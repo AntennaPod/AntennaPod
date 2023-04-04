@@ -22,6 +22,7 @@ public class TimeRangeDialog extends MaterialAlertDialogBuilder {
         super(context);
         view = new TimeRangeView(context, from, to);
         setView(view);
+        setPositiveButton(android.R.string.ok, null);
     }
 
     public int getFrom() {
@@ -32,14 +33,19 @@ public class TimeRangeDialog extends MaterialAlertDialogBuilder {
         return view.to;
     }
 
-    class TimeRangeView extends View {
-        private final Paint paintBackground = new Paint();
+    static class TimeRangeView extends View {
+        private static final int DIAL_ALPHA = 120;
+        private final Paint paintDial = new Paint();
         private final Paint paintSelected = new Paint();
         private final Paint paintText = new Paint();
         private int from;
         private int to;
         private final RectF bounds = new RectF();
         int touching = 0;
+
+        public TimeRangeView(Context context) { // Used by Android tools
+            this(context, 0, 0);
+        }
 
         public TimeRangeView(Context context, int from, int to) {
             super(context);
@@ -49,9 +55,11 @@ public class TimeRangeDialog extends MaterialAlertDialogBuilder {
         }
 
         private void setup() {
-            paintBackground.setAntiAlias(true);
-            paintBackground.setStyle(Paint.Style.STROKE);
-            paintBackground.setColor(ThemeUtils.getColorFromAttr(getContext(), android.R.attr.textColorPrimary));
+            paintDial.setAntiAlias(true);
+            paintDial.setStyle(Paint.Style.STROKE);
+            paintDial.setStrokeCap(Paint.Cap.ROUND);
+            paintDial.setColor(ThemeUtils.getColorFromAttr(getContext(), android.R.attr.textColorPrimary));
+            paintDial.setAlpha(DIAL_ALPHA);
 
             paintSelected.setAntiAlias(true);
             paintSelected.setStyle(Paint.Style.STROKE);
@@ -86,15 +94,25 @@ public class TimeRangeDialog extends MaterialAlertDialogBuilder {
 
             float size = getHeight(); // square
             float padding = size * 0.1f;
-            paintBackground.setStrokeWidth(size * 0.005f);
+            paintDial.setStrokeWidth(size * 0.005f);
             bounds.set(padding, padding, size - padding, size - padding);
 
-            canvas.drawArc(bounds, 0, 360, false, paintBackground);
+            paintText.setAlpha(DIAL_ALPHA);
+            canvas.drawArc(bounds, 0, 360, false, paintDial);
             for (int i = 0; i < 24; i++) {
-                Point p1 = radToPoint(i / 24.0f * 360.f, size / 2 - 1.6f * padding);
-                Point p2 = radToPoint(i / 24.0f * 360.f, size / 2 - ((i % 6 == 0) ? 2.1f : 1.8f) * padding);
-                canvas.drawLine(p1.x, p1.y, p2.x, p2.y, paintBackground);
+                paintDial.setStrokeWidth(size * 0.005f);
+                if (i % 6 == 0) {
+                    paintDial.setStrokeWidth(size * 0.01f);
+                    Point textPos = radToPoint(i / 24.0f * 360.f, size / 2 - 2.5f * padding);
+                    paintText.setTextSize(0.4f * padding);
+                    canvas.drawText(String.valueOf(i == 0 ? 12 : i), textPos.x,
+                            textPos.y + (-paintText.descent() - paintText.ascent()) / 2, paintText);
+                }
+                Point outer = radToPoint(i / 24.0f * 360.f, size / 2 - 1.7f * padding);
+                Point inner = radToPoint(i / 24.0f * 360.f, size / 2 - 1.9f * padding);
+                canvas.drawLine(outer.x, outer.y, inner.x, inner.y, paintDial);
             }
+            paintText.setAlpha(255);
 
             float angleFrom = (float) from / 24 * 360 - 90;
             float angleDistance = (float) ((to - from + 24) % 24) / 24 * 360;
@@ -107,18 +125,17 @@ public class TimeRangeDialog extends MaterialAlertDialogBuilder {
             Point p2 = radToPoint(angleFrom + angleDistance + 90, size / 2 - padding);
             canvas.drawCircle(p2.x, p2.y, padding / 2, paintSelected);
 
-            paintText.setTextSize(0.7f * padding);
+            paintText.setTextSize(0.6f * padding);
             String timeRange;
             if (from == to) {
-                // TODO Update string?
-                timeRange = "Always";
+                timeRange = getContext().getString(R.string.sleep_timer_always);
             } else if (DateFormat.is24HourFormat(getContext())) {
                 timeRange = String.format(Locale.getDefault(), "%02d:00 - %02d:00", from, to);
             } else {
                 timeRange = String.format(Locale.getDefault(), "%02d:00 %s - %02d:00 %s", from % 12,
                         from >= 12 ? "PM" : "AM", to % 12, to >= 12 ? "PM" : "AM");
             }
-            canvas.drawText(timeRange, size / 2, size / 2, paintText);
+            canvas.drawText(timeRange, size / 2, (size - paintText.descent() - paintText.ascent()) / 2, paintText);
         }
 
         protected Point radToPoint(float angle, float radius) {
@@ -147,6 +164,10 @@ public class TimeRangeDialog extends MaterialAlertDialogBuilder {
                 }
             } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                 int newTime = (int) (24 * (angle / 360.0));
+                if (from == to && touching != 0) {
+                    // Switch which handle is focussed such that selection is the smaller arc
+                    touching = (((newTime - to + 24) % 24) < 12) ? 2 : 1;
+                }
                 if (touching == 1) {
                     from = newTime;
                     invalidate();

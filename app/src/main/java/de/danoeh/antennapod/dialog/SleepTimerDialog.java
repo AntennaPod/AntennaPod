@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.util.Pair;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -18,7 +17,6 @@ import androidx.annotation.NonNull;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.timepicker.TimeFormat;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
