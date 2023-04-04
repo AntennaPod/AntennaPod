@@ -16,23 +16,35 @@ import de.danoeh.antennapod.ui.common.ThemeUtils;
 import java.util.Locale;
 
 public class TimeRangeDialog extends MaterialAlertDialogBuilder {
+    private final TimeRangeView view;
 
-    public TimeRangeDialog(@NonNull Context context) {
+    public TimeRangeDialog(@NonNull Context context, int from, int to) {
         super(context);
-        setView(new TimeRangeView(context));
+        view = new TimeRangeView(context, from, to);
+        setView(view);
+    }
+
+    public int getFrom() {
+        return view.from;
+    }
+
+    public int getTo() {
+        return view.to;
     }
 
     class TimeRangeView extends View {
         private final Paint paintBackground = new Paint();
         private final Paint paintSelected = new Paint();
         private final Paint paintText = new Paint();
-        private int from = 0;
-        private int to = 6;
+        private int from;
+        private int to;
         private final RectF bounds = new RectF();
         int touching = 0;
 
-        public TimeRangeView(Context context) {
+        public TimeRangeView(Context context, int from, int to) {
             super(context);
+            this.from = from;
+            this.to = to;
             setup();
         }
 
@@ -97,7 +109,10 @@ public class TimeRangeDialog extends MaterialAlertDialogBuilder {
 
             paintText.setTextSize(0.7f * padding);
             String timeRange;
-            if (DateFormat.is24HourFormat(getContext())) {
+            if (from == to) {
+                // TODO Update string?
+                timeRange = "Always";
+            } else if (DateFormat.is24HourFormat(getContext())) {
                 timeRange = String.format(Locale.getDefault(), "%02d:00 - %02d:00", from, to);
             } else {
                 timeRange = String.format(Locale.getDefault(), "%02d:00 %s - %02d:00 %s", from % 12,
