@@ -105,7 +105,7 @@ public class TimeRangeDialog extends MaterialAlertDialogBuilder {
                     paintDial.setStrokeWidth(size * 0.01f);
                     Point textPos = radToPoint(i / 24.0f * 360.f, size / 2 - 2.5f * padding);
                     paintText.setTextSize(0.4f * padding);
-                    canvas.drawText(String.valueOf(i == 0 ? 12 : i), textPos.x,
+                    canvas.drawText(String.valueOf(i), textPos.x,
                             textPos.y + (-paintText.descent() - paintText.ascent()) / 2, paintText);
                 }
                 Point outer = radToPoint(i / 24.0f * 360.f, size / 2 - 1.7f * padding);

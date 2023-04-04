@@ -128,46 +128,16 @@ public class SleepTimerDialog extends DialogFragment {
         });
         updateAutoEnableText();
 
-
-        //final int timeFormat = DateFormat.is24HourFormat(getContext()) ? TimeFormat.CLOCK_24H : TimeFormat.CLOCK_12H;
         changeTimesButton.setOnClickListener(changeTimesBtn -> {
             Pair<Integer, Integer> from = SleepTimerPreferences.autoEnableTimeFrom();
             Pair<Integer, Integer> to = SleepTimerPreferences.autoEnableTimeTo();
             TimeRangeDialog dialog = new TimeRangeDialog(getContext(), from.first, to.first);
             dialog.setOnDismissListener(v -> {
-               SleepTimerPreferences.setAutoEnableTimeFrom(dialog.getFrom(), 0);
-               SleepTimerPreferences.setAutoEnableTimeTo(dialog.getTo(), 0);
-               updateAutoEnableText();
-            });
-            dialog.show();
-
-            /*
-            MaterialTimePicker dialogFrom = new MaterialTimePicker.Builder()
-                    .setHour(from.first)
-                    .setMinute(from.second)
-                    .setTimeFormat(timeFormat)
-                    .setTitleText(R.string.auto_enable_from)
-                    .setPositiveButtonText(R.string.auto_enable_next)
-                    .build();
-            dialogFrom.addOnPositiveButtonClickListener(dialog -> {
-
-                MaterialTimePicker dialogTo = new MaterialTimePicker.Builder()
-                        .setHour(to.first)
-                        .setMinute(to.second)
-                        .setTimeFormat(timeFormat)
-                        .setTitleText(R.string.auto_enable_to)
-                        .build();
-                dialogTo.addOnPositiveButtonClickListener(dialog2 -> {
-                    SleepTimerPreferences.setAutoEnableTimeTo(dialogTo.getHour(), dialogTo.getMinute());
-                    updateAutoEnableText();
-                });
-                dialogTo.show(getParentFragmentManager(), "SleepTimerAutoEnableTo");
-            });
-            dialogFrom.addOnPositiveButtonClickListener(dialog -> {
-                SleepTimerPreferences.setAutoEnableTimeFrom(dialogFrom.getHour(), dialogFrom.getMinute());
+                SleepTimerPreferences.setAutoEnableTimeFrom(dialog.getFrom(), 0);
+                SleepTimerPreferences.setAutoEnableTimeTo(dialog.getTo(), 0);
                 updateAutoEnableText();
             });
-            dialogFrom.show(getParentFragmentManager(), "SleepTimerAutoEnableFrom");*/
+            dialog.show();
         });
 
         Button disableButton = content.findViewById(R.id.disableSleeptimerButton);
