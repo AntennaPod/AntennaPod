@@ -40,6 +40,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.media.MediaBrowserServiceCompat;
@@ -806,22 +807,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     stateManager.startForeground(R.id.notification_playing, notificationBuilder.build());
                     // set sleep timer if auto-enabled
                     boolean autoEnableByTime = true;
-                    Pair<Integer, Integer> fromSetting = SleepTimerPreferences.autoEnableTimeFrom();
-                    Pair<Integer, Integer> toSetting = SleepTimerPreferences.autoEnableTimeTo();
-                    if (!fromSetting.equals(toSetting)) {
-                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                        try {
-                            Calendar now = new GregorianCalendar();
-                            now.setTimeInMillis(System.currentTimeMillis());
-
-                            Date timeNow = sdf.parse(now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE));
-                            Date from = sdf.parse(fromSetting.first + ":" + fromSetting.second);
-                            Date to = sdf.parse(toSetting.first + ":" + toSetting.second);
-
-                            autoEnableByTime = timeNow.after(from) && timeNow.before(to);
-                        } catch (ParseException | NullPointerException e) {
-                            Log.d(TAG, "Error parsing dates", e);
-                        }
+                    int fromSetting = SleepTimerPreferences.autoEnableFrom();
+                    int toSetting = SleepTimerPreferences.autoEnableTimeTo();
+                    if (fromSetting != toSetting) {
+                        Calendar now = new GregorianCalendar();
+                        now.setTimeInMillis(System.currentTimeMillis());
+                        int currentHour = now.get(Calendar.HOUR_OF_DAY);
+                        autoEnableByTime = isInTimeRange(fromSetting, toSetting, currentHour);
                     }
 
                     if (newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING
@@ -922,6 +914,21 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
         }
     };
+
+    @VisibleForTesting
+    public static boolean isInTimeRange(int from, int to, int current) {
+        // Range covers one day
+        if (from < to) {
+            return from <= current && current < to;
+        }
+
+        // Range covers two days
+        if (from <= current) {
+            return true;
+        }
+
+        return current < to;
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Pair;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -129,12 +130,12 @@ public class SleepTimerDialog extends DialogFragment {
         updateAutoEnableText();
 
         changeTimesButton.setOnClickListener(changeTimesBtn -> {
-            Pair<Integer, Integer> from = SleepTimerPreferences.autoEnableTimeFrom();
-            Pair<Integer, Integer> to = SleepTimerPreferences.autoEnableTimeTo();
-            TimeRangeDialog dialog = new TimeRangeDialog(getContext(), from.first, to.first);
+            int from = SleepTimerPreferences.autoEnableFrom();
+            int to = SleepTimerPreferences.autoEnableTimeTo();
+            TimeRangeDialog dialog = new TimeRangeDialog(getContext(), from, to);
             dialog.setOnDismissListener(v -> {
-                SleepTimerPreferences.setAutoEnableTimeFrom(dialog.getFrom(), 0);
-                SleepTimerPreferences.setAutoEnableTimeTo(dialog.getTo(), 0);
+                SleepTimerPreferences.setAutoEnableFrom(dialog.getFrom());
+                SleepTimerPreferences.setAutoEnableTo(dialog.getTo());
                 updateAutoEnableText();
             });
             dialog.show();
@@ -172,23 +173,19 @@ public class SleepTimerDialog extends DialogFragment {
 
     private void updateAutoEnableText() {
         String text;
-        Pair<Integer, Integer> fromSetting = SleepTimerPreferences.autoEnableTimeFrom();
-        Pair<Integer, Integer> toSetting = SleepTimerPreferences.autoEnableTimeTo();
-        if (fromSetting.equals(toSetting)) {
+        int from = SleepTimerPreferences.autoEnableFrom();
+        int to = SleepTimerPreferences.autoEnableTimeTo();
+
+        if (from == to) {
             text = getString(R.string.auto_enable_label);
+        } else if (DateFormat.is24HourFormat(getContext())) {
+            String time = String.format(Locale.getDefault(), "%02d:00 - %02d:00", from, to);
+            text = getString(R.string.auto_enable_label_with_times, time);
         } else {
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-            try {
-                Date from = sdf.parse(fromSetting.first + ":" + fromSetting.second);
-                Date to = sdf.parse(toSetting.first + ":" + toSetting.second);
-                text = getString(
-                        R.string.auto_enable_label_with_times,
-                        SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT).format(from),
-                        SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT).format(to)
-                );
-            } catch (Exception e) {
-                return;
-            }
+            String time = String.format(Locale.getDefault(), "%02d:00 %s - %02d:00 %s", from % 12,
+                    from >= 12 ? "PM" : "AM", to % 12, to >= 12 ? "PM" : "AM");
+            text = getString(R.string.auto_enable_label_with_times, time);
+
         }
         chAutoEnable.setText(text);
     }
