@@ -615,9 +615,6 @@
     <string name="auto_enable_label">Automatically activate the sleep timer when pressing play</string>
     <string name="auto_enable_label_with_times">Automatically activate the sleep timer when pressing play at %s</string>
     <string name="auto_enable_change_times">Change times</string>
-    <string name="auto_enable_from">From</string>
-    <string name="auto_enable_to">To</string>
-    <string name="auto_enable_next">Next</string>
     <string name="sleep_timer_enabled_label">Sleep timer enabled</string>
 
     <!-- Synchronisation -->
