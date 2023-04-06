@@ -767,8 +767,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             updateMediaSession(newInfo.playerStatus);
             switch (newInfo.playerStatus) {
                 case INITIALIZED:
-                    PlaybackPreferences.writeMediaPlaying(mediaPlayer.getPSMPInfo().playable,
-                            mediaPlayer.getPSMPInfo().playerStatus);
+                    if (mediaPlayer.getPSMPInfo().playable != null) {
+                        PlaybackPreferences.writeMediaPlaying(mediaPlayer.getPSMPInfo().playable,
+                                mediaPlayer.getPSMPInfo().playerStatus);
+                    }
                     updateNotificationAndMediaSession(newInfo.playable);
                     break;
                 case PREPARED:
