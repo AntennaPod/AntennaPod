@@ -175,8 +175,13 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             new RenameItemDialog(getActivity(), feed).show();
             return true;
         } else if (itemId == R.id.remove_feed) {
-            ((MainActivity) getActivity()).loadFragment(AllEpisodesFragment.TAG, null);
-            RemoveFeedDialog.show(getContext(), feed);
+            RemoveFeedDialog.show(getContext(), feed, () -> {
+                if (String.valueOf(feed.getId()).equals(getLastNavFragment(getContext()))) {
+                    ((MainActivity) getActivity()).loadFragment(UserPreferences.getDefaultPage(), null);
+                    // Make sure fragment is hidden before actually starting to delete
+                    getActivity().getSupportFragmentManager().executePendingTransactions();
+                }
+            });
             return true;
         }
         return super.onContextItemSelected(item);

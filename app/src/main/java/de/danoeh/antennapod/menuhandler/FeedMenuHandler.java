@@ -126,7 +126,7 @@ public class FeedMenuHandler {
         } else if (menuItemId == R.id.rename_item) {
             new RenameItemDialog(fragment.getActivity(), selectedFeed).show();
         } else if (menuItemId == R.id.remove_feed) {
-            RemoveFeedDialog.show(context, selectedFeed);
+            RemoveFeedDialog.show(context, selectedFeed, null);
         } else {
             return false;
         }
