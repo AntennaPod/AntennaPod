@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
+import java.util.Random;
 
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -46,6 +47,9 @@ class ItemEnqueuePositionCalculator {
                 int currentlyPlayingPosition = getCurrentlyPlayingPosition(curQueue, currentPlaying);
                 return getPositionOfFirstNonDownloadingItem(
                         currentlyPlayingPosition + 1, curQueue);
+            case RANDOM:
+                Random random = new Random();
+                return random.nextInt(curQueue.size() + 1);
             default:
                 throw new AssertionError("calcPosition() : unrecognized enqueueLocation option: " + enqueueLocation);
         }

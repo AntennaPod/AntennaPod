@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.playback.cast;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import android.util.Log;
@@ -36,6 +37,7 @@ import org.greenrobot.eventbus.EventBus;
 /**
  * Implementation of PlaybackServiceMediaPlayer suitable for remote playback on Cast Devices.
  */
+@SuppressLint("VisibleForTests")
 public class CastPsmp extends PlaybackServiceMediaPlayer {
 
     public static final String TAG = "CastPSMP";

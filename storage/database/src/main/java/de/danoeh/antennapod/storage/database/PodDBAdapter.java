@@ -734,6 +734,13 @@ public class PodDBAdapter {
         }
     }
 
+    public void resetPagedFeedPage(Feed feed) {
+        final String sql = "UPDATE " + TABLE_NAME_FEEDS
+                + " SET " + KEY_NEXT_PAGE_LINK + "=" + KEY_DOWNLOAD_URL
+                + " WHERE " + KEY_ID + "=" + feed.getId();
+        db.execSQL(sql);
+    }
+
     public void setFeedLastUpdateFailed(long feedId, boolean failed) {
         final String sql = "UPDATE " + TABLE_NAME_FEEDS
                 + " SET " + KEY_LAST_UPDATE_FAILED + "=" + (failed ? "1" : "0")
@@ -1193,7 +1200,7 @@ public class PodDBAdapter {
                     + TABLE_NAME_FEED_MEDIA + "." + KEY_POSITION + "> 0";
         }
         final String timeFilter = lastPlayedTime + ">=" + timeFilterFrom
-                + " AND " + lastPlayedTime + "<=" + timeFilterTo;
+                + " AND " + lastPlayedTime + "<" + timeFilterTo;
         String playedTime = TABLE_NAME_FEED_MEDIA + "." + KEY_PLAYED_DURATION;
         if (includeMarkedAsPlayed) {
             playedTime = "(CASE WHEN " + playedTime + " != 0"
@@ -1477,6 +1484,9 @@ public class PodDBAdapter {
         public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
             Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to " + newVersion + ".");
             DBUpgrader.upgrade(db, oldVersion, newVersion);
+
+            db.execSQL("DELETE FROM " + PodDBAdapter.TABLE_NAME_DOWNLOAD_LOG + " WHERE "
+                    + PodDBAdapter.KEY_COMPLETION_DATE + "<" + (System.currentTimeMillis() - 7L * 24L * 3600L * 1000L));
         }
     }
 }

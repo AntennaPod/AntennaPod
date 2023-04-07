@@ -1,9 +1,9 @@
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         minSdk 21
-        targetSdk 31
+        targetSdk 33
 
         multiDexEnabled true
         vectorDrawables.useSupportLibrary true
@@ -24,16 +24,17 @@ android {
     }
 
     packagingOptions {
-        exclude "META-INF/LICENSE.txt"
-        exclude "META-INF/NOTICE.txt"
-        // Extraneous jsoup files
-        exclude "META-INF/CHANGES"
-        exclude "META-INF/README.md"
+        resources {
+            excludes += ["META-INF/LICENSE.txt",
+                         "META-INF/NOTICE.txt",
+                         "META-INF/CHANGES",
+                         "META-INF/README.md"]
+        }
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     testOptions {
@@ -43,7 +44,7 @@ android {
         }
     }
 
-    lintOptions {
+    lint {
         disable "GradleDependency"
         checkDependencies true
         warningsAsErrors true

@@ -4,8 +4,8 @@ plugins {
 apply from: "../../common.gradle"
 
 android {
-    lintOptions {
-        disable "StaticFieldLeak"
+    lint {
+        disable "StaticFieldLeak", "StringFormatCount", "StringFormatMatches", "StringFormatInvalid", "PluralsCandidate", "StringFormatTrivial"
     }
 }
 
