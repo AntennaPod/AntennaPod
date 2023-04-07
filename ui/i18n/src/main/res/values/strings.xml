@@ -60,6 +60,9 @@
     <string name="home_downloads_title">Manage downloads</string>
     <string name="home_welcome_title">Welcome to AntennaPod!</string>
     <string name="home_welcome_text">You are not subscribed to any podcasts yet. Open the side menu to add a podcast.</string>
+    <string name="notification_permission_text">AntennaPod needs your permission to show notifications while downloading episodes.</string>
+    <string name="notification_permission_denied">You denied the permission.</string>
+    <string name="open_settings">Open settings</string>
     <string name="configure_home">Configure Home Screen</string>
 
     <!-- Download Statistics fragment -->
