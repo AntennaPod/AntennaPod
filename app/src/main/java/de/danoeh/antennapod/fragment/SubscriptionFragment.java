@@ -22,17 +22,6 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.joanzapata.iconify.Iconify;
 import com.leinardi.android.speeddial.SpeedDialView;
-import de.danoeh.antennapod.dialog.TagSettingsDialog;
-import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
-import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
-import de.danoeh.antennapod.view.LiftOnScrollListener;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.SubscriptionsRecyclerAdapter;
@@ -71,7 +60,7 @@ import java.util.Locale;
  */
 public class SubscriptionFragment extends Fragment
         implements MaterialToolbar.OnMenuItemClickListener,
-        SubscriptionsRecyclerAdapter.OnSelectModeListener, RemoveFeedDialog.Callback {
+        SubscriptionsRecyclerAdapter.OnSelectModeListener {
     public static final String TAG = "SubscriptionFragment";
     private static final String PREFS = "SubscriptionFragment";
     private static final String PREF_NUM_COLUMNS = "columns";
@@ -352,25 +341,6 @@ public class SubscriptionFragment extends Fragment
         }
 
         Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
-
-        if (itemId == R.id.remove_all_inbox_item) {
-            displayConfirmationDialog(
-                    R.string.remove_all_inbox_label,
-                    R.string.remove_all_inbox_confirmation_msg,
-                    () -> DBWriter.removeFeedNewFlag(feed.getId()));
-            return true;
-        } else if (itemId == R.id.edit_tags) {
-            TagSettingsDialog.newInstance(Collections.singletonList(feed.getPreferences()))
-                    .show(getChildFragmentManager(), TagSettingsDialog.TAG);
-            return true;
-        } else if (itemId == R.id.rename_item) {
-            new RenameItemDialog(getActivity(), feed).show();
-            return true;
-        } else if (itemId == R.id.remove_feed) {
-            RemoveFeedDialog.show(getContext(), feed, this);
-            return true;
-        }
-        
         if (itemId == R.id.multi_select) {
             speedDialView.setVisibility(View.VISIBLE);
             return subscriptionAdapter.onContextItemSelected(item);
@@ -410,11 +380,5 @@ public class SubscriptionFragment extends Fragment
             }
         }
         subscriptionAdapter.setItems(feedsOnly);
-    }
-
-    @Override
-    public void onConfirmRemovePodcast() {
-        String lastNavFragment = NavDrawerFragment.getLastNavFragmentExceptFeed(getContext());
-        new MainActivityStarter(getContext()).withFragmentLoaded(lastNavFragment).start();
     }
 }

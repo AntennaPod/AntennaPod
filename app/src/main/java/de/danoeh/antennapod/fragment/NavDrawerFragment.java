@@ -57,11 +57,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class NavDrawerFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener,
-        RemoveFeedDialog.Callback {
+public class NavDrawerFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     @VisibleForTesting
     public static final String PREF_LAST_FRAGMENT_TAG = "prefLastFragmentTag";
-    public static final String PREF_LAST_DEFAULT_FRAGMENT_TAG = "prefLastDefaultFragmentTag";
     private static final String PREF_OPEN_FOLDERS = "prefOpenFolders";
     @VisibleForTesting
     public static final String PREF_NAME = "NavDrawerPrefs";
@@ -177,7 +175,13 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             new RenameItemDialog(getActivity(), feed).show();
             return true;
         } else if (itemId == R.id.remove_feed) {
-            RemoveFeedDialog.show(getContext(), feed, this);
+            RemoveFeedDialog.show(getContext(), feed, () -> {
+                if (String.valueOf(feed.getId()).equals(getLastNavFragment(getContext()))) {
+                    ((MainActivity) getActivity()).loadFragment(UserPreferences.getDefaultPage(), null);
+                    // Make sure fragment is hidden before actually starting to delete
+                    getActivity().getSupportFragmentManager().executePendingTransactions();
+                }
+            });
             return true;
         }
         return super.onContextItemSelected(item);
@@ -417,33 +421,10 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         return lastFragment;
     }
 
-    public static void saveLastNavFragmentExceptFeed(Context context, String tag) {
-        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor edit = prefs.edit();
-        if (tag != null) {
-            edit.putString(PREF_LAST_DEFAULT_FRAGMENT_TAG, tag);
-        } else {
-            edit.remove(PREF_LAST_DEFAULT_FRAGMENT_TAG);
-        }
-        edit.apply();
-    }
-
-    public static String getLastNavFragmentExceptFeed(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        String lastFragment = prefs.getString(PREF_LAST_DEFAULT_FRAGMENT_TAG, HomeFragment.TAG);
-        return lastFragment;
-    }
-
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (PREF_LAST_FRAGMENT_TAG.equals(key)) {
             navAdapter.notifyDataSetChanged(); // Update selection
         }
-    }
-
-    @Override
-    public void onConfirmRemovePodcast() {
-        String lastNavFragment = getLastNavFragmentExceptFeed(getContext());
-        new MainActivityStarter(getContext()).withFragmentLoaded(lastNavFragment).start();
     }
 }

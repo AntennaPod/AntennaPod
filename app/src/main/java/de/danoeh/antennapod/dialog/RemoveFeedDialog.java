@@ -21,7 +21,7 @@ import io.reactivex.schedulers.Schedulers;
 public class RemoveFeedDialog {
     private static final String TAG = "RemoveFeedDialog";
 
-    public static void show(Context context, Feed feed, @Nullable Callback callback) {
+    public static void show(Context context, Feed feed, @Nullable Runnable callback) {
         List<Feed> feeds = Collections.singletonList(feed);
         String message = getMessageId(context, feeds);
         showDialog(context, feeds, message, callback);
@@ -32,13 +32,13 @@ public class RemoveFeedDialog {
         showDialog(context, feeds, message, null);
     }
 
-    private static void showDialog(Context context, List<Feed> feeds, String message, @Nullable Callback callback) {
+    private static void showDialog(Context context, List<Feed> feeds, String message, @Nullable Runnable callback) {
         ConfirmationDialog dialog = new ConfirmationDialog(context, R.string.remove_feed_label, message) {
             @Override
             public void onConfirmButtonPressed(DialogInterface clickedDialog) {
 
                 if (callback != null) {
-                    callback.onConfirmRemovePodcast();
+                    callback.run();
                 }
 
                 clickedDialog.dismiss();
@@ -80,9 +80,5 @@ public class RemoveFeedDialog {
             return context.getString(R.string.feed_delete_confirmation_msg_batch);
         }
 
-    }
-
-    public interface Callback {
-        void onConfirmRemovePodcast();
     }
 }

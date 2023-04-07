@@ -61,7 +61,7 @@ import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
-import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 import de.danoeh.antennapod.view.ToolbarIconTintManager;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -82,8 +82,7 @@ import java.util.List;
  * Displays a list of FeedItems.
  */
 public class FeedItemlistFragment extends Fragment implements AdapterView.OnItemClickListener,
-        MaterialToolbar.OnMenuItemClickListener, EpisodeItemListAdapter.OnSelectModeListener,
-        RemoveFeedDialog.Callback {
+        MaterialToolbar.OnMenuItemClickListener, EpisodeItemListAdapter.OnSelectModeListener {
     public static final String TAG = "ItemlistFragment";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
     private static final String KEY_UP_ARROW = "up_arrow";
@@ -272,7 +271,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             new RenameItemDialog(getActivity(), feed).show();
             return true;
         } else if (itemId == R.id.remove_feed) {
-            RemoveFeedDialog.show(getContext(), feed, this);
+            RemoveFeedDialog.show(getContext(), feed, () -> {
+                ((MainActivity) getActivity()).loadFragment(UserPreferences.getDefaultPage(), null);
+                // Make sure fragment is hidden before actually starting to delete
+                getActivity().getSupportFragmentManager().executePendingTransactions();
+            });
             return true;
         } else if (itemId == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(feed.getId(), feed.getTitle()));
@@ -595,11 +598,5 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             }
             MenuItemUtils.setOnClickListeners(menu, FeedItemlistFragment.this::onContextItemSelected);
         }
-    }
-
-    @Override
-    public void onConfirmRemovePodcast() {
-        String lastNavFragment = NavDrawerFragment.getLastNavFragmentExceptFeed(getContext());
-        new MainActivityStarter(getContext()).withFragmentLoaded(lastNavFragment).start();
     }
 }

@@ -15,7 +15,6 @@ public class MainActivityStarter {
     public static final String EXTRA_OPEN_PLAYER = "open_player";
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
     public static final String EXTRA_ADD_TO_BACK_STACK = "add_to_back_stack";
-    public static final String EXTRA_LOAD_FRAGMENT = "load_fragment";
     public static final String EXTRA_FRAGMENT_TAG = "fragment_tag";
     public static final String EXTRA_OPEN_DRAWER = "open_drawer";
     public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
@@ -59,7 +58,6 @@ public class MainActivityStarter {
     }
 
     public MainActivityStarter withFragmentLoaded(String fragmentName) {
-        intent.putExtra(EXTRA_LOAD_FRAGMENT, fragmentName);
         intent.putExtra(EXTRA_FRAGMENT_TAG, fragmentName);
         return this;
     }
