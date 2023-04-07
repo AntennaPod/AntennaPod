@@ -14,14 +14,13 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadLogAdapter;
-import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
-import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.databinding.DownloadLogFragmentBinding;
 import de.danoeh.antennapod.dialog.DownloadLogDetailsDialog;
+import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
@@ -120,11 +119,10 @@ public class DownloadLogFragment extends BottomSheetDialogFragment
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEvent(DownloadEvent event) {
-        Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
-        DownloaderUpdate update = event.update;
-        runningDownloads = update.downloaders;
-        adapter.setRunningDownloads(runningDownloads);
+    public void onEventMainThread(EpisodeDownloadEvent event) {
+        //runningDownloads = update.downloaders;
+        //adapter.setRunningDownloads(runningDownloads);
+        // TODO
     }
 
     private void loadDownloadLog() {

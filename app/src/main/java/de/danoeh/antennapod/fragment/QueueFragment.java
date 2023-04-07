@@ -32,8 +32,6 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.adapter.QueueRecyclerAdapter;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
-import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -41,6 +39,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
+import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
@@ -186,16 +185,11 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(DownloadEvent event) {
-        Log.d(TAG, "onEventMainThread() called with DownloadEvent");
-        DownloaderUpdate update = event.update;
-        refreshToolbarState();
-        if (recyclerAdapter != null && update.mediaIds.length > 0) {
-            for (long mediaId : update.mediaIds) {
-                int pos = FeedItemUtil.indexOfItemWithMediaId(queue, mediaId);
-                if (pos >= 0) {
-                    recyclerAdapter.notifyItemChangedCompat(pos);
-                }
+    public void onEventMainThread(EpisodeDownloadEvent event) {
+        for (String downloadUrl : event.getUrls()) {
+            int pos = FeedItemUtil.indexOfItemWithDownloadUrl(queue, downloadUrl);
+            if (pos >= 0) {
+                recyclerAdapter.notifyItemChangedCompat(pos);
             }
         }
     }

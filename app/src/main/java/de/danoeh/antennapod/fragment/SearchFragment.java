@@ -28,9 +28,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.adapter.HorizontalFeedListAdapter;
-import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
@@ -295,15 +294,11 @@ public class SearchFragment extends Fragment {
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(DownloadEvent event) {
-        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        DownloaderUpdate update = event.update;
-        if (adapter != null && update.mediaIds.length > 0) {
-            for (long mediaId : update.mediaIds) {
-                int pos = FeedItemUtil.indexOfItemWithMediaId(results, mediaId);
-                if (pos >= 0) {
-                    adapter.notifyItemChangedCompat(pos);
-                }
+    public void onEventMainThread(EpisodeDownloadEvent event) {
+        for (String downloadUrl : event.getUrls()) {
+            int pos = FeedItemUtil.indexOfItemWithDownloadUrl(results, downloadUrl);
+            if (pos >= 0) {
+                adapter.notifyItemChangedCompat(pos);
             }
         }
     }

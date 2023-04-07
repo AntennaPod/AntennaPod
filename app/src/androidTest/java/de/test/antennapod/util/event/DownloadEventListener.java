@@ -2,7 +2,7 @@ package de.test.antennapod.util.event;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import io.reactivex.functions.Consumer;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -14,7 +14,7 @@ import java.util.List;
  * Test helper to listen to {@link DownloadEvent} and handle them accordingly.
  */
 public class DownloadEventListener {
-    private final List<DownloadEvent> events = new ArrayList<>();
+    private final List<EpisodeDownloadEvent> events = new ArrayList<>();
 
     /**
      * Provides an listener subscribing to {@link DownloadEvent} that the callers can use.

@@ -29,8 +29,6 @@ import com.leinardi.android.speeddial.SpeedDialView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
-import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -45,6 +43,7 @@ import de.danoeh.antennapod.dialog.DownloadLogDetailsDialog;
 import de.danoeh.antennapod.dialog.FeedItemFilterDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameItemDialog;
+import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FavoritesEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
@@ -330,16 +329,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(DownloadEvent event) {
-        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        DownloaderUpdate update = event.update;
-        updateToolbar();
-        if (update.mediaIds.length > 0 && feed != null) {
-            for (long mediaId : update.mediaIds) {
-                int pos = FeedItemUtil.indexOfItemWithMediaId(feed.getItems(), mediaId);
-                if (pos >= 0) {
-                    adapter.notifyItemChangedCompat(pos);
-                }
+    public void onEventMainThread(EpisodeDownloadEvent event) {
+        for (String downloadUrl : event.getUrls()) {
+            int pos = FeedItemUtil.indexOfItemWithDownloadUrl(feed.getItems(), downloadUrl);
+            if (pos >= 0) {
+                adapter.notifyItemChangedCompat(pos);
             }
         }
     }

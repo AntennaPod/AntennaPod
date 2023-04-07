@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.storage;
 
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -192,23 +193,23 @@ public class ItemEnqueuePositionCalculatorTest {
                 Playable currentlyPlaying = getCurrentlyPlaying(idCurrentlyPlaying);
                 // User clicks download on feed item 101
                 FeedItem feedItem101 = createFeedItem(101);
-                downloadServiceMock.when(() ->
-                        DownloadService.isDownloadingFile(feedItem101.getMedia().getDownload_url())).thenReturn(true);
+                downloadServiceMock.when(() -> DownloadServiceInterface.get()
+                        .isDownloadingEpisode(feedItem101.getMedia().getDownload_url())).thenReturn(true);
                 doAddToQueueAndAssertResult(message + " (1st download)",
                         calculator, feedItem101, queue, currentlyPlaying, idsExpectedAfter101);
                 // Then user clicks download on feed item 102
                 FeedItem feedItem102 = createFeedItem(102);
-                downloadServiceMock.when(() ->
-                        DownloadService.isDownloadingFile(feedItem102.getMedia().getDownload_url())).thenReturn(true);
+                downloadServiceMock.when(() -> DownloadServiceInterface.get()
+                        .isDownloadingEpisode(feedItem102.getMedia().getDownload_url())).thenReturn(true);
                 doAddToQueueAndAssertResult(message + " (2nd download, it should preserve order of download)",
                         calculator, feedItem102, queue, currentlyPlaying, idsExpectedAfter102);
                 // simulate download failure case for 102
-                downloadServiceMock.when(() ->
-                        DownloadService.isDownloadingFile(feedItem102.getMedia().getDownload_url())).thenReturn(false);
+                downloadServiceMock.when(() -> DownloadServiceInterface.get()
+                        .isDownloadingEpisode(feedItem102.getMedia().getDownload_url())).thenReturn(false);
                 // Then user clicks download on feed item 103
                 FeedItem feedItem103 = createFeedItem(103);
-                downloadServiceMock.when(() ->
-                        DownloadService.isDownloadingFile(feedItem103.getMedia().getDownload_url())).thenReturn(true);
+                downloadServiceMock.when(() -> DownloadServiceInterface.get()
+                        .isDownloadingEpisode(feedItem103.getMedia().getDownload_url())).thenReturn(true);
                 doAddToQueueAndAssertResult(message
                                 + " (3rd download, with 2nd download failed; "
                                 + "it should be behind 1st download (unless enqueueLocation is BACK)",

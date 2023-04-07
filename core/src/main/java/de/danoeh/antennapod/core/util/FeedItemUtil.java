@@ -34,6 +34,16 @@ public class FeedItemUtil {
         return -1;
     }
 
+    public static int indexOfItemWithDownloadUrl(List<FeedItem> items, String downloadUrl) {
+        for (int i = 0; i < items.size(); i++) {
+            FeedItem item = items.get(i);
+            if (item != null && item.getMedia() != null && item.getMedia().getDownload_url().equals(downloadUrl)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public static long[] getIds(List<FeedItem> items) {
         if(items == null || items.size() == 0) {
             return new long[0];

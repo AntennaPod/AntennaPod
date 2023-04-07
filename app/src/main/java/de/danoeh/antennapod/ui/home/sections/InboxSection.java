@@ -14,11 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
-import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -97,15 +96,11 @@ public class InboxSection extends HomeSection {
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(DownloadEvent event) {
-        Log.d(TAG, "onEventMainThread() called with DownloadEvent");
-        DownloaderUpdate update = event.update;
-        if (adapter != null && update.mediaIds.length > 0) {
-            for (long mediaId : update.mediaIds) {
-                int pos = FeedItemUtil.indexOfItemWithMediaId(items, mediaId);
-                if (pos >= 0) {
-                    adapter.notifyItemChangedCompat(pos);
-                }
+    public void onEventMainThread(EpisodeDownloadEvent event) {
+        for (String downloadUrl : event.getUrls()) {
+            int pos = FeedItemUtil.indexOfItemWithDownloadUrl(items, downloadUrl);
+            if (pos >= 0) {
+                adapter.notifyItemChangedCompat(pos);
             }
         }
     }

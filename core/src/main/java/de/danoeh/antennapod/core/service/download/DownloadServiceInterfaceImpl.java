@@ -3,18 +3,46 @@ package de.danoeh.antennapod.core.service.download;
 import android.content.Context;
 import android.content.Intent;
 import androidx.core.content.ContextCompat;
-import com.google.android.exoplayer2.util.Log;
-import de.danoeh.antennapod.core.BuildConfig;
-import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.ExistingWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.OutOfQuotaPolicy;
+import androidx.work.WorkManager;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import androidx.work.OneTimeWorkRequest;
 
 import java.util.ArrayList;
-
-import static de.danoeh.antennapod.core.service.download.DownloadService.isDownloadingFile;
+import java.util.concurrent.TimeUnit;
 
 public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
     private static final String TAG = "DownloadServiceInterface";
+
+    public void download(Context context, FeedItem item) {
+        OneTimeWorkRequest.Builder workRequest = new OneTimeWorkRequest.Builder(EpisodeDownloadWorker.class)
+                .setInitialDelay(0L, TimeUnit.MILLISECONDS)
+                .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+                .addTag(DownloadServiceInterface.WORK_TAG)
+                .addTag(DownloadServiceInterface.WORK_TAG_EPISODE_URL + item.getMedia().getDownload_url());
+        Data.Builder builder = new Data.Builder();
+        builder.putString("episode", item.getMedia().getDownload_url());
+        workRequest.setInputData(builder.build());
+        WorkManager.getInstance(context).enqueueUniqueWork(item.getMedia().getDownload_url(),
+                ExistingWorkPolicy.KEEP, workRequest.build());
+    }
+
+    private static Constraints getConstraints() {
+        Constraints.Builder constraints = new Constraints.Builder();
+        if (UserPreferences.isAllowMobileEpisodeDownload()) {
+            constraints.setRequiredNetworkType(NetworkType.CONNECTED);
+        } else {
+            constraints.setRequiredNetworkType(NetworkType.UNMETERED);
+        }
+        return constraints.build();
+    }
 
     public void download(Context context, boolean cleanupMedia, DownloadRequest... requests) {
         Intent intent = makeDownloadIntent(context, cleanupMedia, requests);
@@ -25,32 +53,12 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
 
     public Intent makeDownloadIntent(Context context, boolean cleanupMedia, DownloadRequest... requests) {
         ArrayList<DownloadRequest> requestsToSend = new ArrayList<>();
-        for (DownloadRequest request : requests) {
-            if (!isDownloadingFile(request.getSource())) {
-                requestsToSend.add(request);
-            }
-        }
-        if (requestsToSend.isEmpty()) {
-            return null;
-        } else if (requestsToSend.size() > 100) {
-            if (BuildConfig.DEBUG) {
-                throw new IllegalArgumentException("Android silently drops intent payloads that are too large");
-            } else {
-                Log.d(TAG, "Too many download requests. Dropping some to avoid Android dropping all.");
-                requestsToSend = new ArrayList<>(requestsToSend.subList(0, 100));
-            }
-        }
-
         Intent launchIntent = new Intent(context, DownloadService.class);
         launchIntent.putParcelableArrayListExtra(DownloadService.EXTRA_REQUESTS, requestsToSend);
         if (cleanupMedia) {
             launchIntent.putExtra(DownloadService.EXTRA_CLEANUP_MEDIA, true);
         }
         return launchIntent;
-    }
-
-    public void refreshAllFeeds(Context context, boolean initiatedByUser) {
-        FeedUpdateManager.runOnce(context);
     }
 
     public void cancel(Context context, String url) {

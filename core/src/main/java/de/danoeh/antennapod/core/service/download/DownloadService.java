@@ -16,7 +16,6 @@ import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.ServiceCompat;
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.service.download.handler.FailedDownloadHandler;
 import de.danoeh.antennapod.core.service.download.handler.MediaDownloadedHandler;
 import de.danoeh.antennapod.core.service.download.handler.PostDownloaderTask;
@@ -181,7 +180,6 @@ public class DownloadService extends Service {
         unregisterReceiver(cancelDownloadReceiver);
         connectionMonitor.disable(getApplicationContext());
 
-        EventBus.getDefault().postSticky(DownloadEvent.refresh(Collections.emptyList()));
         cancelNotificationUpdater();
         downloadEnqueueExecutor.shutdownNow();
         downloadHandleExecutor.shutdownNow();

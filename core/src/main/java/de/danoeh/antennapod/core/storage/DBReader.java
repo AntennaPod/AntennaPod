@@ -716,10 +716,10 @@ public final class DBReader {
         }
     }
 
-    public static List<FeedItem> getFeedItemsWithMedia(Long[] mediaIds) {
+    public static List<FeedItem> getFeedItemsWithUrl(List<String> urls) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        try (Cursor itemCursor = adapter.getFeedItemCursorByMediaIds(mediaIds)) {
+        try (Cursor itemCursor = adapter.getFeedItemCursorByUrl(urls)) {
             List<FeedItem> items = extractItemlistFromCursor(adapter, itemCursor);
             loadAdditionalFeedItemListData(items);
             Collections.sort(items, new PlaybackCompletionDateComparator());

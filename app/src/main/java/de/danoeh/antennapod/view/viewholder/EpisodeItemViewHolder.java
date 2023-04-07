@@ -21,8 +21,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
 import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.util.PlaybackStatus;
 import de.danoeh.antennapod.core.util.download.MediaSizeLoader;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
@@ -31,6 +29,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
@@ -145,9 +144,8 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
             itemView.setBackgroundResource(ThemeUtils.getDrawableFromAttr(activity, R.attr.selectableItemBackground));
         }
 
-        if (DownloadService.isDownloadingFile(media.getDownload_url())) {
-            final DownloadRequest downloadRequest = DownloadService.findRequest(media.getDownload_url());
-            float percent = 0.01f * downloadRequest.getProgressPercent();
+        if (DownloadServiceInterface.get().isDownloadingEpisode(media.getDownload_url())) {
+            float percent = 0.01f * DownloadServiceInterface.get().getProgress(media.getDownload_url());
             secondaryActionProgress.setPercentage(Math.max(percent, 0.01f), item);
         } else if (media.isDownloaded()) {
             secondaryActionProgress.setPercentage(1, item); // Do not animate 100% -> 0%

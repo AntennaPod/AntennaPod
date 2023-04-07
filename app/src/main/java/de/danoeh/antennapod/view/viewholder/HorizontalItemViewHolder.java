@@ -14,13 +14,12 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
 import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.util.DateFormatter;
 import de.danoeh.antennapod.core.util.PlaybackStatus;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
 import de.danoeh.antennapod.ui.common.SquareImageView;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
@@ -85,9 +84,8 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
                 setProgressBar(false, 0);
             }
 
-            if (DownloadService.isDownloadingFile(media.getDownload_url())) {
-                final DownloadRequest downloadRequest = DownloadService.findRequest(media.getDownload_url());
-                float percent = 0.01f * downloadRequest.getProgressPercent();
+            if (DownloadServiceInterface.get().isDownloadingEpisode(media.getDownload_url())) {
+                float percent = 0.01f * DownloadServiceInterface.get().getProgress(media.getDownload_url());
                 circularProgressBar.setPercentage(Math.max(percent, 0.01f), item);
             } else if (media.isDownloaded()) {
                 circularProgressBar.setPercentage(1, item); // Do not animate 100% -> 0%

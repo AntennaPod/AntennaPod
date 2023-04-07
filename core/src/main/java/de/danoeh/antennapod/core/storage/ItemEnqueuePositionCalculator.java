@@ -8,9 +8,9 @@ import androidx.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.model.playback.Playable;
 
@@ -74,7 +74,7 @@ class ItemEnqueuePositionCalculator {
         }
         return curItem != null
                 && curItem.getMedia() != null
-                && DownloadService.isDownloadingFile(curItem.getMedia().getDownload_url());
+                && DownloadServiceInterface.get().isDownloadingEpisode(curItem.getMedia().getDownload_url());
     }
 
     private static int getCurrentlyPlayingPosition(@NonNull List<FeedItem> curQueue,

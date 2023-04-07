@@ -37,8 +37,10 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
+import de.danoeh.antennapod.core.service.download.DownloadServiceInterfaceImpl;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.dialog.RatingDialog;
+import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
@@ -53,6 +55,7 @@ import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SearchFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.fragment.TransitionEffect;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import de.danoeh.antennapod.preferences.PreferenceUpgrader;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -65,6 +68,10 @@ import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The activity that is shown when the user launches the app.
@@ -172,6 +179,29 @@ public class MainActivity extends CastEnabledActivity {
                         }
                     }
                     EventBus.getDefault().postSticky(new FeedUpdateRunningEvent(isRefreshingFeeds));
+                });
+        WorkManager.getInstance(this)
+                .getWorkInfosByTagLiveData(DownloadServiceInterface.WORK_TAG)
+                .observe(this, workInfos -> {
+                    Map<String, Integer> downloadingEpisodes = new HashMap<>();
+                    for (WorkInfo workInfo : workInfos) {
+                        if (workInfo.getState() != WorkInfo.State.RUNNING) {
+                            continue;
+                        }
+                        String downloadUrl = null;
+                        for (String tag : workInfo.getTags()) {
+                            if (tag.startsWith(DownloadServiceInterface.WORK_TAG_EPISODE_URL)) {
+                                downloadUrl = tag.substring(DownloadServiceInterface.WORK_TAG_EPISODE_URL.length());
+                            }
+                        }
+                        if (downloadUrl == null) {
+                            continue;
+                        }
+                        int progress = workInfo.getProgress().getInt(DownloadServiceInterface.WORK_DATA_PROGRESS, -1);
+                        downloadingEpisodes.put(downloadUrl, progress);
+                    }
+                    DownloadServiceInterface.get().setCurrentDownloads(downloadingEpisodes);
+                    EventBus.getDefault().postSticky(new EpisodeDownloadEvent(downloadingEpisodes));
                 });
     }
 
