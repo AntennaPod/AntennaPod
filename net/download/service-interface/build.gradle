@@ -5,7 +5,7 @@ plugins {
 apply from: "../../../common.gradle"
 
 android {
-    lintOptions {
+    lint {
         disable 'ParcelClassLoader'
     }
 }

@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <supports-screens
         android:anyDensity="true"
@@ -76,7 +77,6 @@
 
         <activity
             android:name=".activity.SplashActivity"
-            android:label="@string/app_name"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true">
             <intent-filter>
@@ -99,7 +99,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize|screenLayout|density|uiMode|keyboard|navigation"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:launchMode="singleTask"
-            android:label="@string/app_name"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -111,14 +110,21 @@
                     android:host="antennapod.org"
                     android:pathPrefix="/deeplink/main"
                     android:scheme="https" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="antennapod.org"
                     android:pathPrefix="/deeplink/search"
                     android:scheme="https" />
             </intent-filter>
             <intent-filter>
-                <action android:name="de.danoeh.antennapod.intents.MAIN_ACTIVITY" />
                 <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="de.danoeh.antennapod.intents.MAIN_ACTIVITY" />
                 <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES"/>
             </intent-filter>
         </activity>
@@ -382,6 +388,7 @@
         </provider>
 
         <meta-data
+            tools:ignore="Deprecated"
             android:name="com.google.android.actions"
             android:resource="@xml/actions" />
     </application>

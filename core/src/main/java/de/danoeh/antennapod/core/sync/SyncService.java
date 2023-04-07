@@ -20,16 +20,15 @@ import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
+import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadService;
-import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -153,9 +152,10 @@ public class SyncService extends Worker {
                 continue;
             }
             if (!UrlChecker.containsUrl(localSubscriptions, downloadUrl) && !queuedRemovedFeeds.contains(downloadUrl)) {
-                Feed feed = new Feed(downloadUrl, null);
-                DownloadRequest.Builder builder = DownloadRequestCreator.create(feed);
-                DownloadServiceInterface.get().download(getApplicationContext(), false, builder.build());
+                Feed feed = new Feed(downloadUrl, null, "Unknown podcast");
+                feed.setItems(Collections.emptyList());
+                Feed newFeed = DBTasks.updateFeed(getApplicationContext(), feed, false);
+                FeedUpdateManager.runOnce(getApplicationContext(), newFeed);
             }
         }
 
@@ -193,9 +193,13 @@ public class SyncService extends Worker {
     private void waitForDownloadServiceCompleted() {
         EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_wait_for_downloads));
         try {
-            while (DownloadService.isRunning) {
+            while (true) {
                 //noinspection BusyWait
                 Thread.sleep(1000);
+                FeedUpdateRunningEvent event = EventBus.getDefault().getStickyEvent(FeedUpdateRunningEvent.class);
+                if (event == null || !event.isFeedUpdateRunning) {
+                    return;
+                }
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -268,10 +272,6 @@ public class SyncService extends Worker {
             }
             if (feedItem.getMedia() == null) {
                 Log.i(TAG, "Feed item has no media: " + action);
-                continue;
-            }
-            if (action.getAction() == EpisodeAction.NEW) {
-                DBWriter.markItemPlayed(feedItem, FeedItem.UNPLAYED, true);
                 continue;
             }
             feedItem.getMedia().setPosition(action.getPosition() * 1000);

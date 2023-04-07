@@ -73,12 +73,6 @@
                 android:key="prefCompactNotificationButtons"
                 android:summary="@string/pref_compact_notification_buttons_sum"
                 android:title="@string/pref_compact_notification_buttons_title"/>
-        <SwitchPreferenceCompat
-                android:defaultValue="true"
-                android:enabled="true"
-                android:key="prefLockscreenBackground"
-                android:summary="@string/pref_lockscreen_background_sum"
-                android:title="@string/pref_lockscreen_background_title"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/behavior">
         <de.danoeh.antennapod.preferences.MaterialListPreference

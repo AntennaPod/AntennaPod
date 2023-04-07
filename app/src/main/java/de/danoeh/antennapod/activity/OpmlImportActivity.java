@@ -29,7 +29,7 @@ import de.danoeh.antennapod.core.export.opml.OpmlReader;
 import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
 
 import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.databinding.OpmlSelectionBinding;
 import de.danoeh.antennapod.model.feed.Feed;
 import io.reactivex.Completable;
@@ -101,7 +101,7 @@ public class OpmlImportActivity extends AppCompatActivity {
                     feed.setItems(Collections.emptyList());
                     DBTasks.updateFeed(this, feed, false);
                 }
-                DownloadServiceInterface.get().refreshAllFeeds(this, true);
+                FeedUpdateManager.runOnce(this);
             })
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

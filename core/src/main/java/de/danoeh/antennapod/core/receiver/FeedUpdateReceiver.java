@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.ClientConfigurator;
-import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 
 /**
  * Refreshes all feeds when it receives an intent
@@ -20,7 +20,7 @@ public class FeedUpdateReceiver extends BroadcastReceiver {
         Log.d(TAG, "Received intent");
         ClientConfigurator.initialize(context);
 
-        AutoUpdateManager.runOnce(context);
+        FeedUpdateManager.runOnce(context);
     }
 
 }

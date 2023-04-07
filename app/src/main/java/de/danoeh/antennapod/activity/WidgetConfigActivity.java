@@ -3,6 +3,8 @@ package de.danoeh.antennapod.activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -84,6 +86,23 @@ public class WidgetConfigActivity extends AppCompatActivity {
         ckFastForward.setOnClickListener(v -> displayPreviewPanel());
         ckSkip = findViewById(R.id.ckSkip);
         ckSkip.setOnClickListener(v -> displayPreviewPanel());
+
+        setInitialState();
+    }
+
+    private void setInitialState() {
+        SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, MODE_PRIVATE);
+        ckPlaybackSpeed.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_PLAYBACK_SPEED + appWidgetId, false));
+        ckRewind.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + appWidgetId, false));
+        ckFastForward.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + appWidgetId, false));
+        ckSkip.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + appWidgetId, false));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            int color = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + appWidgetId, 0);
+            int opacity = Color.alpha(color) * 100 / 0xFF;
+
+            opacitySeekBar.setProgress(opacity, false);
+        }
+        displayPreviewPanel();
     }
 
     private void displayPreviewPanel() {
