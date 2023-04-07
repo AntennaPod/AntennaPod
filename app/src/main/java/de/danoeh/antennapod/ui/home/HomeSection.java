@@ -14,9 +14,12 @@ import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
+import de.danoeh.antennapod.adapter.HorizontalFeedListAdapter;
 import de.danoeh.antennapod.adapter.HorizontalItemListAdapter;
 import de.danoeh.antennapod.databinding.HomeSectionBinding;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
+import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import org.greenrobot.eventbus.EventBus;
 
@@ -57,6 +60,12 @@ public abstract class HomeSection extends Fragment implements View.OnCreateConte
             // The method is called on all fragments in a ViewPager, so this needs to be ignored in invisible ones.
             // Apparently, none of the visibility check method works reliably on its own, so we just use all.
             return false;
+        }
+        if (viewBinding.recyclerView.getAdapter() instanceof HorizontalFeedListAdapter) {
+            HorizontalFeedListAdapter adapter = (HorizontalFeedListAdapter) viewBinding.recyclerView.getAdapter();
+            Feed selectedFeed = adapter.getLongPressedItem();
+            return selectedFeed != null
+                    && FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedFeed, () -> { });
         }
         FeedItem longPressedItem;
         if (viewBinding.recyclerView.getAdapter() instanceof EpisodeItemListAdapter) {
