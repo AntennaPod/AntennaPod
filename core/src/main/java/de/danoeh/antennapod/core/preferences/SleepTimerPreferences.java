@@ -2,8 +2,9 @@ package de.danoeh.antennapod.core.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import androidx.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import java.util.concurrent.TimeUnit;
 
@@ -20,7 +21,9 @@ public class SleepTimerPreferences {
     private static final String PREF_AUTO_ENABLE_FROM = "AutoEnableFrom";
     private static final String PREF_AUTO_ENABLE_TO = "AutoEnableTo";
 
-    private static final String DEFAULT_VALUE = "15";
+    private static final String DEFAULT_LAST_TIMER = "15";
+    private static final int DEFAULT_AUTO_ENABLE_FROM = 22;
+    private static final int DEFAULT_AUTO_ENABLE_TO = 6;
 
     private static SharedPreferences prefs;
 
@@ -39,7 +42,7 @@ public class SleepTimerPreferences {
     }
 
     public static String lastTimerValue() {
-        return prefs.getString(PREF_VALUE, DEFAULT_VALUE);
+        return prefs.getString(PREF_VALUE, DEFAULT_LAST_TIMER);
     }
 
     public static long timerMillis() {
@@ -76,7 +79,7 @@ public class SleepTimerPreferences {
     }
 
     public static int autoEnableFrom() {
-        return prefs.getInt(PREF_AUTO_ENABLE_FROM, 0);
+        return prefs.getInt(PREF_AUTO_ENABLE_FROM, DEFAULT_AUTO_ENABLE_FROM);
     }
 
     public static void setAutoEnableTo(int hourOfDay) {
@@ -84,6 +87,6 @@ public class SleepTimerPreferences {
     }
 
     public static int autoEnableTimeTo() {
-        return prefs.getInt(PREF_AUTO_ENABLE_TO, 0);
+        return prefs.getInt(PREF_AUTO_ENABLE_TO, DEFAULT_AUTO_ENABLE_TO);
     }
 }
