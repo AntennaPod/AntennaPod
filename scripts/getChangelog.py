@@ -14,10 +14,10 @@ def get_token():
     TOKEN = ""
     while not TOKEN:
         TOKEN = input('Token: ').strip()
-    print("Grand, thank you! (" + TOKEN + " is noted)")
     return TOKEN
 
 TOKEN = get_token()
+print("Grand, thank you! (" + TOKEN + " is noted)")
 
 print()
 print("Now, what do you want to compare?")
@@ -64,30 +64,28 @@ for i in range(numCommits):
         print("  [is merge commit]")
         continue
     pr_match = re.search(r'\(#(\d{4})\)', commit["commit"]["message"])
-    time.sleep(2) # Avoid rate limit
     if pr_match:
         pr_number = pr_match.group(1)
         if pr_number in prsSeen:
             print_seen()
             continue
+        time.sleep(2) # Avoid rate limit
         pr_details = requests.get("https://api.github.com/repos/" + REPO + "/pulls/" + pr_number, headers={'Authorization': 'token ' + TOKEN}).json()
         outputFile.write("PR," + pr_details["merged_at"] + "," + pr_details["html_url"] + ",\"" + pr_details["title"] + "\"," + pr_details["user"]["login"] + "\n")
         print("  " + pr_details["title"] + " (#" + str(pr_details["number"]) + ")")
         prsSeen.add(pr_number)
         continue
-    try:
-        prs = requests.get("https://api.github.com/search/issues?q=repo:" + REPO + "+type:pr+is:merged+" + sha, headers={'Authorization': 'token ' + TOKEN}).json()
-        if len(prs["items"]) == 0:
-            print("  [orphan] " + commit["commit"]["message"].splitlines()[0])
-            raise Exception('Results')
-        pr_details = prs["items"][0]
-        if pr_details["number"] in prsSeen:
-            print_seen()
-            continue
-        outputFile.write("PR," + pr_details["pull_request"]["merged_at"] + "," + pr_details["html_url"] + ",\"" + pr_details["title"] + "\"," + pr_details["user"]["login"] + "\n")
-        print("  " + pr_details["title"] + " (#" + str(pr_details["number"]) + ")")
-        prsSeen.add(pr_details["number"])
-    except Exception as e:
-        print("  [exception] " + commit["commit"]["message"].splitlines()[0])
+    time.sleep(2) # Avoid rate limit
+    prs = requests.get("https://api.github.com/search/issues?q=repo:" + REPO + "+type:pr+is:merged+" + sha, headers={'Authorization': 'token ' + TOKEN}).json()
+    if len(prs["items"]) == 0:
         outputFile.write("Commit," + commit["commit"]["committer"]["date"] + "," + commit["html_url"] + ",\"" + commit["commit"]["message"].splitlines()[0] + "\"," + commit["committer"]["login"] + "\n")
+        print("  [orphan] " + commit["commit"]["message"].splitlines()[0])
+        continue
+    pr_details = prs["items"][0]
+    if pr_details["number"] in prsSeen:
+        print_seen()
+        continue
+    outputFile.write("PR," + pr_details["pull_request"]["merged_at"] + "," + pr_details["html_url"] + ",\"" + pr_details["title"] + "\"," + pr_details["user"]["login"] + "\n")
+    print("  " + pr_details["title"] + " (#" + str(pr_details["number"]) + ")")
+    prsSeen.add(pr_details["number"])
 outputFile.close()
