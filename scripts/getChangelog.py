@@ -59,7 +59,7 @@ numCommits = len(commits["commits"])
 for i in range(numCommits):
     sha = commits["commits"][i]["sha"]
     commit = commits["commits"][i]
-    print("Commit " + sha + " (" + str(i+1) + " of " + str(numCommits) + ")")
+    print("Commit "+ str(i+1) + " of " + str(numCommits))
     if "Merge pull request #" in commit["commit"]["message"] or "Merge branch" in commit["commit"]["message"]:
         print("  [is merge commit]")
         continue
@@ -69,13 +69,12 @@ for i in range(numCommits):
         if pr_number in prsSeen:
             print_seen()
             continue
-        time.sleep(2) # Avoid rate limit
         pr_details = requests.get("https://api.github.com/repos/" + REPO + "/pulls/" + pr_number, headers={'Authorization': 'token ' + TOKEN}).json()
         outputFile.write("PR," + pr_details["merged_at"] + "," + pr_details["html_url"] + ",\"" + pr_details["title"] + "\"," + pr_details["user"]["login"] + "\n")
         print("  " + pr_details["title"] + " (#" + str(pr_details["number"]) + ")")
         prsSeen.add(pr_number)
         continue
-    time.sleep(2) # Avoid rate limit
+    time.sleep(1.5) # Avoid rate limit
     prs = requests.get("https://api.github.com/search/issues?q=repo:" + REPO + "+type:pr+is:merged+" + sha, headers={'Authorization': 'token ' + TOKEN}).json()
     if len(prs["items"]) == 0:
         outputFile.write("Commit," + commit["commit"]["committer"]["date"] + "," + commit["html_url"] + ",\"" + commit["commit"]["message"].splitlines()[0] + "\"," + commit["committer"]["login"] + "\n")
