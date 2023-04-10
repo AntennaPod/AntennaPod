@@ -613,7 +613,7 @@
         <item quantity="other">%d hours</item>
     </plurals>
     <string name="auto_enable_label">Automatically activate the sleep timer when pressing play</string>
-    <string name="auto_enable_label_with_times">Automatically activate the sleep timer when pressing play at %s</string>
+    <string name="auto_enable_label_with_times">Automatically activate the sleep timer when pressing play between %s and %s</string>
     <string name="auto_enable_change_times">Change times</string>
     <string name="sleep_timer_enabled_label">Sleep timer enabled</string>
 

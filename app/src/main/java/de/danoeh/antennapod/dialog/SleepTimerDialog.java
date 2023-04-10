@@ -178,12 +178,15 @@ public class SleepTimerDialog extends DialogFragment {
         if (from == to) {
             text = getString(R.string.auto_enable_label);
         } else if (DateFormat.is24HourFormat(getContext())) {
-            String time = String.format(Locale.getDefault(), "%02d:00 - %02d:00", from, to);
-            text = getString(R.string.auto_enable_label_with_times, time);
+            String formattedFrom = String.format(Locale.getDefault(), "%02d:00", from);
+            String formattedTo = String.format(Locale.getDefault(), "%02d:00", to);
+            text = getString(R.string.auto_enable_label_with_times, formattedFrom, formattedTo);
         } else {
-            String time = String.format(Locale.getDefault(), "%02d:00 %s - %02d:00 %s", from % 12,
-                    from >= 12 ? "PM" : "AM", to % 12, to >= 12 ? "PM" : "AM");
-            text = getString(R.string.auto_enable_label_with_times, time);
+            String formattedFrom = String.format(Locale.getDefault(), "%02d:00 %s",
+                    from % 12, from >= 12 ? "PM" : "AM");
+            String formattedTo = String.format(Locale.getDefault(), "%02d:00 %s",
+                    to % 12, to >= 12 ? "PM" : "AM");
+            text = getString(R.string.auto_enable_label_with_times, formattedFrom, formattedTo);
 
         }
         chAutoEnable.setText(text);
