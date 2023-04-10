@@ -86,7 +86,21 @@ public class SleepTimerPreferences {
         prefs.edit().putInt(PREF_AUTO_ENABLE_TO, hourOfDay).apply();
     }
 
-    public static int autoEnableTimeTo() {
+    public static int autoEnableTo() {
         return prefs.getInt(PREF_AUTO_ENABLE_TO, DEFAULT_AUTO_ENABLE_TO);
+    }
+
+    public static boolean isInTimeRange(int from, int to, int current) {
+        // Range covers one day
+        if (from < to) {
+            return from <= current && current < to;
+        }
+
+        // Range covers two days
+        if (from <= current) {
+            return true;
+        }
+
+        return current < to;
     }
 }

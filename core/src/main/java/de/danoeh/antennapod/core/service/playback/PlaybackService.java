@@ -804,12 +804,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     // set sleep timer if auto-enabled
                     boolean autoEnableByTime = true;
                     int fromSetting = SleepTimerPreferences.autoEnableFrom();
-                    int toSetting = SleepTimerPreferences.autoEnableTimeTo();
+                    int toSetting = SleepTimerPreferences.autoEnableTo();
                     if (fromSetting != toSetting) {
                         Calendar now = new GregorianCalendar();
                         now.setTimeInMillis(System.currentTimeMillis());
                         int currentHour = now.get(Calendar.HOUR_OF_DAY);
-                        autoEnableByTime = isInTimeRange(fromSetting, toSetting, currentHour);
+                        autoEnableByTime = SleepTimerPreferences.isInTimeRange(fromSetting, toSetting, currentHour);
                     }
 
                     if (newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING
@@ -910,21 +910,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
         }
     };
-
-    @VisibleForTesting
-    public static boolean isInTimeRange(int from, int to, int current) {
-        // Range covers one day
-        if (from < to) {
-            return from <= current && current < to;
-        }
-
-        // Range covers two days
-        if (from <= current) {
-            return true;
-        }
-
-        return current < to;
-    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")

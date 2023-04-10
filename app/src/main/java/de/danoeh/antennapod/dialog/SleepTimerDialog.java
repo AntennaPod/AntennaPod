@@ -130,7 +130,7 @@ public class SleepTimerDialog extends DialogFragment {
 
         changeTimesButton.setOnClickListener(changeTimesBtn -> {
             int from = SleepTimerPreferences.autoEnableFrom();
-            int to = SleepTimerPreferences.autoEnableTimeTo();
+            int to = SleepTimerPreferences.autoEnableTo();
             TimeRangeDialog dialog = new TimeRangeDialog(getContext(), from, to);
             dialog.setOnDismissListener(v -> {
                 SleepTimerPreferences.setAutoEnableFrom(dialog.getFrom());
@@ -173,7 +173,7 @@ public class SleepTimerDialog extends DialogFragment {
     private void updateAutoEnableText() {
         String text;
         int from = SleepTimerPreferences.autoEnableFrom();
-        int to = SleepTimerPreferences.autoEnableTimeTo();
+        int to = SleepTimerPreferences.autoEnableTo();
 
         if (from == to) {
             text = getString(R.string.auto_enable_label);
