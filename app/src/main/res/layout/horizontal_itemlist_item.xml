@@ -126,4 +126,3 @@ app:cardElevation="0dp">
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
-
