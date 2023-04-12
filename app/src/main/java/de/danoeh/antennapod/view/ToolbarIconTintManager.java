@@ -40,8 +40,8 @@ public abstract class ToolbarIconTintManager implements AppBarLayout.OnOffsetCha
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
         //Convert status bar height from dp to px
-        int statusBarHeightPx = defaultStatusBarHeight *
-                activity.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT;
+        int statusBarHeightPx = defaultStatusBarHeight
+                * activity.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT;
         double ratio = (float) (collapsingToolbar.getHeight() + offset) / collapsingToolbar.getMinimumHeight();
 
         //Check if status bar and/or toolbar need to be changed to reflect appearance
