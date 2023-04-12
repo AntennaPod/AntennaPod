@@ -24,7 +24,8 @@ public abstract class ToolbarIconTintManager implements AppBarLayout.OnOffsetCha
     private boolean isTinted = false;
     private boolean isWhiteIconsStatusBar = false;
 
-    public ToolbarIconTintManager(Activity activity, MaterialToolbar toolbar, CollapsingToolbarLayout collapsingToolbar) {
+    public ToolbarIconTintManager(Activity activity, MaterialToolbar toolbar,
+                                  CollapsingToolbarLayout collapsingToolbar) {
         this.activity = activity;
         this.collapsingToolbar = collapsingToolbar;
         this.toolbar = toolbar;
@@ -39,7 +40,8 @@ public abstract class ToolbarIconTintManager implements AppBarLayout.OnOffsetCha
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
         //Convert status bar height from dp to px
-        int statusBarHeightPx = defaultStatusBarHeight * activity.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT;
+        int statusBarHeightPx = defaultStatusBarHeight *
+                activity.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT;
         double ratio = (float) (collapsingToolbar.getHeight() + offset) / collapsingToolbar.getMinimumHeight();
 
         //Check if status bar and/or toolbar need to be changed to reflect appearance
@@ -49,7 +51,8 @@ public abstract class ToolbarIconTintManager implements AppBarLayout.OnOffsetCha
         //Change appearance of status bar only when needed to reduce overhead
         if (isWhiteIconsStatusBar != whiteIconsStatusBar) {
             isWhiteIconsStatusBar = whiteIconsStatusBar;
-            WindowInsetsControllerCompat windowInsetController = WindowCompat.getInsetsController(activity.getWindow(), activity.getWindow().getDecorView());
+            WindowInsetsControllerCompat windowInsetController =
+                    WindowCompat.getInsetsController(activity.getWindow(), activity.getWindow().getDecorView());
             windowInsetController.setAppearanceLightStatusBars(whiteIconsStatusBar);
         }
 
