@@ -1,102 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
-xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/card"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:clickable="true"
-android:clipToPadding="false"
-android:foreground="?android:attr/selectableItemBackground"
-android:layout_margin="4dp"
-app:cardCornerRadius="12dp"
-app:cardElevation="0dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:clickable="true"
+    android:clipToPadding="false"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="1px"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="0dp">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#dddddd">
-
-                <de.danoeh.antennapod.ui.common.SquareImageView
-                    android:id="@+id/cover"
-                    android:layout_width="128dp"
-                    android:layout_height="128dp"
-                    android:outlineProvider="bounds"
-                    app:layout_constraintBottom_toTopOf="@id/progressBar"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    squareImageView:direction="width"
-                    tools:src="@tools:sample/avatars" />
-
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="bottom|end"
-                    app:layout_constraintBottom_toBottomOf="@id/cover"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_margin="4dp"
-                    android:padding="3dp"
-                    app:srcCompat="@drawable/bg_circle" />
-
-                <de.danoeh.antennapod.ui.common.CircularProgressBar
-                    android:id="@+id/circularProgressBar"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="bottom|end"
-                    app:layout_constraintBottom_toBottomOf="@id/cover"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_margin="4dp"
-                    app:foregroundColor="?attr/colorOnPrimary" />
-
-                <ImageView
-                    android:id="@+id/secondaryActionIcon"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="bottom|end"
-                    android:layout_margin="4dp"
-                    android:clickable="true"
-                    app:layout_constraintBottom_toBottomOf="@id/cover"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:foreground="?attr/selectableItemBackgroundBorderless"
-                    android:padding="12dp"
-                    app:srcCompat="@drawable/ic_play_24dp"
-                    app:tint="?attr/colorOnPrimary"
-                    app:tintMode="src_atop" />
-
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_width="128dp"
-                    app:layout_constraintTop_toBottomOf="@id/cover"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_height="4dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_gravity="bottom"
-                    android:max="100"
-                    style="?attr/progressBarTheme"
-                    tools:background="@android:color/holo_blue_light" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <View
-            android:id="@+id/progressBarReplacementSpacer"
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:visibility="gone" />
 
         <TextView
             android:id="@+id/titleLabel"
@@ -113,6 +33,7 @@ app:cardElevation="0dp">
 
         <TextView
             android:id="@+id/dateLabel"
+            style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
@@ -120,8 +41,87 @@ app:cardElevation="0dp">
             android:singleLine="true"
             android:textAlignment="textStart"
             android:textSize="14sp"
-            tools:text="@sample/episodes.json/data/published_at"
-            style="@style/AntennaPod.TextView.ListItemSecondaryTitle" />
+            tools:text="@sample/episodes.json/data/published_at" />
+
+        <View
+            android:id="@+id/progressBarReplacementSpacer"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:visibility="gone" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="1px"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#dddddd">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="4dp"
+                    android:padding="3dp"
+                    app:layout_constraintBottom_toBottomOf="@id/cover"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/bg_circle" />
+
+                <ImageView
+                    android:id="@+id/secondaryActionIcon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="4dp"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:padding="12dp"
+                    app:layout_constraintBottom_toBottomOf="@id/cover"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/ic_play_24dp"
+                    app:tint="?attr/colorOnPrimary"
+                    app:tintMode="src_atop" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?attr/progressBarTheme"
+                    android:layout_width="128dp"
+                    android:layout_height="4dp"
+                    android:layout_gravity="bottom"
+                    android:max="100"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cover"
+                    tools:background="@android:color/holo_blue_light" />
+
+                <de.danoeh.antennapod.ui.common.CircularProgressBar
+                    android:id="@+id/circularProgressBar"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="4dp"
+                    app:foregroundColor="?attr/colorOnPrimary"
+                    app:layout_constraintBottom_toBottomOf="@id/cover"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <de.danoeh.antennapod.ui.common.SquareImageView
+                    android:id="@+id/cover"
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:outlineProvider="bounds"
+                    app:layout_constraintBottom_toTopOf="@id/progressBar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    squareImageView:direction="width"
+                    tools:src="@tools:sample/avatars" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 
