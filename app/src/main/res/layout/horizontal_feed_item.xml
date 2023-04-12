@@ -1,33 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<LinearLayout
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
     android:layout_width="match_parent"
     android:layout_height="96dp"
-    android:padding="4dp"
-    android:clipToPadding="false"
-    android:clipToOutline="false"
-    android:clipChildren="false">-->
+    app:cardBackgroundColor="@color/non_square_icon_background"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:cardPreventCornerOverlap="false">
 
-    <androidx.cardview.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <de.danoeh.antennapod.ui.common.SquareImageView
+        android:id="@+id/discovery_cover"
         android:layout_width="match_parent"
         android:layout_height="96dp"
-        app:cardBackgroundColor="@color/non_square_icon_background"
-        app:cardCornerRadius="16dp"
-        app:cardPreventCornerOverlap="false"
-        app:cardElevation="2dp">
+        android:background="?android:attr/windowBackground"
+        android:elevation="4dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:outlineProvider="bounds"
+        squareImageView:direction="height" />
 
-        <de.danoeh.antennapod.ui.common.SquareImageView
-            android:id="@+id/discovery_cover"
-            android:layout_width="match_parent"
-            android:layout_height="96dp"
-            android:elevation="4dp"
-            android:outlineProvider="bounds"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:background="?android:attr/windowBackground"
-            squareImageView:direction="height" />
+</androidx.cardview.widget.CardView>
 
-    </androidx.cardview.widget.CardView>
-<!--
-</LinearLayout>-->
