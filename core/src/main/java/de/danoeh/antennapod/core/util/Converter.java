@@ -30,9 +30,9 @@ public final class Converter {
 
     private static int[] millisecondsToHms(long duration) {
         int h = (int) (duration / HOURS_MIL);
-        long rest = duration - h * HOURS_MIL;
+        long rest = duration % HOURS_MIL;
         int m = (int) (rest / MINUTES_MIL);
-        rest -= m * MINUTES_MIL;
+        rest = duration % MINUTES_MIL;
         int s = (int) (rest / SECONDS_MIL);
         return new int[] {h, m, s};
     }

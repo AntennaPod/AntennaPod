@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.ui.home.sections;
 
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -55,6 +57,18 @@ public class SubscriptionsSection extends HomeSection {
         viewBinding.recyclerView.setAdapter(listAdapter);
         int paddingHorizontal = (int) (12 * getResources().getDisplayMetrics().density);
         viewBinding.recyclerView.setPadding(paddingHorizontal, 0, paddingHorizontal, 0);
+        viewBinding.recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+                outRect.right = paddingHorizontal;
+            }
+
+            @Override
+            public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                super.onDraw(c, parent, state);
+            }
+        });
         return view;
     }
 
