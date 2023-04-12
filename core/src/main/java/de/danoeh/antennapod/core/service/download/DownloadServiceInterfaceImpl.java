@@ -15,12 +15,9 @@ import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfa
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import androidx.work.OneTimeWorkRequest;
 
-import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
-    private static final String TAG = "DownloadServiceInterface";
-
     public void download(Context context, FeedItem item) {
         OneTimeWorkRequest.Builder workRequest = new OneTimeWorkRequest.Builder(EpisodeDownloadWorker.class)
                 .setInitialDelay(0L, TimeUnit.MILLISECONDS)
@@ -28,7 +25,7 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
                 .addTag(DownloadServiceInterface.WORK_TAG)
                 .addTag(DownloadServiceInterface.WORK_TAG_EPISODE_URL + item.getMedia().getDownload_url());
         Data.Builder builder = new Data.Builder();
-        builder.putString("episode", item.getMedia().getDownload_url());
+        builder.putLong(WORK_DATA_MEDIA_ID, item.getMedia().getId());
         workRequest.setInputData(builder.build());
         WorkManager.getInstance(context).enqueueUniqueWork(item.getMedia().getDownload_url(),
                 ExistingWorkPolicy.KEEP, workRequest.build());
@@ -52,31 +49,12 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
     }
 
     public Intent makeDownloadIntent(Context context, boolean cleanupMedia, DownloadRequest... requests) {
-        ArrayList<DownloadRequest> requestsToSend = new ArrayList<>();
-        Intent launchIntent = new Intent(context, DownloadService.class);
-        launchIntent.putParcelableArrayListExtra(DownloadService.EXTRA_REQUESTS, requestsToSend);
-        if (cleanupMedia) {
-            launchIntent.putExtra(DownloadService.EXTRA_CLEANUP_MEDIA, true);
-        }
-        return launchIntent;
+        return null;
     }
 
     public void cancel(Context context, String url) {
-        if (!DownloadService.isRunning) {
-            return;
-        }
-        Intent cancelIntent = new Intent(DownloadService.ACTION_CANCEL_DOWNLOAD);
-        cancelIntent.putExtra(DownloadService.EXTRA_DOWNLOAD_URL, url);
-        cancelIntent.setPackage(context.getPackageName());
-        context.sendBroadcast(cancelIntent);
     }
 
     public void cancelAll(Context context) {
-        if (!DownloadService.isRunning) {
-            return;
-        }
-        Intent cancelIntent = new Intent(DownloadService.ACTION_CANCEL_ALL_DOWNLOADS);
-        cancelIntent.setPackage(context.getPackageName());
-        context.sendBroadcast(cancelIntent);
     }
 }

@@ -75,7 +75,7 @@ public class DownloadServiceNotification {
                         numDownloads, numDownloads);
             }
 
-            Intent cancelDownloadsIntent = new Intent(DownloadService.ACTION_CANCEL_ALL_DOWNLOADS);
+            Intent cancelDownloadsIntent = new Intent("DownloadService.ACTION_CANCEL_ALL_DOWNLOADS");
             cancelDownloadsIntent.setPackage(context.getPackageName());
             PendingIntent cancelPendingIntent = PendingIntent.getBroadcast(context,
                     R.id.pending_intent_download_cancel_all, cancelDownloadsIntent, PendingIntent.FLAG_UPDATE_CURRENT

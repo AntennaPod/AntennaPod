@@ -85,11 +85,12 @@ public class DownloadRequestCreator {
      * taken by another requested download.
      */
     private static boolean isFilenameAvailable(String path) {
-        for (Downloader downloader : DownloadService.downloads) {
+        // TODO
+        /*for (Downloader downloader : DownloadService.downloads) {
             if (downloader.request.getDestination().equals(path)) {
                 return false;
             }
-        }
+        }*/
         return true;
     }
 
