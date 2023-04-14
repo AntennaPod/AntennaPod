@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_gravity="center">
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -23,12 +25,14 @@
                 android:id="@+id/etxtTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:selectAllOnFocus="true"
                 android:layout_margin="8dp"
+                android:layout_weight="1"
                 android:ems="2"
+                android:hint="@string/sleep_time"
                 android:inputType="number"
-                android:maxLength="3" />
+                android:maxLength="3"
+                android:minHeight="48dp"
+                android:selectAllOnFocus="true" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -127,20 +131,24 @@
             android:id="@+id/cbShakeToReset"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="48dp"
             android:text="@string/shake_to_reset_label" />
 
         <CheckBox
             android:id="@+id/cbVibrate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="48dp"
             android:text="@string/timer_vibration_label" />
 
         <CheckBox
             android:id="@+id/chAutoEnable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="48dp"
             android:text="@string/auto_enable_label" />
 
     </LinearLayout>
 
 </LinearLayout>
+</ScrollView>
