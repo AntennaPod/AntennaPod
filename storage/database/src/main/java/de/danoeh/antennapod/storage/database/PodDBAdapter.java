@@ -1146,8 +1146,15 @@ public class PodDBAdapter {
         if (urls.size() > IN_OPERATOR_MAXIMUM) {
             throw new IllegalArgumentException("number of IDs must not be larger than " + IN_OPERATOR_MAXIMUM);
         }
+        StringBuilder urlsString = new StringBuilder();
+        for (int i = 0; i < urls.size(); i++) {
+            if (i != 0) {
+                urlsString.append(",");
+            }
+            urlsString.append(DatabaseUtils.sqlEscapeString(urls.get(i)));
+        }
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
-                + " WHERE " + KEY_DOWNLOAD_URL + " IN (" + TextUtils.join(",", urls) + ")";
+                + " WHERE " + KEY_DOWNLOAD_URL + " IN (" + urlsString + ")";
         return db.rawQuery(query, null);
     }
 

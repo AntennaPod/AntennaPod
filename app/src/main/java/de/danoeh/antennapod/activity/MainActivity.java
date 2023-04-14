@@ -194,10 +194,10 @@ public class MainActivity extends CastEnabledActivity {
                             continue;
                         }
                         int progress = workInfo.getProgress().getInt(DownloadServiceInterface.WORK_DATA_PROGRESS, -1);
-                        if (workInfo.getState() == WorkInfo.State.RUNNING) {
+                        if (workInfo.getState() == WorkInfo.State.RUNNING
+                                || workInfo.getState() == WorkInfo.State.ENQUEUED
+                                || workInfo.getState() == WorkInfo.State.BLOCKED) {
                             downloadingEpisodes.put(downloadUrl, progress);
-                        } else if (workInfo.getState() == WorkInfo.State.ENQUEUED) {
-                            progress = 0;
                         }
                         updatedEpisodes.put(downloadUrl, progress);
                     }

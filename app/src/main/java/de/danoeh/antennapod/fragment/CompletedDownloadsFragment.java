@@ -36,6 +36,7 @@ import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
@@ -219,8 +220,14 @@ public class CompletedDownloadsFragment extends Fragment
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EpisodeDownloadEvent event) {
-        if (!event.getUrls().equals(runningDownloads)) {
-            runningDownloads = event.getUrls();
+        Set<String> newRunningDownloads = new HashSet<>();
+        for (String url : event.getUrls()) {
+            if (DownloadServiceInterface.get().isDownloadingEpisode(url)) {
+                newRunningDownloads.add(url);
+            }
+        }
+        if (!newRunningDownloads.equals(runningDownloads)) {
+            runningDownloads = newRunningDownloads;
             loadItems();
             return; // Refreshed anyway
         }
