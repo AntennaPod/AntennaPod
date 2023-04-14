@@ -9,7 +9,6 @@ import androidx.work.WorkerParameters;
 import de.danoeh.antennapod.core.ClientConfigurator;
 import de.danoeh.antennapod.core.service.download.handler.MediaDownloadedHandler;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadStatus;
@@ -20,7 +19,6 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 
 public class EpisodeDownloadWorker extends Worker {
@@ -104,7 +102,6 @@ public class EpisodeDownloadWorker extends Worker {
         }
 
         try {
-            DBTasks.enqueueFeedItemsToDownload(getApplicationContext(), Collections.singletonList(media.getItem()));
             downloader.call();
         } catch (Exception e) {
             DBWriter.addDownloadStatus(downloader.getResult());
@@ -122,6 +119,12 @@ public class EpisodeDownloadWorker extends Worker {
         }
 
         if (status.isCancelled()) {
+            if (getInputData().getBoolean(DownloadServiceInterface.WORK_DATA_WAS_QUEUED, false)) {
+                try {
+                    DBWriter.removeQueueItem(getApplicationContext(), false, media.getItem()).get();
+                } catch (ExecutionException | InterruptedException ignore) {
+                }
+            }
             return Result.success();
         }
 

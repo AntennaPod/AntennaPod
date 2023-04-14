@@ -9,6 +9,7 @@ import androidx.work.ExistingWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.OutOfQuotaPolicy;
 import androidx.work.WorkManager;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
@@ -19,6 +20,8 @@ import java.util.concurrent.TimeUnit;
 
 public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
     public void download(Context context, FeedItem item) {
+
+
         OneTimeWorkRequest.Builder workRequest = new OneTimeWorkRequest.Builder(EpisodeDownloadWorker.class)
                 .setInitialDelay(0L, TimeUnit.MILLISECONDS)
                 .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
@@ -26,6 +29,10 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
                 .addTag(DownloadServiceInterface.WORK_TAG_EPISODE_URL + item.getMedia().getDownload_url());
         Data.Builder builder = new Data.Builder();
         builder.putLong(WORK_DATA_MEDIA_ID, item.getMedia().getId());
+        if (!item.isTagged(FeedItem.TAG_QUEUE) && UserPreferences.enqueueDownloadedEpisodes()) {
+            DBWriter.addQueueItem(context, false, item.getId());
+            builder.putBoolean(WORK_DATA_WAS_QUEUED, true);
+        }
         workRequest.setInputData(builder.build());
         WorkManager.getInstance(context).enqueueUniqueWork(item.getMedia().getDownload_url(),
                 ExistingWorkPolicy.KEEP, workRequest.build());

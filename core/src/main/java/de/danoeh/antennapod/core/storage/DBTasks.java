@@ -7,7 +7,6 @@ import android.util.Log;
 import androidx.annotation.VisibleForTesting;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
-import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.event.FeedItemEvent;
@@ -112,21 +111,6 @@ public final class DBTasks {
         DBWriter.setFeedMedia(media);
         EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
         EventBus.getDefault().post(new MessageEvent(context.getString(R.string.error_file_not_found)));
-    }
-
-    public static List<FeedItem> enqueueFeedItemsToDownload(final Context context,
-                       List<FeedItem> items) throws InterruptedException, ExecutionException {
-        List<FeedItem> itemsToEnqueue = new ArrayList<>();
-        if (UserPreferences.enqueueDownloadedEpisodes()) {
-            LongList queueIDList = DBReader.getQueueIDList();
-            for (FeedItem item : items) {
-                if (!queueIDList.contains(item.getId())) {
-                    itemsToEnqueue.add(item);
-                }
-            }
-            DBWriter.addQueueItem(context, false, itemsToEnqueue.toArray(new FeedItem[0])).get();
-        }
-        return itemsToEnqueue;
     }
 
     /**

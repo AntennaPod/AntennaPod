@@ -12,6 +12,7 @@ public abstract class DownloadServiceInterface {
     public static final String WORK_TAG_EPISODE_URL = "episodeUrl:";
     public static final String WORK_DATA_PROGRESS = "progress";
     public static final String WORK_DATA_MEDIA_ID = "media_id";
+    public static final String WORK_DATA_WAS_QUEUED = "was_queued";
     private static DownloadServiceInterface impl;
     private Map<String, Integer> currentDownloads = new HashMap<>();
 
