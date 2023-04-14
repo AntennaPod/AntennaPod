@@ -1,27 +1,22 @@
 package de.danoeh.antennapod.core.service.download;
 
 import android.content.Context;
-import android.content.Intent;
-import androidx.core.content.ContextCompat;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingWorkPolicy;
 import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.OutOfQuotaPolicy;
 import androidx.work.WorkManager;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import androidx.work.OneTimeWorkRequest;
 
 import java.util.concurrent.TimeUnit;
 
 public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
-    public void download(Context context, FeedItem item) {
-
-
+    public void download(Context context, FeedItem item, boolean ignoreConstraints) {
         OneTimeWorkRequest.Builder workRequest = new OneTimeWorkRequest.Builder(EpisodeDownloadWorker.class)
                 .setInitialDelay(0L, TimeUnit.MILLISECONDS)
                 .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
@@ -34,6 +29,9 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
             builder.putBoolean(WORK_DATA_WAS_QUEUED, true);
         }
         workRequest.setInputData(builder.build());
+        if (!ignoreConstraints) {
+            workRequest.setConstraints(getConstraints());
+        }
         WorkManager.getInstance(context).enqueueUniqueWork(item.getMedia().getDownload_url(),
                 ExistingWorkPolicy.KEEP, workRequest.build());
     }
@@ -48,21 +46,12 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
         return constraints.build();
     }
 
-    public void download(Context context, boolean cleanupMedia, DownloadRequest... requests) {
-        Intent intent = makeDownloadIntent(context, cleanupMedia, requests);
-        if (intent != null) {
-            ContextCompat.startForegroundService(context, intent);
-        }
-    }
-
-    public Intent makeDownloadIntent(Context context, boolean cleanupMedia, DownloadRequest... requests) {
-        return null;
-    }
-
+    @Override
     public void cancel(Context context, String url) {
         WorkManager.getInstance(context).cancelAllWorkByTag(WORK_TAG_EPISODE_URL + url);
     }
 
+    @Override
     public void cancelAll(Context context) {
         WorkManager.getInstance(context).cancelAllWorkByTag(WORK_TAG);
     }

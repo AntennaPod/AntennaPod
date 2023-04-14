@@ -11,7 +11,6 @@ import android.widget.Toast;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -138,8 +137,7 @@ public class DownloadLogAdapter extends BaseAdapter {
                             Log.e(TAG, "Could not find feed media for feed id: " + status.getFeedfileId());
                             return;
                         }
-                        DownloadServiceInterface.get()
-                                .download(context, true, DownloadRequestCreator.create(media).build());
+                        DownloadServiceInterface.get().download(context, media.getItem(), false);
                         ((MainActivity) context).showSnackbarAbovePlayer(
                                 R.string.status_downloading_label, Toast.LENGTH_SHORT);
                     });

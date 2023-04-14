@@ -6,13 +6,10 @@ import androidx.annotation.PluralsRes;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.LongList;
@@ -93,14 +90,12 @@ public class EpisodeMultiSelectActionHandler {
 
     private void downloadChecked(List<FeedItem> items) {
         // download the check episodes in the same order as they are currently displayed
-        List<DownloadRequest> requests = new ArrayList<>();
         for (FeedItem episode : items) {
             if (episode.hasMedia() && !episode.getFeed().isLocalFeed()) {
-                requests.add(DownloadRequestCreator.create(episode.getMedia()).build());
+                DownloadServiceInterface.get().download(activity, episode, false);
             }
         }
-        DownloadServiceInterface.get().download(activity, true, requests.toArray(new DownloadRequest[0]));
-        showMessage(R.plurals.downloading_batch_label, requests.size());
+        showMessage(R.plurals.downloading_batch_label, items.size());
     }
 
     private void deleteChecked(List<FeedItem> items) {

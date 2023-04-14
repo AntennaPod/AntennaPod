@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import androidx.appcompat.app.AppCompatActivity;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
@@ -56,8 +55,8 @@ public class DownloadAuthenticationActivity extends AppCompatActivity {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {
-                            DownloadServiceInterface.get()
-                                    .download(DownloadAuthenticationActivity.this, false, request);
+                            //DownloadServiceInterface.get()
+                            //        .download(DownloadAuthenticationActivity.this, false, request);
                             finish();
                         });
             }

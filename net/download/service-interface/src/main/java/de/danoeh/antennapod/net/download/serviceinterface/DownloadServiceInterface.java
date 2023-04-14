@@ -28,11 +28,7 @@ public abstract class DownloadServiceInterface {
         this.currentDownloads = currentDownloads;
     }
 
-    public abstract void download(Context context, FeedItem item);
-
-    public abstract void download(Context context, boolean cleanupMedia, DownloadRequest... requests);
-
-    public abstract Intent makeDownloadIntent(Context context, boolean cleanupMedia, DownloadRequest... requests);
+    public abstract void download(Context context, FeedItem item, boolean ignoreConstraints);
 
     public abstract void cancel(Context context, String url);
 

@@ -11,7 +11,6 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.core.util.PlaybackStatus;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
@@ -103,7 +102,7 @@ public class AutomaticDownloadAlgorithm {
                         request.withInitiatedByUser(false);
                         requests.add(request.build());
                     }
-                    DownloadServiceInterface.get().download(context, false, requests.toArray(new DownloadRequest[0]));
+                    //DownloadServiceInterface.get().download(context, false, requests.toArray(new DownloadRequest[0]));
                 }
             }
         };

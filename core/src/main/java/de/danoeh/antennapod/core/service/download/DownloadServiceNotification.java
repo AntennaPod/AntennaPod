@@ -15,7 +15,6 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.ui.appstartintent.DownloadAuthenticationActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 
@@ -231,7 +230,7 @@ public class DownloadServiceNotification {
 
     private void createDownloadFailedNotification(List<DownloadStatus> reportQueue,
                                                   List<DownloadRequest> failedRequests) {
-        Intent retryIntent = DownloadServiceInterface.get().makeDownloadIntent(context,
+        /*Intent retryIntent = DownloadServiceInterface.get().makeDownloadIntent(context,
                 false, failedRequests.toArray(new DownloadRequest[0]));
         PendingIntent retryPendingIntent = null;
         if (retryIntent != null && Build.VERSION.SDK_INT >= 26) {
@@ -242,7 +241,7 @@ public class DownloadServiceNotification {
                     R.id.pending_intent_download_service_retry, retryIntent,
                     PendingIntent.FLAG_UPDATE_CURRENT
                             | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
-        }
+        }*/
         PendingIntent intent = getReportNotificationContentIntent(context);
         String content = createFailedDownloadNotificationContent(reportQueue);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context,
@@ -254,10 +253,10 @@ public class DownloadServiceNotification {
                 .setSmallIcon(R.drawable.ic_notification_sync_error)
                 .setContentIntent(intent)
                 .setAutoCancel(true);
-        if (retryPendingIntent != null) {
+        /*if (retryPendingIntent != null) {
             builder.addAction(new NotificationCompat.Action(
                     R.drawable.ic_notification_sync, context.getString(R.string.retry_label), retryPendingIntent));
-        }
+        }*/
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(R.id.notification_download_report, builder.build());
