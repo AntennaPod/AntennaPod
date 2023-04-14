@@ -149,6 +149,5 @@
             android:text="@string/auto_enable_label" />
 
     </LinearLayout>
-
 </LinearLayout>
 </ScrollView>
