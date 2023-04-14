@@ -3,13 +3,13 @@
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_gravity="center">
+
 <LinearLayout xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
     android:padding="16dp">
-
     <LinearLayout
         android:id="@+id/timeSetup"
         android:layout_width="match_parent"
@@ -116,11 +116,8 @@
                 android:layout_weight="1"
                 style="?attr/materialButtonOutlinedStyle"
                 tools:text="+20 min" />
-
         </LinearLayout>
-
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -147,7 +144,8 @@
             android:layout_height="wrap_content"
             android:minHeight="48dp"
             android:text="@string/auto_enable_label" />
-
     </LinearLayout>
 </LinearLayout>
 </ScrollView>
+
+
