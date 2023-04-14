@@ -62,7 +62,8 @@ public class EpisodeDownloadWorker extends Worker {
         progressUpdaterThread.interrupt();
         try {
             progressUpdaterThread.join();
-        } catch (InterruptedException ignore) {
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         Log.d(TAG, "Worker for " + media.getDownload_url() + " returned.");
         return result;
@@ -122,7 +123,8 @@ public class EpisodeDownloadWorker extends Worker {
             if (getInputData().getBoolean(DownloadServiceInterface.WORK_DATA_WAS_QUEUED, false)) {
                 try {
                     DBWriter.removeQueueItem(getApplicationContext(), false, media.getItem()).get();
-                } catch (ExecutionException | InterruptedException ignore) {
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
             return Result.success();

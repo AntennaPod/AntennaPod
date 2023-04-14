@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.net.download.serviceinterface;
 
 import android.content.Context;
-import android.content.Intent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 
 import java.util.HashMap;
