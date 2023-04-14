@@ -181,11 +181,9 @@ public class MainActivity extends CastEnabledActivity {
         WorkManager.getInstance(this)
                 .getWorkInfosByTagLiveData(DownloadServiceInterface.WORK_TAG)
                 .observe(this, workInfos -> {
+                    Map<String, Integer> updatedEpisodes = new HashMap<>();
                     Map<String, Integer> downloadingEpisodes = new HashMap<>();
                     for (WorkInfo workInfo : workInfos) {
-                        if (workInfo.getState() != WorkInfo.State.RUNNING) {
-                            continue;
-                        }
                         String downloadUrl = null;
                         for (String tag : workInfo.getTags()) {
                             if (tag.startsWith(DownloadServiceInterface.WORK_TAG_EPISODE_URL)) {
@@ -196,10 +194,15 @@ public class MainActivity extends CastEnabledActivity {
                             continue;
                         }
                         int progress = workInfo.getProgress().getInt(DownloadServiceInterface.WORK_DATA_PROGRESS, -1);
-                        downloadingEpisodes.put(downloadUrl, progress);
+                        if (workInfo.getState() == WorkInfo.State.RUNNING) {
+                            downloadingEpisodes.put(downloadUrl, progress);
+                        } else if (workInfo.getState() == WorkInfo.State.ENQUEUED) {
+                            progress = 0;
+                        }
+                        updatedEpisodes.put(downloadUrl, progress);
                     }
                     DownloadServiceInterface.get().setCurrentDownloads(downloadingEpisodes);
-                    EventBus.getDefault().postSticky(new EpisodeDownloadEvent(downloadingEpisodes));
+                    EventBus.getDefault().postSticky(new EpisodeDownloadEvent(updatedEpisodes));
                 });
     }
 

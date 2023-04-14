@@ -11,14 +11,12 @@ import de.danoeh.antennapod.core.service.download.handler.MediaDownloadedHandler
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import org.apache.commons.io.FileUtils;
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
@@ -106,8 +104,6 @@ public class EpisodeDownloadWorker extends Worker {
         }
 
         if (status.isCancelled()) {
-            // if FeedMedia download has been canceled, fake FeedItem update so that lists reload it
-            EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
             return Result.success();
         }
 
@@ -120,8 +116,6 @@ public class EpisodeDownloadWorker extends Worker {
 
         Log.e(TAG, "Download failed");
         DBWriter.addDownloadStatus(status);
-        // to make lists reload the failed item, we fake an item update
-        EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
 
         if (getRunAttemptCount() < 3) {
             return Result.retry();
