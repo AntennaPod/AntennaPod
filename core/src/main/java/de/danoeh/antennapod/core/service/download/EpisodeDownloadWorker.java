@@ -21,9 +21,11 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.concurrent.ExecutionException;
 
 public class EpisodeDownloadWorker extends Worker {
     private static final String TAG = "EpisodeDownloadWorker";
+    private Downloader downloader = null;
 
     public EpisodeDownloadWorker(@NonNull Context context, @NonNull WorkerParameters params) {
         super(context, params);
@@ -46,18 +48,34 @@ public class EpisodeDownloadWorker extends Worker {
                 while (!isInterrupted()) {
                     try {
                         Thread.sleep(1000);
-                    } catch (InterruptedException e) {
+                        setProgressAsync(
+                                new Data.Builder()
+                                    .putInt(DownloadServiceInterface.WORK_DATA_PROGRESS, request.getProgressPercent())
+                                    .build())
+                                .get();
+                    } catch (InterruptedException | ExecutionException e) {
                         return;
                     }
-                    setProgressAsync(new Data.Builder().putInt(
-                            DownloadServiceInterface.WORK_DATA_PROGRESS, request.getProgressPercent()).build());
                 }
             }
         };
         progressUpdaterThread.start();
-        Result result = performDownload(media, request);
+        final Result result = performDownload(media, request);
         progressUpdaterThread.interrupt();
+        try {
+            progressUpdaterThread.join();
+        } catch (InterruptedException ignore) {
+        }
+        Log.d(TAG, "Worker for " + media.getDownload_url() + " returned.");
         return result;
+    }
+
+    @Override
+    public void onStopped() {
+        super.onStopped();
+        if (downloader != null) {
+            downloader.cancel();
+        }
     }
 
     private Result performDownload(FeedMedia media, DownloadRequest request) {
@@ -79,7 +97,7 @@ public class EpisodeDownloadWorker extends Worker {
             }
         }
 
-        Downloader downloader = new DefaultDownloaderFactory().create(request);
+        downloader = new DefaultDownloaderFactory().create(request);
         if (downloader == null) {
             Log.d(TAG, "Unable to create downloader");
             return Result.failure();

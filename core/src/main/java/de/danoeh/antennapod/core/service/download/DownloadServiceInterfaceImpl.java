@@ -53,8 +53,10 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
     }
 
     public void cancel(Context context, String url) {
+        WorkManager.getInstance(context).cancelAllWorkByTag(WORK_TAG_EPISODE_URL + url);
     }
 
     public void cancelAll(Context context) {
+        WorkManager.getInstance(context).cancelAllWorkByTag(WORK_TAG);
     }
 }
