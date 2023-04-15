@@ -12,7 +12,8 @@ public class StubDownloader extends Downloader {
     @NonNull
     private final Consumer<DownloadResult> onDownloadComplete;
 
-    public StubDownloader(@NonNull DownloadRequest request, long downloadTime, @NonNull Consumer<DownloadResult> onDownloadComplete) {
+    public StubDownloader(@NonNull DownloadRequest request, long downloadTime,
+                          @NonNull Consumer<DownloadResult> onDownloadComplete) {
         super(request);
         this.downloadTime = downloadTime;
         this.onDownloadComplete = onDownloadComplete;

@@ -4,12 +4,11 @@ import java.util.Comparator;
 
 import de.danoeh.antennapod.model.download.DownloadResult;
 
-/** Compares the completion date of two Downloadstatus objects. */
+/** Compares the completion date of two DownloadResult objects. */
 public class DownloadStatusComparator implements Comparator<DownloadResult> {
 
-	@Override
-	public int compare(DownloadResult lhs, DownloadResult rhs) {
-		return rhs.getCompletionDate().compareTo(lhs.getCompletionDate());
-	}
-
+    @Override
+    public int compare(DownloadResult lhs, DownloadResult rhs) {
+        return rhs.getCompletionDate().compareTo(lhs.getCompletionDate());
+    }
 }
