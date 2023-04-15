@@ -370,7 +370,6 @@
     <string name="no_subscriptions_label">To subscribe to a podcast, press the plus icon below.</string>
 
     <!-- Preferences -->
-    <string name="statistics_moved">The statistics screen was moved to the subscriptions screen. You can open it from there.</string>
     <string name="project_pref">Project</string>
     <string name="synchronization_pref">Synchronization</string>
     <string name="synchronization_sum">Synchronize with other devices</string>

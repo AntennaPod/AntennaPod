@@ -5,7 +5,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -40,7 +39,6 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_NOTIFICATION = "notifications";
     private static final String PREF_CONTRIBUTE = "prefContribute";
-    private static final String PREF_STATISTICS = "statistics";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -130,15 +128,6 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
             startActivity(new Intent(getActivity(), BugReportActivity.class));
             return true;
         });
-        findPreference(PREF_STATISTICS).setOnPreferenceClickListener(
-                preference -> {
-                    new MaterialAlertDialogBuilder(getContext())
-                            .setMessage(R.string.statistics_moved)
-                            .setPositiveButton(android.R.string.ok, null)
-                            .show();
-                    return true;
-                }
-        );
     }
 
     private String getLocalizedWebsiteLink() {
