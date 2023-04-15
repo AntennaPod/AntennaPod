@@ -193,7 +193,7 @@ public class PreferencesTest {
 
     @Test
     public void testAutoDelete() {
-        clickPreference(R.string.storage_pref);
+        clickPreference(R.string.downloads_pref);
         final boolean autoDelete = UserPreferences.isAutoDelete();
         onView(withText(R.string.pref_auto_delete_title)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
@@ -225,7 +225,7 @@ public class PreferencesTest {
 
     @Test
     public void testSetSequentialDownload() {
-        clickPreference(R.string.network_pref);
+        clickPreference(R.string.downloads_pref);
         clickPreference(R.string.pref_parallel_downloads_title);
         onView(isRoot()).perform(waitForView(withClassName(endsWith("EditText")), 1000));
         onView(withClassName(endsWith("EditText"))).perform(replaceText("1"));
@@ -236,7 +236,7 @@ public class PreferencesTest {
 
     @Test
     public void testSetParallelDownloads() {
-        clickPreference(R.string.network_pref);
+        clickPreference(R.string.downloads_pref);
         clickPreference(R.string.pref_parallel_downloads_title);
         onView(isRoot()).perform(waitForView(withClassName(endsWith("EditText")), 1000));
         onView(withClassName(endsWith("EditText"))).perform(replaceText("10"));
@@ -248,7 +248,7 @@ public class PreferencesTest {
 
     @Test
     public void testSetParallelDownloadsInvalidInput() {
-        clickPreference(R.string.network_pref);
+        clickPreference(R.string.downloads_pref);
         clickPreference(R.string.pref_parallel_downloads_title);
         onView(isRoot()).perform(waitForView(withClassName(endsWith("EditText")), 1000));
         onView(withClassName(endsWith("EditText"))).perform(replaceText("0"));
@@ -263,7 +263,7 @@ public class PreferencesTest {
         String[] values = res.getStringArray(R.array.episode_cache_size_values);
         String entry = entries[entries.length / 2];
         final int value = Integer.parseInt(values[values.length / 2]);
-        clickPreference(R.string.network_pref);
+        clickPreference(R.string.downloads_pref);
         clickPreference(R.string.pref_automatic_download_title);
         clickPreference(R.string.pref_episode_cache_title);
         onView(isRoot()).perform(waitForView(withText(entry), 1000));
@@ -279,7 +279,7 @@ public class PreferencesTest {
         String minEntry = entries[0];
         final int minValue = Integer.parseInt(values[0]);
 
-        clickPreference(R.string.network_pref);
+        clickPreference(R.string.downloads_pref);
         clickPreference(R.string.pref_automatic_download_title);
         clickPreference(R.string.pref_episode_cache_title);
         onView(withId(R.id.select_dialog_listview)).perform(swipeDown());
@@ -294,7 +294,7 @@ public class PreferencesTest {
         String[] values = res.getStringArray(R.array.episode_cache_size_values);
         String maxEntry = entries[entries.length - 1];
         final int maxValue = Integer.parseInt(values[values.length - 1]);
-        onView(withText(R.string.network_pref)).perform(click());
+        onView(withText(R.string.downloads_pref)).perform(click());
         onView(withText(R.string.pref_automatic_download_title)).perform(click());
         onView(withText(R.string.pref_episode_cache_title)).perform(click());
         onView(withId(R.id.select_dialog_listview)).perform(swipeUp());
@@ -306,7 +306,7 @@ public class PreferencesTest {
     @Test
     public void testAutomaticDownload() {
         final boolean automaticDownload = UserPreferences.isEnableAutodownload();
-        clickPreference(R.string.network_pref);
+        clickPreference(R.string.downloads_pref);
         clickPreference(R.string.pref_automatic_download_title);
         clickPreference(R.string.pref_automatic_download_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
@@ -327,7 +327,7 @@ public class PreferencesTest {
 
     @Test
     public void testEpisodeCleanupFavoriteOnly() {
-        clickPreference(R.string.network_pref);
+        clickPreference(R.string.downloads_pref);
         onView(withText(R.string.pref_automatic_download_title)).perform(click());
         onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
         onView(withId(R.id.select_dialog_listview)).perform(swipeDown());
@@ -338,7 +338,7 @@ public class PreferencesTest {
 
     @Test
     public void testEpisodeCleanupQueueOnly() {
-        clickPreference(R.string.network_pref);
+        clickPreference(R.string.downloads_pref);
         onView(withText(R.string.pref_automatic_download_title)).perform(click());
         onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
         onView(withId(R.id.select_dialog_listview)).perform(swipeDown());
@@ -349,7 +349,7 @@ public class PreferencesTest {
 
     @Test
     public void testEpisodeCleanupNeverAlg() {
-        clickPreference(R.string.network_pref);
+        clickPreference(R.string.downloads_pref);
         onView(withText(R.string.pref_automatic_download_title)).perform(click());
         onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
         onView(withId(R.id.select_dialog_listview)).perform(swipeUp());
@@ -360,7 +360,7 @@ public class PreferencesTest {
 
     @Test
     public void testEpisodeCleanupClassic() {
-        clickPreference(R.string.network_pref);
+        clickPreference(R.string.downloads_pref);
         onView(withText(R.string.pref_automatic_download_title)).perform(click());
         onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
         onView(withText(R.string.episode_cleanup_after_listening)).perform(click());
@@ -377,7 +377,7 @@ public class PreferencesTest {
 
     @Test
     public void testEpisodeCleanupNumDays() {
-        clickPreference(R.string.network_pref);
+        clickPreference(R.string.downloads_pref);
         clickPreference(R.string.pref_automatic_download_title);
         clickPreference(R.string.pref_episode_cleanup_title);
         String search = res.getQuantityString(R.plurals.episode_cleanup_days_after_listening, 3, 3);
@@ -437,7 +437,7 @@ public class PreferencesTest {
 
     @Test
     public void testDeleteRemovesFromQueue() {
-        clickPreference(R.string.storage_pref);
+        clickPreference(R.string.downloads_pref);
         if (!UserPreferences.shouldDeleteRemoveFromQueue()) {
             clickPreference(R.string.pref_delete_removes_from_queue_title);
             Awaitility.await().atMost(1000, MILLISECONDS)
