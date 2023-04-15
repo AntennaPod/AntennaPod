@@ -120,32 +120,32 @@
   <string name="episode_cleanup_after_listening">بعد الانتهاء</string>
   <plurals name="episode_cleanup_hours_after_listening">
     <item quantity="zero">%d ساعة بعد الأنتهاء</item>
-    <item quantity="one">1 ساعة بعد الأنتهاء</item>
-    <item quantity="two">%d ساعتان بعد الأنتهاء</item>
-    <item quantity="few">%d ساعة بعد الأنتهاء</item>
-    <item quantity="many">%d ساعة بعد الأنتهاء</item>
-    <item quantity="other">%d ساعة بعد الأنتهاء</item>
+    <item quantity="one">1 ساعة واحدة بعد الانتهاء</item>
+    <item quantity="two"> ساعتان %d بعد الانتهاء</item>
+    <item quantity="few">%d ساعة بعد الانتهاء</item>
+    <item quantity="many">%d ساعة بعد الانتهاء</item>
+    <item quantity="other">%d ساعة بعد الانتهاء</item>
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="zero">%d يوم بعد الأنتهاء</item>
-    <item quantity="one">1 يوم بعد الأنتهاء</item>
-    <item quantity="two">%d يومان بعد الأنتهاء</item>
-    <item quantity="few">%d يوم بعد الأنتهاء</item>
-    <item quantity="many">%d يوم بعد الأنتهاء</item>
-    <item quantity="other">%d يوم بعد الأنتهاء</item>
+    <item quantity="zero">%d يوم بعد الانتهاء</item>
+    <item quantity="one">1 يوم واحد بعد الانتهاء</item>
+    <item quantity="two">%d يومان بعد الانتهاء</item>
+    <item quantity="few">%d يوم بعد الانتهاء</item>
+    <item quantity="many">%d يوم بعد الانتهاء</item>
+    <item quantity="other">%d يوم بعد الانتهاء</item>
   </plurals>
   <plurals name="num_selected_label">
-    <item quantity="zero">تم تحديد %1$d/ %2$d</item>
+    <item quantity="zero">تم تحديد %1$d/%2$d</item>
     <item quantity="one">تم تحديد %1$d/%2$d</item>
     <item quantity="two">تم تحديد %1$d/%2$d</item>
     <item quantity="few">تم تحديد %1$d/%2$d</item>
-    <item quantity="many">تم تحديد %1$d/ %2$d </item>
+    <item quantity="many">تم تحديد %1$d/%2$d </item>
     <item quantity="other">تم تحديد %1$d/%2$d</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="zero">%d حلقة</item>
-    <item quantity="one">حلقة %d</item>
-    <item quantity="two">%d حلقتين</item>
+    <item quantity="one">%d حلقة واحدة</item>
+    <item quantity="two">%d حلقتان</item>
     <item quantity="few">%d حلقات</item>
     <item quantity="many">%d حلقات</item>
     <item quantity="other">%d حلقات</item>
@@ -153,9 +153,9 @@
   <string name="episode_notification">تنبيهات الحلقات</string>
   <string name="episode_notification_summary">اظهر تنبيه عند صدور حلقه جديدة</string>
   <plurals name="new_episode_notification_message">
-    <item quantity="zero">لا توجد حلقات جديده لدى %2$s </item>
+    <item quantity="zero">%1$d حلقات جديدة من %2$s</item>
     <item quantity="one">حلقة جديدة من %2$s</item>
-    <item quantity="two">حلقتان جديدة من %2$s</item>
+    <item quantity="two">حلقتان جديدة %1$d من %2$s</item>
     <item quantity="few">%1$d حلقات جديدة من %2$s</item>
     <item quantity="many">%1$d حلقات جديدة من %2$s</item>
     <item quantity="other">%1$d حلقات جديدة من %2$s</item>
@@ -226,8 +226,8 @@
   <string name="delete_episode_label">مسح الحلقة</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="zero">%dحلقة منزلة مسحت.</item>
-    <item quantity="one">1 حلقة منزلة مسحت.</item>
-    <item quantity="two">%dحلقاتان منزلة مسحت.</item>
+    <item quantity="one">1 حلقة منزلة واحدة مسحت.</item>
+    <item quantity="two">%dحلقاتان منزلتان مسحت.</item>
     <item quantity="few">%dحلقات منزلة مسحت.</item>
     <item quantity="many">%dحلقات منزلة مسحت.</item>
     <item quantity="other">%dحلقات منزلة مسحت.</item>
@@ -810,7 +810,7 @@
   <string name="sort_short_long">قصيرة \u2192 طويلة</string>
   <string name="sort_long_short">طويلة \u2192 قصيرة</string>
   <!--Rating dialog-->
-  <string name="rating_title" tools:ignore="UnusedResources">أعجبك AntennaPod؟</string>
+  <string name="rating_title" tools:ignore="UnusedResources">هل أعجبك AntennaPod؟</string>
   <string name="rating_message" tools:ignore="UnusedResources">سنكون ممتنين إذا قمت بتقييم AntennaPod.</string>
   <string name="rating_never_label" tools:ignore="UnusedResources">أتركني وشأني</string>
   <string name="rating_later_label" tools:ignore="UnusedResources">ذكرني في وقت لاحق</string>

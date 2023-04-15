@@ -13,7 +13,7 @@
   <string name="settings_label">Impostazioni</string>
   <string name="downloads_label">Download</string>
   <string name="open_autodownload_settings">Apri Impostazioni</string>
-  <string name="downloads_log_label">Log dei download</string>
+  <string name="downloads_log_label">Registro dei download</string>
   <string name="subscriptions_label">Iscrizioni</string>
   <string name="subscriptions_list_label">Elenco iscrizioni</string>
   <string name="cancel_download_label">Annulla download</string>
@@ -69,8 +69,8 @@
   <string name="drawer_feed_counter_none">Nessuno</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">Nessuna applicazione compatibile trovata</string>
-  <string name="export_logs_menu_title">Esporta log dettagliati</string>
-  <string name="confirm_export_log_dialog_message">I log dettagliati possono contenere informazioni sensibili come la lista delle iscrizioni</string>
+  <string name="export_logs_menu_title">Esporta registri dettagliati</string>
+  <string name="confirm_export_log_dialog_message">I registri dettagliati possono contenere informazioni sensibili come il tuo elenco di iscrizioni</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Apri nel browser</string>
   <string name="copy_url_label">Copia URL</string>
@@ -105,7 +105,7 @@
   <string name="auto_download_label">Includi nei download automatici</string>
   <string name="auto_delete_label">Eliminazione automatica episodi</string>
   <string name="feed_volume_reduction">Riduzione del volume</string>
-  <string name="feed_volume_reduction_summary">Abbassa volume per gli episodi di questo podcast: %1$s</string>
+  <string name="feed_volume_reduction_summary">Abbassa il volume per gli episodi di questo podcast: %1$s</string>
   <string name="feed_volume_reduction_off">Spento</string>
   <string name="feed_volume_reduction_light">Leggero</string>
   <string name="feed_volume_reduction_heavy">Deciso</string>
@@ -139,7 +139,7 @@
     <item quantity="other">%d episodi</item>
   </plurals>
   <string name="episode_notification">Notifiche episodi</string>
-  <string name="episode_notification_summary">Mostra una notifica quando viene pubblicato un episodio.</string>
+  <string name="episode_notification_summary">Invia una notifica quando viene pubblicato un nuovo episodio.</string>
   <plurals name="new_episode_notification_message">
     <item quantity="one">%2$s ha un nuovo episodio</item>
     <item quantity="many">%2$s ha %1$d nuovi episodi</item>
@@ -167,7 +167,7 @@
   <string name="share_rss_address_label">Indirizzo RSS:</string>
   <string name="feed_delete_confirmation_msg">Conferma di voler eliminare il podcast \"%1$s\" e TUTTI i suoi episodi (compresi quelli scaricati).</string>
   <string name="feed_delete_confirmation_msg_batch">Conferma che vuoi eliminare i podcast selezionati e TUTTI i loro episodi (inclusi quelli scaricati).</string>
-  <string name="feed_delete_confirmation_local_msg">Conferma se desideri rimuovere il podcast \"%1$s\". I file nella cartella di origine locale non verranno cancellati.</string>
+  <string name="feed_delete_confirmation_local_msg">Conferma se desideri rimuovere il podcast \"%1$s\". I file nella cartella locale di origine non verranno cancellati.</string>
   <string name="feed_remover_msg">Rimozione podcast in corso</string>
   <string name="load_complete_feed">Aggiorna podcast completo</string>
   <string name="multi_select">Selezione multipla</string>
@@ -342,7 +342,7 @@
   <string name="no_shownotes_label">Questo episodio non ha note.</string>
   <string name="no_comp_downloads_head_label">Nessun episodio scaricato</string>
   <string name="no_comp_downloads_label">Puoi scaricare gli episodi dalla schermata del podcast.</string>
-  <string name="no_log_downloads_head_label">Nessun registro</string>
+  <string name="no_log_downloads_head_label">Nessun registro dei download</string>
   <string name="no_log_downloads_label">Il registro dei download apparirà qui quando presente.</string>
   <string name="no_history_head_label">Nessuna cronologia</string>
   <string name="no_history_label">Ogni episodio ascoltato apparirà qui.</string>
@@ -445,7 +445,7 @@
   <string name="pref_episode_cache_title">Cache degli episodi</string>
   <string name="pref_episode_cache_summary">Numero di episodi scaricati memorizzabili sul dispositivo. I download automatici vengono interrotti se si raggiunge questo valore.</string>
   <string name="pref_episode_cover_title">Usa immagine episodio</string>
-  <string name="pref_episode_cover_summary">Usa l\'immagine dell\'episodio, se disponibile. Se non selezionato, l\'app userà sempre l\'immagine di copertina del podcast.</string>
+  <string name="pref_episode_cover_summary">Usa l\'immagine dell\'episodio quando disponibile. Se disattivato, l\'app userà sempre l\'immagine di copertina del podcast.</string>
   <string name="pref_show_remain_time_title">Mostra tempo residuo</string>
   <string name="pref_show_remain_time_summary">Mostra il tempo rimanente degli episodi. Se non selezionato, mostra la durata totale degli episodi.</string>
   <string name="pref_theme_title_use_system">Usa tema di sistema</string>
@@ -511,7 +511,7 @@
   <string name="pref_delete_removes_from_queue_sum">Quando un episodio viene eliminato lo rimuove automaticamente dalla coda.</string>
   <string name="pref_filter_feed_title">Filtro iscrizioni</string>
   <string name="pref_filter_feed_sum">Filtra le iscrizioni nella barra laterale e nella schermata Iscrizioni.</string>
-  <string name="subscriptions_are_filtered">Iscrizioni filtrate.</string>
+  <string name="subscriptions_are_filtered">Le iscrizioni sono filtrate.</string>
   <string name="subscriptions_counter_greater_zero">Contatore maggiore di zero</string>
   <string name="auto_downloaded">Con download automatico</string>
   <string name="not_auto_downloaded">Senza download automatico</string>
@@ -530,7 +530,7 @@
   <string name="contributors_summary">Tutti possono contribuire a rendere AntennaPod migliore - programmando, traducendo o aiutando gli utenti nel nostro forum</string>
   <string name="developers">Sviluppatori</string>
   <string name="translators">Traduttori</string>
-  <string name="special_thanks">Ringraziamenti  speciali</string>
+  <string name="special_thanks">Ringraziamenti speciali</string>
   <string name="privacy_policy">Privacy policy</string>
   <string name="licenses">Licenze</string>
   <string name="licenses_summary">AntennaPod usa altri ottimi software</string>
@@ -558,7 +558,7 @@
   <string name="opml_import_summary">Importa le tue iscrizioni da un\'altra app per i podcast</string>
   <string name="database_export_summary">Sposta le iscrizioni, gli episodi ascoltati e la coda su AntennaPod di un altro dispositivo</string>
   <string name="database_import_summary">Importa il database di AntennaPod da un altro dispositivo</string>
-  <string name="opml_import_label">Importa OPML</string>
+  <string name="opml_import_label">Importa da OPML</string>
   <string name="opml_add_podcast_label">Importa lista podcast (OPML)</string>
   <string name="opml_reader_error">Errore in fase di lettura del documento OPML:</string>
   <string name="opml_import_error_no_file">Nessun file selezionato!</string>
@@ -722,11 +722,11 @@
   <string name="local_folder">Cartella locale</string>
   <string name="reconnect_local_folder">Riconnetti cartella locale</string>
   <string name="reconnect_local_folder_warning">In caso di rifiuto dell\'autorizzazione, puoi usare questa opzione per riconnetterti alla stessa cartella. Non selezionare un\'altra cartella.</string>
-  <string name="local_feed_description">Questo podcast virtuale è generato dall\'aggiunta di una cartella ad AntennaPod.</string>
+  <string name="local_feed_description">Questo podcast virtuale è stato generato aggiungendo una cartella locale ad AntennaPod</string>
   <string name="unable_to_start_system_file_manager">Impossibile avviare il gestore file di sistema</string>
   <string name="filter">Filtra</string>
   <string name="hide_is_favorite_label">Preferiti</string>
-  <string name="not_favorite">Non preferito</string>
+  <string name="not_favorite">Non preferiti</string>
   <string name="hide_downloaded_episodes_label">Scaricati</string>
   <string name="hide_not_downloaded_episodes_label">Non scaricati</string>
   <string name="queued_label">In coda</string>
@@ -736,7 +736,7 @@
   <string name="hide_paused_episodes_label">In pausa</string>
   <string name="not_paused">Non in pausa</string>
   <string name="hide_played_episodes_label">Riprodotti</string>
-  <string name="not_played">Non riprodotto</string>
+  <string name="not_played">Non riprodotti</string>
   <!--Sort-->
   <string name="sort_title_a_z">Titolo (A \u2192 Z)</string>
   <string name="sort_title_z_a">Titolo (Z \u2192 A)</string>

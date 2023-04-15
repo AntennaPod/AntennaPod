@@ -374,7 +374,7 @@
   <string name="pref_followQueue_sum">Saltar ao seguinte elemento na cola cando remata o episodio</string>
   <string name="pref_auto_delete_sum">Eliminar o episodio cando remata a súa reprodución</string>
   <string name="pref_auto_delete_title">Borrado automático</string>
-  <string name="pref_smart_mark_as_played_sum">Marcar episodios como reproducidos si aínda quedan un determinado número de segundos por reproducir</string>
+  <string name="pref_smart_mark_as_played_sum">Marcar episodios como reproducidos se aínda quedan un determinado número de segundos por reproducir</string>
   <string name="pref_smart_mark_as_played_title">Marcar como Reproducido automático</string>
   <string name="pref_skip_keeps_episodes_sum">Manter os episodios cando son omitidos</string>
   <string name="pref_skip_keeps_episodes_title">Manter episodios omitidos</string>
@@ -664,7 +664,7 @@
   <string name="multi_feed_common_tags_info">{fa-info-circle} Só se mostran as etiquetas comúns de tódolas subscricións seleccionadas. Outras etiquetas non están afectadas.</string>
   <string name="auto_download_settings_label">Axustes de descarga automática</string>
   <string name="episode_filters_label">Fitro de episodios</string>
-  <string name="episode_filters_description">Lista dos termos utilizados para decidir si un episodio debe ser incluído ou excluído das descargas automáticas</string>
+  <string name="episode_filters_description">Lista dos termos utilizados para decidir se un episodio debe ser incluído ou excluído das descargas automáticas</string>
   <string name="add_term">Engadir Termo</string>
   <string name="exclude_terms">Excluír episodios que conteñen algún destes termos</string>
   <string name="include_terms">Incluír só episodios que conteñen algún destes termos</string>
@@ -711,8 +711,8 @@
   <string name="hide_downloaded_episodes_label">Descargado</string>
   <string name="hide_not_downloaded_episodes_label">Non descargado</string>
   <string name="queued_label">Na cola</string>
-  <string name="not_queued_label">Fora da cola</string>
-  <string name="has_media">Teñen medios</string>
+  <string name="not_queued_label">Fóra da cola</string>
+  <string name="has_media">Ten multimedia</string>
   <string name="no_media">Sen multimedia</string>
   <string name="hide_paused_episodes_label">En pausa</string>
   <string name="not_paused">Non pausado</string>
@@ -745,7 +745,7 @@
   <string name="share_dialog_for_social">Mensaxe Social</string>
   <string name="share_dialog_media_address">Enderezo multimedia</string>
   <string name="share_dialog_media_file_label">Ficheiro multimedia</string>
-  <string name="share_starting_position_label">Inciado o</string>
+  <string name="share_starting_position_label">Escoita en</string>
   <!--Audio controls-->
   <string name="audio_controls">Controis de audio</string>
   <string name="playback_speed">Velocidade de reprodución</string>
