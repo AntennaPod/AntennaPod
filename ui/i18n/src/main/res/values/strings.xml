@@ -372,7 +372,6 @@
     <!-- Preferences -->
     <string name="storage_pref">Storage</string>
     <string name="storage_sum">Episode auto delete, Import, Export</string>
-    <string name="statistics_moved">The statistics screen was moved to the subscriptions screen. You can open it from there.</string>
     <string name="project_pref">Project</string>
     <string name="synchronization_pref">Synchronization</string>
     <string name="synchronization_sum">Synchronize with other devices</string>
