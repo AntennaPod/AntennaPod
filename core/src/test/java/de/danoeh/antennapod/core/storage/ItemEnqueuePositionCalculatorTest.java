@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.core.storage;
 
 import de.danoeh.antennapod.model.playback.RemoteMedia;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfaceStub;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -71,6 +73,7 @@ public class ItemEnqueuePositionCalculatorTest {
          */
         @Test
         public void test() {
+            DownloadServiceInterface.setImpl(new DownloadServiceInterfaceStub());
             ItemEnqueuePositionCalculator calculator = new ItemEnqueuePositionCalculator(options);
 
             // shallow copy to which the test will add items
