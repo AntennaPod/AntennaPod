@@ -21,7 +21,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.databinding.DownloadLogFragmentBinding;
 import de.danoeh.antennapod.dialog.DownloadLogDetailsDialog;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -41,7 +41,7 @@ public class DownloadLogFragment extends BottomSheetDialogFragment
         implements AdapterView.OnItemClickListener, MaterialToolbar.OnMenuItemClickListener {
     private static final String TAG = "DownloadLogFragment";
 
-    private List<DownloadStatus> downloadLog = new ArrayList<>();
+    private List<DownloadResult> downloadLog = new ArrayList<>();
     private List<Downloader> runningDownloads = new ArrayList<>();
     private DownloadLogAdapter adapter;
     private Disposable disposable;
@@ -92,8 +92,8 @@ public class DownloadLogFragment extends BottomSheetDialogFragment
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Object item = adapter.getItem(position);
-        if (item instanceof DownloadStatus) {
-            new DownloadLogDetailsDialog(getContext(), (DownloadStatus) item).show();
+        if (item instanceof DownloadResult) {
+            new DownloadLogDetailsDialog(getContext(), (DownloadResult) item).show();
         }
     }
 

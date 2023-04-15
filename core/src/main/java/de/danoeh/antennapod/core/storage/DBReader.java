@@ -23,7 +23,7 @@ import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.danoeh.antennapod.storage.database.mapper.DownloadStatusCursorMapper;
 import de.danoeh.antennapod.storage.database.mapper.ChapterCursorMapper;
@@ -393,13 +393,13 @@ public final class DBReader {
      * @return A list with DownloadStatus objects that represent the download log.
      * The size of the returned list is limited by {@link #DOWNLOAD_LOG_SIZE}.
      */
-    public static List<DownloadStatus> getDownloadLog() {
+    public static List<DownloadResult> getDownloadLog() {
         Log.d(TAG, "getDownloadLog() called");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try (Cursor cursor = adapter.getDownloadLogCursor(DOWNLOAD_LOG_SIZE)) {
-            List<DownloadStatus> downloadLog = new ArrayList<>(cursor.getCount());
+            List<DownloadResult> downloadLog = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
                 downloadLog.add(DownloadStatusCursorMapper.convert(cursor));
             }
@@ -417,13 +417,13 @@ public final class DBReader {
      * @return A list with DownloadStatus objects that represent the feed's download log,
      * newest events first.
      */
-    public static List<DownloadStatus> getFeedDownloadLog(long feedId) {
+    public static List<DownloadResult> getFeedDownloadLog(long feedId) {
         Log.d(TAG, "getFeedDownloadLog() called with: " + "feed = [" + feedId + "]");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try (Cursor cursor = adapter.getDownloadLog(Feed.FEEDFILETYPE_FEED, feedId)) {
-            List<DownloadStatus> downloadLog = new ArrayList<>(cursor.getCount());
+            List<DownloadResult> downloadLog = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
                 downloadLog.add(DownloadStatusCursorMapper.convert(cursor));
             }

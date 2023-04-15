@@ -10,7 +10,7 @@ import java.io.IOException;
 import de.danoeh.antennapod.model.feed.FeedFile;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.model.download.DownloadError;
@@ -80,10 +80,9 @@ public class HttpDownloaderTest {
         DownloadRequest request = new DownloadRequest(feedFile.getFile_url(), url, title, 0, feedFile.getTypeAsInt(), username, password, deleteOnFail, null, false);
         Downloader downloader = new HttpDownloader(request);
         downloader.call();
-        DownloadStatus status = downloader.getResult();
+        DownloadResult status = downloader.getResult();
         assertNotNull(status);
         assertEquals(expectedResult, status.isSuccessful());
-        assertTrue(status.isDone());
         // the file should not exist if the download has failed and deleteExisting was true
         assertTrue(!deleteExisting || new File(feedFile.getFile_url()).exists() == expectedResult);
         return downloader;
@@ -127,10 +126,8 @@ public class HttpDownloaderTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        DownloadStatus result = downloader.getResult();
-        assertTrue(result.isDone());
+        DownloadResult result = downloader.getResult();
         assertFalse(result.isSuccessful());
-        assertTrue(result.isCancelled());
         assertFalse(new File(feedFile.getFile_url()).exists());
     }
 

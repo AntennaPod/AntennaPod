@@ -18,7 +18,7 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.DownloadErrorLabel;
 import de.danoeh.antennapod.model.download.DownloadError;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -35,7 +35,7 @@ public class DownloadLogAdapter extends BaseAdapter {
     private static final String TAG = "DownloadLogAdapter";
 
     private final Activity context;
-    private List<DownloadStatus> downloadLog = new ArrayList<>();
+    private List<DownloadResult> downloadLog = new ArrayList<>();
     private List<Downloader> runningDownloads = new ArrayList<>();
 
     public DownloadLogAdapter(Activity context) {
@@ -43,7 +43,7 @@ public class DownloadLogAdapter extends BaseAdapter {
         this.context = context;
     }
 
-    public void setDownloadLog(List<DownloadStatus> downloadLog) {
+    public void setDownloadLog(List<DownloadResult> downloadLog) {
         this.downloadLog = downloadLog;
         notifyDataSetChanged();
     }
@@ -64,15 +64,15 @@ public class DownloadLogAdapter extends BaseAdapter {
         }
 
         Object item = getItem(position);
-        if (item instanceof DownloadStatus) {
-            bind(holder, (DownloadStatus) item, position);
+        if (item instanceof DownloadResult) {
+            bind(holder, (DownloadResult) item, position);
         } else if (item instanceof Downloader) {
             bind(holder, (Downloader) item, position);
         }
         return holder.itemView;
     }
 
-    private void bind(DownloadLogItemViewHolder holder, DownloadStatus status, int position) {
+    private void bind(DownloadLogItemViewHolder holder, DownloadResult status, int position) {
         String statusText = "";
         if (status.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
             statusText += context.getString(R.string.download_type_feed);
@@ -180,7 +180,7 @@ public class DownloadLogAdapter extends BaseAdapter {
             status += context.getString(R.string.download_pending);
         } else {
             status += Formatter.formatShortFileSize(context, request.getSoFar());
-            if (request.getSize() != DownloadStatus.SIZE_UNKNOWN) {
+            if (request.getSize() != DownloadResult.SIZE_UNKNOWN) {
                 status += " / " + Formatter.formatShortFileSize(context, request.getSize());
                 holder.secondaryActionProgress.setPercentage(
                         0.01f * Math.max(1, request.getProgressPercent()), request);
@@ -195,7 +195,7 @@ public class DownloadLogAdapter extends BaseAdapter {
 
     private boolean newerWasSuccessful(int downloadStatusIndex, int feedTypeId, long id) {
         for (int i = 0; i < downloadStatusIndex; i++) {
-            DownloadStatus status = downloadLog.get(i);
+            DownloadResult status = downloadLog.get(i);
             if (status.getFeedfileType() == feedTypeId && status.getFeedfileId() == id && status.isSuccessful()) {
                 return true;
             }

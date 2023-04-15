@@ -9,14 +9,13 @@ import de.danoeh.antennapod.model.feed.FeedFile;
 /**
  * Contains status attributes for one download
  */
-public class DownloadStatus {
+public class DownloadResult {
     /**
      * Downloaders should use this constant for the size attribute if necessary
      * so that the listadapters etc. can react properly.
      */
     public static final int SIZE_UNKNOWN = -1;
 
-    // ----------------------------------- ATTRIBUTES STORED IN DB
     /**
      * A human-readable string which is shown to the user so that he can
      * identify the download. Should be the title of the item/feed/media or the
@@ -43,29 +42,24 @@ public class DownloadStatus {
     private String reasonDetailed;
     private boolean successful;
     private final Date completionDate;
-    // ------------------------------------ NOT STORED IN DB
-    private boolean done;
-    private boolean cancelled;
 
     /**
      * Constructor for creating new completed downloads.
      */
-    public DownloadStatus(@NonNull FeedFile feedfile, String title, DownloadError reason, boolean successful,
+    public DownloadResult(@NonNull FeedFile feedfile, String title, DownloadError reason, boolean successful,
                           String reasonDetailed, boolean initiatedByUser) {
-        this(0, title, feedfile.getId(), feedfile.getTypeAsInt(), successful, false, true, reason, new Date(),
+        this(0, title, feedfile.getId(), feedfile.getTypeAsInt(), successful, reason, new Date(),
                 reasonDetailed, initiatedByUser);
     }
 
-    public DownloadStatus(long id, String title, long feedfileId, int feedfileType, boolean successful,
-                          boolean cancelled, boolean done, DownloadError reason, Date completionDate,
+    public DownloadResult(long id, String title, long feedfileId, int feedfileType, boolean successful,
+                          DownloadError reason, Date completionDate,
                           String reasonDetailed, boolean initiatedByUser) {
         this.id = id;
         this.title = title;
         this.feedfileId = feedfileId;
         this.reason = reason;
         this.successful = successful;
-        this.cancelled = cancelled;
-        this.done = done;
         this.completionDate = (Date) completionDate.clone();
         this.reasonDetailed = reasonDetailed;
         this.feedfileType = feedfileType;
@@ -79,8 +73,7 @@ public class DownloadStatus {
                 + reason + ", reasonDetailed=" + reasonDetailed
                 + ", successful=" + successful + ", completionDate="
                 + completionDate + ", feedfileId=" + feedfileId
-                + ", feedfileType=" + feedfileType + ", done=" + done
-                + ", cancelled=" + cancelled + "]";
+                + ", feedfileType=" + feedfileType + "]";
     }
 
     public long getId() {
@@ -123,31 +116,19 @@ public class DownloadStatus {
         return initiatedByUser;
     }
 
-    public boolean isDone() {
-        return done;
-    }
-
-    public boolean isCancelled() {
-        return cancelled;
-    }
-
     public void setSuccessful() {
         this.successful = true;
         this.reason = DownloadError.SUCCESS;
-        this.done = true;
     }
 
     public void setFailed(DownloadError reason, String reasonDetailed) {
         this.successful = false;
         this.reason = reason;
         this.reasonDetailed = reasonDetailed;
-        this.done = true;
     }
 
     public void setCancelled() {
         this.successful = false;
         this.reason = DownloadError.ERROR_DOWNLOAD_CANCELLED;
-        this.done = true;
-        this.cancelled = true;
     }
 }

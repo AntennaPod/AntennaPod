@@ -56,7 +56,7 @@ import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
@@ -473,7 +473,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private void showErrorDetails() {
         Maybe.fromCallable(
                 () -> {
-                    List<DownloadStatus> feedDownloadLog = DBReader.getFeedDownloadLog(feedID);
+                    List<DownloadResult> feedDownloadLog = DBReader.getFeedDownloadLog(feedID);
                     if (feedDownloadLog.size() == 0 || feedDownloadLog.get(0).isSuccessful()) {
                         return null;
                     }

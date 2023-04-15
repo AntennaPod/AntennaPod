@@ -10,7 +10,7 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.util.DownloadErrorLabel;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
@@ -139,7 +139,7 @@ public class DownloadServiceNotification {
         return stringBuilder.toString();
     }
 
-    private static String createAutoDownloadNotificationContent(List<DownloadStatus> statuses) {
+    private static String createAutoDownloadNotificationContent(List<DownloadResult> statuses) {
         int length = statuses.size();
         StringBuilder sb = new StringBuilder();
 
@@ -153,7 +153,7 @@ public class DownloadServiceNotification {
         return sb.toString();
     }
 
-    private String createFailedDownloadNotificationContent(List<DownloadStatus> statuses) {
+    private String createFailedDownloadNotificationContent(List<DownloadResult> statuses) {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < statuses.size(); i++) {
@@ -177,7 +177,7 @@ public class DownloadServiceNotification {
      * user about the number of completed downloads. A report will only be
      * created if there is at least one failed download excluding images
      */
-    public void updateReport(List<DownloadStatus> reportQueue, boolean showAutoDownloadReport,
+    public void updateReport(List<DownloadResult> reportQueue, boolean showAutoDownloadReport,
                              List<DownloadRequest> failedRequests) {
         // check if report should be created
         boolean createReport = false;
@@ -185,8 +185,8 @@ public class DownloadServiceNotification {
 
         // a download report is created if at least one download has failed
         // (excluding failed image downloads)
-        for (DownloadStatus status : reportQueue) {
-            if (status == null || status.isCancelled()) {
+        for (DownloadResult status : reportQueue) {
+            if (status == null) {
                 continue;
             }
             if (status.isSuccessful()) {
@@ -211,7 +211,7 @@ public class DownloadServiceNotification {
         Log.d(TAG, "Download report notification was posted");
     }
 
-    private void createAutoDownloadReportNotification(List<DownloadStatus> reportQueue) {
+    private void createAutoDownloadReportNotification(List<DownloadResult> reportQueue) {
         PendingIntent intent = getAutoDownloadReportNotificationContentIntent(context);
         String content = createAutoDownloadNotificationContent(reportQueue);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context,
@@ -228,7 +228,7 @@ public class DownloadServiceNotification {
         nm.notify(R.id.notification_auto_download_report, builder.build());
     }
 
-    private void createDownloadFailedNotification(List<DownloadStatus> reportQueue,
+    private void createDownloadFailedNotification(List<DownloadResult> reportQueue,
                                                   List<DownloadRequest> failedRequests) {
         /*Intent retryIntent = DownloadServiceInterface.get().makeDownloadIntent(context,
                 false, failedRequests.toArray(new DownloadRequest[0]));

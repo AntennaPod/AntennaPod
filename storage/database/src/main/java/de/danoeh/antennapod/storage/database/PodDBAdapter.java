@@ -35,7 +35,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.database.mapper.FeedItemFilterQuery;
 import de.danoeh.antennapod.storage.database.mapper.FeedItemSortQuery;
@@ -757,7 +757,7 @@ public class PodDBAdapter {
     /**
      * Inserts or updates a download status.
      */
-    public long setDownloadStatus(DownloadStatus status) {
+    public long setDownloadStatus(DownloadResult status) {
         ContentValues values = new ContentValues();
         values.put(KEY_FEEDFILE, status.getFeedfileId());
         values.put(KEY_FEEDFILETYPE, status.getFeedfileType());

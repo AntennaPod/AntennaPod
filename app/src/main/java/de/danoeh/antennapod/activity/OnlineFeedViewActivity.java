@@ -44,7 +44,7 @@ import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -307,10 +307,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    private void checkDownloadResult(@NonNull DownloadStatus status, String destination) {
-        if (status.isCancelled()) {
-            return;
-        }
+    private void checkDownloadResult(@NonNull DownloadResult status, String destination) {
         if (status.isSuccessful()) {
             parseFeed(destination);
         } else if (status.getReason() == DownloadError.ERROR_UNAUTHORIZED) {

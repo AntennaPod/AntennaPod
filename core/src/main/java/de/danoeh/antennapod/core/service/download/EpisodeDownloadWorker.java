@@ -11,7 +11,7 @@ import de.danoeh.antennapod.core.service.download.handler.MediaDownloadedHandler
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.model.download.DownloadError;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
@@ -109,17 +109,7 @@ public class EpisodeDownloadWorker extends Worker {
             return Result.failure();
         }
 
-        DownloadStatus status = downloader.getResult();
-
-        if (status.isSuccessful()) {
-            MediaDownloadedHandler handler = new MediaDownloadedHandler(
-                    getApplicationContext(), downloader.getResult(), request);
-            handler.run();
-            DBWriter.addDownloadStatus(handler.getUpdatedStatus());
-            return Result.success();
-        }
-
-        if (status.isCancelled()) {
+        if (downloader.cancelled) {
             if (getInputData().getBoolean(DownloadServiceInterface.WORK_DATA_WAS_QUEUED, false)) {
                 try {
                     DBWriter.removeQueueItem(getApplicationContext(), false, media.getItem()).get();
@@ -127,6 +117,15 @@ public class EpisodeDownloadWorker extends Worker {
                     e.printStackTrace();
                 }
             }
+            return Result.success();
+        }
+
+        DownloadResult status = downloader.getResult();
+        if (status.isSuccessful()) {
+            MediaDownloadedHandler handler = new MediaDownloadedHandler(
+                    getApplicationContext(), downloader.getResult(), request);
+            handler.run();
+            DBWriter.addDownloadStatus(handler.getUpdatedStatus());
             return Result.success();
         }
 

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.util.DownloadErrorLabel;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -18,7 +18,7 @@ import org.greenrobot.eventbus.EventBus;
 
 public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
 
-    public DownloadLogDetailsDialog(@NonNull Context context, DownloadStatus status) {
+    public DownloadLogDetailsDialog(@NonNull Context context, DownloadResult status) {
         super(context);
 
         String url = "unknown";

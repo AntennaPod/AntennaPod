@@ -13,7 +13,7 @@ import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.download.DownloadError;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -251,7 +251,7 @@ public final class DBTasks {
                 FeedItem possibleDuplicate = searchFeedItemGuessDuplicate(newFeed.getItems(), item);
                 if (!newFeed.isLocalFeed() && possibleDuplicate != null && item != possibleDuplicate) {
                     // Canonical episode is the first one returned (usually oldest)
-                    DBWriter.addDownloadStatus(new DownloadStatus(savedFeed,
+                    DBWriter.addDownloadStatus(new DownloadResult(savedFeed,
                             item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
                             "The podcast host appears to have added the same episode twice. "
                                     + "AntennaPod still refreshed the feed and attempted to repair it."
@@ -266,7 +266,7 @@ public final class DBTasks {
                     oldItem = searchFeedItemGuessDuplicate(savedFeed.getItems(), item);
                     if (oldItem != null) {
                         Log.d(TAG, "Repaired duplicate: " + oldItem + ", " + item);
-                        DBWriter.addDownloadStatus(new DownloadStatus(savedFeed,
+                        DBWriter.addDownloadStatus(new DownloadResult(savedFeed,
                                 item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
                                 "The podcast host changed the ID of an existing episode instead of just "
                                         + "updating the episode itself. AntennaPod still refreshed the feed and "
