@@ -54,6 +54,7 @@ import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SearchFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.fragment.TransitionEffect;
+import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import de.danoeh.antennapod.preferences.PreferenceUpgrader;
@@ -181,8 +182,7 @@ public class MainActivity extends CastEnabledActivity {
         WorkManager.getInstance(this)
                 .getWorkInfosByTagLiveData(DownloadServiceInterface.WORK_TAG)
                 .observe(this, workInfos -> {
-                    Map<String, Integer> updatedEpisodes = new HashMap<>();
-                    Map<String, Integer> downloadingEpisodes = new HashMap<>();
+                    Map<String, DownloadStatus> updatedEpisodes = new HashMap<>();
                     for (WorkInfo workInfo : workInfos) {
                         String downloadUrl = null;
                         for (String tag : workInfo.getTags()) {
@@ -193,15 +193,23 @@ public class MainActivity extends CastEnabledActivity {
                         if (downloadUrl == null) {
                             continue;
                         }
-                        int progress = workInfo.getProgress().getInt(DownloadServiceInterface.WORK_DATA_PROGRESS, -1);
-                        if (workInfo.getState() == WorkInfo.State.RUNNING
-                                || workInfo.getState() == WorkInfo.State.ENQUEUED
+                        int status;
+                        if (workInfo.getState() == WorkInfo.State.RUNNING) {
+                            status = DownloadStatus.STATE_RUNNING;
+                        } else if (workInfo.getState() == WorkInfo.State.ENQUEUED
                                 || workInfo.getState() == WorkInfo.State.BLOCKED) {
-                            downloadingEpisodes.put(downloadUrl, progress);
+                            status = DownloadStatus.STATE_QUEUED;
+                        } else {
+                            status = DownloadStatus.STATE_COMPLETED;
                         }
-                        updatedEpisodes.put(downloadUrl, progress);
+                        int progress = workInfo.getProgress().getInt(DownloadServiceInterface.WORK_DATA_PROGRESS, -1);
+                        if (progress == -1 && status != DownloadStatus.STATE_COMPLETED) {
+                            status = DownloadStatus.STATE_QUEUED;
+                            progress = 0;
+                        }
+                        updatedEpisodes.put(downloadUrl, new DownloadStatus(status, progress));
                     }
-                    DownloadServiceInterface.get().setCurrentDownloads(downloadingEpisodes);
+                    DownloadServiceInterface.get().setCurrentDownloads(updatedEpisodes);
                     EventBus.getDefault().postSticky(new EpisodeDownloadEvent(updatedEpisodes));
                 });
     }

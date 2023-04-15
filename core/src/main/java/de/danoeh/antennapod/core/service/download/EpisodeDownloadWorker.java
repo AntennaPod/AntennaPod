@@ -133,7 +133,11 @@ public class EpisodeDownloadWorker extends Worker {
                 && Integer.parseInt(status.getReasonDetailed()) == 416) {
             Log.d(TAG, "Requested invalid range, restarting download from the beginning");
             FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
-            return Result.retry();
+            if (getRunAttemptCount() < 3) {
+                return Result.retry();
+            } else {
+                return Result.failure();
+            }
         }
 
         Log.e(TAG, "Download failed");

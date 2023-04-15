@@ -87,10 +87,14 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
             if (DownloadServiceInterface.get().isDownloadingEpisode(media.getDownload_url())) {
                 float percent = 0.01f * DownloadServiceInterface.get().getProgress(media.getDownload_url());
                 circularProgressBar.setPercentage(Math.max(percent, 0.01f), item);
+                circularProgressBar.setIndeterminate(
+                        DownloadServiceInterface.get().isEpisodeQueued(media.getDownload_url()));
             } else if (media.isDownloaded()) {
                 circularProgressBar.setPercentage(1, item); // Do not animate 100% -> 0%
+                circularProgressBar.setIndeterminate(false);
             } else {
                 circularProgressBar.setPercentage(0, item); // Animate X% -> 0%
+                circularProgressBar.setIndeterminate(false);
             }
         }
     }
@@ -105,6 +109,7 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
         date.setText("███");
         secondaryActionIcon.setImageDrawable(null);
         circularProgressBar.setPercentage(0, null);
+        circularProgressBar.setIndeterminate(false);
         setProgressBar(true, 50);
     }
 

@@ -116,6 +116,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
             bind(item.getMedia());
         } else {
             secondaryActionProgress.setPercentage(0, item);
+            secondaryActionProgress.setIndeterminate(false);
             isVideo.setVisibility(View.GONE);
             progressBar.setVisibility(View.GONE);
             duration.setVisibility(View.GONE);
@@ -147,10 +148,14 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         if (DownloadServiceInterface.get().isDownloadingEpisode(media.getDownload_url())) {
             float percent = 0.01f * DownloadServiceInterface.get().getProgress(media.getDownload_url());
             secondaryActionProgress.setPercentage(Math.max(percent, 0.01f), item);
+            secondaryActionProgress.setIndeterminate(
+                    DownloadServiceInterface.get().isEpisodeQueued(media.getDownload_url()));
         } else if (media.isDownloaded()) {
             secondaryActionProgress.setPercentage(1, item); // Do not animate 100% -> 0%
+            secondaryActionProgress.setIndeterminate(false);
         } else {
             secondaryActionProgress.setPercentage(0, item); // Animate X% -> 0%
+            secondaryActionProgress.setIndeterminate(false);
         }
 
         duration.setText(Converter.getDurationStringLong(media.getDuration()));
@@ -208,6 +213,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         pubDate.setText("████");
         duration.setText("████");
         secondaryActionProgress.setPercentage(0, null);
+        secondaryActionProgress.setIndeterminate(false);
         progressBar.setVisibility(View.GONE);
         position.setVisibility(View.GONE);
         dragHandle.setVisibility(View.GONE);

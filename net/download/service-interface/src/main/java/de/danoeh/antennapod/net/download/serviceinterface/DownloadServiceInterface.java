@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.net.download.serviceinterface;
 
 import android.content.Context;
+import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.model.feed.FeedItem;
 
 import java.util.HashMap;
@@ -13,7 +14,7 @@ public abstract class DownloadServiceInterface {
     public static final String WORK_DATA_MEDIA_ID = "media_id";
     public static final String WORK_DATA_WAS_QUEUED = "was_queued";
     private static DownloadServiceInterface impl;
-    private Map<String, Integer> currentDownloads = new HashMap<>();
+    private Map<String, DownloadStatus> currentDownloads = new HashMap<>();
 
     public static DownloadServiceInterface get() {
         return impl;
@@ -23,7 +24,7 @@ public abstract class DownloadServiceInterface {
         DownloadServiceInterface.impl = impl;
     }
 
-    public void setCurrentDownloads(Map<String, Integer> currentDownloads) {
+    public void setCurrentDownloads(Map<String, DownloadStatus> currentDownloads) {
         this.currentDownloads = currentDownloads;
     }
 
@@ -34,10 +35,16 @@ public abstract class DownloadServiceInterface {
     public abstract void cancelAll(Context context);
 
     public boolean isDownloadingEpisode(String url) {
-        return currentDownloads.containsKey(url);
+        return currentDownloads.containsKey(url)
+                && currentDownloads.get(url).getState() != DownloadStatus.STATE_COMPLETED;
+    }
+
+    public boolean isEpisodeQueued(String url) {
+        return currentDownloads.containsKey(url)
+                && currentDownloads.get(url).getState() == DownloadStatus.STATE_QUEUED;
     }
 
     public int getProgress(String url) {
-        return isDownloadingEpisode(url) ? currentDownloads.get(url) : -1;
+        return isDownloadingEpisode(url) ? currentDownloads.get(url).getProgress() : -1;
     }
 }
