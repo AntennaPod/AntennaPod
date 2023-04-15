@@ -22,10 +22,10 @@
             android:icon="@drawable/ic_play_24dp" />
 
     <Preference
-            android:key="prefScreenNetwork"
-            android:title="@string/network_pref"
-            android:summary="@string/network_pref_sum"
-            android:icon="@drawable/ic_network" />
+            android:key="prefScreenDownloads"
+            android:title="@string/downloads_pref"
+            android:summary="@string/downloads_pref_sum"
+            android:icon="@drawable/ic_download_black" />
 
     <Preference
             android:key="prefScreenSynchronization"
@@ -34,21 +34,15 @@
             android:icon="@drawable/ic_cloud" />
 
     <Preference
-            android:key="prefScreenStorage"
-            android:title="@string/storage_pref"
-            android:summary="@string/storage_sum"
+            android:key="prefScreenImportExport"
+            android:title="@string/import_export_pref"
+            android:summary="@string/import_export_summary"
             android:icon="@drawable/ic_storage" />
 
     <Preference
             android:key="notifications"
             android:title="@string/notification_pref_fragment"
             android:icon="@drawable/ic_notifications"/>
-
-    <Preference
-            android:key="statistics"
-            android:title="@string/statistics_label"
-            android:summary="@string/statistics_moved"
-            android:icon="@drawable/ic_chart_box"/>
 
     <PreferenceCategory
             android:key="project"
