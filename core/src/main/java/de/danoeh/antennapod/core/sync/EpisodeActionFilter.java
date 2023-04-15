@@ -70,7 +70,8 @@ public class EpisodeActionFilter {
                                                             EpisodeAction secondAction) {
         return secondAction != null
                 && secondAction.getTimestamp() != null
-                && secondAction.getTimestamp().after(firstAction.getTimestamp());
+                && (firstAction.getTimestamp() == null
+                        || secondAction.getTimestamp().after(firstAction.getTimestamp()));
     }
 
 }
