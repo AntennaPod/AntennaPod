@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.ui.home.sections;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.ui.home.HomeSection;
+import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -79,7 +82,10 @@ public class SubscriptionsSection extends HomeSection {
         if (disposable != null) {
             disposable.dispose();
         }
-        disposable = Observable.fromCallable(() -> DBReader.getStatistics(true, 0, Long.MAX_VALUE).feedTime)
+        SharedPreferences prefs = getContext().getSharedPreferences(StatisticsFragment.PREF_NAME, Context.MODE_PRIVATE);
+        boolean includeMarkedAsPlayed = prefs.getBoolean(StatisticsFragment.PREF_INCLUDE_MARKED_PLAYED, false);
+        disposable = Observable.fromCallable(() ->
+                        DBReader.getStatistics(includeMarkedAsPlayed, 0, Long.MAX_VALUE).feedTime)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(statisticsData -> {
