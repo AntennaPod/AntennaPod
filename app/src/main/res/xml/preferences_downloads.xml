@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:numberpicker="http://schemas.android.com/apk/de.danoeh.antennapod"
         xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch">
 
     <Preference
@@ -56,12 +55,6 @@
                 android:key="prefMobileUpdateTypes"
                 android:summary="@string/pref_mobileUpdate_sum"
                 android:title="@string/pref_mobileUpdate_title"/>
-        <de.danoeh.antennapod.preferences.NumberPickerPreference
-                android:defaultValue="4"
-                numberpicker:minValue="1"
-                numberpicker:maxValue="50"
-                android:key="prefParallelDownloads"
-                android:title="@string/pref_parallel_downloads_title"/>
         <Preference
                 android:key="prefProxy"
                 android:summary="@string/pref_proxy_sum"

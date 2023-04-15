@@ -18,7 +18,6 @@ import androidx.test.espresso.util.HumanReadables;
 import androidx.test.espresso.util.TreeIterables;
 import android.view.View;
 
-import androidx.work.WorkManager;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import junit.framework.AssertionFailedError;
 

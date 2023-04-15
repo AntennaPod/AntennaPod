@@ -90,7 +90,6 @@ public class UserPreferences {
     public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
     private static final String PREF_MOBILE_UPDATE = "prefMobileUpdateTypes";
     public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
-    public static final String PREF_PARALLEL_DOWNLOADS = "prefParallelDownloads";
     public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
     public static final String PREF_ENABLE_AUTODL = "prefEnableAutoDl";
     public static final String PREF_ENABLE_AUTODL_ON_BATTERY = "prefEnableAutoDownloadOnBattery";
@@ -523,10 +522,6 @@ public class UserPreferences {
 
     public static void setAllowMobileSync(boolean allow) {
         setAllowMobileFor("sync", allow);
-    }
-
-    public static int getParallelDownloads() {
-        return Integer.parseInt(prefs.getString(PREF_PARALLEL_DOWNLOADS, "4"));
     }
 
     /**

@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.fragment.preferences;
 
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -43,19 +42,12 @@ public class DownloadsPreferencesFragment extends PreferenceFragmentCompat
     @Override
     public void onResume() {
         super.onResume();
-        setParallelDownloadsText(UserPreferences.getParallelDownloads());
         setDataFolderText();
     }
 
     private void setupNetworkScreen() {
         findPreference(PREF_SCREEN_AUTODL).setOnPreferenceClickListener(preference -> {
             ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_autodownload);
-            return true;
-        });
-        findPreference(UserPreferences.PREF_PARALLEL_DOWNLOADS).setOnPreferenceChangeListener((preference, o) -> {
-            if (o instanceof Integer) {
-                setParallelDownloadsText((Integer) o);
-            }
             return true;
         });
         // validate and set correct value: number of downloads between 1 and 50 (inclusive)
@@ -71,12 +63,6 @@ public class DownloadsPreferencesFragment extends PreferenceFragmentCompat
             });
             return true;
         });
-    }
-
-    private void setParallelDownloadsText(int downloads) {
-        final Resources res = getActivity().getResources();
-        String s = res.getString(R.string.parallel_downloads, downloads);
-        findPreference(UserPreferences.PREF_PARALLEL_DOWNLOADS).setSummary(s);
     }
 
     private void setDataFolderText() {
