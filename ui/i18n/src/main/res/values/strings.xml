@@ -591,6 +591,7 @@
     <string name="set_sleeptimer_label">Set sleep timer</string>
     <string name="disable_sleeptimer_label">Disable sleep timer</string>
     <string name="extend_sleep_timer_label">+%d min</string>
+    <string name="sleep_timer_always">Always</string>
     <string name="sleep_timer_label">Sleep timer</string>
     <string name="time_dialog_invalid_input">Invalid input, time has to be an integer</string>
     <string name="shake_to_reset_label">Shake to reset</string>
@@ -610,7 +611,9 @@
         <item quantity="one">1 hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
-    <string name="auto_enable_label">Auto-enable</string>
+    <string name="auto_enable_label">Automatically activate the sleep timer when pressing play</string>
+    <string name="auto_enable_label_with_times">Automatically activate the sleep timer when pressing play between %s and %s</string>
+    <string name="auto_enable_change_times">Change times</string>
     <string name="sleep_timer_enabled_label">Sleep timer enabled</string>
 
     <!-- Synchronisation -->
