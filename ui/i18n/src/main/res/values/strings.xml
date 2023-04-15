@@ -370,8 +370,6 @@
     <string name="no_subscriptions_label">To subscribe to a podcast, press the plus icon below.</string>
 
     <!-- Preferences -->
-    <string name="storage_pref">Storage</string>
-    <string name="storage_sum">Episode auto delete, Import, Export</string>
     <string name="project_pref">Project</string>
     <string name="synchronization_pref">Synchronization</string>
     <string name="synchronization_sum">Synchronize with other devices</string>
@@ -411,8 +409,8 @@
     <string name="pref_favorite_keeps_episodes_title">Keep Favorite Episodes</string>
     <string name="playback_pref">Playback</string>
     <string name="playback_pref_sum">Headphone controls, Skip intervals, Queue</string>
-    <string name="network_pref">Network</string>
-    <string name="network_pref_sum">Update interval, Download controls, Mobile data</string>
+    <string name="downloads_pref">Downloads</string>
+    <string name="downloads_pref_sum">Update interval, Mobile data, Automatic download, Automatic deletion</string>
     <string name="feed_refresh_title">Refresh podcasts</string>
     <string name="feed_refresh_sum">Specify an interval at which AntennaPod looks for new episodes automatically</string>
     <string name="feed_refresh_never">Never</string>
