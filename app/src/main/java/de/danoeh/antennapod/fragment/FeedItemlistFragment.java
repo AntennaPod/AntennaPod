@@ -330,6 +330,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EpisodeDownloadEvent event) {
+        if (feed == null) {
+            return;
+        }
         for (String downloadUrl : event.getUrls()) {
             int pos = FeedItemUtil.indexOfItemWithDownloadUrl(feed.getItems(), downloadUrl);
             if (pos >= 0) {

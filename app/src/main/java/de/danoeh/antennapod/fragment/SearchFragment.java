@@ -295,6 +295,9 @@ public class SearchFragment extends Fragment {
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EpisodeDownloadEvent event) {
+        if (results == null) {
+            return;
+        }
         for (String downloadUrl : event.getUrls()) {
             int pos = FeedItemUtil.indexOfItemWithDownloadUrl(results, downloadUrl);
             if (pos >= 0) {

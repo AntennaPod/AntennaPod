@@ -32,6 +32,7 @@ import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class QueueSection extends HomeSection {
@@ -39,7 +40,7 @@ public class QueueSection extends HomeSection {
     private static final int NUM_EPISODES = 8;
     private HorizontalItemListAdapter listAdapter;
     private Disposable disposable;
-    private List<FeedItem> queue;
+    private List<FeedItem> queue = new ArrayList<>();
 
     @Nullable
     @Override

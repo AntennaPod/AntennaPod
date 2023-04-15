@@ -31,6 +31,7 @@ import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -40,7 +41,7 @@ public class EpisodesSurpriseSection extends HomeSection {
     private static int seed = 0;
     private HorizontalItemListAdapter listAdapter;
     private Disposable disposable;
-    private List<FeedItem> episodes;
+    private List<FeedItem> episodes = new ArrayList<>();
 
     @Nullable
     @Override
@@ -102,9 +103,6 @@ public class EpisodesSurpriseSection extends HomeSection {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if (episodes == null) {
-            return;
-        }
         for (int i = 0, size = event.items.size(); i < size; i++) {
             FeedItem item = event.items.get(i);
             int pos = FeedItemUtil.indexOfItemWithId(episodes, item.getId());

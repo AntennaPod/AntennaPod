@@ -34,6 +34,7 @@ import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -41,7 +42,7 @@ public class InboxSection extends HomeSection {
     public static final String TAG = "InboxSection";
     private static final int NUM_EPISODES = 2;
     private EpisodeItemListAdapter adapter;
-    private List<FeedItem> items;
+    private List<FeedItem> items = new ArrayList<>();
     private Disposable disposable;
 
     @Nullable

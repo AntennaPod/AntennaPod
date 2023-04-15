@@ -20,6 +20,7 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.service.download.NewEpisodesNotification;
 import de.danoeh.antennapod.core.service.download.handler.FeedSyncTask;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
@@ -80,6 +81,7 @@ public class FeedUpdateWorker extends Worker {
             refreshFeeds(toUpdate, true);
         }
         notificationManager.cancel(R.id.notification_updating_feeds);
+        DBTasks.autodownloadUndownloadedItems(getApplicationContext());
         return Result.success();
     }
 

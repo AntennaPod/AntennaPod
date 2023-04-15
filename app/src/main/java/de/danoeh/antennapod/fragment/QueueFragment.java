@@ -186,6 +186,9 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EpisodeDownloadEvent event) {
+        if (queue == null) {
+            return;
+        }
         for (String downloadUrl : event.getUrls()) {
             int pos = FeedItemUtil.indexOfItemWithDownloadUrl(queue, downloadUrl);
             if (pos >= 0) {
