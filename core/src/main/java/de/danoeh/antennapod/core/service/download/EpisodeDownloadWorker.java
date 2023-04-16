@@ -1,8 +1,13 @@
 package de.danoeh.antennapod.core.service.download;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
@@ -11,6 +16,7 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.service.download.handler.MediaDownloadedHandler;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadResult;
@@ -110,6 +116,11 @@ public class EpisodeDownloadWorker extends Worker {
             downloader.call();
         } catch (Exception e) {
             DBWriter.addDownloadStatus(downloader.getResult());
+            if (EventBus.getDefault().hasSubscriberForEvent(MessageEvent.class)) {
+                sendMessage(request.getTitle(), false);
+            } else {
+                sendErrorNotification();
+            }
             return Result.failure();
         }
 
@@ -137,18 +148,25 @@ public class EpisodeDownloadWorker extends Worker {
                 && Integer.parseInt(status.getReasonDetailed()) == 416) {
             Log.d(TAG, "Requested invalid range, restarting download from the beginning");
             FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
-            sendMessage(request.getTitle());
+            sendMessage(request.getTitle(), true);
             return retry3times();
         }
 
         Log.e(TAG, "Download failed");
         DBWriter.addDownloadStatus(status);
         if (status.getReason() == DownloadError.ERROR_FORBIDDEN
+                || status.getReason() == DownloadError.ERROR_NOT_FOUND
                 || status.getReason() == DownloadError.ERROR_UNAUTHORIZED
                 || status.getReason() == DownloadError.ERROR_IO_BLOCKED) {
-            return Result.failure(); // Fail fast, these are probably unrecoverable
+            // Fail fast, these are probably unrecoverable
+            if (EventBus.getDefault().hasSubscriberForEvent(MessageEvent.class)) {
+                sendMessage(request.getTitle(), false);
+            } else {
+                sendErrorNotification();
+            }
+            return Result.failure();
         }
-        sendMessage(request.getTitle());
+        sendMessage(request.getTitle(), true);
         return retry3times();
     }
 
@@ -156,19 +174,40 @@ public class EpisodeDownloadWorker extends Worker {
         if (getRunAttemptCount() < 2) {
             return Result.retry();
         } else {
+            sendErrorNotification();
             return Result.failure();
         }
     }
 
-    private void sendMessage(String episodeTitle) {
+    private void sendMessage(String episodeTitle, boolean retrying) {
         if (episodeTitle.length() > 20) {
             episodeTitle = episodeTitle.substring(0, 19) + "…";
         }
         EventBus.getDefault().post(new MessageEvent(
-                    getApplicationContext().getString(R.string.download_error_retrying, episodeTitle), (ctx) ->
-                    new MainActivityStarter(ctx)
-                        .withFragmentLoaded("DownloadsFragment")
-                        .withFragmentArgs("show_logs", true)
-                        .start(), getApplicationContext().getString(R.string.download_error_details)));
+                    getApplicationContext().getString(
+                            retrying ? R.string.download_error_retrying : R.string.download_error_not_retrying,
+                            episodeTitle), (ctx) -> new MainActivityStarter(ctx).withDownloadLogsOpen().start(),
+                getApplicationContext().getString(R.string.download_error_details)));
+    }
+
+    private PendingIntent getNotificationContentIntent(Context context) {
+        Intent intent = new MainActivityStarter(context).withDownloadLogsOpen().getIntent();
+        return PendingIntent.getActivity(context, R.id.pending_intent_download_service_report, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+    }
+
+    private void sendErrorNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(),
+                NotificationUtils.CHANNEL_ID_DOWNLOAD_ERROR);
+        builder.setTicker(getApplicationContext().getString(R.string.download_report_title))
+                .setContentTitle(getApplicationContext().getString(R.string.download_report_title))
+                .setContentText(getApplicationContext().getString(R.string.download_error_tap_for_details))
+                .setSmallIcon(R.drawable.ic_notification_sync_error)
+                .setContentIntent(getNotificationContentIntent(getApplicationContext()))
+                .setAutoCancel(true);
+        builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+        NotificationManager nm = (NotificationManager) getApplicationContext()
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.notify(R.id.notification_download_report, builder.build());
     }
 }

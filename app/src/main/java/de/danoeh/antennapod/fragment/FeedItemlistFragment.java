@@ -487,9 +487,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 .subscribe(
                     downloadStatus -> new DownloadLogDetailsDialog(getContext(), downloadStatus).show(),
                     error -> error.printStackTrace(),
-                    () -> {
-                        ((MainActivity) getActivity()).loadChildFragment(new DownloadLogFragment());
-                    });
+                    () -> new DownloadLogFragment().show(getChildFragmentManager(), null));
     }
 
     private void showFeedInfo() {

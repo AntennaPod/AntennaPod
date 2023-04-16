@@ -263,7 +263,8 @@
     <string name="download_running">Download running</string>
     <string name="download_error_details">Details</string>
     <string name="download_log_details_message">%1$s \n\nTechnical reason: \n%2$s \n\nFile URL:\n%3$s</string>
-    <string name="download_error_retrying">Download of \"%1$s\" failed. Retrying later.</string>
+    <string name="download_error_retrying">Download of \"%1$s\" failed. Will be retried later.</string>
+    <string name="download_error_not_retrying">Download of \"%1$s\" failed.</string>
     <string name="download_error_tap_for_details">Tap to view details.</string>
     <string name="download_error_device_not_found">Storage Device not found</string>
     <string name="download_error_insufficient_space">There is not enough space left on your device.</string>
@@ -291,8 +292,6 @@
         <item quantity="one">%d download left</item>
         <item quantity="other">%d downloads left</item>
     </plurals>
-    <string name="completing">Completing…</string>
-    <string name="download_notification_title">Downloading podcast data</string>
     <string name="download_notification_title_feeds">Refreshing podcasts</string>
     <string name="download_notification_title_episodes">Downloading episodes</string>
     <string name="download_log_title_unknown">Unknown Title</string>
@@ -301,7 +300,6 @@
     <string name="null_value_podcast_error">No podcast was provided that could be shown.</string>
     <string name="no_feed_url_podcast_found_by_search">The suggested podcast did not have an RSS link, AntennaPod found a podcast that could match</string>
     <string name="authentication_notification_title">Authentication required</string>
-    <string name="authentication_notification_msg">The resource you requested requires a username and a password</string>
     <string name="confirm_mobile_download_dialog_title">Confirm Mobile Download</string>
     <string name="confirm_mobile_download_dialog_message">Downloading over mobile data connection is disabled in the settings.</string>
     <string name="confirm_mobile_download_dialog_download_later">Download when Wi-Fi is available</string>

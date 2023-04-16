@@ -267,7 +267,8 @@ public class HttpDownloader extends Downloader {
         } else if (response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
             error = DownloadError.ERROR_FORBIDDEN;
             details = String.valueOf(response.code());
-        } else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND) {
+        } else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND
+                || response.code() == HttpURLConnection.HTTP_GONE) {
             error = DownloadError.ERROR_NOT_FOUND;
             details = String.valueOf(response.code());
         } else {
