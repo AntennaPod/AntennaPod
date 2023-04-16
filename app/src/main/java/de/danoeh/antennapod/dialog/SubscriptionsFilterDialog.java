@@ -57,6 +57,10 @@ public class SubscriptionsFilterDialog {
             }
         }
 
+        builder.setNeutralButton(R.string.reset_label, (dialog, which) -> {
+            filterValues.clear();
+            updateFilter(filterValues);
+        });
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
             filterValues.clear();
             for (int i = 0; i < rows.getChildCount(); i++) {

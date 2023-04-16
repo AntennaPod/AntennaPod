@@ -101,6 +101,7 @@
     <string name="removed_history_label">Removed from history</string>
 
     <!-- Other -->
+    <string name="reset_label">Reset</string>
     <string name="confirm_label">Confirm</string>
     <string name="cancel_label">Cancel</string>
     <string name="yes">Yes</string>
