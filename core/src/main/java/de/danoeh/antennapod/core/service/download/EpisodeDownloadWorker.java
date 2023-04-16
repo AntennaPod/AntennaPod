@@ -29,10 +29,15 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class EpisodeDownloadWorker extends Worker {
     private static final String TAG = "EpisodeDownloadWorker";
+    private static final Map<String, Integer> notificationProgress = new HashMap<>();
+
     private Downloader downloader = null;
 
     public EpisodeDownloadWorker(@NonNull Context context, @NonNull WorkerParameters params) {
@@ -56,11 +61,13 @@ public class EpisodeDownloadWorker extends Worker {
                 while (!isInterrupted()) {
                     try {
                         Thread.sleep(1000);
+                        notificationProgress.put(media.getEpisodeTitle(), request.getProgressPercent());
                         setProgressAsync(
                                 new Data.Builder()
                                     .putInt(DownloadServiceInterface.WORK_DATA_PROGRESS, request.getProgressPercent())
                                     .build())
                                 .get();
+                        sendProgressNotification();
                     } catch (InterruptedException | ExecutionException e) {
                         return;
                     }
@@ -74,6 +81,12 @@ public class EpisodeDownloadWorker extends Worker {
             progressUpdaterThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+        notificationProgress.remove(media.getEpisodeTitle());
+        if (notificationProgress.isEmpty()) {
+            NotificationManager nm = (NotificationManager) getApplicationContext()
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+            nm.cancel(R.id.notification_downloading);
         }
         Log.d(TAG, "Worker for " + media.getDownload_url() + " returned.");
         return result;
@@ -190,9 +203,15 @@ public class EpisodeDownloadWorker extends Worker {
                 getApplicationContext().getString(R.string.download_error_details)));
     }
 
-    private PendingIntent getNotificationContentIntent(Context context) {
+    private PendingIntent getDownloadLogsIntent(Context context) {
         Intent intent = new MainActivityStarter(context).withDownloadLogsOpen().getIntent();
         return PendingIntent.getActivity(context, R.id.pending_intent_download_service_report, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+    }
+
+    private PendingIntent getDownloadsIntent(Context context) {
+        Intent intent = new MainActivityStarter(context).withFragmentLoaded("DownloadsFragment").getIntent();
+        return PendingIntent.getActivity(context, R.id.pending_intent_download_service_notification, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
     }
 
@@ -203,11 +222,44 @@ public class EpisodeDownloadWorker extends Worker {
                 .setContentTitle(getApplicationContext().getString(R.string.download_report_title))
                 .setContentText(getApplicationContext().getString(R.string.download_error_tap_for_details))
                 .setSmallIcon(R.drawable.ic_notification_sync_error)
-                .setContentIntent(getNotificationContentIntent(getApplicationContext()))
+                .setContentIntent(getDownloadLogsIntent(getApplicationContext()))
                 .setAutoCancel(true);
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         NotificationManager nm = (NotificationManager) getApplicationContext()
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(R.id.notification_download_report, builder.build());
+    }
+
+    private void sendProgressNotification() {
+        StringBuilder bigTextB = new StringBuilder();
+        Map<String, Integer> progressCopy = new HashMap<>(notificationProgress);
+        for (Map.Entry<String, Integer> entry : progressCopy.entrySet()) {
+            bigTextB.append(String.format(Locale.getDefault(), "%s (%d%%)\n", entry.getKey(), entry.getValue()));
+        }
+        String bigText = bigTextB.toString().trim();
+        String contentText;
+        if (notificationProgress.size() == 1) {
+            contentText = bigText;
+        } else {
+            contentText = getApplicationContext().getResources().getQuantityString(R.plurals.downloads_left,
+                    notificationProgress.size(), notificationProgress.size());
+        }
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(),
+                NotificationUtils.CHANNEL_ID_DOWNLOADING);
+        builder.setTicker(getApplicationContext().getString(R.string.download_notification_title_episodes))
+                .setContentTitle(getApplicationContext().getString(R.string.download_notification_title_episodes))
+                .setContentText(contentText)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(bigText))
+                .setContentIntent(getDownloadsIntent(getApplicationContext()))
+                .setAutoCancel(false)
+                .setOngoing(true)
+                .setWhen(0)
+                .setOnlyAlertOnce(true)
+                .setShowWhen(false)
+                .setSmallIcon(R.drawable.ic_notification_sync)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+        NotificationManager nm = (NotificationManager) getApplicationContext()
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.notify(R.id.notification_downloading, builder.build());
     }
 }
