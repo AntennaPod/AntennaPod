@@ -801,7 +801,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                             && SleepTimerPreferences.autoEnable() && !sleepTimerActive()) {
                         setSleepTimer(SleepTimerPreferences.timerMillis());
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label),
-                                PlaybackService.this::disableSleepTimer));
+                                (ctx) -> disableSleepTimer(), getString(R.string.undo)));
                     }
                     loadQueueForMediaSession();
                     break;

@@ -30,6 +30,9 @@ public class MainActivityStarter {
     }
 
     public Intent getIntent() {
+        if (fragmentArgs != null) {
+            intent.putExtra(EXTRA_FRAGMENT_ARGS, fragmentArgs);
+        }
         return intent;
     }
 

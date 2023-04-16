@@ -7,15 +7,19 @@ import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 import de.danoeh.antennapod.core.ClientConfigurator;
+import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.service.download.handler.MediaDownloadedHandler;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import org.apache.commons.io.FileUtils;
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
@@ -133,19 +137,38 @@ public class EpisodeDownloadWorker extends Worker {
                 && Integer.parseInt(status.getReasonDetailed()) == 416) {
             Log.d(TAG, "Requested invalid range, restarting download from the beginning");
             FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
+            sendMessage(request.getTitle());
             return retry3times();
         }
 
         Log.e(TAG, "Download failed");
         DBWriter.addDownloadStatus(status);
+        if (status.getReason() == DownloadError.ERROR_FORBIDDEN
+                || status.getReason() == DownloadError.ERROR_UNAUTHORIZED
+                || status.getReason() == DownloadError.ERROR_IO_BLOCKED) {
+            return Result.failure(); // Fail fast, these are probably unrecoverable
+        }
+        sendMessage(request.getTitle());
         return retry3times();
     }
 
     private Result retry3times() {
-        if (getRunAttemptCount() < 3) {
+        if (getRunAttemptCount() < 2) {
             return Result.retry();
         } else {
             return Result.failure();
         }
+    }
+
+    private void sendMessage(String episodeTitle) {
+        if (episodeTitle.length() > 20) {
+            episodeTitle = episodeTitle.substring(0, 19) + "…";
+        }
+        EventBus.getDefault().post(new MessageEvent(
+                    getApplicationContext().getString(R.string.download_error_retrying, episodeTitle), (ctx) ->
+                    new MainActivityStarter(ctx)
+                        .withFragmentLoaded("DownloadsFragment")
+                        .withFragmentArgs("show_logs", true)
+                        .start(), getApplicationContext().getString(R.string.download_error_details)));
     }
 }

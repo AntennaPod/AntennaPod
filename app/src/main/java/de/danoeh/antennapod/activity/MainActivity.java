@@ -566,9 +566,9 @@ public class MainActivity extends CastEnabledActivity {
     public void onEventMainThread(MessageEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
 
-        Snackbar snackbar = showSnackbarAbovePlayer(event.message, Snackbar.LENGTH_SHORT);
+        Snackbar snackbar = showSnackbarAbovePlayer(event.message, Snackbar.LENGTH_LONG);
         if (event.action != null) {
-            snackbar.setAction(getString(R.string.undo), v -> event.action.run());
+            snackbar.setAction(event.actionText, v -> event.action.accept(this));
         }
     }
 

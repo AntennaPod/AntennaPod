@@ -263,6 +263,7 @@
     <string name="download_running">Download running</string>
     <string name="download_error_details">Details</string>
     <string name="download_log_details_message">%1$s \n\nTechnical reason: \n%2$s \n\nFile URL:\n%3$s</string>
+    <string name="download_error_retrying">Download of \"%1$s\" failed. Retrying later.</string>
     <string name="download_error_tap_for_details">Tap to view details.</string>
     <string name="download_error_device_not_found">Storage Device not found</string>
     <string name="download_error_insufficient_space">There is not enough space left on your device.</string>
@@ -274,7 +275,7 @@
     <string name="download_error_not_found">The podcast host\'s server does not know where to find the file. It may have been deleted.</string>
     <string name="download_error_connection_error">Connection Error</string>
     <string name="download_error_unknown_host">Cannot find the server. Check if the address is typed correctly and if you have a working network connection.</string>
-    <string name="download_error_unauthorized">Authentication Error</string>
+    <string name="download_error_unauthorized">Authentication Error. Make sure that username and password are correct.</string>
     <string name="download_error_file_type_type">File Type Error</string>
     <string name="download_error_forbidden">The podcast host\'s server refuses to respond.</string>
     <string name="download_canceled_msg">Download canceled</string>

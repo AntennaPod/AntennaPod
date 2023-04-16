@@ -29,16 +29,14 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
             builder.putBoolean(WORK_DATA_WAS_QUEUED, true);
         }
         workRequest.setInputData(builder.build());
-        if (!ignoreConstraints) {
-            workRequest.setConstraints(getConstraints());
-        }
+        workRequest.setConstraints(getConstraints(ignoreConstraints));
         WorkManager.getInstance(context).enqueueUniqueWork(item.getMedia().getDownload_url(),
                 ExistingWorkPolicy.KEEP, workRequest.build());
     }
 
-    private static Constraints getConstraints() {
+    private static Constraints getConstraints(boolean ignoreConstraints) {
         Constraints.Builder constraints = new Constraints.Builder();
-        if (UserPreferences.isAllowMobileEpisodeDownload()) {
+        if (UserPreferences.isAllowMobileEpisodeDownload() || ignoreConstraints) {
             constraints.setRequiredNetworkType(NetworkType.CONNECTED);
         } else {
             constraints.setRequiredNetworkType(NetworkType.UNMETERED);
