@@ -182,7 +182,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         if (disposable != null) {
             disposable.dispose();
         }
-        disposable = Observable.fromCallable(() -> DBReader.getNavDrawerData().items.size())
+        disposable = Observable.fromCallable(() -> DBReader.getNavDrawerData(false).items.size())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(numSubscriptions -> {

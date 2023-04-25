@@ -369,7 +369,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
     private void loadData() {
         disposable = Observable.fromCallable(
                 () -> {
-                    NavDrawerData data = DBReader.getNavDrawerData();
+                    NavDrawerData data = DBReader.getNavDrawerData(false);
                     return new Pair<>(data, makeFlatDrawerData(data.items, 0));
                 })
                 .subscribeOn(Schedulers.io())

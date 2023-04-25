@@ -7,11 +7,19 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.SimpleChipAdapter;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -23,11 +31,6 @@ import de.danoeh.antennapod.view.ItemOffsetDecoration;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class TagSettingsDialog extends DialogFragment {
     public static final String TAG = "TagSettingsDialog";
@@ -107,7 +110,7 @@ public class TagSettingsDialog extends DialogFragment {
     private void loadTags() {
         Observable.fromCallable(
                 () -> {
-                    NavDrawerData data = DBReader.getNavDrawerData();
+                    NavDrawerData data = DBReader.getNavDrawerData(true);
                     List<NavDrawerData.DrawerItem> items = data.items;
                     List<String> folders = new ArrayList<String>();
                     for (NavDrawerData.DrawerItem item : items) {

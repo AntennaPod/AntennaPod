@@ -289,7 +289,7 @@ public class SubscriptionFragment extends Fragment
         emptyView.hide();
         disposable = Observable.fromCallable(
                 () -> {
-                    NavDrawerData data = DBReader.getNavDrawerData();
+                    NavDrawerData data = DBReader.getNavDrawerData(false);
                     List<NavDrawerData.DrawerItem> items = data.items;
                     for (NavDrawerData.DrawerItem item : items) {
                         if (item.type == NavDrawerData.DrawerItem.Type.TAG

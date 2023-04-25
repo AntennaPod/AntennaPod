@@ -142,7 +142,7 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
         }
         disposable = Observable.fromCallable(
                 () -> {
-                    NavDrawerData data = DBReader.getNavDrawerData();
+                    NavDrawerData data = DBReader.getNavDrawerData(false);
                     return getFeedItems(data.items, new ArrayList<>());
                 })
                 .subscribeOn(Schedulers.io())
