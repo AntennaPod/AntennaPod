@@ -812,7 +812,7 @@ public final class DBReader {
      * items.
      */
     @NonNull
-    public static NavDrawerData getNavDrawerData(boolean ignoreFilter) {
+    public static NavDrawerData getNavDrawerData(@Nullable SubscriptionsFilter subscriptionsFilter) {
         Log.d(TAG, "getNavDrawerData() called with: " + "");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -820,8 +820,7 @@ public final class DBReader {
         final Map<Long, Integer> feedCounters = adapter.getFeedCounters(UserPreferences.getFeedCounterSetting());
         List<Feed> feeds = getFeedList(adapter);
 
-        if (!ignoreFilter) {
-            SubscriptionsFilter subscriptionsFilter = UserPreferences.getSubscriptionsFilter();
+        if (subscriptionsFilter != null) {
             feeds = subscriptionsFilter.filter(feeds, feedCounters);
         }
 

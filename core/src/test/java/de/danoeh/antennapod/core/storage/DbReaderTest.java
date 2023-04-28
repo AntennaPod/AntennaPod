@@ -330,7 +330,7 @@ public class DbReaderTest {
             final int numFeeds = 10;
             final int numItems = 10;
             DbTestUtils.saveFeedlist(numFeeds, numItems, true);
-            NavDrawerData navDrawerData = DBReader.getNavDrawerData(false);
+            NavDrawerData navDrawerData = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter());
             assertEquals(numFeeds, navDrawerData.items.size());
             assertEquals(0, navDrawerData.numNewItems);
             assertEquals(0, navDrawerData.queueSize);
@@ -359,7 +359,7 @@ public class DbReaderTest {
 
             adapter.close();
 
-            NavDrawerData navDrawerData = DBReader.getNavDrawerData(false);
+            NavDrawerData navDrawerData = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter());
             assertEquals(numFeeds, navDrawerData.items.size());
             assertEquals(numNew, navDrawerData.numNewItems);
             assertEquals(numQueue, navDrawerData.queueSize);

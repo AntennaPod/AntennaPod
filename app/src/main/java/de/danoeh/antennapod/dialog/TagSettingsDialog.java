@@ -110,7 +110,7 @@ public class TagSettingsDialog extends DialogFragment {
     private void loadTags() {
         Observable.fromCallable(
                 () -> {
-                    NavDrawerData data = DBReader.getNavDrawerData(true);
+                    NavDrawerData data = DBReader.getNavDrawerData(null);
                     List<NavDrawerData.DrawerItem> items = data.items;
                     List<String> folders = new ArrayList<String>();
                     for (NavDrawerData.DrawerItem item : items) {
