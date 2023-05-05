@@ -410,8 +410,8 @@
   <string name="user_interface_label">Brugergrænseflade</string>
   <string name="user_interface_sum">Udseende, abonnementer, låseskærm</string>
   <string name="pref_set_theme_title">Vælg tema</string>
-  <string name="pref_tinted_theme_title">Brug farvetoner</string>
-  <string name="pref_tinted_theme_message">Giv appens farver en toning baseret på baggrundsbilledet</string>
+  <string name="pref_tinted_theme_title">Brug dynamiske farver</string>
+  <string name="pref_tinted_theme_message">Tilpas appens farver i forhold til baggrunden</string>
   <string name="pref_nav_drawer_items_title">Vælg elementer i navigationspanelet</string>
   <string name="pref_nav_drawer_items_sum">Vælg hvilke elementer, der skal vises i navigationspanelet.</string>
   <string name="pref_nav_drawer_feed_order_title">Vælg abonnementsorden</string>

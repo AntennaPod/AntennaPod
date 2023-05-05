@@ -26,6 +26,7 @@
     <string name="episode_cache_full_message">The episode cache limit has been reached. You can increase the cache size in the Settings.</string>
     <string name="years_statistics_label">Years</string>
     <string name="notification_pref_fragment">Notifications</string>
+    <string name="recently_played_episodes">Recently played episodes</string>
 
     <!-- Google Assistant -->
     <string name="app_action_not_found">\"%1$s\" not found</string>
@@ -507,6 +508,8 @@
     <string name="behavior">Behavior</string>
     <string name="pref_default_page">Default Page</string>
     <string name="pref_default_page_sum">Screen that is opened when starting AntennaPod.</string>
+    <string name="pref_back_button_opens_drawer">Back button opens drawer</string>
+    <string name="pref_back_button_opens_drawer_summary">Pressing the back button on the default page opens the navigation drawer</string>
     <string name="remember_last_page">Remember last page</string>
     <string name="pref_delete_removes_from_queue_title">Delete removes from Queue</string>
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted.</string>
@@ -660,8 +663,6 @@
     <string name="choose_data_directory_available_space">%1$s of %2$s free</string>
     <string name="pref_pausePlaybackForFocusLoss_sum">Pause playback instead of lowering volume when another app wants to play sounds</string>
     <string name="pref_pausePlaybackForFocusLoss_title">Pause for Interruptions</string>
-    <string name="pref_resumeAfterCall_sum">Resume playback after a phone call completes</string>
-    <string name="pref_resumeAfterCall_title">Resume after Call</string>
 
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>

@@ -20,7 +20,12 @@ public abstract class CastEnabledActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         canCast = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS;
         if (canCast) {
-            CastContext.getSharedInstance(this);
+            try {
+                CastContext.getSharedInstance(this);
+            } catch (Exception e) {
+                e.printStackTrace();
+                canCast = false;
+            }
         }
     }
 

@@ -425,13 +425,16 @@ public abstract class EpisodesListFragment extends Fragment
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         data -> {
+                            final boolean restoreScrollPosition = episodes.isEmpty();
                             episodes = data.first;
                             hasMoreItems = !(page == 1 && episodes.size() < EPISODES_PER_PAGE);
                             progressBar.setVisibility(View.GONE);
                             listAdapter.setDummyViews(0);
                             listAdapter.updateItems(episodes);
                             listAdapter.setTotalNumberOfItems(data.second);
-                            recyclerView.restoreScrollPosition(getPrefName());
+                            if (restoreScrollPosition) {
+                                recyclerView.restoreScrollPosition(getPrefName());
+                            }
                             updateToolbar();
                         }, error -> {
                             listAdapter.setDummyViews(0);

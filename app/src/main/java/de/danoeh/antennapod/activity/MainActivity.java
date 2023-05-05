@@ -516,7 +516,11 @@ public class MainActivity extends CastEnabledActivity {
             String toPage = UserPreferences.getDefaultPage();
             if (NavDrawerFragment.getLastNavFragment(this).equals(toPage)
                     || UserPreferences.DEFAULT_PAGE_REMEMBER.equals(toPage)) {
-                super.onBackPressed();
+                if (UserPreferences.backButtonOpensDrawer() && drawerLayout != null) {
+                    drawerLayout.openDrawer(navDrawer);
+                } else {
+                    super.onBackPressed();
+                }
             } else {
                 loadFragment(toPage, null);
             }
