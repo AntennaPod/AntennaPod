@@ -606,7 +606,6 @@
   <string name="synchronization_full_sync_title">اجبار به همگام سازی کامل</string>
   <string name="synchronization_force_sync_summary">همه اشتراک‌ها و وضعیت‌های قسمت را دوباره همگام‌سازی کنید</string>
   <string name="synchronization_logout">خروج</string>
-  <string name="synchronization_login_status"><![CDATA[به عنوان در وارد شده‌اید. پس از خروج از سیستم می توانید دوباره ارائه دهنده همگام سازی خود را انتخاب کنید]]></string>
   <string name="pref_synchronization_logout_toast">خروج موفقیت آمیز بود</string>
   <string name="gpodnetsync_error_title">خطای همگام‌سازی gpodder.net</string>
   <string name="gpodnetsync_error_descr">هنگام همگام‌سازی خطایی رخ داد:\u0020</string>
