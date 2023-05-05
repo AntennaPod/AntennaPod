@@ -16,10 +16,6 @@
         android:icon="@mipmap/ic_launcher"
         android:supportsRtl="true">
 
-        <service
-            android:name=".service.download.DownloadService"
-            android:enabled="true" />
-
         <service android:name=".service.playback.PlaybackService"
             android:label="@string/app_name"
             android:enabled="true"

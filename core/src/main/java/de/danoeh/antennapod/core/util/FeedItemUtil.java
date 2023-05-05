@@ -24,10 +24,10 @@ public class FeedItemUtil {
         return -1;
     }
 
-    public static int indexOfItemWithMediaId(List<FeedItem> items, long mediaId) {
-        for(int i=0; i < items.size(); i++) {
+    public static int indexOfItemWithDownloadUrl(List<FeedItem> items, String downloadUrl) {
+        for (int i = 0; i < items.size(); i++) {
             FeedItem item = items.get(i);
-            if(item != null && item.getMedia() != null && item.getMedia().getId() == mediaId) {
+            if (item != null && item.getMedia() != null && item.getMedia().getDownload_url().equals(downloadUrl)) {
                 return i;
             }
         }

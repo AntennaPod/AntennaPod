@@ -35,7 +35,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.database.mapper.FeedItemFilterQuery;
 import de.danoeh.antennapod.storage.database.mapper.FeedItemSortQuery;
@@ -757,7 +757,7 @@ public class PodDBAdapter {
     /**
      * Inserts or updates a download status.
      */
-    public long setDownloadStatus(DownloadStatus status) {
+    public long setDownloadStatus(DownloadResult status) {
         ContentValues values = new ContentValues();
         values.put(KEY_FEEDFILE, status.getFeedfileId());
         values.put(KEY_FEEDFILETYPE, status.getFeedfileType());
@@ -1142,12 +1142,19 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getFeedItemCursorByMediaIds(final Long[] ids) {
-        if (ids.length > IN_OPERATOR_MAXIMUM) {
+    public final Cursor getFeedItemCursorByUrl(List<String> urls) {
+        if (urls.size() > IN_OPERATOR_MAXIMUM) {
             throw new IllegalArgumentException("number of IDs must not be larger than " + IN_OPERATOR_MAXIMUM);
         }
+        StringBuilder urlsString = new StringBuilder();
+        for (int i = 0; i < urls.size(); i++) {
+            if (i != 0) {
+                urlsString.append(",");
+            }
+            urlsString.append(DatabaseUtils.sqlEscapeString(urls.get(i)));
+        }
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
-                + " WHERE " + SELECT_KEY_MEDIA_ID + " IN (" + TextUtils.join(",", ids) + ")";
+                + " WHERE " + KEY_DOWNLOAD_URL + " IN (" + urlsString + ")";
         return db.rawQuery(query, null);
     }
 

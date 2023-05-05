@@ -27,8 +27,6 @@ import java.util.Arrays;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.swipeDown;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
@@ -37,13 +35,11 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
-import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static de.test.antennapod.EspressoTestUtils.clickPreference;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertTrue;
 
@@ -221,40 +217,6 @@ public class PreferencesTest {
         clickPreference(R.string.pref_pausePlaybackForFocusLoss_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> pauseForFocusLoss == UserPreferences.shouldPauseForFocusLoss());
-    }
-
-    @Test
-    public void testSetSequentialDownload() {
-        clickPreference(R.string.downloads_pref);
-        clickPreference(R.string.pref_parallel_downloads_title);
-        onView(isRoot()).perform(waitForView(withClassName(endsWith("EditText")), 1000));
-        onView(withClassName(endsWith("EditText"))).perform(replaceText("1"));
-        onView(withText(android.R.string.ok)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getParallelDownloads() == 1);
-    }
-
-    @Test
-    public void testSetParallelDownloads() {
-        clickPreference(R.string.downloads_pref);
-        clickPreference(R.string.pref_parallel_downloads_title);
-        onView(isRoot()).perform(waitForView(withClassName(endsWith("EditText")), 1000));
-        onView(withClassName(endsWith("EditText"))).perform(replaceText("10"));
-        onView(withClassName(endsWith("EditText"))).perform(closeSoftKeyboard());
-        onView(withText(android.R.string.ok)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getParallelDownloads() == 10);
-    }
-
-    @Test
-    public void testSetParallelDownloadsInvalidInput() {
-        clickPreference(R.string.downloads_pref);
-        clickPreference(R.string.pref_parallel_downloads_title);
-        onView(isRoot()).perform(waitForView(withClassName(endsWith("EditText")), 1000));
-        onView(withClassName(endsWith("EditText"))).perform(replaceText("0"));
-        onView(withClassName(endsWith("EditText"))).check(matches(withText("")));
-        onView(withClassName(endsWith("EditText"))).perform(replaceText("100"));
-        onView(withClassName(endsWith("EditText"))).check(matches(withText("")));
     }
 
     @Test

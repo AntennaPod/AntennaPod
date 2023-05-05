@@ -20,12 +20,13 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.service.download.NewEpisodesNotification;
 import de.danoeh.antennapod.core.service.download.handler.FeedSyncTask;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.model.download.DownloadError;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 
@@ -80,6 +81,7 @@ public class FeedUpdateWorker extends Worker {
             refreshFeeds(toUpdate, true);
         }
         notificationManager.cancel(R.id.notification_updating_feeds);
+        DBTasks.autodownloadUndownloadedItems(getApplicationContext());
         return Result.success();
     }
 
@@ -115,8 +117,8 @@ public class FeedUpdateWorker extends Worker {
                 }
             } catch (Exception e) {
                 DBWriter.setFeedLastUpdateFailed(feed.getId(), true);
-                DownloadStatus status = new DownloadStatus(feed, feed.getTitle(),
-                        DownloadError.ERROR_IO_ERROR, false, e.getMessage(), true);
+                DownloadResult status = new DownloadResult(feed, feed.getTitle(),
+                        DownloadError.ERROR_IO_ERROR, false, e.getMessage());
                 DBWriter.addDownloadStatus(status);
             }
             toUpdate.remove(0);
@@ -144,7 +146,7 @@ public class FeedUpdateWorker extends Worker {
         downloader.call();
 
         if (!downloader.getResult().isSuccessful()) {
-            if (downloader.getResult().isCancelled()) {
+            if (downloader.cancelled) {
                 return;
             }
             DBWriter.setFeedLastUpdateFailed(request.getFeedfileId(), true);
@@ -165,7 +167,7 @@ public class FeedUpdateWorker extends Worker {
             return; // No download logs for new subscriptions
         }
         // we create a 'successful' download log if the feed's last refresh failed
-        List<DownloadStatus> log = DBReader.getFeedDownloadLog(request.getFeedfileId());
+        List<DownloadResult> log = DBReader.getFeedDownloadLog(request.getFeedfileId());
         if (log.size() > 0 && !log.get(0).isSuccessful()) {
             DBWriter.addDownloadStatus(feedSyncTask.getDownloadStatus());
         }

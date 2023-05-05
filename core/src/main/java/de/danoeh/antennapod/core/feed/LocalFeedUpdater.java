@@ -28,7 +28,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.documentfile.provider.DocumentFile;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.util.FastDocumentFile;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -246,8 +246,8 @@ public class LocalFeedUpdater {
     }
 
     private static void reportError(Feed feed, String reasonDetailed) {
-        DownloadStatus status = new DownloadStatus(feed, feed.getTitle(),
-                DownloadError.ERROR_IO_ERROR, false, reasonDetailed, true);
+        DownloadResult status = new DownloadResult(feed, feed.getTitle(),
+                DownloadError.ERROR_IO_ERROR, false, reasonDetailed);
         DBWriter.addDownloadStatus(status);
         DBWriter.setFeedLastUpdateFailed(feed.getId(), true);
     }
@@ -256,8 +256,7 @@ public class LocalFeedUpdater {
      * Reports a successful download status.
      */
     private static void reportSuccess(Feed feed) {
-        DownloadStatus status = new DownloadStatus(feed, feed.getTitle(),
-                DownloadError.SUCCESS, true, null, true);
+        DownloadResult status = new DownloadResult(feed, feed.getTitle(), DownloadError.SUCCESS, true, null);
         DBWriter.addDownloadStatus(status);
         DBWriter.setFeedLastUpdateFailed(feed.getId(), false);
     }
@@ -266,21 +265,21 @@ public class LocalFeedUpdater {
      * Answers if reporting success is needed for the given feed.
      */
     private static boolean mustReportDownloadSuccessful(Feed feed) {
-        List<DownloadStatus> downloadStatuses = DBReader.getFeedDownloadLog(feed.getId());
+        List<DownloadResult> downloadResults = DBReader.getFeedDownloadLog(feed.getId());
 
-        if (downloadStatuses.isEmpty()) {
+        if (downloadResults.isEmpty()) {
             // report success if never reported before
             return true;
         }
 
-        Collections.sort(downloadStatuses, (downloadStatus1, downloadStatus2) ->
+        Collections.sort(downloadResults, (downloadStatus1, downloadStatus2) ->
                 downloadStatus1.getCompletionDate().compareTo(downloadStatus2.getCompletionDate()));
 
-        DownloadStatus lastDownloadStatus = downloadStatuses.get(downloadStatuses.size() - 1);
+        DownloadResult lastDownloadResult = downloadResults.get(downloadResults.size() - 1);
 
         // report success if the last update was not successful
         // (avoid logging success again if the last update was ok)
-        return !lastDownloadStatus.isSuccessful();
+        return !lastDownloadResult.isSuccessful();
     }
 
     @FunctionalInterface

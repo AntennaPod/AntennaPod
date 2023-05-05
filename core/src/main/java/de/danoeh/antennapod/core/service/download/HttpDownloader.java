@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.util.NetworkUtils;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import okhttp3.CacheControl;
 import okhttp3.internal.http.StatusLine;
@@ -149,12 +149,12 @@ public class HttpDownloader extends Downloader {
             request.setSize(responseBody.contentLength() + request.getSoFar());
             Log.d(TAG, "Size is " + request.getSize());
             if (request.getSize() < 0) {
-                request.setSize(DownloadStatus.SIZE_UNKNOWN);
+                request.setSize(DownloadResult.SIZE_UNKNOWN);
             }
 
             long freeSpace = StorageUtils.getFreeSpaceAvailable();
             Log.d(TAG, "Free space is " + freeSpace);
-            if (request.getSize() != DownloadStatus.SIZE_UNKNOWN && request.getSize() > freeSpace) {
+            if (request.getSize() != DownloadResult.SIZE_UNKNOWN && request.getSize() > freeSpace) {
                 onFail(DownloadError.ERROR_NOT_ENOUGH_SPACE, null);
                 return;
             }
@@ -175,7 +175,7 @@ public class HttpDownloader extends Downloader {
             } else {
                 // check if size specified in the response header is the same as the size of the
                 // written file. This check cannot be made if compression was used
-                if (!isGzip && request.getSize() != DownloadStatus.SIZE_UNKNOWN
+                if (!isGzip && request.getSize() != DownloadResult.SIZE_UNKNOWN
                         && request.getSoFar() != request.getSize()) {
                     onFail(DownloadError.ERROR_IO_WRONG_SIZE, "Download completed but size: "
                             + request.getSoFar() + " does not equal expected size " + request.getSize());
@@ -267,7 +267,8 @@ public class HttpDownloader extends Downloader {
         } else if (response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
             error = DownloadError.ERROR_FORBIDDEN;
             details = String.valueOf(response.code());
-        } else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND) {
+        } else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND
+                || response.code() == HttpURLConnection.HTTP_GONE) {
             error = DownloadError.ERROR_NOT_FOUND;
             details = String.valueOf(response.code());
         } else {
