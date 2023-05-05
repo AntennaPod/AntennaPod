@@ -25,7 +25,7 @@
             android:key="prefScreenDownloads"
             android:title="@string/downloads_pref"
             android:summary="@string/downloads_pref_sum"
-            android:icon="@drawable/ic_download_black" />
+            android:icon="@drawable/ic_download" />
 
     <Preference
             android:key="prefScreenSynchronization"

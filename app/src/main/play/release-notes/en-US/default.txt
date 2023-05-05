@@ -1,1 +1,7 @@
-This is a beta release.
+∙ Add Home screen, with quick access to the queued and latest episodes, favourite podcasts and surprise suggestions (@ByteHamster)
+∙ Apply Material Design 3, including a theme colour based on your wallpaper [Android 12+ only] (idem)
+∙ Better spread episodes while using smart shuffle (idem)
+∙ Enable multi-select in Inbox (idem)
+∙ Other improvements (e.g. for local feeds) and bugfixes (idem)
+∙ Refreshed icon/branding (Ryan Gorley/Freehive)
+∙ Allow editing podcast feed URLs (@ricardoborgesjr)

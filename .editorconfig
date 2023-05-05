@@ -1,0 +1,7 @@
+# Settings in .editorconfig should match checkstyle config
+
+root = true
+
+[*]
+charset = utf-8
+max_line_length = 120

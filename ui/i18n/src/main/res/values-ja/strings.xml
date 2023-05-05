@@ -394,8 +394,6 @@
   <string name="user_interface_label">インターフェース</string>
   <string name="user_interface_sum">外観、購読、ロック画面</string>
   <string name="pref_set_theme_title">テーマを選択</string>
-  <string name="pref_tinted_theme_title">色を合わせる</string>
-  <string name="pref_tinted_theme_message">アプリの色を壁紙の色と合わせます</string>
   <string name="pref_nav_drawer_items_title">ナビゲーションドロワーを変更</string>
   <string name="pref_nav_drawer_items_sum">ナビゲーションドロワーに表示するアイテムを変更します。</string>
   <string name="pref_nav_drawer_feed_order_title">購読の順序を設定</string>

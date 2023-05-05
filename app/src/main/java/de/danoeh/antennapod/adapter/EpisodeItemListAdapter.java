@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Build;
 import android.view.ContextMenu;
 import android.view.InputDevice;
@@ -15,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.elevation.SurfaceColors;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
@@ -120,9 +119,8 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         if (inActionMode()) {
             holder.secondaryActionButton.setOnClickListener(null);
             if (isSelected(pos)) {
-                Context context = mainActivityRef.get();
-                float density = context.getResources().getDisplayMetrics().density;
-                holder.itemView.setBackgroundColor(SurfaceColors.getColorForElevation(context, 8 * density));
+                holder.itemView.setBackgroundColor(0x88000000
+                        + (0xffffff & ThemeUtils.getColorFromAttr(mainActivityRef.get(), R.attr.colorAccent)));
             } else {
                 holder.itemView.setBackgroundResource(android.R.color.transparent);
             }

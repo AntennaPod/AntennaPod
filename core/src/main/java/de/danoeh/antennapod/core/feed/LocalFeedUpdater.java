@@ -204,7 +204,7 @@ public class LocalFeedUpdater {
             mediaMetadataRetriever.setDataSource(context, file.getUri());
 
             String dateStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DATE);
-            if (!TextUtils.isEmpty(dateStr)) {
+            if (!TextUtils.isEmpty(dateStr) && !"19040101T000000.000Z".equals(dateStr)) {
                 try {
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss", Locale.getDefault());
                     item.setPubDate(simpleDateFormat.parse(dateStr));
