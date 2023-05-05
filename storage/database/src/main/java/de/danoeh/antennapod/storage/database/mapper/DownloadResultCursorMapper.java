@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * Converts a {@link Cursor} to a {@link DownloadResult} object.
  */
-public abstract class DownloadStatusCursorMapper {
+public abstract class DownloadResultCursorMapper {
     /**
      * Create a {@link DownloadResult} instance from a database row (cursor).
      */
@@ -30,6 +30,6 @@ public abstract class DownloadStatusCursorMapper {
                 cursor.getInt(indexFileFileType), cursor.getInt(indexSuccessful) > 0,
                 DownloadError.fromCode(cursor.getInt(indexReason)),
                 new Date(cursor.getLong(indexCompletionDate)),
-                cursor.getString(indexReasonDetailed), false);
+                cursor.getString(indexReasonDetailed));
     }
 }

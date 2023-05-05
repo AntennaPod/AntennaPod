@@ -33,7 +33,7 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
         downloadResult = new DownloadResult(
         0, request.getTitle(), 0, request.getFeedfileType(), false,
                 DownloadError.ERROR_REQUEST_ERROR, new Date(),
-                "Unknown error: Status not set", request.isInitiatedByUser());
+                "Unknown error: Status not set");
     }
 
     @Override
@@ -88,11 +88,11 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
 
         if (successful) {
             downloadResult = new DownloadResult(feed, feed.getHumanReadableIdentifier(), DownloadError.SUCCESS,
-                                                successful, reasonDetailed, request.isInitiatedByUser());
+                                                successful, reasonDetailed);
             return result;
         } else {
             downloadResult = new DownloadResult(feed, feed.getHumanReadableIdentifier(), reason,
-                                                successful, reasonDetailed, request.isInitiatedByUser());
+                                                successful, reasonDetailed);
             return null;
         }
     }

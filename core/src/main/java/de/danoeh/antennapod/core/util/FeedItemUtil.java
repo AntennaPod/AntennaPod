@@ -24,16 +24,6 @@ public class FeedItemUtil {
         return -1;
     }
 
-    public static int indexOfItemWithMediaId(List<FeedItem> items, long mediaId) {
-        for(int i=0; i < items.size(); i++) {
-            FeedItem item = items.get(i);
-            if(item != null && item.getMedia() != null && item.getMedia().getId() == mediaId) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     public static int indexOfItemWithDownloadUrl(List<FeedItem> items, String downloadUrl) {
         for (int i = 0; i < items.size(); i++) {
             FeedItem item = items.get(i);

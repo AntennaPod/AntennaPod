@@ -247,7 +247,7 @@ public class LocalFeedUpdater {
 
     private static void reportError(Feed feed, String reasonDetailed) {
         DownloadResult status = new DownloadResult(feed, feed.getTitle(),
-                DownloadError.ERROR_IO_ERROR, false, reasonDetailed, true);
+                DownloadError.ERROR_IO_ERROR, false, reasonDetailed);
         DBWriter.addDownloadStatus(status);
         DBWriter.setFeedLastUpdateFailed(feed.getId(), true);
     }
@@ -256,8 +256,7 @@ public class LocalFeedUpdater {
      * Reports a successful download status.
      */
     private static void reportSuccess(Feed feed) {
-        DownloadResult status = new DownloadResult(feed, feed.getTitle(),
-                DownloadError.SUCCESS, true, null, true);
+        DownloadResult status = new DownloadResult(feed, feed.getTitle(), DownloadError.SUCCESS, true, null);
         DBWriter.addDownloadStatus(status);
         DBWriter.setFeedLastUpdateFailed(feed.getId(), false);
     }

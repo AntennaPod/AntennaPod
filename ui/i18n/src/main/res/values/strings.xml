@@ -301,8 +301,8 @@
     <string name="no_feed_url_podcast_found_by_search">The suggested podcast did not have an RSS link, AntennaPod found a podcast that could match</string>
     <string name="authentication_notification_title">Authentication required</string>
     <string name="confirm_mobile_download_dialog_title">Confirm Mobile Download</string>
-    <string name="confirm_mobile_download_dialog_message">Downloading over mobile data connection is disabled in the settings.</string>
-    <string name="confirm_mobile_download_dialog_download_later">Download when Wi-Fi is available</string>
+    <string name="confirm_mobile_download_dialog_message">Downloading over mobile data connection is disabled in the settings. AntennaPod can download the episode later automatically when Wi-Fi is available.</string>
+    <string name="confirm_mobile_download_dialog_download_later">Download later</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Download anyway</string>
     <string name="confirm_mobile_streaming_notification_title">Confirm Mobile streaming</string>
     <string name="confirm_mobile_streaming_notification_message">Streaming over mobile data connection is disabled in the settings. Tap to stream anyway.</string>

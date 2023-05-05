@@ -257,7 +257,7 @@ public final class DBTasks {
                                     + "AntennaPod still refreshed the feed and attempted to repair it."
                                     + "\n\nOriginal episode:\n" + duplicateEpisodeDetails(item)
                                     + "\n\nSecond episode that is also in the feed:\n"
-                                    + duplicateEpisodeDetails(possibleDuplicate), false));
+                                    + duplicateEpisodeDetails(possibleDuplicate)));
                     continue;
                 }
 
@@ -272,7 +272,7 @@ public final class DBTasks {
                                         + "updating the episode itself. AntennaPod still refreshed the feed and "
                                         + "attempted to repair it."
                                         + "\n\nOriginal episode:\n" + duplicateEpisodeDetails(oldItem)
-                                        + "\n\nNow the feed contains:\n" + duplicateEpisodeDetails(item), false));
+                                        + "\n\nNow the feed contains:\n" + duplicateEpisodeDetails(item)));
                         oldItem.setItemIdentifier(item.getItemIdentifier());
 
                         if (oldItem.isPlayed() && oldItem.getMedia() != null) {

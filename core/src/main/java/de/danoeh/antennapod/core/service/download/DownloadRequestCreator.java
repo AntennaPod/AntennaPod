@@ -21,9 +21,6 @@ public class DownloadRequestCreator {
 
     public static DownloadRequest.Builder create(Feed feed) {
         File dest = new File(getFeedfilePath(), getFeedfileName(feed));
-        if (!isFilenameAvailable(dest.toString()) && !feed.isLocalFeed()) {
-            dest = findUnusedFile(dest);
-        }
         Log.d(TAG, "Requesting download of url " + feed.getDownload_url());
 
         String username = (feed.getPreferences() != null) ? feed.getPreferences().getUsername() : null;
@@ -45,7 +42,7 @@ public class DownloadRequestCreator {
             dest = new File(getMediafilePath(media), getMediafilename(media));
         }
 
-        if (!isFilenameAvailable(dest.toString()) || (!partiallyDownloadedFileExists && dest.exists())) {
+        if (dest.exists() && !partiallyDownloadedFileExists) {
             dest = findUnusedFile(dest);
         }
         Log.d(TAG, "Requesting download of url " + media.getDownload_url());
@@ -72,26 +69,12 @@ public class DownloadRequestCreator {
                     + FilenameUtils.getExtension(dest.getName());
             Log.d(TAG, "Testing filename " + newName);
             newDest = new File(dest.getParent(), newName);
-            if (!newDest.exists() && isFilenameAvailable(newDest.toString())) {
+            if (!newDest.exists()) {
                 Log.d(TAG, "File doesn't exist yet. Using " + newName);
                 break;
             }
         }
         return newDest;
-    }
-
-    /**
-     * Returns true if a filename is available and false if it has already been
-     * taken by another requested download.
-     */
-    private static boolean isFilenameAvailable(String path) {
-        // TODO
-        /*for (Downloader downloader : DownloadService.downloads) {
-            if (downloader.request.getDestination().equals(path)) {
-                return false;
-            }
-        }*/
-        return true;
     }
 
     private static String getFeedfilePath() {

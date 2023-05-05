@@ -33,7 +33,7 @@ public abstract class Downloader implements Callable<Downloader> {
         this.request.setStatusMsg(R.string.download_pending);
         this.cancelled = false;
         this.result = new DownloadResult(0, request.getTitle(), request.getFeedfileId(), request.getFeedfileType(),
-                false, null, new Date(), null, request.isInitiatedByUser());
+                false, null, new Date(), null);
     }
 
     protected abstract void download();

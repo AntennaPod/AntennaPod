@@ -92,7 +92,7 @@ public class EpisodeMultiSelectActionHandler {
         // download the check episodes in the same order as they are currently displayed
         for (FeedItem episode : items) {
             if (episode.hasMedia() && !episode.getFeed().isLocalFeed()) {
-                DownloadServiceInterface.get().download(activity, episode, false);
+                DownloadServiceInterface.get().download(activity, episode);
             }
         }
         showMessage(R.plurals.downloading_batch_label, items.size());

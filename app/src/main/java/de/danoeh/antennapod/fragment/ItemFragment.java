@@ -308,6 +308,8 @@ public class ItemFragment extends Fragment {
                 progbarDownload.setVisibility(View.VISIBLE);
                 progbarDownload.setPercentage(0.01f * Math.max(1,
                         DownloadServiceInterface.get().getProgress(item.getMedia().getDownload_url())), item);
+                progbarDownload.setIndeterminate(
+                        DownloadServiceInterface.get().isEpisodeQueued(item.getMedia().getDownload_url()));
             }
         }
 

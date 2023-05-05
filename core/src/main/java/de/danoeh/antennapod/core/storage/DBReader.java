@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.danoeh.antennapod.core.util.LongList;
-import de.danoeh.antennapod.core.util.comparator.DownloadStatusComparator;
+import de.danoeh.antennapod.core.util.comparator.DownloadResultComparator;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.core.util.comparator.PlaybackCompletionDateComparator;
 import de.danoeh.antennapod.model.feed.Chapter;
@@ -31,7 +31,7 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.danoeh.antennapod.storage.database.mapper.ChapterCursorMapper;
-import de.danoeh.antennapod.storage.database.mapper.DownloadStatusCursorMapper;
+import de.danoeh.antennapod.storage.database.mapper.DownloadResultCursorMapper;
 import de.danoeh.antennapod.storage.database.mapper.FeedCursorMapper;
 import de.danoeh.antennapod.storage.database.mapper.FeedItemCursorMapper;
 import de.danoeh.antennapod.storage.database.mapper.FeedMediaCursorMapper;
@@ -402,9 +402,9 @@ public final class DBReader {
         try (Cursor cursor = adapter.getDownloadLogCursor(DOWNLOAD_LOG_SIZE)) {
             List<DownloadResult> downloadLog = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
-                downloadLog.add(DownloadStatusCursorMapper.convert(cursor));
+                downloadLog.add(DownloadResultCursorMapper.convert(cursor));
             }
-            Collections.sort(downloadLog, new DownloadStatusComparator());
+            Collections.sort(downloadLog, new DownloadResultComparator());
             return downloadLog;
         } finally {
             adapter.close();
@@ -426,9 +426,9 @@ public final class DBReader {
         try (Cursor cursor = adapter.getDownloadLog(Feed.FEEDFILETYPE_FEED, feedId)) {
             List<DownloadResult> downloadLog = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
-                downloadLog.add(DownloadStatusCursorMapper.convert(cursor));
+                downloadLog.add(DownloadResultCursorMapper.convert(cursor));
             }
-            Collections.sort(downloadLog, new DownloadStatusComparator());
+            Collections.sort(downloadLog, new DownloadResultComparator());
             return downloadLog;
         } finally {
             adapter.close();

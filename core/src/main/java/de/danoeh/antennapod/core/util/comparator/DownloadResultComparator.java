@@ -5,7 +5,7 @@ import java.util.Comparator;
 import de.danoeh.antennapod.model.download.DownloadResult;
 
 /** Compares the completion date of two DownloadResult objects. */
-public class DownloadStatusComparator implements Comparator<DownloadResult> {
+public class DownloadResultComparator implements Comparator<DownloadResult> {
 
     @Override
     public int compare(DownloadResult lhs, DownloadResult rhs) {

@@ -15,12 +15,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadLogAdapter;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
-import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.databinding.DownloadLogFragmentBinding;
 import de.danoeh.antennapod.dialog.DownloadLogDetailsDialog;
-import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
@@ -29,7 +27,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +39,6 @@ public class DownloadLogFragment extends BottomSheetDialogFragment
     private static final String TAG = "DownloadLogFragment";
 
     private List<DownloadResult> downloadLog = new ArrayList<>();
-    private List<Downloader> runningDownloads = new ArrayList<>();
     private DownloadLogAdapter adapter;
     private Disposable disposable;
     private DownloadLogFragmentBinding viewBinding;
@@ -116,13 +112,6 @@ public class DownloadLogFragment extends BottomSheetDialogFragment
             return true;
         }
         return false;
-    }
-
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(EpisodeDownloadEvent event) {
-        //runningDownloads = update.downloaders;
-        //adapter.setRunningDownloads(runningDownloads);
-        // TODO
     }
 
     private void loadDownloadLog() {

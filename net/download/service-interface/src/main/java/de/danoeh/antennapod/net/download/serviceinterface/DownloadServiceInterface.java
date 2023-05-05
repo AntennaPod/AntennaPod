@@ -28,7 +28,15 @@ public abstract class DownloadServiceInterface {
         this.currentDownloads = currentDownloads;
     }
 
-    public abstract void download(Context context, FeedItem item, boolean ignoreConstraints);
+    /**
+     * Download immediately after user action.
+     */
+    public abstract void downloadNow(Context context, FeedItem item, boolean ignoreConstraints);
+
+    /**
+     * Download when device seems fit.
+     */
+    public abstract void download(Context context, FeedItem item);
 
     public abstract void cancel(Context context, String url);
 

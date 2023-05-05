@@ -95,7 +95,7 @@ public class MediaDownloadedHandler implements Runnable {
         } catch (ExecutionException e) {
             Log.e(TAG, "ExecutionException in MediaHandlerThread: " + e.getMessage());
             updatedStatus = new DownloadResult(media, media.getEpisodeTitle(),
-                    DownloadError.ERROR_DB_ACCESS_ERROR, false, e.getMessage(), request.isInitiatedByUser());
+                    DownloadError.ERROR_DB_ACCESS_ERROR, false, e.getMessage());
         }
 
         if (item != null) {

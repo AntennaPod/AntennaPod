@@ -29,7 +29,6 @@ public class DownloadResult {
      * FEEDFILETYPE_FEEDIMAGE or FEEDFILETYPE_FEEDMEDIA
      */
     private final int feedfileType;
-    private final boolean initiatedByUser;
     /**
      * Unique id for storing the object in database.
      */
@@ -47,14 +46,14 @@ public class DownloadResult {
      * Constructor for creating new completed downloads.
      */
     public DownloadResult(@NonNull FeedFile feedfile, String title, DownloadError reason, boolean successful,
-                          String reasonDetailed, boolean initiatedByUser) {
+                          String reasonDetailed) {
         this(0, title, feedfile.getId(), feedfile.getTypeAsInt(), successful, reason, new Date(),
-                reasonDetailed, initiatedByUser);
+                reasonDetailed);
     }
 
     public DownloadResult(long id, String title, long feedfileId, int feedfileType, boolean successful,
                           DownloadError reason, Date completionDate,
-                          String reasonDetailed, boolean initiatedByUser) {
+                          String reasonDetailed) {
         this.id = id;
         this.title = title;
         this.feedfileId = feedfileId;
@@ -63,7 +62,6 @@ public class DownloadResult {
         this.completionDate = (Date) completionDate.clone();
         this.reasonDetailed = reasonDetailed;
         this.feedfileType = feedfileType;
-        this.initiatedByUser = initiatedByUser;
     }
 
     @Override
@@ -110,10 +108,6 @@ public class DownloadResult {
 
     public int getFeedfileType() {
         return feedfileType;
-    }
-
-    public boolean isInitiatedByUser() {
-        return initiatedByUser;
     }
 
     public void setSuccessful() {

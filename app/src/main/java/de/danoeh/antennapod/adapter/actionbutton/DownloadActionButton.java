@@ -48,15 +48,15 @@ public class DownloadActionButton extends ItemActionButton {
         UsageStatistics.logAction(UsageStatistics.ACTION_DOWNLOAD);
 
         if (NetworkUtils.isEpisodeDownloadAllowed()) {
-            DownloadServiceInterface.get().download(context, item, false);
+            DownloadServiceInterface.get().downloadNow(context, item, false);
         } else {
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context)
                     .setTitle(R.string.confirm_mobile_download_dialog_title)
                     .setMessage(R.string.confirm_mobile_download_dialog_message)
                     .setPositiveButton(R.string.confirm_mobile_download_dialog_download_later,
-                            (d, w) -> DownloadServiceInterface.get().download(context, item, false))
+                            (d, w) -> DownloadServiceInterface.get().downloadNow(context, item, false))
                     .setNeutralButton(R.string.confirm_mobile_download_dialog_allow_this_time,
-                            (d, w) -> DownloadServiceInterface.get().download(context, item, true))
+                            (d, w) -> DownloadServiceInterface.get().downloadNow(context, item, true))
                     .setNegativeButton(R.string.cancel_label, null);
             builder.show();
         }
