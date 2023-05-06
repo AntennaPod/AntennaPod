@@ -317,6 +317,7 @@ public class HttpDownloader extends Downloader {
     private void onCancelled() {
         Log.d(TAG, "Download was cancelled");
         result.setCancelled();
+        cancelled = true;
         cleanup();
     }
 
