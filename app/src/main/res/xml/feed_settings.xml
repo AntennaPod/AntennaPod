@@ -3,12 +3,14 @@
     android:key="feedSettingsScreen">
 
     <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preference_material_switch"
         android:icon="@drawable/ic_refresh"
         android:key="keepUpdated"
         android:summary="@string/keep_updated_summary"
         android:title="@string/keep_updated" />
 
     <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preference_material_switch"
         android:defaultValue="false"
         android:dependency="keepUpdated"
         android:icon="@drawable/ic_notifications"
@@ -69,6 +71,7 @@
         android:key="autoDownloadCategory"
         android:title="@string/auto_download_settings_label">
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             android:key="autoDownload"
             android:title="@string/auto_download_label" />
         <Preference

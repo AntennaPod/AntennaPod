@@ -7,11 +7,13 @@
         <de.danoeh.antennapod.preferences.ThemePreference
                 android:key="prefTheme" />
         <SwitchPreferenceCompat
+                android:widgetLayout="@layout/preference_material_switch"
                 android:title="@string/pref_black_theme_title"
                 android:key="prefThemeBlack"
                 android:summary="@string/pref_black_theme_message"
                 android:defaultValue="false" />
         <SwitchPreferenceCompat
+                android:widgetLayout="@layout/preference_material_switch"
                 android:title="@string/pref_tinted_theme_title"
                 android:key="prefTintedColors"
                 android:summary="@string/pref_tinted_theme_message"
@@ -21,12 +23,14 @@
                 android:summary="@string/pref_nav_drawer_items_sum"
                 android:title="@string/pref_nav_drawer_items_title"/>
         <SwitchPreferenceCompat
+                android:widgetLayout="@layout/preference_material_switch"
                 android:title="@string/pref_episode_cover_title"
                 android:key="prefEpisodeCover"
                 android:summary="@string/pref_episode_cover_summary"
                 android:defaultValue="true"
                 android:enabled="true"/>
         <SwitchPreferenceCompat
+                android:widgetLayout="@layout/preference_material_switch"
                 android:title="@string/pref_show_remain_time_title"
                 android:key="showTimeLeft"
                 android:summary="@string/pref_show_remain_time_summary"
@@ -50,6 +54,7 @@
             android:key="prefSubscriptionsFilter"
             android:summary="@string/pref_filter_feed_sum" />
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preference_material_switch"
             android:title="@string/pref_show_subscription_title"
             android:key="prefSubscriptionTitle"
             android:summary="@string/pref_show_subscription_title_summary"
@@ -57,6 +62,7 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/external_elements">
         <SwitchPreferenceCompat
+                android:widgetLayout="@layout/preference_material_switch"
                 android:defaultValue="false"
                 android:enabled="true"
                 android:key="prefExpandNotify"
@@ -64,6 +70,7 @@
                 android:title="@string/pref_expandNotify_title"
                 search:ignore="true"/>
         <SwitchPreferenceCompat
+                android:widgetLayout="@layout/preference_material_switch"
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefPersistNotify"
@@ -83,6 +90,7 @@
                 android:summary="@string/pref_default_page_sum"
                 android:defaultValue="HomeFragment"/>
         <SwitchPreferenceCompat
+                android:widgetLayout="@layout/preference_material_switch"
                 android:key="prefBackButtonOpensDrawer"
                 android:title="@string/pref_back_button_opens_drawer"
                 android:summary="@string/pref_back_button_opens_drawer_summary"
