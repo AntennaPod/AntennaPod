@@ -2,6 +2,7 @@
 <com.google.android.material.button.MaterialButtonToggleGroup
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/buttonGroup"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:weightSum="2"
