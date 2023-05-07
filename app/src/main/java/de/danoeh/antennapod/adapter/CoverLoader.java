@@ -69,7 +69,7 @@ public class CoverLoader {
         CoverTarget coverTarget = new CoverTarget(fallbackTitle, imgvCover, textAndImageCombined);
 
         if (resource != 0) {
-            Glide.with(activity).clear(coverTarget);
+            Glide.with(imgvCover).clear(coverTarget);
             imgvCover.setImageResource(resource);
             CoverTarget.setTitleVisibility(fallbackTitle, textAndImageCombined);
             return;
@@ -79,13 +79,13 @@ public class CoverLoader {
                 .fitCenter()
                 .dontAnimate();
 
-        RequestBuilder<Drawable> builder = Glide.with(activity)
+        RequestBuilder<Drawable> builder = Glide.with(imgvCover)
                 .as(Drawable.class)
                 .load(uri)
                 .apply(options);
 
         if (fallbackUri != null) {
-            builder = builder.error(Glide.with(activity)
+            builder = builder.error(Glide.with(imgvCover)
                     .as(Drawable.class)
                     .load(fallbackUri)
                     .apply(options));
