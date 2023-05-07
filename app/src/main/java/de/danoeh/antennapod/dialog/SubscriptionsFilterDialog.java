@@ -46,6 +46,10 @@ public class SubscriptionsFilterDialog {
             } else {
                 binding.filterButton2.setVisibility(View.GONE);
             }
+            binding.filterButton1.setMaxLines(3);
+            binding.filterButton1.setSingleLine(false);
+            binding.filterButton2.setMaxLines(3);
+            binding.filterButton2.setSingleLine(false);
             rows.addView(binding.getRoot());
         }
 

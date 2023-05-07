@@ -11,15 +11,15 @@
     <Button
         android:id="@+id/filterButton1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        style="?attr/materialButtonOutlinedStyle" />
+        style="@style/OutlinedButtonBetterContrast" />
 
     <Button
         android:id="@+id/filterButton2"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        style="?attr/materialButtonOutlinedStyle" />
+        style="@style/OutlinedButtonBetterContrast" />
 
 </com.google.android.material.button.MaterialButtonToggleGroup>
