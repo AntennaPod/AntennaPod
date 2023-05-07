@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.dialog;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -8,6 +9,7 @@ import android.graphics.RectF;
 import android.text.format.DateFormat;
 import android.view.MotionEvent;
 import android.view.View;
+
 import androidx.annotation.NonNull;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
@@ -31,6 +33,10 @@ public class TimeRangeDialog extends MaterialAlertDialogBuilder {
 
     public int getTo() {
         return view.to;
+    }
+
+    public void setDialogOnDismissListener(DialogInterface.OnDismissListener dismissListener) {
+        setOnDismissListener(dismissListener);
     }
 
     static class TimeRangeView extends View {
