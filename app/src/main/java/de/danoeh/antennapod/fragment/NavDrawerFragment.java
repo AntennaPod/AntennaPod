@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -17,12 +18,18 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.core.graphics.Insets;
 import androidx.core.util.Pair;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.shape.CornerFamily;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -55,6 +62,7 @@ import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.home.HomeFragment;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -94,6 +102,13 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                              @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.nav_list, container, false);
+        setupDrawerRoundBackground(root);
+        ViewCompat.setOnApplyWindowInsetsListener(root, (view, insets) -> {
+            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(bars.left, bars.top, bars.right, 0);
+            ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).bottomMargin = bars.bottom;
+            return insets;
+        });
 
         SharedPreferences preferences = getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         openFolders = new HashSet<>(preferences.getStringSet(PREF_OPEN_FOLDERS, new HashSet<>())); // Must not modify
@@ -110,6 +125,22 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
 
         preferences.registerOnSharedPreferenceChangeListener(this);
         return root;
+    }
+
+    private void setupDrawerRoundBackground(View root) {
+        ShapeAppearanceModel.Builder shapeBuilder = ShapeAppearanceModel.builder();
+        // 28dp, matches R.style.ShapeAppearance_Material3_Corner_ExtraLarge
+        float leftRoundness = getResources().getDimension(R.dimen.drawer_left_roundness);
+        float rightRoundness = getResources().getDimension(R.dimen.drawer_right_roundness);
+        shapeBuilder
+                .setTopRightCorner(CornerFamily.ROUNDED, rightRoundness)
+                .setBottomRightCorner(CornerFamily.ROUNDED, rightRoundness)
+                .setTopLeftCorner(CornerFamily.ROUNDED, leftRoundness)
+                .setBottomLeftCorner(CornerFamily.ROUNDED, leftRoundness);
+        MaterialShapeDrawable drawable = new MaterialShapeDrawable(shapeBuilder.build());
+        int themeColor = ThemeUtils.getColorFromAttr(root.getContext(), android.R.attr.windowBackground);
+        drawable.setFillColor(ColorStateList.valueOf(themeColor));
+        root.setBackground(drawable);
     }
 
     @Override

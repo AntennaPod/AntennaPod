@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="additional_horizontal_spacing">0dp</dimen>
+    <!-- Matches R.style.ShapeAppearance_Material3_Corner_ExtraLarge, there is a override in values-ldrtl to these -->
+    <dimen name="drawer_left_roundness">0dp</dimen>
+    <dimen name="drawer_right_roundness">28dp</dimen>
 </resources>
