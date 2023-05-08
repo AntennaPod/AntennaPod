@@ -55,6 +55,7 @@ import io.reactivex.schedulers.Schedulers;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -80,6 +81,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
     private View infoContainer;
     private View header;
     private MaterialToolbar toolbar;
+    private ToolbarIconTintManager toolbarIconTintManager;
 
     public static FeedInfoFragment newInstance(Feed feed) {
         FeedInfoFragment fragment = new FeedInfoFragment();
@@ -116,18 +118,9 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         refreshToolbarState();
 
         AppBarLayout appBar = root.findViewById(R.id.appBar);
-        CollapsingToolbarLayout collapsingToolbar = root.findViewById(R.id.collapsing_toolbar);
-        ToolbarIconTintManager iconTintManager = new ToolbarIconTintManager(getContext(), toolbar, collapsingToolbar) {
-            @Override
-            protected void doTint(Context themedContext) {
-                toolbar.getMenu().findItem(R.id.visit_website_item)
-                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_web));
-                toolbar.getMenu().findItem(R.id.share_item)
-                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_share));
-            }
-        };
-        iconTintManager.updateTint();
-        appBar.addOnOffsetChangedListener(iconTintManager);
+        toolbarIconTintManager = new ToolbarIconTintManager(getActivity(), toolbar,
+                Arrays.asList(toolbar.getMenu().findItem(R.id.share_item).getIcon(), toolbar.getMenu().findItem(R.id.visit_website_item).getIcon()));
+        appBar.addOnOffsetChangedListener(toolbarIconTintManager);
 
         imgvCover = root.findViewById(R.id.imgvCover);
         txtvTitle = root.findViewById(R.id.txtvTitle);
@@ -269,6 +262,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         if (disposable != null) {
             disposable.dispose();
         }
+        toolbarIconTintManager.resetStatusBar();
     }
 
     private void refreshToolbarState() {

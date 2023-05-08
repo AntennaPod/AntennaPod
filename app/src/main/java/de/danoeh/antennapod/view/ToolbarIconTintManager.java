@@ -1,59 +1,97 @@
 package de.danoeh.antennapod.view;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
+
+import androidx.core.graphics.ColorUtils;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
+
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 import de.danoeh.antennapod.R;
 
-public abstract class ToolbarIconTintManager implements AppBarLayout.OnOffsetChangedListener {
-    private final Context context;
-    private final CollapsingToolbarLayout collapsingToolbar;
+public class ToolbarIconTintManager implements AppBarLayout.OnOffsetChangedListener {
+    private final Activity activity;
     private final MaterialToolbar toolbar;
-    private boolean isTinted = false;
+    private final int colorBackgroundToolbar;
+    private final int colorToolbarIcons;
+    private final List<Drawable> toolbarIconsToTint;
+    private final int originalStatusBarColor;
 
-    public ToolbarIconTintManager(Context context, MaterialToolbar toolbar, CollapsingToolbarLayout collapsingToolbar) {
-        this.context = context;
-        this.collapsingToolbar = collapsingToolbar;
+    public ToolbarIconTintManager(Activity activity, MaterialToolbar toolbar, List<Drawable> toolbarIconsToTint) {
+        this.activity = activity;
         this.toolbar = toolbar;
+
+        //Get the background color of the toolbar (dependant on theme)
+        Resources.Theme theme = activity.getTheme();
+        TypedArray typedArray = theme.obtainStyledAttributes(new int[]{ R.attr.background_elevated});
+        this.colorBackgroundToolbar = typedArray.getColor(0, 0);
+        typedArray.recycle();
+
+        //Get toolbar icon color (also dependant on theme)
+        TypedValue typedValueToolbarIconColor = new TypedValue();
+        theme.resolveAttribute(android.R.attr.colorForeground, typedValueToolbarIconColor, true);
+        this.colorToolbarIcons = typedValueToolbarIconColor.data;
+
+        //Compile list of all icons needing to be tinted from constructor + toolbar defaults
+        this.toolbarIconsToTint = new ArrayList<>();
+        this.toolbarIconsToTint.addAll(toolbarIconsToTint);
+        this.toolbarIconsToTint.addAll(Arrays.asList(toolbar.getNavigationIcon(), toolbar.getOverflowIcon(), toolbar.getCollapseIcon()));
+
+        //Save original status bar color so that it can be restored when the activity is destroyed
+        originalStatusBarColor = activity.getWindow().getStatusBarColor();
     }
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
-        boolean tint  = (collapsingToolbar.getHeight() + offset) > (2 * collapsingToolbar.getMinimumHeight());
-        if (isTinted != tint) {
-            isTinted = tint;
-            updateTint();
+        int alpha = Math.min(Math.abs((offset) * 2), 255);
+        int newToolbarColor = ColorUtils.setAlphaComponent(colorBackgroundToolbar, alpha);
+
+        //Update toolbar background color as well as update icon tint
+        toolbar.setBackgroundColor(newToolbarColor);
+        updateTint(alpha / 255f);
+
+        /*Check if version is newer than marshmello because on older versions the bright toolbar with white icons
+        would not create sufficient contrast, thus we must keep the default status bar*/
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            activity.getWindow().setStatusBarColor(newToolbarColor);
         }
     }
 
-    public void updateTint() {
-        if (isTinted) {
-            doTint(new ContextThemeWrapper(context, R.style.Theme_AntennaPod_Dark));
-            safeSetColorFilter(toolbar.getNavigationIcon(), new PorterDuffColorFilter(0xffffffff, Mode.SRC_ATOP));
-            safeSetColorFilter(toolbar.getOverflowIcon(), new PorterDuffColorFilter(0xffffffff, Mode.SRC_ATOP));
-            safeSetColorFilter(toolbar.getCollapseIcon(), new PorterDuffColorFilter(0xffffffff, Mode.SRC_ATOP));
-        } else {
-            doTint(context);
-            safeSetColorFilter(toolbar.getNavigationIcon(), null);
-            safeSetColorFilter(toolbar.getOverflowIcon(), null);
-            safeSetColorFilter(toolbar.getCollapseIcon(), null);
-        }
-    }
-
-    private void safeSetColorFilter(Drawable icon, PorterDuffColorFilter filter) {
-        if (icon != null) {
-            icon.setColorFilter(filter);
+    public void updateTint(float progress) {
+        int color = ColorUtils.blendARGB(Color.WHITE, colorToolbarIcons, progress);
+        ColorFilter colorFilter = new PorterDuffColorFilter(color, Mode.SRC_ATOP);
+        for (Drawable drawable:
+             toolbarIconsToTint) {
+            if (drawable != null) {
+                drawable.setColorFilter(colorFilter);
+            }
         }
     }
 
     /**
-     * View expansion was changed. Icons need to be tinted
-     * @param themedContext ContextThemeWrapper with dark theme while expanded
+     * Call this function whenever the activity this <class>toolbarIconTintManager</class> is destroyed
+     * Resets status bar color back to initial so that the status bar appearance does not permanently get altered
      */
-    protected abstract void doTint(Context themedContext);
+    public void resetStatusBar() {
+        activity.getWindow().setStatusBarColor(originalStatusBarColor);
+    }
 }

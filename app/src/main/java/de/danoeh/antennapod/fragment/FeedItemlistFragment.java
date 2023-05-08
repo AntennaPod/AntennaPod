@@ -75,6 +75,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -97,6 +98,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private Disposable disposable;
     private FeedItemListFragmentBinding viewBinding;
     private MultiSelectSpeedDialBinding speedDialBinding;
+
+    private ToolbarIconTintManager toolbarIconTintManager;
 
     /**
      * Creates new ItemlistFragment which shows the Feeditems of a specific
@@ -150,18 +153,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         swipeActions = new SwipeActions(this, TAG).attachTo(viewBinding.recyclerView);
         viewBinding.progressBar.setVisibility(View.VISIBLE);
 
-        ToolbarIconTintManager iconTintManager = new ToolbarIconTintManager(
-                getContext(), viewBinding.toolbar, viewBinding.collapsingToolbar) {
-            @Override
-            protected void doTint(Context themedContext) {
-                viewBinding.toolbar.getMenu().findItem(R.id.refresh_item)
-                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_refresh));
-                viewBinding.toolbar.getMenu().findItem(R.id.action_search)
-                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_search));
-            }
-        };
-        iconTintManager.updateTint();
-        viewBinding.appBar.addOnOffsetChangedListener(iconTintManager);
+        toolbarIconTintManager = new ToolbarIconTintManager(
+                getActivity(), viewBinding.toolbar,
+                Arrays.asList(viewBinding.toolbar.getMenu().findItem(R.id.refresh_item).getIcon(),
+                        viewBinding.toolbar.getMenu().findItem(R.id.action_search).getIcon()));
+
+        viewBinding.appBar.addOnOffsetChangedListener(toolbarIconTintManager);
 
         nextPageLoader = new MoreContentListFooterUtil(viewBinding.moreContent.moreContentListFooter);
         nextPageLoader.setClickListener(() -> {
@@ -229,6 +226,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             disposable.dispose();
         }
         adapter.endSelectMode();
+
+        toolbarIconTintManager.resetStatusBar();
     }
 
     @Override
