@@ -27,7 +27,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 
@@ -128,17 +127,15 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
     }
 
     private void setupDrawerRoundBackground(View root) {
+        // Akin to this logic:
+        //   https://github.com/material-components/material-components-android/blob/8938da8c/lib/java/com/google/android/material/navigation/NavigationView.java#L405
         ShapeAppearanceModel.Builder shapeBuilder = ShapeAppearanceModel.builder();
         float cornerSize = getResources().getDimension(R.dimen.drawer_corner_size);
         boolean isRtl = getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
         if (isRtl) {
-            shapeBuilder
-                    .setTopLeftCorner(CornerFamily.ROUNDED, cornerSize)
-                    .setBottomLeftCorner(CornerFamily.ROUNDED, cornerSize);
+            shapeBuilder.setTopLeftCornerSize(cornerSize).setBottomLeftCornerSize(cornerSize);
         } else {
-            shapeBuilder
-                    .setTopRightCorner(CornerFamily.ROUNDED, cornerSize)
-                    .setBottomRightCorner(CornerFamily.ROUNDED, cornerSize);
+            shapeBuilder.setTopRightCornerSize(cornerSize).setBottomRightCornerSize(cornerSize);
         }
         MaterialShapeDrawable drawable = new MaterialShapeDrawable(shapeBuilder.build());
         int themeColor = ThemeUtils.getColorFromAttr(root.getContext(), android.R.attr.windowBackground);
