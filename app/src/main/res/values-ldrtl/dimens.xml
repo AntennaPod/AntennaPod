@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="drawer_left_roundness">28dp</dimen>
-    <dimen name="drawer_right_roundness">0dp</dimen>
-</resources>

@@ -130,13 +130,17 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
     private void setupDrawerRoundBackground(View root) {
         ShapeAppearanceModel.Builder shapeBuilder = ShapeAppearanceModel.builder();
         // 28dp, matches R.style.ShapeAppearance_Material3_Corner_ExtraLarge
-        float leftRoundness = getResources().getDimension(R.dimen.drawer_left_roundness);
-        float rightRoundness = getResources().getDimension(R.dimen.drawer_right_roundness);
-        shapeBuilder
-                .setTopRightCorner(CornerFamily.ROUNDED, rightRoundness)
-                .setBottomRightCorner(CornerFamily.ROUNDED, rightRoundness)
-                .setTopLeftCorner(CornerFamily.ROUNDED, leftRoundness)
-                .setBottomLeftCorner(CornerFamily.ROUNDED, leftRoundness);
+        float roundness = getResources().getDimension(R.dimen.drawer_roundness);
+        boolean isRtl = getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+        if (isRtl) {
+            shapeBuilder
+                    .setTopLeftCorner(CornerFamily.ROUNDED, roundness)
+                    .setBottomLeftCorner(CornerFamily.ROUNDED, roundness);
+        } else {
+            shapeBuilder
+                    .setTopRightCorner(CornerFamily.ROUNDED, roundness)
+                    .setBottomRightCorner(CornerFamily.ROUNDED, roundness);
+        }
         MaterialShapeDrawable drawable = new MaterialShapeDrawable(shapeBuilder.build());
         int themeColor = ThemeUtils.getColorFromAttr(root.getContext(), android.R.attr.windowBackground);
         drawable.setFillColor(ColorStateList.valueOf(themeColor));
