@@ -48,7 +48,8 @@ public class ToolbarColorManager implements AppBarLayout.OnOffsetChangedListener
         //Compile list of all icons needing to be tinted from constructor + toolbar defaults
         this.toolbarIconsToTint = new ArrayList<>();
         this.toolbarIconsToTint.addAll(toolbarIconsToTint);
-        this.toolbarIconsToTint.addAll(Arrays.asList(toolbar.getNavigationIcon(), toolbar.getOverflowIcon(), toolbar.getCollapseIcon()));
+        this.toolbarIconsToTint.addAll(Arrays.asList(toolbar.getNavigationIcon(), toolbar.getOverflowIcon(),
+                toolbar.getCollapseIcon()));
 
         //Save original status bar color so that it can be restored when the activity is destroyed
         originalStatusBarColor = activity.getWindow().getStatusBarColor();
@@ -73,8 +74,7 @@ public class ToolbarColorManager implements AppBarLayout.OnOffsetChangedListener
     public void updateTint(float progress) {
         int color = ColorUtils.blendARGB(Color.WHITE, colorToolbarIcons, progress);
         ColorFilter colorFilter = new PorterDuffColorFilter(color, Mode.SRC_ATOP);
-        for (Drawable drawable:
-             toolbarIconsToTint) {
+        for (Drawable drawable : toolbarIconsToTint) {
             if (drawable != null) {
                 drawable.setColorFilter(colorFilter);
             }

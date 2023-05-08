@@ -116,8 +116,9 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         refreshToolbarState();
 
         AppBarLayout appBar = root.findViewById(R.id.appBar);
-        toolbarColorManager = new ToolbarColorManager(getActivity(), toolbar,
-                Arrays.asList(toolbar.getMenu().findItem(R.id.share_item).getIcon(), toolbar.getMenu().findItem(R.id.visit_website_item).getIcon()));
+        toolbarColorManager = new ToolbarColorManager(getActivity(), toolbar, Arrays.asList(
+                toolbar.getMenu().findItem(R.id.share_item).getIcon(),
+                toolbar.getMenu().findItem(R.id.visit_website_item).getIcon()));
         appBar.addOnOffsetChangedListener(toolbarColorManager);
 
         imgvCover = root.findViewById(R.id.imgvCover);
