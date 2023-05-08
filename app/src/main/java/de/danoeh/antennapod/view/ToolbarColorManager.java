@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.view;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -11,24 +10,19 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.TypedValue;
-import android.view.ContextThemeWrapper;
 
 import androidx.core.graphics.ColorUtils;
-import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
 
-public class ToolbarIconTintManager implements AppBarLayout.OnOffsetChangedListener {
+public class ToolbarColorManager implements AppBarLayout.OnOffsetChangedListener {
     private final Activity activity;
     private final MaterialToolbar toolbar;
     private final int colorBackgroundToolbar;
@@ -36,7 +30,7 @@ public class ToolbarIconTintManager implements AppBarLayout.OnOffsetChangedListe
     private final List<Drawable> toolbarIconsToTint;
     private final int originalStatusBarColor;
 
-    public ToolbarIconTintManager(Activity activity, MaterialToolbar toolbar, List<Drawable> toolbarIconsToTint) {
+    public ToolbarColorManager(Activity activity, MaterialToolbar toolbar, List<Drawable> toolbarIconsToTint) {
         this.activity = activity;
         this.toolbar = toolbar;
 

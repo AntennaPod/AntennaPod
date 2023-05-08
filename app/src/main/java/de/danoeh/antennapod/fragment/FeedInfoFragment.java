@@ -22,14 +22,12 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import androidx.appcompat.content.res.AppCompatResources;
 import com.google.android.material.appbar.MaterialToolbar;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.joanzapata.iconify.Iconify;
 import de.danoeh.antennapod.R;
@@ -45,7 +43,7 @@ import de.danoeh.antennapod.model.feed.FeedFunding;
 import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
 import de.danoeh.antennapod.ui.statistics.feed.FeedStatisticsFragment;
-import de.danoeh.antennapod.view.ToolbarIconTintManager;
+import de.danoeh.antennapod.view.ToolbarColorManager;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
@@ -81,7 +79,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
     private View infoContainer;
     private View header;
     private MaterialToolbar toolbar;
-    private ToolbarIconTintManager toolbarIconTintManager;
+    private ToolbarColorManager toolbarColorManager;
 
     public static FeedInfoFragment newInstance(Feed feed) {
         FeedInfoFragment fragment = new FeedInfoFragment();
@@ -118,9 +116,9 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         refreshToolbarState();
 
         AppBarLayout appBar = root.findViewById(R.id.appBar);
-        toolbarIconTintManager = new ToolbarIconTintManager(getActivity(), toolbar,
+        toolbarColorManager = new ToolbarColorManager(getActivity(), toolbar,
                 Arrays.asList(toolbar.getMenu().findItem(R.id.share_item).getIcon(), toolbar.getMenu().findItem(R.id.visit_website_item).getIcon()));
-        appBar.addOnOffsetChangedListener(toolbarIconTintManager);
+        appBar.addOnOffsetChangedListener(toolbarColorManager);
 
         imgvCover = root.findViewById(R.id.imgvCover);
         txtvTitle = root.findViewById(R.id.txtvTitle);
@@ -262,7 +260,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         if (disposable != null) {
             disposable.dispose();
         }
-        toolbarIconTintManager.resetStatusBar();
+        toolbarColorManager.resetStatusBar();
     }
 
     private void refreshToolbarState() {
