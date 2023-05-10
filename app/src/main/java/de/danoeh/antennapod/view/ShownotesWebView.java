@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -104,7 +105,9 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             if (clipboardManager != null) {
                 clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", r.getExtra()));
             }
-            if (this.getContext() instanceof MainActivity) {
+            //Giving copying feedback is discouraged starting Android 13
+            //Please see https://developer.android.com/develop/ui/views/touch-and-input/copy-paste?hl=en#duplicate-notifications
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S_V2 && this.getContext() instanceof MainActivity) {
                 ((MainActivity) this.getContext()).showSnackbarAbovePlayer(
                         getResources().getString(R.string.copied_to_clipboard),
                         Snackbar.LENGTH_SHORT);
@@ -130,9 +133,13 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             ClipboardManager cm = (ClipboardManager) getContext()
                     .getSystemService(Context.CLIPBOARD_SERVICE);
             cm.setPrimaryClip(clipData);
-            Snackbar s = Snackbar.make(this, R.string.copied_url_msg, Snackbar.LENGTH_LONG);
-            ViewCompat.setElevation(s.getView(), 100);
-            s.show();
+            //Giving copying feedback is discouraged starting Android 13
+            //Please see https://developer.android.com/develop/ui/views/touch-and-input/copy-paste?hl=en#duplicate-notifications
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S_V2) {
+                Snackbar s = Snackbar.make(this, R.string.copied_url_msg, Snackbar.LENGTH_LONG);
+                ViewCompat.setElevation(s.getView(), 100);
+                s.show();
+            }
         } else if (itemId == R.id.go_to_position_item) {
             if (ShownotesCleaner.isTimecodeLink(selectedUrl) && timecodeSelectedListener != null) {
                 timecodeSelectedListener.accept(ShownotesCleaner.getTimecodeLinkTime(selectedUrl));

@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment.preferences.about;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.preference.PreferenceFragmentCompat;
 import com.google.android.material.snackbar.Snackbar;
@@ -24,7 +25,11 @@ public class AboutFragment extends PreferenceFragmentCompat {
             ClipData clip = ClipData.newPlainText(getString(R.string.bug_report_title),
                     findPreference("about_version").getSummary());
             clipboard.setPrimaryClip(clip);
-            Snackbar.make(getView(), R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
+            //Giving copying feedback is discouraged starting Android 13
+            //Please see https://developer.android.com/develop/ui/views/touch-and-input/copy-paste?hl=en#duplicate-notifications
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S_V2) {
+                Snackbar.make(getView(), R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
+            }
             return true;
         });
         findPreference("about_contributors").setOnPreferenceClickListener((preference) -> {
