@@ -71,7 +71,8 @@ public class BugReportActivity extends AppCompatActivity {
             //Giving copying feedback is discouraged starting Android 13
             //Please see https://developer.android.com/develop/ui/views/touch-and-input/copy-paste?hl=en#duplicate-notifications
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S_V2) {
-                Snackbar.make(findViewById(android.R.id.content), R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), R.string.copied_to_clipboard,
+                        Snackbar.LENGTH_SHORT).show();
             }
         });
     }
