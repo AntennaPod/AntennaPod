@@ -197,11 +197,13 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-                <TextView
+                <de.danoeh.antennapod.view.NoRelayoutTextView
                     android:id="@+id/txtvPosition"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
+                    android:minWidth="64dp"
+                    android:textAlignment="textStart"
                     style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                     tools:text="00:42:23"
                     tools:background="@android:color/holo_blue_light" />
@@ -216,11 +218,13 @@
                     style="?android:attr/progressBarStyleHorizontal"
                     tools:background="@android:color/holo_blue_light" />
 
-                <TextView
+                <de.danoeh.antennapod.view.NoRelayoutTextView
                     android:id="@+id/txtvDuration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
+                    android:minWidth="64dp"
+                    android:textAlignment="textEnd"
                     style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                     tools:text="@sample/episodes.json/data/duration"
                     tools:background="@android:color/holo_blue_light" />
