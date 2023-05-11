@@ -224,7 +224,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
                     android:minWidth="64dp"
-                    android:textAlignment="textEnd"
+                    android:textAlignment="textStart"
                     style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                     tools:text="@sample/episodes.json/data/duration"
                     tools:background="@android:color/holo_blue_light" />
