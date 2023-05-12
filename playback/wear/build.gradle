@@ -1,0 +1,16 @@
+plugins {
+    id("com.android.library")
+}
+apply from: "../../common.gradle"
+apply from: "../../playFlavor.gradle"
+
+android {
+    namespace "de.danoeh.antennapod.playback.wear"
+}
+
+dependencies {
+    implementation "androidx.media:media:$mediaVersion"
+
+    playApi "com.google.android.support:wearable:$wearableSupportVersion"
+    compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
+}

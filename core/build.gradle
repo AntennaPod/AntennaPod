@@ -32,6 +32,7 @@ dependencies {
     implementation project(':parser:media')
     implementation project(':playback:base')
     implementation project(':playback:cast')
+    implementation project(':playback:wear')
     implementation project(':storage:database')
     implementation project(':storage:preferences')
     implementation project(':ui:app-start-intent')
@@ -67,10 +68,6 @@ dependencies {
     implementation "com.google.android.exoplayer:exoplayer-core:$exoPlayerVersion"
     implementation "com.google.android.exoplayer:exoplayer-ui:$exoPlayerVersion"
     implementation "com.google.android.exoplayer:extension-okhttp:$exoPlayerVersion"
-
-    // Non-free dependencies:
-    playApi "com.google.android.support:wearable:$wearableSupportVersion"
-    compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
 
     testImplementation "androidx.test:core:$testCoreVersion"
     testImplementation "org.awaitility:awaitility:$awaitilityVersion"

@@ -15,6 +15,7 @@ include ':parser:media'
 
 include ':playback:base'
 include ':playback:cast'
+include ':playback:wear'
 
 include ':storage:database'
 include ':storage:preferences'
