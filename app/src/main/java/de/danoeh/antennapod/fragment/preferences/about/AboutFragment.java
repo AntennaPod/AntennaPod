@@ -25,9 +25,7 @@ public class AboutFragment extends PreferenceFragmentCompat {
             ClipData clip = ClipData.newPlainText(getString(R.string.bug_report_title),
                     findPreference("about_version").getSummary());
             clipboard.setPrimaryClip(clip);
-            //Giving copying feedback is discouraged starting Android 13
-            //Please see https://developer.android.com/develop/ui/views/touch-and-input/copy-paste?hl=en#duplicate-notifications
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S_V2) {
+            if (Build.VERSION.SDK_INT < 32) {
                 Snackbar.make(getView(), R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
             }
             return true;

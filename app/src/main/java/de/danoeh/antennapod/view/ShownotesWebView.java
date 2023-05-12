@@ -105,9 +105,7 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             if (clipboardManager != null) {
                 clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", r.getExtra()));
             }
-            //Giving copying feedback is discouraged starting Android 13
-            //Please see https://developer.android.com/develop/ui/views/touch-and-input/copy-paste?hl=en#duplicate-notifications
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S_V2 && this.getContext() instanceof MainActivity) {
+            if (Build.VERSION.SDK_INT < 32 && this.getContext() instanceof MainActivity) {
                 ((MainActivity) this.getContext()).showSnackbarAbovePlayer(
                         getResources().getString(R.string.copied_to_clipboard),
                         Snackbar.LENGTH_SHORT);
@@ -133,9 +131,7 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             ClipboardManager cm = (ClipboardManager) getContext()
                     .getSystemService(Context.CLIPBOARD_SERVICE);
             cm.setPrimaryClip(clipData);
-            //Giving copying feedback is discouraged starting Android 13
-            //Please see https://developer.android.com/develop/ui/views/touch-and-input/copy-paste?hl=en#duplicate-notifications
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S_V2) {
+            if (Build.VERSION.SDK_INT < 32) {
                 Snackbar s = Snackbar.make(this, R.string.copied_url_msg, Snackbar.LENGTH_LONG);
                 ViewCompat.setElevation(s.getView(), 100);
                 s.show();

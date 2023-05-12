@@ -99,9 +99,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 android.content.ClipboardManager cm = (android.content.ClipboardManager) getContext()
                         .getSystemService(Context.CLIPBOARD_SERVICE);
                 cm.setPrimaryClip(clipData);
-                //Giving copying feedback is discouraged starting Android 13
-                //Please see https://developer.android.com/develop/ui/views/touch-and-input/copy-paste?hl=en#duplicate-notifications
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S_V2) {
+                if (Build.VERSION.SDK_INT < 32) {
                     ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.copied_url_msg,
                             Snackbar.LENGTH_SHORT);
                 }
