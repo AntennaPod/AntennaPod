@@ -6,6 +6,8 @@ apply from: "../common.gradle"
 apply from: "../playFlavor.gradle"
 
 android {
+    namespace "de.danoeh.antennapod"
+
     defaultConfig {
         // Version code schema:
         // "1.2.3-beta4"    -> 1020304

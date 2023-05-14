@@ -3,6 +3,10 @@ plugins {
 }
 apply from: "../../common.gradle"
 
+android {
+    namespace "de.danoeh.antennapod.ui.common"
+}
+
 dependencies {
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
