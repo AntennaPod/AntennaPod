@@ -100,7 +100,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                         .getSystemService(Context.CLIPBOARD_SERVICE);
                 cm.setPrimaryClip(clipData);
                 if (Build.VERSION.SDK_INT < 32) {
-                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.copied_url_msg,
+                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.copied_to_clipboard,
                             Snackbar.LENGTH_SHORT);
                 }
             }

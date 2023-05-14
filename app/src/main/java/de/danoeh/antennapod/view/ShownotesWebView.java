@@ -132,7 +132,7 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
                     .getSystemService(Context.CLIPBOARD_SERVICE);
             cm.setPrimaryClip(clipData);
             if (Build.VERSION.SDK_INT < 32) {
-                Snackbar s = Snackbar.make(this, R.string.copied_url_msg, Snackbar.LENGTH_LONG);
+                Snackbar s = Snackbar.make(this, R.string.copied_to_clipboard, Snackbar.LENGTH_LONG);
                 ViewCompat.setElevation(s.getView(), 100);
                 s.show();
             }
