@@ -3,6 +3,7 @@ package de.danoeh.antennapod.dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.os.Build;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -49,7 +50,9 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
                     .getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText(context.getString(R.string.download_error_details), messageFull);
             clipboard.setPrimaryClip(clip);
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.copied_to_clipboard)));
+            if (Build.VERSION.SDK_INT < 32) {
+                EventBus.getDefault().post(new MessageEvent(context.getString(R.string.copied_to_clipboard)));
+            }
         });
     }
 

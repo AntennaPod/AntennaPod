@@ -92,7 +92,6 @@
     <string name="open_in_browser_label">Open in Browser</string>
     <string name="copy_url_label">Copy URL</string>
     <string name="share_url_label">Share URL</string>
-    <string name="copied_url_msg">Copied URL to Clipboard</string>
     <string name="go_to_position_label">Go to this Position</string>
 
     <!-- Playback history -->
