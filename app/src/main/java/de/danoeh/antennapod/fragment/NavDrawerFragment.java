@@ -1,10 +1,13 @@
 package de.danoeh.antennapod.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -105,7 +108,14 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         ViewCompat.setOnApplyWindowInsetsListener(root, (view, insets) -> {
             Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             view.setPadding(bars.left, bars.top, bars.right, 0);
-            ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).bottomMargin = bars.bottom;
+            float navigationBarHeight = 0;
+            Activity activity = getActivity();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && activity != null) {
+                navigationBarHeight = getActivity().getWindow().getNavigationBarDividerColor() == Color.TRANSPARENT
+                        ? 0 : 1 * getResources().getDisplayMetrics().density; // Assuming the divider is 1dp in height
+            }
+            float bottomInset = Math.max(0f, Math.round(bars.bottom - navigationBarHeight));
+            ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).bottomMargin = (int) bottomInset;
             return insets;
         });
 
