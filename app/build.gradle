@@ -98,7 +98,6 @@ dependencies {
     implementation "androidx.fragment:fragment:$fragmentVersion"
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation "androidx.media:media:$mediaVersion"
-    implementation 'androidx.multidex:multidex:2.0.1'
     implementation "androidx.palette:palette:$paletteVersion"
     implementation "androidx.preference:preference:$preferenceVersion"
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
