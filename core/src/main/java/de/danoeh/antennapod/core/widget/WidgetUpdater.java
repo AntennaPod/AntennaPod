@@ -86,14 +86,10 @@ public abstract class WidgetUpdater {
             views.setOnClickPendingIntent(R.id.imgvCover, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlaybackSpeed, startPlaybackSpeedDialog);
 
+            int radius = context.getResources().getDimensionPixelSize(R.dimen.widget_inner_radius);
             RequestOptions options = new RequestOptions()
                     .dontAnimate()
-                    .transform(
-                            new FitCenter(),
-                            new RoundedCorners(
-                                    context.getResources().getDimensionPixelSize(R.dimen.widget_inner_radius)
-                            )
-                    );
+                    .transform(new FitCenter(), new RoundedCorners(radius));
 
             try {
                 icon = Glide.with(context)
