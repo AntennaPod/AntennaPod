@@ -97,7 +97,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
         ckFastForward.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + appWidgetId, false));
         ckSkip.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + appWidgetId, false));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            int color = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + appWidgetId, 0);
+            int color = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + appWidgetId, PlayerWidget.DEFAULT_COLOR);
             int opacity = Color.alpha(color) * 100 / 0xFF;
 
             opacitySeekBar.setProgress(opacity, false);
@@ -139,6 +139,6 @@ public class WidgetConfigActivity extends AppCompatActivity {
     }
 
     private int getColorWithAlpha(int color, int opacity) {
-        return (int) Math.round(0xFF * (0.01 * opacity)) * 0x1000000 + color;
+        return (int) Math.round(0xFF * (0.01 * opacity)) * 0x1000000 + (color & 0xffffff);
     }
 }
