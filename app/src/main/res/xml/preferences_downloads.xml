@@ -28,21 +28,18 @@
             android:title="@string/pref_automatic_download_title"
             search:ignore="true" />
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preference_material_switch"
             android:defaultValue="false"
             android:enabled="true"
             android:key="prefAutoDelete"
             android:summary="@string/pref_auto_delete_sum"
             android:title="@string/pref_auto_delete_title"/>
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preference_material_switch"
             android:defaultValue="true"
             android:enabled="true"
             android:key="prefFavoriteKeepsEpisode"
             android:summary="@string/pref_favorite_keeps_episodes_sum"
             android:title="@string/pref_favorite_keeps_episodes_title"/>
         <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preference_material_switch"
             android:defaultValue="false"
             android:enabled="true"
             android:key="prefDeleteRemovesFromQueue"

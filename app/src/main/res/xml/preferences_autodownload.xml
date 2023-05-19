@@ -4,7 +4,6 @@
         xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch">
 
     <de.danoeh.antennapod.preferences.MasterSwitchPreference
-            android:widgetLayout="@layout/preference_material_switch"
             android:key="prefEnableAutoDl"
             android:title="@string/pref_automatic_download_title"
             search:summary="@string/pref_automatic_download_sum"
@@ -24,13 +23,11 @@
             android:summary="@string/pref_episode_cleanup_summary"
             android:entryValues="@array/episode_cleanup_values"/>
     <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preference_material_switch"
             android:key="prefEnableAutoDownloadOnBattery"
             android:title="@string/pref_automatic_download_on_battery_title"
             android:summary="@string/pref_automatic_download_on_battery_sum"
             android:defaultValue="true"/>
     <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preference_material_switch"
             android:key="prefEnableAutoDownloadWifiFilter"
             android:title="@string/pref_autodl_wifi_filter_title"
             android:summary="@string/pref_autodl_wifi_filter_sum"/>

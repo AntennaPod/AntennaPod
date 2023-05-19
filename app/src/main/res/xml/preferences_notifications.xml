@@ -5,7 +5,6 @@
     <PreferenceCategory
             android:title="@string/notification_group_news">
         <SwitchPreferenceCompat
-                android:widgetLayout="@layout/preference_material_switch"
                 android:defaultValue="false"
                 android:enabled="true"
                 android:key="prefShowAutoDownloadReport"
@@ -16,14 +15,12 @@
     <PreferenceCategory
             android:title="@string/notification_group_errors">
         <SwitchPreferenceCompat
-                android:widgetLayout="@layout/preference_material_switch"
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefShowDownloadReport"
                 android:summary="@string/notification_channel_download_error_description"
                 android:title="@string/notification_channel_download_error" />
         <SwitchPreferenceCompat
-                android:widgetLayout="@layout/preference_material_switch"
                 android:defaultValue="true"
                 android:key="pref_gpodnet_notifications"
                 android:summary="@string/notification_channel_sync_error_description"

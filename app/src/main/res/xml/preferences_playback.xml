@@ -3,14 +3,12 @@
 
     <PreferenceCategory android:title="@string/interruptions">
         <SwitchPreferenceCompat
-                android:widgetLayout="@layout/preference_material_switch"
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefPauseOnHeadsetDisconnect"
                 android:summary="@string/pref_pauseOnDisconnect_sum"
                 android:title="@string/pref_pauseOnHeadsetDisconnect_title"/>
         <SwitchPreferenceCompat
-                android:widgetLayout="@layout/preference_material_switch"
                 android:defaultValue="true"
                 android:enabled="true"
                 android:dependency="prefPauseOnHeadsetDisconnect"
@@ -18,7 +16,6 @@
                 android:summary="@string/pref_unpauseOnHeadsetReconnect_sum"
                 android:title="@string/pref_unpauseOnHeadsetReconnect_title"/>
         <SwitchPreferenceCompat
-                android:widgetLayout="@layout/preference_material_switch"
                 android:defaultValue="false"
                 android:enabled="true"
                 android:dependency="prefPauseOnHeadsetDisconnect"
@@ -26,7 +23,6 @@
                 android:summary="@string/pref_unpauseOnBluetoothReconnect_sum"
                 android:title="@string/pref_unpauseOnBluetoothReconnect_title"/>
         <SwitchPreferenceCompat
-                android:widgetLayout="@layout/preference_material_switch"
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefPauseForFocusLoss"
@@ -48,13 +44,11 @@
                 android:summary="@string/pref_playback_speed_sum"
                 android:title="@string/playback_speed"/>
         <SwitchPreferenceCompat
-                android:widgetLayout="@layout/preference_material_switch"
                 android:defaultValue="false"
                 android:key="prefPlaybackTimeRespectsSpeed"
                 android:summary="@string/pref_playback_time_respects_speed_sum"
                 android:title="@string/pref_playback_time_respects_speed_title"/>
         <SwitchPreferenceCompat
-                android:widgetLayout="@layout/preference_material_switch"
                 android:defaultValue="false"
                 android:key="prefStreamOverDownload"
                 android:summary="@string/pref_stream_over_download_sum"
@@ -80,7 +74,6 @@
 
     <PreferenceCategory android:title="@string/queue_label">
         <SwitchPreferenceCompat
-                android:widgetLayout="@layout/preference_material_switch"
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefEnqueueDownloaded"
@@ -93,7 +86,6 @@
                 android:key="prefEnqueueLocation"
                 android:title="@string/pref_enqueue_location_title"/>
         <SwitchPreferenceCompat
-                android:widgetLayout="@layout/preference_material_switch"
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefFollowQueue"
@@ -107,7 +99,6 @@
                 android:summary="@string/pref_smart_mark_as_played_sum"
                 android:title="@string/pref_smart_mark_as_played_title"/>
         <SwitchPreferenceCompat
-                android:widgetLayout="@layout/preference_material_switch"
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefSkipKeepsEpisode"
