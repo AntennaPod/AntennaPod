@@ -5,7 +5,7 @@ apply from: "../common.gradle"
 apply from: "../playFlavor.gradle"
 
 android {
-    lintOptions {
+    lint {
         disable "InvalidPeriodicWorkRequestInterval", "ObsoleteLintCustomCheck", "DefaultLocale", "UnusedAttribute",
                 "ParcelClassLoader", "CheckResult", "TrustAllX509TrustManager",
                 "StaticFieldLeak", "IconDensities", "IconDuplicates"

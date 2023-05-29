@@ -141,6 +141,14 @@
             android:layout_height="wrap_content"
             android:text="@string/auto_enable_label" />
 
+        <Button
+            android:id="@+id/changeTimes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/auto_enable_change_times"
+            android:layout_gravity="center"
+            style="@style/Widget.MaterialComponents.Button.TextButton" />
+
     </LinearLayout>
 
 </LinearLayout>

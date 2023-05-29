@@ -24,7 +24,7 @@ public class PlayerWidget extends AppWidgetProvider {
     public static final String KEY_WIDGET_SKIP = "widget_skip";
     public static final String KEY_WIDGET_FAST_FORWARD = "widget_fast_forward";
     public static final String KEY_WIDGET_REWIND = "widget_rewind";
-    public static final int DEFAULT_COLOR = 0x00262C31;
+    public static final int DEFAULT_COLOR = 0xff262C31;
     private static final String WORKAROUND_WORK_NAME = "WidgetUpdaterWorkaround";
 
     @Override

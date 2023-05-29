@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.PathEffect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
@@ -13,11 +15,13 @@ import androidx.annotation.Nullable;
 public class CircularProgressBar extends View {
     public static final float MINIMUM_PERCENTAGE = 0.005f;
     public static final float MAXIMUM_PERCENTAGE = 1 - MINIMUM_PERCENTAGE;
+    private static final PathEffect DASHED = new DashPathEffect(new float[] {5f, 5f}, 0f);
 
     private final Paint paintBackground = new Paint();
     private final Paint paintProgress = new Paint();
     private float percentage = 0;
     private float targetPercentage = 0;
+    private boolean isIndeterminate = false;
     private Object tag = null;
     private final RectF bounds = new RectF();
 
@@ -73,9 +77,10 @@ public class CircularProgressBar extends View {
 
         float padding = getHeight() * 0.07f;
         paintBackground.setStrokeWidth(getHeight() * 0.02f);
+        paintBackground.setPathEffect(isIndeterminate ? DASHED : null);
         paintProgress.setStrokeWidth(padding);
         bounds.set(padding, padding, getWidth() - padding, getHeight() - padding);
-        canvas.drawArc(bounds, 0, 360, false, paintBackground);
+        canvas.drawArc(bounds, -90, 360, false, paintBackground);
 
         if (MINIMUM_PERCENTAGE <= percentage && percentage <= MAXIMUM_PERCENTAGE) {
             canvas.drawArc(bounds, -90, percentage * 360, false, paintProgress);
@@ -91,5 +96,9 @@ public class CircularProgressBar extends View {
             percentage += delta * direction;
             invalidate();
         }
+    }
+
+    public void setIndeterminate(boolean indeterminate) {
+        isIndeterminate = indeterminate;
     }
 }

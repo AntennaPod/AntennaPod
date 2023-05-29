@@ -3,13 +3,14 @@ package de.danoeh.antennapod.dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.os.Build;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.util.DownloadErrorLabel;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -18,7 +19,7 @@ import org.greenrobot.eventbus.EventBus;
 
 public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
 
-    public DownloadLogDetailsDialog(@NonNull Context context, DownloadStatus status) {
+    public DownloadLogDetailsDialog(@NonNull Context context, DownloadResult status) {
         super(context);
 
         String url = "unknown";
@@ -49,7 +50,9 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
                     .getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText(context.getString(R.string.download_error_details), messageFull);
             clipboard.setPrimaryClip(clip);
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.copied_to_clipboard)));
+            if (Build.VERSION.SDK_INT < 32) {
+                EventBus.getDefault().post(new MessageEvent(context.getString(R.string.copied_to_clipboard)));
+            }
         });
     }
 

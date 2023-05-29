@@ -410,7 +410,7 @@
   <string name="user_interface_label">Gebruikersinterface</string>
   <string name="user_interface_sum">Uiterlijk, abonnementen, vergrendelscherm</string>
   <string name="pref_set_theme_title">Thema</string>
-  <string name="pref_tinted_theme_title">Kleurtinten gebruiken</string>
+  <string name="pref_tinted_theme_title">Dynamische kleuren gebruiken</string>
   <string name="pref_tinted_theme_message">Gebruik kleuren op basis van de achtergrondafbeelding</string>
   <string name="pref_nav_drawer_items_title">Navigatiemenu-items</string>
   <string name="pref_nav_drawer_items_sum">Kies welke items moeten worden getoond in het navigatiemenu.</string>

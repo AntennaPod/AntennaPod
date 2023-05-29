@@ -6,11 +6,14 @@
   <string name="statistics_label">Statisztika</string>
   <string name="add_feed_label">Podcast hozzáadása</string>
   <string name="episodes_label">Epizódok</string>
+  <string name="home_label">Kezdőlap</string>
   <string name="queue_label">Lejátszási sor</string>
+  <string name="inbox_label">Beérkezett</string>
   <string name="favorite_episodes_label">Kedvencek</string>
   <string name="settings_label">Beállítások</string>
   <string name="downloads_label">Letöltések</string>
   <string name="open_autodownload_settings">Beállítások megnyitása</string>
+  <string name="downloads_log_label">Letöltési napló</string>
   <string name="subscriptions_label">Feliratkozások</string>
   <string name="subscriptions_list_label">Feliratkozások listája</string>
   <string name="cancel_download_label">Letöltés megszakítása</string>
@@ -41,6 +44,14 @@
   <string name="statistics_counting_range">%1$s és %2$s között lejátszott</string>
   <string name="statistics_counting_total">Lejátszva összesen</string>
   <!--Home fragment-->
+  <string name="home_surprise_title">Lepődjön meg</string>
+  <string name="home_classics_title">Nézze meg a klasszikusait</string>
+  <string name="home_continue_title">Hallgatás folytatása</string>
+  <string name="home_new_title">Nézze meg az újdonságokat</string>
+  <string name="home_downloads_title">Letöltések kezelése</string>
+  <string name="home_welcome_title">Üdvözli az AntennaPod!</string>
+  <string name="home_welcome_text">Még nem iratkozott fel egy podcastra sem. Nyissa meg az oldalsó menüt és adjon hozzá egy podcastot.</string>
+  <string name="configure_home">Kezdőképernyő beállítása</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Az eszközön lévő epizódok összmérete</string>
   <!--Main activity-->
@@ -51,8 +62,10 @@
   <string name="drawer_feed_order_alphabetical">Rendezés betűrendben</string>
   <string name="drawer_feed_order_last_update">Rendezés közzététel dátuma szerint</string>
   <string name="drawer_feed_order_most_played">Rendezés lejátszott epizódok szerint</string>
+  <string name="drawer_feed_counter_inbox">Beérkezett epizódok száma</string>
   <string name="drawer_feed_counter_unplayed">Nem játszott epizódok száma</string>
   <string name="drawer_feed_counter_downloaded">Letöltött epizódok száma</string>
+  <string name="drawer_feed_counter_downloaded_unplayed">Letöltött és nem lejátszott epizódok száma</string>
   <string name="drawer_feed_counter_none">Nincs</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">Nem található kompatibilis alkalmazás</string>
@@ -60,19 +73,22 @@
   <string name="confirm_export_log_dialog_message">A részletes naplók érzékeny adatokat is tartalmazhatnak, mint például a feliratkozások listáját</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Megnyitás böngészőben</string>
-  <string name="copy_url_label">URL másolása</string>
-  <string name="share_url_label">URL megosztása</string>
-  <string name="copied_url_msg">URL vágólapra másolva</string>
+  <string name="copy_url_label">Webcím másolása</string>
+  <string name="share_url_label">Webcím megosztása</string>
+  <string name="copied_url_msg">Webcím vágólapra másolva</string>
   <string name="go_to_position_label">Ugrás ehhez a pozícióhoz</string>
   <!--Playback history-->
   <string name="clear_history_label">Napló törlése</string>
+  <string name="clear_playback_history_msg">Ez törli az összes lejátszási előzményt. Biztos, hogy folytatja?</string>
+  <string name="remove_history_label">Eltávolítás az előzményekből</string>
+  <string name="removed_history_label">Eltávolítva az előzményekből</string>
   <!--Other-->
   <string name="confirm_label">Megerősítés</string>
   <string name="cancel_label">Mégse</string>
   <string name="yes">Igen</string>
   <string name="no">Nem</string>
   <string name="reset">Visszaállítás</string>
-  <string name="url_label">URL</string>
+  <string name="url_label">Webcím </string>
   <string name="support_funding_label">Támogatás</string>
   <string name="support_podcast">E podcast támogatása</string>
   <string name="error_label">Hiba</string>
@@ -130,6 +146,11 @@
   </plurals>
   <string name="new_episode_notification_group_text">A feliratkozásainak új epizódjai vannak.</string>
   <!--Actions on feeds-->
+  <string name="remove_all_inbox_label">Összes eltávolítása a beérkezők közül</string>
+  <string name="removed_all_inbox_msg">Összes eltávolítva a beérkezők közül</string>
+  <string name="remove_all_inbox_confirmation_msg">Erősítse meg, hogy az összeset eltávolítja a beérkezők közül.</string>
+  <string name="multi_select_mark_played_confirmation">Erősítse meg, hogy az összes kiválasztott elemet lejátszottnak jelöli.</string>
+  <string name="multi_select_mark_unplayed_confirmation">Erősítse meg, hogy az összes kiválasztott elemet nem lejátszottnak jelöli.</string>
   <string name="show_info_label">Információ megjelenítése</string>
   <string name="show_feed_settings_label">Podcast beállítások megjelenítése</string>
   <string name="feed_settings_label">Podcast beállítások</string>
@@ -156,6 +177,7 @@
     <item quantity="other">%d feliratkozás frissítve.</item>
   </plurals>
   <string name="edit_tags">Címkék szerkesztése</string>
+  <string name="add_tag">Címke hozzáadása</string>
   <string name="rename_tag_label">Címke átnevezése</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">A mobil adatkapcsolaton történő podcastfrissítés ki van kapcsolva a beállításokban.\n\nMindenképp frissít?</string>
   <!--actions on feeditems-->
@@ -174,7 +196,10 @@
     <item quantity="one">1 letöltött epizód törölve.</item>
     <item quantity="other">%d letöltött epizód törölve.</item>
   </plurals>
+  <string name="remove_inbox_label">Eltávolítás a beérkezők közül</string>
+  <string name="removed_inbox_label">Eltávolítva a beérkezők közül</string>
   <string name="mark_read_label">Megjelölés lejátszottként</string>
+  <string name="toggle_played_label">Lejátszott állapot be/ki</string>
   <string name="marked_as_played_label">Megjelölve lejátszottként</string>
   <string name="marked_as_unplayed_label">Megjelölve nem lejátszottként</string>
   <string name="mark_read_no_media_label">Megjelölés olvasottként</string>
@@ -200,6 +225,10 @@
     <item quantity="one">%d epizód eltávolítva a lejátszási sorból.</item>
     <item quantity="other">%d epizód eltávolítva a lejátszási sorból.</item>
   </plurals>
+  <plurals name="removed_from_inbox_batch_label">
+    <item quantity="one">%d epizód eltávolítva a beérkezők közül.</item>
+    <item quantity="other">%d epizód eltávolítva a beérkezők közül.</item>
+  </plurals>
   <string name="add_to_favorite_label">Hozzáadás a kedvencekhez</string>
   <string name="remove_from_favorite_label">Eltávolítás a kedvencekből</string>
   <string name="visit_website_label">Honlap megtekintése</string>
@@ -211,6 +240,7 @@
   <string name="download_pending">Letöltés várakozik</string>
   <string name="download_running">Letöltés fut</string>
   <string name="download_error_details">Részletek</string>
+  <string name="download_log_details_message">%1$s \n\nMűszaki ok: \n%2$s \n\nFájl webcíme:\n%3$s</string>
   <string name="download_error_tap_for_details">Koppintson a részletek megjelenítéséhez.</string>
   <string name="download_error_device_not_found">Tárolóeszköz nem található</string>
   <string name="download_error_insufficient_space">Nincs elég szabad tárhely az eszközén.</string>
@@ -303,11 +333,15 @@
   <string name="no_history_label">Ha meghallgat egy epizódot, meg fog itt jelenni.</string>
   <string name="no_all_episodes_head_label">Nincsenek epizódok</string>
   <string name="no_all_episodes_label">Ha hozzáad egy podcastot, az epizódok itt fognak megjelenni.</string>
+  <string name="no_all_episodes_filtered_label">Próbálja meg törölni a szűrőt, hogy több epizódot lásson.</string>
+  <string name="no_inbox_head_label">Nincsenek beérkezett epizódok</string>
+  <string name="no_inbox_label">Amikor új epizódok érkeznek, akkor itt fognak megjelenni. Azután eldöntheti, hogy érdeklik-e vagy sem.</string>
   <string name="no_subscriptions_head_label">Nincsenek feliratkozások</string>
   <string name="no_subscriptions_label">Podcastra való feliratkozáshoz nyomja meg az alábbi plusz ikont.</string>
   <!--Preferences-->
   <string name="storage_pref">Tároló</string>
   <string name="storage_sum">Epizódok automatikus törlése, importálása, exportálása</string>
+  <string name="statistics_moved">A statisztikai képernyő át lett helyezve a feliratkozások képernyőre. Onnan nyithatja meg.</string>
   <string name="project_pref">Projekt</string>
   <string name="synchronization_pref">Szinkronizálás</string>
   <string name="synchronization_sum">Szinkronizáció más eszközökkel</string>
@@ -452,6 +486,9 @@
   <string name="media_player_switched_to_exoplayer">Átváltva az ExoPlayerre.</string>
   <string name="pref_skip_silence_title">Csend kihagyása a hangokban</string>
   <string name="behavior">Viselkedés</string>
+  <string name="pref_default_page">Alapértelmezett oldal</string>
+  <string name="pref_default_page_sum">Az AntennaPod indításakor megnyitott képernyő.</string>
+  <string name="remember_last_page">Legutóbbi oldal megjegyzése</string>
   <string name="pref_delete_removes_from_queue_title">A törlés eltávolítja a sorból</string>
   <string name="pref_delete_removes_from_queue_sum">Törléskor az epizód automatikus eltávolítása a sorból.</string>
   <string name="pref_filter_feed_title">Feliratkozások szűrője</string>
@@ -553,12 +590,19 @@
   <string name="synchronization_choose_title">Válasszon szinkronizálási szolgáltatót</string>
   <string name="synchronization_summary_unchoosen">Több szolgáltató közül választhat, melyekkel szinkronizálhatja a feliratkozásait és az epizódok lejátszási állapotait.</string>
   <string name="dialog_choose_sync_service_title">Válasszon szinkronizálási szolgáltatót</string>
+  <string name="gpodnet_description">A gpodder.net egy nyílt forráskódú podcast szinkronizációs szolgáltatás, amelyet a saját kiszolgálójára telepíthet. A gpodder.net független az AntennaPod projekttől.</string>
   <string name="synchronization_summary_nextcloud">A Gpoddersync egy nyílt forráskódú nextcloudos alkalmazás, amelyet könnyedén telepíthet a saját kiszolgálójára. Az alkalmazás független az AntennaPod projekttől.</string>
+  <string name="synchronization_host_explanation">Kiválaszthatja a saját, szinkronizációhoz használt kiszolgálóját. Ha azonosította az előnyben részesített szinkronizációs kiszolgálóját, akkor itt adja meg a címét.</string>
+  <string name="synchronization_host_label">Kiszolgálócím</string>
+  <string name="proceed_to_login_butLabel">Tovább a bejelentkezéshez</string>
   <string name="synchronization_nextcloud_authenticate_browser">Adjon hozzáférés a megnyitott webböngészőben, és jöjjön vissza az AntennaPodhoz.</string>
   <string name="gpodnetauth_login_butLabel">Bejelentkezés</string>
+  <string name="synchronization_credentials_explanation">Adja meg a szinkronizációs kiszolgálón lévő fiókja hitelesítő adatait.</string>
   <string name="gpodnetauth_encryption_warning">A jelszavak és adatok nem titkosítottak!</string>
   <string name="username_label">Felhasználónév</string>
   <string name="password_label">Jelszó</string>
+  <string name="synchronization_login_butLabel">Bejelentkezés</string>
+  <string name="synchronization_selectDevice_explanation">Válassza ki a szinkronizációs kiszolgálón létrehozott eszközt, vagy hozzon létre egy újat.</string>
   <string name="gpodnetauth_device_name">Eszköz neve</string>
   <string name="gpodnetauth_device_name_default">AntennaPod ezen: %1$s</string>
   <string name="gpodnetauth_existing_devices">Létező eszközök</string>
@@ -602,6 +646,7 @@
   <string name="status_downloading_label">Az epizód letöltés alatt van</string>
   <string name="in_queue_label">Az epizód sorba van állítva </string>
   <string name="is_favorite_label">Az epizód megjelölve kedvencként</string>
+  <string name="is_inbox_label">Az epizód a beérkezettek között van</string>
   <string name="load_next_page_label">Következő oldal betöltése</string>
   <string name="position">Pozíció: %1$s</string>
   <string name="apply_action">Művelet alkalmazása</string>
@@ -618,6 +663,10 @@
   <string name="auto_download_settings_label">Automatikus letöltési beállítások</string>
   <string name="episode_filters_label">Epizódszűrő</string>
   <string name="episode_filters_description">A kulcsszavak, mely alapján eldől, hogy az automatikus letöltés beleveszi-e az epizódot, vagy sem</string>
+  <string name="add_term">Kifejezés hozzáadása</string>
+  <string name="exclude_terms">A lenti kifejezések bármelyikét tartalmazó epizódok kizárása</string>
+  <string name="include_terms">Csak a lenti kifejezések egyikét tartalmazó epizódok belevétele</string>
+  <string name="exclude_episodes_shorter_than">Az ennél rövidebb epizódok kizárása:</string>
   <string name="keep_updated">Frissítse</string>
   <string name="keep_updated_summary">Vegye bele ezt a podcastot is az összes podcast (automatikus) frissítésébe</string>
   <string name="auto_download_disabled_globally">Az automatikus letöltés ki van kapcsolva a fő AntennaPod beállításokban</string>
@@ -627,6 +676,8 @@
   <string name="statistics_space_used">Használt tárhely: </string>
   <string name="statistics_episodes_started_total">Epizódok elkezdve/összes:</string>
   <string name="statistics_view_all">Megtekintés az összes podcasthoz »</string>
+  <string name="edit_url_menu">Csatorna webcímének szerkesztése</string>
+  <string name="edit_url_confirmation_msg">Az RSS-cím módosítása könnyen elronthatja a lejátszási állapotokat és a podcast epizódlistáját. NEM javasoljuk a megváltoztatását, és ha hiba történik, akkor NEM nyújtunk támogatást. Ez nem vonható vissza. A hibás feliratkozás NEM javítható ki a cím visszaírásával. Azt javasoljuk, hogy a folytatás előtt készítsen biztonsági mentést.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Feliratkozások importálása az egycélú alkalmazásokból…</string>
   <!--Add podcast fragment-->
@@ -642,7 +693,9 @@
   <string name="discover_is_hidden">A javaslatok elrejtését választotta.</string>
   <string name="discover_more">több »</string>
   <string name="discover_powered_by_itunes">iTunes javaslatok</string>
+  <string name="discover_confirm">Javaslatok megjelenítése</string>
   <string name="search_powered_by">%1$s javaslatok</string>
+  <string name="select_country">Ország kiválasztása</string>
   <!--Local feeds-->
   <string name="add_local_folder">Helyi mappa hozzáadása</string>
   <string name="local_folder">Helyi mappa</string>

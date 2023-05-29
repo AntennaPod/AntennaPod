@@ -23,10 +23,9 @@ import de.danoeh.antennapod.databinding.SettingsActivityBinding;
 import de.danoeh.antennapod.fragment.preferences.AutoDownloadPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.ImportExportPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.MainPreferencesFragment;
-import de.danoeh.antennapod.fragment.preferences.NetworkPreferencesFragment;
+import de.danoeh.antennapod.fragment.preferences.DownloadsPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.NotificationPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.PlaybackPreferencesFragment;
-import de.danoeh.antennapod.fragment.preferences.StoragePreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.synchronization.SynchronizationPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.SwipePreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.UserInterfacePreferencesFragment;
@@ -69,10 +68,8 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
 
         if (screen == R.xml.preferences_user_interface) {
             prefFragment = new UserInterfacePreferencesFragment();
-        } else if (screen == R.xml.preferences_network) {
-            prefFragment = new NetworkPreferencesFragment();
-        } else if (screen == R.xml.preferences_storage) {
-            prefFragment = new StoragePreferencesFragment();
+        } else if (screen == R.xml.preferences_downloads) {
+            prefFragment = new DownloadsPreferencesFragment();
         } else if (screen == R.xml.preferences_import_export) {
             prefFragment = new ImportExportPreferencesFragment();
         } else if (screen == R.xml.preferences_autodownload) {
@@ -90,14 +87,12 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
     }
 
     public static int getTitleOfPage(int preferences) {
-        if (preferences == R.xml.preferences_network) {
-            return R.string.network_pref;
+        if (preferences == R.xml.preferences_downloads) {
+            return R.string.downloads_pref;
         } else if (preferences == R.xml.preferences_autodownload) {
             return R.string.pref_automatic_download_title;
         } else if (preferences == R.xml.preferences_playback) {
             return R.string.playback_pref;
-        } else if (preferences == R.xml.preferences_storage) {
-            return R.string.storage_pref;
         } else if (preferences == R.xml.preferences_import_export) {
             return R.string.import_export_pref;
         } else if (preferences == R.xml.preferences_user_interface) {

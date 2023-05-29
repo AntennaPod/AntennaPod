@@ -7,14 +7,13 @@ import android.util.Log;
 import androidx.annotation.VisibleForTesting;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
-import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.download.DownloadError;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -112,21 +111,6 @@ public final class DBTasks {
         DBWriter.setFeedMedia(media);
         EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
         EventBus.getDefault().post(new MessageEvent(context.getString(R.string.error_file_not_found)));
-    }
-
-    public static List<FeedItem> enqueueFeedItemsToDownload(final Context context,
-                       List<FeedItem> items) throws InterruptedException, ExecutionException {
-        List<FeedItem> itemsToEnqueue = new ArrayList<>();
-        if (UserPreferences.enqueueDownloadedEpisodes()) {
-            LongList queueIDList = DBReader.getQueueIDList();
-            for (FeedItem item : items) {
-                if (!queueIDList.contains(item.getId())) {
-                    itemsToEnqueue.add(item);
-                }
-            }
-            DBWriter.addQueueItem(context, false, itemsToEnqueue.toArray(new FeedItem[0])).get();
-        }
-        return itemsToEnqueue;
     }
 
     /**
@@ -267,13 +251,13 @@ public final class DBTasks {
                 FeedItem possibleDuplicate = searchFeedItemGuessDuplicate(newFeed.getItems(), item);
                 if (!newFeed.isLocalFeed() && possibleDuplicate != null && item != possibleDuplicate) {
                     // Canonical episode is the first one returned (usually oldest)
-                    DBWriter.addDownloadStatus(new DownloadStatus(savedFeed,
+                    DBWriter.addDownloadStatus(new DownloadResult(savedFeed,
                             item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
                             "The podcast host appears to have added the same episode twice. "
                                     + "AntennaPod still refreshed the feed and attempted to repair it."
                                     + "\n\nOriginal episode:\n" + duplicateEpisodeDetails(item)
                                     + "\n\nSecond episode that is also in the feed:\n"
-                                    + duplicateEpisodeDetails(possibleDuplicate), false));
+                                    + duplicateEpisodeDetails(possibleDuplicate)));
                     continue;
                 }
 
@@ -282,13 +266,13 @@ public final class DBTasks {
                     oldItem = searchFeedItemGuessDuplicate(savedFeed.getItems(), item);
                     if (oldItem != null) {
                         Log.d(TAG, "Repaired duplicate: " + oldItem + ", " + item);
-                        DBWriter.addDownloadStatus(new DownloadStatus(savedFeed,
+                        DBWriter.addDownloadStatus(new DownloadResult(savedFeed,
                                 item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
                                 "The podcast host changed the ID of an existing episode instead of just "
                                         + "updating the episode itself. AntennaPod still refreshed the feed and "
                                         + "attempted to repair it."
                                         + "\n\nOriginal episode:\n" + duplicateEpisodeDetails(oldItem)
-                                        + "\n\nNow the feed contains:\n" + duplicateEpisodeDetails(item), false));
+                                        + "\n\nNow the feed contains:\n" + duplicateEpisodeDetails(item)));
                         oldItem.setItemIdentifier(item.getItemIdentifier());
 
                         if (oldItem.isPlayed() && oldItem.getMedia() != null) {

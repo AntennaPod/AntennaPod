@@ -426,7 +426,8 @@
   <string name="user_interface_label">Interface</string>
   <string name="user_interface_sum">Aparência, subscrições e ecrã de bloqueio</string>
   <string name="pref_set_theme_title">Tema</string>
-  <string name="pref_tinted_theme_message">Colorir cores da aplicação tendo por base a imagem de fundo</string>
+  <string name="pref_tinted_theme_title">Utilizar cores dinâmicas</string>
+  <string name="pref_tinted_theme_message">Ajustar cores da aplicação à cor de fundo do ecrã</string>
   <string name="pref_nav_drawer_items_title">Alterar itens do menu</string>
   <string name="pref_nav_drawer_items_sum">Alterar os itens que aparecem no menu de navegação.</string>
   <string name="pref_nav_drawer_feed_order_title">Definir ordem de subscrição</string>

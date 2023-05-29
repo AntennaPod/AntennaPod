@@ -39,12 +39,14 @@ import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.dialog.RatingDialog;
+import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.AudioPlayerFragment;
 import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
+import de.danoeh.antennapod.fragment.DownloadLogFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
@@ -53,6 +55,8 @@ import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SearchFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.fragment.TransitionEffect;
+import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import de.danoeh.antennapod.preferences.PreferenceUpgrader;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -65,6 +69,9 @@ import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The activity that is shown when the user launches the app.
@@ -172,6 +179,39 @@ public class MainActivity extends CastEnabledActivity {
                         }
                     }
                     EventBus.getDefault().postSticky(new FeedUpdateRunningEvent(isRefreshingFeeds));
+                });
+        WorkManager.getInstance(this)
+                .getWorkInfosByTagLiveData(DownloadServiceInterface.WORK_TAG)
+                .observe(this, workInfos -> {
+                    Map<String, DownloadStatus> updatedEpisodes = new HashMap<>();
+                    for (WorkInfo workInfo : workInfos) {
+                        String downloadUrl = null;
+                        for (String tag : workInfo.getTags()) {
+                            if (tag.startsWith(DownloadServiceInterface.WORK_TAG_EPISODE_URL)) {
+                                downloadUrl = tag.substring(DownloadServiceInterface.WORK_TAG_EPISODE_URL.length());
+                            }
+                        }
+                        if (downloadUrl == null) {
+                            continue;
+                        }
+                        int status;
+                        if (workInfo.getState() == WorkInfo.State.RUNNING) {
+                            status = DownloadStatus.STATE_RUNNING;
+                        } else if (workInfo.getState() == WorkInfo.State.ENQUEUED
+                                || workInfo.getState() == WorkInfo.State.BLOCKED) {
+                            status = DownloadStatus.STATE_QUEUED;
+                        } else {
+                            status = DownloadStatus.STATE_COMPLETED;
+                        }
+                        int progress = workInfo.getProgress().getInt(DownloadServiceInterface.WORK_DATA_PROGRESS, -1);
+                        if (progress == -1 && status != DownloadStatus.STATE_COMPLETED) {
+                            status = DownloadStatus.STATE_QUEUED;
+                            progress = 0;
+                        }
+                        updatedEpisodes.put(downloadUrl, new DownloadStatus(status, progress));
+                    }
+                    DownloadServiceInterface.get().setCurrentDownloads(updatedEpisodes);
+                    EventBus.getDefault().postSticky(new EpisodeDownloadEvent(updatedEpisodes));
                 });
     }
 
@@ -516,7 +556,11 @@ public class MainActivity extends CastEnabledActivity {
             String toPage = UserPreferences.getDefaultPage();
             if (NavDrawerFragment.getLastNavFragment(this).equals(toPage)
                     || UserPreferences.DEFAULT_PAGE_REMEMBER.equals(toPage)) {
-                super.onBackPressed();
+                if (UserPreferences.backButtonOpensDrawer() && drawerLayout != null) {
+                    drawerLayout.openDrawer(navDrawer);
+                } else {
+                    super.onBackPressed();
+                }
             } else {
                 loadFragment(toPage, null);
             }
@@ -527,9 +571,9 @@ public class MainActivity extends CastEnabledActivity {
     public void onEventMainThread(MessageEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
 
-        Snackbar snackbar = showSnackbarAbovePlayer(event.message, Snackbar.LENGTH_SHORT);
+        Snackbar snackbar = showSnackbarAbovePlayer(event.message, Snackbar.LENGTH_LONG);
         if (event.action != null) {
-            snackbar.setAction(getString(R.string.undo), v -> event.action.run());
+            snackbar.setAction(event.actionText, v -> event.action.accept(this));
         }
     }
 
@@ -565,6 +609,9 @@ public class MainActivity extends CastEnabledActivity {
 
         if (intent.getBooleanExtra(MainActivityStarter.EXTRA_OPEN_DRAWER, false) && drawerLayout != null) {
             drawerLayout.open();
+        }
+        if (intent.getBooleanExtra(MainActivityStarter.EXTRA_OPEN_DOWNLOAD_LOGS, false)) {
+            new DownloadLogFragment().show(getSupportFragmentManager(), null);
         }
         if (intent.getBooleanExtra(EXTRA_REFRESH_ON_START, false)) {
             FeedUpdateManager.runOnceOrAsk(this);

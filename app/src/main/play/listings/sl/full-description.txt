@@ -1,8 +1,8 @@
-AntennaPod je upravljalnik in predvajalnik podcastov, ki vam omogoča takojšen dostop do milijonov brezplačnih in plačljivih podcastov, od neodvisnih podcastov do velikih založb, kot so BBC, NPR in CNN. Brez težav dodajte, uvozite in izvozite njihove vire z bazo podatkov podcastov iTunes, datotekami OPML ali preprostimi URL-ji RSS.
+AntennaPod je upravljalnik in predvajalnik podkastov, ki vam omogoča takojšen dostop do milijonov brezplačnih in plačljivih podkastov, od neodvisnih podkastov do velikih založb, kot so BBC, NPR in CNN. Brez težav dodajte, uvozite in izvozite njihove vire z bazo podatkov podkastov iTunes, datotekami OPML ali preprostimi URL-ji RSS.
 Prenesite, pretočite ali postavite v čakalno vrsto epizode in uživajte v njih, kot želite, z nastavljivimi hitrostmi predvajanja, podporo za poglavja in časovnikom za spanje.
 Prihranite trud, baterijo in porabo mobilnih podatkov z zmogljivimi avtomatskimi kontrolami za prenos epizod (določite čas, intervale in omrežja WiFi) in brisanje epizod (na podlagi vaših priljubljenih in nastavitev zakasnitve).
 
-AntennaPod, ki so ga izdelali ljubitelji podcastov, je brezplačen v vseh pomenih besede: odprtokoden, brez stroškov, brez oglasov.
+AntennaPod, ki so ga izdelali ljubitelji podkastov, je brezplačen v vseh pomenih besede: odprtokoden, brez stroškov, brez oglasov.
 
 <b>Uvozi, preuredi in predvajaj</b>
 • Upravljajte predvajanje od koder koli: pripomoček za začetni zaslon, sistemsko obvestilo ter kontrolniki za ušesne čepke in bluetooth

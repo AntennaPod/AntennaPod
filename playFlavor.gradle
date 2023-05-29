@@ -1,5 +1,5 @@
 android {
-    flavorDimensions "market"
+    flavorDimensions += ["market"]
     productFlavors {
         free {
             dimension "market"

@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.service.playback;
 
 import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -43,37 +44,22 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.media.MediaBrowserServiceCompat;
 
-import de.danoeh.antennapod.core.service.QuickSettingsTileService;
-import de.danoeh.antennapod.core.util.playback.PlayableUtils;
-import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
-import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
-import de.danoeh.antennapod.event.PlayerErrorEvent;
-import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
-import de.danoeh.antennapod.model.feed.FeedItemFilter;
-import de.danoeh.antennapod.model.feed.SortOrder;
-import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
-import de.danoeh.antennapod.playback.base.PlayerStatus;
-import de.danoeh.antennapod.playback.cast.CastPsmp;
-import de.danoeh.antennapod.playback.cast.CastStateListener;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.event.MessageEvent;
-import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
-import de.danoeh.antennapod.event.settings.SkipIntroEndingChangedEvent;
-import de.danoeh.antennapod.event.settings.SpeedPresetChangedEvent;
-import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
+import de.danoeh.antennapod.core.service.QuickSettingsTileService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
@@ -82,14 +68,31 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
+import de.danoeh.antennapod.core.util.playback.PlayableUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.core.widget.WidgetUpdater;
+import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.event.PlayerErrorEvent;
+import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
+import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
+import de.danoeh.antennapod.event.settings.SkipIntroEndingChangedEvent;
+import de.danoeh.antennapod.event.settings.SpeedPresetChangedEvent;
+import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
+import de.danoeh.antennapod.playback.base.PlayerStatus;
+import de.danoeh.antennapod.playback.cast.CastPsmp;
+import de.danoeh.antennapod.playback.cast.CastStateListener;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.VideoPlayerActivityStarter;
 import io.reactivex.Completable;
@@ -315,9 +318,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public BrowserRoot onGetRoot(@NonNull String clientPackageName, int clientUid, Bundle rootHints) {
         Log.d(TAG, "OnGetRoot: clientPackageName=" + clientPackageName +
                 "; clientUid=" + clientUid + " ; rootHints=" + rootHints);
-        return new BrowserRoot(
-                getResources().getString(R.string.app_name), // Name visible in Android Auto
-                null); // Bundle of optional extras
+        if (rootHints != null && rootHints.getBoolean(BrowserRoot.EXTRA_RECENT)) {
+            Bundle extras = new Bundle();
+            extras.putBoolean(BrowserRoot.EXTRA_RECENT, true);
+            return new BrowserRoot(getResources().getString(R.string.recently_played_episodes), extras);
+        }
+
+        // Name visible in Android Auto
+        return new BrowserRoot(getResources().getString(R.string.app_name), null);
     }
 
     private void loadQueueForMediaSession() {
@@ -391,8 +399,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     });
     }
 
-    private List<MediaBrowserCompat.MediaItem> loadChildrenSynchronous(@NonNull String parentId)
-            throws InterruptedException {
+    private List<MediaBrowserCompat.MediaItem> loadChildrenSynchronous(@NonNull String parentId) {
         List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
         if (parentId.equals(getResources().getString(R.string.app_name))) {
             mediaItems.add(createBrowsableMediaItem(R.string.queue_label, R.drawable.ic_playlist_play_black,
@@ -420,6 +427,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         } else if (parentId.startsWith("FeedId:")) {
             long feedId = Long.parseLong(parentId.split(":")[1]);
             feedItems = DBReader.getFeedItemList(DBReader.getFeed(feedId));
+        } else if (parentId.equals(getString(R.string.recently_played_episodes))) {
+            Playable playable = PlaybackPreferences.createInstanceFromPreferences(this);
+            if (playable instanceof FeedMedia) {
+                feedItems = Collections.singletonList(((FeedMedia) playable).getItem());
+            } else {
+                return null;
+            }
         } else {
             Log.e(TAG, "Parent ID not found: " + parentId);
             return null;
@@ -540,6 +554,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
     }
 
+    @SuppressLint("LaunchActivityFromNotification")
     private void displayStreamingNotAllowedNotification(Intent originalIntent) {
         Intent intentAllowThisTime = new Intent(originalIntent);
         intentAllowThisTime.setAction(PlaybackServiceInterface.EXTRA_ALLOW_STREAM_THIS_TIME);
@@ -765,8 +780,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             updateMediaSession(newInfo.playerStatus);
             switch (newInfo.playerStatus) {
                 case INITIALIZED:
-                    PlaybackPreferences.writeMediaPlaying(mediaPlayer.getPSMPInfo().playable,
-                            mediaPlayer.getPSMPInfo().playerStatus);
+                    if (mediaPlayer.getPSMPInfo().playable != null) {
+                        PlaybackPreferences.writeMediaPlaying(mediaPlayer.getPSMPInfo().playable,
+                                mediaPlayer.getPSMPInfo().playerStatus);
+                    }
                     updateNotificationAndMediaSession(newInfo.playable);
                     break;
                 case PREPARED:
@@ -793,11 +810,21 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     stateManager.validStartCommandWasReceived();
                     stateManager.startForeground(R.id.notification_playing, notificationBuilder.build());
                     // set sleep timer if auto-enabled
+                    boolean autoEnableByTime = true;
+                    int fromSetting = SleepTimerPreferences.autoEnableFrom();
+                    int toSetting = SleepTimerPreferences.autoEnableTo();
+                    if (fromSetting != toSetting) {
+                        Calendar now = new GregorianCalendar();
+                        now.setTimeInMillis(System.currentTimeMillis());
+                        int currentHour = now.get(Calendar.HOUR_OF_DAY);
+                        autoEnableByTime = SleepTimerPreferences.isInTimeRange(fromSetting, toSetting, currentHour);
+                    }
+
                     if (newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING
-                            && SleepTimerPreferences.autoEnable() && !sleepTimerActive()) {
+                            && SleepTimerPreferences.autoEnable() && autoEnableByTime && !sleepTimerActive()) {
                         setSleepTimer(SleepTimerPreferences.timerMillis());
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label),
-                                PlaybackService.this::disableSleepTimer));
+                                (ctx) -> disableSleepTimer(), getString(R.string.undo)));
                     }
                     loadQueueForMediaSession();
                     break;
@@ -1469,6 +1496,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
         if (transientPause) {
             transientPause = false;
+            if (Build.VERSION.SDK_INT >= 31) {
+                stateManager.stopService();
+                return;
+            }
             if (!bluetooth && UserPreferences.isUnpauseOnHeadsetReconnect()) {
                 mediaPlayer.resume();
             } else if (bluetooth && UserPreferences.isUnpauseOnBluetoothReconnect()) {

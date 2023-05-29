@@ -45,6 +45,7 @@
   <string name="statistics_counting_total">W sumie odtwarzane</string>
   <!--Home fragment-->
   <string name="home_surprise_title">Otrzymaj niespodziankę</string>
+  <string name="home_classics_title">Sprawdź swoje klasyki</string>
   <string name="home_continue_title">Kontynuuj słuchanie</string>
   <string name="home_new_title">Sprawdź nowości</string>
   <string name="home_downloads_title">Zarządzaj pobranymi</string>
@@ -335,8 +336,8 @@
   <string name="checkbox_do_not_show_again">Nie pokazuj więcej</string>
   <string name="clear_queue_label">Wyczyść kolejkę</string>
   <string name="undo">Cofnij</string>
-  <string name="move_to_top_label">Przesuń na górę</string>
-  <string name="move_to_bottom_label">Przesuń na dół</string>
+  <string name="move_to_top_label">Przesuń na początek</string>
+  <string name="move_to_bottom_label">Przesuń na koniec</string>
   <string name="sort">Sortuj</string>
   <string name="keep_sorted">Zachowaj</string>
   <string name="date">Według daty</string>
@@ -441,7 +442,8 @@
   <string name="user_interface_label">Interfejs użytkownika</string>
   <string name="user_interface_sum">Wygląd, Subskrypcje, Ekran blokady</string>
   <string name="pref_set_theme_title">Wybierz motyw</string>
-  <string name="pref_tinted_theme_title">Użyj przyciemnionych kolorów</string>
+  <string name="pref_tinted_theme_title">Używaj kolorów dynamicznie</string>
+  <string name="pref_tinted_theme_message">Dostosuj kolory na podstawie tapety</string>
   <string name="pref_nav_drawer_items_title">Wybierz pozycje panelu nawigacyjnego</string>
   <string name="pref_nav_drawer_items_sum">Zmienia pozycje widoczne w panelu nawigacyjnym.</string>
   <string name="pref_nav_drawer_feed_order_title">Ustaw kolejność subskrypcji</string>
@@ -519,6 +521,7 @@
   <string name="pref_skip_silence_title">Pomiń ciszę w plikach audio</string>
   <string name="behavior">Zachowanie</string>
   <string name="pref_default_page">Domyślna strona</string>
+  <string name="pref_default_page_sum">Ekran otwierany przy uruchamianiu AntennaPod.</string>
   <string name="remember_last_page">Zapiętaj ostatnią stronę</string>
   <string name="pref_delete_removes_from_queue_title">Kasowanie usuwa z kolejki</string>
   <string name="pref_delete_removes_from_queue_sum">Automatycznie usuwaj odcinek z kolejki gdy go kasujesz.</string>
@@ -629,14 +632,17 @@
   <string name="dialog_choose_sync_service_title">Wybierz dostawcę synchronizacji</string>
   <string name="gpodnet_description">Gpodder.net to serwis open-source do synchronizacji podcastów, który możesz zainstalować na własnym serwerze. Gpodder.net nie jest powiązany z projektem AntennaPod.</string>
   <string name="synchronization_summary_nextcloud">Gpoddersync to open-source aplikacja Nextcloudu, którą możesz łatwo zainstalować na swój serwer. Aplikacja nie jest powiązana z projektem AntennaPod.</string>
+  <string name="synchronization_host_explanation">Możesz wybrać swój własny serwer do synchronizacji. Po zidentyfikowaniu preferowanego serwera synchronizacji, wpisz tutaj jego adres.</string>
   <string name="synchronization_host_label">Adres serwera</string>
   <string name="proceed_to_login_butLabel">Przejdź do logowania</string>
   <string name="synchronization_nextcloud_authenticate_browser">Zezwól na dostęp w otwartym oknie przeglądarki i wróć do aplikacji AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Login</string>
+  <string name="synchronization_credentials_explanation">Podaj dane uwierzytelniające swojego konta na serwerze synchronizacji.</string>
   <string name="gpodnetauth_encryption_warning">Hasło i dane nie są zaszyfrowane!</string>
   <string name="username_label">Nazwa użytkownika</string>
   <string name="password_label">Hasło</string>
   <string name="synchronization_login_butLabel">Zaloguj się</string>
+  <string name="synchronization_selectDevice_explanation">Wybierz urządzenie, które zostało utworzone na serwerze synchronizacji lub utwórz nowe.</string>
   <string name="gpodnetauth_device_name">Nazwa urządzenia</string>
   <string name="gpodnetauth_device_name_default">AntennaPod na %1$s</string>
   <string name="gpodnetauth_existing_devices">Istniejące urządzenia</string>

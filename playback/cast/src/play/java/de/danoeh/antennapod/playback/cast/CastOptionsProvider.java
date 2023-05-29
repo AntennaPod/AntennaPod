@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.playback.cast;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import com.google.android.gms.cast.framework.CastOptions;
@@ -9,6 +10,7 @@ import com.google.android.gms.cast.framework.SessionProvider;
 import java.util.List;
 
 @SuppressWarnings("unused")
+@SuppressLint("VisibleForTests")
 public class CastOptionsProvider implements OptionsProvider {
     @Override
     @NonNull

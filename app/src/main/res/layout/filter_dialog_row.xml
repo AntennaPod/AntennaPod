@@ -2,6 +2,7 @@
 <com.google.android.material.button.MaterialButtonToggleGroup
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/buttonGroup"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:weightSum="2"
@@ -10,15 +11,15 @@
     <Button
         android:id="@+id/filterButton1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        style="?attr/materialButtonOutlinedStyle" />
+        style="@style/OutlinedButtonBetterContrast" />
 
     <Button
         android:id="@+id/filterButton2"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        style="?attr/materialButtonOutlinedStyle" />
+        style="@style/OutlinedButtonBetterContrast" />
 
 </com.google.android.material.button.MaterialButtonToggleGroup>

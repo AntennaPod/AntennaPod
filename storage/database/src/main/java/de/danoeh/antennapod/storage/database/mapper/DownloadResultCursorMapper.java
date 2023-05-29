@@ -2,21 +2,21 @@ package de.danoeh.antennapod.storage.database.mapper;
 
 import android.database.Cursor;
 import androidx.annotation.NonNull;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 
 import java.util.Date;
 
 /**
- * Converts a {@link Cursor} to a {@link DownloadStatus} object.
+ * Converts a {@link Cursor} to a {@link DownloadResult} object.
  */
-public abstract class DownloadStatusCursorMapper {
+public abstract class DownloadResultCursorMapper {
     /**
-     * Create a {@link DownloadStatus} instance from a database row (cursor).
+     * Create a {@link DownloadResult} instance from a database row (cursor).
      */
     @NonNull
-    public static DownloadStatus convert(@NonNull Cursor cursor) {
+    public static DownloadResult convert(@NonNull Cursor cursor) {
         int indexId = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_ID);
         int indexTitle = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DOWNLOADSTATUS_TITLE);
         int indexFeedFile = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEEDFILE);
@@ -26,10 +26,10 @@ public abstract class DownloadStatusCursorMapper {
         int indexCompletionDate = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_COMPLETION_DATE);
         int indexReasonDetailed = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_REASON_DETAILED);
 
-        return new DownloadStatus(cursor.getLong(indexId), cursor.getString(indexTitle), cursor.getLong(indexFeedFile),
-                cursor.getInt(indexFileFileType), cursor.getInt(indexSuccessful) > 0, false, true,
+        return new DownloadResult(cursor.getLong(indexId), cursor.getString(indexTitle), cursor.getLong(indexFeedFile),
+                cursor.getInt(indexFileFileType), cursor.getInt(indexSuccessful) > 0,
                 DownloadError.fromCode(cursor.getInt(indexReason)),
                 new Date(cursor.getLong(indexCompletionDate)),
-                cursor.getString(indexReasonDetailed), false);
+                cursor.getString(indexReasonDetailed));
     }
 }

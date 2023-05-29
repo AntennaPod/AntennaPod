@@ -9,12 +9,10 @@ import java.util.List;
 
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.core.util.PlaybackStatus;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.PowerUtils;
@@ -97,13 +95,9 @@ public class AutomaticDownloadAlgorithm {
                 if (itemsToDownload.size() > 0) {
                     Log.d(TAG, "Enqueueing " + itemsToDownload.size() + " items for download");
 
-                    List<DownloadRequest> requests = new ArrayList<>();
                     for (FeedItem episode : itemsToDownload) {
-                        DownloadRequest.Builder request = DownloadRequestCreator.create(episode.getMedia());
-                        request.withInitiatedByUser(false);
-                        requests.add(request.build());
+                        DownloadServiceInterface.get().download(context, episode);
                     }
-                    DownloadServiceInterface.get().download(context, false, requests.toArray(new DownloadRequest[0]));
                 }
             }
         };

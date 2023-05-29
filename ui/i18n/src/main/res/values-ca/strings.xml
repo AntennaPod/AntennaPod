@@ -16,7 +16,7 @@
   <string name="downloads_log_label">Registre de descàrregues</string>
   <string name="subscriptions_label">Subscripcions</string>
   <string name="subscriptions_list_label">Llista de subscripcions</string>
-  <string name="cancel_download_label">Cancelar descàrrega</string>
+  <string name="cancel_download_label">Cancel·la la descàrrega</string>
   <string name="playback_history_label">Historial de reproducció</string>
   <string name="episode_cache_full_title">La memòria cau d\'episodis és plena</string>
   <string name="episode_cache_full_message">S\'ha arribat al límit de la memòria cau d\'episodis. Pots incrementar-ne la capacitat a la configuració.</string>
@@ -88,7 +88,7 @@
   <string name="yes">Sí</string>
   <string name="no">No</string>
   <string name="reset">Reiniciar</string>
-  <string name="url_label">Adreça web</string>
+  <string name="url_label">Enllaç web</string>
   <string name="support_funding_label">Suport</string>
   <string name="support_podcast">Dóna suport a aquest podcast</string>
   <string name="error_label">Error</string>
@@ -225,6 +225,10 @@
     <item quantity="one">%d episodi retirat de la cua.</item>
     <item quantity="other">%d episodis retirats de la cua.</item>
   </plurals>
+  <plurals name="removed_from_inbox_batch_label">
+    <item quantity="one">%d episodi eliminat de la Safata d\'entrada.</item>
+    <item quantity="other">%d episodis eliminats de la Safata d\'entrada.</item>
+  </plurals>
   <string name="add_to_favorite_label">Afegir a preferits</string>
   <string name="remove_from_favorite_label">Suprimeix de preferits</string>
   <string name="visit_website_label">Visita el lloc web</string>
@@ -236,6 +240,7 @@
   <string name="download_pending">Baixada pendent</string>
   <string name="download_running">Baixada en procés</string>
   <string name="download_error_details">Detalls</string>
+  <string name="download_log_details_message">%1$s \n\nMotiu tècnic: \n%2$s \n\nEnllaç del fitxer:\n%3$s</string>
   <string name="download_error_tap_for_details">Toqueu per veure detalls.</string>
   <string name="download_error_device_not_found">No s\'ha trobat cap dispositiu d\'emmagatzemament</string>
   <string name="download_error_insufficient_space">No queda prou espai al dispositiu.</string>
@@ -405,8 +410,6 @@
   <string name="user_interface_label">Interfície d\'usuari</string>
   <string name="user_interface_sum">Aparença, subscripcions, pantalla de bloqueig</string>
   <string name="pref_set_theme_title">Selecciona el tema</string>
-  <string name="pref_tinted_theme_title">Tinta amb colors</string>
-  <string name="pref_tinted_theme_message">Tinta els colors de l\'aplicació en funció de la imatge de fons</string>
   <string name="pref_nav_drawer_items_title">Estableix els elements del calaix de navegació</string>
   <string name="pref_nav_drawer_items_sum">Canvia els elements que apareixen al calaix de navegació.</string>
   <string name="pref_nav_drawer_feed_order_title">Estableix l\'ordre de les subscripcions</string>
@@ -673,7 +676,7 @@
   <string name="statistics_space_used">Espai utilitzat:</string>
   <string name="statistics_episodes_started_total">Episodis iniciats/total:</string>
   <string name="statistics_view_all">Veure per tots els podcasts »</string>
-  <string name="edit_url_menu">Edita l\'URL del canal</string>
+  <string name="edit_url_menu">Edita l\'enllaç del canal</string>
   <string name="edit_url_confirmation_msg">Canviar l\'adreça RSS pot trencar fàcilment l\'estat de reproducció i les llistes d\'episodis del podcast. NO recomanem canviar-lo i NO oferirem suport si alguna cosa va malament. Això no es pot desfer. La subscripció trencada NO es pot reparar simplement canviant l\'adreça. Us suggerim que creeu una còpia de seguretat abans de continuar.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">S\'estan important les subscripcions des de les apps de propòsit únic...</string>

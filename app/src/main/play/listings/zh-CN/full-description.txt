@@ -11,7 +11,7 @@ AntennaPod是一个播客管理器和播放器，可以让你即时访问数以�
 •访问有密码保护的提要和音频
 
 <b>保持跟踪、分享和欣赏</b>
-•把剧集标记为最爱
+•标记你最爱的播客剧集，并随时保持更新
 •通过回放历史或通过搜索标题和 shownote 找到某期节目
 •通过高级社交媒体和电子邮件选项、gPodder.net 服务和导出 OPML 分享剧集和提要
 
@@ -22,10 +22,10 @@ AntennaPod是一个播客管理器和播放器，可以让你即时访问数以�
 • 使用 gPodder.net 集成和 OPML 导出备份订阅
 
 <b>加入 AntennaPod 社区</b>
-志愿者正在积极开发 AntennaPod。您也可以通过代码或评论做出贡献！
+AntennaPod 用爱发电，借助社区持续更新。您也可以通过提交代码或发表评论做出贡献！
 
 我们友好的论坛成员乐意为您的每个问题提供帮助。我们还邀请您讨论功能和播客。
 https://forum.antennapod.org/
 
-要帮忙翻译请前往 Transifex
+您可以前往 Transifex 协助翻译：
 https://www.transifex.com/antennapod/antennapod

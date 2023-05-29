@@ -60,6 +60,7 @@ public class UserPreferences {
     public static final String PREF_DEFAULT_PAGE = "prefDefaultPage";
     public static final String PREF_FILTER_FEED = "prefSubscriptionsFilter";
     public static final String PREF_SUBSCRIPTION_TITLE = "prefSubscriptionTitle";
+    public static final String PREF_BACK_OPENS_DRAWER = "prefBackButtonOpensDrawer";
 
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
@@ -70,7 +71,7 @@ public class UserPreferences {
     // Playback
     public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
     public static final String PREF_UNPAUSE_ON_HEADSET_RECONNECT = "prefUnpauseOnHeadsetReconnect";
-    private static final String PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT = "prefUnpauseOnBluetoothReconnect";
+    public static final String PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT = "prefUnpauseOnBluetoothReconnect";
     public static final String PREF_HARDWARE_FORWARD_BUTTON = "prefHardwareForwardButton";
     public static final String PREF_HARDWARE_PREVIOUS_BUTTON = "prefHardwarePreviousButton";
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
@@ -80,7 +81,6 @@ public class UserPreferences {
     public static final String PREF_SMART_MARK_AS_PLAYED_SECS = "prefSmartMarkAsPlayedSecs";
     private static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
     public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
-    private static final String PREF_RESUME_AFTER_CALL = "prefResumeAfterCall";
     private static final String PREF_TIME_RESPECTS_SPEED = "prefPlaybackTimeRespectsSpeed";
     public static final String PREF_STREAM_OVER_DOWNLOAD = "prefStreamOverDownload";
 
@@ -90,7 +90,6 @@ public class UserPreferences {
     public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
     private static final String PREF_MOBILE_UPDATE = "prefMobileUpdateTypes";
     public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
-    public static final String PREF_PARALLEL_DOWNLOADS = "prefParallelDownloads";
     public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
     public static final String PREF_ENABLE_AUTODL = "prefEnableAutoDl";
     public static final String PREF_ENABLE_AUTODL_ON_BATTERY = "prefEnableAutoDownloadOnBattery";
@@ -525,10 +524,6 @@ public class UserPreferences {
         setAllowMobileFor("sync", allow);
     }
 
-    public static int getParallelDownloads() {
-        return Integer.parseInt(prefs.getString(PREF_PARALLEL_DOWNLOADS, "4"));
-    }
-
     /**
      * Returns the capacity of the episode cache. This method will return the
      * negative integer EPISODE_CACHE_SIZE_UNLIMITED if the cache size is set to
@@ -601,10 +596,6 @@ public class UserPreferences {
         String username = prefs.getString(PREF_PROXY_USER, null);
         String password = prefs.getString(PREF_PROXY_PASSWORD, null);
         return new ProxyConfig(type, host, port, username, password);
-    }
-
-    public static boolean shouldResumeAfterCall() {
-        return prefs.getBoolean(PREF_RESUME_AFTER_CALL, true);
     }
 
     public static boolean isQueueLocked() {
@@ -798,6 +789,10 @@ public class UserPreferences {
 
     public static void setDefaultPage(String defaultPage) {
         prefs.edit().putString(PREF_DEFAULT_PAGE, defaultPage).apply();
+    }
+
+    public static boolean backButtonOpensDrawer() {
+        return prefs.getBoolean(PREF_BACK_OPENS_DRAWER, false);
     }
 
     public static boolean timeRespectsSpeed() {
