@@ -131,13 +131,7 @@ public class SleepTimerDialog extends DialogFragment {
         changeTimesButton.setOnClickListener(changeTimesBtn -> {
             int from = SleepTimerPreferences.autoEnableFrom();
             int to = SleepTimerPreferences.autoEnableTo();
-            TimeRangeDialog dialog = new TimeRangeDialog(getContext(), from, to);
-            dialog.setOnDismissListener(v -> {
-                SleepTimerPreferences.setAutoEnableFrom(dialog.getFrom());
-                SleepTimerPreferences.setAutoEnableTo(dialog.getTo());
-                updateAutoEnableText();
-            });
-            dialog.show();
+            showTimeRangeDialog(getContext(), from, to);
         });
 
         Button disableButton = content.findViewById(R.id.disableSleeptimerButton);
@@ -168,6 +162,16 @@ public class SleepTimerDialog extends DialogFragment {
             }
         });
         return builder.create();
+    }
+
+    private void showTimeRangeDialog(Context context, int from, int to) {
+        TimeRangeDialog dialog = new TimeRangeDialog(context, from, to);
+        dialog.setOnDismissListener(v -> {
+            SleepTimerPreferences.setAutoEnableFrom(dialog.getFrom());
+            SleepTimerPreferences.setAutoEnableTo(dialog.getTo());
+            updateAutoEnableText();
+        });
+        dialog.show();
     }
 
     private void updateAutoEnableText() {
