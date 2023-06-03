@@ -407,7 +407,7 @@
     <string name="downloads_pref">Downloads</string>
     <string name="downloads_pref_sum">Update interval, Mobile data, Automatic download, Automatic deletion</string>
     <string name="feed_refresh_title">Refresh podcasts</string>
-    <string name="feed_refresh_sum">Specify an interval or a specific time to look for new episodes automatically</string>
+    <string name="feed_refresh_sum">Specify an interval at which AntennaPod looks for new episodes automatically</string>
     <string name="feed_refresh_never">Never</string>
     <string name="feed_every_hour">Every hour</string>
     <string name="feed_every_2_hours">Every 2 hours</string>
@@ -574,7 +574,7 @@
     <string name="database_import_warning">Importing a database will replace all of your current subscriptions and playing history. You should export your current database as a backup. Do you want to replace?</string>
     <string name="please_wait">Please wait&#8230;</string>
     <string name="export_error_label">Export error</string>
-    <string name="export_success_title">Export Successful</string>
+    <string name="export_success_title">Export successful</string>
     <string name="export_success_sum">The exported file was written to:\n\n%1$s</string>
     <string name="opml_import_ask_read_permission">Access to external storage is required to read the OPML file</string>
     <string name="successful_import_label">Import successful</string>
