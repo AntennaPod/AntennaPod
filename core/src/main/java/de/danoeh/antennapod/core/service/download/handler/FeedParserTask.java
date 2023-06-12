@@ -9,11 +9,13 @@ import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.model.download.DownloadResult;
-import de.danoeh.antennapod.parser.feed.FeedHandler;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.core.util.InvalidFeedException;
+import de.danoeh.antennapod.parser.feed.type.FeedHandler;
+
+import org.json.JSONException;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -51,15 +53,15 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
         String reasonDetailed = null;
         FeedHandler feedHandler = new FeedHandler();
 
-        FeedHandlerResult result = null;
+        FeedHandlerResult feedHandlerResult = null;
         try {
-            result = feedHandler.parseFeed(feed);
-            Log.d(TAG, feed.getTitle() + " parsed");
-            checkFeedData(feed);
+            feedHandlerResult = feedHandler.parseFeed(feed);
+            Log.d(TAG, feedHandlerResult.feed.getTitle() + " parsed");
+            checkFeedData(feedHandlerResult.feed);
             if (TextUtils.isEmpty(feed.getImageUrl())) {
                 feed.setImageUrl(Feed.PREFIX_GENERATIVE_COVER + feed.getDownload_url());
             }
-        } catch (SAXException | IOException | ParserConfigurationException e) {
+        } catch (SAXException | IOException | ParserConfigurationException | JSONException e) {
             successful = false;
             e.printStackTrace();
             reason = DownloadError.ERROR_PARSER_EXCEPTION;
@@ -89,7 +91,7 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
         if (successful) {
             downloadResult = new DownloadResult(feed, feed.getHumanReadableIdentifier(), DownloadError.SUCCESS,
                                                 successful, reasonDetailed);
-            return result;
+            return feedHandlerResult;
         } else {
             downloadResult = new DownloadResult(feed, feed.getHumanReadableIdentifier(), reason,
                                                 successful, reasonDetailed);

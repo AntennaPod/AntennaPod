@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.parser.feed.util;
+package de.danoeh.antennapod.parser.feed.type;
 
 import android.util.Log;
 
@@ -15,19 +15,13 @@ import java.io.IOException;
 import java.io.Reader;
 
 import de.danoeh.antennapod.model.feed.Feed;
-
-/** Gets the type of a specific feed by reading the root element. */
-public class TypeGetter {
+public class XMLTypeGetter implements TypeGetter {
     private static final String TAG = "TypeGetter";
-
-    public enum Type {
-        RSS20, RSS091, ATOM, INVALID
-    }
 
     private static final String ATOM_ROOT = "feed";
     private static final String RSS_ROOT = "rss";
 
-    public Type getType(Feed feed) throws UnsupportedFeedtypeException {
+    public TypeResolver.Type getType(Feed feed) throws UnsupportedFeedtypeException {
         XmlPullParserFactory factory;
         if (feed.getFile_url() != null) {
             Reader reader = null;
@@ -52,33 +46,28 @@ public class TypeGetter {
                                     feed.setLanguage(strLang);
                                 }
 
-                                return Type.ATOM;
+                                return TypeResolver.Type.ATOM;
                             case RSS_ROOT:
                                 String strVersion = xpp.getAttributeValue(null, "version");
                                 if (strVersion == null) {
                                     feed.setType(Feed.TYPE_RSS2);
                                     Log.d(TAG, "Assuming type RSS 2.0");
-                                    return Type.RSS20;
+                                    return TypeResolver.Type.RSS20;
                                 } else if (strVersion.equals("2.0")) {
                                     feed.setType(Feed.TYPE_RSS2);
                                     Log.d(TAG, "Recognized type RSS 2.0");
-                                    return Type.RSS20;
+                                    return TypeResolver.Type.RSS20;
                                 } else if (strVersion.equals("0.91") || strVersion.equals("0.92")) {
                                     Log.d(TAG, "Recognized type RSS 0.91/0.92");
-                                    return Type.RSS091;
+                                    return TypeResolver.Type.RSS091;
                                 }
                                 throw new UnsupportedFeedtypeException("Unsupported rss version");
                             default:
                                 Log.d(TAG, "Type is invalid");
-                                throw new UnsupportedFeedtypeException(Type.INVALID, tag);
+                                throw new UnsupportedFeedtypeException(TypeResolver.Type.INVALID, tag);
                         }
                     } else {
-                        try {
-                            eventType = xpp.next();
-                        } catch (RuntimeException e) {
-                            // Apparently this happens on some devices...
-                            throw new UnsupportedFeedtypeException("Unable to get type");
-                        }
+                        eventType = xpp.next();
                     }
                 }
             } catch (XmlPullParserException e) {
@@ -86,12 +75,13 @@ public class TypeGetter {
                 // XML document might actually be a HTML document -> try to parse as HTML
                 String rootElement = null;
                 try {
-                    Jsoup.parse(new File(feed.getFile_url()));
-                    rootElement = "html";
+                    if (Jsoup.parse(new File(feed.getFile_url()), null) != null) {
+                        rootElement = "html";
+                    }
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-                throw new UnsupportedFeedtypeException(Type.INVALID, rootElement);
+                throw new UnsupportedFeedtypeException(TypeResolver.Type.INVALID, rootElement);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -106,7 +96,7 @@ public class TypeGetter {
             }
         }
         Log.d(TAG, "Type is invalid");
-        throw new UnsupportedFeedtypeException(Type.INVALID);
+        throw new UnsupportedFeedtypeException(String.valueOf(TypeResolver.Type.INVALID));
     }
 
     private Reader createReader(Feed feed) {

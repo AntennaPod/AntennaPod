@@ -1,11 +1,10 @@
 package de.danoeh.antennapod.parser.feed;
 
-import de.danoeh.antennapod.parser.feed.util.TypeGetter;
-import de.danoeh.antennapod.parser.feed.util.TypeGetter.Type;
+import static de.danoeh.antennapod.parser.feed.type.TypeResolver.*;
 
 public class UnsupportedFeedtypeException extends Exception {
     private static final long serialVersionUID = 9105878964928170669L;
-    private final TypeGetter.Type type;
+    private final Type type;
     private String rootElement;
     private String message = null;
 
@@ -24,7 +23,7 @@ public class UnsupportedFeedtypeException extends Exception {
         type = Type.INVALID;
     }
 
-    public TypeGetter.Type getType() {
+    public Type getType() {
         return type;
     }
 
@@ -36,7 +35,7 @@ public class UnsupportedFeedtypeException extends Exception {
     public String getMessage() {
         if (message != null) {
             return message;
-        } else if (type == TypeGetter.Type.INVALID) {
+        } else if (type == Type.INVALID) {
             return "Invalid type";
         } else {
             return "Type " + type + " not supported";

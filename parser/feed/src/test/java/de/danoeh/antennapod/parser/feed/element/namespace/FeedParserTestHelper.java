@@ -6,6 +6,7 @@ import java.io.File;
 
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.parser.feed.FeedHandler;
+import de.danoeh.antennapod.parser.feed.type.FeedHandler;
 
 /**
  * Tests for FeedHandler.
