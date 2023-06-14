@@ -30,7 +30,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.feed.FeedEvent;
-import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
@@ -319,17 +318,13 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             return;
         }
 
-        if (feed.isLocalFeed()) {
-            LocalFeedUpdater.updateFeed(feed, requireContext().getApplicationContext(), null);
-        } else {
-            for (int i = 0, size = event.items.size(); i < size; i++) {
-                FeedItem item = event.items.get(i);
-                int pos = FeedItemUtil.indexOfItemWithId(feed.getItems(), item.getId());
-                if (pos >= 0) {
-                    feed.getItems().remove(pos);
-                    feed.getItems().add(pos, item);
-                    adapter.notifyItemChangedCompat(pos);
-                }
+        for (int i = 0, size = event.items.size(); i < size; i++) {
+            FeedItem item = event.items.get(i);
+            int pos = FeedItemUtil.indexOfItemWithId(feed.getItems(), item.getId());
+            if (pos >= 0) {
+                feed.getItems().remove(pos);
+                feed.getItems().add(pos, item);
+                adapter.notifyItemChangedCompat(pos);
             }
         }
     }

@@ -3,6 +3,8 @@ package de.danoeh.antennapod.core.storage;
 import android.app.backup.BackupManager;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -10,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.documentfile.provider.DocumentFile;
 
+import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
@@ -23,12 +26,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.event.FavoritesEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
@@ -113,6 +114,8 @@ public class DBWriter {
         Log.i(TAG, String.format(Locale.US, "Requested to delete FeedMedia [id=%d, title=%s, downloaded=%s",
                 media.getId(), media.getEpisodeTitle(), media.isDownloaded()));
 
+        boolean localDelete = false;
+
         if (media.isDownloaded()) {
             // delete downloaded media file
             File mediaFile = new File(media.getFile_url());
@@ -134,6 +137,8 @@ public class DBWriter {
                 EventBus.getDefault().post(evt);
                 return false;
             }
+
+            localDelete = true;
         }
 
         media.setDownloaded(false);
@@ -159,7 +164,19 @@ public class DBWriter {
                 .build();
         SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
 
-        EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
+        if (!localDelete) {
+            EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
+        } else {
+            // FeedItemEvent only updates the state of an item, but with local feed, item is deleted completely.
+            // Instead we must do full update of this feed to get rid of the item
+            // Additionally, updateFeed() must be called from the Main thread to prevent a deadlock.
+            new Handler(Looper.getMainLooper()).post(() -> {
+                LocalFeedUpdater.updateFeed(media.getItem().getFeed(),
+                        context.getApplicationContext(),
+                        null
+                );
+            });
+        }
         return true;
     }
 
