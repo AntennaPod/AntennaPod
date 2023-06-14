@@ -13,6 +13,7 @@ import androidx.documentfile.provider.DocumentFile;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -108,12 +109,9 @@ public class DBWriter {
         });
     }
 
-    private static boolean deleteFeedMediaSynchronous(
-            @NonNull Context context, @NonNull FeedMedia media) {
+    private static boolean deleteFeedMediaSynchronous(@NonNull Context context, @NonNull FeedMedia media) {
         Log.i(TAG, String.format(Locale.US, "Requested to delete FeedMedia [id=%d, title=%s, downloaded=%s",
                 media.getId(), media.getEpisodeTitle(), media.isDownloaded()));
-
-        boolean deleted = false;
 
         if (media.isDownloaded()) {
             // delete downloaded media file
@@ -123,8 +121,6 @@ public class DBWriter {
                 EventBus.getDefault().post(evt);
                 return false;
             }
-
-            deleted = true;
         } else if (media.getFile_url().startsWith("content://")) {
             // Local feed
 
@@ -138,34 +134,30 @@ public class DBWriter {
                 EventBus.getDefault().post(evt);
                 return false;
             }
-
-            deleted = true;
         }
 
-        if (deleted) {
-            media.setDownloaded(false);
-            media.setFile_url(null);
-            media.setHasEmbeddedPicture(false);
-            PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            adapter.setMedia(media);
-            adapter.close();
+        media.setDownloaded(false);
+        media.setFile_url(null);
+        media.setHasEmbeddedPicture(false);
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        adapter.setMedia(media);
+        adapter.close();
 
-            if (media.getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId()) {
-                PlaybackPreferences.writeNoMediaPlaying();
-                IntentUtils.sendLocalBroadcast(context, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
+        if (media.getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId()) {
+            PlaybackPreferences.writeNoMediaPlaying();
+            IntentUtils.sendLocalBroadcast(context, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
 
-                NotificationManagerCompat nm = NotificationManagerCompat.from(context);
-                nm.cancel(R.id.notification_playing);
-            }
-
-            // Gpodder: queue delete action for synchronization
-            FeedItem item = media.getItem();
-            EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DELETE)
-                    .currentTimestamp()
-                    .build();
-            SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
+            NotificationManagerCompat nm = NotificationManagerCompat.from(context);
+            nm.cancel(R.id.notification_playing);
         }
+
+        // Gpodder: queue delete action for synchronization
+        FeedItem item = media.getItem();
+        EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DELETE)
+                .currentTimestamp()
+                .build();
+        SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
 
         EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
         return true;
@@ -304,7 +296,7 @@ public class DBWriter {
      * current date regardless of the current value.
      *
      * @param media FeedMedia that should be added to the playback history.
-     * @param date PlaybackCompletionDate for <code>media</code>
+     * @param date  PlaybackCompletionDate for <code>media</code>
      */
     public static Future<?> addItemToPlaybackHistory(final FeedMedia media, Date date) {
         return dbExec.submit(() -> {
@@ -953,7 +945,8 @@ public class DBWriter {
     public static Future<?> reorderQueue(@Nullable SortOrder sortOrder, final boolean broadcastUpdate) {
         if (sortOrder == null) {
             Log.w(TAG, "reorderQueue() - sortOrder is null. Do nothing.");
-            return dbExec.submit(() -> { });
+            return dbExec.submit(() -> {
+            });
         }
         final Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(sortOrder);
         return dbExec.submit(() -> {
@@ -994,7 +987,6 @@ public class DBWriter {
 
     /**
      * Set item sort order of the feed
-     *
      */
     public static Future<?> setFeedItemSortOrder(long feedId, @Nullable SortOrder sortOrder) {
         return dbExec.submit(() -> {
