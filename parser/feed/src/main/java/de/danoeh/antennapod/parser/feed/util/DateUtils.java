@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.parser.feed.util;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -145,6 +146,7 @@ public class DateUtils {
      * @throws java.lang.NumberFormatException if the number segments contain invalid numbers.
      */
     public static long parseTimeString(final String time) {
+        if(TextUtils.isEmpty(time)) return 0;
         String[] parts = time.split(":");
         long result = 0;
         int idx = 0;
