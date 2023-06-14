@@ -5,6 +5,7 @@ apply from: "../common.gradle"
 
 dependencies {
     implementation project(':model')
+    implementation "androidx.core:core:$coreVersion"
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
 }

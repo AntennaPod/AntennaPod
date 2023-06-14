@@ -36,7 +36,7 @@ import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.IntentUtils;
@@ -299,7 +299,7 @@ public class DBWriter {
      *
      * @param status The DownloadStatus object.
      */
-    public static Future<?> addDownloadStatus(final DownloadStatus status) {
+    public static Future<?> addDownloadStatus(final DownloadResult status) {
         return dbExec.submit(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
@@ -665,6 +665,15 @@ public class DBWriter {
         adapter.close();
     }
 
+    public static Future<?> resetPagedFeedPage(Feed feed) {
+        return dbExec.submit(() -> {
+            final PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.resetPagedFeedPage(feed);
+            adapter.close();
+        });
+    }
+
     /*
      * Sets the 'read'-attribute of all specified FeedItems
      *
@@ -697,7 +706,6 @@ public class DBWriter {
             }
         });
     }
-
 
     /**
      * Sets the 'read'-attribute of a FeedItem to the specified value.

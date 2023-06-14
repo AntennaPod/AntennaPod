@@ -1,8 +1,8 @@
-Met AntennaPod speel en beheer je al je podcasts en krijg je directe toegang tot duizenden gratis en betaalde podcasts - van onafhankelijke makers tot grote merken zoals BBC, CNN en NPO. Via de iTunes-database, OPML-bestanden en simpele RSS-linkjes voeg je deze podcasts makkelijk toe.
+Met AntennaPod speel en beheer je alle podcasts en krijg je directe toegang tot duizenden gratis en betaalde podcasts - van onafhankelijke makers tot grote merken zoals BBC, CNN en NPO. Via de iTunes-database, OPML-bestanden en simpele RSS-linkjes voeg je deze podcasts makkelijk toe.
 Download, stream of voeg afleveringen toe aan de wachtrij. Met instelbare afspeelsnelheden, hoofdstukondersteuning en een slaaptimer luister je podcasts op de manier die jij prettig vindt.
-Spaar moeite, je batterij en je databundel met slimme automatische controle op het downloaden nieuwe afleveringen. En AntennaPod verwijdert ook je oude afleveringen, afhankelijk van je instellingen.
+Spaar moeite, je batterij en je databundel met slimme automatische controle op het downloaden van nieuwe afleveringen. En AntennaPod verwijdert ook je oude afleveringen, afhankelijk van je instellingen.
 
-AntennaPod is gemaakt door podcast-enthousiastelingen. Het team van vrijwilligers bieden je het gratis aan - vrij van advertenties en open source.
+AntennaPod is gemaakt door podcast-enthousiastelingen. Het team van vrijwilligers bieden het gratis aan - vrij van advertenties en open source.
 
 <b>Importeren, organiseren en afspelen</b>
 • Beheer het afspelen op elke manier: met een homescreen widget, in je Android meldingen en via de knoppen op je koptelefoon en bluetooth-apparaat

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -98,7 +99,10 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 android.content.ClipboardManager cm = (android.content.ClipboardManager) getContext()
                         .getSystemService(Context.CLIPBOARD_SERVICE);
                 cm.setPrimaryClip(clipData);
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.copied_url_msg, Snackbar.LENGTH_SHORT);
+                if (Build.VERSION.SDK_INT < 32) {
+                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.copied_to_clipboard,
+                            Snackbar.LENGTH_SHORT);
+                }
             }
         }
     };
@@ -196,7 +200,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         Log.d(TAG, "Language is " + feed.getLanguage());
         Log.d(TAG, "Author is " + feed.getAuthor());
         Log.d(TAG, "URL is " + feed.getDownload_url());
-        Glide.with(getContext())
+        Glide.with(this)
                 .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                         .placeholder(R.color.light_gray)
@@ -204,7 +208,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                         .fitCenter()
                         .dontAnimate())
                 .into(imgvCover);
-        Glide.with(getContext())
+        Glide.with(this)
                 .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                         .placeholder(R.color.image_readability_tint)

@@ -10,6 +10,7 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.dialog.IntraFeedSortDialog;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.SortOrder;
@@ -26,6 +27,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import java.util.Collections;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
@@ -64,7 +66,16 @@ public class FeedMenuHandler {
         if (itemId == R.id.refresh_item) {
             DBTasks.forceRefreshFeed(context, selectedFeed, true);
         } else if (itemId == R.id.refresh_complete_item) {
-            DBTasks.forceRefreshCompleteFeed(context, selectedFeed);
+            new Thread(() -> {
+                selectedFeed.setNextPageLink(selectedFeed.getDownload_url());
+                selectedFeed.setPageNr(0);
+                try {
+                    DBWriter.resetPagedFeedPage(selectedFeed).get();
+                    FeedUpdateManager.runOnce(context, selectedFeed);
+                } catch (ExecutionException | InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
         } else if (itemId == R.id.sort_items) {
             showSortDialog(context, selectedFeed);
         } else if (itemId == R.id.visit_website_item) {
@@ -115,7 +126,7 @@ public class FeedMenuHandler {
         } else if (menuItemId == R.id.rename_item) {
             new RenameItemDialog(fragment.getActivity(), selectedFeed).show();
         } else if (menuItemId == R.id.remove_feed) {
-            RemoveFeedDialog.show(context, selectedFeed);
+            RemoveFeedDialog.show(context, selectedFeed, null);
         } else {
             return false;
         }

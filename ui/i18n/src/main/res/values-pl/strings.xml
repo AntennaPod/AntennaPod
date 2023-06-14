@@ -6,6 +6,7 @@
   <string name="statistics_label">Statystyki</string>
   <string name="add_feed_label">Dodaj podcast</string>
   <string name="episodes_label">Odcinki</string>
+  <string name="home_label">Strona główna</string>
   <string name="queue_label">Kolejka</string>
   <string name="inbox_label">Skrzynka odbiorcza</string>
   <string name="favorite_episodes_label">Ulubione</string>
@@ -43,6 +44,14 @@
   <string name="statistics_counting_range">Puść pomiędzy %1$sa %2$s</string>
   <string name="statistics_counting_total">W sumie odtwarzane</string>
   <!--Home fragment-->
+  <string name="home_surprise_title">Otrzymaj niespodziankę</string>
+  <string name="home_classics_title">Sprawdź swoje klasyki</string>
+  <string name="home_continue_title">Kontynuuj słuchanie</string>
+  <string name="home_new_title">Sprawdź nowości</string>
+  <string name="home_downloads_title">Zarządzaj pobranymi</string>
+  <string name="home_welcome_title">Witamy w AntennaPod!</string>
+  <string name="home_welcome_text">Nie subskrybujesz jeszcze żadnych podcastów. Otwórz menu boczne, aby dodać podcasty.</string>
+  <string name="configure_home">Konfiguruj stronę główną</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Rozmiar wszystkich pobranych odcinków</string>
   <!--Main activity-->
@@ -56,6 +65,7 @@
   <string name="drawer_feed_counter_inbox">Liczba odcinków w skrzynce odbiorczej</string>
   <string name="drawer_feed_counter_unplayed">Liczba nieodtworzonych odcinków</string>
   <string name="drawer_feed_counter_downloaded">Liczba pobranych odcinków</string>
+  <string name="drawer_feed_counter_downloaded_unplayed">Liczba pobranych i nieodtworzonych odcinków</string>
   <string name="drawer_feed_counter_none">Brak</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">Nie znaleziono kompatybilnych aplikacji</string>
@@ -69,6 +79,9 @@
   <string name="go_to_position_label">Przejdź do tego miejsca</string>
   <!--Playback history-->
   <string name="clear_history_label">Wyczyść historię</string>
+  <string name="clear_playback_history_msg">Spowoduje to wyczyszczenie całej historii odtwarzania. Czy na pewno chcesz kontynuować?</string>
+  <string name="remove_history_label">Usuń z historii</string>
+  <string name="removed_history_label">Usunięto z historii</string>
   <!--Other-->
   <string name="confirm_label">Potwierdź </string>
   <string name="cancel_label">Anuluj</string>
@@ -178,6 +191,7 @@
     <item quantity="other">%dsubskrypcji uaktualniono.</item>
   </plurals>
   <string name="edit_tags">Edytuj tagi</string>
+  <string name="add_tag">Dodaj tag</string>
   <string name="rename_tag_label">Zmień nazwę tagu</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">Sprawdzanie dostępności nowych odcinków z użyciem danych komórkowych jest zablokowane w ustawieniach.\n\nCzy nadal chcesz odświeżyć podcasty poprzez dane komórkowe?</string>
   <!--actions on feeditems-->
@@ -237,6 +251,12 @@
     <item quantity="many">%d odcinki(ów) usunięto z kolejki.</item>
     <item quantity="other">%d odcinki(ów) usunięto z kolejki.</item>
   </plurals>
+  <plurals name="removed_from_inbox_batch_label">
+    <item quantity="one">%d odcinek został usunięty ze skrzynki odbiorczej.</item>
+    <item quantity="few">%d odcinki zostały usunięte ze skrzynki odbiorczej.</item>
+    <item quantity="many">%d odcinków zostało usuniętych ze skrzynki odbiorczej.</item>
+    <item quantity="other">%d odcinków zostało usuniętych ze skrzynki odbiorczej.</item>
+  </plurals>
   <string name="add_to_favorite_label">Dodaj do Ulubionych</string>
   <string name="remove_from_favorite_label">Usuń z Ulubionych</string>
   <string name="visit_website_label">Odwiedź stronę</string>
@@ -248,6 +268,7 @@
   <string name="download_pending">Pobieranie w toku</string>
   <string name="download_running">Pobieram</string>
   <string name="download_error_details">Szczegóły</string>
+  <string name="download_log_details_message">%1$s \n\nTechniczne powody: \n%2$s \n\nAdres URL pliku:\n%3$s</string>
   <string name="download_error_tap_for_details">Naciśnij, aby zobaczyć szczegóły</string>
   <string name="download_error_device_not_found">Nie znaleziono urządzenia docelowego</string>
   <string name="download_error_insufficient_space">Brak wystarczającej ilości wolnego miejsca na twoim urządzeniu.</string>
@@ -315,8 +336,8 @@
   <string name="checkbox_do_not_show_again">Nie pokazuj więcej</string>
   <string name="clear_queue_label">Wyczyść kolejkę</string>
   <string name="undo">Cofnij</string>
-  <string name="move_to_top_label">Przesuń na górę</string>
-  <string name="move_to_bottom_label">Przesuń na dół</string>
+  <string name="move_to_top_label">Przesuń na początek</string>
+  <string name="move_to_bottom_label">Przesuń na koniec</string>
   <string name="sort">Sortuj</string>
   <string name="keep_sorted">Zachowaj</string>
   <string name="date">Według daty</string>
@@ -421,6 +442,8 @@
   <string name="user_interface_label">Interfejs użytkownika</string>
   <string name="user_interface_sum">Wygląd, Subskrypcje, Ekran blokady</string>
   <string name="pref_set_theme_title">Wybierz motyw</string>
+  <string name="pref_tinted_theme_title">Używaj kolorów dynamicznie</string>
+  <string name="pref_tinted_theme_message">Dostosuj kolory na podstawie tapety</string>
   <string name="pref_nav_drawer_items_title">Wybierz pozycje panelu nawigacyjnego</string>
   <string name="pref_nav_drawer_items_sum">Zmienia pozycje widoczne w panelu nawigacyjnym.</string>
   <string name="pref_nav_drawer_feed_order_title">Ustaw kolejność subskrypcji</string>
@@ -497,6 +520,9 @@
   <string name="media_player_switched_to_exoplayer">Zmieniono na ExoPlayer</string>
   <string name="pref_skip_silence_title">Pomiń ciszę w plikach audio</string>
   <string name="behavior">Zachowanie</string>
+  <string name="pref_default_page">Domyślna strona</string>
+  <string name="pref_default_page_sum">Ekran otwierany przy uruchamianiu AntennaPod.</string>
+  <string name="remember_last_page">Zapiętaj ostatnią stronę</string>
   <string name="pref_delete_removes_from_queue_title">Kasowanie usuwa z kolejki</string>
   <string name="pref_delete_removes_from_queue_sum">Automatycznie usuwaj odcinek z kolejki gdy go kasujesz.</string>
   <string name="pref_filter_feed_title">Filtr subskrypcji</string>
@@ -606,11 +632,17 @@
   <string name="dialog_choose_sync_service_title">Wybierz dostawcę synchronizacji</string>
   <string name="gpodnet_description">Gpodder.net to serwis open-source do synchronizacji podcastów, który możesz zainstalować na własnym serwerze. Gpodder.net nie jest powiązany z projektem AntennaPod.</string>
   <string name="synchronization_summary_nextcloud">Gpoddersync to open-source aplikacja Nextcloudu, którą możesz łatwo zainstalować na swój serwer. Aplikacja nie jest powiązana z projektem AntennaPod.</string>
+  <string name="synchronization_host_explanation">Możesz wybrać swój własny serwer do synchronizacji. Po zidentyfikowaniu preferowanego serwera synchronizacji, wpisz tutaj jego adres.</string>
+  <string name="synchronization_host_label">Adres serwera</string>
+  <string name="proceed_to_login_butLabel">Przejdź do logowania</string>
   <string name="synchronization_nextcloud_authenticate_browser">Zezwól na dostęp w otwartym oknie przeglądarki i wróć do aplikacji AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Login</string>
+  <string name="synchronization_credentials_explanation">Podaj dane uwierzytelniające swojego konta na serwerze synchronizacji.</string>
   <string name="gpodnetauth_encryption_warning">Hasło i dane nie są zaszyfrowane!</string>
   <string name="username_label">Nazwa użytkownika</string>
   <string name="password_label">Hasło</string>
+  <string name="synchronization_login_butLabel">Zaloguj się</string>
+  <string name="synchronization_selectDevice_explanation">Wybierz urządzenie, które zostało utworzone na serwerze synchronizacji lub utwórz nowe.</string>
   <string name="gpodnetauth_device_name">Nazwa urządzenia</string>
   <string name="gpodnetauth_device_name_default">AntennaPod na %1$s</string>
   <string name="gpodnetauth_existing_devices">Istniejące urządzenia</string>
@@ -671,6 +703,10 @@
   <string name="auto_download_settings_label">Ustawienia automatycznego pobierania</string>
   <string name="episode_filters_label">Filtr odcinków</string>
   <string name="episode_filters_description">Wykaz terminów używanych aby zdecydować, czy odcinek powinien być włączony lub wyłączony podczas automatycznego pobierania.</string>
+  <string name="add_term">Dodaj Wyrażenie </string>
+  <string name="exclude_terms">Wyklucz odcinki zawierające dowolne z poniższych wyrażeń</string>
+  <string name="include_terms">Uwzględnij tylko odcinki zawierające dowolne z poniższych wyrażeń</string>
+  <string name="exclude_episodes_shorter_than">Wyklucz odcinki krótsze niż</string>
   <string name="keep_updated">Utrzymuj zaktualizowane</string>
   <string name="keep_updated_summary">Uwzględnij ten podcast przy (automatycznym) odświeżaniu wszystkich kanałów</string>
   <string name="auto_download_disabled_globally">Automatyczne pobieranie jest wyłączone w globalnych ustawieniach AntennaPod</string>
@@ -680,6 +716,8 @@
   <string name="statistics_space_used">Użyto pamięci:</string>
   <string name="statistics_episodes_started_total">Rozpoczęte/wszystkie odcinki:</string>
   <string name="statistics_view_all">Zobacz wszystkie podcasty »</string>
+  <string name="edit_url_menu">Edytuj adres kanału</string>
+  <string name="edit_url_confirmation_msg">Zmiana adresu RSS może łatwo zepsuć stan odtwarzania i listę odcinków podcastu. NIE zalecamy zmiany i NIE zapewniamy wsparcia, jeśli coś pójdzie nie tak. Tego nie da się cofnąć. Uszkodzonej subskrypcji NIE MOŻNA naprawić poprzez zwykłą zmianę adresu z powrotem. Sugerujemy utworzenie kopii zapasowej przed kontynuowaniem.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importowanie subskrybcji z jednozadaniowych aplikacji</string>
   <!--Add podcast fragment-->
@@ -695,7 +733,9 @@
   <string name="discover_is_hidden">Wybrano ukrywanie \"sugerowanych\".</string>
   <string name="discover_more">więcej »</string>
   <string name="discover_powered_by_itunes">Sugerowane przez iTunes</string>
+  <string name="discover_confirm">Pokaż podpowiedzi</string>
   <string name="search_powered_by">Wyniki z %1$s</string>
+  <string name="select_country">Wybierz kraj</string>
   <!--Local feeds-->
   <string name="add_local_folder">Dodaj lokalny folder</string>
   <string name="local_folder">Lokalny folder</string>

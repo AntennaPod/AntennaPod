@@ -184,4 +184,29 @@ public class EpisodeActionFilterTest extends TestCase {
                 .getRemoteActionsOverridingLocalActions(remoteActions, episodeActions);
         assertEquals(0, uniqueList.size());
     }
+
+    public void testPresentRemoteTimestampOverridesMissingLocalTimestamp() throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date arbitraryTime = format.parse("2021-01-01 08:00:00");
+
+        List<EpisodeAction> episodeActions = new ArrayList<>();
+        episodeActions.add(new EpisodeAction
+                .Builder("podcast.a", "episode.1", EpisodeAction.Action.PLAY)
+                // no timestamp
+                .position(10)
+                .build()
+        );
+
+        List<EpisodeAction> remoteActions = new ArrayList<>();
+        remoteActions.add(new EpisodeAction
+                .Builder("podcast.a", "episode.1", EpisodeAction.Action.PLAY)
+                .timestamp(arbitraryTime)
+                .position(10)
+                .build()
+        );
+
+        Map<Pair<String, String>, EpisodeAction> uniqueList = episodeActionFilter
+                .getRemoteActionsOverridingLocalActions(remoteActions, episodeActions);
+        assertSame(1, uniqueList.size());
+    }
 }

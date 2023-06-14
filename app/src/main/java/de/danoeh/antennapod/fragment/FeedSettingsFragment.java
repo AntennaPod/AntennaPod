@@ -16,7 +16,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.event.settings.SkipIntroEndingChangedEvent;
 import de.danoeh.antennapod.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
@@ -105,6 +105,7 @@ public class FeedSettingsFragment extends Fragment {
         private static final CharSequence PREF_AUTHENTICATION = "authentication";
         private static final CharSequence PREF_AUTO_DELETE = "autoDelete";
         private static final CharSequence PREF_CATEGORY_AUTO_DOWNLOAD = "autoDownloadCategory";
+        private static final CharSequence PREF_NEW_EPISODES_ACTION = "feedNewEpisodesAction";
         private static final String PREF_FEED_PLAYBACK_SPEED = "feedPlaybackSpeed";
         private static final String PREF_AUTO_SKIP = "feedAutoSkip";
         private static final String PREF_TAGS = "tags";
@@ -156,6 +157,7 @@ public class FeedSettingsFragment extends Fragment {
                         setupKeepUpdatedPreference();
                         setupAutoDeletePreference();
                         setupVolumeReductionPreferences();
+                        setupNewEpisodesAction();
                         setupAuthentificationPreference();
                         setupEpisodeFilterPreference();
                         setupPlaybackSpeedPreference();
@@ -166,6 +168,7 @@ public class FeedSettingsFragment extends Fragment {
                         updateAutoDeleteSummary();
                         updateVolumeReductionValue();
                         updateAutoDownloadEnabled();
+                        updateNewEpisodesAction();
 
                         if (feed.isLocalFeed()) {
                             findPreference(PREF_AUTHENTICATION).setVisible(false);
@@ -267,8 +270,7 @@ public class FeedSettingsFragment extends Fragment {
                             } catch (InterruptedException | ExecutionException e) {
                                 e.printStackTrace();
                             }
-
-                            DBTasks.forceRefreshFeed(requireContext(), feed, true);
+                            FeedUpdateManager.runOnce(getContext(), feed);
                         }, "RefreshAfterCredentialChange").start();
                     }
                 }.show();
@@ -283,11 +285,12 @@ public class FeedSettingsFragment extends Fragment {
                         feedPreferences.setAutoDeleteAction(FeedPreferences.AutoDeleteAction.GLOBAL);
                         break;
                     case "always":
-                        feedPreferences.setAutoDeleteAction(FeedPreferences.AutoDeleteAction.YES);
+                        feedPreferences.setAutoDeleteAction(FeedPreferences.AutoDeleteAction.ALWAYS);
                         break;
                     case "never":
-                        feedPreferences.setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NO);
+                        feedPreferences.setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NEVER);
                         break;
+                    default:
                 }
                 DBWriter.setFeedPreferences(feedPreferences);
                 updateAutoDeleteSummary();
@@ -300,14 +303,14 @@ public class FeedSettingsFragment extends Fragment {
 
             switch (feedPreferences.getAutoDeleteAction()) {
                 case GLOBAL:
-                    autoDeletePreference.setSummary(R.string.feed_auto_download_global);
+                    autoDeletePreference.setSummary(R.string.global_default);
                     autoDeletePreference.setValue("global");
                     break;
-                case YES:
+                case ALWAYS:
                     autoDeletePreference.setSummary(R.string.feed_auto_download_always);
                     autoDeletePreference.setValue("always");
                     break;
-                case NO:
+                case NEVER:
                     autoDeletePreference.setSummary(R.string.feed_auto_download_never);
                     autoDeletePreference.setValue("never");
                     break;
@@ -327,6 +330,7 @@ public class FeedSettingsFragment extends Fragment {
                     case "heavy":
                         feedPreferences.setVolumeAdaptionSetting(VolumeAdaptionSetting.HEAVY_REDUCTION);
                         break;
+                    default:
                 }
                 DBWriter.setFeedPreferences(feedPreferences);
                 updateVolumeReductionValue();
@@ -349,6 +353,34 @@ public class FeedSettingsFragment extends Fragment {
                 case HEAVY_REDUCTION:
                     volumeReductionPreference.setValue("heavy");
                     break;
+            }
+        }
+
+        private void setupNewEpisodesAction() {
+            findPreference(PREF_NEW_EPISODES_ACTION).setOnPreferenceChangeListener((preference, newValue) -> {
+                int code = Integer.parseInt((String) newValue);
+                feedPreferences.setNewEpisodesAction(FeedPreferences.NewEpisodesAction.fromCode(code));
+                DBWriter.setFeedPreferences(feedPreferences);
+                updateNewEpisodesAction();
+                return false;
+            });
+        }
+
+        private void updateNewEpisodesAction() {
+            ListPreference newEpisodesAction = findPreference(PREF_NEW_EPISODES_ACTION);
+            newEpisodesAction.setValue("" + feedPreferences.getNewEpisodesAction().code);
+
+            switch (feedPreferences.getNewEpisodesAction()) {
+                case GLOBAL:
+                    newEpisodesAction.setSummary(R.string.global_default);
+                    break;
+                case ADD_TO_INBOX:
+                    newEpisodesAction.setSummary(R.string.feed_new_episodes_action_add_to_inbox);
+                    break;
+                case NOTHING:
+                    newEpisodesAction.setSummary(R.string.feed_new_episodes_action_nothing);
+                    break;
+                default:
             }
         }
 

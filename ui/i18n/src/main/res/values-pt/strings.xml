@@ -47,7 +47,7 @@
   <string name="home_surprise_title">Surpreendam-me</string>
   <string name="home_classics_title">Ver clássicos</string>
   <string name="home_continue_title">Continuar a ouvir</string>
-  <string name="home_new_title">Ver o que há de novo</string>
+  <string name="home_new_title">Novidades</string>
   <string name="home_downloads_title">Gerir descargas</string>
   <string name="home_welcome_title">Bem-vindo a AntennaPod!</string>
   <string name="home_welcome_text">Ainda não subscreveu quaisquer podcasts. Abra o menu lateral para adicionar um.</string>
@@ -80,6 +80,8 @@
   <!--Playback history-->
   <string name="clear_history_label">Limpar histórico</string>
   <string name="clear_playback_history_msg">Está prestes a eliminar todo o histórico de reprodução. Tem a certeza de que deseja continuar?</string>
+  <string name="remove_history_label">Remover do histórico</string>
+  <string name="removed_history_label">Removido do histórico</string>
   <!--Other-->
   <string name="confirm_label">Confirmar</string>
   <string name="cancel_label">Cancelar</string>
@@ -424,6 +426,8 @@
   <string name="user_interface_label">Interface</string>
   <string name="user_interface_sum">Aparência, subscrições e ecrã de bloqueio</string>
   <string name="pref_set_theme_title">Tema</string>
+  <string name="pref_tinted_theme_title">Utilizar cores dinâmicas</string>
+  <string name="pref_tinted_theme_message">Ajustar cores da aplicação à cor de fundo do ecrã</string>
   <string name="pref_nav_drawer_items_title">Alterar itens do menu</string>
   <string name="pref_nav_drawer_items_sum">Alterar os itens que aparecem no menu de navegação.</string>
   <string name="pref_nav_drawer_feed_order_title">Definir ordem de subscrição</string>
@@ -609,11 +613,17 @@
   <string name="dialog_choose_sync_service_title">Escolher serviço de sincroniação</string>
   <string name="gpodnet_description">Gpodder.net é um serviço \'open source\' para sincronização de podcasts, que pode instalar no seu servidor. Gpodder.net é um serviço totalmente independente do projeto AntennaPod.</string>
   <string name="synchronization_summary_nextcloud">Gpoddersync é uma aplicação NextCloud que pode, facilmente, ser instalada no seu servidor. Esta aplicação é independente do projeto AntennaPod.</string>
+  <string name="synchronization_host_explanation">Pode escolher qualquer servidor de sincronização. Assim que identificar o servidor preferido, introduza aqui o endereço.</string>
+  <string name="synchronization_host_label">Endereço do servidor</string>
+  <string name="proceed_to_login_butLabel">Ir para início de sessão</string>
   <string name="synchronization_nextcloud_authenticate_browser">Conceda o acesso necessário através do navegador web e retorne a AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Acesso</string>
+  <string name="synchronization_credentials_explanation">Indique as credenciais da sua conta no servidor de sincronização.</string>
   <string name="gpodnetauth_encryption_warning">A palavra-passe e os dados não são cifrados!</string>
   <string name="username_label">Utilizador</string>
   <string name="password_label">Palavra-passe</string>
+  <string name="synchronization_login_butLabel">Iniciar sesssão</string>
+  <string name="synchronization_selectDevice_explanation">Selecione o dispositivo criado no servidor de sincronização ou, então, crie um novo.</string>
   <string name="gpodnetauth_device_name">Nome do dispositivo</string>
   <string name="gpodnetauth_device_name_default">AntennaPod em %1$s</string>
   <string name="gpodnetauth_existing_devices">Dispositivos existentes</string>
@@ -706,6 +716,7 @@
   <string name="discover_powered_by_itunes">Sugestões de iTunes</string>
   <string name="discover_confirm">Mostrar sugestões</string>
   <string name="search_powered_by">Resultados de %1$s</string>
+  <string name="select_country">Selecione o país</string>
   <!--Local feeds-->
   <string name="add_local_folder">Adicionar pasta local</string>
   <string name="local_folder">Pasta local</string>

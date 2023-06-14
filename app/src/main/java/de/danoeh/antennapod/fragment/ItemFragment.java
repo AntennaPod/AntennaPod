@@ -37,10 +37,7 @@ import de.danoeh.antennapod.adapter.actionbutton.PlayActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.PlayLocalActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.StreamActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.VisitWebsiteActionButton;
-import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.event.DownloaderUpdate;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.core.util.PlaybackStatus;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
@@ -49,8 +46,8 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.preferences.UsageStatistics;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateFormatter;
@@ -63,12 +60,10 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.apache.commons.lang3.ArrayUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -98,7 +93,6 @@ public class ItemFragment extends Fragment {
     private long itemId;
     private FeedItem item;
     private String webviewData;
-    private List<Downloader> downloaderList;
 
     private ViewGroup root;
     private ShownotesWebView webvDescription;
@@ -297,9 +291,9 @@ public class ItemFragment extends Fragment {
                         new RoundedCorners((int) (8 * getResources().getDisplayMetrics().density)))
                 .dontAnimate();
 
-        Glide.with(getActivity())
+        Glide.with(this)
                 .load(item.getImageLocation())
-                .error(Glide.with(getActivity())
+                .error(Glide.with(this)
                         .load(ImageResourceUtils.getFallbackImageLocation(item))
                         .apply(options))
                 .apply(options)
@@ -309,14 +303,13 @@ public class ItemFragment extends Fragment {
 
     private void updateButtons() {
         progbarDownload.setVisibility(View.GONE);
-        if (item.hasMedia() && downloaderList != null) {
-            for (Downloader downloader : downloaderList) {
-                DownloadRequest request = downloader.getDownloadRequest();
-                if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
-                        && request.getFeedfileId() == item.getMedia().getId()) {
-                    progbarDownload.setVisibility(View.VISIBLE);
-                    progbarDownload.setPercentage(0.01f * Math.max(1, request.getProgressPercent()), request);
-                }
+        if (item.hasMedia()) {
+            if (DownloadServiceInterface.get().isDownloadingEpisode(item.getMedia().getDownload_url())) {
+                progbarDownload.setVisibility(View.VISIBLE);
+                progbarDownload.setPercentage(0.01f * Math.max(1,
+                        DownloadServiceInterface.get().getProgress(item.getMedia().getDownload_url())), item);
+                progbarDownload.setIndeterminate(
+                        DownloadServiceInterface.get().isEpisodeQueued(item.getMedia().getDownload_url()));
             }
         }
 
@@ -341,7 +334,7 @@ public class ItemFragment extends Fragment {
             } else {
                 actionButton1 = new StreamActionButton(item);
             }
-            if (DownloadService.isDownloadingFile(media.getDownload_url())) {
+            if (DownloadServiceInterface.get().isDownloadingEpisode(media.getDownload_url())) {
                 actionButton2 = new CancelDownloadActionButton(item);
             } else if (!media.isDownloaded()) {
                 actionButton2 = new DownloadActionButton(item);
@@ -386,18 +379,15 @@ public class ItemFragment extends Fragment {
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(DownloadEvent event) {
-        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        DownloaderUpdate update = event.update;
-        downloaderList = update.downloaders;
+    public void onEventMainThread(EpisodeDownloadEvent event) {
         if (item == null || item.getMedia() == null) {
             return;
         }
-        long mediaId = item.getMedia().getId();
-        if (ArrayUtils.contains(update.mediaIds, mediaId)) {
-            if (itemsLoaded && getActivity() != null) {
-                updateButtons();
-            }
+        if (!event.getUrls().contains(item.getMedia().getDownload_url())) {
+            return;
+        }
+        if (itemsLoaded && getActivity() != null) {
+            updateButtons();
         }
     }
 

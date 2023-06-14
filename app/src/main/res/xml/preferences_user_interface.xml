@@ -4,13 +4,13 @@
         xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch">
 
     <PreferenceCategory android:title="@string/appearance">
-        <de.danoeh.antennapod.preferences.MaterialListPreference
-                android:entryValues="@array/theme_values"
-                android:entries="@array/theme_options"
-                android:title="@string/pref_set_theme_title"
-                android:key="prefTheme"
-                android:summary="@string/pref_set_theme_sum"
-                android:defaultValue="system"/>
+        <de.danoeh.antennapod.preferences.ThemePreference
+                android:key="prefTheme" />
+        <SwitchPreferenceCompat
+                android:title="@string/pref_black_theme_title"
+                android:key="prefThemeBlack"
+                android:summary="@string/pref_black_theme_message"
+                android:defaultValue="false" />
         <SwitchPreferenceCompat
                 android:title="@string/pref_tinted_theme_title"
                 android:key="prefTintedColors"
@@ -73,12 +73,6 @@
                 android:key="prefCompactNotificationButtons"
                 android:summary="@string/pref_compact_notification_buttons_sum"
                 android:title="@string/pref_compact_notification_buttons_title"/>
-        <SwitchPreferenceCompat
-                android:defaultValue="true"
-                android:enabled="true"
-                android:key="prefLockscreenBackground"
-                android:summary="@string/pref_lockscreen_background_sum"
-                android:title="@string/pref_lockscreen_background_title"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/behavior">
         <de.danoeh.antennapod.preferences.MaterialListPreference
@@ -88,6 +82,11 @@
                 android:title="@string/pref_default_page"
                 android:summary="@string/pref_default_page_sum"
                 android:defaultValue="HomeFragment"/>
+        <SwitchPreferenceCompat
+                android:key="prefBackButtonOpensDrawer"
+                android:title="@string/pref_back_button_opens_drawer"
+                android:summary="@string/pref_back_button_opens_drawer_summary"
+                android:defaultValue="false"/>
         <Preference
                 android:key="prefSwipe"
                 android:summary="@string/swipeactions_summary"

@@ -27,10 +27,12 @@
         <item name="android:splitMotionEvents">false</item>
         <item name="android:fitsSystemWindows">false</item>
         <item name="android:windowContentTransitions">true</item>
+        <item name="preferenceTheme">@style/AppPreferenceThemeOverlay</item>
     </style>
 
     <style name="Theme.AntennaPod.Light" parent="Theme.AntennaPod.Dynamic.Light">
         <item name="colorPrimary">@color/accent_light</item>
+        <item name="colorOnPrimary">@color/white</item>
         <item name="colorAccent">@color/accent_light</item>
         <item name="colorSecondary">@color/accent_light</item>
         <item name="colorOnSecondary">@color/white</item>
@@ -67,10 +69,12 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:navigationBarColor">@color/background_darktheme</item>
+        <item name="preferenceTheme">@style/AppPreferenceThemeOverlay</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.AntennaPod.Dynamic.Dark">
         <item name="colorPrimary">@color/accent_dark</item>
+        <item name="colorOnPrimary">@color/black</item>
         <item name="colorAccent">@color/accent_dark</item>
         <item name="colorSecondary">@color/accent_dark</item>
         <item name="colorOnSecondary">@color/black</item>
@@ -218,7 +222,7 @@
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_icon</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/launcher_animate</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">
@@ -249,6 +253,10 @@
         <item name="android:textColor">?android:attr/textColorSecondary</item>
         <item name="android:lines">1</item>
         <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="OutlinedButtonBetterContrast" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="backgroundTint">@color/button_bg_selector</item>
     </style>
 
     <style name="ProgressBarLight">
@@ -291,6 +299,14 @@
         <item name="android:textAlignment">center</item>
         <item name="android:paddingStart">8dp</item>
         <item name="android:paddingEnd">8dp</item>
+    </style>
+
+    <style name="AppPreferenceThemeOverlay" parent="@style/PreferenceThemeOverlay">
+        <item name="switchPreferenceCompatStyle">@style/AppSwitchPreference</item>
+    </style>
+
+    <style name="AppSwitchPreference" parent="@style/Preference.SwitchPreferenceCompat.Material">
+        <item name="widgetLayout">@layout/preference_material_switch</item>
     </style>
 
 </resources>

@@ -80,6 +80,8 @@
   <!--Playback history-->
   <string name="clear_history_label">Chronik löschen</string>
   <string name="clear_playback_history_msg">Dadurch wird der gesamte Wiedergabeverlauf gelöscht. Möchtest du wirklich fortfahren?</string>
+  <string name="remove_history_label">Aus dem Verlauf entfernen</string>
+  <string name="removed_history_label">Aus dem Verlauf entfernt</string>
   <!--Other-->
   <string name="confirm_label">Bestätigen</string>
   <string name="cancel_label">Abbrechen</string>
@@ -409,6 +411,8 @@ Tippen, um Details anzuzeigen.</string>
   <string name="user_interface_label">Benutzeroberfläche</string>
   <string name="user_interface_sum">Darstellung, Abonnements, Sperrbildschirm</string>
   <string name="pref_set_theme_title">Theme auswählen</string>
+  <string name="pref_tinted_theme_title">Dynamische Farben verwenden</string>
+  <string name="pref_tinted_theme_message">App-Farben basierend auf dem Hintergrundbild anpassen</string>
   <string name="pref_nav_drawer_items_title">Seitenleiste ändern</string>
   <string name="pref_nav_drawer_items_sum">Ändere, welche Einträge in der Seitenleiste erscheinen.</string>
   <string name="pref_nav_drawer_feed_order_title">Reihenfolge der Abonnements einstellen</string>
@@ -591,11 +595,17 @@ Tippen, um Details anzuzeigen.</string>
   <string name="dialog_choose_sync_service_title">Anbieter für Synchronisierung auswählen</string>
   <string name="gpodnet_description">Gpodder.net ist ein Open-Source-Podcast-Synchronisationsdienst, den du auf deinem eigenen Server installieren kannst. Gpodder.net ist unabhängig von dem AntennaPod-Projekt.</string>
   <string name="synchronization_summary_nextcloud">Gpoddersync ist eine quelloffene Nextcloud-Anwendung, die du einfach auf deinem eigenen Server installieren kannst. Die App ist unabhängig vom AntennaPod-Projekt.</string>
+  <string name="synchronization_host_explanation">Sie können Ihren eigenen Server zur Synchronisation auswählen. Wenn Sie Ihren bevorzugten Synchronisationsserver identifiziert haben, geben Sie bitte hier die Server-Adresse ein. </string>
+  <string name="synchronization_host_label">Server-Adresse</string>
+  <string name="proceed_to_login_butLabel">Weiter zur Anmeldung</string>
   <string name="synchronization_nextcloud_authenticate_browser">Gewähre den Zugriff über den geöffneten Webbrowser und kehre zu AntennaPod zurück.</string>
   <string name="gpodnetauth_login_butLabel">Anmelden</string>
+  <string name="synchronization_credentials_explanation">Bitte geben Sie die Anmeldeinformationen Ihres Kontos auf dem Synchronisationsserver an.</string>
   <string name="gpodnetauth_encryption_warning">Passwort und Daten sind nicht verschlüsselt!</string>
   <string name="username_label">Benutzername</string>
   <string name="password_label">Passwort</string>
+  <string name="synchronization_login_butLabel">Anmelden</string>
+  <string name="synchronization_selectDevice_explanation">Bitte wählen Sie das Gerät aus, das Sie auf dem Synchronisationsserver erstellt haben, oder erstellen Sie ein neues.</string>
   <string name="gpodnetauth_device_name">Gerätename</string>
   <string name="gpodnetauth_device_name_default">AntennaPod auf %1$s</string>
   <string name="gpodnetauth_existing_devices">Bestehende Geräte</string>
@@ -670,7 +680,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="statistics_episodes_started_total">Episoden gestartet/gesamt:</string>
   <string name="statistics_view_all">Für alle Podcasts ansehen »</string>
   <string name="edit_url_menu">Feed-URL bearbeiten</string>
-  <string name="edit_url_confirmation_msg">Das Ändern der RSS-Adresse kann leicht den Wiedergabezustand und die Episodenauflistung des Podcasts beeinträchtigen. Wir empfehlen NICHT, die Adresse zu ändern und bieten KEINEN Support an, wenn etwas schief geht. Dies kann nicht rückgängig gemacht werden. Das unterbrochene Abonnement kann NICHT repariert werden, indem die Adresse einfach wieder geändert wird. Wir empfehlen, eine Sicherungskopie zu erstellen, bevor du fortfährst.</string>
+  <string name="edit_url_confirmation_msg">Das Ändern der RSS-Adresse kann leicht den Abgespielt-Zustand und die Episoden des Podcasts beeinträchtigen. Wir empfehlen NICHT, die Adresse zu ändern und bieten KEINEN Support an, wenn etwas schief geht. Dies kann nicht rückgängig gemacht werden. Das defekte Abonnement kann NICHT repariert werden, indem die Adresse einfach wieder geändert wird. Wir empfehlen, eine Sicherungskopie zu erstellen, bevor du fortfährst.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importiere Abonnements aus Single-Purpose Apps</string>
   <!--Add podcast fragment-->
@@ -688,6 +698,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="discover_powered_by_itunes">Vorschläge von iTunes</string>
   <string name="discover_confirm">Vorschläge anzeigen</string>
   <string name="search_powered_by">Ergebnisse von %1$s</string>
+  <string name="select_country">Land auswählen</string>
   <!--Local feeds-->
   <string name="add_local_folder">Lokalen Ordner hinzufügen</string>
   <string name="local_folder">Lokaler Ordner</string>

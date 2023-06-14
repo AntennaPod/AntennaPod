@@ -6,17 +6,20 @@
   <string name="statistics_label">Statistika</string>
   <string name="add_feed_label">Lisa taskuhääling</string>
   <string name="episodes_label">Saated</string>
+  <string name="home_label">Kodu</string>
   <string name="queue_label">Järjekord</string>
   <string name="favorite_episodes_label">Lemmikud</string>
   <string name="settings_label">Seaded</string>
   <string name="downloads_label">Allalaadimised</string>
   <string name="open_autodownload_settings">Ava seaded</string>
+  <string name="downloads_log_label">Allalaadimise logi</string>
   <string name="subscriptions_label">Tellimused</string>
   <string name="subscriptions_list_label">Tellimuste nimekiri</string>
   <string name="cancel_download_label">Katkesta allalaadimine</string>
   <string name="playback_history_label">Esitamise ajalugu</string>
   <string name="episode_cache_full_title">Saadete vahemälu on täis</string>
   <string name="episode_cache_full_message">Saadete vahemälu limiit on täis. Vahemälu limiiti saab suurendada seadete alt.</string>
+  <string name="years_statistics_label">Aastad</string>
   <string name="notification_pref_fragment">Teavitused</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" ei leitud</string>
@@ -29,9 +32,19 @@
   <string name="change_setting">Muuda</string>
   <!--Statistics fragment-->
   <string name="statistics_speed_not_counted">Märkus: taasesituse kiirust ei arvestata kunagi.</string>
+  <string name="statistics_from">Kellelt</string>
+  <string name="statistics_to">Kellele</string>
+  <string name="statistics_today">Täna</string>
+  <string name="statistics_filter_all_time">Igal ajal</string>
   <string name="statistics_reset_data">Lähtesta statistika andmed</string>
   <string name="statistics_reset_data_msg">See lähtestab kõigi esitatud saadete kuulamise pikkuse ajaloo. Kas oled kindel, et tahad jätkata?</string>
   <!--Home fragment-->
+  <string name="home_surprise_title">Üllata mind</string>
+  <string name="home_classics_title">Vaata klassikalisi</string>
+  <string name="home_continue_title">Jätka kuulamist</string>
+  <string name="home_new_title">Mis on uut</string>
+  <string name="home_downloads_title">Halda allalaadimisi</string>
+  <string name="home_welcome_title">Tere tulemast AntennaPodi!</string>
   <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Ava menüü</string>
@@ -43,6 +56,7 @@
   <string name="drawer_feed_order_most_played">Sorteeri kuulatud saadete järgi</string>
   <string name="drawer_feed_counter_unplayed">Kuulamata saadete arv</string>
   <string name="drawer_feed_counter_downloaded">Allalaaditud saadete arv</string>
+  <string name="drawer_feed_counter_downloaded_unplayed">Allalaaditud kuulamata saadete arv</string>
   <string name="drawer_feed_counter_none">Pole</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">Ühtegi ühilduvat rakendust ei leitud</string>
@@ -128,6 +142,7 @@
   <string name="share_label">Jaga</string>
   <string name="share_file_label">Jaga faili</string>
   <string name="feed_delete_confirmation_msg">Palun kinnita, et tahad kustutada taskuhäälingu \"%1$s\" ja KÕIK selle saated (ka allalaaditud saated).</string>
+  <string name="feed_delete_confirmation_msg_batch">Palun kinnita, et tahad kustutada valitud taskuhäälingud ja KÕIK nende saated (ka allalaaditud saated).</string>
   <string name="feed_delete_confirmation_local_msg">Palun kinnita, et tahad eemaldada taskuhäälingu \"%1$s\". Kohalikus kaustas olevaid saateid ei kustutata.</string>
   <string name="feed_remover_msg">Taskuhäälingu eemaldamine</string>
   <string name="load_complete_feed">Värskenda kogu taskuhääling</string>
@@ -151,6 +166,10 @@
   <string name="delete_label">Kustuta</string>
   <string name="delete_failed">Faili ei saa kustutada. Aidata võib seadme taaskäivitamine.</string>
   <string name="delete_episode_label">Kustuta saade</string>
+  <plurals name="deleted_multi_episode_batch_label">
+    <item quantity="one">1 allalaaditud saade kustutatud.</item>
+    <item quantity="other">%d allalaaditud saadet kustutatud.</item>
+  </plurals>
   <string name="mark_read_label">Märgi kuulatuks</string>
   <string name="marked_as_played_label">Märgitud kuulatuks</string>
   <string name="marked_as_unplayed_label">Märgitud kui kuulamata</string>
@@ -204,6 +223,8 @@
   <string name="download_error_forbidden">Taskuhäälingut hostiv server keeldub vastamast.</string>
   <string name="download_canceled_msg">Allalaadimine on tühistatud</string>
   <string name="download_error_wrong_size">Ühendus serveriga katkes enne allalaadimise lõppu</string>
+  <string name="download_error_blocked">Allalaadimise blokeeris mingi teine rakendus sinu telefonis (nt VPN või reklaami blokeerija).</string>
+  <string name="download_error_certificate">Turvalist ühendust pole võimalik luua. See võib tähendada, et mõni teine rakendus su seadmes (nt VPN või reklaami blokeerija) blokeeris allalaadimise või on serveri sertifikaatidel midagi viga.</string>
   <string name="download_report_title">Allalaadimised lõpetati veaga (vigadega)</string>
   <string name="auto_download_report_title">Automaatsed allalaadimised lõpetatud</string>
   <string name="download_error_io_error">IO viga</string>
@@ -215,6 +236,7 @@
   </plurals>
   <string name="completing">Lõpetamine…</string>
   <string name="download_notification_title">Taskuhäälingu andmete allalaadimine</string>
+  <string name="download_notification_title_episodes">Saadete allalaadimine</string>
   <string name="download_log_title_unknown">Tundmatu pealkiri</string>
   <string name="download_type_feed">Uudisvoog</string>
   <string name="download_type_media">Meediafail</string>
@@ -451,6 +473,7 @@
   <string name="sync_status_episodes_download">Saadete muudatuste allalaadimine…</string>
   <string name="sync_status_upload_played">Esitamise oleku uuendamine…</string>
   <string name="sync_status_subscriptions">Tellimuste sünkroonimine…</string>
+  <string name="sync_status_wait_for_downloads">Allalaadimiste lõpu ootamine...</string>
   <string name="sync_status_success">Sünkroonimine õnnestus</string>
   <string name="sync_status_error">Sünkroonimine nurjus</string>
   <!--import and export-->
