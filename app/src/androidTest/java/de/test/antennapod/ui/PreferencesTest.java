@@ -200,6 +200,18 @@ public class PreferencesTest {
     }
 
     @Test
+    public void testAutoDeleteLocal() {
+        clickPreference(R.string.downloads_pref);
+        final boolean autoDelete = UserPreferences.isAutoDeleteLocal();
+        onView(withText(R.string.pref_auto_local_delete_title)).perform(click());
+        Awaitility.await().atMost(1000, MILLISECONDS)
+                .until(() -> autoDelete != UserPreferences.isAutoDeleteLocal());
+        onView(withText(R.string.pref_auto_local_delete_title)).perform(click());
+        Awaitility.await().atMost(1000, MILLISECONDS)
+                .until(() -> autoDelete == UserPreferences.isAutoDeleteLocal());
+    }
+
+    @Test
     public void testPlaybackSpeeds() {
         clickPreference(R.string.playback_pref);
         clickPreference(R.string.playback_speed);

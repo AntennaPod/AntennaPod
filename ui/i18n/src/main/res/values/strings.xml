@@ -397,6 +397,8 @@
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
     <string name="pref_auto_delete_title">Auto Delete</string>
+    <string name="pref_auto_local_delete_sum">Include local folder feeds in Auto Delete functionality</string>
+    <string name="pref_auto_local_delete_title">Auto Delete from local folder feeds</string>
     <string name="pref_smart_mark_as_played_sum">Mark episodes as played even if less than a certain amount of seconds of playing time is still left</string>
     <string name="pref_smart_mark_as_played_title">Smart Mark as Played</string>
     <string name="pref_skip_keeps_episodes_sum">Keep episodes when they are skipped</string>

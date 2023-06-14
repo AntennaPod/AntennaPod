@@ -15,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.util.FeedUtil;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
@@ -226,7 +227,8 @@ public class FeedItemMenuHandler {
         final Handler h = new Handler(fragment.requireContext().getMainLooper());
         final Runnable r = () -> {
             FeedMedia media = item.getMedia();
-            if (media != null && FeedItemUtil.hasAlmostEnded(media) && UserPreferences.isAutoDelete()) {
+            boolean shouldAutoDelete = FeedUtil.shouldAutoDeleteItemsOnThatFeed(item.getFeed());
+            if (media != null && FeedItemUtil.hasAlmostEnded(media) && shouldAutoDelete) {
                 DBWriter.deleteFeedMediaOfItem(fragment.requireContext(), media.getId());
             }
         };

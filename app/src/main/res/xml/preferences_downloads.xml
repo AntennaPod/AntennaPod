@@ -34,6 +34,12 @@
             android:summary="@string/pref_auto_delete_sum"
             android:title="@string/pref_auto_delete_title"/>
         <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefAutoDeleteLocal"
+            android:summary="@string/pref_auto_local_delete_sum"
+            android:title="@string/pref_auto_local_delete_title"/>
+        <SwitchPreferenceCompat
             android:defaultValue="true"
             android:enabled="true"
             android:key="prefFavoriteKeepsEpisode"
