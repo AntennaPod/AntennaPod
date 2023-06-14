@@ -47,6 +47,10 @@ public abstract class ItemFilterDialog extends BottomSheetDialogFragment {
             binding.filterButton1.setTag(item.values[0].filterId);
             binding.filterButton2.setText(item.values[1].displayName);
             binding.filterButton2.setTag(item.values[1].filterId);
+            binding.filterButton1.setMaxLines(3);
+            binding.filterButton1.setSingleLine(false);
+            binding.filterButton2.setMaxLines(3);
+            binding.filterButton2.setSingleLine(false);
             rows.addView(binding.getRoot());
         }
 

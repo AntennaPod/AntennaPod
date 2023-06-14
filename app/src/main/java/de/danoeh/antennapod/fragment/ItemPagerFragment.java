@@ -48,7 +48,7 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
         ItemPagerFragment fragment = new ItemPagerFragment();
         Bundle args = new Bundle();
         args.putLongArray(ARG_FEEDITEMS, feeditems);
-        args.putInt(ARG_FEEDITEM_POS, feedItemPos);
+        args.putInt(ARG_FEEDITEM_POS, Math.max(0, feedItemPos));
         fragment.setArguments(args);
         return fragment;
     }

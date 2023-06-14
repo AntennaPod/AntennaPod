@@ -2,8 +2,9 @@ package de.danoeh.antennapod.core.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import androidx.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,8 +18,12 @@ public class SleepTimerPreferences {
     private static final String PREF_VIBRATE = "Vibrate";
     private static final String PREF_SHAKE_TO_RESET = "ShakeToReset";
     private static final String PREF_AUTO_ENABLE = "AutoEnable";
+    private static final String PREF_AUTO_ENABLE_FROM = "AutoEnableFrom";
+    private static final String PREF_AUTO_ENABLE_TO = "AutoEnableTo";
 
-    private static final String DEFAULT_VALUE = "15";
+    private static final String DEFAULT_LAST_TIMER = "15";
+    private static final int DEFAULT_AUTO_ENABLE_FROM = 22;
+    private static final int DEFAULT_AUTO_ENABLE_TO = 6;
 
     private static SharedPreferences prefs;
 
@@ -37,7 +42,7 @@ public class SleepTimerPreferences {
     }
 
     public static String lastTimerValue() {
-        return prefs.getString(PREF_VALUE, DEFAULT_VALUE);
+        return prefs.getString(PREF_VALUE, DEFAULT_LAST_TIMER);
     }
 
     public static long timerMillis() {
@@ -69,4 +74,33 @@ public class SleepTimerPreferences {
         return prefs.getBoolean(PREF_AUTO_ENABLE, false);
     }
 
+    public static void setAutoEnableFrom(int hourOfDay) {
+        prefs.edit().putInt(PREF_AUTO_ENABLE_FROM, hourOfDay).apply();
+    }
+
+    public static int autoEnableFrom() {
+        return prefs.getInt(PREF_AUTO_ENABLE_FROM, DEFAULT_AUTO_ENABLE_FROM);
+    }
+
+    public static void setAutoEnableTo(int hourOfDay) {
+        prefs.edit().putInt(PREF_AUTO_ENABLE_TO, hourOfDay).apply();
+    }
+
+    public static int autoEnableTo() {
+        return prefs.getInt(PREF_AUTO_ENABLE_TO, DEFAULT_AUTO_ENABLE_TO);
+    }
+
+    public static boolean isInTimeRange(int from, int to, int current) {
+        // Range covers one day
+        if (from < to) {
+            return from <= current && current < to;
+        }
+
+        // Range covers two days
+        if (from <= current) {
+            return true;
+        }
+
+        return current < to;
+    }
 }

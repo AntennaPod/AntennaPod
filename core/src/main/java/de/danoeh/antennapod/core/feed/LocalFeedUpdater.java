@@ -28,7 +28,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.documentfile.provider.DocumentFile;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.util.FastDocumentFile;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -197,55 +197,55 @@ public class LocalFeedUpdater {
         return item;
     }
 
-    private static void loadMetadata(FeedItem item, FastDocumentFile file, Context context) {
-        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-        mediaMetadataRetriever.setDataSource(context, file.getUri());
+    private static void loadMetadata(FeedItem item, FastDocumentFile file, Context context) throws IOException {
+        try (MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever()) {
+            mediaMetadataRetriever.setDataSource(context, file.getUri());
 
-        String dateStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DATE);
-        if (!TextUtils.isEmpty(dateStr)) {
-            try {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss", Locale.getDefault());
-                item.setPubDate(simpleDateFormat.parse(dateStr));
-            } catch (ParseException parseException) {
-                Date date = DateUtils.parse(dateStr);
-                if (date != null) {
-                    item.setPubDate(date);
+            String dateStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DATE);
+            if (!TextUtils.isEmpty(dateStr) && !"19040101T000000.000Z".equals(dateStr)) {
+                try {
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss", Locale.getDefault());
+                    item.setPubDate(simpleDateFormat.parse(dateStr));
+                } catch (ParseException parseException) {
+                    Date date = DateUtils.parse(dateStr);
+                    if (date != null) {
+                        item.setPubDate(date);
+                    }
                 }
             }
-        }
 
-        String title = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
-        if (!TextUtils.isEmpty(title)) {
-            item.setTitle(title);
-        }
+            String title = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+            if (!TextUtils.isEmpty(title)) {
+                item.setTitle(title);
+            }
 
-        String durationStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-        item.getMedia().setDuration((int) Long.parseLong(durationStr));
+            String durationStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            item.getMedia().setDuration((int) Long.parseLong(durationStr));
 
-        item.getMedia().setHasEmbeddedPicture(mediaMetadataRetriever.getEmbeddedPicture() != null);
-        mediaMetadataRetriever.close();
-
-        try (InputStream inputStream = context.getContentResolver().openInputStream(file.getUri())) {
-            Id3MetadataReader reader = new Id3MetadataReader(
-                    new CountingInputStream(new BufferedInputStream(inputStream)));
-            reader.readInputStream();
-            item.setDescriptionIfLonger(reader.getComment());
-        } catch (IOException | ID3ReaderException e) {
-            Log.d(TAG, "Unable to parse ID3 of " + file.getUri() + ": " + e.getMessage());
+            item.getMedia().setHasEmbeddedPicture(mediaMetadataRetriever.getEmbeddedPicture() != null);
 
             try (InputStream inputStream = context.getContentResolver().openInputStream(file.getUri())) {
-                VorbisCommentMetadataReader reader = new VorbisCommentMetadataReader(inputStream);
+                Id3MetadataReader reader = new Id3MetadataReader(
+                        new CountingInputStream(new BufferedInputStream(inputStream)));
                 reader.readInputStream();
-                item.setDescriptionIfLonger(reader.getDescription());
-            } catch (IOException | VorbisCommentReaderException e2) {
-                Log.d(TAG, "Unable to parse vorbis comments of " + file.getUri() + ": " + e2.getMessage());
+                item.setDescriptionIfLonger(reader.getComment());
+            } catch (IOException | ID3ReaderException e) {
+                Log.d(TAG, "Unable to parse ID3 of " + file.getUri() + ": " + e.getMessage());
+
+                try (InputStream inputStream = context.getContentResolver().openInputStream(file.getUri())) {
+                    VorbisCommentMetadataReader reader = new VorbisCommentMetadataReader(inputStream);
+                    reader.readInputStream();
+                    item.setDescriptionIfLonger(reader.getDescription());
+                } catch (IOException | VorbisCommentReaderException e2) {
+                    Log.d(TAG, "Unable to parse vorbis comments of " + file.getUri() + ": " + e2.getMessage());
+                }
             }
         }
     }
 
     private static void reportError(Feed feed, String reasonDetailed) {
-        DownloadStatus status = new DownloadStatus(feed, feed.getTitle(),
-                DownloadError.ERROR_IO_ERROR, false, reasonDetailed, true);
+        DownloadResult status = new DownloadResult(feed, feed.getTitle(),
+                DownloadError.ERROR_IO_ERROR, false, reasonDetailed);
         DBWriter.addDownloadStatus(status);
         DBWriter.setFeedLastUpdateFailed(feed.getId(), true);
     }
@@ -254,8 +254,7 @@ public class LocalFeedUpdater {
      * Reports a successful download status.
      */
     private static void reportSuccess(Feed feed) {
-        DownloadStatus status = new DownloadStatus(feed, feed.getTitle(),
-                DownloadError.SUCCESS, true, null, true);
+        DownloadResult status = new DownloadResult(feed, feed.getTitle(), DownloadError.SUCCESS, true, null);
         DBWriter.addDownloadStatus(status);
         DBWriter.setFeedLastUpdateFailed(feed.getId(), false);
     }
@@ -264,21 +263,21 @@ public class LocalFeedUpdater {
      * Answers if reporting success is needed for the given feed.
      */
     private static boolean mustReportDownloadSuccessful(Feed feed) {
-        List<DownloadStatus> downloadStatuses = DBReader.getFeedDownloadLog(feed.getId());
+        List<DownloadResult> downloadResults = DBReader.getFeedDownloadLog(feed.getId());
 
-        if (downloadStatuses.isEmpty()) {
+        if (downloadResults.isEmpty()) {
             // report success if never reported before
             return true;
         }
 
-        Collections.sort(downloadStatuses, (downloadStatus1, downloadStatus2) ->
+        Collections.sort(downloadResults, (downloadStatus1, downloadStatus2) ->
                 downloadStatus1.getCompletionDate().compareTo(downloadStatus2.getCompletionDate()));
 
-        DownloadStatus lastDownloadStatus = downloadStatuses.get(downloadStatuses.size() - 1);
+        DownloadResult lastDownloadResult = downloadResults.get(downloadResults.size() - 1);
 
         // report success if the last update was not successful
         // (avoid logging success again if the last update was ok)
-        return !lastDownloadStatus.isSuccessful();
+        return !lastDownloadResult.isSuccessful();
     }
 
     @FunctionalInterface

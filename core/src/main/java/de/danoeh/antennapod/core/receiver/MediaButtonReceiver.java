@@ -37,7 +37,11 @@ public class MediaButtonReceiver extends BroadcastReceiver {
             serviceIntent.putExtra(EXTRA_KEYCODE, event.getKeyCode());
             serviceIntent.putExtra(EXTRA_SOURCE, event.getSource());
             serviceIntent.putExtra(EXTRA_HARDWAREBUTTON, event.getEventTime() > 0 || event.getDownTime() > 0);
-            ContextCompat.startForegroundService(context, serviceIntent);
+            try {
+                ContextCompat.startForegroundService(context, serviceIntent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

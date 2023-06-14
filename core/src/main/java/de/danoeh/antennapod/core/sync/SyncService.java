@@ -274,10 +274,6 @@ public class SyncService extends Worker {
                 Log.i(TAG, "Feed item has no media: " + action);
                 continue;
             }
-            if (action.getAction() == EpisodeAction.NEW) {
-                DBWriter.markItemPlayed(feedItem, FeedItem.UNPLAYED, true);
-                continue;
-            }
             feedItem.getMedia().setPosition(action.getPosition() * 1000);
             if (FeedItemUtil.hasAlmostEnded(feedItem.getMedia())) {
                 Log.d(TAG, "Marking as played: " + action);

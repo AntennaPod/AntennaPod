@@ -426,8 +426,8 @@
   <string name="user_interface_label">Interface utilisateur</string>
   <string name="user_interface_sum">Apparence, abonnements, écran de verrouillage</string>
   <string name="pref_set_theme_title">Choisir un thème</string>
-  <string name="pref_tinted_theme_title">Utiliser les couleurs dynamiques</string>
-  <string name="pref_tinted_theme_message">Colore l\'application en fonction du fonds d\'écran.</string>
+  <string name="pref_tinted_theme_title">Couleurs dynamiques</string>
+  <string name="pref_tinted_theme_message">Adapter les couleurs de l\'application à celles du fonds d\'écran.</string>
   <string name="pref_nav_drawer_items_title">Changer les éléments du volet de navigation</string>
   <string name="pref_nav_drawer_items_sum">Choisir quels éléments apparaissent dans le volet de navigation</string>
   <string name="pref_nav_drawer_feed_order_title">Définir l\'ordre des abonnements</string>
@@ -615,7 +615,7 @@
   <string name="synchronization_summary_nextcloud">Gpoddersync est une application Nextcloud open-source que vous pouvez installer facilement sur votre serveur. L\'application est indépendante du projet AntennaPod.</string>
   <string name="synchronization_host_explanation">Vous pouvez décider du serveur à utiliser pour synchroniser vos données. Quand vous en aurez choisi un, entrer son adresse ici.</string>
   <string name="synchronization_host_label">Adresse du serveur</string>
-  <string name="proceed_to_login_butLabel">Identification</string>
+  <string name="proceed_to_login_butLabel">S\'identifier</string>
   <string name="synchronization_nextcloud_authenticate_browser">Autoriser l\'accès à l\'aide du navigateur qui a été ouvert puis revenez sur AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Connexion</string>
   <string name="synchronization_credentials_explanation">Merci de renseigner vos informations de connexion au serveur de synchronisation.</string>
@@ -686,7 +686,7 @@
   <string name="episode_filters_description">Liste de mots permettant de décider si un épisode est à inclure ou à exclure des téléchargements automatiques</string>
   <string name="add_term">Ajouter le mot</string>
   <string name="exclude_terms">Exclure les épisodes avec les mots ci-dessous</string>
-  <string name="include_terms">Inclure uniquement les épisodes avec les mots ci-dessous</string>
+  <string name="include_terms">N\'inclure que les épisodes avec les mots ci-dessous</string>
   <string name="exclude_episodes_shorter_than">Exclure les épisodes de moins de</string>
   <string name="keep_updated">Maintenir à jour</string>
   <string name="keep_updated_summary">Inclure ce podcast lors de la mise à jour des podcasts</string>
@@ -716,7 +716,7 @@
   <string name="discover_powered_by_itunes">Suggestions de iTunes</string>
   <string name="discover_confirm">Montrer les suggestions</string>
   <string name="search_powered_by">Résultats de %1$s</string>
-  <string name="select_country">Choisir un pays</string>
+  <string name="select_country">Changer le pays</string>
   <!--Local feeds-->
   <string name="add_local_folder">Ajouter un dossier</string>
   <string name="local_folder">Dossier local</string>

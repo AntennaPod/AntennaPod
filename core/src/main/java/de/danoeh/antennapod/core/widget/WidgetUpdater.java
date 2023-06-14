@@ -13,6 +13,9 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.concurrent.TimeUnit;
 
@@ -83,10 +86,16 @@ public abstract class WidgetUpdater {
             views.setOnClickPendingIntent(R.id.imgvCover, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlaybackSpeed, startPlaybackSpeedDialog);
 
+            int radius = context.getResources().getDimensionPixelSize(R.dimen.widget_inner_radius);
+            RequestOptions options = new RequestOptions()
+                    .dontAnimate()
+                    .transform(new FitCenter(), new RoundedCorners(radius));
+
             try {
                 icon = Glide.with(context)
                         .asBitmap()
                         .load(widgetState.media.getImageLocation())
+                        .apply(options)
                         .submit(iconSize, iconSize)
                         .get(500, TimeUnit.MILLISECONDS);
                 views.setImageViewBitmap(R.id.imgvCover, icon);
@@ -95,6 +104,7 @@ public abstract class WidgetUpdater {
                     icon = Glide.with(context)
                             .asBitmap()
                             .load(ImageResourceUtils.getFallbackImageLocation(widgetState.media))
+                            .apply(options)
                             .submit(iconSize, iconSize)
                             .get(500, TimeUnit.MILLISECONDS);
                     views.setImageViewBitmap(R.id.imgvCover, icon);
@@ -176,6 +186,9 @@ public abstract class WidgetUpdater {
                 views.setInt(R.id.butRew, "setVisibility", showRewind ? View.VISIBLE : View.GONE);
                 views.setInt(R.id.butFastForward, "setVisibility", showFastForward ? View.VISIBLE : View.GONE);
                 views.setInt(R.id.butSkip, "setVisibility", showSkip ? View.VISIBLE : View.GONE);
+            } else {
+                views.setInt(R.id.extendedButtonsContainer, "setVisibility", View.GONE);
+                views.setInt(R.id.butPlay, "setVisibility", View.VISIBLE);
             }
 
             int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);

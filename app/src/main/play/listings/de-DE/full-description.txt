@@ -1,5 +1,5 @@
-AntennaPod ist ein Podcast-Manager und -Player, mit dem Du direkten Zugriff auf Millionen von freien und kostenpflichtigen Podcasts hast. Angefangen von unabhängigen Podcastern zu großen Rundfunkanstalten oder Hörfunksendern wie BBC, NPR und CNN. Abonniere, importiere und exportiere deine Feeds mühelos mit Hilfe des iTunes-Podcast-Verzeichnisses, OPML-Dateien oder RSS-URLs.
-Downloade, streame oder sortiere Episoden in der Abspielliste und genieße sie mit einstellbarer Abspielgeschwindigkeit, Unterstützung von Kapiteln und Schlummerfunktion.
+AntennaPod ist ein Podcast-Manager und -Player, mit dem Du direkten Zugriff auf Millionen von freien und kostenpflichtigen Podcasts hast, von unabhängigen Podcastern bis zu großen Rundfunkanstalten oder Hörfunksendern wie BBC, NPR und CNN. Abonniere, importiere und exportiere deine Feeds mühelos mit Hilfe des iTunes-Podcast-Verzeichnisses, OPML-Dateien oder RSS-URLs.
+Downloade, streame oder sortiere Episoden in der Abspielliste und genieße sie mit einstellbarer Wiedergabegeschwindigkeit, Unterstützung von Kapiteln und Schlummerfunktion.
 Reduziere Aufwand, Stromverbrauch und Datenverbrauch durch leistungsfähige Kontrolle der Downloads (bestimmte Uhrzeiten, Intervalle, WiFi-Netze) und des Löschens (basierend auf deinen Favoriten und weiteren Einstellungen).
 
 AntennaPod ist von Podcast-Enthusiasten gemacht und frei im wahrsten Sinne des Wortes: Open Source, keine Kosten, keine Werbung.
@@ -18,7 +18,7 @@ AntennaPod ist von Podcast-Enthusiasten gemacht und frei im wahrsten Sinne des W
 <b>Behalte die Kontrolle</b>
 • Kontrolliere automatisches Herunterladen: Wähle Feeds aus, schließe mobile Netze aus, suche bestimmte WiFi-Netze aus, setze voraus, dass das Smartphone geladen wird und lege Zeitpunkte oder Intervalle fest
 • Verwalte deinen Speicherplatz durch das Festlegen der Anzahl gespeicherter Episoden, schlaues Löschen und durch Auswahl des Speicherortes
-• Passe das Aussehen mit dem hellen oder dunklen Theme an deine Wünsche an
+• Passt sich deiner Umgebung mit dem hellen oder dunklen Theme an
 • Sichere deine Abonnements mit gPodder.net oder über den OPML-Export
 
 <b>Tritt der AntennaPod-Community bei!</b>

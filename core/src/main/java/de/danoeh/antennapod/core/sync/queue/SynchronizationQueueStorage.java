@@ -94,13 +94,15 @@ public class SynchronizationQueueStorage {
 
     protected void enqueueFeedAdded(String downloadUrl) {
         SharedPreferences sharedPreferences = getSharedPreferences();
-        String json = sharedPreferences
-                .getString(QUEUED_FEEDS_ADDED, "[]");
         try {
-            JSONArray queue = new JSONArray(json);
-            queue.put(downloadUrl);
-            sharedPreferences
-                    .edit().putString(QUEUED_FEEDS_ADDED, queue.toString()).apply();
+            JSONArray addedQueue = new JSONArray(sharedPreferences.getString(QUEUED_FEEDS_ADDED, "[]"));
+            addedQueue.put(downloadUrl);
+            JSONArray removedQueue = new JSONArray(sharedPreferences.getString(QUEUED_FEEDS_REMOVED, "[]"));
+            removedQueue.remove(indexOf(downloadUrl, removedQueue));
+            sharedPreferences.edit()
+                    .putString(QUEUED_FEEDS_ADDED, addedQueue.toString())
+                    .putString(QUEUED_FEEDS_REMOVED, removedQueue.toString())
+                    .apply();
 
         } catch (JSONException jsonException) {
             jsonException.printStackTrace();
@@ -109,15 +111,31 @@ public class SynchronizationQueueStorage {
 
     protected void enqueueFeedRemoved(String downloadUrl) {
         SharedPreferences sharedPreferences = getSharedPreferences();
-        String json = sharedPreferences.getString(QUEUED_FEEDS_REMOVED, "[]");
         try {
-            JSONArray queue = new JSONArray(json);
-            queue.put(downloadUrl);
-            sharedPreferences.edit().putString(QUEUED_FEEDS_REMOVED, queue.toString())
+            JSONArray removedQueue = new JSONArray(sharedPreferences.getString(QUEUED_FEEDS_REMOVED, "[]"));
+            removedQueue.put(downloadUrl);
+            JSONArray addedQueue = new JSONArray(sharedPreferences.getString(QUEUED_FEEDS_ADDED, "[]"));
+            addedQueue.remove(indexOf(downloadUrl, addedQueue));
+            sharedPreferences.edit()
+                    .putString(QUEUED_FEEDS_ADDED, addedQueue.toString())
+                    .putString(QUEUED_FEEDS_REMOVED, removedQueue.toString())
                     .apply();
         } catch (JSONException jsonException) {
             jsonException.printStackTrace();
         }
+    }
+
+    private int indexOf(String string, JSONArray array) {
+        try {
+            for (int i = 0; i < array.length(); i++) {
+                if (array.getString(i).equals(string)) {
+                    return i;
+                }
+            }
+        } catch (JSONException jsonException) {
+            jsonException.printStackTrace();
+        }
+        return -1;
     }
 
     protected void enqueueEpisodeAction(EpisodeAction action) {

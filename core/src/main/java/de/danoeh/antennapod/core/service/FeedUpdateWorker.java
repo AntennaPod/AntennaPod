@@ -5,7 +5,7 @@ import android.content.Context;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
-import androidx.work.ForegroundInfo;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
@@ -20,12 +20,13 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.service.download.NewEpisodesNotification;
 import de.danoeh.antennapod.core.service.download.handler.FeedSyncTask;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.model.download.DownloadError;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 
@@ -38,10 +39,12 @@ public class FeedUpdateWorker extends Worker {
     private static final String TAG = "FeedUpdateWorker";
 
     private final NewEpisodesNotification newEpisodesNotification;
+    private final NotificationManagerCompat notificationManager;
 
     public FeedUpdateWorker(@NonNull Context context, @NonNull WorkerParameters params) {
         super(context, params);
         newEpisodesNotification = new NewEpisodesNotification();
+        notificationManager = NotificationManagerCompat.from(context);
     }
 
     @Override
@@ -77,16 +80,18 @@ public class FeedUpdateWorker extends Worker {
             toUpdate.add(feed);
             refreshFeeds(toUpdate, true);
         }
+        notificationManager.cancel(R.id.notification_updating_feeds);
+        DBTasks.autodownloadUndownloadedItems(getApplicationContext());
         return Result.success();
     }
 
     @NonNull
-    private ForegroundInfo createForegroundInfo(List<Feed> toUpdate) {
+    private Notification createNotification(List<Feed> toUpdate) {
         Context context = getApplicationContext();
         String contentText = context.getResources().getQuantityString(R.plurals.downloads_left,
                 toUpdate.size(), toUpdate.size());
         String bigText = Stream.of(toUpdate).map(feed -> "• " + feed.getTitle()).collect(Collectors.joining("\n"));
-        Notification notification = new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_DOWNLOADING)
+        return new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_DOWNLOADING)
                 .setContentTitle(context.getString(R.string.download_notification_title_feeds))
                 .setContentText(contentText)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(bigText))
@@ -95,7 +100,6 @@ public class FeedUpdateWorker extends Worker {
                 .addAction(R.drawable.ic_cancel, context.getString(R.string.cancel_label),
                         WorkManager.getInstance(context).createCancelPendingIntent(getId()))
                 .build();
-        return new ForegroundInfo(R.id.notification_updating_feeds, notification);
     }
 
     private void refreshFeeds(List<Feed> toUpdate, boolean force) {
@@ -103,7 +107,7 @@ public class FeedUpdateWorker extends Worker {
             if (isStopped()) {
                 return;
             }
-            setForegroundAsync(createForegroundInfo(toUpdate));
+            notificationManager.notify(R.id.notification_updating_feeds, createNotification(toUpdate));
             Feed feed = toUpdate.get(0);
             try {
                 if (feed.isLocalFeed()) {
@@ -113,8 +117,8 @@ public class FeedUpdateWorker extends Worker {
                 }
             } catch (Exception e) {
                 DBWriter.setFeedLastUpdateFailed(feed.getId(), true);
-                DownloadStatus status = new DownloadStatus(feed, feed.getTitle(),
-                        DownloadError.ERROR_IO_ERROR, false, e.getMessage(), true);
+                DownloadResult status = new DownloadResult(feed, feed.getTitle(),
+                        DownloadError.ERROR_IO_ERROR, false, e.getMessage());
                 DBWriter.addDownloadStatus(status);
             }
             toUpdate.remove(0);
@@ -142,7 +146,7 @@ public class FeedUpdateWorker extends Worker {
         downloader.call();
 
         if (!downloader.getResult().isSuccessful()) {
-            if (downloader.getResult().isCancelled()) {
+            if (downloader.cancelled || downloader.getResult().getReason() == DownloadError.ERROR_DOWNLOAD_CANCELLED) {
                 return;
             }
             DBWriter.setFeedLastUpdateFailed(request.getFeedfileId(), true);
@@ -163,7 +167,7 @@ public class FeedUpdateWorker extends Worker {
             return; // No download logs for new subscriptions
         }
         // we create a 'successful' download log if the feed's last refresh failed
-        List<DownloadStatus> log = DBReader.getFeedDownloadLog(request.getFeedfileId());
+        List<DownloadResult> log = DBReader.getFeedDownloadLog(request.getFeedfileId());
         if (log.size() > 0 && !log.get(0).isSuccessful()) {
             DBWriter.addDownloadStatus(feedSyncTask.getDownloadStatus());
         }

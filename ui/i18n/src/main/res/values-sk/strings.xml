@@ -442,8 +442,8 @@
   <string name="user_interface_label">Používateľské rozhranie</string>
   <string name="user_interface_sum">Vzhľad, odbery, zamknutá obrazovka</string>
   <string name="pref_set_theme_title">Vybrať motív</string>
-  <string name="pref_tinted_theme_title">Použiť tónované farby</string>
-  <string name="pref_tinted_theme_message">Tónuj farby aplikácie na základe obrázku pozadia</string>
+  <string name="pref_tinted_theme_title">Použitť dynamické farby</string>
+  <string name="pref_tinted_theme_message">Prispôsobiť farby aplikácie podľa tapety</string>
   <string name="pref_nav_drawer_items_title">Zmeniť navigačný panel</string>
   <string name="pref_nav_drawer_items_sum">Upraviť zobrazenie položiek v navigačnom paneli.</string>
   <string name="pref_nav_drawer_feed_order_title">Nastaviť poradie odberov</string>

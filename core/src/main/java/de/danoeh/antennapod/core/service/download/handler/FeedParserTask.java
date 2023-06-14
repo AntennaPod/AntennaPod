@@ -8,7 +8,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.parser.feed.FeedHandler;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
@@ -25,15 +25,15 @@ import java.util.concurrent.Callable;
 public class FeedParserTask implements Callable<FeedHandlerResult> {
     private static final String TAG = "FeedParserTask";
     private final DownloadRequest request;
-    private DownloadStatus downloadStatus;
+    private DownloadResult downloadResult;
     private boolean successful = true;
 
     public FeedParserTask(DownloadRequest request) {
         this.request = request;
-        downloadStatus = new DownloadStatus(
+        downloadResult = new DownloadResult(
         0, request.getTitle(), 0, request.getFeedfileType(), false,
-                false, true, DownloadError.ERROR_REQUEST_ERROR, new Date(),
-                "Unknown error: Status not set", request.isInitiatedByUser());
+                DownloadError.ERROR_REQUEST_ERROR, new Date(),
+                "Unknown error: Status not set");
     }
 
     @Override
@@ -87,12 +87,12 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
         }
 
         if (successful) {
-            downloadStatus = new DownloadStatus(feed, feed.getHumanReadableIdentifier(), DownloadError.SUCCESS,
-                                                successful, reasonDetailed, request.isInitiatedByUser());
+            downloadResult = new DownloadResult(feed, feed.getHumanReadableIdentifier(), DownloadError.SUCCESS,
+                                                successful, reasonDetailed);
             return result;
         } else {
-            downloadStatus = new DownloadStatus(feed, feed.getHumanReadableIdentifier(), reason,
-                                                successful, reasonDetailed, request.isInitiatedByUser());
+            downloadResult = new DownloadResult(feed, feed.getHumanReadableIdentifier(), reason,
+                                                successful, reasonDetailed);
             return null;
         }
     }
@@ -120,7 +120,7 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
     }
 
     @NonNull
-    public DownloadStatus getDownloadStatus() {
-        return downloadStatus;
+    public DownloadResult getDownloadStatus() {
+        return downloadResult;
     }
 }
