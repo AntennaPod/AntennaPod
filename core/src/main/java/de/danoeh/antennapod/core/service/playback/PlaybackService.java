@@ -1227,23 +1227,27 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         sessionState.setActions(capabilities);
 
-        // On Android Auto, custom actions are added in the following order around the play button, if no default
-        // actions are present: Near left, near right, far left, far right, additional actions panel
-        PlaybackStateCompat.CustomAction.Builder rewindBuilder = new PlaybackStateCompat.CustomAction.Builder(
+        if (UserPreferences.showRewindOnCompactNotification()) {
+            // On Android Auto, custom actions are added in the following order around the play button, if no default
+            // actions are present: Near left, near right, far left, far right, additional actions panel
+            PlaybackStateCompat.CustomAction.Builder rewindBuilder = new PlaybackStateCompat.CustomAction.Builder(
                 CUSTOM_ACTION_REWIND,
                 getString(R.string.rewind_label),
                 R.drawable.ic_notification_fast_rewind
-        );
-        WearMediaSession.addWearExtrasToAction(rewindBuilder);
-        sessionState.addCustomAction(rewindBuilder.build());
+            );
+            WearMediaSession.addWearExtrasToAction(rewindBuilder);
+            sessionState.addCustomAction(rewindBuilder.build());
+        }
 
-        PlaybackStateCompat.CustomAction.Builder fastForwardBuilder = new PlaybackStateCompat.CustomAction.Builder(
+        if (UserPreferences.showFastForwardOnCompactNotification()) {
+            PlaybackStateCompat.CustomAction.Builder fastForwardBuilder = new PlaybackStateCompat.CustomAction.Builder(
                 CUSTOM_ACTION_FAST_FORWARD,
                 getString(R.string.fast_forward_label),
                 R.drawable.ic_notification_fast_forward
-        );
-        WearMediaSession.addWearExtrasToAction(fastForwardBuilder);
-        sessionState.addCustomAction(fastForwardBuilder.build());
+            );
+            WearMediaSession.addWearExtrasToAction(fastForwardBuilder);
+            sessionState.addCustomAction(fastForwardBuilder.build());
+        }
 
         sessionState.addCustomAction(
                 new PlaybackStateCompat.CustomAction.Builder(
@@ -1252,20 +1256,25 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         R.drawable.ic_notification_playback_speed
                 ).build()
         );
-        sessionState.addCustomAction(
-                new PlaybackStateCompat.CustomAction.Builder(
-                        CUSTOM_ACTION_SKIP_TO_NEXT,
-                        getString(R.string.skip_episode_label),
-                        R.drawable.ic_notification_skip
-                ).build()
-        );
 
-        if (getPlayable() != null && getPlayable().getChapters() != null) {
+        if (UserPreferences.showSkipOnCompactNotification()) {
             sessionState.addCustomAction(
                 new PlaybackStateCompat.CustomAction.Builder(
-                    CUSTOM_ACTION_NEXT_CHAPTER,
-                    getString(R.string.next_chapter), R.drawable.ic_notification_next_chapter)
-                    .build());
+                    CUSTOM_ACTION_SKIP_TO_NEXT,
+                    getString(R.string.skip_episode_label),
+                    R.drawable.ic_notification_skip
+                ).build()
+            );
+        }
+
+        if (UserPreferences.showNextChapterOnCompactNotification()) {
+            if (getPlayable() != null && getPlayable().getChapters() != null) {
+                sessionState.addCustomAction(
+                        new PlaybackStateCompat.CustomAction.Builder(
+                        CUSTOM_ACTION_NEXT_CHAPTER,
+                        getString(R.string.next_chapter), R.drawable.ic_notification_next_chapter)
+                        .build());
+            }
         }
 
         WearMediaSession.mediaSessionSetExtraForWear(mediaSession);
