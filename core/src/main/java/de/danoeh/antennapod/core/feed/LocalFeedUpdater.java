@@ -126,9 +126,6 @@ public class LocalFeedUpdater {
         feed.setDescription(context.getString(R.string.local_feed_description));
         feed.setAuthor(context.getString(R.string.local_folder));
 
-        if (newItems.isEmpty()) {
-            throw new IOException("Empty folder. Make sure that the folder is accessible and contains media files.");
-        }
         DBTasks.updateFeed(context, feed, true);
     }
 
