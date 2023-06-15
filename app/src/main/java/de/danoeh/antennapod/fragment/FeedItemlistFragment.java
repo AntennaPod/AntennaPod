@@ -225,8 +225,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             disposable.dispose();
         }
         adapter.endSelectMode();
+    }
 
-        toolbarColorManager.resetStatusBar();
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (toolbarColorManager != null) {
+            toolbarColorManager.resetStatusBar();
+        }
     }
 
     @Override

@@ -11,7 +11,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.TypedValue;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.ColorUtils;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.appbar.AppBarLayout;
@@ -34,7 +36,7 @@ public class ToolbarColorManager implements AppBarLayout.OnOffsetChangedListener
         this.activity = activity;
         this.toolbar = toolbar;
 
-        //Get the background color of the toolbar (dependant on theme)
+        //Get the background color of the toolbar (dependent on theme)
         Resources.Theme theme = activity.getTheme();
         TypedArray typedArray = theme.obtainStyledAttributes(new int[]{ R.attr.background_elevated});
         this.colorBackgroundToolbar = typedArray.getColor(0, 0);
@@ -53,6 +55,13 @@ public class ToolbarColorManager implements AppBarLayout.OnOffsetChangedListener
 
         //Save original status bar color so that it can be restored when the activity is destroyed
         originalStatusBarColor = activity.getWindow().getStatusBarColor();
+
+        /*Reset status bar color whenever a new fragment come in foreground
+        Check if activity is of AppCompatActivity to prevent ClassCastExceptions*/
+        if (activity instanceof AppCompatActivity) {
+            FragmentManager fragmentManager = ((AppCompatActivity) activity).getSupportFragmentManager();
+            fragmentManager.addOnBackStackChangedListener(this::resetStatusBar);
+        }
     }
 
     @Override
@@ -82,7 +91,7 @@ public class ToolbarColorManager implements AppBarLayout.OnOffsetChangedListener
     }
 
     /**
-     * Call this function whenever the activity this <class>toolbarIconTintManager</class> is destroyed
+     * Call this function whenever the activity this <class>toolbarIconTintManager</class> is onPause
      * Resets status bar color back to initial so that the status bar appearance does not permanently get altered
      */
     public void resetStatusBar() {

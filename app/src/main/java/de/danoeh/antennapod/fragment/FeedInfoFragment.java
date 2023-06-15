@@ -261,7 +261,14 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         if (disposable != null) {
             disposable.dispose();
         }
-        toolbarColorManager.resetStatusBar();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (toolbarColorManager != null) {
+            toolbarColorManager.resetStatusBar();
+        }
     }
 
     private void refreshToolbarState() {
