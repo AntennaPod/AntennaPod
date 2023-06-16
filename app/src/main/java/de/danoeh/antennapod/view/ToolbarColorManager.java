@@ -31,6 +31,7 @@ public class ToolbarColorManager implements AppBarLayout.OnOffsetChangedListener
     private final int colorToolbarIcons;
     private final List<Drawable> toolbarIconsToTint;
     private final int originalStatusBarColor;
+    private static final float TOOLBAR_ELEVATION_PRIMARY_COLOR_TINT = 0.12f;
 
     public ToolbarColorManager(Activity activity, MaterialToolbar toolbar, List<Drawable> toolbarIconsToTint) {
         this.activity = activity;
@@ -38,13 +39,16 @@ public class ToolbarColorManager implements AppBarLayout.OnOffsetChangedListener
 
         //Get the background color of the toolbar (dependent on theme)
         Resources.Theme theme = activity.getTheme();
-        TypedArray typedArray = theme.obtainStyledAttributes(new int[]{ R.attr.colorPrimary});
-        int primaryColor = typedArray.getColor(0, 0);
-        typedArray.recycle();
+        TypedArray typedArrayColors = theme.obtainStyledAttributes(new int[]{ R.attr.colorPrimary,
+                R.attr.background_color});
+        int primaryColor = typedArrayColors.getColor(0, 0);
+        int backgroundColor = typedArrayColors.getColor(1, 0);
+        typedArrayColors.recycle();
 
-        this.colorBackgroundToolbar = ColorUtils.blendARGB(Color.WHITE, primaryColor,  0.12f);
+        this.colorBackgroundToolbar = ColorUtils.blendARGB(backgroundColor, primaryColor,
+                TOOLBAR_ELEVATION_PRIMARY_COLOR_TINT);
 
-        //Get toolbar icon color (also dependant on theme)
+        //Get toolbar icon color (also dependent on theme)
         TypedValue typedValueToolbarIconColor = new TypedValue();
         theme.resolveAttribute(android.R.attr.colorForeground, typedValueToolbarIconColor, true);
         this.colorToolbarIcons = typedValueToolbarIconColor.data;
