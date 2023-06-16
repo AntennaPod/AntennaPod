@@ -38,9 +38,11 @@ public class ToolbarColorManager implements AppBarLayout.OnOffsetChangedListener
 
         //Get the background color of the toolbar (dependent on theme)
         Resources.Theme theme = activity.getTheme();
-        TypedArray typedArray = theme.obtainStyledAttributes(new int[]{ R.attr.background_elevated});
-        this.colorBackgroundToolbar = typedArray.getColor(0, 0);
+        TypedArray typedArray = theme.obtainStyledAttributes(new int[]{ R.attr.colorPrimary});
+        int primaryColor = typedArray.getColor(0, 0);
         typedArray.recycle();
+
+        this.colorBackgroundToolbar = ColorUtils.blendARGB(Color.WHITE, primaryColor,  0.12f);
 
         //Get toolbar icon color (also dependant on theme)
         TypedValue typedValueToolbarIconColor = new TypedValue();
