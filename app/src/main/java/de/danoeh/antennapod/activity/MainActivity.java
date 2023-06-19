@@ -332,6 +332,10 @@ public class MainActivity extends CastEnabledActivity {
         params.setMargins(navigationBarInsets.left, 0, navigationBarInsets.right,
                 navigationBarInsets.bottom + (visible ? externalPlayerHeight : 0));
         mainView.setLayoutParams(params);
+        FragmentContainerView playerView = findViewById(R.id.playerFragment);
+        ViewGroup.MarginLayoutParams playerParams = (ViewGroup.MarginLayoutParams) playerView.getLayoutParams();
+        playerParams.setMargins(navigationBarInsets.left,0,navigationBarInsets.right,0);
+        playerView.setLayoutParams(playerParams);
         findViewById(R.id.audioplayerFragment).setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
