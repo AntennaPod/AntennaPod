@@ -174,13 +174,17 @@ public class AudioPlayerFragment extends Fragment implements
     }
 
     private void setMiniPlayerMargin() {
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
         Resources resources = this.getResources();
         @SuppressLint({"DiscouragedApi", "InternalInsetResource"})
         int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
         if (resourceId > 0) {
             int width = resources.getDimensionPixelSize(resourceId);
-            final int rotation = ((WindowManager) requireActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
+            final int rotation = ((WindowManager) requireActivity().getSystemService(Context.WINDOW_SERVICE))
+                                 .getDefaultDisplay().getRotation();
             if (rotation == Surface.ROTATION_90) {
                 params.setMarginEnd(width);
             } else if (rotation == Surface.ROTATION_270) {
