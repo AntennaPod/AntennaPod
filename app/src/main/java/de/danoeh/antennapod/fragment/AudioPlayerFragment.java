@@ -181,7 +181,7 @@ public class AudioPlayerFragment extends Fragment implements
         );
         Resources resources = this.getResources();
         int resourceId;
-        if (isTablet(requireActivity())){
+        if (isTablet(requireActivity())) {
             resourceId = resources.getIdentifier(
                     resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
                             ? "navigation_bar_height" : "navigation_bar_height_landscape", "dimen", "android"
