@@ -173,14 +173,26 @@ public class AudioPlayerFragment extends Fragment implements
         return root;
     }
 
+    @SuppressLint("DiscouragedApi")
     private void setMiniPlayerMargin() {
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
         Resources resources = this.getResources();
-        @SuppressLint({"DiscouragedApi", "InternalInsetResource"})
-        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
+        int resourceId;
+        if (isTablet(requireActivity())){
+            resourceId = resources.getIdentifier(
+                    resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ?
+                    "navigation_bar_height" : "navigation_bar_height_landscape", "dimen", "android"
+            );
+        }  else {
+            resourceId = resources.getIdentifier(
+                    resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ?
+                    "navigation_bar_height" : "navigation_bar_width", "dimen", "android"
+            );
+        }
+
         if (resourceId > 0) {
             int width = resources.getDimensionPixelSize(resourceId);
             final int rotation = ((WindowManager) requireActivity().getSystemService(Context.WINDOW_SERVICE))
@@ -196,6 +208,12 @@ public class AudioPlayerFragment extends Fragment implements
         }
         miniPlayerView.setLayoutParams(params);
     }
+    private boolean isTablet(Context c) {
+        return (c.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
+
 
     private void setChapterDividers(Playable media) {
 
