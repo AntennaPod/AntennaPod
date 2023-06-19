@@ -186,6 +186,7 @@ public class AudioPlayerFragment extends Fragment implements
             } else if (rotation == Surface.ROTATION_270) {
                 params.setMarginStart(width);
             } else {
+                params.setMarginStart(0);
                 params.setMarginEnd(0);
             }
         }
