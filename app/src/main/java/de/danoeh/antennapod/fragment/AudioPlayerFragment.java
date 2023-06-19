@@ -186,7 +186,7 @@ public class AudioPlayerFragment extends Fragment implements
                     resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
                             ? "navigation_bar_height" : "navigation_bar_height_landscape", "dimen", "android"
             );
-        }  else {
+        } else {
             resourceId = resources.getIdentifier(
                     resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
                             ? "navigation_bar_height" : "navigation_bar_width", "dimen", "android"
@@ -196,10 +196,12 @@ public class AudioPlayerFragment extends Fragment implements
         if (resourceId > 0) {
             int width = resources.getDimensionPixelSize(resourceId);
             final int rotation = ((WindowManager) requireActivity().getSystemService(Context.WINDOW_SERVICE))
-                                 .getDefaultDisplay().getRotation();
-            if (rotation == Surface.ROTATION_90) { params.setMarginEnd(width); }
-            else if (rotation == Surface.ROTATION_270){ params.setMarginStart(width); }
-            else {
+                    .getDefaultDisplay().getRotation();
+            if (rotation == Surface.ROTATION_90) {
+                params.setMarginEnd(width);
+            } else if (rotation == Surface.ROTATION_270) {
+                params.setMarginStart(width);
+            } else {
                 params.setMarginStart(0);
                 params.setMarginEnd(0);
             }
