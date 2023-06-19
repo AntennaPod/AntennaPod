@@ -1,13 +1,20 @@
 package de.danoeh.antennapod.fragment;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
@@ -18,6 +25,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.appbar.MaterialToolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -95,6 +103,7 @@ public class AudioPlayerFragment extends Fragment implements
     private ProgressBar progressIndicator;
     private CardView cardViewSeek;
     private TextView txtvSeek;
+    private FragmentContainerView miniPlayerView;
 
     private PlaybackController controller;
     private Disposable disposable;
@@ -117,6 +126,8 @@ public class AudioPlayerFragment extends Fragment implements
         toolbar.setOnMenuItemClickListener(this);
 
         ExternalPlayerFragment externalPlayerFragment = new ExternalPlayerFragment();
+        miniPlayerView = root.findViewById(R.id.playerFragment);
+        setMiniPlayerMargin();
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.playerFragment, externalPlayerFragment, ExternalPlayerFragment.TAG)
                 .commit();
@@ -160,6 +171,48 @@ public class AudioPlayerFragment extends Fragment implements
         });
 
         return root;
+    }
+
+    @SuppressLint("DiscouragedApi")
+    private void setMiniPlayerMargin() {
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        Resources resources = this.getResources();
+        int resourceId;
+        if (isTablet(requireActivity())) {
+            resourceId = resources.getIdentifier(
+                    resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
+                            ? "navigation_bar_height" : "navigation_bar_height_landscape", "dimen", "android"
+            );
+        } else {
+            resourceId = resources.getIdentifier(
+                    resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
+                            ? "navigation_bar_height" : "navigation_bar_width", "dimen", "android"
+            );
+        }
+
+        if (resourceId > 0) {
+            int width = resources.getDimensionPixelSize(resourceId);
+            final int rotation = ((WindowManager) requireActivity().getSystemService(Context.WINDOW_SERVICE))
+                    .getDefaultDisplay().getRotation();
+            if (rotation == Surface.ROTATION_90) {
+                params.setMarginEnd(width);
+            } else if (rotation == Surface.ROTATION_270) {
+                params.setMarginStart(width);
+            } else {
+                params.setMarginStart(0);
+                params.setMarginEnd(0);
+            }
+        }
+        miniPlayerView.setLayoutParams(params);
+    }
+
+    private boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
     private void setChapterDividers(Playable media) {
@@ -426,6 +479,12 @@ public class AudioPlayerFragment extends Fragment implements
         } else if (duration != controller.getDuration()) {
             updateUi(controller.getMedia());
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setMiniPlayerMargin();
     }
 
     @Override
