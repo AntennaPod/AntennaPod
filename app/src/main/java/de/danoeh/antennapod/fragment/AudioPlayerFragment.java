@@ -208,12 +208,12 @@ public class AudioPlayerFragment extends Fragment implements
         }
         miniPlayerView.setLayoutParams(params);
     }
-    private boolean isTablet(Context c) {
-        return (c.getResources().getConfiguration().screenLayout
+
+    private boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
-
 
     private void setChapterDividers(Playable media) {
 
