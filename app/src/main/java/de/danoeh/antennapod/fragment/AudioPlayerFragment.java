@@ -183,13 +183,13 @@ public class AudioPlayerFragment extends Fragment implements
         int resourceId;
         if (isTablet(requireActivity())){
             resourceId = resources.getIdentifier(
-                    resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ?
-                    "navigation_bar_height" : "navigation_bar_height_landscape", "dimen", "android"
+                    resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
+                            ? "navigation_bar_height" : "navigation_bar_height_landscape", "dimen", "android"
             );
         }  else {
             resourceId = resources.getIdentifier(
-                    resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ?
-                    "navigation_bar_height" : "navigation_bar_width", "dimen", "android"
+                    resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
+                            ? "navigation_bar_height" : "navigation_bar_width", "dimen", "android"
             );
         }
 
