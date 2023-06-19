@@ -32,8 +32,8 @@ public class SimpleChapters extends Namespace {
         if (currentItem != null) {
             if (localName.equals(CHAPTERS)) {
                 currentItem.setChapters(new ArrayList<>());
-            } // if the chapter's START is empty, we don't need to do anything
-            else if (localName.equals(CHAPTER) && !TextUtils.isEmpty(attributes.getValue(START))) {
+            } else if (localName.equals(CHAPTER) && !TextUtils.isEmpty(attributes.getValue(START))) {
+                // if the chapter's START is empty, we don't need to do anything
                 try {
                     long start = DateUtils.parseTimeString(attributes.getValue(START));
                     String title = attributes.getValue(TITLE);
