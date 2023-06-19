@@ -197,12 +197,8 @@ public class AudioPlayerFragment extends Fragment implements
             int width = resources.getDimensionPixelSize(resourceId);
             final int rotation = ((WindowManager) requireActivity().getSystemService(Context.WINDOW_SERVICE))
                                  .getDefaultDisplay().getRotation();
-            if (rotation == Surface.ROTATION_90) {
-                params.setMarginEnd(width);
-            }
-            else if (rotation == Surface.ROTATION_270) {
-                params.setMarginStart(width);
-            }
+            if (rotation == Surface.ROTATION_90) params.setMarginEnd(width);
+            else if (rotation == Surface.ROTATION_270) params.setMarginStart(width);
             else {
                 params.setMarginStart(0);
                 params.setMarginEnd(0);
