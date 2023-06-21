@@ -17,6 +17,9 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.elevation.SurfaceColors;
+import com.google.android.material.theme.overlay.MaterialThemeOverlay;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,26 +34,19 @@ public class ToolbarColorManager implements AppBarLayout.OnOffsetChangedListener
     private final int colorToolbarIcons;
     private final List<Drawable> toolbarIconsToTint;
     private final int originalStatusBarColor;
-    private static final float TOOLBAR_ELEVATION_PRIMARY_COLOR_TINT = 0.12f;
 
     public ToolbarColorManager(Activity activity, MaterialToolbar toolbar, List<Drawable> toolbarIconsToTint) {
         this.activity = activity;
         this.toolbar = toolbar;
 
-        //Get the background color of the toolbar (dependent on theme)
-        Resources.Theme theme = activity.getTheme();
-        TypedArray typedArrayColors = theme.obtainStyledAttributes(new int[]{ R.attr.colorPrimary,
-                R.attr.background_color});
-        int primaryColor = typedArrayColors.getColor(0, 0);
-        int backgroundColor = typedArrayColors.getColor(1, 0);
-        typedArrayColors.recycle();
-
-        this.colorBackgroundToolbar = ColorUtils.blendARGB(backgroundColor, primaryColor,
-                TOOLBAR_ELEVATION_PRIMARY_COLOR_TINT);
+        /*Toolbar color is Surface_2 in Material 3
+        (see https://m3.material.io/components/top-app-bar/specs#d950a7cc-c1e7-4d69-a6f4-b8ff92cc5b3a)*/
+        this.colorBackgroundToolbar = SurfaceColors.SURFACE_2.getColor(activity);
 
         //Get toolbar icon color (also dependent on theme)
         TypedValue typedValueToolbarIconColor = new TypedValue();
-        theme.resolveAttribute(android.R.attr.colorForeground, typedValueToolbarIconColor, true);
+        Resources.Theme theme = activity.getTheme();
+        theme.resolveAttribute(R.attr.colorOnSurface, typedValueToolbarIconColor, true);
         this.colorToolbarIcons = typedValueToolbarIconColor.data;
 
         //Compile list of all icons needing to be tinted from constructor + toolbar defaults
