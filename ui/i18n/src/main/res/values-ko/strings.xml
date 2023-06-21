@@ -6,11 +6,13 @@
   <string name="statistics_label">통계</string>
   <string name="add_feed_label">팟캐스트 추가</string>
   <string name="episodes_label">에피소드</string>
+  <string name="home_label">홈</string>
   <string name="queue_label">대기열</string>
   <string name="favorite_episodes_label">즐겨찾기</string>
   <string name="settings_label">설정</string>
   <string name="downloads_label">다운로드</string>
   <string name="open_autodownload_settings">설정 열기</string>
+  <string name="downloads_log_label">다운로드 기록</string>
   <string name="subscriptions_label">구독</string>
   <string name="subscriptions_list_label">구독 목록</string>
   <string name="cancel_download_label">다운로드 취소</string>
@@ -117,6 +119,9 @@
   <string name="filtered_label">필터링함</string>
   <string name="open_podcast">팟캐스트 열기</string>
   <string name="please_wait_for_data">데이터를 읽어 들일 때까지 기다리십시오</string>
+  <string name="edit_tags">태그 편집</string>
+  <string name="add_tag">태그 추가</string>
+  <string name="rename_tag_label">태그 이름 바꾸기</string>
   <!--actions on feeditems-->
   <string name="download_label">다운로드</string>
   <plurals name="downloading_batch_label">

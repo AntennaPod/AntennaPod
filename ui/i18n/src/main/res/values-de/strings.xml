@@ -411,8 +411,8 @@ Tippen, um Details anzuzeigen.</string>
   <string name="user_interface_label">Benutzeroberfläche</string>
   <string name="user_interface_sum">Darstellung, Abonnements, Sperrbildschirm</string>
   <string name="pref_set_theme_title">Theme auswählen</string>
-  <string name="pref_tinted_theme_title">Getönte Farben verwenden</string>
-  <string name="pref_tinted_theme_message">App-Farben basierend auf dem Hintergrundbild einfärben</string>
+  <string name="pref_tinted_theme_title">Dynamische Farben verwenden</string>
+  <string name="pref_tinted_theme_message">App-Farben basierend auf dem Hintergrundbild anpassen</string>
   <string name="pref_nav_drawer_items_title">Seitenleiste ändern</string>
   <string name="pref_nav_drawer_items_sum">Ändere, welche Einträge in der Seitenleiste erscheinen.</string>
   <string name="pref_nav_drawer_feed_order_title">Reihenfolge der Abonnements einstellen</string>

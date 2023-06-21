@@ -45,7 +45,9 @@
   <string name="statistics_counting_total">Toplamda çalınan</string>
   <!--Home fragment-->
   <string name="home_surprise_title">Sürprizle karşılaş</string>
+  <string name="home_classics_title">Klasiklerinizi kontrol edin</string>
   <string name="home_continue_title">Dinlemeye devam et</string>
+  <string name="home_new_title">Yenilikler</string>
   <string name="home_downloads_title">İndirmeleri yönet</string>
   <string name="home_welcome_title">AntennaPod\'a hoşgeldin!</string>
   <string name="home_welcome_text">Henüz hiçbir podcast\'e abone olmadın. Kenar menüyü aç ve bir podcast ekle.</string>
@@ -78,6 +80,8 @@
   <!--Playback history-->
   <string name="clear_history_label">Geçmişi temizle</string>
   <string name="clear_playback_history_msg">Bu tüm oynatma geçmişini silecek. Devam etmek istediğinden emin misin?</string>
+  <string name="remove_history_label">Geçmişten kaldır</string>
+  <string name="removed_history_label">Geçmişten kaldırıldı</string>
   <!--Other-->
   <string name="confirm_label">Onayla</string>
   <string name="cancel_label">İptal</string>
@@ -236,6 +240,7 @@
   <string name="download_pending">İndirme bekleniyor</string>
   <string name="download_running">İndiriliyor</string>
   <string name="download_error_details">Ayrıntılar</string>
+  <string name="download_log_details_message">%1$s\n\nTechnical reason: \n%2$s\n\nFile URL:\n%3$s</string>
   <string name="download_error_tap_for_details">Ayrıntıları görüntülemek için dokunun.</string>
   <string name="download_error_device_not_found">Depolama aygıtı bulunamadı</string>
   <string name="download_error_insufficient_space">Cihazınızda yeterli alan kalmadı.</string>
@@ -405,6 +410,8 @@
   <string name="user_interface_label">Kullanıcı Arayüzü</string>
   <string name="user_interface_sum">Görünüm, Abonelikler, Kilit ekranı</string>
   <string name="pref_set_theme_title">Temayı seç</string>
+  <string name="pref_tinted_theme_title">Dinamik renkleri kullan</string>
+  <string name="pref_tinted_theme_message">Uygulama renklerini duvar kağıdına göre uyarla</string>
   <string name="pref_nav_drawer_items_title">Uygulama Çekmecesi öğelerini ayarla</string>
   <string name="pref_nav_drawer_items_sum">Hangi öğelerin uygulama çekmecesinde görüneceğini değiştir.</string>
   <string name="pref_nav_drawer_feed_order_title">Abonelik sıralamasını ayarla</string>
@@ -588,11 +595,17 @@ Herkes AntennaPod\'u daha iyi hale getirmek için yardımda bulunabilir, gerek k
   <string name="dialog_choose_sync_service_title">Senkronizasyon sağlayıcınızı seçin</string>
   <string name="gpodnet_description">Gpodder.net, kendi sunucunuza yükleyebileceğiniz açık kaynaklı bir podcast senkronizasyon hizmetidir. Gpodder.net, AntennaPod projesinden bağımsızdır.</string>
   <string name="synchronization_summary_nextcloud">Gpoddersync, kendi sunucunuza kolayca yükleyebileceğiniz açık kaynaklı bir Nextcloud uygulamasıdır. Uygulama AntennaPod projesinden bağımsızdır.</string>
+  <string name="synchronization_host_explanation">Senkronize etmek için kendi sunucunuzu seçebilirsiniz. Tercih ettiğiniz senkronizasyon sunucusu adresini lütfen buraya girin.</string>
+  <string name="synchronization_host_label">Sunucu adresi</string>
+  <string name="proceed_to_login_butLabel">Oturum açmak için ilerleyin</string>
   <string name="synchronization_nextcloud_authenticate_browser">Açılan web tarayıcısını kullanarak erişim izni verin ve AntennaPod\'a geri dönün.</string>
   <string name="gpodnetauth_login_butLabel">Giriş</string>
+  <string name="synchronization_credentials_explanation">Lütfen senkronizasyon sunucusundaki hesabınızın kimlik bilgilerini girin.</string>
   <string name="gpodnetauth_encryption_warning">Parola ve veri şifrelenmedi!</string>
   <string name="username_label">Kullanıcı adı</string>
   <string name="password_label">Parola</string>
+  <string name="synchronization_login_butLabel">Giriş yap</string>
+  <string name="synchronization_selectDevice_explanation">Lütfen senkronizasyon sunucusunda oluşturduğunuz cihazı seçin veya yenisini oluşturun.</string>
   <string name="gpodnetauth_device_name">Cihaz ismi</string>
   <string name="gpodnetauth_device_name_default">AntennaPod\'da %1$s</string>
   <string name="gpodnetauth_existing_devices">Mevcut cihazlar</string>
@@ -685,6 +698,7 @@ Herkes AntennaPod\'u daha iyi hale getirmek için yardımda bulunabilir, gerek k
   <string name="discover_powered_by_itunes">Suggestions by iTunes</string>
   <string name="discover_confirm">Önerileri göster</string>
   <string name="search_powered_by">Results by %1$s</string>
+  <string name="select_country">Ülke seç</string>
   <!--Local feeds-->
   <string name="add_local_folder">Cihazdan yerel klasör ekle</string>
   <string name="local_folder">Yerel klasör</string>

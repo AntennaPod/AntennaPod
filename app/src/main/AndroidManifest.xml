@@ -130,17 +130,6 @@
         </activity>
 
         <activity
-            android:name=".activity.DownloadAuthenticationActivity"
-            android:theme="@style/Theme.AntennaPod.Dark.Translucent"
-            android:exported="false"
-            android:launchMode="singleInstance">
-            <intent-filter>
-                <action android:name="de.danoeh.antennapod.intents.DOWNLOAD_AUTH_ACTIVITY" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <activity
             android:name=".activity.PreferenceActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"

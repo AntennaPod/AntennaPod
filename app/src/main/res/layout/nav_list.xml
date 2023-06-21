@@ -5,15 +5,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:background="?android:attr/windowBackground">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/nav_settings"
         android:layout_width="match_parent"
         android:layout_height="@dimen/listitem_iconwithtext_height"
-        android:fitsSystemWindows="true"
         android:layout_alignParentBottom="true"
         android:background="?attr/selectableItemBackground"
         android:contentDescription="@string/settings_label"

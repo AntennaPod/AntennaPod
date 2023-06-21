@@ -410,8 +410,8 @@
   <string name="user_interface_label">Användargränssnitt</string>
   <string name="user_interface_sum">Utseende, Prenumerationer, Låsskärm</string>
   <string name="pref_set_theme_title">Välj tema</string>
-  <string name="pref_tinted_theme_title">Använd tonade färger</string>
-  <string name="pref_tinted_theme_message">Tona app färger baserat på backgrundsbild</string>
+  <string name="pref_tinted_theme_title">Använd dynamiska färger</string>
+  <string name="pref_tinted_theme_message">Anpassa appfärger baserat på bakgrunden</string>
   <string name="pref_nav_drawer_items_title">Välj objekt i navigeringsmenyn</string>
   <string name="pref_nav_drawer_items_sum">Ändra vad som visas i navigationsmenyn.</string>
   <string name="pref_nav_drawer_feed_order_title">Välj prenumerationsordning</string>

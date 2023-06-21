@@ -27,11 +27,10 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
-import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
+import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
@@ -387,16 +386,11 @@ public abstract class EpisodesListFragment extends Fragment
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(DownloadEvent event) {
-        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        DownloaderUpdate update = event.update;
-        updateToolbar();
-        if (update.mediaIds.length > 0) {
-            for (long mediaId : update.mediaIds) {
-                int pos = FeedItemUtil.indexOfItemWithMediaId(episodes, mediaId);
-                if (pos >= 0) {
-                    listAdapter.notifyItemChangedCompat(pos);
-                }
+    public void onEventMainThread(EpisodeDownloadEvent event) {
+        for (String downloadUrl : event.getUrls()) {
+            int pos = FeedItemUtil.indexOfItemWithDownloadUrl(episodes, downloadUrl);
+            if (pos >= 0) {
+                listAdapter.notifyItemChangedCompat(pos);
             }
         }
     }
@@ -425,13 +419,16 @@ public abstract class EpisodesListFragment extends Fragment
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         data -> {
+                            final boolean restoreScrollPosition = episodes.isEmpty();
                             episodes = data.first;
                             hasMoreItems = !(page == 1 && episodes.size() < EPISODES_PER_PAGE);
                             progressBar.setVisibility(View.GONE);
                             listAdapter.setDummyViews(0);
                             listAdapter.updateItems(episodes);
                             listAdapter.setTotalNumberOfItems(data.second);
-                            recyclerView.restoreScrollPosition(getPrefName());
+                            if (restoreScrollPosition) {
+                                recyclerView.restoreScrollPosition(getPrefName());
+                            }
                             updateToolbar();
                         }, error -> {
                             listAdapter.setDummyViews(0);

@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
@@ -30,9 +30,9 @@ public class MediaDownloadedHandler implements Runnable {
     private static final String TAG = "MediaDownloadedHandler";
     private final DownloadRequest request;
     private final Context context;
-    private DownloadStatus updatedStatus;
+    private DownloadResult updatedStatus;
 
-    public MediaDownloadedHandler(@NonNull Context context, @NonNull DownloadStatus status,
+    public MediaDownloadedHandler(@NonNull Context context, @NonNull DownloadResult status,
                                   @NonNull DownloadRequest request) {
         this.request = request;
         this.context = context;
@@ -94,8 +94,8 @@ public class MediaDownloadedHandler implements Runnable {
             Log.e(TAG, "MediaHandlerThread was interrupted");
         } catch (ExecutionException e) {
             Log.e(TAG, "ExecutionException in MediaHandlerThread: " + e.getMessage());
-            updatedStatus = new DownloadStatus(media, media.getEpisodeTitle(),
-                    DownloadError.ERROR_DB_ACCESS_ERROR, false, e.getMessage(), request.isInitiatedByUser());
+            updatedStatus = new DownloadResult(media, media.getEpisodeTitle(),
+                    DownloadError.ERROR_DB_ACCESS_ERROR, false, e.getMessage());
         }
 
         if (item != null) {
@@ -107,7 +107,7 @@ public class MediaDownloadedHandler implements Runnable {
     }
 
     @NonNull
-    public DownloadStatus getUpdatedStatus() {
+    public DownloadResult getUpdatedStatus() {
         return updatedStatus;
     }
 }

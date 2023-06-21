@@ -44,10 +44,10 @@
   <string name="statistics_counting_range">%1$s 到 %2$s 期间播放的</string>
   <string name="statistics_counting_total">总播放</string>
   <!--Home fragment-->
-  <string name="home_surprise_title">获得惊喜</string>
-  <string name="home_classics_title">继续使用经典首页</string>
+  <string name="home_surprise_title">随便听听</string>
+  <string name="home_classics_title">订阅列表</string>
   <string name="home_continue_title">继续收听</string>
-  <string name="home_new_title">新版变化</string>
+  <string name="home_new_title">最近更新</string>
   <string name="home_downloads_title">管理下载</string>
   <string name="home_welcome_title">欢迎来到 AntennaPod！</string>
   <string name="home_welcome_text">你尚未订阅任何播客。 打开侧栏菜单添加一个。</string>
@@ -394,7 +394,7 @@
   <string name="user_interface_label">界面</string>
   <string name="user_interface_sum">外观、订阅、锁屏</string>
   <string name="pref_set_theme_title">主题选择</string>
-  <string name="pref_tinted_theme_title">使用基于背景图的颜色</string>
+  <string name="pref_tinted_theme_title">使用动态色彩</string>
   <string name="pref_tinted_theme_message">基于背景图对应用进行着色</string>
   <string name="pref_nav_drawer_items_title">设置侧边栏的选项</string>
   <string name="pref_nav_drawer_items_sum">改变侧边栏中的选项</string>

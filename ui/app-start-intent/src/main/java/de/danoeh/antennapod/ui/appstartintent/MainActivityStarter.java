@@ -17,6 +17,7 @@ public class MainActivityStarter {
     public static final String EXTRA_ADD_TO_BACK_STACK = "add_to_back_stack";
     public static final String EXTRA_FRAGMENT_TAG = "fragment_tag";
     public static final String EXTRA_OPEN_DRAWER = "open_drawer";
+    public static final String EXTRA_OPEN_DOWNLOAD_LOGS = "open_download_logs";
     public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
 
     private final Intent intent;
@@ -30,6 +31,9 @@ public class MainActivityStarter {
     }
 
     public Intent getIntent() {
+        if (fragmentArgs != null) {
+            intent.putExtra(EXTRA_FRAGMENT_ARGS, fragmentArgs);
+        }
         return intent;
     }
 
@@ -64,6 +68,11 @@ public class MainActivityStarter {
 
     public MainActivityStarter withDrawerOpen() {
         intent.putExtra(EXTRA_OPEN_DRAWER, true);
+        return this;
+    }
+
+    public MainActivityStarter withDownloadLogsOpen() {
+        intent.putExtra(EXTRA_OPEN_DOWNLOAD_LOGS, true);
         return this;
     }
 
