@@ -2,7 +2,6 @@ package de.danoeh.antennapod.view;
 
 import android.app.Activity;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.PorterDuff.Mode;
@@ -17,9 +16,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.elevation.SurfaceColors;
-import com.google.android.material.theme.overlay.MaterialThemeOverlay;
 
 import java.util.ArrayList;
 import java.util.Arrays;
