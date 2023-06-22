@@ -37,7 +37,8 @@ public class JsonFeedParser implements FeedParser {
             InputStream fileInputStream = new FileInputStream(feed.getFile_url());
             String jsonTxt = IOUtils.toString(fileInputStream, Charsets.UTF_8);
             fileInputStream.close();
-            hydratedFeed = hydrateFeed(new JSONObject(jsonTxt));
+            JSONObject jsonObject = new JSONObject(jsonTxt);
+            hydratedFeed = hydrateFeed(jsonObject.getJSONObject("data").getJSONObject("programSet"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -50,21 +51,23 @@ public class JsonFeedParser implements FeedParser {
     public Feed hydrateFeed(JSONObject jsonObject) throws JSONException {
         String title = jsonObject.getString("title");
         String url = AUDIOTHEK_BASE_URI + jsonObject.getJSONObject("_links").getJSONObject("self").getString("href");
+        url = url.replace("{?order,offset,limit}", "");
+
+        //sync process fails
         Feed feed = new Feed(url, Calendar.getInstance().getTime().toString(), title);
 
-        JSONObject embedded = jsonObject.getJSONObject("_embedded");
-        feed.setItems(extractFeedItems(embedded.getJSONArray("mt:items"), feed));
+        JSONObject items = jsonObject.getJSONObject("items");
+        feed.setItems(extractFeedItems(items.getJSONArray("nodes"), feed));
         feed.setImageUrl(getProgramSetImageUrl(jsonObject));
         feed.setDescription(jsonObject.getString("synopsis"));
-        feed.setAuthor(embedded.getJSONObject("mt:publicationService").getString("title"));
+        feed.setAuthor(jsonObject.getJSONObject("publicationService").getString("organizationName"));
 
         return feed;
     }
 
     @NonNull
     private String getProgramSetImageUrl(JSONObject jsonObject) throws JSONException {
-        String rawMediaUrl = jsonObject.getJSONObject("_links").getJSONObject("mt:image").getString("href");
-        rawMediaUrl = rawMediaUrl.replace("{ratio}", "1x1");
+        String rawMediaUrl = jsonObject.getJSONObject("image").getString("url");
         return rawMediaUrl.replace("{width}", "128");
     }
 
@@ -91,8 +94,9 @@ public class JsonFeedParser implements FeedParser {
 
     @NonNull
     private FeedMedia getFeedMedia(JSONObject programSetItem, FeedItem feedItem) throws JSONException {
-        String mediaUrl = programSetItem.getJSONObject("_links").getJSONObject("mt:bestQualityPlaybackUrl")
-                .getString("href");
+        JSONArray audios = programSetItem.getJSONArray("audios");
+        JSONObject audioSource = (JSONObject) audios.get(0);
+        String mediaUrl = audioSource.getString("url");
         return new FeedMedia(feedItem, mediaUrl, mediaUrl.length(), getMimeType(mediaUrl));
     }
 

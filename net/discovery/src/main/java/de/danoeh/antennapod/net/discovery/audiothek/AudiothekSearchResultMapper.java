@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.net.discovery.audiothek;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import org.json.JSONArray;
@@ -18,32 +20,38 @@ public class AudiothekSearchResultMapper {
     public static List<PodcastSearchResult> extractPodcasts(JSONObject searchResponse) throws JSONException {
         List<PodcastSearchResult> podcasts = new ArrayList<>();
         JSONObject embeddedProgramSetJsonObject = searchResponse
-                .getJSONObject("_embedded")
-                .getJSONObject("mt:programSetSearchResults")
-                .getJSONObject("_embedded");
+                .getJSONObject("data")
+                .getJSONObject("search")
+                .getJSONObject("programSets");
 
-        JSONObject embeddedEditorialCollectionJsonObject = searchResponse
-                .getJSONObject("_embedded")
-                .getJSONObject("mt:editorialCollectionSearchResults")
-                .getJSONObject("_embedded");
+JSONObject embeddedEditorialCollectionJsonObject = searchResponse
+                .getJSONObject("data")
+                .getJSONObject("search")
+                .getJSONObject("editorialCollections");
         JSONArray programSets = new JSONArray();
         JSONArray editorialCollections = new JSONArray();
         try {
             programSets = embeddedProgramSetJsonObject
-                    .getJSONArray("mt:programSets");
-            editorialCollections = embeddedEditorialCollectionJsonObject.getJSONArray("mt:editorialCollections");
+                    .getJSONArray("nodes");
+            editorialCollections = embeddedEditorialCollectionJsonObject.getJSONArray("nodes");
             programSets = appendResults(programSets, editorialCollections);
         } catch (JSONException jsonException) {
             // if there is only a single result the response contains only a JSONObject and NOT JSONArray
-            programSets.put(embeddedProgramSetJsonObject.getJSONObject("mt:programSets"));
+            Log.d("Audiothek Parser", "Error parsing search result");
+            //programSets.put(embeddedProgramSetJsonObject.getJSONObject("mt:programSets"));
         }
 
         for (int i = 0; i < programSets.length(); i++) {
             JSONObject podcastJson = programSets.getJSONObject(i);
-            PodcastSearchResult podcast = getPodcastSearchResult(podcastJson);
-            if (podcast.feedUrl != null) {
-                podcasts.add(podcast);
+            try {
+                PodcastSearchResult podcast = getPodcastSearchResult(podcastJson);
+                if (podcast.feedUrl != null) {
+                    podcasts.add(podcast);
+                }
+            } catch (JSONException exception) {
+                continue;
             }
+
         }
 
         return podcasts;
@@ -64,23 +72,12 @@ public class AudiothekSearchResultMapper {
     protected static PodcastSearchResult getPodcastSearchResult(JSONObject json) throws JSONException {
         String title = json.optString("title", "");
         JSONObject links = json.getJSONObject("_links");
-        String imageUrl = links.getJSONObject("mt:squareImage").optString("href", null);
+        String imageUrl = json.getJSONObject("image").optString("url", null);
         imageUrl = imageUrl.replace("{ratio}", "1x1");
         imageUrl = imageUrl.replace("{width}", "64");
         String feedUrlRaw = links.getJSONObject("self").optString("href", null);
         String feedUrl = AUDIOTHEK_BASE_URI + feedUrlRaw.replace("{?order,offset,limit}", "");
-        String author = getAuthor(json);
+        String author = json.getJSONObject("publicationService").getString("organizationName");
         return new PodcastSearchResult(title, imageUrl, feedUrl, author);
-    }
-
-    @NonNull
-    private static String getAuthor(JSONObject json) throws JSONException {
-        JSONObject embedded = json.optJSONObject("_embedded");
-        if (embedded == null) {
-            return "";
-        }
-        String author = embedded.getJSONObject("mt:publicationService")
-                .getString("organizationName");
-        return author;
     }
 }

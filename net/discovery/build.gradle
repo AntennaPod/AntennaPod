@@ -21,6 +21,7 @@ dependencies {
     implementation project(':model')
     implementation project(':net:sync:gpoddernet')
     implementation project(':net:sync:model')
+    implementation 'junit:junit:4.12'
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
 
@@ -29,4 +30,9 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    implementation "org.apache.directory.studio:org.apache.commons.io:2.4"
+
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+
 }
