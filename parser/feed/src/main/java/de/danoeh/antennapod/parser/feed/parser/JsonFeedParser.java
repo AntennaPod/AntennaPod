@@ -45,7 +45,8 @@ public class JsonFeedParser implements FeedParser {
             e.printStackTrace();
         }
 
-        return new FeedHandlerResult(hydratedFeed, alternateFeedUrls, "https://unknown");
+        assert hydratedFeed != null;
+        return new FeedHandlerResult(hydratedFeed, alternateFeedUrls, hydratedFeed.getDownload_url());
     }
 
     public Feed hydrateFeed(JSONObject jsonObject) throws JSONException {
