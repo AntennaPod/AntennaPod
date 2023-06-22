@@ -36,9 +36,7 @@ JSONObject embeddedEditorialCollectionJsonObject = searchResponse
             editorialCollections = embeddedEditorialCollectionJsonObject.getJSONArray("nodes");
             programSets = appendResults(programSets, editorialCollections);
         } catch (JSONException jsonException) {
-            // if there is only a single result the response contains only a JSONObject and NOT JSONArray
             Log.d("Audiothek Parser", "Error parsing search result");
-            //programSets.put(embeddedProgramSetJsonObject.getJSONObject("mt:programSets"));
         }
 
         for (int i = 0; i < programSets.length(); i++) {

@@ -54,7 +54,6 @@ public class JsonFeedParser implements FeedParser {
         String url = AUDIOTHEK_BASE_URI + jsonObject.getJSONObject("_links").getJSONObject("self").getString("href");
         url = url.replace("{?order,offset,limit}", "");
 
-        //sync process fails
         Feed feed = new Feed(url, Calendar.getInstance().getTime().toString(), title);
 
         JSONObject items = jsonObject.getJSONObject("items");
