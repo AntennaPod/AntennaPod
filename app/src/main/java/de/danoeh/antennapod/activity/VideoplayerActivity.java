@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.ColorDrawable;
@@ -20,6 +19,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -30,7 +30,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import androidx.annotation.Nullable;
-import androidx.core.view.WindowCompat;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.bumptech.glide.Glide;
 import de.danoeh.antennapod.R;
@@ -95,13 +94,12 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     private Disposable disposable;
     private float prog;
 
-    @SuppressLint("AppCompatMethod")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
         // has to be called before setting layout content
-        supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR_OVERLAY);
+        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setTheme(R.style.Theme_AntennaPod_VideoPlayer);
         super.onCreate(savedInstanceState);
 

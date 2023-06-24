@@ -1,10 +1,10 @@
 package de.danoeh.antennapod;
 
+import android.app.Application;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.StrictMode;
 
-import androidx.multidex.MultiDexApplication;
 import com.google.android.material.color.DynamicColors;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
@@ -21,7 +21,7 @@ import de.danoeh.antennapod.spa.SPAUtil;
 import org.greenrobot.eventbus.EventBus;
 
 /** Main application class. */
-public class PodcastApp extends MultiDexApplication {
+public class PodcastApp extends Application {
 
     private static PodcastApp singleton;
 
