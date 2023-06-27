@@ -36,16 +36,14 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.service.download.HttpCredentialEncoder;
 import de.danoeh.antennapod.core.util.NetworkUtils;
-import de.danoeh.antennapod.core.util.playback.IPlayer;
-import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
+import de.danoeh.antennapod.model.playback.Playable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import org.antennapod.audio.MediaPlayer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,19 +51,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class ExoPlayerWrapper implements IPlayer {
+public class ExoPlayerWrapper {
+    public static final int BUFFERING_STARTED = -1;
+    public static final int BUFFERING_ENDED = -2;
     private static final String TAG = "ExoPlayerWrapper";
     public static final int ERROR_CODE_OFFSET = 1000;
+
     private final Context context;
     private final Disposable bufferingUpdateDisposable;
     private SimpleExoPlayer exoPlayer;
     private MediaSource mediaSource;
-    private MediaPlayer.OnSeekCompleteListener audioSeekCompleteListener;
-    private MediaPlayer.OnCompletionListener audioCompletionListener;
+    private Runnable audioSeekCompleteListener;
+    private Runnable audioCompletionListener;
     private Consumer<String> audioErrorListener;
-    private MediaPlayer.OnBufferingUpdateListener bufferingUpdateListener;
+    private Consumer<Integer> bufferingUpdateListener;
     private PlaybackParameters playbackParameters;
-    private MediaPlayer.OnInfoListener infoListener;
     private DefaultTrackSelector trackSelector;
 
     ExoPlayerWrapper(Context context) {
@@ -76,7 +76,7 @@ public class ExoPlayerWrapper implements IPlayer {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(tickNumber -> {
                     if (bufferingUpdateListener != null) {
-                        bufferingUpdateListener.onBufferingUpdate(null, exoPlayer.getBufferedPercentage());
+                        bufferingUpdateListener.accept(exoPlayer.getBufferedPercentage());
                     }
                 });
     }
@@ -97,11 +97,11 @@ public class ExoPlayerWrapper implements IPlayer {
             @Override
             public void onPlaybackStateChanged(@Player.State int playbackState) {
                 if (audioCompletionListener != null && playbackState == Player.STATE_ENDED) {
-                    audioCompletionListener.onCompletion(null);
-                } else if (infoListener != null && playbackState == Player.STATE_BUFFERING) {
-                    infoListener.onInfo(null, android.media.MediaPlayer.MEDIA_INFO_BUFFERING_START, 0);
-                } else if (infoListener != null) {
-                    infoListener.onInfo(null, android.media.MediaPlayer.MEDIA_INFO_BUFFERING_END, 0);
+                    audioCompletionListener.run();
+                } else if (bufferingUpdateListener != null && playbackState == Player.STATE_BUFFERING) {
+                    bufferingUpdateListener.accept(BUFFERING_STARTED);
+                } else if (bufferingUpdateListener != null) {
+                    bufferingUpdateListener.accept(BUFFERING_ENDED);
                 }
             }
 
@@ -130,52 +130,40 @@ public class ExoPlayerWrapper implements IPlayer {
                                                 @NonNull Player.PositionInfo newPosition,
                                                 @Player.DiscontinuityReason int reason) {
                 if (audioSeekCompleteListener != null && reason == Player.DISCONTINUITY_REASON_SEEK) {
-                    audioSeekCompleteListener.onSeekComplete(null);
+                    audioSeekCompleteListener.run();
                 }
             }
         });
     }
 
-    @Override
-    public boolean canDownmix() {
-        return false;
-    }
-
-    @Override
     public int getCurrentPosition() {
         return (int) exoPlayer.getCurrentPosition();
     }
 
-    @Override
     public float getCurrentSpeedMultiplier() {
         return playbackParameters.speed;
     }
 
-    @Override
     public int getDuration() {
         if (exoPlayer.getDuration() == C.TIME_UNSET) {
-            return PlaybackServiceMediaPlayer.INVALID_TIME;
+            return Playable.INVALID_TIME;
         }
         return (int) exoPlayer.getDuration();
     }
 
-    @Override
     public boolean isPlaying() {
         return exoPlayer.getPlayWhenReady();
     }
 
-    @Override
     public void pause() {
         exoPlayer.pause();
     }
 
-    @Override
     public void prepare() throws IllegalStateException {
         exoPlayer.setMediaSource(mediaSource, false);
         exoPlayer.prepare();
     }
 
-    @Override
     public void release() {
         bufferingUpdateDisposable.dispose();
         if (exoPlayer != null) {
@@ -187,21 +175,18 @@ public class ExoPlayerWrapper implements IPlayer {
         bufferingUpdateListener = null;
     }
 
-    @Override
     public void reset() {
         exoPlayer.release();
         createPlayer();
     }
 
-    @Override
     public void seekTo(int i) throws IllegalStateException {
         exoPlayer.seekTo(i);
         if (audioSeekCompleteListener != null) {
-            audioSeekCompleteListener.onSeekComplete(null);
+            audioSeekCompleteListener.run();
         }
     }
 
-    @Override
     public void setAudioStreamType(int i) {
         AudioAttributes a = exoPlayer.getAudioAttributes();
         AudioAttributes.Builder b = new AudioAttributes.Builder();
@@ -235,51 +220,34 @@ public class ExoPlayerWrapper implements IPlayer {
         mediaSource = f.createMediaSource(mediaItem);
     }
 
-    @Override
     public void setDataSource(String s) throws IllegalArgumentException, IllegalStateException {
         setDataSource(s, null, null);
     }
 
-    @Override
     public void setDisplay(SurfaceHolder sh) {
         exoPlayer.setVideoSurfaceHolder(sh);
     }
 
-    @Override
     public void setPlaybackParams(float speed, boolean skipSilence) {
         playbackParameters = new PlaybackParameters(speed, playbackParameters.pitch);
         exoPlayer.setSkipSilenceEnabled(skipSilence);
         exoPlayer.setPlaybackParameters(playbackParameters);
     }
 
-    @Override
-    public void setDownmix(boolean b) {
-
-    }
-
-    @Override
     public void setVolume(float v, float v1) {
         exoPlayer.setVolume(v);
     }
 
-    @Override
-    public void setWakeMode(Context context, int i) {
-
-    }
-
-    @Override
     public void start() {
         exoPlayer.play();
         // Can't set params when paused - so always set it on start in case they changed
         exoPlayer.setPlaybackParameters(playbackParameters);
     }
 
-    @Override
     public void stop() {
         exoPlayer.stop();
     }
 
-    @Override
     public List<String> getAudioTracks() {
         List<String> trackNames = new ArrayList<>();
         TrackNameProvider trackNameProvider = new DefaultTrackNameProvider(context.getResources());
@@ -302,7 +270,6 @@ public class ExoPlayerWrapper implements IPlayer {
         return formats;
     }
 
-    @Override
     public void setAudioTrack(int track) {
         MappingTrackSelector.MappedTrackInfo trackInfo = trackSelector.getCurrentMappedTrackInfo();
         if (trackInfo == null) {
@@ -324,7 +291,6 @@ public class ExoPlayerWrapper implements IPlayer {
         return -1;
     }
 
-    @Override
     public int getSelectedAudioTrack() {
         TrackSelectionArray trackSelections = exoPlayer.getCurrentTrackSelections();
         List<Format> availableFormats = getFormats();
@@ -340,11 +306,11 @@ public class ExoPlayerWrapper implements IPlayer {
         return -1;
     }
 
-    void setOnCompletionListener(MediaPlayer.OnCompletionListener audioCompletionListener) {
+    void setOnCompletionListener(Runnable audioCompletionListener) {
         this.audioCompletionListener = audioCompletionListener;
     }
 
-    void setOnSeekCompleteListener(MediaPlayer.OnSeekCompleteListener audioSeekCompleteListener) {
+    void setOnSeekCompleteListener(Runnable audioSeekCompleteListener) {
         this.audioSeekCompleteListener = audioSeekCompleteListener;
     }
 
@@ -366,11 +332,7 @@ public class ExoPlayerWrapper implements IPlayer {
         return exoPlayer.getVideoFormat().height;
     }
 
-    void setOnBufferingUpdateListener(MediaPlayer.OnBufferingUpdateListener bufferingUpdateListener) {
+    void setOnBufferingUpdateListener(Consumer<Integer> bufferingUpdateListener) {
         this.bufferingUpdateListener = bufferingUpdateListener;
-    }
-
-    public void setOnInfoListener(MediaPlayer.OnInfoListener infoListener) {
-        this.infoListener = infoListener;
     }
 }

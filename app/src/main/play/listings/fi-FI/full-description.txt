@@ -1,0 +1,31 @@
+AntennaPod on podcastien hallintaan ja toistoon luotu sovellus, joka mahdollistaa pääsyn miljooniin ilmaisiin ja maksullisiin podcasteihin itsenäisistä podcast-tuottajista suuriin julkaisijoihin, kuten BBC, NPR ja CNN. Lisää, tuo ja vie syötteitä vaivattomasti iTunesin podcast-tietokantaa, OPML-tiedostoja tai yksinkertaisia RSS-osoitteita käyttäen.
+Lataa, suoratoista tai lisää jonoonjaksoja ja nauti niitä säädettävällä toistonopeudella, kappaletuella ja uniajastimella.
+Säästä vaivaa, akkua ja mobiilidataa tehokkailla automatisoiduilla jaksojen lataustoiminnoilla (aseta ajat, aikavälit, WiFi-verkot) ja poistotoiminnoilla (perustuen suosikkeihin ja viiveasetuksiin).
+
+Podcasteihin uppoutuneihin luoma sovellus, AntennaPod on vapaa ja ilmainen kaikissa sanan merkityksissä: vapaa lähdekoodi, ei maksuja, ei mainoksia.
+
+<b>Tuo, organisoi, toista</b>
+• Hallitse toistoa mistä vain: kotinäytön pienoissovellluksesta, järjestelmän ilmoituksista, kuulokkeiden tai bluetoothin ohjaimista
+• Lisää ja tuo syötteitä iTunes- ja gPodder.net-hakemistoista, OPML-tiedostoista sekä RSS- ja Atom-linkeistä
+• Kuuntele ja nauti tavoillasi: säädettävä toistonopeus, kappaletuki, toistokohdan muistaminen ja kehittynyt uniajastin (ravista nollataksesi, matalampi äänenvoimakkuus)
+• Käytä salasanasuojattuja syötteitä ja jaksoja
+
+<b>Pysy kartalla, jaa ja arvosta</b>
+• Pysy kartalla parhaista jaksoista merkkaamalla suosikkijaksoja
+• Löydä juuri se yksi jakso toistohistorian tai hakutoiminnon kautta, joka hakee jaksojen otsikoista ja kuvauksista
+• Jaa jaksoja ja syötteitä kehittyneillä some- ja sähköpostivalinnoilla, gPodder.net-palvelulla ja OPML-viennillä
+
+<b>Hallitse järjestelmää</b>
+• Ota automaattinen lataus haltuun: valitse syötteet sekä WiFi-verkot, joissa automaattilataukset suoritetaan. Lisäksi voit poistaa lataukset käytöstä mobiiliverkossa, hakea jaksoja vain puhelimen ollessa latauksessa sekä asettaa aikavälit tai kellonajat jaksojen hakuun
+• Hallitse tallennustilaa asettamalla välimuistiin ladattujen jaksojen määrä, älykäs poisto ja latausten sijainti
+• Mukauta ympäristöösi käyttäen vaaleaa ja tummaa teemaa
+• Varmuuskopioi tilauksesi gPodder.net-integraatiolla ja OPML-viennillä
+
+<b>Liity AntennaPod-yhteisöön!</b>
+AntennaPod on vapaaehtoisten aktiivisessa kehityksessä. Sinä voit auttaa koodilla tai kommentilla!
+
+Ystävälliset foorumin jäsenet vastaavat mielellään jokaiseen kysymykseesi. Kutsumme sinut keskustelemaan myös ominaisuuksista ja podcasteista yleisesti.
+https://forum.antennapod.org/
+
+Transifex on kielikäännöksien kirjoitusalusta:
+https://www.transifex.com/antennapod/antennapod

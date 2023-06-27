@@ -2,19 +2,17 @@ package de.danoeh.antennapod.adapter.actionbutton;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
-import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UsageStatistics;
-import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 
 public class DownloadActionButton extends ItemActionButton {
@@ -49,18 +47,23 @@ public class DownloadActionButton extends ItemActionButton {
 
         UsageStatistics.logAction(UsageStatistics.ACTION_DOWNLOAD);
 
-        if (NetworkUtils.isEpisodeDownloadAllowed() || MobileDownloadHelper.userAllowedMobileDownloads()) {
-            DownloadService.download(context, false, DownloadRequestCreator.create(item.getMedia()).build());
-        } else if (MobileDownloadHelper.userChoseAddToQueue() && !item.isTagged(FeedItem.TAG_QUEUE)) {
-            DBWriter.addQueueItem(context, item);
-            Toast.makeText(context, R.string.added_to_queue_label, Toast.LENGTH_SHORT).show();
+        if (NetworkUtils.isEpisodeDownloadAllowed()) {
+            DownloadServiceInterface.get().downloadNow(context, item, false);
         } else {
-            MobileDownloadHelper.confirmMobileDownload(context, item);
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context)
+                    .setTitle(R.string.confirm_mobile_download_dialog_title)
+                    .setMessage(R.string.confirm_mobile_download_dialog_message)
+                    .setPositiveButton(R.string.confirm_mobile_download_dialog_download_later,
+                            (d, w) -> DownloadServiceInterface.get().downloadNow(context, item, false))
+                    .setNeutralButton(R.string.confirm_mobile_download_dialog_allow_this_time,
+                            (d, w) -> DownloadServiceInterface.get().downloadNow(context, item, true))
+                    .setNegativeButton(R.string.cancel_label, null);
+            builder.show();
         }
     }
 
     private boolean shouldNotDownload(@NonNull FeedMedia media) {
-        boolean isDownloading = DownloadService.isDownloadingFile(media.getDownload_url());
+        boolean isDownloading = DownloadServiceInterface.get().isDownloadingEpisode(media.getDownload_url());
         return isDownloading || media.isDownloaded();
     }
 }

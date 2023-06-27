@@ -31,22 +31,22 @@ import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
-import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.core.feed.FeedUrlNotFoundException;
+import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
 import de.danoeh.antennapod.core.util.DownloadErrorLabel;
+import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.DownloadRequest;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.service.download.HttpDownloader;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.net.discovery.CombinedSearcher;
@@ -56,7 +56,7 @@ import de.danoeh.antennapod.parser.feed.FeedHandler;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.URLChecker;
+import de.danoeh.antennapod.net.common.UrlChecker;
 import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.databinding.OnlinefeedviewActivityBinding;
@@ -65,6 +65,8 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
 import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
+import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -119,7 +121,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(UserPreferences.getTranslucentTheme());
+        setTheme(ThemeSwitcher.getTranslucentTheme(this));
         super.onCreate(savedInstanceState);
 
         viewBinding = OnlinefeedviewActivityBinding.inflate(getLayoutInflater());
@@ -127,6 +129,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         viewBinding.transparentBackground.setOnClickListener(v -> finish());
         viewBinding.card.setOnClickListener(null);
+        viewBinding.card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(this, R.attr.colorSurface));
 
         String feedUrl = null;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
@@ -286,7 +289,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
     private void startFeedDownload(String url) {
         Log.d(TAG, "Starting feed download");
-        selectedDownloadUrl = URLChecker.prepareURL(url);
+        selectedDownloadUrl = UrlChecker.prepareUrl(url);
         DownloadRequest request = DownloadRequestCreator.create(new Feed(selectedDownloadUrl, null))
                 .withAuthentication(username, password)
                 .withInitiatedByUser(true)
@@ -304,10 +307,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    private void checkDownloadResult(@NonNull DownloadStatus status, String destination) {
-        if (status.isCancelled()) {
-            return;
-        }
+    private void checkDownloadResult(@NonNull DownloadResult status, String destination) {
         if (status.isSuccessful()) {
             parseFeed(destination);
         } else if (status.getReason() == DownloadError.ERROR_UNAUTHORIZED) {
@@ -338,9 +338,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 );
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(DownloadEvent event) {
-        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EpisodeDownloadEvent event) {
         handleUpdatedFeedStatus();
     }
 
@@ -431,7 +430,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                     .apply(new RequestOptions()
                         .placeholder(R.color.light_gray)
                         .error(R.color.light_gray)
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                         .fitCenter()
                         .dontAnimate())
                     .into(viewBinding.coverImage);
@@ -440,7 +438,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                     .apply(new RequestOptions()
                             .placeholder(R.color.image_readability_tint)
                             .error(R.color.image_readability_tint)
-                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                             .transform(new FastBlurTransformation())
                             .dontAnimate())
                     .into(viewBinding.backgroundImage);
@@ -454,10 +451,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             if (feedInFeedlist()) {
                 openFeed();
             } else {
-                Feed f = new Feed(selectedDownloadUrl, null, feed.getTitle());
-                DownloadService.download(this, false, DownloadRequestCreator.create(f)
-                        .withAuthentication(username, password)
-                        .build());
+                DBTasks.updateFeed(this, feed, false);
                 didPressSubscribe = true;
                 handleUpdatedFeedStatus();
             }
@@ -465,7 +459,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         viewBinding.stopPreviewButton.setOnClickListener(v -> {
             PlaybackPreferences.writeNoMediaPlaying();
-            IntentUtils.sendLocalBroadcast(this, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
+            IntentUtils.sendLocalBroadcast(this, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
         });
 
         if (UserPreferences.isEnableAutodownload()) {
@@ -537,7 +531,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     private void handleUpdatedFeedStatus() {
-        if (DownloadService.isDownloadingFile(selectedDownloadUrl)) {
+        if (DownloadServiceInterface.get().isDownloadingEpisode(selectedDownloadUrl)) {
             viewBinding.subscribeButton.setEnabled(false);
             viewBinding.subscribeButton.setText(R.string.subscribing_label);
         } else if (feedInFeedlist()) {

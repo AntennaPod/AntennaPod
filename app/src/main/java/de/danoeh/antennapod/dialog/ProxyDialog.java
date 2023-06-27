@@ -6,7 +6,6 @@ import android.content.res.TypedArray;
 import android.os.Build;
 import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import androidx.core.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -28,9 +27,10 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.model.download.ProxyConfig;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -299,7 +299,7 @@ public class ProxyDialog {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         () -> {
-                            txtvMessage.setTextColor(ContextCompat.getColor(context, R.color.download_success_green));
+                            txtvMessage.setTextColor(ThemeUtils.getColorFromAttr(context, R.attr.icon_green));
                             String message = String.format("%s %s", "{fa-check}",
                                     context.getString(R.string.proxy_test_successful));
                             txtvMessage.setText(message);
@@ -307,7 +307,7 @@ public class ProxyDialog {
                         },
                         error -> {
                             error.printStackTrace();
-                            txtvMessage.setTextColor(ContextCompat.getColor(context, R.color.download_failed_red));
+                            txtvMessage.setTextColor(ThemeUtils.getColorFromAttr(context, R.attr.icon_red));
                             String message = String.format("%s %s: %s", "{fa-close}",
                                     context.getString(R.string.proxy_test_failed), error.getMessage());
                             txtvMessage.setText(message);

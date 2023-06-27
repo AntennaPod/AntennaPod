@@ -29,17 +29,13 @@ import com.leinardi.android.speeddial.SpeedDialView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
-import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.feed.FeedEvent;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.databinding.FeedItemListFragmentBinding;
 import de.danoeh.antennapod.databinding.MultiSelectSpeedDialBinding;
@@ -47,9 +43,11 @@ import de.danoeh.antennapod.dialog.DownloadLogDetailsDialog;
 import de.danoeh.antennapod.dialog.FeedItemFilterDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameItemDialog;
+import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FavoritesEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -58,10 +56,12 @@ import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 import de.danoeh.antennapod.view.ToolbarIconTintManager;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import io.reactivex.Maybe;
@@ -145,9 +145,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         viewBinding.recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         adapter = new FeedItemListAdapter((MainActivity) getActivity());
         adapter.setOnSelectModeListener(this);
-        adapter.setDummyViews(10);
         viewBinding.recyclerView.setAdapter(adapter);
         swipeActions = new SwipeActions(this, TAG).attachTo(viewBinding.recyclerView);
+        viewBinding.progressBar.setVisibility(View.VISIBLE);
 
         ToolbarIconTintManager iconTintManager = new ToolbarIconTintManager(
                 getContext(), viewBinding.toolbar, viewBinding.collapsingToolbar) {
@@ -165,7 +165,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         nextPageLoader = new MoreContentListFooterUtil(viewBinding.moreContent.moreContentListFooter);
         nextPageLoader.setClickListener(() -> {
             if (feed != null) {
-                DBTasks.loadNextPageOfFeed(getActivity(), feed, false);
+                FeedUpdateManager.runOnce(getContext(), feed, true);
             }
         });
         viewBinding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -242,8 +242,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
         viewBinding.toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(feed.getLink() != null);
 
-        MenuItemUtils.updateRefreshMenuItem(viewBinding.toolbar.getMenu(), R.id.refresh_item,
-                DownloadService.isRunning && DownloadService.isDownloadingFile(feed.getDownload_url()));
         FeedMenuHandler.onPrepareOptionsMenu(viewBinding.toolbar.getMenu(), feed);
     }
 
@@ -272,8 +270,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             new RenameItemDialog(getActivity(), feed).show();
             return true;
         } else if (itemId == R.id.remove_feed) {
-            ((MainActivity) getActivity()).loadFragment(AllEpisodesFragment.TAG, null);
-            RemoveFeedDialog.show(getContext(), feed);
+            RemoveFeedDialog.show(getContext(), feed, () -> {
+                ((MainActivity) getActivity()).loadFragment(UserPreferences.getDefaultPage(), null);
+                // Make sure fragment is hidden before actually starting to delete
+                getActivity().getSupportFragmentManager().executePendingTransactions();
+            });
             return true;
         } else if (itemId == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(feed.getId(), feed.getTitle()));
@@ -328,16 +329,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(DownloadEvent event) {
-        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        DownloaderUpdate update = event.update;
-        updateToolbar();
-        if (update.mediaIds.length > 0 && feed != null) {
-            for (long mediaId : update.mediaIds) {
-                int pos = FeedItemUtil.indexOfItemWithMediaId(feed.getItems(), mediaId);
-                if (pos >= 0) {
-                    adapter.notifyItemChangedCompat(pos);
-                }
+    public void onEventMainThread(EpisodeDownloadEvent event) {
+        if (feed == null) {
+            return;
+        }
+        for (String downloadUrl : event.getUrls()) {
+            int pos = FeedItemUtil.indexOfItemWithDownloadUrl(feed.getItems(), downloadUrl);
+            if (pos >= 0) {
+                adapter.notifyItemChangedCompat(pos);
             }
         }
     }
@@ -385,7 +384,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     private void updateUi() {
         loadItems();
-        updateSyncProgressBarVisibility();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -405,12 +403,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
     }
 
-    private void updateSyncProgressBarVisibility() {
-        updateToolbar();
-        if (!DownloadService.isDownloadingFeeds()) {
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FeedUpdateRunningEvent event) {
+        nextPageLoader.setLoadingState(event.isFeedUpdateRunning);
+        if (!event.isFeedUpdateRunning) {
             nextPageLoader.getRoot().setVisibility(View.GONE);
         }
-        nextPageLoader.setLoadingState(DownloadService.isDownloadingFeeds());
+        MenuItemUtils.updateRefreshMenuItem(viewBinding.toolbar.getMenu(),
+                R.id.refresh_item, event.isFeedUpdateRunning);
     }
 
     private void refreshHeaderView() {
@@ -476,7 +476,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private void showErrorDetails() {
         Maybe.fromCallable(
                 () -> {
-                    List<DownloadStatus> feedDownloadLog = DBReader.getFeedDownloadLog(feedID);
+                    List<DownloadResult> feedDownloadLog = DBReader.getFeedDownloadLog(feedID);
                     if (feedDownloadLog.size() == 0 || feedDownloadLog.get(0).isSuccessful()) {
                         return null;
                     }
@@ -487,9 +487,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 .subscribe(
                     downloadStatus -> new DownloadLogDetailsDialog(getContext(), downloadStatus).show(),
                     error -> error.printStackTrace(),
-                    () -> {
-                        ((MainActivity) getActivity()).loadChildFragment(new DownloadLogFragment());
-                    });
+                    () -> new DownloadLogFragment().show(getChildFragmentManager(), null));
     }
 
     private void showFeedInfo() {
@@ -500,22 +498,20 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void loadFeedImage() {
-        Glide.with(getActivity())
+        Glide.with(this)
                 .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                     .placeholder(R.color.image_readability_tint)
                     .error(R.color.image_readability_tint)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                     .transform(new FastBlurTransformation())
                     .dontAnimate())
                 .into(viewBinding.imgvBackground);
 
-        Glide.with(getActivity())
+        Glide.with(this)
                 .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                     .placeholder(R.color.light_gray)
                     .error(R.color.light_gray)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                     .fitCenter()
                     .dontAnimate())
                 .into(viewBinding.header.imgvCover);
@@ -533,17 +529,16 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                         feed = result;
                         swipeActions.setFilter(feed.getItemFilter());
                         refreshHeaderView();
+                        viewBinding.progressBar.setVisibility(View.GONE);
                         adapter.setDummyViews(0);
                         adapter.updateItems(feed.getItems());
                         updateToolbar();
-                        updateSyncProgressBarVisibility();
                     }, error -> {
                         feed = null;
                         refreshHeaderView();
                         adapter.setDummyViews(0);
                         adapter.updateItems(Collections.emptyList());
                         updateToolbar();
-                        updateSyncProgressBarVisibility();
                         Log.e(TAG, Log.getStackTraceString(error));
                     });
     }

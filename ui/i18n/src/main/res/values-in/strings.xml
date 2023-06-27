@@ -26,6 +26,7 @@
   <string name="statistics_speed_not_counted">Perhatian: Kecepatan pemutaran tidak pernah diperhintungkan.</string>
   <string name="statistics_reset_data">Reset data statistik</string>
   <string name="statistics_reset_data_msg">Ini akan menghapus riwayat durasi yang diputar untuk semua episode. Apa Anda yakin ingin melanjutkan?</string>
+  <!--Home fragment-->
   <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Buka menu</string>
@@ -93,7 +94,6 @@
   <plurals name="num_episodes">
     <item quantity="other">%d episode</item>
   </plurals>
-  <string name="loading_more">Memuat lebih banyak...</string>
   <string name="episode_notification_summary">Tampilkan sebuah notifikasi ketika episode baru diluncurkan.</string>
   <plurals name="new_episode_notification_message">
     <item quantity="other">%2$s memiliki %1$d episode baru</item>
@@ -158,7 +158,6 @@
   <string name="download_pending">Unduhan terunda</string>
   <string name="download_running">Unduhan berjalan</string>
   <string name="download_error_details">Detail</string>
-  <string name="download_error_details_message">%1$s \n\nURL Berkas:\n%2$s</string>
   <string name="download_error_tap_for_details">Ketuk untuk melihat keterangan.</string>
   <string name="download_error_device_not_found">Perangkat Penyimpanan tidak ditemukan</string>
   <string name="download_error_insufficient_space">Tidak ada cukup ruang tersisa di perangkat Anda.</string>
@@ -284,8 +283,6 @@
   <string name="pref_theme_title_dark">Gelap</string>
   <string name="pref_theme_title_trueblack">Hitam (AMOLED tersedia)</string>
   <string name="pref_episode_cache_unlimited">Tidak terbatas</string>
-  <string name="pref_gpodnet_setlogin_information_title">Ubah informasi login</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Ubah informasi login untuk akun gpodder.net Anda</string>
   <string name="pref_playback_speed_sum">Sesuaikan kecepatan yang tersedia untuk pemutarna kecepatan variabel</string>
   <string name="pref_playback_time_respects_speed_title">Atur info media ke kecepatan pemutaran</string>
   <string name="pref_playback_time_respects_speed_sum">Posisi dan durasi yang ditampilkan disesuaikan dengan kecepatan pemutaran</string>
@@ -321,16 +318,6 @@
   <string name="media_player_builtin">Pemain Android bawaan (usang)</string>
   <string name="pref_skip_silence_title">Lewatkan Keheningan dalam Audio</string>
   <string name="behavior">Perilaku</string>
-  <string name="pref_back_button_behavior_title">Perilaku Tombol Kembali</string>
-  <string name="pref_back_button_behavior_sum">Ubah perilaku dari tombol kembali</string>
-  <string name="back_button_default">Standar</string>
-  <string name="back_button_open_drawer">Buka laci navigasi</string>
-  <string name="back_button_double_tap">Tekan dobel untuk keluar</string>
-  <string name="back_button_show_prompt">Konfirmasi untuk keluar</string>
-  <string name="close_prompt">Apa Anda yakin ingin menutup AntennaPod?</string>
-  <string name="double_tap_toast">Tekan tombol kembali lagi untuk keluar</string>
-  <string name="back_button_go_to_page">Pergi kek halaman...</string>
-  <string name="back_button_go_to_page_title">Pilih halaman</string>
   <string name="pref_delete_removes_from_queue_title">Hapus menghapus dari Antrian</string>
   <string name="pref_delete_removes_from_queue_sum">Secara otomatis hapus sebuah episode dari antrian ketika episode dihapus.</string>
   <!--About screen-->
@@ -376,12 +363,14 @@
   </plurals>
   <string name="auto_enable_label">Aktifkan otomatis</string>
   <string name="sleep_timer_enabled_label">Timer tidur diaktifkan</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
   <string name="gpodnetauth_login_butLabel">Masuk</string>
   <string name="username_label">Nama pengguna</string>
   <string name="password_label">Kata sandi</string>
   <string name="gpodnetauth_finish_descr">Selamat! Akun gpodder.net Anda sekarang terhubung dengan perangkat Anda. AntennaPod sekarang akan secara otomatis sinkronkan langganan pada perangkat Anda dengan akun gpodder.net Anda.</string>
   <string name="gpodnetauth_finish_butsyncnow">Mulai sinkronisasi sekarang</string>
+  <string name="pref_gpodnet_setlogin_information_title">Ubah informasi login</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Ubah informasi login untuk akun gpodder.net Anda</string>
   <string name="gpodnetsync_error_title">Kesalahan sinkronisasi gpodder.net</string>
   <string name="gpodnetsync_error_descr">Sebuah kesalahan terjadi selama sinkronisasi:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Berhasil</string>
@@ -410,9 +399,6 @@
   <string name="auto_download_settings_label">Pengaturan Pengunduhan Otomatis</string>
   <string name="episode_filters_label">Filter Episode</string>
   <string name="episode_filters_description">Daftar ketentuan yang digunakan untuk memutuskan jika episode sebuah episode harus disertakan atau dikecualikan ketika mengunduh otomatis</string>
-  <string name="episode_filters_include">Sertakan</string>
-  <string name="episode_filters_exclude">Kecualikan</string>
-  <string name="episode_filters_hint">Satu kata \n\"Banyak kata\"</string>
   <string name="keep_updated">Terus Perbarui</string>
   <string name="keep_updated_summary">Sertakan podcast ini saat (otomatis) menyegarkan semua podcast</string>
   <string name="auto_download_disabled_globally">Unduh otomatis dinonaktifkan di pengaturan AntennaPod utama</string>

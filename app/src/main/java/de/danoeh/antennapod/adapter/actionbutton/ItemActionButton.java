@@ -7,11 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import android.view.View;
 
-import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.util.PlaybackStatus;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public abstract class ItemActionButton {
     FeedItem item;
@@ -39,8 +39,8 @@ public abstract class ItemActionButton {
             return new MarkAsPlayedActionButton(item);
         }
 
-        final boolean isDownloadingMedia = DownloadService.isDownloadingFile(media.getDownload_url());
-        if (FeedItemUtil.isCurrentlyPlaying(media)) {
+        final boolean isDownloadingMedia = DownloadServiceInterface.get().isDownloadingEpisode(media.getDownload_url());
+        if (PlaybackStatus.isCurrentlyPlaying(media)) {
             return new PauseActionButton(item);
         } else if (item.getFeed().isLocalFeed()) {
             return new PlayLocalActionButton(item);

@@ -54,8 +54,8 @@ public class ChapterUtils {
         return chapters.size() - 1;
     }
 
-    public static void loadChapters(Playable playable, Context context) {
-        if (playable.getChapters() != null) {
+    public static void loadChapters(Playable playable, Context context, boolean forceRefresh) {
+        if (playable.getChapters() != null && !forceRefresh) {
             // Already loaded
             return;
         }
@@ -73,7 +73,7 @@ public class ChapterUtils {
 
             if (!TextUtils.isEmpty(feedMedia.getItem().getPodcastIndexChapterUrl())) {
                 chaptersFromPodcastIndex = ChapterUtils.loadChaptersFromUrl(
-                        feedMedia.getItem().getPodcastIndexChapterUrl());
+                        feedMedia.getItem().getPodcastIndexChapterUrl(), forceRefresh);
             }
 
         }
@@ -135,23 +135,32 @@ public class ChapterUtils {
         }
     }
 
-    public static List<Chapter> loadChaptersFromUrl(String url) {
+    public static List<Chapter> loadChaptersFromUrl(String url, boolean forceRefresh) {
+        if (forceRefresh) {
+            return loadChaptersFromUrl(url, CacheControl.FORCE_NETWORK);
+        }
+        List<Chapter> cachedChapters = loadChaptersFromUrl(url, CacheControl.FORCE_CACHE);
+        if (cachedChapters == null || cachedChapters.size() <= 1) {
+            // Some publishers use one dummy chapter before actual chapters are available
+            return loadChaptersFromUrl(url, CacheControl.FORCE_NETWORK);
+        }
+        return cachedChapters;
+    }
+
+    private static List<Chapter> loadChaptersFromUrl(String url, CacheControl cacheControl) {
+        Response response = null;
         try {
-            Request request = new Request.Builder().url(url).cacheControl(CacheControl.FORCE_CACHE).build();
-            Response response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
-            if (response.isSuccessful() && response.body() != null) {
-                List<Chapter> chapters = PodcastIndexChapterParser.parse(response.body().string());
-                if (chapters != null && !chapters.isEmpty()) {
-                    return chapters;
-                }
-            }
-            request = new Request.Builder().url(url).build();
+            Request request = new Request.Builder().url(url).cacheControl(cacheControl).build();
             response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
             if (response.isSuccessful() && response.body() != null) {
                 return PodcastIndexChapterParser.parse(response.body().string());
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (response != null) {
+                response.close();
+            }
         }
         return null;
     }

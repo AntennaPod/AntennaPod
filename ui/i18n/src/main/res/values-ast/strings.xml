@@ -25,6 +25,7 @@
   <!--Statistics fragment-->
   <string name="statistics_speed_not_counted">Avisu: la velocidá de reproducción enxamás se tien en cuenta.</string>
   <string name="statistics_reset_data">Reafitar les estadístiques</string>
+  <!--Home fragment-->
   <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Abrir el menú</string>
@@ -94,7 +95,6 @@
     <item quantity="one">%d episodiu</item>
     <item quantity="other">%d episodios</item>
   </plurals>
-  <string name="loading_more">Cargando más…</string>
   <string name="episode_notification">Avisos d\'episodios nuevos</string>
   <string name="episode_notification_summary">Amuesa un avisu cuando s\'espublice un episodiu nuevu.</string>
   <plurals name="new_episode_notification_message">
@@ -154,7 +154,6 @@
   <string name="reset_position">Reafitar el puntu de reproducción</string>
   <!--Download messages and labels-->
   <string name="download_error_details">Detalles</string>
-  <string name="download_error_details_message">%1$s \n\nURL del ficheru:\n%2$s</string>
   <string name="download_error_tap_for_details">Calca pa ver los detalles</string>
   <string name="download_error_device_not_found">Nun s\'atopó\'l preséu d\'almacenamientu</string>
   <string name="download_error_insufficient_space">Nun queda abondu espaciu nel preséu.</string>
@@ -297,8 +296,6 @@
   <string name="pref_theme_title_dark">Escuridá</string>
   <string name="pref_theme_title_trueblack">Escuridá (AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Ensin llende</string>
-  <string name="pref_gpodnet_setlogin_information_title">Camudar la información del aniciu de sesión</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Camuda la información d\'aniciu de sesión de la to cuenta de gpodder.net .</string>
   <string name="pref_feed_playback_speed_sum">La velocidá que s\'usa al aniciar la reproducción de los episodios d\'esti podcast</string>
   <string name="pref_feed_skip">Saltu automáticu</string>
   <string name="pref_feed_skip_sum">Salta les introducciones y los creitos del final</string>
@@ -335,15 +332,6 @@
   <string name="pref_enqueue_downloaded_title">Amestar lo baxao a la cola</string>
   <string name="pref_enqueue_downloaded_summary">Amiesta los episodios baxaos a la cola</string>
   <string name="behavior">Comportamientu</string>
-  <string name="pref_back_button_behavior_title">Comportamientu del botón Atrás</string>
-  <string name="pref_back_button_behavior_sum">Camuda\'l comportamientu del botón Atrás.</string>
-  <string name="back_button_default">El predetermináu</string>
-  <string name="back_button_open_drawer">Apertura del caxón de navegación</string>
-  <string name="back_button_double_tap">Dos calcos pa colar</string>
-  <string name="back_button_show_prompt">Confirmación pa colar</string>
-  <string name="close_prompt">¿De xuru que quies zarrar AntennaPod?</string>
-  <string name="double_tap_toast">Volvi tocar el botón Atrás pa colar</string>
-  <string name="back_button_go_to_page">Dir pa la páxina…</string>
   <string name="pref_delete_removes_from_queue_title">«Desaniciar» quita de la cola</string>
   <string name="pref_delete_removes_from_queue_sum">Quita automáticamente los episodios de la cola al desanicialos.</string>
   <string name="pref_filter_feed_title">Peñera de soscripciones</string>
@@ -416,19 +404,19 @@
     <item quantity="other">%d hores</item>
   </plurals>
   <string name="auto_enable_label">Activación automática</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
   <string name="gpodnetauth_login_butLabel">Aniciar sesión</string>
   <string name="gpodnetauth_encryption_warning">¡Los datos y la contraseña nun tán cifraos!</string>
   <string name="username_label">Nome d\'usuariu</string>
   <string name="password_label">Contraseña</string>
-  <string name="gpodnetauth_host">Agospiador</string>
-  <string name="gpodnetauth_select_server">Esbillar el sirvidor</string>
   <string name="gpodnetauth_device_name">Nome del preséu</string>
   <string name="gpodnetauth_device_name_default">AntennaPod en «%1$s»</string>
   <string name="gpodnetauth_existing_devices">Preseos esistentes</string>
   <string name="gpodnetauth_create_device">Crear el preséu</string>
   <string name="gpodnetauth_finish_descr">¡Norabona! La to cuenta de gpodder.net ta enllaciada col preséu. Dende agora, AntennaPod va sincronizar automáticamente les soscripciones del preséu con esta cuenta.</string>
   <string name="gpodnetauth_finish_butsyncnow">Sincronizar agora</string>
+  <string name="pref_gpodnet_setlogin_information_title">Camudar la información del aniciu de sesión</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Camuda la información d\'aniciu de sesión de la to cuenta de gpodder.net .</string>
   <string name="gpodnetsync_error_descr">Asocedió un fallu demientres la sincronización:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Sincronización correuta</string>
   <string name="gpodnetsync_pref_report_failed">Sincronización fallida</string>
@@ -463,9 +451,6 @@
   <string name="auto_download_settings_label">Axustes de la descarga automática</string>
   <string name="episode_filters_label">Peñera d\'episodios</string>
   <string name="episode_filters_description">La llista de términos que s\'usa pa decidir si un episodiu habría incluyise o escluyise de la descarga automática</string>
-  <string name="episode_filters_include">Incluyir</string>
-  <string name="episode_filters_exclude">Escluyir</string>
-  <string name="episode_filters_hint">Pallabres individuales\n\"Pallabres múltiples\"</string>
   <string name="keep_updated">Anovamientu automáticu</string>
   <string name="keep_updated_summary">Inclúi esti podcast al refrescar (automáticamente) tolos podcasts</string>
   <string name="auto_download_disabled_globally">La descarga automática ta desactivada nos axustes principales d\'AntennaPod</string>

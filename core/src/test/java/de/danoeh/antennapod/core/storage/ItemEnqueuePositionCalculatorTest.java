@@ -1,7 +1,8 @@
 package de.danoeh.antennapod.core.storage;
 
-import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfaceStub;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -19,14 +20,12 @@ import de.danoeh.antennapod.model.feed.FeedComponent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedMother;
-import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
+import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.model.playback.Playable;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 
-import static de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation.AFTER_CURRENTLY_PLAYING;
-import static de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation.BACK;
-import static de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation.FRONT;
+import static de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation.AFTER_CURRENTLY_PLAYING;
+import static de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation.BACK;
+import static de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation.FRONT;
 import static de.danoeh.antennapod.core.util.CollectionTestUtil.concat;
 import static de.danoeh.antennapod.core.util.CollectionTestUtil.list;
 import static de.danoeh.antennapod.core.util.FeedItemUtil.getIdList;
@@ -74,6 +73,7 @@ public class ItemEnqueuePositionCalculatorTest {
          */
         @Test
         public void test() {
+            DownloadServiceInterface.setImpl(new DownloadServiceInterfaceStub());
             ItemEnqueuePositionCalculator calculator = new ItemEnqueuePositionCalculator(options);
 
             // shallow copy to which the test will add items
@@ -126,95 +126,6 @@ public class ItemEnqueuePositionCalculatorTest {
         private static final long ID_CURRENTLY_PLAYING_NULL = -1L;
         private static final long ID_CURRENTLY_PLAYING_NOT_FEEDMEDIA = -9999L;
 
-    }
-
-    @RunWith(Parameterized.class)
-    public static class PreserveDownloadOrderTest {
-        /**
-         * The test covers the use case that when user initiates multiple downloads in succession,
-         * resulting in multiple addQueueItem() calls in succession.
-         * the items in the queue will be in the same order as the order user taps to download
-         */
-        @Parameters(name = "{index}: case<{0}>")
-        public static Iterable<Object[]> data() {
-            // Attempts to make test more readable by showing the expected list of ids
-            // (rather than the expected positions)
-            return Arrays.asList(new Object[][] {
-                    {"download order test, enqueue default",
-                            concat(QUEUE_DEFAULT_IDS, 101L),
-                            concat(QUEUE_DEFAULT_IDS, list(101L, 102L)),
-                            concat(QUEUE_DEFAULT_IDS, list(101L, 102L, 103L)),
-                            BACK, QUEUE_DEFAULT, ID_CURRENTLY_PLAYING_NULL},
-                    {"download order test, enqueue at front (currently playing has no effect)",
-                            concat(101L, QUEUE_DEFAULT_IDS),
-                            concat(list(101L, 102L), QUEUE_DEFAULT_IDS),
-                            concat(list(101L, 103L, 102L), QUEUE_DEFAULT_IDS),
-                            // ^ 103 is put ahead of 102, after 102 failed.
-                            // It is a limitation as the logic can't tell 102 download has failed
-                            // (as opposed to simply being enqueued)
-                            FRONT, QUEUE_DEFAULT, 11L}, // 11 is at the front, currently playing
-                    {"download order test, enqueue after currently playing",
-                            list(11L, 101L, 12L, 13L, 14L),
-                            list(11L, 101L, 102L, 12L, 13L, 14L),
-                            list(11L, 101L, 103L, 102L, 12L, 13L, 14L),
-                            AFTER_CURRENTLY_PLAYING, QUEUE_DEFAULT, 11L}  // 11 is at the front, currently playing
-            });
-        }
-
-        @Parameter
-        public String message;
-
-        @Parameter(1)
-        public List<Long> idsExpectedAfter101;
-
-        @Parameter(2)
-        public List<Long> idsExpectedAfter102;
-
-        @Parameter(3)
-        public List<Long> idsExpectedAfter103;
-
-        @Parameter(4)
-        public EnqueueLocation options;
-
-        @Parameter(5)
-        public List<FeedItem> queueInitial;
-
-        @Parameter(6)
-        public long idCurrentlyPlaying;
-
-        @Test
-        public void testQueueOrderWhenDownloading2Items() {
-            ItemEnqueuePositionCalculator calculator = new ItemEnqueuePositionCalculator(options);
-            try (MockedStatic<DownloadService> downloadServiceMock = Mockito.mockStatic(DownloadService.class)) {
-                List<FeedItem> queue = new ArrayList<>(queueInitial);
-
-                // Test body
-                Playable currentlyPlaying = getCurrentlyPlaying(idCurrentlyPlaying);
-                // User clicks download on feed item 101
-                FeedItem feedItem101 = createFeedItem(101);
-                downloadServiceMock.when(() ->
-                        DownloadService.isDownloadingFile(feedItem101.getMedia().getDownload_url())).thenReturn(true);
-                doAddToQueueAndAssertResult(message + " (1st download)",
-                        calculator, feedItem101, queue, currentlyPlaying, idsExpectedAfter101);
-                // Then user clicks download on feed item 102
-                FeedItem feedItem102 = createFeedItem(102);
-                downloadServiceMock.when(() ->
-                        DownloadService.isDownloadingFile(feedItem102.getMedia().getDownload_url())).thenReturn(true);
-                doAddToQueueAndAssertResult(message + " (2nd download, it should preserve order of download)",
-                        calculator, feedItem102, queue, currentlyPlaying, idsExpectedAfter102);
-                // simulate download failure case for 102
-                downloadServiceMock.when(() ->
-                        DownloadService.isDownloadingFile(feedItem102.getMedia().getDownload_url())).thenReturn(false);
-                // Then user clicks download on feed item 103
-                FeedItem feedItem103 = createFeedItem(103);
-                downloadServiceMock.when(() ->
-                        DownloadService.isDownloadingFile(feedItem103.getMedia().getDownload_url())).thenReturn(true);
-                doAddToQueueAndAssertResult(message
-                                + " (3rd download, with 2nd download failed; "
-                                + "it should be behind 1st download (unless enqueueLocation is BACK)",
-                        calculator, feedItem103, queue, currentlyPlaying, idsExpectedAfter103);
-            }
-        }
     }
 
     static void doAddToQueueAndAssertResult(String message,

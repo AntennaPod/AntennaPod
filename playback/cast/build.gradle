@@ -15,5 +15,5 @@ dependencies {
     annotationProcessor "org.greenrobot:eventbus-annotation-processor:$eventbusVersion"
 
     playApi 'androidx.mediarouter:mediarouter:1.2.5'
-    playApi 'com.google.android.gms:play-services-cast-framework:20.0.0'
+    playApi 'com.google.android.gms:play-services-cast-framework:21.2.0'
 }

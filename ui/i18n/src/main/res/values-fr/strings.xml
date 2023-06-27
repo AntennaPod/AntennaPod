@@ -6,6 +6,7 @@
   <string name="statistics_label">Statistiques</string>
   <string name="add_feed_label">Ajouter un podcast</string>
   <string name="episodes_label">Episodes</string>
+  <string name="home_label">Accueil</string>
   <string name="queue_label">Liste de lecture</string>
   <string name="inbox_label">Boîte de réception</string>
   <string name="favorite_episodes_label">Favoris</string>
@@ -42,6 +43,15 @@
   <string name="statistics_reset_data_msg">L\'information des temps de lecture va être effacée. Etes-vous sûr de vouloir continuer ?</string>
   <string name="statistics_counting_range">Lu entre %1$s et %2$s</string>
   <string name="statistics_counting_total">De durée de lecture</string>
+  <!--Home fragment-->
+  <string name="home_surprise_title">Soyez surpris</string>
+  <string name="home_classics_title">Vos classiques</string>
+  <string name="home_continue_title">Continuer d\'écouter</string>
+  <string name="home_new_title">Les nouveautés</string>
+  <string name="home_downloads_title">Derniers téléchargements</string>
+  <string name="home_welcome_title">Bienvenu dans AntennaPod !</string>
+  <string name="home_welcome_text">Vous n\'avez pas encore d\'abonnements. Ouvrez le menu latéral pour ajouter des podcasts.</string>
+  <string name="configure_home">Paramétrer l\'accueil</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Utilisé sur l\'appareil par les épisodes</string>
   <!--Main activity-->
@@ -52,10 +62,10 @@
   <string name="drawer_feed_order_alphabetical">Trier par ordre alphabétique</string>
   <string name="drawer_feed_order_last_update">Trier par date de publication</string>
   <string name="drawer_feed_order_most_played">Trier par nombre lus</string>
-  <string name="drawer_feed_counter_inbox_unplayed">Episodes dans la boîte de réception et non lus</string>
   <string name="drawer_feed_counter_inbox">Episodes dans la boîte de réception</string>
   <string name="drawer_feed_counter_unplayed">Episodes non-lus</string>
   <string name="drawer_feed_counter_downloaded">Episodes téléchargés</string>
+  <string name="drawer_feed_counter_downloaded_unplayed">Episodes téléchargés et non lus</string>
   <string name="drawer_feed_counter_none">Aucun</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">Aucune application compatible trouvée</string>
@@ -69,6 +79,9 @@
   <string name="go_to_position_label">Aller à cette position</string>
   <!--Playback history-->
   <string name="clear_history_label">Effacer le journal</string>
+  <string name="clear_playback_history_msg">L\'historique de lecture va être effacé. Êtes-vous sûr de vouloir continuer ?</string>
+  <string name="remove_history_label">Supprimer de l\'historique</string>
+  <string name="removed_history_label">Supprimé de l\'historique</string>
   <!--Other-->
   <string name="confirm_label">Confirmer</string>
   <string name="cancel_label">Annuler</string>
@@ -125,7 +138,6 @@
     <item quantity="many">%d épisodes</item>
     <item quantity="other">%d épisodes</item>
   </plurals>
-  <string name="loading_more">Chargement...</string>
   <string name="episode_notification">Notification des épisodes</string>
   <string name="episode_notification_summary">Affiche une notification quand de nouveaux épisodes sont disponibles.</string>
   <plurals name="new_episode_notification_message">
@@ -172,6 +184,7 @@
     <item quantity="other">%d abonnements mis à jour.</item>
   </plurals>
   <string name="edit_tags">Modifier les tags</string>
+  <string name="add_tag">Ajouter un tag</string>
   <string name="rename_tag_label">Renommer le tag</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">La mise à jour des podcasts par la connexion mobile est désactivé dans les options.\n\nVoulez-vous quand même actualiser ?</string>
   <!--actions on feeditems-->
@@ -225,6 +238,11 @@
     <item quantity="many">%d épisodes supprimés de la liste de lecture.</item>
     <item quantity="other">%d épisodes supprimés de la liste de lecture.</item>
   </plurals>
+  <plurals name="removed_from_inbox_batch_label">
+    <item quantity="one">%d épisode supprimé de la boîte de réception.</item>
+    <item quantity="many">%d épisodes supprimés de la boîte de réception.</item>
+    <item quantity="other">%d épisodes supprimés de la boîte de réception.</item>
+  </plurals>
   <string name="add_to_favorite_label">Ajouter aux Favoris</string>
   <string name="remove_from_favorite_label">Supprimer des Favoris</string>
   <string name="visit_website_label">Visiter le site</string>
@@ -236,7 +254,7 @@
   <string name="download_pending">Téléchargement en attente</string>
   <string name="download_running">Téléchargement en cours</string>
   <string name="download_error_details">Détails</string>
-  <string name="download_error_details_message">%1$s \n\nLien du fichier :\n%2$s</string>
+  <string name="download_log_details_message">%1$s \n\nRaison technique :\n%2$s \n\nURL du fichier :\n%3$s</string>
   <string name="download_error_tap_for_details">Taper pour plus de détails.</string>
   <string name="download_error_device_not_found">Volume de stockage non trouvé</string>
   <string name="download_error_insufficient_space">Espace insuffisant sur l\'appareil.</string>
@@ -408,6 +426,8 @@
   <string name="user_interface_label">Interface utilisateur</string>
   <string name="user_interface_sum">Apparence, abonnements, écran de verrouillage</string>
   <string name="pref_set_theme_title">Choisir un thème</string>
+  <string name="pref_tinted_theme_title">Couleurs dynamiques</string>
+  <string name="pref_tinted_theme_message">Adapter les couleurs de l\'application à celles du fonds d\'écran.</string>
   <string name="pref_nav_drawer_items_title">Changer les éléments du volet de navigation</string>
   <string name="pref_nav_drawer_items_sum">Choisir quels éléments apparaissent dans le volet de navigation</string>
   <string name="pref_nav_drawer_feed_order_title">Définir l\'ordre des abonnements</string>
@@ -433,20 +453,6 @@
   <string name="pref_theme_title_dark">Sombre</string>
   <string name="pref_theme_title_trueblack">Noir (pour écran AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Illimité</string>
-  <string name="synchronization_logout">Déconnexion</string>
-  <string name="pref_synchronization_logout_toast">Déconnexion réussie</string>
-  <string name="pref_gpodnet_setlogin_information_title">Modifier les informations de connexion</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Modifier les information de connexion pour votre compte gpodder.net</string>
-  <string name="synchronization_sync_changes_title">Synchroniser maintenant</string>
-  <string name="synchronization_full_sync_title">Forcer une synchronisation complète</string>
-  <string name="synchronization_login_status"><![CDATA[Connecté en tant que <i>%1$s</i> sur <i>%2$s</i>. <br/><br/>Déconnectez-vous pour pouvoir changer le service de synchronisation]]></string>
-  <string name="synchronization_summary_unchoosen">Vous pouvez choisir entre plusieurs services pour synchroniser les abonnements et les statuts des épisodes</string>
-  <string name="synchronization_summary_nextcloud">Gpoddersync est une application Nextcloud open-source que vous pouvez installer facilement sur votre serveur. L\'application est indépendante du projet AntennaPod.</string>
-  <string name="synchronization_nextcloud_authenticate_browser">Autoriser l\'accès à l\'aide du navigateur qui a été ouvert puis revenez sur AntennaPod.</string>
-  <string name="synchronization_choose_title">Choisir le service de synchronisation</string>
-  <string name="synchronization_force_sync_summary">Resynchroniser tous les abonnements et tous les statuts d\'épisodes</string>
-  <string name="synchronization_sync_summary">Synchroniser l\'abonnement et les statuts d\'épisodes changés</string>
-  <string name="dialog_choose_sync_service_title">Choisir le service de synchronisation</string>
   <string name="pref_playback_speed_sum">Définir les vitesses disponibles lors de la lecture</string>
   <string name="pref_feed_playback_speed_sum">Vitesse de lecture par défaut des épisodes</string>
   <string name="pref_feed_skip">Saut automatique</string>
@@ -498,16 +504,9 @@
   <string name="media_player_switched_to_exoplayer">Lecteur changé pour ExoPlayer</string>
   <string name="pref_skip_silence_title">Supprimer les silences audios</string>
   <string name="behavior">Comportement</string>
-  <string name="pref_back_button_behavior_title">Comportement du bouton retour</string>
-  <string name="pref_back_button_behavior_sum">Change le comportement du bouton retour</string>
-  <string name="back_button_default">Défaut</string>
-  <string name="back_button_open_drawer">Ouvrir le volet de navigation</string>
-  <string name="back_button_double_tap">Taper 2 fois pour quitter</string>
-  <string name="back_button_show_prompt">Confirmer la fermeture</string>
-  <string name="close_prompt">Etes-vous sur de vouloir fermer AntennaPod ?</string>
-  <string name="double_tap_toast">Taper encore une fois retour pour quitter</string>
-  <string name="back_button_go_to_page">Aller à la page...</string>
-  <string name="back_button_go_to_page_title">Sélectionner une page</string>
+  <string name="pref_default_page">Ecran par défaut</string>
+  <string name="pref_default_page_sum">Choisir l\'écran par défaut à l\'ouverture d\'AntennaPod.</string>
+  <string name="remember_last_page">Dernier écran utilisé</string>
   <string name="pref_delete_removes_from_queue_title">Supprimer retire de la liste de lecture</string>
   <string name="pref_delete_removes_from_queue_sum">Retirer de la liste de lecture un épisode quand son fichier est supprimé.</string>
   <string name="pref_filter_feed_title">Filtre des abonnements</string>
@@ -608,20 +607,38 @@
   </plurals>
   <string name="auto_enable_label">Activation automatique</string>
   <string name="sleep_timer_enabled_label">Arrêt automatique activé</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
+  <string name="synchronization_choose_title">Choisir le service de synchronisation</string>
+  <string name="synchronization_summary_unchoosen">Vous pouvez choisir entre plusieurs services pour synchroniser les abonnements et les statuts des épisodes</string>
+  <string name="dialog_choose_sync_service_title">Choisir le service de synchronisation</string>
+  <string name="gpodnet_description">Gpodder.net est un service open-source de synchronisation que vous pouvez installer facilement sur votre propre serveur. Gpodder.net est indépendant du projet AntennaPod.</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync est une application Nextcloud open-source que vous pouvez installer facilement sur votre serveur. L\'application est indépendante du projet AntennaPod.</string>
+  <string name="synchronization_host_explanation">Vous pouvez décider du serveur à utiliser pour synchroniser vos données. Quand vous en aurez choisi un, entrer son adresse ici.</string>
+  <string name="synchronization_host_label">Adresse du serveur</string>
+  <string name="proceed_to_login_butLabel">S\'identifier</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Autoriser l\'accès à l\'aide du navigateur qui a été ouvert puis revenez sur AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Connexion</string>
+  <string name="synchronization_credentials_explanation">Merci de renseigner vos informations de connexion au serveur de synchronisation.</string>
   <string name="gpodnetauth_encryption_warning">Le mot de passe et les données ne sont pas cryptés !</string>
   <string name="username_label">Identifiant</string>
   <string name="password_label">Mot de passe</string>
-  <string name="gpodnet_description">Gpodder.net est un service open-source de synchronisation que vous pouvez installer facilement sur votre propre serveur. Gpodder.net est indépendant du projet AntennaPod.</string>
-  <string name="gpodnetauth_host">Nom d\'hôte</string>
-  <string name="gpodnetauth_select_server">Sélectionner le serveur</string>
+  <string name="synchronization_login_butLabel">Connexion</string>
+  <string name="synchronization_selectDevice_explanation">Sélectionner votre appareil sur le serveur de synchronisation ou créez-en un nouveau.</string>
   <string name="gpodnetauth_device_name">Nom de l\'appareil</string>
   <string name="gpodnetauth_device_name_default">AntennaPod sur %1$s</string>
   <string name="gpodnetauth_existing_devices">Appareils déjà existants</string>
   <string name="gpodnetauth_create_device">Créer un appareil</string>
   <string name="gpodnetauth_finish_descr">Félicitations ! Votre compte gpodder.net est maintenant lié à votre appareil. AntennaPod va désormais automatiquement synchroniser vos podcasts sur votre appareil avec votre compte gpodder.</string>
   <string name="gpodnetauth_finish_butsyncnow">Commencer la synchronisation</string>
+  <string name="pref_gpodnet_setlogin_information_title">Modifier les informations de connexion</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Modifier les information de connexion pour votre compte gpodder.net</string>
+  <string name="synchronization_sync_changes_title">Synchroniser maintenant</string>
+  <string name="synchronization_sync_summary">Synchroniser l\'abonnement et les statuts d\'épisodes changés</string>
+  <string name="synchronization_full_sync_title">Forcer une synchronisation complète</string>
+  <string name="synchronization_force_sync_summary">Resynchroniser tous les abonnements et tous les statuts d\'épisodes</string>
+  <string name="synchronization_logout">Déconnexion</string>
+  <string name="synchronization_login_status"><![CDATA[Connecté en tant que <i>%1$s</i> sur <i>%2$s</i>. <br/><br/>Déconnectez-vous pour pouvoir changer le service de synchronisation]]></string>
+  <string name="pref_synchronization_logout_toast">Déconnexion réussie</string>
   <string name="gpodnetsync_error_title">Problème de synchronisation avec gpodder.net</string>
   <string name="gpodnetsync_error_descr">Une erreur est apparue lors de la synchronisation :\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Réussie</string>
@@ -667,10 +684,10 @@
   <string name="auto_download_settings_label">Préférence de téléchargement automatique</string>
   <string name="episode_filters_label">Filtre d\'épisode</string>
   <string name="episode_filters_description">Liste de mots permettant de décider si un épisode est à inclure ou à exclure des téléchargements automatiques</string>
-  <string name="episode_filters_include">Inclure</string>
-  <string name="episode_filters_exclude">Exclure</string>
-  <string name="episode_filters_duration">Durée minimum (en minutes)</string>
-  <string name="episode_filters_hint">Mots uniques \n\"Liste de mots\"</string>
+  <string name="add_term">Ajouter le mot</string>
+  <string name="exclude_terms">Exclure les épisodes avec les mots ci-dessous</string>
+  <string name="include_terms">N\'inclure que les épisodes avec les mots ci-dessous</string>
+  <string name="exclude_episodes_shorter_than">Exclure les épisodes de moins de</string>
   <string name="keep_updated">Maintenir à jour</string>
   <string name="keep_updated_summary">Inclure ce podcast lors de la mise à jour des podcasts</string>
   <string name="auto_download_disabled_globally">Le téléchargement automatique n\'est pas activé dans les préférences</string>
@@ -680,6 +697,8 @@
   <string name="statistics_space_used">Espace utilisé :</string>
   <string name="statistics_episodes_started_total">Episodes démarrés / total :</string>
   <string name="statistics_view_all">Voir les statistiques pour tous les podcasts »</string>
+  <string name="edit_url_menu">Modifier le lien</string>
+  <string name="edit_url_confirmation_msg">Modifier le lien RSS peut facilement corrompre l\'état de lecture et la liste des épisodes du podcast. Il est recommandé de NE PAS LE CHANGER et AUCUNE AIDE ne pourra être fournie si quelque chose se passe mal. Cette action ne peut pas être annulée. L\'abonnement NE POURRA PAS ÊTRE RÉPARÉ en remettant juste l\'ancien lien. Il est recommandé de CRÉER UNE SAUVEGARDE avant de continuer.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importation des abonnements à partir d\'applications à usage unique...</string>
   <!--Add podcast fragment-->
@@ -695,7 +714,9 @@
   <string name="discover_is_hidden">Vous avez choisi de cacher les suggestions.</string>
   <string name="discover_more">plus »</string>
   <string name="discover_powered_by_itunes">Suggestions de iTunes</string>
+  <string name="discover_confirm">Montrer les suggestions</string>
   <string name="search_powered_by">Résultats de %1$s</string>
+  <string name="select_country">Changer le pays</string>
   <!--Local feeds-->
   <string name="add_local_folder">Ajouter un dossier</string>
   <string name="local_folder">Dossier local</string>

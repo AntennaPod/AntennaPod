@@ -3,7 +3,7 @@ package de.danoeh.antennapod.core.sync;
 import android.content.Context;
 import android.content.SharedPreferences;
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 
 /**

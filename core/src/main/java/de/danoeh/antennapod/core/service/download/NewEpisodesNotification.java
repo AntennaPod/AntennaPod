@@ -19,7 +19,6 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedCounter;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 
@@ -119,9 +118,7 @@ public class NewEpisodesNotification {
             return Glide.with(context)
                     .asBitmap()
                     .load(feed.getImageUrl())
-                    .apply(new RequestOptions()
-                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                            .centerCrop())
+                    .apply(new RequestOptions().centerCrop())
                     .submit(iconSize, iconSize)
                     .get();
         } catch (Throwable tr) {

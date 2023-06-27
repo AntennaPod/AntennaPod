@@ -28,12 +28,6 @@
                 android:key="prefPauseForFocusLoss"
                 android:summary="@string/pref_pausePlaybackForFocusLoss_sum"
                 android:title="@string/pref_pausePlaybackForFocusLoss_title"/>
-        <SwitchPreferenceCompat
-                android:defaultValue="true"
-                android:enabled="true"
-                android:key="prefResumeAfterCall"
-                android:summary="@string/pref_resumeAfterCall_sum"
-                android:title="@string/pref_resumeAfterCall_title"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/playback_control">
@@ -62,14 +56,14 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/reassign_hardware_buttons">
-        <ListPreference
+        <de.danoeh.antennapod.preferences.MaterialListPreference
                 android:defaultValue="@string/keycode_media_fast_forward"
                 android:entries="@array/button_action_options"
                 android:entryValues="@array/button_action_values"
                 android:key="prefHardwareForwardButton"
                 android:title="@string/pref_hardware_forward_button_title"
                 android:summary="@string/pref_hardware_forward_button_summary"/>
-        <ListPreference
+        <de.danoeh.antennapod.preferences.MaterialListPreference
                 android:defaultValue="@string/keycode_media_rewind"
                 android:entries="@array/button_action_options"
                 android:entryValues="@array/button_action_values"
@@ -85,7 +79,7 @@
                 android:key="prefEnqueueDownloaded"
                 android:summary="@string/pref_enqueue_downloaded_summary"
                 android:title="@string/pref_enqueue_downloaded_title" />
-        <ListPreference
+        <de.danoeh.antennapod.preferences.MaterialListPreference
                 android:defaultValue="BACK"
                 android:entries="@array/enqueue_location_options"
                 android:entryValues="@array/enqueue_location_values"
@@ -97,7 +91,7 @@
                 android:key="prefFollowQueue"
                 android:summary="@string/pref_followQueue_sum"
                 android:title="@string/pref_followQueue_title"/>
-        <ListPreference
+        <de.danoeh.antennapod.preferences.MaterialListPreference
                 android:defaultValue="30"
                 android:entries="@array/smart_mark_as_played_values"
                 android:entryValues="@array/smart_mark_as_played_values"
@@ -110,15 +104,5 @@
                 android:key="prefSkipKeepsEpisode"
                 android:summary="@string/pref_skip_keeps_episodes_sum"
                 android:title="@string/pref_skip_keeps_episodes_title"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/experimental_pref">
-        <ListPreference
-                android:defaultValue="exoplayer"
-                android:entries="@array/media_player_options"
-                android:key="prefMediaPlayer"
-                android:title="@string/media_player"
-                android:summary="@string/pref_media_player_message"
-                android:entryValues="@array/media_player_values"/>
     </PreferenceCategory>
 </PreferenceScreen>

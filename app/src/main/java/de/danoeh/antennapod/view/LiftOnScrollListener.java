@@ -3,7 +3,6 @@ package de.danoeh.antennapod.view;
 import android.animation.ValueAnimator;
 import android.view.View;
 import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +17,7 @@ public class LiftOnScrollListener extends RecyclerView.OnScrollListener
 
     public LiftOnScrollListener(View appBar) {
         animator = ValueAnimator.ofFloat(0, appBar.getContext().getResources().getDisplayMetrics().density * 8);
-        animator.addUpdateListener(animation -> ViewCompat.setElevation(appBar, (float) animation.getAnimatedValue()));
+        animator.addUpdateListener(animation -> appBar.setElevation((float) animation.getAnimatedValue()));
     }
 
     @Override

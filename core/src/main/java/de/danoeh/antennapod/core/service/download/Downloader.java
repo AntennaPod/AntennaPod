@@ -9,7 +9,8 @@ import java.util.concurrent.Callable;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 
 /**
  * Downloads files
@@ -24,15 +25,15 @@ public abstract class Downloader implements Callable<Downloader> {
     @NonNull
     final DownloadRequest request;
     @NonNull
-    final DownloadStatus result;
+    final DownloadResult result;
 
     Downloader(@NonNull DownloadRequest request) {
         super();
         this.request = request;
         this.request.setStatusMsg(R.string.download_pending);
         this.cancelled = false;
-        this.result = new DownloadStatus(0, request.getTitle(), request.getFeedfileId(), request.getFeedfileType(),
-                false, cancelled, false, null, new Date(), null, request.isInitiatedByUser());
+        this.result = new DownloadResult(0, request.getTitle(), request.getFeedfileId(), request.getFeedfileType(),
+                false, null, new Date(), null);
     }
 
     protected abstract void download();
@@ -62,7 +63,7 @@ public abstract class Downloader implements Callable<Downloader> {
     }
 
     @NonNull
-    public DownloadStatus getResult() {
+    public DownloadResult getResult() {
         return result;
     }
 

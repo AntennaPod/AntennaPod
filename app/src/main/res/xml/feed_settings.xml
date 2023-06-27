@@ -40,15 +40,15 @@
         android:summary="@string/pref_feed_skip_sum"
         android:title="@string/pref_feed_skip" />
 
-    <ListPreference
+    <de.danoeh.antennapod.preferences.MaterialListPreference
         android:entries="@array/spnAutoDeleteItems"
         android:entryValues="@array/spnAutoDeleteValues"
         android:icon="@drawable/ic_delete"
         android:key="autoDelete"
-        android:summary="@string/feed_auto_download_global"
+        android:summary="@string/global_default"
         android:title="@string/auto_delete_label" />
 
-    <ListPreference
+    <de.danoeh.antennapod.preferences.MaterialListPreference
         android:defaultValue="off"
         android:entries="@array/spnVolumeReductionItems"
         android:entryValues="@array/spnVolumeReductionValues"
@@ -56,6 +56,14 @@
         android:key="volumeReduction"
         android:summary="@string/feed_volume_reduction_summary"
         android:title="@string/feed_volume_reduction" />
+
+    <de.danoeh.antennapod.preferences.MaterialListPreference
+        android:entries="@array/feedNewEpisodesActionItems"
+        android:entryValues="@array/feedNewEpisodesActionValues"
+        android:icon="@drawable/ic_feed"
+        android:key="feedNewEpisodesAction"
+        android:summary="@string/global_default"
+        android:title="@string/pref_new_episodes_action_title" />
 
     <PreferenceCategory
         android:key="autoDownloadCategory"

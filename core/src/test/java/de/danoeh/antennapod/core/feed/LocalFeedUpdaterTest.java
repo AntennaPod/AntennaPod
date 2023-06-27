@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfaceStub;
 import de.danoeh.antennapod.core.util.FastDocumentFile;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -24,6 +26,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowMediaMetadataRetriever;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,7 +35,7 @@ import java.util.Objects;
 
 import de.danoeh.antennapod.core.ApplicationCallbacks;
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 
@@ -75,6 +78,7 @@ public class LocalFeedUpdaterTest {
         Application app = (Application) context;
         ClientConfig.applicationCallbacks = mock(ApplicationCallbacks.class);
         when(ClientConfig.applicationCallbacks.getApplicationInstance()).thenReturn(app);
+        DownloadServiceInterface.setImpl(new DownloadServiceInterfaceStub());
 
         // Initialize database
         PodDBAdapter.init(context);
@@ -259,7 +263,11 @@ public class LocalFeedUpdaterTest {
 
             // call method to test
             Feed feed = new Feed(FEED_URL, null);
-            LocalFeedUpdater.tryUpdateFeed(feed, context, null, null);
+            try {
+                LocalFeedUpdater.tryUpdateFeed(feed, context, null, null);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

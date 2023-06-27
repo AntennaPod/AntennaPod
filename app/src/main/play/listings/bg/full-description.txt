@@ -1,0 +1,31 @@
+AntennaPod е мениджър и плейър на подкасти, който ви дава незабавен достъп до милиони безплатни и платени подкасти, от независими подкастери до големи издателства като BBC, NPR и CNN. Добавяйте, импортирайте и експортирайте техните емисии безпроблемно, като използвате подкаст базата данни на iTunes, OPML файлове или прости RSS URL адреси.
+Изтегли епизоди, пусни ги в ефир или ги прибави към списък и им се наслади по начина по който ти харесва с настройваща се скорост на записа, подружка за глави и таймер за заспиване. 
+Спести усилие, батерия и мобилни данни с мощни автоматизиран контрол за изтегляне на епизоди (учотни време, интевал или безжична връзка) и за изтриване на епизоди (спрямо твоите настройки за любими и забавяния). 
+
+Направен от подкаст ентусиасти, AntennaPod е безплатен във всеки смисъл на думата: отворен, без пари, без реклами. 
+
+<b>Вмъкни, организирай и пусни</b>
+Управлявай възпроизвеждането отвсякъде: акранно приложение, системните известия или бутоните на безжичните слушалки
+Прибави и вмъкни списъци чрез базаданните на iTunes и gPodder.net, OPML файлове и RSS или линкове от Atom
+• Enjoy listening your way with adjustable playback speed, chapter support, remembered playback position and an advanced sleep timer (shake to reset, lower volume)
+• Access password-protected feeds and episodes
+
+<b>Keep track, share & appreciate</b>
+• Keep track of the best of the best by marking episodes as favourites
+Намери определен епизод чрез историята на възпройзвежданията или чрез търсене на заглавия и белеки към предаванията.
+• Share episodes and feeds through advanced social media and email options, the gPodder.net services and via OPML export
+
+<b>Управлявай системата</b>
+• Take control over automated downloading: choose feeds, exclude mobile networks, select specific WiFi networks, require the phone to be charging and set times or intervals
+• Manage storage by setting the amount of cached episodes, smart deletion and selecting your preferred location
+• Приспособи се към околната среда със светла и тъмна тема
+• Back-up your subscriptions with the gPodder.net integration and OPML export
+
+<b>Присъедини се към AntennaPod обществото!</b>
+AntennaPod се разработва активно от доброволци. Можете да допринесете с код или с коментар!
+
+Нашите дружелюбни форум членове с удоволствие ще помогнат с всеки въпрос който имаш. Поканен си да обсъждаш функции и подкастване като цяло.
+https://forum.antennapod.org/
+
+Transifex е мястото за помощ с преводите:
+https://www.transifex.com/antennapod/antennapod

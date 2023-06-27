@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import de.danoeh.antennapod.databinding.FilterDialogRowBinding;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Arrays;
@@ -18,10 +17,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.feed.SubscriptionsFilterGroup;
+import de.danoeh.antennapod.databinding.FilterDialogRowBinding;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
-import de.danoeh.antennapod.core.feed.SubscriptionsFilterGroup;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public class SubscriptionsFilterDialog {
     public static void showDialog(Context context) {
@@ -37,6 +37,7 @@ public class SubscriptionsFilterDialog {
 
         for (SubscriptionsFilterGroup item : SubscriptionsFilterGroup.values()) {
             FilterDialogRowBinding binding = FilterDialogRowBinding.inflate(inflater);
+            binding.buttonGroup.setWeightSum(item.values.length);
             binding.filterButton1.setText(item.values[0].displayName);
             binding.filterButton1.setTag(item.values[0].filterId);
             if (item.values.length == 2) {
@@ -45,6 +46,10 @@ public class SubscriptionsFilterDialog {
             } else {
                 binding.filterButton2.setVisibility(View.GONE);
             }
+            binding.filterButton1.setMaxLines(3);
+            binding.filterButton1.setSingleLine(false);
+            binding.filterButton2.setMaxLines(3);
+            binding.filterButton2.setSingleLine(false);
             rows.addView(binding.getRoot());
         }
 

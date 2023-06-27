@@ -19,7 +19,6 @@ import android.webkit.WebViewClient;
 
 import androidx.core.content.ContextCompat;
 import androidx.core.util.Consumer;
-import androidx.core.view.ViewCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -63,9 +62,7 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
             // Use cached resources, even if they have expired
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
+        getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         getSettings().setUseWideViewPort(false);
         getSettings().setLoadWithOverviewMode(true);
         setOnLongClickListener(this);
@@ -107,7 +104,7 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             if (clipboardManager != null) {
                 clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", r.getExtra()));
             }
-            if (this.getContext() instanceof MainActivity) {
+            if (Build.VERSION.SDK_INT < 32 && this.getContext() instanceof MainActivity) {
                 ((MainActivity) this.getContext()).showSnackbarAbovePlayer(
                         getResources().getString(R.string.copied_to_clipboard),
                         Snackbar.LENGTH_SHORT);
@@ -133,9 +130,11 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             ClipboardManager cm = (ClipboardManager) getContext()
                     .getSystemService(Context.CLIPBOARD_SERVICE);
             cm.setPrimaryClip(clipData);
-            Snackbar s = Snackbar.make(this, R.string.copied_url_msg, Snackbar.LENGTH_LONG);
-            ViewCompat.setElevation(s.getView(), 100);
-            s.show();
+            if (Build.VERSION.SDK_INT < 32) {
+                Snackbar s = Snackbar.make(this, R.string.copied_to_clipboard, Snackbar.LENGTH_LONG);
+                s.getView().setElevation(100);
+                s.show();
+            }
         } else if (itemId == R.id.go_to_position_item) {
             if (ShownotesCleaner.isTimecodeLink(selectedUrl) && timecodeSelectedListener != null) {
                 timecodeSelectedListener.accept(ShownotesCleaner.getTimecodeLinkTime(selectedUrl));

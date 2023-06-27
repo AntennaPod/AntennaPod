@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -32,7 +33,6 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DateFormatter;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
@@ -96,7 +96,7 @@ public class CoverFragment extends Fragment {
             Playable media = controller.getMedia();
             if (media != null) {
                 if (includingChapters) {
-                    ChapterUtils.loadChapters(media, getContext());
+                    ChapterUtils.loadChapters(media, getContext(), false);
                 }
                 emitter.onSuccess(media);
             } else {
@@ -268,7 +268,6 @@ public class CoverFragment extends Fragment {
 
     private void displayCoverImage() {
         RequestOptions options = new RequestOptions()
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .dontAnimate()
                 .transform(new FitCenter(),
                         new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density)));
@@ -333,9 +332,10 @@ public class CoverFragment extends Fragment {
         if (clipboardManager != null) {
             clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", text));
         }
-        ((MainActivity) requireActivity()).showSnackbarAbovePlayer(
-                getResources().getString(R.string.copied_to_clipboard),
-                Snackbar.LENGTH_SHORT);
+        if (Build.VERSION.SDK_INT < 32) {
+            ((MainActivity) requireActivity()).showSnackbarAbovePlayer(
+                    getResources().getString(R.string.copied_to_clipboard), Snackbar.LENGTH_SHORT);
+        }
         return true;
     }
 }

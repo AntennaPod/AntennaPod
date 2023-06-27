@@ -13,11 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.HorizontalItemListAdapter;
-import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
@@ -32,6 +31,7 @@ import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -41,7 +41,7 @@ public class EpisodesSurpriseSection extends HomeSection {
     private static int seed = 0;
     private HorizontalItemListAdapter listAdapter;
     private Disposable disposable;
-    private List<FeedItem> episodes;
+    private List<FeedItem> episodes = new ArrayList<>();
 
     @Nullable
     @Override
@@ -65,11 +65,18 @@ public class EpisodesSurpriseSection extends HomeSection {
         viewBinding.recyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         viewBinding.recyclerView.setAdapter(listAdapter);
+        int paddingHorizontal = (int) (12 * getResources().getDisplayMetrics().density);
+        viewBinding.recyclerView.setPadding(paddingHorizontal, 0, paddingHorizontal, 0);
         if (seed == 0) {
             seed = new Random().nextInt();
         }
-        loadItems();
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        loadItems();
     }
 
     @Override
@@ -96,9 +103,6 @@ public class EpisodesSurpriseSection extends HomeSection {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if (episodes == null) {
-            return;
-        }
         for (int i = 0, size = event.items.size(); i < size; i++) {
             FeedItem item = event.items.get(i);
             int pos = FeedItemUtil.indexOfItemWithId(episodes, item.getId());
@@ -111,15 +115,11 @@ public class EpisodesSurpriseSection extends HomeSection {
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(DownloadEvent event) {
-        Log.d(TAG, "onEventMainThread() called with DownloadEvent");
-        DownloaderUpdate update = event.update;
-        if (listAdapter != null && update.mediaIds.length > 0) {
-            for (long mediaId : update.mediaIds) {
-                int pos = FeedItemUtil.indexOfItemWithMediaId(episodes, mediaId);
-                if (pos >= 0) {
-                    listAdapter.notifyItemChangedCompat(pos);
-                }
+    public void onEventMainThread(EpisodeDownloadEvent event) {
+        for (String downloadUrl : event.getUrls()) {
+            int pos = FeedItemUtil.indexOfItemWithDownloadUrl(episodes, downloadUrl);
+            if (pos >= 0) {
+                listAdapter.notifyItemChangedCompat(pos);
             }
         }
     }

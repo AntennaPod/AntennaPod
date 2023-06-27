@@ -16,10 +16,6 @@
         android:icon="@mipmap/ic_launcher"
         android:supportsRtl="true">
 
-        <service
-            android:name=".service.download.DownloadService"
-            android:enabled="true" />
-
         <service android:name=".service.playback.PlaybackService"
             android:label="@string/app_name"
             android:enabled="true"
@@ -28,6 +24,7 @@
 
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService"/>
+                <action android:name="de.danoeh.antennapod.intents.PLAYBACK_SERVICE" />
             </intent-filter>
         </service>
 
@@ -58,6 +55,7 @@
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
             <meta-data android:name="android.service.quicksettings.ACTIVE_TILE" android:value="true" />
+            <meta-data android:name="android.service.quicksettings.TOGGLEABLE_TILE" android:value="true" />
         </service>
     </application>
 

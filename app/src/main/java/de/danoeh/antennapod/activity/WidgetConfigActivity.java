@@ -3,6 +3,8 @@ package de.danoeh.antennapod.activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -10,7 +12,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
 import de.danoeh.antennapod.core.receiver.PlayerWidget;
 import de.danoeh.antennapod.core.widget.WidgetUpdaterWorker;
 
@@ -27,7 +29,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(UserPreferences.getTheme());
+        setTheme(ThemeSwitcher.getTheme(this));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_widget_config);
 
@@ -84,6 +86,23 @@ public class WidgetConfigActivity extends AppCompatActivity {
         ckFastForward.setOnClickListener(v -> displayPreviewPanel());
         ckSkip = findViewById(R.id.ckSkip);
         ckSkip.setOnClickListener(v -> displayPreviewPanel());
+
+        setInitialState();
+    }
+
+    private void setInitialState() {
+        SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, MODE_PRIVATE);
+        ckPlaybackSpeed.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_PLAYBACK_SPEED + appWidgetId, false));
+        ckRewind.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + appWidgetId, false));
+        ckFastForward.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + appWidgetId, false));
+        ckSkip.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + appWidgetId, false));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            int color = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + appWidgetId, PlayerWidget.DEFAULT_COLOR);
+            int opacity = Color.alpha(color) * 100 / 0xFF;
+
+            opacitySeekBar.setProgress(opacity, false);
+        }
+        displayPreviewPanel();
     }
 
     private void displayPreviewPanel() {
@@ -120,6 +139,6 @@ public class WidgetConfigActivity extends AppCompatActivity {
     }
 
     private int getColorWithAlpha(int color, int opacity) {
-        return (int) Math.round(0xFF * (0.01 * opacity)) * 0x1000000 + color;
+        return (int) Math.round(0xFF * (0.01 * opacity)) * 0x1000000 + (color & 0xffffff);
     }
 }

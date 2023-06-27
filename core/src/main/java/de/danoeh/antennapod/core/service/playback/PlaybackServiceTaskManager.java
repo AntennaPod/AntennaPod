@@ -227,7 +227,7 @@ public class PlaybackServiceTaskManager {
 
         if (media.getChapters() == null) {
             chapterLoaderFuture = Completable.create(emitter -> {
-                ChapterUtils.loadChapters(media, context);
+                ChapterUtils.loadChapters(media, context, false);
                 emitter.onComplete();
             })
                     .subscribeOn(Schedulers.io())
@@ -301,6 +301,7 @@ public class PlaybackServiceTaskManager {
         public void run() {
             Log.d(TAG, "Starting");
             long lastTick = System.currentTimeMillis();
+            EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(timeLeft));
             while (timeLeft > 0) {
                 try {
                     Thread.sleep(UPDATE_INTERVAL);

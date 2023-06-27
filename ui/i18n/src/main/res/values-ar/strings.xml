@@ -6,17 +6,21 @@
   <string name="statistics_label">الإحصائيات</string>
   <string name="add_feed_label">إضافة بودكاست</string>
   <string name="episodes_label">الحلقات</string>
+  <string name="home_label">المنزل</string>
   <string name="queue_label">لائحة الاستماع</string>
+  <string name="inbox_label">صندوق الوارد</string>
   <string name="favorite_episodes_label">المفضلات</string>
   <string name="settings_label">إعدادات</string>
   <string name="downloads_label">تنزيلات</string>
   <string name="open_autodownload_settings">إفتح الإعدادات</string>
+  <string name="downloads_log_label">سجل التنزيلات</string>
   <string name="subscriptions_label">إشتراكات</string>
   <string name="subscriptions_list_label">لائحة الإشتراكات</string>
   <string name="cancel_download_label">الغاء التنزيل</string>
   <string name="playback_history_label">سجل التشغيل</string>
   <string name="episode_cache_full_title">ذاكرة تخزين الحلقات ممتلئة</string>
   <string name="episode_cache_full_message">لقد تم تجاوز الحد الأقصى لتخزين الحلقات. المرجو الرفع من قيمة التخزين في قائمة الإعدادات.</string>
+  <string name="years_statistics_label">السنين</string>
   <string name="notification_pref_fragment">إشعارات</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">لم يتم العثور على %1$s</string>
@@ -28,10 +32,28 @@
   <string name="enable_swipeactions">تفعيل السحب في هذه الواجهة</string>
   <string name="change_setting">تغيير </string>
   <!--Statistics fragment-->
+  <string name="statistics_include_marked">قم بتضمين مدة الحلقات التي تم تعليمها ك مشغلة</string>
   <string name="statistics_speed_not_counted">ملاحظة: سرعة التشغيل لن تأخذ بالاعتبار.</string>
+  <string name="statistics_from">مِنْ</string>
+  <string name="statistics_to">إلى</string>
+  <string name="statistics_today">اليوم</string>
+  <string name="statistics_filter_all_time">جميع الوقت</string>
+  <string name="statistics_filter_past_year">السنة الماضية</string>
   <string name="statistics_reset_data">صفر الاحصاءات</string>
   <string name="statistics_reset_data_msg">هذا سيمسح سجل وقت التشغيل لكل الحلقات. هل أنت متأكد؟</string>
+  <string name="statistics_counting_range">شغّل ما بين %1$s و %2$s</string>
+  <string name="statistics_counting_total">شغّل بالكامل</string>
+  <!--Home fragment-->
+  <string name="home_surprise_title">فاجئني</string>
+  <string name="home_classics_title">راجع الكلاسيكيات الخاصة بك</string>
+  <string name="home_continue_title">واصل الاستماع</string>
+  <string name="home_new_title">أطلع على الجديد</string>
+  <string name="home_downloads_title">إدارة التنزيلات</string>
+  <string name="home_welcome_title">مرحبا بك إلى AntennaPod!</string>
+  <string name="home_welcome_text">أنت لست مشتركا بأي بودكاستات، أفتح الدرج لإضافة بودكاست.</string>
+  <string name="configure_home">أضبط شاشة المنزل</string>
   <!--Download Statistics fragment-->
+  <string name="total_size_downloaded_podcasts">الحجم الإجمالي للحلقات على هذا الجهاز</string>
   <!--Main activity-->
   <string name="drawer_open">قائمة الفتح</string>
   <string name="drawer_close">قائمة الاغلاف</string>
@@ -40,8 +62,10 @@
   <string name="drawer_feed_order_alphabetical">رتب أبجديا</string>
   <string name="drawer_feed_order_last_update">رتب بتاريخ النشر</string>
   <string name="drawer_feed_order_most_played">رتب بعدد الحلقات المشغلة</string>
+  <string name="drawer_feed_counter_inbox">عدد الحلقات في صندوق الوارد</string>
   <string name="drawer_feed_counter_unplayed">عدد الحلقات غير المشغلة</string>
   <string name="drawer_feed_counter_downloaded">عدد الحلقات المنزلة</string>
+  <string name="drawer_feed_counter_downloaded_unplayed">عدد الحلقات المنزلة وغير المشغلة</string>
   <string name="drawer_feed_counter_none">بدون</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">لا يوجد برنامج متوافق</string>
@@ -55,6 +79,9 @@
   <string name="go_to_position_label">اذهب لهذا التوقيت</string>
   <!--Playback history-->
   <string name="clear_history_label">مسح السجل</string>
+  <string name="clear_playback_history_msg">سيؤدي هذا إلى حذف سجل التشغيل كاملا. هل أنت متأكد أنك تريد المتابعة</string>
+  <string name="remove_history_label">احذف من السجل</string>
+  <string name="removed_history_label">حُذف من السجل</string>
   <!--Other-->
   <string name="confirm_label">تأكيد</string>
   <string name="cancel_label">الغاء</string>
@@ -93,45 +120,44 @@
   <string name="episode_cleanup_after_listening">بعد الانتهاء</string>
   <plurals name="episode_cleanup_hours_after_listening">
     <item quantity="zero">%d ساعة بعد الأنتهاء</item>
-    <item quantity="one">1 ساعة بعد الأنتهاء</item>
-    <item quantity="two">%d ساعتان بعد الأنتهاء</item>
-    <item quantity="few">%d ساعة بعد الأنتهاء</item>
-    <item quantity="many">%d ساعة بعد الأنتهاء</item>
-    <item quantity="other">%d ساعة بعد الأنتهاء</item>
+    <item quantity="one">1 ساعة واحدة بعد الانتهاء</item>
+    <item quantity="two"> ساعتان %d بعد الانتهاء</item>
+    <item quantity="few">%d ساعة بعد الانتهاء</item>
+    <item quantity="many">%d ساعة بعد الانتهاء</item>
+    <item quantity="other">%d ساعة بعد الانتهاء</item>
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="zero">%d يوم بعد الأنتهاء</item>
-    <item quantity="one">1 يوم بعد الأنتهاء</item>
-    <item quantity="two">%d يومان بعد الأنتهاء</item>
-    <item quantity="few">%d يوم بعد الأنتهاء</item>
-    <item quantity="many">%d يوم بعد الأنتهاء</item>
-    <item quantity="other">%d يوم بعد الأنتهاء</item>
+    <item quantity="zero">%d يوم بعد الانتهاء</item>
+    <item quantity="one">1 يوم واحد بعد الانتهاء</item>
+    <item quantity="two">%d يومان بعد الانتهاء</item>
+    <item quantity="few">%d يوم بعد الانتهاء</item>
+    <item quantity="many">%d يوم بعد الانتهاء</item>
+    <item quantity="other">%d يوم بعد الانتهاء</item>
   </plurals>
   <plurals name="num_selected_label">
-    <item quantity="zero">تم تحديد %1$d/ %2$d</item>
+    <item quantity="zero">تم تحديد %1$d/%2$d</item>
     <item quantity="one">تم تحديد %1$d/%2$d</item>
     <item quantity="two">تم تحديد %1$d/%2$d</item>
     <item quantity="few">تم تحديد %1$d/%2$d</item>
-    <item quantity="many">تم تحديد %1$d/ %2$d </item>
+    <item quantity="many">تم تحديد %1$d/%2$d </item>
     <item quantity="other">تم تحديد %1$d/%2$d</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="zero">%d حلقة</item>
-    <item quantity="one">حلقة</item>
-    <item quantity="two">حلقتين</item>
+    <item quantity="one">%d حلقة واحدة</item>
+    <item quantity="two">%d حلقتان</item>
     <item quantity="few">%d حلقات</item>
     <item quantity="many">%d حلقات</item>
     <item quantity="other">%d حلقات</item>
   </plurals>
-  <string name="loading_more">تحميل المزيد...</string>
   <string name="episode_notification">تنبيهات الحلقات</string>
   <string name="episode_notification_summary">اظهر تنبيه عند صدور حلقه جديدة</string>
   <plurals name="new_episode_notification_message">
-    <item quantity="zero">لا توجد حلقات جديده لدى %2$s %1$d </item>
+    <item quantity="zero">%1$d حلقات جديدة من %2$s</item>
     <item quantity="one">حلقة جديدة من %2$s</item>
-    <item quantity="two">حلقتان جديدة من %2$s</item>
-    <item quantity="few">حلقات جديدة من %2$s</item>
-    <item quantity="many">حلقات جديدة من %2$s</item>
+    <item quantity="two">حلقتان جديدة %1$d من %2$s</item>
+    <item quantity="few">%1$d حلقات جديدة من %2$s</item>
+    <item quantity="many">%1$d حلقات جديدة من %2$s</item>
     <item quantity="other">%1$d حلقات جديدة من %2$s</item>
   </plurals>
   <plurals name="new_episode_notification_title">
@@ -144,6 +170,11 @@
   </plurals>
   <string name="new_episode_notification_group_text">حلقات جديدة من اشتراكاتك</string>
   <!--Actions on feeds-->
+  <string name="remove_all_inbox_label">أزل الكل من صندوق الوارد</string>
+  <string name="removed_all_inbox_msg">تم إزاله الكل من صندوق الوارد</string>
+  <string name="remove_all_inbox_confirmation_msg">الرجاء تأكيد رغبتك في إزالة الكل من صندوق الوارد.</string>
+  <string name="multi_select_mark_played_confirmation">يرجى تأكيد رغبتك في تحديد جميع العناصر المحددة على أنه تم تشغيلها.</string>
+  <string name="multi_select_mark_unplayed_confirmation">يرجى تأكيد رغبتك في تحديد جميع العناصر المحددة على أنه لم يتم تشغيلها.</string>
   <string name="show_info_label">اظهر معلومات</string>
   <string name="show_feed_settings_label">أظهر اعدادات البودكاست</string>
   <string name="feed_settings_label">إعدادات البودكاست</string>
@@ -151,6 +182,7 @@
   <string name="remove_feed_label">ازل البودكاست</string>
   <string name="share_label">مشاركة</string>
   <string name="share_file_label">مشاركة ملف</string>
+  <string name="share_rss_address_label">عنوان الـ RSS</string>
   <string name="feed_delete_confirmation_msg">نرجو تأكيد رغبتك مسح بودكاست \"%1$s\" وكل حلقاته (بما فيها المنزلة).</string>
   <string name="feed_delete_confirmation_msg_batch">الرجاء تأكيد أنك تريد إزالة البرامج الإذاعية المحددة وجميع حلقاتها (متضمنة الحلقات المحمّلة) </string>
   <string name="feed_delete_confirmation_local_msg">نرجو تأكيد رغبتك إزالة بودكاست \"%1$s\". الملفات المنزلة لن يتم مسحها.</string>
@@ -172,6 +204,10 @@
     <item quantity="many">تم تحديث %d اشتراك</item>
     <item quantity="other">تم تحديث %d اشتراك</item>
   </plurals>
+  <string name="edit_tags">تعديل العلامات</string>
+  <string name="add_tag">أضف علامة</string>
+  <string name="rename_tag_label">إعادة تسمية العلامات</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">لقد تم إيقاف ميزة تجديد الاشتراكات باستخدام بيانات الهاتف.\n\nهل تريد التحديث على أي حال؟</string>
   <!--actions on feeditems-->
   <string name="download_label">تنزيل</string>
   <plurals name="downloading_batch_label">
@@ -188,7 +224,18 @@
   <string name="delete_label">مسح</string>
   <string name="delete_failed">لم نتمكن من مسح الملف. إعادة تشغيل الجهاز قد تساعد.</string>
   <string name="delete_episode_label">مسح الحلقة</string>
+  <plurals name="deleted_multi_episode_batch_label">
+    <item quantity="zero">%dحلقة منزلة مسحت.</item>
+    <item quantity="one">1 حلقة منزلة واحدة مسحت.</item>
+    <item quantity="two">%dحلقاتان منزلتان مسحت.</item>
+    <item quantity="few">%dحلقات منزلة مسحت.</item>
+    <item quantity="many">%dحلقات منزلة مسحت.</item>
+    <item quantity="other">%dحلقات منزلة مسحت.</item>
+  </plurals>
+  <string name="remove_inbox_label">أزل من صندوق الوارد</string>
+  <string name="removed_inbox_label">تم الإزالة من صندوق الوارد</string>
   <string name="mark_read_label">علمها كـ مشغلة</string>
+  <string name="toggle_played_label">فعل حالة التشغيل</string>
   <string name="marked_as_played_label">تم الاستماع</string>
   <string name="marked_as_unplayed_label">لم يتم الاستماع بعد</string>
   <string name="mark_read_no_media_label">علمها كـ مقروءة</string>
@@ -230,6 +277,14 @@
     <item quantity="many">%d حلقات أزيلت من لائحة الاستماع.</item>
     <item quantity="other">%d حلقات أزيلت من لائحة الاستماع.</item>
   </plurals>
+  <plurals name="removed_from_inbox_batch_label">
+    <item quantity="zero">%d حلقة أزيلت من صندوق الوارد.</item>
+    <item quantity="one">%d حلقة أزيلت من صندوق الوارد.</item>
+    <item quantity="two">%d حلقتان أزيلتا من صندوق الوارد.</item>
+    <item quantity="few">%d حلقات أزيلت من صندوق الوارد.</item>
+    <item quantity="many">%d حلقات أزيلت من صندوق الوارد.</item>
+    <item quantity="other">%d حلقات أزيلت من صندوق الوارد.</item>
+  </plurals>
   <string name="add_to_favorite_label">اضافة للمفضلات</string>
   <string name="remove_from_favorite_label">المسح من المفضلات</string>
   <string name="visit_website_label">زيارة الموقع</string>
@@ -241,7 +296,7 @@
   <string name="download_pending">التنزيل فى الانتظار</string>
   <string name="download_running">جارى التنزيل</string>
   <string name="download_error_details">تفاصيل</string>
-  <string name="download_error_details_message">%1$s \n\nURL الملف:\n%2$s</string>
+  <string name="download_log_details_message">%1$s \n\n سبب تقني: \n%2$s \n\n رابط الملف:\n%3$s</string>
   <string name="download_error_tap_for_details">إضغط لرؤية التفاصيل.</string>
   <string name="download_error_device_not_found">جهاز التخزين غير موجود</string>
   <string name="download_error_insufficient_space">لا توجد مساحة متبقية كافية في جهازك</string>
@@ -258,6 +313,7 @@
   <string name="download_error_forbidden">خادم البودكاست يرفض الرد</string>
   <string name="download_canceled_msg">ألغي التنزيل</string>
   <string name="download_error_wrong_size">الاتصال مع الخادم فقد قبل الانتهاء من التنزيل</string>
+  <string name="download_error_blocked">تم حظر التنزيل بواسطة تطبيق آخر على جهازك(مثل اللـ VPN أو مانع الإعلانات)</string>
   <string name="download_error_certificate">غير قادر على تأسيس اتصال آمن. قد يعني هذا أن تطبيقًا آخر على جهازك (مثل VPN أو أداة حظر الإعلانات) قد حظر التنزيل ، أو أن هناك خطأ ما في شهادات الخادم.</string>
   <string name="download_report_title">أنتهى التنزيل مع خطأ (او أكثر)</string>
   <string name="auto_download_report_title">التنزيل التلقائي أنتهى</string>
@@ -274,10 +330,13 @@
   </plurals>
   <string name="completing">جاري الإتمام</string>
   <string name="download_notification_title">تنزيل بيانات البودكاست</string>
+  <string name="download_notification_title_feeds">يتم تحديث البودكاستات</string>
+  <string name="download_notification_title_episodes">يتم تنزيل الحلقات</string>
   <string name="download_log_title_unknown">عنوان غير معروف</string>
   <string name="download_type_feed">قناة</string>
   <string name="download_type_media">ملف وسائط</string>
   <string name="null_value_podcast_error">لم نعطى بودكاست يمكن عرضه.</string>
+  <string name="no_feed_url_podcast_found_by_search">لم يتم العثور على رابط RSS للبودكاست المقترح، لقد عثر AntennaPod على بودكاست أخر قد يطابقه</string>
   <string name="authentication_notification_title">التحقق مطلوب</string>
   <string name="authentication_notification_msg">المورد الذي طلبته يتطلب اسم مستخدم وكلمة مرور</string>
   <string name="confirm_mobile_download_dialog_title">أكد التنزيل على بيانات الجوال</string>
@@ -330,26 +389,28 @@
   <string name="no_comp_downloads_label">يمكنك تنزيل حلقات من صفحة تفاصيل البودكاست.</string>
   <string name="no_log_downloads_head_label">لا سجل للتنزيلات</string>
   <string name="no_log_downloads_label">ستظهر سجلات التنزيل هنا عند توفرها.</string>
-  <string name="no_history_head_label">لا يوجد سجل
-</string>
+  <string name="no_history_head_label">لا يوجد سجل</string>
   <string name="no_history_label">ستظهر هنا الحلقة بعد الاستماع إليها.</string>
   <string name="no_all_episodes_head_label">لا توجد حلقات</string>
   <string name="no_all_episodes_label">ستظهر هنا الحلقة بعد إضافتها.</string>
+  <string name="no_all_episodes_filtered_label">حاول مسح الفلتر لرؤية المزيد من الحلقات</string>
+  <string name="no_inbox_head_label">لا يوجد حلقات في صندوق الوارد</string>
+  <string name="no_inbox_label">عندما تصل حلقات جديدة، سيتم عرضها هنا. يمكنك بعد ذلك تحديد ما إذا كنت مهتمًا بها أم لا.</string>
   <string name="no_subscriptions_head_label">لا توجد إشتراكات</string>
   <string name="no_subscriptions_label">للاشتراك في بودكاست ، اضغط على أيقونة علامة الجمع أدناه.</string>
   <!--Preferences-->
   <string name="storage_pref">تخزين</string>
   <string name="storage_sum">الحذف التلقائي والاستيراد والتصدير للحلقة</string>
+  <string name="statistics_moved">لقد تم نقل صفحة الإحصائيات إلى صفحة الإشتراكات، يمكنك فتحها من هناك.</string>
   <string name="project_pref">المشروع</string>
   <string name="synchronization_pref">مزامنة</string>
+  <string name="synchronization_sum">زامن مع أجهرة أخرى</string>
   <string name="automation">التشغيل الآلي</string>
   <string name="download_pref_details">تفاصيل</string>
   <string name="import_export_pref">استيراد/تصدير</string>
   <string name="import_export_search_keywords">لنسخ الاحتياطي و استرجاع</string>
   <string name="appearance">المظهر</string>
-  <string name="external_elements">العوامل الخارجية
-
-</string>
+  <string name="external_elements">العوامل الخارجية</string>
   <string name="interruptions">المقاطعات</string>
   <string name="playback_control">تحكم التشغيل</string>
   <string name="reassign_hardware_buttons">اعد تحديد وظائف الازرار الملموسة</string>
@@ -390,9 +451,9 @@
   <string name="feed_refresh_never">أبداً</string>
   <string name="feed_refresh_interval_at">عند %1$s</string>
   <plurals name="feed_refresh_every_x_hours">
-    <item quantity="zero"> </item>
+    <item quantity="zero"> كل %d ساعة</item>
     <item quantity="one">كل ساعة</item>
-    <item quantity="two">كل ساعتين</item>
+    <item quantity="two">كل %d ساعتين</item>
     <item quantity="few">كل %d ساعة</item>
     <item quantity="many">كل %d ساعة</item>
     <item quantity="other">كل %d ساعة</item>
@@ -413,6 +474,8 @@
   <string name="user_interface_label">واجهة الاستخدام</string>
   <string name="user_interface_sum">المظهر, الإشتراكات, شاشة القفل</string>
   <string name="pref_set_theme_title">اختيار النمط</string>
+  <string name="pref_tinted_theme_title">استخدم الألوان الديناميكية</string>
+  <string name="pref_tinted_theme_message">تكييف ألوان التطبيق بناءً على الخلفية</string>
   <string name="pref_nav_drawer_items_title">حدد عناصر درج التنقل</string>
   <string name="pref_nav_drawer_items_sum">قم بتغيير العناصر التي تظهر في درج التنقل.</string>
   <string name="pref_nav_drawer_feed_order_title">حدد ترتيب الإشتراكات</string>
@@ -438,10 +501,6 @@
   <string name="pref_theme_title_dark">داكن</string>
   <string name="pref_theme_title_trueblack">اسود (ِلأجهزة AMOLED)</string>
   <string name="pref_episode_cache_unlimited">غير محدود</string>
-  <string name="synchronization_logout">تسجيل الخروج</string>
-  <string name="pref_synchronization_logout_toast">تم تسجيل الخروج بنجاح</string>
-  <string name="pref_gpodnet_setlogin_information_title">تغيير بيانات تسجيل الدخول</string>
-  <string name="pref_gpodnet_setlogin_information_sum">قم بتغيير بيانات تسجيل الدخول لحساب gpodder.net الخاص بك.</string>
   <string name="pref_playback_speed_sum">حدد السرعات المتوفرة في التشغيل متعدد السرعات</string>
   <string name="pref_feed_playback_speed_sum">سرعة التشغيل الصوتي عند بدء تشغيل حلقات من هذا البودكاست </string>
   <string name="pref_feed_skip">تخطي تلقائي</string>
@@ -493,21 +552,14 @@
   <string name="media_player_switched_to_exoplayer">تم بالتبديل إلى ExoPlayer</string>
   <string name="pref_skip_silence_title">تخطي الصمت في الصوت</string>
   <string name="behavior">سلوك</string>
-  <string name="pref_back_button_behavior_title">سلوك زر الرجوع</string>
-  <string name="pref_back_button_behavior_sum">تغيير سلوك زر الرجوع</string>
-  <string name="back_button_default">إفتراضي</string>
-  <string name="back_button_open_drawer">أفتح درج التنقل</string>
-  <string name="back_button_double_tap">النقر مرتين للخروج</string>
-  <string name="back_button_show_prompt">التاكيد للخروج</string>
-  <string name="close_prompt">هل أنت متأكد أنك تريد غلق AntennaPod?</string>
-  <string name="double_tap_toast">انقر زر الرجوع للخروج</string>
-  <string name="back_button_go_to_page">اذهب الى صفحة...</string>
-  <string name="back_button_go_to_page_title">اختر صفحة</string>
+  <string name="pref_default_page">الصفحة الافتراضية</string>
+  <string name="pref_default_page_sum">الشاشة التي يتم عرضها عند تشغيل AntennaPod.</string>
+  <string name="remember_last_page">تذكر الصفحة الأخيرة</string>
   <string name="pref_delete_removes_from_queue_title">المسح يزيل الحلقة من لائحة الاستماع</string>
   <string name="pref_delete_removes_from_queue_sum">أزل الحلقة من لائحة الاستماع آليا عند مسحها.</string>
   <string name="pref_filter_feed_title">مصفاة الإشتراكات</string>
   <string name="pref_filter_feed_sum">صفي إشتراكاتك في درج التنقل وشاشة الإشتراكات.</string>
-  <string name="subscriptions_are_filtered">الإشتراكات مصففاة</string>
+  <string name="subscriptions_are_filtered">الاشتراكات مصفاة.</string>
   <string name="subscriptions_counter_greater_zero">العداد به رقم أكبر من صفر</string>
   <string name="auto_downloaded">تنزيل تلقائي</string>
   <string name="not_auto_downloaded">لم يتم التنزيل تلقائياً</string>
@@ -517,6 +569,8 @@
   <string name="new_episode_notification_disabled">الإشعارات غير مفعلة</string>
   <string name="pref_feed_settings_dialog_msg">هذا الإعداد فريد لكل بودكاست. يمكنك تغييره بفتح صفحة البودكاست.</string>
   <string name="pref_contribute">ساهم</string>
+  <string name="pref_show_subscription_title">إظهار عنوان الاشتراك</string>
+  <string name="pref_show_subscription_title_summary">أعرض عنوان الاشتراك أسفل صورة الغلاف.</string>
   <!--About screen-->
   <string name="about_pref">حول</string>
   <string name="antennapod_version">اصدار AntennaPod</string>
@@ -538,7 +592,8 @@
   <string name="sync_status_episodes_upload">جارٍ تحميل تغييرات الحلقة ...</string>
   <string name="sync_status_episodes_download">تنزيل التغييرات الخاصة بالحلقة</string>
   <string name="sync_status_upload_played">جارٍ تحميل حالة التشغيل...</string>
-  <string name="sync_status_subscriptions">تتزامن الإشتراكات الآن...</string>
+  <string name="sync_status_subscriptions">تتزامن الاشتراكات الآن...</string>
+  <string name="sync_status_wait_for_downloads">بانتظار اكتمال التنزيلات...</string>
   <string name="sync_status_success">نجحت المزامنة</string>
   <string name="sync_status_error">فشلت المزامنة</string>
   <!--import and export-->
@@ -547,10 +602,11 @@
   <string name="opml">OPML</string>
   <string name="html">HTML</string>
   <string name="html_export_summary">عرض إشتراكاتك لصديق</string>
-  <string name="opml_export_summary">نقل إشتراكاتك لبرنامج بوكاست آخر</string>
-  <string name="opml_import_summary">إستيراد اشتراكاتك من برنامج آخر</string>
+  <string name="opml_export_summary">نقل اشتراكاتك لبرنامج بودكاست آخر</string>
+  <string name="opml_import_summary">استيراد اشتراكاتك من برنامج بودكاست آخر</string>
   <string name="database_export_summary">نقل الاشتراكات والحلقات المسموعة ولائحة الإستماع لـ AntennaPod على جهاز آخر</string>
   <string name="database_import_summary">استوراد قاعدة بيانات AntennaPod من جهاز آخر</string>
+  <string name="opml_import_label">استيراد ملف بصيغة OPML</string>
   <string name="opml_add_podcast_label">استورد قائمة بودكاستات (OPML)</string>
   <string name="opml_reader_error">حدث خطأ أثناء قراءة مستند OPML:</string>
   <string name="opml_import_error_no_file">لم يتم اختيار أي ملف</string>
@@ -608,19 +664,38 @@
   </plurals>
   <string name="auto_enable_label">مفعّل تلقائيًا</string>
   <string name="sleep_timer_enabled_label">مؤقت النوم مفعل</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
+  <string name="synchronization_choose_title">اختر مزود خدمة التزامن</string>
+  <string name="synchronization_summary_unchoosen">يمكنك الاختيار من بين عدة مزودين لمزامنة اشتراكاتك وحالة تشغيل الحلقة معهم</string>
+  <string name="dialog_choose_sync_service_title">اختر مزود خدمة التزامن</string>
+  <string name="gpodnet_description">Gpodder.net هي خدمة مزامنة بودكاست مفتوحة المصدر يمكنك تنصيبها على السيرفر الخاص بك. Gpodder.net خدمة مستقلة عن مشروع AntennaPod.</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync هو تطبيق Nextcloud مفتوح المصدر يمكنك تنصيبه على سيرفرك بكل سهولة. التطبيق مستقل عن مشروع AntennaPod.</string>
+  <string name="synchronization_host_explanation">يمكنك اختيار سيرفر خاص بك للمزامنة. عند اقتناءك لسيرفر المزامنة المرغوب، يرجى اضافة عنوانه هنا.</string>
+  <string name="synchronization_host_label">عنوان الخادم</string>
+  <string name="proceed_to_login_butLabel">الشروع إلى تسجيل الدخول</string>
+  <string name="synchronization_nextcloud_authenticate_browser">أمنح الوصول باستخدام المتصفح الذي تم فتحه ثم أرجع إلى AntennaPod. </string>
   <string name="gpodnetauth_login_butLabel">تسجيل الدخول</string>
+  <string name="synchronization_credentials_explanation">الرجاء إضافة بيانات الدخول لحسابك على خادم المزامنة.</string>
   <string name="gpodnetauth_encryption_warning">كلمة السر والبيانات غير مشفرة!</string>
   <string name="username_label">إسم المستخدم</string>
   <string name="password_label">كلمة المرور</string>
-  <string name="gpodnetauth_host">اسم المضيف</string>
-  <string name="gpodnetauth_select_server">أختر خادوم</string>
+  <string name="synchronization_login_butLabel">سجّل الدخول</string>
+  <string name="synchronization_selectDevice_explanation">الرجاء اختيار الجهاز الذي أنشأته على خادم المزامنة، أو أنشأ جهازا أخر  </string>
   <string name="gpodnetauth_device_name">أسم الجهاز</string>
   <string name="gpodnetauth_device_name_default">AntennaPod على %1$s</string>
   <string name="gpodnetauth_existing_devices">أجهزة موجودة</string>
   <string name="gpodnetauth_create_device">أنشئ جهاز</string>
-  <string name="gpodnetauth_finish_descr">تهانينا! حسابك في gpodder.net مربوط الآن مغ جهازك. سيزامن AntennaPod من الآن وصاعدا إشتراكاتك على جهازك مع حسابك على gpodder.net.</string>
+  <string name="gpodnetauth_finish_descr">تهانينا! حسابك في gpodder.net مربوط الآن مع جهازك. سيزامن AntennaPod من الآن وصاعدا اشتراكاتك على جهازك مع حسابك على gpodder.net.</string>
   <string name="gpodnetauth_finish_butsyncnow">ابدأ المزامنة الآن</string>
+  <string name="pref_gpodnet_setlogin_information_title">تغيير بيانات تسجيل الدخول</string>
+  <string name="pref_gpodnet_setlogin_information_sum">قم بتغيير بيانات تسجيل الدخول لحساب gpodder.net الخاص بك.</string>
+  <string name="synchronization_sync_changes_title">زامن الآن</string>
+  <string name="synchronization_sync_summary">زامن التغييرات بين الاشتراكات وتغييرات حالة الحلقة</string>
+  <string name="synchronization_full_sync_title">افرض المزامنة الكاملة</string>
+  <string name="synchronization_force_sync_summary">أعد مزامنة كل الاشتراكات وحالات الحلقة</string>
+  <string name="synchronization_logout">تسجيل الخروج</string>
+  <string name="synchronization_login_status"><![CDATA[تم تسجيل دخولك كـ <i>%1$s</i> على <i>%2$s</i>.<br/><br/> يمكنك اختيار خادم المزامنة مرة اخرى بعد تسجيل الخروج]]></string>
+  <string name="pref_synchronization_logout_toast">تم تسجيل الخروج بنجاح</string>
   <string name="gpodnetsync_error_title">خظأ في التزامن مع gpodder.net</string>
   <string name="gpodnetsync_error_descr">حدث خطأ أثناء التزامن: \u0020</string>
   <string name="gpodnetsync_pref_report_successful">تم بنجاح</string>
@@ -636,10 +711,11 @@
   <string name="pref_resumeAfterCall_title">استكمل التشغيل بعد المكالمة</string>
   <!--Online feed view-->
   <string name="subscribe_label">أشترك</string>
-  <string name="subscribing_label">جاري الإشتراك...</string>
+  <string name="subscribing_label">جاري الاشتراك...</string>
   <string name="preview_episode">معاينة</string>
   <string name="stop_preview">أوقف المعاينة</string>
   <!--Content descriptions for image buttons-->
+  <string name="toolbar_back_button_content_description">الرجوع</string>
   <string name="rewind_label">التخطى للخلف</string>
   <string name="fast_forward_label">التقدم السريع</string>
   <string name="increase_speed">زد السرعة</string>
@@ -648,6 +724,7 @@
   <string name="status_downloading_label">يتم تنزيل الحلقة</string>
   <string name="in_queue_label">الحلقة موجودة في لائحة الاستماع</string>
   <string name="is_favorite_label">الحلقة علمت كمفضلة</string>
+  <string name="is_inbox_label">الحلقة موجودة في صندوق الوارد</string>
   <string name="load_next_page_label">تحميل الصفحة التالية</string>
   <string name="position">موقع: %1$s</string>
   <string name="apply_action">طبق القرار</string>
@@ -657,19 +734,28 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">تسجيل الدخول</string>
   <string name="authentication_descr">غيّر اسم المستخدم وكلمة المرور لهذا البودكاست وحلقاته.</string>
+  <string name="feed_tags_label">العلامات</string>
+  <string name="feed_tags_summary">قم بتغيير العلامات الخاصة بهذا البودكاست للمساعدة في تنظيم اشتراكاتك</string>
   <string name="feed_folders_include_root">عرض في القائمة الرئيسية</string>
+  <string name="multi_feed_common_tags_info">{fa-info-circle} سيتم عرض العلامات المشتركة بين الاشتراكات المختارة فقط. لن يتم تعديل العلامات الأخرى</string>
   <string name="auto_download_settings_label">إعدادات التنزيل التلقائي</string>
   <string name="episode_filters_label">مصفى الحلقات</string>
   <string name="episode_filters_description">قائمة الكلمات المستخدمة لتحديد ما إذا كان يجب تضمين حلقة أو استبعادها عند التنزيل التلقائي</string>
-  <string name="episode_filters_include">تضمين</string>
-  <string name="episode_filters_exclude">استبعاد</string>
-  <string name="episode_filters_hint">كلمات مفردة \n \"كلمات متعددة\"</string>
+  <string name="add_term">إضافة مصطلح</string>
+  <string name="exclude_terms">استبعد الحلقات التي تحتوي على أي من المصطلحات أدناه</string>
+  <string name="include_terms">اشمل الحلقات التي تحتوي على أي من المصطلحات أدناه</string>
+  <string name="exclude_episodes_shorter_than">استبعد الحلقات الاقصر من</string>
   <string name="keep_updated">محدث بإستمرار</string>
   <string name="keep_updated_summary">قم بإضافة هذا البودكاست عند تحديث (أو التحديث التلقائي) جميع ملفات البودكاستات</string>
   <string name="auto_download_disabled_globally">التنزيل التلقائي معطل في الإعدادات الرئيسية لـ AntennaPod</string>
+  <string name="statistics_time_played">وقت التشغيل الكامل:</string>
+  <string name="statistics_total_duration">الزمن الكامل(تقريبيا):</string>
   <string name="statistics_episodes_on_device">حلقات مسجلة على هذا الجهاز:</string>
   <string name="statistics_space_used">المساحة المستخدمة:</string>
+  <string name="statistics_episodes_started_total">الحلقات التي بدأت / المجموع:</string>
   <string name="statistics_view_all">عرض لجميع البودكاستات »</string>
+  <string name="edit_url_menu">عدل على الرابط </string>
+  <string name="edit_url_confirmation_msg">تغيير رابط الـ RSS قد يؤدي إلى كسر حالة التشغيل و قائمة الحلقات للبودكاست. نحن لا ننصح بتغيرها ولن نقوم بتوفير أي دعم في حالة حصول أي خطأ. لا يمكن التراجع عن هذا التغيير. الاشتراك المكسور لن يمكن أن يتم استرجاعه بإعادة إرجاع الرابط القديم. ننصح بإنشاء نسخة احتياطية قبل المتابعة.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">استيراد الاشتراكات من التطبيقات ذات الغرض الواحد ...</string>
   <!--Add podcast fragment-->
@@ -685,7 +771,9 @@
   <string name="discover_is_hidden">لقد اخترت اخفاء الاقتراحات.</string>
   <string name="discover_more">المزيد »</string>
   <string name="discover_powered_by_itunes">إقتراحات من iTunes</string>
+  <string name="discover_confirm">اظهر الاقتراحات</string>
   <string name="search_powered_by">النتائج من %1$s</string>
+  <string name="select_country">أختر الدولة</string>
   <!--Local feeds-->
   <string name="add_local_folder">أضف مجلد محلي</string>
   <string name="local_folder">مجلد محلي</string>
@@ -713,6 +801,8 @@
   <string name="sort_date_old_new">تاريخ (قديم \u2192 حديث)</string>
   <string name="sort_duration_short_long">مدة (قصيرة \u2192 طويلة)</string>
   <string name="sort_duration_long_short">مدة (طويلة \u2192 قصيرة)</string>
+  <string name="sort_filename_a_z">أسم الملف (A \u2192 Z)</string>
+  <string name="sort_filename_z_a">أسم الملف (Z \u2192 A)</string>
   <string name="sort_a_z">أ \u2192 ي</string>
   <string name="sort_z_a">ي \u2192 أ</string>
   <string name="sort_new_old">حديث \u2192 قديم</string>
@@ -720,14 +810,18 @@
   <string name="sort_short_long">قصيرة \u2192 طويلة</string>
   <string name="sort_long_short">طويلة \u2192 قصيرة</string>
   <!--Rating dialog-->
-  <string name="rating_title" tools:ignore="UnusedResources">أعجبك AntennaPod?</string>
+  <string name="rating_title" tools:ignore="UnusedResources">هل أعجبك AntennaPod؟</string>
   <string name="rating_message" tools:ignore="UnusedResources">سنكون ممتنين إذا قمت بتقييم AntennaPod.</string>
   <string name="rating_never_label" tools:ignore="UnusedResources">أتركني وشأني</string>
   <string name="rating_later_label" tools:ignore="UnusedResources">ذكرني في وقت لاحق</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">أكيد، لنفعل ذلك!</string>
   <!--Share episode dialog-->
+  <string name="share_playback_position_dialog_label">اشمل موضع التشغيل</string>
   <string name="share_dialog_episode_website_label">صفحة وب الحلقة</string>
+  <string name="share_dialog_for_social">رسالة اجتماعية</string>
+  <string name="share_dialog_media_address">عنوان الوسائط</string>
   <string name="share_dialog_media_file_label">ملف الوسائط</string>
+  <string name="share_starting_position_label">ابتداءً من</string>
   <!--Audio controls-->
   <string name="audio_controls">ضوابط الصوت</string>
   <string name="playback_speed">سرعة التشغيل</string>
@@ -735,6 +829,7 @@
   <string name="stereo_to_mono">تحويل: ثنائي القناة الى أحادي</string>
   <string name="sonic_only">سونيك فقط</string>
   <string name="exoplayer_only">اكسوبلير فقط</string>
+  <string name="player_switch_to_audio_only">قم بالتبديل إلى الصوت فقط</string>
   <!--proxy settings-->
   <string name="proxy_type_label">النوع</string>
   <string name="host_label">خادم</string>
@@ -773,5 +868,8 @@
   <!--On-Demand configuration-->
   <string name="on_demand_config_setting_changed">تم تحديث الإعداد بنجاح.</string>
   <string name="on_demand_config_stream_text">يبدو أنك تثتخدم البث المتدفق كثيرًا. هل تريد أن تظهر قوائم الحلقات أزرار البث المتدفق؟</string>
-  <string name="on_demand_config_download_text">يبدو أنك تقوم بالتنزيل كثيراً. هل تريد أن إظهارأزرار التنزيل في قوائم الحلقات؟</string>
+  <string name="on_demand_config_download_text">يبدو أنك تقوم بالتنزيل كثيراً. هل تريد أن إظهار أزرار التنزيل في قوائم الحلقات؟</string>
+  <string name="shortcut_subscription_label">اختصار الاشتراك</string>
+  <string name="shortcut_select_subscription">أختر الاشتراك</string>
+  <string name="add_shortcut">أضف اختصارا</string>
 </resources>

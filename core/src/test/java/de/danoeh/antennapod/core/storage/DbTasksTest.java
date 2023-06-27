@@ -13,7 +13,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -24,9 +23,8 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
-import static de.danoeh.antennapod.core.util.FeedItemUtil.getIdList;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -253,63 +251,6 @@ public class DbTasksTest {
             assertTrue(item.getPubDate().getTime() >= lastDate.getTime());
             lastDate = item.getPubDate();
         }
-    }
-
-    @Test
-    public void testAddQueueItemsInDownload_EnqueueEnabled() throws Exception {
-        // Setup test data / environment
-        UserPreferences.setEnqueueDownloadedEpisodes(true);
-        UserPreferences.setEnqueueLocation(UserPreferences.EnqueueLocation.BACK);
-
-        List<FeedItem> fis1 = createSavedFeed("Feed 1", 2).getItems();
-        List<FeedItem> fis2 = createSavedFeed("Feed 2", 3).getItems();
-
-        DBWriter.addQueueItem(context, fis1.get(0), fis2.get(0)).get();
-        // the first item fis1.get(0) is already in the queue
-        FeedItem[] itemsToDownload = new FeedItem[]{ fis1.get(0), fis1.get(1), fis2.get(2), fis2.get(1) };
-
-        // Expectations:
-        List<FeedItem> expectedEnqueued = Arrays.asList(fis1.get(1), fis2.get(2), fis2.get(1));
-        List<FeedItem> expectedQueue = new ArrayList<>();
-        expectedQueue.addAll(DBReader.getQueue());
-        expectedQueue.addAll(expectedEnqueued);
-
-        // Run actual test and assert results
-        List<? extends FeedItem> actualEnqueued =
-                DBTasks.enqueueFeedItemsToDownload(context, Arrays.asList(itemsToDownload));
-
-        assertEqualsByIds("Only items not in the queue are enqueued", expectedEnqueued, actualEnqueued);
-        assertEqualsByIds("Queue has new items appended", expectedQueue, DBReader.getQueue());
-    }
-
-    @Test
-    public void testAddQueueItemsInDownload_EnqueueDisabled() throws Exception {
-        // Setup test data / environment
-        UserPreferences.setEnqueueDownloadedEpisodes(false);
-
-        List<FeedItem> fis1 = createSavedFeed("Feed 1", 2).getItems();
-        List<FeedItem> fis2 = createSavedFeed("Feed 2", 3).getItems();
-
-        DBWriter.addQueueItem(context, fis1.get(0), fis2.get(0)).get();
-        FeedItem[] itemsToDownload = new FeedItem[]{ fis1.get(0), fis1.get(1), fis2.get(2), fis2.get(1) };
-
-        // Expectations:
-        List<FeedItem> expectedEnqueued = Collections.emptyList();
-        List<FeedItem> expectedQueue = DBReader.getQueue();
-
-        // Run actual test and assert results
-        List<? extends FeedItem> actualEnqueued =
-                DBTasks.enqueueFeedItemsToDownload(context, Arrays.asList(itemsToDownload));
-
-        assertEqualsByIds("No item is enqueued", expectedEnqueued, actualEnqueued);
-        assertEqualsByIds("Queue is unchanged", expectedQueue, DBReader.getQueue());
-    }
-
-    private void assertEqualsByIds(String msg, List<? extends FeedItem> expected, List<? extends FeedItem> actual) {
-        // assert only the IDs, so that any differences are easily to spot.
-        List<Long> expectedIds = getIdList(expected);
-        List<Long> actualIds = getIdList(actual);
-        assertEquals(msg, expectedIds, actualIds);
     }
 
     private Feed createSavedFeed(String title, int numFeedItems) {

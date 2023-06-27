@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -19,21 +21,26 @@ import io.reactivex.schedulers.Schedulers;
 public class RemoveFeedDialog {
     private static final String TAG = "RemoveFeedDialog";
 
-    public static void show(Context context, Feed feed) {
+    public static void show(Context context, Feed feed, @Nullable Runnable callback) {
         List<Feed> feeds = Collections.singletonList(feed);
         String message = getMessageId(context, feeds);
-        showDialog(context, feeds, message);
+        showDialog(context, feeds, message, callback);
     }
 
     public static void show(Context context, List<Feed> feeds) {
         String message = getMessageId(context, feeds);
-        showDialog(context, feeds, message);
+        showDialog(context, feeds, message, null);
     }
 
-    private static void showDialog(Context context, List<Feed> feeds, String message) {
+    private static void showDialog(Context context, List<Feed> feeds, String message, @Nullable Runnable callback) {
         ConfirmationDialog dialog = new ConfirmationDialog(context, R.string.remove_feed_label, message) {
             @Override
             public void onConfirmButtonPressed(DialogInterface clickedDialog) {
+
+                if (callback != null) {
+                    callback.run();
+                }
+
                 clickedDialog.dismiss();
 
                 ProgressDialog progressDialog = new ProgressDialog(context);

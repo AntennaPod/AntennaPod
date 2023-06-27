@@ -1,41 +1,28 @@
 package de.danoeh.antennapod.adapter;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.ColorUtils;
-import androidx.palette.graphics.Palette;
-
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomViewTarget;
+import com.bumptech.glide.request.transition.Transition;
+import de.danoeh.antennapod.activity.MainActivity;
 
 import java.lang.ref.WeakReference;
-
-import com.bumptech.glide.request.transition.Transition;
-
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.glide.PaletteBitmap;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
 
 public class CoverLoader {
     private int resource = 0;
     private String uri;
     private String fallbackUri;
-    private TextView txtvPlaceholder;
     private ImageView imgvCover;
     private boolean textAndImageCombined;
     private MainActivity activity;
+    private TextView fallbackTitle;
 
     public CoverLoader(MainActivity activity) {
         this.activity = activity;
@@ -61,47 +48,45 @@ public class CoverLoader {
         return this;
     }
 
-    public CoverLoader withPlaceholderView(TextView placeholderView) {
-        txtvPlaceholder = placeholderView;
+    public CoverLoader withPlaceholderView(TextView title) {
+        this.fallbackTitle = title;
         return this;
     }
 
     /**
      * Set cover text and if it should be shown even if there is a cover image.
-     *
-     * @param placeholderView      Cover text.
+     * @param fallbackTitle Fallback title text
      * @param textAndImageCombined Show cover text even if there is a cover image?
      */
     @NonNull
-    public CoverLoader withPlaceholderView(@NonNull TextView placeholderView, boolean textAndImageCombined) {
-        this.txtvPlaceholder = placeholderView;
+    public CoverLoader withPlaceholderView(TextView fallbackTitle, boolean textAndImageCombined) {
+        this.fallbackTitle = fallbackTitle;
         this.textAndImageCombined = textAndImageCombined;
         return this;
     }
 
     public void load() {
-        CoverTarget coverTarget = new CoverTarget(txtvPlaceholder, imgvCover, textAndImageCombined);
+        CoverTarget coverTarget = new CoverTarget(fallbackTitle, imgvCover, textAndImageCombined);
 
         if (resource != 0) {
-            Glide.with(activity).clear(coverTarget);
+            Glide.with(imgvCover).clear(coverTarget);
             imgvCover.setImageResource(resource);
-            CoverTarget.setPlaceholderVisibility(txtvPlaceholder, textAndImageCombined, null);
+            CoverTarget.setTitleVisibility(fallbackTitle, textAndImageCombined);
             return;
         }
 
         RequestOptions options = new RequestOptions()
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .fitCenter()
                 .dontAnimate();
 
-        RequestBuilder<PaletteBitmap> builder = Glide.with(activity)
-                .as(PaletteBitmap.class)
+        RequestBuilder<Drawable> builder = Glide.with(imgvCover)
+                .as(Drawable.class)
                 .load(uri)
                 .apply(options);
 
-        if (fallbackUri != null && txtvPlaceholder != null && imgvCover != null) {
-            builder = builder.error(Glide.with(activity)
-                    .as(PaletteBitmap.class)
+        if (fallbackUri != null) {
+            builder = builder.error(Glide.with(imgvCover)
+                    .as(Drawable.class)
                     .load(fallbackUri)
                     .apply(options));
         }
@@ -109,64 +94,41 @@ public class CoverLoader {
         builder.into(coverTarget);
     }
 
-    static class CoverTarget extends CustomViewTarget<ImageView, PaletteBitmap> {
-        private final WeakReference<TextView> placeholder;
+    static class CoverTarget extends CustomViewTarget<ImageView, Drawable> {
+        private final WeakReference<TextView> fallbackTitle;
         private final WeakReference<ImageView> cover;
-        private boolean textAndImageCombined;
+        private final boolean textAndImageCombined;
 
-        public CoverTarget(TextView txtvPlaceholder, ImageView imgvCover, boolean textAndImageCombined) {
-            super(imgvCover);
-            if (txtvPlaceholder != null) {
-                txtvPlaceholder.setVisibility(View.VISIBLE);
-            }
-            placeholder = new WeakReference<>(txtvPlaceholder);
-            cover = new WeakReference<>(imgvCover);
+        public CoverTarget(TextView fallbackTitle, ImageView coverImage, boolean textAndImageCombined) {
+            super(coverImage);
+            this.fallbackTitle = new WeakReference<>(fallbackTitle);
+            this.cover = new WeakReference<>(coverImage);
             this.textAndImageCombined = textAndImageCombined;
         }
 
         @Override
         public void onLoadFailed(Drawable errorDrawable) {
-            setPlaceholderVisibility(this.placeholder.get(), true, null);
+            setTitleVisibility(fallbackTitle.get(), true);
         }
 
         @Override
-        public void onResourceReady(@NonNull PaletteBitmap resource,
-                                    @Nullable Transition<? super PaletteBitmap> transition) {
+        public void onResourceReady(@NonNull Drawable resource,
+                                    @Nullable Transition<? super Drawable> transition) {
             ImageView ivCover = cover.get();
-            ivCover.setImageBitmap(resource.bitmap);
-            setPlaceholderVisibility(placeholder.get(), textAndImageCombined, resource.palette);
+            ivCover.setImageDrawable(resource);
+            setTitleVisibility(fallbackTitle.get(), textAndImageCombined);
         }
 
         @Override
         protected void onResourceCleared(@Nullable Drawable placeholder) {
             ImageView ivCover = cover.get();
             ivCover.setImageDrawable(placeholder);
-            setPlaceholderVisibility(this.placeholder.get(), textAndImageCombined, null);
+            setTitleVisibility(fallbackTitle.get(),  textAndImageCombined);
         }
 
-        static void setPlaceholderVisibility(TextView placeholder, boolean textAndImageCombined, Palette palette) {
-            boolean showTitle = UserPreferences.shouldShowSubscriptionTitle();
-            if (placeholder != null) {
-                if (textAndImageCombined || showTitle) {
-                    final Context context = placeholder.getContext();
-                    placeholder.setVisibility(View.VISIBLE);
-                    int bgColor = ContextCompat.getColor(context, R.color.feed_text_bg);
-                    if (palette == null || !showTitle) {
-                        placeholder.setBackgroundColor(bgColor);
-                        placeholder.setTextColor(ThemeUtils.getColorFromAttr(placeholder.getContext(),
-                                android.R.attr.textColorPrimary));
-                        return;
-                    }
-                    int dominantColor = palette.getDominantColor(bgColor);
-                    int textColor = ContextCompat.getColor(context, R.color.white);
-                    if (ColorUtils.calculateLuminance(dominantColor) > 0.5) {
-                        textColor = ContextCompat.getColor(context, R.color.black);
-                    }
-                    placeholder.setTextColor(textColor);
-                    placeholder.setBackgroundColor(dominantColor);
-                } else {
-                    placeholder.setVisibility(View.INVISIBLE);
-                }
+        static void setTitleVisibility(TextView fallbackTitle, boolean textAndImageCombined) {
+            if (fallbackTitle != null) {
+                fallbackTitle.setVisibility(textAndImageCombined ? View.VISIBLE : View.GONE);
             }
         }
     }

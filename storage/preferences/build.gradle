@@ -1,0 +1,18 @@
+plugins {
+    id("com.android.library")
+}
+apply from: "../../common.gradle"
+
+android {
+    lint {
+        disable "StaticFieldLeak"
+    }
+}
+
+dependencies {
+    implementation project(':model')
+
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "androidx.fragment:fragment:$fragmentVersion"
+    implementation "androidx.preference:preference:$preferenceVersion"
+}

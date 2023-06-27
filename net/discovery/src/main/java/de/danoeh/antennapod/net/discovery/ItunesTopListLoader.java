@@ -2,12 +2,8 @@ package de.danoeh.antennapod.net.discovery;
 
 import android.content.Context;
 import android.util.Log;
-
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
-import io.reactivex.Single;
-import io.reactivex.SingleOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import de.danoeh.antennapod.model.feed.Feed;
 import okhttp3.CacheControl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -18,8 +14,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class ItunesTopListLoader {
@@ -27,41 +25,57 @@ public class ItunesTopListLoader {
     private final Context context;
     public static final String PREF_KEY_COUNTRY_CODE = "country_code";
     public static final String PREF_KEY_HIDDEN_DISCOVERY_COUNTRY = "hidden_discovery_country";
+    public static final String PREF_KEY_NEEDS_CONFIRM = "needs_confirm";
     public static final String PREFS = "CountryRegionPrefs";
     public static final String COUNTRY_CODE_UNSET = "99";
+    private static final int NUM_LOADED = 25;
 
     public ItunesTopListLoader(Context context) {
         this.context = context;
     }
 
-    public Single<List<PodcastSearchResult>> loadToplist(String country, int limit) {
-        return Single.create((SingleOnSubscribe<List<PodcastSearchResult>>) emitter -> {
-            OkHttpClient client = AntennapodHttpClient.getHttpClient();
-            String feedString;
-            String loadCountry = country;
+    public List<PodcastSearchResult> loadToplist(String country, int limit, List<Feed> subscribed)
+            throws JSONException, IOException {
+        OkHttpClient client = AntennapodHttpClient.getHttpClient();
+        String feedString;
+        String loadCountry = country;
+        if (COUNTRY_CODE_UNSET.equals(country)) {
+            loadCountry = Locale.getDefault().getCountry();
+        }
+        try {
+            feedString = getTopListFeed(client, loadCountry);
+        } catch (IOException e) {
             if (COUNTRY_CODE_UNSET.equals(country)) {
-                loadCountry = Locale.getDefault().getCountry();
+                feedString = getTopListFeed(client, "US");
+            } else {
+                throw e;
             }
-            try {
-                feedString = getTopListFeed(client, loadCountry, limit);
-            } catch (IOException e) {
-                if (COUNTRY_CODE_UNSET.equals(country)) {
-                    feedString = getTopListFeed(client, "US", limit);
-                } else {
-                    emitter.onError(e);
-                    return;
-                }
-            }
-
-            List<PodcastSearchResult> podcasts = parseFeed(feedString);
-            emitter.onSuccess(podcasts);
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        }
+        return removeSubscribed(parseFeed(feedString), subscribed, limit);
     }
 
-    private String getTopListFeed(OkHttpClient client, String country, int limit) throws IOException {
-        String url = "https://itunes.apple.com/%s/rss/toppodcasts/limit=" + limit + "/explicit=true/json";
+    private static List<PodcastSearchResult> removeSubscribed(
+            List<PodcastSearchResult> suggestedPodcasts, List<Feed> subscribedFeeds, int limit) {
+        Set<String> subscribedPodcastsSet = new HashSet<>();
+        for (Feed subscribedFeed : subscribedFeeds) {
+            if (subscribedFeed.getTitle() != null && subscribedFeed.getAuthor() != null) {
+                subscribedPodcastsSet.add(subscribedFeed.getTitle().trim() + " - " + subscribedFeed.getAuthor().trim());
+            }
+        }
+        List<PodcastSearchResult> suggestedNotSubscribed = new ArrayList<>();
+        for (PodcastSearchResult suggested : suggestedPodcasts) {
+            if (!subscribedPodcastsSet.contains(suggested.title.trim())) {
+                suggestedNotSubscribed.add(suggested);
+            }
+            if (suggestedNotSubscribed.size() == limit) {
+                return suggestedNotSubscribed;
+            }
+        }
+        return suggestedNotSubscribed;
+    }
+
+    private String getTopListFeed(OkHttpClient client, String country) throws IOException {
+        String url = "https://itunes.apple.com/%s/rss/toppodcasts/limit=" + NUM_LOADED + "/explicit=true/json";
         Log.d(TAG, "Feed URL " + String.format(url, country));
         Request.Builder httpReq = new Request.Builder()
                 .cacheControl(new CacheControl.Builder().maxStale(1, TimeUnit.DAYS).build())

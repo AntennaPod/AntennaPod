@@ -6,6 +6,7 @@
   <string name="statistics_label">סטטיסטיקה</string>
   <string name="add_feed_label">הוספת פודקאסט</string>
   <string name="episodes_label">פרקים</string>
+  <string name="home_label">בית</string>
   <string name="queue_label">תור</string>
   <string name="inbox_label">דואר נכנס</string>
   <string name="favorite_episodes_label">מועדפים</string>
@@ -42,6 +43,15 @@
   <string name="statistics_reset_data_msg">פעולה זו תמחק את משך הנגינה של כל הפרקים. להמשיך?</string>
   <string name="statistics_counting_range">התנגן בין %1$s לבין %2$s</string>
   <string name="statistics_counting_total">התנגן בסך הכול</string>
+  <!--Home fragment-->
+  <string name="home_surprise_title">הפתעה אקראית</string>
+  <string name="home_classics_title">חזרה לקלסיקות</string>
+  <string name="home_continue_title">המשך האזנה</string>
+  <string name="home_new_title">מה חדש</string>
+  <string name="home_downloads_title">ניהול הורדות</string>
+  <string name="home_welcome_title">ברוך בואך לאנטנה־פּוֹד!</string>
+  <string name="home_welcome_text">לא נרשמת עדיין לאף פודקאסט. יש לפתוח את תפריט הצד ולהוסיף פודקאסט.</string>
+  <string name="configure_home">הגדרת מסך הבית</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">גודל הפרקים הכולל במכשיר</string>
   <!--Main activity-->
@@ -52,10 +62,10 @@
   <string name="drawer_feed_order_alphabetical">מיון בסדר אלפביתי</string>
   <string name="drawer_feed_order_last_update">מיון לפי תאריך פרסום</string>
   <string name="drawer_feed_order_most_played">מיון לפי מספר פרקים שהושמעו </string>
-  <string name="drawer_feed_counter_inbox_unplayed">מספר הפרקים שלא נוגנו ופרקים בדואר הנכנס</string>
   <string name="drawer_feed_counter_inbox">מספר הפרקים בדואר הנכנס</string>
   <string name="drawer_feed_counter_unplayed">מספר פרקים שעוד לא התנגנו</string>
   <string name="drawer_feed_counter_downloaded">מספר פרקים שהתקבלו</string>
+  <string name="drawer_feed_counter_downloaded_unplayed">מספר הפרקים שירדו אבל לא נוגנו</string>
   <string name="drawer_feed_counter_none">ללא</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">לא נמצאו יישומונים תואמים</string>
@@ -69,6 +79,9 @@
   <string name="go_to_position_label">מעבר למיקום זה</string>
   <!--Playback history-->
   <string name="clear_history_label">ניקוי היסטוריה</string>
+  <string name="clear_playback_history_msg">פעולה זו תמחק את היסטוריית הנגינה. להמשיך?</string>
+  <string name="remove_history_label">הסרה מההיסטוריה</string>
+  <string name="removed_history_label">הוסר מההיסטוריה</string>
   <!--Other-->
   <string name="confirm_label">אישור</string>
   <string name="cancel_label">ביטול</string>
@@ -129,7 +142,6 @@
     <item quantity="many">%d פרקים</item>
     <item quantity="other">%d פרקים</item>
   </plurals>
-  <string name="loading_more">נטענים עוד…</string>
   <string name="episode_notification">התראות פרקים</string>
   <string name="episode_notification_summary">להציג התראה כאשר יוצא פרק חדש.</string>
   <plurals name="new_episode_notification_message">
@@ -179,6 +191,7 @@
     <item quantity="other">%d מינויים עודכנו.</item>
   </plurals>
   <string name="edit_tags">עריכת תגיות</string>
+  <string name="add_tag">הוספת תגית</string>
   <string name="rename_tag_label">שינוי שם תגית</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">רענון פודקאסטים דרך חיבור סלולרי מושבת בהגדרות.\n\nלרענן בכל זאת?</string>
   <!--actions on feeditems-->
@@ -238,6 +251,12 @@
     <item quantity="many">%d פרקים הוסרו מהתור.</item>
     <item quantity="other">%d פרקים הוסרו מהתור.</item>
   </plurals>
+  <plurals name="removed_from_inbox_batch_label">
+    <item quantity="one">הפרק הוסר מהדואר הנכנס.</item>
+    <item quantity="two">%d פרקים הוסרו מהדואר הנכנס.</item>
+    <item quantity="many">%d פרקים הוסרו מהדואר הנכנס.</item>
+    <item quantity="other">%d פרקים הוסרו מהדואר הנכנס.</item>
+  </plurals>
   <string name="add_to_favorite_label">הוספה למועדפים</string>
   <string name="remove_from_favorite_label">הסרה מהמועדפים</string>
   <string name="visit_website_label">ביקור באתר</string>
@@ -249,7 +268,7 @@
   <string name="download_pending">הורדה ממתינה</string>
   <string name="download_running">הורדה מתבצעת</string>
   <string name="download_error_details">פרטים</string>
-  <string name="download_error_details_message">%1$s \n\nכתובת הקובץ:\n%2$s</string>
+  <string name="download_log_details_message">%1$s \n\nסיבה טכנית: \n%2$s \n\nכתובת הקובץ:\n%3$s</string>
   <string name="download_error_tap_for_details">יש לגעת כדי להציג עוד פרטים.</string>
   <string name="download_error_device_not_found">התקן האחסון לא נמצא</string>
   <string name="download_error_insufficient_space">לא נשאר מספיק מקום במכשיר שלך.</string>
@@ -423,6 +442,8 @@
   <string name="user_interface_label">מנשק משתמש</string>
   <string name="user_interface_sum">מראה, מינויים, מסך נעילה</string>
   <string name="pref_set_theme_title">בחירת ערכת עיצוב</string>
+  <string name="pref_tinted_theme_title">להשתמש בצבעים דינמיים</string>
+  <string name="pref_tinted_theme_message">להתאים את צבעי היישומון לפי הטפט</string>
   <string name="pref_nav_drawer_items_title">הגדרת פריטי מגירת ניווט</string>
   <string name="pref_nav_drawer_items_sum">החלפת הפריטים שמופיעים במגירת הניווט.</string>
   <string name="pref_nav_drawer_feed_order_title">הגדרת סדר מינויים</string>
@@ -448,20 +469,6 @@
   <string name="pref_theme_title_dark">כהה</string>
   <string name="pref_theme_title_trueblack">שחור (תואם AMOLED)</string>
   <string name="pref_episode_cache_unlimited">בלתי מוגבל</string>
-  <string name="synchronization_logout">יציאה</string>
-  <string name="pref_synchronization_logout_toast">היציאה הצליחה</string>
-  <string name="pref_gpodnet_setlogin_information_title">שינוי פרטי הכניסה</string>
-  <string name="pref_gpodnet_setlogin_information_sum">שינוי פרטי הכניסה לחשבון ה־gpodder.net שלך.</string>
-  <string name="synchronization_sync_changes_title">לסנכרן עכשיו</string>
-  <string name="synchronization_full_sync_title">אילוץ סנכרון מלא</string>
-  <string name="synchronization_login_status"><![CDATA[נכנסת בתור <i>%1$s</i> אל <i>%2$s</i>. <br/><br/>אפשר לבחור את שרת הסנכרון שלך שוב לאחר היציאה מהחשבון]]></string>
-  <string name="synchronization_summary_unchoosen">אפשר לבחור בין מגוון ספקית לסנכרון המינויים ומצב נגינ הפרקים שלך עם</string>
-  <string name="synchronization_summary_nextcloud">Gpoddersync הוא יישומון Nextcloud בקוד פתוח שניתן להתקין בקלות בשרת שלך. היישומון אינו תלוי במיזם AntennaPod.</string>
-  <string name="synchronization_nextcloud_authenticate_browser">יש להעניק גישה באמצעות הדפדפן שנפתח ולחזור ל־AntennaPod.</string>
-  <string name="synchronization_choose_title">בחירת ספק סנכרון</string>
-  <string name="synchronization_force_sync_summary">סנכרון המינוי ושינויי מצב הפרקים מחדש</string>
-  <string name="synchronization_sync_summary">סנכרון המינוי ושינויי מצב הפרקים</string>
-  <string name="dialog_choose_sync_service_title">בחירת ספק סנכרון</string>
   <string name="pref_playback_speed_sum">התאמת המהירויות הזמינות למהירות נגינה משתנה</string>
   <string name="pref_feed_playback_speed_sum">המהירות שתחול על פרקים בפודקאסט זה כשאלו מתחילים להתנגן</string>
   <string name="pref_feed_skip">לדלג אוטומטית</string>
@@ -513,16 +520,9 @@
   <string name="media_player_switched_to_exoplayer">הועבר ל־ExoPlayer.</string>
   <string name="pref_skip_silence_title">דילוג על שקט בקטעי ההאזנה</string>
   <string name="behavior">התנהגות</string>
-  <string name="pref_back_button_behavior_title">התנהגות כפתור חזרה</string>
-  <string name="pref_back_button_behavior_sum">שינוי התנהגות כפתור החזרה.</string>
-  <string name="back_button_default">בררת מחדל</string>
-  <string name="back_button_open_drawer">פתיחת מגירת ניווט</string>
-  <string name="back_button_double_tap">לחיצה כפולה ליציאה</string>
-  <string name="back_button_show_prompt">אישור ליציאה</string>
-  <string name="close_prompt">לסגור את אנטנה־פּוֹד?</string>
-  <string name="double_tap_toast">יש לגעת בכפתור החזרה שוב כדי לצאת</string>
-  <string name="back_button_go_to_page">מעבר לעמוד…</string>
-  <string name="back_button_go_to_page_title">בחירת עמוד</string>
+  <string name="pref_default_page">עמוד ברירת מחדל</string>
+  <string name="pref_default_page_sum">המסך שייפתח בהפעלת אנטנה־פּוֹד.</string>
+  <string name="remember_last_page">זכירת העמוד האחרון</string>
   <string name="pref_delete_removes_from_queue_title">מחיקה מסירה מהתור</string>
   <string name="pref_delete_removes_from_queue_sum">הסרת פרק מהתור אוטומטית עם מחיקתו.</string>
   <string name="pref_filter_feed_title">מסנן מינויים</string>
@@ -626,20 +626,38 @@
   </plurals>
   <string name="auto_enable_label">הפעלה אוטומטית</string>
   <string name="sleep_timer_enabled_label">מתזמן השינה פעיל</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
+  <string name="synchronization_choose_title">בחירת ספק סנכרון</string>
+  <string name="synchronization_summary_unchoosen">אפשר לבחור בין מגוון ספקית לסנכרון המינויים ומצב נגינ הפרקים שלך עם</string>
+  <string name="dialog_choose_sync_service_title">בחירת ספק סנכרון</string>
+  <string name="gpodnet_description">Gpodder.net הוא שירות סנכרון פודקאסטים בקוד פתוח שניתן להתקין על שרת משלך. ל־Gpodder.net אין לו קשר למיזם אנטנה־פּוֹד.</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync הוא יישומון Nextcloud בקוד פתוח שניתן להתקין בקלות בשרת שלך. היישומון אינו תלוי במיזם AntennaPod.</string>
+  <string name="synchronization_host_explanation">אפשר לבחור שרת משלך להסתנכרן מולו. כשזיהית את שרת הסנכרון המועדף עליך, נא למלא את הכתובת שלו כאן.</string>
+  <string name="synchronization_host_label">כתובת שרת</string>
+  <string name="proceed_to_login_butLabel">המשך לכניסה</string>
+  <string name="synchronization_nextcloud_authenticate_browser">יש להעניק גישה באמצעות הדפדפן שנפתח ולחזור ל־AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">כניסה</string>
+  <string name="synchronization_credentials_explanation">נא לספק את פרטי הגישה לחשבון שלך בשרת הסנכרון.</string>
   <string name="gpodnetauth_encryption_warning">הססמה והנתונים אינם מוצפנים!</string>
   <string name="username_label">שם משתמש</string>
   <string name="password_label">ססמה</string>
-  <string name="gpodnet_description">Gpodder.net הוא שירות סנכרון פודקאסטים בקוד פתוח שניתן להתקין על שרת משלך. ל־Gpodder.net אין לו קשר למיזם אנטנה־פּוֹד.</string>
-  <string name="gpodnetauth_host">שם מארח</string>
-  <string name="gpodnetauth_select_server">בחירת שרת</string>
+  <string name="synchronization_login_butLabel">כניסה</string>
+  <string name="synchronization_selectDevice_explanation">נא לבחור את המכשיר שיצרת בשרת הסנכרון או ליצור אחד חדש.</string>
   <string name="gpodnetauth_device_name">שם המכשיר</string>
   <string name="gpodnetauth_device_name_default">אנטנה־פּוֹד על %1$s</string>
   <string name="gpodnetauth_existing_devices">מכשירים קיימים</string>
   <string name="gpodnetauth_create_device">יצירת מכשיר</string>
   <string name="gpodnetauth_finish_descr">מזל טוב! חשבון ה־gpodder.net שלך מקושר כעת עם המכשיר שלך. מעתה כל המינויים שלך יסונכרנו אוטומטית על ידי אנטנה־פּוֹד מהמכשיר שלך לחשבון ה־gpodder.net שלך.</string>
   <string name="gpodnetauth_finish_butsyncnow">התחלת סנכרון כעת</string>
+  <string name="pref_gpodnet_setlogin_information_title">שינוי פרטי הכניסה</string>
+  <string name="pref_gpodnet_setlogin_information_sum">שינוי פרטי הכניסה לחשבון ה־gpodder.net שלך.</string>
+  <string name="synchronization_sync_changes_title">לסנכרן עכשיו</string>
+  <string name="synchronization_sync_summary">סנכרון המינוי ושינויי מצב הפרקים</string>
+  <string name="synchronization_full_sync_title">אילוץ סנכרון מלא</string>
+  <string name="synchronization_force_sync_summary">סנכרון המינוי ושינויי מצב הפרקים מחדש</string>
+  <string name="synchronization_logout">יציאה</string>
+  <string name="synchronization_login_status"><![CDATA[נכנסת בתור <i>%1$s</i> אל <i>%2$s</i>. <br/><br/>אפשר לבחור את שרת הסנכרון שלך שוב לאחר היציאה מהחשבון]]></string>
+  <string name="pref_synchronization_logout_toast">היציאה הצליחה</string>
   <string name="gpodnetsync_error_title">שגיאת סנכרון מול gpodder.net</string>
   <string name="gpodnetsync_error_descr">שגיאה במהלך סינכרון:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">מוצלח</string>
@@ -685,10 +703,10 @@
   <string name="auto_download_settings_label">הגדרות הורדה אוטומטית</string>
   <string name="episode_filters_label">מסנן פרקים</string>
   <string name="episode_filters_description">רשימת המונחים בהם יעשה שימוש כדי להחליט אם להכליל או להחריג פרק כלשהו במהלך הורדה אוטומטית</string>
-  <string name="episode_filters_include">להכליל</string>
-  <string name="episode_filters_exclude">להחריג</string>
-  <string name="episode_filters_duration">משך זמן מזערי (בדקות)</string>
-  <string name="episode_filters_hint">מילים בודדות \n\"אוסף מילים\"</string>
+  <string name="add_term">הוספת ביטו</string>
+  <string name="exclude_terms">החרגת פרקים שמכילים ביטוי כלשהו מאלו שלהלן</string>
+  <string name="include_terms">הכללת פרקים שמכילים ביטוי כלשהו מאלו שלהלן</string>
+  <string name="exclude_episodes_shorter_than">החרגת פרקים שאורכם אינו עולה על</string>
   <string name="keep_updated">לשמור על עדכניות</string>
   <string name="keep_updated_summary">לכלול את הפודקאסט בעת רענון (אוטומטי) של כל הפודקאסטים</string>
   <string name="auto_download_disabled_globally">הורדה אוטומטית מושבתת בהגדרות הראשיות של אנטנה־פּוֹד</string>
@@ -698,6 +716,8 @@
   <string name="statistics_space_used">מקום תפוס:</string>
   <string name="statistics_episodes_started_total">פרקים שהותחלו/סך הכול:</string>
   <string name="statistics_view_all">להציג לכל הפודקאסטים »</string>
+  <string name="edit_url_menu">עריכת כתובת ערוץ</string>
+  <string name="edit_url_confirmation_msg">החלפת כתובת ה־RSS יכולה בקלות לפגוע במצב הנגינה והצגת הפרקים של הפודקאסט. אנו לא ממליצים להחליף אותה ולא נספק תמיכה אם משהו ישתבש. זאת פעולה בלתי הפיעה. לא ניתן לשקם מינויים פגומים על ידי החזרת הכתובת הקודמת. אנו מציעים לגבות באופן יסודי בטרם בחירה להמשיך בתהליך.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">מתבצע ייבוא מינויים מיישומונים ממוקדי מטרה…</string>
   <!--Add podcast fragment-->
@@ -713,7 +733,9 @@
   <string name="discover_is_hidden">בחרת להסתיר הצעות.</string>
   <string name="discover_more">עוד »</string>
   <string name="discover_powered_by_itunes">הצעות מ־iTunes</string>
+  <string name="discover_confirm">הצגת הצעות</string>
   <string name="search_powered_by">תוצאות מאת %1$s</string>
+  <string name="select_country">בחירת מדינה</string>
   <!--Local feeds-->
   <string name="add_local_folder">הוספת תיקייה מקומית</string>
   <string name="local_folder">תיקייה מקומית</string>

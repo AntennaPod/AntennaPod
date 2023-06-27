@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.InputDevice;
 import android.view.LayoutInflater;
@@ -17,29 +16,27 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.content.ContextCompat;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.elevation.SurfaceColors;
 import java.lang.ref.WeakReference;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.ui.common.TriangleLabelView;
 
 /**
  * Adapter for subscriptions
@@ -52,13 +49,17 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
     private List<NavDrawerData.DrawerItem> listItems;
     private NavDrawerData.DrawerItem selectedItem = null;
     int longPressedPosition = 0; // used to init actionMode
-    private int dummyViews = 0;
+    private int columnCount = 3;
 
     public SubscriptionsRecyclerAdapter(MainActivity mainActivity) {
         super(mainActivity);
         this.mainActivityRef = new WeakReference<>(mainActivity);
         this.listItems = new ArrayList<>();
         setHasStableIds(true);
+    }
+
+    public void setColumnCount(int columnCount) {
+        this.columnCount = columnCount;
     }
 
     public Object getItem(int position) {
@@ -73,34 +74,12 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
     @Override
     public SubscriptionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(mainActivityRef.get()).inflate(R.layout.subscription_item, parent, false);
-        TextView feedTitle = itemView.findViewById(R.id.txtvTitle);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) feedTitle.getLayoutParams();
-        int topAndBottomItemId = R.id.imgvCover;
-        int belowItemId = 0;
-
-        if (viewType == COVER_WITH_TITLE) {
-            topAndBottomItemId = 0;
-            belowItemId = R.id.imgvCover;
-            feedTitle.setBackgroundColor(
-                    ContextCompat.getColor(feedTitle.getContext(), R.color.feed_text_bg));
-            int padding = (int) convertDpToPixel(feedTitle.getContext(), 6);
-            feedTitle.setPadding(padding, padding, padding, padding);
-        }
-        params.addRule(RelativeLayout.BELOW, belowItemId);
-        params.addRule(RelativeLayout.ALIGN_TOP, topAndBottomItemId);
-        params.addRule(RelativeLayout.ALIGN_BOTTOM, topAndBottomItemId);
-        feedTitle.setLayoutParams(params);
-        feedTitle.setSingleLine(viewType == COVER_WITH_TITLE);
+        itemView.findViewById(R.id.titleLabel).setVisibility(viewType == COVER_WITH_TITLE ? View.VISIBLE : View.GONE);
         return new SubscriptionViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull SubscriptionViewHolder holder, int position) {
-        if (position >= listItems.size()) {
-            holder.selectView.setVisibility(View.GONE);
-            holder.bindDummy();
-            return;
-        }
         NavDrawerData.DrawerItem drawerItem = listItems.get(position);
         boolean isFeed = drawerItem.type == NavDrawerData.DrawerItem.Type.FEED;
         holder.bind(drawerItem);
@@ -113,11 +92,11 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
             holder.selectCheckbox.setChecked((isSelected(position)));
             holder.selectCheckbox.setOnCheckedChangeListener((buttonView, isChecked)
                     -> setSelected(holder.getBindingAdapterPosition(), isChecked));
-            holder.imageView.setAlpha(0.6f);
+            holder.coverImage.setAlpha(0.6f);
             holder.count.setVisibility(View.GONE);
         } else {
             holder.selectView.setVisibility(View.GONE);
-            holder.imageView.setAlpha(1.0f);
+            holder.coverImage.setAlpha(1.0f);
         }
 
         holder.itemView.setOnLongClickListener(v -> {
@@ -163,7 +142,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
 
     @Override
     public int getItemCount() {
-        return listItems.size() + dummyViews;
+        return listItems.size();
     }
 
     @Override
@@ -211,12 +190,9 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         return items;
     }
 
-    public void setDummyViews(int dummyViews) {
-        this.dummyViews = dummyViews;
-    }
-
     public void setItems(List<NavDrawerData.DrawerItem> listItems) {
         this.listItems = listItems;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -233,66 +209,74 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
     }
 
     public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
-        private final TextView feedTitle;
-        private final ImageView imageView;
-        private final TriangleLabelView count;
+        private final TextView title;
+        private final ImageView coverImage;
+        private final TextView count;
+        private final TextView fallbackTitle;
         private final FrameLayout selectView;
         private final CheckBox selectCheckbox;
+        private final CardView card;
 
         public SubscriptionViewHolder(@NonNull View itemView) {
             super(itemView);
-            feedTitle = itemView.findViewById(R.id.txtvTitle);
-            imageView = itemView.findViewById(R.id.imgvCover);
-            count = itemView.findViewById(R.id.triangleCountView);
-            selectView = itemView.findViewById(R.id.selectView);
+            title = itemView.findViewById(R.id.titleLabel);
+            coverImage = itemView.findViewById(R.id.coverImage);
+            count = itemView.findViewById(R.id.countViewPill);
+            fallbackTitle = itemView.findViewById(R.id.fallbackTitleLabel);
+            selectView = itemView.findViewById(R.id.selectContainer);
             selectCheckbox = itemView.findViewById(R.id.selectCheckBox);
+            card = itemView.findViewById(R.id.outerContainer);
         }
 
         public void bind(NavDrawerData.DrawerItem drawerItem) {
             Drawable drawable = AppCompatResources.getDrawable(selectView.getContext(),
                     R.drawable.ic_checkbox_background);
             selectView.setBackground(drawable); // Setting this in XML crashes API <= 21
-            feedTitle.setText(drawerItem.getTitle());
-            imageView.setContentDescription(drawerItem.getTitle());
-            feedTitle.setVisibility(View.VISIBLE);
-            if (TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_RTL) {
-                count.setCorner(TriangleLabelView.Corner.TOP_LEFT);
-            }
-
+            title.setText(drawerItem.getTitle());
+            fallbackTitle.setText(drawerItem.getTitle());
+            coverImage.setContentDescription(drawerItem.getTitle());
             if (drawerItem.getCounter() > 0) {
-                count.setPrimaryText(NumberFormat.getInstance().format(drawerItem.getCounter()));
+                count.setText(NumberFormat.getInstance().format(drawerItem.getCounter()));
                 count.setVisibility(View.VISIBLE);
             } else {
                 count.setVisibility(View.GONE);
             }
 
+            CoverLoader coverLoader = new CoverLoader(mainActivityRef.get());
+            boolean textAndImageCombined;
             if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
                 Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
-                boolean textAndImageCombind = feed.isLocalFeed()
-                        && feed.getImageUrl() != null && feed.getImageUrl().startsWith(Feed.PREFIX_GENERATIVE_COVER);
-                new CoverLoader(mainActivityRef.get())
-                        .withUri(feed.getImageUrl())
-                        .withPlaceholderView(feedTitle, textAndImageCombind)
-                        .withCoverView(imageView)
-                        .load();
+                textAndImageCombined = feed.isLocalFeed() && feed.getImageUrl() != null
+                        && feed.getImageUrl().startsWith(Feed.PREFIX_GENERATIVE_COVER);
+                coverLoader.withUri(feed.getImageUrl());
             } else {
-                new CoverLoader(mainActivityRef.get())
-                        .withResource(R.drawable.ic_tag)
-                        .withPlaceholderView(feedTitle, true)
-                        .withCoverView(imageView)
-                        .load();
+                textAndImageCombined = true;
+                coverLoader.withResource(R.drawable.ic_tag);
             }
-        }
+            if (UserPreferences.shouldShowSubscriptionTitle()) {
+                // No need for fallback title when already showing title
+                fallbackTitle.setVisibility(View.GONE);
+            } else {
+                coverLoader.withPlaceholderView(fallbackTitle, textAndImageCombined);
+            }
+            coverLoader.withCoverView(coverImage);
+            coverLoader.load();
 
-        public void bindDummy() {
-            feedTitle.setText("███████");
-            feedTitle.setVisibility(View.VISIBLE);
-            count.setVisibility(View.GONE);
-            new CoverLoader(mainActivityRef.get())
-                    .withResource(android.R.color.transparent)
-                    .withPlaceholderView(feedTitle, false)
-                    .withCoverView(imageView)
-                    .load();
+            float density = mainActivityRef.get().getResources().getDisplayMetrics().density;
+            card.setCardBackgroundColor(SurfaceColors.getColorForElevation(mainActivityRef.get(), 1 * density));
+
+            int textPadding = columnCount <= 3 ? 16 : 8;
+            title.setPadding(textPadding, textPadding, textPadding, textPadding);
+            fallbackTitle.setPadding(textPadding, textPadding, textPadding, textPadding);
+
+            int textSize = 14;
+            if (columnCount == 3) {
+                textSize = 15;
+            } else if (columnCount == 2) {
+                textSize = 16;
+            }
+            title.setTextSize(textSize);
+            fallbackTitle.setTextSize(textSize);
         }
     }
 

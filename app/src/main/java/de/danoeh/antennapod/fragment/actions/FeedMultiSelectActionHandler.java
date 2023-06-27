@@ -89,28 +89,12 @@ public class FeedMultiSelectActionHandler {
 
     private void autoDeleteEpisodesPrefHandler() {
         PreferenceListDialog preferenceListDialog = new PreferenceListDialog(activity,
-                "Auto delete episodes");
+                activity.getString(R.string.auto_delete_label));
         String[] items = activity.getResources().getStringArray(R.array.spnAutoDeleteItems);
-        String[] values = activity.getResources().getStringArray(R.array.spnAutoDeleteValues);
         preferenceListDialog.openDialog(items);
         preferenceListDialog.setOnPreferenceChangedListener(which -> {
-            FeedPreferences.AutoDeleteAction autoDeleteAction = null;
-            switch (values[which]) {
-                case "global":
-                    autoDeleteAction = FeedPreferences.AutoDeleteAction.GLOBAL;
-                    break;
-                case "always":
-                    autoDeleteAction = FeedPreferences.AutoDeleteAction.YES;
-                    break;
-                case "never":
-                    autoDeleteAction = FeedPreferences.AutoDeleteAction.NO;
-                    break;
-                default:
-            }
-            FeedPreferences.AutoDeleteAction finalAutoDeleteAction = autoDeleteAction;
-            saveFeedPreferences(feedPreferences -> {
-                feedPreferences.setAutoDeleteAction(finalAutoDeleteAction);
-            });
+            FeedPreferences.AutoDeleteAction autoDeleteAction = FeedPreferences.AutoDeleteAction.fromCode(which);
+            saveFeedPreferences(feedPreferences -> feedPreferences.setAutoDeleteAction(autoDeleteAction));
         });
     }
 

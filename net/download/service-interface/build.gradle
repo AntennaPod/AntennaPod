@@ -1,0 +1,21 @@
+plugins {
+    id("com.android.library")
+    id("java-test-fixtures")
+}
+apply from: "../../../common.gradle"
+
+android {
+    lint {
+        disable 'ParcelClassLoader'
+    }
+}
+
+dependencies {
+    implementation project(':model')
+    implementation project(':net:common')
+
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
+}

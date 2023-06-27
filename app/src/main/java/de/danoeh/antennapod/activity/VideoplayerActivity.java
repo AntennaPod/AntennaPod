@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.ColorDrawable;
@@ -21,6 +19,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -31,18 +30,18 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import androidx.annotation.Nullable;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import androidx.core.view.WindowCompat;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.bumptech.glide.Glide;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.dialog.MediaPlayerErrorDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.fragment.ChaptersFragment;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -95,13 +94,12 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     private Disposable disposable;
     private float prog;
 
-    @SuppressLint("AppCompatMethod")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
         // has to be called before setting layout content
-        supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR_OVERLAY);
+        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setTheme(R.style.Theme_AntennaPod_VideoPlayer);
         super.onCreate(savedInstanceState);
 
@@ -174,7 +172,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         super.onPause();
     }
 
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
@@ -190,18 +187,18 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     private PlaybackController newPlaybackController() {
         return new PlaybackController(this) {
             @Override
-            public void onPositionObserverUpdate() {
-                VideoplayerActivity.this.onPositionObserverUpdate();
-            }
-
-            @Override
-            public void onReloadNotification(int code) {
-                VideoplayerActivity.this.onReloadNotification(code);
-            }
-
-            @Override
             protected void updatePlayButtonShowsPlay(boolean showPlay) {
                 viewBinding.playButton.setIsShowPlay(showPlay);
+                if (showPlay) {
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                } else {
+                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    setupVideoAspectRatio();
+                    if (videoSurfaceCreated && controller != null) {
+                        Log.d(TAG, "Videosurface already created, setting videosurface now");
+                        controller.setVideoSurface(viewBinding.videoView.getHolder());
+                    }
+                }
             }
 
             @Override
@@ -210,26 +207,8 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             }
 
             @Override
-            public void onAwaitingVideoSurface() {
-                setupVideoAspectRatio();
-                if (videoSurfaceCreated && controller != null) {
-                    Log.d(TAG, "Videosurface already created, setting videosurface now");
-                    controller.setVideoSurface(viewBinding.videoView.getHolder());
-                }
-            }
-
-            @Override
             public void onPlaybackEnd() {
                 finish();
-            }
-
-            @Override
-            protected void setScreenOn(boolean enable) {
-                if (enable) {
-                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                } else {
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                }
             }
         };
     }
@@ -257,6 +236,13 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     protected void loadMediaInfo() {
         Log.d(TAG, "loadMediaInfo()");
         if (controller == null || controller.getMedia() == null) {
+            return;
+        }
+        if (controller.getStatus() == PlayerStatus.PLAYING && !controller.isPlayingVideoLocally()) {
+            Log.d(TAG, "Closing, no longer video");
+            destroyingDueToReload = true;
+            finish();
+            new MainActivityStarter(this).withOpenPlayer().start();
             return;
         }
         showTimeLeft = UserPreferences.shouldShowRemainingTime();
@@ -485,22 +471,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         }
     };
 
-    protected void onReloadNotification(int notificationCode) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && PictureInPictureUtil.isInPictureInPictureMode(this)) {
-            if (notificationCode == PlaybackService.EXTRA_CODE_AUDIO
-                    || notificationCode == PlaybackService.EXTRA_CODE_CAST) {
-                finish();
-            }
-            return;
-        }
-        if (notificationCode == PlaybackService.EXTRA_CODE_CAST) {
-            Log.d(TAG, "ReloadNotification received, switching to Castplayer now");
-            destroyingDueToReload = true;
-            finish();
-            new MainActivityStarter(this).withOpenPlayer().start();
-        }
-    }
-
     private void showVideoControls() {
         viewBinding.bottomControlsContainer.setVisibility(View.VISIBLE);
         viewBinding.controlsContainer.setVisibility(View.VISIBLE);
@@ -543,11 +513,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMediaPlayerError(PlayerErrorEvent event) {
-        final MaterialAlertDialogBuilder errorDialog = new MaterialAlertDialogBuilder(VideoplayerActivity.this);
-        errorDialog.setTitle(R.string.error_label);
-        errorDialog.setMessage(event.getMessage());
-        errorDialog.setNeutralButton(android.R.string.ok, (dialog, which) -> finish());
-        errorDialog.show();
+        MediaPlayerErrorDialog.show(this, event);
     }
 
     @Override
@@ -590,6 +556,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         menu.findItem(R.id.player_switch_to_audio_only).setVisible(true);
         menu.findItem(R.id.audio_controls).setIcon(R.drawable.ic_sliders);
         menu.findItem(R.id.playback_speed).setVisible(true);
+        menu.findItem(R.id.player_show_chapters).setVisible(true);
         return true;
     }
 
@@ -599,12 +566,14 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             switchToAudioOnly = true;
             finish();
             return true;
-        }
-        if (item.getItemId() == android.R.id.home) {
+        } else if (item.getItemId() == android.R.id.home) {
             Intent intent = new Intent(VideoplayerActivity.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP  | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
+            return true;
+        } else if (item.getItemId() == R.id.player_show_chapters) {
+            new ChaptersFragment().show(getSupportFragmentManager(), ChaptersFragment.TAG);
             return true;
         }
 
@@ -669,8 +638,8 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         int remainingTime = converter.convert(
                 controller.getDuration() - controller.getPosition());
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
-        if (currentPosition == PlaybackService.INVALID_TIME
-                || duration == PlaybackService.INVALID_TIME) {
+        if (currentPosition == Playable.INVALID_TIME
+                || duration == Playable.INVALID_TIME) {
             Log.w(TAG, "Could not react to position observer update because of invalid time");
             return;
         }

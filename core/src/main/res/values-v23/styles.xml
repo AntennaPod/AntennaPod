@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="Theme.AntennaPod.Dynamic.Light" parent="Theme.Base.AntennaPod.Dynamic.Light">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <!-- To make icons visible -->
+        <item name="android:navigationBarColor">@color/grey600</item>
+    </style>
+</resources>

@@ -28,9 +28,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.adapter.HorizontalFeedListAdapter;
-import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
@@ -42,6 +41,7 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
+import de.danoeh.antennapod.view.LiftOnScrollListener;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -53,6 +53,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Collections;
 import java.util.List;
+import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
+
 
 /**
  * Performs a search operation on all feeds or one specific feed and displays the search result.
@@ -131,6 +134,7 @@ public class SearchFragment extends Fragment {
 
         recyclerView = layout.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
+        registerForContextMenu(recyclerView);
         adapter = new EpisodeItemListAdapter((MainActivity) getActivity()) {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -139,12 +143,20 @@ public class SearchFragment extends Fragment {
             }
         };
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new LiftOnScrollListener(layout.findViewById(R.id.appbar)));
 
         RecyclerView recyclerViewFeeds = layout.findViewById(R.id.recyclerViewFeeds);
         LinearLayoutManager layoutManagerFeeds = new LinearLayoutManager(getActivity());
         layoutManagerFeeds.setOrientation(RecyclerView.HORIZONTAL);
         recyclerViewFeeds.setLayoutManager(layoutManagerFeeds);
-        adapterFeeds = new HorizontalFeedListAdapter((MainActivity) getActivity());
+        adapterFeeds = new HorizontalFeedListAdapter((MainActivity) getActivity()) {
+            @Override
+            public void onCreateContextMenu(ContextMenu contextMenu, View view,
+                                            ContextMenu.ContextMenuInfo contextMenuInfo) {
+                super.onCreateContextMenu(contextMenu, view, contextMenuInfo);
+                MenuItemUtils.setOnClickListeners(contextMenu, SearchFragment.this::onContextItemSelected);
+            }
+        };
         recyclerViewFeeds.setAdapter(adapterFeeds);
 
         emptyViewHandler = new EmptyViewHandler(getContext());
@@ -239,12 +251,21 @@ public class SearchFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        FeedItem selectedItem = adapter.getLongPressedItem();
-        if (selectedItem == null) {
-            Log.i(TAG, "Selected item at current position was null, ignoring selection");
-            return super.onContextItemSelected(item);
+        Feed selectedFeedItem  = adapterFeeds.getLongPressedItem();
+        if (selectedFeedItem != null
+                && FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedFeedItem, () -> { })) {
+            return true;
         }
-        return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
+        FeedItem selectedItem = adapter.getLongPressedItem();
+        if (selectedItem != null && FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem)) {
+            return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFeedListChanged(FeedListUpdateEvent event) {
+        search();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -273,15 +294,14 @@ public class SearchFragment extends Fragment {
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(DownloadEvent event) {
-        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        DownloaderUpdate update = event.update;
-        if (adapter != null && update.mediaIds.length > 0) {
-            for (long mediaId : update.mediaIds) {
-                int pos = FeedItemUtil.indexOfItemWithMediaId(results, mediaId);
-                if (pos >= 0) {
-                    adapter.notifyItemChangedCompat(pos);
-                }
+    public void onEventMainThread(EpisodeDownloadEvent event) {
+        if (results == null) {
+            return;
+        }
+        for (String downloadUrl : event.getUrls()) {
+            int pos = FeedItemUtil.indexOfItemWithDownloadUrl(results, downloadUrl);
+            if (pos >= 0) {
+                adapter.notifyItemChangedCompat(pos);
             }
         }
     }

@@ -13,7 +13,9 @@ import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 /**
  * A cleanup algorithm that removes any item that isn't a favorite but only if space is needed.
@@ -74,7 +76,8 @@ public class ExceptFavoriteCleanupAlgorithm extends EpisodeCleanupAlgorithm {
     @NonNull
     private List<FeedItem> getCandidates() {
         List<FeedItem> candidates = new ArrayList<>();
-        List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
+        List<FeedItem> downloadedItems = DBReader.getEpisodes(0, Integer.MAX_VALUE,
+                new FeedItemFilter(FeedItemFilter.DOWNLOADED), SortOrder.DATE_NEW_OLD);
         for (FeedItem item : downloadedItems) {
             if (item.hasMedia()
                     && item.getMedia().isDownloaded()
@@ -88,8 +91,8 @@ public class ExceptFavoriteCleanupAlgorithm extends EpisodeCleanupAlgorithm {
     @Override
     public int getDefaultCleanupParameter() {
         int cacheSize = UserPreferences.getEpisodeCacheSize();
-        if (cacheSize != UserPreferences.getEpisodeCacheSizeUnlimited()) {
-            int downloadedEpisodes = DBReader.getNumberOfDownloadedEpisodes();
+        if (cacheSize != UserPreferences.EPISODE_CACHE_SIZE_UNLIMITED) {
+            int downloadedEpisodes = DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.DOWNLOADED));
             if (downloadedEpisodes > cacheSize) {
                 return downloadedEpisodes - cacheSize;
             }

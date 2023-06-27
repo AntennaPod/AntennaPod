@@ -2,9 +2,12 @@ package de.danoeh.antennapod.core.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
 import android.util.Log;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
@@ -186,5 +189,49 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
                 playerStatusAsInt = PLAYER_STATUS_OTHER;
         }
         return playerStatusAsInt;
+    }
+
+    /**
+     * Restores a playable object from a sharedPreferences file. This method might load data from the database,
+     * depending on the type of playable that was restored.
+     *
+     * @return The restored Playable object
+     */
+    @Nullable
+    public static Playable createInstanceFromPreferences(@NonNull Context context) {
+        long currentlyPlayingMedia = PlaybackPreferences.getCurrentlyPlayingMediaType();
+        if (currentlyPlayingMedia != PlaybackPreferences.NO_MEDIA_PLAYING) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+            return createInstanceFromPreferences((int) currentlyPlayingMedia, prefs);
+        }
+        return null;
+    }
+
+    /**
+     * Restores a playable object from a sharedPreferences file. This method might load data from the database,
+     * depending on the type of playable that was restored.
+     *
+     * @param type An integer that represents the type of the Playable object
+     *             that is restored.
+     * @param pref The SharedPreferences file from which the Playable object
+     *             is restored
+     * @return The restored Playable object
+     */
+    private static Playable createInstanceFromPreferences(int type, SharedPreferences pref) {
+        if (type == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA) {
+            return createFeedMediaInstance(pref);
+        } else {
+            Log.e(TAG, "Could not restore Playable object from preferences");
+            return null;
+        }
+    }
+
+    private static Playable createFeedMediaInstance(SharedPreferences pref) {
+        Playable result = null;
+        long mediaId = pref.getLong(FeedMedia.PREF_MEDIA_ID, -1);
+        if (mediaId != -1) {
+            result =  DBReader.getFeedMedia(mediaId);
+        }
+        return result;
     }
 }

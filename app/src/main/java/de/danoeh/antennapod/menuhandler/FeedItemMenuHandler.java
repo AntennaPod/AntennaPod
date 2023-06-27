@@ -3,6 +3,7 @@ package de.danoeh.antennapod.menuhandler;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -14,13 +15,15 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
+import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.core.util.PlaybackStatus;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.dialog.ShareDialog;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -50,7 +53,7 @@ public class FeedItemMenuHandler {
             return false;
         }
         final boolean hasMedia = selectedItem.getMedia() != null;
-        final boolean isPlaying = hasMedia && FeedItemUtil.isPlaying(selectedItem.getMedia());
+        final boolean isPlaying = hasMedia && PlaybackStatus.isPlaying(selectedItem.getMedia());
         final boolean isInQueue = selectedItem.isTagged(FeedItem.TAG_QUEUE);
         final boolean fileDownloaded = hasMedia && selectedItem.getMedia().fileExists();
         final boolean isFavorite = selectedItem.isTagged(FeedItem.TAG_FAVORITE);
@@ -143,7 +146,7 @@ public class FeedItemMenuHandler {
 
         @NonNull Context context = fragment.requireContext();
         if (menuItemId == R.id.skip_episode_item) {
-            IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SKIP_CURRENT_EPISODE);
+            context.sendBroadcast(MediaButtonReceiver.createIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT));
         } else if (menuItemId == R.id.remove_item) {
             DBWriter.deleteFeedMediaOfItem(context, selectedItem.getMedia().getId());
         } else if (menuItemId == R.id.remove_inbox_item) {
@@ -185,7 +188,7 @@ public class FeedItemMenuHandler {
             selectedItem.getMedia().setPosition(0);
             if (PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == selectedItem.getMedia().getId()) {
                 PlaybackPreferences.writeNoMediaPlaying();
-                IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
+                IntentUtils.sendLocalBroadcast(context, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
             }
             DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, true);
         } else if (menuItemId == R.id.visit_website_item) {

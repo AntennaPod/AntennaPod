@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
@@ -48,6 +49,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
 
     public void setDummyViews(int dummyViews) {
         this.dummyViews = dummyViews;
+        notifyDataSetChanged();
     }
 
     public void updateItems(List<FeedItem> items) {
@@ -115,12 +117,13 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         });
 
         if (inActionMode()) {
-            holder.secondaryActionButton.setVisibility(View.GONE);
-            holder.selectCheckBox.setOnClickListener(v -> toggleSelection(holder.getBindingAdapterPosition()));
-            holder.selectCheckBox.setChecked(isSelected(pos));
-            holder.selectCheckBox.setVisibility(View.VISIBLE);
-        } else {
-            holder.selectCheckBox.setVisibility(View.GONE);
+            holder.secondaryActionButton.setOnClickListener(null);
+            if (isSelected(pos)) {
+                holder.itemView.setBackgroundColor(0x88000000
+                        + (0xffffff & ThemeUtils.getColorFromAttr(mainActivityRef.get(), R.attr.colorAccent)));
+            } else {
+                holder.itemView.setBackgroundResource(android.R.color.transparent);
+            }
         }
 
         afterBindViewHolder(holder, pos);

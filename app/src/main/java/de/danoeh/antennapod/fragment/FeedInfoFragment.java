@@ -22,7 +22,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.content.res.AppCompatResources;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -36,15 +35,15 @@ import com.google.android.material.snackbar.Snackbar;
 import com.joanzapata.iconify.Iconify;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
+import de.danoeh.antennapod.dialog.EditUrlSettingsDialog;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedFunding;
+import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
 import de.danoeh.antennapod.ui.statistics.feed.FeedStatisticsFragment;
 import de.danoeh.antennapod.view.ToolbarIconTintManager;
@@ -100,7 +99,10 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 android.content.ClipboardManager cm = (android.content.ClipboardManager) getContext()
                         .getSystemService(Context.CLIPBOARD_SERVICE);
                 cm.setPrimaryClip(clipData);
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.copied_url_msg, Snackbar.LENGTH_SHORT);
+                if (Build.VERSION.SDK_INT < 32) {
+                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.copied_to_clipboard,
+                            Snackbar.LENGTH_SHORT);
+                }
             }
         }
     };
@@ -198,21 +200,19 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         Log.d(TAG, "Language is " + feed.getLanguage());
         Log.d(TAG, "Author is " + feed.getAuthor());
         Log.d(TAG, "URL is " + feed.getDownload_url());
-        Glide.with(getContext())
+        Glide.with(this)
                 .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                         .placeholder(R.color.light_gray)
                         .error(R.color.light_gray)
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                         .fitCenter()
                         .dontAnimate())
                 .into(imgvCover);
-        Glide.with(getContext())
+        Glide.with(this)
                 .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                         .placeholder(R.color.image_readability_tint)
                         .error(R.color.image_readability_tint)
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                         .transform(new FastBlurTransformation())
                         .dontAnimate())
                 .into(imgvBackground);
@@ -280,6 +280,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         toolbar.getMenu().findItem(R.id.share_item).setVisible(feed != null && !feed.isLocalFeed());
         toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(feed != null && feed.getLink() != null
                 && IntentUtils.isCallable(getContext(), new Intent(Intent.ACTION_VIEW, Uri.parse(feed.getLink()))));
+        toolbar.getMenu().findItem(R.id.edit_feed_url_item).setVisible(feed != null && !feed.isLocalFeed());
     }
 
     @Override
@@ -291,7 +292,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         }
         boolean handled = FeedMenuHandler.onOptionsItemClicked(getContext(), item, feed);
 
-        if (item.getItemId() == R.id.reconnect_local_folder && Build.VERSION.SDK_INT >= 21) {
+        if (item.getItemId() == R.id.reconnect_local_folder) {
             MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(getContext());
             alert.setMessage(R.string.reconnect_local_folder_warning);
             alert.setPositiveButton(android.R.string.ok, (dialog, which) -> {
@@ -306,6 +307,19 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
             return true;
         }
 
+        if (item.getItemId() == R.id.edit_feed_url_item) {
+            new EditUrlSettingsDialog(getActivity(), feed) {
+                @Override
+                protected void setUrl(String url) {
+                    feed.setDownload_url(url);
+                    txtvUrl.setText(feed.getDownload_url() + " {fa-paperclip}");
+                    Iconify.addIcons(txtvUrl);
+                }
+            }.show();
+
+            return true;
+        }
+
         return handled;
     }
 
@@ -317,7 +331,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
     }
 
     private void reconnectLocalFolder(Uri uri) {
-        if (Build.VERSION.SDK_INT < 21 || feed == null) {
+        if (feed == null) {
             return;
         }
 
@@ -341,7 +355,6 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
     }
 
     private static class AddLocalFolder extends ActivityResultContracts.OpenDocumentTree {
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @NonNull
         @Override
         public Intent createIntent(@NonNull final Context context, @Nullable final Uri input) {

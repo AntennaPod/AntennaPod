@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,19 +15,23 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import de.danoeh.antennapod.net.discovery.ItunesTopListLoader;
-import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
+import androidx.fragment.app.Fragment;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.FeedDiscoverAdapter;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.event.DiscoveryDefaultUpdateEvent;
+import de.danoeh.antennapod.net.discovery.ItunesTopListLoader;
+import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +64,6 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         errorView = root.findViewById(R.id.discover_error);
         errorTextView = root.findViewById(R.id.discover_error_txtV);
         errorRetry = root.findViewById(R.id.discover_error_retry_btn);
-        errorRetry.setOnClickListener((listener) -> loadToplist());
         poweredByTextView = root.findViewById(R.id.discover_powered_by_itunes);
 
         adapter = new FeedDiscoverAdapter((MainActivity) getActivity());
@@ -108,14 +110,14 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
     private void loadToplist() {
         errorView.setVisibility(View.GONE);
         errorRetry.setVisibility(View.INVISIBLE);
+        errorRetry.setText(R.string.retry_label);
         poweredByTextView.setVisibility(View.VISIBLE);
 
         ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
         SharedPreferences prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
         String countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE,
                 Locale.getDefault().getCountry());
-        boolean hidden = prefs.getBoolean(ItunesTopListLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, false);
-        if (hidden) {
+        if (prefs.getBoolean(ItunesTopListLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, false)) {
             errorTextView.setText(R.string.discover_is_hidden);
             errorView.setVisibility(View.VISIBLE);
             discoverGridLayout.setVisibility(View.GONE);
@@ -123,26 +125,44 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
             poweredByTextView.setVisibility(View.GONE);
             return;
         }
+        //noinspection ConstantConditions
+        if (BuildConfig.FLAVOR.equals("free") && prefs.getBoolean(ItunesTopListLoader.PREF_KEY_NEEDS_CONFIRM, true)) {
+            errorTextView.setText("");
+            errorView.setVisibility(View.VISIBLE);
+            discoverGridLayout.setVisibility(View.VISIBLE);
+            errorRetry.setVisibility(View.VISIBLE);
+            errorRetry.setText(R.string.discover_confirm);
+            poweredByTextView.setVisibility(View.VISIBLE);
+            errorRetry.setOnClickListener(v -> {
+                prefs.edit().putBoolean(ItunesTopListLoader.PREF_KEY_NEEDS_CONFIRM, false).apply();
+                loadToplist();
+            });
+            return;
+        }
 
-        disposable = loader.loadToplist(countryCode, NUM_SUGGESTIONS)
+        disposable = Observable.fromCallable(() ->
+                        loader.loadToplist(countryCode, NUM_SUGGESTIONS, DBReader.getFeedList()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        podcasts -> {
-                            errorView.setVisibility(View.GONE);
-                            if (podcasts.size() == 0) {
-                                errorTextView.setText(getResources().getText(R.string.search_status_no_results));
-                                errorView.setVisibility(View.VISIBLE);
-                                discoverGridLayout.setVisibility(View.INVISIBLE);
-                            } else {
-                                discoverGridLayout.setVisibility(View.VISIBLE);
-                                adapter.updateData(podcasts);
-                            }
-                        }, error -> {
-                            Log.e(TAG, Log.getStackTraceString(error));
-                            errorTextView.setText(error.getLocalizedMessage());
+                    podcasts -> {
+                        errorView.setVisibility(View.GONE);
+                        if (podcasts.size() == 0) {
+                            errorTextView.setText(getResources().getText(R.string.search_status_no_results));
                             errorView.setVisibility(View.VISIBLE);
                             discoverGridLayout.setVisibility(View.INVISIBLE);
-                            errorRetry.setVisibility(View.VISIBLE);
-                        });
+                        } else {
+                            discoverGridLayout.setVisibility(View.VISIBLE);
+                            adapter.updateData(podcasts);
+                        }
+                    }, error -> {
+                        Log.e(TAG, Log.getStackTraceString(error));
+                        errorTextView.setText(error.getLocalizedMessage());
+                        errorView.setVisibility(View.VISIBLE);
+                        discoverGridLayout.setVisibility(View.INVISIBLE);
+                        errorRetry.setVisibility(View.VISIBLE);
+                        errorRetry.setOnClickListener(v -> loadToplist());
+                    });
     }
 
     @Override

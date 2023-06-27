@@ -8,11 +8,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.service.download.DownloadService;
-import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
+import de.danoeh.antennapod.core.ClientConfigurator;
+import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.model.feed.Feed;
 
 /**
@@ -41,11 +42,13 @@ public class SPAReceiver extends BroadcastReceiver{
             return;
         }
         Log.d(TAG, "Received feeds list: " + Arrays.toString(feedUrls));
-        ClientConfig.initialize(context);
+        ClientConfigurator.initialize(context);
         for (String url : feedUrls) {
-            Feed f = new Feed(url, null);
-            DownloadService.download(context, false, DownloadRequestCreator.create(f).build());
+            Feed feed = new Feed(url, null, "Unknown podcast");
+            feed.setItems(Collections.emptyList());
+            DBTasks.updateFeed(context, feed, false);
         }
         Toast.makeText(context, R.string.sp_apps_importing_feeds_msg, Toast.LENGTH_LONG).show();
+        FeedUpdateManager.runOnce(context);
     }
 }
