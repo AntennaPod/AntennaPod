@@ -55,6 +55,7 @@ public class UserPreferences {
     public static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
     private static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
     public static final String PREF_COMPACT_NOTIFICATION_BUTTONS = "prefCompactNotificationButtons";
+    public static final String PREF_FULL_NOTIFICATION_BUTTONS = "prefFullNotificationButtons";
     private static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
     private static final String PREF_SHOW_AUTO_DOWNLOAD_REPORT = "prefShowAutoDownloadReport";
     public static final String PREF_DEFAULT_PAGE = "prefDefaultPage";
@@ -128,6 +129,7 @@ public class UserPreferences {
     private static final int NOTIFICATION_BUTTON_SKIP = 2;
 
     private static final int NOTIFICATION_BUTTON_NEXT_CHAPTER = 3;
+    private static final int NOTIFICATION_BUTTON_PLAYBACK_SPEED = 4;
     public static final int EPISODE_CACHE_SIZE_UNLIMITED = -1;
     public static final int FEED_ORDER_COUNTER = 0;
     public static final int FEED_ORDER_ALPHABETICAL = 1;
@@ -231,6 +233,55 @@ public class UserPreferences {
 
     public static boolean showNextChapterOnCompactNotification() {
         return showButtonOnCompactNotification(NOTIFICATION_BUTTON_SKIP);
+    }
+
+    public static List<Integer> getFullNotificationButtons() {
+        String[] buttons = TextUtils.split(
+            prefs.getString(PREF_FULL_NOTIFICATION_BUTTONS,
+                NOTIFICATION_BUTTON_REWIND + ","
+                    + NOTIFICATION_BUTTON_FAST_FORWARD + ","
+                    + NOTIFICATION_BUTTON_SKIP + ","
+                    + NOTIFICATION_BUTTON_NEXT_CHAPTER + ","
+                    + NOTIFICATION_BUTTON_PLAYBACK_SPEED),
+            ",");
+
+        List<Integer> notificationButtons = new ArrayList<>();
+        for (String button : buttons) {
+            notificationButtons.add(Integer.parseInt(button));
+        }
+        return notificationButtons;
+    }
+
+    /**
+     * Helper function to return whether the specified button should be shown on full
+     * notifications.
+     *
+     * @param buttonId Either NOTIFICATION_BUTTON_REWIND, NOTIFICATION_BUTTON_FAST_FORWARD,
+     *                 NOTIFICATION_BUTTON_SKIP or NOTIFICATION_BUTTON_PLAYBACK_SPEED.
+     * @return {@code true} if button should be shown, {@code false}  otherwise
+     */
+    private static boolean showButtonOnFullNotification(int buttonId) {
+        return getFullNotificationButtons().contains(buttonId);
+    }
+
+    public static boolean showRewindOnFullNotification() {
+        return showButtonOnFullNotification(NOTIFICATION_BUTTON_REWIND);
+    }
+
+    public static boolean showFastForwardOnFullNotification() {
+        return showButtonOnFullNotification(NOTIFICATION_BUTTON_FAST_FORWARD);
+    }
+
+    public static boolean showSkipOnFullNotification() {
+        return showButtonOnFullNotification(NOTIFICATION_BUTTON_SKIP);
+    }
+
+    public static boolean showNextChapterOnFullNotification() {
+        return showButtonOnFullNotification(NOTIFICATION_BUTTON_SKIP);
+    }
+
+    public static boolean showPlaybackSpeedOnFullNotification() {
+        return showButtonOnFullNotification(NOTIFICATION_BUTTON_PLAYBACK_SPEED);
     }
 
     public static int getFeedOrder() {
@@ -688,6 +739,13 @@ public class UserPreferences {
         String str = TextUtils.join(",", items);
         prefs.edit()
              .putString(PREF_COMPACT_NOTIFICATION_BUTTONS, str)
+             .apply();
+    }
+
+    public static void setFullNotificationButtons(List<Integer> items) {
+        String str = TextUtils.join(",", items);
+        prefs.edit()
+             .putString(PREF_FULL_NOTIFICATION_BUTTONS, str)
              .apply();
     }
 

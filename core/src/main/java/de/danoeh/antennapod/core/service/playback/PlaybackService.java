@@ -1227,7 +1227,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         sessionState.setActions(capabilities);
 
-        if (UserPreferences.showRewindOnCompactNotification()) {
+        if (UserPreferences.showRewindOnFullNotification()) {
             // On Android Auto, custom actions are added in the following order around the play button, if no default
             // actions are present: Near left, near right, far left, far right, additional actions panel
             PlaybackStateCompat.CustomAction.Builder rewindBuilder = new PlaybackStateCompat.CustomAction.Builder(
@@ -1239,7 +1239,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             sessionState.addCustomAction(rewindBuilder.build());
         }
 
-        if (UserPreferences.showFastForwardOnCompactNotification()) {
+        if (UserPreferences.showFastForwardOnFullNotification()) {
             PlaybackStateCompat.CustomAction.Builder fastForwardBuilder = new PlaybackStateCompat.CustomAction.Builder(
                 CUSTOM_ACTION_FAST_FORWARD,
                 getString(R.string.fast_forward_label),
@@ -1249,17 +1249,19 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             sessionState.addCustomAction(fastForwardBuilder.build());
         }
 
-        sessionState.addCustomAction(
-                new PlaybackStateCompat.CustomAction.Builder(
-                        CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED,
-                        getString(R.string.playback_speed),
-                        R.drawable.ic_notification_playback_speed
-                ).build()
-        );
-
-        if (UserPreferences.showSkipOnCompactNotification()) {
+        if (UserPreferences.showPlaybackSpeedOnFullNotification()) {
             sessionState.addCustomAction(
                 new PlaybackStateCompat.CustomAction.Builder(
+                    CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED,
+                    getString(R.string.playback_speed),
+                    R.drawable.ic_notification_playback_speed
+                ).build()
+            );
+        }
+
+        if (UserPreferences.showSkipOnFullNotification()) {
+            sessionState.addCustomAction(
+                    new PlaybackStateCompat.CustomAction.Builder(
                     CUSTOM_ACTION_SKIP_TO_NEXT,
                     getString(R.string.skip_episode_label),
                     R.drawable.ic_notification_skip
@@ -1267,7 +1269,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             );
         }
 
-        if (UserPreferences.showNextChapterOnCompactNotification()) {
+        if (UserPreferences.showNextChapterOnFullNotification()) {
             if (getPlayable() != null && getPlayable().getChapters() != null) {
                 sessionState.addCustomAction(
                         new PlaybackStateCompat.CustomAction.Builder(

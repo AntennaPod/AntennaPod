@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment.preferences;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.ListView;
@@ -66,7 +67,12 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
 
         findPreference(UserPreferences.PREF_COMPACT_NOTIFICATION_BUTTONS)
                 .setOnPreferenceClickListener(preference -> {
-                    showNotificationButtonsDialog();
+                    showCompatNotificationButtonsDialog();
+                    return true;
+                });
+        findPreference(UserPreferences.PREF_FULL_NOTIFICATION_BUTTONS)
+                .setOnPreferenceClickListener(preference -> {
+                    showFullNotificationButtonsDialog();
                     return true;
                 });
         findPreference(UserPreferences.PREF_FILTER_FEED)
@@ -91,12 +97,46 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
         }
     }
 
-    private void showNotificationButtonsDialog() {
+    private void showCompatNotificationButtonsDialog() {
         final Context context = getActivity();
+
         final List<Integer> preferredButtons = UserPreferences.getCompactNotificationButtons();
         final String[] allButtonNames = context.getResources().getStringArray(
                 R.array.compact_notification_buttons_options);
+        final int maxItems = 2;
+        final DialogInterface.OnClickListener completeListener = (dialog, which) ->
+                UserPreferences.setCompactNotificationButtons(preferredButtons);
+        final String title = context.getResources().getString(
+                R.string.pref_compact_notification_buttons_dialog_title);
+
+        showNotificationButtonsDialog(preferredButtons, allButtonNames, title, maxItems, completeListener);
+    }
+
+    private void showFullNotificationButtonsDialog() {
+        final Context context = getActivity();
+
+        final List<Integer> preferredButtons = UserPreferences.getFullNotificationButtons();
+        final String[] allButtonNames = context.getResources().getStringArray(
+                R.array.full_notification_buttons_options);
+        final int maxItems = Integer.MAX_VALUE;
+        final DialogInterface.OnClickListener completeListener = (dialog, which) ->
+                UserPreferences.setFullNotificationButtons(preferredButtons);
+        final String title = context.getResources().getString(
+                R.string.pref_full_notification_buttons_title);
+
+        showNotificationButtonsDialog(preferredButtons, allButtonNames, title, maxItems, completeListener);
+    }
+
+    private void showNotificationButtonsDialog(
+            List<Integer> preferredButtons,
+            String[] allButtonNames,
+            String title,
+            int maxItems,
+            DialogInterface.OnClickListener completeListener
+    ) {
         boolean[] checked = new boolean[allButtonNames.length]; // booleans default to false in java
+
+        final Context context = getActivity();
 
         for(int i=0; i < checked.length; i++) {
             if(preferredButtons.contains(i)) {
@@ -105,13 +145,12 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
         }
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
-        builder.setTitle(String.format(context.getResources().getString(
-                R.string.pref_compact_notification_buttons_dialog_title), 2));
+        builder.setTitle(String.format(title, maxItems));
         builder.setMultiChoiceItems(allButtonNames, checked, (dialog, which, isChecked) -> {
             checked[which] = isChecked;
 
             if (isChecked) {
-                if (preferredButtons.size() < 2) {
+                if (preferredButtons.size() < maxItems) {
                     preferredButtons.add(which);
                 } else {
                     // Only allow a maximum of two selections. This is because the notification
@@ -123,15 +162,14 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                     Snackbar.make(
                             selectionView,
                             String.format(context.getResources().getString(
-                                    R.string.pref_compact_notification_buttons_dialog_error), 2),
+                                    R.string.pref_compact_notification_buttons_dialog_error), maxItems),
                             Snackbar.LENGTH_SHORT).show();
                 }
             } else {
                 preferredButtons.remove((Integer) which);
             }
         });
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) ->
-                UserPreferences.setCompactNotificationButtons(preferredButtons));
+        builder.setPositiveButton(R.string.confirm_label, completeListener);
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
     }

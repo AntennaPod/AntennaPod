@@ -73,6 +73,10 @@
                 android:key="prefCompactNotificationButtons"
                 android:summary="@string/pref_compact_notification_buttons_sum"
                 android:title="@string/pref_compact_notification_buttons_title"/>
+        <Preference
+                android:key="prefFullNotificationButtons"
+                android:summary="@string/pref_full_notification_buttons_sum"
+                android:title="@string/pref_full_notification_buttons_title"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/behavior">
         <de.danoeh.antennapod.preferences.MaterialListPreference
