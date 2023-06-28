@@ -19,7 +19,6 @@ import android.webkit.WebViewClient;
 
 import androidx.core.content.ContextCompat;
 import androidx.core.util.Consumer;
-import androidx.core.view.ViewCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -133,7 +132,7 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             cm.setPrimaryClip(clipData);
             if (Build.VERSION.SDK_INT < 32) {
                 Snackbar s = Snackbar.make(this, R.string.copied_to_clipboard, Snackbar.LENGTH_LONG);
-                ViewCompat.setElevation(s.getView(), 100);
+                s.getView().setElevation(100);
                 s.show();
             }
         } else if (itemId == R.id.go_to_position_item) {
