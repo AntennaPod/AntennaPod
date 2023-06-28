@@ -3,6 +3,8 @@ package de.test.antennapod.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.os.Build;
+
 import androidx.annotation.StringRes;
 import androidx.preference.PreferenceManager;
 import androidx.test.filters.LargeTest;
@@ -42,6 +44,7 @@ import static de.test.antennapod.EspressoTestUtils.waitForView;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
 
 @LargeTest
 public class PreferencesTest {
@@ -80,6 +83,9 @@ public class PreferencesTest {
 
     @Test
     public void testSetLockscreenButtons() {
+        assumeTrue("Compact notification setting is only relevant on older Android versions",
+                Build.VERSION.SDK_INT < 30);
+
         clickPreference(R.string.user_interface_label);
         String[] buttons = res.getStringArray(R.array.compact_notification_buttons_options);
         clickPreference(R.string.pref_compact_notification_buttons_title);
@@ -113,6 +119,29 @@ public class PreferencesTest {
                 .until(() -> !UserPreferences.showSkipOnCompactNotification());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> !UserPreferences.showNextChapterOnCompactNotification());
+    }
+
+    @Test
+    public void testSetNotificationButtons() {
+        clickPreference(R.string.user_interface_label);
+        String[] buttons = res.getStringArray(R.array.full_notification_buttons_options);
+        clickPreference(R.string.pref_full_notification_buttons_title);
+        // First uncheck checkboxes
+        onView(withText(buttons[0])).perform(click());
+        onView(withText(buttons[1])).perform(click());
+
+        onView(withText(R.string.confirm_label)).perform(click());
+
+        Awaitility.await().atMost(1000, MILLISECONDS)
+                .until(() -> !UserPreferences.showRewindOnFullNotification());
+        Awaitility.await().atMost(1000, MILLISECONDS)
+                .until(() -> !UserPreferences.showFastForwardOnFullNotification());
+        Awaitility.await().atMost(1000, MILLISECONDS)
+                .until(() -> UserPreferences.showSkipOnFullNotification());
+        Awaitility.await().atMost(1000, MILLISECONDS)
+                .until(() -> UserPreferences.showNextChapterOnFullNotification());
+        Awaitility.await().atMost(1000, MILLISECONDS)
+                .until(() -> UserPreferences.showPlaybackSpeedOnFullNotification());
     }
 
     @Test
