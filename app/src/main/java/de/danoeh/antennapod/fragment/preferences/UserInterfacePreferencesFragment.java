@@ -65,11 +65,15 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                     return true;
                 });
 
-        findPreference(UserPreferences.PREF_COMPACT_NOTIFICATION_BUTTONS)
+        if (Build.VERSION.SDK_INT >= 30) {
+            findPreference(UserPreferences.PREF_COMPACT_NOTIFICATION_BUTTONS).setVisible(false);
+        } else {
+            findPreference(UserPreferences.PREF_COMPACT_NOTIFICATION_BUTTONS)
                 .setOnPreferenceClickListener(preference -> {
                     showCompatNotificationButtonsDialog();
                     return true;
                 });
+        }
         findPreference(UserPreferences.PREF_FULL_NOTIFICATION_BUTTONS)
                 .setOnPreferenceClickListener(preference -> {
                     showFullNotificationButtonsDialog();
