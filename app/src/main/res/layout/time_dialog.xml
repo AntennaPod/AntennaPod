@@ -153,6 +153,5 @@
                 android:text="@string/shake_to_reset_label" />
 
         </LinearLayout>
-
     </LinearLayout>
 </ScrollView>
