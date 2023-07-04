@@ -53,9 +53,11 @@ public class FeedUpdateWorker extends Worker {
         ClientConfigurator.initialize(getApplicationContext());
         newEpisodesNotification.loadCountersBeforeRefresh();
 
-        if (!NetworkUtils.networkAvailable() || !NetworkUtils.isFeedRefreshAllowed()) {
-            Log.d(TAG, "Blocking automatic update: no wifi available / no mobile updates allowed");
-            return Result.retry();
+        if (!getInputData().getBoolean(FeedUpdateManager.EXTRA_EVEN_ON_MOBILE, false)) {
+            if (!NetworkUtils.networkAvailable() || !NetworkUtils.isFeedRefreshAllowed()) {
+                Log.d(TAG, "Blocking automatic update: no wifi available / no mobile updates allowed");
+                return Result.retry();
+            }
         }
 
         List<Feed> toUpdate;
