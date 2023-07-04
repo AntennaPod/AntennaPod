@@ -11,8 +11,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.actionbutton.DownloadActionButton;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.DownloadErrorLabel;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -109,7 +109,7 @@ public class DownloadLogAdapter extends BaseAdapter {
                             Log.e(TAG, "Could not find feed for feed id: " + status.getFeedfileId());
                             return;
                         }
-                        DBTasks.forceRefreshFeed(context, feed, true);
+                        FeedUpdateManager.runOnce(context, feed);
                     });
                 } else if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                     holder.secondaryActionButton.setOnClickListener(v -> {
