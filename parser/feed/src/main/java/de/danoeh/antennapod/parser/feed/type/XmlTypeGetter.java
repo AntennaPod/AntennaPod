@@ -17,7 +17,7 @@ import java.io.Reader;
 
 import de.danoeh.antennapod.model.feed.Feed;
 
-public class XMLTypeGetter implements TypeGetter {
+public class XmlTypeGetter implements TypeGetter {
     private static final String TAG = "TypeGetter";
 
     private static final String ATOM_ROOT = "feed";

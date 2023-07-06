@@ -1,8 +1,10 @@
 package de.danoeh.antennapod.net.discovery;
 
 import androidx.annotation.Nullable;
+
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetPodcast;
 import de.mfietz.fyydlin.SearchHit;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +34,10 @@ public class PodcastSearchResult {
     public final String author;
 
 
-    public PodcastSearchResult(String title, @Nullable String imageUrl, @Nullable String feedUrl, @Nullable String author) {
+    public PodcastSearchResult(String title,
+                               @Nullable String imageUrl,
+                               @Nullable String feedUrl,
+                               @Nullable String author) {
         this.title = title;
         this.imageUrl = imageUrl;
         this.feedUrl = feedUrl;
@@ -66,11 +71,11 @@ public class PodcastSearchResult {
     public static PodcastSearchResult fromItunesToplist(JSONObject json) throws JSONException {
         String title = json.getJSONObject("title").getString("label");
         String imageUrl = null;
-        JSONArray images =  json.getJSONArray("im:image");
-        for(int i=0; imageUrl == null && i < images.length(); i++) {
+        JSONArray images = json.getJSONArray("im:image");
+        for (int i = 0; imageUrl == null && i < images.length(); i++) {
             JSONObject image = images.getJSONObject(i);
             String height = image.getJSONObject("attributes").getString("height");
-            if(Integer.parseInt(height) >= 100) {
+            if (Integer.parseInt(height) >= 100) {
                 imageUrl = image.getString("label");
             }
         }
@@ -88,16 +93,16 @@ public class PodcastSearchResult {
 
     public static PodcastSearchResult fromFyyd(SearchHit searchHit) {
         return new PodcastSearchResult(searchHit.getTitle(),
-                                       searchHit.getThumbImageURL(),
-                                       searchHit.getXmlUrl(),
-                                       searchHit.getAuthor());
+                searchHit.getThumbImageURL(),
+                searchHit.getXmlUrl(),
+                searchHit.getAuthor());
     }
 
     public static PodcastSearchResult fromGpodder(GpodnetPodcast searchHit) {
         return new PodcastSearchResult(searchHit.getTitle(),
-                                       searchHit.getLogoUrl(),
-                                       searchHit.getUrl(),
-                                       searchHit.getAuthor());
+                searchHit.getLogoUrl(),
+                searchHit.getUrl(),
+                searchHit.getAuthor());
     }
 
     public static PodcastSearchResult fromPodcastIndex(JSONObject json) {

@@ -22,7 +22,7 @@ public class AudiothekSearchResultMapper {
                 .getJSONObject("search")
                 .getJSONObject("programSets");
 
-JSONObject embeddedEditorialCollectionJsonObject = searchResponse
+        JSONObject embeddedEditorialCollectionJsonObject = searchResponse
                 .getJSONObject("data")
                 .getJSONObject("search")
                 .getJSONObject("editorialCollections");

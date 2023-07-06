@@ -99,7 +99,6 @@ public class JsonFeedParser implements FeedParser {
 
     @NonNull
     private static Date getPubDate(String publicationStartDateAndTime) {
-//        "2023-06-14T00:01:00+02:00"
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
         try {
             assert publicationStartDateAndTime != null;
