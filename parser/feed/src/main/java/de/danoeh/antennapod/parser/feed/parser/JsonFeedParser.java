@@ -5,6 +5,8 @@ import androidx.annotation.NonNull;
 
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,8 +15,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -99,13 +99,8 @@ public class JsonFeedParser implements FeedParser {
 
     @NonNull
     private static Date getPubDate(String publicationStartDateAndTime) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-        try {
-            assert publicationStartDateAndTime != null;
-            return format.parse(publicationStartDateAndTime);
-        } catch (ParseException e) {
-            return new Date();
-        }
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZZ");
+        return formatter.parseDateTime(publicationStartDateAndTime).toDate();
     }
 
     @NonNull

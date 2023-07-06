@@ -45,6 +45,7 @@ project.ext {
     rxJavaVersion = "2.2.2"
     iconifyVersion = "2.2.2"
     exoPlayerVersion = "2.14.2"
+    jodaTimeVersion = "2.10.12"
 
     // Google Play build
     wearableSupportVersion = "2.6.0"
