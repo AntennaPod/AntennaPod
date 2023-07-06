@@ -3,6 +3,7 @@ package de.danoeh.antennapod.parser.feed.type;
 import android.util.Log;
 
 import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
+
 import org.apache.commons.io.input.XmlStreamReader;
 import org.jsoup.Jsoup;
 import org.xmlpull.v1.XmlPullParser;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.io.Reader;
 
 import de.danoeh.antennapod.model.feed.Feed;
+
 public class XMLTypeGetter implements TypeGetter {
     private static final String TAG = "TypeGetter";
 

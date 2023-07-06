@@ -1,14 +1,9 @@
 package de.danoeh.antennapod.parser.feed.parser;
 
-import static de.danoeh.antennapod.parser.feed.util.MimeTypeUtils.getMimeType;
-
-import android.content.Context;
-import android.webkit.MimeTypeMap;
 
 import androidx.annotation.NonNull;
 
 import org.apache.commons.io.Charsets;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,10 +25,8 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
-import de.danoeh.antennapod.parser.feed.namespace.Content;
 import de.danoeh.antennapod.parser.feed.type.TypeResolver;
 import de.danoeh.antennapod.parser.feed.util.MimeTypeNonStaticWrapper;
-import de.danoeh.antennapod.parser.feed.util.MimeTypeUtils;
 
 public class JsonFeedParser implements FeedParser {
     public static final String AUDIOTHEK_BASE_URI = "https://api.ardaudiothek.de/";
@@ -43,6 +36,7 @@ public class JsonFeedParser implements FeedParser {
 
         this.mimeTypeUtils = mimeTypeUtils;
     }
+
     @Override
     public FeedHandlerResult createFeedHandlerResult(Feed feed, TypeResolver.Type type) throws JSONException {
         Map<String, String> alternateFeedUrls = new HashMap<>();
