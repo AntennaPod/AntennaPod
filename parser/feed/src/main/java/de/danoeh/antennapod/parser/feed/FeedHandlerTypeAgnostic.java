@@ -8,7 +8,7 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.parser.feed.parser.JsonFeedParser;
+import de.danoeh.antennapod.parser.feed.parser.JsonFeedParserBuilder;
 import de.danoeh.antennapod.parser.feed.parser.XmlFeedParser;
 import de.danoeh.antennapod.parser.feed.type.TypeGetterRegistry;
 import de.danoeh.antennapod.parser.feed.type.TypeResolver;
@@ -27,7 +27,7 @@ public class FeedHandlerTypeAgnostic {
         }
 
         if (type.equals(TypeResolver.Type.JSON)) {
-            return (new JsonFeedParser()).createFeedHandlerResult(feed, type);
+            return (new JsonFeedParserBuilder().createJsonFeedParser()).createFeedHandlerResult(feed, type);
         }
 
         throw new UnsupportedFeedtypeException(String.valueOf(TypeResolver.Type.INVALID));

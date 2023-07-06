@@ -2,8 +2,6 @@ package de.danoeh.antennapod.net.discovery.audiothek;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,8 +68,7 @@ JSONObject embeddedEditorialCollectionJsonObject = searchResponse
     protected static PodcastSearchResult getPodcastSearchResult(JSONObject json) throws JSONException {
         String title = json.optString("title", "");
         JSONObject links = json.getJSONObject("_links");
-        String imageUrl = json.getJSONObject("image").optString("url", null);
-        imageUrl = imageUrl.replace("{ratio}", "1x1");
+        String imageUrl = json.getJSONObject("image").optString("url1X1", null);
         imageUrl = imageUrl.replace("{width}", "64");
         String feedUrlRaw = links.getJSONObject("self").optString("href", null);
         String feedUrl = AUDIOTHEK_BASE_URI + feedUrlRaw.replace("{?order,offset,limit}", "");

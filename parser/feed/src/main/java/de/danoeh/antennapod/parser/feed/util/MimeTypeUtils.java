@@ -63,7 +63,7 @@ public class MimeTypeUtils {
      * Should be used if mime-type of enclosure tag is not supported. This
      * method will return the mime-type of the file extension.
      */
-    private static String getMimeTypeFromUrl(String url) {
+    static String getMimeTypeFromUrl(String url) {
         if (url == null) {
             return null;
         }

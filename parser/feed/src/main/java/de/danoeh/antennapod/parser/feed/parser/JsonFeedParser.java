@@ -1,5 +1,8 @@
 package de.danoeh.antennapod.parser.feed.parser;
 
+import static de.danoeh.antennapod.parser.feed.util.MimeTypeUtils.getMimeType;
+
+import android.content.Context;
 import android.webkit.MimeTypeMap;
 
 import androidx.annotation.NonNull;
@@ -15,8 +18,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,11 +30,19 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
+import de.danoeh.antennapod.parser.feed.namespace.Content;
 import de.danoeh.antennapod.parser.feed.type.TypeResolver;
+import de.danoeh.antennapod.parser.feed.util.MimeTypeNonStaticWrapper;
+import de.danoeh.antennapod.parser.feed.util.MimeTypeUtils;
 
 public class JsonFeedParser implements FeedParser {
     public static final String AUDIOTHEK_BASE_URI = "https://api.ardaudiothek.de/";
+    private MimeTypeNonStaticWrapper mimeTypeUtils;
 
+    public JsonFeedParser(MimeTypeNonStaticWrapper mimeTypeUtils) {
+
+        this.mimeTypeUtils = mimeTypeUtils;
+    }
     @Override
     public FeedHandlerResult createFeedHandlerResult(Feed feed, TypeResolver.Type type) throws JSONException {
         Map<String, String> alternateFeedUrls = new HashMap<>();
@@ -57,7 +71,8 @@ public class JsonFeedParser implements FeedParser {
         Feed feed = new Feed(url, Calendar.getInstance().getTime().toString(), title);
 
         JSONObject items = jsonObject.getJSONObject("items");
-        feed.setItems(extractFeedItems(items.getJSONArray("nodes"), feed));
+        ArrayList<FeedItem> episodes = extractFeedItems(items.getJSONArray("nodes"), feed);
+        feed.setItems(episodes);
         feed.setImageUrl(getProgramSetImageUrl(jsonObject));
         feed.setDescription(jsonObject.getString("synopsis"));
         feed.setAuthor(jsonObject.getJSONObject("publicationService").getString("organizationName"));
@@ -81,10 +96,23 @@ public class JsonFeedParser implements FeedParser {
             feedItem.setMedia(getFeedMedia(programSetItem, feedItem));
             feedItem.setFeed(feed);
             feedItem.setItemIdentifier(createUuid(programSetItem));
+            feedItem.setPubDate(getPubDate(programSetItem.getString("publicationStartDateAndTime")));
             feedItems.add(feedItem);
         }
 
         return feedItems;
+    }
+
+    @NonNull
+    private static Date getPubDate(String publicationStartDateAndTime) {
+//        "2023-06-14T00:01:00+02:00"
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+        try {
+            assert publicationStartDateAndTime != null;
+            return format.parse(publicationStartDateAndTime);
+        } catch (ParseException e) {
+            return new Date();
+        }
     }
 
     @NonNull
@@ -97,11 +125,7 @@ public class JsonFeedParser implements FeedParser {
         JSONArray audios = programSetItem.getJSONArray("audios");
         JSONObject audioSource = (JSONObject) audios.get(0);
         String mediaUrl = audioSource.getString("url");
-        return new FeedMedia(feedItem, mediaUrl, mediaUrl.length(), getMimeType(mediaUrl));
+        return new FeedMedia(feedItem, mediaUrl, mediaUrl.length(), mimeTypeUtils.getMimeTypeFromUrl(mediaUrl));
     }
 
-    private String getMimeType(String mediaUrl) {
-        String extension = FilenameUtils.getExtension(mediaUrl);
-        return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-    }
 }

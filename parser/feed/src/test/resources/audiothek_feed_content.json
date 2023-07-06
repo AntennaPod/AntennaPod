@@ -1,0 +1,608 @@
+{
+  "id": "12701131",
+  "title": "Das war morgen",
+  "numberOfElements": 4,
+  "synopsis": "Zeitreisen, Künstliche Intelligenz, Klimakrise, Atommüll, das Leben nach dem Tod: Wie hat man sich vor fünfzig Jahren die Zukunft vorgestellt? \"Das war Morgen\" präsentiert Science-Fiction-Hörspiele aus den 1960er bis 1990er Jahren der SDR-Reihen ‚Science-",
+  "_links": {
+    "self": {
+      "href": ".\/programsets\/12701131{?order,offset,limit}",
+      "name": "programSet",
+      "templated": true
+    }
+  },
+  "sharingUrl": "https:\/\/www.ardaudiothek.de\/sendung\/das-war-morgen\/12701131\/",
+  "image": {
+    "url": "https:\/\/api.ardmediathek.de\/image-service\/images\/urn:ard:image:7180d61cfbc579f8?w={width}&ch=99bdf1f0bb4a71df",
+    "url1X1": "https:\/\/api.ardmediathek.de\/image-service\/images\/urn:ard:image:d949e2c7d6ff3b11?w={width}&ch=f8e6e3500cd679cf",
+    "attribution": "SWR",
+    "description": "Grafik des Science-Fiction-Podcasts &#034;Das war morgen&#034; mit Isabella Hermann und Andreas Brandhorst"
+  },
+  "tracking": {
+    "title": "ARD Audiothek\/Sendung\/Das war morgen",
+    "chapter1": "Sendung",
+    "page": {
+      "page_title": "Das war morgen",
+      "page_id": "urn:ard:show:0996975bcd43e086",
+      "page_chapter1": "Show",
+      "page_institution": "SWR",
+      "page_institution_id": "urn:ard:institution:a3004ff924ece1a2",
+      "page_publisher": "SWR",
+      "page_publisher_id": "urn:ard:publisher:6fbb364df2d0cdaf",
+      "page_show": "Das war morgen",
+      "page_show_id": "urn:ard:show:0996975bcd43e086"
+    }
+  },
+  "items": {
+    "nodes": [
+      {
+        "duration": 3733,
+        "id": "94514682",
+        "publicationStartDateAndTime": "2023-06-14T00:01:00+02:00",
+        "synopsis": "Was wäre, wenn sich Träume zur Steigerung der Arbeitsleistung nutzbarmachen ließen? ‚Traumabtaster‘ machen dies durch biochemische Eingabe möglich, in dem sie produktive Träume der Tiefschlafphase aufzeichnen.\nDer Werbetexter Paolo Klever kann nur noch mi",
+        "title": "Das Haus am Meer (1976)",
+        "tracking": {
+          "title": "ARD Audiothek\/{page.tracking.chapter1}\/Das war morgen\/Das Haus am Meer (1976)\/94514682\/20230614_0006",
+          "chapter1": "{page.tracking.chapter1}",
+          "chapter2": "Das Haus am Meer (1976)",
+          "teaser": {
+            "teaser_title": "Das Haus am Meer (1976)",
+            "teaser_id": "urn:ard:publication:d7a8b089d8a8f90e",
+            "teaser_content_type": "Item",
+            "teaser_institution": "SWR",
+            "teaser_institution_id": "urn:ard:institution:a3004ff924ece1a2"
+          },
+          "avContent": {
+            "av_content": "Das Haus am Meer (1976)",
+            "av_content_id": "urn:ard:publication:d7a8b089d8a8f90e",
+            "av_content_duration": 3733000,
+            "av_content_type": "Audio",
+            "av_broadcasting_type": "OnDemand",
+            "av_institution": "SWR",
+            "av_institution_id": "urn:ard:institution:a3004ff924ece1a2",
+            "av_publisher": "SWR",
+            "av_publisher_id": "urn:ard:publisher:6fbb364df2d0cdaf",
+            "av_show": "Das war morgen",
+            "av_show_id": "urn:ard:show:0996975bcd43e086"
+          },
+          "play": {
+            "title": "ARD Audiothek\/{page.tracking.chapter1}\/Das war morgen\/Das Haus am Meer (1976)\/94514682\/20230614_0006",
+            "chapter1": "{page.tracking.chapter1}",
+            "chapter2": "Das war morgen",
+            "mediaType": "audio",
+            "mediaDistributionType": "1",
+            "lra": "SWR",
+            "channel": "SWR",
+            "producer": "SWR",
+            "show": "Das war morgen",
+            "source": "SWR",
+            "clipTitle": "Das Haus am Meer (1976)",
+            "clipLength": "3733",
+            "contentId": "94514682",
+            "contentType": "2",
+            "publicationId": "urn:ard:publication:d7a8b089d8a8f90e",
+            "publicationDate": "20230614"
+          }
+        },
+        "_links": {
+          "self": {
+            "href": ".\/items\/94514682",
+            "name": "item"
+          }
+        },
+        "image": {
+          "url": "https:\/\/api.ardmediathek.de\/image-service\/images\/urn:ard:image:8ffef87efff877ea?w={width}&ch=dc9ea6899e927982",
+          "url1X1": "https:\/\/api.ardmediathek.de\/image-service\/images\/urn:ard:image:442fb94347a4a87f?w={width}&ch=a70443e0b3b24393",
+          "attribution": "SWR",
+          "description": "Illustration zum Science-Fiction-Hörspiel &#034;Das Haus am Meer&#034; in der Podcast-Reihe &#034;Das war morgen&#034;"
+        },
+        "audios": [
+          {
+            "url": "https:\/\/avdlswr-a.akamaihd.net\/swr\/swr2\/hoerspiel\/das-war-morgen\/1870522.l.mp3",
+            "downloadUrl": "https:\/\/avdlswr-a.akamaihd.net\/swr\/swr2\/hoerspiel\/das-war-morgen\/1870522.l.mp3"
+          },
+          {
+            "url": "https:\/\/pdodswr-a.akamaihd.net\/swr\/swr2\/hoerspiel\/das-war-morgen\/1870522.l.mp3",
+            "downloadUrl": null
+          }
+        ],
+        "sharingUrl": "https:\/\/www.ardaudiothek.de\/episode\/das-war-morgen\/das-haus-am-meer-1976\/swr\/94514682\/",
+        "programSet": {
+          "id": "12701131",
+          "numberOfElements": 4,
+          "synopsis": "Zeitreisen, Künstliche Intelligenz, Klimakrise, Atommüll, das Leben nach dem Tod: Wie hat man sich vor fünfzig Jahren die Zukunft vorgestellt? \"Das war Morgen\" präsentiert Science-Fiction-Hörspiele aus den 1960er bis 1990er Jahren der SDR-Reihen ‚Science-",
+          "title": "Das war morgen",
+          "_links": {
+            "self": {
+              "href": ".\/programsets\/12701131{?order,offset,limit}",
+              "name": "programSet",
+              "templated": true
+            }
+          },
+          "sharingUrl": "https:\/\/www.ardaudiothek.de\/sendung\/das-war-morgen\/12701131\/",
+          "image": {
+            "url": "https:\/\/api.ardmediathek.de\/image-service\/images\/urn:ard:image:7180d61cfbc579f8?w={width}&ch=99bdf1f0bb4a71df",
+            "url1X1": "https:\/\/api.ardmediathek.de\/image-service\/images\/urn:ard:image:d949e2c7d6ff3b11?w={width}&ch=f8e6e3500cd679cf",
+            "attribution": "SWR",
+            "description": "Grafik des Science-Fiction-Podcasts &#034;Das war morgen&#034; mit Isabella Hermann und Andreas Brandhorst"
+          },
+          "publicationService": {
+            "id": "71457300",
+            "title": "SWR",
+            "_links": {
+              "self": {
+                "href": ".\/publicationservices\/71457300",
+                "name": "publicationService"
+              },
+              "mt:onlinePortal": {
+                "href": "https:\/\/www.swr.de\/"
+              }
+            },
+            "brandingColor": "#ffffff",
+            "genre": "Info",
+            "numberOfElements": 32,
+            "organizationName": "SWR",
+            "homepageUrl": "https:\/\/www.swr.de\/"
+          },
+          "editorialCategories": {
+            "id": "42914712",
+            "title": "Hörspiel",
+            "_links": {
+              "self": {
+                "href": ".\/editorialcategories\/42914712{?offset,limit}",
+                "name": "editorialCategory",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https:\/\/www.daserste.de\/rubrik-hoerspiel_lesung-100~_type-at_ratio-16x9_width-{width}_3209ce.jpg",
+                "name": "Kopfhörer",
+                "templated": true
+              }
+            },
+            "image": {
+              "url": "https:\/\/www.daserste.de\/rubrik-hoerspiel_lesung-100~_type-at_ratio-16x9_width-{width}_3209ce.jpg"
+            }
+          }
+        }
+      },
+      {
+        "duration": 3975,
+        "id": "94496326",
+        "publicationStartDateAndTime": "2023-06-07T00:02:00+02:00",
+        "synopsis": "Was würde passieren, wenn die Menschheit nicht mehr schlafen müsste? In Großbritannien haben fast alle Menschen die Möglichkeit gewählt, mit der Injektion der Droge \"Viviwach\" dem Schlaf zu entkommen. Acht Stunden mehr am Tag, um zu leben.\nDer Wissenschaf",
+        "title": "Welt ohne Schlaf (1972)",
+        "tracking": {
+          "title": "ARD Audiothek\/{page.tracking.chapter1}\/Das war morgen\/Welt ohne Schlaf (1972)\/94496326\/20230607_0006",
+          "chapter1": "{page.tracking.chapter1}",
+          "chapter2": "Welt ohne Schlaf (1972)",
+          "teaser": {
+            "teaser_title": "Welt ohne Schlaf (1972)",
+            "teaser_id": "urn:ard:publication:34f427965a7dba60",
+            "teaser_content_type": "Item",
+            "teaser_institution": "SWR",
+            "teaser_institution_id": "urn:ard:institution:a3004ff924ece1a2"
+          },
+          "avContent": {
+            "av_content": "Welt ohne Schlaf (1972)",
+            "av_content_id": "urn:ard:publication:34f427965a7dba60",
+            "av_content_duration": 3975000,
+            "av_content_type": "Audio",
+            "av_broadcasting_type": "OnDemand",
+            "av_institution": "SWR",
+            "av_institution_id": "urn:ard:institution:a3004ff924ece1a2",
+            "av_publisher": "SWR",
+            "av_publisher_id": "urn:ard:publisher:6fbb364df2d0cdaf",
+            "av_show": "Das war morgen",
+            "av_show_id": "urn:ard:show:0996975bcd43e086"
+          },
+          "play": {
+            "title": "ARD Audiothek\/{page.tracking.chapter1}\/Das war morgen\/Welt ohne Schlaf (1972)\/94496326\/20230607_0006",
+            "chapter1": "{page.tracking.chapter1}",
+            "chapter2": "Das war morgen",
+            "mediaType": "audio",
+            "mediaDistributionType": "1",
+            "lra": "SWR",
+            "channel": "SWR",
+            "producer": "SWR",
+            "show": "Das war morgen",
+            "source": "SWR",
+            "clipTitle": "Welt ohne Schlaf (1972)",
+            "clipLength": "3975",
+            "contentId": "94496326",
+            "contentType": "2",
+            "publicationId": "urn:ard:publication:34f427965a7dba60",
+            "publicationDate": "20230607"
+          }
+        },
+        "_links": {
+          "self": {
+            "href": ".\/items\/94496326",
+            "name": "item"
+          }
+        },
+        "image": {
+          "url": "https:\/\/api.ardmediathek.de\/image-service\/images\/urn:ard:image:6ca26f617d2d3484?w={width}&ch=efe0818260c5d05d",
+          "url1X1": "https:\/\/api.ardmediathek.de\/image-service\/images\/urn:ard:image:a7732e5cc571eb11?w={width}&ch=fb4ac3ed9b10f174",
+          "attribution": "SWR",
+          "description": "&#034;Das war morgen&#034; - Retro-Science-Fiction Podcast - Episode 1: &#034;Welt ohne Schlaf&#034;"
+        },
+        "audios": [
+          {
+            "url": "https:\/\/avdlswr-a.akamaihd.net\/swr\/swr2\/hoerspiel\/das-war-morgen\/1866482.l.mp3",
+            "downloadUrl": "https:\/\/avdlswr-a.akamaihd.net\/swr\/swr2\/hoerspiel\/das-war-morgen\/1866482.l.mp3"
+          },
+          {
+            "url": "https:\/\/pdodswr-a.akamaihd.net\/swr\/swr2\/hoerspiel\/das-war-morgen\/1866482.l.mp3",
+            "downloadUrl": null
+          }
+        ],
+        "sharingUrl": "https:\/\/www.ardaudiothek.de\/episode\/das-war-morgen\/welt-ohne-schlaf-1972\/swr\/94496326\/",
+        "programSet": {
+          "id": "12701131",
+          "numberOfElements": 4,
+          "synopsis": "Zeitreisen, Künstliche Intelligenz, Klimakrise, Atommüll, das Leben nach dem Tod: Wie hat man sich vor fünfzig Jahren die Zukunft vorgestellt? \"Das war Morgen\" präsentiert Science-Fiction-Hörspiele aus den 1960er bis 1990er Jahren der SDR-Reihen ‚Science-",
+          "title": "Das war morgen",
+          "_links": {
+            "self": {
+              "href": ".\/programsets\/12701131{?order,offset,limit}",
+              "name": "programSet",
+              "templated": true
+            }
+          },
+          "sharingUrl": "https:\/\/www.ardaudiothek.de\/sendung\/das-war-morgen\/12701131\/",
+          "image": {
+            "url": "https:\/\/api.ardmediathek.de\/image-service\/images\/urn:ard:image:7180d61cfbc579f8?w={width}&ch=99bdf1f0bb4a71df",
+            "url1X1": "https:\/\/api.ardmediathek.de\/image-service\/images\/urn:ard:image:d949e2c7d6ff3b11?w={width}&ch=f8e6e3500cd679cf",
+            "attribution": "SWR",
+            "description": "Grafik des Science-Fiction-Podcasts &#034;Das war morgen&#034; mit Isabella Hermann und Andreas Brandhorst"
+          },
+          "publicationService": {
+            "id": "71457300",
+            "title": "SWR",
+            "_links": {
+              "self": {
+                "href": ".\/publicationservices\/71457300",
+                "name": "publicationService"
+              },
+              "mt:onlinePortal": {
+                "href": "https:\/\/www.swr.de\/"
+              }
+            },
+            "brandingColor": "#ffffff",
+            "genre": "Info",
+            "numberOfElements": 32,
+            "organizationName": "SWR",
+            "homepageUrl": "https:\/\/www.swr.de\/"
+          },
+          "editorialCategories": {
+            "id": "42914712",
+            "title": "Hörspiel",
+            "_links": {
+              "self": {
+                "href": ".\/editorialcategories\/42914712{?offset,limit}",
+                "name": "editorialCategory",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https:\/\/www.daserste.de\/rubrik-hoerspiel_lesung-100~_type-at_ratio-16x9_width-{width}_3209ce.jpg",
+                "name": "Kopfhörer",
+                "templated": true
+              }
+            },
+            "image": {
+              "url": "https:\/\/www.daserste.de\/rubrik-hoerspiel_lesung-100~_type-at_ratio-16x9_width-{width}_3209ce.jpg"
+            }
+          }
+        }
+      },
+      {
+        "duration": 4077,
+        "id": "94496322",
+        "publicationStartDateAndTime": "2023-06-07T00:01:00+02:00",
+        "synopsis": "Nach dem Zusammenbruch der Biosphäre ist die Erde kaum noch bewohnbar. Menschen leben auf engstem Raum in Kuppelstädten, um sich vor der vergifteten Erdatmosphäre zu schützen.\nEine selbsternannte Elite möchte sich auf die Orbitalstation N.O.A.H. flüchten,",
+        "title": "N.O.A.H. Studie in Himmelblau und Schwarz (1977)",
+        "tracking": {
+          "title": "ARD Audiothek\/{page.tracking.chapter1}\/Das war morgen\/N.O.A.H. Studie in Himmelblau und Schwarz (1977)\/94496322\/20230607_0006",
+          "chapter1": "{page.tracking.chapter1}",
+          "chapter2": "N.O.A.H. Studie in Himmelblau und Schwarz (1977)",
+          "teaser": {
+            "teaser_title": "N.O.A.H. Studie in Himmelblau und Schwarz (1977)",
+            "teaser_id": "urn:ard:publication:f3e505aaa043e1d5",
+            "teaser_content_type": "Item",
+            "teaser_institution": "SWR",
+            "teaser_institution_id": "urn:ard:institution:a3004ff924ece1a2"
+          },
+          "avContent": {
+            "av_content": "N.O.A.H. Studie in Himmelblau und Schwarz (1977)",
+            "av_content_id": "urn:ard:publication:f3e505aaa043e1d5",
+            "av_content_duration": 4077000,
+            "av_content_type": "Audio",
+            "av_broadcasting_type": "OnDemand",
+            "av_institution": "SWR",
+            "av_institution_id": "urn:ard:institution:a3004ff924ece1a2",
+            "av_publisher": "SWR",
+            "av_publisher_id": "urn:ard:publisher:6fbb364df2d0cdaf",
+            "av_show": "Das war morgen",
+            "av_show_id": "urn:ard:show:0996975bcd43e086"
+          },
+          "play": {
+            "title": "ARD Audiothek\/{page.tracking.chapter1}\/Das war morgen\/N.O.A.H. Studie in Himmelblau und Schwarz (1977)\/94496322\/20230607_0006",
+            "chapter1": "{page.tracking.chapter1}",
+            "chapter2": "Das war morgen",
+            "mediaType": "audio",
+            "mediaDistributionType": "1",
+            "lra": "SWR",
+            "channel": "SWR",
+            "producer": "SWR",
+            "show": "Das war morgen",
+            "source": "SWR",
+            "clipTitle": "N.O.A.H. Studie in Himmelblau und Schwarz (1977)",
+            "clipLength": "4077",
+            "contentId": "94496322",
+            "contentType": "2",
+            "publicationId": "urn:ard:publication:f3e505aaa043e1d5",
+            "publicationDate": "20230607"
+          }
+        },
+        "_links": {
+          "self": {
+            "href": ".\/items\/94496322",
+            "name": "item"
+          }
+        },
+        "image": {
+          "url": "https:\/\/api.ardmediathek.de\/image-service\/images\/urn:ard:image:abb34d5d87136f31?w={width}&ch=ddd163f481f5b90c",
+          "url1X1": "https:\/\/api.ardmediathek.de\/image-service\/images\/urn:ard:image:60620c603f4fb0a4?w={width}&ch=aa8a614d6dbd7cf4",
+          "attribution": "SWR",
+          "description": "&#034;Das war morgen&#034; - Retro-Science-Fiction Podcast - Episode 1: &#034;N.O.A.H.&#034;"
+        },
+        "audios": [
+          {
+            "url": "https:\/\/avdlswr-a.akamaihd.net\/swr\/swr2\/hoerspiel\/das-war-morgen\/1866481.l.mp3",
+            "downloadUrl": "https:\/\/avdlswr-a.akamaihd.net\/swr\/swr2\/hoerspiel\/das-war-morgen\/1866481.l.mp3"
+          },
+          {
+            "url": "https:\/\/pdodswr-a.akamaihd.net\/swr\/swr2\/hoerspiel\/das-war-morgen\/1866481.l.mp3",
+            "downloadUrl": null
+          }
+        ],
+        "sharingUrl": "https:\/\/www.ardaudiothek.de\/episode\/das-war-morgen\/n-o-a-h-studie-in-himmelblau-und-schwarz-1977\/swr\/94496322\/",
+        "programSet": {
+          "id": "12701131",
+          "numberOfElements": 4,
+          "synopsis": "Zeitreisen, Künstliche Intelligenz, Klimakrise, Atommüll, das Leben nach dem Tod: Wie hat man sich vor fünfzig Jahren die Zukunft vorgestellt? \"Das war Morgen\" präsentiert Science-Fiction-Hörspiele aus den 1960er bis 1990er Jahren der SDR-Reihen ‚Science-",
+          "title": "Das war morgen",
+          "_links": {
+            "self": {
+              "href": ".\/programsets\/12701131{?order,offset,limit}",
+              "name": "programSet",
+              "templated": true
+            }
+          },
+          "sharingUrl": "https:\/\/www.ardaudiothek.de\/sendung\/das-war-morgen\/12701131\/",
+          "image": {
+            "url": "https:\/\/api.ardmediathek.de\/image-service\/images\/urn:ard:image:7180d61cfbc579f8?w={width}&ch=99bdf1f0bb4a71df",
+            "url1X1": "https:\/\/api.ardmediathek.de\/image-service\/images\/urn:ard:image:d949e2c7d6ff3b11?w={width}&ch=f8e6e3500cd679cf",
+            "attribution": "SWR",
+            "description": "Grafik des Science-Fiction-Podcasts &#034;Das war morgen&#034; mit Isabella Hermann und Andreas Brandhorst"
+          },
+          "publicationService": {
+            "id": "71457300",
+            "title": "SWR",
+            "_links": {
+              "self": {
+                "href": ".\/publicationservices\/71457300",
+                "name": "publicationService"
+              },
+              "mt:onlinePortal": {
+                "href": "https:\/\/www.swr.de\/"
+              }
+            },
+            "brandingColor": "#ffffff",
+            "genre": "Info",
+            "numberOfElements": 32,
+            "organizationName": "SWR",
+            "homepageUrl": "https:\/\/www.swr.de\/"
+          },
+          "editorialCategories": {
+            "id": "42914712",
+            "title": "Hörspiel",
+            "_links": {
+              "self": {
+                "href": ".\/editorialcategories\/42914712{?offset,limit}",
+                "name": "editorialCategory",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https:\/\/www.daserste.de\/rubrik-hoerspiel_lesung-100~_type-at_ratio-16x9_width-{width}_3209ce.jpg",
+                "name": "Kopfhörer",
+                "templated": true
+              }
+            },
+            "image": {
+              "url": "https:\/\/www.daserste.de\/rubrik-hoerspiel_lesung-100~_type-at_ratio-16x9_width-{width}_3209ce.jpg"
+            }
+          }
+        }
+      },
+      {
+        "duration": 75,
+        "id": "12701135",
+        "publicationStartDateAndTime": "2023-05-24T16:05:00+02:00",
+        "synopsis": "Zeitreisen, Künstliche Intelligenz, Klimakrise, Atommüll, das Leben nach dem Tod: Wie hat man sich vor fünfzig Jahren die Zukunft vorgestellt?\n\"Das war morgen\" präsentiert Science-Fiction-Hörspiele aus den 1960er bis 1990er Jahren der SDR-Reihen ‚Science-",
+        "title": "Trailer zum Science-Fiction-Podcast \"Das war morgen\" mit Isabella Hermann und Andreas Brandhorst",
+        "tracking": {
+          "title": "ARD Audiothek\/{page.tracking.chapter1}\/Das war morgen\/Trailer zum Science-Fiction-Podcast \"Das war morgen\" mit Isabella Hermann und Andreas Brandhorst\/12701135\/20230524_1605",
+          "chapter1": "{page.tracking.chapter1}",
+          "chapter2": "Trailer zum Science-Fiction-Podcast \"Das war morgen\" mit Isabella Hermann und Andreas Brandhorst",
+          "teaser": {
+            "teaser_title": "Trailer zum Science-Fiction-Podcast \"Das war morgen\" mit Isabella Hermann und Andreas Brandhorst",
+            "teaser_id": "urn:ard:publication:1b7e5587b7ec01ab",
+            "teaser_content_type": "Item",
+            "teaser_institution": "SWR",
+            "teaser_institution_id": "urn:ard:institution:a3004ff924ece1a2"
+          },
+          "avContent": {
+            "av_content": "Trailer zum Science-Fiction-Podcast \"Das war morgen\" mit Isabella Hermann und Andreas Brandhorst",
+            "av_content_id": "urn:ard:publication:1b7e5587b7ec01ab",
+            "av_content_duration": 75000,
+            "av_content_type": "Audio",
+            "av_broadcasting_type": "OnDemand",
+            "av_institution": "SWR",
+            "av_institution_id": "urn:ard:institution:a3004ff924ece1a2",
+            "av_publisher": "SWR",
+            "av_publisher_id": "urn:ard:publisher:6fbb364df2d0cdaf",
+            "av_show": "Das war morgen",
+            "av_show_id": "urn:ard:show:0996975bcd43e086"
+          },
+          "play": {
+            "title": "ARD Audiothek\/{page.tracking.chapter1}\/Das war morgen\/Trailer zum Science-Fiction-Podcast \"Das war morgen\" mit Isabella Hermann und Andreas Brandhorst\/12701135\/20230524_1605",
+            "chapter1": "{page.tracking.chapter1}",
+            "chapter2": "Das war morgen",
+            "mediaType": "audio",
+            "mediaDistributionType": "1",
+            "lra": "SWR",
+            "channel": "SWR",
+            "producer": "SWR",
+            "show": "Das war morgen",
+            "source": "SWR",
+            "clipTitle": "Trailer zum Science-Fiction-Podcast \"Das war morgen\" mit Isabella Hermann und Andreas Brandhorst",
+            "clipLength": "75",
+            "contentId": "12701135",
+            "contentType": "2",
+            "publicationId": "urn:ard:publication:1b7e5587b7ec01ab",
+            "publicationDate": "20230524"
+          }
+        },
+        "_links": {
+          "self": {
+            "href": ".\/items\/12701135",
+            "name": "item"
+          }
+        },
+        "image": {
+          "url": "https:\/\/api.ardmediathek.de\/image-service\/images\/urn:ard:image:43281d7090bc8f4f?w={width}&ch=296e4db6f3dbedb2",
+          "url1X1": "https:\/\/api.ardmediathek.de\/image-service\/images\/urn:ard:image:88f95c4d28e050da?w={width}&ch=f8e6e3500cd679cf",
+          "attribution": "SWR",
+          "description": "Grafik des Science-Fiction-Podcasts &#034;Das war morgen&#034; mit Isabella Hermann und Andreas Brandhorst"
+        },
+        "audios": [
+          {
+            "url": "https:\/\/avdlswr-a.akamaihd.net\/swr\/swr2\/hoerspiel\/das-war-morgen\/1862339.l.mp3",
+            "downloadUrl": "https:\/\/avdlswr-a.akamaihd.net\/swr\/swr2\/hoerspiel\/das-war-morgen\/1862339.l.mp3"
+          },
+          {
+            "url": "https:\/\/pdodswr-a.akamaihd.net\/swr\/swr2\/hoerspiel\/das-war-morgen\/1862339.l.mp3",
+            "downloadUrl": null
+          }
+        ],
+        "sharingUrl": "https:\/\/www.ardaudiothek.de\/episode\/das-war-morgen\/trailer-zum-science-fiction-podcast-das-war-morgen-mit-isabella-hermann-und-andreas-brandhorst\/swr\/12701135\/",
+        "programSet": {
+          "id": "12701131",
+          "numberOfElements": 4,
+          "synopsis": "Zeitreisen, Künstliche Intelligenz, Klimakrise, Atommüll, das Leben nach dem Tod: Wie hat man sich vor fünfzig Jahren die Zukunft vorgestellt? \"Das war Morgen\" präsentiert Science-Fiction-Hörspiele aus den 1960er bis 1990er Jahren der SDR-Reihen ‚Science-",
+          "title": "Das war morgen",
+          "_links": {
+            "self": {
+              "href": ".\/programsets\/12701131{?order,offset,limit}",
+              "name": "programSet",
+              "templated": true
+            }
+          },
+          "sharingUrl": "https:\/\/www.ardaudiothek.de\/sendung\/das-war-morgen\/12701131\/",
+          "image": {
+            "url": "https:\/\/api.ardmediathek.de\/image-service\/images\/urn:ard:image:7180d61cfbc579f8?w={width}&ch=99bdf1f0bb4a71df",
+            "url1X1": "https:\/\/api.ardmediathek.de\/image-service\/images\/urn:ard:image:d949e2c7d6ff3b11?w={width}&ch=f8e6e3500cd679cf",
+            "attribution": "SWR",
+            "description": "Grafik des Science-Fiction-Podcasts &#034;Das war morgen&#034; mit Isabella Hermann und Andreas Brandhorst"
+          },
+          "publicationService": {
+            "id": "71457300",
+            "title": "SWR",
+            "_links": {
+              "self": {
+                "href": ".\/publicationservices\/71457300",
+                "name": "publicationService"
+              },
+              "mt:onlinePortal": {
+                "href": "https:\/\/www.swr.de\/"
+              }
+            },
+            "brandingColor": "#ffffff",
+            "genre": "Info",
+            "numberOfElements": 32,
+            "organizationName": "SWR",
+            "homepageUrl": "https:\/\/www.swr.de\/"
+          },
+          "editorialCategories": {
+            "id": "42914712",
+            "title": "Hörspiel",
+            "_links": {
+              "self": {
+                "href": ".\/editorialcategories\/42914712{?offset,limit}",
+                "name": "editorialCategory",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https:\/\/www.daserste.de\/rubrik-hoerspiel_lesung-100~_type-at_ratio-16x9_width-{width}_3209ce.jpg",
+                "name": "Kopfhörer",
+                "templated": true
+              }
+            },
+            "image": {
+              "url": "https:\/\/www.daserste.de\/rubrik-hoerspiel_lesung-100~_type-at_ratio-16x9_width-{width}_3209ce.jpg"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "publicationService": {
+    "_links": {
+      "self": {
+        "href": ".\/publicationservices\/71457300",
+        "name": "publicationService"
+      },
+      "mt:image": {
+        "href": "https:\/\/img.ardmediathek.de\/standard\/00\/66\/85\/81\/66\/-1774185891\/16x9\/{width}?mandant=ard",
+        "templated": true
+      },
+      "mt:squareImage": {
+        "href": "https:\/\/img.ardmediathek.de\/standard\/00\/66\/85\/81\/66\/-1774185891\/1x1\/{width}?mandant=ard",
+        "templated": true
+      },
+      "mt:onlinePortal": {
+        "href": "https:\/\/www.swr.de\/"
+      }
+    },
+    "brandingColor": "#ffffff",
+    "genre": "Info",
+    "id": "71457300",
+    "numberOfElements": 32,
+    "organizationName": "SWR",
+    "title": "SWR",
+    "image": {
+      "url": "https:\/\/api.ardmediathek.de\/image-service\/images\/urn:ard:image:23189356f3fa45f7?w={width}&ch=46efd19da12ea770",
+      "url1X1": "https:\/\/api.ardmediathek.de\/image-service\/images\/urn:ard:image:4ee7c6cb0e4300d7?w={width}&ch=3044ae41002db93a"
+    },
+    "homepageUrl": "https:\/\/www.swr.de\/"
+  },
+  "editorialCategories": {
+    "id": "42914712",
+    "title": "Hörspiel",
+    "_links": {
+      "self": {
+        "href": ".\/editorialcategories\/42914712{?offset,limit}",
+        "name": "editorialCategory",
+        "templated": true
+      },
+      "mt:image": {
+        "href": "https:\/\/www.daserste.de\/rubrik-hoerspiel_lesung-100~_type-at_ratio-16x9_width-{width}_3209ce.jpg",
+        "name": "Kopfhörer",
+        "templated": true
+      }
+    },
+    "image": {
+      "url": "https:\/\/www.daserste.de\/rubrik-hoerspiel_lesung-100~_type-at_ratio-16x9_width-{width}_3209ce.jpg"
+    }
+  }
+}
