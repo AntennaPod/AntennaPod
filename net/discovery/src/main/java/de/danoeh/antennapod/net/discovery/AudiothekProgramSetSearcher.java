@@ -38,7 +38,9 @@ public class AudiothekProgramSetSearcher implements PodcastSearcher {
             String formattedUrl = String.format(API_URL, encodedQuery);
 
             OkHttpClient client = AntennapodHttpClient.getHttpClient();
-            Request.Builder httpReq = new Request.Builder().addHeader("User-Agent", ClientConfig.USER_AGENT).url(formattedUrl);
+            Request.Builder httpReq = new Request.Builder()
+                    .addHeader("User-Agent", ClientConfig.USER_AGENT)
+                    .url(formattedUrl);
             List<PodcastSearchResult> podcasts = null;
             try {
                 Response response = client.newCall(httpReq.build()).execute();
