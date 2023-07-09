@@ -29,13 +29,13 @@ public class AudiothekSearchResultMapperTest extends TestCase {
         TestCase.assertEquals("Das war morgen", podcastSearchResult.title);
         TestCase.assertEquals("SWR", podcastSearchResult.author);
         TestCase.assertEquals("https://api.ardaudiothek.de/./programsets/12701131", podcastSearchResult.feedUrl);
-        TestCase.assertEquals("https://api.ardmediathek.de/image-service/images/urn:ard:image:7180d61cfbc579f8?w=64&ch=99bdf1f0bb4a71df", podcastSearchResult.imageUrl);
+        TestCase.assertEquals("https://api.ardmediathek.de/image-service/images/urn:ard:image:d949e2c7d6ff3b11?w=64&ch=f8e6e3500cd679cf", podcastSearchResult.imageUrl);
 
         PodcastSearchResult editorialCollectionSearchResult = podcastSearchResults.get(6);
         TestCase.assertEquals("SWR Aktuell Info-Date", editorialCollectionSearchResult.title);
         TestCase.assertEquals("SWR", editorialCollectionSearchResult.author);
         TestCase.assertEquals("https://api.ardaudiothek.de/./programsets/94703120", editorialCollectionSearchResult.feedUrl);
-        TestCase.assertEquals("https://api.ardmediathek.de/image-service/images/urn:ard:image:6de646a482bcd3f2?w=64&ch=6f9f827cbd8fbc47", editorialCollectionSearchResult.imageUrl);
+        TestCase.assertEquals("https://api.ardmediathek.de/image-service/images/urn:ard:image:c52f727faf86911b?w=64&ch=c3d831509180e565", editorialCollectionSearchResult.imageUrl);
     }
 
     @NonNull

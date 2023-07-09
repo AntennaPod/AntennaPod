@@ -2,6 +2,8 @@ package de.danoeh.antennapod.net.discovery.audiothek;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,11 +70,21 @@ public class AudiothekSearchResultMapper {
     protected static PodcastSearchResult getPodcastSearchResult(JSONObject json) throws JSONException {
         String title = json.optString("title", "");
         JSONObject links = json.getJSONObject("_links");
-        String imageUrl = json.getJSONObject("image").optString("url1X1", null);
-        imageUrl = imageUrl.replace("{width}", "64");
+        String imageUrl = getImageUrl(json.getJSONObject("image"));
         String feedUrlRaw = links.getJSONObject("self").optString("href", null);
         String feedUrl = AUDIOTHEK_BASE_URI + feedUrlRaw.replace("{?order,offset,limit}", "");
         String author = json.getJSONObject("publicationService").getString("organizationName");
         return new PodcastSearchResult(title, imageUrl, feedUrl, author);
+    }
+
+    @NonNull
+    private static String getImageUrl(JSONObject imageLinks) {
+        String imageUrl = imageLinks.optString("url1X1", null);
+        if (imageUrl == null) {
+            imageUrl = imageLinks.optString("url", null);
+        }
+
+        imageUrl = imageUrl.replace("{width}", "64");
+        return imageUrl;
     }
 }
