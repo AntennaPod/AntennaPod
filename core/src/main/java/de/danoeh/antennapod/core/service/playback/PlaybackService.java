@@ -1859,7 +1859,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         }
 
                         clickHandler.removeCallbacks(clickRunnable); // always remove callbacks
-                        clickHandler.postDelayed(clickRunnable, 500); // always post a delayed clickRunnable. It will get executed if no further clicks are detected within the threshold
+                        // always post a delayed clickRunnable. 
+                        // It will get executed if no further clicks are detected within the threshold.
+                        clickHandler.postDelayed(clickRunnable, 500); 
 
                         lastClickTime = clickTime;
                         if (clickCount == 1) {  // only get play state at the first click
