@@ -20,7 +20,9 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.Vibrator;
 import android.service.quicksettings.TileService;
 import android.support.v4.media.MediaBrowserCompat;
@@ -1734,7 +1736,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 prepare();
             }
         }
-
         @Override
         public void onPlayFromMediaId(String mediaId, Bundle extras) {
             Log.d(TAG, "onPlayFromMediaId: mediaId: " + mediaId + " extras: " + extras.toString());
@@ -1815,15 +1816,60 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             setSpeed(speed);
         }
 
+        private boolean playStateBeforeClick = false;
+        private long lastClickTime = 0;
+        private Handler clickHandler = new Handler(Looper.getMainLooper());
+        private int clickCount = 0;
+
+        private Runnable clickRunnable = new Runnable() {
+            @Override
+            public void run() {
+                // Single click
+                if (clickCount == 1) {
+                    if (playStateBeforeClick) {
+                        onPause();
+                    } else {
+                        onPlay();
+                    }
+                }
+                // Double click
+                else if (clickCount == 2) {
+                    onFastForward();
+                }
+                // Triple click
+                else if (clickCount == 3) {
+                    onRewind();
+                    onPlay(); // otherwise playback is paused?
+                }
+                // Reset
+                clickCount = 0;
+            }
+        };
+
         @Override
         public boolean onMediaButtonEvent(final Intent mediaButton) {
             Log.d(TAG, "onMediaButtonEvent(" + mediaButton + ")");
             if (mediaButton != null) {
-                KeyEvent keyEvent = mediaButton.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
-                if (keyEvent != null &&
-                        keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
-                        keyEvent.getRepeatCount() == 0) {
-                    return handleKeycode(keyEvent.getKeyCode(), false);
+                final KeyEvent keyEvent = mediaButton.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+                if (keyEvent != null && keyEvent.getRepeatCount() == 0) {
+                    if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
+                        long clickTime = System.currentTimeMillis();
+                        long elapsedTime = clickTime - lastClickTime;
+
+                        if (elapsedTime <= 500) { // Assuming 500 milliseconds threshold for multiple clicks
+                            clickCount++; // increment click count
+                        } else {
+                            clickCount = 1; // if more than 500ms has passed, reset to 1
+                        }
+
+                        clickHandler.removeCallbacks(clickRunnable); // always remove callbacks
+                        clickHandler.postDelayed(clickRunnable, 500); // always post a delayed clickRunnable. It will get executed if no further clicks are detected within the threshold
+
+                        lastClickTime = clickTime;
+                        if (clickCount == 1) {  // only get play state at the first click
+                            playStateBeforeClick = getStatus() == PlayerStatus.PLAYING; // store the play status
+                        }
+                    }
                 }
             }
             return false;
