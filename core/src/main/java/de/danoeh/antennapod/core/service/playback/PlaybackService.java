@@ -1736,6 +1736,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 prepare();
             }
         }
+
         @Override
         public void onPlayFromMediaId(String mediaId, Bundle extras) {
             Log.d(TAG, "onPlayFromMediaId: mediaId: " + mediaId + " extras: " + extras.toString());
@@ -1824,20 +1825,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         private Runnable clickRunnable = new Runnable() {
             @Override
             public void run() {
-                // Single click
                 if (clickCount == 1) {
                     if (playStateBeforeClick) {
                         onPause();
                     } else {
                         onPlay();
                     }
-                }
-                // Double click
-                else if (clickCount == 2) {
+                } else if (clickCount == 2) {
                     onFastForward();
-                }
-                // Triple click
-                else if (clickCount == 3) {
+                } else if (clickCount == 3) {
                     onRewind();
                     onPlay(); // otherwise playback is paused?
                 }
@@ -1857,7 +1853,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         long elapsedTime = clickTime - lastClickTime;
 
                         if (elapsedTime <= 500) { // Assuming 500 milliseconds threshold for multiple clicks
-                            clickCount++; // increment click count
+                            clickCount++;
                         } else {
                             clickCount = 1; // if more than 500ms has passed, reset to 1
                         }
