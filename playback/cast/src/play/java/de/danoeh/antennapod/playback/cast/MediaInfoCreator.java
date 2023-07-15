@@ -2,6 +2,7 @@ package de.danoeh.antennapod.playback.cast;
 
 import android.net.Uri;
 import android.text.TextUtils;
+import androidx.annotation.Nullable;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.common.images.WebImage;
@@ -74,7 +75,6 @@ public class MediaInfoCreator {
         MediaMetadata metadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_GENERIC);
         if (media.getItem() == null) {
             throw new IllegalStateException("item is null");
-            //media.setItem(DBReader.getFeedItem(media.getItemId()));
         }
         FeedItem feedItem = media.getItem();
         if (feedItem != null) {
@@ -84,15 +84,15 @@ public class MediaInfoCreator {
                 metadata.putString(MediaMetadata.KEY_SUBTITLE, subtitle);
             }
 
+            final @Nullable Feed feed = feedItem.getFeed();
             // Manual because cast does not support embedded images
-            String url = feedItem.getImageUrl() == null ? feedItem.getFeed().getImageUrl() : feedItem.getImageUrl();
+            String url = (feedItem.getImageUrl() == null && feed != null) ? feed.getImageUrl() : feedItem.getImageUrl();
             if (!TextUtils.isEmpty(url)) {
                 metadata.addImage(new WebImage(Uri.parse(url)));
             }
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(media.getItem().getPubDate());
             metadata.putDate(MediaMetadata.KEY_RELEASE_DATE, calendar);
-            Feed feed = feedItem.getFeed();
             if (feed != null) {
                 if (!TextUtils.isEmpty(feed.getAuthor())) {
                     metadata.putString(MediaMetadata.KEY_ARTIST, feed.getAuthor());
