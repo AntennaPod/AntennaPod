@@ -44,6 +44,14 @@
             android:exported="true"
             tools:ignore="ExportedReceiver" /> <!-- allow feeds update to be triggered by external apps -->
 
+        <receiver android:name=".receiver.ExportDatabaseReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="de.danoeh.antennapod.action.EXPORT_DATABASE" />
+            </intent-filter>
+        </receiver>
+
+
         <service
             android:name=".service.QuickSettingsTileService"
             android:enabled="true"
