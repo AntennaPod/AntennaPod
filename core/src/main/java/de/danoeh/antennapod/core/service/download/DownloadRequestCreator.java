@@ -28,7 +28,6 @@ public class DownloadRequestCreator {
 
         return new DownloadRequest.Builder(dest.toString(), feed)
                 .withAuthentication(username, password)
-                .deleteOnFailure(true)
                 .lastModified(feed.getLastUpdate());
     }
 
@@ -53,7 +52,6 @@ public class DownloadRequestCreator {
                 ? media.getItem().getFeed().getPreferences().getPassword() : null;
 
         return new DownloadRequest.Builder(dest.toString(), media)
-                .deleteOnFailure(false)
                 .withAuthentication(username, password);
     }
 

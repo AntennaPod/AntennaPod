@@ -41,17 +41,14 @@ public class DownloadRequestTest {
         String password = "testPassword";
         FeedMedia item = createFeedItem(1);
         DownloadRequest request1 = new DownloadRequest.Builder(destStr, item)
-                .deleteOnFailure(true)
                 .withAuthentication(username, password)
                 .build();
 
         DownloadRequest request2 = new DownloadRequest.Builder(destStr, item)
-                .deleteOnFailure(true)
                 .withAuthentication(username, password)
                 .build();
 
         DownloadRequest request3 = new DownloadRequest.Builder(destStr, item)
-                .deleteOnFailure(true)
                 .withAuthentication("diffUsername", "diffPassword")
                 .build();
 
