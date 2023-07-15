@@ -360,6 +360,9 @@ public class DBWriter {
     public static Future<?> addQueueItem(final Context context, boolean markAsUnplayed, final FeedItem... items) {
         LongList itemIds = new LongList(items.length);
         for (FeedItem item : items) {
+            if (!item.hasMedia()) {
+                continue;
+            }
             itemIds.add(item.getId());
             item.addTag(FeedItem.TAG_QUEUE);
         }
