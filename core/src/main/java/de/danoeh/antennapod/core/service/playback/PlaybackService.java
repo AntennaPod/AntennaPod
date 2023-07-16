@@ -1817,10 +1817,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             setSpeed(speed);
         }
 
-        private boolean playStateBeforeClick = false;
         private long lastClickTime = 0;
-        private Handler clickHandler = new Handler(Looper.getMainLooper());
         private int clickCount = 0;
+        private Handler clickHandler = new Handler(Looper.getMainLooper());
 
         private Runnable clickRunnable = new Runnable() {
             @Override
@@ -1831,10 +1830,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     onFastForward();
                 } else if (clickCount == 3) {
                     onRewind();
-                    onPlay(); // otherwise playback is paused?
                 }
-                // Reset
-                clickCount = 0;
+                clickCount = 0; // reset clickCount
             }
         };
 
@@ -1852,17 +1849,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         if (elapsedTime <= 400) { // Assuming 400 milliseconds threshold for multiple clicks
                             clickCount++;
                         } else {
-                            clickCount = 1; // if more than 400ms has passed, reset to 1
-                        }
+                             clickCount = 1; // if more than elapsedTime has passed, reset to 1
+                         }
                         clickHandler.removeCallbacks(clickRunnable); // always remove callbacks
-                        // always post a delayed clickRunnable.
-                        // It will get executed if no further clicks are detected within the threshold.
+                        // Always post a delayed clickRunnable; runs if no further clicks within elapsedTime.
                         clickHandler.postDelayed(clickRunnable, 400);
-
                         lastClickTime = clickTime;
-                        if (clickCount == 1) {  // only get play state at the first click
-                            playStateBeforeClick = getStatus() == PlayerStatus.PLAYING; // store the play status
-                        }
                         return true;
                     } else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_MEDIA_NEXT) {
                         onSkipToNext();
