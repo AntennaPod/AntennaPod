@@ -1826,11 +1826,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             @Override
             public void run() {
                 if (clickCount == 1) {
-                    if (playStateBeforeClick) {
-                        onPause();
-                    } else {
-                        onPlay();
-                    }
+                    handleKeycode(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, false);
                 } else if (clickCount == 2) {
                     onFastForward();
                 } else if (clickCount == 3) {
@@ -1846,29 +1842,36 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public boolean onMediaButtonEvent(final Intent mediaButton) {
             Log.d(TAG, "onMediaButtonEvent(" + mediaButton + ")");
             if (mediaButton != null) {
-                final KeyEvent keyEvent = mediaButton.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
-                if (keyEvent != null && keyEvent.getRepeatCount() == 0) {
-                    // Check if the key event is a play/pause button to avoid other button presses
-                    if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE
-                            || keyEvent.getKeyCode() == KeyEvent.KEYCODE_HEADSETHOOK) {
-                        if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
-                            long clickTime = System.currentTimeMillis();
-                            long elapsedTime = clickTime - lastClickTime;
-                            if (elapsedTime <= 500) { // Assuming 500 milliseconds threshold for multiple clicks
-                                clickCount++;
-                            } else {
-                                clickCount = 1; // if more than 500ms has passed, reset to 1
-                            }
-                            clickHandler.removeCallbacks(clickRunnable); // always remove callbacks
-                            // always post a delayed clickRunnable.
-                            // It will get executed if no further clicks are detected within the threshold.
-                            clickHandler.postDelayed(clickRunnable, 500);
-
-                            lastClickTime = clickTime;
-                            if (clickCount == 1) {  // only get play state at the first click
-                                playStateBeforeClick = getStatus() == PlayerStatus.PLAYING; // store the play status
-                            }
+                KeyEvent keyEvent = mediaButton.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+                if (keyEvent != null &&
+                        keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
+                        keyEvent.getRepeatCount() == 0) {
+                    if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_HEADSETHOOK) { // default headset button 
+                        long clickTime = System.currentTimeMillis();
+                        long elapsedTime = clickTime - lastClickTime;
+                        if (elapsedTime <= 400) { // Assuming 400 milliseconds threshold for multiple clicks
+                            clickCount++;
+                        } else {
+                            clickCount = 1; // if more than 400ms has passed, reset to 1
                         }
+                        clickHandler.removeCallbacks(clickRunnable); // always remove callbacks
+                        // always post a delayed clickRunnable.
+                        // It will get executed if no further clicks are detected within the threshold.
+                        clickHandler.postDelayed(clickRunnable, 400);
+
+                        lastClickTime = clickTime;
+                        if (clickCount == 1) {  // only get play state at the first click
+                            playStateBeforeClick = getStatus() == PlayerStatus.PLAYING; // store the play status
+                        }
+                        return true;
+                    } else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_MEDIA_NEXT) {
+                        onSkipToNext();
+                        return true;
+                    } else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
+                        onSkipToPrevious();
+                        return true;
+                    } else {
+                        return handleKeycode(keyEvent.getKeyCode(), false);
                     }
                 }
             }
