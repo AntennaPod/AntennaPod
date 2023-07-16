@@ -1850,7 +1850,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                             clickCount++;
                         } else {
                              clickCount = 1; // if more than elapsedTime has passed, reset to 1
-                         }
+                        }
                         clickHandler.removeCallbacks(clickRunnable); // always remove callbacks
                         // Always post a delayed clickRunnable; runs if no further clicks within elapsedTime.
                         clickHandler.postDelayed(clickRunnable, 400);
