@@ -17,6 +17,7 @@ import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.ClientConfigurator;
 import de.danoeh.antennapod.error.CrashReportWriter;
 import de.danoeh.antennapod.error.RxJavaErrorHandlerSetup;
+import de.danoeh.antennapod.preferences.PreferenceUpgrader;
 import de.danoeh.antennapod.spa.SPAUtil;
 import org.greenrobot.eventbus.EventBus;
 
@@ -52,6 +53,7 @@ public class PodcastApp extends Application {
         singleton = this;
 
         ClientConfigurator.initialize(this);
+        PreferenceUpgrader.checkUpgrades(this);
 
         Iconify.with(new FontAwesomeModule());
         Iconify.with(new MaterialModule());
