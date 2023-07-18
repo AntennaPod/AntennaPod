@@ -4,13 +4,17 @@ import android.app.Notification;
 import android.content.Context;
 import android.util.Log;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.work.ForegroundInfo;
 import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import de.danoeh.antennapod.core.ClientConfigurator;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
@@ -88,11 +92,15 @@ public class FeedUpdateWorker extends Worker {
     }
 
     @NonNull
-    private Notification createNotification(List<Feed> toUpdate) {
+    private Notification createNotification(@Nullable List<Feed> toUpdate) {
         Context context = getApplicationContext();
-        String contentText = context.getResources().getQuantityString(R.plurals.downloads_left,
-                toUpdate.size(), toUpdate.size());
-        String bigText = Stream.of(toUpdate).map(feed -> "• " + feed.getTitle()).collect(Collectors.joining("\n"));
+        String contentText = "";
+        String bigText = "";
+        if (toUpdate != null) {
+            contentText = context.getResources().getQuantityString(R.plurals.downloads_left,
+                    toUpdate.size(), toUpdate.size());
+            bigText = Stream.of(toUpdate).map(feed -> "• " + feed.getTitle()).collect(Collectors.joining("\n"));
+        }
         return new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_DOWNLOADING)
                 .setContentTitle(context.getString(R.string.download_notification_title_feeds))
                 .setContentText(contentText)
@@ -102,6 +110,12 @@ public class FeedUpdateWorker extends Worker {
                 .addAction(R.drawable.ic_cancel, context.getString(R.string.cancel_label),
                         WorkManager.getInstance(context).createCancelPendingIntent(getId()))
                 .build();
+    }
+
+    @NonNull
+    @Override
+    public ListenableFuture<ForegroundInfo> getForegroundInfoAsync() {
+        return Futures.immediateFuture(new ForegroundInfo(R.id.notification_updating_feeds, createNotification(null)));
     }
 
     private void refreshFeeds(List<Feed> toUpdate, boolean force) {

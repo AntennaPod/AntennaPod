@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.service.download;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,8 +10,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.work.Data;
+import androidx.work.ForegroundInfo;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import de.danoeh.antennapod.core.ClientConfigurator;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.service.download.handler.MediaDownloadedHandler;
@@ -67,7 +71,9 @@ public class EpisodeDownloadWorker extends Worker {
                                     .putInt(DownloadServiceInterface.WORK_DATA_PROGRESS, request.getProgressPercent())
                                     .build())
                                 .get();
-                        sendProgressNotification();
+                        NotificationManager nm = (NotificationManager) getApplicationContext()
+                                .getSystemService(Context.NOTIFICATION_SERVICE);
+                        nm.notify(R.id.notification_downloading, generateProgressNotification());
                     } catch (InterruptedException | ExecutionException e) {
                         return;
                     }
@@ -75,7 +81,13 @@ public class EpisodeDownloadWorker extends Worker {
             }
         };
         progressUpdaterThread.start();
-        final Result result = performDownload(media, request);
+        Result result;
+        try {
+            result = performDownload(media, request);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = Result.failure();
+        }
         progressUpdaterThread.interrupt();
         try {
             progressUpdaterThread.join();
@@ -98,6 +110,13 @@ public class EpisodeDownloadWorker extends Worker {
         if (downloader != null) {
             downloader.cancel();
         }
+    }
+
+    @NonNull
+    @Override
+    public ListenableFuture<ForegroundInfo> getForegroundInfoAsync() {
+        return Futures.immediateFuture(
+                new ForegroundInfo(R.id.notification_downloading, generateProgressNotification()));
     }
 
     private Result performDownload(FeedMedia media, DownloadRequest request) {
@@ -242,7 +261,7 @@ public class EpisodeDownloadWorker extends Worker {
         nm.notify(R.id.notification_download_report, builder.build());
     }
 
-    private void sendProgressNotification() {
+    private Notification generateProgressNotification() {
         StringBuilder bigTextB = new StringBuilder();
         Map<String, Integer> progressCopy = new HashMap<>(notificationProgress);
         for (Map.Entry<String, Integer> entry : progressCopy.entrySet()) {
@@ -270,8 +289,6 @@ public class EpisodeDownloadWorker extends Worker {
                 .setShowWhen(false)
                 .setSmallIcon(R.drawable.ic_notification_sync)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-        NotificationManager nm = (NotificationManager) getApplicationContext()
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.notify(R.id.notification_downloading, builder.build());
+        return builder.build();
     }
 }
