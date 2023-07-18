@@ -49,12 +49,6 @@ public class HttpDownloader extends Downloader {
         File destination = new File(request.getDestination());
         final boolean fileExists = destination.exists();
 
-        if (request.isDeleteOnFailure() && fileExists) {
-            Log.w(TAG, "File already exists");
-            onSuccess();
-            return;
-        }
-
         RandomAccessFile out = null;
         InputStream connection;
         ResponseBody responseBody = null;
@@ -309,31 +303,11 @@ public class HttpDownloader extends Downloader {
     private void onFail(DownloadError reason, String reasonDetailed) {
         Log.d(TAG, "onFail() called with: " + "reason = [" + reason + "], reasonDetailed = [" + reasonDetailed + "]");
         result.setFailed(reason, reasonDetailed);
-        if (request.isDeleteOnFailure()) {
-            cleanup();
-        }
     }
 
     private void onCancelled() {
         Log.d(TAG, "Download was cancelled");
         result.setCancelled();
         cancelled = true;
-        cleanup();
-    }
-
-    /**
-     * Deletes unfinished downloads.
-     */
-    private void cleanup() {
-        if (request.getDestination() != null) {
-            File dest = new File(request.getDestination());
-            if (dest.exists()) {
-                boolean rc = dest.delete();
-                Log.d(TAG, "Deleted file " + dest.getName() + "; Result: "
-                        + rc);
-            } else {
-                Log.d(TAG, "cleanup() didn't delete file: does not exist.");
-            }
-        }
     }
 }

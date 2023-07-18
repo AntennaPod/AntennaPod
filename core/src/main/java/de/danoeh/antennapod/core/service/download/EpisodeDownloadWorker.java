@@ -134,6 +134,7 @@ public class EpisodeDownloadWorker extends Worker {
             } else {
                 sendErrorNotification();
             }
+            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
             return Result.failure();
         }
 
@@ -162,6 +163,9 @@ public class EpisodeDownloadWorker extends Worker {
             Log.d(TAG, "Requested invalid range, restarting download from the beginning");
             FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
             sendMessage(request.getTitle(), true);
+            if (isLastRunAttempt()) {
+                FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
+            }
             return retry3times();
         }
 
@@ -177,19 +181,27 @@ public class EpisodeDownloadWorker extends Worker {
             } else {
                 sendErrorNotification();
             }
+            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
             return Result.failure();
         }
         sendMessage(request.getTitle(), true);
+        if (isLastRunAttempt()) {
+            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
+        }
         return retry3times();
     }
 
     private Result retry3times() {
-        if (getRunAttemptCount() < 2) {
-            return Result.retry();
-        } else {
+        if (isLastRunAttempt()) {
             sendErrorNotification();
             return Result.failure();
+        } else {
+            return Result.retry();
         }
+    }
+
+    private boolean isLastRunAttempt() {
+        return getRunAttemptCount() >= 2;
     }
 
     private void sendMessage(String episodeTitle, boolean retrying) {
