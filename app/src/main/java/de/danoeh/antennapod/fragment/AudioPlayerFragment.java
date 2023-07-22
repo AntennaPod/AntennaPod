@@ -202,8 +202,16 @@ public class AudioPlayerFragment extends Fragment implements
         });
         butFF.setOnClickListener(v -> {
             if (controller != null) {
-                int curr = controller.getPosition();
-                controller.seekTo(curr + UserPreferences.getFastForwardSecs() * 1000);
+                int newPos = controller.getPosition() + (UserPreferences.getFastForwardSecs() * 1000);
+                if (newPos < controller.getDuration()) {
+                    controller.seekTo(newPos);
+                } else {
+                    // New position exceeds end of episode. Prevent a
+                    // potentially-unsuccessful seek by skipping to next episode.
+                    // See https://github.com/AntennaPod/AntennaPod/issues/5974
+                    Log.d(TAG, "Fast-forward reached end of file, skipping to next episode");
+                    controller.skip();
+                }
             }
         });
         butFF.setOnLongClickListener(v -> {
