@@ -11,14 +11,19 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:background="@drawable/background_widget">
 
         <ImageView
             android:id="@+id/widget_config_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/teaser" />
+            app:srcCompat="@drawable/teaser"
+            android:background="@drawable/background_widget"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"/>
 
         <include
             android:id="@+id/widget_config_preview"
@@ -38,7 +43,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -78,33 +86,36 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp">
 
-                <CheckBox
+                <RadioButton
                     android:id="@+id/ckPlaybackSpeed"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="@string/playback_speed" />
 
-                <CheckBox
+                <RadioButton
                     android:id="@+id/ckRewind"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="@string/rewind_label" />
 
-                <CheckBox
+                <RadioButton
                     android:id="@+id/ckFastForward"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="@string/fast_forward_label" />
 
-                <CheckBox
+                <RadioButton
                     android:id="@+id/ckSkip"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="@string/skip_episode_label" />
 
