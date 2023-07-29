@@ -20,10 +20,7 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             app:srcCompat="@drawable/teaser"
-            android:background="@drawable/background_widget"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"/>
+            />
 
         <include
             android:id="@+id/widget_config_preview"
@@ -43,10 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp">
+            android:padding="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -86,33 +80,30 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp">
+                android:orientation="vertical">
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/ckPlaybackSpeed"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="@string/playback_speed" />
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/ckRewind"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="@string/rewind_label" />
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/ckFastForward"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="@string/fast_forward_label" />
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/ckSkip"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
