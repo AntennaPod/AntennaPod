@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_circle"
     android:padding="@dimen/widget_margin">
 
     <RelativeLayout
         android:id="@+id/widgetLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#262C31"
+        android:background="@drawable/bg_circle"
         tools:ignore="UselessParent">
 
         <ImageButton
