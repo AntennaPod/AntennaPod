@@ -12,18 +12,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_circle"
-        tools:ignore="UselessParent">
+        tools:ignore="UselessParent" >
 
         <ImageButton
             android:id="@+id/butPlay"
             android:layout_width="@android:dimen/app_icon_size"
             android:layout_height="match_parent"
-            android:contentDescription="@string/play_label"
             android:layout_alignParentEnd="true"
-            android:layout_margin="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
             android:background="?android:attr/selectableItemBackground"
-            android:scaleType="fitCenter"
+            android:contentDescription="@string/play_label"
             android:padding="8dp"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_widget_play" />
 
         <LinearLayout

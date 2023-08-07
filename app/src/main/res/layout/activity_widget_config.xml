@@ -4,18 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/gradient_background"
+    android:background="@color/white"
     android:padding="16dp">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:background="@drawable/bg_circle">
 
         <ImageView
             android:id="@+id/widget_config_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/bg_circle"
             android:scaleType="centerCrop"
             android:src="@drawable/teaser" />
 
@@ -37,6 +39,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_marginTop="35dp"
+            android:background="@drawable/gradient_background"
             android:padding="16dp">
 
             <!-- Stylish Typography -->
@@ -44,10 +48,10 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
                 android:text="@string/widget_opacity"
-                android:textSize="18sp"
                 android:textColor="@android:color/black"
-                android:fontFamily="@font/cool_stylish_fonts" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/widget_opacity_textView"
@@ -69,7 +73,7 @@
                 android:layout_marginBottom="16dp"
                 android:max="100"
                 android:progress="100"
-                android:progressTint="@color/vibrant_blue" />
+                android:progressTint="@color/black" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -80,37 +84,37 @@
                     android:id="@+id/ckPlaybackSpeed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/black"
+                    android:fontFamily="sans-serif"
                     android:text="@string/playback_speed"
-                    android:fontFamily="@font/cool_stylish_fonts"
-                    android:textColor="@android:color/black"
-                    android:buttonTint="@color/vibrant_green" />
+                    android:textColor="@android:color/black" />
 
                 <CheckBox
                     android:id="@+id/ckRewind"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/black"
+                    android:fontFamily="sans-serif"
                     android:text="@string/rewind_label"
-                    android:fontFamily="@font/cool_stylish_fonts"
-                    android:textColor="@android:color/black"
-                    android:buttonTint="@color/vibrant_blue" />
+                    android:textColor="@android:color/black" />
 
                 <CheckBox
                     android:id="@+id/ckFastForward"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/black"
+                    android:fontFamily="sans-serif"
                     android:text="@string/fast_forward_label"
-                    android:fontFamily="@font/cool_stylish_fonts"
-                    android:textColor="@android:color/black"
-                    android:buttonTint="@color/vibrant_orange" />
+                    android:textColor="@android:color/black" />
 
                 <CheckBox
                     android:id="@+id/ckSkip"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/black"
+                    android:fontFamily="sans-serif"
                     android:text="@string/skip_episode_label"
-                    android:fontFamily="@font/cool_stylish_fonts"
-                    android:textColor="@android:color/black"
-                    android:buttonTint="@color/vibrant_purple" />
+                    android:textColor="@android:color/black" />
 
             </LinearLayout>
 
@@ -120,12 +124,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/widget_create_button"
-                android:textColor="@android:color/black"
                 android:background="@drawable/rounded_button"
-                android:elevation="4dp"
-                android:fontFamily="@font/cool_stylish_fonts"
-                android:stateListAnimator="@animator/button_state_list_animator" />
+                android:elevation="7dp"
+                android:fontFamily="sans-serif-black"
+                android:stateListAnimator="@animator/button_state_list_animator"
+                android:text="@string/widget_create_button"
+                android:textColor="@android:color/black" />
 
         </LinearLayout>
 
