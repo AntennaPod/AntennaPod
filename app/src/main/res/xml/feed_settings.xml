@@ -50,12 +50,12 @@
 
     <de.danoeh.antennapod.preferences.MaterialListPreference
         android:defaultValue="off"
-        android:entries="@array/spnVolumeReductionItems"
-        android:entryValues="@array/spnVolumeReductionValues"
+        android:entries="@array/spnVolumeAdaptationItems"
+        android:entryValues="@array/spnVolumeAdaptationValues"
         android:icon="@drawable/ic_volume_adaption"
         android:key="volumeReduction"
-        android:summary="@string/feed_volume_reduction_summary"
-        android:title="@string/feed_volume_reduction" />
+        android:summary="@string/feed_volume_adaptation_summary"
+        android:title="@string/feed_volume_adapdation" />
 
     <de.danoeh.antennapod.preferences.MaterialListPreference
         android:entries="@array/feedNewEpisodesActionItems"

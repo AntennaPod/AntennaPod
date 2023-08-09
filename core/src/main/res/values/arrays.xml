@@ -13,16 +13,22 @@
         <item>never</item>
     </string-array>
 
-    <string-array name="spnVolumeReductionItems">
+    <string-array name="spnVolumeAdaptationItems">
         <item>@string/feed_volume_reduction_off</item>
         <item>@string/feed_volume_reduction_light</item>
         <item>@string/feed_volume_reduction_heavy</item>
+        <item>@string/feed_volume_boost_light</item>
+        <item>@string/feed_volume_boost_medium</item>
+        <item>@string/feed_volume_boost_heavy</item>
     </string-array>
 
-    <string-array name="spnVolumeReductionValues">
+    <string-array name="spnVolumeAdaptationValues">
         <item>off</item>
         <item>light</item>
         <item>heavy</item>
+        <item>light_boost</item>
+        <item>medium_boost</item>
+        <item>heavy_boost</item>
     </string-array>
 
     <string-array name="feed_refresh_interval_entries">

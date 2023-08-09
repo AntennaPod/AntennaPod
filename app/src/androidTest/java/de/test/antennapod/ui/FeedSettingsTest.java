@@ -73,7 +73,7 @@ public class FeedSettingsTest {
         clickPreference(R.string.auto_delete_label);
         onView(withText(R.string.cancel_label)).perform(click());
 
-        clickPreference(R.string.feed_volume_reduction);
+        clickPreference(R.string.feed_volume_adapdation);
         onView(withText(R.string.cancel_label)).perform(click());
     }
 }
