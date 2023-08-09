@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
+import android.media.audiofx.LoudnessEnhancer;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
@@ -68,6 +69,8 @@ public class ExoPlayerWrapper {
     private PlaybackParameters playbackParameters;
     private DefaultTrackSelector trackSelector;
 
+    private LoudnessEnhancer loudnessEnhancer;
+
     ExoPlayerWrapper(Context context) {
         this.context = context;
         createPlayer();
@@ -133,7 +136,14 @@ public class ExoPlayerWrapper {
                     audioSeekCompleteListener.run();
                 }
             }
+
+            @Override
+            public void onAudioSessionIdChanged(int audioSessionId) {
+                initLoudnessEnhancer(audioSessionId);
+            }
         });
+
+        initLoudnessEnhancer(exoPlayer.getAudioSessionId());
     }
 
     public int getCurrentPosition() {
@@ -235,7 +245,15 @@ public class ExoPlayerWrapper {
     }
 
     public void setVolume(float v, float v1) {
-        exoPlayer.setVolume(v);
+        if (v > 1) {
+            exoPlayer.setVolume(1f);
+            loudnessEnhancer.setEnabled(true);
+            loudnessEnhancer.setTargetGain((int) (1000 * (v - 1)));
+        } else {
+            exoPlayer.setVolume(v);
+            loudnessEnhancer.setEnabled(false);
+        }
+
     }
 
     public void start() {
@@ -334,5 +352,17 @@ public class ExoPlayerWrapper {
 
     void setOnBufferingUpdateListener(Consumer<Integer> bufferingUpdateListener) {
         this.bufferingUpdateListener = bufferingUpdateListener;
+    }
+
+    private void initLoudnessEnhancer(int audioStreamId) {
+        LoudnessEnhancer newEnhancer = new LoudnessEnhancer(audioStreamId);
+        LoudnessEnhancer oldEnhancer = this.loudnessEnhancer;
+        if (oldEnhancer != null) {
+            newEnhancer.setEnabled(oldEnhancer.getEnabled());
+            newEnhancer.setTargetGain((int) oldEnhancer.getTargetGain());
+            oldEnhancer.release();
+        }
+
+        this.loudnessEnhancer = newEnhancer;
     }
 }
