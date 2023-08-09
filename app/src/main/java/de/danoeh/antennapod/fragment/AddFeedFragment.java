@@ -27,6 +27,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.model.feed.SortOrder;
@@ -213,7 +214,7 @@ public class AddFeedFragment extends Fragment {
         dirFeed.setItems(Collections.emptyList());
         dirFeed.setSortOrder(SortOrder.EPISODE_TITLE_A_Z);
         Feed fromDatabase = DBTasks.updateFeed(getContext(), dirFeed, false);
-        DBTasks.forceRefreshFeed(getContext(), fromDatabase, true);
+        FeedUpdateManager.runOnce(requireContext(), fromDatabase);
         return fromDatabase;
     }
 

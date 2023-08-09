@@ -1,10 +1,10 @@
 package de.danoeh.antennapod;
 
+import android.app.Application;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.StrictMode;
 
-import androidx.multidex.MultiDexApplication;
 import com.google.android.material.color.DynamicColors;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
@@ -17,11 +17,12 @@ import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.ClientConfigurator;
 import de.danoeh.antennapod.error.CrashReportWriter;
 import de.danoeh.antennapod.error.RxJavaErrorHandlerSetup;
+import de.danoeh.antennapod.preferences.PreferenceUpgrader;
 import de.danoeh.antennapod.spa.SPAUtil;
 import org.greenrobot.eventbus.EventBus;
 
 /** Main application class. */
-public class PodcastApp extends MultiDexApplication {
+public class PodcastApp extends Application {
 
     private static PodcastApp singleton;
 
@@ -52,6 +53,7 @@ public class PodcastApp extends MultiDexApplication {
         singleton = this;
 
         ClientConfigurator.initialize(this);
+        PreferenceUpgrader.checkUpgrades(this);
 
         Iconify.with(new FontAwesomeModule());
         Iconify.with(new MaterialModule());

@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.text.TextUtilsCompat;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
@@ -38,7 +36,7 @@ public abstract class HomeSection extends Fragment implements View.OnCreateConte
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         viewBinding = HomeSectionBinding.inflate(inflater);
         viewBinding.titleLabel.setText(getSectionTitle());
-        if (TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_LTR) {
+        if (TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_LTR) {
             viewBinding.moreButton.setText(getMoreLinkTitle() + "\u00A0»");
         } else {
             viewBinding.moreButton.setText("«\u00A0" + getMoreLinkTitle());

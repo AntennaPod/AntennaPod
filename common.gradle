@@ -5,7 +5,6 @@ android {
         minSdk 21
         targetSdk 33
 
-        multiDexEnabled true
         vectorDrawables.useSupportLibrary true
         vectorDrawables.generatedDensities = []
 

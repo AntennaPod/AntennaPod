@@ -1,26 +1,29 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activity and fragment titles-->
-  <string name="feed_update_receiver_name">更新訂閱</string>
   <string name="feeds_label">Podcast</string>
   <string name="statistics_label">統計</string>
-  <string name="add_feed_label">新增 Podcast</string>
   <string name="episodes_label">單集</string>
+  <string name="home_label">首頁</string>
   <string name="queue_label">待播清單</string>
+  <string name="inbox_label">收件匣</string>
   <string name="favorite_episodes_label">最愛</string>
   <string name="settings_label">設定</string>
   <string name="downloads_label">下載</string>
   <string name="subscriptions_label">訂閱</string>
-  <string name="subscriptions_list_label">訂閱列表</string>
-  <string name="cancel_download_label">取消下載</string>
-  <string name="playback_history_label">播放歷史</string>
   <string name="episode_cache_full_title">暫存集數已達上限</string>
   <string name="episode_cache_full_message">暫存集數已達上限，您可以在設定中調整限制。</string>
+  <string name="years_statistics_label">年</string>
   <string name="notification_pref_fragment">通知</string>
   <!--Google Assistant-->
+  <string name="app_action_not_found">找不到 \"%1$s\"</string>
   <!--SwipeActions-->
+  <string name="change_setting">變更</string>
   <!--Statistics fragment-->
   <string name="statistics_speed_not_counted">注意：此統計不考慮播放速度影響</string>
+  <string name="statistics_from">自</string>
+  <string name="statistics_to">至</string>
+  <string name="statistics_today">今日</string>
   <string name="statistics_reset_data">重設統計數據</string>
   <string name="statistics_reset_data_msg">這會清除過去的播放紀錄，您確定要進行嗎？</string>
   <!--Home fragment-->
@@ -28,7 +31,6 @@
   <!--Main activity-->
   <string name="drawer_open">打開選單</string>
   <string name="drawer_close">關閉選單</string>
-  <string name="drawer_preferences">側邊選單設定</string>
   <string name="drawer_feed_order_unplayed_episodes">按計數器排序</string>
   <string name="drawer_feed_order_alphabetical">按字母排序</string>
   <string name="drawer_feed_order_last_update">按發布日期排序</string>
@@ -41,13 +43,9 @@
   <string name="export_logs_menu_title">匯出詳細記錄</string>
   <string name="confirm_export_log_dialog_message">詳細記錄中可能包含您的隱私資訊，例如訂閱列表等等</string>
   <!--Webview actions-->
-  <string name="open_in_browser_label">在瀏覽器中打開</string>
   <string name="copy_url_label">複製網址</string>
   <string name="share_url_label">分析網址</string>
-  <string name="copied_url_msg">複製網址到剪貼簿</string>
-  <string name="go_to_position_label">跳至此處</string>
   <!--Playback history-->
-  <string name="clear_history_label">清除歷史</string>
   <!--Other-->
   <string name="confirm_label">確定</string>
   <string name="cancel_label">取消</string>
@@ -65,13 +63,9 @@
   <string name="close_label">關閉</string>
   <string name="retry_label">重試</string>
   <string name="auto_download_label">加入自動下載</string>
-  <string name="auto_delete_label">自動刪除單集</string>
-  <string name="feed_volume_reduction">降低音量</string>
   <string name="feed_volume_reduction_off">關閉</string>
   <string name="feed_volume_reduction_light">輕</string>
   <string name="feed_volume_reduction_heavy">重</string>
-  <string name="parallel_downloads">同時一次下載 %1$d 集</string>
-  <string name="feed_auto_download_global">預設值</string>
   <string name="feed_auto_download_always">總是</string>
   <string name="feed_auto_download_never">不予下載</string>
   <string name="send_label">發送中…</string>
@@ -85,13 +79,9 @@
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="other">聽完後 %d 天</item>
   </plurals>
-  <string name="episode_notification">單集通知</string>
   <string name="episode_notification_summary">當新單集推出時顯示通知訊息</string>
   <plurals name="new_episode_notification_message">
     <item quantity="other">%2$s 發表了 %1$d 則新單集</item>
-  </plurals>
-  <plurals name="new_episode_notification_title">
-    <item quantity="other">新單集</item>
   </plurals>
   <string name="new_episode_notification_group_text">您訂閱的 Podcast 推出新單集了。</string>
   <!--Actions on feeds-->
@@ -101,17 +91,12 @@
   <string name="rename_feed_label">重新命名 Podcast</string>
   <string name="remove_feed_label">移除 Podcast</string>
   <string name="share_label">分享</string>
-  <string name="share_file_label">分享文件</string>
-  <string name="feed_delete_confirmation_msg">請確認您是否要刪除「%1$s」這個 Podcast 及當中下載的每一集。</string>
-  <string name="feed_delete_confirmation_local_msg">您確定要刪除「%1$s」嗎？目前下載過的檔案將不會刪除。</string>
   <string name="feed_remover_msg">移除 Podcast</string>
   <string name="load_complete_feed">重新整理 Podcast</string>
   <string name="multi_select">多重選取</string>
   <string name="select_all_above">選取以上全部</string>
   <string name="select_all_below">選取以下全部</string>
   <string name="filtered_label">已過濾</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} 前次更新失敗，點擊查閱詳情。</string>
-  <string name="open_podcast">打開 Podcast</string>
   <string name="please_wait_for_data">資料載入中，請稍候</string>
   <!--actions on feeditems-->
   <string name="download_label">下載</string>
@@ -123,7 +108,6 @@
   <string name="stream_label">串流播放</string>
   <string name="delete_label">刪除</string>
   <string name="delete_failed">刪除文件失敗。重啟設備試試看。</string>
-  <string name="delete_episode_label">刪除這一集</string>
   <string name="mark_read_label">標記為已播放</string>
   <string name="mark_read_no_media_label">標示為已讀</string>
   <string name="play_this_to_seek_position">若想指定播放位置，請先播放該單集</string>
@@ -135,20 +119,13 @@
   <plurals name="marked_unread_batch_label">
     <item quantity="other">共有 %d 集標示為未播放。</item>
   </plurals>
-  <string name="add_to_queue_label">加入待播清單</string>
-  <string name="added_to_queue_label">已列入待播清單</string>
   <plurals name="added_to_queue_batch_label">
     <item quantity="other">已將 %d 集加入待播清單。</item>
   </plurals>
-  <string name="remove_from_queue_label">從待播清單中移除</string>
   <plurals name="removed_from_queue_batch_label">
     <item quantity="other">已將 %d 集自待播清單中移除</item>
   </plurals>
-  <string name="add_to_favorite_label">加入最愛</string>
-  <string name="remove_from_favorite_label">移出最愛</string>
-  <string name="visit_website_label">訪問網站</string>
   <string name="skip_episode_label">跳過這一集</string>
-  <string name="reset_position">重置播放進度</string>
   <string name="no_items_selected">未選擇任何項目</string>
   <!--Download messages and labels-->
   <string name="download_successful">成功</string>
@@ -158,54 +135,33 @@
   <string name="download_error_tap_for_details">點擊查閱詳情。</string>
   <string name="download_error_device_not_found">沒找到儲存空間</string>
   <string name="download_error_insufficient_space">您設備的儲存空間不夠了。</string>
-  <string name="download_error_http_data_error">HTTP 資料有誤</string>
-  <string name="download_error_error_unknown">位置錯誤</string>
   <string name="download_error_parser_exception">Podcast 主機傳了錯誤的資料過來。</string>
-  <string name="download_error_unsupported_type">不支援此來源類型</string>
-  <string name="download_error_connection_error">連接錯誤</string>
-  <string name="download_error_unauthorized">驗證失敗</string>
-  <string name="download_error_file_type_type">文件格式錯誤</string>
   <string name="download_canceled_msg">下載已取消</string>
   <string name="download_report_title">下載已完成，但可能有錯誤</string>
-  <string name="auto_download_report_title">自動下載完畢</string>
-  <string name="download_error_io_error">IO 錯誤</string>
-  <string name="download_error_request_error">請求錯誤</string>
-  <string name="download_error_db_access">資料庫存取錯誤</string>
   <plurals name="downloads_left">
     <item quantity="other">剩餘%d 個下載</item>
   </plurals>
-  <string name="download_notification_title">Podcast 資料下載中</string>
-  <string name="download_log_title_unknown">標題不明</string>
+  <string name="download_notification_title_feeds">正在重新整理 Podcast</string>
   <string name="download_type_feed">資料來源</string>
   <string name="download_type_media">媒體檔案</string>
   <string name="null_value_podcast_error">無法顯示 Podcast</string>
   <string name="authentication_notification_title">需要驗證</string>
-  <string name="authentication_notification_msg">這項資源需要帳號及密碼</string>
-  <string name="confirm_mobile_download_dialog_title">確定使用行動網路下載</string>
-  <string name="confirm_mobile_download_dialog_message_not_in_queue">您目前設定為不以行動網路下載。\n\n您可以僅將這一集加入待播清單，或暫時允許以行動網路下載。\n\n<small>暫時允許的效期為10分鐘</small></string>
-  <string name="confirm_mobile_download_dialog_message">您目前設定為不以行動網路下載單集。\n\n是否要暫時允許以行動網路下載呢？\n\n1<small>暫時允許的效期為 10 分鐘</small></string>
-  <string name="confirm_mobile_streaming_notification_title">確認以行動網路串流播放</string>
   <string name="confirm_mobile_streaming_notification_message">目前您設定為不可使用行動網路串流播放，輕觸後可強制以串流播放。</string>
   <string name="confirm_mobile_streaming_button_always">永遠允許</string>
   <string name="confirm_mobile_streaming_button_once">允許一次</string>
-  <string name="confirm_mobile_download_dialog_only_add_to_queue">列入待播清單</string>
-  <string name="confirm_mobile_download_dialog_enable_temporarily">暫時允許</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_server_died">主機未回應</string>
   <string name="playback_error_unsupported">不支援的媒體格式</string>
   <string name="playback_error_timeout">操作逾時</string>
   <string name="playback_error_source">無法取得該媒體檔案</string>
-  <string name="playback_error_unknown">不明錯誤</string>
   <string name="no_media_playing_label">播放完畢</string>
   <string name="unknown_media_key">AntennaPod - 媒體按鍵無法辨識：%1$d</string>
   <string name="error_file_not_found">找不到檔案</string>
   <!--Queue operations-->
-  <string name="lock_queue">鎖定待播清單</string>
   <string name="queue_locked">待播清單已鎖定</string>
   <string name="queue_unlocked">待播清單已解鎖</string>
   <string name="queue_lock_warning">一旦鎖定待播清單，就無法調整各集次序或使用滑動選單</string>
   <string name="checkbox_do_not_show_again">不再顯示</string>
-  <string name="clear_queue_label">清空待播清單</string>
   <string name="undo">返回</string>
   <string name="move_to_top_label">移到最前</string>
   <string name="move_to_bottom_label">移到最後</string>
@@ -216,7 +172,6 @@
   <string name="episode_title">單集標題</string>
   <string name="feed_title">Podcast 標題</string>
   <string name="random">隨機</string>
-  <string name="smart_shuffle">智慧隨機</string>
   <string name="clear_queue_confirmation_msg">請確認您要清除待播清單中的每一集</string>
   <string name="time_left_label">時間尚餘：\u0020</string>
   <!--Variable Speed-->
@@ -230,15 +185,11 @@
   <string name="no_comp_downloads_label">您可以到 Podcast 詳情畫面下載各單集。</string>
   <string name="no_log_downloads_head_label">無下載紀錄</string>
   <string name="no_log_downloads_label">有下載紀錄時，將顯示於此</string>
-  <string name="no_history_head_label">無歷史紀錄</string>
   <string name="no_history_label">聽過的每一集都會顯示在此。</string>
-  <string name="no_all_episodes_head_label">什麼也沒有</string>
   <string name="no_all_episodes_label">當您添增 Podcast 後，其中的各單集會顯示於此。</string>
   <string name="no_subscriptions_head_label">無訂閱</string>
   <string name="no_subscriptions_label">請按下方加號以訂閱 Podcast</string>
   <!--Preferences-->
-  <string name="storage_pref">儲存空間</string>
-  <string name="storage_sum">自動刪除、匯入、匯出</string>
   <string name="project_pref">專案</string>
   <string name="synchronization_pref">同步</string>
   <string name="automation">自動化</string>
@@ -253,76 +204,42 @@
   <string name="preference_search_hint">搜尋…</string>
   <string name="preference_search_no_results">無結果</string>
   <string name="preference_search_clear_history">清除歷史紀錄</string>
-  <string name="media_player">媒體播放器</string>
-  <string name="pref_episode_cleanup_title">刪除單集時機</string>
   <string name="pref_pauseOnDisconnect_sum">耳機或藍牙斷開連接時暫停播放</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">當耳機再次連接時繼續播放</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">當藍牙再次連接時繼續播放</string>
-  <string name="pref_hardware_forward_button_title">快轉鈕</string>
   <string name="pref_hardware_forward_button_summary">自訂快轉鈕的功能</string>
-  <string name="pref_hardware_previous_button_title">倒轉鈕</string>
   <string name="pref_hardware_previous_button_summary">自訂倒轉鈕的功能</string>
-  <string name="button_action_fast_forward">快轉</string>
   <string name="button_action_rewind">倒轉</string>
-  <string name="button_action_skip_episode">跳過這集</string>
-  <string name="button_action_restart_episode">重新播放</string>
   <string name="pref_followQueue_sum">當播放完畢時自動跳至待播清單中的下一集</string>
   <string name="pref_auto_delete_sum">播放完畢後刪除該集</string>
-  <string name="pref_auto_delete_title">自動刪除</string>
   <string name="pref_smart_mark_as_played_sum">若離開時還剩下特定秒數以內，也將該集標記為已播放</string>
-  <string name="pref_smart_mark_as_played_title">提前視為已播放</string>
   <string name="pref_skip_keeps_episodes_sum">當跳過某集不播放時，仍於清單中保留該集</string>
-  <string name="pref_skip_keeps_episodes_title">保留跳過的單集</string>
-  <string name="pref_favorite_keeps_episodes_sum">保留標記為最愛的各單集</string>
-  <string name="pref_favorite_keeps_episodes_title">保留最愛單集</string>
   <string name="playback_pref">播放</string>
   <string name="playback_pref_sum">耳機線控、快轉時間、待播清單</string>
-  <string name="network_pref">網路</string>
-  <string name="network_pref_sum">更新週期、下載控制、行動網路</string>
-  <string name="pref_followQueue_title">連續播放</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">耳機或藍牙裝置拔除時</string>
-  <string name="pref_unpauseOnHeadsetReconnect_title">接上耳機時繼續播放</string>
-  <string name="pref_unpauseOnBluetoothReconnect_title">連上藍牙時繼續播放</string>
-  <string name="pref_stream_over_download_title">偏好串流</string>
   <string name="pref_stream_over_download_sum">在清單中顯示串流播放按鈕取代下載鈕</string>
-  <string name="pref_mobileUpdate_title">允許以行動網路…</string>
   <string name="pref_mobileUpdate_sum">選擇以行動網路連線時可以做的事</string>
   <string name="pref_mobileUpdate_refresh">更新 Podcast</string>
   <string name="pref_mobileUpdate_images">更新封面圖</string>
   <string name="pref_mobileUpdate_auto_download">自動下載</string>
   <string name="pref_mobileUpdate_episode_download">下載單集</string>
   <string name="pref_mobileUpdate_streaming">串流播放</string>
-  <string name="user_interface_label">使用者介面</string>
-  <string name="user_interface_sum">外觀、訂閱、鎖定畫面</string>
-  <string name="pref_set_theme_title">選擇主題</string>
-  <string name="pref_nav_drawer_items_title">設定側邊選單</string>
   <string name="pref_nav_drawer_items_sum">調整側邊選單裡要顯示的項目</string>
-  <string name="pref_nav_drawer_feed_order_title">設定訂閱排序方式</string>
   <string name="pref_nav_drawer_feed_order_sum">更改您訂閱頻道的排序方式</string>
-  <string name="pref_nav_drawer_feed_counter_title">設定訂閱計數器</string>
   <string name="pref_nav_drawer_feed_counter_sum">調整訂閱計數器中要顯示的東西，同時也會在排序方式設定為「計數」時影響排序</string>
-  <string name="pref_set_theme_sum">更改 AntennaPod 的外觀</string>
-  <string name="pref_automatic_download_title">自動下載</string>
   <string name="pref_automatic_download_sum">設定單集自動下載機制</string>
   <string name="pref_autodl_wifi_filter_title">限定 Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">限定於特定 Wi-Fi 連線時自動下載</string>
   <string name="pref_automatic_download_on_battery_title">未充電時下載</string>
   <string name="pref_automatic_download_on_battery_sum">允許未充電時也自動下載</string>
-  <string name="pref_parallel_downloads_title">同步下載</string>
-  <string name="pref_episode_cache_title">暫存集數</string>
   <string name="pref_episode_cache_summary">在本機中可以暫存的集數，若達上限則將停止自動下載。</string>
-  <string name="pref_episode_cover_title">使用單集的封面圖</string>
   <string name="pref_episode_cover_summary">在單集有專屬封面的情況下使用該封面圖。如果取消，則一律使用 Podcast 的封面圖</string>
-  <string name="pref_show_remain_time_title">顯示剩餘時間</string>
   <string name="pref_show_remain_time_summary">勾選時顯示剩餘播放時間，不勾選時顯示單集的總時間。</string>
-  <string name="pref_theme_title_use_system">依據系統設定</string>
   <string name="pref_theme_title_light">淡色</string>
   <string name="pref_theme_title_dark">深色</string>
-  <string name="pref_theme_title_trueblack">黑色 (適用 AMOLED 螢幕)</string>
   <string name="pref_episode_cache_unlimited">無限</string>
   <string name="pref_playback_speed_sum">自訂可選用的播放速度</string>
   <string name="pref_feed_playback_speed_sum">播放此 Podcast 中各單集時的播放速度</string>
-  <string name="pref_feed_skip">自動跳過</string>
   <string name="pref_feed_skip_sum">跳過開場和結尾鳴謝</string>
   <string name="pref_feed_skip_ending">跳過最後幾秒</string>
   <string name="pref_feed_skip_intro">跳過最初幾秒</string>
@@ -330,50 +247,29 @@
   <string name="pref_feed_skip_intro_toast">跳過最初 %d 秒</string>
   <string name="pref_playback_time_respects_speed_title">依據播放速度調整媒體資訊</string>
   <string name="pref_playback_time_respects_speed_sum">根據播放速度調整播放進度、時長等資訊</string>
-  <string name="pref_fast_forward">快轉時間</string>
   <string name="pref_fast_forward_sum">自訂快轉鈕要往前快轉多少時間</string>
-  <string name="pref_rewind">倒轉時間</string>
   <string name="pref_rewind_sum">自訂倒轉鈕要往後倒轉多少時間</string>
-  <string name="pref_expandNotify_title">優先通知</string>
   <string name="pref_expandNotify_sum">此功能通常會加大通知訊息以便顯示控制鈕</string>
-  <string name="pref_persistNotify_title">保留播放控制鈕</string>
   <string name="pref_persistNotify_sum">暫停播放時，在通知列及鎖定畫面上保留播放控制鈕</string>
-  <string name="pref_compact_notification_buttons_title">設定精簡通知按鈕</string>
   <string name="pref_compact_notification_buttons_sum">設定精簡通知訊息上的播放控制鈕。「暫停/播放」鈕一定會出現</string>
   <string name="pref_compact_notification_buttons_dialog_title">最多可選擇 %1$d 項</string>
   <string name="pref_compact_notification_buttons_dialog_error">您最多只能選擇 %1$d 項。</string>
-  <string name="pref_lockscreen_background_title">設定鎖定畫面背景</string>
-  <string name="pref_lockscreen_background_sum">在鎖定畫面背景採用本單集的圖片，同時也會在第三方 App 裡顯示圖片</string>
-  <string name="pref_enqueue_location_title">待播清單新增位置</string>
   <string name="pref_enqueue_location_sum">將這幾集加到：%1$s</string>
   <string name="enqueue_location_back">放到清單最後</string>
   <string name="enqueue_location_front">放到清單最前</string>
   <string name="enqueue_location_after_current">當前這集以後</string>
   <string name="pref_smart_mark_as_played_disabled">停用</string>
-  <string name="documentation_support">文件與支援資訊</string>
   <string name="visit_user_forum">使用者論壇</string>
   <string name="bug_report_title">回報錯誤</string>
   <string name="open_bug_tracker">開啟錯誤追蹤</string>
   <string name="copy_to_clipboard">複製到剪貼簿</string>
   <string name="copied_to_clipboard">已複製到剪貼簿</string>
-  <string name="experimental_pref">實驗功能</string>
-  <string name="pref_media_player_message">設定用以播放檔案的媒體播放器</string>
-  <string name="pref_current_value">當前設定：%1$s</string>
   <string name="pref_proxy_title">代理伺服器</string>
   <string name="pref_proxy_sum">設定代理伺服器</string>
   <string name="pref_no_browser_found">找不到任何瀏覽器</string>
-  <string name="pref_enqueue_downloaded_title">下載後加入待播清單</string>
   <string name="pref_enqueue_downloaded_summary">下載單集以後自動加入待播清單</string>
-  <string name="media_player_builtin">內建 Android 播放器 (已棄用)</string>
-  <string name="media_player_sonic">Sonic Media Player (已棄用) </string>
-  <string name="media_player_exoplayer_recommended">ExoPlayer（推薦使用）</string>
-  <string name="media_player_switch_to_exoplayer">切換至 ExoPlayer</string>
-  <string name="media_player_switched_to_exoplayer">已切換至 ExoPlayer</string>
-  <string name="pref_skip_silence_title">跳過沒有聲音的部分</string>
   <string name="behavior">操作行為</string>
-  <string name="pref_delete_removes_from_queue_title">刪除時同步自待播清單中移除</string>
   <string name="pref_delete_removes_from_queue_sum">刪除某單集後，也自動將其從待播清單中移除</string>
-  <string name="pref_filter_feed_title">篩選訂閱內容</string>
   <string name="pref_filter_feed_sum">篩選側邊選單及訂閱畫面中顯示的訂閱清單</string>
   <string name="subscriptions_are_filtered">此為篩選過的訂閱清單。</string>
   <string name="subscriptions_counter_greater_zero">計數大於 0 的</string>
@@ -454,13 +350,14 @@
   <plurals name="time_hours_quantified">
     <item quantity="other">%d 小時</item>
   </plurals>
-  <string name="auto_enable_label">自動啟用</string>
   <string name="sleep_timer_enabled_label">已設定睡眠定時</string>
   <!--Synchronisation-->
+  <string name="synchronization_host_label">伺服器位址</string>
   <string name="gpodnetauth_login_butLabel">登入</string>
   <string name="gpodnetauth_encryption_warning">密碼與資料都沒有加密！</string>
   <string name="username_label">帳號</string>
   <string name="password_label">密碼</string>
+  <string name="synchronization_login_butLabel">登入</string>
   <string name="gpodnetauth_device_name">裝置名稱</string>
   <string name="gpodnetauth_existing_devices">現存裝置</string>
   <string name="gpodnetauth_create_device">新增裝置</string>
@@ -468,19 +365,16 @@
   <string name="gpodnetauth_finish_butsyncnow">現在開始同步</string>
   <string name="pref_gpodnet_setlogin_information_title">變更登入資訊</string>
   <string name="pref_gpodnet_setlogin_information_sum">修改您的 gpodder.net 帳號登入資訊</string>
+  <string name="synchronization_logout">登出</string>
   <string name="gpodnetsync_error_title">gpodder.net 同步錯誤</string>
   <string name="gpodnetsync_error_descr">更新時發生錯誤：\u0020</string>
   <string name="gpodnetsync_pref_report_successful">成功</string>
   <string name="gpodnetsync_pref_report_failed">失敗</string>
   <string name="gpodnetsync_username_characters_error">帳號中只能包含英文字母、數字、橫線及底線</string>
   <!--Directory chooser-->
-  <string name="choose_data_directory">選擇儲存資料夾</string>
   <string name="choose_data_directory_message">請選擇您儲存檔案用的資料夾，AntennaPod 會自動建立相應的子資料夾。</string>
   <string name="choose_data_directory_available_space">可用空間 %1$s/%2$s</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">有其他 App 也要播放聲音時，停止播放 Podcast（而非降低音量）</string>
-  <string name="pref_pausePlaybackForFocusLoss_title">其他音訊介入時暫停播放</string>
-  <string name="pref_resumeAfterCall_sum">通話結束後，繼續播放 Podcast</string>
-  <string name="pref_resumeAfterCall_title">通話後繼續播放</string>
   <!--Online feed view-->
   <string name="subscribe_label">訂閱</string>
   <string name="subscribing_label">訂閱中</string>
@@ -502,10 +396,7 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">驗證</string>
   <string name="authentication_descr">修改此 Podcast 的帳號與密碼。</string>
-  <string name="auto_download_settings_label">自動下載設定</string>
-  <string name="episode_filters_label">篩選</string>
   <string name="episode_filters_description">自動下載時要列入或排除的條件清單</string>
-  <string name="keep_updated">維持更新</string>
   <string name="keep_updated_summary">自動更新所有 Podcast 時，也包括此 Podcast</string>
   <string name="auto_download_disabled_globally">AntennaPod 的主設定中已停用自動下載功能</string>
   <string name="statistics_episodes_on_device">裝置上的單集：</string>
@@ -515,8 +406,6 @@
   <string name="sp_apps_importing_feeds_msg">從 AntennaPodSP 匯入訂閱清單</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">搜尋 Podcast…</string>
-  <string name="search_itunes_label">搜尋 iTunes</string>
-  <string name="search_podcastindex_label">搜尋 Podcastindex.org</string>
   <string name="search_fyyd_label">搜尋 fyyd</string>
   <string name="gpodnet_search_hint">搜尋 gpodder.net</string>
   <string name="advanced">進階</string>
@@ -525,7 +414,6 @@
   <string name="discover_hide">隱藏</string>
   <string name="discover_is_hidden">您已隱藏推薦項目。</string>
   <string name="discover_more">更多 »</string>
-  <string name="discover_powered_by_itunes">由 iTunes 提供的建議</string>
   <string name="search_powered_by">來自 %1$s 的搜尋結果</string>
   <!--Local feeds-->
   <string name="add_local_folder">新增本機資料夾</string>
@@ -560,22 +448,11 @@
   <string name="sort_old_new">舊 \u2192 新</string>
   <string name="sort_short_long">短 \u2192 長</string>
   <string name="sort_long_short">長 \u2192 短</string>
-  <!--Rating dialog-->
-  <string name="rating_title" tools:ignore="UnusedResources">喜歡 AntennaPod 嗎？</string>
-  <string name="rating_message" tools:ignore="UnusedResources">如果您能花點時間為 AntennaPod 評個分，就太感謝啦！</string>
-  <string name="rating_never_label" tools:ignore="UnusedResources">別吵我</string>
-  <string name="rating_later_label" tools:ignore="UnusedResources">以後再說</string>
-  <string name="rating_now_label" tools:ignore="UnusedResources">好啊，這就去！</string>
   <!--Share episode dialog-->
   <string name="share_dialog_episode_website_label">此單集的網頁</string>
   <string name="share_dialog_media_file_label">媒體檔案</string>
   <!--Audio controls-->
   <string name="audio_controls">聲音控制</string>
-  <string name="playback_speed">播放速度</string>
-  <string name="audio_effects">音效調整</string>
-  <string name="stereo_to_mono">將雙聲道降混為單聲道</string>
-  <string name="sonic_only">僅用 Sonic</string>
-  <string name="exoplayer_only">僅用 ExoPlayer</string>
   <!--proxy settings-->
   <string name="proxy_type_label">類型</string>
   <string name="host_label">主機</string>
@@ -605,7 +482,6 @@
   <string name="notification_channel_sync_error_description">在 gpodder 同步發生錯誤時顯示</string>
   <string name="notification_channel_auto_download">自動下載完畢</string>
   <string name="notification_channel_episode_auto_download">自動下載後顯示</string>
-  <string name="notification_channel_new_episode">新單集</string>
   <string name="notification_channel_new_episode_description">啟用通知的情形下，有新單集上架時顯示通知訊息</string>
   <!--Widget settings-->
   <string name="widget_settings">小工具設定</string>

@@ -156,12 +156,12 @@ public class SwipeActionsDialog {
 
             Drawable icon = DrawableCompat.wrap(AppCompatResources.getDrawable(context, action.getActionIcon()));
             icon.mutate();
-            DrawableCompat.setTintMode(icon, PorterDuff.Mode.SRC_ATOP);
+            icon.setTintMode(PorterDuff.Mode.SRC_ATOP);
             if ((direction == LEFT && leftAction == action) || (direction == RIGHT && rightAction == action)) {
-                DrawableCompat.setTint(icon, ThemeUtils.getColorFromAttr(context, action.getActionColor()));
+                icon.setTint(ThemeUtils.getColorFromAttr(context, action.getActionColor()));
                 item.swipeActionLabel.setTextColor(ThemeUtils.getColorFromAttr(context, action.getActionColor()));
             } else {
-                DrawableCompat.setTint(icon, ThemeUtils.getColorFromAttr(context, R.attr.action_icon_color));
+                icon.setTint(ThemeUtils.getColorFromAttr(context, R.attr.action_icon_color));
             }
             item.swipeIcon.setImageDrawable(icon);
 
