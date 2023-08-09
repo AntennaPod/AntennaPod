@@ -6,18 +6,22 @@
   <string name="statistics_label">Statistika</string>
   <string name="add_feed_label">Lisa taskuhääling</string>
   <string name="episodes_label">Saated</string>
+  <string name="home_label">Kodu</string>
   <string name="queue_label">Järjekord</string>
   <string name="favorite_episodes_label">Lemmikud</string>
   <string name="settings_label">Seaded</string>
   <string name="downloads_label">Allalaadimised</string>
   <string name="open_autodownload_settings">Ava seaded</string>
+  <string name="downloads_log_label">Allalaadimise logi</string>
   <string name="subscriptions_label">Tellimused</string>
   <string name="subscriptions_list_label">Tellimuste nimekiri</string>
   <string name="cancel_download_label">Katkesta allalaadimine</string>
   <string name="playback_history_label">Esitamise ajalugu</string>
   <string name="episode_cache_full_title">Saadete vahemälu on täis</string>
   <string name="episode_cache_full_message">Saadete vahemälu limiit on täis. Vahemälu limiiti saab suurendada seadete alt.</string>
+  <string name="years_statistics_label">Aastad</string>
   <string name="notification_pref_fragment">Teavitused</string>
+  <string name="recently_played_episodes">Hiljuti kuulatud saated</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" ei leitud</string>
   <!--SwipeActions-->
@@ -27,21 +31,36 @@
   <string name="swipe_left">Pühi vasakule</string>
   <string name="enable_swipeactions">Luba sellel ekraanil pühkimise tegevused</string>
   <string name="change_setting">Muuda</string>
+  <string name="individual_subscription">Üksiktellimus</string>
   <!--Statistics fragment-->
   <string name="statistics_speed_not_counted">Märkus: taasesituse kiirust ei arvestata kunagi.</string>
+  <string name="statistics_from">Kellelt</string>
+  <string name="statistics_to">Kellele</string>
+  <string name="statistics_today">Täna</string>
+  <string name="statistics_filter_all_time">Igal ajal</string>
+  <string name="statistics_filter_past_year">Möödunud aasta</string>
   <string name="statistics_reset_data">Lähtesta statistika andmed</string>
   <string name="statistics_reset_data_msg">See lähtestab kõigi esitatud saadete kuulamise pikkuse ajaloo. Kas oled kindel, et tahad jätkata?</string>
+  <string name="statistics_counting_total">Kokku kuulatud</string>
+  <!--Home fragment-->
+  <string name="home_surprise_title">Üllata mind</string>
+  <string name="home_classics_title">Vaata klassikalisi</string>
+  <string name="home_continue_title">Jätka kuulamist</string>
+  <string name="home_new_title">Mis on uut</string>
+  <string name="home_downloads_title">Halda allalaadimisi</string>
+  <string name="home_welcome_title">Tere tulemast AntennaPodi!</string>
+  <string name="open_settings">Ava seaded</string>
   <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Ava menüü</string>
   <string name="drawer_close">Sulge menüü</string>
-  <string name="drawer_preferences">Sahtli eelistused</string>
   <string name="drawer_feed_order_unplayed_episodes">Sorteeri arvu järgi</string>
   <string name="drawer_feed_order_alphabetical">Sorteeri tähestiku järgi</string>
   <string name="drawer_feed_order_last_update">Sorteeri avaldamise kuupäeva järgi</string>
   <string name="drawer_feed_order_most_played">Sorteeri kuulatud saadete järgi</string>
   <string name="drawer_feed_counter_unplayed">Kuulamata saadete arv</string>
   <string name="drawer_feed_counter_downloaded">Allalaaditud saadete arv</string>
+  <string name="drawer_feed_counter_downloaded_unplayed">Allalaaditud kuulamata saadete arv</string>
   <string name="drawer_feed_counter_none">Pole</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">Ühtegi ühilduvat rakendust ei leitud</string>
@@ -51,16 +70,19 @@
   <string name="open_in_browser_label">Ava veebisirvijas</string>
   <string name="copy_url_label">Kopeeri URL</string>
   <string name="share_url_label">Jaga URL-i</string>
-  <string name="copied_url_msg">URL on kopeeritud lõikelauale</string>
   <string name="go_to_position_label">Mine sellele asukohale</string>
   <!--Playback history-->
-  <string name="clear_history_label">Tühjenda ajalugu</string>
+  <string name="clear_history_label">Puhasta ajalugu</string>
+  <string name="clear_playback_history_msg">See puhastab kogu kuulamiste ajaloo. Kas oled kindel, et soovid jätkata?</string>
+  <string name="remove_history_label">Eemalda ajaloost</string>
+  <string name="removed_history_label">Ajaloost eemaldatud</string>
   <!--Other-->
   <string name="confirm_label">Kinnita</string>
   <string name="cancel_label">Loobu</string>
   <string name="yes">Jah</string>
   <string name="no">Ei</string>
   <string name="reset">Nulli</string>
+  <string name="global_default">Üldine vaikeväärtus</string>
   <string name="url_label">URL</string>
   <string name="support_funding_label">Toeta</string>
   <string name="support_podcast">Toeta seda taskuhäälingut</string>
@@ -68,6 +90,7 @@
   <string name="error_msg_prefix">Tekkis viga:</string>
   <string name="refresh_label">Värskenda</string>
   <string name="chapters_label">Peatükid</string>
+  <string name="no_chapters_label">Peatükid puuduvad</string>
   <string name="chapter_duration">Pikkus: %1$s</string>
   <string name="description_label">Kirjeldus</string>
   <string name="shownotes_label">Saate märkmed</string>
@@ -82,8 +105,6 @@
   <string name="feed_volume_reduction_off">Väljas</string>
   <string name="feed_volume_reduction_light">Kerge</string>
   <string name="feed_volume_reduction_heavy">Tugev</string>
-  <string name="parallel_downloads">%1$d paralleelset allalaadimist</string>
-  <string name="feed_auto_download_global">Üldine vaikeväärtus</string>
   <string name="feed_auto_download_always">Alati</string>
   <string name="feed_auto_download_never">Mitte kunagi</string>
   <string name="send_label">Saada...</string>
@@ -107,7 +128,6 @@
     <item quantity="one">%d saade</item>
     <item quantity="other">%d saadet</item>
   </plurals>
-  <string name="loading_more">Laadimine…</string>
   <string name="episode_notification">Saadete teavitused</string>
   <string name="episode_notification_summary">Teate kuvamine, kui avaldatakse uus saade.</string>
   <plurals name="new_episode_notification_message">
@@ -127,15 +147,14 @@
   <string name="remove_feed_label">Eemalda taskuhääling</string>
   <string name="share_label">Jaga</string>
   <string name="share_file_label">Jaga faili</string>
-  <string name="feed_delete_confirmation_msg">Palun kinnita, et tahad kustutada taskuhäälingu \"%1$s\" ja KÕIK selle saated (ka allalaaditud saated).</string>
-  <string name="feed_delete_confirmation_local_msg">Palun kinnita, et tahad eemaldada taskuhäälingu \"%1$s\". Kohalikus kaustas olevaid saateid ei kustutata.</string>
+  <string name="feed_delete_confirmation_msg">Palun kinnita, et tahad kustutada taskuhäälingu \"%1$s\", KÕIK selle saated (ka allalaaditud saated) ja statistika.</string>
+  <string name="feed_delete_confirmation_msg_batch">Palun kinnita, et tahad kustutada valitud taskuhäälingud, KÕIK nende saated (ka allalaaditud saated) ja statistika.</string>
   <string name="feed_remover_msg">Taskuhäälingu eemaldamine</string>
   <string name="load_complete_feed">Värskenda kogu taskuhääling</string>
   <string name="multi_select">Mitme valimine</string>
   <string name="select_all_above">Vali kõik ülemised</string>
   <string name="select_all_below">Vali kõik alumised</string>
   <string name="filtered_label">Filtreeritud</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Viimane värskendamine ebaõnnestus. Puuduta üksikasjade jaoks.</string>
   <string name="open_podcast">Ava taskuhääling</string>
   <string name="please_wait_for_data">Palun oota andmete laadimist</string>
   <string name="updates_disabled_label">Värskendused keelatud</string>
@@ -151,6 +170,10 @@
   <string name="delete_label">Kustuta</string>
   <string name="delete_failed">Faili ei saa kustutada. Aidata võib seadme taaskäivitamine.</string>
   <string name="delete_episode_label">Kustuta saade</string>
+  <plurals name="deleted_multi_episode_batch_label">
+    <item quantity="one">1 allalaaditud saade kustutatud.</item>
+    <item quantity="other">%d allalaaditud saadet kustutatud.</item>
+  </plurals>
   <string name="mark_read_label">Märgi kuulatuks</string>
   <string name="marked_as_played_label">Märgitud kuulatuks</string>
   <string name="marked_as_unplayed_label">Märgitud kui kuulamata</string>
@@ -167,7 +190,6 @@
     <item quantity="other">%d saadet märgiti kui kuulamata.</item>
   </plurals>
   <string name="add_to_queue_label">Lisa järjekorda</string>
-  <string name="added_to_queue_label">Lisatud järjekorda</string>
   <plurals name="added_to_queue_batch_label">
     <item quantity="one">%d saade lisati järjekorda.</item>
     <item quantity="other">%d saadet lisati järjekorda.</item>
@@ -177,7 +199,7 @@
     <item quantity="one">%d saade eemaldati järjekorrast.</item>
     <item quantity="other">%d saadet eemaldati järjekorrast.</item>
   </plurals>
-  <string name="add_to_favorite_label">Lisa lemmikuks</string>
+  <string name="add_to_favorite_label">Lisa lemmikutesse</string>
   <string name="remove_from_favorite_label">Eemalda lemmikutest</string>
   <string name="visit_website_label">Külasta veebilehte</string>
   <string name="skip_episode_label">Jäta saade vahele</string>
@@ -188,7 +210,6 @@
   <string name="download_pending">Ootel allalaadimine</string>
   <string name="download_running">Allalaadimine on käimas</string>
   <string name="download_error_details">Üksikasjad</string>
-  <string name="download_error_details_message">%1$s \n\nFaili URL:\n%2$s</string>
   <string name="download_error_tap_for_details">Vajuta üksikasjade nägemiseks.</string>
   <string name="download_error_device_not_found">Salvestuskohta ei leitud</string>
   <string name="download_error_insufficient_space">Sinu seadmes pole piisavalt ruumi.</string>
@@ -200,13 +221,13 @@
   <string name="download_error_not_found">Taskuhäälingut hostiv server ei leia faili. See võib olla kustutatud.</string>
   <string name="download_error_connection_error">Ühenduse viga</string>
   <string name="download_error_unknown_host">Serverit ei leitud. Kontroll, kas aadress on kirjutatud õigesti ning kas internetiühendus töötab.</string>
-  <string name="download_error_unauthorized">Autentimise viga</string>
   <string name="download_error_file_type_type">Failitüübi viga</string>
   <string name="download_error_forbidden">Taskuhäälingut hostiv server keeldub vastamast.</string>
   <string name="download_canceled_msg">Allalaadimine on tühistatud</string>
   <string name="download_error_wrong_size">Ühendus serveriga katkes enne allalaadimise lõppu</string>
+  <string name="download_error_blocked">Allalaadimise blokeeris mingi teine rakendus sinu telefonis (nt VPN või reklaami blokeerija).</string>
+  <string name="download_error_certificate">Turvalist ühendust pole võimalik luua. See võib tähendada, et mõni teine rakendus su seadmes (nt VPN või reklaami blokeerija) blokeeris allalaadimise või on serveri sertifikaatidel midagi viga.</string>
   <string name="download_report_title">Allalaadimised lõpetati veaga (vigadega)</string>
-  <string name="auto_download_report_title">Automaatsed allalaadimised lõpetatud</string>
   <string name="download_error_io_error">IO viga</string>
   <string name="download_error_request_error">Päringu viga</string>
   <string name="download_error_db_access">Andmebaasile ligipääsu viga</string>
@@ -214,29 +235,20 @@
     <item quantity="one">%d allalaadimine jäänud</item>
     <item quantity="other">%d allalaadimist jäänud</item>
   </plurals>
-  <string name="completing">Lõpetamine…</string>
-  <string name="download_notification_title">Taskuhäälingu andmete allalaadimine</string>
-  <string name="download_log_title_unknown">Tundmatu pealkiri</string>
+  <string name="download_notification_title_feeds">Taskuhäälingute värskendamine</string>
+  <string name="download_notification_title_episodes">Saadete allalaadimine</string>
   <string name="download_type_feed">Uudisvoog</string>
   <string name="download_type_media">Meediafail</string>
   <string name="null_value_podcast_error">Pole ühtegi taskuhäälingut, mida näidata.</string>
   <string name="authentication_notification_title">Autentimine on nõutud</string>
-  <string name="authentication_notification_msg">Soovitud ressurss vajab kasutajanime ja parooli</string>
-  <string name="confirm_mobile_download_dialog_title">Kinnita allalaadimine andmeside kaudu</string>
-  <string name="confirm_mobile_download_dialog_message_not_in_queue">Allalaadimine mobiilse andmeside kaudu on seadetest keelatud.\n\nSa võid valida, kas lisad saate ainult järjekorda või ajutiselt lubad allalaadimise.\n\n<small>Sinu valikut peetakse meeles 10 minutit.</small></string>
-  <string name="confirm_mobile_download_dialog_message">Allalaadimine mobiilse andmeside kaudu on seadetest keelatud.\n\nKas tahad allalaadimise ajutiselt lubada?\n\n<small>Sinu valikut peetakse meeles 10 minutit.</small></string>
-  <string name="confirm_mobile_streaming_notification_title">Kinnita voogedastus andmeside kaudu</string>
   <string name="confirm_mobile_streaming_notification_message">Voogedastus andmeside kaudu on seadetest keelatud. Koputa, et ikka striimida.</string>
   <string name="confirm_mobile_streaming_button_always">Alati</string>
   <string name="confirm_mobile_streaming_button_once">Üks kord</string>
-  <string name="confirm_mobile_download_dialog_only_add_to_queue">Järjekorda</string>
-  <string name="confirm_mobile_download_dialog_enable_temporarily">Luba ajutiselt</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_server_died">Server suri ära</string>
   <string name="playback_error_unsupported">Toetamata meedia liik</string>
   <string name="playback_error_timeout">Tegevus aegus</string>
   <string name="playback_error_source">Puudub ligipääs meediafailile</string>
-  <string name="playback_error_unknown">Tundmatu tõrge</string>
   <string name="no_media_playing_label">Mingit faili ei esitata</string>
   <string name="unknown_media_key">AntennaPod - Tundmatu meedia võti: %1$d</string>
   <string name="error_file_not_found">Faili ei leitud</string>
@@ -247,7 +259,6 @@
   <string name="queue_unlocked">Järjekorra lukustus on eemaldatud</string>
   <string name="queue_lock_warning">Kui lukustad järjekorra, ei saa saadete järjekorda enam muuta ega neid välja pühkida.</string>
   <string name="checkbox_do_not_show_again">Ära enam näita</string>
-  <string name="clear_queue_label">Tühjenda järjekord</string>
   <string name="undo">Tühista</string>
   <string name="move_to_top_label">Liiguta üles</string>
   <string name="move_to_bottom_label">Liiguta alla</string>
@@ -258,7 +269,6 @@
   <string name="episode_title">Saate pealkiri</string>
   <string name="feed_title">Taskuhäälingu pealkiri</string>
   <string name="random">Juhuslik</string>
-  <string name="smart_shuffle">Nutikalt juhuslik</string>
   <string name="clear_queue_confirmation_msg">Palun kinnita, et tahad puhastada järjekorra KÕIGIST selles olevatest saadetest</string>
   <string name="time_left_label">Aega jäänud:\u0020</string>
   <!--Variable Speed-->
@@ -272,15 +282,11 @@
   <string name="no_comp_downloads_label">Saateid saab alla laadida taskuhäälingu vaatest.</string>
   <string name="no_log_downloads_head_label">Allalaadimise logi on tühi</string>
   <string name="no_log_downloads_label">Allalaadimise logi ilmub siia siis, kui see on tekib.</string>
-  <string name="no_history_head_label">Ajalugu pole</string>
   <string name="no_history_label">Pärast seda, kui sa kuulad mõnd saadet, näidatakse seda siin.</string>
-  <string name="no_all_episodes_head_label">Saateid pole</string>
   <string name="no_all_episodes_label">Kui lisad taskuhäälingu, näeb siin selle saateid.</string>
   <string name="no_subscriptions_head_label">Tellimusi pole</string>
   <string name="no_subscriptions_label">Taskuhäälingu tellimiseks vajuta all plussmärgil.</string>
   <!--Preferences-->
-  <string name="storage_pref">Salvestusruum</string>
-  <string name="storage_sum">Saate automaatne kustutamine, importimine, eksportimine</string>
   <string name="project_pref">Projekt</string>
   <string name="synchronization_pref">Sünkroonimine</string>
   <string name="automation">Automaatika</string>
@@ -295,84 +301,45 @@
   <string name="preference_search_hint">Otsing...</string>
   <string name="preference_search_no_results">Tulemusi pole</string>
   <string name="preference_search_clear_history">Puhasta ajalugu</string>
-  <string name="media_player">Meediaesitaja</string>
-  <string name="pref_episode_cleanup_title">Saadete kustutamine</string>
   <string name="pref_episode_cleanup_summary">Saated, mida tohib kustutada, kui automaatne allalaadimine vajab ruumi uute saadete jaoks</string>
   <string name="pref_pauseOnDisconnect_sum">Esitus pausitakse, kui kõrvaklapid või bluetooth eemaldatakse</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Esitus jätkub, kui kõrvaklapid uuesti ühendatakse</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Esitus jätkub kui bluetooth uuesti ühendub</string>
-  <string name="pref_hardware_forward_button_title">Edasi nupp</string>
   <string name="pref_hardware_forward_button_summary">Muuda edasi nupu tegevust</string>
-  <string name="pref_hardware_previous_button_title">Tagasi nupp</string>
   <string name="pref_hardware_previous_button_summary">Muuda tagasi nupu tegevust</string>
-  <string name="button_action_fast_forward">Keri edasi</string>
   <string name="button_action_rewind">Keri tagasi</string>
-  <string name="button_action_skip_episode">Jäta saade vahele</string>
-  <string name="button_action_restart_episode">Alusta saadet algusest</string>
   <string name="pref_followQueue_sum">Kui saade lõpeb, siis esita kohe järgmine järjekorras olev saade.</string>
   <string name="pref_auto_delete_sum">Kustuta saated, kui need on kuulatud</string>
-  <string name="pref_auto_delete_title">Automaatne kustutamine</string>
   <string name="pref_smart_mark_as_played_sum">Märgi saated kuulatuks ka siis, kui vähem kui määratud arv sekundeid on jäänud saate lõpuni</string>
-  <string name="pref_smart_mark_as_played_title">Nutikas kuulatuks märkmine</string>
   <string name="pref_skip_keeps_episodes_sum">Hoia saated alles, kui need jäetakse vahele</string>
-  <string name="pref_skip_keeps_episodes_title">Hoia vahelejäetud osad alles</string>
-  <string name="pref_favorite_keeps_episodes_sum">Saadete säilitamine, kui need on märgitud lemmikuks</string>
-  <string name="pref_favorite_keeps_episodes_title">Säilita lemmikosad</string>
   <string name="playback_pref">Esitamine</string>
   <string name="playback_pref_sum">Kõrvaklappide juhtimine, vahelejätmine, ootejärjekord</string>
-  <string name="network_pref">Võrk</string>
-  <string name="network_pref_sum">Uuendamise sagedus, allalaadimine, mobiilinett</string>
   <string name="feed_refresh_title">Värskenda taskuhäälinguid</string>
-  <string name="feed_refresh_interval">Vahemik</string>
-  <string name="feed_refresh_time">Aeg</string>
   <string name="feed_refresh_never">Mitte kunagi</string>
-  <string name="feed_refresh_interval_at">%1$s tagant</string>
-  <string name="pref_followQueue_title">Pidev esitamine</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Peakomplekti või Bluetoothi lahti ühendamisel</string>
-  <string name="pref_unpauseOnHeadsetReconnect_title">Kõrvaklappide uuesti ühendamine</string>
-  <string name="pref_unpauseOnBluetoothReconnect_title">Bluetoothi uuesti ühendamine</string>
-  <string name="pref_stream_over_download_title">Eelista voogedastust</string>
   <string name="pref_stream_over_download_sum">Loeteludes kuvatakse allalaadimise asemel voogedastuse nuppu.</string>
-  <string name="pref_mobileUpdate_title">Uuendamine üle andmeside</string>
   <string name="pref_mobileUpdate_sum">Vali, mis peaks olema lubatud andmeside kaudu</string>
   <string name="pref_mobileUpdate_refresh">Taskuhäälingu värskendamine</string>
   <string name="pref_mobileUpdate_images">Kaanepildid</string>
   <string name="pref_mobileUpdate_auto_download">Automaatne allalaadimine</string>
   <string name="pref_mobileUpdate_episode_download">Saate allalaadimine</string>
   <string name="pref_mobileUpdate_streaming">Voogedastus</string>
-  <string name="user_interface_label">Kasutajaliides</string>
-  <string name="user_interface_sum">Välimus, tellimused, lukustusekraan</string>
-  <string name="pref_set_theme_title">Vali teema</string>
-  <string name="pref_nav_drawer_items_title">Määra peamenüü osad</string>
   <string name="pref_nav_drawer_items_sum">Määra, mis osad on peamenüüs.</string>
-  <string name="pref_nav_drawer_feed_order_title">Määra tellimuste järjekord</string>
   <string name="pref_nav_drawer_feed_order_sum">Muuda oma tellimuste järjekorda</string>
-  <string name="pref_nav_drawer_feed_counter_title">Määra tellimuste loendur</string>
   <string name="pref_nav_drawer_feed_counter_sum">Muuda, millist infot kuvatakse tellimuste loenduris. See mõjutab ka tellimuste järjekorda, kui \"Tellimuste järjekorra\" aluseks on \"Loendur\".</string>
-  <string name="pref_set_theme_sum">AntennaPodi välimuse muutmine</string>
-  <string name="pref_automatic_download_title">Automaatne allalaadimine</string>
   <string name="pref_automatic_download_sum">Saadete automaatse allalaadimise seadistamine.</string>
   <string name="pref_autodl_wifi_filter_title">Luba Wifi filter</string>
   <string name="pref_autodl_wifi_filter_sum">Luba automaatne allalaadimine ainult valitud Wifi võrkudes.</string>
   <string name="pref_automatic_download_on_battery_title">Allalaadimine, kui seade ei lae</string>
   <string name="pref_automatic_download_on_battery_sum">Luba automaatne allalaadimine ka siis, kui seade pole laadimas</string>
-  <string name="pref_parallel_downloads_title">Samaaegsed allalaadimised</string>
-  <string name="pref_episode_cache_title">Saadete vahemälu</string>
   <string name="pref_episode_cache_summary">Seadme puhvrisse allalaaditud saadete koguarv. Automaatne allalaadimine peatub, kui selle numbrini jõutakse.</string>
-  <string name="pref_episode_cover_title">Kasuta saate kaanepilti</string>
   <string name="pref_episode_cover_summary">Kui võimalik, kasutatakse nimekirjades saate kaanepilti. Kui märkimata, kasutab rakendus alati taskuhäälingu kaanepilti.</string>
-  <string name="pref_show_remain_time_title">Näita allesjäänud aega</string>
   <string name="pref_show_remain_time_summary">Kui märgitud, kuvatakse saate alles jäänud aega. Kui märkimata, näidatakse saadete kogupikkust.</string>
-  <string name="pref_theme_title_use_system">Kasuta süsteemi kujundust</string>
   <string name="pref_theme_title_light">Hele</string>
   <string name="pref_theme_title_dark">Tume</string>
-  <string name="pref_theme_title_trueblack">Must (AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Piiramatult</string>
-  <string name="pref_gpodnet_setlogin_information_title">Muuda kasutajakonto infot</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Muuda oma gpodder.net konto sisselogimise andmeid.</string>
   <string name="pref_playback_speed_sum">Kohanda kiiruseid, mis on esitamisel saadaval</string>
   <string name="pref_feed_playback_speed_sum">Millise kiirusega esitatakse selle tellimuse saadete heli</string>
-  <string name="pref_feed_skip">Automaatne vahelejätmine</string>
   <string name="pref_feed_skip_sum">Sissejuhatuse ja lõputänu vahele jätmine.</string>
   <string name="pref_feed_skip_ending">Jäta vahele lõpust</string>
   <string name="pref_feed_skip_intro">Jäta vahele  algusest</string>
@@ -380,60 +347,29 @@
   <string name="pref_feed_skip_intro_toast">Algusest jäeti vahele %d sekundit</string>
   <string name="pref_playback_time_respects_speed_title">Meedia info kohandamine esituse kiirusega</string>
   <string name="pref_playback_time_respects_speed_sum">Kuvatav asukoht ja kestus kohandatakse esituse kiiruse järgi</string>
-  <string name="pref_fast_forward">Edasi kerimise hüpe</string>
   <string name="pref_fast_forward_sum">Määra, mitu sekundit edasi hüpatakse, kui vajutatakse edasi kerimise nuppu</string>
-  <string name="pref_rewind">Tagasi kerimise hüpe</string>
   <string name="pref_rewind_sum">Määra, mitu sekundit tagasi hüpatakse, kui vajutatakse tagasi kerimise nuppu</string>
-  <string name="pref_expandNotify_title">Kõrge teate prioriteet</string>
   <string name="pref_expandNotify_sum">See tavaliselt kuvab teadet laiemana ning näha on esitusnupud.</string>
-  <string name="pref_persistNotify_title">Püsivad taasesitamise nupud</string>
   <string name="pref_persistNotify_sum">Säilita märguande ja lukustuskuva juhtnupud, kui esitus on pausil.</string>
-  <string name="pref_compact_notification_buttons_title">Vali kompaktsed teavituste nupud</string>
   <string name="pref_compact_notification_buttons_sum">Muuda esitamise nuppe, kui teavitus on suletud. Eritamise/pausi nupp on alati saadaval.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Vali maksimaalselt %1$d kirjet</string>
   <string name="pref_compact_notification_buttons_dialog_error">Maksimaalselt saab valida %1$d kirjet.</string>
-  <string name="pref_lockscreen_background_title">Määra lukustusekraani taustapilt</string>
-  <string name="pref_lockscreen_background_sum">Määra lukuekraani taustaks selle saate pilt. Kõrvalmõjuna kuvab see pilti ka teistes rakendustes.</string>
-  <string name="pref_enqueue_location_title">Järjekorra asukoht</string>
   <string name="pref_enqueue_location_sum">Saated lisatakse: %1$s</string>
   <string name="enqueue_location_back">Algusesse</string>
   <string name="enqueue_location_front">Lõppu</string>
   <string name="enqueue_location_after_current">Pärast praegust saadet</string>
   <string name="pref_smart_mark_as_played_disabled">Välja lülitatud</string>
-  <string name="documentation_support">Dokumentatsioon &amp; tugi</string>
   <string name="visit_user_forum">Kasutajate foorum</string>
   <string name="bug_report_title">Raporteeri veast</string>
   <string name="open_bug_tracker">Ava vigade loetelu</string>
   <string name="copy_to_clipboard">Kopeeri lõikelauale</string>
   <string name="copied_to_clipboard">Kopeeritud lõikelauale</string>
-  <string name="experimental_pref">Katsetamisel</string>
-  <string name="pref_media_player_message">Vali, millise meediaesitajaga faile mängitakse</string>
-  <string name="pref_current_value">Praegune väärtus: %1$s</string>
   <string name="pref_proxy_title">Vaheserver</string>
   <string name="pref_proxy_sum">Määra võrgu vaheserver</string>
   <string name="pref_no_browser_found">Veebilehitsejat ei leitud.</string>
-  <string name="pref_enqueue_downloaded_title">Järjekord allalaaditud</string>
   <string name="pref_enqueue_downloaded_summary">Allalaaditud saadete lisamine järjekorda</string>
-  <string name="media_player_builtin">Sisseehitatud Androidi esitaja (aegunud)</string>
-  <string name="media_player_sonic">Sonic meediaesitaja (aegunud)</string>
-  <string name="media_player_exoplayer_recommended">ExoPlayer (soovitatud)</string>
-  <string name="media_player_switch_to_exoplayer">Vaheta ExoPlayerile</string>
-  <string name="media_player_switched_to_exoplayer">Vahetati ExoPlayerile.</string>
-  <string name="pref_skip_silence_title">Audios vaikuse vahele jätmine</string>
   <string name="behavior">Käitumine</string>
-  <string name="pref_back_button_behavior_title">Tagasi nupu käitumine</string>
-  <string name="pref_back_button_behavior_sum">Tagasi nupu käitumine muutmine.</string>
-  <string name="back_button_default">Vaikimisi</string>
-  <string name="back_button_open_drawer">Avab navigeerimise sahtli</string>
-  <string name="back_button_double_tap">Topeltkoputus väljub</string>
-  <string name="back_button_show_prompt">Väljumine kinnitusega</string>
-  <string name="close_prompt">Kas tahad kindlasti sulgeda AntennaPodi?</string>
-  <string name="double_tap_toast">Koputa nuppu väljumiseks uuesti</string>
-  <string name="back_button_go_to_page">Mine lehele...</string>
-  <string name="back_button_go_to_page_title">Vali leht</string>
-  <string name="pref_delete_removes_from_queue_title">Kustutamine eemaldab järjekorrast</string>
   <string name="pref_delete_removes_from_queue_sum">Saade eemaldatakse järjekorrast pärast kustutamist automaatselt.</string>
-  <string name="pref_filter_feed_title">Tellimuste filter</string>
   <string name="pref_filter_feed_sum">Filtreeri oma tellimusi navigeerimisribal ja tellimuste lehel.</string>
   <string name="subscriptions_are_filtered">Tellimused on filtreeritud.</string>
   <string name="subscriptions_counter_greater_zero">Loendur on suurem kui null</string>
@@ -464,6 +400,7 @@
   <string name="sync_status_episodes_download">Saadete muudatuste allalaadimine…</string>
   <string name="sync_status_upload_played">Esitamise oleku uuendamine…</string>
   <string name="sync_status_subscriptions">Tellimuste sünkroonimine…</string>
+  <string name="sync_status_wait_for_downloads">Allalaadimiste lõpu ootamine...</string>
   <string name="sync_status_success">Sünkroonimine õnnestus</string>
   <string name="sync_status_error">Sünkroonimine nurjus</string>
   <!--import and export-->
@@ -519,34 +456,29 @@
     <item quantity="one">1 tund</item>
     <item quantity="other">%d tundi</item>
   </plurals>
-  <string name="auto_enable_label">Automaatne kustutamine</string>
   <string name="sleep_timer_enabled_label">Unetaimer on sisse lülitatud</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
   <string name="gpodnetauth_login_butLabel">Logi sisse</string>
   <string name="gpodnetauth_encryption_warning">Parool ja andmed ei ole krüpteeritud!</string>
   <string name="username_label">Kasutajanimi</string>
   <string name="password_label">Parool</string>
-  <string name="gpodnetauth_host">Hostinimi</string>
-  <string name="gpodnetauth_select_server">Vali server</string>
   <string name="gpodnetauth_device_name">Seadme nimi</string>
   <string name="gpodnetauth_device_name_default">AntennaPod %1$s seadmel</string>
   <string name="gpodnetauth_existing_devices">Olemasolevad seadmed</string>
   <string name="gpodnetauth_create_device">Loo uus seade</string>
   <string name="gpodnetauth_finish_descr">Palju õnne! Sinu gpodder.net konto on nüüd lingitud sinu seadmega. AntennaPod süngib nüüdsest tellimused sinu seadmes gpodder.net-i kontoga.</string>
   <string name="gpodnetauth_finish_butsyncnow">Alusta kohe sünkroonimist</string>
+  <string name="pref_gpodnet_setlogin_information_title">Muuda kasutajakonto infot</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Muuda oma gpodder.net konto sisselogimise andmeid.</string>
   <string name="gpodnetsync_error_title">gpodder.net sünkroonimise viga</string>
   <string name="gpodnetsync_error_descr">Sünkroonimise ajal tekkis viga:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Korras</string>
   <string name="gpodnetsync_pref_report_failed">Ebaõnnestus</string>
   <string name="gpodnetsync_username_characters_error">Kasutajanimi võib sisaldada ainult tähti, numbreid, side- ja allkriipsu.</string>
   <!--Directory chooser-->
-  <string name="choose_data_directory">Vali andmete kaust</string>
   <string name="choose_data_directory_message">Palun vali oma andmete kaust. AntennaPod loob vajalikud alamkaustad.</string>
   <string name="choose_data_directory_available_space">vaba on %1$s %2$s-st</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Kui teine äpp tahab helisid mängida, pausi esitus, selle asemel et vähendada helitugevust</string>
-  <string name="pref_pausePlaybackForFocusLoss_title">Peata kõne korral</string>
-  <string name="pref_resumeAfterCall_sum">Taasta esitamine pärast telefonikõne lõppu</string>
-  <string name="pref_resumeAfterCall_title">Taasta pärast kõne lõppu</string>
   <!--Online feed view-->
   <string name="subscribe_label">Telli</string>
   <string name="subscribing_label">Tellimine...</string>
@@ -570,13 +502,7 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">Autentimine</string>
   <string name="authentication_descr">Muuda kasutajanime ja parooli selle taskuhäälingu ja saadete jaoks.</string>
-  <string name="auto_download_settings_label">Automaatse allalaadimise seaded</string>
-  <string name="episode_filters_label">Saadete filter</string>
   <string name="episode_filters_description">Terminite loetelu, mille alusel otsustada, kas saade tuleks arvata sisse või välja automaatsel allalaadimisel</string>
-  <string name="episode_filters_include">Kaasa</string>
-  <string name="episode_filters_exclude">Jäta välja</string>
-  <string name="episode_filters_hint">Üksikud sõnad \n\"Mitu sõna\"</string>
-  <string name="keep_updated">Hoia uuendatuna</string>
   <string name="keep_updated_summary">Uuenda koos teiste taskuhäälingute (automaatse) värskendamisega ka seda</string>
   <string name="auto_download_disabled_globally">Automaatne allalaadimine on keelatud AntennaPodi peamistes seadetes</string>
   <string name="statistics_episodes_on_device">Saated seadmes:</string>
@@ -586,8 +512,6 @@
   <string name="sp_apps_importing_feeds_msg">Tellimuste importimine teistest äppidest...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Otsi taskuhäälingut...</string>
-  <string name="search_itunes_label">Otsi iTunest</string>
-  <string name="search_podcastindex_label">Otsi saidilt Podcastindex.org</string>
   <string name="search_fyyd_label">Search fyyd-ist</string>
   <string name="gpodnet_search_hint">Otsi gpodder.net-ist</string>
   <string name="advanced">Täpsem</string>
@@ -596,7 +520,6 @@
   <string name="discover_hide">Peida</string>
   <string name="discover_is_hidden">Valisid soovituste peitmise.</string>
   <string name="discover_more">veel »</string>
-  <string name="discover_powered_by_itunes">iTunes soovitab</string>
   <string name="search_powered_by">Tulemused: %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Lisa kohalik kaust</string>
@@ -631,22 +554,11 @@
   <string name="sort_old_new">Vana \u2192 uus</string>
   <string name="sort_short_long">Lühike \u2192 pikk</string>
   <string name="sort_long_short">Pikk \u2192 lühike</string>
-  <!--Rating dialog-->
-  <string name="rating_title" tools:ignore="UnusedResources">Kas sulle meeldib AntennaPod?</string>
-  <string name="rating_message" tools:ignore="UnusedResources">Oleks suur asi, kui sa saaksid võtta aega, et anda AntennaPodile hinnang.</string>
-  <string name="rating_never_label" tools:ignore="UnusedResources">Jäta mind rahule</string>
-  <string name="rating_later_label" tools:ignore="UnusedResources">Tuleta hiljem meelde</string>
-  <string name="rating_now_label" tools:ignore="UnusedResources">Jah, otseloomulikult!</string>
   <!--Share episode dialog-->
   <string name="share_dialog_episode_website_label">Saate veebisait</string>
   <string name="share_dialog_media_file_label">Meediafail</string>
   <!--Audio controls-->
   <string name="audio_controls">Audioesitaja nupud</string>
-  <string name="playback_speed">Esitamise kiirus</string>
-  <string name="audio_effects">Heliefektid</string>
-  <string name="stereo_to_mono">Downmix: Stereo monoks</string>
-  <string name="sonic_only">Ainult Sonic</string>
-  <string name="exoplayer_only">Ainult ExoPlayer</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tüüp</string>
   <string name="host_label">Hostinimi</string>
@@ -676,7 +588,6 @@
   <string name="notification_channel_sync_error_description">Näidatakse, kui gpodder sünkroniseerimine ebaõnnestub.</string>
   <string name="notification_channel_auto_download">Automaatne allalaadimine lõpetatud</string>
   <string name="notification_channel_episode_auto_download">Näita, kui saateid laaditi automaatselt alla.</string>
-  <string name="notification_channel_new_episode">Uus saade</string>
   <string name="notification_channel_new_episode_description">Näita, kui leiti uus saade, kui teated on lubatud</string>
   <!--Widget settings-->
   <string name="widget_settings">Vidina seaded</string>

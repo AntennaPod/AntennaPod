@@ -1,64 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:foreground="?attr/selectableItemBackground">
+    android:padding="4dp">
 
-    <de.danoeh.antennapod.ui.common.SquareImageView
-        android:id="@+id/imgvCover"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/outerContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/non_square_icon_background"
-        android:scaleType="fitCenter"
-        squareImageView:direction="width"
-        tools:src="@tools:sample/avatars" />
+        android:clickable="false"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp">
 
-    <com.joanzapata.iconify.widget.IconTextView
-        android:id="@+id/txtvTitle"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignStart="@+id/imgvCover"
-        android:layout_alignLeft="@+id/imgvCover"
-        android:layout_alignTop="@+id/imgvCover"
-        android:layout_alignEnd="@+id/imgvCover"
-        android:layout_alignRight="@+id/imgvCover"
-        android:layout_alignBottom="@+id/imgvCover"
-        android:background="@color/non_square_icon_background"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:textColor="?android:attr/textColorPrimary"
-        tools:text="@string/app_name" />
-
-    <de.danoeh.antennapod.ui.common.TriangleLabelView
-        android:id="@+id/triangleCountView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        app:backgroundColor="?attr/colorSecondary"
-        app:corner="rightTop"
-        app:primaryText="Test"
-        app:primaryTextColor="?attr/colorOnSecondary"
-        app:primaryTextSize="12sp" />
-
-    <FrameLayout
-        android:id="@+id/selectView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <CheckBox
-            android:id="@+id/selectCheckBox"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:layout_margin="8dp" />
+            android:orientation="vertical">
 
-    </FrameLayout>
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1px"
+                android:clickable="false"
+                app:cardBackgroundColor="@color/non_square_icon_background"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
 
-</RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <de.danoeh.antennapod.ui.common.SquareImageView
+                        android:id="@+id/coverImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitCenter"
+                        android:outlineProvider="background"
+                        squareImageView:direction="width"
+                        tools:src="@tools:sample/avatars" />
+
+                    <TextView
+                        android:id="@+id/fallbackTitleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/coverImage"
+                        android:layout_alignLeft="@+id/coverImage"
+                        android:layout_alignTop="@+id/coverImage"
+                        android:layout_alignEnd="@+id/coverImage"
+                        android:layout_alignRight="@+id/coverImage"
+                        android:layout_alignBottom="@+id/coverImage"
+                        android:background="@color/feed_text_bg"
+                        android:gravity="center"
+                        android:ellipsize="end"
+                        android:padding="6dp"
+                        android:textColor="#fff"
+                        tools:text="@sample/episodes.json/data/title" />
+
+                    <TextView
+                        android:id="@+id/countViewPill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:layout_alignParentEnd="true"
+                        android:textSize="14sp"
+                        style="@style/TextPill" />
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/titleLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:textColor="?android:attr/textColorPrimary"
+                android:lines="2"
+                tools:text="@sample/episodes.json/data/title" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/selectContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false">
+
+            <CheckBox
+                android:id="@+id/selectCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:layout_margin="8dp" />
+
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>

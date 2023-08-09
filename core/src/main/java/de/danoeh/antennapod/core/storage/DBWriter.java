@@ -36,7 +36,7 @@ import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.IntentUtils;
@@ -257,6 +257,9 @@ public class DBWriter {
         });
     }
 
+    public static Future<?> deleteFromPlaybackHistory(FeedItem feedItem) {
+        return addItemToPlaybackHistory(feedItem.getMedia(), new Date(0));
+    }
 
     /**
      * Adds a FeedMedia object to the playback history. A FeedMedia object is in the playback history if
@@ -265,10 +268,22 @@ public class DBWriter {
      *
      * @param media FeedMedia that should be added to the playback history.
      */
-    public static Future<?> addItemToPlaybackHistory(final FeedMedia media) {
+    public static Future<?> addItemToPlaybackHistory(FeedMedia media) {
+        return addItemToPlaybackHistory(media, new Date());
+    }
+
+    /**
+     * Adds a FeedMedia object to the playback history. A FeedMedia object is in the playback history if
+     * its playback completion date is set to a non-null value. This method will set the playback completion date to the
+     * current date regardless of the current value.
+     *
+     * @param media FeedMedia that should be added to the playback history.
+     * @param date PlaybackCompletionDate for <code>media</code>
+     */
+    public static Future<?> addItemToPlaybackHistory(final FeedMedia media, Date date) {
         return dbExec.submit(() -> {
-            Log.d(TAG, "Adding new item to playback history");
-            media.setPlaybackCompletionDate(new Date());
+            Log.d(TAG, "Adding item to playback history");
+            media.setPlaybackCompletionDate(date);
 
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
@@ -284,7 +299,7 @@ public class DBWriter {
      *
      * @param status The DownloadStatus object.
      */
-    public static Future<?> addDownloadStatus(final DownloadStatus status) {
+    public static Future<?> addDownloadStatus(final DownloadResult status) {
         return dbExec.submit(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
@@ -345,6 +360,9 @@ public class DBWriter {
     public static Future<?> addQueueItem(final Context context, boolean markAsUnplayed, final FeedItem... items) {
         LongList itemIds = new LongList(items.length);
         for (FeedItem item : items) {
+            if (!item.hasMedia()) {
+                continue;
+            }
             itemIds.add(item.getId());
             item.addTag(FeedItem.TAG_QUEUE);
         }
@@ -650,6 +668,15 @@ public class DBWriter {
         adapter.close();
     }
 
+    public static Future<?> resetPagedFeedPage(Feed feed) {
+        return dbExec.submit(() -> {
+            final PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.resetPagedFeedPage(feed);
+            adapter.close();
+        });
+    }
+
     /*
      * Sets the 'read'-attribute of all specified FeedItems
      *
@@ -682,7 +709,6 @@ public class DBWriter {
             }
         });
     }
-
 
     /**
      * Sets the 'read'-attribute of a FeedItem to the specified value.

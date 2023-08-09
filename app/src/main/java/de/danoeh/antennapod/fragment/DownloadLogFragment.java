@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,15 +14,12 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadLogAdapter;
-import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
-import de.danoeh.antennapod.core.event.DownloaderUpdate;
-import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.databinding.DownloadLogFragmentBinding;
 import de.danoeh.antennapod.dialog.DownloadLogDetailsDialog;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -31,7 +27,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +38,7 @@ public class DownloadLogFragment extends BottomSheetDialogFragment
         implements AdapterView.OnItemClickListener, MaterialToolbar.OnMenuItemClickListener {
     private static final String TAG = "DownloadLogFragment";
 
-    private List<DownloadStatus> downloadLog = new ArrayList<>();
-    private List<Downloader> runningDownloads = new ArrayList<>();
+    private List<DownloadResult> downloadLog = new ArrayList<>();
     private DownloadLogAdapter adapter;
     private Disposable disposable;
     private DownloadLogFragmentBinding viewBinding;
@@ -80,9 +74,7 @@ public class DownloadLogFragment extends BottomSheetDialogFragment
         adapter = new DownloadLogAdapter(getActivity());
         viewBinding.list.setAdapter(adapter);
         viewBinding.list.setOnItemClickListener(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            viewBinding.list.setNestedScrollingEnabled(true);
-        }
+        viewBinding.list.setNestedScrollingEnabled(true);
         EventBus.getDefault().register(this);
         return viewBinding.getRoot();
     }
@@ -96,8 +88,8 @@ public class DownloadLogFragment extends BottomSheetDialogFragment
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Object item = adapter.getItem(position);
-        if (item instanceof DownloadStatus) {
-            new DownloadLogDetailsDialog(getContext(), (DownloadStatus) item).show();
+        if (item instanceof DownloadResult) {
+            new DownloadLogDetailsDialog(getContext(), (DownloadResult) item).show();
         }
     }
 
@@ -120,14 +112,6 @@ public class DownloadLogFragment extends BottomSheetDialogFragment
             return true;
         }
         return false;
-    }
-
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEvent(DownloadEvent event) {
-        Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
-        DownloaderUpdate update = event.update;
-        runningDownloads = update.downloaders;
-        adapter.setRunningDownloads(runningDownloads);
     }
 
     private void loadDownloadLog() {

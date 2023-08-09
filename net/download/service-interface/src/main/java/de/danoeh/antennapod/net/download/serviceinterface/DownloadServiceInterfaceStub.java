@@ -1,18 +1,23 @@
 package de.danoeh.antennapod.net.download.serviceinterface;
 
 import android.content.Context;
+import de.danoeh.antennapod.model.feed.FeedItem;
 
 public class DownloadServiceInterfaceStub extends DownloadServiceInterface {
 
-    public void download(Context context, boolean cleanupMedia, DownloadRequest... requests) {
+    @Override
+    public void downloadNow(Context context, FeedItem item, boolean ignoreConstraints) {
     }
 
-    public void refreshAllFeeds(Context context, boolean initiatedByUser) {
+    @Override
+    public void download(Context context, FeedItem item) {
     }
 
+    @Override
     public void cancel(Context context, String url) {
     }
 
+    @Override
     public void cancelAll(Context context) {
     }
 }

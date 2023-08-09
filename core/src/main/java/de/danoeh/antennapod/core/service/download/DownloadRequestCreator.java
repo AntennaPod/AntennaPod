@@ -21,9 +21,6 @@ public class DownloadRequestCreator {
 
     public static DownloadRequest.Builder create(Feed feed) {
         File dest = new File(getFeedfilePath(), getFeedfileName(feed));
-        if (!isFilenameAvailable(dest.toString()) && !feed.isLocalFeed()) {
-            dest = findUnusedFile(dest);
-        }
         Log.d(TAG, "Requesting download of url " + feed.getDownload_url());
 
         String username = (feed.getPreferences() != null) ? feed.getPreferences().getUsername() : null;
@@ -31,7 +28,6 @@ public class DownloadRequestCreator {
 
         return new DownloadRequest.Builder(dest.toString(), feed)
                 .withAuthentication(username, password)
-                .deleteOnFailure(true)
                 .lastModified(feed.getLastUpdate());
     }
 
@@ -39,13 +35,13 @@ public class DownloadRequestCreator {
         final boolean partiallyDownloadedFileExists =
                 media.getFile_url() != null && new File(media.getFile_url()).exists();
         File dest;
-        if (media.getFile_url() != null && new File(media.getFile_url()).exists()) {
+        if (partiallyDownloadedFileExists) {
             dest = new File(media.getFile_url());
         } else {
             dest = new File(getMediafilePath(media), getMediafilename(media));
         }
 
-        if (!isFilenameAvailable(dest.toString()) || (!partiallyDownloadedFileExists && dest.exists())) {
+        if (dest.exists() && !partiallyDownloadedFileExists) {
             dest = findUnusedFile(dest);
         }
         Log.d(TAG, "Requesting download of url " + media.getDownload_url());
@@ -56,7 +52,6 @@ public class DownloadRequestCreator {
                 ? media.getItem().getFeed().getPreferences().getPassword() : null;
 
         return new DownloadRequest.Builder(dest.toString(), media)
-                .deleteOnFailure(false)
                 .withAuthentication(username, password);
     }
 
@@ -72,25 +67,12 @@ public class DownloadRequestCreator {
                     + FilenameUtils.getExtension(dest.getName());
             Log.d(TAG, "Testing filename " + newName);
             newDest = new File(dest.getParent(), newName);
-            if (!newDest.exists() && isFilenameAvailable(newDest.toString())) {
+            if (!newDest.exists()) {
                 Log.d(TAG, "File doesn't exist yet. Using " + newName);
                 break;
             }
         }
         return newDest;
-    }
-
-    /**
-     * Returns true if a filename is available and false if it has already been
-     * taken by another requested download.
-     */
-    private static boolean isFilenameAvailable(String path) {
-        for (Downloader downloader : DownloadService.downloads) {
-            if (downloader.request.getDestination().equals(path)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     private static String getFeedfilePath() {
@@ -102,7 +84,7 @@ public class DownloadRequestCreator {
         if (feed.getTitle() != null && !feed.getTitle().isEmpty()) {
             filename = feed.getTitle();
         }
-        return "feed-" + FileNameGenerator.generateFileName(filename);
+        return "feed-" + FileNameGenerator.generateFileName(filename) + feed.getId();
     }
 
     private static String getMediafilePath(FeedMedia media) {
@@ -112,7 +94,6 @@ public class DownloadRequestCreator {
     }
 
     private static String getMediafilename(FeedMedia media) {
-        String filename;
         String titleBaseFilename = "";
 
         // Try to generate the filename by the item title
@@ -123,18 +104,17 @@ public class DownloadRequestCreator {
 
         String urlBaseFilename = URLUtil.guessFileName(media.getDownload_url(), null, media.getMime_type());
 
+        String baseFilename;
         if (!titleBaseFilename.equals("")) {
-            // Append extension
-            final int filenameMaxLength = 220;
-            if (titleBaseFilename.length() > filenameMaxLength) {
-                titleBaseFilename = titleBaseFilename.substring(0, filenameMaxLength);
-            }
-            filename = titleBaseFilename + FilenameUtils.EXTENSION_SEPARATOR
-                    + FilenameUtils.getExtension(urlBaseFilename);
+            baseFilename = titleBaseFilename;
         } else {
-            // Fall back on URL file name
-            filename = urlBaseFilename;
+            baseFilename = urlBaseFilename;
         }
-        return filename;
+        final int filenameMaxLength = 220;
+        if (baseFilename.length() > filenameMaxLength) {
+            baseFilename = baseFilename.substring(0, filenameMaxLength);
+        }
+        return baseFilename + FilenameUtils.EXTENSION_SEPARATOR + media.getId()
+                + FilenameUtils.EXTENSION_SEPARATOR + FilenameUtils.getExtension(urlBaseFilename);
     }
 }

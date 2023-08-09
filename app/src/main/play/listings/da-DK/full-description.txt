@@ -6,7 +6,7 @@ AntennaPod er lavet af podcast-entusiaster og er fri og gratis i alle betydninge
 
 <b>Importér, organiser og afspil</b>
 • Håndter afspilning fra hvor som helst: widget på startsskærmen, systemnotifikation, samt hovedtelefon og bluetooth-styring
-• Tilføj og importer feeds via iTunes og gPodder.net oversigter, OPML filer og RSS eller Atom-links
+• Tilføj og importer feeds via iTunes- og gPodder.net-oversigter, OPML-filer og RSS- eller Atom-links
 • Nyd at lytte på din måde ved at justere afspilningshastighed, kapitelunderstøttelse, huske hvor langt du lyttede sidst og avancerede søvntimer (ryst for at starte igen, sænk lydstyrken)
 • Tilgå adgangskodebeskyttede feeds og afsnit
 

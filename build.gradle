@@ -5,7 +5,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.2'
+        classpath 'com.android.tools.build:gradle:7.4.0'
         classpath "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.0"
         classpath 'org.codehaus.groovy:groovy-xml:3.0.9'
     }
@@ -31,7 +31,7 @@ project.ext {
     recyclerViewVersion = "1.2.1"
     viewPager2Version = "1.1.0-beta01"
     workManagerVersion = "2.7.1"
-    googleMaterialVersion = "1.6.0"
+    googleMaterialVersion = "1.7.0"
 
     // Third-party
     commonslangVersion = "3.6"
@@ -44,8 +44,8 @@ project.ext {
     rxAndroidVersion = "2.1.1"
     rxJavaVersion = "2.2.2"
     iconifyVersion = "2.2.2"
+    annimonStreamVersion = "1.2.2"
     exoPlayerVersion = "2.14.2"
-    audioPlayerVersion = "v2.0.0"
 
     // Google Play build
     wearableSupportVersion = "2.6.0"

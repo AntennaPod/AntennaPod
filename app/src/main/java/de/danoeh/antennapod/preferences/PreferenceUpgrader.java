@@ -13,7 +13,6 @@ import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.error.CrashReportWriter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
-import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeAction;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
@@ -31,7 +30,6 @@ public class PreferenceUpgrader {
         int newVersion = BuildConfig.VERSION_CODE;
 
         if (oldVersion != newVersion) {
-            AutoUpdateManager.restartUpdateAlarm(context);
             CrashReportWriter.getFile().delete();
 
             upgrade(oldVersion, context);
@@ -57,9 +55,6 @@ public class PreferenceUpgrader {
             }
         }
         if (oldVersion < 1070300) {
-            prefs.edit().putString(UserPreferences.PREF_MEDIA_PLAYER,
-                    UserPreferences.PREF_MEDIA_PLAYER_EXOPLAYER).apply();
-
             if (prefs.getBoolean("prefEnableAutoDownloadOnMobile", false)) {
                 UserPreferences.setAllowMobileAutoDownload(true);
             }
@@ -131,6 +126,23 @@ public class PreferenceUpgrader {
                     .equals(context.getString(R.string.pref_episode_cache_unlimited))) {
                 prefs.edit().putString(UserPreferences.PREF_EPISODE_CACHE_SIZE,
                         "" + UserPreferences.EPISODE_CACHE_SIZE_UNLIMITED).apply();
+            }
+        }
+        if (oldVersion < 3000007) {
+            if (prefs.getString("prefBackButtonBehavior", "").equals("drawer")) {
+                prefs.edit().putBoolean(UserPreferences.PREF_BACK_OPENS_DRAWER, true).apply();
+            }
+        }
+        if (oldVersion < 3010000) {
+            if (prefs.getString(UserPreferences.PREF_THEME, "system").equals("2")) {
+                prefs.edit()
+                        .putString(UserPreferences.PREF_THEME, "1")
+                        .putBoolean(UserPreferences.PREF_THEME_BLACK, true)
+                        .apply();
+            }
+            UserPreferences.setAllowMobileSync(true);
+            if (prefs.getString(UserPreferences.PREF_UPDATE_INTERVAL, ":").contains(":")) { // Unset or "time of day"
+                prefs.edit().putString(UserPreferences.PREF_UPDATE_INTERVAL, "12").apply();
             }
         }
     }

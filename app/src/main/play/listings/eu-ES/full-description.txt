@@ -1,0 +1,31 @@
+AntennaPod podcast kudeatzaile eta erreproduzigailua da, eta berehalako sarbidea ematen dizu doako eta ordainpeko milioika podcast-etara, podcaster independenteetatik BBC, NPR eta CNN bezalako estazio handietara. Iturriak modu errazean gehitu, inportatu eta esportatzen ditu, iTunesen, OPML fitxategien edo RSS motako URLen zerrenda erabiliz. Esfortzua, bateria eta datuak aurrezten ditu gertaeren deskarga- eta ezabatze-kontrolekin (gogokoetan eta denbora-doikuntzetan oinarrituta).
+Deskargatu, stream-ean entzun, edo gehitu saioak ilaran eta goza itzazu nahi bezala erreprodukzio abiadura doigarriarekin, kapituluetarako euskarria eta lo-tenporizadorearekin.
+Aurreztu lana, bateria eta datu-kontsumoa deskargatzeko automatizazio-kontrol indartsuekin (zehaztu zein ordutan eta zein Wi-Fi saretatik) eta ezabatu antzinako gertakariak (zure lehentasunetan oinarrituta).
+
+Podcastaren jarraitzaile sutsuek sortua, AntennaPod askea da zentzu guztietan: kode irekia, doakoa eta publizitaterik gabekoa.
+
+<b>Inportatu, antolatu eta erreproduzitu</b>
+Erreprodukzioa edozein lekutatik administratzen du: kontrola hasierako pantailan, sistemaren jakinarazpena eta aurikular eta bluetooth kontrolak
+Iturriak gehitu eta inportatu iTunes eta gPodder.net direktorio eta, OPML artxiboen eta RSS edo Atom esteken bidez
+& # 8226; Zure erara entzunez gozatu erreprodukzio-abiadura doigarriaz, kapituluen euskarria (MP3, VorbisComment eta Podlove), erreprodukzio-puntuaren eta loaldi aurreratuko tenporizadorearen oroigarria (astindu bolumena berrezartzeko, jaisteko eta erreprodukzio-abiadura murrizteko <br>
+• pasahitzarekin babestutako iturrietan eta saioetan sartu
+
+<b>Jarraitu, baloratu eta partekatu</b>
+• egin onenetan onenen segimendua saioak gogokoetan sartuz
+• Aurkitu saio hori erreprodukzioaren historialaren bidez edo bilaketa bidez(atalen izenburuak eta oharrak)
+• Saioak eta iturriak partekatu sare sozial aurreratuen bidez eta posta elektroniko, gPodder.net zerbitzu eta OPML esportazioaren bidez
+
+<b>Sistemaren kontrola</b>
+• Deskarga automatikoak kontrolatu: iturriak aukeratu, sare mugikorrak baztertu, wifi sare espezifikoak hautatu, edo telefonoa kargatzen ari denean bakarrik egin, eta ordutegiak edo tarteak ezarri
+• Biltegiratzea kudeatu, cache-ko gertakari-kopurua konfiguratu, ezabatu adimenduna konfiguratu eta zure kokaleku gustukoena aukeratu
+• Zure ingurura egokitu gai argia edo iluna erabiliz
+• Zure harpidetzen segurtasun-kopia bat egin, gPodder.net eta OPML esportazio integratua erabiliz
+
+<b>Bat egin AntennaPod komunitatearekin!</b>
+AntennaPod etengabe ari da garatzen boluntarioekin. Zuk ere ekarpena egin dezakezu, zure kodearekin edo zure iruzkinekin!
+
+Foroko kideak pozik daude galdera bakoitzarekin laguntzeagatik. Ezaugarriak eta podcastinga, oro har, eztabaidatzera gonbidatuta zaude.
+https://forum.antennapod.org/
+
+Transifex itzulpenekin laguntzeko lekua da:
+https://www.transifex.com/antennapod/antennapod

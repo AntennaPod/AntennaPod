@@ -6,7 +6,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.activity.result.contract.ActivityResultContracts.GetContent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
@@ -29,6 +27,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.model.feed.SortOrder;
@@ -105,9 +104,6 @@ public class AddFeedFragment extends Fragment {
         });
 
         viewBinding.addLocalFolderButton.setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT < 21) {
-                return;
-            }
             try {
                 addLocalFolderLauncher.launch(null);
             } catch (ActivityNotFoundException e) {
@@ -116,10 +112,6 @@ public class AddFeedFragment extends Fragment {
                         .showSnackbarAbovePlayer(R.string.unable_to_start_system_file_manager, Snackbar.LENGTH_LONG);
             }
         });
-        if (Build.VERSION.SDK_INT < 21) {
-            viewBinding.addLocalFolderButton.setVisibility(View.GONE);
-        }
-
         viewBinding.searchButton.setOnClickListener(view -> performSearch());
 
         return viewBinding.getRoot();
@@ -205,9 +197,6 @@ public class AddFeedFragment extends Fragment {
     }
 
     private Feed addLocalFolder(Uri uri) {
-        if (Build.VERSION.SDK_INT < 21) {
-            return null;
-        }
         getActivity().getContentResolver()
                 .takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
         DocumentFile documentFile = DocumentFile.fromTreeUri(getContext(), uri);
@@ -222,12 +211,11 @@ public class AddFeedFragment extends Fragment {
         dirFeed.setItems(Collections.emptyList());
         dirFeed.setSortOrder(SortOrder.EPISODE_TITLE_A_Z);
         Feed fromDatabase = DBTasks.updateFeed(getContext(), dirFeed, false);
-        DBTasks.forceRefreshFeed(getContext(), fromDatabase, true);
+        FeedUpdateManager.runOnce(requireContext(), fromDatabase);
         return fromDatabase;
     }
 
     private static class AddLocalFolder extends ActivityResultContracts.OpenDocumentTree {
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @NonNull
         @Override
         public Intent createIntent(@NonNull final Context context, @Nullable final Uri input) {

@@ -1,1 +1,1 @@
-This is an alpha release.
+This is a beta release.

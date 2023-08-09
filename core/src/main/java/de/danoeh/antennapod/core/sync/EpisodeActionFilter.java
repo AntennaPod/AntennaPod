@@ -25,8 +25,6 @@ public class EpisodeActionFilter {
             Pair<String, String> key = new Pair<>(remoteAction.getPodcast(), remoteAction.getEpisode());
             switch (remoteAction.getAction()) {
                 case NEW:
-                    remoteActionsThatOverrideLocalActions.put(key, remoteAction);
-                    break;
                 case DOWNLOAD:
                     break;
                 case PLAY:
@@ -72,7 +70,8 @@ public class EpisodeActionFilter {
                                                             EpisodeAction secondAction) {
         return secondAction != null
                 && secondAction.getTimestamp() != null
-                && secondAction.getTimestamp().after(firstAction.getTimestamp());
+                && (firstAction.getTimestamp() == null
+                        || secondAction.getTimestamp().after(firstAction.getTimestamp()));
     }
 
 }

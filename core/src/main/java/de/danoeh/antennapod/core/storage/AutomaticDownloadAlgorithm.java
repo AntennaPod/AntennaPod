@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.core.util.PlaybackStatus;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.PowerUtils;
@@ -53,7 +53,8 @@ public class AutomaticDownloadAlgorithm {
                 List<FeedItem> candidates;
                 List<FeedItem> markAsPlayedCandidates;
                 final List<FeedItem> queue = DBReader.getQueue();
-                final List<FeedItem> newItems = DBReader.getNewItemsList(0, Integer.MAX_VALUE);
+                final List<FeedItem> newItems = DBReader.getEpisodes(0, Integer.MAX_VALUE,
+                        new FeedItemFilter(FeedItemFilter.NEW), SortOrder.DATE_NEW_OLD);
                 candidates = new ArrayList<>(queue.size() + newItems.size());
                 markAsPlayedCandidates = new ArrayList<>(queue.size() + newItems.size());
                 candidates.addAll(queue);
@@ -80,7 +81,7 @@ public class AutomaticDownloadAlgorithm {
                 }
 
                 int autoDownloadableEpisodes = candidates.size();
-                int downloadedEpisodes = DBReader.getNumberOfDownloadedEpisodes();
+                int downloadedEpisodes = DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.DOWNLOADED));
                 int deletedEpisodes = EpisodeCleanupAlgorithmFactory.build()
                         .makeRoomForEpisodes(context, autoDownloadableEpisodes);
                 boolean cacheIsUnlimited =
@@ -98,13 +99,9 @@ public class AutomaticDownloadAlgorithm {
                 if (itemsToDownload.size() > 0) {
                     Log.d(TAG, "Enqueueing " + itemsToDownload.size() + " items for download");
 
-                    List<DownloadRequest> requests = new ArrayList<>();
                     for (FeedItem episode : itemsToDownload) {
-                        DownloadRequest.Builder request = DownloadRequestCreator.create(episode.getMedia());
-                        request.withInitiatedByUser(false);
-                        requests.add(request.build());
+                        DownloadServiceInterface.get().download(context, episode);
                     }
-                    DownloadServiceInterface.get().download(context, false, requests.toArray(new DownloadRequest[0]));
                 }
 
                 for (FeedItem itemToMarkAsPlayed: markAsPlayedCandidates) {

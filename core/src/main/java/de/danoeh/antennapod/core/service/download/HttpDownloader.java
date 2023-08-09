@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.util.NetworkUtils;
-import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import okhttp3.CacheControl;
 import okhttp3.internal.http.StatusLine;
@@ -48,12 +48,6 @@ public class HttpDownloader extends Downloader {
     protected void download() {
         File destination = new File(request.getDestination());
         final boolean fileExists = destination.exists();
-
-        if (request.isDeleteOnFailure() && fileExists) {
-            Log.w(TAG, "File already exists");
-            onSuccess();
-            return;
-        }
 
         RandomAccessFile out = null;
         InputStream connection;
@@ -149,12 +143,12 @@ public class HttpDownloader extends Downloader {
             request.setSize(responseBody.contentLength() + request.getSoFar());
             Log.d(TAG, "Size is " + request.getSize());
             if (request.getSize() < 0) {
-                request.setSize(DownloadStatus.SIZE_UNKNOWN);
+                request.setSize(DownloadResult.SIZE_UNKNOWN);
             }
 
             long freeSpace = StorageUtils.getFreeSpaceAvailable();
             Log.d(TAG, "Free space is " + freeSpace);
-            if (request.getSize() != DownloadStatus.SIZE_UNKNOWN && request.getSize() > freeSpace) {
+            if (request.getSize() != DownloadResult.SIZE_UNKNOWN && request.getSize() > freeSpace) {
                 onFail(DownloadError.ERROR_NOT_ENOUGH_SPACE, null);
                 return;
             }
@@ -175,7 +169,7 @@ public class HttpDownloader extends Downloader {
             } else {
                 // check if size specified in the response header is the same as the size of the
                 // written file. This check cannot be made if compression was used
-                if (!isGzip && request.getSize() != DownloadStatus.SIZE_UNKNOWN
+                if (!isGzip && request.getSize() != DownloadResult.SIZE_UNKNOWN
                         && request.getSoFar() != request.getSize()) {
                     onFail(DownloadError.ERROR_IO_WRONG_SIZE, "Download completed but size: "
                             + request.getSoFar() + " does not equal expected size " + request.getSize());
@@ -267,7 +261,8 @@ public class HttpDownloader extends Downloader {
         } else if (response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
             error = DownloadError.ERROR_FORBIDDEN;
             details = String.valueOf(response.code());
-        } else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND) {
+        } else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND
+                || response.code() == HttpURLConnection.HTTP_GONE) {
             error = DownloadError.ERROR_NOT_FOUND;
             details = String.valueOf(response.code());
         } else {
@@ -308,30 +303,11 @@ public class HttpDownloader extends Downloader {
     private void onFail(DownloadError reason, String reasonDetailed) {
         Log.d(TAG, "onFail() called with: " + "reason = [" + reason + "], reasonDetailed = [" + reasonDetailed + "]");
         result.setFailed(reason, reasonDetailed);
-        if (request.isDeleteOnFailure()) {
-            cleanup();
-        }
     }
 
     private void onCancelled() {
         Log.d(TAG, "Download was cancelled");
         result.setCancelled();
-        cleanup();
-    }
-
-    /**
-     * Deletes unfinished downloads.
-     */
-    private void cleanup() {
-        if (request.getDestination() != null) {
-            File dest = new File(request.getDestination());
-            if (dest.exists()) {
-                boolean rc = dest.delete();
-                Log.d(TAG, "Deleted file " + dest.getName() + "; Result: "
-                        + rc);
-            } else {
-                Log.d(TAG, "cleanup() didn't delete file: does not exist.");
-            }
-        }
+        cancelled = true;
     }
 }

@@ -22,5 +22,10 @@
         android:menuCategory="container"
         android:icon="@drawable/ic_refresh"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/downloads_sort"
+        android:title="@string/sort">
+        <menu></menu>
+    </item>
 
 </menu>

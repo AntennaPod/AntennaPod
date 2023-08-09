@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -331,9 +332,10 @@ public class CoverFragment extends Fragment {
         if (clipboardManager != null) {
             clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", text));
         }
-        ((MainActivity) requireActivity()).showSnackbarAbovePlayer(
-                getResources().getString(R.string.copied_to_clipboard),
-                Snackbar.LENGTH_SHORT);
+        if (Build.VERSION.SDK_INT < 32) {
+            ((MainActivity) requireActivity()).showSnackbarAbovePlayer(
+                    getResources().getString(R.string.copied_to_clipboard), Snackbar.LENGTH_SHORT);
+        }
         return true;
     }
 }

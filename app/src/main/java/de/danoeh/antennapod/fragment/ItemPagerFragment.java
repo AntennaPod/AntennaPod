@@ -48,7 +48,7 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
         ItemPagerFragment fragment = new ItemPagerFragment();
         Bundle args = new Bundle();
         args.putLongArray(ARG_FEEDITEMS, feeditems);
-        args.putInt(ARG_FEEDITEM_POS, feedItemPos);
+        args.putInt(ARG_FEEDITEM_POS, Math.max(0, feedItemPos));
         fragment.setArguments(args);
         return fragment;
     }
@@ -70,7 +70,7 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
         toolbar.setOnMenuItemClickListener(this);
 
         feedItems = getArguments().getLongArray(ARG_FEEDITEMS);
-        int feedItemPos = getArguments().getInt(ARG_FEEDITEM_POS);
+        final int feedItemPos = Math.max(0, getArguments().getInt(ARG_FEEDITEM_POS));
 
         pager = layout.findViewById(R.id.pager);
         // FragmentStatePagerAdapter documentation:

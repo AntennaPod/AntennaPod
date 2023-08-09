@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.parser.feed.namespace;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import de.danoeh.antennapod.model.feed.Chapter;
@@ -31,7 +32,8 @@ public class SimpleChapters extends Namespace {
         if (currentItem != null) {
             if (localName.equals(CHAPTERS)) {
                 currentItem.setChapters(new ArrayList<>());
-            } else if (localName.equals(CHAPTER)) {
+            } else if (localName.equals(CHAPTER) && !TextUtils.isEmpty(attributes.getValue(START))) {
+                // if the chapter's START is empty, we don't need to do anything
                 try {
                     long start = DateUtils.parseTimeString(attributes.getValue(START));
                     String title = attributes.getValue(TITLE);

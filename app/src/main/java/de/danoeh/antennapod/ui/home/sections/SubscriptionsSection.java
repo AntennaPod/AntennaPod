@@ -1,7 +1,10 @@
 package de.danoeh.antennapod.ui.home.sections;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.HorizontalFeedListAdapter;
+import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.ui.home.HomeSection;
+import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -41,9 +46,18 @@ public class SubscriptionsSection extends HomeSection {
         final View view = super.onCreateView(inflater, container, savedInstanceState);
         viewBinding.recyclerView.setLayoutManager(
                 new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
-        listAdapter = new HorizontalFeedListAdapter((MainActivity) getActivity());
+        listAdapter = new HorizontalFeedListAdapter((MainActivity) getActivity()) {
+            @Override
+            public void onCreateContextMenu(ContextMenu contextMenu, View view,
+                                            ContextMenu.ContextMenuInfo contextMenuInfo) {
+                super.onCreateContextMenu(contextMenu, view, contextMenuInfo);
+                MenuItemUtils.setOnClickListeners(contextMenu, SubscriptionsSection.this::onContextItemSelected);
+            }
+        };
         listAdapter.setDummyViews(NUM_FEEDS);
         viewBinding.recyclerView.setAdapter(listAdapter);
+        int paddingHorizontal = (int) (12 * getResources().getDisplayMetrics().density);
+        viewBinding.recyclerView.setPadding(paddingHorizontal, 0, paddingHorizontal, 0);
         return view;
     }
 
@@ -77,7 +91,10 @@ public class SubscriptionsSection extends HomeSection {
         if (disposable != null) {
             disposable.dispose();
         }
-        disposable = Observable.fromCallable(() -> DBReader.getStatistics(true, 0, Long.MAX_VALUE).feedTime)
+        SharedPreferences prefs = getContext().getSharedPreferences(StatisticsFragment.PREF_NAME, Context.MODE_PRIVATE);
+        boolean includeMarkedAsPlayed = prefs.getBoolean(StatisticsFragment.PREF_INCLUDE_MARKED_PLAYED, false);
+        disposable = Observable.fromCallable(() ->
+                        DBReader.getStatistics(includeMarkedAsPlayed, 0, Long.MAX_VALUE).feedTime)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(statisticsData -> {

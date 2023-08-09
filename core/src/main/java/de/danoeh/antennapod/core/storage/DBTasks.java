@@ -1,20 +1,26 @@
 package de.danoeh.antennapod.core.storage;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.text.TextUtils;
 import android.util.Log;
-
 import androidx.annotation.VisibleForTesting;
-
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
+import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
+import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
+import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.model.download.DownloadError;
+import de.danoeh.antennapod.model.download.DownloadResult;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.danoeh.antennapod.storage.database.mapper.FeedCursorMapper;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
@@ -29,29 +35,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
-import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.event.FeedItemEvent;
-import de.danoeh.antennapod.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.event.MessageEvent;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.model.download.DownloadStatus;
-import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
-import de.danoeh.antennapod.model.download.DownloadError;
-import de.danoeh.antennapod.core.util.LongList;
-import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.net.sync.model.EpisodeAction;
-
 /**
  * Provides methods for doing common tasks that use DBReader and DBWriter.
  */
 public final class DBTasks {
     private static final String TAG = "DBTasks";
-
-    private static final String PREF_NAME = "dbtasks";
-    private static final String PREF_LAST_REFRESH = "last_refresh";
 
     /**
      * Executor service used by the autodownloadUndownloadedEpisodes method.
@@ -104,70 +92,6 @@ public final class DBTasks {
     }
 
     /**
-     * Refreshes all feeds.
-     * It must not be from the main thread.
-     * This method might ignore subsequent calls if it is still
-     * enqueuing Feeds for download from a previous call
-     *
-     * @param context  Might be used for accessing the database
-     * @param initiatedByUser a boolean indicating if the refresh was triggered by user action.
-     */
-    public static void refreshAllFeeds(final Context context, boolean initiatedByUser) {
-        DownloadServiceInterface.get().refreshAllFeeds(context, initiatedByUser);
-
-        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        prefs.edit().putLong(PREF_LAST_REFRESH, System.currentTimeMillis()).apply();
-
-        SynchronizationQueueSink.syncNow();
-        // Note: automatic download of episodes will be done but not here.
-        // Instead it is done after all feeds have been refreshed (asynchronously),
-        // in DownloadService.onDestroy()
-        // See Issue #2577 for the details of the rationale
-    }
-
-
-
-    /**
-     * Queues the next page of this Feed for download. The given Feed has to be a paged
-     * Feed (isPaged()=true) and must contain a nextPageLink.
-     *
-     * @param context      Used for requesting the download.
-     * @param feed         The feed whose next page should be loaded.
-     * @param loadAllPages True if any subsequent pages should also be loaded, false otherwise.
-     */
-    public static void loadNextPageOfFeed(final Context context, Feed feed, boolean loadAllPages) {
-        if (feed.isPaged() && feed.getNextPageLink() != null) {
-            int pageNr = feed.getPageNr() + 1;
-            Feed nextFeed = new Feed(feed.getNextPageLink(), null, feed.getTitle() + "(" + pageNr + ")");
-            nextFeed.setPageNr(pageNr);
-            nextFeed.setPaged(true);
-            nextFeed.setId(feed.getId());
-
-            DownloadRequest.Builder builder = DownloadRequestCreator.create(nextFeed);
-            builder.loadAllPages(loadAllPages);
-            DownloadServiceInterface.get().download(context, false, builder.build());
-        } else {
-            Log.e(TAG, "loadNextPageOfFeed: Feed was either not paged or contained no nextPageLink");
-        }
-    }
-
-    public static void forceRefreshFeed(Context context, Feed feed, boolean initiatedByUser) {
-        forceRefreshFeed(context, feed, false, initiatedByUser);
-    }
-
-    public static void forceRefreshCompleteFeed(final Context context, final Feed feed) {
-        forceRefreshFeed(context, feed, true, true);
-    }
-
-    private static void forceRefreshFeed(Context context, Feed feed, boolean loadAllPages, boolean initiatedByUser) {
-        DownloadRequest.Builder builder = DownloadRequestCreator.create(feed);
-        builder.withInitiatedByUser(initiatedByUser);
-        builder.setForce(true);
-        builder.loadAllPages(loadAllPages);
-        DownloadServiceInterface.get().download(context, false, builder.build());
-    }
-
-    /**
      * Notifies the database about a missing FeedMedia file. This method will correct the FeedMedia object's
      * values in the DB and send a FeedItemEvent.
      */
@@ -178,21 +102,6 @@ public final class DBTasks {
         DBWriter.setFeedMedia(media);
         EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
         EventBus.getDefault().post(new MessageEvent(context.getString(R.string.error_file_not_found)));
-    }
-
-    public static List<FeedItem> enqueueFeedItemsToDownload(final Context context,
-                       List<FeedItem> items) throws InterruptedException, ExecutionException {
-        List<FeedItem> itemsToEnqueue = new ArrayList<>();
-        if (UserPreferences.enqueueDownloadedEpisodes()) {
-            LongList queueIDList = DBReader.getQueueIDList();
-            for (FeedItem item : items) {
-                if (!queueIDList.contains(item.getId())) {
-                    itemsToEnqueue.add(item);
-                }
-            }
-            DBWriter.addQueueItem(context, false, itemsToEnqueue.toArray(new FeedItem[0])).get();
-        }
-        return itemsToEnqueue;
     }
 
     /**
@@ -298,13 +207,6 @@ public final class DBTasks {
             Log.d(TAG, "Found no existing Feed with title "
                             + newFeed.getTitle() + ". Adding as new one.");
 
-            // Add a new Feed
-            // all new feeds will have the most recent item marked as unplayed
-            FeedItem mostRecent = newFeed.getMostRecentItem();
-            if (mostRecent != null) {
-                mostRecent.setNew();
-            }
-
             resultFeed = newFeed;
         } else {
             Log.d(TAG, "Feed with title " + newFeed.getTitle()
@@ -328,7 +230,7 @@ public final class DBTasks {
 
             // get the most recent date now, before we start changing the list
             FeedItem priorMostRecent = savedFeed.getMostRecentItem();
-            Date priorMostRecentDate = null;
+            Date priorMostRecentDate = new Date();
             if (priorMostRecent != null) {
                 priorMostRecentDate = priorMostRecent.getPubDate();
             }
@@ -340,13 +242,13 @@ public final class DBTasks {
                 FeedItem possibleDuplicate = searchFeedItemGuessDuplicate(newFeed.getItems(), item);
                 if (!newFeed.isLocalFeed() && possibleDuplicate != null && item != possibleDuplicate) {
                     // Canonical episode is the first one returned (usually oldest)
-                    DBWriter.addDownloadStatus(new DownloadStatus(savedFeed,
+                    DBWriter.addDownloadStatus(new DownloadResult(savedFeed,
                             item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
                             "The podcast host appears to have added the same episode twice. "
                                     + "AntennaPod still refreshed the feed and attempted to repair it."
                                     + "\n\nOriginal episode:\n" + duplicateEpisodeDetails(item)
                                     + "\n\nSecond episode that is also in the feed:\n"
-                                    + duplicateEpisodeDetails(possibleDuplicate), false));
+                                    + duplicateEpisodeDetails(possibleDuplicate)));
                     continue;
                 }
 
@@ -355,13 +257,13 @@ public final class DBTasks {
                     oldItem = searchFeedItemGuessDuplicate(savedFeed.getItems(), item);
                     if (oldItem != null) {
                         Log.d(TAG, "Repaired duplicate: " + oldItem + ", " + item);
-                        DBWriter.addDownloadStatus(new DownloadStatus(savedFeed,
+                        DBWriter.addDownloadStatus(new DownloadResult(savedFeed,
                                 item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
                                 "The podcast host changed the ID of an existing episode instead of just "
                                         + "updating the episode itself. AntennaPod still refreshed the feed and "
                                         + "attempted to repair it."
                                         + "\n\nOriginal episode:\n" + duplicateEpisodeDetails(oldItem)
-                                        + "\n\nNow the feed contains:\n" + duplicateEpisodeDetails(item), false));
+                                        + "\n\nNow the feed contains:\n" + duplicateEpisodeDetails(item)));
                         oldItem.setItemIdentifier(item.getItemIdentifier());
 
                         if (oldItem.isPlayed() && oldItem.getMedia() != null) {
@@ -388,14 +290,15 @@ public final class DBTasks {
                         savedFeed.getItems().add(idx, item);
                     }
 
-                    // only mark the item new if it was published after or at the same time
-                    // as the most recent item
-                    // (if the most recent date is null then we can assume there are no items
-                    // and this is the first, hence 'new')
-                    // New items that do not have a pubDate set are always marked as new
-                    if (item.getPubDate() == null || priorMostRecentDate == null
-                            || priorMostRecentDate.before(item.getPubDate())
-                            || priorMostRecentDate.equals(item.getPubDate())) {
+                    FeedPreferences.NewEpisodesAction action = savedFeed.getPreferences().getNewEpisodesAction();
+                    if (action == FeedPreferences.NewEpisodesAction.GLOBAL) {
+                        action = UserPreferences.getNewEpisodesAction();
+                    }
+                    if (action == FeedPreferences.NewEpisodesAction.ADD_TO_INBOX
+                            && (item.getPubDate() == null
+                                || priorMostRecentDate == null
+                                || priorMostRecentDate.before(item.getPubDate())
+                                || priorMostRecentDate.equals(item.getPubDate()))) {
                         Log.d(TAG, "Marking item published on " + item.getPubDate()
                                 + " new, prior most recent date = " + priorMostRecentDate);
                         item.setNew();

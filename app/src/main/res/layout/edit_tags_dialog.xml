@@ -7,6 +7,12 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <CheckBox
+        android:id="@+id/rootFolderCheckbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/feed_folders_include_root" />
+
     <com.joanzapata.iconify.widget.IconTextView
         android:id="@+id/commonTagsInfo"
         android:layout_width="match_parent"
@@ -21,12 +27,6 @@
         android:id="@+id/tagsRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
-    <CheckBox
-        android:id="@+id/rootFolderCheckbox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/feed_folders_include_root" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/newTagTextInput"
