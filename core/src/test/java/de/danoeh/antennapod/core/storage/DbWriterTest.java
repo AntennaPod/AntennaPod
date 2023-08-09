@@ -298,7 +298,6 @@ public class DbWriterTest {
         for (int i = 0; i < 10; i++) {
             FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), FeedItem.PLAYED, feed);
             feed.getItems().add(item);
-
         }
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -444,6 +443,7 @@ public class DbWriterTest {
         // create items
         for (int i = 0; i < 10; i++) {
             FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), FeedItem.PLAYED, feed);
+            item.setMedia(new FeedMedia(item, "", 0, ""));
             feed.getItems().add(item);
         }
 
@@ -522,6 +522,7 @@ public class DbWriterTest {
         feed.setItems(new ArrayList<>());
         for (int i = 0; i < numItems; i++) {
             FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i, new Date(), FeedItem.PLAYED, feed);
+            item.setMedia(new FeedMedia(item, "", 0, ""));
             feed.getItems().add(item);
         }
 
@@ -548,6 +549,7 @@ public class DbWriterTest {
         Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
         FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), FeedItem.PLAYED, feed);
+        item.setMedia(new FeedMedia(item, "", 0, ""));
         feed.getItems().add(item);
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -572,6 +574,7 @@ public class DbWriterTest {
         Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
         FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), FeedItem.PLAYED, feed);
+        item.setMedia(new FeedMedia(item, "", 0, ""));
         feed.getItems().add(item);
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -714,6 +717,7 @@ public class DbWriterTest {
         for (int i = 0; i < numItems; i++) {
             FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i,
                     new Date(), FeedItem.PLAYED, feed);
+            item.setMedia(new FeedMedia(item, "", 0, ""));
             feed.getItems().add(item);
         }
 
@@ -762,6 +766,7 @@ public class DbWriterTest {
         for (int i = 0; i < numItems; i++) {
             FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i,
                     new Date(), FeedItem.NEW, feed);
+            item.setMedia(new FeedMedia(item, "", 0, ""));
             feed.getItems().add(item);
         }
 
@@ -788,6 +793,7 @@ public class DbWriterTest {
         for (int i = 0; i < numItems; i++) {
             FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i,
                     new Date(), FeedItem.PLAYED, feed);
+            item.setMedia(new FeedMedia(item, "", 0, ""));
             feed.getItems().add(item);
         }
 
