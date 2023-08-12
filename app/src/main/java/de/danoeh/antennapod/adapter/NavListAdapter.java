@@ -22,7 +22,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.joanzapata.iconify.Iconify;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.fragment.AllEpisodesFragment;
@@ -260,10 +259,8 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             // don't count episodes that can be reclaimed
             int spaceUsed = itemAccess.getNumberOfDownloadedItems()
                     - itemAccess.getReclaimableItems();
-
             if (epCacheSize > 0 && spaceUsed >= epCacheSize) {
-                holder.count.setText("{md-disc-full 150%}");
-                Iconify.addIcons(holder.count);
+                holder.count.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_disc_full, 0);
                 holder.count.setVisibility(View.VISIBLE);
                 holder.count.setOnClickListener(v ->
                         new MaterialAlertDialogBuilder(context)
@@ -291,9 +288,9 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
 
         if (UserPreferences.getSubscriptionsFilter().isEnabled() && showSubscriptionList) {
             holder.itemView.setEnabled(true);
-            holder.feedsFilteredMsg.setText("{md-info-outline} "
-                    + context.getString(R.string.subscriptions_are_filtered));
-            Iconify.addIcons(holder.feedsFilteredMsg);
+            holder.feedsFilteredMsg.setText(" " + context.getString(R.string.subscriptions_are_filtered));
+            holder.feedsFilteredMsg.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    R.drawable.md_info_outline, 0, 0, 0);
             holder.feedsFilteredMsg.setVisibility(View.VISIBLE);
         } else {
             holder.itemView.setEnabled(false);
