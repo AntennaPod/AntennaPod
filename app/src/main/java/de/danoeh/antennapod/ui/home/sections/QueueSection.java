@@ -92,6 +92,9 @@ public class QueueSection extends HomeSection {
         }
         for (int i = 0, size = event.items.size(); i < size; i++) {
             FeedItem item = event.items.get(i);
+	    if(item.isPlayed()) {
+		continue;
+	    }
             int pos = FeedItemUtil.indexOfItemWithId(queue, item.getId());
             if (pos >= 0) {
                 queue.remove(pos);
