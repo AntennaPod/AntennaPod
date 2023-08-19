@@ -21,8 +21,11 @@ public class MediaPlayerErrorDialog {
                 genericMessage.length(), errorMessage.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         errorDialog.setMessage(errorMessage);
-        errorDialog.setPositiveButton(android.R.string.ok, (dialog, which) ->
-                ((MainActivity) activity).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED));
+        errorDialog.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+            if (activity instanceof MainActivity) {
+                ((MainActivity) activity).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
         errorDialog.create().show();
     }
 }
