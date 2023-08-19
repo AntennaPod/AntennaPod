@@ -270,17 +270,20 @@ public class EpisodeDownloadWorker extends Worker {
 
     private Notification generateProgressNotification() {
         StringBuilder bigTextB = new StringBuilder();
-        Map<String, Integer> progressCopy = new HashMap<>(notificationProgress);
+        Map<String, Integer> progressCopy;
+        synchronized (notificationProgress) {
+            progressCopy = new HashMap<>(notificationProgress);
+        }
         for (Map.Entry<String, Integer> entry : progressCopy.entrySet()) {
             bigTextB.append(String.format(Locale.getDefault(), "%s (%d%%)\n", entry.getKey(), entry.getValue()));
         }
         String bigText = bigTextB.toString().trim();
         String contentText;
-        if (notificationProgress.size() == 1) {
+        if (progressCopy.size() == 1) {
             contentText = bigText;
         } else {
             contentText = getApplicationContext().getResources().getQuantityString(R.plurals.downloads_left,
-                    notificationProgress.size(), notificationProgress.size());
+                    progressCopy.size(), progressCopy.size());
         }
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(),
                 NotificationUtils.CHANNEL_ID_DOWNLOADING);
