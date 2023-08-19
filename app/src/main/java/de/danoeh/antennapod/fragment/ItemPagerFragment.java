@@ -161,6 +161,9 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
     }
 
     private void openPodcast() {
+        if (item == null) {
+            return;
+        }
         Fragment fragment = FeedItemlistFragment.newInstance(item.getFeedId());
         ((MainActivity) getActivity()).loadChildFragment(fragment);
     }
