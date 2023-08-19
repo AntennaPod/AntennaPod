@@ -62,10 +62,14 @@ public class EpisodeDownloadWorker extends Worker {
         Thread progressUpdaterThread = new Thread() {
             @Override
             public void run() {
-                while (!isInterrupted()) {
+                while (true) {
                     try {
-                        Thread.sleep(1000);
-                        notificationProgress.put(media.getEpisodeTitle(), request.getProgressPercent());
+                        synchronized (notificationProgress) {
+                            if (isInterrupted()) {
+                                return;
+                            }
+                            notificationProgress.put(media.getEpisodeTitle(), request.getProgressPercent());
+                        }
                         setProgressAsync(
                                 new Data.Builder()
                                     .putInt(DownloadServiceInterface.WORK_DATA_PROGRESS, request.getProgressPercent())
@@ -74,6 +78,7 @@ public class EpisodeDownloadWorker extends Worker {
                         NotificationManager nm = (NotificationManager) getApplicationContext()
                                 .getSystemService(Context.NOTIFICATION_SERVICE);
                         nm.notify(R.id.notification_downloading, generateProgressNotification());
+                        Thread.sleep(1000);
                     } catch (InterruptedException | ExecutionException e) {
                         return;
                     }
@@ -94,11 +99,13 @@ public class EpisodeDownloadWorker extends Worker {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        notificationProgress.remove(media.getEpisodeTitle());
-        if (notificationProgress.isEmpty()) {
-            NotificationManager nm = (NotificationManager) getApplicationContext()
-                    .getSystemService(Context.NOTIFICATION_SERVICE);
-            nm.cancel(R.id.notification_downloading);
+        synchronized (notificationProgress) {
+            notificationProgress.remove(media.getEpisodeTitle());
+            if (notificationProgress.isEmpty()) {
+                NotificationManager nm = (NotificationManager) getApplicationContext()
+                        .getSystemService(Context.NOTIFICATION_SERVICE);
+                nm.cancel(R.id.notification_downloading);
+            }
         }
         Log.d(TAG, "Worker for " + media.getDownload_url() + " returned.");
         return result;
