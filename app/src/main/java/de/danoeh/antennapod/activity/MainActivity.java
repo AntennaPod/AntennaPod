@@ -37,6 +37,7 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
+import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
@@ -165,6 +166,8 @@ public class MainActivity extends CastEnabledActivity {
         sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
 
         FeedUpdateManager.restartUpdateAlarm(this, false);
+        SynchronizationQueueSink.syncNowIfNotSyncedRecently();
+
         WorkManager.getInstance(this)
                 .getWorkInfosByTagLiveData(FeedUpdateManager.WORK_TAG_FEED_UPDATE)
                 .observe(this, workInfos -> {
