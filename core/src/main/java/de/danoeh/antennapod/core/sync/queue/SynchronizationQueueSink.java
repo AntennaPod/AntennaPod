@@ -19,6 +19,12 @@ public class SynchronizationQueueSink {
         serviceStarterImpl.run();
     }
 
+    public static void syncNowIfNotSyncedRecently() {
+        if (System.currentTimeMillis() - SynchronizationSettings.getLastSyncAttempt() > 1000 * 60 * 10) {
+            syncNow();
+        }
+    }
+
     public static void clearQueue(Context context) {
         LockingAsyncExecutor.executeLockedAsync(new SynchronizationQueueStorage(context)::clearQueue);
     }
