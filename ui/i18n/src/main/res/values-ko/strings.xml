@@ -32,6 +32,8 @@
   <string name="statistics_reset_data">통계 데이터 초기화</string>
   <string name="statistics_reset_data_msg">모든 에피소드의 재생 시간 기록을 지웁니다. 정말로 계속 하시겠습니까?</string>
   <!--Home fragment-->
+  <string name="home_downloads_title">다운로드 관리</string>
+  <string name="configure_home">홈 화면 구성</string>
   <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">메뉴 열기</string>
@@ -68,6 +70,7 @@
   <string name="close_label">닫기</string>
   <string name="retry_label">다시 시도</string>
   <string name="auto_download_label">자동 다운로드에 포함</string>
+  <string name="auto_delete_label">에피소드 자동 삭제</string>
   <string name="feed_volume_reduction_off">끄기</string>
   <string name="feed_volume_reduction_light">가볍게</string>
   <string name="feed_volume_reduction_heavy">무겁게</string>
@@ -99,6 +102,7 @@
   <string name="rename_feed_label">팟캐스트 이름 바꾸기</string>
   <string name="remove_feed_label">팟캐스트 제거</string>
   <string name="share_label">공유</string>
+  <string name="share_rss_address_label">RSS 주소:</string>
   <string name="feed_remover_msg">팟캐스트 삭제하는 중</string>
   <string name="load_complete_feed">전체 팟캐스트 새로 고침</string>
   <string name="multi_select">다중 선택</string>
@@ -145,6 +149,7 @@
   <string name="download_running">다운로드 실행 중</string>
   <string name="download_error_details">자세히</string>
   <string name="download_error_device_not_found">저장 장치가 없습니다</string>
+  <string name="download_error_http_data_error">HTTP 데이터 오류</string>
   <string name="download_canceled_msg">다운로드 취소함</string>
   <string name="download_report_title">다운로드 마침 (오류 있음)</string>
   <plurals name="downloads_left">
