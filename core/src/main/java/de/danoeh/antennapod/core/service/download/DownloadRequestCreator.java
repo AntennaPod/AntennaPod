@@ -21,6 +21,9 @@ public class DownloadRequestCreator {
 
     public static DownloadRequest.Builder create(Feed feed) {
         File dest = new File(getFeedfilePath(), getFeedfileName(feed));
+        if (dest.exists()) {
+            dest.delete();
+        }
         Log.d(TAG, "Requesting download of url " + feed.getDownload_url());
 
         String username = (feed.getPreferences() != null) ? feed.getPreferences().getUsername() : null;
