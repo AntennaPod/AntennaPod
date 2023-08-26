@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: AntennaPod Forum
+  - name: Help & Support
     url: https://forum.antennapod.org/
-    about: Reduce developer's workload by asking other users.
+    about: Reduce developer's support workload by asking other users on our forum.
+  - name: F-Droid Release
+    url: https://antennapod.org/documentation/general/f-droid
+    about: Waiting for an update to appear on F-Droid? No need to create an issue, please just be patient!
