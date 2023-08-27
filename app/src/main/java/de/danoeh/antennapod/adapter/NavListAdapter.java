@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
@@ -288,9 +289,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
 
         if (UserPreferences.getSubscriptionsFilter().isEnabled() && showSubscriptionList) {
             holder.itemView.setEnabled(true);
-            holder.feedsFilteredMsg.setText(" " + context.getString(R.string.subscriptions_are_filtered));
-            holder.feedsFilteredMsg.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                    R.drawable.md_info_outline, 0, 0, 0);
+            holder.feedsFilteredMsgTxt.setText(context.getString(R.string.subscriptions_are_filtered));
             holder.feedsFilteredMsg.setVisibility(View.VISIBLE);
         } else {
             holder.itemView.setEnabled(false);
@@ -358,11 +357,13 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
     }
 
     static class DividerHolder extends Holder {
-        final TextView feedsFilteredMsg;
+        final LinearLayout feedsFilteredMsg;
+        final TextView feedsFilteredMsgTxt;
 
         public DividerHolder(@NonNull View itemView) {
             super(itemView);
             feedsFilteredMsg = itemView.findViewById(R.id.nav_feeds_filtered_message);
+            feedsFilteredMsgTxt = itemView.findViewById(R.id.nav_feeds_filtered_message_text);
         }
     }
 
