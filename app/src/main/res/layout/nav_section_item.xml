@@ -24,19 +24,20 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_marginLeft="18dp"
-            android:layout_marginTop="6dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
             android:src="@drawable/ic_info" />
 
         <TextView
             android:id="@+id/nav_feeds_filtered_message_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
+            android:layout_marginStart="4dp"
             android:gravity="start"
             android:paddingTop="4dp"
+            android:text="@string/subscriptions_are_filtered"
             android:textColor="?android:attr/textColorSecondary"
             android:textSize="@dimen/text_size_small" />
 

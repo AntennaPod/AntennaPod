@@ -289,7 +289,6 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
 
         if (UserPreferences.getSubscriptionsFilter().isEnabled() && showSubscriptionList) {
             holder.itemView.setEnabled(true);
-            holder.feedsFilteredMsgTxt.setText(context.getString(R.string.subscriptions_are_filtered));
             holder.feedsFilteredMsg.setVisibility(View.VISIBLE);
         } else {
             holder.itemView.setEnabled(false);
@@ -358,12 +357,10 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
 
     static class DividerHolder extends Holder {
         final LinearLayout feedsFilteredMsg;
-        final TextView feedsFilteredMsgTxt;
 
         public DividerHolder(@NonNull View itemView) {
             super(itemView);
             feedsFilteredMsg = itemView.findViewById(R.id.nav_feeds_filtered_message);
-            feedsFilteredMsgTxt = itemView.findViewById(R.id.nav_feeds_filtered_message_text);
         }
     }
 
