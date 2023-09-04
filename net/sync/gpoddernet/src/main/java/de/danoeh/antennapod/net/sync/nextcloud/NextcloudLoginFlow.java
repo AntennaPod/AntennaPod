@@ -21,6 +21,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class NextcloudLoginFlow {
@@ -28,6 +29,7 @@ public class NextcloudLoginFlow {
 
     private final OkHttpClient httpClient;
     private final HostnameParser hostname;
+    private final String rawHostUrl;
     private final Context context;
     private final AuthenticationCallback callback;
     private String token;
@@ -38,12 +40,33 @@ public class NextcloudLoginFlow {
     public NextcloudLoginFlow(OkHttpClient httpClient, String hostUrl, Context context,
                               AuthenticationCallback callback) {
         this.httpClient = httpClient;
+        this.rawHostUrl = hostUrl;
         this.hostname = new HostnameParser(hostUrl);
         this.context = context;
         this.callback = callback;
     }
 
+    public static NextcloudLoginFlow fromInstanceState(OkHttpClient httpClient, Context context,
+                               AuthenticationCallback callback, ArrayList<String> instanceState) {
+        NextcloudLoginFlow flow = new NextcloudLoginFlow(httpClient, instanceState.get(0), context, callback);
+        flow.token = instanceState.get(1);
+        flow.endpoint = instanceState.get(2);
+        return flow;
+    }
+
+    public ArrayList<String> saveInstanceState() {
+        ArrayList<String> state = new ArrayList<>();
+        state.add(rawHostUrl);
+        state.add(token);
+        state.add(endpoint);
+        return state;
+    }
+
     public void start() {
+        if (token != null) {
+            poll();
+            return;
+        }
         startDisposable = Observable.fromCallable(() -> {
             URL url = new URI(hostname.scheme, null, hostname.host, hostname.port,
                     hostname.subfolder + "/index.php/login/v2", null, null).toURL();
@@ -62,6 +85,8 @@ public class NextcloudLoginFlow {
                         poll();
                     }, error -> {
                         Log.e(TAG, Log.getStackTraceString(error));
+                        this.token = null;
+                        this.endpoint = null;
                         callback.onNextcloudAuthError(error.getLocalizedMessage());
                     });
     }
@@ -74,7 +99,11 @@ public class NextcloudLoginFlow {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> callback.onNextcloudAuthenticated(
                         result.getString("server"), result.getString("loginName"), result.getString("appPassword")),
-                    error -> callback.onNextcloudAuthError(error.getLocalizedMessage()));
+                    error -> {
+                        this.token = null;
+                        this.endpoint = null;
+                        callback.onNextcloudAuthError(error.getLocalizedMessage());
+                    });
     }
 
     public void cancel() {
