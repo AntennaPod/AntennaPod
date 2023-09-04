@@ -2,26 +2,26 @@ package de.danoeh.antennapod.ui.glide;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.integration.okhttp3.OkHttpStreamFetcher;
 import com.bumptech.glide.load.data.DataFetcher;
 import com.bumptech.glide.load.model.GlideUrl;
+
 import okhttp3.Call;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 public class ResizingOkHttpStreamFetcher extends OkHttpStreamFetcher {
     private static final String TAG = "ResizingOkHttpStreamFet";
@@ -46,78 +46,46 @@ public class ResizingOkHttpStreamFetcher extends OkHttpStreamFetcher {
                     return;
                 }
                 try {
-                    tempIn = File.createTempFile("resize_", null);
-                    tempOut = File.createTempFile("resize_", null);
-                    OutputStream outputStream = new FileOutputStream(tempIn);
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                     IOUtils.copy(data, outputStream);
-                    outputStream.close();
                     IOUtils.closeQuietly(data);
 
-                    if (tempIn.length() <= MAX_FILE_SIZE) {
-                        try {
-                            stream = new FileInputStream(tempIn);
-                            callback.onDataReady(stream); // Just deliver the original, non-scaled image
-                        } catch (FileNotFoundException fileNotFoundException) {
-                            callback.onLoadFailed(fileNotFoundException);
-                        }
-                        return;
-                    }
+                    byte[] inputData = outputStream.toByteArray();
+                    Bitmap originalBitmap = BitmapFactory.decodeByteArray(inputData, 0, inputData.length);
 
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inJustDecodeBounds = true;
-                    FileInputStream in = new FileInputStream(tempIn);
-                    BitmapFactory.decodeStream(in, null, options);
-                    IOUtils.closeQuietly(in);
-
-                    if (options.outWidth == -1 || options.outHeight == -1) {
-                        throw new IOException("Not a valid image");
-                    } else if (Math.max(options.outHeight, options.outWidth) >= MAX_DIMENSIONS) {
-                        double sampleSize = (double) Math.max(options.outHeight, options.outWidth) / MAX_DIMENSIONS;
-                        options.inSampleSize = (int) Math.pow(2d, Math.floor(Math.log(sampleSize) / Math.log(2d)));
-                    }
-
-                    options.inJustDecodeBounds = false;
-                    in = new FileInputStream(tempIn);
-                    Bitmap bitmap = BitmapFactory.decodeStream(in, null, options);
-                    IOUtils.closeQuietly(in);
-
-                    Bitmap.CompressFormat format = Build.VERSION.SDK_INT < 30
-                            ? Bitmap.CompressFormat.WEBP : Bitmap.CompressFormat.WEBP_LOSSY;
-
+                    int originalSize = inputData.length;
                     int quality = 100;
-                    while (true) {
-                        FileOutputStream out = new FileOutputStream(tempOut);
-                        bitmap.compress(format, quality, out);
-                        IOUtils.closeQuietly(out);
 
-                        if (tempOut.length() > 3 * MAX_FILE_SIZE && quality >= 45) {
-                            quality -= 40;
-                        } else if (tempOut.length() > 2 * MAX_FILE_SIZE && quality >= 25) {
-                            quality -= 20;
-                        } else if (tempOut.length() > MAX_FILE_SIZE && quality >= 15) {
-                            quality -= 10;
-                        } else if (tempOut.length() > MAX_FILE_SIZE && quality >= 10) {
-                            quality -= 5;
+                    while (originalSize > MAX_FILE_SIZE && quality >= 10) {
+                        outputStream.reset();
+                        originalBitmap.compress(Bitmap.CompressFormat.WEBP, quality, outputStream);
+                        byte[] compressedData = outputStream.toByteArray();
+
+                        if (compressedData.length > MAX_FILE_SIZE) {
+                            if (quality >= 45) {
+                                quality -= 40;
+                            } else if (quality >= 25) {
+                                quality -= 20;
+                            } else if (quality >= 15) {
+                                quality -= 10;
+                            } else {
+                                quality -= 5;
+                            }
                         } else {
-                            break;
+                            inputData = compressedData;
+                            originalSize = compressedData.length;
                         }
                     }
-                    bitmap.recycle();
 
-                    stream = new FileInputStream(tempOut);
-                    callback.onDataReady(stream);
-                    Log.d(TAG, "Compressed image from " + tempIn.length() / 1024
-                            + " to " + tempOut.length() / 1024 + " kB (quality: " + quality + "%)");
-                } catch (Throwable e) {
+                    ByteArrayInputStream inputStream = new ByteArrayInputStream(inputData);
+                    callback.onDataReady(inputStream);
+
+                    int compressedSize = inputData.length;
+                    Log.d(TAG, "Compressed image from " + originalSize / 1024 + " to " + compressedSize / 1024 + " kB (quality: " + quality + "%)");
+
+                } catch (Exception e) {
                     e.printStackTrace();
-
-                    try {
-                        stream = new FileInputStream(tempIn);
-                        callback.onDataReady(stream); // Just deliver the original, non-scaled image
-                    } catch (FileNotFoundException fileNotFoundException) {
-                        e.printStackTrace();
-                        callback.onLoadFailed(fileNotFoundException);
-                    }
+                    callback.onLoadFailed(e);
                 }
             }
 
