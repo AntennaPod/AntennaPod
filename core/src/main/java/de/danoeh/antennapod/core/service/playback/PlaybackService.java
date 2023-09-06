@@ -354,9 +354,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
             emitter.onSuccess(queueItems);
         })
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(queueItems -> mediaSession.setQueue(queueItems), Throwable::printStackTrace);
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(queueItems -> mediaSession.setQueue(queueItems), Throwable::printStackTrace);
     }
 
     private MediaBrowserCompat.MediaItem createBrowsableMediaItem(
@@ -407,11 +407,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        () -> {
-                        }, e -> {
-                            e.printStackTrace();
-                            result.sendResult(null);
-                        });
+                    () -> {
+                    }, e -> {
+                        e.printStackTrace();
+                        result.sendResult(null);
+                    });
     }
 
     private List<MediaBrowserCompat.MediaItem> loadChildrenSynchronous(@NonNull String parentId) {
@@ -549,7 +549,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private void skipIntro(Playable playable) {
-        if (!(playable instanceof FeedMedia)) {
+        if (! (playable instanceof FeedMedia)) {
             return;
         }
 
@@ -1150,7 +1150,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private void skipEndingIfNecessary() {
         Playable playable = mediaPlayer.getPlayable();
-        if (!(playable instanceof FeedMedia)) {
+        if (! (playable instanceof FeedMedia)) {
             return;
         }
 
@@ -1173,7 +1173,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             this.autoSkippedFeedMediaId = feedMedia.getItem().getIdentifyingValue();
             mediaPlayer.skip();
         }
-    }
+   }
 
     /**
      * Updates the Media Session for the corresponding status.
@@ -1589,10 +1589,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (getPlayable() instanceof FeedMedia) {
             if (((FeedMedia) getPlayable()).getItem().getFeed().getId() == event.getFeedId()) {
                 if (event.getSkipEnding() != 0) {
-                    FeedPreferences feedPreferences
-                            = ((FeedMedia) getPlayable()).getItem().getFeed().getPreferences();
-                    feedPreferences.setFeedSkipIntro(event.getSkipIntro());
-                    feedPreferences.setFeedSkipEnding(event.getSkipEnding());
+                   FeedPreferences feedPreferences
+                           = ((FeedMedia) getPlayable()).getItem().getFeed().getPreferences();
+                   feedPreferences.setFeedSkipIntro(event.getSkipIntro());
+                   feedPreferences.setFeedSkipEnding(event.getSkipEnding());
 
                 }
             }
@@ -1649,7 +1649,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     public float getCurrentPlaybackSpeed() {
-        if (mediaPlayer == null) {
+        if(mediaPlayer == null) {
             return 1.0f;
         }
         return mediaPlayer.getPlaybackSpeed();

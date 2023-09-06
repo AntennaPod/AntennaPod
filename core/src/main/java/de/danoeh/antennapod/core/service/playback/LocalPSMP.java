@@ -596,18 +596,15 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 return;
             }
 
-
-
-
-                if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
-                    Log.d(TAG, "Lost audio focus");
-                    pause(true, false);
-                    callback.shouldStop();
-                } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK
-                        && !UserPreferences.shouldPauseForFocusLoss()) {
-                    if (playerStatus == PlayerStatus.PLAYING) {
-                        Log.d(TAG, "Lost audio focus temporarily. Ducking...");
-                        setVolume(0.25f, 0.25f);
+            if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+                Log.d(TAG, "Lost audio focus");
+                pause(true, false);
+                callback.shouldStop();
+            } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK
+                    && !UserPreferences.shouldPauseForFocusLoss()) {
+                if (playerStatus == PlayerStatus.PLAYING) {
+                    Log.d(TAG, "Lost audio focus temporarily. Ducking...");
+                    setVolume(0.25f, 0.25f);
                     pausedBecauseOfTransientAudiofocusLoss = false;
                 }
             } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT
