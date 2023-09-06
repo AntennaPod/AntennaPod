@@ -43,7 +43,10 @@ public abstract class FeedFile extends FeedComponent {
     void updateFromOther(FeedFile other) {
         super.updateFromOther(other);
         this.download_url = other.download_url;
-        this.file_url = other.file_url;
+
+        if (other.file_url != null) {
+            this.file_url = other.file_url;
+        }
     }
 
     /**
