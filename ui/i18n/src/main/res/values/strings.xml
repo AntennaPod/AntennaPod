@@ -127,11 +127,11 @@
     <string name="feed_volume_adapdation">Volume adaptation</string>
     <string name="feed_volume_adaptation_summary">Turn volume for episodes of this podcast up or down: %1$s</string>
     <string name="feed_volume_reduction_off">Off</string>
-    <string name="feed_volume_reduction_light">Light Reduction</string>
-    <string name="feed_volume_reduction_heavy">Heavy Reduction</string>
-    <string name="feed_volume_boost_light">Light Boost</string>
-    <string name="feed_volume_boost_medium">Medium Boost</string>
-    <string name="feed_volume_boost_heavy">Heavy Boost</string>
+    <string name="feed_volume_reduction_light">Light reduction</string>
+    <string name="feed_volume_reduction_heavy">Heavy reduction</string>
+    <string name="feed_volume_boost_light">Light boost</string>
+    <string name="feed_volume_boost_medium">Medium boost</string>
+    <string name="feed_volume_boost_heavy">Heavy boost</string>
     <string name="feed_auto_download_always">Always</string>
     <string name="feed_auto_download_never">Never</string>
     <string name="feed_new_episodes_action_add_to_inbox">Add to inbox</string>
