@@ -1828,12 +1828,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 return;
             }
 
-            int currentChapter = ChapterUtils.getCurrentChapterIndex(
-                    mediaPlayer.getPlayable(),
-                    mediaPlayer.getPosition()
-            );
-
-            int nextChapter = currentChapter + 1;
+            int nextChapter = ChapterUtils.getCurrentChapterIndex(
+                    mediaPlayer.getPlayable(), mediaPlayer.getPosition()) + 1;
 
             if (chapters.size() < nextChapter + 1) {
                 // We are on the last chapter, just fallback to the next episode

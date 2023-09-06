@@ -131,13 +131,8 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
         showNotificationButtonsDialog(preferredButtons, allButtonNames, title, maxItems, completeListener);
     }
 
-    private void showNotificationButtonsDialog(
-            List<Integer> preferredButtons,
-            String[] allButtonNames,
-            String title,
-            int maxItems,
-            DialogInterface.OnClickListener completeListener
-    ) {
+    private void showNotificationButtonsDialog(List<Integer> preferredButtons, String[] allButtonNames,
+            String title, int maxItems, DialogInterface.OnClickListener completeListener) {
         boolean[] checked = new boolean[allButtonNames.length]; // booleans default to false in java
 
         final Context context = getActivity();
