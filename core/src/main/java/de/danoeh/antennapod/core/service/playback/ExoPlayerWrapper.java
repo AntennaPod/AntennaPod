@@ -253,7 +253,6 @@ public class ExoPlayerWrapper {
             exoPlayer.setVolume(v);
             loudnessEnhancer.setEnabled(false);
         }
-
     }
 
     public void start() {
