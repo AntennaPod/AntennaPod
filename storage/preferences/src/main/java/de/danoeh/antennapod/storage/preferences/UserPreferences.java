@@ -240,7 +240,7 @@ public class UserPreferences {
             prefs.getString(PREF_FULL_NOTIFICATION_BUTTONS,
                 NOTIFICATION_BUTTON_REWIND + ","
                     + NOTIFICATION_BUTTON_FAST_FORWARD + ","
-                    + NOTIFICATION_BUTTON_SKIP + ","),
+                    + NOTIFICATION_BUTTON_SKIP),
             ",");
 
         List<Integer> notificationButtons = new ArrayList<>();
