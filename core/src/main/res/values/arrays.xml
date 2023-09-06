@@ -14,8 +14,8 @@
     </string-array>
 
     <string-array name="spnVolumeAdaptationItems">
-        <item>@string/feed_volume_reduction_light</item>
         <item>@string/feed_volume_reduction_heavy</item>
+        <item>@string/feed_volume_reduction_light</item>
         <item>@string/feed_volume_reduction_off</item>
         <item>@string/feed_volume_boost_light</item>
         <item>@string/feed_volume_boost_medium</item>
@@ -23,8 +23,8 @@
     </string-array>
 
     <string-array name="spnVolumeAdaptationValues">
-        <item>light</item>
         <item>heavy</item>
+        <item>light</item>
         <item>off</item>
         <item>light_boost</item>
         <item>medium_boost</item>
