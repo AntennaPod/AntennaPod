@@ -82,46 +82,6 @@ public class PreferencesTest {
     }
 
     @Test
-    public void testSetLockscreenButtons() {
-        assumeTrue("Compact notification setting is only relevant on older Android versions",
-                Build.VERSION.SDK_INT < 30);
-
-        clickPreference(R.string.user_interface_label);
-        String[] buttons = res.getStringArray(R.array.compact_notification_buttons_options);
-        clickPreference(R.string.pref_compact_notification_buttons_title);
-        // First uncheck checkboxes
-        onView(withText(buttons[0])).perform(click());
-        onView(withText(buttons[1])).perform(click());
-
-        // Now try to check all checkboxes
-        onView(withText(buttons[0])).perform(click());
-        onView(withText(buttons[1])).perform(click());
-        onView(withText(buttons[2])).perform(click());
-
-        // Make sure that the third checkbox is unchecked
-        onView(withText(buttons[2])).check(matches(not(isChecked())));
-
-        String snackBarText = String.format(res.getString(
-                R.string.pref_compact_notification_buttons_dialog_error), 2);
-        Awaitility.await().ignoreExceptions().atMost(4000, MILLISECONDS)
-                .until(() -> {
-                    onView(withText(snackBarText)).check(doesNotExist());
-                    return true;
-                });
-
-        onView(withText(R.string.confirm_label)).perform(click());
-
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(UserPreferences::showRewindOnCompactNotification);
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(UserPreferences::showFastForwardOnCompactNotification);
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> !UserPreferences.showSkipOnCompactNotification());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> !UserPreferences.showNextChapterOnCompactNotification());
-    }
-
-    @Test
     public void testSetNotificationButtons() {
         clickPreference(R.string.user_interface_label);
         String[] buttons = res.getStringArray(R.array.full_notification_buttons_options);
