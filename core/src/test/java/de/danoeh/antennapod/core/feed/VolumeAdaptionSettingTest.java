@@ -32,10 +32,34 @@ public class VolumeAdaptionSettingTest {
     }
 
     @Test
+    public void mapLightBoostToInteger() {
+        VolumeAdaptionSetting setting = VolumeAdaptionSetting.LIGHT_BOOST;
+
+        assertThat(setting.toInteger(), is(equalTo(3)));
+    }
+
+    @Test
+    public void mapMediumBoostToInteger() {
+        VolumeAdaptionSetting setting = VolumeAdaptionSetting.MEDIUM_BOOST;
+
+        assertThat(setting.toInteger(), is(equalTo(4)));
+    }
+
+    @Test
+    public void mapHeavyBoostToInteger() {
+        VolumeAdaptionSetting setting = VolumeAdaptionSetting.HEAVY_BOOST;
+
+        assertThat(setting.toInteger(), is(equalTo(5)));
+    }
+
+    @Test
     public void mapIntegerToVolumeAdaptionSetting() {
         assertThat(VolumeAdaptionSetting.fromInteger(0), is(equalTo(VolumeAdaptionSetting.OFF)));
         assertThat(VolumeAdaptionSetting.fromInteger(1), is(equalTo(VolumeAdaptionSetting.LIGHT_REDUCTION)));
         assertThat(VolumeAdaptionSetting.fromInteger(2), is(equalTo(VolumeAdaptionSetting.HEAVY_REDUCTION)));
+        assertThat(VolumeAdaptionSetting.fromInteger(3), is(equalTo(VolumeAdaptionSetting.LIGHT_BOOST)));
+        assertThat(VolumeAdaptionSetting.fromInteger(4), is(equalTo(VolumeAdaptionSetting.MEDIUM_BOOST)));
+        assertThat(VolumeAdaptionSetting.fromInteger(5), is(equalTo(VolumeAdaptionSetting.HEAVY_BOOST)));
     }
 
     @Test(expected =  IllegalArgumentException.class)
@@ -45,7 +69,7 @@ public class VolumeAdaptionSettingTest {
 
     @Test(expected =  IllegalArgumentException.class)
     public void cannotMapValuesOutOfRange() {
-        VolumeAdaptionSetting.fromInteger(3);
+        VolumeAdaptionSetting.fromInteger(6);
     }
 
     @Test
@@ -61,5 +85,32 @@ public class VolumeAdaptionSettingTest {
         float heavyReductionFactor = VolumeAdaptionSetting.HEAVY_REDUCTION.getAdaptionFactor();
 
         assertTrue("Light reduction must have higher factor than heavy reduction", lightReductionFactor > heavyReductionFactor);
+    }
+
+    @Test
+    public void lightBoostYieldsHigherValueThanLightReduction() {
+        float lightReductionFactor = VolumeAdaptionSetting.LIGHT_REDUCTION.getAdaptionFactor();
+
+        float lightBoostFactor = VolumeAdaptionSetting.LIGHT_BOOST.getAdaptionFactor();
+
+        assertTrue("Light boost must have higher factor than light reduction", lightBoostFactor > lightReductionFactor);
+    }
+
+    @Test
+    public void mediumBoostYieldsHigherValueThanLightBoost() {
+        float lightBoostFactor = VolumeAdaptionSetting.LIGHT_BOOST.getAdaptionFactor();
+
+        float mediumBoostFactor = VolumeAdaptionSetting.MEDIUM_BOOST.getAdaptionFactor();
+
+        assertTrue("Medium boost must have higher factor than light boost", mediumBoostFactor > lightBoostFactor);
+    }
+
+    @Test
+    public void heavyBoostYieldsHigherValueThanMediumBoost() {
+        float mediumBoostFactor = VolumeAdaptionSetting.MEDIUM_BOOST.getAdaptionFactor();
+
+        float heavyBoostFactor = VolumeAdaptionSetting.HEAVY_BOOST.getAdaptionFactor();
+
+        assertTrue("Heavy boost must have higher factor than medium boost", heavyBoostFactor > mediumBoostFactor);
     }
 }
