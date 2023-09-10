@@ -34,7 +34,6 @@ import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -57,15 +56,10 @@ public class FeedUpdateWorker extends Worker {
         ClientConfigurator.initialize(getApplicationContext());
         newEpisodesNotification.loadCountersBeforeRefresh();
 
-        if (!getInputData().getBoolean(FeedUpdateManager.EXTRA_EVEN_ON_MOBILE, false)) {
-            if (!NetworkUtils.networkAvailable() || !NetworkUtils.isFeedRefreshAllowed()) {
-                Log.d(TAG, "Blocking automatic update: no wifi available / no mobile updates allowed");
-                return Result.retry();
-            }
-        }
-
         List<Feed> toUpdate;
         long feedId = getInputData().getLong(FeedUpdateManager.EXTRA_FEED_ID, -1);
+        boolean allAreLocal = true;
+        boolean force = false;
         if (feedId == -1) { // Update all
             toUpdate = DBReader.getFeedList();
             Iterator<Feed> itr = toUpdate.iterator();
@@ -74,18 +68,31 @@ public class FeedUpdateWorker extends Worker {
                 if (!feed.getPreferences().getKeepUpdated()) {
                     itr.remove();
                 }
+                if (!feed.isLocalFeed()) {
+                    allAreLocal = false;
+                }
             }
             Collections.shuffle(toUpdate); // If the worker gets cancelled early, every feed has a chance to be updated
-            refreshFeeds(toUpdate, false);
         } else {
-            toUpdate = new ArrayList<>();
             Feed feed = DBReader.getFeed(feedId);
             if (feed == null) {
                 return Result.success();
             }
-            toUpdate.add(feed);
-            refreshFeeds(toUpdate, true);
+            if (!feed.isLocalFeed()) {
+                allAreLocal = false;
+            }
+            toUpdate = Collections.singletonList(feed);
+            force = true;
         }
+
+        if (!getInputData().getBoolean(FeedUpdateManager.EXTRA_EVEN_ON_MOBILE, false) && !allAreLocal) {
+            if (!NetworkUtils.networkAvailable() || !NetworkUtils.isFeedRefreshAllowed()) {
+                Log.d(TAG, "Blocking automatic update");
+                return Result.retry();
+            }
+        }
+        refreshFeeds(toUpdate,  force);
+
         notificationManager.cancel(R.id.notification_updating_feeds);
         DBTasks.autodownloadUndownloadedItems(getApplicationContext());
         return Result.success();
