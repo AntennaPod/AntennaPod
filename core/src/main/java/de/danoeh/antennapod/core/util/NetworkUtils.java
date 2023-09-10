@@ -78,18 +78,18 @@ public class NetworkUtils {
 
     private static boolean isNetworkMetered() {
         ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            NetworkCapabilities capabilities = connManager.getNetworkCapabilities(
-                    connManager.getActiveNetwork());
-
-            if (capabilities != null
-                    && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
-                    && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)) {
-                return false;
-            }
-        }
         return connManager.isActiveNetworkMetered();
+    }
+
+    public static boolean isVpnOverWifi() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return false;
+        }
+        ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities capabilities = connManager.getNetworkCapabilities(connManager.getActiveNetwork());
+        return capabilities != null
+                && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN);
     }
 
     private static boolean isNetworkCellular() {
