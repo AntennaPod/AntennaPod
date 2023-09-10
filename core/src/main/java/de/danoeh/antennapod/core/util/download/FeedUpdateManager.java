@@ -98,7 +98,6 @@ public class FeedUpdateManager {
     private static void confirmMobileRefresh(final Context context, @Nullable Feed feed) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.feed_refresh_title)
-                .setMessage(R.string.confirm_mobile_feed_refresh_dialog_message)
                 .setPositiveButton(R.string.confirm_mobile_streaming_button_once,
                         (dialog, which) -> runOnce(context, feed))
                 .setNeutralButton(R.string.confirm_mobile_streaming_button_always, (dialog, which) -> {
@@ -106,6 +105,11 @@ public class FeedUpdateManager {
                     runOnce(context, feed);
                 })
                 .setNegativeButton(R.string.no, null);
+        if (NetworkUtils.isNetworkRestricted() && NetworkUtils.isVpnOverWifi()) {
+            builder.setMessage(R.string.confirm_mobile_feed_refresh_dialog_message_vpn);
+        } else {
+            builder.setMessage(R.string.confirm_mobile_feed_refresh_dialog_message);
+        }
         builder.show();
     }
 

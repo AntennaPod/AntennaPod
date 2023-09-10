@@ -52,12 +52,17 @@ public class DownloadActionButton extends ItemActionButton {
         } else {
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context)
                     .setTitle(R.string.confirm_mobile_download_dialog_title)
-                    .setMessage(R.string.confirm_mobile_download_dialog_message)
                     .setPositiveButton(R.string.confirm_mobile_download_dialog_download_later,
                             (d, w) -> DownloadServiceInterface.get().downloadNow(context, item, false))
                     .setNeutralButton(R.string.confirm_mobile_download_dialog_allow_this_time,
                             (d, w) -> DownloadServiceInterface.get().downloadNow(context, item, true))
                     .setNegativeButton(R.string.cancel_label, null);
+            if (NetworkUtils.isNetworkRestricted() && NetworkUtils.isVpnOverWifi()) {
+                builder.setMessage(R.string.confirm_mobile_download_dialog_message_vpn);
+            } else {
+                builder.setMessage(R.string.confirm_mobile_download_dialog_message);
+            }
+
             builder.show();
         }
     }
