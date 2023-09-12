@@ -297,7 +297,7 @@
   <string name="playback_error_timeout">A operación caducou</string>
   <string name="playback_error_source">O ficheiro de medios non está accesible</string>
   <string name="playback_error_unknown">Erro descoñecido</string>
-  <string name="no_media_playing_label">Non reproducindo</string>
+  <string name="no_media_playing_label">Sen reprodución</string>
   <string name="unknown_media_key">AntennaPod - chave de medios descoñecida: %1$d</string>
   <string name="error_file_not_found">Non se atopa o ficheiro</string>
   <string name="no_media_label">O elemento non conten un ficheiro multimedia</string>
@@ -580,7 +580,7 @@
     <item quantity="other">%d horas</item>
   </plurals>
   <string name="auto_enable_label">Activar automáticamente o temporizador ao iniciar a reprodución</string>
-  <string name="auto_enable_label_with_times">Activa o temporizador de apagado ao premer o reprodutor entre as %s e as %s</string>
+  <string name="auto_enable_label_with_times">Activa automáticamente o temporizador de apagado ao escoitar entre as %s e as %s</string>
   <string name="auto_enable_change_times">Cambiar horas</string>
   <string name="sleep_timer_enabled_label">Apagado automático habilitado</string>
   <!--Synchronisation-->
@@ -760,7 +760,7 @@
   <string name="notification_channel_downloading">Descargando</string>
   <string name="notification_channel_downloading_description">Mostrado durante a descarga actual.</string>
   <string name="notification_channel_playing">Soando agora</string>
-  <string name="notification_channel_playing_description">Permite controlar a reprodución. Esta é a notificación principal que verá mentras reproduce un podcast.</string>
+  <string name="notification_channel_playing_description">Permite controlar a reprodución. Esta é a notificación principal que verás mentras escoitas un podcast.</string>
   <string name="notification_channel_download_error">Fallou a descarga</string>
   <string name="notification_channel_download_error_description">Mostrado cando a descarga ou actualización da fonte fallou.</string>
   <string name="notification_channel_sync_error">Fallou a sincronización</string>

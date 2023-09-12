@@ -91,6 +91,7 @@
   <string name="yes">Tak</string>
   <string name="no">Nie</string>
   <string name="reset">Reset</string>
+  <string name="global_default">Globalnie domyślne</string>
   <string name="url_label">URL</string>
   <string name="support_funding_label">Wsparcie</string>
   <string name="support_podcast">Wesprzyj ten podcast</string>
@@ -339,6 +340,7 @@
   <string name="episode_title">Tytuł odcinka</string>
   <string name="feed_title">Tytuł podcastu</string>
   <string name="random">Losowo</string>
+  <string name="smart_shuffle">Inteligentne tasowanie</string>
   <string name="clear_queue_confirmation_msg">Potwierdź usunięcie WSZYSTKICH pozycji z kolejki</string>
   <string name="time_left_label">Pozostały czas:\u0020</string>
   <!--Variable Speed-->
@@ -352,6 +354,7 @@
   <string name="no_comp_downloads_label">Możesz pobrać odcinki z ekranu informacji o podcaście</string>
   <string name="no_log_downloads_head_label">Brak dziennika pobierań</string>
   <string name="no_log_downloads_label">Tutaj pojawi się dziennik pobierań</string>
+  <string name="no_history_head_label">Brak historii</string>
   <string name="no_history_label">Tutaj pojawi się lista odcinków, po ich przesłuchaniu.</string>
   <string name="no_all_episodes_head_label">Brak odcinków</string>
   <string name="no_all_episodes_label">Tutaj pojawi się lista odcinków, gdy dodasz podcast.</string>
@@ -381,7 +384,9 @@
   <string name="pref_pauseOnDisconnect_sum">Wstrzymaj odtwarzanie po rozłączeniu słuchawek lub Bluetooth</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Wznów odtwarzanie kiedy słuchawki zostaną podłączone ponownie</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Wznów odtwarzanie po przywróceniu połączenia Bluetooth</string>
+  <string name="pref_hardware_forward_button_title">Przycisk \'do przodu\'</string>
   <string name="pref_hardware_forward_button_summary">Dostosuj przycisk \'do przodu\'</string>
+  <string name="pref_hardware_previous_button_title">Przycisk \'wstecz\'</string>
   <string name="pref_hardware_previous_button_summary">Dostosuj przycisk \'wstecz\'</string>
   <string name="button_action_fast_forward">Szybkie przewijanie</string>
   <string name="button_action_rewind">Przewijanie do tyłu</string>
@@ -405,9 +410,12 @@
   <string name="feed_every_4_hours">Co 4 godziny</string>
   <string name="feed_every_8_hours">Co 8 godzin</string>
   <string name="feed_every_12_hours">Co 12 godzin</string>
+  <string name="feed_every_24_hours">Codziennie</string>
   <string name="feed_every_72_hours">Co 3 dni</string>
   <string name="pref_followQueue_title">Odtwarzanie ciągłe</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Rozłączenie słuchawek lub Bluetooth</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Podłączono ponownie słuchawki</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">Podłączono ponownie Bluetooth</string>
   <string name="pref_stream_over_download_title">Preferuj streamowanie</string>
   <string name="pref_stream_over_download_sum">Wyświetlaj na listach przycisk streamowania zamiast przycisku pobierania.</string>
   <string name="pref_mobileUpdate_sum">Wybierz co ma być dozwolone przy połączeniu poprzez sieć komórkową</string>
@@ -653,8 +661,10 @@
   <string name="feed_tags_label">Tagi</string>
   <string name="feed_tags_summary">Zmień tagi tego podcastu, żeby lepiej zorganizować swoje subskrypcje</string>
   <string name="multi_feed_common_tags_info">{fa-info-circle} Tylko wspólne tagi wybranych subskrypcji są pokazane. Pozostałe tagi zostaną bez zmian.</string>
+  <string name="auto_download_settings_label">Ustawienia automatycznego pobierania</string>
   <string name="episode_filters_label">Filtr odcinków</string>
   <string name="episode_filters_description">Wykaz terminów używanych aby zdecydować, czy odcinek powinien być włączony lub wyłączony podczas automatycznego pobierania.</string>
+  <string name="add_term">Dodaj termin</string>
   <string name="exclude_terms">Wyklucz odcinki zawierające dowolne z poniższych wyrażeń</string>
   <string name="include_terms">Uwzględnij tylko odcinki zawierające dowolne z poniższych wyrażeń</string>
   <string name="exclude_episodes_shorter_than">Wyklucz odcinki krótsze niż</string>

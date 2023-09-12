@@ -597,8 +597,8 @@
     <item quantity="many">%d heures</item>
     <item quantity="other">%d heures</item>
   </plurals>
-  <string name="auto_enable_label">Activer automatiquement lorsque la lecture commence</string>
-  <string name="auto_enable_label_with_times">Activer automatiquement lorsque la lecture commence entre %s et %s</string>
+  <string name="auto_enable_label">Activation automatique lorsque la lecture commence</string>
+  <string name="auto_enable_label_with_times">Activation automatique lorsque la lecture commence entre %s et %s</string>
   <string name="auto_enable_change_times">Changer la plage horaire</string>
   <string name="sleep_timer_enabled_label">Arrêt automatique activé</string>
   <!--Synchronisation-->

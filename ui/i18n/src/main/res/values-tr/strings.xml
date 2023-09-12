@@ -319,7 +319,7 @@
   <string name="feed_title">Podcast bilgisi</string>
   <string name="random">Rastgele</string>
   <string name="smart_shuffle">Akıllı karıştırma</string>
-  <string name="clear_queue_confirmation_msg">Lütfen içerisindeki BÜTÜN ölümlerle birlikte kuyruğu temizleme isteğinizi onaylayın.</string>
+  <string name="clear_queue_confirmation_msg">Lütfen içerisindeki BÜTÜN bölümlerle birlikte kuyruğu temizleme isteğinizi onaylayın.</string>
   <string name="time_left_label">Kalan süre:\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">Kayıtlı Hızlar</string>
@@ -663,7 +663,7 @@
   <string name="include_terms">Yalnızca aşağıdaki şartlardan herhangi birini içeren bölümleri dahil et</string>
   <string name="exclude_episodes_shorter_than">Şundan kısa bölümleri hariç tut</string>
   <string name="keep_updated">Güncel tutun</string>
-  <string name="keep_updated_summary">Tüm podcastleri otomatik yenilerken bu podcasti dahil edilirken</string>
+  <string name="keep_updated_summary">Tüm podcastleri (otomatik veya elle) yenilerken bu podcasti dahil et</string>
   <string name="auto_download_disabled_globally">AntennaPod ayarlarında otomatik indirme devre dışı bırakılmıştır</string>
   <string name="statistics_time_played">Çalınan süre:</string>
   <string name="statistics_total_duration">Toplam süre (tahmini):</string>
@@ -689,6 +689,7 @@
   <string name="discover_more">daha fazla »</string>
   <string name="discover_powered_by_itunes">Apple Podcasts tarafından önerilenler</string>
   <string name="discover_confirm">Önerileri göster</string>
+  <string name="search_powered_by">%1$s tarafından sonuçlar</string>
   <string name="select_country">Ülke seç</string>
   <!--Local feeds-->
   <string name="add_local_folder">Cihazdan yerel klasör ekle</string>

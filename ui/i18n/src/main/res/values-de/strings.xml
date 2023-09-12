@@ -27,7 +27,7 @@
   <string name="app_action_not_found">\"%1$s\" nicht gefunden</string>
   <!--SwipeActions-->
   <string name="swipeactions_label">Wisch-Aktionen</string>
-  <string name="swipeactions_summary">Lege fest, was passiert, wenn du in einer Liste über eine Episode wischst.</string>
+  <string name="swipeactions_summary">Auswählen, was passiert, wenn du in einer Liste über eine Episode wischst.</string>
   <string name="swipe_right">Nach rechts wischen</string>
   <string name="swipe_left">Nach links wischen</string>
   <string name="enable_swipeactions">Wisch-Aktionen für diesen Bildschirm aktivieren</string>
@@ -291,7 +291,7 @@
   <string name="confirm_mobile_streaming_button_always">Immer</string>
   <string name="confirm_mobile_streaming_button_once">Einmalig</string>
   <!--Mediaplayer messages-->
-  <string name="playback_error_generic"><![CDATA[Die Mediendatei konnte nicht abgespielt werden.\n\n- Versuche die Datei zu löschen und erneut herunterzuladen.\n- Überprüfe die Netzwerkverbindung und versichere dich, dass kein VPN oder eine Login-Seite den Zugriff blockiert.\n- Tippe lange auf die Episode und teile die \"Medien-Adresse\" zum Internet-Browser. Wenn sie dort auch nicht abgespielt werden kann, nimm Kontakt mit den Erstellern des Podcasts auf.]]></string>
+  <string name="playback_error_generic"><![CDATA[Die Mediendatei konnte nicht abgespielt werden.\n\n- Versuche die Episode zu löschen und erneut herunterzuladen.\n- Überprüfe die Netzwerkverbindung und stelle sicher, dass kein VPN oder eine Anmeldeseite den Zugriff blockiert.\n- Tippe lange auf die Episode und teile die \"Medienadresse\" mit deinem Webbrowser, um zu sehen, ob sie dort abgespielt werden kann. Wenn nicht, wende dich an die Ersteller des Podcasts.]]></string>
   <string name="playback_error_server_died">Server ist offline</string>
   <string name="playback_error_unsupported">Dateityp nicht unterstützt</string>
   <string name="playback_error_timeout">Zeitüberschreitung</string>
@@ -420,12 +420,12 @@
   <string name="pref_nav_drawer_feed_counter_sum">Die durch den Abonnementszähler angezeigten Informationen ändern. Betrifft auch die Sortierung der Abonnements wenn \"Reihenfolge der Abonnements\" auf \"Zähler\" gesetzt ist.</string>
   <string name="pref_automatic_download_title">Automatisches Herunterladen</string>
   <string name="pref_automatic_download_sum">Automatisches Herunterladen von Episoden einrichten.</string>
-  <string name="pref_autodl_wifi_filter_title">W-LAN-Filter aktivieren</string>
+  <string name="pref_autodl_wifi_filter_title">WLAN-Filter aktivieren</string>
   <string name="pref_autodl_wifi_filter_sum">Erlaube das automatische Herunterladen nur in ausgewählten W-LAN Netzwerken.</string>
-  <string name="pref_automatic_download_on_battery_title">Automatischer Download im Batterie Modus</string>
-  <string name="pref_automatic_download_on_battery_sum">Automatische Downloads auch erlauben, wenn die Batterie nicht geladen wird</string>
+  <string name="pref_automatic_download_on_battery_title">Automatischer Download im Akkubetrieb</string>
+  <string name="pref_automatic_download_on_battery_sum">Automatische Downloads auch erlauben, wenn der Akku nicht geladen wird</string>
   <string name="pref_episode_cache_title">Episodenspeicher</string>
-  <string name="pref_episode_cache_summary">Gesamtzahl an Episoden, die auf dem Gerät gespeichert werden. Automatisches Herunterladen wird pausiert, wenn diese Anzahl erreicht ist.</string>
+  <string name="pref_episode_cache_summary">Gesamtzahl der heruntergeladenen Episoden, die auf dem Gerät gespeichert werden. Der automatische Download wird pausiert, wenn diese Anzahl erreicht ist.</string>
   <string name="pref_episode_cover_title">Episoden-Bilder verwenden</string>
   <string name="pref_episode_cover_summary">Falls verfügbar, episodenspezifische Titelbilder in Listen verwenden. Falls nicht ausgewählt, wird immer das Titelbild des Podcasts verwendet.</string>
   <string name="pref_show_remain_time_title">Verbleibende Zeit anzeigen</string>
@@ -519,7 +519,7 @@
   <string name="sync_status_started">Synchronisation gestartet</string>
   <string name="sync_status_episodes_upload">Lade Episoden-Änderungen hoch…</string>
   <string name="sync_status_episodes_download">Lade Episoden-Änderungen herunter…</string>
-  <string name="sync_status_upload_played">Lade Abspiel-Status hoch…</string>
+  <string name="sync_status_upload_played">Lade Abspielstatus hoch…</string>
   <string name="sync_status_subscriptions">Synchronisiere Abonnements…</string>
   <string name="sync_status_wait_for_downloads">Warte auf Abschluss der Downloads...</string>
   <string name="sync_status_success">Synchronisation erfolgreich</string>
@@ -540,8 +540,8 @@
   <string name="opml_import_error_no_file">Keine Datei ausgewählt!</string>
   <string name="select_all_label">Alle auswählen</string>
   <string name="deselect_all_label">Auswahl zurücksetzen</string>
-  <string name="opml_export_label">OPML Export</string>
-  <string name="html_export_label">HTML Export</string>
+  <string name="opml_export_label">OPML-Export</string>
+  <string name="html_export_label">HTML-Export</string>
   <string name="database_export_label">Datenbank exportieren</string>
   <string name="database_import_label">Datenbank importieren</string>
   <string name="database_import_warning">Das Importieren einer Datenbank ersetzt alle Abonnements und abgespielte Episoden. Ein Export als Backup wird empfohlen. Möchtest du die Datenbank wirklich ersetzen?</string>
@@ -549,7 +549,7 @@
   <string name="export_error_label">Exportfehler</string>
   <string name="export_success_title">Export erfolgreich</string>
   <string name="export_success_sum">Die exportierte Datei wurde geschrieben nach:\n\n%1$s</string>
-  <string name="opml_import_ask_read_permission">Zugriff auf externen Speicher wird benötigt, um die OPML Datei zu lesen</string>
+  <string name="opml_import_ask_read_permission">Zugriff auf externen Speicher wird benötigt, um die OPML-Datei zu lesen</string>
   <string name="successful_import_label">Import erfolgreich</string>
   <string name="import_ok">Bitte drücke OK, um AntennaPod neu zu starten.</string>
   <string name="import_no_downgrade">Diese Datenbank wurde mit einer neueren Version von AntennaPod exportiert. Deine im Moment installierte Version kann die Datei leider nicht bearbeiten.</string>
@@ -587,7 +587,7 @@
   <string name="synchronization_choose_title">Anbieter für Synchronisierung auswählen</string>
   <string name="synchronization_summary_unchoosen">Du kannst zwischen mehreren Anbietern wählen, um deine Abonnement- und Episodenzustände zu synchronisieren.</string>
   <string name="dialog_choose_sync_service_title">Anbieter für Synchronisierung auswählen</string>
-  <string name="gpodnet_description">Gpodder.net ist ein Open-Source-Podcast-Synchronisationsdienst, den du auf deinem eigenen Server installieren kannst. Gpodder.net ist unabhängig von dem AntennaPod-Projekt.</string>
+  <string name="gpodnet_description">Gpodder.net ist ein Open-Source-Podcast-Synchronisationsdienst, den du auf deinem eigenen Server installieren kannst. Gpodder.net ist unabhängig vom AntennaPod-Projekt.</string>
   <string name="synchronization_summary_nextcloud">Gpoddersync ist eine quelloffene Nextcloud-Anwendung, die du einfach auf deinem eigenen Server installieren kannst. Die App ist unabhängig vom AntennaPod-Projekt.</string>
   <string name="synchronization_host_explanation">Du kannst deinen eigenen Server zur Synchronisation auswählen. Wenn du deinen bevorzugten Synchronisationsserver gefunden hast, gib bitte hier seine Adresse ein.</string>
   <string name="synchronization_host_label">Server-Adresse</string>
@@ -607,7 +607,7 @@
   <string name="gpodnetauth_finish_descr">Glückwunsch! Dein gpodder.net Profil ist jetzt mit deinem Gerät verbunden. Von nun an wird AntennaPod automatisch deine Abonnements mit deinem gpodder.net Profil synchronisieren.</string>
   <string name="gpodnetauth_finish_butsyncnow">Jetzt synchronisieren</string>
   <string name="pref_gpodnet_setlogin_information_title">Anmeldeinformationen ändern</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Die Anmeldeinformationen deines gpodder.net Profils ändern.</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Die Anmeldeinformationen deines gpodder.net-Profils ändern.</string>
   <string name="synchronization_sync_changes_title">Jetzt synchronisieren</string>
   <string name="synchronization_sync_summary">Änderungen der Abonnement- und Episodenzustände synchronisieren</string>
   <string name="synchronization_full_sync_title">Komplette Synchronisation erzwingen</string>
@@ -622,7 +622,7 @@
   <string name="gpodnetsync_username_characters_error">Benutzernamen dürfen nur Buchstaben, Zahlen, Bindestriche und Unterstriche enthalten.</string>
   <!--Directory chooser-->
   <string name="choose_data_directory">Datenordner auswählen</string>
-  <string name="choose_data_directory_message">Bitte wähle eine Basis für deinen Datenordner. AntennaPod erstellt automatisch die richtigen Unterverzeichnisse.</string>
+  <string name="choose_data_directory_message">Bitte wähle das Basisverzeichnis deines Datenordners aus. AntennaPod erstellt automatisch die richtigen Unterverzeichnisse.</string>
   <string name="choose_data_directory_available_space">%1$s von %2$s frei</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Wiedergabe pausieren, statt die Lautstärke zu reduzieren, wenn eine andere Anwendung Töne abspielt</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Bei Unterbrechungen pausieren</string>
@@ -730,7 +730,7 @@
   <string name="share_playback_position_dialog_label">Wiedergabeposition einbeziehen</string>
   <string name="share_dialog_episode_website_label">Webseite der Episode</string>
   <string name="share_dialog_for_social">Soziale Nachricht</string>
-  <string name="share_dialog_media_address">Medien-Adresse</string>
+  <string name="share_dialog_media_address">Medienadresse</string>
   <string name="share_dialog_media_file_label">Mediendatei</string>
   <string name="share_starting_position_label">Starten bei</string>
   <!--Audio controls-->
@@ -777,7 +777,7 @@
   <string name="on_demand_config_setting_changed">Einstellung erfolgreich aktualisiert.</string>
   <string name="on_demand_config_stream_text">Es sieht so aus, als würdest du viel streamen. Möchtest du in Listen den Streamen-Knopf anzeigen?</string>
   <string name="on_demand_config_download_text">Es sieht so aus, als würdest du viel herunterladen. Möchtest du in Listen den Download-Knopf anzeigen?</string>
-  <string name="shortcut_subscription_label">Abonnement shortcut</string>
+  <string name="shortcut_subscription_label">Abonnement-Verknüpfung</string>
   <string name="shortcut_select_subscription">Abonnement auswählen</string>
   <string name="add_shortcut">Verknüpfung hinzufügen</string>
 </resources>

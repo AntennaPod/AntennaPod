@@ -174,6 +174,7 @@
   <string name="select_all_above">Välj alla ovanför</string>
   <string name="select_all_below">Välj alla nedanför</string>
   <string name="filtered_label">Filtrerad</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} Senaste uppdateringen misslyckades. Tryck för att visa detaljer.</string>
   <string name="open_podcast">Öppna podcast</string>
   <string name="please_wait_for_data">Vänta tills datan laddats</string>
   <string name="updates_disabled_label">Uppdateringar avstängt</string>
@@ -245,6 +246,8 @@
   <string name="download_running">Nedladdning pågår</string>
   <string name="download_error_details">Detaljer</string>
   <string name="download_log_details_message">%1$s\n\nTeknisk andledning: \n %2$s\n\nFil URL:\n%3$s</string>
+  <string name="download_error_retrying">Nedladdning av \"%1$s\" misslyckades. Kommer att försökas igen senare.</string>
+  <string name="download_error_not_retrying">Nedladdning av \"%1$s\" misslyckades.</string>
   <string name="download_error_tap_for_details">Tryck för att visa detaljer.</string>
   <string name="download_error_device_not_found">Hittade ingen lagringsenhet</string>
   <string name="download_error_insufficient_space">Det finns inte tillräckligt med utrymme kvar på enheten.</string>
@@ -256,6 +259,7 @@
   <string name="download_error_not_found">Podcastens server kunde inte hitta filen. Den kan ha tagits bort.</string>
   <string name="download_error_connection_error">Anslutningsfel</string>
   <string name="download_error_unknown_host">Kunde inte hitta servern. Kontrollera att adressen är korrekt och att nätverksanslutningen fungerar.</string>
+  <string name="download_error_unauthorized">Autentiseringsfel. Se till att användarnamn och lösenord är korrekt.</string>
   <string name="download_error_file_type_type">Filtypsfel</string>
   <string name="download_error_forbidden">Podcastens server svarade inte.</string>
   <string name="download_canceled_msg">Nedladdning avbruten</string>
@@ -279,6 +283,7 @@
   <string name="no_feed_url_podcast_found_by_search">Den föreslagna podcasten hade inte en RSS-länk, AntennaPod hittade en podcast som kunde matcha</string>
   <string name="authentication_notification_title">Autentisering krävs</string>
   <string name="confirm_mobile_download_dialog_title">Bekräfta mobil nedladdning</string>
+  <string name="confirm_mobile_download_dialog_message">Nedladdning via mobil dataanslutning är inaktiverat i inställningarna. AntennaPod kan ladda ner avsnittet senare automatiskt när Wi-Fi är tillgängligt.</string>
   <string name="confirm_mobile_download_dialog_download_later">Ladda ner senare</string>
   <string name="confirm_mobile_download_dialog_allow_this_time">Ladda ner ändå</string>
   <string name="confirm_mobile_streaming_notification_title">Bekräfta mobil strömning</string>
@@ -286,6 +291,8 @@
   <string name="confirm_mobile_streaming_button_always">Alltid</string>
   <string name="confirm_mobile_streaming_button_once">En gång</string>
   <!--Mediaplayer messages-->
+  <string name="playback_error_generic"><![CDATA[Mediefilen kunde inte spelas upp.\n\n- Försök att ta bort och ladda ner avsnittet igen.\n- Kontrollera din nätverksanslutning och se till att ingen VPN eller inloggningssida blockerar åtkomst.\n- Försök att trycka länge och dela \"Mediaadressen\" till din webbläsare för att se om den kan spelas där. Om inte, kontakta podcastskaparna.]]>
+ </string>
   <string name="playback_error_server_died">Servern dog</string>
   <string name="playback_error_unsupported">Mediatypen stöds inte</string>
   <string name="playback_error_timeout">Åtgärden tog för lång tid</string>
@@ -406,6 +413,7 @@
   <string name="pref_black_theme_message">Använd helsvart för det mörka temat</string>
   <string name="pref_tinted_theme_title">Dynamiska färger</string>
   <string name="pref_tinted_theme_message">Anpassa appfärger baserat på bakgrunden</string>
+  <string name="pref_nav_drawer_items_title">Ställ in objekt i navigerinsmenyn</string>
   <string name="pref_nav_drawer_items_sum">Ändra vad som visas i navigationsmenyn.</string>
   <string name="pref_nav_drawer_feed_order_title">Välj prenumerationsordning</string>
   <string name="pref_nav_drawer_feed_order_sum">Ändra ordningen på dina prenumerationer</string>
@@ -439,11 +447,13 @@
   <string name="pref_playback_time_respects_speed_sum">Visad position och totallängd anpassas till uppspelningshastigheten</string>
   <string name="pref_fast_forward">Snabbspolningslängd</string>
   <string name="pref_fast_forward_sum">Anpassa antalet sekunder att hoppa framåt när snabbspolningsknappen används</string>
+  <string name="pref_rewind">Spola bakåt längd</string>
   <string name="pref_rewind_sum">Anpassa antalet sekunder att hoppa bakåt när snabbspolningsknappen bakåt används</string>
   <string name="pref_expandNotify_title">Hög aviseringsprioritet</string>
   <string name="pref_expandNotify_sum">Detta utvidgar vanligen aviseringen och visar uppspelningskontroller.</string>
   <string name="pref_persistNotify_title">Bestående uppspelningskontroller</string>
   <string name="pref_persistNotify_sum">Behåll avisering och kontroller på låsskärmen när uppspelningen pausas.</string>
+  <string name="pref_compact_notification_buttons_title">Ställ in kompakta aviseringsknappar</string>
   <string name="pref_compact_notification_buttons_sum">Ändra uppspelningsknapparna när notifieringen är kollapsad. Spela/paus-knappen visas alltid.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Välj maximalt %1$d st.</string>
   <string name="pref_compact_notification_buttons_dialog_error">Du kan bara välja maximalt %1$d st.</string>
@@ -463,11 +473,14 @@
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Använd en nätverksproxy</string>
   <string name="pref_no_browser_found">Ingen webbläsare hittades.</string>
+  <string name="pref_enqueue_downloaded_title">Köa nedladdad</string>
   <string name="pref_enqueue_downloaded_summary">Lägg nedladdade episoder i uppspelningskön</string>
   <string name="pref_skip_silence_title">Hoppa över tystnad i ljud</string>
   <string name="behavior">Beteende</string>
   <string name="pref_default_page">Standard sida</string>
   <string name="pref_default_page_sum">Skärm som öppnas när AntennaPod startas.</string>
+  <string name="pref_back_button_opens_drawer">Bakåtknappen öppnar sidomenyn</string>
+  <string name="pref_back_button_opens_drawer_summary">Genom att trycka på bakåtknappen på standardsidan öppnas sidomenyn</string>
   <string name="remember_last_page">Kom ihåg senaste sida</string>
   <string name="pref_delete_removes_from_queue_title">Radering tar bort från kön</string>
   <string name="pref_delete_removes_from_queue_sum">Ta automatiskt bort episoder från kön när de raderas.</string>
@@ -485,6 +498,8 @@
   <string name="pref_contribute">Bidra</string>
   <string name="pref_show_subscription_title">Visa Prenumerationstitel</string>
   <string name="pref_show_subscription_title_summary">Visa titel på prenumerationen under omslagsbilden.</string>
+  <string name="pref_new_episodes_action_title">Åtgärd vid nya episoder</string>
+  <string name="pref_new_episodes_action_sum">Åtgärd att genomföra för nya episoder</string>
   <!--About screen-->
   <string name="about_pref">Om</string>
   <string name="antennapod_version">AntennaPod version</string>
@@ -565,6 +580,8 @@
     <item quantity="one">1 timme</item>
     <item quantity="other">%d timmar</item>
   </plurals>
+  <string name="auto_enable_label">Aktivera insomningstimern automatiskt när du trycker på play</string>
+  <string name="auto_enable_label_with_times">Aktivera automatiskt insomningstimern när du trycker på spela mellan %s och %s</string>
   <string name="auto_enable_change_times">Ändra tider</string>
   <string name="sleep_timer_enabled_label">Insomningstimer aktiverad</string>
   <!--Synchronisation-->
