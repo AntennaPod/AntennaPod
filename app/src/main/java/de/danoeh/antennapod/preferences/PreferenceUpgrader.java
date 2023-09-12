@@ -3,6 +3,7 @@ package de.danoeh.antennapod.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.KeyEvent;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.preference.PreferenceManager;
 
 import java.util.concurrent.TimeUnit;
@@ -144,6 +145,9 @@ public class PreferenceUpgrader {
             if (prefs.getString(UserPreferences.PREF_UPDATE_INTERVAL, ":").contains(":")) { // Unset or "time of day"
                 prefs.edit().putString(UserPreferences.PREF_UPDATE_INTERVAL, "12").apply();
             }
+        }
+        if (oldVersion < 3020000) {
+            NotificationManagerCompat.from(context).deleteNotificationChannel("auto_download");
         }
     }
 }

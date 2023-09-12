@@ -815,8 +815,6 @@
     <string name="notification_channel_download_error_description">Shown when download or feed update fails.</string>
     <string name="notification_channel_sync_error">Synchronization failed</string>
     <string name="notification_channel_sync_error_description">Shown when gpodder synchronization fails.</string>
-    <string name="notification_channel_auto_download">Automatic download completed</string>
-    <string name="notification_channel_episode_auto_download">Shown when episodes have been automatically downloaded.</string>
     <string name="notification_channel_new_episode">New episode</string>
     <string name="notification_channel_new_episode_description">Shown when a new episode of a podcast was found, where notifications are enabled</string>
 
