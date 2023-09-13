@@ -1,9 +1,14 @@
 package de.danoeh.antennapod.fragment.preferences;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
+import androidx.preference.TwoStatePreference;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
@@ -17,8 +22,11 @@ import java.io.File;
 public class DownloadsPreferencesFragment extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String PREF_SCREEN_AUTODL = "prefAutoDownloadSettings";
+    private static final String PREF_AUTO_DELETE_LOCAL = "prefAutoDeleteLocal";
     private static final String PREF_PROXY = "prefProxy";
     private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
+
+    private boolean blockAutoDeleteLocal = true;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -63,6 +71,14 @@ public class DownloadsPreferencesFragment extends PreferenceFragmentCompat
             });
             return true;
         });
+        findPreference(PREF_AUTO_DELETE_LOCAL).setOnPreferenceChangeListener((preference, newValue) -> {
+            if (blockAutoDeleteLocal && newValue == Boolean.TRUE) {
+                showAutoDeleteEnableDialog();
+                return false;
+            } else {
+                return  true;
+            }
+        });
     }
 
     private void setDataFolderText() {
@@ -77,5 +93,21 @@ public class DownloadsPreferencesFragment extends PreferenceFragmentCompat
         if (UserPreferences.PREF_UPDATE_INTERVAL.equals(key)) {
             FeedUpdateManager.restartUpdateAlarm(getContext(), true);
         }
+    }
+
+    private void showAutoDeleteEnableDialog() {
+        new AlertDialog.Builder(requireContext())
+            .setTitle(R.string.pref_auto_local_delete_dialog_title)
+            .setMessage(R.string.pref_auto_local_delete_dialog_body)
+            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    blockAutoDeleteLocal = false;
+                    ((TwoStatePreference) findPreference(PREF_AUTO_DELETE_LOCAL)).setChecked(true);
+                    blockAutoDeleteLocal = true;
+                }
+            })
+            .setNegativeButton(R.string.cancel_label, null)
+            .show();
     }
 }
