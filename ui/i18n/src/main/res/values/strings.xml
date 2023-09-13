@@ -258,6 +258,9 @@
     <string name="reset_position">Reset playback position</string>
     <string name="no_items_selected">No items selected</string>
 
+    <string name="delete_local_feed_warning_title">Delete episode?</string>
+    <string name="delete_local_feed_warning_body">Deleting removes the episode from AntennaPod and deletes the media file from your device storage. It cannot be downloaded again through AntennaPod.</string>
+
     <!-- Download messages and labels -->
     <string name="download_successful">successful</string>
     <string name="download_pending">Download pending</string>

@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Arrays;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -29,6 +31,7 @@ import de.danoeh.antennapod.dialog.ShareDialog;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
+import de.danoeh.antennapod.view.LocalDeleteModal;
 
 /**
  * Handles interactions with the FeedItemMenu.
@@ -149,7 +152,11 @@ public class FeedItemMenuHandler {
         if (menuItemId == R.id.skip_episode_item) {
             context.sendBroadcast(MediaButtonReceiver.createIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT));
         } else if (menuItemId == R.id.remove_item) {
-            DBWriter.deleteFeedMediaOfItem(context, selectedItem.getMedia().getId());
+            LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(
+                    context,
+                    Arrays.asList(selectedItem),
+                    () -> DBWriter.deleteFeedMediaOfItem(context, selectedItem.getMedia().getId())
+            );
         } else if (menuItemId == R.id.remove_inbox_item) {
             removeNewFlagWithUndo(fragment, selectedItem);
         } else if (menuItemId == R.id.mark_read_item) {
