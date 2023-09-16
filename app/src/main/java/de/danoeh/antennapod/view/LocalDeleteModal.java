@@ -9,11 +9,8 @@ import de.danoeh.antennapod.ui.i18n.R;
 import de.danoeh.antennapod.model.feed.FeedItem;
 
 public class LocalDeleteModal {
-    public static void showLocalFeedDeleteWarningIfNecessary(
-            Context context,
-            Iterable<FeedItem> items,
-            Runnable deleteCommand
-    ) {
+    public static void showLocalFeedDeleteWarningIfNecessary(Context context, Iterable<FeedItem> items,
+                                                             Runnable deleteCommand) {
         boolean anyLocalFeed = false;
         for (FeedItem item : items) {
             if (item.getFeed().isLocalFeed()) {

@@ -3,7 +3,7 @@ package de.danoeh.antennapod.fragment.swipeactions;
 import android.content.Context;
 import androidx.fragment.app.Fragment;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -39,10 +39,8 @@ public class DeleteSwipeAction implements SwipeAction {
             return;
         }
         LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(
-                fragment.requireContext(),
-                Arrays.asList(item),
-                () -> DBWriter.deleteFeedMediaOfItem(fragment.requireContext(), item.getMedia().getId())
-        );
+                fragment.requireContext(), Collections.singletonList(item),
+                () -> DBWriter.deleteFeedMediaOfItem(fragment.requireContext(), item.getMedia().getId()));
     }
 
     @Override

@@ -5,7 +5,7 @@ import android.view.View;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -39,11 +39,8 @@ public class DeleteActionButton extends ItemActionButton {
         }
 
         LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(
-                context,
-                Arrays.asList(item),
-                () -> DBWriter.deleteFeedMediaOfItem(context, media.getId())
-        );
-
+                context, Collections.singletonList(item),
+                () -> DBWriter.deleteFeedMediaOfItem(context, media.getId()));
     }
 
     @Override

@@ -115,9 +115,7 @@ public class DBWriter {
     private static boolean deleteFeedMediaSynchronous(@NonNull Context context, @NonNull FeedMedia media) {
         Log.i(TAG, String.format(Locale.US, "Requested to delete FeedMedia [id=%d, title=%s, downloaded=%s",
                 media.getId(), media.getEpisodeTitle(), media.isDownloaded()));
-
         boolean localDelete = false;
-
         if (media.isDownloaded()) {
             // delete downloaded media file
             File mediaFile = new File(media.getFile_url());
@@ -128,18 +126,12 @@ public class DBWriter {
             }
         } else if (media.getFile_url().startsWith("content://")) {
             // Local feed
-
             DocumentFile documentFile = DocumentFile.fromSingleUri(
-                    context,
-                    Uri.parse(media.getFile_url())
-            );
-
+                    context, Uri.parse(media.getFile_url()));
             if (documentFile == null || !documentFile.exists() || !documentFile.delete()) {
-                MessageEvent evt = new MessageEvent(context.getString(R.string.delete_local_failed));
-                EventBus.getDefault().post(evt);
+                EventBus.getDefault().post(new MessageEvent(context.getString(R.string.delete_local_failed)));
                 return false;
             }
-
             localDelete = true;
         }
 
@@ -315,7 +307,7 @@ public class DBWriter {
      * current date regardless of the current value.
      *
      * @param media FeedMedia that should be added to the playback history.
-     * @param date  PlaybackCompletionDate for <code>media</code>
+     * @param date PlaybackCompletionDate for <code>media</code>
      */
     public static Future<?> addItemToPlaybackHistory(final FeedMedia media, Date date) {
         return dbExec.submit(() -> {
@@ -967,8 +959,7 @@ public class DBWriter {
     public static Future<?> reorderQueue(@Nullable SortOrder sortOrder, final boolean broadcastUpdate) {
         if (sortOrder == null) {
             Log.w(TAG, "reorderQueue() - sortOrder is null. Do nothing.");
-            return dbExec.submit(() -> {
-            });
+            return dbExec.submit(() -> { });
         }
         final Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(sortOrder);
         return dbExec.submit(() -> {
@@ -1009,6 +1000,7 @@ public class DBWriter {
 
     /**
      * Set item sort order of the feed
+     *
      */
     public static Future<?> setFeedItemSortOrder(long feedId, @Nullable SortOrder sortOrder) {
         return dbExec.submit(() -> {
