@@ -97,7 +97,6 @@ public class DownloadsPreferencesFragment extends PreferenceFragmentCompat
 
     private void showAutoDeleteEnableDialog() {
         new AlertDialog.Builder(requireContext())
-            .setTitle(R.string.pref_auto_local_delete_dialog_title)
             .setMessage(R.string.pref_auto_local_delete_dialog_body)
             .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
