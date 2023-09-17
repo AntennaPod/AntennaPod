@@ -40,8 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
                 android:paddingBottom="8dp"
-                android:text="@string/subscriptions_are_filtered"
-                tools:visibility="visible" />
+                android:text="@string/subscriptions_are_filtered" />
 
         </LinearLayout>
 
