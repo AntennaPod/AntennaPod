@@ -93,6 +93,9 @@ public class EpisodeDownloadWorker extends Worker {
             e.printStackTrace();
             result = Result.failure();
         }
+        if (result.equals(Result.failure()) && downloader != null) {
+            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
+        }
         progressUpdaterThread.interrupt();
         try {
             progressUpdaterThread.join();
@@ -156,22 +159,15 @@ public class EpisodeDownloadWorker extends Worker {
         } catch (Exception e) {
             DBWriter.addDownloadStatus(downloader.getResult());
             if (EventBus.getDefault().hasSubscriberForEvent(MessageEvent.class)) {
-                sendMessage(request.getTitle(), false);
+                sendMessage(request.getTitle(), true);
             } else {
                 sendErrorNotification();
             }
-            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
             return Result.failure();
         }
 
         if (downloader.cancelled) {
-            if (getInputData().getBoolean(DownloadServiceInterface.WORK_DATA_WAS_QUEUED, false)) {
-                try {
-                    DBWriter.removeQueueItem(getApplicationContext(), false, media.getItem()).get();
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+            // This also happens when the worker was preempted, not just when the user cancelled it
             return Result.success();
         }
 
@@ -188,10 +184,7 @@ public class EpisodeDownloadWorker extends Worker {
                 && Integer.parseInt(status.getReasonDetailed()) == 416) {
             Log.d(TAG, "Requested invalid range, restarting download from the beginning");
             FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
-            sendMessage(request.getTitle(), true);
-            if (isLastRunAttempt()) {
-                FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
-            }
+            sendMessage(request.getTitle(), false);
             return retry3times();
         }
 
@@ -203,17 +196,13 @@ public class EpisodeDownloadWorker extends Worker {
                 || status.getReason() == DownloadError.ERROR_IO_BLOCKED) {
             // Fail fast, these are probably unrecoverable
             if (EventBus.getDefault().hasSubscriberForEvent(MessageEvent.class)) {
-                sendMessage(request.getTitle(), false);
+                sendMessage(request.getTitle(), true);
             } else {
                 sendErrorNotification();
             }
-            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
             return Result.failure();
         }
-        sendMessage(request.getTitle(), true);
-        if (isLastRunAttempt()) {
-            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
-        }
+        sendMessage(request.getTitle(), false);
         return retry3times();
     }
 
@@ -230,7 +219,8 @@ public class EpisodeDownloadWorker extends Worker {
         return getRunAttemptCount() >= 2;
     }
 
-    private void sendMessage(String episodeTitle, boolean retrying) {
+    private void sendMessage(String episodeTitle, boolean isImmediateFail) {
+        boolean retrying = !isLastRunAttempt() && !isImmediateFail;
         if (episodeTitle.length() > 20) {
             episodeTitle = episodeTitle.substring(0, 19) + "…";
         }
