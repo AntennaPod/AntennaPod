@@ -21,13 +21,12 @@
 
         <LinearLayout
             android:id="@+id/feeds_filtered_message"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"
             android:layout_marginStart="60dp"
             android:layout_marginTop="-12dp"
             android:background="?android:attr/selectableItemBackground"
-            android:importantForAccessibility="no"
             android:orientation="horizontal">
 
             <ImageView
