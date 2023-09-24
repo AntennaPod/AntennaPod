@@ -110,7 +110,7 @@ public class DBWriter {
             @NonNull Context context, @NonNull FeedMedia media) {
         Log.i(TAG, String.format(Locale.US, "Requested to delete FeedMedia [id=%d, title=%s, downloaded=%s",
                 media.getId(), media.getEpisodeTitle(), media.isDownloaded()));
-        if (media.isDownloaded()) {
+        if (media.isDownloaded() || media.getFile_url() != null) {
             // delete downloaded media file
             File mediaFile = new File(media.getFile_url());
             if (mediaFile.exists() && !mediaFile.delete()) {
@@ -206,7 +206,7 @@ public class DBWriter {
                 if (item.getMedia().isDownloaded()) {
                     deleteFeedMediaSynchronous(context, item.getMedia());
                 }
-                DownloadServiceInterface.get().cancel(context, item.getMedia().getDownload_url());
+                DownloadServiceInterface.get().cancel(context, item.getMedia());
             }
         }
 

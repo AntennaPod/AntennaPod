@@ -2,6 +2,7 @@ package de.danoeh.antennapod.net.download.serviceinterface;
 
 import android.content.Context;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 
 public class DownloadServiceInterfaceStub extends DownloadServiceInterface {
 
@@ -14,7 +15,7 @@ public class DownloadServiceInterfaceStub extends DownloadServiceInterface {
     }
 
     @Override
-    public void cancel(Context context, String url) {
+    public void cancel(Context context, FeedMedia media) {
     }
 
     @Override
