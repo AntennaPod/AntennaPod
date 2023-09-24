@@ -19,18 +19,30 @@
             app:title="@string/subscriptions_label"
             app:navigationIcon="?homeAsUpIndicator" />
 
-        <TextView
+        <LinearLayout
             android:id="@+id/feeds_filtered_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:text="@string/filtered_label"
+            android:paddingStart="60dp"
+            android:paddingEnd="0dp"
+            android:paddingVertical="4dp"
             android:layout_marginTop="-12dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginStart="60dp"
             android:background="?android:attr/selectableItemBackground"
-            android:visibility="gone"
-            tools:visibility="visible" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_info" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:text="@string/subscriptions_are_filtered" />
+
+        </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
