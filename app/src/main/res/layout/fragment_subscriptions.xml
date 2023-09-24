@@ -23,10 +23,12 @@
             android:id="@+id/feeds_filtered_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="60dp"
-            android:layout_marginStart="60dp"
+            android:paddingStart="60dp"
+            android:paddingEnd="0dp"
+            android:paddingVertical="4dp"
             android:layout_marginTop="-12dp"
             android:background="?android:attr/selectableItemBackground"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageView
@@ -38,7 +40,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
-                android:paddingBottom="8dp"
                 android:text="@string/subscriptions_are_filtered" />
 
         </LinearLayout>
