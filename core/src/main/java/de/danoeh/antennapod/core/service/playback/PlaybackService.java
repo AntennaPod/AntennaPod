@@ -35,6 +35,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
+import android.view.ViewConfiguration;
 import android.webkit.URLUtil;
 import android.widget.Toast;
 
@@ -152,6 +153,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private CastStateListener castStateListener;
 
     private String autoSkippedFeedMediaId = null;
+    private int clickCount = 0;
+    private final Handler clickHandler = new Handler(Looper.getMainLooper());
 
     /**
      * Used for Lollipop notifications, Android Wear, and Android Auto.
@@ -1817,24 +1820,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             setSpeed(speed);
         }
 
-        private long lastClickTime = 0;
-        private int clickCount = 0;
-        private Handler clickHandler = new Handler(Looper.getMainLooper());
-
-        private Runnable clickRunnable = new Runnable() {
-            @Override
-            public void run() {
-                if (clickCount == 1) {
-                    handleKeycode(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, false);
-                } else if (clickCount == 2) {
-                    onFastForward();
-                } else if (clickCount == 3) {
-                    onRewind();
-                }
-                clickCount = 0; // reset clickCount
-            }
-        };
-
         @Override
         public boolean onMediaButtonEvent(final Intent mediaButton) {
             Log.d(TAG, "onMediaButtonEvent(" + mediaButton + ")");
@@ -1844,23 +1829,18 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
                         keyEvent.getRepeatCount() == 0) {
                     if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_HEADSETHOOK) { // default headset button 
-                        long clickTime = System.currentTimeMillis();
-                        long elapsedTime = clickTime - lastClickTime;
-                        if (elapsedTime <= 400) { // Assuming 400 milliseconds threshold for multiple clicks
-                            clickCount++;
-                        } else {
-                            clickCount = 1; // if more than elapsedTime has passed, reset to 1
-                        }
-                        clickHandler.removeCallbacks(clickRunnable); // always remove callbacks
-                        // Always post a delayed clickRunnable; runs if no further clicks within elapsedTime.
-                        clickHandler.postDelayed(clickRunnable, 400);
-                        lastClickTime = clickTime;
-                        return true;
-                    } else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_MEDIA_NEXT) {
-                        onSkipToNext();
-                        return true;
-                    } else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
-                        onSkipToPrevious();
+                        clickCount++;
+                        clickHandler.removeCallbacksAndMessages(null);
+                        clickHandler.postDelayed(() -> {
+                            if (clickCount == 1) {
+                                handleKeycode(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, false);
+                            } else if (clickCount == 2) {
+                                onFastForward();
+                            } else if (clickCount == 3) {
+                                onRewind();
+                            }
+                            clickCount = 0;
+                        }, ViewConfiguration.getDoubleTapTimeout());
                         return true;
                     } else {
                         return handleKeycode(keyEvent.getKeyCode(), false);
