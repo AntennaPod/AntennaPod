@@ -34,6 +34,7 @@ import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -81,7 +82,8 @@ public class FeedUpdateWorker extends Worker {
             if (!feed.isLocalFeed()) {
                 allAreLocal = false;
             }
-            toUpdate = Collections.singletonList(feed);
+            toUpdate = new ArrayList<>();
+            toUpdate.add(feed); // Needs to be updatable, so no singletonList
             force = true;
         }
 
