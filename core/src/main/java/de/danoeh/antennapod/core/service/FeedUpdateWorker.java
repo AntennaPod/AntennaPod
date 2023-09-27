@@ -176,7 +176,8 @@ public class FeedUpdateWorker extends Worker {
         newEpisodesNotification.showIfNeeded(getApplicationContext(), feedSyncTask.getSavedFeed());
         if (downloader.permanentRedirectUrl != null) {
             DBWriter.updateFeedDownloadURL(request.getSource(), downloader.permanentRedirectUrl);
-        } else if (feedSyncTask.getRedirectUrl() != null) {
+        } else if (feedSyncTask.getRedirectUrl() != null
+                && !feedSyncTask.getRedirectUrl().equals(request.getSource())) {
             DBWriter.updateFeedDownloadURL(request.getSource(), feedSyncTask.getRedirectUrl());
         }
     }
