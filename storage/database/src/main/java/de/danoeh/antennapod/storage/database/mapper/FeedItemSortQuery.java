@@ -25,6 +25,12 @@ public class FeedItemSortQuery {
             case DURATION_LONG_SHORT:
                 sortQuery = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_DURATION + " " + "DESC";
                 break;
+            case SIZE_SMALL_LARGE:
+                sortQuery = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_SIZE + " " + "ASC";
+                break;
+            case SIZE_LARGE_SMALL:
+                sortQuery = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_SIZE + " " + "DESC";
+                break;
             default:
                 sortQuery = "";
                 break;
