@@ -76,8 +76,6 @@
         </menu>
     </item>
 
-    <!-- Set visibility to false due to reverse logic -->
-    <!-- Safe usability on another fragment -->
     <item
         android:id="@+id/sort_size"
         android:title="@string/size"

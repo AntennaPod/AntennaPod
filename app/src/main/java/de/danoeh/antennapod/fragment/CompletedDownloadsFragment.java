@@ -159,8 +159,6 @@ public class CompletedDownloadsFragment extends Fragment
         menu.findItem(R.id.sort_random).setVisible(false);
         menu.findItem(R.id.sort_smart_shuffle).setVisible(false);
         menu.findItem(R.id.keep_sorted).setVisible(false);
-
-        // Show sort by size "only" in this fragment
         menu.findItem(R.id.sort_size).setVisible(true);
     }
 
