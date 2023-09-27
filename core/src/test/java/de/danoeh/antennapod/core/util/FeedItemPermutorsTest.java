@@ -113,7 +113,7 @@ public class FeedItemPermutorsTest {
     }
 
     @Test
-    public void testPermutorForRule_SIZE_ASC() {
+    public void testPermutorForRule_size_asc() {
         Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(SortOrder.SIZE_SMALL_LARGE);
 
         List<FeedItem> itemList = getTestList();
@@ -123,7 +123,7 @@ public class FeedItemPermutorsTest {
     }
 
     @Test
-    public void testPermutorForRule_SIZE_DESC() {
+    public void testPermutorForRule_size_desc() {
         Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(SortOrder.SIZE_LARGE_SMALL);
 
         List<FeedItem> itemList = getTestList();
