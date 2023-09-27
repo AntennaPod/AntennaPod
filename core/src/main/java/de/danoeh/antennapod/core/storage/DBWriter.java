@@ -151,14 +151,14 @@ public class DBWriter {
             nm.cancel(R.id.notification_playing);
         }
 
-        // Gpodder: queue delete action for synchronization
-        FeedItem item = media.getItem();
-        EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DELETE)
+        if (!localDelete) {
+            // Gpodder: queue delete action for synchronization
+            FeedItem item = media.getItem();
+            EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DELETE)
                 .currentTimestamp()
                 .build();
-        SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
+            SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
 
-        if (!localDelete) {
             EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
         } else {
             // FeedItemEvent only updates the state of an item, but with local feed, item is deleted completely.
