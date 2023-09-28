@@ -110,8 +110,8 @@
                     android:paddingHorizontal="2dp"
                     android:paddingVertical="4dp"
                     android:layout_weight="1"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:text="@string/extend_sleep_timer_until_end_episode_label"/>
+                    android:text="@string/extend_sleep_timer_until_end_episode_label"
+                    style="?attr/materialButtonOutlinedStyle"/>
 
         </LinearLayout>
 
