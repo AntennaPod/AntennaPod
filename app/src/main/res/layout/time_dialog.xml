@@ -101,17 +101,17 @@
                 tools:text="+10 min" />
 
             <Button
-                    android:id="@+id/extendSleepUntilEndEpisodeButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:paddingHorizontal="2dp"
-                    android:paddingVertical="4dp"
-                    android:layout_weight="1"
-                    android:text="@string/extend_sleep_timer_until_end_episode_label"
-                    style="?attr/materialButtonOutlinedStyle"/>
+                android:id="@+id/extendSleepUntilEndEpisodeButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginLeft="4dp"
+                android:paddingHorizontal="2dp"
+                android:paddingVertical="4dp"
+                android:layout_weight="1"
+                android:text="@string/extend_sleep_timer_until_end_episode_label"
+                style="?attr/materialButtonOutlinedStyle" />
 
         </LinearLayout>
 
