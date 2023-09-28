@@ -1828,7 +1828,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (keyEvent != null &&
                         keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
                         keyEvent.getRepeatCount() == 0) {
-                    if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_HEADSETHOOK) { // default headset button 
+                    int keyCode = keyEvent.getKeyCode();
+                    if (keyCode == KeyEvent.KEYCODE_HEADSETHOOK || keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE) {
                         clickCount++;
                         clickHandler.removeCallbacksAndMessages(null);
                         clickHandler.postDelayed(() -> {
@@ -1843,7 +1844,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         }, ViewConfiguration.getDoubleTapTimeout());
                         return true;
                     } else {
-                        return handleKeycode(keyEvent.getKeyCode(), false);
+                        return handleKeycode(keyCode, false);
                     }
                 }
             }
