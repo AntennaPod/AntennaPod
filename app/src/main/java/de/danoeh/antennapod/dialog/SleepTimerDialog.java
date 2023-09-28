@@ -83,8 +83,7 @@ public class SleepTimerDialog extends DialogFragment {
         extendSleepFiveMinutesButton.setText(getString(R.string.extend_sleep_timer_label, 5));
         Button extendSleepTenMinutesButton = content.findViewById(R.id.extendSleepTenMinutesButton);
         extendSleepTenMinutesButton.setText(getString(R.string.extend_sleep_timer_label, 10));
-        Button extendSleepTwentyMinutesButton = content.findViewById(R.id.extendSleepTwentyMinutesButton);
-        extendSleepTwentyMinutesButton.setText(getString(R.string.extend_sleep_timer_label, 20));
+        Button extendSleepUntilEndEpisodeButton = content.findViewById(R.id.extendSleepUntilEndEpisodeButton);
         extendSleepFiveMinutesButton.setOnClickListener(v -> {
             if (controller != null) {
                 controller.extendSleepTimer(5 * 1000 * 60);
@@ -95,9 +94,9 @@ public class SleepTimerDialog extends DialogFragment {
                 controller.extendSleepTimer(10 * 1000 * 60);
             }
         });
-        extendSleepTwentyMinutesButton.setOnClickListener(v -> {
+        extendSleepUntilEndEpisodeButton.setOnClickListener(v -> {
             if (controller != null) {
-                controller.extendSleepTimer(20 * 1000 * 60);
+                controller.setSleepTimer(controller.getDuration() - controller.getPosition());
             }
         });
 
