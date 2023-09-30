@@ -145,8 +145,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         viewBinding.transparentBackground.setOnClickListener(v -> finish());
         viewBinding.card.setOnClickListener(null);
         viewBinding.card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(this, R.attr.colorSurface));
-        viewBinding.closeButton.setImageTintList( ColorStateList.valueOf(
-                getResources().getColor(R.color.white)));
+        viewBinding.closeButton.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
         viewBinding.closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -460,7 +459,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             originalDesc.setSpan(new ForegroundColorSpan(description.getTextColors().getDefaultColor()), 0, CHARACTER_LIMIT, 0);
         } else {
             originalDesc = new SpannableString(HtmlToPlainText.getPlainText(feed.getDescription()));
-            originalDesc.setSpan(new ForegroundColorSpan(description.getTextColors().getDefaultColor()), 0, feed.getDescription().length(), 0); }
+            originalDesc.setSpan(new ForegroundColorSpan(description.getTextColors().getDefaultColor()), 0, feed.getDescription().length(), 0);
+        }
 
         SpannableString readMore = new SpannableString(Html.fromHtml("&#160;"+"  <b>Read more</b>"));
         readMore.setSpan(new ForegroundColorSpan(R.attr.colorPrimary), 0, readMore.length(), 0);
