@@ -5,11 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -19,16 +17,11 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -545,9 +538,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             headerBinding.autoDownloadCheckBox.setVisibility(View.GONE);
         }
 
-
-
-
         if (alternateFeedUrls.isEmpty()) {
             headerBinding.autoDownloadCheckBox.setVisibility(View.GONE);
         } else {
@@ -586,8 +576,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 public void onNothingSelected(AdapterView<?> parent) {
 
                 }
-            });
-        }
+            }); }
         handleUpdatedFeedStatus();
     }
 
