@@ -9,6 +9,7 @@ import android.content.res.ColorStateList;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -18,6 +19,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +50,7 @@ import de.danoeh.antennapod.core.feed.FeedUrlNotFoundException;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
 import de.danoeh.antennapod.core.util.DownloadErrorLabel;
+import de.danoeh.antennapod.databinding.OnlinefeedviewHeaderBinding;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
@@ -128,10 +131,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private Disposable parser;
     private Disposable updater;
 
-    private  Button subscribeButton;
-    private  Button stopPreview;
-    private LinearLayout playLayout;
-    private CheckBox autoDownloadCheckBox;
+    private OnlinefeedviewHeaderBinding headerBinding;
+
     private OnlinefeedviewActivityBinding viewBinding;
 
     @Override
@@ -141,11 +142,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         viewBinding = OnlinefeedviewActivityBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
-        subscribeButton = new Button(this);
         viewBinding.transparentBackground.setOnClickListener(v -> finish());
         viewBinding.card.setOnClickListener(null);
         viewBinding.card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(this, R.attr.colorSurface));
-        viewBinding.closeButton.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
+        headerBinding = OnlinefeedviewHeaderBinding.bind(
+                View.inflate(this, R.layout.onlinefeedview_header, null));
         viewBinding.closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -438,18 +439,15 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         viewBinding.backgroundImage.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
 
-        View header = View.inflate(this, R.layout.onlinefeedview_header, null);
-
-        viewBinding.listView.addHeaderView(header);
+        viewBinding.listView.addHeaderView(headerBinding.getRoot());
         viewBinding.listView.setSelector(android.R.color.transparent);
         viewBinding.listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
 
         final int characterLimit = 150;
         boolean isLong = false;
 
-        TextView description = header.findViewById(R.id.txtvDescription);
 
-        description.setMaxEms(characterLimit);
+        headerBinding.txtvDescription.setMaxEms(characterLimit);
         SpannableString originalDesc = null;
 
         isLong = feed.getDescription().length() > characterLimit;
@@ -458,12 +456,12 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             originalDesc = new SpannableString(HtmlToPlainText.getPlainText(feed.getDescription())
                     .substring(0, characterLimit));
             originalDesc.setSpan(new ForegroundColorSpan(
-                    description.getTextColors().getDefaultColor()), 0,
+                            headerBinding.txtvDescription.getTextColors().getDefaultColor()), 0,
                     characterLimit, 0);
         } else {
             originalDesc = new SpannableString(HtmlToPlainText.getPlainText(feed.getDescription()));
             originalDesc.setSpan(new ForegroundColorSpan(
-                    description.getTextColors().getDefaultColor()), 0, feed.getDescription().length(), 0);
+                    headerBinding.txtvDescription.getTextColors().getDefaultColor()), 0, feed.getDescription().length(), 0);
         }
 
         SpannableString readMore = new SpannableString(
@@ -475,14 +473,14 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View textView) {
                 builder.clear();
-                description.setMaxEms(feed.getDescription().length());
+                headerBinding.txtvDescription.setMaxEms(feed.getDescription().length());
                 SpannableString finalOriginalDesc = new SpannableString(
                         HtmlToPlainText.getPlainText(feed.getDescription()));
                 finalOriginalDesc.setSpan(new ForegroundColorSpan(
                         getResources().getColor(R.color.light_gray)),
                         0, feed.getDescription().length(), 0);
                 builder.append(finalOriginalDesc);
-                description.setText(builder, TextView.BufferType.SPANNABLE);
+                headerBinding.txtvDescription.setText(builder, TextView.BufferType.SPANNABLE);
             }
 
             @Override
@@ -500,13 +498,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             builder.append(readMore);
         }
 
-        description.setText(builder, TextView.BufferType.SPANNABLE);
-        description.setMovementMethod(LinkMovementMethod.getInstance());
-        subscribeButton = header.findViewById(R.id.subscribeButton);
-        stopPreview = header.findViewById(R.id.stopPreviewButton);
-        autoDownloadCheckBox = header.findViewById(R.id.autoDownloadCheckBox);
-        Spinner alternativeSpinner = header.findViewById(R.id.alternate_urls_spinner);
-        playLayout = header.findViewById(R.id.playLayout);
+        headerBinding.txtvDescription.setText(builder, TextView.BufferType.SPANNABLE);
+        headerBinding.txtvDescription.setMovementMethod(LinkMovementMethod.getInstance());
         if (StringUtils.isNotBlank(feed.getImageUrl())) {
             Glide.with(this)
                     .load(feed.getImageUrl())
@@ -529,7 +522,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         viewBinding.titleLabel.setText(feed.getTitle());
         viewBinding.authorLabel.setText(feed.getAuthor());
 
-        subscribeButton.setOnClickListener(v -> {
+        headerBinding.subscribeButton.setOnClickListener(v -> {
             if (feedInFeedlist()) {
                 openFeed();
             } else {
@@ -539,23 +532,26 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             }
         });
 
-        stopPreview.setOnClickListener(v -> {
+        headerBinding.stopPreviewButton.setOnClickListener(v -> {
             PlaybackPreferences.writeNoMediaPlaying();
             IntentUtils.sendLocalBroadcast(this, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
         });
 
         if (UserPreferences.isEnableAutodownload()) {
             SharedPreferences preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
-            autoDownloadCheckBox.setChecked(preferences.getBoolean(PREF_LAST_AUTO_DOWNLOAD, true));
+            headerBinding.autoDownloadCheckBox.setChecked(preferences.getBoolean(PREF_LAST_AUTO_DOWNLOAD, true));
+        }
+        else {
+            headerBinding.autoDownloadCheckBox.setVisibility(View.GONE);
         }
 
 
 
 
         if (alternateFeedUrls.isEmpty()) {
-            autoDownloadCheckBox.setVisibility(View.GONE);
+            headerBinding.autoDownloadCheckBox.setVisibility(View.GONE);
         } else {
-            autoDownloadCheckBox.setVisibility(View.VISIBLE);
+            headerBinding.autoDownloadCheckBox.setVisibility(View.VISIBLE);
 
             final List<String> alternateUrlsList = new ArrayList<>();
             final List<String> alternateUrlsTitleList = new ArrayList<>();
@@ -579,8 +575,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             };
 
             adapter.setDropDownViewResource(R.layout.alternate_urls_dropdown_item);
-            alternativeSpinner.setAdapter(adapter);
-            alternativeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            headerBinding.alternateUrlsSpinner.setAdapter(adapter);
+            headerBinding.alternateUrlsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     selectedDownloadUrl = alternateUrlsList.get(position);
@@ -607,15 +603,15 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
     private void handleUpdatedFeedStatus() {
         if (DownloadServiceInterface.get().isDownloadingEpisode(selectedDownloadUrl)) {
-            subscribeButton.setEnabled(false);
-            subscribeButton.setText(R.string.subscribing_label);
+            headerBinding.subscribeButton.setEnabled(false);
+            headerBinding.subscribeButton.setText(R.string.subscribing_label);
         } else if (feedInFeedlist()) {
-            subscribeButton.setEnabled(true);
-            subscribeButton.setText(R.string.open_podcast);
+            headerBinding.subscribeButton.setEnabled(true);
+            headerBinding.subscribeButton.setText(R.string.open_podcast);
             if (didPressSubscribe) {
                 didPressSubscribe = false;
                 if (UserPreferences.isEnableAutodownload()) {
-                    boolean autoDownload = autoDownloadCheckBox.isChecked();
+                    boolean autoDownload = headerBinding.autoDownloadCheckBox.isChecked();
 
                     Feed feed1 = DBReader.getFeed(getFeedId());
                     FeedPreferences feedPreferences = feed1.getPreferences();
@@ -630,10 +626,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 openFeed();
             }
         } else {
-            subscribeButton.setEnabled(true);
-            subscribeButton.setText(R.string.subscribe_label);
+            headerBinding.subscribeButton.setEnabled(true);
+            headerBinding.subscribeButton.setText(R.string.subscribe_label);
             if (UserPreferences.isEnableAutodownload()) {
-                autoDownloadCheckBox.setVisibility(View.VISIBLE);
+                headerBinding.autoDownloadCheckBox.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -684,8 +680,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     public void playbackStateChanged(PlayerStatusEvent event) {
         boolean isPlayingPreview =
                 PlaybackPreferences.getCurrentlyPlayingMediaType() == RemoteMedia.PLAYABLE_TYPE_REMOTE_MEDIA;
-        stopPreview.setVisibility(isPlayingPreview ? View.VISIBLE : View.GONE);
-        playLayout.setVisibility(isPlayingPreview ? View.VISIBLE : View.GONE);
+        headerBinding.stopPreviewButton.setVisibility(isPlayingPreview ? View.VISIBLE : View.GONE);
+        headerBinding.playLayout.setVisibility(isPlayingPreview ? View.VISIBLE : View.GONE);
     }
 
     /**

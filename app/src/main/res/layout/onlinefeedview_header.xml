@@ -17,7 +17,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/about_podcast"
+        android:text="@string/description_label"
         android:textSize="@dimen/text_size_semi_medium"
         android:fontFamily="sans-serif-medium"
         android:textFontWeight="600"
@@ -36,7 +36,7 @@
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="@dimen/text_size_small"
         android:lineHeight="21dp"
-        tools:text="@string/design_time_sampletext" />
+        tools:text="@string/design_time_lorem_ipsum" />
 
     <Button
         android:id="@+id/subscribeButton"
@@ -52,6 +52,7 @@
         android:id="@+id/playLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="4dp"
         android:orientation="vertical">
 
         <Spinner
@@ -75,7 +76,6 @@
             android:layout_marginRight="8dp"
             android:focusable="false"
             android:text="@string/auto_download_label"
-            android:visibility="gone"
             tools:visibility="visible" />
 
         <Button
