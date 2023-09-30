@@ -150,7 +150,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
-            }});
+            }
+        });
 
         String feedUrl = null;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
@@ -443,37 +444,47 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         viewBinding.listView.setSelector(android.R.color.transparent);
         viewBinding.listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
 
-        final int CHARACTER_LIMIT = 150;
+        final int characterLimit = 150;
         boolean isLong = false;
 
         TextView description = header.findViewById(R.id.txtvDescription);
 
-        description.setMaxEms(CHARACTER_LIMIT);
+        description.setMaxEms(characterLimit);
         SpannableString originalDesc = null;
-        SpannableStringBuilder builder = new SpannableStringBuilder();
-        isLong = feed.getDescription().length() > CHARACTER_LIMIT;
 
-        if(isLong) {
+        isLong = feed.getDescription().length() > characterLimit;
+
+        if (isLong) {
             originalDesc = new SpannableString(HtmlToPlainText.getPlainText(feed.getDescription())
-                    .substring(0, CHARACTER_LIMIT));
-            originalDesc.setSpan(new ForegroundColorSpan(description.getTextColors().getDefaultColor()), 0, CHARACTER_LIMIT, 0);
+                    .substring(0, characterLimit));
+            originalDesc.setSpan(new ForegroundColorSpan(
+                    description.getTextColors().getDefaultColor()), 0,
+                    characterLimit, 0);
         } else {
             originalDesc = new SpannableString(HtmlToPlainText.getPlainText(feed.getDescription()));
-            originalDesc.setSpan(new ForegroundColorSpan(description.getTextColors().getDefaultColor()), 0, feed.getDescription().length(), 0);
+            originalDesc.setSpan(new ForegroundColorSpan(
+                    description.getTextColors().getDefaultColor())
+                    , 0, feed.getDescription().length(), 0);
         }
 
-        SpannableString readMore = new SpannableString(Html.fromHtml("&#160;"+"  <b>Read more</b>"));
-        readMore.setSpan(new ForegroundColorSpan(R.attr.colorPrimary), 0, readMore.length(), 0);
+        SpannableString readMore = new SpannableString(
+                Html.fromHtml("&#160;" + "  <b>Read more</b>"));
+        readMore.setSpan(new ForegroundColorSpan(R.attr.colorPrimary)
+                , 0, readMore.length(), 0);
 
+        SpannableStringBuilder builder = new SpannableStringBuilder();
         ClickableSpan readMoreSpan = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
                 builder.clear();
                 description.setMaxEms(feed.getDescription().length());
-                SpannableString finalOriginalDesc = new SpannableString(HtmlToPlainText.getPlainText(feed.getDescription()));
-                finalOriginalDesc.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.light_gray)), 0, feed.getDescription().length(), 0);
+                SpannableString finalOriginalDesc = new SpannableString(
+                        HtmlToPlainText.getPlainText(feed.getDescription()));
+                finalOriginalDesc.setSpan(new ForegroundColorSpan(
+                        getResources().getColor(R.color.light_gray)) ,
+                        0 , feed.getDescription().length() , 0);
                 builder.append(finalOriginalDesc);
-                description.setText(builder, TextView.BufferType.SPANNABLE);
+                description.setText(builder , TextView.BufferType.SPANNABLE);
             }
 
             @Override
@@ -485,14 +496,15 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         readMore.setSpan(readMoreSpan, 0, readMore.length(),0);
 
+
         builder.append(originalDesc);
-        if(isLong) {
+        if (isLong) {
             builder.append(readMore);
         }
 
         description.setText(builder, TextView.BufferType.SPANNABLE);
         description.setMovementMethod(LinkMovementMethod.getInstance());
-       subscribeButton = header.findViewById(R.id.subscribeButton);
+        subscribeButton = header.findViewById(R.id.subscribeButton);
         stopPreview = header.findViewById(R.id.stopPreviewButton);
         autoDownloadCheckBox = header.findViewById(R.id.autoDownloadCheckBox);
         Spinner alternativeSpinner = header.findViewById(R.id.alternate_urls_spinner);

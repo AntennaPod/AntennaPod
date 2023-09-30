@@ -75,8 +75,8 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
         holder.description.setMaxLines(2);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            holder.title.setTypeface(Typeface.create(null,700,false));
-            holder.preview.setTypeface(Typeface.create(null,600,false));
+            holder.title.setTypeface(Typeface.create(null , 700 , false));
+            holder.preview.setTypeface(Typeface.create(null , 600 , false));
         }
         holder.description.setTag(Boolean.FALSE); // not expanded
         holder.preview.setOnClickListener(v -> {
