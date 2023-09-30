@@ -491,8 +491,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 ds.setUnderlineText(false);
             }
         };
-
-        readMore.setSpan(readMoreSpan, 0, readMore.length(),0);
+        
+        readMore.setSpan(readMoreSpan, 0, readMore.length(), 0);
 
 
         builder.append(originalDesc);
