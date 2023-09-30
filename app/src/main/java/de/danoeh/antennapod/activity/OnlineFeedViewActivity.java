@@ -454,7 +454,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         } else {
             originalDesc = new SpannableString(HtmlToPlainText.getPlainText(feed.getDescription()));
             originalDesc.setSpan(new ForegroundColorSpan(
-                    headerBinding.txtvDescription.getTextColors().getDefaultColor()), 0, feed.getDescription().length(), 0);
+                    headerBinding.txtvDescription.getTextColors().getDefaultColor()),
+                    0, feed.getDescription().length(), 0);
         }
 
         SpannableString readMore = new SpannableString(
