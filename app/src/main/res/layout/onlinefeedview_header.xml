@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
     android:paddingLeft="4dp"
     android:paddingRight="4dp"
     android:layout_marginTop="8dp"
-        android:layout_width="match_parent">
+    android:layout_width="match_parent">
 
 
     <TextView
@@ -22,24 +22,23 @@
         android:textSize="@dimen/text_size_semi_medium"
         android:fontFamily="sans-serif-medium"
         android:textFontWeight="600"
-        android:textColor="?android:attr/textColorPrimary"/>
+        android:textColor="?android:attr/textColorPrimary" />
 
 
     <TextView
-            android:id="@+id/txtvDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginEnd="16dp"
-            android:ellipsize="end"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textSize="@dimen/text_size_small"
+        android:id="@+id/txtvDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="@dimen/text_size_small"
         android:lineHeight="21dp"
-            tools:text="@string/design_time_sampletext"
-        />
+        tools:text="@string/design_time_sampletext" />
 
     <Button
         android:id="@+id/subscribeButton"
@@ -52,10 +51,10 @@
         android:text="@string/subscribe_label" />
 
     <LinearLayout
+        android:id="@+id/playLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/playLayout">
+        android:orientation="vertical">
 
         <Spinner
             android:id="@+id/alternate_urls_spinner"
@@ -107,6 +106,6 @@
         android:textSize="@dimen/text_size_semi_medium"
         android:fontFamily="sans-serif-medium"
         android:textFontWeight="600"
-        android:textColor="?android:attr/textColorPrimary"/>
+        android:textColor="?android:attr/textColorPrimary" />
 
 </LinearLayout>

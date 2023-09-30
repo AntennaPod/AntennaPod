@@ -63,7 +63,6 @@
 
                     <TextView
                         android:id="@+id/titleLabel"
-                        style="@style/AntennaPod.TextView.HeadingSemiBold"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -84,6 +83,7 @@
                         android:shadowRadius="3"
                         android:textColor="@color/white"
                         android:textFontWeight="800"
+                        style="@style/AntennaPod.TextView.HeadingSemiBold"
                         tools:text="Podcast title" />
 
                     <TextView
@@ -126,7 +126,7 @@
                     android:id="@+id/listView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="18dp"/>
+                    android:layout_marginTop="18dp" />
 
             </LinearLayout>
 

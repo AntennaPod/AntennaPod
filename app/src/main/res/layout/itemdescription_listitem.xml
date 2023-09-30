@@ -13,19 +13,18 @@
 
     <TextView
         android:id="@+id/txtvPubDate"
-        style="@android:style/TextAppearance.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-
         android:layout_marginStart="4dp"
         android:layout_marginTop="2dp"
         android:ellipsize="end"
         android:lines="1"
         android:textColor="?android:textColorSecondary"
         android:textSize="@dimen/text_size_descriptionsmall"
+        style="@android:style/TextAppearance.Small"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="22 Jan 2016" />
