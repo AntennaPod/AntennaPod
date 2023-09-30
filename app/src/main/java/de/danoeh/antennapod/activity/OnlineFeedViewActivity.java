@@ -6,9 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.LightingColorFilter;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spannable;
@@ -37,7 +35,6 @@ import androidx.annotation.UiThread;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
-import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -154,8 +151,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
-            }
-        });
+            }});
 
         String feedUrl = null;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
@@ -462,11 +458,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             originalDesc = new SpannableString(HtmlToPlainText.getPlainText(feed.getDescription())
                     .substring(0, CHARACTER_LIMIT));
             originalDesc.setSpan(new ForegroundColorSpan(description.getTextColors().getDefaultColor()), 0, CHARACTER_LIMIT, 0);
-        }
-        else {
+        } else {
             originalDesc = new SpannableString(HtmlToPlainText.getPlainText(feed.getDescription()));
-            originalDesc.setSpan(new ForegroundColorSpan(description.getTextColors().getDefaultColor()), 0, feed.getDescription().length(), 0);
-        }
+            originalDesc.setSpan(new ForegroundColorSpan(description.getTextColors().getDefaultColor()), 0, feed.getDescription().length(), 0); }
 
         SpannableString readMore = new SpannableString(Html.fromHtml("&#160;"+"  <b>Read more</b>"));
         readMore.setSpan(new ForegroundColorSpan(R.attr.colorPrimary), 0, readMore.length(), 0);
