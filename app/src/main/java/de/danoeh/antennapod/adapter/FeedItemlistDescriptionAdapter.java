@@ -1,17 +1,21 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.databinding.ItemdescriptionListitemBinding;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
@@ -47,10 +51,12 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
             holder = new Holder();
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.itemdescription_listitem, parent, false);
+
             holder.title = convertView.findViewById(R.id.txtvTitle);
             holder.pubDate = convertView.findViewById(R.id.txtvPubDate);
             holder.description = convertView.findViewById(R.id.txtvDescription);
             holder.preview = convertView.findViewById(R.id.butPreview);
+
 
             convertView.setTag(holder);
         } else {
@@ -67,8 +73,14 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
             holder.description.setText(description);
             holder.description.setMaxLines(MAX_LINES_COLLAPSED);
         }
+        holder.title.setMaxLines(2);
+        holder.description.setMaxLines(2);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            holder.title.setTypeface(Typeface.create(null,700,false));
+            holder.preview.setTypeface(Typeface.create(null,600,false));
+        }
         holder.description.setTag(Boolean.FALSE); // not expanded
-        holder.preview.setVisibility(View.GONE);
         holder.preview.setOnClickListener(v -> {
             if (item.getMedia() == null) {
                 return;
@@ -90,7 +102,6 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
         convertView.setOnClickListener(v -> {
             if (holder.description.getTag() == Boolean.TRUE) {
                 holder.description.setMaxLines(MAX_LINES_COLLAPSED);
-                holder.preview.setVisibility(View.GONE);
                 holder.description.setTag(Boolean.FALSE);
             } else {
                 holder.description.setMaxLines(30);
@@ -107,6 +118,6 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
         TextView title;
         TextView pubDate;
         TextView description;
-        Button preview;
+        TextView preview;
     }
 }

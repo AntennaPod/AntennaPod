@@ -1,69 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="8dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingBottom="8dp"
-    tools:background="@android:color/holo_orange_light">
+    android:paddingBottom="8dp">
 
     <TextView
         android:id="@+id/txtvPubDate"
         style="@android:style/TextAppearance.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:textSize="14sp"
-        android:textColor="?android:textColorSecondary"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="2dp"
         android:ellipsize="end"
         android:lines="1"
-        tools:text="22 Jan 2016"
-        tools:background="@android:color/holo_green_dark" />
+        android:textColor="?android:textColorSecondary"
+        android:textSize="@dimen/text_size_descriptionsmall"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="22 Jan 2016" />
 
     <TextView
         android:id="@+id/txtvTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@id/txtvPubDate"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="4dp"
         android:layout_toStartOf="@id/txtvPubDate"
-        android:textSize="16sp"
-        android:textColor="?android:attr/textColorPrimary"
+        android:layout_toLeftOf="@id/txtvPubDate"
         android:ellipsize="end"
         android:maxLines="2"
-        tools:text="Feed item title"
-        tools:background="@android:color/holo_green_dark" />
+        android:lineHeight="21dp"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textFontWeight="700"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtvPubDate"
+        tools:text="Feed item title" />
 
     <TextView
         android:id="@+id/txtvDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/txtvTitle"
-        android:textSize="14sp"
-        android:textColor="?android:attr/textColorSecondary"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="10dp"
         android:ellipsize="end"
-        android:maxLines="3"
-        tools:text="Feed item description"
-        tools:background="@android:color/holo_green_dark" />
+        android:lineHeight="21dp"
+        android:maxLines="2"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="@dimen/text_size_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtvTitle"
+        tools:text="Feed item description" />
 
-    <Button
+    <TextView
         android:id="@+id/butPreview"
-        android:layout_below="@id/txtvDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/txtvDescription"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:text="@string/preview_episode"/>
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="4dp"
+        android:text="@string/preview_episode"
+        android:textColor="?android:attr/colorPrimary"
+        android:textFontWeight="500"
+        android:lineHeight="21dp"
+        android:textSize="@dimen/text_size_descriptionsmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

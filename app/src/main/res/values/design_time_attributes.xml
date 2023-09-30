@@ -16,6 +16,10 @@
         tellus eu rhoncus pellentesque. Quisque et leo faucibus, aliquam nisi ut,
         feugiat lectus.
     </string>
+
+    <string name="design_time_sampletext">
+        Going in Raw with the Stene and Larson takes a look at the week that was in pro wrestling. Steve and larson bring both their brands of humor and insights to every episode and is join.
+    </string>
     <string name="design_time_downloaded_log_failure_reason">
         IO Error: failed to connect to feeds.example.com/100.100.100.100
         (port 80) after 3000ms: isConnected failed: ECONNREFUSED (Connection refused)
