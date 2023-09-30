@@ -436,7 +436,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         viewBinding.listView.setSelector(android.R.color.transparent);
         viewBinding.listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
 
-        final int characterLimit = 150;
+        final int characterLimit = 165;
         boolean isLong = false;
 
 
