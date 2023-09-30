@@ -463,14 +463,12 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         } else {
             originalDesc = new SpannableString(HtmlToPlainText.getPlainText(feed.getDescription()));
             originalDesc.setSpan(new ForegroundColorSpan(
-                    description.getTextColors().getDefaultColor())
-                    , 0, feed.getDescription().length(), 0);
+                    description.getTextColors().getDefaultColor()), 0, feed.getDescription().length(), 0);
         }
 
         SpannableString readMore = new SpannableString(
                 Html.fromHtml("&#160;" + "  <b>Read more</b>"));
-        readMore.setSpan(new ForegroundColorSpan(R.attr.colorPrimary)
-                , 0, readMore.length(), 0);
+        readMore.setSpan(new ForegroundColorSpan(R.attr.colorPrimary), 0, readMore.length(), 0);
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
         ClickableSpan readMoreSpan = new ClickableSpan() {
@@ -481,10 +479,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 SpannableString finalOriginalDesc = new SpannableString(
                         HtmlToPlainText.getPlainText(feed.getDescription()));
                 finalOriginalDesc.setSpan(new ForegroundColorSpan(
-                        getResources().getColor(R.color.light_gray)) ,
-                        0 , feed.getDescription().length() , 0);
+                        getResources().getColor(R.color.light_gray)),
+                        0, feed.getDescription().length(), 0);
                 builder.append(finalOriginalDesc);
-                description.setText(builder , TextView.BufferType.SPANNABLE);
+                description.setText(builder, TextView.BufferType.SPANNABLE);
             }
 
             @Override
