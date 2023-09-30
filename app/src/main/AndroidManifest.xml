@@ -380,9 +380,6 @@
             tools:ignore="Deprecated"
             android:name="com.google.android.actions"
             android:resource="@xml/actions" />
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
