@@ -533,8 +533,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         if (UserPreferences.isEnableAutodownload()) {
             SharedPreferences preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
             headerBinding.autoDownloadCheckBox.setChecked(preferences.getBoolean(PREF_LAST_AUTO_DOWNLOAD, true));
-        }
-        else {
+        } else {
             headerBinding.autoDownloadCheckBox.setVisibility(View.GONE);
         }
 
@@ -576,7 +575,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 public void onNothingSelected(AdapterView<?> parent) {
 
                 }
-            }); }
+            });
+        }
         handleUpdatedFeedStatus();
     }
 
