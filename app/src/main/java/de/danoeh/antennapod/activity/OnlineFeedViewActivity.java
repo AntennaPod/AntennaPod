@@ -138,8 +138,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         viewBinding.transparentBackground.setOnClickListener(v -> finish());
         viewBinding.card.setOnClickListener(null);
         viewBinding.card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(this, R.attr.colorSurface));
-        headerBinding = OnlinefeedviewHeaderBinding.bind(
-                View.inflate(this, R.layout.onlinefeedview_header, null));
+        headerBinding = OnlinefeedviewHeaderBinding.inflate(getLayoutInflater());
         viewBinding.closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -437,13 +436,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         viewBinding.listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
 
         final int characterLimit = 165;
-        boolean isLong = false;
-
+        final boolean isLong = feed.getDescription().length() > characterLimit;
 
         headerBinding.txtvDescription.setMaxEms(characterLimit);
         SpannableString originalDesc = null;
-
-        isLong = feed.getDescription().length() > characterLimit;
 
         if (isLong) {
             originalDesc = new SpannableString(HtmlToPlainText.getPlainText(feed.getDescription())
@@ -534,14 +530,12 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         if (UserPreferences.isEnableAutodownload()) {
             SharedPreferences preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
             headerBinding.autoDownloadCheckBox.setChecked(preferences.getBoolean(PREF_LAST_AUTO_DOWNLOAD, true));
-        } else {
-            headerBinding.autoDownloadCheckBox.setVisibility(View.GONE);
         }
 
         if (alternateFeedUrls.isEmpty()) {
-            headerBinding.autoDownloadCheckBox.setVisibility(View.GONE);
+            headerBinding.alternateUrlsSpinner.setVisibility(View.GONE);
         } else {
-            headerBinding.autoDownloadCheckBox.setVisibility(View.VISIBLE);
+            headerBinding.alternateUrlsSpinner.setVisibility(View.VISIBLE);
 
             final List<String> alternateUrlsList = new ArrayList<>();
             final List<String> alternateUrlsTitleList = new ArrayList<>();

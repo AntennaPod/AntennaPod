@@ -31,7 +31,7 @@ import java.util.List;
  * List adapter for showing a list of FeedItems with their title and description.
  */
 public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
-    private static final int MAX_LINES_COLLAPSED = 3;
+    private static final int MAX_LINES_COLLAPSED = 2;
 
     public FeedItemlistDescriptionAdapter(Context context, int resource, List<FeedItem> objects) {
         super(context, resource, objects);
@@ -55,7 +55,6 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
             holder.description = convertView.findViewById(R.id.txtvDescription);
             holder.preview = convertView.findViewById(R.id.butPreview);
 
-
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
@@ -71,8 +70,7 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
             holder.description.setText(description);
             holder.description.setMaxLines(MAX_LINES_COLLAPSED);
         }
-        holder.title.setMaxLines(2);
-        holder.description.setMaxLines(2);
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             holder.title.setTypeface(Typeface.create(null, 700, false));

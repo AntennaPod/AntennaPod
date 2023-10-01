@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AntennaPod.TextView.HeadingMedium" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textFontWeight">700</item>
+    </style>
+</resources>
