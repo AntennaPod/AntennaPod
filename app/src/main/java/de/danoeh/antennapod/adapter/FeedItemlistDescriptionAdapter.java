@@ -49,7 +49,6 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
             holder = new Holder();
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.itemdescription_listitem, parent, false);
-
             holder.title = convertView.findViewById(R.id.txtvTitle);
             holder.pubDate = convertView.findViewById(R.id.txtvPubDate);
             holder.description = convertView.findViewById(R.id.txtvDescription);
@@ -71,11 +70,6 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
             holder.description.setMaxLines(MAX_LINES_COLLAPSED);
         }
 
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            holder.title.setTypeface(Typeface.create(null, 700, false));
-            holder.preview.setTypeface(Typeface.create(null, 600, false));
-        }
         holder.description.setTag(Boolean.FALSE); // not expanded
         holder.preview.setOnClickListener(v -> {
             if (item.getMedia() == null) {

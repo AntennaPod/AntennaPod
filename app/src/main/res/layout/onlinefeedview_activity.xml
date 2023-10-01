@@ -54,7 +54,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="16dp"
                         android:layout_marginLeft="16dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="24dp"
                         android:layout_marginBottom="12dp"
                         android:background="@drawable/thumbnail_border_bg"
                         android:clipToOutline="true"
@@ -77,12 +77,11 @@
                         android:layout_toEndOf="@id/coverImage"
                         android:layout_toRightOf="@id/coverImage"
                         android:ellipsize="end"
-                        android:lineHeight="20dp"
+                        android:lineHeight="24dp"
                         android:maxLines="2"
                         android:shadowColor="@color/black"
                         android:shadowRadius="3"
                         android:textColor="@color/white"
-                        android:textFontWeight="800"
                         style="@style/AntennaPod.TextView.HeadingSemiBold"
                         tools:text="Podcast title" />
 
@@ -113,8 +112,8 @@
                         android:layout_width="@dimen/close_icon_size"
                         android:layout_height="@dimen/close_icon_size"
                         android:layout_alignParentRight="true"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginRight="12dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/close_icon" />
 

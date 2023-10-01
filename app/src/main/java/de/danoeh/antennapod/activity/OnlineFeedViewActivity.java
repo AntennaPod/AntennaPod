@@ -438,7 +438,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         final int characterLimit = 160;
         final boolean isLong = feed.getDescription().length() > characterLimit;
 
-        headerBinding.txtvDescription.setMaxEms(characterLimit);
         SpannableString originalDesc = null;
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
@@ -614,6 +613,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             headerBinding.subscribeButton.setText(R.string.subscribe_label);
             if (UserPreferences.isEnableAutodownload()) {
                 headerBinding.autoDownloadCheckBox.setVisibility(View.VISIBLE);
+            } else {
+                headerBinding.autoDownloadCheckBox.setVisibility(View.GONE);
             }
         }
     }
@@ -665,7 +666,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         boolean isPlayingPreview =
                 PlaybackPreferences.getCurrentlyPlayingMediaType() == RemoteMedia.PLAYABLE_TYPE_REMOTE_MEDIA;
         headerBinding.stopPreviewButton.setVisibility(isPlayingPreview ? View.VISIBLE : View.GONE);
-        headerBinding.playLayout.setVisibility(isPlayingPreview ? View.VISIBLE : View.GONE);
     }
 
     /**

@@ -42,13 +42,11 @@
         android:layout_toLeftOf="@id/txtvPubDate"
         android:ellipsize="end"
         android:maxLines="2"
-        android:lineHeight="20dp"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textFontWeight="700"
-        android:textSize="17sp"
+        android:lineHeight="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtvPubDate"
+        style="@style/AntennaPod.TextView.HeadingMedium"
         tools:text="Feed item title" />
 
     <TextView
@@ -61,7 +59,7 @@
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="12dp"
         android:ellipsize="end"
-        android:lineHeight="20dp"
+        android:lineHeight="24dp"
         android:maxLines="2"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="@dimen/text_size_small"
@@ -82,10 +80,10 @@
         android:layout_marginEnd="4dp"
         android:text="@string/preview_episode"
         android:textColor="?android:attr/colorPrimary"
-        android:textFontWeight="500"
-        android:lineHeight="20dp"
+        android:lineHeight="24dp"
         android:textSize="@dimen/text_size_descriptionsmall"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/AntennaPod.TextView.Small"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
