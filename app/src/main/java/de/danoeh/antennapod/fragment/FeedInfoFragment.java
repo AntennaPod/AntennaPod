@@ -228,7 +228,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         }
 
         txtvUrl.setText(feed.getDownload_url());
-        txtvUrl.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_paper_clip, 0);
+        txtvUrl.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_paperclip, 0);
 
         if (feed.getPaymentLinks() == null || feed.getPaymentLinks().size() == 0) {
             lblSupport.setVisibility(View.GONE);
@@ -312,7 +312,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 protected void setUrl(String url) {
                     feed.setDownload_url(url);
                     txtvUrl.setText(feed.getDownload_url());
-                    txtvUrl.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_paper_clip, 0);
+                    txtvUrl.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_paperclip, 0);
                 }
             }.show();
 
