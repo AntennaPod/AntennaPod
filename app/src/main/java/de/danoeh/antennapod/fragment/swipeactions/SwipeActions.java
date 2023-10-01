@@ -191,7 +191,7 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
 
         //add color and icon
         Context context = fragment.requireContext();
-        int themeColor = ThemeUtils.getColorFromAttr(context, android.R.attr.windowBackground);
+        int themeColor = ThemeUtils.getColorFromAttr(context, android.R.attr.colorBackground);
         int actionColor = ThemeUtils.getColorFromAttr(context,
                 dx > 0 ? right.getActionColor() : left.getActionColor());
         RecyclerViewSwipeDecorator.Builder builder = new RecyclerViewSwipeDecorator.Builder(

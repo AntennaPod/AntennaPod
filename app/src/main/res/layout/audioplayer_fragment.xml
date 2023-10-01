@@ -46,7 +46,7 @@
             android:layout_alignBottom="@id/pager"
             android:importantForAccessibility="no"
             app:srcCompat="@drawable/bg_gradient"
-            app:tint="?android:attr/windowBackground" />
+            app:tint="?android:attr/colorBackground" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewSeek"
