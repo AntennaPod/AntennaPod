@@ -435,11 +435,12 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         viewBinding.listView.setSelector(android.R.color.transparent);
         viewBinding.listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
 
-        final int characterLimit = 165;
+        final int characterLimit = 160;
         final boolean isLong = feed.getDescription().length() > characterLimit;
 
         headerBinding.txtvDescription.setMaxEms(characterLimit);
         SpannableString originalDesc = null;
+        SpannableStringBuilder builder = new SpannableStringBuilder();
 
         if (isLong) {
             originalDesc = new SpannableString(HtmlToPlainText.getPlainText(feed.getDescription())
@@ -447,46 +448,45 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             originalDesc.setSpan(new ForegroundColorSpan(
                             headerBinding.txtvDescription.getTextColors().getDefaultColor()), 0,
                     characterLimit, 0);
+
+            SpannableString readMore = new SpannableString(
+                    Html.fromHtml("&#160;" + "  <b>Read more</b>"));
+            readMore.setSpan(new ForegroundColorSpan(R.attr.colorPrimary), 0, readMore.length(), 0);
+
+            ClickableSpan readMoreSpan = new ClickableSpan() {
+                @Override
+                public void onClick(View textView) {
+                    builder.clear();
+                    headerBinding.txtvDescription.setMaxEms(feed.getDescription().length());
+                    SpannableString finalOriginalDesc = new SpannableString(
+                            HtmlToPlainText.getPlainText(feed.getDescription()));
+                    finalOriginalDesc.setSpan(new ForegroundColorSpan(
+                                    getResources().getColor(R.color.light_gray)),
+                            0, feed.getDescription().length(), 0);
+                    builder.append(finalOriginalDesc);
+                    headerBinding.txtvDescription.setText(builder, TextView.BufferType.SPANNABLE);
+                }
+
+                @Override
+                public void updateDrawState(TextPaint ds) {
+                    super.updateDrawState(ds);
+                    ds.setUnderlineText(false);
+                }
+            };
+
+            readMore.setSpan(readMoreSpan, 0, readMore.length(), 0);
+            builder.append(originalDesc);
+            builder.append(readMore);
+
         } else {
             originalDesc = new SpannableString(HtmlToPlainText.getPlainText(feed.getDescription()));
             originalDesc.setSpan(new ForegroundColorSpan(
                     headerBinding.txtvDescription.getTextColors().getDefaultColor()),
                     0, feed.getDescription().length(), 0);
+
+            builder.append(originalDesc);
         }
 
-        SpannableString readMore = new SpannableString(
-                Html.fromHtml("&#160;" + "  <b>Read more</b>"));
-        readMore.setSpan(new ForegroundColorSpan(R.attr.colorPrimary), 0, readMore.length(), 0);
-
-        SpannableStringBuilder builder = new SpannableStringBuilder();
-        ClickableSpan readMoreSpan = new ClickableSpan() {
-            @Override
-            public void onClick(View textView) {
-                builder.clear();
-                headerBinding.txtvDescription.setMaxEms(feed.getDescription().length());
-                SpannableString finalOriginalDesc = new SpannableString(
-                        HtmlToPlainText.getPlainText(feed.getDescription()));
-                finalOriginalDesc.setSpan(new ForegroundColorSpan(
-                        getResources().getColor(R.color.light_gray)),
-                        0, feed.getDescription().length(), 0);
-                builder.append(finalOriginalDesc);
-                headerBinding.txtvDescription.setText(builder, TextView.BufferType.SPANNABLE);
-            }
-
-            @Override
-            public void updateDrawState(TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setUnderlineText(false);
-            }
-        };
-
-        readMore.setSpan(readMoreSpan, 0, readMore.length(), 0);
-
-
-        builder.append(originalDesc);
-        if (isLong) {
-            builder.append(readMore);
-        }
 
         headerBinding.txtvDescription.setText(builder, TextView.BufferType.SPANNABLE);
         headerBinding.txtvDescription.setMovementMethod(LinkMovementMethod.getInstance());

@@ -10,7 +10,6 @@
     android:layout_marginTop="8dp">
 
     <TextView
-        style="@style/AntennaPod.TextView.HeadingMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -18,7 +17,8 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/description_label" />
+        android:text="@string/description_label"
+        style="@style/AntennaPod.TextView.HeadingMedium" />
 
     <TextView
         android:id="@+id/txtvDescription"
@@ -88,7 +88,6 @@
     </LinearLayout>
 
     <TextView
-        style="@style/AntennaPod.TextView.HeadingMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -97,6 +96,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
-        android:text="@string/episodes_label" />
+        android:text="@string/episodes_label"
+        style="@style/AntennaPod.TextView.HeadingMedium" />
 
 </LinearLayout>
