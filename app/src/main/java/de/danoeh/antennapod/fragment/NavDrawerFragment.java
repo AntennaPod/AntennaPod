@@ -148,7 +148,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             shapeBuilder.setTopRightCornerSize(cornerSize).setBottomRightCornerSize(cornerSize);
         }
         MaterialShapeDrawable drawable = new MaterialShapeDrawable(shapeBuilder.build());
-        int themeColor = ThemeUtils.getColorFromAttr(root.getContext(), android.R.attr.windowBackground);
+        int themeColor = ThemeUtils.getColorFromAttr(root.getContext(), android.R.attr.colorBackground);
         drawable.setFillColor(ColorStateList.valueOf(themeColor));
         root.setBackground(drawable);
     }
