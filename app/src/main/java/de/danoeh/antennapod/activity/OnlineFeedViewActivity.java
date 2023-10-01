@@ -593,19 +593,24 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             headerBinding.subscribeButton.setText(R.string.open_podcast);
             if (didPressSubscribe) {
                 didPressSubscribe = false;
+
                 Feed feed1 = DBReader.getFeed(getFeedId());
                 FeedPreferences feedPreferences = feed1.getPreferences();
                 if (UserPreferences.isEnableAutodownload()) {
                     boolean autoDownload = headerBinding.autoDownloadCheckBox.isChecked();
-                    
                     feedPreferences.setAutoDownload(autoDownload);
-                    DBWriter.setFeedPreferences(feedPreferences);
 
                     SharedPreferences preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putBoolean(PREF_LAST_AUTO_DOWNLOAD, autoDownload);
                     editor.apply();
                 }
+                if (username != null) {
+                    feedPreferences.setUsername(username);
+                    feedPreferences.setPassword(password);
+                }
+                DBWriter.setFeedPreferences(feedPreferences);
+
                 openFeed();
             }
         } else {
