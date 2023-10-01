@@ -593,11 +593,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             headerBinding.subscribeButton.setText(R.string.open_podcast);
             if (didPressSubscribe) {
                 didPressSubscribe = false;
+                Feed feed1 = DBReader.getFeed(getFeedId());
+                FeedPreferences feedPreferences = feed1.getPreferences();
                 if (UserPreferences.isEnableAutodownload()) {
                     boolean autoDownload = headerBinding.autoDownloadCheckBox.isChecked();
-
-                    Feed feed1 = DBReader.getFeed(getFeedId());
-                    FeedPreferences feedPreferences = feed1.getPreferences();
+                    
                     feedPreferences.setAutoDownload(autoDownload);
                     DBWriter.setFeedPreferences(feedPreferences);
 
