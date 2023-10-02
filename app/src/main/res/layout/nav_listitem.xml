@@ -57,6 +57,7 @@
         android:layout_toStartOf="@id/txtvCount"
         android:layout_toLeftOf="@id/txtvCount"
         android:visibility="gone"
+        android:contentDescription="@string/refresh_failed_msg"
         app:srcCompat="@drawable/ic_error"
         app:tint="?attr/icon_red"
         tools:text="!" />
