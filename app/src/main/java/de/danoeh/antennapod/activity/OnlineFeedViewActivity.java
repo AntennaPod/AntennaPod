@@ -545,7 +545,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 Feed feed1 = DBReader.getFeed(getFeedId());
                 FeedPreferences feedPreferences = feed1.getPreferences();
                 if (UserPreferences.isEnableAutodownload()) {
-                    boolean autoDownload = viewBinding.autoDownloadCheckBox.isChecked();
+                    boolean autoDownload = headerBinding.autoDownloadCheckBox.isChecked();
                     feedPreferences.setAutoDownload(autoDownload);
 
                     SharedPreferences preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
