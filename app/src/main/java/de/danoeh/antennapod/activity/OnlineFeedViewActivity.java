@@ -434,60 +434,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         viewBinding.listView.setSelector(android.R.color.transparent);
         viewBinding.listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
 
-        final int characterLimit = 160;
-        final boolean isLong = feed.getDescription().length() > characterLimit;
-
-        SpannableString originalDesc = null;
-        SpannableStringBuilder builder = new SpannableStringBuilder();
-
-        if (isLong) {
-            originalDesc = new SpannableString(HtmlToPlainText.getPlainText(feed.getDescription())
-                    .substring(0, characterLimit));
-            originalDesc.setSpan(new ForegroundColorSpan(
-                            headerBinding.txtvDescription.getTextColors().getDefaultColor()), 0,
-                    characterLimit, 0);
-
-            SpannableString readMore = new SpannableString(
-                    Html.fromHtml("&#160;" + "  <b>Read more</b>"));
-            readMore.setSpan(new ForegroundColorSpan(R.attr.colorPrimary), 0, readMore.length(), 0);
-
-            ClickableSpan readMoreSpan = new ClickableSpan() {
-                @Override
-                public void onClick(View textView) {
-                    builder.clear();
-                    headerBinding.txtvDescription.setMaxEms(feed.getDescription().length());
-                    SpannableString finalOriginalDesc = new SpannableString(
-                            HtmlToPlainText.getPlainText(feed.getDescription()));
-                    finalOriginalDesc.setSpan(new ForegroundColorSpan(
-                                    getResources().getColor(R.color.light_gray)),
-                            0, feed.getDescription().length(), 0);
-                    builder.append(finalOriginalDesc);
-                    headerBinding.txtvDescription.setText(builder, TextView.BufferType.SPANNABLE);
-                }
-
-                @Override
-                public void updateDrawState(TextPaint ds) {
-                    super.updateDrawState(ds);
-                    ds.setUnderlineText(false);
-                }
-            };
-
-            readMore.setSpan(readMoreSpan, 0, readMore.length(), 0);
-            builder.append(originalDesc);
-            builder.append(readMore);
-
-        } else {
-            originalDesc = new SpannableString(HtmlToPlainText.getPlainText(feed.getDescription()));
-            originalDesc.setSpan(new ForegroundColorSpan(
-                    headerBinding.txtvDescription.getTextColors().getDefaultColor()),
-                    0, feed.getDescription().length(), 0);
-
-            builder.append(originalDesc);
-        }
-
-
-        headerBinding.txtvDescription.setText(builder, TextView.BufferType.SPANNABLE);
-        headerBinding.txtvDescription.setMovementMethod(LinkMovementMethod.getInstance());
+        headerBinding.txtvDescription.setText(HtmlToPlainText.getPlainText(feed.getDescription()));
         if (StringUtils.isNotBlank(feed.getImageUrl())) {
             Glide.with(this)
                     .load(feed.getImageUrl())
@@ -519,7 +466,15 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 handleUpdatedFeedStatus();
             }
         });
-
+        final int MAX_LINES_COLLAPSED = 4;
+        headerBinding.txtvDescription.setMaxLines(MAX_LINES_COLLAPSED);
+        headerBinding.txtvDescription.setOnClickListener(v -> {
+            if (headerBinding.txtvDescription.getMaxLines() > MAX_LINES_COLLAPSED) {
+                headerBinding.txtvDescription.setMaxLines(MAX_LINES_COLLAPSED);
+            } else {
+                headerBinding.txtvDescription.setMaxLines(2000);
+            }
+        });
         headerBinding.stopPreviewButton.setOnClickListener(v -> {
             PlaybackPreferences.writeNoMediaPlaying();
             IntentUtils.sendLocalBroadcast(this, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
@@ -596,7 +551,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 Feed feed1 = DBReader.getFeed(getFeedId());
                 FeedPreferences feedPreferences = feed1.getPreferences();
                 if (UserPreferences.isEnableAutodownload()) {
-                    boolean autoDownload = headerBinding.autoDownloadCheckBox.isChecked();
+                    boolean autoDownload = viewBinding.autoDownloadCheckBox.isChecked();
                     feedPreferences.setAutoDownload(autoDownload);
 
                     SharedPreferences preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
@@ -617,8 +572,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             headerBinding.subscribeButton.setText(R.string.subscribe_label);
             if (UserPreferences.isEnableAutodownload()) {
                 headerBinding.autoDownloadCheckBox.setVisibility(View.VISIBLE);
-            } else {
-                headerBinding.autoDownloadCheckBox.setVisibility(View.GONE);
             }
         }
     }

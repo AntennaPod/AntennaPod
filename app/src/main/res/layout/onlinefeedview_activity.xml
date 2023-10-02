@@ -36,6 +36,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/feeditemlist_header_height"
+                    android:layout_marginBottom="16dp"
                     android:background="@color/feed_image_bg">
 
                     <ImageView
@@ -48,14 +49,14 @@
                         android:id="@+id/coverImage"
                         android:layout_width="@dimen/thumbnail_length_onlinefeedview"
                         android:layout_height="@dimen/thumbnail_length_onlinefeedview"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerVertical="true"
                         android:layout_marginStart="16dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="24dp"
                         android:layout_marginBottom="12dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerVertical="true"
                         android:background="@drawable/thumbnail_border_bg"
                         android:clipToOutline="true"
                         android:importantForAccessibility="no"
@@ -70,9 +71,9 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginStart="16dp"
                         android:layout_marginLeft="16dp"
-                        android:layout_marginTop="25dp"
-                        android:layout_marginEnd="26dp"
-                        android:layout_marginRight="26dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginRight="24dp"
                         android:layout_marginBottom="8dp"
                         android:layout_toEndOf="@id/coverImage"
                         android:layout_toRightOf="@id/coverImage"
@@ -115,15 +116,14 @@
                         android:layout_marginTop="12dp"
                         android:layout_marginRight="12dp"
                         android:background="@android:color/transparent"
-                        android:src="@drawable/close_icon" />
+                        android:src="@drawable/ic_close_white" />
 
                 </RelativeLayout>
 
                 <ListView
                     android:id="@+id/listView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="18dp" />
+                    android:layout_height="match_parent" />
 
             </LinearLayout>
 

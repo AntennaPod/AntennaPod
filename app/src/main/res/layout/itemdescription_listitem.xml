@@ -64,13 +64,12 @@
         android:ellipsize="end"
         android:lineHeight="24dp"
         android:maxLines="2"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="@dimen/text_size_small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtvTitle"
         tools:text="Feed item description"
+        style="@style/AntennaPod.TextView.SmallSecondary"
         tools:background="@android:color/holo_green_dark"/>
 
     <TextView
@@ -86,6 +85,7 @@
         android:textColor="?android:attr/colorPrimary"
         android:lineHeight="24dp"
         android:textSize="@dimen/text_size_descriptionsmall"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         style="@style/AntennaPod.TextView.Small"/>

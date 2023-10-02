@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:paddingLeft="4dp"
     android:paddingRight="4dp"
-    android:layout_marginTop="8dp">
+    android:layout_marginBottom="16dp" >
 
     <TextView
         android:layout_width="wrap_content"
@@ -42,7 +42,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
-        android:focusable="false"
         android:text="@string/subscribe_label" />
 
     <LinearLayout
@@ -71,16 +70,15 @@
             android:checked="true"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:focusable="false"
+            android:focusable="true"
             android:text="@string/auto_download_label"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
 
         <Button
             android:id="@+id/stopPreviewButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:focusable="false"
             android:text="@string/stop_preview"
             android:visibility="gone"
             tools:visibility="visible" />
