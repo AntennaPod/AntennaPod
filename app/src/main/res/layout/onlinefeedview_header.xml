@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:paddingLeft="4dp"
     android:paddingRight="4dp"
-    android:layout_marginBottom="16dp" >
+    android:layout_marginBottom="16dp">
 
     <TextView
         android:layout_width="wrap_content"
