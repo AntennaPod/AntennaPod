@@ -460,11 +460,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 handleUpdatedFeedStatus();
             }
         });
-        final int MAX_LINES_COLLAPSED = 4;
-        headerBinding.txtvDescription.setMaxLines(MAX_LINES_COLLAPSED);
+        final int Max_Lines_Collapsed = 4;
+        headerBinding.txtvDescription.setMaxLines(Max_Lines_Collapsed);
         headerBinding.txtvDescription.setOnClickListener(v -> {
-            if (headerBinding.txtvDescription.getMaxLines() > MAX_LINES_COLLAPSED) {
-                headerBinding.txtvDescription.setMaxLines(MAX_LINES_COLLAPSED);
+            if (headerBinding.txtvDescription.getMaxLines() > Max_Lines_Collapsed) {
+                headerBinding.txtvDescription.setMaxLines(Max_Lines_Collapsed);
             } else {
                 headerBinding.txtvDescription.setMaxLines(2000);
             }
