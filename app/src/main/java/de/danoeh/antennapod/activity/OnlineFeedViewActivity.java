@@ -30,7 +30,6 @@ import androidx.annotation.UiThread;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
@@ -125,7 +124,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private Disposable updater;
 
     private OnlinefeedviewHeaderBinding headerBinding;
-
     private OnlinefeedviewActivityBinding viewBinding;
 
     @Override
@@ -135,6 +133,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         viewBinding = OnlinefeedviewActivityBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
+
         viewBinding.transparentBackground.setOnClickListener(v -> finish());
         viewBinding.card.setOnClickListener(null);
         viewBinding.card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(this, R.attr.colorSurface));

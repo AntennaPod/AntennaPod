@@ -1,13 +1,10 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
-import android.graphics.Typeface;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -69,7 +66,6 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
             holder.description.setText(description);
             holder.description.setMaxLines(MAX_LINES_COLLAPSED);
         }
-
         holder.description.setTag(Boolean.FALSE); // not expanded
         holder.preview.setOnClickListener(v -> {
             if (item.getMedia() == null) {

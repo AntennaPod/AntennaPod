@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,6 +13,7 @@
 
     <TextView
         android:id="@+id/txtvPubDate"
+        style="@android:style/TextAppearance.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -23,10 +25,10 @@
         android:lines="1"
         android:textColor="?android:textColorSecondary"
         android:textSize="@dimen/text_size_descriptionsmall"
-        style="@android:style/TextAppearance.Small"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="22 Jan 2016" />
+        tools:text="22 Jan 2016"
+        tools:background="@android:color/holo_green_dark"/>
 
     <TextView
         android:id="@+id/txtvTitle"
@@ -47,7 +49,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtvPubDate"
         style="@style/AntennaPod.TextView.HeadingMedium"
-        tools:text="Feed item title" />
+        tools:text="Feed item title"
+        tools:background="@android:color/holo_green_dark"/>
 
     <TextView
         android:id="@+id/txtvDescription"
@@ -67,7 +70,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtvTitle"
-        tools:text="Feed item description" />
+        tools:text="Feed item description"
+        tools:background="@android:color/holo_green_dark"/>
 
     <TextView
         android:id="@+id/butPreview"

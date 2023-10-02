@@ -103,7 +103,7 @@
                         android:lines="1"
                         android:shadowColor="@color/black"
                         android:shadowRadius="3"
-                        android:textColor="@color/light_gray"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/text_size_small"
                         tools:text="Podcast author" />
 
