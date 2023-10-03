@@ -56,6 +56,7 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         };
         controller.init();
         EventBus.getDefault().register(this);
+        updateSpeed(new SpeedChangedEvent(controller.getCurrentPlaybackSpeedMultiplier()));
     }
 
     @Override
