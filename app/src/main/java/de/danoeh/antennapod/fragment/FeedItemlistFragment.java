@@ -127,6 +127,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         viewBinding = FeedItemListFragmentBinding.inflate(inflater);
         speedDialBinding = MultiSelectSpeedDialBinding.bind(viewBinding.getRoot());
         viewBinding.toolbar.inflateMenu(R.menu.feedlist);
+        viewBinding.toolbar.setNavigationContentDescription("back");
         viewBinding.toolbar.setOnMenuItemClickListener(this);
         viewBinding.toolbar.setOnLongClickListener(v -> {
             viewBinding.recyclerView.scrollToPosition(5);

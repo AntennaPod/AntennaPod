@@ -61,6 +61,7 @@ public class StatisticsFragment extends PagedToolbarFragment {
         toolbar = rootView.findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.statistics_label));
         toolbar.inflateMenu(R.menu.statistics);
+        toolbar.setNavigationContentDescription("back");
         toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
         viewPager.setAdapter(new StatisticsPagerAdapter(this));
         // Give the TabLayout the ViewPager
