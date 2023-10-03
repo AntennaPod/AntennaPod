@@ -37,23 +37,23 @@
 
         <TextView
             android:id="@+id/txtvTitle"
-            style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
             tools:background="@android:color/holo_green_dark"
             tools:text="Podcast title" />
 
         <TextView
             android:id="@+id/txtvAuthor"
-            style="android:style/TextAppearance.Small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="?android:attr/textColorSecondary"
             android:ellipsize="middle"
             android:maxLines="2"
+            style="android:style/TextAppearance.Small"
             tools:text="author"
-            tools:background="@android:color/holo_green_dark"/>
+            tools:background="@android:color/holo_green_dark" />
 
     </LinearLayout>
 

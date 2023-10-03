@@ -12,7 +12,6 @@
 
     <TextView
         android:id="@+id/txtvPubDate"
-        style="@android:style/TextAppearance.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -22,6 +21,7 @@
         android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:lines="1"
+        style="@android:style/TextAppearance.Small"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="22 Jan 2016"
@@ -41,10 +41,10 @@
         android:layout_toLeftOf="@id/txtvPubDate"
         android:ellipsize="end"
         android:maxLines="2"
+        style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtvPubDate"
-        style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
         tools:text="Feed item title"
         tools:background="@android:color/holo_green_dark" />
 
@@ -59,12 +59,12 @@
         android:layout_marginBottom="12dp"
         android:ellipsize="end"
         android:maxLines="2"
+        style="@style/AntennaPod.TextView.ListItemBody"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtvTitle"
         tools:text="Feed item description"
-        style="@style/AntennaPod.TextView.ListItemBody"
         tools:background="@android:color/holo_green_dark" />
 
     <Button
@@ -78,9 +78,9 @@
         android:gravity="right|top"
         android:paddingVertical="0dp"
         android:paddingHorizontal="8dp"
+        android:text="@string/preview_episode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:text="@string/preview_episode" />
+        style="@style/Widget.MaterialComponents.Button.TextButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

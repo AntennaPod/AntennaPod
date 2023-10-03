@@ -30,8 +30,8 @@
         android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp"
         android:ellipsize="end"
-        style="@style/AntennaPod.TextView.ListItemBody"
         android:lineHeight="20dp"
+        style="@style/AntennaPod.TextView.ListItemBody"
         tools:text="@string/design_time_lorem_ipsum" />
 
     <TextView
