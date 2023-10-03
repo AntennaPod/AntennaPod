@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -32,6 +33,7 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
@@ -94,6 +96,7 @@ public class MainActivity extends CastEnabledActivity {
 
     private @Nullable DrawerLayout drawerLayout;
     private @Nullable ActionBarDrawerToggle drawerToggle;
+    private BottomNavigationView bottomNavigationView;
     private View navDrawer;
     private LockableBottomSheetBehavior sheetBehavior;
     private RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
@@ -170,6 +173,14 @@ public class MainActivity extends CastEnabledActivity {
         FeedUpdateManager.getInstance().restartUpdateAlarm(this, false);
         SynchronizationQueueSink.syncNowIfNotSyncedRecently();
         AutomaticDatabaseExportWorker.enqueueIfNeeded(this, false);
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.getMenu().add(R.string.home_label).setIcon(R.drawable.ic_home);
+        bottomNavigationView.getMenu().add(R.string.queue_label).setIcon(R.drawable.ic_playlist_play);
+        bottomNavigationView.getMenu().add(R.string.inbox_label).setIcon(R.drawable.ic_inbox);
+        bottomNavigationView.getMenu().add(R.string.subscriptions_label).setIcon(R.drawable.ic_subscriptions);
+        bottomNavigationView.getMenu().add(R.string.searchpreference_more).setIcon(R.drawable.ic_arrow_down);
+        bottomNavigationView.setOnItemSelectedListener(item -> true);
 
         WorkManager.getInstance(this)
                 .getWorkInfosByTagLiveData(FeedUpdateManagerImpl.WORK_TAG_FEED_UPDATE)
@@ -321,7 +332,10 @@ public class MainActivity extends CastEnabledActivity {
     private void updateInsets() {
         setPlayerVisible(findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE);
         int playerHeight = (int) getResources().getDimension(R.dimen.external_player_height);
-        sheetBehavior.setPeekHeight(playerHeight + navigationBarInsets.bottom);
+        sheetBehavior.setPeekHeight(playerHeight);
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+        layoutParams.bottomMargin = navigationBarInsets.bottom;
+        bottomNavigationView.setLayoutParams(layoutParams);
     }
 
     public void setPlayerVisible(boolean visible) {
@@ -331,11 +345,10 @@ public class MainActivity extends CastEnabledActivity {
         } else {
             getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
         }
-        FragmentContainerView mainView = findViewById(R.id.main_view);
+        FragmentContainerView mainView = findViewById(R.id.main_content_view);
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mainView.getLayoutParams();
         int externalPlayerHeight = (int) getResources().getDimension(R.dimen.external_player_height);
-        params.setMargins(navigationBarInsets.left, 0, navigationBarInsets.right,
-                navigationBarInsets.bottom + (visible ? externalPlayerHeight : 0));
+        params.setMargins(navigationBarInsets.left, 0, navigationBarInsets.right, (visible ? externalPlayerHeight : 0));
         mainView.setLayoutParams(params);
         FragmentContainerView playerView = findViewById(R.id.playerFragment);
         ViewGroup.MarginLayoutParams playerParams = (ViewGroup.MarginLayoutParams) playerView.getLayoutParams();
@@ -412,7 +425,7 @@ public class MainActivity extends CastEnabledActivity {
             fragmentManager.popBackStack();
         }
         FragmentTransaction t = fragmentManager.beginTransaction();
-        t.replace(R.id.main_view, fragment, MAIN_FRAGMENT_TAG);
+        t.replace(R.id.main_content_view, fragment, MAIN_FRAGMENT_TAG);
         fragmentManager.popBackStack();
         // TODO: we have to allow state loss here
         // since this function can get called from an AsyncTask which
@@ -446,7 +459,7 @@ public class MainActivity extends CastEnabledActivity {
 
         transaction
                 .hide(getSupportFragmentManager().findFragmentByTag(MAIN_FRAGMENT_TAG))
-                .add(R.id.main_view, fragment, MAIN_FRAGMENT_TAG)
+                .add(R.id.main_content_view, fragment, MAIN_FRAGMENT_TAG)
                 .addToBackStack(null)
                 .commit();
     }
@@ -647,7 +660,7 @@ public class MainActivity extends CastEnabledActivity {
     public Snackbar showSnackbarAbovePlayer(CharSequence text, int duration) {
         Snackbar s;
         if (getBottomSheet().getState() == BottomSheetBehavior.STATE_COLLAPSED) {
-            s = Snackbar.make(findViewById(R.id.main_view), text, duration);
+            s = Snackbar.make(findViewById(R.id.main_content_view), text, duration);
             if (findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE) {
                 s.setAnchorView(findViewById(R.id.audioplayerFragment));
             }
