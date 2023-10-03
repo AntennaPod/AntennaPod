@@ -41,7 +41,6 @@
         android:layout_toLeftOf="@id/txtvPubDate"
         android:ellipsize="end"
         android:maxLines="2"
-        android:lineHeight="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtvPubDate"
@@ -59,7 +58,6 @@
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="12dp"
         android:ellipsize="end"
-        android:lineHeight="20dp"
         android:maxLines="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,9 +78,9 @@
         android:gravity="right|top"
         android:paddingVertical="0dp"
         android:paddingHorizontal="8dp"
-        android:text="@string/preview_episode"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:text="@string/preview_episode" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -100,6 +100,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private static final String TAG = "OnlineFeedViewActivity";
     private static final String PREFS = "OnlineFeedViewActivityPreferences";
     private static final String PREF_LAST_AUTO_DOWNLOAD = "lastAutoDownload";
+    private static final int DESCRIPTION_MAX_LINES_COLLAPSED = 4;
 
     private volatile List<Feed> feeds;
     private String selectedDownloadUrl;
@@ -466,11 +467,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             viewBinding.autoDownloadCheckBox.setChecked(preferences.getBoolean(PREF_LAST_AUTO_DOWNLOAD, true));
         }
 
-        final int MAX_LINES_COLLAPSED = 4;
-        headerBinding.txtvDescription.setMaxLines(MAX_LINES_COLLAPSED);
+        headerBinding.txtvDescription.setMaxLines(DESCRIPTION_MAX_LINES_COLLAPSED);
         headerBinding.txtvDescription.setOnClickListener(v -> {
-            if (headerBinding.txtvDescription.getMaxLines() > MAX_LINES_COLLAPSED) {
-                headerBinding.txtvDescription.setMaxLines(MAX_LINES_COLLAPSED);
+            if (headerBinding.txtvDescription.getMaxLines() > DESCRIPTION_MAX_LINES_COLLAPSED) {
+                headerBinding.txtvDescription.setMaxLines(DESCRIPTION_MAX_LINES_COLLAPSED);
             } else {
                 headerBinding.txtvDescription.setMaxLines(2000);
             }
