@@ -35,8 +35,6 @@
         android:lineHeight="20dp"
         tools:text="@string/design_time_lorem_ipsum" />
 
-
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

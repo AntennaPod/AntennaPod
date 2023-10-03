@@ -71,7 +71,6 @@
 
     <Button
         android:id="@+id/butPreview"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_alignParentStart="true"
@@ -83,6 +82,7 @@
         android:text="@string/preview_episode"
         android:textColor="?android:attr/colorPrimary"
         android:textSize="@dimen/text_size_descriptionsmall"
+        style="@style/AntennaPod.TextView.Small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
