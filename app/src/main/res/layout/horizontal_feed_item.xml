@@ -25,7 +25,7 @@
             android:elevation="4dp"
             android:outlineProvider="bounds"
             android:foreground="?android:attr/selectableItemBackground"
-            android:background="?android:attr/windowBackground"
+            android:background="?android:attr/colorBackground"
             squareImageView:direction="height" />
 
     </androidx.cardview.widget.CardView>

@@ -20,7 +20,9 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.Vibrator;
 import android.service.quicksettings.TileService;
 import android.support.v4.media.MediaBrowserCompat;
@@ -33,6 +35,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
+import android.view.ViewConfiguration;
 import android.webkit.URLUtil;
 import android.widget.Toast;
 
@@ -150,6 +153,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private CastStateListener castStateListener;
 
     private String autoSkippedFeedMediaId = null;
+    private int clickCount = 0;
+    private final Handler clickHandler = new Handler(Looper.getMainLooper());
 
     /**
      * Used for Lollipop notifications, Android Wear, and Android Auto.
@@ -1823,7 +1828,24 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (keyEvent != null &&
                         keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
                         keyEvent.getRepeatCount() == 0) {
-                    return handleKeycode(keyEvent.getKeyCode(), false);
+                    int keyCode = keyEvent.getKeyCode();
+                    if (keyCode == KeyEvent.KEYCODE_HEADSETHOOK || keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE) {
+                        clickCount++;
+                        clickHandler.removeCallbacksAndMessages(null);
+                        clickHandler.postDelayed(() -> {
+                            if (clickCount == 1) {
+                                handleKeycode(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, false);
+                            } else if (clickCount == 2) {
+                                onFastForward();
+                            } else if (clickCount == 3) {
+                                onRewind();
+                            }
+                            clickCount = 0;
+                        }, ViewConfiguration.getDoubleTapTimeout());
+                        return true;
+                    } else {
+                        return handleKeycode(keyCode, false);
+                    }
                 }
             }
             return false;
