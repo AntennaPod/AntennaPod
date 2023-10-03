@@ -12,16 +12,16 @@
 
     <TextView
         android:id="@+id/txtvPubDate"
+        style="@android:style/TextAppearance.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:lines="1"
-        style="@android:style/TextAppearance.Small"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="22 Jan 2016"
@@ -31,8 +31,8 @@
         android:id="@+id/txtvTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="4dp"
         android:layout_marginTop="12dp"
@@ -45,7 +45,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtvPubDate"
-        style="@style/AntennaPod.TextView.HeadingMedium"
+        style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
         tools:text="Feed item title"
         tools:background="@android:color/holo_green_dark" />
 
@@ -66,23 +66,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtvTitle"
         tools:text="Feed item description"
-        style="@style/AntennaPod.TextView.Small"
+        style="@style/AntennaPod.TextView.ListItemBody"
         tools:background="@android:color/holo_green_dark" />
 
     <Button
         android:id="@+id/butPreview"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
+        android:minWidth="0dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_marginEnd="4dp"
         android:gravity="right|top"
-        android:padding="0dp"
-        android:letterSpacing="0.01"
+        android:paddingVertical="0dp"
+        android:paddingHorizontal="8dp"
         android:text="@string/preview_episode"
-        android:textColor="?android:attr/colorPrimary"
-        android:textSize="@dimen/text_size_descriptionsmall"
-        style="@style/AntennaPod.TextView.Small"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

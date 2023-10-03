@@ -11,7 +11,7 @@
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="32dp"
+        android:layout_margin="24dp"
         android:elevation="16dp"
         app:cardCornerRadius="8dp">
 
@@ -49,15 +49,15 @@
                         android:id="@+id/coverImage"
                         android:layout_width="@dimen/thumbnail_length_onlinefeedview"
                         android:layout_height="@dimen/thumbnail_length_onlinefeedview"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginBottom="12dp"
-                        android:layout_alignParentStart="true"
                         android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:layout_centerVertical="true"
-                        android:background="@drawable/thumbnail_border_bg"
+                        android:layout_marginBottom="12dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="24dp"
+                        android:background="@drawable/bg_rounded_corners"
                         android:clipToOutline="true"
                         android:importantForAccessibility="no"
                         tools:src="@tools:sample/avatars" />
@@ -67,14 +67,14 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginRight="24dp"
+                        android:layout_marginEnd="24dp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginEnd="24dp"
-                        android:layout_marginRight="24dp"
-                        android:layout_marginBottom="8dp"
                         android:layout_toEndOf="@id/coverImage"
                         android:layout_toRightOf="@id/coverImage"
                         android:ellipsize="end"
@@ -83,7 +83,9 @@
                         android:shadowColor="@color/black"
                         android:shadowRadius="3"
                         android:textColor="@color/white"
-                        style="@style/AntennaPod.TextView.HeadingSemiBold"
+                        android:textSize="18sp"
+                        android:fontFamily="sans-serif"
+                        android:textFontWeight="800"
                         tools:text="Podcast title" />
 
                     <TextView
@@ -98,8 +100,8 @@
                         android:layout_marginEnd="16dp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_toEndOf="@id/coverImage"
                         android:layout_toRightOf="@id/coverImage"
+                        android:layout_toEndOf="@id/coverImage"
                         android:ellipsize="end"
                         android:lines="1"
                         android:shadowColor="@color/black"
@@ -110,8 +112,8 @@
 
                     <ImageButton
                         android:id="@+id/closeButton"
-                        android:layout_width="@dimen/close_icon_size"
-                        android:layout_height="@dimen/close_icon_size"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginTop="12dp"
                         android:layout_marginRight="12dp"
@@ -121,13 +123,11 @@
                 </RelativeLayout>
 
                 <LinearLayout
-                    android:id="@+id/playLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:paddingRight="4dp"
                     android:paddingLeft="4dp"
-                    android:layout_marginBottom="4dp"
                     android:orientation="vertical">
 
                     <Button
@@ -161,13 +161,16 @@
                         android:layout_marginTop="8dp"
                         android:focusable="true"
                         android:text="@string/auto_download_label"
-                        tools:visibility="gone" />
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
                     <Button
                         android:id="@+id/stopPreviewButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="8dp"
                         android:text="@string/stop_preview"
                         android:visibility="gone"
                         tools:visibility="visible" />
@@ -177,7 +180,9 @@
                 <ListView
                     android:id="@+id/listView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:paddingTop="16dp"
+                    android:clipToPadding="false" />
 
             </LinearLayout>
 

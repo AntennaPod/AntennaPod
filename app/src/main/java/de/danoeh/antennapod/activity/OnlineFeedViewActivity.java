@@ -129,15 +129,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         setContentView(viewBinding.getRoot());
 
         viewBinding.transparentBackground.setOnClickListener(v -> finish());
+        viewBinding.closeButton.setOnClickListener(view -> finish());
         viewBinding.card.setOnClickListener(null);
         viewBinding.card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(this, R.attr.colorSurface));
         headerBinding = OnlinefeedviewHeaderBinding.inflate(getLayoutInflater());
-        viewBinding.closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
 
         String feedUrl = null;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
@@ -428,7 +423,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         viewBinding.listView.setSelector(android.R.color.transparent);
         viewBinding.listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
 
-        headerBinding.txtvDescription.setText(HtmlToPlainText.getPlainText(feed.getDescription()));
         if (StringUtils.isNotBlank(feed.getImageUrl())) {
             Glide.with(this)
                     .load(feed.getImageUrl())
@@ -450,6 +444,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         viewBinding.titleLabel.setText(feed.getTitle());
         viewBinding.authorLabel.setText(feed.getAuthor());
+        headerBinding.txtvDescription.setText(HtmlToPlainText.getPlainText(feed.getDescription()));
 
         viewBinding.subscribeButton.setOnClickListener(v -> {
             if (feedInFeedlist()) {
@@ -460,15 +455,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 handleUpdatedFeedStatus();
             }
         });
-        final int Max_Lines_Collapsed = 4;
-        headerBinding.txtvDescription.setMaxLines(Max_Lines_Collapsed);
-        headerBinding.txtvDescription.setOnClickListener(v -> {
-            if (headerBinding.txtvDescription.getMaxLines() > Max_Lines_Collapsed) {
-                headerBinding.txtvDescription.setMaxLines(Max_Lines_Collapsed);
-            } else {
-                headerBinding.txtvDescription.setMaxLines(2000);
-            }
-        });
+
         viewBinding.stopPreviewButton.setOnClickListener(v -> {
             PlaybackPreferences.writeNoMediaPlaying();
             IntentUtils.sendLocalBroadcast(this, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
@@ -478,6 +465,16 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             SharedPreferences preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
             viewBinding.autoDownloadCheckBox.setChecked(preferences.getBoolean(PREF_LAST_AUTO_DOWNLOAD, true));
         }
+
+        final int MAX_LINES_COLLAPSED = 4;
+        headerBinding.txtvDescription.setMaxLines(MAX_LINES_COLLAPSED);
+        headerBinding.txtvDescription.setOnClickListener(v -> {
+            if (headerBinding.txtvDescription.getMaxLines() > MAX_LINES_COLLAPSED) {
+                headerBinding.txtvDescription.setMaxLines(MAX_LINES_COLLAPSED);
+            } else {
+                headerBinding.txtvDescription.setMaxLines(2000);
+            }
+        });
 
         if (alternateFeedUrls.isEmpty()) {
             viewBinding.alternateUrlsSpinner.setVisibility(View.GONE);
