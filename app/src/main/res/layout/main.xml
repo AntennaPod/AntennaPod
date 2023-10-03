@@ -1,46 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/main_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:ignore="InconsistentLayout"
     tools:viewBindingIgnore="true">
 
-    <!-- InconsistentLayout: Tablet layout does not have a drawer -->
-    <!-- viewBindingIgnore: Configurations for main.xml must
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <!-- InconsistentLayout: Tablet layout does not have a drawer -->
+        <!-- viewBindingIgnore: Configurations for main.xml must
             agree on the root element's ID -->
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/overview_coordinator_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/overview_coordinator_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/main_content_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:foreground="?android:windowContentOverlay"
+                tools:background="@android:color/holo_red_dark" />
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/audioplayerFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?android:attr/colorBackground"
+                android:elevation="8dp"
+                android:visibility="gone"
+                app:paddingBottomSystemWindowInsets="true"
+                app:layout_behavior="de.danoeh.antennapod.view.LockableBottomSheetBehavior" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/main_view"
+            android:id="@+id/navDrawerFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:foreground="?android:windowContentOverlay"
-            tools:background="@android:color/holo_red_dark" />
+            android:layout_gravity="start"
+            android:orientation="vertical" />
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/audioplayerFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?android:attr/colorBackground"
-            android:elevation="8dp"
-            android:visibility="gone"
-            app:layout_behavior="de.danoeh.antennapod.view.LockableBottomSheetBehavior" />
+    </androidx.drawerlayout.widget.DrawerLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/navDrawerFragment"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:orientation="vertical" />
+        android:layout_height="wrap_content"
+        app:labelVisibilityMode="labeled" />
 
-</androidx.drawerlayout.widget.DrawerLayout>
+</LinearLayout>
