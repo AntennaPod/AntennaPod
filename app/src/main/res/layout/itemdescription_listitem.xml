@@ -18,7 +18,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:lines="1"
         style="@android:style/TextAppearance.Small"
@@ -59,32 +59,31 @@
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="12dp"
         android:ellipsize="end"
-        android:lineHeight="24dp"
+        android:lineHeight="20dp"
         android:maxLines="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtvTitle"
         tools:text="Feed item description"
-        style="@style/AntennaPod.TextView.SmallSecondary"
+        style="@style/AntennaPod.TextView.Small"
         tools:background="@android:color/holo_green_dark" />
 
-    <TextView
+    <Button
         android:id="@+id/butPreview"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtvDescription"
+        android:layout_height="32dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="2dp"
         android:layout_marginEnd="4dp"
+        android:gravity="right|top"
+        android:padding="0dp"
+        android:letterSpacing="0.01"
         android:text="@string/preview_episode"
         android:textColor="?android:attr/colorPrimary"
-        android:lineHeight="24dp"
         android:textSize="@dimen/text_size_descriptionsmall"
-        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        style="@style/AntennaPod.TextView.Small" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

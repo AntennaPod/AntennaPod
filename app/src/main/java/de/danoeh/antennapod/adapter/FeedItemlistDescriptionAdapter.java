@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -104,6 +105,6 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
         TextView title;
         TextView pubDate;
         TextView description;
-        TextView preview;
+        Button preview;
     }
 }

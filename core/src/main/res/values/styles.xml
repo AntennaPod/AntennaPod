@@ -249,14 +249,8 @@
 
     <style name="AntennaPod.TextView.Small" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">@dimen/text_size_small</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-    </style>
-
-    <style name="AntennaPod.TextView.SmallSecondary" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:textColor">?android:attr/textColorSecondary</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:fontFamily">sans-serif</item>
     </style>
 
 

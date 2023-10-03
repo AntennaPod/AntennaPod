@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:paddingLeft="4dp"
     android:paddingRight="4dp"
-    android:layout_marginBottom="16dp">
+    android:layout_marginBottom="8dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -35,62 +35,13 @@
         android:lineHeight="20dp"
         tools:text="@string/design_time_lorem_ipsum" />
 
-    <Button
-        android:id="@+id/subscribeButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/subscribe_label" />
 
-    <LinearLayout
-        android:id="@+id/playLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="4dp"
-        android:orientation="vertical">
-
-        <Spinner
-            android:id="@+id/alternate_urls_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:dropDownWidth="match_parent"
-            android:padding="8dp"
-            android:visibility="gone"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="@dimen/text_size_micro" />
-
-        <CheckBox
-            android:id="@+id/autoDownloadCheckBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:checked="true"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:focusable="true"
-            android:text="@string/auto_download_label"
-            tools:visibility="gone" />
-
-        <Button
-            android:id="@+id/stopPreviewButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/stop_preview"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
-    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"

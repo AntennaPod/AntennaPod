@@ -451,7 +451,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         viewBinding.titleLabel.setText(feed.getTitle());
         viewBinding.authorLabel.setText(feed.getAuthor());
 
-        headerBinding.subscribeButton.setOnClickListener(v -> {
+        viewBinding.subscribeButton.setOnClickListener(v -> {
             if (feedInFeedlist()) {
                 openFeed();
             } else {
@@ -469,20 +469,20 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 headerBinding.txtvDescription.setMaxLines(2000);
             }
         });
-        headerBinding.stopPreviewButton.setOnClickListener(v -> {
+        viewBinding.stopPreviewButton.setOnClickListener(v -> {
             PlaybackPreferences.writeNoMediaPlaying();
             IntentUtils.sendLocalBroadcast(this, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
         });
 
         if (UserPreferences.isEnableAutodownload()) {
             SharedPreferences preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
-            headerBinding.autoDownloadCheckBox.setChecked(preferences.getBoolean(PREF_LAST_AUTO_DOWNLOAD, true));
+            viewBinding.autoDownloadCheckBox.setChecked(preferences.getBoolean(PREF_LAST_AUTO_DOWNLOAD, true));
         }
 
         if (alternateFeedUrls.isEmpty()) {
-            headerBinding.alternateUrlsSpinner.setVisibility(View.GONE);
+            viewBinding.alternateUrlsSpinner.setVisibility(View.GONE);
         } else {
-            headerBinding.alternateUrlsSpinner.setVisibility(View.VISIBLE);
+            viewBinding.alternateUrlsSpinner.setVisibility(View.VISIBLE);
 
             final List<String> alternateUrlsList = new ArrayList<>();
             final List<String> alternateUrlsTitleList = new ArrayList<>();
@@ -506,8 +506,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             };
 
             adapter.setDropDownViewResource(R.layout.alternate_urls_dropdown_item);
-            headerBinding.alternateUrlsSpinner.setAdapter(adapter);
-            headerBinding.alternateUrlsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            viewBinding.alternateUrlsSpinner.setAdapter(adapter);
+            viewBinding.alternateUrlsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     selectedDownloadUrl = alternateUrlsList.get(position);
@@ -534,18 +534,18 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
     private void handleUpdatedFeedStatus() {
         if (DownloadServiceInterface.get().isDownloadingEpisode(selectedDownloadUrl)) {
-            headerBinding.subscribeButton.setEnabled(false);
-            headerBinding.subscribeButton.setText(R.string.subscribing_label);
+            viewBinding.subscribeButton.setEnabled(false);
+            viewBinding.subscribeButton.setText(R.string.subscribing_label);
         } else if (feedInFeedlist()) {
-            headerBinding.subscribeButton.setEnabled(true);
-            headerBinding.subscribeButton.setText(R.string.open_podcast);
+            viewBinding.subscribeButton.setEnabled(true);
+            viewBinding.subscribeButton.setText(R.string.open_podcast);
             if (didPressSubscribe) {
                 didPressSubscribe = false;
 
                 Feed feed1 = DBReader.getFeed(getFeedId());
                 FeedPreferences feedPreferences = feed1.getPreferences();
                 if (UserPreferences.isEnableAutodownload()) {
-                    boolean autoDownload = headerBinding.autoDownloadCheckBox.isChecked();
+                    boolean autoDownload = viewBinding.autoDownloadCheckBox.isChecked();
                     feedPreferences.setAutoDownload(autoDownload);
 
                     SharedPreferences preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
@@ -562,10 +562,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 openFeed();
             }
         } else {
-            headerBinding.subscribeButton.setEnabled(true);
-            headerBinding.subscribeButton.setText(R.string.subscribe_label);
+            viewBinding.subscribeButton.setEnabled(true);
+            viewBinding.subscribeButton.setText(R.string.subscribe_label);
             if (UserPreferences.isEnableAutodownload()) {
-                headerBinding.autoDownloadCheckBox.setVisibility(View.VISIBLE);
+                viewBinding.autoDownloadCheckBox.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -616,7 +616,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     public void playbackStateChanged(PlayerStatusEvent event) {
         boolean isPlayingPreview =
                 PlaybackPreferences.getCurrentlyPlayingMediaType() == RemoteMedia.PLAYABLE_TYPE_REMOTE_MEDIA;
-        headerBinding.stopPreviewButton.setVisibility(isPlayingPreview ? View.VISIBLE : View.GONE);
+        viewBinding.stopPreviewButton.setVisibility(isPlayingPreview ? View.VISIBLE : View.GONE);
     }
 
     /**
