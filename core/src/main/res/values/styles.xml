@@ -237,20 +237,20 @@
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
-    <style name="AntennaPod.TextView.ListItemPrimaryTitle" parent="@style/TextAppearance.Material3.TitleMedium">
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <style name="AntennaPod.TextView.ListItemPrimaryTitle" parent="@style/TextAppearance.Material3.BodyLarge">
+        <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
     </style>
 
     <style name="AntennaPod.TextView.ListItemSecondaryTitle" parent="@style/TextAppearance.Material3.BodyMedium">
-        <item name="android:textColor">?android:attr/textColorSecondary</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
         <item name="android:lines">1</item>
         <item name="android:ellipsize">end</item>
     </style>
 
     <style name="AntennaPod.TextView.ListItemBody" parent="@style/TextAppearance.Material3.BodyMedium">
-        <item name="android:textColor">?android:attr/textColorSecondary</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
     </style>
 
     <style name="OutlinedButtonBetterContrast" parent="Widget.Material3.Button.OutlinedButton">
