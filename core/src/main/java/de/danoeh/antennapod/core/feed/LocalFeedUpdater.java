@@ -180,13 +180,7 @@ public class LocalFeedUpdater {
                     && existingItem.getMedia().getDownload_url().equals(file.getUri().toString())
                     && file.getLength() == existingItem.getMedia().getSize()) {
                 // We found an old file that we already scanned. Re-use metadata.
-
-                // Old file's file_url can be null, which will get transferred over to a new file when updateFromOther
-                // is called. That's why we must manually set the URl afterwards.
-
-                String newFileUrl = item.getMedia().getFile_url();
                 item.updateFromOther(existingItem);
-                item.getMedia().setFile_url(newFileUrl);
                 return item;
             }
         }

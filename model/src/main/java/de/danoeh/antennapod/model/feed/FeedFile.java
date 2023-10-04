@@ -43,10 +43,6 @@ public abstract class FeedFile extends FeedComponent {
     void updateFromOther(FeedFile other) {
         super.updateFromOther(other);
         this.download_url = other.download_url;
-
-        if (other.file_url != null) {
-            this.file_url = other.file_url;
-        }
     }
 
     /**
@@ -61,9 +57,6 @@ public abstract class FeedFile extends FeedComponent {
             return true;
         }
         if (!TextUtils.equals(download_url, other.download_url)) {
-            return true;
-        }
-        if (!TextUtils.equals(file_url, other.file_url)) {
             return true;
         }
         return false;
