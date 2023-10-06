@@ -82,6 +82,7 @@
                 android:gravity="start"
                 android:textColor="?android:attr/textColorPrimary"
                 android:lines="2"
+                android:importantForAccessibility="no"
                 tools:text="@sample/episodes.json/data/title" />
 
         </LinearLayout>

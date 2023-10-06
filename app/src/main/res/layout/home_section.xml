@@ -39,6 +39,7 @@
         android:layout_marginLeft="8dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:visibility="gone"
+        android:contentDescription="@string/shuffle_suggestions"
         app:layout_constraintBottom_toBottomOf="@id/barrier"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/titleLabel"
