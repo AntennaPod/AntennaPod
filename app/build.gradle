@@ -69,6 +69,7 @@ android {
     androidResources {
         additionalParameters "--no-version-vectors"
     }
+    namespace 'de.danoeh.antennapod'
 }
 
 dependencies {
