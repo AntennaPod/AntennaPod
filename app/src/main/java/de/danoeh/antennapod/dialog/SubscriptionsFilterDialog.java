@@ -7,12 +7,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -62,8 +65,59 @@ public class SubscriptionsFilterDialog {
             }
         }
 
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            filterValues.clear();
+        builder.setPositiveButton(R.string.confirm_label, null);
+        builder.setNeutralButton(R.string.reset, null);
+        builder.setNegativeButton(R.string.cancel_label, null);
+        AlertDialog dialog = builder.create();
+
+        for (int i = 0; i < rows.getChildCount(); i++) {
+            FilterDialogRowBinding binding = FilterDialogRowBinding.bind(rows.getChildAt(i));
+            setFilterButtonListener(binding.filterButton1, rows, dialog);
+            setFilterButtonListener(binding.filterButton2, rows, dialog);
+        }
+
+        dialog.setOnShowListener(dialogInterface -> {
+            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(view -> {
+                filterValues.clear();
+                for (int i = 0; i < rows.getChildCount(); i++) {
+                    if (!(rows.getChildAt(i) instanceof MaterialButtonToggleGroup)) {
+                        continue;
+                    }
+                    MaterialButtonToggleGroup group = (MaterialButtonToggleGroup) rows.getChildAt(i);
+                    if (group.getCheckedButtonId() == View.NO_ID) {
+                        continue;
+                    }
+                    String tag = (String) group.findViewById(group.getCheckedButtonId()).getTag();
+                    if (tag == null) { // Clear buttons use no tag
+                        continue;
+                    }
+                    filterValues.add(tag);
+                }
+                updateFilter(filterValues);
+                dialog.dismiss();
+            });
+
+            Button neutralButton = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+            neutralButton.setOnClickListener(view -> {
+                updateFilter(Collections.emptySet());
+                showDialog(context);
+                dialog.dismiss();
+            });
+        });
+        dialog.show();
+        Button neutralButton = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+        neutralButton.setEnabled(subscriptionsFilter.isEnabled());
+    }
+
+    private static void updateFilter(Set<String> filterValues) {
+        SubscriptionsFilter subscriptionsFilter = new SubscriptionsFilter(filterValues.toArray(new String[0]));
+        UserPreferences.setSubscriptionsFilter(subscriptionsFilter);
+        EventBus.getDefault().post(new UnreadItemsUpdateEvent());
+    }
+
+    private static void setFilterButtonListener(Button button, LinearLayout rows, AlertDialog dialog) {
+        button.setOnClickListener(v -> {
             for (int i = 0; i < rows.getChildCount(); i++) {
                 if (!(rows.getChildAt(i) instanceof MaterialButtonToggleGroup)) {
                     continue;
@@ -76,17 +130,12 @@ public class SubscriptionsFilterDialog {
                 if (tag == null) { // Clear buttons use no tag
                     continue;
                 }
-                filterValues.add(tag);
+                Button neutralButton = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                neutralButton.setEnabled(true);
+                return;
             }
-            updateFilter(filterValues);
+            Button neutralButton = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+            neutralButton.setEnabled(false);
         });
-        builder.setNegativeButton(R.string.cancel_label, null);
-        builder.show();
-    }
-
-    private static void updateFilter(Set<String> filterValues) {
-        SubscriptionsFilter subscriptionsFilter = new SubscriptionsFilter(filterValues.toArray(new String[0]));
-        UserPreferences.setSubscriptionsFilter(subscriptionsFilter);
-        EventBus.getDefault().post(new UnreadItemsUpdateEvent());
     }
 }
