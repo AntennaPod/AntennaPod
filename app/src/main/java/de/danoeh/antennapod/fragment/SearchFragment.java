@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -26,6 +27,7 @@ import com.google.android.material.chip.Chip;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.adapter.HorizontalFeedListAdapter;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
@@ -39,6 +41,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
+import de.danoeh.antennapod.net.discovery.CombinedSearcher;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.LiftOnScrollListener;
@@ -334,6 +337,7 @@ public class SearchFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
+        adapterFeeds.setEndButton(R.string.search_online, this::searchOnline);
         chip.setVisibility((getArguments().getLong(ARG_FEED, 0) == 0) ? View.GONE : View.VISIBLE);
         disposable = Observable.fromCallable(this::performSearch)
                 .subscribeOn(Schedulers.io())
@@ -373,5 +377,20 @@ public class SearchFragment extends Fragment {
         if (imm != null) {
             imm.showSoftInput(view, 0);
         }
+    }
+
+    private void searchOnline() {
+        searchView.clearFocus();
+        InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+        String query = searchView.getQuery().toString();
+        if (query.matches("http[s]?://.*")) {
+            Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
+            intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, query);
+            startActivity(intent);
+            return;
+        }
+        ((MainActivity) getActivity()).loadChildFragment(
+                OnlineSearchFragment.newInstance(CombinedSearcher.class, query));
     }
 }
