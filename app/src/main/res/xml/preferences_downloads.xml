@@ -48,7 +48,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/download_pref_details">
-        <MultiSelectListPreference
+        <de.danoeh.antennapod.preferences.MaterialMultiSelectListPreference
                 android:defaultValue="@array/mobile_update_default_value"
                 android:entries="@array/mobile_update_entries"
                 android:entryValues="@array/mobile_update_values"
