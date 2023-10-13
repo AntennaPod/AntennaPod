@@ -16,8 +16,8 @@ public class PodcastIndexTranscriptUtils {
     public static List<Transcript> loadTranscriptFromURL(String url, String type, boolean forceRefresh) {
         Response response = null;
         try {
-            // TT TODO, what to do with caching
-            Request request = new Request.Builder().url(url).cacheControl(CacheControl.FORCE_CACHE).build();
+            // TT TODO, what to do with cachingx
+            Request request = new Request.Builder().url(url).build();
             response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
             if (response.isSuccessful() && response.body() != null) {
                 return PodcastIndexTranscriptParser.parse(response.body().string(), type);

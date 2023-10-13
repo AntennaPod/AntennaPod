@@ -44,7 +44,6 @@ public class FeedItem extends FeedComponent implements Serializable {
     private transient Feed feed;
     private long feedId;
     private String podcastIndexChapterUrl;
-
     private Hashtable<String, String> podcastIndexTranscriptUrls;
 
     private int state;
@@ -86,7 +85,7 @@ public class FeedItem extends FeedComponent implements Serializable {
      * */
     public FeedItem(long id, String title, String link, Date pubDate, String paymentLink, long feedId,
                     boolean hasChapters, String imageUrl, int state,
-                    String itemIdentifier, long autoDownload, String podcastIndexChapterUrl) {
+                    String itemIdentifier, long autoDownload, String podcastIndexChapterUrl, String transcriptUrl) {
         this.id = id;
         this.title = title;
         this.link = link;
@@ -99,6 +98,11 @@ public class FeedItem extends FeedComponent implements Serializable {
         this.itemIdentifier = itemIdentifier;
         this.autoDownload = autoDownload;
         this.podcastIndexChapterUrl = podcastIndexChapterUrl;
+        if (transcriptUrl != null) {
+            this.podcastIndexTranscriptUrls = new Hashtable<String, String>();
+            // TT TODO, how many urls do we store?
+            this.podcastIndexTranscriptUrls.put("application/json", transcriptUrl);
+        }
     }
 
     /**
@@ -165,6 +169,9 @@ public class FeedItem extends FeedComponent implements Serializable {
         }
         if (other.podcastIndexChapterUrl != null) {
             podcastIndexChapterUrl = other.podcastIndexChapterUrl;
+        }
+        if (other.getPodcastIndexTranscriptUrls() != null) {
+            podcastIndexTranscriptUrls = other.podcastIndexTranscriptUrls;
         }
     }
 
@@ -444,16 +451,20 @@ public class FeedItem extends FeedComponent implements Serializable {
         podcastIndexChapterUrl = url;
     }
 
-    public void setPodcastIndexTranscriptUrl(String type, String url) {
+    public void setPodcastIndexTranscriptUrl(String t, String url) {
         if (podcastIndexTranscriptUrls == null) {
             // TT TODO: Should not crate it here, instead load it from DBReader or make sure to free up in the destructor?
             podcastIndexTranscriptUrls = new Hashtable<String, String>();
         }
-        podcastIndexTranscriptUrls.put(type, url);
+        podcastIndexTranscriptUrls.put(t, url);
     }
 
-    public String getPodcastIndexTranscriptUrl(String type) {
-        return podcastIndexTranscriptUrls.get(type);
+
+    public String getPodcastIndexTranscriptUrl(String t) {
+        if (podcastIndexTranscriptUrls == null) {
+            return null;
+        }
+        return podcastIndexTranscriptUrls.get(t);
     }
 
     public Hashtable<String, String> getPodcastIndexTranscriptUrls() {
