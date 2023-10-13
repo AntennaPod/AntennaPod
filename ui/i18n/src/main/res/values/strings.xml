@@ -545,6 +545,7 @@
     <string name="type_to_search">Type a query to search</string>
     <string name="search_label">Search</string>
     <string name="no_results_for_query">No results were found for \"%1$s\"</string>
+    <string name="search_online">Search online</string>
 
     <!-- Synchronization -->
     <string name="sync_status_started">Sync started</string>
