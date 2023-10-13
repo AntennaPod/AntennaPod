@@ -456,6 +456,10 @@ public class FeedItem extends FeedComponent implements Serializable {
         return podcastIndexTranscriptUrls.get(type);
     }
 
+    public Hashtable<String, String> getPodcastIndexTranscriptUrls() {
+        return podcastIndexTranscriptUrls;
+    }
+
     @NonNull
     @Override
     public String toString() {
