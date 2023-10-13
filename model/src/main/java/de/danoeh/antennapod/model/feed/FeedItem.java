@@ -8,7 +8,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Dictionary;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -42,6 +44,8 @@ public class FeedItem extends FeedComponent implements Serializable {
     private transient Feed feed;
     private long feedId;
     private String podcastIndexChapterUrl;
+
+    private Hashtable<String, String> podcastIndexTranscriptUrls;
 
     private int state;
     public static final int NEW = -1;
@@ -438,6 +442,18 @@ public class FeedItem extends FeedComponent implements Serializable {
 
     public void setPodcastIndexChapterUrl(String url) {
         podcastIndexChapterUrl = url;
+    }
+
+    public void setPodcastIndexTranscriptUrl(String type, String url) {
+        if (podcastIndexTranscriptUrls == null) {
+            // TT TODO: Should not crate it here, instead load it from DBReader or make sure to free up in the destructor?
+            podcastIndexTranscriptUrls = new Hashtable<String, String>();
+        }
+        podcastIndexTranscriptUrls.put(type, url);
+    }
+
+    public String getPodcastIndexTranscriptUrl(String type) {
+        return podcastIndexTranscriptUrls.get(type);
     }
 
     @NonNull
