@@ -12,11 +12,17 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.util.PodcastIndexTranscriptUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.gui.ShownotesCleaner;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.view.ShownotesWebView;
 import io.reactivex.Maybe;
@@ -97,15 +103,30 @@ public class ItemDescriptionFragment extends Fragment {
                 emitter.onComplete();
                 return;
             }
+            String transcriptStr = "";
             if (media instanceof FeedMedia) {
                 FeedMedia feedMedia = ((FeedMedia) media);
                 if (feedMedia.getItem() == null) {
                     feedMedia.setItem(DBReader.getFeedItem(feedMedia.getItemId()));
                 }
                 DBReader.loadDescriptionOfFeedItem(feedMedia.getItem());
+                List<Transcript> transcripts = PodcastIndexTranscriptUtils.loadTranscript(feedMedia);
+                if (transcripts != null) {
+                    Iterator<Transcript> iter = transcripts.iterator();
+                    try {
+                        while (true) {
+                            Transcript transcript = iter.next();
+                            transcriptStr = transcriptStr.concat(transcript.getWords() + " ");
+                        }
+                    } catch (NoSuchElementException e) {
+                        // DONE
+                    }
+                    Log.d(TAG, transcriptStr);
+                }
             }
+            String full_text = media.getDescription().concat(transcriptStr);
             ShownotesCleaner shownotesCleaner = new ShownotesCleaner(
-                    context, media.getDescription(), media.getDuration());
+                    context, full_text, media.getDuration());
             emitter.onSuccess(shownotesCleaner.processShownotes());
         })
                 .subscribeOn(Schedulers.io())

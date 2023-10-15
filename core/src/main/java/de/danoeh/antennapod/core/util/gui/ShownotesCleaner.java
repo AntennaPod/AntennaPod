@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.PodcastIndexTranscriptUtils;
 
 /**
  * Cleans up and prepares shownotes:

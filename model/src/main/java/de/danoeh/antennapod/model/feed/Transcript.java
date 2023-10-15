@@ -10,4 +10,9 @@ public class Transcript {
         _end = end;
         _words = words;
     }
+
+    public String getWords () {
+        return _words;
+    }
+
 }

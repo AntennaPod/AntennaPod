@@ -85,7 +85,8 @@ public class FeedItem extends FeedComponent implements Serializable {
      * */
     public FeedItem(long id, String title, String link, Date pubDate, String paymentLink, long feedId,
                     boolean hasChapters, String imageUrl, int state,
-                    String itemIdentifier, long autoDownload, String podcastIndexChapterUrl, String transcriptUrl) {
+                    String itemIdentifier, long autoDownload, String podcastIndexChapterUrl,
+                    String transcriptType, String transcriptUrl) {
         this.id = id;
         this.title = title;
         this.link = link;
@@ -101,7 +102,7 @@ public class FeedItem extends FeedComponent implements Serializable {
         if (transcriptUrl != null) {
             this.podcastIndexTranscriptUrls = new Hashtable<String, String>();
             // TT TODO, how many urls do we store?
-            this.podcastIndexTranscriptUrls.put("application/json", transcriptUrl);
+            this.podcastIndexTranscriptUrls.put(transcriptType, transcriptUrl);
         }
     }
 

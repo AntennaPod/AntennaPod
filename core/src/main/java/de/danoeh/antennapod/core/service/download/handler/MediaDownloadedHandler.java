@@ -64,7 +64,8 @@ public class MediaDownloadedHandler implements Runnable {
         }
 
         if (media.getItem() != null && media.getItem().getPodcastIndexTranscriptUrls() != null) {
-            PodcastIndexTranscriptUtils.loadTranscriptFromURL(media.getItem().getPodcastIndexTranscriptUrl("application/json"), "application/json", false);
+            // TT TODO
+            PodcastIndexTranscriptUtils.loadTranscript(media);
         }
         // Get duration
         String durationStr = null;

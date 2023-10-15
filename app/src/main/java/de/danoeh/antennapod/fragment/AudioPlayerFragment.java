@@ -26,6 +26,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.elevation.SurfaceColors;
 
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
+import de.danoeh.antennapod.core.util.PodcastIndexTranscriptUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.MediaPlayerErrorDialog;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
@@ -257,7 +258,12 @@ public class AudioPlayerFragment extends Fragment implements
         }
         disposable = Maybe.<Playable>create(emitter -> {
             Playable media = controller.getMedia();
+
             if (media != null) {
+                if (media instanceof FeedMedia) {
+                    // TT TODO
+                    PodcastIndexTranscriptUtils.loadTranscript((FeedMedia) media);
+                }
                 if (includingChapters) {
                     ChapterUtils.loadChapters(media, getContext(), false);
                 }
