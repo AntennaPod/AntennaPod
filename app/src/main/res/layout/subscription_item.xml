@@ -6,7 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="4dp">
+    android:padding="4dp"
+    tools:layout_width="150dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/outerContainer"
@@ -69,6 +70,18 @@
                         android:layout_alignParentEnd="true"
                         android:textSize="14sp"
                         style="@style/TextPill" />
+
+                    <ImageView
+                        android:id="@+id/errorIcon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignBottom="@id/coverImage"
+                        android:layout_margin="8dp"
+                        android:visibility="gone"
+                        android:contentDescription="@string/refresh_failed_msg"
+                        app:srcCompat="@drawable/ic_error"
+                        tools:visibility="visible" />
 
                 </RelativeLayout>
 
