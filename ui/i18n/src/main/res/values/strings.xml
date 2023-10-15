@@ -426,7 +426,7 @@
     <string name="pref_unpauseOnHeadsetReconnect_title">Headphones reconnect</string>
     <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth reconnect</string>
     <string name="pref_stream_over_download_title">Prefer streaming</string>
-    <string name="pref_stream_over_download_sum">Display stream button instead of download button in lists.</string>
+    <string name="pref_stream_over_download_sum">Display stream button instead of download button in lists</string>
     <string name="pref_mobileUpdate_title">Mobile updates</string>
     <string name="pref_mobileUpdate_sum">Select what should be allowed over the mobile data connection</string>
     <string name="pref_mobileUpdate_refresh">Podcast refresh</string>
@@ -441,13 +441,13 @@
     <string name="pref_tinted_theme_title">Dynamic colors</string>
     <string name="pref_tinted_theme_message">Adapt app colors based on the wallpaper</string>
     <string name="pref_nav_drawer_items_title">Set navigation drawer items</string>
-    <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer.</string>
+    <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer</string>
     <string name="pref_nav_drawer_feed_order_title">Set subscription order</string>
     <string name="pref_nav_drawer_feed_order_sum">Change the order of your subscriptions</string>
     <string name="pref_nav_drawer_feed_counter_title">Set subscription counter</string>
     <string name="pref_nav_drawer_feed_counter_sum">Change the information displayed by the subscription counter. Also affects the sorting of subscriptions if \'Subscription Order\' is set to \'Counter\'.</string>
     <string name="pref_automatic_download_title">Automatic download</string>
-    <string name="pref_automatic_download_sum">Configure the automatic download of episodes.</string>
+    <string name="pref_automatic_download_sum">Configure the automatic download of episodes</string>
     <string name="pref_autodl_wifi_filter_title">Enable Wi-Fi filter</string>
     <string name="pref_autodl_wifi_filter_sum">Allow automatic download only for selected Wi-Fi networks.</string>
     <string name="pref_automatic_download_on_battery_title">Download when not charging</string>
@@ -479,7 +479,7 @@
     <string name="pref_expandNotify_title">High notification priority</string>
     <string name="pref_expandNotify_sum">This usually expands the notification to show playback buttons.</string>
     <string name="pref_persistNotify_title">Persistent playback controls</string>
-    <string name="pref_persistNotify_sum">Keep notification and lockscreen controls when playback is paused.</string>
+    <string name="pref_persistNotify_sum">Keep notification and lockscreen controls when playback is paused</string>
     <string name="pref_compact_notification_buttons_title">Set compact notification buttons</string>
     <string name="pref_compact_notification_buttons_sum">Change the playback buttons when the notification is collapsed. The play/pause button is always included.</string>
     <string name="pref_compact_notification_buttons_dialog_title">Select a maximum of %1$d items</string>
@@ -505,14 +505,14 @@
     <string name="pref_skip_silence_title">Skip silence in audio</string>
     <string name="behavior">Behavior</string>
     <string name="pref_default_page">Default page</string>
-    <string name="pref_default_page_sum">Screen that is opened when starting AntennaPod.</string>
+    <string name="pref_default_page_sum">Screen that is opened when starting AntennaPod</string>
     <string name="pref_back_button_opens_drawer">Back button opens drawer</string>
     <string name="pref_back_button_opens_drawer_summary">Pressing the back button on the default page opens the navigation drawer</string>
     <string name="remember_last_page">Remember last page</string>
     <string name="pref_delete_removes_from_queue_title">Delete removes from queue</string>
-    <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted.</string>
+    <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted</string>
     <string name="pref_filter_feed_title">Subscription filter</string>
-    <string name="pref_filter_feed_sum">Filter your subscriptions in navigation drawer and subscriptions screen.</string>
+    <string name="pref_filter_feed_sum">Filter your subscriptions in navigation drawer and subscriptions screen</string>
     <string name="subscriptions_are_filtered">Subscriptions are filtered.</string>
     <string name="subscriptions_counter_greater_zero">Counter greater than zero</string>
     <string name="auto_downloaded">Auto downloaded</string>
@@ -524,7 +524,7 @@
     <string name="pref_feed_settings_dialog_msg">This setting is unique to each podcast. You can change it by opening the podcast page.</string>
     <string name="pref_contribute">Contribute</string>
     <string name="pref_show_subscription_title">Show subscription title</string>
-    <string name="pref_show_subscription_title_summary">Display the subscription title below the cover image.</string>
+    <string name="pref_show_subscription_title_summary">Display the subscription title below the cover image</string>
     <string name="pref_new_episodes_action_title">New episodes action</string>
     <string name="pref_new_episodes_action_sum">Action to take for new episodes</string>
 
