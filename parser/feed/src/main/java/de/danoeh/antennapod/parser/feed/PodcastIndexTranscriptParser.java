@@ -64,7 +64,7 @@ public class PodcastIndexTranscriptParser {
                         transcript = new Transcript(startTimecode, endTimecode, body);
                         transcripts.add(transcript);
                     }
-                } catch (NoSuchElementException e){
+                } catch (NoSuchElementException e) {
                     return transcripts;
                 }
             }
