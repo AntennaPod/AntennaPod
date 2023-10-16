@@ -5,13 +5,13 @@ public class Transcript {
     private long _end;
     private String _words;
 
-    public Transcript (long start, long end, String words) {
+    public Transcript(long start, long end, String words) {
         _start = start;
         _end = end;
         _words = words;
     }
 
-    public String getWords () {
+    public String getWords() {
         return _words;
     }
 

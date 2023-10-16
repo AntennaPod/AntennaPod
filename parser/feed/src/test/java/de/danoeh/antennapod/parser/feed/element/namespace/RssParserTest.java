@@ -96,6 +96,7 @@ public class RssParserTest {
         assertTrue(TextUtils.isEmpty(feed.getPaymentLinks().get(2).content));
         assertEquals("https://example.com/funding3", feed.getPaymentLinks().get(2).url);
     }
+
     @Test
     public void testPodcastIndexTranscript() throws Exception {
         File feedFile = FeedParserTestHelper.getFeedFile("feed-rss-testPodcastIndexTranscript.xml");

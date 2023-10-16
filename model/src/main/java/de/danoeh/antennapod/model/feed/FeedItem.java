@@ -8,7 +8,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
