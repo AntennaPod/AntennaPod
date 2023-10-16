@@ -14,7 +14,7 @@ public class PodcastIndexTranscriptUtils {
 
     private static final String TAG = "PodcastIndexTranscriptUtils";
 
-    public static List<Transcript> loadTranscriptFromURL(String url, String type, boolean forceRefresh) {
+    public static List<Transcript> loadTranscriptFromUrl(String url, String type, boolean forceRefresh) {
         Response response = null;
         List<Transcript> transcripts = null;
         try {
@@ -47,7 +47,7 @@ public class PodcastIndexTranscriptUtils {
         }
         // TODO: Store the transcript somewhere? in the DB of file system?
         if (url != null) {
-            return PodcastIndexTranscriptUtils.loadTranscriptFromURL(url, type, false);
+            return PodcastIndexTranscriptUtils.loadTranscriptFromUrl(url, type, false);
         }
         return null;
     }

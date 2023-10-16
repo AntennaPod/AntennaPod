@@ -124,9 +124,9 @@ public class ItemDescriptionFragment extends Fragment {
                     Log.d(TAG, transcriptStr);
                 }
             }
-            String full_text = media.getDescription().concat(transcriptStr);
+            String fullText = media.getDescription().concat(transcriptStr);
             ShownotesCleaner shownotesCleaner = new ShownotesCleaner(
-                    context, full_text, media.getDuration());
+                    context, fullText, media.getDuration());
             emitter.onSuccess(shownotesCleaner.processShownotes());
         })
                 .subscribeOn(Schedulers.io())

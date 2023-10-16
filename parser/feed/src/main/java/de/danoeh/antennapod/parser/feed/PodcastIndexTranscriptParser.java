@@ -31,7 +31,6 @@ import de.danoeh.antennapod.model.feed.Transcript;
 public class PodcastIndexTranscriptParser {
 
     public static class PodcastIndexTranscriptSrtParser {
-        private String TAG = "PodcastIndexTranscriptSrtParser";
 
         public static List<Transcript> parse(String str) {
             List<Transcript> transcripts = new ArrayList<>();
@@ -65,7 +64,7 @@ public class PodcastIndexTranscriptParser {
                         transcript = new Transcript(startTimecode, endTimecode, body);
                         transcripts.add(transcript);
                     }
-                } catch(NoSuchElementException e){
+                } catch (NoSuchElementException e){
                     return transcripts;
                 }
             }
@@ -88,7 +87,7 @@ public class PodcastIndexTranscriptParser {
             try {
                 List<Transcript> transcripts = new ArrayList<>();
                 JSONObject obj = new JSONObject(jsonStr);
-                JSONArray objSegments= obj.getJSONArray("segments");
+                JSONArray objSegments = obj.getJSONArray("segments");
                 for (int i = 0; i < objSegments.length(); i++) {
                     JSONObject jsonObject = objSegments.getJSONObject(i);
                     int startTime = jsonObject.optInt("startTime", 0);

@@ -1,18 +1,18 @@
 package de.danoeh.antennapod.model.feed;
 
 public class Transcript {
-    private long _start;
-    private long _end;
-    private String _words;
+    private long startTime;
+    private long endTime;
+    private String words;
 
-    public Transcript(long start, long end, String words) {
-        _start = start;
-        _end = end;
-        _words = words;
+    public Transcript(long start, long end, String w) {
+        startTime = start;
+        endTime = end;
+        words = w;
     }
 
     public String getWords() {
-        return _words;
+        return words;
     }
 
 }

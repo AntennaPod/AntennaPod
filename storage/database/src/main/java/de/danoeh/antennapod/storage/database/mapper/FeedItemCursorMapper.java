@@ -29,7 +29,8 @@ public abstract class FeedItemCursorMapper {
         int indexImageUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_IMAGE_URL);
         int indexPodcastIndexChapterUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PODCASTINDEX_CHAPTER_URL);
         int indexPodcastIndexTranscriptUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PODCASTINDEX_TRANSCRIPT_URL);
-        int indexPodcastIndexTranscriptType = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PODCASTINDEX_TRANSCRIPT_TYPE);
+        int indexPodcastIndexTranscriptType = cursor.getColumnIndexOrThrow(
+                PodDBAdapter.KEY_PODCASTINDEX_TRANSCRIPT_TYPE);
 
         long id = cursor.getInt(indexId);
         String title = cursor.getString(indexTitle);

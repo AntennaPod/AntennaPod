@@ -453,7 +453,8 @@ public class FeedItem extends FeedComponent implements Serializable {
 
     public void setPodcastIndexTranscriptUrl(String t, String url) {
         if (podcastIndexTranscriptUrls == null) {
-            // TT TODO: Should not crate it here, instead load it from DBReader or make sure to free up in the destructor?
+            // TT TODO: Should not crate it here, instead load it from
+            //  DBReader or make sure to free up in the destructor?
             podcastIndexTranscriptUrls = new Hashtable<String, String>();
         }
         podcastIndexTranscriptUrls.put(t, url);
