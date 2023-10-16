@@ -6,9 +6,7 @@ import java.util.List;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.Transcript;
-import de.danoeh.antennapod.parser.feed.PodcastIndexChapterParser;
 import de.danoeh.antennapod.parser.feed.PodcastIndexTranscriptParser;
-import okhttp3.CacheControl;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -52,7 +50,5 @@ public class PodcastIndexTranscriptUtils {
             return PodcastIndexTranscriptUtils.loadTranscriptFromURL(url, type, false);
         }
         return null;
-    }
-    public static void loadTranscriptFromURL(String podcastIndexTranscriptUrl, boolean b) {
     }
 }

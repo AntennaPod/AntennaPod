@@ -32,6 +32,7 @@ public class PodcastIndexTranscriptParser {
 
     public static class PodcastIndexTranscriptSrtParser {
         private String TAG = "PodcastIndexTranscriptSrtParser";
+
         public static List<Transcript> parse(String str) {
             List<Transcript> transcripts = new ArrayList<>();
 
