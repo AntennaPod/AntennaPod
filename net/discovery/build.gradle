@@ -5,6 +5,8 @@ apply from: "../../common.gradle"
 apply from: "../../playFlavor.gradle"
 
 android {
+    namespace "de.danoeh.antennapod.net.discovery"
+
     defaultConfig {
         if (project.hasProperty("podcastindexApiKey")) {
             buildConfigField "String", "PODCASTINDEX_API_KEY", '"' + podcastindexApiKey + '"'

@@ -4,6 +4,10 @@ plugins {
 apply from: "../../common.gradle"
 apply from: "../../playFlavor.gradle"
 
+android {
+    namespace "de.danoeh.antennapod.playback.cast"
+}
+
 dependencies {
     implementation project(':event')
     implementation project(':model')
