@@ -19,6 +19,7 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="18sp"
         android:layout_marginVertical="8dp"
+        android:accessibilityHeading="true"
         app:layout_constraintWidth_max="wrap"
         app:layout_constraintWidth_percent="0.6"
         app:layout_constraintBottom_toBottomOf="@id/barrier"

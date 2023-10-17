@@ -16,6 +16,55 @@
         android:orientation="horizontal"
         android:gravity="bottom">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:background="@color/image_readability_tint"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true">
+
+            <View
+                android:layout_width="148dp"
+                android:layout_height="match_parent" />
+
+            <ImageButton
+                android:id="@+id/butShowInfo"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/show_info_label"
+                android:layout_marginLeft="-8dp"
+                android:layout_marginStart="-8dp"
+                android:scaleType="fitXY"
+                android:padding="8dp"
+                app:srcCompat="@drawable/ic_info_white"
+                tools:visibility="visible" />
+
+            <ImageButton
+                android:id="@+id/butFilter"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/filter"
+                android:scaleType="fitXY"
+                android:padding="8dp"
+                app:srcCompat="@drawable/ic_filter_white"
+                tools:visibility="visible" />
+
+            <ImageButton
+                android:id="@+id/butShowSettings"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/show_feed_settings_label"
+                android:scaleType="fitXY"
+                android:padding="8dp"
+                app:srcCompat="@drawable/ic_settings_white"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+
         <ImageView
             android:layout_width="12dp"
             android:layout_height="12dp"
@@ -86,55 +135,6 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_small"
                 tools:text="Podcast author" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:background="@color/image_readability_tint"
-            android:orientation="horizontal"
-            android:layout_alignParentBottom="true">
-
-            <View
-                android:layout_width="148dp"
-                android:layout_height="match_parent" />
-
-            <ImageButton
-                android:id="@+id/butShowInfo"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackground"
-                android:contentDescription="@string/show_info_label"
-                android:layout_marginLeft="-8dp"
-                android:layout_marginStart="-8dp"
-                android:scaleType="fitXY"
-                android:padding="8dp"
-                app:srcCompat="@drawable/ic_info_white"
-                tools:visibility="visible" />
-
-            <ImageButton
-                android:id="@+id/butFilter"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackground"
-                android:contentDescription="@string/filter"
-                android:scaleType="fitXY"
-                android:padding="8dp"
-                app:srcCompat="@drawable/ic_filter_white"
-                tools:visibility="visible" />
-
-            <ImageButton
-                android:id="@+id/butShowSettings"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackground"
-                android:contentDescription="@string/show_feed_settings_label"
-                android:scaleType="fitXY"
-                android:padding="8dp"
-                app:srcCompat="@drawable/ic_settings_white"
-                tools:visibility="visible" />
 
         </LinearLayout>
 
