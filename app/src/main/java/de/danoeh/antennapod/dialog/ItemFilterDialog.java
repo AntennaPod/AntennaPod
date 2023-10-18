@@ -70,6 +70,7 @@ public abstract class ItemFilterDialog extends BottomSheetDialogFragment {
                 }
             }
         }
+        resetTextView.setEnabled(!getNewFilterValues().isEmpty());
         resetTextView.setOnClickListener(v -> {
             onFilterChanged(Collections.emptySet());
             resetFilters(rows);
