@@ -65,7 +65,12 @@ public class SubscriptionsFilterDialog {
             }
         }
 
-        builder.setPositiveButton(R.string.confirm_label, null);
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+            filterValues.clear();
+            filterValues.addAll(buildFilterValues(rows));
+            updateFilter(filterValues);
+            dialog.dismiss();
+        });
         builder.setNeutralButton(R.string.reset, null);
         builder.setNegativeButton(R.string.cancel_label, null);
         AlertDialog dialog = builder.create();
@@ -77,14 +82,6 @@ public class SubscriptionsFilterDialog {
         }
 
         dialog.setOnShowListener(dialogInterface -> {
-            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positiveButton.setOnClickListener(view -> {
-                filterValues.clear();
-                filterValues.addAll(buildFilterValues(rows));
-                updateFilter(filterValues);
-                dialog.dismiss();
-            });
-
             Button neutralButton = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
             neutralButton.setOnClickListener(view -> {
                 updateFilter(Collections.emptySet());
