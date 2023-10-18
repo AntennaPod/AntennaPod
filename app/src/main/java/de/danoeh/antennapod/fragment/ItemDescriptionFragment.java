@@ -15,6 +15,9 @@ import androidx.fragment.app.Fragment;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -23,6 +26,7 @@ import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.gui.ShownotesCleaner;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.Transcript;
+import de.danoeh.antennapod.model.feed.TranscriptSegment;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.view.ShownotesWebView;
 import io.reactivex.Maybe;
@@ -110,13 +114,16 @@ public class ItemDescriptionFragment extends Fragment {
                     feedMedia.setItem(DBReader.getFeedItem(feedMedia.getItemId()));
                 }
                 DBReader.loadDescriptionOfFeedItem(feedMedia.getItem());
-                List<Transcript> transcripts = PodcastIndexTranscriptUtils.loadTranscript(feedMedia);
-                if (transcripts != null) {
-                    Iterator<Transcript> iter = transcripts.iterator();
+                Transcript transcript = PodcastIndexTranscriptUtils.loadTranscript(feedMedia);
+                if (transcript != null) {
+                    TreeMap<Long, TranscriptSegment> segmentsMap = transcript.getSegmentsMap();
+                    SortedMap<Long, TranscriptSegment> map = segmentsMap.tailMap(60*1000L, true);
+                    Iterator<Long> iter = map.keySet().iterator();
+
                     try {
                         while (true) {
-                            Transcript transcript = iter.next();
-                            transcriptStr = transcriptStr.concat(transcript.getWords() + " ");
+                            Long l = iter.next();
+                            transcriptStr = transcriptStr.concat(segmentsMap.get(l).getWords() + " ");
                         }
                     } catch (NoSuchElementException e) {
                         // DONE
@@ -124,7 +131,7 @@ public class ItemDescriptionFragment extends Fragment {
                     Log.d(TAG, transcriptStr);
                 }
             }
-            String fullText = media.getDescription().concat(transcriptStr);
+            String fullText = transcriptStr.concat(media.getDescription());
             ShownotesCleaner shownotesCleaner = new ShownotesCleaner(
                     context, fullText, media.getDuration());
             emitter.onSuccess(shownotesCleaner.processShownotes());

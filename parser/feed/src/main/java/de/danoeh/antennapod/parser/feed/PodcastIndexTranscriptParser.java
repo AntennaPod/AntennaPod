@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.parser.feed;
 
 /*
+ JSON format
 {
     "version": "1.0.0",
     "segments": [
@@ -16,6 +17,8 @@ package de.danoeh.antennapod.parser.feed;
         },
  */
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,23 +30,28 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import de.danoeh.antennapod.model.feed.Transcript;
+import de.danoeh.antennapod.model.feed.TranscriptSegment;
 
 public class PodcastIndexTranscriptParser {
 
     public static class PodcastIndexTranscriptSrtParser {
 
-        public static List<Transcript> parse(String str) {
-            List<Transcript> transcripts = new ArrayList<>();
+        private static String TAG = "PodcastIndexTranscriptSrtParser";
 
-            Transcript transcript;
+        public static Transcript parse(String str) {
+            Transcript transcript = new Transcript();
+
+            TranscriptSegment transcriptSegment;
             List<String> lines = Arrays.asList(str.split("\n"));
             Iterator<String> iter = lines.iterator();
 
+            // TT TODO Parse speaker
             String line;
             while (true) {
                 try {
                     line = iter.next();
                     String body = null;
+                    String speaker = "";
                     long startTimecode = 0;
                     long endTimecode = 0;
                     if (line.isEmpty()) {
@@ -51,6 +59,7 @@ public class PodcastIndexTranscriptParser {
                     }
 
                     if (line.contains("-->")) {
+                        Log.d(TAG, line + "\n");
                         String[] timecodes = line.split("-->");
                         if (timecodes.length < 2) {
                             continue;
@@ -58,14 +67,17 @@ public class PodcastIndexTranscriptParser {
                         startTimecode = parseTimecode(timecodes[0].trim());
                         endTimecode = parseTimecode(timecodes[1].trim());
                         line = iter.next();
-                        body = line.strip();
+                        do {
+                            body = line.strip();
+                            line = iter.next();
+                        } while (line.length() > 0);
                     }
-                    if (startTimecode != 0 && endTimecode != 0 && ! StringUtil.isBlank(body)) {
-                        transcript = new Transcript(startTimecode, endTimecode, body);
-                        transcripts.add(transcript);
+                    if (!StringUtil.isBlank(body)) {
+                        Log.d(TAG, Long.toString(startTimecode) + " " + body);
+                        transcript.addSegment(new TranscriptSegment(startTimecode, endTimecode, body, speaker));
                     }
                 } catch (NoSuchElementException e) {
-                    return transcripts;
+                    return transcript;
                 }
             }
         }
@@ -83,19 +95,25 @@ public class PodcastIndexTranscriptParser {
 
 
     public static class PodcastIndexTranscriptJsonParser {
-        public static List<Transcript> parse(String jsonStr) {
+        static String TAG = "PodcastIndexTranscriptJsonParser";
+        static Transcript transcript = new Transcript();
+
+        public static Transcript parse(String jsonStr) {
             try {
-                List<Transcript> transcripts = new ArrayList<>();
                 JSONObject obj = new JSONObject(jsonStr);
                 JSONArray objSegments = obj.getJSONArray("segments");
+                String speaker = "";
                 for (int i = 0; i < objSegments.length(); i++) {
                     JSONObject jsonObject = objSegments.getJSONObject(i);
                     int startTime = jsonObject.optInt("startTime", 0);
                     int endTime = jsonObject.optInt("endTime", startTime);
                     String body = jsonObject.optString("body");
-                    transcripts.add(new Transcript(startTime * 1000L, endTime * 1000L, body));
+
+                    Log.d(TAG, "JSON " + Long.toString(startTime) + " " + body);
+
+                    transcript.addSegment(new TranscriptSegment(startTime * 1000L, endTime * 1000L, body, speaker));
                 }
-                return transcripts;
+                return transcript;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -103,7 +121,7 @@ public class PodcastIndexTranscriptParser {
         }
     }
 
-    public static List<Transcript> parse(String str, String type) {
+    public static Transcript parse(String str, String type) {
 
         if ("application/json".equals(type)) {
             return PodcastIndexTranscriptJsonParser.parse(str);

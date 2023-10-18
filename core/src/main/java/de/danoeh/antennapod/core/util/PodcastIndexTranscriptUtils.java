@@ -6,6 +6,7 @@ import java.util.List;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.Transcript;
+import de.danoeh.antennapod.model.feed.TranscriptSegment;
 import de.danoeh.antennapod.parser.feed.PodcastIndexTranscriptParser;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -14,28 +15,28 @@ public class PodcastIndexTranscriptUtils {
 
     private static final String TAG = "PodcastIndexTranscriptUtils";
 
-    public static List<Transcript> loadTranscriptFromUrl(String url, String type, boolean forceRefresh) {
+    public static Transcript loadTranscriptFromUrl(String url, String type, boolean forceRefresh) {
         Response response = null;
-        List<Transcript> transcripts = null;
+        Transcript transcript= null;
         try {
             // TT TODO, what to do with cachingx
             Request request = new Request.Builder().url(url).build();
             response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
             if (response.isSuccessful() && response.body() != null) {
-                transcripts = PodcastIndexTranscriptParser.parse(response.body().string(), type);
+                transcript = PodcastIndexTranscriptParser.parse(response.body().string(), type);
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             if (response != null) {
                 response.close();
-                return transcripts;
+                return transcript;
             }
         }
-        return transcripts;
+        return transcript;
     }
 
-    public static List<Transcript> loadTranscript(FeedMedia media) {
+    public static Transcript loadTranscript(FeedMedia media) {
         String type = null;
         String url = null;
         if (media.getItem().getPodcastIndexTranscriptUrl("application/jsonxx") != null) {
