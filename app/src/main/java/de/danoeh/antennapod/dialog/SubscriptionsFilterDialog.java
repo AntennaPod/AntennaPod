@@ -93,12 +93,6 @@ public class SubscriptionsFilterDialog {
         neutralButton.setEnabled(subscriptionsFilter.isEnabled());
     }
 
-    private static void updateFilter(Set<String> filterValues) {
-        SubscriptionsFilter subscriptionsFilter = new SubscriptionsFilter(filterValues.toArray(new String[0]));
-        UserPreferences.setSubscriptionsFilter(subscriptionsFilter);
-        EventBus.getDefault().post(new UnreadItemsUpdateEvent());
-    }
-
     private static void setFilterButtonListener(Button button, LinearLayout rows, AlertDialog dialog) {
         button.setOnClickListener(v -> {
             Button neutralButton = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
@@ -135,5 +129,11 @@ public class SubscriptionsFilterDialog {
                 ((MaterialButtonToggleGroup) row).clearChecked();
             }
         }
+    }
+
+    private static void updateFilter(Set<String> filterValues) {
+        SubscriptionsFilter subscriptionsFilter = new SubscriptionsFilter(filterValues.toArray(new String[0]));
+        UserPreferences.setSubscriptionsFilter(subscriptionsFilter);
+        EventBus.getDefault().post(new UnreadItemsUpdateEvent());
     }
 }
