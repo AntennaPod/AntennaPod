@@ -1,20 +1,13 @@
 package de.danoeh.antennapod.dialog;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.material.button.MaterialButtonToggleGroup;
-
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.FeedItemFilterGroup;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import org.greenrobot.eventbus.EventBus;
 
