@@ -80,20 +80,7 @@ public class SubscriptionsFilterDialog {
             Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
             positiveButton.setOnClickListener(view -> {
                 filterValues.clear();
-                for (int i = 0; i < rows.getChildCount(); i++) {
-                    if (!(rows.getChildAt(i) instanceof MaterialButtonToggleGroup)) {
-                        continue;
-                    }
-                    MaterialButtonToggleGroup group = (MaterialButtonToggleGroup) rows.getChildAt(i);
-                    if (group.getCheckedButtonId() == View.NO_ID) {
-                        continue;
-                    }
-                    String tag = (String) group.findViewById(group.getCheckedButtonId()).getTag();
-                    if (tag == null) { // Clear buttons use no tag
-                        continue;
-                    }
-                    filterValues.add(tag);
-                }
+                filterValues.addAll(buildFilterValues(rows));
                 updateFilter(filterValues);
                 dialog.dismiss();
             });
@@ -101,8 +88,7 @@ public class SubscriptionsFilterDialog {
             Button neutralButton = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
             neutralButton.setOnClickListener(view -> {
                 updateFilter(Collections.emptySet());
-                showDialog(context);
-                dialog.dismiss();
+                resetFilters(rows);
             });
         });
         dialog.show();
@@ -118,24 +104,39 @@ public class SubscriptionsFilterDialog {
 
     private static void setFilterButtonListener(Button button, LinearLayout rows, AlertDialog dialog) {
         button.setOnClickListener(v -> {
-            for (int i = 0; i < rows.getChildCount(); i++) {
-                if (!(rows.getChildAt(i) instanceof MaterialButtonToggleGroup)) {
-                    continue;
-                }
-                MaterialButtonToggleGroup group = (MaterialButtonToggleGroup) rows.getChildAt(i);
-                if (group.getCheckedButtonId() == View.NO_ID) {
-                    continue;
-                }
-                String tag = (String) group.findViewById(group.getCheckedButtonId()).getTag();
-                if (tag == null) { // Clear buttons use no tag
-                    continue;
-                }
-                Button neutralButton = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                neutralButton.setEnabled(true);
-                return;
-            }
             Button neutralButton = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-            neutralButton.setEnabled(false);
+            neutralButton.setEnabled(!buildFilterValues(rows).isEmpty());
         });
+    }
+
+    private static Set<String> buildFilterValues(LinearLayout rows) {
+        Set<String> filterValues = new HashSet<>();
+
+        for (int i = 0; i < rows.getChildCount(); i++) {
+            if (!(rows.getChildAt(i) instanceof MaterialButtonToggleGroup)) {
+                continue;
+            }
+            MaterialButtonToggleGroup group = (MaterialButtonToggleGroup) rows.getChildAt(i);
+            if (group.getCheckedButtonId() == View.NO_ID) {
+                continue;
+            }
+            String tag = (String) group.findViewById(group.getCheckedButtonId()).getTag();
+            if (tag == null) { // Clear buttons use no tag
+                continue;
+            }
+            filterValues.add(tag);
+        }
+
+        return filterValues;
+    }
+
+    private static void resetFilters(LinearLayout rows) {
+        for (int i = 0; i < rows.getChildCount(); i++) {
+            View row = rows.getChildAt(i);
+
+            if (row instanceof MaterialButtonToggleGroup) {
+                ((MaterialButtonToggleGroup) row).clearChecked();
+            }
+        }
     }
 }
