@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="36dp"
             android:paddingTop="8dp"
+            android:paddingRight="0dp"
             android:paddingBottom="24dp"
             android:text="@string/reset"
             android:visibility="gone" />
