@@ -51,7 +51,8 @@ public class NetworkUtils {
     }
 
     public static boolean isEpisodeDownloadAllowed() {
-        return UserPreferences.isAllowMobileEpisodeDownload() || !NetworkUtils.isNetworkRestricted();
+        return UserPreferences.isEnableDownloadOnCellularNetwork() ||
+            UserPreferences.isAllowMobileEpisodeDownload() || !NetworkUtils.isNetworkRestricted();
     }
 
     public static boolean isEpisodeHeadDownloadAllowed() {

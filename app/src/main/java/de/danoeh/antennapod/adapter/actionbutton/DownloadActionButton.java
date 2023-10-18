@@ -14,6 +14,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public class DownloadActionButton extends ItemActionButton {
 
@@ -56,7 +57,10 @@ public class DownloadActionButton extends ItemActionButton {
                     .setPositiveButton(R.string.confirm_mobile_download_dialog_download_later,
                             (d, w) -> DownloadServiceInterface.get().downloadNow(context, item, false))
                     .setNeutralButton(R.string.confirm_mobile_download_dialog_allow_this_time,
-                            (d, w) -> DownloadServiceInterface.get().downloadNow(context, item, true))
+                            (d, w) -> {
+                        UserPreferences.setEnableDownloadOnCellularNetwork(true);
+                        DownloadServiceInterface.get().downloadNow(context, item, true);
+                    })
                     .setNegativeButton(R.string.cancel_label, null);
             builder.show();
         }
