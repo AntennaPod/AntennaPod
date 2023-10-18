@@ -232,7 +232,7 @@ public class UserPreferences {
     }
 
     public static boolean showNextChapterOnCompactNotification() {
-        return showButtonOnCompactNotification(NOTIFICATION_BUTTON_SKIP);
+        return showButtonOnCompactNotification(NOTIFICATION_BUTTON_NEXT_CHAPTER);
     }
 
     public static List<Integer> getFullNotificationButtons() {
