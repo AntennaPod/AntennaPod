@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,6 +31,7 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 public abstract class ItemFilterDialog extends BottomSheetDialogFragment {
     protected static final String ARGUMENT_FILTER = "filter";
 
+    private TextView resetTextView;
     private LinearLayout rows;
 
     @Nullable
@@ -36,13 +39,18 @@ public abstract class ItemFilterDialog extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.filter_dialog, null, false);
+        resetTextView = layout.findViewById(R.id.reset_textView);
         rows = layout.findViewById(R.id.filter_rows);
         FeedItemFilter filter = (FeedItemFilter) getArguments().getSerializable(ARGUMENT_FILTER);
 
         for (FeedItemFilterGroup item : FeedItemFilterGroup.values()) {
             FilterDialogRowBinding binding = FilterDialogRowBinding.inflate(inflater);
             binding.getRoot().addOnButtonCheckedListener(
-                    (group, checkedId, isChecked) -> onFilterChanged(getNewFilterValues()));
+                    (group, checkedId, isChecked) -> {
+                        Set<String> filterValues = getNewFilterValues();
+                        resetTextView.setEnabled(!filterValues.isEmpty());
+                        onFilterChanged(filterValues);
+                    });
             binding.filterButton1.setText(item.values[0].displayName);
             binding.filterButton1.setTag(item.values[0].filterId);
             binding.filterButton2.setText(item.values[1].displayName);
@@ -62,6 +70,10 @@ public abstract class ItemFilterDialog extends BottomSheetDialogFragment {
                 }
             }
         }
+        resetTextView.setOnClickListener(v -> {
+            onFilterChanged(Collections.emptySet());
+            resetFilters(rows);
+        });
         return layout;
     }
 
@@ -74,6 +86,10 @@ public abstract class ItemFilterDialog extends BottomSheetDialogFragment {
             setupFullHeight(bottomSheetDialog);
         });
         return dialog;
+    }
+
+    protected void setResetButtonVisibility(int visibility) {
+        resetTextView.setVisibility(visibility);
     }
 
     private void setupFullHeight(BottomSheetDialog bottomSheetDialog) {
@@ -103,6 +119,18 @@ public abstract class ItemFilterDialog extends BottomSheetDialogFragment {
             newFilterValues.add(tag);
         }
         return newFilterValues;
+    }
+
+    private void resetFilters(LinearLayout rows) {
+        for (int i = 0; i < rows.getChildCount(); i++) {
+            View row = rows.getChildAt(i);
+
+            if (row instanceof MaterialButtonToggleGroup) {
+                ((MaterialButtonToggleGroup) row).clearChecked();
+            }
+        }
+
+        resetTextView.setEnabled(false);
     }
 
     abstract void onFilterChanged(Set<String> newFilterValues);
