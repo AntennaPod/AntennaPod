@@ -3,12 +3,10 @@ package de.danoeh.antennapod.core.util;
 import android.util.Log;
 
 import java.io.IOException;
-import java.util.List;
 
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.Transcript;
-import de.danoeh.antennapod.model.feed.TranscriptSegment;
 import de.danoeh.antennapod.parser.feed.PodcastIndexTranscriptParser;
 import okhttp3.Request;
 import okhttp3.Response;

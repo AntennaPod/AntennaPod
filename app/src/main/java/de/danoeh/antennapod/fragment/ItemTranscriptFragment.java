@@ -15,10 +15,8 @@ import android.webkit.WebView;
 import androidx.fragment.app.Fragment;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -168,6 +166,7 @@ public class ItemTranscriptFragment extends Fragment {
         // TT TODO WebView.setWebContentsDebuggingEnabled(true);
         webvDescription.loadUrl("javascript:scrollAnchor(\"seg" + entry.getKey() + "\");");
     }
+
     private void savePreference() {
         Log.d(TAG, "Saving preferences");
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF, Activity.MODE_PRIVATE);

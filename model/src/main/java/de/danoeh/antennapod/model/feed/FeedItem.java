@@ -61,7 +61,7 @@ public class FeedItem extends FeedComponent implements Serializable {
     private final boolean hasChapters;
 
     /**
-     * Is true if database or feeditem has <podcast:transcript>
+     * Is true if database or feeditem has podcast:transcript
      */
     private boolean hasTranscript;
 
