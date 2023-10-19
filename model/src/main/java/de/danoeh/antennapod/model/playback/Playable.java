@@ -36,6 +36,11 @@ public interface Playable extends Parcelable, Serializable {
     List<Chapter> getChapters();
 
     /**
+     * Has transcripts
+     */
+    Boolean hasTranscript();
+
+    /**
      * Returns a link to a website that is meant to be shown in a browser
      */
     String getWebsiteLink();

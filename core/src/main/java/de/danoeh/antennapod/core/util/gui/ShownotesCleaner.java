@@ -88,7 +88,12 @@ public class ShownotesCleaner {
 
         if (TextUtils.isEmpty(shownotes)) {
             Log.d(TAG, "shownotesProvider contained no shownotes. Returning 'no shownotes' message");
-            shownotes = "<html><head></head><body><p id='apNoShownotes'>" + noShownotesLabel + "</p></body></html>";
+            shownotes = "<html><head>"
+                    + "<script>"
+                    + "function scrollAnchor(id) {"
+                    + "  window.location.hash = id;"
+                    + "</script>"
+                    + "</head><body><p id='apNoShownotes'>" + noShownotesLabel + "</p></body></html>";
         }
 
         // replace ASCII line breaks with HTML ones if shownotes don't contain HTML line breaks already
@@ -99,6 +104,11 @@ public class ShownotesCleaner {
         Document document = Jsoup.parse(shownotes);
         cleanCss(document);
         document.head().appendElement("style").attr("type", "text/css").text(webviewStyle);
+        String jsString = "function scrollAnchor(id) {"
+                        + "  window.location.hash = id;"
+                        + "}";
+
+        document.head().appendElement("script").attr("type", "application/javascript").text(jsString);
         addTimecodes(document);
         return document.toString();
     }

@@ -71,6 +71,8 @@ public class CoverFragment extends Fragment {
         viewBinding.imgvCover.setOnClickListener(v -> onPlayPause());
         viewBinding.openDescription.setOnClickListener(view -> ((AudioPlayerFragment) requireParentFragment())
                 .scrollToPage(AudioPlayerFragment.POS_DESCRIPTION, true));
+        viewBinding.transcriptButton.setOnClickListener(view -> ((AudioPlayerFragment) requireParentFragment())
+                .scrollToPage(AudioPlayerFragment.POS_TRANSCRIPT, false));
         ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
                 viewBinding.txtvPodcastTitle.getCurrentTextColor(), BlendModeCompat.SRC_IN);
         viewBinding.butNextChapter.setColorFilter(colorFilter);
@@ -161,6 +163,12 @@ public class CoverFragment extends Fragment {
         displayedChapterIndex = -1;
         refreshChapterData(ChapterUtils.getCurrentChapterIndex(media, media.getPosition())); //calls displayCoverImage
         updateChapterControlVisibility();
+
+        if (media.hasTranscript()) {
+            if (viewBinding.transcriptButton.getVisibility() != View.VISIBLE) {
+                viewBinding.transcriptButton.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     private void updateChapterControlVisibility() {

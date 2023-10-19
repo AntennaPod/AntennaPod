@@ -136,6 +136,12 @@ public class RemoteMedia implements Playable {
     }
 
     @Override
+    public Boolean hasTranscript() {
+        // TT TODO
+       return false;
+    }
+
+    @Override
     public String getWebsiteLink() {
         if (episodeLink != null) {
             return episodeLink;

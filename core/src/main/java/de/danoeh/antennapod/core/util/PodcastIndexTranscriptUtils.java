@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.util;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -39,15 +41,16 @@ public class PodcastIndexTranscriptUtils {
     public static Transcript loadTranscript(FeedMedia media) {
         String type = null;
         String url = null;
-        if (media.getItem().getPodcastIndexTranscriptUrl("application/jsonxx") != null) {
+        if (media.getItem().getPodcastIndexTranscriptUrl("application/json") != null) {
             type = "application/json";
             url = media.getItem().getPodcastIndexTranscriptUrl("application/json");
-        } else if (media.getItem().getPodcastIndexTranscriptUrl("application/srt") != null) {
+        } else if (media.getItem().getPodcastIndexTranscriptUrl("application/srtXXX") != null) {
             type = "application/srt";
             url = media.getItem().getPodcastIndexTranscriptUrl(type);
         }
         // TODO: Store the transcript somewhere? in the DB of file system?
         if (url != null) {
+            Log.d(TAG, "Loading Transcript URL " + url);
             return PodcastIndexTranscriptUtils.loadTranscriptFromUrl(url, type, false);
         }
         return null;

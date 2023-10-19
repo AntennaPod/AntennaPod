@@ -105,13 +105,13 @@ public class PodcastIndexTranscriptParser {
                 String speaker = "";
                 for (int i = 0; i < objSegments.length(); i++) {
                     JSONObject jsonObject = objSegments.getJSONObject(i);
-                    int startTime = jsonObject.optInt("startTime", 0);
-                    int endTime = jsonObject.optInt("endTime", startTime);
+                    long startTime = Double.valueOf(jsonObject.optDouble("startTime", 0) * 1000L).longValue();
+                    long endTime = Double.valueOf(jsonObject.optDouble("endTime", startTime) * 1000L).longValue();
                     String body = jsonObject.optString("body");
 
                     Log.d(TAG, "JSON " + Long.toString(startTime) + " " + body);
 
-                    transcript.addSegment(new TranscriptSegment(startTime * 1000L, endTime * 1000L, body, speaker));
+                    transcript.addSegment(new TranscriptSegment(startTime, endTime, body, speaker));
                 }
                 return transcript;
             } catch (JSONException e) {

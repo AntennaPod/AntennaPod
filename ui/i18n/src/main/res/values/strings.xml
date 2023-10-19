@@ -687,6 +687,7 @@
     <string name="next_chapter">Next chapter</string>
     <string name="shuffle_suggestions">Shuffle suggestions</string>
     <string name="add_preset">Add preset</string>
+    <string name="transcript_label">Transcript</string>
 
     <!-- Feed settings/information screen -->
     <string name="authentication_label">Authentication</string>

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
@@ -78,7 +79,8 @@ public class AudioPlayerFragment extends Fragment implements
     public static final String TAG = "AudioPlayerFragment";
     public static final int POS_COVER = 0;
     public static final int POS_DESCRIPTION = 1;
-    private static final int NUM_CONTENT_FRAGMENTS = 2;
+    public static final int POS_TRANSCRIPT = 2;
+    private static final int NUM_CONTENT_FRAGMENTS = 3;
 
     PlaybackSpeedIndicatorView butPlaybackSpeed;
     TextView txtvPlaybackSpeed;
@@ -307,10 +309,11 @@ public class AudioPlayerFragment extends Fragment implements
             return;
         }
         duration = controller.getDuration();
-        updatePosition(new PlaybackPositionEvent(media.getPosition(), media.getDuration()));
+        long position = updatePosition(new PlaybackPositionEvent(media.getPosition(), media.getDuration()));
         updatePlaybackSpeedButton(new SpeedChangedEvent(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media)));
         setChapterDividers(media);
         setupOptionsMenu(media);
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -365,9 +368,9 @@ public class AudioPlayerFragment extends Fragment implements
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void updatePosition(PlaybackPositionEvent event) {
+    public long updatePosition(PlaybackPositionEvent event) {
         if (controller == null || txtvPosition == null || txtvLength == null || sbPosition == null) {
-            return;
+            return 0;
         }
 
         TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
@@ -375,10 +378,12 @@ public class AudioPlayerFragment extends Fragment implements
         int duration = converter.convert(event.getDuration());
         int remainingTime = converter.convert(Math.max(event.getDuration() - event.getPosition(), 0));
         currentChapterIndex = ChapterUtils.getCurrentChapterIndex(controller.getMedia(), currentPosition);
-        Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
+        Log.d(TAG, "currentPosition "
+                + "Position " + currentPosition
+                + " Display " + Converter.getDurationStringLong(currentPosition));
         if (currentPosition == Playable.INVALID_TIME || duration == Playable.INVALID_TIME) {
             Log.w(TAG, "Could not react to position observer update because of invalid time");
-            return;
+            return 0;
         }
         txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
         showTimeLeft = UserPreferences.shouldShowRemainingTime();
@@ -392,6 +397,15 @@ public class AudioPlayerFragment extends Fragment implements
             float progress = ((float) event.getPosition()) / event.getDuration();
             sbPosition.setProgress((int) (progress * sbPosition.getMax()));
         }
+
+        Fragment transcriptChild = getChildFragmentManager().findFragmentByTag("f" + POS_TRANSCRIPT);
+        if (transcriptChild != null) {
+            ItemTranscriptFragment itemTranscriptFragment = (ItemTranscriptFragment) transcriptChild;
+            String id = "seg98280";
+            //Log.d(TAG, "Jumping to anchor #" + id + " position " + position);
+            itemTranscriptFragment.scrollToPosition(currentPosition);
+        }
+        return currentPosition;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -542,6 +556,8 @@ public class AudioPlayerFragment extends Fragment implements
             switch (position) {
                 case POS_COVER:
                     return new CoverFragment();
+                case POS_TRANSCRIPT:
+                    return new ItemTranscriptFragment();
                 default:
                 case POS_DESCRIPTION:
                     return new ItemDescriptionFragment();
@@ -564,6 +580,9 @@ public class AudioPlayerFragment extends Fragment implements
         Fragment visibleChild = getChildFragmentManager().findFragmentByTag("f" + POS_DESCRIPTION);
         if (visibleChild instanceof ItemDescriptionFragment) {
             ((ItemDescriptionFragment) visibleChild).scrollToTop();
+        }
+        if (visibleChild instanceof ItemTranscriptFragment) {
+            ((ItemTranscriptFragment) visibleChild).scrollToTop();
         }
     }
 

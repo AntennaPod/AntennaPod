@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -662,8 +663,12 @@ public class PodDBAdapter {
         values.put(KEY_IMAGE_URL, item.getImageUrl());
         values.put(KEY_PODCASTINDEX_CHAPTER_URL, item.getPodcastIndexChapterUrl());
         // TT TODO, hardcode
-        values.put(KEY_PODCASTINDEX_TRANSCRIPT_URL, item.getPodcastIndexTranscriptUrl("application/srt"));
-        values.put(KEY_PODCASTINDEX_TRANSCRIPT_TYPE, "application/srt");
+
+        Hashtable<String, String>  typeUrl = item.getPodcastIndexTranscriptUrl();
+        if (typeUrl != null && typeUrl.get("application/json") != null) {
+            values.put(KEY_PODCASTINDEX_TRANSCRIPT_URL, typeUrl.get("application/json"));
+            values.put(KEY_PODCASTINDEX_TRANSCRIPT_TYPE, "application/json");
+        }
 
         if (item.getId() == 0) {
             item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));

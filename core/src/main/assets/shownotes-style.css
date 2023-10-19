@@ -20,6 +20,13 @@ img, iframe {
 body {
      padding: %dpx %dpx %dpx %dpx;
 }
+
+:target {
+    border: 2px solid #D4D4D4;
+    background-color: orange;
+    color: white;
+}
+
 p#apNoShownotes {
     position: fixed;
     top: 50%%;

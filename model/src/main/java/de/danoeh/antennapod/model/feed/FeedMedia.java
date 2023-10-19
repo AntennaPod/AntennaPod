@@ -323,6 +323,14 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
+    public Boolean hasTranscript() {
+        if (item == null) {
+            return null;
+        }
+        return item.hasTranscript();
+    }
+
+    @Override
     public String getWebsiteLink() {
         if (item == null) {
             return null;
