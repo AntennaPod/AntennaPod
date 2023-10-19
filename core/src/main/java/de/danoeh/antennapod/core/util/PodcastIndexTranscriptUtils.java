@@ -17,7 +17,7 @@ public class PodcastIndexTranscriptUtils {
 
     public static Transcript loadTranscriptFromUrl(String url, String type, boolean forceRefresh) {
         Response response = null;
-        Transcript transcript= null;
+        Transcript transcript = null;
         try {
             // TT TODO, what to do with cachingx
             Request request = new Request.Builder().url(url).build();

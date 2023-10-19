@@ -58,7 +58,7 @@ public class ItemTranscriptFragment extends Fragment {
         Log.d(TAG, "Creating view");
         View root = inflater.inflate(R.layout.item_description_fragment, container, false);
         webvDescription = root.findViewById(R.id.webview);
-        ((WebView)webvDescription).getSettings().setJavaScriptEnabled(true);
+        ((WebView) webvDescription).getSettings().setJavaScriptEnabled(true);
         webvDescription.setTimecodeSelectedListener(time -> {
             if (controller != null) {
                 controller.seekTo(time);
@@ -108,50 +108,50 @@ public class ItemTranscriptFragment extends Fragment {
             return;
         }
         webViewLoader = Maybe.<String>create(emitter -> {
-                    Playable media = controller.getMedia();
-                    if (media == null) {
-                        emitter.onComplete();
-                        return;
-                    }
-                    String transcriptStr = "";
-                    if (media instanceof FeedMedia) {
-                        FeedMedia feedMedia = ((FeedMedia) media);
-                        if (feedMedia.getItem() == null) {
-                            feedMedia.setItem(DBReader.getFeedItem(feedMedia.getItemId()));
-                        }
-                        Transcript transcript = PodcastIndexTranscriptUtils.loadTranscript(feedMedia);
-                        if (transcript != null) {
-                            segmentsMap = transcript.getSegmentsMap();
-                            map = segmentsMap.tailMap(0L, true);
-                            Iterator<Long> iter = map.keySet().iterator();
+            Playable media = controller.getMedia();
+            if (media == null) {
+                emitter.onComplete();
+                return;
+            }
+            String transcriptStr = "";
+            if (media instanceof FeedMedia) {
+                FeedMedia feedMedia = ((FeedMedia) media);
+                if (feedMedia.getItem() == null) {
+                    feedMedia.setItem(DBReader.getFeedItem(feedMedia.getItemId()));
+                }
+                Transcript transcript = PodcastIndexTranscriptUtils.loadTranscript(feedMedia);
+                if (transcript != null) {
+                    segmentsMap = transcript.getSegmentsMap();
+                    map = segmentsMap.tailMap(0L, true);
+                    Iterator<Long> iter = map.keySet().iterator();
 
-                            try {
-                                while (true) {
-                                    Long l = iter.next();
-                                    transcriptStr = transcriptStr.concat(
-                                            "<a id=\"seg" + segmentsMap.get(l).getStartTime() + "\">"
-                                           + segmentsMap.get(l).getWords() + "</a> "
+                    try {
+                        while (true) {
+                            Long l = iter.next();
+                            transcriptStr = transcriptStr.concat(
+                                    "<a id=\"seg" + segmentsMap.get(l).getStartTime() + "\">"
+                                            + segmentsMap.get(l).getWords() + "</a> "
 
-                                    );
-                                }
-                            } catch (NoSuchElementException e) {
-                                // DONE
-                            }
-                            Log.d(TAG, "FULL TRANSCRIPT" + transcriptStr);
+                            );
                         }
+                    } catch (NoSuchElementException e) {
+                        // DONE
                     }
-                    String fullText = transcriptStr;
-                    ShownotesCleaner shownotesCleaner = new ShownotesCleaner(
-                            context, fullText, media.getDuration());
-                    emitter.onSuccess(shownotesCleaner.processShownotes());
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> {
-                    webvDescription.loadDataWithBaseURL("https://127.0.0.1", data, "text/html",
-                            "utf-8", "about:blank");
-                    Log.d(TAG, "Webview loaded with data " + data);
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+                    Log.d(TAG, "FULL TRANSCRIPT" + transcriptStr);
+                }
+            }
+            String fullText = transcriptStr;
+            ShownotesCleaner shownotesCleaner = new ShownotesCleaner(
+                    context, fullText, media.getDuration());
+            emitter.onSuccess(shownotesCleaner.processShownotes());
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(data -> {
+            webvDescription.loadDataWithBaseURL("https://127.0.0.1", data, "text/html",
+                    "utf-8", "about:blank");
+            Log.d(TAG, "Webview loaded with data " + data);
+        }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     @Override

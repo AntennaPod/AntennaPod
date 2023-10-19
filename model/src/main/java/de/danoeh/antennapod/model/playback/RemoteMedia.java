@@ -138,7 +138,7 @@ public class RemoteMedia implements Playable {
     @Override
     public Boolean hasTranscript() {
         // TT TODO
-       return false;
+        return false;
     }
 
     @Override
