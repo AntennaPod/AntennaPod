@@ -13,7 +13,7 @@ import okhttp3.Response;
 
 public class PodcastIndexTranscriptUtils {
 
-    private static final String TAG = "PodcastIndexTranscriptUtils";
+    private static final String TAG = "PodcastIndexTranscript";
 
     public static Transcript loadTranscriptFromUrl(String url, String type, boolean forceRefresh) {
         Response response = null;
