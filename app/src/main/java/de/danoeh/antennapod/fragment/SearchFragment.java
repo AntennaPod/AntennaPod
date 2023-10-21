@@ -449,7 +449,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         searchViewFocusOn();
     }
 
-    void searchViewFocusOff(){
+    private void searchViewFocusOff(){
         isOtherViewInFoucus = true;
         searchView.clearFocus();
     }
