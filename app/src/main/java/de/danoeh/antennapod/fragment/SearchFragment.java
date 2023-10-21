@@ -217,7 +217,8 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
             @Override
             public void onToggleChanged(boolean open) {
                 if (open && adapter.getSelectedCount() == 0) {
-                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected, Snackbar.LENGTH_SHORT);
+                    ((MainActivity) getActivity())
+                            .showSnackbarAbovePlayer(R.string.no_items_selected, Snackbar.LENGTH_SHORT);
                     speedDialBinding.fabSD.close();
                 }
             }
@@ -289,16 +290,16 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         Feed selectedFeedItem  = adapterFeeds.getLongPressedItem();
-        if (selectedFeedItem != null
-                && FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedFeedItem, () -> { })) {
+        if(selectedFeedItem != null
+                && FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedFeedItem, () -> {})){
             return true;
         }
         FeedItem selectedItem = adapter.getLongPressedItem();
         if(selectedItem != null){
-            if (adapter.onContextItemSelected(item)) {
+            if(adapter.onContextItemSelected(item)){
                 return true;
             }
-            if (FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem)) {
+            if(FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem)){
                 return true;
             }
         }
