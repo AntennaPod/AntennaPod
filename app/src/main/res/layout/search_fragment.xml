@@ -61,4 +61,7 @@
         android:paddingTop="12dp"
         android:paddingHorizontal="@dimen/additional_horizontal_spacing" />
 
+    <include
+        layout="@layout/multi_select_speed_dial" />
+
 </RelativeLayout>
