@@ -99,7 +99,6 @@ public class UserPreferences {
     private static final String PREF_PROXY_PORT = "prefProxyPort";
     private static final String PREF_PROXY_USER = "prefProxyUser";
     private static final String PREF_PROXY_PASSWORD = "prefProxyPassword";
-    private static final String PREF_ENABLE_DOWNLOAD_ON_CELLULAR_NETWORK = "prefEnableDownloadOnCellularNetwork";
 
     // Services
     private static final String PREF_GPODNET_NOTIFICATIONS = "pref_gpodnet_notifications";
@@ -563,15 +562,6 @@ public class UserPreferences {
         String username = prefs.getString(PREF_PROXY_USER, null);
         String password = prefs.getString(PREF_PROXY_PASSWORD, null);
         return new ProxyConfig(type, host, port, username, password);
-    }
-
-    // TODO WI
-    public static boolean isEnableDownloadOnCellularNetwork() {
-        return prefs.getBoolean(PREF_ENABLE_DOWNLOAD_ON_CELLULAR_NETWORK, false);
-    }
-
-    public static void setEnableDownloadOnCellularNetwork(boolean enabled) {
-        prefs.edit().putBoolean(PREF_ENABLE_DOWNLOAD_ON_CELLULAR_NETWORK, enabled).apply();
     }
 
     public static boolean isQueueLocked() {
