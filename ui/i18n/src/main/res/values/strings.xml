@@ -682,6 +682,7 @@
     <string name="is_inbox_label">Episode is in the inbox</string>
     <string name="load_next_page_label">Load next page</string>
     <string name="position">Position: %1$s</string>
+    <string name="remaining_time">Remaining time: %1$s</string>
     <string name="apply_action">Apply action</string>
     <string name="play_chapter">Play chapter</string>
     <string name="prev_chapter">Previous chapter</string>

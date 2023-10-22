@@ -19,6 +19,7 @@
             android:textSize="18sp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
+            android:accessibilityHeading="true"
             android:textColor="?android:attr/textColorPrimary" />
 
         <Button
