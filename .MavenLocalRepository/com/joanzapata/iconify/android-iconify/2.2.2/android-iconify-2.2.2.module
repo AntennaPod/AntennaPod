@@ -1,0 +1,67 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.joanzapata.iconify",
+    "module": "android-iconify",
+    "version": "2.2.2",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.5"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "android-iconify-2.2.2.aar",
+          "url": "android-iconify-2.2.2.aar",
+          "size": 21345,
+          "sha512": "5eecc274c3f16fe1b1fe2f27b5066bf793dcddf62940c0e3dd31a44cfdff88538b0c184ba8e540ec37744e7f1ee8e20919630ec5548abc71babfabce287cbe68",
+          "sha256": "5ff9f73092dad65c14d0e04469ef79613deed4342581f80fe8e8c47538ebb67e",
+          "sha1": "72899df22d06820c0e818f9c7c195ba8f77fd5bf",
+          "md5": "6d86565fb3c0782edcca6937989ca128"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.legacy",
+          "module": "legacy-support-v4",
+          "version": {
+            "requires": "1.0.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "android-iconify-2.2.2.aar",
+          "url": "android-iconify-2.2.2.aar",
+          "size": 21345,
+          "sha512": "5eecc274c3f16fe1b1fe2f27b5066bf793dcddf62940c0e3dd31a44cfdff88538b0c184ba8e540ec37744e7f1ee8e20919630ec5548abc71babfabce287cbe68",
+          "sha256": "5ff9f73092dad65c14d0e04469ef79613deed4342581f80fe8e8c47538ebb67e",
+          "sha1": "72899df22d06820c0e818f9c7c195ba8f77fd5bf",
+          "md5": "6d86565fb3c0782edcca6937989ca128"
+        }
+      ]
+    }
+  ]
+}

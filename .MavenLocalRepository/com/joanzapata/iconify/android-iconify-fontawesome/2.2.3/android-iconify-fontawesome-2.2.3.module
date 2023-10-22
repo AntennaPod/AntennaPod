@@ -1,0 +1,67 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.joanzapata.iconify",
+    "module": "android-iconify-fontawesome",
+    "version": "2.2.3",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.5"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "android-iconify-fontawesome-2.2.3.aar",
+          "url": "android-iconify-fontawesome-2.2.3.aar",
+          "size": 110714,
+          "sha512": "62d9e056f256f05ec98f976f154c78a75da6f1bc37a83bd18937648cea3a910d5650eb3403ae8b34e697466156c2ca0a9a3cb7ac2230a0e641d1098a87616f34",
+          "sha256": "4a202259b790f9fe2a7a174632b13e7eb9d42fd320bd5084cae490fef814ff6b",
+          "sha1": "550c66f894aadb2cda384c357a5357177af6d08b",
+          "md5": "b7848a459635eb14c221c09e281e987e"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.joanzapata.iconify",
+          "module": "android-iconify",
+          "version": {
+            "requires": "2.2.3"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "android-iconify-fontawesome-2.2.3.aar",
+          "url": "android-iconify-fontawesome-2.2.3.aar",
+          "size": 110714,
+          "sha512": "62d9e056f256f05ec98f976f154c78a75da6f1bc37a83bd18937648cea3a910d5650eb3403ae8b34e697466156c2ca0a9a3cb7ac2230a0e641d1098a87616f34",
+          "sha256": "4a202259b790f9fe2a7a174632b13e7eb9d42fd320bd5084cae490fef814ff6b",
+          "sha1": "550c66f894aadb2cda384c357a5357177af6d08b",
+          "md5": "b7848a459635eb14c221c09e281e987e"
+        }
+      ]
+    }
+  ]
+}

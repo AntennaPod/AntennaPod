@@ -1,0 +1,67 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.joanzapata.iconify",
+    "module": "android-iconify-material",
+    "version": "2.2.3",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.5"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "android-iconify-material-2.2.3.aar",
+          "url": "android-iconify-material-2.2.3.aar",
+          "size": 79060,
+          "sha512": "fa3b7619c482821125667ce999a1e52631bc3aa998c13791ce4ccebca8b063a3ad09ed9c7b47286e366711f0659a787ff1a62ff8a8a52b5de2e6451e8ccdc9f0",
+          "sha256": "786581c7b5a200e8f39e58c5ed92157b6216c984802818bbaec6d464dac96881",
+          "sha1": "5d8aa962dce7b42e86b270a9a26f8dd7e259afd1",
+          "md5": "1298e02c917346242fde8a658fa62942"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.joanzapata.iconify",
+          "module": "android-iconify",
+          "version": {
+            "requires": "2.2.3"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "android-iconify-material-2.2.3.aar",
+          "url": "android-iconify-material-2.2.3.aar",
+          "size": 79060,
+          "sha512": "fa3b7619c482821125667ce999a1e52631bc3aa998c13791ce4ccebca8b063a3ad09ed9c7b47286e366711f0659a787ff1a62ff8a8a52b5de2e6451e8ccdc9f0",
+          "sha256": "786581c7b5a200e8f39e58c5ed92157b6216c984802818bbaec6d464dac96881",
+          "sha1": "5d8aa962dce7b42e86b270a9a26f8dd7e259afd1",
+          "md5": "1298e02c917346242fde8a658fa62942"
+        }
+      ]
+    }
+  ]
+}
