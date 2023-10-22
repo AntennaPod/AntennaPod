@@ -215,6 +215,10 @@ public abstract class PlaybackServiceMediaPlayer {
     public abstract int getSelectedAudioTrack();
 
     public void skip() {
+        if (getPosition() < 1000) {
+            Log.d(TAG, "Ignoring skip, is in first second of playback");
+            return;
+        }
         endPlayback(false, true, true, true);
     }
 

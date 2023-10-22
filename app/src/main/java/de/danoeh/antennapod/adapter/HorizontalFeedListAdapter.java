@@ -2,7 +2,10 @@ package de.danoeh.antennapod.adapter;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -26,7 +29,8 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
     private final List<Feed> data = new ArrayList<>();
     private int dummyViews = 0;
     private Feed longPressedItem;
-
+    private @StringRes int endButtonText = 0;
+    private Runnable endButtonAction = null;
 
     public HorizontalFeedListAdapter(MainActivity mainActivity) {
         this.mainActivityRef = new WeakReference<>(mainActivity);
@@ -51,6 +55,15 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
+        if (position == getItemCount() - 1 && endButtonAction != null) {
+            holder.cardView.setVisibility(View.GONE);
+            holder.actionButton.setVisibility(View.VISIBLE);
+            holder.actionButton.setText(endButtonText);
+            holder.actionButton.setOnClickListener(v -> endButtonAction.run());
+            return;
+        }
+        holder.cardView.setVisibility(View.VISIBLE);
+        holder.actionButton.setVisibility(View.GONE);
         if (position >= data.size()) {
             holder.itemView.setAlpha(0.1f);
             Glide.with(mainActivityRef.get()).clear(holder.imageView);
@@ -95,7 +108,7 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
 
     @Override
     public int getItemCount() {
-        return dummyViews + data.size();
+        return dummyViews + data.size() + ((endButtonAction == null) ? 0 : 1);
     }
 
     @Override
@@ -108,13 +121,23 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
         contextMenu.setHeaderTitle(longPressedItem.getTitle());
     }
 
+    public void setEndButton(@StringRes int text, Runnable action) {
+        endButtonAction = action;
+        endButtonText = text;
+        notifyDataSetChanged();
+    }
+
     static class Holder extends RecyclerView.ViewHolder {
         SquareImageView imageView;
+        CardView cardView;
+        Button actionButton;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.discovery_cover);
             imageView.setDirection(SquareImageView.DIRECTION_HEIGHT);
+            actionButton = itemView.findViewById(R.id.actionButton);
+            cardView = itemView.findViewById(R.id.cardView);
         }
     }
 }

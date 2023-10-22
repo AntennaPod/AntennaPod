@@ -1,11 +1,13 @@
 plugins {
     id('com.android.application')
-    id('com.github.triplet.play') version '3.7.0' apply false
+    id('com.github.triplet.play') version '3.8.3' apply false
 }
 apply from: "../common.gradle"
 apply from: "../playFlavor.gradle"
 
 android {
+    namespace "de.danoeh.antennapod"
+
     defaultConfig {
         // Version code schema:
         // "1.2.3-beta4"    -> 1020304

@@ -3,6 +3,10 @@ plugins {
 }
 apply from: "../../common.gradle"
 
+android {
+    namespace "de.danoeh.antennapod.ui.common"
+}
+
 dependencies {
     implementation project(":ui:i18n")
 
