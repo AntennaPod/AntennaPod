@@ -1,10 +1,8 @@
 package de.danoeh.antennapod.view;
 
 import android.content.Context;
-import android.content.DialogInterface;
 
-import androidx.appcompat.app.AlertDialog;
-
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.ui.i18n.R;
 import de.danoeh.antennapod.model.feed.FeedItem;
 
@@ -24,15 +22,10 @@ public class LocalDeleteModal {
             return;
         }
 
-        new AlertDialog.Builder(context)
-            .setTitle(R.string.delete_local_feed_warning_title)
+        new MaterialAlertDialogBuilder(context)
+            .setTitle(R.string.delete_episode_label)
             .setMessage(R.string.delete_local_feed_warning_body)
-            .setPositiveButton(R.string.delete_label, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    deleteCommand.run();
-                }
-            })
+            .setPositiveButton(R.string.delete_label, (dialog, which) -> deleteCommand.run())
             .setNegativeButton(R.string.cancel_label, null)
             .show();
     }

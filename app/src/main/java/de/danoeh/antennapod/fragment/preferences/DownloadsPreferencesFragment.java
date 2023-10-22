@@ -75,7 +75,7 @@ public class DownloadsPreferencesFragment extends PreferenceFragmentCompat
                 showAutoDeleteEnableDialog();
                 return false;
             } else {
-                return  true;
+                return true;
             }
         });
     }

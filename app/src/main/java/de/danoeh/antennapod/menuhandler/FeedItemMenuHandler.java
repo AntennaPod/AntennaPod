@@ -152,11 +152,8 @@ public class FeedItemMenuHandler {
         if (menuItemId == R.id.skip_episode_item) {
             context.sendBroadcast(MediaButtonReceiver.createIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT));
         } else if (menuItemId == R.id.remove_item) {
-            LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(
-                    context,
-                    Arrays.asList(selectedItem),
-                    () -> DBWriter.deleteFeedMediaOfItem(context, selectedItem.getMedia().getId())
-            );
+            LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(context, Arrays.asList(selectedItem),
+                    () -> DBWriter.deleteFeedMediaOfItem(context, selectedItem.getMedia().getId()));
         } else if (menuItemId == R.id.remove_inbox_item) {
             removeNewFlagWithUndo(fragment, selectedItem);
         } else if (menuItemId == R.id.mark_read_item) {

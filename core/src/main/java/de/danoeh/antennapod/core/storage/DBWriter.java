@@ -100,7 +100,7 @@ public class DBWriter {
      */
     public static Future<?> deleteFeedMediaOfItem(@NonNull final Context context,
                                                   final long mediaId) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             final FeedMedia media = DBReader.getFeedMedia(mediaId);
             if (media != null) {
                 boolean result = deleteFeedMediaSynchronous(context, media);
@@ -124,6 +124,13 @@ public class DBWriter {
                 EventBus.getDefault().post(evt);
                 return false;
             }
+            media.setDownloaded(false);
+            media.setFile_url(null);
+            media.setHasEmbeddedPicture(false);
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.setMedia(media);
+            adapter.close();
         } else if (media.getFile_url().startsWith("content://")) {
             // Local feed
             DocumentFile documentFile = DocumentFile.fromSingleUri(
@@ -135,14 +142,6 @@ public class DBWriter {
             localDelete = true;
         }
 
-        media.setDownloaded(false);
-        media.setFile_url(null);
-        media.setHasEmbeddedPicture(false);
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.setMedia(media);
-        adapter.close();
-
         if (media.getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId()) {
             PlaybackPreferences.writeNoMediaPlaying();
             IntentUtils.sendLocalBroadcast(context, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
@@ -151,7 +150,10 @@ public class DBWriter {
             nm.cancel(R.id.notification_playing);
         }
 
-        if (!localDelete) {
+        if (localDelete) {
+            // Do full update of this feed to get rid of the item
+            LocalFeedUpdater.updateFeed(media.getItem().getFeed(), context.getApplicationContext(), null);
+        } else {
             // Gpodder: queue delete action for synchronization
             FeedItem item = media.getItem();
             EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DELETE)
@@ -160,13 +162,6 @@ public class DBWriter {
             SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
 
             EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
-        } else {
-            // FeedItemEvent only updates the state of an item, but with local feed, item is deleted completely.
-            // Instead we must do full update of this feed to get rid of the item
-            LocalFeedUpdater.updateFeed(media.getItem().getFeed(),
-                    context.getApplicationContext(),
-                    null
-            );
         }
         return true;
     }
@@ -178,7 +173,7 @@ public class DBWriter {
      * @param feedId  ID of the Feed that should be deleted.
      */
     public static Future<?> deleteFeed(final Context context, final long feedId) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             final Feed feed = DBReader.getFeed(feedId);
             if (feed == null) {
                 return;
@@ -209,7 +204,7 @@ public class DBWriter {
      */
     @NonNull
     public static Future<?> deleteFeedItems(@NonNull Context context, @NonNull List<FeedItem> items) {
-        return submitIfNeeded(() -> deleteFeedItemsSynchronous(context, items));
+        return runOnDbThread(() -> deleteFeedItemsSynchronous(context, items));
     }
 
     /**
@@ -261,7 +256,7 @@ public class DBWriter {
      * Deletes the entire playback history.
      */
     public static Future<?> clearPlaybackHistory() {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.clearPlaybackHistory();
@@ -274,7 +269,7 @@ public class DBWriter {
      * Deletes the entire download log.
      */
     public static Future<?> clearDownloadLog() {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.clearDownloadLog();
@@ -307,7 +302,7 @@ public class DBWriter {
      * @param date PlaybackCompletionDate for <code>media</code>
      */
     public static Future<?> addItemToPlaybackHistory(final FeedMedia media, Date date) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             Log.d(TAG, "Adding item to playback history");
             media.setPlaybackCompletionDate(date);
 
@@ -326,7 +321,7 @@ public class DBWriter {
      * @param status The DownloadStatus object.
      */
     public static Future<?> addDownloadStatus(final DownloadResult status) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setDownloadStatus(status);
@@ -348,7 +343,7 @@ public class DBWriter {
      */
     public static Future<?> addQueueItemAt(final Context context, final long itemId,
                                            final int index, final boolean performAutoDownload) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             final List<FeedItem> queue = DBReader.getQueue(adapter);
@@ -419,7 +414,7 @@ public class DBWriter {
      */
     public static Future<?> addQueueItem(final Context context, final boolean performAutoDownload,
                                          final boolean markAsUnplayed, final long... itemIds) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             if (itemIds.length < 1) {
                 return;
             }
@@ -502,7 +497,7 @@ public class DBWriter {
      * Removes all FeedItem objects from the queue.
      */
     public static Future<?> clearQueue() {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.clearQueue();
@@ -521,12 +516,12 @@ public class DBWriter {
      */
     public static Future<?> removeQueueItem(final Context context,
                                             final boolean performAutoDownload, final FeedItem item) {
-        return submitIfNeeded(() -> removeQueueItemSynchronous(context, performAutoDownload, item.getId()));
+        return runOnDbThread(() -> removeQueueItemSynchronous(context, performAutoDownload, item.getId()));
     }
 
     public static Future<?> removeQueueItem(final Context context, final boolean performAutoDownload,
                                             final long... itemIds) {
-        return submitIfNeeded(() -> removeQueueItemSynchronous(context, performAutoDownload, itemIds));
+        return runOnDbThread(() -> removeQueueItemSynchronous(context, performAutoDownload, itemIds));
     }
 
     private static void removeQueueItemSynchronous(final Context context,
@@ -588,7 +583,7 @@ public class DBWriter {
     }
 
     public static Future<?> addFavoriteItem(final FeedItem item) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
             adapter.addFavoriteItem(item);
             adapter.close();
@@ -599,7 +594,7 @@ public class DBWriter {
     }
 
     public static Future<?> removeFavoriteItem(final FeedItem item) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
             adapter.removeFavoriteItem(item);
             adapter.close();
@@ -616,7 +611,7 @@ public class DBWriter {
      * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
      */
     public static Future<?> moveQueueItemToTop(final long itemId, final boolean broadcastUpdate) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             LongList queueIdList = DBReader.getQueueIDList();
             int index = queueIdList.indexOf(itemId);
             if (index >= 0) {
@@ -635,7 +630,7 @@ public class DBWriter {
      */
     public static Future<?> moveQueueItemToBottom(final long itemId,
                                                   final boolean broadcastUpdate) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             LongList queueIdList = DBReader.getQueueIDList();
             int index = queueIdList.indexOf(itemId);
             if (index >= 0) {
@@ -658,7 +653,7 @@ public class DBWriter {
      */
     public static Future<?> moveQueueItem(final int from,
                                           final int to, final boolean broadcastUpdate) {
-        return submitIfNeeded(() -> moveQueueItemHelper(from, to, broadcastUpdate));
+        return runOnDbThread(() -> moveQueueItemHelper(from, to, broadcastUpdate));
     }
 
     /**
@@ -695,7 +690,7 @@ public class DBWriter {
     }
 
     public static Future<?> resetPagedFeedPage(Feed feed) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.resetPagedFeedPage(feed);
@@ -725,7 +720,7 @@ public class DBWriter {
      */
     public static Future<?> markItemPlayed(final int played, final boolean broadcastUpdate,
                                            final long... itemIds) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setFeedItemRead(played, itemIds);
@@ -755,7 +750,7 @@ public class DBWriter {
                                             final int played,
                                             final long mediaId,
                                             final boolean resetMediaPosition) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setFeedItemRead(played, itemId, mediaId,
@@ -772,7 +767,7 @@ public class DBWriter {
      * @param feedId ID of the Feed.
      */
     public static Future<?> removeFeedNewFlag(final long feedId) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setFeedItems(FeedItem.NEW, FeedItem.UNPLAYED, feedId);
@@ -786,7 +781,7 @@ public class DBWriter {
      * Sets the 'read'-attribute of all NEW FeedItems to UNPLAYED.
      */
     public static Future<?> removeAllNewFlags() {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setFeedItems(FeedItem.NEW, FeedItem.UNPLAYED);
@@ -797,7 +792,7 @@ public class DBWriter {
     }
 
     static Future<?> addNewFeed(final Context context, final Feed... feeds) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setCompleteFeed(feeds);
@@ -815,7 +810,7 @@ public class DBWriter {
     }
 
     static Future<?> setCompleteFeed(final Feed... feeds) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setCompleteFeed(feeds);
@@ -824,7 +819,7 @@ public class DBWriter {
     }
 
     public static Future<?> setItemList(final List<FeedItem> items) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.storeFeedItemlist(items);
@@ -840,7 +835,7 @@ public class DBWriter {
      * @param media The FeedMedia object.
      */
     public static Future<?> setFeedMedia(final FeedMedia media) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setMedia(media);
@@ -854,7 +849,7 @@ public class DBWriter {
      * @param media The FeedMedia object.
      */
     public static Future<?> setFeedMediaPlaybackInformation(final FeedMedia media) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setFeedMediaPlaybackInformation(media);
@@ -869,7 +864,7 @@ public class DBWriter {
      * @param item The FeedItem object.
      */
     public static Future<?> setFeedItem(final FeedItem item) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setSingleFeedItem(item);
@@ -883,7 +878,7 @@ public class DBWriter {
      */
     public static Future<?> updateFeedDownloadURL(final String original, final String updated) {
         Log.d(TAG, "updateFeedDownloadURL(original: " + original + ", updated: " + updated + ")");
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setFeedDownloadUrl(original, updated);
@@ -897,7 +892,7 @@ public class DBWriter {
      * @param preferences The FeedPreferences object.
      */
     public static Future<?> setFeedPreferences(final FeedPreferences preferences) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setFeedPreferences(preferences);
@@ -927,7 +922,7 @@ public class DBWriter {
      */
     public static Future<?> setFeedLastUpdateFailed(final long feedId,
                                                     final boolean lastUpdateFailed) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setFeedLastUpdateFailed(feedId, lastUpdateFailed);
@@ -937,7 +932,7 @@ public class DBWriter {
     }
 
     public static Future<?> setFeedCustomTitle(Feed feed) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setFeedCustomTitle(feed.getId(), feed.getCustomTitle());
@@ -956,10 +951,10 @@ public class DBWriter {
     public static Future<?> reorderQueue(@Nullable SortOrder sortOrder, final boolean broadcastUpdate) {
         if (sortOrder == null) {
             Log.w(TAG, "reorderQueue() - sortOrder is null. Do nothing.");
-            return submitIfNeeded(() -> { });
+            return runOnDbThread(() -> { });
         }
         final Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(sortOrder);
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             final List<FeedItem> queue = DBReader.getQueue(adapter);
@@ -986,7 +981,7 @@ public class DBWriter {
     public static Future<?> setFeedItemsFilter(final long feedId,
                                                final Set<String> filterValues) {
         Log.d(TAG, "setFeedItemsFilter() called with: " + "feedId = [" + feedId + "], filterValues = [" + filterValues + "]");
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setFeedItemFilter(feedId, filterValues);
@@ -1000,7 +995,7 @@ public class DBWriter {
      *
      */
     public static Future<?> setFeedItemSortOrder(long feedId, @Nullable SortOrder sortOrder) {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setFeedItemSortOrder(feedId, sortOrder);
@@ -1014,7 +1009,7 @@ public class DBWriter {
      */
     @NonNull
     public static Future<?> resetStatistics() {
-        return submitIfNeeded(() -> {
+        return runOnDbThread(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.resetAllMediaPlayedDuration();
@@ -1026,14 +1021,12 @@ public class DBWriter {
      * Submit to the DB thread only if caller is not already on the DB thread. Otherwise,
      * just execute synchronously
      */
-    private static Future<?> submitIfNeeded(Runnable runnable) {
-        if (Thread.currentThread().getName() == "DatabaseExecutor") {
+    private static Future<?> runOnDbThread(Runnable runnable) {
+        if ("DatabaseExecutor".equals(Thread.currentThread().getName())) {
             runnable.run();
             return Futures.immediateFuture(null);
         } else {
-            return dbExec.submit(() -> {
-                runnable.run();
-            });
+            return dbExec.submit(runnable);
         }
     }
 }

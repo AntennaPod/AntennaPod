@@ -42,11 +42,7 @@ public class EpisodeMultiSelectActionHandler {
         } else if (actionId == R.id.download_batch) {
             downloadChecked(items);
         } else if (actionId == R.id.delete_batch) {
-            LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(
-                    activity,
-                    items,
-                    () -> deleteChecked(items)
-            );
+            LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(activity, items, () -> deleteChecked(items));
         } else {
             Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionId);
         }

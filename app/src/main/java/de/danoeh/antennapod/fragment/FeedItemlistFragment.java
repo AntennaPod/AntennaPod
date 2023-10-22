@@ -316,7 +316,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (feed == null || feed.getItems() == null) {
             return;
         }
-
         for (int i = 0, size = event.items.size(); i < size; i++) {
             FeedItem item = event.items.get(i);
             int pos = FeedItemUtil.indexOfItemWithId(feed.getItems(), item.getId());

@@ -38,15 +38,13 @@ public class DeleteActionButton extends ItemActionButton {
             return;
         }
 
-        LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(
-                context, Collections.singletonList(item),
+        LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(context, Collections.singletonList(item),
                 () -> DBWriter.deleteFeedMediaOfItem(context, media.getId()));
     }
 
     @Override
     public int getVisibility() {
-        if (item.getMedia() != null
-                && (item.getMedia().isDownloaded() || item.getFeed().isLocalFeed())) {
+        if (item.getMedia() != null && (item.getMedia().isDownloaded() || item.getFeed().isLocalFeed())) {
             return View.VISIBLE;
         }
 
