@@ -49,7 +49,7 @@ public class DownloadActionButton extends ItemActionButton {
 
         UsageStatistics.logAction(UsageStatistics.ACTION_DOWNLOAD);
 
-        if (BYPASS_CELLULAR_NETWORK_WARNING || NetworkUtils.isEpisodeDownloadAllowed()) {
+        if (bypassCellularNetworkWarning || NetworkUtils.isEpisodeDownloadAllowed()) {
             DownloadServiceInterface.get().downloadNow(context, item, false);
         } else {
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context)
