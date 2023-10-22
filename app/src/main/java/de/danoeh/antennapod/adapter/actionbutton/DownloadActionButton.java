@@ -17,7 +17,7 @@ import de.danoeh.antennapod.core.util.NetworkUtils;
 
 public class DownloadActionButton extends ItemActionButton {
 
-    private static boolean BYPASS_CELLULAR_NETWORK_WARNING = false;
+    private static boolean bypassCellularNetworkWarning = false;
 
     public DownloadActionButton(FeedItem item) {
         super(item);
@@ -59,7 +59,7 @@ public class DownloadActionButton extends ItemActionButton {
                             (d, w) -> DownloadServiceInterface.get().downloadNow(context, item, false))
                     .setNeutralButton(R.string.confirm_mobile_download_dialog_allow_this_time,
                             (d, w) -> {
-                                BYPASS_CELLULAR_NETWORK_WARNING = true;
+                                bypassCellularNetworkWarning = true;
                                 DownloadServiceInterface.get().downloadNow(context, item, true);
                             })
                     .setNegativeButton(R.string.cancel_label, null);
