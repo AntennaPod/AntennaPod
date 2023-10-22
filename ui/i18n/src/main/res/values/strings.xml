@@ -216,6 +216,7 @@
     <string name="stream_label">Stream</string>
     <string name="delete_label">Delete</string>
     <string name="delete_failed">Unable to delete file. Rebooting the device could help.</string>
+    <string name="delete_local_failed">Unable to delete file. Try re-connecting the local folder from the podcast info screen.</string>
     <string name="delete_episode_label">Delete episode</string>
     <plurals name="deleted_multi_episode_batch_label">
         <item quantity="one">1 downloaded episode deleted.</item>
@@ -259,6 +260,7 @@
     <string name="skip_episode_label">Skip episode</string>
     <string name="reset_position">Reset playback position</string>
     <string name="no_items_selected">No items selected</string>
+    <string name="delete_local_feed_warning_body">Deleting removes the episode from AntennaPod and deletes the media file from your device storage. It cannot be downloaded again through AntennaPod.</string>
 
     <!-- Download messages and labels -->
     <string name="download_successful">successful</string>
@@ -401,6 +403,9 @@
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
     <string name="pref_auto_delete_title">Auto delete</string>
+    <string name="pref_auto_local_delete_title">Auto delete from local folders</string>
+    <string name="pref_auto_local_delete_sum">Include local folders in Auto delete functionality</string>
+    <string name="pref_auto_local_delete_dialog_body">Note that for local folders this will remove episodes from AntennaPod and delete their media files from your device storage. They cannot be downloaded again through AntennaPod. Enable auto delete?</string>
     <string name="pref_smart_mark_as_played_sum">Mark episodes as played even if less than a certain amount of seconds of playing time is still left</string>
     <string name="pref_smart_mark_as_played_title">Smart mark as played</string>
     <string name="pref_skip_keeps_episodes_sum">Keep episodes when they are skipped</string>

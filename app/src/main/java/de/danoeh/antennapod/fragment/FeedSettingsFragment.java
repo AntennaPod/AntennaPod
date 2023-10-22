@@ -172,7 +172,6 @@ public class FeedSettingsFragment extends Fragment {
 
                         if (feed.isLocalFeed()) {
                             findPreference(PREF_AUTHENTICATION).setVisible(false);
-                            findPreference(PREF_AUTO_DELETE).setVisible(false);
                             findPreference(PREF_CATEGORY_AUTO_DOWNLOAD).setVisible(false);
                         }
 
