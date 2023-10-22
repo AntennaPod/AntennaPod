@@ -3,6 +3,10 @@ plugins {
 }
 apply from: "../common.gradle"
 
+android {
+    namespace "de.danoeh.antennapod.event"
+}
+
 dependencies {
     implementation project(':model')
     implementation "androidx.core:core:$coreVersion"

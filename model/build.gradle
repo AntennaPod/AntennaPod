@@ -3,6 +3,10 @@ plugins {
 }
 apply from: "../common.gradle"
 
+android {
+    namespace "de.danoeh.antennapod.model"
+}
+
 dependencies {
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.media:media:$mediaVersion"

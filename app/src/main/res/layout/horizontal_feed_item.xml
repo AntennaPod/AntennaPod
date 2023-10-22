@@ -11,6 +11,7 @@
     android:clipChildren="false">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/non_square_icon_background"
@@ -29,5 +30,12 @@
             squareImageView:direction="height" />
 
     </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/actionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        style="@style/Widget.Material3.Button.OutlinedButton" />
 
 </LinearLayout>

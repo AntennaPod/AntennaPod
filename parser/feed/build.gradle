@@ -3,6 +3,10 @@ plugins {
 }
 apply from: "../../common.gradle"
 
+android {
+    namespace "de.danoeh.antennapod.parser.feed"
+}
+
 dependencies {
     implementation project(':model')
 
