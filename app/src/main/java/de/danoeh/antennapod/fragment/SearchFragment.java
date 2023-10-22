@@ -67,7 +67,7 @@ import de.danoeh.antennapod.event.FeedListUpdateEvent;
 /**
  * Performs a search operation on all feeds or one specific feed and displays the search result.
  */
-public class SearchFragment extends Fragment implements EpisodeItemListAdapter.OnSelectModeListener  {
+public class SearchFragment extends Fragment implements EpisodeItemListAdapter.OnSelectModeListener {
     private static final String TAG = "SearchFragment";
     private static final String ARG_QUERY = "query";
     private static final String ARG_FEED = "feed";
@@ -224,7 +224,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
             }
         });
         speedDialBinding.fabSD.setOnActionSelectedListener(actionItem -> {
-            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), actionItem.getId())
+            new EpisodeMultiSelectActionHandler((MainActivity) getActivity(), actionItem.getId())
                     .handleAction(adapter.getSelectedItems());
             adapter.endSelectMode();
             return true;
@@ -290,16 +290,16 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         Feed selectedFeedItem  = adapterFeeds.getLongPressedItem();
-        if(selectedFeedItem != null
-                && FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedFeedItem, () -> {})){
+        if (selectedFeedItem != null
+                && FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedFeedItem, () -> { })) {
             return true;
         }
         FeedItem selectedItem = adapter.getLongPressedItem();
-        if(selectedItem != null){
-            if(adapter.onContextItemSelected(item)){
+        if (selectedItem != null) {
+            if (adapter.onContextItemSelected(item)) {
                 return true;
             }
-            if(FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem)){
+            if (FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem)) {
                 return true;
             }
         }
@@ -450,7 +450,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         searchViewFocusOn();
     }
 
-    private void searchViewFocusOff(){
+    private void searchViewFocusOff() {
         isOtherViewInFoucus = true;
         searchView.clearFocus();
     }
