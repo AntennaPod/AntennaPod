@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -110,12 +111,13 @@ public class SleepTimerDialog extends DialogFragment {
         final CheckBox cbShakeToReset = content.findViewById(R.id.cbShakeToReset);
         final CheckBox cbVibrate = content.findViewById(R.id.cbVibrate);
         chAutoEnable = content.findViewById(R.id.chAutoEnable);
-        final TextView changeTimesButton = content.findViewById(R.id.changeTimes);
+        final ImageView changeTimesButton = content.findViewById(R.id.changeTimesButton);
 
         cbShakeToReset.setChecked(SleepTimerPreferences.shakeToReset());
         cbVibrate.setChecked(SleepTimerPreferences.vibrate());
         chAutoEnable.setChecked(SleepTimerPreferences.autoEnable());
         changeTimesButton.setEnabled(chAutoEnable.isChecked());
+        changeTimesButton.setAlpha(chAutoEnable.isChecked() ? 1.0f : 0.5f);
 
         cbShakeToReset.setOnCheckedChangeListener((buttonView, isChecked)
                 -> SleepTimerPreferences.setShakeToReset(isChecked));
@@ -125,6 +127,7 @@ public class SleepTimerDialog extends DialogFragment {
                 -> {
             SleepTimerPreferences.setAutoEnable(isChecked);
             changeTimesButton.setEnabled(isChecked);
+            changeTimesButton.setAlpha(isChecked ? 1.0f : 0.5f);
         });
         updateAutoEnableText();
 
