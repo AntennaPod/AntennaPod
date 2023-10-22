@@ -82,7 +82,7 @@
                         android:shadowColor="@color/black"
                         android:shadowRadius="3"
                         android:textColor="@color/white"
-                        android:textSize="18sp"
+                        android:textSize="20sp"
                         android:textFontWeight="800"
                         tools:text="Podcast title" />
 

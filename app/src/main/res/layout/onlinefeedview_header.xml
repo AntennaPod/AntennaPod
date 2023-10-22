@@ -18,7 +18,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp"
         android:text="@string/description_label"
-        style="@style/AntennaPod.TextView.ListItemPrimaryTitle" />
+        style="@style/TextAppearance.Material3.TitleMedium" />
 
     <TextView
         android:id="@+id/txtvDescription"
@@ -43,6 +43,6 @@
         android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp"
         android:text="@string/episodes_label"
-        style="@style/AntennaPod.TextView.ListItemPrimaryTitle" />
+        style="@style/TextAppearance.Material3.TitleMedium" />
 
 </LinearLayout>

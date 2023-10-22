@@ -68,6 +68,7 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
             holder.description.setMaxLines(MAX_LINES_COLLAPSED);
         }
         holder.description.setTag(Boolean.FALSE); // not expanded
+        holder.preview.setVisibility(View.GONE);
         holder.preview.setOnClickListener(v -> {
             if (item.getMedia() == null) {
                 return;
@@ -89,6 +90,7 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
         convertView.setOnClickListener(v -> {
             if (holder.description.getTag() == Boolean.TRUE) {
                 holder.description.setMaxLines(MAX_LINES_COLLAPSED);
+                holder.preview.setVisibility(View.GONE);
                 holder.description.setTag(Boolean.FALSE);
             } else {
                 holder.description.setMaxLines(30);
