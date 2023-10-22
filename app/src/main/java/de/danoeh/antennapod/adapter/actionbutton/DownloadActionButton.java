@@ -58,8 +58,7 @@ public class DownloadActionButton extends ItemActionButton {
                     .setPositiveButton(R.string.confirm_mobile_download_dialog_download_later,
                             (d, w) -> DownloadServiceInterface.get().downloadNow(context, item, false))
                     .setNeutralButton(R.string.confirm_mobile_download_dialog_allow_this_time,
-                            (d, w) ->
-                            {
+                            (d, w) -> {
                                 BYPASS_CELLULAR_NETWORK_WARNING = true;
                                 DownloadServiceInterface.get().downloadNow(context, item, true);
                             })
