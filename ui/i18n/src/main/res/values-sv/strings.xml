@@ -227,7 +227,7 @@
   </plurals>
   <string name="remove_from_queue_label">Ta bort från kön</string>
   <plurals name="removed_from_queue_batch_label">
-    <item quantity="one">1%d episod borttagen från kön.</item>
+    <item quantity="one">%d episod borttagen från kön.</item>
     <item quantity="other">%d episoder borttagna från kön.</item>
   </plurals>
   <plurals name="removed_from_inbox_batch_label">

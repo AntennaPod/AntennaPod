@@ -49,13 +49,13 @@
   <string name="home_surprise_title">فاجِئني</string>
   <string name="home_classics_title">الأكثر استماعا لك</string>
   <string name="home_continue_title">واصل الاستماع</string>
-  <string name="home_new_title">أطلع على الجديد</string>
+  <string name="home_new_title">اطلع على الجديد</string>
   <string name="home_downloads_title">إدارة التنزيلات</string>
   <string name="home_welcome_title">مرحبا بك في AntennaPod!</string>
   <string name="home_welcome_text">أنت لست مشتركا بأي بودكاست، أفتح الدرج لإضافة بودكاست.</string>
   <string name="notification_permission_text">يحتاج التطبيق إلى إذنك لكي يعرض الإشعارات خلال تنزيله للحلقات.</string>
-  <string name="notification_permission_denied">لقد رفضت السماح للإشعارات</string>
-  <string name="open_settings">إفتح الإعدادات</string>
+  <string name="notification_permission_denied">لقد رفضت السماح بلإشعارات</string>
+  <string name="open_settings">افتح الإعدادات</string>
   <string name="configure_home">أضبط شاشة المنزل</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">الحجم الإجمالي للحلقات على هذا الجهاز</string>
@@ -254,8 +254,8 @@
     <item quantity="many">%d حلقات علمت كـ مقروءة. </item>
     <item quantity="other">%d حلقات علمت كمقروءة.</item>
   </plurals>
-  <string name="mark_unread_label">تعليمه بأنه لم يتم تشغيله</string>
-  <string name="mark_unread_label_no_media">علمه بأنه غير مقروء</string>
+  <string name="mark_unread_label">علمها كغير مشغلة</string>
+  <string name="mark_unread_label_no_media">علمها كغير مقروءة</string>
   <plurals name="marked_unread_batch_label">
     <item quantity="zero">%d حلقة علمت بأنه لم يتم تشغيلها.</item>
     <item quantity="one">%d حلقة  علمت بأنه لم يتم تشغيلها.</item>
@@ -748,19 +748,19 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">استيراد الاشتراكات من التطبيقات ذات الغرض الواحد ...</string>
   <!--Add podcast fragment-->
-  <string name="search_podcast_hint">أبحث عن بودكاست...</string>
-  <string name="search_itunes_label">البحث في Apple Podcasts</string>
+  <string name="search_podcast_hint">ابحث عن بودكاست...</string>
+  <string name="search_itunes_label">ابحث Apple Podcasts</string>
   <string name="search_podcastindex_label">إبحث في Podcast Index</string>
-  <string name="search_fyyd_label">أبحث fyyd</string>
-  <string name="gpodnet_search_hint">أبحث gpodder.net</string>
+  <string name="search_fyyd_label">ابحث fyyd</string>
+  <string name="gpodnet_search_hint">ابحث gpodder.net</string>
   <string name="advanced">متقدم</string>
   <string name="add_podcast_by_url">أضف بودكاست برابط الـ RSS</string>
-  <string name="discover">أكتشف</string>
+  <string name="discover">اكتشف</string>
   <string name="discover_hide">اخفاء</string>
   <string name="discover_is_hidden">لقد اخترت اخفاء الاقتراحات.</string>
   <string name="discover_more">المزيد »</string>
-  <string name="discover_powered_by_itunes">اقتراحات من Apple Podcasts</string>
-  <string name="discover_confirm">اظهر الاقتراحات</string>
+  <string name="discover_powered_by_itunes">إقتراحات من Apple Podcasts</string>
+  <string name="discover_confirm">أظهر الاقتراحات</string>
   <string name="search_powered_by">النتائج من %1$s</string>
   <string name="select_country">أختر الدولة</string>
   <!--Local feeds-->
