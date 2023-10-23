@@ -1591,10 +1591,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         mediaPlayer.pause(abandonAudioFocus, reinit);
     }
 
-    public void skip() {
-        mediaPlayer.skip();
-    }
-
     public PlaybackServiceMediaPlayer.PSMPInfo getPSMPInfo() {
         return mediaPlayer.getPSMPInfo();
     }

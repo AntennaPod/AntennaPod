@@ -318,10 +318,6 @@ public abstract class PlaybackController {
         }
     }
 
-    public void skip() {
-        playbackService.skip();
-    }
-
     public int getPosition() {
         if (playbackService != null) {
             return playbackService.getCurrentPosition();
