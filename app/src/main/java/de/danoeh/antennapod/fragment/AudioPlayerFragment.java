@@ -26,7 +26,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.elevation.SurfaceColors;
 
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
-import de.danoeh.antennapod.core.util.PodcastIndexTranscriptUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.MediaPlayerErrorDialog;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
