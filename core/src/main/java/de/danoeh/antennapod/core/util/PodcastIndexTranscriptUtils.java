@@ -39,13 +39,20 @@ public class PodcastIndexTranscriptUtils {
     public static Transcript loadTranscript(FeedMedia media) {
         String type = null;
         String url = null;
-        if (media.getItem().getPodcastIndexTranscriptUrl("application/json") != null) {
+        if (media.getItem().getPodcastIndexTranscriptUrls("application/json") != null) {
             type = "application/json";
-            url = media.getItem().getPodcastIndexTranscriptUrl("application/json");
-        } else if (media.getItem().getPodcastIndexTranscriptUrl("application/srtXXX") != null) {
+            url = media.getItem().getPodcastIndexTranscriptUrls("application/json");
+
+        } else if (media.getItem().getPodcastIndexTranscriptUrls("application/srt") != null) {
+            // TT TODO: how about application/x-subrip
             type = "application/srt";
-            url = media.getItem().getPodcastIndexTranscriptUrl(type);
+            url = media.getItem().getPodcastIndexTranscriptUrls(type);
         }
+
+        if (media.getItem().getPodcastIndexTranscriptText() != null) {
+            return PodcastIndexTranscriptParser.parse(media.getItem().getPodcastIndexTranscriptText(), type);
+        }
+
         // TODO: Store the transcript somewhere? in the DB of file system?
         if (url != null) {
             Log.d(TAG, "Loading Transcript URL " + url);

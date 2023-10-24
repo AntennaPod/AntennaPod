@@ -7,6 +7,7 @@ public class Transcript {
 
     private TreeMap<Long, TranscriptSegment> segmentsMap = new TreeMap<>();
     private HashMap<Long, TranscriptSegment> randomAccessMap = new HashMap<>();
+    private String rawString;
 
     public void addSegment(TranscriptSegment segment) {
         segmentsMap.put(segment.getStartTime(), segment);
@@ -23,5 +24,13 @@ public class Transcript {
 
     public TranscriptSegment getSegmentAtRandomTime(long time) {
         return randomAccessMap.get(time);
+    }
+
+    public void setRawString(java.lang.String rawString) {
+        this.rawString = rawString;
+    }
+
+    public String toString() {
+       return rawString;
     }
 }

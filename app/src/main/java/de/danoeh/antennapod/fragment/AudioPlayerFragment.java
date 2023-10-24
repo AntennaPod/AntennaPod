@@ -34,10 +34,12 @@ import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
+import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.jsoup.internal.StringUtil;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -261,10 +263,6 @@ public class AudioPlayerFragment extends Fragment implements
             Playable media = controller.getMedia();
 
             if (media != null) {
-                if (media instanceof FeedMedia) {
-                    // TT TODO
-                    PodcastIndexTranscriptUtils.loadTranscript((FeedMedia) media);
-                }
                 if (includingChapters) {
                     ChapterUtils.loadChapters(media, getContext(), false);
                 }
@@ -400,7 +398,6 @@ public class AudioPlayerFragment extends Fragment implements
         Fragment transcriptChild = getChildFragmentManager().findFragmentByTag("f" + POS_TRANSCRIPT);
         if (transcriptChild != null) {
             ItemTranscriptFragment itemTranscriptFragment = (ItemTranscriptFragment) transcriptChild;
-            String id = "seg98280";
             //Log.d(TAG, "Jumping to anchor #" + id + " position " + position);
             itemTranscriptFragment.scrollToPosition(currentPosition);
         }

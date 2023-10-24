@@ -43,6 +43,7 @@ public class FeedItem extends FeedComponent implements Serializable {
     private transient Feed feed;
     private long feedId;
     private String podcastIndexChapterUrl;
+    private String podcastIndexTranscriptText;
     private Hashtable<String, String> podcastIndexTranscriptUrls;
 
     private int state;
@@ -91,7 +92,7 @@ public class FeedItem extends FeedComponent implements Serializable {
     public FeedItem(long id, String title, String link, Date pubDate, String paymentLink, long feedId,
                     boolean hasChapters, String imageUrl, int state,
                     String itemIdentifier, long autoDownload, String podcastIndexChapterUrl,
-                    String transcriptType, String transcriptUrl) {
+                    String transcriptType, String transcriptUrl, String transcriptText) {
         this.id = id;
         this.title = title;
         this.link = link;
@@ -110,6 +111,7 @@ public class FeedItem extends FeedComponent implements Serializable {
             this.podcastIndexTranscriptUrls.put(transcriptType, transcriptUrl);
             this.hasTranscript = true;
         }
+        this.podcastIndexTranscriptText = transcriptText;
     }
 
     /**
@@ -470,26 +472,30 @@ public class FeedItem extends FeedComponent implements Serializable {
     }
 
 
-    public String getPodcastIndexTranscriptUrl(String t) {
+    public String getPodcastIndexTranscriptUrls(String t) {
         if (podcastIndexTranscriptUrls == null) {
             return null;
         }
         return podcastIndexTranscriptUrls.get(t);
     }
 
-    public Hashtable<String, String> getPodcastIndexTranscriptUrl() {
+    public Hashtable<String, String> getPodcastIndexTranscriptUrls() {
         if (podcastIndexTranscriptUrls == null) {
             return null;
         }
         return podcastIndexTranscriptUrls;
     }
 
-    public boolean hasTranscript() {
-        return hasTranscript;
+    public String getPodcastIndexTranscriptText() {
+        return podcastIndexTranscriptText;
     }
 
-    public Hashtable<String, String> getPodcastIndexTranscriptUrls() {
-        return podcastIndexTranscriptUrls;
+    public String setPodcastIndexTranscriptText(String str) {
+        return podcastIndexTranscriptText = str;
+    }
+
+    public boolean hasTranscript() {
+        return hasTranscript;
     }
 
     @NonNull

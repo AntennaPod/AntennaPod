@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.util.PodcastIndexTranscriptUtils;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -65,7 +66,8 @@ public class MediaDownloadedHandler implements Runnable {
 
         if (media.getItem() != null && media.getItem().getPodcastIndexTranscriptUrls() != null) {
             // TT TODO
-            PodcastIndexTranscriptUtils.loadTranscript(media);
+            Transcript transcript =  PodcastIndexTranscriptUtils.loadTranscript(media);
+            media.getItem().setPodcastIndexTranscriptText(transcript.toString());
         }
         // Get duration
         String durationStr = null;
