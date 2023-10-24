@@ -674,7 +674,7 @@ public class PodDBAdapter {
             values.put(KEY_PODCASTINDEX_TRANSCRIPT_TYPE, "application/json");
         }
 
-       values.put(KEY_PODCASTINDEX_TRANSCRIPT_TEXT, item.getPodcastIndexTranscriptText());
+        values.put(KEY_PODCASTINDEX_TRANSCRIPT_TEXT, item.getPodcastIndexTranscriptText());
 
         if (item.getId() == 0) {
             item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));

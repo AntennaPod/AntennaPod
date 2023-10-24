@@ -31,6 +31,6 @@ public class Transcript {
     }
 
     public String toString() {
-       return rawString;
+        return rawString;
     }
 }

@@ -81,7 +81,10 @@ public class PodcastIndexTranscriptParser {
                         Log.d(TAG, Long.toString(startTimecode) + " " + body);
                         segmentBody += body;
                         if (duration >= span) {
-                            transcript.addSegment(new TranscriptSegment(startTimecode, endTimecode, segmentBody, speaker));
+                            transcript.addSegment(new TranscriptSegment(startTimecode,
+                                    endTimecode,
+                                    segmentBody,
+                                    speaker));
                             duration = 0L;
                             segmentBody = "";
                         }

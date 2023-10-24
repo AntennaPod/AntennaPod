@@ -52,7 +52,9 @@ public class ItemTranscriptTextFragment extends Fragment {
         View root = inflater.inflate(R.layout.item_transcript_text, container, false);
         recyclerView = root.findViewById(R.id.transcript_text_recyclerview);
         // setting recyclerView layoutManager
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false);
         recyclerView.setLayoutManager(layoutManager);
         return root;
     }
@@ -73,48 +75,48 @@ public class ItemTranscriptTextFragment extends Fragment {
             return;
         }
         webViewLoader = Maybe.<String>create(emitter -> {
-                    Playable media = controller.getMedia();
-                    if (media == null) {
-                        emitter.onComplete();
-                        return;
-                    }
-                    String transcriptStr = "";
-                    if (media instanceof FeedMedia) {
-                        FeedMedia feedMedia = ((FeedMedia) media);
-                        if (feedMedia.getItem() == null) {
-                            feedMedia.setItem(DBReader.getFeedItem(feedMedia.getItemId()));
+            Playable media = controller.getMedia();
+            if (media == null) {
+                emitter.onComplete();
+                return;
+            }
+            String transcriptStr = "";
+            if (media instanceof FeedMedia) {
+                FeedMedia feedMedia = ((FeedMedia) media);
+                if (feedMedia.getItem() == null) {
+                    feedMedia.setItem(DBReader.getFeedItem(feedMedia.getItemId()));
+                }
+                Transcript transcript = PodcastIndexTranscriptUtils.loadTranscript(feedMedia);
+                if (transcript != null) {
+                    segmentsMap = transcript.getSegmentsMap();
+                    map = segmentsMap.tailMap(0L, true);
+                    Iterator<Long> iter = map.keySet().iterator();
+                    try {
+                        while (true) {
+                            Long l = iter.next();
+                            long start = segmentsMap.get(l).getStartTime();
+                            transcriptStr = transcriptStr.concat(
+                                    "<a id=\"seg" + start + "\">"
+                                            + segmentsMap.get(l).getWords()
+                                            + "</a> "
+                            );
                         }
-                        Transcript transcript = PodcastIndexTranscriptUtils.loadTranscript(feedMedia);
-                        if (transcript != null) {
-                            segmentsMap = transcript.getSegmentsMap();
-                            map = segmentsMap.tailMap(0L, true);
-                            Iterator<Long> iter = map.keySet().iterator();
-                            try {
-                                while (true) {
-                                    Long l = iter.next();
-                                    long start = segmentsMap.get(l).getStartTime();
-                                    transcriptStr = transcriptStr.concat(
-                                            "<a id=\"seg" + start + "\">"
-                                                    + segmentsMap.get(l).getWords()
-                                                    + "</a> "
-                                    );
-                                }
-                            } catch (NoSuchElementException e) {
-                                // DONE
-                            }
-                            Log.d(TAG, "FULL TRANSCRIPT" + transcriptStr);
-                        }
+                    } catch (NoSuchElementException e) {
+                        // DONE
                     }
-                    ShownotesCleaner shownotesCleaner = new ShownotesCleaner(
-                            context, transcriptStr, media.getDuration());
-                    emitter.onSuccess(shownotesCleaner.processShownotes());
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> {
-                    // TT TODO: show data
-                    Log.d(TAG, "Webview loaded with data " + data);
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+                    Log.d(TAG, "FULL TRANSCRIPT" + transcriptStr);
+                }
+            }
+            ShownotesCleaner shownotesCleaner = new ShownotesCleaner(
+                    context, transcriptStr, media.getDuration());
+            emitter.onSuccess(shownotesCleaner.processShownotes());
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(data -> {
+            // TT TODO: show data
+            Log.d(TAG, "Webview loaded with data " + data);
+        }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     @Override
