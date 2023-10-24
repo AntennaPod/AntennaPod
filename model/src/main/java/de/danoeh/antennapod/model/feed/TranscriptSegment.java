@@ -17,6 +17,10 @@ public class TranscriptSegment {
         return startTime;
     }
 
+    public long getEndTime() {
+        return endTime;
+    }
+
     public String getWords() {
         return words;
     }

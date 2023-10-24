@@ -26,7 +26,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.elevation.SurfaceColors;
 
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
-import de.danoeh.antennapod.core.util.PodcastIndexTranscriptUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.MediaPlayerErrorDialog;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
@@ -261,10 +260,6 @@ public class AudioPlayerFragment extends Fragment implements
             Playable media = controller.getMedia();
 
             if (media != null) {
-                if (media instanceof FeedMedia) {
-                    // TT TODO
-                    PodcastIndexTranscriptUtils.loadTranscript((FeedMedia) media);
-                }
                 if (includingChapters) {
                     ChapterUtils.loadChapters(media, getContext(), false);
                 }
@@ -400,7 +395,6 @@ public class AudioPlayerFragment extends Fragment implements
         Fragment transcriptChild = getChildFragmentManager().findFragmentByTag("f" + POS_TRANSCRIPT);
         if (transcriptChild != null) {
             ItemTranscriptFragment itemTranscriptFragment = (ItemTranscriptFragment) transcriptChild;
-            String id = "seg98280";
             //Log.d(TAG, "Jumping to anchor #" + id + " position " + position);
             itemTranscriptFragment.scrollToPosition(currentPosition);
         }
