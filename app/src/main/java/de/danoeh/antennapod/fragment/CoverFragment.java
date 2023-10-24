@@ -168,6 +168,8 @@ public class CoverFragment extends Fragment {
             if (viewBinding.transcriptButton.getVisibility() != View.VISIBLE) {
                 viewBinding.transcriptButton.setVisibility(View.VISIBLE);
             }
+        } else {
+            viewBinding.transcriptButton.setVisibility(View.GONE);
         }
     }
 

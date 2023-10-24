@@ -258,7 +258,6 @@ public class AudioPlayerFragment extends Fragment implements
         }
         disposable = Maybe.<Playable>create(emitter -> {
             Playable media = controller.getMedia();
-
             if (media != null) {
                 if (includingChapters) {
                     ChapterUtils.loadChapters(media, getContext(), false);
@@ -303,11 +302,10 @@ public class AudioPlayerFragment extends Fragment implements
             return;
         }
         duration = controller.getDuration();
-        long position = updatePosition(new PlaybackPositionEvent(media.getPosition(), media.getDuration()));
+        updatePosition(new PlaybackPositionEvent(media.getPosition(), media.getDuration()));
         updatePlaybackSpeedButton(new SpeedChangedEvent(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media)));
         setChapterDividers(media);
         setupOptionsMenu(media);
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
