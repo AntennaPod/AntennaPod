@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -165,6 +163,7 @@ public class ItemTranscriptFragment extends Fragment {
             webvDescription.loadUrl("javascript:scrollAnchor(\"seg" + entry.getKey() + "\");");
         }
     }
+
     public void scrollToTop() {
         webvDescription.scrollTo(0, 0);
     }
