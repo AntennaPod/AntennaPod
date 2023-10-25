@@ -28,5 +28,4 @@ public class TranscriptSegment {
     public String getSpeaker() {
         return speaker;
     }
-
 }

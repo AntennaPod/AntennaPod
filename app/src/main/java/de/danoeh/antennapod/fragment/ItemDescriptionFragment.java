@@ -46,12 +46,10 @@ public class ItemDescriptionFragment extends Fragment {
             if (controller != null) {
                 controller.seekTo(time);
             }
-            // TT TOOD seek to transcript?
         });
         webvDescription.setPageFinishedListener(() -> {
             // Restoring the scroll position might not always work
             webvDescription.postDelayed(ItemDescriptionFragment.this::restoreFromPreference, 50);
-            // TT TODO, do we restore from transcript?
         });
 
         root.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
