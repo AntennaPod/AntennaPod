@@ -22,6 +22,7 @@ import androidx.work.WorkerParameters;
 
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import org.apache.commons.lang3.StringUtils;
@@ -298,13 +299,18 @@ public class SyncService extends Worker {
     }
 
     private void updateErrorNotification(Exception exception) {
+        Log.d(TAG, "Posting sync error notification");
+        final String description = getApplicationContext().getString(R.string.gpodnetsync_error_descr)
+                + exception.getMessage();
+
         if (!UserPreferences.gpodnetNotificationsEnabled()) {
             Log.d(TAG, "Skipping sync error notification because of user setting");
             return;
         }
-        Log.d(TAG, "Posting sync error notification");
-        final String description = getApplicationContext().getString(R.string.gpodnetsync_error_descr)
-                + exception.getMessage();
+        if (EventBus.getDefault().hasSubscriberForEvent(MessageEvent.class)) {
+            EventBus.getDefault().post(new MessageEvent(description));
+            return;
+        }
 
         Intent intent = getApplicationContext().getPackageManager().getLaunchIntentForPackage(
                 getApplicationContext().getPackageName());

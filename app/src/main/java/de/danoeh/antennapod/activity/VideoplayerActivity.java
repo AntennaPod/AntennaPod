@@ -32,9 +32,11 @@ import android.widget.SeekBar;
 import androidx.annotation.Nullable;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.bumptech.glide.Glide;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.dialog.MediaPlayerErrorDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
@@ -85,7 +87,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     private boolean videoSurfaceCreated = false;
     private boolean destroyingDueToReload = false;
     private long lastScreenTap = 0;
-    private Handler videoControlsHider = new Handler(Looper.getMainLooper());
+    private final Handler videoControlsHider = new Handler(Looper.getMainLooper());
     private VideoplayerActivityBinding viewBinding;
     private PlaybackController controller;
     private boolean showTimeLeft = false;
@@ -514,6 +516,17 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMediaPlayerError(PlayerErrorEvent event) {
         MediaPlayerErrorDialog.show(this, event);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(MessageEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        final MaterialAlertDialogBuilder errorDialog = new MaterialAlertDialogBuilder(this);
+        errorDialog.setMessage(event.message);
+        if (event.action != null) {
+            errorDialog.setPositiveButton(event.actionText, (dialog, which) -> event.action.accept(this));
+        }
+        errorDialog.show();
     }
 
     @Override

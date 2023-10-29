@@ -129,11 +129,7 @@ public class EpisodeDownloadWorker extends Worker {
             downloader.call();
         } catch (Exception e) {
             DBWriter.addDownloadStatus(downloader.getResult());
-            if (EventBus.getDefault().hasSubscriberForEvent(MessageEvent.class)) {
-                sendMessage(request.getTitle(), false);
-            } else {
-                sendErrorNotification();
-            }
+            sendErrorNotification(request.getTitle());
             FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
             return Result.failure();
         }
@@ -176,11 +172,7 @@ public class EpisodeDownloadWorker extends Worker {
                 || status.getReason() == DownloadError.ERROR_UNAUTHORIZED
                 || status.getReason() == DownloadError.ERROR_IO_BLOCKED) {
             // Fail fast, these are probably unrecoverable
-            if (EventBus.getDefault().hasSubscriberForEvent(MessageEvent.class)) {
-                sendMessage(request.getTitle(), false);
-            } else {
-                sendErrorNotification();
-            }
+            sendErrorNotification(request.getTitle());
             FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
             return Result.failure();
         }
@@ -193,7 +185,7 @@ public class EpisodeDownloadWorker extends Worker {
 
     private Result retry3times() {
         if (isLastRunAttempt()) {
-            sendErrorNotification();
+            sendErrorNotification(downloader.getDownloadRequest().getTitle());
             return Result.failure();
         } else {
             return Result.retry();
@@ -227,7 +219,12 @@ public class EpisodeDownloadWorker extends Worker {
                 PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
     }
 
-    private void sendErrorNotification() {
+    private void sendErrorNotification(String title) {
+        if (EventBus.getDefault().hasSubscriberForEvent(MessageEvent.class)) {
+            sendMessage(title, false);
+            return;
+        }
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(),
                 NotificationUtils.CHANNEL_ID_DOWNLOAD_ERROR);
         builder.setTicker(getApplicationContext().getString(R.string.download_report_title))

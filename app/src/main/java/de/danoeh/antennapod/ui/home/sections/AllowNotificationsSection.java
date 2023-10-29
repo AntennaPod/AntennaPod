@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.ui.home.sections;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -15,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.HomeSectionNotificationBinding;
@@ -29,6 +31,7 @@ public class AllowNotificationsSection extends Fragment {
                     ((MainActivity) getActivity()).loadFragment(HomeFragment.TAG, null);
                 } else {
                     viewBinding.openSettingsButton.setVisibility(View.VISIBLE);
+                    viewBinding.allowButton.setVisibility(View.GONE);
                     Toast.makeText(getContext(), R.string.notification_permission_denied, Toast.LENGTH_LONG).show();
                 }
             });
@@ -48,6 +51,17 @@ public class AllowNotificationsSection extends Fragment {
             Uri uri = Uri.fromParts("package", getContext().getPackageName(), null);
             intent.setData(uri);
             startActivity(intent);
+        });
+        viewBinding.denyButton.setOnClickListener(v -> {
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+            builder.setMessage(R.string.notification_permission_deny_warning);
+            builder.setPositiveButton(R.string.deny_label, (dialog, which) -> {
+                getContext().getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE)
+                        .edit().putBoolean(HomeFragment.PREF_DISABLE_NOTIFICATION_PERMISSION_NAG, true).apply();
+                ((MainActivity) getActivity()).loadFragment(HomeFragment.TAG, null);
+            });
+            builder.setNegativeButton(R.string.cancel_label, null);
+            builder.show();
         });
         return viewBinding.getRoot();
     }
