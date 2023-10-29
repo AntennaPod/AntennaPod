@@ -562,6 +562,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     @SuppressLint("LaunchActivityFromNotification")
     private void displayStreamingNotAllowedNotification(Intent originalIntent) {
+        if (EventBus.getDefault().hasSubscriberForEvent(MessageEvent.class)) {
+            EventBus.getDefault().post(new MessageEvent(
+                    getString(R.string.confirm_mobile_streaming_notification_message)));
+            return;
+        }
+
         Intent intentAllowThisTime = new Intent(originalIntent);
         intentAllowThisTime.setAction(PlaybackServiceInterface.EXTRA_ALLOW_STREAM_THIS_TIME);
         intentAllowThisTime.putExtra(PlaybackServiceInterface.EXTRA_ALLOW_STREAM_THIS_TIME, true);
