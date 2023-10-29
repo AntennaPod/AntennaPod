@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +36,7 @@ import de.danoeh.antennapod.core.feed.FeedUrlNotFoundException;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
 import de.danoeh.antennapod.core.util.DownloadErrorLabel;
+import de.danoeh.antennapod.databinding.OnlinefeedviewHeaderBinding;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
@@ -100,6 +100,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private static final String TAG = "OnlineFeedViewActivity";
     private static final String PREFS = "OnlineFeedViewActivityPreferences";
     private static final String PREF_LAST_AUTO_DOWNLOAD = "lastAutoDownload";
+    private static final int DESCRIPTION_MAX_LINES_COLLAPSED = 4;
 
     private volatile List<Feed> feeds;
     private String selectedDownloadUrl;
@@ -117,6 +118,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private Disposable parser;
     private Disposable updater;
 
+    private OnlinefeedviewHeaderBinding headerBinding;
     private OnlinefeedviewActivityBinding viewBinding;
 
     @Override
@@ -128,8 +130,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         setContentView(viewBinding.getRoot());
 
         viewBinding.transparentBackground.setOnClickListener(v -> finish());
+        viewBinding.closeButton.setOnClickListener(view -> finish());
         viewBinding.card.setOnClickListener(null);
         viewBinding.card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(this, R.attr.colorSurface));
+        headerBinding = OnlinefeedviewHeaderBinding.inflate(getLayoutInflater());
 
         String feedUrl = null;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
@@ -416,13 +420,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         viewBinding.backgroundImage.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
 
-        View header = View.inflate(this, R.layout.onlinefeedview_header, null);
-
-        viewBinding.listView.addHeaderView(header);
+        viewBinding.listView.addHeaderView(headerBinding.getRoot());
         viewBinding.listView.setSelector(android.R.color.transparent);
         viewBinding.listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
-
-        TextView description = header.findViewById(R.id.txtvDescription);
 
         if (StringUtils.isNotBlank(feed.getImageUrl())) {
             Glide.with(this)
@@ -445,7 +445,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         viewBinding.titleLabel.setText(feed.getTitle());
         viewBinding.authorLabel.setText(feed.getAuthor());
-        description.setText(HtmlToPlainText.getPlainText(feed.getDescription()));
+        headerBinding.txtvDescription.setText(HtmlToPlainText.getPlainText(feed.getDescription()));
 
         viewBinding.subscribeButton.setOnClickListener(v -> {
             if (feedInFeedlist()) {
@@ -467,13 +467,12 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             viewBinding.autoDownloadCheckBox.setChecked(preferences.getBoolean(PREF_LAST_AUTO_DOWNLOAD, true));
         }
 
-        final int MAX_LINES_COLLAPSED = 10;
-        description.setMaxLines(MAX_LINES_COLLAPSED);
-        description.setOnClickListener(v -> {
-            if (description.getMaxLines() > MAX_LINES_COLLAPSED) {
-                description.setMaxLines(MAX_LINES_COLLAPSED);
+        headerBinding.txtvDescription.setMaxLines(DESCRIPTION_MAX_LINES_COLLAPSED);
+        headerBinding.txtvDescription.setOnClickListener(v -> {
+            if (headerBinding.txtvDescription.getMaxLines() > DESCRIPTION_MAX_LINES_COLLAPSED) {
+                headerBinding.txtvDescription.setMaxLines(DESCRIPTION_MAX_LINES_COLLAPSED);
             } else {
-                description.setMaxLines(2000);
+                headerBinding.txtvDescription.setMaxLines(2000);
             }
         });
 

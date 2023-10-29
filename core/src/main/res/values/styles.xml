@@ -237,24 +237,24 @@
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
-    <style name="AntennaPod.TextView.ListItemPrimaryTitle" parent="@android:style/TextAppearance.Small">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <style name="AntennaPod.TextView.ListItemPrimaryTitle" parent="@style/TextAppearance.Material3.BodyLarge">
+        <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
+        <item name="lineHeight">20sp</item>
+        <item name="android:lineHeight" tools:targetApi="p">20sp</item>
     </style>
 
-    <style name="AntennaPod.TextView.ListItemPrimaryTitle2" parent="@android:style/TextAppearance.Small">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:ellipsize">end</item>
-    </style>
-
-    <style name="AntennaPod.TextView.ListItemSecondaryTitle" parent="@android:style/TextAppearance.Small">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">?android:attr/textColorSecondary</item>
+    <style name="AntennaPod.TextView.ListItemSecondaryTitle" parent="@style/TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
         <item name="android:lines">1</item>
         <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="AntennaPod.TextView.ListItemBody" parent="@style/TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="lineHeight">18sp</item>
+        <item name="android:lineHeight" tools:targetApi="p">18sp</item>
     </style>
 
     <style name="OutlinedButtonBetterContrast" parent="Widget.Material3.Button.OutlinedButton">

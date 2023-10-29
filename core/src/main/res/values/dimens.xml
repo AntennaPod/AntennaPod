@@ -6,11 +6,10 @@
     <dimen name="text_size_micro">12sp</dimen>
     <dimen name="text_size_small">14sp</dimen>
     <dimen name="text_size_navdrawer">16sp</dimen>
-    <dimen name="text_size_medium">18sp</dimen>
     <dimen name="text_size_large">22sp</dimen>
     <dimen name="thumbnail_length_itemlist">56dp</dimen>
     <dimen name="thumbnail_length_queue_item">56dp</dimen>
-    <dimen name="thumbnail_length_onlinefeedview">100dp</dimen>
+    <dimen name="thumbnail_length_onlinefeedview">92dp</dimen>
     <dimen name="feeditemlist_header_height">132dp</dimen>
     <dimen name="thumbnail_length_navlist">40dp</dimen>
     <dimen name="listitem_iconwithtext_height">48dp</dimen>
