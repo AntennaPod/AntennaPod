@@ -3,6 +3,10 @@ plugins {
 }
 apply from: "../../common.gradle"
 
+android {
+    namespace "de.danoeh.antennapod.net.common"
+}
+
 dependencies {
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"

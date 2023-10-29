@@ -5,6 +5,8 @@ apply from: "../common.gradle"
 apply from: "../playFlavor.gradle"
 
 android {
+    namespace "de.danoeh.antennapod.core"
+
     lint {
         disable "InvalidPeriodicWorkRequestInterval", "ObsoleteLintCustomCheck", "DefaultLocale", "UnusedAttribute",
                 "ParcelClassLoader", "CheckResult", "TrustAllX509TrustManager",

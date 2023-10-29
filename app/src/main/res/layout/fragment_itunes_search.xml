@@ -21,6 +21,7 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:title="@string/discover"
+            app:navigationContentDescription="@string/toolbar_back_button_content_description"
             app:navigationIcon="?homeAsUpIndicator" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -91,7 +92,7 @@
         android:text="@string/discover_powered_by_itunes"
         android:textSize="12sp"
         android:padding="4dp"
-        android:background="?android:attr/windowBackground"
+        android:background="?android:attr/colorBackground"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"

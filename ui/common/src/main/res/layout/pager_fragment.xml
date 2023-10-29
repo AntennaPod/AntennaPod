@@ -16,6 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:navigationContentDescription="@string/toolbar_back_button_content_description"
             app:navigationIcon="?homeAsUpIndicator" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -24,7 +25,7 @@
         android:id="@+id/sliding_tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
+        android:background="?android:attr/colorBackground"
         app:tabBackground="?attr/selectableItemBackground"
         app:tabMode="auto"
         app:tabGravity="fill" />

@@ -33,7 +33,6 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="#dddddd"
                     android:orientation="vertical">
 
                     <FrameLayout
@@ -87,7 +86,7 @@
                         android:layout_gravity="bottom"
                         android:max="100"
                         style="?attr/progressBarTheme"
-                        tools:background="@android:color/holo_blue_light" />
+                        tools:progress="50" />
 
                 </LinearLayout>
 

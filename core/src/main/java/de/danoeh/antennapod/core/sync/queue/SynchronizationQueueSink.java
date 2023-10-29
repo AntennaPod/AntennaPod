@@ -19,6 +19,12 @@ public class SynchronizationQueueSink {
         serviceStarterImpl.run();
     }
 
+    public static void syncNowIfNotSyncedRecently() {
+        if (System.currentTimeMillis() - SynchronizationSettings.getLastSyncAttempt() > 1000 * 60 * 10) {
+            syncNow();
+        }
+    }
+
     public static void clearQueue(Context context) {
         LockingAsyncExecutor.executeLockedAsync(new SynchronizationQueueStorage(context)::clearQueue);
     }
@@ -58,7 +64,7 @@ public class SynchronizationQueueSink {
         if (!SynchronizationSettings.isProviderConnected()) {
             return;
         }
-        if (media.getItem() == null) {
+        if (media.getItem() == null || media.getItem().getFeed().isLocalFeed()) {
             return;
         }
         if (media.getStartPosition() < 0 || (!completed && media.getStartPosition() >= media.getPosition())) {

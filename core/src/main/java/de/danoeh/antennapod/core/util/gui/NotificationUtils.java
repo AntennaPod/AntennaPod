@@ -18,7 +18,6 @@ public class NotificationUtils {
     public static final String CHANNEL_ID_PLAYING = "playing";
     public static final String CHANNEL_ID_DOWNLOAD_ERROR = "error";
     public static final String CHANNEL_ID_SYNC_ERROR = "sync_error";
-    public static final String CHANNEL_ID_AUTO_DOWNLOAD = "auto_download";
     public static final String CHANNEL_ID_EPISODE_NOTIFICATIONS = "episode_notifications";
 
     public static final String GROUP_ID_ERRORS = "group_errors";
@@ -38,7 +37,6 @@ public class NotificationUtils {
                 createChannelPlaying(context),
                 createChannelError(context),
                 createChannelSyncError(context),
-                createChannelAutoDownload(context),
                 createChannelEpisodeNotification(context));
         mNotificationManager.createNotificationChannelsCompat(channels);
     }
@@ -94,20 +92,6 @@ public class NotificationUtils {
         if (!UserPreferences.getGpodnetNotificationsEnabledRaw()) {
             // Migration from app managed setting: disable notification
             notificationChannel.setImportance(NotificationManagerCompat.IMPORTANCE_NONE);
-        }
-        return notificationChannel.build();
-    }
-
-    private static NotificationChannelCompat createChannelAutoDownload(final Context c) {
-        final NotificationChannelCompat.Builder notificationChannel = new NotificationChannelCompat.Builder(
-                        CHANNEL_ID_AUTO_DOWNLOAD, NotificationManagerCompat.IMPORTANCE_NONE)
-                .setName(c.getString(R.string.notification_channel_auto_download))
-                .setDescription(c.getString(R.string.notification_channel_episode_auto_download))
-                .setGroup(GROUP_ID_NEWS);
-
-        if (UserPreferences.getShowAutoDownloadReportRaw()) {
-            // Migration from app managed setting: enable notification
-            notificationChannel.setImportance(NotificationManagerCompat.IMPORTANCE_DEFAULT);
         }
         return notificationChannel.build();
     }

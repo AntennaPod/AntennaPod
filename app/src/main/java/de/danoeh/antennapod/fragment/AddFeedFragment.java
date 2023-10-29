@@ -197,8 +197,8 @@ public class AddFeedFragment extends Fragment {
     }
 
     private Feed addLocalFolder(Uri uri) {
-        getActivity().getContentResolver()
-                .takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        getActivity().getContentResolver().takePersistableUriPermission(uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         DocumentFile documentFile = DocumentFile.fromTreeUri(getContext(), uri);
         if (documentFile == null) {
             throw new IllegalArgumentException("Unable to retrieve document tree");

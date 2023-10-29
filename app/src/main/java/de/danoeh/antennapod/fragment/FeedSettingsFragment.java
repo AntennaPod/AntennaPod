@@ -156,7 +156,7 @@ public class FeedSettingsFragment extends Fragment {
                         setupAutoDownloadPreference();
                         setupKeepUpdatedPreference();
                         setupAutoDeletePreference();
-                        setupVolumeReductionPreferences();
+                        setupVolumeAdaptationPreferences();
                         setupNewEpisodesAction();
                         setupAuthentificationPreference();
                         setupEpisodeFilterPreference();
@@ -166,13 +166,12 @@ public class FeedSettingsFragment extends Fragment {
                         setupTags();
 
                         updateAutoDeleteSummary();
-                        updateVolumeReductionValue();
+                        updateVolumeAdaptationValue();
                         updateAutoDownloadEnabled();
                         updateNewEpisodesAction();
 
                         if (feed.isLocalFeed()) {
                             findPreference(PREF_AUTHENTICATION).setVisible(false);
-                            findPreference(PREF_AUTO_DELETE).setVisible(false);
                             findPreference(PREF_CATEGORY_AUTO_DOWNLOAD).setVisible(false);
                         }
 
@@ -317,9 +316,9 @@ public class FeedSettingsFragment extends Fragment {
             }
         }
 
-        private void setupVolumeReductionPreferences() {
-            ListPreference volumeReductionPreference = findPreference("volumeReduction");
-            volumeReductionPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+        private void setupVolumeAdaptationPreferences() {
+            ListPreference volumeAdaptationPreference = findPreference("volumeReduction");
+            volumeAdaptationPreference.setOnPreferenceChangeListener((preference, newValue) -> {
                 switch ((String) newValue) {
                     case "off":
                         feedPreferences.setVolumeAdaptionSetting(VolumeAdaptionSetting.OFF);
@@ -330,28 +329,46 @@ public class FeedSettingsFragment extends Fragment {
                     case "heavy":
                         feedPreferences.setVolumeAdaptionSetting(VolumeAdaptionSetting.HEAVY_REDUCTION);
                         break;
+                    case "light_boost":
+                        feedPreferences.setVolumeAdaptionSetting(VolumeAdaptionSetting.LIGHT_BOOST);
+                        break;
+                    case "medium_boost":
+                        feedPreferences.setVolumeAdaptionSetting(VolumeAdaptionSetting.MEDIUM_BOOST);
+                        break;
+                    case "heavy_boost":
+                        feedPreferences.setVolumeAdaptionSetting(VolumeAdaptionSetting.HEAVY_BOOST);
+                        break;
                     default:
                 }
                 DBWriter.setFeedPreferences(feedPreferences);
-                updateVolumeReductionValue();
+                updateVolumeAdaptationValue();
                 EventBus.getDefault().post(
                         new VolumeAdaptionChangedEvent(feedPreferences.getVolumeAdaptionSetting(), feed.getId()));
                 return false;
             });
         }
 
-        private void updateVolumeReductionValue() {
-            ListPreference volumeReductionPreference = findPreference("volumeReduction");
+        private void updateVolumeAdaptationValue() {
+            ListPreference volumeAdaptationPreference = findPreference("volumeReduction");
 
             switch (feedPreferences.getVolumeAdaptionSetting()) {
                 case OFF:
-                    volumeReductionPreference.setValue("off");
+                    volumeAdaptationPreference.setValue("off");
                     break;
                 case LIGHT_REDUCTION:
-                    volumeReductionPreference.setValue("light");
+                    volumeAdaptationPreference.setValue("light");
                     break;
                 case HEAVY_REDUCTION:
-                    volumeReductionPreference.setValue("heavy");
+                    volumeAdaptationPreference.setValue("heavy");
+                    break;
+                case LIGHT_BOOST:
+                    volumeAdaptationPreference.setValue("light_boost");
+                    break;
+                case MEDIUM_BOOST:
+                    volumeAdaptationPreference.setValue("medium_boost");
+                    break;
+                case HEAVY_BOOST:
+                    volumeAdaptationPreference.setValue("heavy_boost");
                     break;
             }
         }

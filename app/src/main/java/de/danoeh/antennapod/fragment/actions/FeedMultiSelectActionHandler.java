@@ -36,6 +36,8 @@ public class FeedMultiSelectActionHandler {
     public void handleAction(int id) {
         if (id == R.id.remove_feed) {
             RemoveFeedDialog.show(activity, selectedItems);
+        } else if (id == R.id.notify_new_episodes) {
+            notifyNewEpisodesPrefHandler();
         } else if (id == R.id.keep_updated) {
             keepUpdatedPrefHandler();
         } else if (id == R.id.autodownload) {
@@ -51,16 +53,21 @@ public class FeedMultiSelectActionHandler {
         }
     }
 
+    private void notifyNewEpisodesPrefHandler() {
+        PreferenceSwitchDialog preferenceSwitchDialog = new PreferenceSwitchDialog(activity,
+                activity.getString(R.string.episode_notification),
+                activity.getString(R.string.episode_notification_summary));
+        preferenceSwitchDialog.setOnPreferenceChangedListener(enabled ->
+                saveFeedPreferences(feedPreferences -> feedPreferences.setShowEpisodeNotification(enabled)));
+        preferenceSwitchDialog.openDialog();
+    }
+
     private void autoDownloadPrefHandler() {
         PreferenceSwitchDialog preferenceSwitchDialog = new PreferenceSwitchDialog(activity,
                 activity.getString(R.string.auto_download_settings_label),
                 activity.getString(R.string.auto_download_label));
-        preferenceSwitchDialog.setOnPreferenceChangedListener(new PreferenceSwitchDialog.OnPreferenceChangedListener() {
-            @Override
-            public void preferenceChanged(boolean enabled) {
-                saveFeedPreferences(feedPreferences -> feedPreferences.setAutoDownload(enabled));
-            }
-        });
+        preferenceSwitchDialog.setOnPreferenceChangedListener(enabled ->
+                saveFeedPreferences(feedPreferences -> feedPreferences.setAutoDownload(enabled)));
         preferenceSwitchDialog.openDialog();
     }
 
@@ -102,11 +109,8 @@ public class FeedMultiSelectActionHandler {
         PreferenceSwitchDialog preferenceSwitchDialog = new PreferenceSwitchDialog(activity,
                 activity.getString(R.string.kept_updated),
                 activity.getString(R.string.keep_updated_summary));
-        preferenceSwitchDialog.setOnPreferenceChangedListener(keepUpdated -> {
-            saveFeedPreferences(feedPreferences -> {
-                feedPreferences.setKeepUpdated(keepUpdated);
-            });
-        });
+        preferenceSwitchDialog.setOnPreferenceChangedListener(keepUpdated ->
+                saveFeedPreferences(feedPreferences -> feedPreferences.setKeepUpdated(keepUpdated)));
         preferenceSwitchDialog.openDialog();
     }
 

@@ -124,11 +124,14 @@
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto downloads</string>
     <string name="auto_delete_label">Auto delete episode</string>
-    <string name="feed_volume_reduction">Volume reduction</string>
-    <string name="feed_volume_reduction_summary">Turn down volume for episodes of this podcast: %1$s</string>
-    <string name="feed_volume_reduction_off">Off</string>
-    <string name="feed_volume_reduction_light">Light</string>
-    <string name="feed_volume_reduction_heavy">Heavy</string>
+    <string name="feed_volume_adapdation">Volume adaptation</string>
+    <string name="feed_volume_adaptation_summary">Turn volume for episodes of this podcast up or down: %1$s</string>
+    <string name="feed_volume_reduction_off">No adaption</string>
+    <string name="feed_volume_reduction_light">Light reduction</string>
+    <string name="feed_volume_reduction_heavy">Heavy reduction</string>
+    <string name="feed_volume_boost_light">Light boost</string>
+    <string name="feed_volume_boost_medium">Medium boost</string>
+    <string name="feed_volume_boost_heavy">Heavy boost</string>
     <string name="feed_auto_download_always">Always</string>
     <string name="feed_auto_download_never">Never</string>
     <string name="feed_new_episodes_action_add_to_inbox">Add to inbox</string>
@@ -213,6 +216,7 @@
     <string name="stream_label">Stream</string>
     <string name="delete_label">Delete</string>
     <string name="delete_failed">Unable to delete file. Rebooting the device could help.</string>
+    <string name="delete_local_failed">Unable to delete file. Try re-connecting the local folder from the podcast info screen.</string>
     <string name="delete_episode_label">Delete episode</string>
     <plurals name="deleted_multi_episode_batch_label">
         <item quantity="one">1 downloaded episode deleted.</item>
@@ -256,6 +260,7 @@
     <string name="skip_episode_label">Skip episode</string>
     <string name="reset_position">Reset playback position</string>
     <string name="no_items_selected">No items selected</string>
+    <string name="delete_local_feed_warning_body">Deleting removes the episode from AntennaPod and deletes the media file from your device storage. It cannot be downloaded again through AntennaPod.</string>
 
     <!-- Download messages and labels -->
     <string name="download_successful">successful</string>
@@ -340,6 +345,7 @@
     <string name="feed_title">Podcast title</string>
     <string name="random">Random</string>
     <string name="smart_shuffle">Smart shuffle</string>
+    <string name="size">Size</string>
     <string name="clear_queue_confirmation_msg">Please confirm that you want to clear the queue of ALL of the episodes in it</string>
     <string name="time_left_label">Time left:\u0020</string>
 
@@ -397,6 +403,9 @@
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
     <string name="pref_auto_delete_title">Auto delete</string>
+    <string name="pref_auto_local_delete_title">Auto delete from local folders</string>
+    <string name="pref_auto_local_delete_sum">Include local folders in Auto delete functionality</string>
+    <string name="pref_auto_local_delete_dialog_body">Note that for local folders this will remove episodes from AntennaPod and delete their media files from your device storage. They cannot be downloaded again through AntennaPod. Enable auto delete?</string>
     <string name="pref_smart_mark_as_played_sum">Mark episodes as played even if less than a certain amount of seconds of playing time is still left</string>
     <string name="pref_smart_mark_as_played_title">Smart mark as played</string>
     <string name="pref_skip_keeps_episodes_sum">Keep episodes when they are skipped</string>
@@ -422,7 +431,7 @@
     <string name="pref_unpauseOnHeadsetReconnect_title">Headphones reconnect</string>
     <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth reconnect</string>
     <string name="pref_stream_over_download_title">Prefer streaming</string>
-    <string name="pref_stream_over_download_sum">Display stream button instead of download button in lists.</string>
+    <string name="pref_stream_over_download_sum">Display stream button instead of download button in lists</string>
     <string name="pref_mobileUpdate_title">Mobile updates</string>
     <string name="pref_mobileUpdate_sum">Select what should be allowed over the mobile data connection</string>
     <string name="pref_mobileUpdate_refresh">Podcast refresh</string>
@@ -437,13 +446,13 @@
     <string name="pref_tinted_theme_title">Dynamic colors</string>
     <string name="pref_tinted_theme_message">Adapt app colors based on the wallpaper</string>
     <string name="pref_nav_drawer_items_title">Set navigation drawer items</string>
-    <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer.</string>
+    <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer</string>
     <string name="pref_nav_drawer_feed_order_title">Set subscription order</string>
     <string name="pref_nav_drawer_feed_order_sum">Change the order of your subscriptions</string>
     <string name="pref_nav_drawer_feed_counter_title">Set subscription counter</string>
     <string name="pref_nav_drawer_feed_counter_sum">Change the information displayed by the subscription counter. Also affects the sorting of subscriptions if \'Subscription Order\' is set to \'Counter\'.</string>
     <string name="pref_automatic_download_title">Automatic download</string>
-    <string name="pref_automatic_download_sum">Configure the automatic download of episodes.</string>
+    <string name="pref_automatic_download_sum">Configure the automatic download of episodes</string>
     <string name="pref_autodl_wifi_filter_title">Enable Wi-Fi filter</string>
     <string name="pref_autodl_wifi_filter_sum">Allow automatic download only for selected Wi-Fi networks.</string>
     <string name="pref_automatic_download_on_battery_title">Download when not charging</string>
@@ -475,7 +484,7 @@
     <string name="pref_expandNotify_title">High notification priority</string>
     <string name="pref_expandNotify_sum">This usually expands the notification to show playback buttons.</string>
     <string name="pref_persistNotify_title">Persistent playback controls</string>
-    <string name="pref_persistNotify_sum">Keep notification and lockscreen controls when playback is paused.</string>
+    <string name="pref_persistNotify_sum">Keep notification and lockscreen controls when playback is paused</string>
     <string name="pref_compact_notification_buttons_title">Set compact notification buttons</string>
     <string name="pref_compact_notification_buttons_sum">Change the playback buttons when the notification is collapsed. The play/pause button is always included.</string>
     <string name="pref_compact_notification_buttons_dialog_title">Select a maximum of %1$d items</string>
@@ -503,14 +512,14 @@
     <string name="pref_skip_silence_title">Skip silence in audio</string>
     <string name="behavior">Behavior</string>
     <string name="pref_default_page">Default page</string>
-    <string name="pref_default_page_sum">Screen that is opened when starting AntennaPod.</string>
+    <string name="pref_default_page_sum">Screen that is opened when starting AntennaPod</string>
     <string name="pref_back_button_opens_drawer">Back button opens drawer</string>
     <string name="pref_back_button_opens_drawer_summary">Pressing the back button on the default page opens the navigation drawer</string>
     <string name="remember_last_page">Remember last page</string>
     <string name="pref_delete_removes_from_queue_title">Delete removes from queue</string>
-    <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted.</string>
+    <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted</string>
     <string name="pref_filter_feed_title">Subscription filter</string>
-    <string name="pref_filter_feed_sum">Filter your subscriptions in navigation drawer and subscriptions screen.</string>
+    <string name="pref_filter_feed_sum">Filter your subscriptions in navigation drawer and subscriptions screen</string>
     <string name="subscriptions_are_filtered">Subscriptions are filtered.</string>
     <string name="subscriptions_counter_greater_zero">Counter greater than zero</string>
     <string name="auto_downloaded">Auto downloaded</string>
@@ -522,7 +531,7 @@
     <string name="pref_feed_settings_dialog_msg">This setting is unique to each podcast. You can change it by opening the podcast page.</string>
     <string name="pref_contribute">Contribute</string>
     <string name="pref_show_subscription_title">Show subscription title</string>
-    <string name="pref_show_subscription_title_summary">Display the subscription title below the cover image.</string>
+    <string name="pref_show_subscription_title_summary">Display the subscription title below the cover image</string>
     <string name="pref_new_episodes_action_title">New episodes action</string>
     <string name="pref_new_episodes_action_sum">Action to take for new episodes</string>
 
@@ -543,6 +552,7 @@
     <string name="type_to_search">Type a query to search</string>
     <string name="search_label">Search</string>
     <string name="no_results_for_query">No results were found for \"%1$s\"</string>
+    <string name="search_online">Search online</string>
 
     <!-- Synchronization -->
     <string name="sync_status_started">Sync started</string>
@@ -612,7 +622,7 @@
     </plurals>
     <string name="auto_enable_label">Automatically activate the sleep timer when pressing play</string>
     <string name="auto_enable_label_with_times">Automatically activate the sleep timer when pressing play between %s and %s</string>
-    <string name="auto_enable_change_times">Change times</string>
+    <string name="auto_enable_change_times">Change time range</string>
     <string name="sleep_timer_enabled_label">Sleep timer enabled</string>
 
     <!-- Synchronisation -->
@@ -679,10 +689,13 @@
     <string name="is_inbox_label">Episode is in the inbox</string>
     <string name="load_next_page_label">Load next page</string>
     <string name="position">Position: %1$s</string>
+    <string name="remaining_time">Remaining time: %1$s</string>
     <string name="apply_action">Apply action</string>
     <string name="play_chapter">Play chapter</string>
     <string name="prev_chapter">Previous chapter</string>
     <string name="next_chapter">Next chapter</string>
+    <string name="shuffle_suggestions">Shuffle suggestions</string>
+    <string name="add_preset">Add preset</string>
 
     <!-- Feed settings/information screen -->
     <string name="authentication_label">Authentication</string>
@@ -770,6 +783,8 @@
     <string name="sort_old_new">Old \u2192 New</string>
     <string name="sort_short_long">Short \u2192 Long</string>
     <string name="sort_long_short">Long \u2192 Short</string>
+    <string name="sort_small_large">Small \u2192 Large</string>
+    <string name="sort_large_small">Large \u2192 Small</string>
 
     <!-- Share episode dialog -->
     <string name="share_playback_position_dialog_label">Include playback position</string>
@@ -814,8 +829,6 @@
     <string name="notification_channel_download_error_description">Shown when download or feed update fails.</string>
     <string name="notification_channel_sync_error">Synchronization failed</string>
     <string name="notification_channel_sync_error_description">Shown when gpodder synchronization fails.</string>
-    <string name="notification_channel_auto_download">Automatic download completed</string>
-    <string name="notification_channel_episode_auto_download">Shown when episodes have been automatically downloaded.</string>
     <string name="notification_channel_new_episode">New episode</string>
     <string name="notification_channel_new_episode_description">Shown when a new episode of a podcast was found, where notifications are enabled</string>
 

@@ -39,6 +39,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static de.test.antennapod.EspressoTestUtils.clickPreference;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @LargeTest
@@ -183,6 +184,22 @@ public class PreferencesTest {
         onView(withText(R.string.pref_auto_delete_title)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> autoDelete == UserPreferences.isAutoDelete());
+    }
+
+    @Test
+    public void testAutoDeleteLocal() {
+        clickPreference(R.string.downloads_pref);
+        final boolean initialAutoDelete = UserPreferences.isAutoDeleteLocal();
+        assertFalse(initialAutoDelete);
+
+        onView(withText(R.string.pref_auto_local_delete_title)).perform(click());
+        onView(withText(R.string.yes)).perform(click());
+        Awaitility.await().atMost(1000, MILLISECONDS)
+                .until(() -> UserPreferences.isAutoDeleteLocal());
+
+        onView(withText(R.string.pref_auto_local_delete_title)).perform(click());
+        Awaitility.await().atMost(1000, MILLISECONDS)
+                .until(() -> !UserPreferences.isAutoDeleteLocal());
     }
 
     @Test

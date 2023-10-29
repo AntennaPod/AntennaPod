@@ -75,6 +75,22 @@
                 android:title="@string/sort_new_old"/>
         </menu>
     </item>
+
+    <item
+        android:id="@+id/sort_size"
+        android:title="@string/size"
+        android:visible="false">
+
+        <menu>
+            <item
+                android:id="@+id/sort_size_small_large"
+                android:title="@string/sort_small_large"/>
+            <item
+                android:id="@+id/sort_size_large_small"
+                android:title="@string/sort_large_small"/>
+        </menu>
+    </item>
+
     <item
         android:id="@+id/keep_sorted"
         android:title="@string/keep_sorted"

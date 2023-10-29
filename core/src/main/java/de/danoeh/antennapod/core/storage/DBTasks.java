@@ -281,7 +281,7 @@ public final class DBTasks {
                 if (oldItem != null) {
                     oldItem.updateFromOther(item);
                 } else {
-                    // item is new
+                    Log.d(TAG, "Found new item: " + item.getTitle());
                     item.setFeed(savedFeed);
 
                     if (idx >= savedFeed.getItems().size()) {

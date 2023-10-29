@@ -37,7 +37,7 @@ public abstract class VorbisCommentReader {
                 readUserComment();
             }
         } catch (IOException e) {
-            Log.d(TAG, e.getMessage());
+            Log.d(TAG, "Vorbis parser: " + e.getMessage());
         }
     }
 

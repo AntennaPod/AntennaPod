@@ -57,7 +57,6 @@ public class UserPreferences {
     public static final String PREF_COMPACT_NOTIFICATION_BUTTONS = "prefCompactNotificationButtons";
     public static final String PREF_FULL_NOTIFICATION_BUTTONS = "prefFullNotificationButtons";
     private static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
-    private static final String PREF_SHOW_AUTO_DOWNLOAD_REPORT = "prefShowAutoDownloadReport";
     public static final String PREF_DEFAULT_PAGE = "prefDefaultPage";
     public static final String PREF_FILTER_FEED = "prefSubscriptionsFilter";
     public static final String PREF_SUBSCRIPTION_TITLE = "prefSubscriptionTitle";
@@ -79,6 +78,7 @@ public class UserPreferences {
     public static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
     private static final String PREF_FAVORITE_KEEPS_EPISODE = "prefFavoriteKeepsEpisode";
     private static final String PREF_AUTO_DELETE = "prefAutoDelete";
+    private static final String PREF_AUTO_DELETE_LOCAL = "prefAutoDeleteLocal";
     public static final String PREF_SMART_MARK_AS_PLAYED_SECS = "prefSmartMarkAsPlayedSecs";
     private static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
     public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
@@ -345,47 +345,14 @@ public class UserPreferences {
     }
 
     /**
-     * Returns true if download reports are shown
-     *
-     * @return {@code true} if download reports are shown, {@code false}  otherwise
-     */
-    public static boolean showDownloadReport() {
-        if (Build.VERSION.SDK_INT >= 26) {
-            return true; // System handles notification preferences
-        }
-        return prefs.getBoolean(PREF_SHOW_DOWNLOAD_REPORT, true);
-    }
-
-    /**
      * Used for migration of the preference to system notification channels.
      */
     public static boolean getShowDownloadReportRaw() {
         return prefs.getBoolean(PREF_SHOW_DOWNLOAD_REPORT, true);
     }
 
-    public static boolean showAutoDownloadReport() {
-        if (Build.VERSION.SDK_INT >= 26) {
-            return true; // System handles notification preferences
-        }
-        return prefs.getBoolean(PREF_SHOW_AUTO_DOWNLOAD_REPORT, false);
-    }
-
-    /**
-     * Used for migration of the preference to system notification channels.
-     */
-    public static boolean getShowAutoDownloadReportRaw() {
-        return prefs.getBoolean(PREF_SHOW_AUTO_DOWNLOAD_REPORT, false);
-    }
-
     public static boolean enqueueDownloadedEpisodes() {
         return prefs.getBoolean(PREF_ENQUEUE_DOWNLOADED, true);
-    }
-
-    @VisibleForTesting
-    public static void setEnqueueDownloadedEpisodes(boolean enqueueDownloadedEpisodes) {
-        prefs.edit()
-                .putBoolean(PREF_ENQUEUE_DOWNLOADED, enqueueDownloadedEpisodes)
-                .apply();
     }
 
     public enum EnqueueLocation {
@@ -453,6 +420,10 @@ public class UserPreferences {
 
     public static boolean isAutoDelete() {
         return prefs.getBoolean(PREF_AUTO_DELETE, false);
+    }
+
+    public static boolean isAutoDeleteLocal() {
+        return prefs.getBoolean(PREF_AUTO_DELETE_LOCAL, false);
     }
 
     public static int getSmartMarkAsPlayedSecs() {

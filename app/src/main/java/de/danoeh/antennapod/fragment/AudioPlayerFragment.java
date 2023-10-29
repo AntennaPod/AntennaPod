@@ -375,10 +375,16 @@ public class AudioPlayerFragment extends Fragment implements
             return;
         }
         txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
+        txtvPosition.setContentDescription(getString(R.string.position,
+                Converter.getDurationStringLocalized(getContext(), currentPosition)));
         showTimeLeft = UserPreferences.shouldShowRemainingTime();
         if (showTimeLeft) {
+            txtvLength.setContentDescription(getString(R.string.remaining_time,
+                    Converter.getDurationStringLocalized(getContext(), remainingTime)));
             txtvLength.setText(((remainingTime > 0) ? "-" : "") + Converter.getDurationStringLong(remainingTime));
         } else {
+            txtvLength.setContentDescription(getString(R.string.chapter_duration,
+                    Converter.getDurationStringLocalized(getContext(), duration)));
             txtvLength.setText(Converter.getDurationStringLong(duration));
         }
 
