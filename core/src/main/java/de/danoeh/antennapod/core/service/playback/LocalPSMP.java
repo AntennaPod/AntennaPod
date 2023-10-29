@@ -344,9 +344,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         }
 
         if (t >= getDuration()) {
-            // New position exceeds end of episode. Prevent a
-            // potentially-unsuccessful seek by skipping to next episode.
-            // See https://github.com/AntennaPod/AntennaPod/issues/5974
             Log.d(TAG, "Seek reached end of file, skipping to next episode");
             skip();
             return;
