@@ -216,6 +216,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         private final FrameLayout selectView;
         private final CheckBox selectCheckbox;
         private final CardView card;
+        private final View errorIcon;
 
         public SubscriptionViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -226,6 +227,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
             selectView = itemView.findViewById(R.id.selectContainer);
             selectCheckbox = itemView.findViewById(R.id.selectCheckBox);
             card = itemView.findViewById(R.id.outerContainer);
+            errorIcon = itemView.findViewById(R.id.errorIcon);
         }
 
         public void bind(NavDrawerData.DrawerItem drawerItem) {
@@ -249,9 +251,11 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                 textAndImageCombined = feed.isLocalFeed() && feed.getImageUrl() != null
                         && feed.getImageUrl().startsWith(Feed.PREFIX_GENERATIVE_COVER);
                 coverLoader.withUri(feed.getImageUrl());
+                errorIcon.setVisibility(feed.hasLastUpdateFailed() ? View.VISIBLE : View.GONE);
             } else {
                 textAndImageCombined = true;
                 coverLoader.withResource(R.drawable.ic_tag);
+                errorIcon.setVisibility(View.GONE);
             }
             if (UserPreferences.shouldShowSubscriptionTitle()) {
                 // No need for fallback title when already showing title

@@ -343,6 +343,12 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             t = 0;
         }
 
+        if (t >= getDuration()) {
+            Log.d(TAG, "Seek reached end of file, skipping to next episode");
+            skip();
+            return;
+        }
+
         if (playerStatus == PlayerStatus.PLAYING
                 || playerStatus == PlayerStatus.PAUSED
                 || playerStatus == PlayerStatus.PREPARED) {

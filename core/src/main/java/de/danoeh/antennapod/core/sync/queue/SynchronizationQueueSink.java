@@ -64,7 +64,7 @@ public class SynchronizationQueueSink {
         if (!SynchronizationSettings.isProviderConnected()) {
             return;
         }
-        if (media.getItem() == null) {
+        if (media.getItem() == null || media.getItem().getFeed().isLocalFeed()) {
             return;
         }
         if (media.getStartPosition() < 0 || (!completed && media.getStartPosition() >= media.getPosition())) {

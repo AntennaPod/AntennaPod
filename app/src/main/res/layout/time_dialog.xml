@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -135,19 +136,28 @@
             android:layout_height="wrap_content"
             android:text="@string/timer_vibration_label" />
 
-        <CheckBox
-            android:id="@+id/chAutoEnable"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/auto_enable_label" />
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-        <Button
-            android:id="@+id/changeTimes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/auto_enable_change_times"
-            android:layout_gravity="center"
-            style="@style/Widget.MaterialComponents.Button.TextButton" />
+            <CheckBox
+                android:id="@+id/chAutoEnable"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/auto_enable_label" />
+
+            <ImageView
+                android:id="@+id/changeTimesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/auto_enable_change_times"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:srcCompat="@drawable/ic_settings" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -77,6 +77,7 @@ public class UserPreferences {
     public static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
     private static final String PREF_FAVORITE_KEEPS_EPISODE = "prefFavoriteKeepsEpisode";
     private static final String PREF_AUTO_DELETE = "prefAutoDelete";
+    private static final String PREF_AUTO_DELETE_LOCAL = "prefAutoDeleteLocal";
     public static final String PREF_SMART_MARK_AS_PLAYED_SECS = "prefSmartMarkAsPlayedSecs";
     private static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
     public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
@@ -364,6 +365,10 @@ public class UserPreferences {
 
     public static boolean isAutoDelete() {
         return prefs.getBoolean(PREF_AUTO_DELETE, false);
+    }
+
+    public static boolean isAutoDeleteLocal() {
+        return prefs.getBoolean(PREF_AUTO_DELETE_LOCAL, false);
     }
 
     public static int getSmartMarkAsPlayedSecs() {

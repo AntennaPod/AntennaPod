@@ -4,10 +4,14 @@ import android.content.Context;
 import android.view.View;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
+
+import java.util.Collections;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.view.LocalDeleteModal;
 
 public class DeleteActionButton extends ItemActionButton {
 
@@ -33,11 +37,17 @@ public class DeleteActionButton extends ItemActionButton {
         if (media == null) {
             return;
         }
-        DBWriter.deleteFeedMediaOfItem(context, media.getId());
+
+        LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(context, Collections.singletonList(item),
+                () -> DBWriter.deleteFeedMediaOfItem(context, media.getId()));
     }
 
     @Override
     public int getVisibility() {
-        return (item.getMedia() != null && item.getMedia().isDownloaded()) ? View.VISIBLE : View.INVISIBLE;
+        if (item.getMedia() != null && (item.getMedia().isDownloaded() || item.getFeed().isLocalFeed())) {
+            return View.VISIBLE;
+        }
+
+        return View.INVISIBLE;
     }
 }

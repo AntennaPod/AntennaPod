@@ -14,6 +14,7 @@ import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfa
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.view.LocalDeleteModal;
 
 public class EpisodeMultiSelectActionHandler {
     private static final String TAG = "EpisodeSelectHandler";
@@ -41,7 +42,7 @@ public class EpisodeMultiSelectActionHandler {
         } else if (actionId == R.id.download_batch) {
             downloadChecked(items);
         } else if (actionId == R.id.delete_batch) {
-            deleteChecked(items);
+            LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(activity, items, () -> deleteChecked(items));
         } else {
             Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionId);
         }
