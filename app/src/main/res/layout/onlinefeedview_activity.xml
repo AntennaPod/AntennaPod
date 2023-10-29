@@ -123,8 +123,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingRight="4dp"
-                    android:paddingLeft="4dp"
+                    android:paddingHorizontal="16dp"
                     android:orientation="vertical">
 
                     <Spinner
@@ -140,9 +139,7 @@
                         android:id="@+id/subscribeButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
                         android:layout_marginTop="4dp"
-                        android:layout_marginEnd="8dp"
                         android:text="@string/subscribe_label" />
 
                     <CheckBox
@@ -151,8 +148,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:checked="true"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
                         android:layout_marginTop="8dp"
                         android:text="@string/auto_download_label"
                         android:visibility="gone"
@@ -162,9 +157,7 @@
                         android:id="@+id/stopPreviewButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
                         android:layout_marginTop="4dp"
-                        android:layout_marginEnd="8dp"
                         android:text="@string/stop_preview"
                         android:visibility="gone"
                         tools:visibility="visible" />

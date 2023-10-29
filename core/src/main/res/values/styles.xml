@@ -253,6 +253,8 @@
 
     <style name="AntennaPod.TextView.ListItemBody" parent="@style/TextAppearance.Material3.BodyMedium">
         <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="lineHeight">18sp</item>
+        <item name="android:lineHeight" tools:targetApi="p">18sp</item>
     </style>
 
     <style name="OutlinedButtonBetterContrast" parent="Widget.Material3.Button.OutlinedButton">
