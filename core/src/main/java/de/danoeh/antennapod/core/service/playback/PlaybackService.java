@@ -1714,7 +1714,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onPause() {
             Log.d(TAG, "onPause()");
             if (getStatus() == PlayerStatus.PLAYING) {
-                pause(!UserPreferences.isPersistNotify(), true);
+                pause(!UserPreferences.isPersistNotify(), false);
             }
         }
 
