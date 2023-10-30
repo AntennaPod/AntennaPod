@@ -3,7 +3,13 @@ plugins {
 }
 apply from: "../../common.gradle"
 
+android {
+    namespace "de.danoeh.antennapod.ui.common"
+}
+
 dependencies {
+    implementation project(":ui:i18n")
+
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation "androidx.viewpager2:viewpager2:$viewPager2Version"

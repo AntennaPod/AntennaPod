@@ -20,6 +20,7 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:title="@string/add_feed_label"
+            app:navigationContentDescription="@string/toolbar_back_button_content_description"
             app:navigationIcon="?homeAsUpIndicator" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -78,7 +79,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:focusableInTouchMode="true"
             android:padding="16dp">
 
             <androidx.fragment.app.FragmentContainerView
@@ -94,6 +94,7 @@
                 android:textSize="18sp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
+                android:accessibilityHeading="true"
                 android:textColor="?android:attr/textColorPrimary" />
 
             <TextView

@@ -94,7 +94,7 @@ public class NewEpisodesNotification {
         intent.setAction("NewEpisodes");
         intent.setComponent(new ComponentName(context, "de.danoeh.antennapod.activity.MainActivity"));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.putExtra("fragment_tag", "EpisodesFragment");
+        intent.putExtra("fragment_tag", "NewEpisodesFragment");
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
                 (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
 

@@ -6,7 +6,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
@@ -64,7 +63,7 @@ public class FeedMenuHandler {
     public static boolean onOptionsItemClicked(final Context context, final MenuItem item, final Feed selectedFeed) {
         final int itemId = item.getItemId();
         if (itemId == R.id.refresh_item) {
-            DBTasks.forceRefreshFeed(context, selectedFeed, true);
+            FeedUpdateManager.runOnceOrAsk(context, selectedFeed);
         } else if (itemId == R.id.refresh_complete_item) {
             new Thread(() -> {
                 selectedFeed.setNextPageLink(selectedFeed.getDownload_url());

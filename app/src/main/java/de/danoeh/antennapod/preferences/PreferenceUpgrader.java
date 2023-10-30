@@ -3,6 +3,7 @@ package de.danoeh.antennapod.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.KeyEvent;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.preference.PreferenceManager;
 
 import java.util.concurrent.TimeUnit;
@@ -13,7 +14,6 @@ import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.error.CrashReportWriter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
-import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeAction;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
@@ -31,7 +31,6 @@ public class PreferenceUpgrader {
         int newVersion = BuildConfig.VERSION_CODE;
 
         if (oldVersion != newVersion) {
-            FeedUpdateManager.restartUpdateAlarm(context, true);
             CrashReportWriter.getFile().delete();
 
             upgrade(oldVersion, context);
@@ -146,6 +145,9 @@ public class PreferenceUpgrader {
             if (prefs.getString(UserPreferences.PREF_UPDATE_INTERVAL, ":").contains(":")) { // Unset or "time of day"
                 prefs.edit().putString(UserPreferences.PREF_UPDATE_INTERVAL, "12").apply();
             }
+        }
+        if (oldVersion < 3020000) {
+            NotificationManagerCompat.from(context).deleteNotificationChannel("auto_download");
         }
     }
 }

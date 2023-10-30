@@ -1,46 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="8dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingBottom="8dp"
-    tools:background="@android:color/holo_orange_light">
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="16dp">
 
     <TextView
         android:id="@+id/txtvPubDate"
-        style="@android:style/TextAppearance.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:textSize="14sp"
-        android:textColor="?android:textColorSecondary"
         android:ellipsize="end"
         android:lines="1"
+        style="@android:style/TextAppearance.Small"
         tools:text="22 Jan 2016"
         tools:background="@android:color/holo_green_dark" />
 
     <TextView
         android:id="@+id/txtvTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@id/txtvPubDate"
-        android:layout_toStartOf="@id/txtvPubDate"
-        android:textSize="16sp"
-        android:textColor="?android:attr/textColorPrimary"
+        android:layout_marginVertical="12dp"
         android:ellipsize="end"
         android:maxLines="2"
+        style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
         tools:text="Feed item title"
         tools:background="@android:color/holo_green_dark" />
 
@@ -48,22 +33,19 @@
         android:id="@+id/txtvDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtvTitle"
-        android:textSize="14sp"
-        android:textColor="?android:attr/textColorSecondary"
         android:ellipsize="end"
-        android:maxLines="3"
+        android:maxLines="2"
+        style="@style/AntennaPod.TextView.ListItemBody"
         tools:text="Feed item description"
         tools:background="@android:color/holo_green_dark" />
 
     <Button
         android:id="@+id/butPreview"
-        android:layout_below="@id/txtvDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:text="@string/preview_episode"/>
+        android:layout_marginTop="8dp"
+        android:text="@string/preview_episode"
+        android:layout_gravity="end|right"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-</RelativeLayout>
+</LinearLayout>

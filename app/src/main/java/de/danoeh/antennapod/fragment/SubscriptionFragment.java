@@ -11,8 +11,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -22,7 +22,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.joanzapata.iconify.Iconify;
 import com.leinardi.android.speeddial.SpeedDialView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -80,7 +79,7 @@ public class SubscriptionFragment extends Fragment
     private RecyclerView subscriptionRecycler;
     private SubscriptionsRecyclerAdapter subscriptionAdapter;
     private EmptyViewHandler emptyView;
-    private TextView feedsFilteredMsg;
+    private LinearLayout feedsFilteredMsg;
     private MaterialToolbar toolbar;
     private ProgressBar progressBar;
     private String displayedFolder = null;
@@ -319,8 +318,6 @@ public class SubscriptionFragment extends Fragment
                     });
 
         if (UserPreferences.getSubscriptionsFilter().isEnabled()) {
-            feedsFilteredMsg.setText("{md-info-outline} " + getString(R.string.subscriptions_are_filtered));
-            Iconify.addIcons(feedsFilteredMsg);
             feedsFilteredMsg.setVisibility(View.VISIBLE);
         } else {
             feedsFilteredMsg.setVisibility(View.GONE);

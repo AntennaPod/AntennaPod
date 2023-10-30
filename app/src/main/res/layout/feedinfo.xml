@@ -16,8 +16,8 @@
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?android:attr/windowBackground"
-            app:contentScrim="?android:attr/windowBackground"
+            android:background="?android:attr/colorBackground"
+            app:contentScrim="?android:attr/colorBackground"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:scrimAnimationDuration="200">
 

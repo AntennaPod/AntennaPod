@@ -8,7 +8,6 @@ import androidx.annotation.VisibleForTesting;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
-import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.MessageEvent;
@@ -90,14 +89,6 @@ public final class DBTasks {
         } else {
             Log.w(TAG, "removeFeedWithDownloadUrl: Could not find feed with url: " + downloadUrl);
         }
-    }
-
-    public static void forceRefreshFeed(Context context, Feed feed, boolean initiatedByUser) {
-        forceRefreshFeed(context, feed, false, initiatedByUser);
-    }
-
-    private static void forceRefreshFeed(Context context, Feed feed, boolean loadAllPages, boolean initiatedByUser) {
-        FeedUpdateManager.runOnce(context, feed);
     }
 
     /**
@@ -290,7 +281,7 @@ public final class DBTasks {
                 if (oldItem != null) {
                     oldItem.updateFromOther(item);
                 } else {
-                    // item is new
+                    Log.d(TAG, "Found new item: " + item.getTitle());
                     item.setFeed(savedFeed);
 
                     if (idx >= savedFeed.getItems().size()) {

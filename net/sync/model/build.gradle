@@ -3,6 +3,10 @@ plugins {
 }
 apply from: "../../../common.gradle"
 
+android {
+    namespace "de.danoeh.antennapod.net.sync.model"
+}
+
 dependencies {
     implementation project(':model')
 

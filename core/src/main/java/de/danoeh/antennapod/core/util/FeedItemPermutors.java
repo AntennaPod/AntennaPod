@@ -72,6 +72,12 @@ public class FeedItemPermutors {
             case SMART_SHUFFLE_NEW_OLD:
                 permutor = (queue) -> smartShuffle(queue, false);
                 break;
+            case SIZE_SMALL_LARGE:
+                comparator = (f1, f2) -> Long.compare(size(f1), size(f2));
+                break;
+            case SIZE_LARGE_SMALL:
+                comparator = (f1, f2) -> Long.compare(size(f2), size(f1));
+                break;
         }
 
         if (comparator != null) {
@@ -95,6 +101,10 @@ public class FeedItemPermutors {
 
     private static int duration(@Nullable FeedItem item) {
         return (item != null && item.getMedia() != null) ? item.getMedia().getDuration() : 0;
+    }
+
+    private static long size(@Nullable FeedItem item) {
+        return (item != null && item.getMedia() != null) ? item.getMedia().getSize() : 0;
     }
 
     @NonNull

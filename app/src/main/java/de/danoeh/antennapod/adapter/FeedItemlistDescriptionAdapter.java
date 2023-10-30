@@ -29,7 +29,7 @@ import java.util.List;
  * List adapter for showing a list of FeedItems with their title and description.
  */
 public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
-    private static final int MAX_LINES_COLLAPSED = 3;
+    private static final int MAX_LINES_COLLAPSED = 2;
 
     public FeedItemlistDescriptionAdapter(Context context, int resource, List<FeedItem> objects) {
         super(context, resource, objects);

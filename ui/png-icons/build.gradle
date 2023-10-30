@@ -4,6 +4,8 @@ plugins {
 apply from: "../../common.gradle"
 
 android {
+    namespace "de.danoeh.antennapod.ui.pngicons"
+
     defaultConfig {
         vectorDrawables.useSupportLibrary false
         vectorDrawables.generatedDensities = ["xhdpi"]

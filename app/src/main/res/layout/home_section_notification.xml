@@ -24,23 +24,40 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_margin="16dp"
                 android:text="@string/notification_permission_text" />
 
-            <Button
-                android:id="@+id/allowButton"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="@android:string/ok" />
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/openSettingsButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:visibility="gone"
-                android:text="@string/open_settings" />
+                <Button
+                    android:id="@+id/denyButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/deny_label"
+                    style="@style/Widget.MaterialComponents.Button.TextButton" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/openSettingsButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:text="@string/open_settings" />
+
+                <Button
+                    android:id="@+id/allowButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@android:string/ok" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

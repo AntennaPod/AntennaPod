@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -37,24 +36,23 @@
 
         <TextView
             android:id="@+id/txtvTitle"
-            style="@style/AntennaPod.TextView.ListItemPrimaryTitle2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="2"
+            style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
             tools:background="@android:color/holo_green_dark"
             tools:text="Podcast title" />
 
         <TextView
             android:id="@+id/txtvAuthor"
-            style="android:style/TextAppearance.Small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="?android:attr/textColorSecondary"
             android:ellipsize="middle"
             android:maxLines="2"
+            style="android:style/TextAppearance.Small"
             tools:text="author"
-            tools:background="@android:color/holo_green_dark"/>
+            tools:background="@android:color/holo_green_dark" />
 
     </LinearLayout>
 

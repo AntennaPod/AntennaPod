@@ -31,6 +31,7 @@
     </style>
 
     <style name="Theme.AntennaPod.Light" parent="Theme.AntennaPod.Dynamic.Light">
+        <item name="isMaterial3DynamicColorApplied">false</item>
         <item name="colorPrimary">@color/accent_light</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorAccent">@color/accent_light</item>
@@ -39,9 +40,9 @@
         <item name="colorPrimaryDark">@color/accent_light</item>
         <item name="colorPrimaryContainer">@color/accent_light</item>
         <item name="colorOnPrimaryContainer">@color/white</item>
-        <item name="android:windowBackground">@color/background_light</item>
+        <item name="android:colorBackground">@color/background_light</item>
         <item name="colorSurface">@color/background_light</item>
-        <item name="colorSurfaceVariant">#B8E4FF</item>
+        <item name="colorSurfaceVariant">#D3DCE0</item>
     </style>
 
     <style name="Theme.AntennaPod.Dynamic.Dark" parent="Theme.Base.AntennaPod.Dynamic.Dark">
@@ -73,6 +74,7 @@
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.AntennaPod.Dynamic.Dark">
+        <item name="isMaterial3DynamicColorApplied">false</item>
         <item name="colorPrimary">@color/accent_dark</item>
         <item name="colorOnPrimary">@color/black</item>
         <item name="colorAccent">@color/accent_dark</item>
@@ -81,15 +83,15 @@
         <item name="colorPrimaryDark">@color/accent_dark</item>
         <item name="colorPrimaryContainer">@color/accent_dark</item>
         <item name="colorOnPrimaryContainer">@color/black</item>
-        <item name="android:windowBackground">@color/background_darktheme</item>
+        <item name="android:colorBackground">@color/background_darktheme</item>
         <item name="colorSurface">@color/background_darktheme</item>
-        <item name="colorSurfaceVariant">#1B3B6A</item>
+        <item name="colorSurfaceVariant">#2F3B4F</item>
     </style>
 
     <style name="Theme.AntennaPod.Dynamic.TrueBlack" parent="Theme.AntennaPod.Dynamic.Dark">
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:color">@color/white</item>
-        <item name="android:windowBackground">@color/black</item>
+        <item name="android:colorBackground">@color/black</item>
         <item name="colorSurface">@color/black</item>
         <item name="background_color">@color/black</item>
         <item name="background_elevated">@color/black</item>
@@ -99,7 +101,7 @@
     <style name="Theme.AntennaPod.TrueBlack" parent="Theme.AntennaPod.Dark">
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:color">@color/white</item>
-        <item name="android:windowBackground">@color/black</item>
+        <item name="android:colorBackground">@color/black</item>
         <item name="colorSurface">@color/black</item>
         <item name="background_color">@color/black</item>
         <item name="background_elevated">@color/black</item>
@@ -235,24 +237,24 @@
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
-    <style name="AntennaPod.TextView.ListItemPrimaryTitle" parent="@android:style/TextAppearance.Small">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <style name="AntennaPod.TextView.ListItemPrimaryTitle" parent="@style/TextAppearance.Material3.BodyLarge">
+        <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
+        <item name="lineHeight">20sp</item>
+        <item name="android:lineHeight" tools:targetApi="p">20sp</item>
     </style>
 
-    <style name="AntennaPod.TextView.ListItemPrimaryTitle2" parent="@android:style/TextAppearance.Small">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:ellipsize">end</item>
-    </style>
-
-    <style name="AntennaPod.TextView.ListItemSecondaryTitle" parent="@android:style/TextAppearance.Small">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">?android:attr/textColorSecondary</item>
+    <style name="AntennaPod.TextView.ListItemSecondaryTitle" parent="@style/TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
         <item name="android:lines">1</item>
         <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="AntennaPod.TextView.ListItemBody" parent="@style/TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="lineHeight">18sp</item>
+        <item name="android:lineHeight" tools:targetApi="p">18sp</item>
     </style>
 
     <style name="OutlinedButtonBetterContrast" parent="Widget.Material3.Button.OutlinedButton">

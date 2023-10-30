@@ -32,6 +32,10 @@ public class MenuItemToSortOrderConverter {
             return SortOrder.SMART_SHUFFLE_OLD_NEW;
         } else if (itemId == R.id.sort_smart_shuffle_desc) {
             return SortOrder.SMART_SHUFFLE_NEW_OLD;
+        } else if (itemId == R.id.sort_size_small_large) {
+            return SortOrder.SIZE_SMALL_LARGE;
+        } else if (itemId == R.id.sort_size_large_small) {
+            return SortOrder.SIZE_LARGE_SMALL;
         }
 
         return null;

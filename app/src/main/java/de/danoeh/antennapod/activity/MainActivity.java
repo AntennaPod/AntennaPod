@@ -37,6 +37,7 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
+import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
@@ -58,7 +59,6 @@ import de.danoeh.antennapod.fragment.TransitionEffect;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
-import de.danoeh.antennapod.preferences.PreferenceUpgrader;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
@@ -160,13 +160,14 @@ public class MainActivity extends CastEnabledActivity {
         transaction.commit();
 
         checkFirstLaunch();
-        PreferenceUpgrader.checkUpgrades(this);
         View bottomSheet = findViewById(R.id.audioplayerFragment);
         sheetBehavior = (LockableBottomSheetBehavior) BottomSheetBehavior.from(bottomSheet);
         sheetBehavior.setHideable(false);
         sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
 
         FeedUpdateManager.restartUpdateAlarm(this, false);
+        SynchronizationQueueSink.syncNowIfNotSyncedRecently();
+
         WorkManager.getInstance(this)
                 .getWorkInfosByTagLiveData(FeedUpdateManager.WORK_TAG_FEED_UPDATE)
                 .observe(this, workInfos -> {

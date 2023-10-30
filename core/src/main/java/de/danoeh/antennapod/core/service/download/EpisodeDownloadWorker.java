@@ -129,11 +129,8 @@ public class EpisodeDownloadWorker extends Worker {
             downloader.call();
         } catch (Exception e) {
             DBWriter.addDownloadStatus(downloader.getResult());
-            if (EventBus.getDefault().hasSubscriberForEvent(MessageEvent.class)) {
-                sendMessage(request.getTitle(), false);
-            } else {
-                sendErrorNotification();
-            }
+            sendErrorNotification(request.getTitle());
+            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
             return Result.failure();
         }
 
@@ -162,6 +159,9 @@ public class EpisodeDownloadWorker extends Worker {
             Log.d(TAG, "Requested invalid range, restarting download from the beginning");
             FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
             sendMessage(request.getTitle(), true);
+            if (isLastRunAttempt()) {
+                FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
+            }
             return retry3times();
         }
 
@@ -172,24 +172,28 @@ public class EpisodeDownloadWorker extends Worker {
                 || status.getReason() == DownloadError.ERROR_UNAUTHORIZED
                 || status.getReason() == DownloadError.ERROR_IO_BLOCKED) {
             // Fail fast, these are probably unrecoverable
-            if (EventBus.getDefault().hasSubscriberForEvent(MessageEvent.class)) {
-                sendMessage(request.getTitle(), false);
-            } else {
-                sendErrorNotification();
-            }
+            sendErrorNotification(request.getTitle());
+            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
             return Result.failure();
         }
         sendMessage(request.getTitle(), true);
+        if (isLastRunAttempt()) {
+            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
+        }
         return retry3times();
     }
 
     private Result retry3times() {
-        if (getRunAttemptCount() < 2) {
-            return Result.retry();
-        } else {
-            sendErrorNotification();
+        if (isLastRunAttempt()) {
+            sendErrorNotification(downloader.getDownloadRequest().getTitle());
             return Result.failure();
+        } else {
+            return Result.retry();
         }
+    }
+
+    private boolean isLastRunAttempt() {
+        return getRunAttemptCount() >= 2;
     }
 
     private void sendMessage(String episodeTitle, boolean retrying) {
@@ -215,7 +219,12 @@ public class EpisodeDownloadWorker extends Worker {
                 PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
     }
 
-    private void sendErrorNotification() {
+    private void sendErrorNotification(String title) {
+        if (EventBus.getDefault().hasSubscriberForEvent(MessageEvent.class)) {
+            sendMessage(title, false);
+            return;
+        }
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(),
                 NotificationUtils.CHANNEL_ID_DOWNLOAD_ERROR);
         builder.setTicker(getApplicationContext().getString(R.string.download_report_title))

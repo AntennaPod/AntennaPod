@@ -32,7 +32,6 @@ import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
@@ -185,7 +184,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
         viewBinding.swipeRefresh.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
         viewBinding.swipeRefresh.setOnRefreshListener(() -> {
-            DBTasks.forceRefreshFeed(requireContext(), feed, true);
+            FeedUpdateManager.runOnceOrAsk(requireContext(), feed);
             new Handler(Looper.getMainLooper()).postDelayed(() -> viewBinding.swipeRefresh.setRefreshing(false),
                     getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
         });
@@ -368,7 +367,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         swipeActions.detach();
         if (feed.isLocalFeed()) {
             speedDialBinding.fabSD.removeActionItemById(R.id.download_batch);
-            speedDialBinding.fabSD.removeActionItemById(R.id.delete_batch);
         }
         speedDialBinding.fabSD.removeActionItemById(R.id.remove_all_inbox_item);
         speedDialBinding.fabSD.setVisibility(View.VISIBLE);
