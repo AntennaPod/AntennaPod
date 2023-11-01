@@ -98,7 +98,7 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
     }
 
     private void addCurrentSpeed() {
-        float newSpeed = controller.getCurrentPlaybackSpeedMultiplier();
+        float newSpeed = speedSeekBar.getCurrentSpeed();
         if (selectedSpeeds.contains(newSpeed)) {
             Snackbar.make(addCurrentSpeedChip,
                     getString(R.string.preset_already_exists, newSpeed), Snackbar.LENGTH_LONG).show();
