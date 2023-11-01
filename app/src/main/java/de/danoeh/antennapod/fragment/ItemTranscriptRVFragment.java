@@ -207,9 +207,9 @@ public class ItemTranscriptRVFragment extends Fragment {
                rv.getLayoutManager().findViewByPosition(pos);
                if (currentView != null) {
                    currentView.setBackgroundColor(R.color.light_gray);
-                   if (prevView != null && prevView != currentView) {
+                    if (prevView != null && prevView != currentView) {
                        prevView.setBackgroundColor(R.color.background_light);
-                   }
+                    }
                }
             }
         }
