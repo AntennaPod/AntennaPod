@@ -90,6 +90,7 @@ dependencies {
     implementation project(':ui:glide')
     implementation project(':ui:i18n')
     implementation project(':ui:statistics')
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"

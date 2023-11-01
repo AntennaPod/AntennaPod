@@ -32,6 +32,7 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
@@ -189,6 +190,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         }
         return items;
     }
+
 
     public void setItems(List<NavDrawerData.DrawerItem> listItems) {
         this.listItems = listItems;

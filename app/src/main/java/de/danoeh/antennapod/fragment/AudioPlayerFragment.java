@@ -392,9 +392,9 @@ public class AudioPlayerFragment extends Fragment implements
 
         Fragment transcriptChild = getChildFragmentManager().findFragmentByTag("f" + POS_TRANSCRIPT);
         if (transcriptChild != null) {
-            ItemTranscriptFragment itemTranscriptFragment = (ItemTranscriptFragment) transcriptChild;
-            //Log.d(TAG, "Jumping to anchor #" + id + " position " + position);
-            itemTranscriptFragment.scrollToPosition(currentPosition);
+            ItemTranscriptRVFragment itemTranscriptRVFragment = (ItemTranscriptRVFragment) transcriptChild;
+            Log.d(TAG, "Jumping to current position" + currentPosition);
+            itemTranscriptRVFragment.scrollToPosition(currentPosition);
         }
         return currentPosition;
     }
@@ -548,7 +548,7 @@ public class AudioPlayerFragment extends Fragment implements
                 case POS_COVER:
                     return new CoverFragment();
                 case POS_TRANSCRIPT:
-                    return new ItemTranscriptFragment();
+                    return new ItemTranscriptRVFragment();
                 default:
                 case POS_DESCRIPTION:
                     return new ItemDescriptionFragment();
@@ -568,12 +568,12 @@ public class AudioPlayerFragment extends Fragment implements
 
         pager.setCurrentItem(page, smoothScroll);
 
-        Fragment visibleChild = getChildFragmentManager().findFragmentByTag("f" + POS_DESCRIPTION);
+        Fragment visibleChild = getChildFragmentManager().findFragmentByTag("f" + page);
         if (visibleChild instanceof ItemDescriptionFragment) {
             ((ItemDescriptionFragment) visibleChild).scrollToTop();
         }
-        if (visibleChild instanceof ItemTranscriptFragment) {
-            ((ItemTranscriptFragment) visibleChild).scrollToTop();
+        if (visibleChild instanceof ItemTranscriptRVFragment) {
+            ((ItemTranscriptRVFragment) visibleChild).scrollToTop();
         }
     }
 

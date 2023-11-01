@@ -27,6 +27,9 @@ public class PodcastIndexTranscriptUtils {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            // TT TODO : NetworkOnMainThreadException
+            e.printStackTrace();
         } finally {
             if (response != null) {
                 response.close();

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<de.danoeh.antennapod.view.NestedScrollableHost
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    app:preferVertical="10"
+    android:nestedScrollingEnabled="true">
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/transcript_list"
+    android:name="de.danoeh.antennapod.ItemTranscriptRVFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    tools:context="de.danoeh.antennapod.fragment.ItemTranscriptRVFragment"
+    tools:listitem="@layout/fragment_item_transcript_rv"/>
+</de.danoeh.antennapod.view.NestedScrollableHost>
