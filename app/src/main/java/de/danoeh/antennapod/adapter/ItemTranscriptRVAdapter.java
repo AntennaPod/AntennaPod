@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.jsoup.internal.StringUtil;
+
 import de.danoeh.antennapod.core.util.PodcastIndexTranscriptUtils;
 import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
@@ -78,7 +80,11 @@ public class ItemTranscriptRVAdapter extends RecyclerView.Adapter<ItemTranscript
         Log.d(TAG, "onBindViewHolder position " + position + " RV pos " + k);
         holder.mItem = seg;
         holder.mIdView.setText(PodcastIndexTranscriptParser.secondsToTime(k));
-        holder.mContentView.setText(seg.getWords());
+        if (! StringUtil.isBlank(seg.getSpeaker())) {
+            holder.mContentView.setText(seg.getSpeaker() + " : " + seg.getWords());
+        } else {
+            holder.mContentView.setText(seg.getWords());
+        }
     }
 
     @Override
