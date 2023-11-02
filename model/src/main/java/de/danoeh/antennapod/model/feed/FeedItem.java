@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.model.feed;
 
+import android.util.Pair;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -9,6 +11,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -42,6 +45,8 @@ public class FeedItem extends FeedComponent implements Serializable {
     private transient Feed feed;
     private long feedId;
     private String podcastIndexChapterUrl;
+    private String podcastIndexTranscriptText;
+    private Hashtable<String, String> podcastIndexTranscriptUrls;
 
     private int state;
     public static final int NEW = -1;
@@ -57,6 +62,11 @@ public class FeedItem extends FeedComponent implements Serializable {
      * has not been saved in the database yet.
      * */
     private final boolean hasChapters;
+
+    /**
+     * Is true if database or feeditem has podcast:transcript
+     */
+    private boolean hasTranscript;
 
     /**
      * The list of chapters of this item. This might be null even if there are chapters of this item
@@ -75,6 +85,7 @@ public class FeedItem extends FeedComponent implements Serializable {
     public FeedItem() {
         this.state = UNPLAYED;
         this.hasChapters = false;
+        this.hasTranscript = false;
     }
 
     /**
@@ -82,7 +93,8 @@ public class FeedItem extends FeedComponent implements Serializable {
      * */
     public FeedItem(long id, String title, String link, Date pubDate, String paymentLink, long feedId,
                     boolean hasChapters, String imageUrl, int state,
-                    String itemIdentifier, long autoDownload, String podcastIndexChapterUrl) {
+                    String itemIdentifier, long autoDownload, String podcastIndexChapterUrl,
+                    String transcriptType, String transcriptUrl) {
         this.id = id;
         this.title = title;
         this.link = link;
@@ -95,6 +107,13 @@ public class FeedItem extends FeedComponent implements Serializable {
         this.itemIdentifier = itemIdentifier;
         this.autoDownload = autoDownload;
         this.podcastIndexChapterUrl = podcastIndexChapterUrl;
+        if (transcriptUrl != null) {
+            this.podcastIndexTranscriptUrls = new Hashtable<String, String>();
+            this.podcastIndexTranscriptUrls.put(transcriptType, transcriptUrl);
+            this.hasTranscript = true;
+        }
+        // TT TODO  Load this from disk
+        // this.podcastIndexTranscriptText = transcriptText;
     }
 
     /**
@@ -161,6 +180,14 @@ public class FeedItem extends FeedComponent implements Serializable {
         }
         if (other.podcastIndexChapterUrl != null) {
             podcastIndexChapterUrl = other.podcastIndexChapterUrl;
+        }
+        if (other.getPodcastIndexTranscriptUrls() != null) {
+            podcastIndexTranscriptUrls = other.podcastIndexTranscriptUrls;
+            hasTranscript = true;
+        }
+
+        if (other.podcastIndexTranscriptText != null) {
+            podcastIndexTranscriptText = other.podcastIndexTranscriptText;
         }
     }
 
@@ -438,6 +465,64 @@ public class FeedItem extends FeedComponent implements Serializable {
 
     public void setPodcastIndexChapterUrl(String url) {
         podcastIndexChapterUrl = url;
+    }
+
+    public void setPodcastIndexTranscriptUrl(String t, String url) {
+        if (podcastIndexTranscriptUrls == null) {
+            podcastIndexTranscriptUrls = new Hashtable<String, String>();
+        }
+        podcastIndexTranscriptUrls.put(t, url);
+        hasTranscript = true;
+    }
+
+
+    public String getPodcastIndexTranscriptUrls(String t) {
+        if (podcastIndexTranscriptUrls == null) {
+            return null;
+        }
+        return podcastIndexTranscriptUrls.get(t);
+    }
+
+    public Hashtable<String, String> getPodcastIndexTranscriptUrls() {
+        if (podcastIndexTranscriptUrls == null) {
+            return null;
+        }
+        return podcastIndexTranscriptUrls;
+    }
+
+    public Pair<String, String> getPodcastIndexTranscriptUrlPreferred() {
+        if (podcastIndexTranscriptUrls == null) {
+            return null;
+        }
+        // We prefer JSON if that is available
+        if (podcastIndexTranscriptUrls.get("application/json") != null) {
+           return new Pair("application/json", podcastIndexTranscriptUrls.get("application/json"));
+        }
+
+        // SRR format, but feeds use different mime types
+        if (podcastIndexTranscriptUrls.get("application/srr") != null) {
+            return new Pair("application/srr", podcastIndexTranscriptUrls.get("application/srr"));
+        }
+        if (podcastIndexTranscriptUrls.get("application/srt") != null) {
+            return new Pair("application/srt", podcastIndexTranscriptUrls.get("application/srt"));
+        }
+        if (podcastIndexTranscriptUrls.get("application/x-subrip") != null) {
+            return new Pair("application/srr", podcastIndexTranscriptUrls.get("application/x-subrip"));
+        }
+        return null;
+    }
+
+    public String getPodcastIndexTranscriptText() {
+        return podcastIndexTranscriptText;
+    }
+
+    public String setPodcastIndexTranscriptText(String str) {
+        hasTranscript = true;
+        return podcastIndexTranscriptText = str;
+    }
+
+    public boolean hasTranscript() {
+        return hasTranscript;
     }
 
     @NonNull
