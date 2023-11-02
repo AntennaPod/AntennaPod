@@ -23,7 +23,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.internal.StringUtil;
+
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -110,10 +118,10 @@ public class PodcastIndexTranscriptParser {
 
     public static class PodcastIndexTranscriptJsonParser {
         static String TAG = "PodcastIndexTranscriptJsonParser";
-        static Transcript transcript = new Transcript();
 
         public static Transcript parse(String jsonStr) {
             try {
+                Transcript transcript = new Transcript();
                 transcript.setRawString(jsonStr);
 
                 JSONObject obj = new JSONObject(jsonStr);
@@ -163,5 +171,11 @@ public class PodcastIndexTranscriptParser {
             return PodcastIndexTranscriptSrtParser.parse(str);
         }
         return null;
+    }
+
+    public static String secondsToTime(long msecs) {
+        int duration = Math.toIntExact(msecs / 1000L);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        return String.format("%d:%02d:%02d", duration / 3600, (duration % 3600) / 60, (duration % 60));
     }
 }
