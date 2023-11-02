@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.model.feed;
 
+import android.util.Pair;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -484,6 +486,26 @@ public class FeedItem extends FeedComponent implements Serializable {
             return null;
         }
         return podcastIndexTranscriptUrls;
+    }
+
+    public Pair<String, String> getPodcastIndexTranscriptUrlPreferred() {
+        if (podcastIndexTranscriptUrls == null) {
+            return null;
+        }
+        // TT TODO - ranked order of preference, a better way to get this list?
+        if (podcastIndexTranscriptUrls.get("application/json") != null) {
+           return new Pair("application/json", podcastIndexTranscriptUrls.get("application/json"));
+        }
+        if (podcastIndexTranscriptUrls.get("application/srr") != null) {
+            return new Pair("application/srr", podcastIndexTranscriptUrls.get("application/srr"));
+        }
+        if (podcastIndexTranscriptUrls.get("application/srt") != null) {
+            return new Pair("application/srt", podcastIndexTranscriptUrls.get("application/srt"));
+        }
+        if (podcastIndexTranscriptUrls.get("application/x-subrip") != null) {
+            return new Pair("application/srr", podcastIndexTranscriptUrls.get("application/x-subrip"));
+        }
+        return null;
     }
 
     public String getPodcastIndexTranscriptText() {

@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -668,13 +669,12 @@ public class PodDBAdapter {
         values.put(KEY_PODCASTINDEX_CHAPTER_URL, item.getPodcastIndexChapterUrl());
 
         // TT TODO, hardcode
-        Hashtable<String, String>  typeUrl = item.getPodcastIndexTranscriptUrls();
-        if (typeUrl != null && typeUrl.get("application/json") != null) {
-            values.put(KEY_PODCASTINDEX_TRANSCRIPT_URL, typeUrl.get("application/json"));
-            values.put(KEY_PODCASTINDEX_TRANSCRIPT_TYPE, "application/json");
+        Pair<String, String> typeUrl = item.getPodcastIndexTranscriptUrlPreferred();
+        if (typeUrl != null) {
+            values.put(KEY_PODCASTINDEX_TRANSCRIPT_TYPE, typeUrl.first);
+            values.put(KEY_PODCASTINDEX_TRANSCRIPT_URL, typeUrl.second);
+            values.put(KEY_PODCASTINDEX_TRANSCRIPT_TEXT, item.getPodcastIndexTranscriptText());
         }
-
-        values.put(KEY_PODCASTINDEX_TRANSCRIPT_TEXT, item.getPodcastIndexTranscriptText());
 
         if (item.getId() == 0) {
             item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));

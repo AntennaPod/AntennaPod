@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.util;
 
 import android.util.Log;
+import android.util.Pair;
 
 import java.io.IOException;
 
@@ -15,11 +16,11 @@ public class PodcastIndexTranscriptUtils {
 
     private static final String TAG = "PodcastIndexTranscript";
 
-    public static Transcript loadTranscriptFromUrl(String url, String type, boolean forceRefresh) {
+    public static Transcript loadTranscriptFromUrl(String type, String url, boolean forceRefresh) {
         Response response = null;
         Transcript transcript = null;
         try {
-            // TT TODO, what to do with cachingx
+            // TT TODO, what to do with caching
             Request request = new Request.Builder().url(url).build();
             response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
             if (response.isSuccessful() && response.body() != null) {
@@ -40,26 +41,15 @@ public class PodcastIndexTranscriptUtils {
     }
 
     public static Transcript loadTranscript(FeedMedia media) {
-        String type = null;
-        String url = null;
-        if (media.getItem().getPodcastIndexTranscriptUrls("application/json") != null) {
-            type = "application/json";
-            url = media.getItem().getPodcastIndexTranscriptUrls("application/json");
-
-        } else if (media.getItem().getPodcastIndexTranscriptUrls("application/srt") != null) {
-            // TT TODO: how about application/x-subrip
-            type = "application/srt";
-            url = media.getItem().getPodcastIndexTranscriptUrls(type);
-        }
+        Pair<String, String> urlType = null;
+        urlType = media.getItem().getPodcastIndexTranscriptUrlPreferred();
 
         if (media.getItem().getPodcastIndexTranscriptText() != null) {
-            return PodcastIndexTranscriptParser.parse(media.getItem().getPodcastIndexTranscriptText(), type);
+            return PodcastIndexTranscriptParser.parse(media.getItem().getPodcastIndexTranscriptText(), urlType.first);
         }
 
-        // TODO: Store the transcript somewhere? in the DB of file system?
-        if (url != null) {
-            Log.d(TAG, "Loading Transcript URL " + url);
-            return PodcastIndexTranscriptUtils.loadTranscriptFromUrl(url, type, false);
+        if (urlType != null) {
+            return PodcastIndexTranscriptUtils.loadTranscriptFromUrl(urlType.first, urlType.second, false);
         }
         return null;
     }

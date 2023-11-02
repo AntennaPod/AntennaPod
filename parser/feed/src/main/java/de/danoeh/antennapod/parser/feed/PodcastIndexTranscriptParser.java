@@ -120,7 +120,7 @@ public class PodcastIndexTranscriptParser {
                 JSONArray objSegments = obj.getJSONArray("segments");
                 // TODO Parse speaker
                 String speaker = "";
-                long span = 10000L;
+                long span = 1000L;
                 long duration = 0L;
                 String segmentBody = "";
                 long segmentStartTime = -1;
@@ -159,7 +159,7 @@ public class PodcastIndexTranscriptParser {
             return PodcastIndexTranscriptJsonParser.parse(str);
         }
 
-        if ("application/srt".equals(type)) {
+        if ("application/srt".equals(type) || "application/srr".equals(type) || "application/x-subrip".equals(type)) {
             return PodcastIndexTranscriptSrtParser.parse(str);
         }
         return null;
