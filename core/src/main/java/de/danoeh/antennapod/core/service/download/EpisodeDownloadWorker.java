@@ -16,19 +16,26 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.service.download.handler.MediaDownloadedHandler;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.PodcastIndexTranscriptUtils;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import org.apache.commons.io.FileUtils;
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -55,6 +62,7 @@ public class EpisodeDownloadWorker extends Worker {
         }
 
         DownloadRequest request = DownloadRequestCreator.create(media).build();
+        DownloadRequest transcriptRequest = DownloadRequestCreator.createTranscript(media).build();
         Thread progressUpdaterThread = new Thread() {
             @Override
             public void run() {
@@ -76,6 +84,8 @@ public class EpisodeDownloadWorker extends Worker {
         };
         progressUpdaterThread.start();
         final Result result = performDownload(media, request);
+        final Result resultTranscript = performDownloadTranscript(media, transcriptRequest);
+
         progressUpdaterThread.interrupt();
         try {
             progressUpdaterThread.join();
@@ -88,6 +98,7 @@ public class EpisodeDownloadWorker extends Worker {
                     .getSystemService(Context.NOTIFICATION_SERVICE);
             nm.cancel(R.id.notification_downloading);
         }
+
         Log.d(TAG, "Worker for " + media.getDownload_url() + " returned.");
         return result;
     }
@@ -98,6 +109,87 @@ public class EpisodeDownloadWorker extends Worker {
         if (downloader != null) {
             downloader.cancel();
         }
+    }
+
+    private Result performDownloadTranscript(FeedMedia media, DownloadRequest request) {
+        File dest = new File(request.getDestination());
+        if (!dest.exists()) {
+            try {
+                dest.createNewFile();
+            } catch (IOException e) {
+                Log.e(TAG, "Unable to create file");
+            }
+        }
+
+        if (dest.exists()) {
+            media.setFile_url(request.getDestination());
+            try {
+                DBWriter.setFeedMedia(media).get();
+            } catch (Exception e) {
+                Log.e(TAG, "ExecutionException in writeFileUrl: " + e.getMessage());
+            }
+        }
+
+        downloader = new DefaultDownloaderFactory().create(request);
+        if (downloader == null) {
+            Log.d(TAG, "Unable to create downloader");
+            return Result.failure();
+        }
+
+        try {
+            downloader.call();
+            String transcript = "";
+            BufferedReader reader = new BufferedReader(new FileReader(downloader.getDownloadRequest().getDestination()));
+            StringBuilder stringBuilder = new StringBuilder();
+            char[] buffer = new char[128];
+            while (reader.read(buffer) != -1) {
+                stringBuilder.append(new String(buffer));
+                buffer = new char[128];
+            }
+            reader.close();
+            transcript = stringBuilder.toString();
+
+            media.getItem().setPodcastIndexTranscriptText(transcript.toString());
+        } catch (Exception e) {
+            sendErrorNotification(request.getTitle());
+            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
+            return Result.failure();
+        }
+
+        if (downloader.cancelled) {
+            return Result.success();
+        }
+
+        DownloadResult status = downloader.getResult();
+        if (status.isSuccessful()) {
+            return Result.success();
+        }
+
+        if (status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
+                && Integer.parseInt(status.getReasonDetailed()) == 416) {
+            Log.d(TAG, "Requested invalid range, restarting download from the beginning");
+            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
+            sendMessage(request.getTitle(), true);
+            if (isLastRunAttempt()) {
+                FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
+            }
+            return retry3times();
+        }
+
+        Log.e(TAG, "Download failed");
+        if (status.getReason() == DownloadError.ERROR_FORBIDDEN
+                || status.getReason() == DownloadError.ERROR_NOT_FOUND
+                || status.getReason() == DownloadError.ERROR_UNAUTHORIZED
+                || status.getReason() == DownloadError.ERROR_IO_BLOCKED) {
+            // Fail fast, these are probably unrecoverable
+            sendErrorNotification(request.getTitle());
+            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
+            return Result.failure();
+        }
+        if (isLastRunAttempt()) {
+            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
+        }
+        return retry3times();
     }
 
     private Result performDownload(FeedMedia media, DownloadRequest request) {

@@ -11,7 +11,9 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 
+import de.danoeh.antennapod.core.util.PodcastIndexTranscriptUtils;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -61,6 +63,7 @@ public class MediaDownloadedHandler implements Runnable {
         if (media.getItem() != null && media.getItem().getPodcastIndexChapterUrl() != null) {
             ChapterUtils.loadChaptersFromUrl(media.getItem().getPodcastIndexChapterUrl(), false);
         }
+
         // Get duration
         String durationStr = null;
         try (MediaMetadataRetriever mmr = new MediaMetadataRetriever()) {

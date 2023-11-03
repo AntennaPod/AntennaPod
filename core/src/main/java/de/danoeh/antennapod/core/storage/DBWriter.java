@@ -118,6 +118,7 @@ public class DBWriter {
         boolean localDelete = false;
         if (media.isDownloaded()) {
             // delete downloaded media file
+            // TT TODO delete transcript
             File mediaFile = new File(media.getFile_url());
             if (mediaFile.exists() && !mediaFile.delete()) {
                 MessageEvent evt = new MessageEvent(context.getString(R.string.delete_failed));
