@@ -2,13 +2,13 @@ package de.danoeh.antennapod.model.feed;
 
 import android.content.Context;
 import android.content.SharedPreferences.Editor;
-import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.Nullable;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
+import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
@@ -458,11 +458,10 @@ public class FeedMedia extends FeedFile implements Playable {
             hasEmbeddedPicture = Boolean.FALSE;
             return;
         }
-        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-        try {
+        try (MediaMetadataRetrieverCompat mmr = new MediaMetadataRetrieverCompat()) {
             mmr.setDataSource(getLocalMediaUrl());
             byte[] image = mmr.getEmbeddedPicture();
-            if(image != null) {
+            if (image != null) {
                 hasEmbeddedPicture = Boolean.TRUE;
             } else {
                 hasEmbeddedPicture = Boolean.FALSE;

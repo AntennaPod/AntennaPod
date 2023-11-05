@@ -162,6 +162,7 @@
   <string name="share_file_label">Del fil</string>
   <string name="share_rss_address_label">RSS adressen:</string>
   <string name="feed_delete_confirmation_msg">Bekreft at du ønsker å slette podkasten \"%1$s\" og ALLE episodene dens (inkludert nedlastede episoder) og statistikken.</string>
+  <string name="feed_delete_confirmation_msg_batch">Bekreft at du ønsker å slette utvalgte podkaster og ALLE de episoder (inkludert nedlastet episoder) og statistikken.</string>
   <string name="feed_delete_confirmation_local_msg">Bekreft at du vil slette podkasten \"%1$s\" og statistikken. Filene i lokale mappen vil ikke bli slettet.</string>
   <string name="feed_remover_msg">Fjerner podkast</string>
   <string name="load_complete_feed">Last hele podkasten på nytt</string>

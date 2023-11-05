@@ -83,7 +83,7 @@
   <string name="go_to_position_label">Mergi la poziția asta</string>
   <!--Playback history-->
   <string name="clear_history_label">Golește istoric</string>
-  <string name="clear_playback_history_msg">Această setare va goli întregul istoric de redare. Ești sugur că dorești să continui ?</string>
+  <string name="clear_playback_history_msg">Această setare va goli întregul istoric de redare. Ești sigur că dorești să continui?</string>
   <string name="remove_history_label">Elimină din istoric</string>
   <string name="removed_history_label">Eliminat din istoric</string>
   <!--Other-->
@@ -159,7 +159,7 @@
   <string name="new_episode_notification_group_text">Abonamentele dumneavoastră au episoade noi</string>
   <!--Actions on feeds-->
   <string name="remove_all_inbox_label">Elimină tot din inbox</string>
-  <string name="removed_all_inbox_msg">Aa fost eliminat tot din inbox</string>
+  <string name="removed_all_inbox_msg">Totul a fost eliminat din inbox</string>
   <string name="remove_all_inbox_confirmation_msg">Vă rugăm să confirmați faptul că doriți să eliminați tot conținutul din inbox.</string>
   <string name="multi_select_mark_played_confirmation">Vă rugăm să confirmați faptul că doriți să marcați toate elementele selectate ca redate.</string>
   <string name="multi_select_mark_unplayed_confirmation">Vă rugăm să confirmați faptul că doriți să marcați toate elementele selectate ca neredate.</string>
@@ -289,7 +289,7 @@
     <item quantity="few">%d descărcări rămase</item>
     <item quantity="other">%d de descărcări rămase</item>
   </plurals>
-  <string name="download_notification_title_feeds">Reîcărcarea podcasturilor</string>
+  <string name="download_notification_title_feeds">Reîncărcarea podcasturilor</string>
   <string name="download_notification_title_episodes">Se descarcă epidoadele</string>
   <string name="download_log_title_unknown">Titlu necunoscut</string>
   <string name="download_type_feed">Feed</string>
@@ -728,20 +728,20 @@
   <string name="hide_paused_episodes_label">Pauză</string>
   <string name="not_paused">Nu sa întrerupt</string>
   <string name="hide_played_episodes_label">Redat</string>
-  <string name="not_played">Nu sa redat</string>
+  <string name="not_played">Nu s-a redat</string>
   <!--Sort-->
   <string name="sort_title_a_z">Titlul (A \u2192 Z)</string>
   <string name="sort_title_z_a">Titlul (A \u2192 Z)</string>
-  <string name="sort_date_new_old">Data  (Nouă \u2192 Veche)</string>
-  <string name="sort_date_old_new">Data  (Nouă \u2192 Veche)</string>
-  <string name="sort_duration_short_long">Durată  (Shortă \u2192 Lungă)</string>
+  <string name="sort_date_new_old">Dată  (Nouă \u2192 Veche)</string>
+  <string name="sort_date_old_new">Dată  (Veche \u2192 Nouă)</string>
+  <string name="sort_duration_short_long">Durată  (Scurtă \u2192 Lungă)</string>
   <string name="sort_duration_long_short">Durată (Lungă \u2192 Scurtă)</string>
   <string name="sort_filename_a_z">Numele fișierului (A \u2192 Z)</string>
   <string name="sort_filename_z_a">Numele fișierului (Z \u2192 A)</string>
   <string name="sort_a_z">A \u2192 Z</string>
   <string name="sort_z_a">Z \u2192 A</string>
-  <string name="sort_new_old">Nou \u2192 Vechi</string>
-  <string name="sort_old_new">Vechi \u2192 Nou</string>
+  <string name="sort_new_old">Noi \u2192 Vechi</string>
+  <string name="sort_old_new">Vechi \u2192 Noi</string>
   <string name="sort_short_long">Scurt \u2192  Lung</string>
   <string name="sort_long_short">Lung \u2192 Scurt</string>
   <!--Share episode dialog-->

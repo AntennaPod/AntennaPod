@@ -1,8 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activity and fragment titles-->
+  <string name="feed_update_receiver_name">Feliratkozások frissítése</string>
   <string name="feeds_label">Podcastok</string>
   <string name="statistics_label">Statisztika</string>
+  <string name="add_feed_label">Podcast hozzáadása</string>
   <string name="episodes_label">Epizódok</string>
   <string name="home_label">Kezdőlap</string>
   <string name="queue_label">Lejátszási sor</string>
@@ -10,7 +12,12 @@
   <string name="favorite_episodes_label">Kedvencek</string>
   <string name="settings_label">Beállítások</string>
   <string name="downloads_label">Letöltések</string>
+  <string name="open_autodownload_settings">Beállítások megnyitása</string>
+  <string name="downloads_log_label">Letöltés napló</string>
   <string name="subscriptions_label">Feliratkozások</string>
+  <string name="subscriptions_list_label">Feliratkozások listája</string>
+  <string name="cancel_download_label">Letöltés megszakítása</string>
+  <string name="playback_history_label">Lejátszási előzmények</string>
   <string name="episode_cache_full_title">Epizód tárhely megtelt</string>
   <string name="episode_cache_full_message">Az epizódok tárolására megadott maximális tárhely megtelt. A mérete a beállításokban növelhető meg.</string>
   <string name="years_statistics_label">Évek</string>
@@ -18,7 +25,9 @@
   <!--Google Assistant-->
   <string name="app_action_not_found">A(z) „%1$s” nem található</string>
   <!--SwipeActions-->
+  <string name="swipeactions_label">Seprési műveletek</string>
   <string name="swipeactions_summary">Válasszon, hogy mi történjen ha elcsúsztat egy epizódot a listában</string>
+  <string name="swipe_right">Húzás jobbra</string>
   <string name="change_setting">Módosítás</string>
   <!--Statistics fragment-->
   <string name="statistics_include_marked">A csak lejátszottnak jelölt epizódok hosszának figyelembe vétele</string>
@@ -40,6 +49,7 @@
   <string name="home_downloads_title">Letöltések kezelése</string>
   <string name="home_welcome_title">Üdvözli az AntennaPod!</string>
   <string name="home_welcome_text">Még nem iratkozott fel egy podcastra sem. Nyissa meg az oldalsó menüt és adjon hozzá egy podcastot.</string>
+  <string name="open_settings">Beállítások megnyitása</string>
   <string name="configure_home">Kezdőképernyő beállítása</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Az eszközön lévő epizódok összmérete</string>
@@ -60,9 +70,12 @@
   <string name="export_logs_menu_title">Részletes naplók exportálása</string>
   <string name="confirm_export_log_dialog_message">A részletes naplók érzékeny adatokat is tartalmazhatnak, mint például a feliratkozások listáját</string>
   <!--Webview actions-->
+  <string name="open_in_browser_label">Megnyitás böngészőben</string>
   <string name="copy_url_label">Webcím másolása</string>
   <string name="share_url_label">Webcím megosztása</string>
+  <string name="go_to_position_label">Pozícióhoz ugrás</string>
   <!--Playback history-->
+  <string name="clear_history_label">Előzmények törlése</string>
   <string name="clear_playback_history_msg">Ez törli az összes lejátszási előzményt. Biztos, hogy folytatja?</string>
   <string name="remove_history_label">Eltávolítás az előzményekből</string>
   <string name="removed_history_label">Eltávolítva az előzményekből</string>

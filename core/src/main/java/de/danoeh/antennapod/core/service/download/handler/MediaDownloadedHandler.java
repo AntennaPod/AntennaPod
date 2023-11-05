@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -63,7 +64,7 @@ public class MediaDownloadedHandler implements Runnable {
         }
         // Get duration
         String durationStr = null;
-        try (MediaMetadataRetriever mmr = new MediaMetadataRetriever()) {
+        try (MediaMetadataRetrieverCompat mmr = new MediaMetadataRetrieverCompat()) {
             mmr.setDataSource(media.getFile_url());
             durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
             media.setDuration(Integer.parseInt(durationStr));
