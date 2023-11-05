@@ -103,6 +103,12 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         leftPadding.setContentDescription(item.getTitle());
         pubDate.setText(DateFormatter.formatAbbrev(activity, item.getPubDate()));
         pubDate.setContentDescription(DateFormatter.formatForAccessibility(item.getPubDate()));
+        if (item.isPlayed()) {
+            cover.setContentDescription(activity.getString(R.string.is_played));
+            cover.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+        } else {
+            cover.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+        }
         isInbox.setVisibility(item.isNew() ? View.VISIBLE : View.GONE);
         isFavorite.setVisibility(item.isTagged(FeedItem.TAG_FAVORITE) ? View.VISIBLE : View.GONE);
         isInQueue.setVisibility(item.isTagged(FeedItem.TAG_QUEUE) ? View.VISIBLE : View.GONE);

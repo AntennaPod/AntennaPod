@@ -686,9 +686,10 @@
     <string name="decrease_speed">Decrease speed</string>
     <string name="media_type_video_label">Video</string>
     <string name="status_downloading_label">Episode is being downloaded</string>
-    <string name="in_queue_label">Episode is in the queue</string>
-    <string name="is_favorite_label">Episode is marked as favorite</string>
-    <string name="is_inbox_label">Episode is in the inbox</string>
+    <string name="in_queue_label">In the queue</string>
+    <string name="is_favorite_label">Marked as favorite</string>
+    <string name="is_inbox_label">In the inbox</string>
+    <string name="is_played">Played</string>
     <string name="load_next_page_label">Load next page</string>
     <string name="position">Position: %1$s</string>
     <string name="remaining_time">Remaining time: %1$s</string>
