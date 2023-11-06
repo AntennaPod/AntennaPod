@@ -117,8 +117,16 @@ public class DBWriter {
                 media.getId(), media.getEpisodeTitle(), media.isDownloaded()));
         boolean localDelete = false;
         if (media.isDownloaded()) {
+            // delete transcript file before the media file because the fileurl is needed
+            if (media.getTranscriptFile_url() != null) {
+                File transcriptFile = new File(media.getTranscriptFile_url());
+                if (transcriptFile.exists() && !transcriptFile.delete()) {
+                    MessageEvent evt = new MessageEvent(context.getString(R.string.delete_failed));
+                    EventBus.getDefault().post(evt);
+                    return false;
+                }
+            }
             // delete downloaded media file
-            // TT TODO delete transcript
             File mediaFile = new File(media.getFile_url());
             if (mediaFile.exists() && !mediaFile.delete()) {
                 MessageEvent evt = new MessageEvent(context.getString(R.string.delete_failed));
@@ -128,6 +136,8 @@ public class DBWriter {
             media.setDownloaded(false);
             media.setFile_url(null);
             media.setHasEmbeddedPicture(false);
+
+
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setMedia(media);

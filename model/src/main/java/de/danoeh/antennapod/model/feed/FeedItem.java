@@ -68,6 +68,8 @@ public class FeedItem extends FeedComponent implements Serializable {
      */
     private boolean hasTranscript;
 
+    Transcript transcript;
+
     /**
      * The list of chapters of this item. This might be null even if there are chapters of this item
      * in the database. The 'hasChapters' attribute should be used to check if this item has any chapters.
@@ -112,8 +114,6 @@ public class FeedItem extends FeedComponent implements Serializable {
             this.podcastIndexTranscriptUrls.put(transcriptType, transcriptUrl);
             this.hasTranscript = true;
         }
-        // TT TODO  Load this from disk
-        // this.podcastIndexTranscriptText = transcriptText;
     }
 
     /**
@@ -495,7 +495,7 @@ public class FeedItem extends FeedComponent implements Serializable {
             return null;
         }
         // We prefer JSON if that is available
-        if (podcastIndexTranscriptUrls.get("application/jsonX") != null) {
+        if (podcastIndexTranscriptUrls.get("application/json") != null) {
            return new Pair("application/json", podcastIndexTranscriptUrls.get("application/json"));
         }
 
@@ -522,7 +522,16 @@ public class FeedItem extends FeedComponent implements Serializable {
     }
 
     public boolean hasTranscript() {
-        return hasTranscript;
+       return hasTranscript;
+    }
+
+    public void setTranscript(Transcript t) {
+        hasTranscript = true;
+        transcript = t;
+    }
+
+    public Transcript gettTranscript() {
+        return transcript;
     }
 
     @NonNull

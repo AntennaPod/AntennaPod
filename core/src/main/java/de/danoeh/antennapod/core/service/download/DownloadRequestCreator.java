@@ -80,10 +80,6 @@ public class DownloadRequestCreator {
         String password = (media.getItem().getFeed().getPreferences() != null)
                 ? media.getItem().getFeed().getPreferences().getPassword() : null;
 
-        // TT TODO - should we do this here?
-        //new DownloadRequest.Builder(dest.toString(), media)
-        //        .withAuthentication(username, password);
-
         return new DownloadRequest.Builder(dest.toString(), media)
                 .withAuthentication(username, password);
     }

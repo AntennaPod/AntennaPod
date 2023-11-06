@@ -56,14 +56,15 @@ public class PodcastIndexTranscriptParser {
             String body = "";
             String line;
             String segmentBody = "";
-            long startTimecode = 0;
-            long endTimecode = 0;
+            long startTimecode = 0L;
+            long spanStartTimecode = 0L;
+            long endTimecode = 0L;
+            long span = 1000L;
+            long duration = 0L;
 
             while (true) {
                 try {
                     line = iter.next();
-                    long span = 1000L;
-                    long duration = 0L;
 
                     if (line.isEmpty()) {
                         continue;
@@ -76,6 +77,9 @@ public class PodcastIndexTranscriptParser {
                         }
                         startTimecode = parseTimecode(timecodes[0].trim());
                         endTimecode = parseTimecode(timecodes[1].trim());
+                        if (spanStartTimecode == 0) {
+                            spanStartTimecode = startTimecode;
+                        }
                         duration += endTimecode - startTimecode;
                         do {
                             line = iter.next();
@@ -94,22 +98,23 @@ public class PodcastIndexTranscriptParser {
                     if (!StringUtil.isBlank(body)) {
                         segmentBody += " " + body;
                         if (duration >= span) {
-                            Log.d(TAG, "SRT : " + Long.toString(startTimecode) + " " + segmentBody);
-                            transcript.addSegment(new TranscriptSegment(startTimecode,
+                            Log.d(TAG, "SRT : " + Long.toString(spanStartTimecode) + " " + segmentBody);
+                            transcript.addSegment(new TranscriptSegment(spanStartTimecode,
                                     endTimecode,
                                     segmentBody,
                                     speaker));
                             startTimecode = endTimecode;
                             duration = 0L;
+                            spanStartTimecode = 0L;
                             segmentBody = "";
                         }
                         body = "";
                     }
                 } catch (NoSuchElementException e) {
                     if (! StringUtil.isBlank(segmentBody)) {
-                        Log.d(TAG, "SRT : " + Long.toString(startTimecode) + " " + segmentBody);
+                        Log.d(TAG, "SRT : " + Long.toString(spanStartTimecode) + " " + segmentBody);
 
-                        transcript.addSegment(new TranscriptSegment(startTimecode,
+                        transcript.addSegment(new TranscriptSegment(spanStartTimecode,
                                 endTimecode,
                                 segmentBody,
                                 speaker));
@@ -139,24 +144,28 @@ public class PodcastIndexTranscriptParser {
             try {
                 Transcript transcript = new Transcript();
                 transcript.setRawString(jsonStr);
-                long startTime = 0;
-                long endTime = 0;
+                long startTime = 0L;
+                long endTime = 0L;
                 String speaker = "";
                 long span = 1000L;
+                long spanStartTime = 0L;
                 long duration = 0L;
                 String segmentBody = "";
-                long segmentStartTime = -1;
+                long segmentStartTime = 0L;
                 JSONObject obj = new JSONObject(jsonStr);
                 JSONArray objSegments = obj.getJSONArray("segments");
 
                 for (int i = 0; i < objSegments.length(); i++) {
                     JSONObject jsonObject = objSegments.getJSONObject(i);
                     startTime = Double.valueOf(jsonObject.optDouble("startTime", 0) * 1000L).longValue();
-                    if (segmentStartTime == -1) {
+                    if (segmentStartTime == 0L) {
                        segmentStartTime = startTime;
                     }
                     endTime = Double.valueOf(jsonObject.optDouble("endTime", startTime) * 1000L).longValue();
                     duration += endTime - startTime;
+                    if (spanStartTime == 0L) {
+                       spanStartTime = startTime;
+                    }
 
                     speaker = jsonObject.optString("speaker");
 
@@ -168,7 +177,7 @@ public class PodcastIndexTranscriptParser {
                         Log.d(TAG, "JSON " + segmentBody);
                         duration = 0L;
                         segmentBody = "";
-                        segmentStartTime = -1;
+                        segmentStartTime = 0L;
                     }
                 }
 

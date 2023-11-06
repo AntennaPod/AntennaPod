@@ -121,15 +121,6 @@ public class EpisodeDownloadWorker extends Worker {
             }
         }
 
-        if (dest.exists()) {
-            media.setFile_url(request.getDestination());
-            try {
-                DBWriter.setFeedMedia(media).get();
-            } catch (Exception e) {
-                Log.e(TAG, "ExecutionException in writeFileUrl: " + e.getMessage());
-            }
-        }
-
         downloader = new DefaultDownloaderFactory().create(request);
         if (downloader == null) {
             Log.d(TAG, "Unable to create downloader");
@@ -138,7 +129,7 @@ public class EpisodeDownloadWorker extends Worker {
 
         try {
             downloader.call();
-            String transcript = "";
+            // read the transcript from the file that is downloaded
             BufferedReader reader = new BufferedReader(new FileReader(downloader.getDownloadRequest().getDestination()));
             StringBuilder stringBuilder = new StringBuilder();
             char[] buffer = new char[128];
@@ -147,9 +138,8 @@ public class EpisodeDownloadWorker extends Worker {
                 buffer = new char[128];
             }
             reader.close();
-            transcript = stringBuilder.toString();
 
-            media.getItem().setPodcastIndexTranscriptText(transcript.toString());
+            media.getItem().setPodcastIndexTranscriptText(stringBuilder.toString());
         } catch (Exception e) {
             sendErrorNotification(request.getTitle());
             FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
