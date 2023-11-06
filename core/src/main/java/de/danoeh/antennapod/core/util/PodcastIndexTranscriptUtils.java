@@ -93,7 +93,9 @@ public class PodcastIndexTranscriptUtils {
                     e.printStackTrace();
                 }
                 media.getItem().setPodcastIndexTranscriptText(transcriptStr);
-                Transcript t = PodcastIndexTranscriptParser.parse(media.getItem().getPodcastIndexTranscriptText(), urlType.first);
+                Transcript t = PodcastIndexTranscriptParser.parse(
+                        media.getItem().getPodcastIndexTranscriptText(),
+                        urlType.first);
                 media.getItem().setTranscript(t);
                 return t;
             }

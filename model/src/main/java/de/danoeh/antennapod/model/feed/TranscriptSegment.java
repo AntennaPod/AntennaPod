@@ -40,8 +40,8 @@ public class TranscriptSegment {
     }
 
     public Boolean setTrimmed(Boolean t) {
-       trimmed = t;
-       return trimmed;
+        trimmed = t;
+        return trimmed;
     }
 
     public Boolean isTrimmed() {

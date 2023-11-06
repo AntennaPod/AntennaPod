@@ -34,8 +34,8 @@ public class DownloadRequestCreator {
 
     public static DownloadRequest.Builder createTranscript(FeedMedia media) {
         final boolean partiallyDownloadedFileExists =
-                media.getTranscriptFile_url() != null &&
-                        new File(media.getTranscriptFile_url()).exists();
+                media.getTranscriptFile_url() != null
+                && new File(media.getTranscriptFile_url()).exists();
         File dest;
         if (partiallyDownloadedFileExists) {
             dest = new File(media.getTranscriptFile_url());
@@ -46,8 +46,8 @@ public class DownloadRequestCreator {
         if (dest.exists() && !partiallyDownloadedFileExists) {
             dest = findUnusedFile(dest);
         }
-        Log.d(TAG, "Requesting download of transcript url " +
-                media.getItem().getPodcastIndexTranscriptUrlPreferred().second);
+        Log.d(TAG, "Requesting download of transcript url "
+                + media.getItem().getPodcastIndexTranscriptUrlPreferred().second);
 
         String username = (media.getItem().getFeed().getPreferences() != null)
                 ? media.getItem().getFeed().getPreferences().getUsername() : null;
@@ -123,7 +123,7 @@ public class DownloadRequestCreator {
     }
 
     private static String getTranscriptFilename(FeedMedia media) {
-       return DownloadRequestCreator.getMediafilename(media) + TRANSCRIPT_EXT;
+        return DownloadRequestCreator.getMediafilename(media) + TRANSCRIPT_EXT;
     }
 
     private static String getMediafilename(FeedMedia media) {
