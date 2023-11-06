@@ -408,7 +408,7 @@ public class CoverFragment extends Fragment {
                     String ellipsisStr  = seg.getWords().substring(indexLastWord);
                     seg.setWords(firstWordsMinusLast);
                     seg.setTrimmed(true);
-                    Log.d(TAG, "sink trim [" + ellipsisStr+ "] from  {" + lastTwoWords + "++" + firstWords + "}");
+                    Log.d(TAG, "sink trim [" + ellipsisStr + "] from  {" + lastTwoWords + " " + firstWords + "}");
                     nextSeg.getValue().setWords(lastTwoWords + " " + ellipsisStr + " " + nextSeg.getValue().getWords());
                     long duration = seg.getEndTime() - seg.getStartTime();
                     float ratio = ((float) (origLen - indexLastTwoWord) / (float) origLen);
@@ -428,8 +428,9 @@ public class CoverFragment extends Fragment {
                         break;
                     }
                     Log.d(TAG, "sink combining " + seg.getWords() + " + " + nextSeg.getValue().getWords());
-                    seg.setWords(StringUtils.stripToEmpty(seg.getWords().replaceAll(" +", " ") + " " +
-                            StringUtils.stripToEmpty(nextSeg.getValue().getWords().replaceAll(" +", " "))));
+                    seg.setWords(StringUtils.stripToEmpty(seg.getWords().replaceAll(" +", " ") + " "
+                            + StringUtils.stripToEmpty(
+                                    nextSeg.getValue().getWords().replaceAll(" +", " "))));
                     seg.setEndTime(nextSeg.getValue().getEndTime());
                     transcript.remove(nextSeg);
                 }
