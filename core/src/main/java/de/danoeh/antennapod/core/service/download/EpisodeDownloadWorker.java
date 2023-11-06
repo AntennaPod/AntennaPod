@@ -125,7 +125,8 @@ public class EpisodeDownloadWorker extends Worker {
         try {
             downloader.call();
             // read the transcript from the file that is downloaded
-            BufferedReader reader = new BufferedReader(new FileReader(downloader.getDownloadRequest().getDestination()));
+            BufferedReader reader = new BufferedReader(
+                    new FileReader(downloader.getDownloadRequest().getDestination()));
             StringBuilder stringBuilder = new StringBuilder();
             char[] buffer = new char[128];
             while (reader.read(buffer) != -1) {

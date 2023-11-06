@@ -522,7 +522,7 @@ public class FeedItem extends FeedComponent implements Serializable {
     }
 
     public boolean hasTranscript() {
-       return hasTranscript;
+        return hasTranscript;
     }
 
     public void setTranscript(Transcript t) {

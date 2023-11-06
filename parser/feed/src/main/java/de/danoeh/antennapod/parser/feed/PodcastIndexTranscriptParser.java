@@ -61,7 +61,7 @@ public class PodcastIndexTranscriptParser {
                         do {
                             line = iter.next();
                             if (StringUtil.isBlank(line)) {
-                               break;
+                                break;
                             }
                             body = body.concat(" " + line.strip());
                         } while (iter.hasNext());
@@ -136,12 +136,12 @@ public class PodcastIndexTranscriptParser {
                     JSONObject jsonObject = objSegments.getJSONObject(i);
                     startTime = Double.valueOf(jsonObject.optDouble("startTime", 0) * 1000L).longValue();
                     if (segmentStartTime == 0L) {
-                       segmentStartTime = startTime;
+                        segmentStartTime = startTime;
                     }
                     endTime = Double.valueOf(jsonObject.optDouble("endTime", startTime) * 1000L).longValue();
                     duration += endTime - startTime;
                     if (spanStartTime == 0L) {
-                       spanStartTime = startTime;
+                        spanStartTime = startTime;
                     }
 
                     speaker = jsonObject.optString("speaker");
