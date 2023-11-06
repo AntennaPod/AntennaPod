@@ -496,7 +496,7 @@ public class FeedItem extends FeedComponent implements Serializable {
         }
         // We prefer JSON if that is available
         if (podcastIndexTranscriptUrls.get("application/json") != null) {
-           return new Pair("application/json", podcastIndexTranscriptUrls.get("application/json"));
+            return new Pair("application/json", podcastIndexTranscriptUrls.get("application/json"));
         }
 
         // SRR format, but feeds use different mime types

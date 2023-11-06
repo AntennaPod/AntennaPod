@@ -86,9 +86,7 @@ public class CoverFragment extends Fragment {
                 new ChaptersFragment().show(getChildFragmentManager(), ChaptersFragment.TAG));
         viewBinding.butPrevChapter.setOnClickListener(v -> seekToPrevChapter());
         viewBinding.butNextChapter.setOnClickListener(v -> seekToNextChapter());
-        viewBinding.txtvTranscript.setOnClickListener(v ->
-                onTranscriptOverlay()
-                );
+        viewBinding.txtvTranscript.setOnClickListener(v -> onTranscriptOverlay());
         return viewBinding.getRoot();
     }
 
@@ -176,7 +174,7 @@ public class CoverFragment extends Fragment {
 
     private void updateTranscriptControlVisibility() {
         if (! (media instanceof FeedMedia)) {
-           return;
+            return;
         }
 
         if (! ((FeedMedia) media).getItem().hasTranscript()) {
@@ -369,16 +367,14 @@ public class CoverFragment extends Fragment {
         TranscriptSegment seg = transcript.getSegmentAtTime(pos);
         if (seg != null) {
             Log.d(TAG, "showing transcript at " + pos + " -> " + seg.getWords());
-            // TT TODO when we detect an ellipse on the textview, then remove the words from the end of the segment until the ellipse no longer
-            // shows, then rebalance all the future segments of the transcript.  Before the audio mostly goes forward, we take
-            // the text from this point forward and rebalance.  When user jumps to a new location, it's okay to reshuffle the entire
-            // transcript.  On the next segment, everything that came before the current location can be wiped.
-            // 2md idea is to scroll the transcript TextView when we get to the end (endTimeCode - span (1sec))
+            // TT TODO when we detect an ellipse on the textview, then remove the words from the end of the
+            //  segment until the ellipse no longer
             Layout l;
             int lines = 0;
             String lastWord = new String();
             do {
-                viewBinding.txtvTranscript.setText(StringUtils.stripToEmpty(StringUtils.replaceAll(seg.getWords(), " +", " ")));
+                viewBinding.txtvTranscript.setText(
+                        StringUtils.stripToEmpty(StringUtils.replaceAll(seg.getWords(), " +", " ")));
                 l = viewBinding.txtvTranscript.getLayout();
                 if (l != null) {
                     lines = l.getLineCount();
@@ -413,14 +409,13 @@ public class CoverFragment extends Fragment {
                     seg.setWords(firstWordsMinusLast);
                     seg.setTrimmed(true);
                     Log.d(TAG, "sink trim [" + ellipsisStr+ "] from  {" + lastTwoWords + "++" + firstWords + "}");
-                    // viewBinding.txtvTranscript.setText(StringUtils.stripToEmpty(StringUtils.replaceAll(firstWords, " +", " ")));
                     nextSeg.getValue().setWords(lastTwoWords + " " + ellipsisStr + " " + nextSeg.getValue().getWords());
                     long duration = seg.getEndTime() - seg.getStartTime();
                     float ratio = ((float) (origLen - indexLastTwoWord) / (float) origLen);
 
                     nextSeg.getValue().setStartTime(nextSeg.getValue().getStartTime() - (long) (ratio * duration));
-                    Log.d(TAG, "new start time " + nextSeg.getValue().getStartTime() + " compare " + nextSeg.getKey() + " -> " + ellipsisStr);
-                    Log.d(TAG, "replace " + nextSeg.getKey() + " with " + nextSeg.getValue().getStartTime());
+                    Log.d(TAG, "new start time " + nextSeg.getValue().getStartTime() + " compare "
+                            + nextSeg.getKey() + " -> " + ellipsisStr);
                     transcript.replace(nextSeg.getKey(), nextSeg.getValue().getStartTime());
                     break;
                 } else {
@@ -429,7 +424,8 @@ public class CoverFragment extends Fragment {
                         break;
                     }
 
-                    Log.d(TAG, "start seg " + seg.getStartTime() + " next seg " + nextSeg.getValue().getStartTime());
+                    Log.d(TAG, "start seg " + seg.getStartTime()
+                            + " next seg " + nextSeg.getValue().getStartTime());
                     if (nextSeg != null && seg.getStartTime() == nextSeg.getValue().getStartTime()) {
                         break;
                     }
