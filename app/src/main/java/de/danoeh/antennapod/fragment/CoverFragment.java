@@ -19,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,7 +43,6 @@ import de.danoeh.antennapod.databinding.CoverFragmentBinding;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
-import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
@@ -57,12 +55,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import java.util.Map;
 
 import static android.widget.LinearLayout.LayoutParams.MATCH_PARENT;
 import static android.widget.LinearLayout.LayoutParams.WRAP_CONTENT;
-
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Displays the cover and the title of a FeedItem.
@@ -396,10 +392,11 @@ public class CoverFragment extends Fragment {
                 Map.Entry<Long, TranscriptSegment> nextSeg = transcript.getSegmentAfterTime(pos);
                 int origLen = 0;
                 int ellipsisAway = l.getEllipsisCount(lines - 1);
+                // TT TODO Using spaces to find which words we trim will not work for transcripts
+                //  like Chinese that don't have spaces
                 if (lines >= 2 && ellipsisAway > 0) {
                     origLen = seg.getWords().length();
-                    int ellipsisStart = seg.getWords().length() - ( (int) (ellipsisAway));
-                    // TT TODO This does not work for transcripts like Chinese that don't have spaces
+                    int ellipsisStart = seg.getWords().length() - ((int) (ellipsisAway));
                     int indexLastWord = seg.getWords().lastIndexOf(" ", ellipsisStart);
                     if (indexLastWord == -1) {
                         break;
