@@ -397,7 +397,6 @@ public class CoverFragment extends Fragment {
                     if (indexLastWord == -1) {
                         break;
                     }
-                    String ellipsisStr  = seg.getWords().substring(indexLastWord);
                     String firstWords = seg.getWords().substring(0, indexLastWord);
                     int indexLastTwoWord = firstWords.lastIndexOf(" ");
                     if (indexLastTwoWord == -1) {
@@ -406,6 +405,7 @@ public class CoverFragment extends Fragment {
                     String firstWordsMinusLast = firstWords.substring(0, indexLastTwoWord);
                     String lastTwoWords = firstWords.substring(indexLastTwoWord);
 
+                    String ellipsisStr  = seg.getWords().substring(indexLastWord);
                     seg.setWords(firstWordsMinusLast);
                     seg.setTrimmed(true);
                     Log.d(TAG, "sink trim [" + ellipsisStr+ "] from  {" + lastTwoWords + "++" + firstWords + "}");
@@ -414,8 +414,6 @@ public class CoverFragment extends Fragment {
                     float ratio = ((float) (origLen - indexLastTwoWord) / (float) origLen);
 
                     nextSeg.getValue().setStartTime(nextSeg.getValue().getStartTime() - (long) (ratio * duration));
-                    Log.d(TAG, "new start time " + nextSeg.getValue().getStartTime() + " compare "
-                            + nextSeg.getKey() + " -> " + ellipsisStr);
                     transcript.replace(nextSeg.getKey(), nextSeg.getValue().getStartTime());
                     break;
                 } else {
