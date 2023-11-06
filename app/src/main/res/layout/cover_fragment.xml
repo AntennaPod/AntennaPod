@@ -89,7 +89,6 @@
             android:textSize="@dimen/text_size_small"
             android:visibility="visible" />
 
-
     </LinearLayout>
 
     <LinearLayout
@@ -123,7 +122,6 @@
                 android:contentDescription="@string/shownotes_contentdescription"
                 android:padding="2dp"
                 app:srcCompat="@drawable/ic_info" />
-
 
             <TextView
                 android:id="@+id/shownotes_label"
