@@ -12,12 +12,15 @@ import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -35,12 +38,16 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DateFormatter;
+import de.danoeh.antennapod.core.util.PodcastIndexTranscriptUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.databinding.CoverFragmentBinding;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.Transcript;
+import de.danoeh.antennapod.model.feed.TranscriptSegment;
 import de.danoeh.antennapod.model.playback.Playable;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -53,6 +60,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import static android.widget.LinearLayout.LayoutParams.MATCH_PARENT;
 import static android.widget.LinearLayout.LayoutParams.WRAP_CONTENT;
+
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Displays the cover and the title of a FeedItem.
@@ -80,6 +90,9 @@ public class CoverFragment extends Fragment {
                 new ChaptersFragment().show(getChildFragmentManager(), ChaptersFragment.TAG));
         viewBinding.butPrevChapter.setOnClickListener(v -> seekToPrevChapter());
         viewBinding.butNextChapter.setOnClickListener(v -> seekToNextChapter());
+        viewBinding.txtvTranscript.setOnClickListener(v ->
+                onTranscriptOverlay()
+                );
         return viewBinding.getRoot();
     }
 
@@ -102,6 +115,7 @@ public class CoverFragment extends Fragment {
             } else {
                 emitter.onComplete();
             }
+
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(media -> {
@@ -161,6 +175,19 @@ public class CoverFragment extends Fragment {
         displayedChapterIndex = -1;
         refreshChapterData(ChapterUtils.getCurrentChapterIndex(media, media.getPosition())); //calls displayCoverImage
         updateChapterControlVisibility();
+        updateTranscriptControlVisibility();
+    }
+
+    private void updateTranscriptControlVisibility() {
+        if (! (media instanceof FeedMedia)) {
+           return;
+        }
+
+        if (! ((FeedMedia) media).getItem().hasTranscript()) {
+            viewBinding.txtvTranscript.setVisibility(View.GONE);
+        } else {
+            viewBinding.txtvTranscript.setVisibility(View.VISIBLE);
+        }
     }
 
     private void updateChapterControlVisibility() {
@@ -325,6 +352,98 @@ public class CoverFragment extends Fragment {
             return;
         }
         controller.playPause();
+    }
+
+    void onTranscriptOverlay() {
+        // TT TODO
+        return;
+    }
+
+    void updateTranscript(Playable media, int pos) {
+        if (! (media instanceof FeedMedia)) {
+            return;
+        }
+        // TT TODO - only get a snippet from previously saved transcript
+        Transcript transcript = PodcastIndexTranscriptUtils.loadTranscript((FeedMedia) media);
+        if (transcript == null) {
+            return;
+        }
+        Log.d(TAG, "looking for transcript at " + pos);
+
+        TranscriptSegment seg = transcript.getSegmentAtTime(pos);
+        if (seg != null) {
+            Log.d(TAG, "showing transcript at " + pos + " -> " + seg.getWords());
+            // TT TODO when we detect an ellipse on the textview, then remove the words from the end of the segment until the ellipse no longer
+            // shows, then rebalance all the future segments of the transcript.  Before the audio mostly goes forward, we take
+            // the text from this point forward and rebalance.  When user jumps to a new location, it's okay to reshuffle the entire
+            // transcript.  On the next segment, everything that came before the current location can be wiped.
+            // 2md idea is to scroll the transcript TextView when we get to the end (endTimeCode - span (1sec))
+            Layout l;
+            int lines = 0;
+            String lastWord = new String();
+            do {
+                viewBinding.txtvTranscript.setText(StringUtils.stripToEmpty(StringUtils.replaceAll(seg.getWords(), " +", " ")));
+                l = viewBinding.txtvTranscript.getLayout();
+                if (l != null) {
+                    lines = l.getLineCount();
+                    //if (lines <= 1) {
+                    //   break;
+                    //}
+                } else {
+                    break;
+                }
+                // We have ellipsis, remove the last word
+                Map.Entry<Long, TranscriptSegment> nextSeg = transcript.getSegmentAfterTime(pos);
+                int origLen = 0;
+                int ellipsisAway = l.getEllipsisCount(lines - 1);
+                if (lines >= 2 && ellipsisAway > 0) {
+                    origLen = seg.getWords().length();
+                    int ellipsisStart = seg.getWords().length() - ( (int) (ellipsisAway));
+                    // TT TODO This does not work for transcripts like Chinese that don't have spaces
+                    int indexLastWord = seg.getWords().lastIndexOf(" ", ellipsisStart);
+                    if (indexLastWord == -1) {
+                        break;
+                    }
+                    String ellipsisStr  = seg.getWords().substring(indexLastWord);
+                    String firstWords = seg.getWords().substring(0, indexLastWord);
+                    int indexLastTwoWord = firstWords.lastIndexOf(" ");
+                    if (indexLastTwoWord == -1) {
+                        break;
+                    }
+                    String firstWordsMinusLast = firstWords.substring(0, indexLastTwoWord);
+                    String lastTwoWords = firstWords.substring(indexLastTwoWord);
+
+                    seg.setWords(firstWordsMinusLast);
+                    seg.setTrimmed(true);
+                    Log.d(TAG, "sink trim [" + ellipsisStr+ "] from  {" + lastTwoWords + "++" + firstWords + "}");
+                    // viewBinding.txtvTranscript.setText(StringUtils.stripToEmpty(StringUtils.replaceAll(firstWords, " +", " ")));
+                    nextSeg.getValue().setWords(lastTwoWords + " " + ellipsisStr + " " + nextSeg.getValue().getWords());
+                    long duration = seg.getEndTime() - seg.getStartTime();
+                    float ratio = ((float) (origLen - indexLastTwoWord) / (float) origLen);
+
+                    nextSeg.getValue().setStartTime(nextSeg.getValue().getStartTime() - (long) (ratio * duration));
+                    Log.d(TAG, "new start time " + nextSeg.getValue().getStartTime() + " compare " + nextSeg.getKey() + " -> " + ellipsisStr);
+                    Log.d(TAG, "replace " + nextSeg.getKey() + " with " + nextSeg.getValue().getStartTime());
+                    transcript.replace(nextSeg.getKey(), nextSeg.getValue().getStartTime());
+                    break;
+                } else {
+                    // Keep on filling until we have ellipse
+                    if (seg.isTrimmed()) {
+                        break;
+                    }
+
+                    Log.d(TAG, "start seg " + seg.getStartTime() + " next seg " + nextSeg.getValue().getStartTime());
+                    if (nextSeg != null && seg.getStartTime() == nextSeg.getValue().getStartTime()) {
+                        break;
+                    }
+                    Log.d(TAG, "sink combining " + seg.getWords() + " + " + nextSeg.getValue().getWords());
+                    seg.setWords(StringUtils.stripToEmpty(seg.getWords().replaceAll(" +", " ") + " " +
+                            StringUtils.stripToEmpty(nextSeg.getValue().getWords().replaceAll(" +", " "))));
+                    seg.setEndTime(nextSeg.getValue().getEndTime());
+                    transcript.remove(nextSeg);
+                }
+            } while (true);
+        }
     }
 
     private boolean copyText(String text) {
