@@ -1,8 +1,5 @@
 package de.danoeh.antennapod.core.util;
 
-import static android.webkit.ConsoleMessage.MessageLevel.LOG;
-
-import android.os.FileUtils;
 import android.os.NetworkOnMainThreadException;
 import android.util.Log;
 import android.util.Pair;
@@ -14,7 +11,6 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
-import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.parser.feed.PodcastIndexTranscriptParser;

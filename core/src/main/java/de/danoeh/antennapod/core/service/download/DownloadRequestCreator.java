@@ -83,6 +83,7 @@ public class DownloadRequestCreator {
         return new DownloadRequest.Builder(dest.toString(), media)
                 .withAuthentication(username, password);
     }
+
     private static File findUnusedFile(File dest) {
         // find different name
         File newDest = null;

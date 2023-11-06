@@ -1,22 +1,5 @@
 package de.danoeh.antennapod.parser.feed;
 
-/*
- JSON format
-{
-    "version": "1.0.0",
-    "segments": [
-        {
-            "startTime": 0.8,
-            "endTime": 1.2,
-            "body": "And"
-        },
-        {
-            "startTime": 1.2,
-            "endTime": 1.4,
-            "body": "the"
-        },
- */
-
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -24,14 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.internal.StringUtil;
 
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
