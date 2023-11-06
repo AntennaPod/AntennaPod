@@ -7,10 +7,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.internal.StringUtil;
 
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 
 import de.danoeh.antennapod.model.feed.Transcript;
@@ -184,7 +184,7 @@ public class PodcastIndexTranscriptParser {
 
     public static String secondsToTime(long msecs) {
         int duration = Math.toIntExact(msecs / 1000L);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        return String.format("%d:%02d:%02d", duration / 3600, (duration % 3600) / 60, (duration % 60));
+        // TT TODO - There should be a more Locale friendly way to format
+        return String.format(Locale.US, "%d:%02d:%02d", duration / 3600, (duration % 3600) / 60, (duration % 60));
     }
 }
