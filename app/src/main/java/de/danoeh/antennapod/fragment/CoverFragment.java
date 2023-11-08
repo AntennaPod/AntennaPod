@@ -371,7 +371,6 @@ public class CoverFragment extends Fragment {
             //  segment until the ellipse no longer
             Layout l;
             int lines = 0;
-            String lastWord = new String();
             do {
                 viewBinding.txtvTranscript.setText(
                         StringUtils.stripToEmpty(StringUtils.replaceAll(seg.getWords(), " +", " ")));
@@ -385,7 +384,7 @@ public class CoverFragment extends Fragment {
                     break;
                 }
                 // We have ellipsis, remove the last word
-                Map.Entry<Long, TranscriptSegment> nextSeg = transcript.getSegmentAfterTime(pos);
+                Map.Entry<Long, TranscriptSegment> nextSeg = transcript.getSegmentAfterTime(seg.getEndTime());
                 int origLen = 0;
                 int ellipsisAway = l.getEllipsisCount(lines - 1);
                 // TT TODO Using spaces to find which words we trim will not work for transcripts
@@ -406,15 +405,19 @@ public class CoverFragment extends Fragment {
                     String lastTwoWords = firstWords.substring(indexLastTwoWord);
 
                     String ellipsisStr  = seg.getWords().substring(indexLastWord);
+                    Log.d(TAG, "sink trim ellipsis [" + ellipsisStr
+                            + "] along with {" + lastTwoWords + "}"
+                            + "from (" + seg.getWords() + ")");
                     seg.setWords(firstWordsMinusLast);
                     seg.setTrimmed(true);
-                    Log.d(TAG, "sink trim [" + ellipsisStr + "] from  {" + lastTwoWords + " " + firstWords + "}");
                     nextSeg.getValue().setWords(lastTwoWords + " " + ellipsisStr + " " + nextSeg.getValue().getWords());
                     long duration = seg.getEndTime() - seg.getStartTime();
                     float ratio = ((float) (origLen - indexLastTwoWord) / (float) origLen);
 
                     nextSeg.getValue().setStartTime(nextSeg.getValue().getStartTime() - (long) (ratio * duration));
                     transcript.replace(nextSeg.getKey(), nextSeg.getValue().getStartTime());
+                    viewBinding.txtvTranscript.setText(
+                            StringUtils.stripToEmpty(StringUtils.replaceAll(seg.getWords(), " +", " ")));
                     break;
                 } else {
                     // Keep on filling until we have ellipse

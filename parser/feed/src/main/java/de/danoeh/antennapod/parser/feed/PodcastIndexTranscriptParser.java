@@ -128,17 +128,17 @@ public class PodcastIndexTranscriptParser {
                 long spanStartTime = 0L;
                 long duration = 0L;
                 String segmentBody = "";
-                long segmentStartTime = 0L;
+                long segmentStartTime = -1L;
                 JSONObject obj = new JSONObject(jsonStr);
                 JSONArray objSegments = obj.getJSONArray("segments");
 
                 for (int i = 0; i < objSegments.length(); i++) {
                     JSONObject jsonObject = objSegments.getJSONObject(i);
                     startTime = Double.valueOf(jsonObject.optDouble("startTime", 0) * 1000L).longValue();
-                    if (segmentStartTime == 0L) {
+                    if (segmentStartTime == -1L) {
                         segmentStartTime = startTime;
                     }
-                    endTime = Double.valueOf(jsonObject.optDouble("endTime", startTime) * 1000L).longValue();
+                    endTime = Double.valueOf(jsonObject.optDouble("endTime", endTime) * 1000L).longValue();
                     duration += endTime - startTime;
                     if (spanStartTime == 0L) {
                         spanStartTime = startTime;
@@ -154,7 +154,7 @@ public class PodcastIndexTranscriptParser {
                         Log.d(TAG, "JSON " + segmentBody);
                         duration = 0L;
                         segmentBody = "";
-                        segmentStartTime = 0L;
+                        segmentStartTime = -1L;
                     }
                 }
 
