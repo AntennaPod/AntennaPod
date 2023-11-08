@@ -255,7 +255,8 @@ public class UserPreferences {
      * notifications.
      *
      * @param buttonId Either NOTIFICATION_BUTTON_REWIND, NOTIFICATION_BUTTON_FAST_FORWARD,
-     *                 NOTIFICATION_BUTTON_SKIP or NOTIFICATION_BUTTON_PLAYBACK_SPEED.
+     *                 NOTIFICATION_BUTTON_SKIP, NOTIFICATION_BUTTON_PLAYBACK_SPEED
+     *                 or NOTIFICATION_BUTTON_NEXT_CHAPTER.
      * @return {@code true} if button should be shown, {@code false}  otherwise
      */
     private static boolean showButtonOnFullNotification(int buttonId) {
@@ -275,7 +276,7 @@ public class UserPreferences {
     }
 
     public static boolean showNextChapterOnFullNotification() {
-        return showButtonOnFullNotification(NOTIFICATION_BUTTON_SKIP);
+        return showButtonOnFullNotification(NOTIFICATION_BUTTON_NEXT_CHAPTER);
     }
 
     public static boolean showPlaybackSpeedOnFullNotification() {
