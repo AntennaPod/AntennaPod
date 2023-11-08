@@ -95,7 +95,7 @@ public class PreferencesTest {
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> UserPreferences.showSkipOnFullNotification());
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.showNextChapterOnFullNotification());
+                .until(() -> !UserPreferences.showNextChapterOnFullNotification());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> !UserPreferences.showPlaybackSpeedOnFullNotification());
     }
