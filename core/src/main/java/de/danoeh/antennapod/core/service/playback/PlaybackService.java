@@ -432,7 +432,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     new FeedItemFilter(FeedItemFilter.UNPLAYED), SortOrder.DATE_NEW_OLD);
         } else if (parentId.startsWith("FeedId:")) {
             long feedId = Long.parseLong(parentId.split(":")[1]);
-            feedItems = DBReader.getFeedItemList(DBReader.getFeed(feedId));
+            Feed feed = DBReader.getFeed(feedId);
+            feedItems = DBReader.getFeedItemList(feed,
+                    FeedItemFilter.unfiltered(),
+                    feed.getSortOrder());
         } else if (parentId.equals(getString(R.string.recently_played_episodes))) {
             Playable playable = PlaybackPreferences.createInstanceFromPreferences(this);
             if (playable instanceof FeedMedia) {
