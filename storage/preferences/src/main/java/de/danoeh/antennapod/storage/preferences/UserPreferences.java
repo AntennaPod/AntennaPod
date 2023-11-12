@@ -620,6 +620,7 @@ public class UserPreferences {
              .apply();
 
     }
+
     public static void setAutodownloadSelectedNetworks(String[] value) {
         prefs.edit()
              .putString(PREF_AUTODL_SELECTED_NETWORKS, TextUtils.join(",", value))
