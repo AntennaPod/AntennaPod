@@ -28,9 +28,6 @@ import java.util.List;
  */
 public class AllEpisodesFragment extends EpisodesListFragment {
     public static final String TAG = "EpisodesFragment";
-    private static final String PREF_NAME = "PrefAllEpisodesFragment";
-    private static final String PREF_FILTER = "filter";
-    private SharedPreferences prefs;
 
     @NonNull
     @Override
@@ -41,7 +38,6 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         toolbar.setTitle(R.string.episodes_label);
         updateToolbar();
         updateFilterUi();
-        prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         txtvInformation.setOnClickListener(
                 v -> AllEpisodesFilterDialog.newInstance(getFilter()).show(getChildFragmentManager(), null));
         return root;
@@ -78,20 +74,15 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         return DBReader.getTotalEpisodeCount(getFilter());
     }
 
+
     @Override
     protected FeedItemFilter getFilter() {
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        return new FeedItemFilter(prefs.getString(PREF_FILTER, ""));
+        return new FeedItemFilter(UserPreferences.getPrefFilterAllEpisodes());
     }
 
     @Override
     protected String getFragmentTag() {
         return TAG;
-    }
-
-    @Override
-    protected String getPrefName() {
-        return PREF_NAME;
     }
 
     @Override
@@ -128,11 +119,15 @@ public class AllEpisodesFragment extends EpisodesListFragment {
 
     @Subscribe
     public void onFilterChanged(AllEpisodesFilterDialog.AllEpisodesFilterChangedEvent event) {
-        prefs.edit().putString(PREF_FILTER, StringUtils.join(event.filterValues, ",")).apply();
+        UserPreferences.setPrefFilterAllEpisodes(StringUtils.join(event.filterValues, ","));
         updateFilterUi();
         page = 1;
         loadItems();
     }
+
+    protected String getPrefName() {
+        return "PrefAllEpisodesFragment";
+    };
 
     private void updateFilterUi() {
         swipeActions.setFilter(getFilter());

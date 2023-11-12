@@ -69,6 +69,7 @@ public class UserPreferences {
 
     // Episode
     public static final String PREF_SORT_ALL_EPISODES = "prefEpisodesSort";
+    private static final String PREF_FILTER_ALL_EPISODES = "prefEpisodeFilter";
 
     // Playback
     public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
@@ -617,8 +618,8 @@ public class UserPreferences {
         prefs.edit()
              .putString(PREF_PLAYBACK_SPEED_ARRAY, jsonArray.toString())
              .apply();
-    }
 
+    }
     public static void setAutodownloadSelectedNetworks(String[] value) {
         prefs.edit()
              .putString(PREF_AUTODL_SELECTED_NETWORKS, TextUtils.join(",", value))
@@ -880,5 +881,13 @@ public class UserPreferences {
     public static SortOrder getAllEpisodeSortOrder() {
         return SortOrder.fromCodeString(prefs.getString(PREF_SORT_ALL_EPISODES,
                 "" + SortOrder.DATE_NEW_OLD.code));
+    }
+
+    public static String getPrefFilterAllEpisodes() {
+        return prefs.getString(PREF_FILTER_ALL_EPISODES, "");
+    }
+
+    public static void setPrefFilterAllEpisodes(String filter) {
+        prefs.edit().putString(PREF_FILTER_ALL_EPISODES, filter).apply();
     }
 }
