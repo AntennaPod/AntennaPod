@@ -116,7 +116,16 @@ public class DBWriter {
         Log.i(TAG, String.format(Locale.US, "Requested to delete FeedMedia [id=%d, title=%s, downloaded=%s",
                 media.getId(), media.getEpisodeTitle(), media.isDownloaded()));
         boolean localDelete = false;
-        if (media.isDownloaded() || media.getFile_url() != null) {
+        if (media.getFile_url() != null && media.getFile_url().startsWith("content://")) {
+            // Local feed
+            DocumentFile documentFile = DocumentFile.fromSingleUri(context, Uri.parse(media.getFile_url()));
+            if (documentFile == null || !documentFile.exists() || !documentFile.delete()) {
+                EventBus.getDefault().post(new MessageEvent(context.getString(R.string.delete_local_failed)));
+                return false;
+            }
+            media.setFile_url(null);
+            localDelete = true;
+        } else if (media.getFile_url() != null) {
             // delete downloaded media file
             File mediaFile = new File(media.getFile_url());
             if (mediaFile.exists() && !mediaFile.delete()) {
@@ -131,15 +140,6 @@ public class DBWriter {
             adapter.open();
             adapter.setMedia(media);
             adapter.close();
-        } else if (media.getFile_url().startsWith("content://")) {
-            // Local feed
-            DocumentFile documentFile = DocumentFile.fromSingleUri(
-                    context, Uri.parse(media.getFile_url()));
-            if (documentFile == null || !documentFile.exists() || !documentFile.delete()) {
-                EventBus.getDefault().post(new MessageEvent(context.getString(R.string.delete_local_failed)));
-                return false;
-            }
-            localDelete = true;
         }
 
         if (media.getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId()) {
@@ -224,10 +224,12 @@ public class DBWriter {
                     PlaybackPreferences.writeNoMediaPlaying();
                     IntentUtils.sendLocalBroadcast(context, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
                 }
-                if (item.getMedia().isDownloaded()) {
-                    deleteFeedMediaSynchronous(context, item.getMedia());
+                if (!item.getFeed().isLocalFeed()) {
+                    DownloadServiceInterface.get().cancel(context, item.getMedia());
+                    if (item.getMedia().isDownloaded()) {
+                        deleteFeedMediaSynchronous(context, item.getMedia());
+                    }
                 }
-                DownloadServiceInterface.get().cancel(context, item.getMedia());
             }
         }
 
