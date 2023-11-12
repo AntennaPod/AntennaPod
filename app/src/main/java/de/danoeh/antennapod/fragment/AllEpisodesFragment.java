@@ -14,6 +14,8 @@ import de.danoeh.antennapod.dialog.AllEpisodesFilterDialog;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -28,7 +30,6 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     public static final String TAG = "EpisodesFragment";
     private static final String PREF_NAME = "PrefAllEpisodesFragment";
     private static final String PREF_FILTER = "filter";
-    public static final String PREF_SORT = "prefEpisodesSort";
     private SharedPreferences prefs;
 
     @NonNull
@@ -61,13 +62,15 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     @NonNull
     @Override
     protected List<FeedItem> loadData() {
-        return DBReader.getEpisodes(0, page * EPISODES_PER_PAGE, getFilter(), getSortOrder());
+        return DBReader.getEpisodes(0, page * EPISODES_PER_PAGE, getFilter(),
+                UserPreferences.getAllEpisodeSortOrder());
     }
 
     @NonNull
     @Override
     protected List<FeedItem> loadMoreData(int page) {
-        return DBReader.getEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, getFilter(), getSortOrder());
+        return DBReader.getEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, getFilter(),
+                UserPreferences.getAllEpisodeSortOrder());
     }
 
     @Override
@@ -119,7 +122,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     }
 
     private void saveSortOrderAndRefresh(SortOrder type) {
-        prefs.edit().putString(PREF_SORT, "" + type.code).apply();
+        UserPreferences.setAllEpisodeSortOrder(type);
         loadItems();
     }
 
@@ -142,9 +145,5 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         }
         toolbar.getMenu().findItem(R.id.action_favorites).setIcon(
                 getFilter().showIsFavorite ? R.drawable.ic_star : R.drawable.ic_star_border);
-    }
-
-    private SortOrder getSortOrder() {
-        return SortOrder.fromCodeString(prefs.getString(PREF_SORT, "" + SortOrder.DATE_NEW_OLD.code));
     }
 }

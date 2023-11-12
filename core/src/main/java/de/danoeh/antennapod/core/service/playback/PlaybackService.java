@@ -429,7 +429,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     new FeedItemFilter(FeedItemFilter.DOWNLOADED), UserPreferences.getDownloadsSortedOrder());
         } else if (parentId.equals(getResources().getString(R.string.episodes_label))) {
             feedItems = DBReader.getEpisodes(0, MAX_ANDROID_AUTO_EPISODES_PER_FEED,
-                    new FeedItemFilter(FeedItemFilter.UNPLAYED), SortOrder.DATE_NEW_OLD);
+                    new FeedItemFilter(FeedItemFilter.UNPLAYED), UserPreferences.getAllEpisodeSortOrder());
         } else if (parentId.startsWith("FeedId:")) {
             long feedId = Long.parseLong(parentId.split(":")[1]);
             Feed feed = DBReader.getFeed(feedId);
