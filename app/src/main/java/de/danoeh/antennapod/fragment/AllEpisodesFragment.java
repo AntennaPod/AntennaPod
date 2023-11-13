@@ -83,6 +83,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         return TAG;
     }
 
+    @Override
     protected String getPrefName() {
         return PREF_NAME;
     }
