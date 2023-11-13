@@ -53,8 +53,10 @@
   <string name="home_downloads_title">管理下载</string>
   <string name="home_welcome_title">欢迎来到 AntennaPod！</string>
   <string name="home_welcome_text">你尚未订阅任何播客。 打开侧栏菜单添加一个。</string>
-  <string name="notification_permission_text">AntennaPod 需要你的许可才能在下载节目时显示通知</string>
+  <string name="notification_permission_text">AntennaPod 需要你的许可方能显示通知。默认情况下，AntennaPod 只显示和进行中的下载或错误相关的通知</string>
   <string name="notification_permission_denied">你拒绝授予该权限</string>
+  <string name="notification_permission_deny_warning">如果你禁用了通知，且出现了错误，你可能无法找出出错的原因</string>
+  <string name="deny_label">拒绝</string>
   <string name="open_settings">打开设置</string>
   <string name="configure_home">配置主屏幕</string>
   <!--Download Statistics fragment-->
@@ -110,16 +112,18 @@
   <string name="retry_label">重试</string>
   <string name="auto_download_label">包含到自动下载</string>
   <string name="auto_delete_label">自动删除节目</string>
-  <string name="feed_volume_reduction">音量降低</string>
-  <string name="feed_volume_reduction_summary">调低本档播客的音量：%1$s</string>
-  <string name="feed_volume_reduction_off">关闭</string>
-  <string name="feed_volume_reduction_light">轻微</string>
-  <string name="feed_volume_reduction_heavy">显著</string>
+  <string name="feed_volume_adapdation">音量调节</string>
+  <string name="feed_volume_adaptation_summary">调高或调低此播客中节目的音量：%1$s</string>
+  <string name="feed_volume_reduction_off">无调节</string>
+  <string name="feed_volume_reduction_light">略微调低</string>
+  <string name="feed_volume_reduction_heavy">大幅下调</string>
+  <string name="feed_volume_boost_light">略微上调</string>
+  <string name="feed_volume_boost_medium">中度上调</string>
+  <string name="feed_volume_boost_heavy">大幅上调</string>
   <string name="feed_auto_download_always"> 总是</string>
   <string name="feed_auto_download_never">从不</string>
   <string name="feed_new_episodes_action_add_to_inbox">添加到收件箱</string>
   <string name="feed_new_episodes_action_nothing">啥都没有</string>
-  <string name="send_label">发送</string>
   <string name="episode_cleanup_never">从不</string>
   <string name="episode_cleanup_except_favorite_removal">当未收藏时</string>
   <string name="episode_cleanup_queue_removal">当不在队列中</string>
@@ -179,6 +183,7 @@
   <string name="add_tag">添加标签</string>
   <string name="rename_tag_label">重命名标签</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">通过移动数据连接刷新播客在设置中被禁用。\n\n你一定要刷新播客吗？</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message_vpn">您的 VPN 应用自称是移动网络 (按流量计费连接)。在设置中禁用了通过移动数据连接刷新播客。\n\n你仍要刷新吗？如果你想修复此问题，请联系 VPN 应用的创建者。</string>
   <!--actions on feeditems-->
   <string name="download_label">下载</string>
   <plurals name="downloading_batch_label">
@@ -189,6 +194,7 @@
   <string name="stream_label">流媒体</string>
   <string name="delete_label">删除</string>
   <string name="delete_failed">无法删除文件。重启可能解决该问题。</string>
+  <string name="delete_local_failed">无法删除文件。尝试从播客信息屏重新连接本地文件夹</string>
   <string name="delete_episode_label">删除节目</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="other">删除了 %d 个已下载的节目。</item>
@@ -226,6 +232,7 @@
   <string name="skip_episode_label">跳过曲目</string>
   <string name="reset_position">重置播放位置</string>
   <string name="no_items_selected">未选中项目</string>
+  <string name="delete_local_feed_warning_body">删除操作会从 AntennaPod 删除播客并从设备存储删除媒体文件。无法再通过 AntennaPod 重新下载它。</string>
   <!--Download messages and labels-->
   <string name="download_successful">成功</string>
   <string name="download_pending">下载等待</string>
@@ -244,6 +251,7 @@
   <string name="download_error_unsupported_type_html">播客主机的服务器发送的是一个网站，不是播客。</string>
   <string name="download_error_not_found">播客主机的服务器不知道去哪里找到文件。它可能被删除了。</string>
   <string name="download_error_connection_error">连接错误</string>
+  <string name="download_error_no_connection">无网络连接</string>
   <string name="download_error_unknown_host">找不到服务器。检查地址是否输入正确，以及网络连接是否正常。</string>
   <string name="download_error_unauthorized">身份认证错误。请确保用户名和密码正确。</string>
   <string name="download_error_file_type_type">文件类型错误</string>
@@ -269,6 +277,7 @@
   <string name="authentication_notification_title">需要认证</string>
   <string name="confirm_mobile_download_dialog_title">确认使用移动数据下载</string>
   <string name="confirm_mobile_download_dialog_message">设置中禁用了使用移动数据进行下载。当 Wi-Fi 可用时，AntennaPod 可以稍后自动下载节目。</string>
+  <string name="confirm_mobile_download_dialog_message_vpn">您的 VPN 应用自称是移动网络 (按流量计费连接)。在设置中禁用了通过移动数据连接下载。如果你想修复此问题，请联系 VPN 应用的创建者。</string>
   <string name="confirm_mobile_download_dialog_download_later">稍后下载</string>
   <string name="confirm_mobile_download_dialog_allow_this_time">仍要下载</string>
   <string name="confirm_mobile_streaming_notification_title">确认使用移动数据进行在线播放</string>
@@ -304,6 +313,7 @@
   <string name="feed_title">播客标题</string>
   <string name="random">随机</string>
   <string name="smart_shuffle">智能随机播放</string>
+  <string name="size">大小</string>
   <string name="clear_queue_confirmation_msg">请确认您要清除队列中的全部曲目</string>
   <string name="time_left_label">计时剩余:\u0020</string>
   <!--Variable Speed-->
@@ -358,6 +368,9 @@
   <string name="pref_followQueue_sum">播放完成跳转到播放列表下一项</string>
   <string name="pref_auto_delete_sum">当播放完成后删除曲目</string>
   <string name="pref_auto_delete_title">自动删除</string>
+  <string name="pref_auto_local_delete_title">自动从本地文件夹删除</string>
+  <string name="pref_auto_local_delete_sum">在自动删除功能中包括本地文件夹</string>
+  <string name="pref_auto_local_delete_dialog_body">请注意，对于本地文件夹，此操作会从 AntennaPod 删除播客并从设备存储删除媒体文件。无法再通过 AntennaPod 下载它们。要开启自动删除吗？</string>
   <string name="pref_smart_mark_as_played_sum">当曲目的剩余未播放时间小于一个确定值时将其表为已播放</string>
   <string name="pref_smart_mark_as_played_title">智能标记为已播放</string>
   <string name="pref_skip_keeps_episodes_sum">当剧集被跳过时保留它们</string>
@@ -383,7 +396,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">耳机重连</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">蓝牙重连</string>
   <string name="pref_stream_over_download_title">偏好在线</string>
-  <string name="pref_stream_over_download_sum">在列表中显示在线播放按钮而非下载按钮</string>
+  <string name="pref_stream_over_download_sum">在列表中显示在线播放按钮而不是下载按钮</string>
   <string name="pref_mobileUpdate_title">移动数据更新</string>
   <string name="pref_mobileUpdate_sum">选择使用移动数据连接时应当允许的内容</string>
   <string name="pref_mobileUpdate_refresh">播客刷新 </string>
@@ -398,13 +411,13 @@
   <string name="pref_tinted_theme_title">动态颜色</string>
   <string name="pref_tinted_theme_message">基于背景图对应用进行着色</string>
   <string name="pref_nav_drawer_items_title">设置导航抽屉项</string>
-  <string name="pref_nav_drawer_items_sum">改变侧边栏中的选项</string>
+  <string name="pref_nav_drawer_items_sum">更改显示在导航抽屉中的项目</string>
   <string name="pref_nav_drawer_feed_order_title">设置订阅顺序</string>
   <string name="pref_nav_drawer_feed_order_sum">改变你的订阅的排序方式</string>
   <string name="pref_nav_drawer_feed_counter_title">设置订阅计数</string>
   <string name="pref_nav_drawer_feed_counter_sum">更改订阅计数器显示的信息。 如果“订阅的排序顺序”设置为“按数量排序”，这也会影响订阅的排序。</string>
   <string name="pref_automatic_download_title">自动下载</string>
-  <string name="pref_automatic_download_sum">配置自动下载的曲目</string>
+  <string name="pref_automatic_download_sum">配置节目的自动下载</string>
   <string name="pref_autodl_wifi_filter_title">打开 Wi-Fi 过滤器</string>
   <string name="pref_autodl_wifi_filter_sum">只允许在 Wi-Fi 网络下自动下载</string>
   <string name="pref_automatic_download_on_battery_title">未充电时下载</string>
@@ -437,7 +450,7 @@
   <string name="pref_expandNotify_title">高通知优先级</string>
   <string name="pref_expandNotify_sum">这通常会拓展通知以显示播放按钮。</string>
   <string name="pref_persistNotify_title">持久性播放控制</string>
-  <string name="pref_persistNotify_sum">在暂停时保持通知和锁屏界面的控制。</string>
+  <string name="pref_persistNotify_sum">播放暂停时保留通知和锁屏控制</string>
   <string name="pref_compact_notification_buttons_title">设置紧凑通知按钮</string>
   <string name="pref_compact_notification_buttons_sum">当通知被折叠时，更改播放按钮。播放/暂停按钮总是包含在内。</string>
   <string name="pref_compact_notification_buttons_dialog_title">最多同时选择%1$d项</string>
@@ -463,14 +476,14 @@
   <string name="pref_skip_silence_title">跳过静音部分</string>
   <string name="behavior">行为</string>
   <string name="pref_default_page">默认页</string>
-  <string name="pref_default_page_sum">启动 AntennaPod 时打开的屏幕。</string>
+  <string name="pref_default_page_sum">启动 AntennaPod 时要打的屏幕</string>
   <string name="pref_back_button_opens_drawer">返回按钮打开抽屉</string>
   <string name="pref_back_button_opens_drawer_summary">在默认页面上按下返回按钮打开导航抽屉</string>
   <string name="remember_last_page">记住最后的页面</string>
   <string name="pref_delete_removes_from_queue_title">删除按钮从队列中去除</string>
-  <string name="pref_delete_removes_from_queue_sum">节目被删除时自动将其移除列表</string>
+  <string name="pref_delete_removes_from_queue_sum">播客被删除后，自动从队列中删掉它</string>
   <string name="pref_filter_feed_title">订阅筛选器</string>
-  <string name="pref_filter_feed_sum">在导航抽屉和订阅屏幕中筛选订阅。</string>
+  <string name="pref_filter_feed_sum">在导航抽屉和订阅屏幕中过滤你的订阅</string>
   <string name="subscriptions_are_filtered">订阅已过滤</string>
   <string name="subscriptions_counter_greater_zero">仅显示有计数的订阅</string>
   <string name="auto_downloaded">自动下载的</string>
@@ -501,6 +514,7 @@
   <string name="type_to_search">输入要搜索的查询</string>
   <string name="search_label">搜索</string>
   <string name="no_results_for_query">未找到关于 \"%1$s\" 的结果</string>
+  <string name="search_online">在线搜索</string>
   <!--Synchronization-->
   <string name="sync_status_started">同步已开始</string>
   <string name="sync_status_episodes_upload">正上传节目更改...</string>
@@ -534,7 +548,6 @@
   <string name="please_wait">请等待...</string>
   <string name="export_error_label">导出出错</string>
   <string name="export_success_title">成功导出</string>
-  <string name="export_success_sum">导出文件被写入:\n\n %1$s</string>
   <string name="opml_import_ask_read_permission">读取 OPML 文件需要访问外部存储的权限</string>
   <string name="successful_import_label">导入成功</string>
   <string name="import_ok">请按\"确定\"重新启动AntennaPod</string>
@@ -564,7 +577,7 @@
   </plurals>
   <string name="auto_enable_label">按下播放时自动激活睡眠定时器</string>
   <string name="auto_enable_label_with_times">在 %s 和 %s间按下播放时自动激活睡眠定时器</string>
-  <string name="auto_enable_change_times">更改时间</string>
+  <string name="auto_enable_change_times">更改时间范围</string>
   <string name="sleep_timer_enabled_label">睡眠计时器已启用</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">选择同步供应商</string>
@@ -622,15 +635,19 @@
   <string name="decrease_speed">放慢速度</string>
   <string name="media_type_video_label">视频</string>
   <string name="status_downloading_label">曲目正在下载</string>
-  <string name="in_queue_label">曲目已经在播放列表中</string>
-  <string name="is_favorite_label">节目被标记为收藏</string>
-  <string name="is_inbox_label">收件箱内的播客节目</string>
+  <string name="in_queue_label">在队列中</string>
+  <string name="is_favorite_label">标记为收藏</string>
+  <string name="is_inbox_label">在收件箱中</string>
+  <string name="is_played">已播放</string>
   <string name="load_next_page_label">载入下一页</string>
   <string name="position">位置：%1$s</string>
+  <string name="remaining_time">剩余时间：%1$s</string>
   <string name="apply_action">应用动作</string>
   <string name="play_chapter">播放章节</string>
   <string name="prev_chapter">上一章</string>
   <string name="next_chapter">下一章</string>
+  <string name="shuffle_suggestions">随机播放建议</string>
+  <string name="add_preset">添加预设</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">验证</string>
   <string name="authentication_descr">给本播客及曲目变更用户名及密码</string>
@@ -709,6 +726,8 @@
   <string name="sort_old_new">旧\u2192新</string>
   <string name="sort_short_long">短\u2192长</string>
   <string name="sort_long_short">长\u2192短</string>
+  <string name="sort_small_large">小 \u2192 大</string>
+  <string name="sort_large_small">大 \u2192 小</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">包括播放位置</string>
   <string name="share_dialog_episode_website_label">节目网页</string>
@@ -748,8 +767,6 @@
   <string name="notification_channel_download_error_description">当下载或源更新失败时显示</string>
   <string name="notification_channel_sync_error">同步失败了</string>
   <string name="notification_channel_sync_error_description">gpodder 同步出错时显示</string>
-  <string name="notification_channel_auto_download">自动下载已完成</string>
-  <string name="notification_channel_episode_auto_download">当节目已自动下载时显示。</string>
   <string name="notification_channel_new_episode">新节目</string>
   <string name="notification_channel_new_episode_description">当发现一个播客的新节目时显示，前提是在播客中启用通知</string>
   <!--Widget settings-->

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activity and fragment titles-->
-  <string name="feed_update_receiver_name">Aktualizovay odběry</string>
+  <string name="feed_update_receiver_name">Aktualizovat odběry</string>
   <string name="feeds_label">Podcasty</string>
   <string name="statistics_label">Statistiky</string>
   <string name="add_feed_label">Přidat podcast</string>
@@ -53,7 +53,6 @@
   <string name="home_downloads_title">Správa stahování</string>
   <string name="home_welcome_title">Vítejte v AntennaPod!</string>
   <string name="home_welcome_text">Zatím nejste přihlášeni k odběru žádných podcastů. Otevřete boční nabídku a přidejte podcast.</string>
-  <string name="notification_permission_text">AntennaPod vyžaduje vaše oprávnění zobrazovat upozornění během stahování epizod.</string>
   <string name="notification_permission_denied">Zamítli jste oprávnění.</string>
   <string name="open_settings">Otevřít nastavení</string>
   <string name="configure_home">Nastavení domovské obrazovky</string>
@@ -90,8 +89,7 @@
   <string name="confirm_label">Potvrdit</string>
   <string name="cancel_label">Zrušit</string>
   <string name="yes">Ano</string>
-  <string name="no">Ne
-</string>
+  <string name="no">Ne</string>
   <string name="reset">Reset</string>
   <string name="global_default">Globální výchozí nastavení</string>
   <string name="url_label">URL</string>
@@ -111,16 +109,10 @@
   <string name="retry_label">Zkusit znovu</string>
   <string name="auto_download_label">Zahrnout do automaticky stahovaných</string>
   <string name="auto_delete_label">Automatické mazání epizod</string>
-  <string name="feed_volume_reduction">Snížení hlasitosti</string>
-  <string name="feed_volume_reduction_summary">Snížit hlasitost pro tento podcast: %1$s</string>
-  <string name="feed_volume_reduction_off">Vypnuto</string>
-  <string name="feed_volume_reduction_light">Nízké</string>
-  <string name="feed_volume_reduction_heavy">Vysoké</string>
   <string name="feed_auto_download_always">Vždy</string>
   <string name="feed_auto_download_never">Nikdy</string>
   <string name="feed_new_episodes_action_add_to_inbox">Přidat do nových</string>
   <string name="feed_new_episodes_action_nothing">Nic</string>
-  <string name="send_label">Odeslat</string>
   <string name="episode_cleanup_never">Nikdy</string>
   <string name="episode_cleanup_except_favorite_removal">Pokud není mezi oblíbenými</string>
   <string name="episode_cleanup_queue_removal">Pokud není ve frontě</string>
@@ -429,7 +421,6 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Opětovné připojení sluchátek</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Opětovné připojení Bluetooth</string>
   <string name="pref_stream_over_download_title">Upřednostnit streamování</string>
-  <string name="pref_stream_over_download_sum">Zobrazit tlačítko streamovat místo tlačítka stáhnout v seznamech.</string>
   <string name="pref_mobileUpdate_title">Aktualizace přes mobilní data</string>
   <string name="pref_mobileUpdate_sum">Vyberte, co by mělo být povoleno přes mobilní data</string>
   <string name="pref_mobileUpdate_refresh">Obnovit podcast</string>
@@ -444,13 +435,11 @@
   <string name="pref_tinted_theme_title">Dynamické barvy</string>
   <string name="pref_tinted_theme_message">Přizpůsobit barvy aplikace podle tapety</string>
   <string name="pref_nav_drawer_items_title">Nastavení položek navigačního panelu</string>
-  <string name="pref_nav_drawer_items_sum">Upravit zobrazení položek v navigačním panelu.</string>
   <string name="pref_nav_drawer_feed_order_title">Nastavit pořadí odběrů</string>
   <string name="pref_nav_drawer_feed_order_sum">Upravit pořadí vašich odběrů</string>
   <string name="pref_nav_drawer_feed_counter_title">Nastavit počítadlo odběrů</string>
   <string name="pref_nav_drawer_feed_counter_sum">Změnit informaci zobrazenou čítačem odběrů. Též ovlivňuje řazení, je-li nastaveno na „podle čítače“.</string>
   <string name="pref_automatic_download_title">Automatické stahování</string>
-  <string name="pref_automatic_download_sum">Nastavení automatického stahování epizod.</string>
   <string name="pref_autodl_wifi_filter_title">Zapnout Wi-Fi filtr</string>
   <string name="pref_autodl_wifi_filter_sum">Povolit automatické stahování pouze pomocí vybraných Wi-Fi sítí.</string>
   <string name="pref_automatic_download_on_battery_title">Stahovat, pokud neprobíhá nabíjení</string>
@@ -482,7 +471,6 @@
   <string name="pref_expandNotify_title">Vysoká priorita pro oznámení</string>
   <string name="pref_expandNotify_sum">Toto obvykle přidá tlačítka ovládání přehrávání do zpráv upozornění</string>
   <string name="pref_persistNotify_title">Trvalé ovládací prvky přehrávání</string>
-  <string name="pref_persistNotify_sum">Zachovat oznámení a ovládání na obrazovce uzamčení i při pozastaveném přehrávání.</string>
   <string name="pref_compact_notification_buttons_title">Nastavení kompaktních tlačítek oznámení</string>
   <string name="pref_compact_notification_buttons_sum">Změnit tlačítka ovládání po zarolování upozornění. Tlačítka přehrát/pozastavit jsou vždy zobrazena.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Vybrat maximálně %1$d položek</string>
@@ -508,14 +496,11 @@
   <string name="pref_skip_silence_title">Přeskočit ticho v audiu</string>
   <string name="behavior">Chování</string>
   <string name="pref_default_page">Výchozí stránka</string>
-  <string name="pref_default_page_sum">Obrazovka, která se otevře při spuštění AntennaPod.</string>
   <string name="pref_back_button_opens_drawer">Tlačítko Zpět otevře menu</string>
   <string name="pref_back_button_opens_drawer_summary">Stisknutím tlačítka zpět na výchozí stránce se otevře navigační panel</string>
   <string name="remember_last_page">Pamatovat si poslední stránku</string>
   <string name="pref_delete_removes_from_queue_title">Mazání také odstraňuje epizody z fronty</string>
-  <string name="pref_delete_removes_from_queue_sum">Automaticky odstraní epizodu z fronty poté, co je smazána.</string>
   <string name="pref_filter_feed_title">Filtr odběrů</string>
-  <string name="pref_filter_feed_sum">Filtrujte svoje odběry v navigačním panelu a na obrazovce odběrů.</string>
   <string name="subscriptions_are_filtered">Odběry jsou filtrovány.</string>
   <string name="subscriptions_counter_greater_zero">Počet vyšší než nula</string>
   <string name="auto_downloaded">Automaticky stahováno</string>
@@ -525,11 +510,10 @@
   <string name="new_episode_notification_enabled">Upozornění zapnuta</string>
   <string name="new_episode_notification_disabled">Upozornění vypnuta</string>
   <string name="pref_feed_settings_dialog_msg">Toto nastavení je specifické pro každý podcast zvlášť. Lze ho měnit otevřením přehledové stránky podcastu.</string>
-  <string name="pref_contribute">Pomozte</string>
+  <string name="pref_contribute">Přispějte</string>
   <string name="pref_show_subscription_title">Zobrazit název odběru</string>
-  <string name="pref_show_subscription_title_summary">Zobrazit název předplatného pod obrázkem podcastu.</string>
   <string name="pref_new_episodes_action_title">Akce pro nové epizody</string>
-  <string name="pref_new_episodes_action_sum">Akce která se provede pro nové epizody</string>
+  <string name="pref_new_episodes_action_sum">Akce, která se provede pro nové epizody</string>
   <!--About screen-->
   <string name="about_pref">O aplikaci</string>
   <string name="antennapod_version">Verze aplikace AntennaPod</string>
@@ -579,7 +563,6 @@
   <string name="please_wait">Čekejte prosím…</string>
   <string name="export_error_label">Chyba exportu</string>
   <string name="export_success_title">Export úspěšný</string>
-  <string name="export_success_sum">Exportovaný soubor zapsán do:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Pro přečtení OPML souboru je vyžadován  přístup k externímu úložišti</string>
   <string name="successful_import_label">Import úspěšný</string>
   <string name="import_ok">Ťuknutím na OK restartujte AntenaPod</string>
@@ -618,7 +601,6 @@
   </plurals>
   <string name="auto_enable_label">Automatická aktivace časovače spánku při stisknutí tlačítka přehrávání</string>
   <string name="auto_enable_label_with_times">Automatická aktivace časovače spánku při stisknutí tlačítka přehrávání mezi %s a %s</string>
-  <string name="auto_enable_change_times">Změna časů</string>
   <string name="sleep_timer_enabled_label">Časovač vypnutí povolen</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">Vyberte poskytovatele synchronizace</string>
@@ -676,9 +658,6 @@
   <string name="decrease_speed">Snížit rychlost</string>
   <string name="media_type_video_label">Video</string>
   <string name="status_downloading_label">Epizoda je právě stahována</string>
-  <string name="in_queue_label">Epizoda je ve frontě</string>
-  <string name="is_favorite_label">Epizoda je označená jako oblíbená</string>
-  <string name="is_inbox_label">Epizoda je nová</string>
   <string name="load_next_page_label">Načíst další stranu</string>
   <string name="position">Pozice: %1$s</string>
   <string name="apply_action">Vykonat</string>
@@ -802,8 +781,6 @@
   <string name="notification_channel_download_error_description">Zobrazeno pokud selže stahování či aktualizace odebíraného kanálu.</string>
   <string name="notification_channel_sync_error">Synchronizace selhala</string>
   <string name="notification_channel_sync_error_description">Zobrazovat chybu synchronizace s gpodder.</string>
-  <string name="notification_channel_auto_download">Automatické stahování dokončeno</string>
-  <string name="notification_channel_episode_auto_download">Zobrazuje se po automatickém stažení epizod.</string>
   <string name="notification_channel_new_episode">Nová epizoda</string>
   <string name="notification_channel_new_episode_description">Zobrazeno pokud bude nalezena nová epizoda podcastu a upozornění jsou zapnuta.</string>
   <!--Widget settings-->

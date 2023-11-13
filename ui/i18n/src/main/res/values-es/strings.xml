@@ -53,8 +53,10 @@
   <string name="home_downloads_title">Gestionar descargas</string>
   <string name="home_welcome_title">Le damos la bienvenida a AntennaPod.</string>
   <string name="home_welcome_text">No se ha suscrito a ningún pódcast. Abra el menú lateral para añadir un pódcast.</string>
-  <string name="notification_permission_text">AntennaPod necesita permisos para mostrar notificaciones mientras descarga episodios.</string>
+  <string name="notification_permission_text">AntennaPod necesita </string>
   <string name="notification_permission_denied">Denegaste el permiso.</string>
+  <string name="notification_permission_deny_warning">Si deshabilita las notificaciones y se produce un error, puede no encontrarlo posteriormente.</string>
+  <string name="deny_label">Denegar</string>
   <string name="open_settings">Abrir ajustes</string>
   <string name="configure_home">Configurar pantalla de inicio</string>
   <!--Download Statistics fragment-->
@@ -110,16 +112,18 @@
   <string name="retry_label">Reintentar</string>
   <string name="auto_download_label">Incluir en descargas automáticas</string>
   <string name="auto_delete_label">Borrar episodio automáticamente</string>
-  <string name="feed_volume_reduction">Reducción de volumen</string>
-  <string name="feed_volume_reduction_summary">Bajar el volumen de los episodios de este pódcast: %1$s</string>
-  <string name="feed_volume_reduction_off">Apagado</string>
-  <string name="feed_volume_reduction_light">Ligero</string>
-  <string name="feed_volume_reduction_heavy">Fuerte</string>
+  <string name="feed_volume_adapdation">Adaptación de volumen</string>
+  <string name="feed_volume_adaptation_summary">Bajar o subir el volumen de los episodios de este pódcast: %1$s</string>
+  <string name="feed_volume_reduction_off">Sin adaptación</string>
+  <string name="feed_volume_reduction_light">Reducción ligera</string>
+  <string name="feed_volume_reduction_heavy">Reducción intensa</string>
+  <string name="feed_volume_boost_light">Aumento ligero</string>
+  <string name="feed_volume_boost_medium">Aumento medio</string>
+  <string name="feed_volume_boost_heavy">Aumento intenso</string>
   <string name="feed_auto_download_always">Siempre</string>
   <string name="feed_auto_download_never">Nunca</string>
   <string name="feed_new_episodes_action_add_to_inbox">Añadir a bandeja de entrada</string>
   <string name="feed_new_episodes_action_nothing">Nada</string>
-  <string name="send_label">Enviar…</string>
   <string name="episode_cleanup_never">Nunca</string>
   <string name="episode_cleanup_except_favorite_removal">Cuando no esté en Favoritos</string>
   <string name="episode_cleanup_queue_removal">Cuando no esté en la cola</string>
@@ -193,6 +197,7 @@
   <string name="add_tag">Añadir etiqueta</string>
   <string name="rename_tag_label">Renombrar etiqueta</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">Actualizar podcasts usando una conexión de datos móviles está desactivado en las opciones.\n\n¿De veras quieres actualizar los podcasts usando una conexión de datos móviles?</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Tu VPN simula ser una red móvil (conexión medida). La actualización de podcasts sobre conexiones de datos está deshabilitada en los ajustes.\n\n¿Quieres refrescarlos a pesar de todo? Si quieres solucionar el problema, contacta con los creadores de tu aplicación VPN.</string>
   <!--actions on feeditems-->
   <string name="download_label">Descargar</string>
   <plurals name="downloading_batch_label">
@@ -205,6 +210,7 @@
   <string name="stream_label">Escuchar en directo</string>
   <string name="delete_label">Borrar</string>
   <string name="delete_failed">No se puede borrar el fichero. Reiniciar el dispositivo podría ayudar.</string>
+  <string name="delete_local_failed">No se pudo borrar el archivo. Intenta reconectar la carpeta local desde la pantalla de información del podcast.</string>
   <string name="delete_episode_label">Borrar episodio</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">Eliminado 1 episodio descargado.</item>
@@ -254,6 +260,7 @@
   <string name="skip_episode_label">Omitir episodio</string>
   <string name="reset_position">Restablecer la posición de reproducción</string>
   <string name="no_items_selected">No hay elementos seleccionados</string>
+  <string name="delete_local_feed_warning_body">La acción borra el episodio de AntennaPod y borra los archivos de medios del almacenamiento. No se puede descargar de nuevo mediante AntennaPod.</string>
   <!--Download messages and labels-->
   <string name="download_successful">exitosa</string>
   <string name="download_pending">Descarga pendiente</string>
@@ -272,6 +279,7 @@
   <string name="download_error_unsupported_type_html">El servidor del host del podcast envió un sitio web, no un podcast.</string>
   <string name="download_error_not_found">El servidor del host del podcast no sabe dónde encontrar el archivo. Es posible que se haya borrado.</string>
   <string name="download_error_connection_error">Error de conexión</string>
+  <string name="download_error_no_connection">Sin conexión</string>
   <string name="download_error_unknown_host">Servidor no encontrado. Verifique su conexión de red y que la dirección este escrita correctamente. </string>
   <string name="download_error_unauthorized">Error de autenticación. Comprueba el usuario y la contarseña.</string>
   <string name="download_error_file_type_type">Tipo de archivo erróneo</string>
@@ -299,6 +307,7 @@
   <string name="authentication_notification_title">Autenticación requerida</string>
   <string name="confirm_mobile_download_dialog_title">Confirmar descarga vía datos móviles</string>
   <string name="confirm_mobile_download_dialog_message">Se desactivaron las descargas por conexión de datos móvil en la configuración. AntennaPod podrá descargar el episodio automáticamente cuando haya conexión Wi-Fi.</string>
+  <string name="confirm_mobile_download_dialog_message_vpn">Tu VPN simula ser una red móvil (conexión medida). La descarga de podcasts sobre conexiones de datos está deshabilitada en los ajustes. Si quieres solucionar el problema, contacta con los creadores de tu aplicación VPN.</string>
   <string name="confirm_mobile_download_dialog_download_later">Descargar más tarde</string>
   <string name="confirm_mobile_download_dialog_allow_this_time">Descargar de todos modos</string>
   <string name="confirm_mobile_streaming_notification_title">Confirmar reproducción vía datos móviles</string>
@@ -334,6 +343,7 @@
   <string name="feed_title">Título del pódcast</string>
   <string name="random">Aleatorio</string>
   <string name="smart_shuffle">Reproducción inteligente</string>
+  <string name="size">Tamaño</string>
   <string name="clear_queue_confirmation_msg">Confirme que quiere borrar TODOS los episodios de la cola</string>
   <string name="time_left_label">Tiempo restante:\u0020</string>
   <!--Variable Speed-->
@@ -388,6 +398,9 @@
   <string name="pref_followQueue_sum">Saltar al siguiente elemento de la cola al acabar la reproducción</string>
   <string name="pref_auto_delete_sum">Borrar el episodio cuando finalice la reproducción</string>
   <string name="pref_auto_delete_title">Eliminar automáticamente</string>
+  <string name="pref_auto_local_delete_title">Autoborrar en local</string>
+  <string name="pref_auto_local_delete_sum">Incluir carpetas locales en la funcionalidad de autoborrado</string>
+  <string name="pref_auto_local_delete_dialog_body">Tenga en cuenta que en las carpetas locales los episodios serán borrados de AtennaPod y eliminará los archivos multimedia del almacenamiento de su dispositivo. Por tanto, no pueden ser descargados de nuevo a través de AntennaPod. ¿Quiere activar el autoborrado?</string>
   <string name="pref_smart_mark_as_played_sum">Marca los episodios como reproducidos incluso si todavía quedan unos segundos por escuchar</string>
   <string name="pref_smart_mark_as_played_title">Marcado inteligente como reproducido</string>
   <string name="pref_skip_keeps_episodes_sum">Conservar los episodios cuando son saltados</string>
@@ -413,7 +426,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Reconectar con los auriculares</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Reconectar con Bluetooth</string>
   <string name="pref_stream_over_download_title">Preferir escuchar en directo</string>
-  <string name="pref_stream_over_download_sum">Muestra el botón de escuchar en directo en lugar del botón de descargar en las listas.</string>
+  <string name="pref_stream_over_download_sum">Mostrar el botón de escuchar en directo en vez del botón de descarga en las listas</string>
   <string name="pref_mobileUpdate_title">Actualizaciones vía datos móviles</string>
   <string name="pref_mobileUpdate_sum">Seleccionar lo que se debe permitir descargar con datos móviles</string>
   <string name="pref_mobileUpdate_refresh">Actualizar podcast</string>
@@ -428,13 +441,13 @@
   <string name="pref_tinted_theme_title">Colores dinámicos</string>
   <string name="pref_tinted_theme_message">Adaptar los colores según el fondo</string>
   <string name="pref_nav_drawer_items_title">Cambiar el cajón de navegación</string>
-  <string name="pref_nav_drawer_items_sum">Cambiar los ítems que aparecen en el cajón de navegación</string>
+  <string name="pref_nav_drawer_items_sum">Cambiar qué elementos aparecen en el cajón de navegación</string>
   <string name="pref_nav_drawer_feed_order_title">Ajustar orden de suscripción</string>
   <string name="pref_nav_drawer_feed_order_sum">Cambiar el orden de las suscripciones</string>
   <string name="pref_nav_drawer_feed_counter_title">Ajustar contador de suscripción</string>
   <string name="pref_nav_drawer_feed_counter_sum">Cambiar la información mostrada en el contador de las suscripciones. También afecta al orden de las suscripciones si el \'orden de la suscripción\' está en modo \'Contador\'.</string>
   <string name="pref_automatic_download_title">Descarga automática</string>
-  <string name="pref_automatic_download_sum">Configurar la descarga automática de episodios.</string>
+  <string name="pref_automatic_download_sum">Configurar la descarga automática de episodios</string>
   <string name="pref_autodl_wifi_filter_title">Activar el filtro wifi</string>
   <string name="pref_autodl_wifi_filter_sum">Permitir la descarga automática sólo desde las redes wifi seleccionadas.</string>
   <string name="pref_automatic_download_on_battery_title">Descargar cuando no se está cargando</string>
@@ -466,7 +479,7 @@
   <string name="pref_expandNotify_title">Alta prioridad de las notificaciones</string>
   <string name="pref_expandNotify_sum">Esto suele expandir las notificaciones para mostrar los botones de reproducción.</string>
   <string name="pref_persistNotify_title">Controles de reproducción persistentes</string>
-  <string name="pref_persistNotify_sum">Mantener las notificaciones y los controles en pantalla de bloqueo cuando se pausa la reproducción.</string>
+  <string name="pref_persistNotify_sum">Mantener la notificación y los controles de la pantalla de bloqueo cuando se pausa</string>
   <string name="pref_compact_notification_buttons_title">Activar botones de notificación compactos</string>
   <string name="pref_compact_notification_buttons_sum">Cambiar los botones cuando la notificación está contraída. El botón reproducir/pausar siempre está incluido.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Seleccionar máximo %1$d elementos</string>
@@ -492,14 +505,14 @@
   <string name="pref_skip_silence_title">Saltar silencio en audio</string>
   <string name="behavior">Comportamiento</string>
   <string name="pref_default_page">Página por defecto</string>
-  <string name="pref_default_page_sum">Pantalla que se abre al iniciar AntennaPod</string>
+  <string name="pref_default_page_sum">La pantalla que se abre al iniciar AntennaPod</string>
   <string name="pref_back_button_opens_drawer">El botón atrás abre el cajón</string>
   <string name="pref_back_button_opens_drawer_summary">Al pulsar el botón atrás en la página por defecto, se abre el cajón de navegación</string>
   <string name="remember_last_page">Recordar última página</string>
   <string name="pref_delete_removes_from_queue_title">Eliminar quita de la cola</string>
-  <string name="pref_delete_removes_from_queue_sum">Quitar automáticamente un episodio de la cola cuando se elimina.</string>
+  <string name="pref_delete_removes_from_queue_sum">Eliminar automáticamente un episodio de la cola cuando se borra</string>
   <string name="pref_filter_feed_title">Filtro de suscripción</string>
-  <string name="pref_filter_feed_sum">Filtra tus suscripciones en el cajón de navegación y pantallas de suscripción.</string>
+  <string name="pref_filter_feed_sum">Filtrar tus suscripciones en el cajón de de navegación y pantallas de suscripción</string>
   <string name="subscriptions_are_filtered">Las suscripciones están filtradas.</string>
   <string name="subscriptions_counter_greater_zero">Contador mayor que cero</string>
   <string name="auto_downloaded">Descargado automáticamente</string>
@@ -511,7 +524,7 @@
   <string name="pref_feed_settings_dialog_msg">Esta preferencia es única para cada pódcast. Puede ajustarla abriendo la página del pódcast.</string>
   <string name="pref_contribute">Contribuir</string>
   <string name="pref_show_subscription_title">Mostrar el título de la suscripción</string>
-  <string name="pref_show_subscription_title_summary">Mostrar el título de la suscripción debajo de la carátula</string>
+  <string name="pref_show_subscription_title_summary">Mostrar el título de la suscripción bajo la imagen de portada</string>
   <string name="pref_new_episodes_action_title">Acción para nuevos episodios</string>
   <string name="pref_new_episodes_action_sum">Acción a tomar para los episodios nuevos</string>
   <!--About screen-->
@@ -530,6 +543,7 @@
   <string name="type_to_search">Escribe un término de búsqueda</string>
   <string name="search_label">Buscar</string>
   <string name="no_results_for_query">No se han encontrado resultados de \"%1$s\"</string>
+  <string name="search_online">Buscar en línea</string>
   <!--Synchronization-->
   <string name="sync_status_started">Sincronización iniciada</string>
   <string name="sync_status_episodes_upload">Subiendo cambios de episodio...</string>
@@ -563,7 +577,6 @@
   <string name="please_wait">Por favor espera...</string>
   <string name="export_error_label">Error en la exportación</string>
   <string name="export_success_title">Exportación exitosa</string>
-  <string name="export_success_sum">El archivo exportado fue guardado en:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Necesita acceso al almacenamiento externo para leer archivos OPML</string>
   <string name="successful_import_label">Importación exitosa</string>
   <string name="import_ok">Pulse OK para reiniciar AntennaPod</string>
@@ -599,7 +612,7 @@
   </plurals>
   <string name="auto_enable_label">Activar el temporizador de sueño automáticamente al pulsar play</string>
   <string name="auto_enable_label_with_times">Activar el temporizador de sueño automáticamente al pulsar el botón de play  entre %s y %s</string>
-  <string name="auto_enable_change_times">Cambiar horas</string>
+  <string name="auto_enable_change_times">Cambiar rango de tiempo</string>
   <string name="sleep_timer_enabled_label">Temporizador habilitado</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">Escoge un proveedor de sincronización</string>
@@ -657,15 +670,19 @@
   <string name="decrease_speed">Reducir velocidad</string>
   <string name="media_type_video_label">Vídeo</string>
   <string name="status_downloading_label">El episodio se está descargando</string>
-  <string name="in_queue_label">El episodio está en la cola</string>
-  <string name="is_favorite_label">Episodio marcado como favorito</string>
-  <string name="is_inbox_label">El episodio está en la bandeja de entrada</string>
+  <string name="in_queue_label">En la cola</string>
+  <string name="is_favorite_label">Marcado como favorito</string>
+  <string name="is_inbox_label">En la bandeja de entrada</string>
+  <string name="is_played">Reproducido</string>
   <string name="load_next_page_label">Cargar la página siguiente</string>
   <string name="position">Posición: %1$s</string>
+  <string name="remaining_time">Tiempo restante: %1$s</string>
   <string name="apply_action">Aplicar acción</string>
   <string name="play_chapter">Reproducir capítulo</string>
   <string name="prev_chapter">Capítulo anterior</string>
   <string name="next_chapter">Capítulo siguiente</string>
+  <string name="shuffle_suggestions">Barajar sugerencias</string>
+  <string name="add_preset">Añadir preset</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">Autenticación</string>
   <string name="authentication_descr">Cambiar nombre y contraseña de este pódcast y sus episodios</string>
@@ -744,6 +761,8 @@
   <string name="sort_old_new">Viejo \u2192 Nuevo</string>
   <string name="sort_short_long">Breve \u2192 Largo</string>
   <string name="sort_long_short">Largo \u2192 Breve</string>
+  <string name="sort_small_large">Pequeño \u2192 Grande</string>
+  <string name="sort_large_small">Grande \u2192 Pequeño</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Incluir la posición de reprodución</string>
   <string name="share_dialog_episode_website_label">Página del episodio</string>
@@ -783,8 +802,6 @@
   <string name="notification_channel_download_error_description">Muestra cuando falla la descarga o la actualización del canal.</string>
   <string name="notification_channel_sync_error">Sincronización fallida</string>
   <string name="notification_channel_sync_error_description">Mostrar cuando falle la sincronización de gpodder.</string>
-  <string name="notification_channel_auto_download">Descarga automática completada</string>
-  <string name="notification_channel_episode_auto_download">Mostrar cuándo los episodios se han descargado automáticamente.</string>
   <string name="notification_channel_new_episode">Episodio nuevo</string>
   <string name="notification_channel_new_episode_description">Se muestra al encontrar un nuevo episodio de un podcast, si las notificaciones están activadas</string>
   <!--Widget settings-->

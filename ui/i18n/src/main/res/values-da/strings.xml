@@ -53,8 +53,10 @@
   <string name="home_downloads_title">Administrer overførsler</string>
   <string name="home_welcome_title">Velkommen til AntennaPod!</string>
   <string name="home_welcome_text">Du har endnu ikke abonneret på nogen podcasts. Åbn sidemenuen for at tilføje en podcast.</string>
-  <string name="notification_permission_text">AntennaPod har brug for din tilladelse til at vise notifikationer, mens du henter afsnit.</string>
+  <string name="notification_permission_text">AntennaPod har brug for din tilladelse til at vise notifikationer. Som udgangspunkt viser AntennaPod kun notifikationer, mens noget hentes, eller når noget går galt.</string>
   <string name="notification_permission_denied">Du afviste tilladelsen.</string>
+  <string name="notification_permission_deny_warning">Hvis du deaktiverer notifikationer, og noget går galt, kan du måske ikke finde ud af, hvorfor det gik galt.</string>
+  <string name="deny_label">Nægt</string>
   <string name="open_settings">Åbn indstillinger</string>
   <string name="configure_home">Konfigurer hjemmeskærm</string>
   <!--Download Statistics fragment-->
@@ -110,16 +112,18 @@
   <string name="retry_label">Prøv igen</string>
   <string name="auto_download_label">Inkludér i automatiske overførsler</string>
   <string name="auto_delete_label">Auto-slet afsnit</string>
-  <string name="feed_volume_reduction">Lydstyrkereduktion</string>
-  <string name="feed_volume_reduction_summary">Skru ned for lydstyrken i afsnit fra denne podcast: %1$s</string>
-  <string name="feed_volume_reduction_off">Fra</string>
-  <string name="feed_volume_reduction_light">Lidt</string>
-  <string name="feed_volume_reduction_heavy">Meget</string>
+  <string name="feed_volume_adapdation">Tilpasning af lydstyrke</string>
+  <string name="feed_volume_adaptation_summary">Skru op eller ned for lydstyrken for afsnit af denne podcast: %1$s</string>
+  <string name="feed_volume_reduction_off">Ingen tilpasning</string>
+  <string name="feed_volume_reduction_light">Lysreduktion</string>
+  <string name="feed_volume_reduction_heavy">Kraftig reduktion</string>
+  <string name="feed_volume_boost_light">Let forstærkning</string>
+  <string name="feed_volume_boost_medium">Medium forstærkning</string>
+  <string name="feed_volume_boost_heavy">Kraftig forstærkning</string>
   <string name="feed_auto_download_always">Altid</string>
   <string name="feed_auto_download_never">Aldrig</string>
   <string name="feed_new_episodes_action_add_to_inbox">Tilføj til indbakke</string>
   <string name="feed_new_episodes_action_nothing">Ingenting</string>
-  <string name="send_label">Send…</string>
   <string name="episode_cleanup_never">Aldrig</string>
   <string name="episode_cleanup_except_favorite_removal">Hvis ikke en favorit</string>
   <string name="episode_cleanup_queue_removal">Når ikke i kø</string>
@@ -186,6 +190,7 @@
   <string name="add_tag">Tilføj etiket</string>
   <string name="rename_tag_label">Omdøb etiket</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">Opdatering af podcasts via mobildataforbindelse er deaktiveret i indstillingerne.\n\nØnsker du alligevel at opdatere?</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Din VPN-app udgiver sig for at være et mobilnetværk (forbrugsafregnet forbindelse). Opdatering af podcasts via mobildataforbindelse er deaktiveret i indstillingerne.\n\nVil du opdatere alligevel? Hvis du vil have løst dette problem, skal du kontakte udviklerne af din VPN-app.</string>
   <!--actions on feeditems-->
   <string name="download_label">Hent</string>
   <plurals name="downloading_batch_label">
@@ -197,6 +202,7 @@
   <string name="stream_label">Stream</string>
   <string name="delete_label">Slet</string>
   <string name="delete_failed">Kan ikke slette fil. En genstart af enheden vil sandsynligvis hjælpe.</string>
+  <string name="delete_local_failed">Kan ikke slette filen. Prøv at forbinde den lokale mappe igen fra podcast-infoskærmen.</string>
   <string name="delete_episode_label">Slet afsnit</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 overført afsnit slettet.</item>
@@ -240,6 +246,7 @@
   <string name="skip_episode_label">Spring afsnit over</string>
   <string name="reset_position">Nulstil afspilningsposition</string>
   <string name="no_items_selected">Intet valgte</string>
+  <string name="delete_local_feed_warning_body">Sletning fjerner afsnittet fra AntennaPod og sletter mediefilen fra din enheds lager. Det kan ikke hentes igen via AntennaPod.</string>
   <!--Download messages and labels-->
   <string name="download_successful">lykkedes</string>
   <string name="download_pending">Afventer overførsel</string>
@@ -258,6 +265,7 @@
   <string name="download_error_unsupported_type_html">Podcast-værtens server sendte en hjemmeside, ikke en podcast.</string>
   <string name="download_error_not_found">Podcast-værtens server ved ikke, hvor filen skal findes. Den kan være blevet slettet.</string>
   <string name="download_error_connection_error">Forbindelsesfejl</string>
+  <string name="download_error_no_connection">Ingen netværksforbindelse</string>
   <string name="download_error_unknown_host">Kan ikke finde serveren. Tjek om adressen er indtastet korrekt, og om du har en fungerende netværksforbindelse.</string>
   <string name="download_error_unauthorized">Autentifikationsfejl. Sørg for, at brugernavn og adgangskode er korrekte.</string>
   <string name="download_error_file_type_type">Filtypefejl</string>
@@ -284,6 +292,7 @@
   <string name="authentication_notification_title">Godkendelse kræves</string>
   <string name="confirm_mobile_download_dialog_title">Bekræft mobiloverførsel </string>
   <string name="confirm_mobile_download_dialog_message">Overførsel via mobildataforbindelse er deaktiveret i indstillingerne. AntennaPod kan hente afsnittet automatisk senere, når Wi-Fi er tilgængeligt.</string>
+  <string name="confirm_mobile_download_dialog_message_vpn">Din VPN-app udgiver sig for at være et mobilnetværk (forbrugsafregnet forbindelse). Overførsel af podcasts via mobildataforbindelse er deaktiveret i indstillingerne.\n\nVil du overføre alligevel? Hvis du vil have løst dette problem, skal du kontakte udviklerne af din VPN-app.</string>
   <string name="confirm_mobile_download_dialog_download_later">Hent senere</string>
   <string name="confirm_mobile_download_dialog_allow_this_time">Hent alligevel</string>
   <string name="confirm_mobile_streaming_notification_title">Bekræft mobilstreaming</string>
@@ -319,6 +328,7 @@
   <string name="feed_title">Titel på podcast</string>
   <string name="random">Tilfældig</string>
   <string name="smart_shuffle">Smart blanding</string>
+  <string name="size">Størrelse</string>
   <string name="clear_queue_confirmation_msg">Bekræft venligst at du vil rydde ALLE afsnit fra køen</string>
   <string name="time_left_label">Tid tilbage:\u0020</string>
   <!--Variable Speed-->
@@ -326,7 +336,7 @@
   <string name="preset_already_exists">%1$.2fx er allerede gemt som en forudindstilling.</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Ingen afsnit i køen</string>
-  <string name="no_items_label">Tilføj et afsnit ved at downloade det, eller tryk og hold på et afsnit og vælg \"Føj til kø\".</string>
+  <string name="no_items_label">Tilføj et afsnit ved at hente det, eller tryk og hold på et afsnit og vælg \"Føj til kø\".</string>
   <string name="no_shownotes_label">Dette afsnit har ingen beskrivelse.</string>
   <string name="no_comp_downloads_head_label">Ingen overførte afsnit</string>
   <string name="no_comp_downloads_label">Du kan downloade afsnit på siden med podcastoplysninger.</string>
@@ -373,6 +383,9 @@
   <string name="pref_followQueue_sum">Gå til næste element i køen når afspilningen er færdig</string>
   <string name="pref_auto_delete_sum">Slet afsnit når afspilningen er færdig</string>
   <string name="pref_auto_delete_title">Slet automatisk</string>
+  <string name="pref_auto_local_delete_title">Slet automatisk fra lokale mapper</string>
+  <string name="pref_auto_local_delete_sum">Inkluder lokale mapper i automatisk sletning</string>
+  <string name="pref_auto_local_delete_dialog_body">Bemærk, at for lokale mapper vil dette fjerne afsnit fra AntennaPod og slette deres mediefiler fra din enheds lager. De kan ikke hentes igen via AntennaPod. Aktivér automatisk sletning?</string>
   <string name="pref_smart_mark_as_played_sum">Markér afsnit som værende afspillet, selv om op til et angivet antal sekunders spilletid stadig mangler</string>
   <string name="pref_smart_mark_as_played_title">Smart markering som afspillet</string>
   <string name="pref_skip_keeps_episodes_sum">Behold afsnit når de bliver sprunget over</string>
@@ -398,7 +411,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Hovedtelefoner forbundet igen</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth forbundet igen</string>
   <string name="pref_stream_over_download_title">Foretræk streaming</string>
-  <string name="pref_stream_over_download_sum">Vis stream-knap i stedet for download-knap i lister.</string>
+  <string name="pref_stream_over_download_sum">Vis stream-knap i stedet for overfør-knap i lister</string>
   <string name="pref_mobileUpdate_title">Mobilopdateringer</string>
   <string name="pref_mobileUpdate_sum">Vælg hvad der skal være tilladt via mobil dataforbindelse</string>
   <string name="pref_mobileUpdate_refresh">Opdatering af podcast</string>
@@ -413,13 +426,13 @@
   <string name="pref_tinted_theme_title">Dynamiske farver</string>
   <string name="pref_tinted_theme_message">Tilpas appens farver i forhold til baggrunden</string>
   <string name="pref_nav_drawer_items_title">Indstil navigationspanelets elementer</string>
-  <string name="pref_nav_drawer_items_sum">Vælg hvilke elementer, der skal vises i navigationspanelet.</string>
+  <string name="pref_nav_drawer_items_sum">Ændr, hvilke elementer der vises i navigationspanelet</string>
   <string name="pref_nav_drawer_feed_order_title">Indstil abonnementsrækkefølge</string>
   <string name="pref_nav_drawer_feed_order_sum">Ændr rækkefølgen af dine abonnementer</string>
   <string name="pref_nav_drawer_feed_counter_title">Indstil abonnementstæller</string>
   <string name="pref_nav_drawer_feed_counter_sum">Ændr informationen vist af abonnementstælleren. Påvirker også rækkefølgen af abonnementer, hvis abonnementsrækkefølgen er sat til \'Tæller\'.</string>
   <string name="pref_automatic_download_title">Automatisk overførsel</string>
-  <string name="pref_automatic_download_sum">Konfigurer automatisk overførsel af afsnit</string>
+  <string name="pref_automatic_download_sum">Konfigurér automatisk overførsel af afsnit</string>
   <string name="pref_autodl_wifi_filter_title">Slå wi-fi-filter til</string>
   <string name="pref_autodl_wifi_filter_sum">Tillad automatisk overførsel kun på de valgte wi-fi-netværk</string>
   <string name="pref_automatic_download_on_battery_title">Tillad overførsel ved batteridrift</string>
@@ -451,7 +464,7 @@
   <string name="pref_expandNotify_title">Høj prioritet for notifikation</string>
   <string name="pref_expandNotify_sum">Dette udvider normalt notifikationen til at vise afspilningsknapper.</string>
   <string name="pref_persistNotify_title">Vedholdende afspilningsknapper</string>
-  <string name="pref_persistNotify_sum">Behold notifikation og knapper på låseskærmen, når afspilningen sættes på pause.</string>
+  <string name="pref_persistNotify_sum">Bevar notifikations- og låseskærmskontrol, når afspilningen er sat på pause</string>
   <string name="pref_compact_notification_buttons_title">Indstil kompakte notifikationsknapper</string>
   <string name="pref_compact_notification_buttons_sum">Ændr afspilningsknapperne når notifikationen minimeres. Afspil/pause-knappen vises altid.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Vælg højst %1$d knapper</string>
@@ -477,14 +490,14 @@
   <string name="pref_skip_silence_title">Spring stilhed over</string>
   <string name="behavior">Funktion</string>
   <string name="pref_default_page">Standardside</string>
-  <string name="pref_default_page_sum">Skærm, der åbnes, når AntennaPod startes.</string>
+  <string name="pref_default_page_sum">Skærm, der åbnes, når AntennaPod startes</string>
   <string name="pref_back_button_opens_drawer">Tilbageknap åbner panel</string>
   <string name="pref_back_button_opens_drawer_summary">Ved tryk på tilbage-knappen på standardsiden åbnes navigationspanelet</string>
   <string name="remember_last_page">Husk sidste side</string>
   <string name="pref_delete_removes_from_queue_title">Slet fjerner fra kø</string>
-  <string name="pref_delete_removes_from_queue_sum">Fjern automatisk afsnit fra køen, når det slettes.</string>
+  <string name="pref_delete_removes_from_queue_sum">Fjern automatisk et afsnit fra køen, når det slettes</string>
   <string name="pref_filter_feed_title">Abonnementsfilter</string>
-  <string name="pref_filter_feed_sum">Filtrer dine abonnementer i navigationspanelet og på abonnementsoversigten.</string>
+  <string name="pref_filter_feed_sum">Filtrér dine abonnementer i navigationspanelet og på abonnementsskærmen</string>
   <string name="subscriptions_are_filtered">Abonnementer er filtreret.</string>
   <string name="subscriptions_counter_greater_zero">Tæller større end 0</string>
   <string name="auto_downloaded">Automatisk hentet</string>
@@ -496,7 +509,7 @@
   <string name="pref_feed_settings_dialog_msg">Denne indstilling er unik for hver podcast. Du kan ændre den ved at åbne podcast-siden.</string>
   <string name="pref_contribute">Bidrag</string>
   <string name="pref_show_subscription_title">Vis abonnementstitel</string>
-  <string name="pref_show_subscription_title_summary">Vis abonnementstitlen under coverbilledet.</string>
+  <string name="pref_show_subscription_title_summary">Vis abonnementets titel under billedet</string>
   <string name="pref_new_episodes_action_title">Handling ved nyt afsnit</string>
   <string name="pref_new_episodes_action_sum">Handling ved nye afsnit</string>
   <!--About screen-->
@@ -515,6 +528,7 @@
   <string name="type_to_search">Indtast en forespørgsel for at søge</string>
   <string name="search_label">Søg</string>
   <string name="no_results_for_query">Ingen resultater fundet for \"%1$s\"</string>
+  <string name="search_online">Søg online</string>
   <!--Synchronization-->
   <string name="sync_status_started">Synkronisering startet</string>
   <string name="sync_status_episodes_upload">Overfører afsnitændringer...</string>
@@ -548,7 +562,6 @@
   <string name="please_wait">Vent...</string>
   <string name="export_error_label">Eksportfejl</string>
   <string name="export_success_title">Eksport lykkedes</string>
-  <string name="export_success_sum">Den eksporterede fil blev skrevet til:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Adgang til eksternt lager er påkrævet for at læse OPML-filen</string>
   <string name="successful_import_label">Importeret</string>
   <string name="import_ok">Tryk venligst OK for at genstarte AntennaPod</string>
@@ -581,7 +594,7 @@
   </plurals>
   <string name="auto_enable_label">Aktivér automatisk slukkefunktion ved at tryk på afspil</string>
   <string name="auto_enable_label_with_times">Aktivér automatisk slukkefunktion ved tryk på afspil mellem %s og %s</string>
-  <string name="auto_enable_change_times">Ændr tider</string>
+  <string name="auto_enable_change_times">Skift tidsinterval</string>
   <string name="sleep_timer_enabled_label">Søvntimer slået til</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">Vælg synkroniseringsudbyder</string>
@@ -639,15 +652,19 @@
   <string name="decrease_speed">Mindsk hastighed</string>
   <string name="media_type_video_label">Video</string>
   <string name="status_downloading_label">Afsnit overføres</string>
-  <string name="in_queue_label">Afsnit er i køen</string>
-  <string name="is_favorite_label">Afsnit er markeret som favorit</string>
-  <string name="is_inbox_label">Afsnit er i indbakken</string>
+  <string name="in_queue_label">I køen</string>
+  <string name="is_favorite_label">Markeret som favorit</string>
+  <string name="is_inbox_label">I indbakken</string>
+  <string name="is_played">Afspillet</string>
   <string name="load_next_page_label">Indlæs næste side</string>
   <string name="position">Position: %1$s</string>
+  <string name="remaining_time">Resterende tid: %1$s</string>
   <string name="apply_action">Anvend handling</string>
   <string name="play_chapter">Afspil kapitel</string>
   <string name="prev_chapter">Forrige kapitel</string>
   <string name="next_chapter">Næste kapitel</string>
+  <string name="shuffle_suggestions">Forslag til blanding</string>
+  <string name="add_preset">Tilføj forudindstilling</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">Godkendelse</string>
   <string name="authentication_descr">Ændr dit brugernavn og adgangskode for denne podcast og dens afsnit.</string>
@@ -726,6 +743,8 @@
   <string name="sort_old_new">Gammel \u2192 Ny</string>
   <string name="sort_short_long">Kort \u2192 Lang</string>
   <string name="sort_long_short">Lang \u2192 Kort</string>
+  <string name="sort_small_large">Lille \u2192 Stor</string>
+  <string name="sort_large_small">Stor \u2192 Lille</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Inkluder afspilningsposition</string>
   <string name="share_dialog_episode_website_label">Adresse på afsnit</string>
@@ -765,8 +784,6 @@
   <string name="notification_channel_download_error_description">Vis når overførsel eller opdatering af feed mislykkes.</string>
   <string name="notification_channel_sync_error">Synkronisering mislykkedes</string>
   <string name="notification_channel_sync_error_description">Vises når gpodder-synkronisering fejler.</string>
-  <string name="notification_channel_auto_download">Automatisk overførsel fuldført</string>
-  <string name="notification_channel_episode_auto_download">Vises når afsnit er blevet automatisk downloadet.</string>
   <string name="notification_channel_new_episode">Nyt afsnit</string>
   <string name="notification_channel_new_episode_description">Vis når et ny afsnit af en podcast blev fundet, hvor notifikationer er aktiveret.</string>
   <!--Widget settings-->

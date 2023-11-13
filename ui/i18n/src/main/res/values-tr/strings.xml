@@ -53,7 +53,6 @@
   <string name="home_downloads_title">İndirmeleri yönet</string>
   <string name="home_welcome_title">AntennaPod\'a hoşgeldin!</string>
   <string name="home_welcome_text">Henüz hiçbir podcast\'e abone olmadın. Kenar menüyü aç ve bir podcast ekle.</string>
-  <string name="notification_permission_text">AntennaPod bölümleri indirirken bildirimleri göstermek için izne ihtiyaç duyar.</string>
   <string name="notification_permission_denied">İzni reddettiniz</string>
   <string name="open_settings">Ayarları aç</string>
   <string name="configure_home">Ana Ekranı Özelleştir</string>
@@ -110,16 +109,10 @@
   <string name="retry_label">Yeniden dene</string>
   <string name="auto_download_label">Otomatik indirmelere dahil et</string>
   <string name="auto_delete_label">Bölümü otomatik sil</string>
-  <string name="feed_volume_reduction">Volume reduction</string>
-  <string name="feed_volume_reduction_summary">Bu Podcast\'in bölümleri için sesi kısın: %1$s</string>
-  <string name="feed_volume_reduction_off">Kapalı</string>
-  <string name="feed_volume_reduction_light">Az</string>
-  <string name="feed_volume_reduction_heavy">Çok</string>
   <string name="feed_auto_download_always">Her zaman</string>
   <string name="feed_auto_download_never">Hiçbir zaman</string>
   <string name="feed_new_episodes_action_add_to_inbox">Genel kutusuna ekle</string>
   <string name="feed_new_episodes_action_nothing">Hiçbir şey yok</string>
-  <string name="send_label">Gönder...</string>
   <string name="episode_cleanup_never">Hiçbir zaman</string>
   <string name="episode_cleanup_except_favorite_removal">Favorilenmemişken</string>
   <string name="episode_cleanup_queue_removal">Sırada değilse</string>
@@ -398,7 +391,6 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Kulaklıklar yeniden bağlanıyor</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth yeniden bağlanıyor</string>
   <string name="pref_stream_over_download_title">İndirmeden dinle</string>
-  <string name="pref_stream_over_download_sum">Listelerde indirme butonu yerine indirmeden dinleme butonu aktif olur.</string>
   <string name="pref_mobileUpdate_title">Mobil güncellemeler</string>
   <string name="pref_mobileUpdate_sum">Mobil veri üzerinden nelere izin verileceğini seçiniz</string>
   <string name="pref_mobileUpdate_refresh">Podcast yenileme</string>
@@ -413,13 +405,11 @@
   <string name="pref_tinted_theme_title">Dinamik renkler</string>
   <string name="pref_tinted_theme_message">Uygulama renklerini duvar kağıdına göre uyarla</string>
   <string name="pref_nav_drawer_items_title">Gezinme çekmecesi öğelerini ayarla</string>
-  <string name="pref_nav_drawer_items_sum">Hangi öğelerin uygulama çekmecesinde görüneceğini değiştir.</string>
   <string name="pref_nav_drawer_feed_order_title">Abonelik sıralamasını ayarla</string>
   <string name="pref_nav_drawer_feed_order_sum">Abonelik sırasını değiştir</string>
   <string name="pref_nav_drawer_feed_counter_title">Abonelik sayacını ayarla</string>
   <string name="pref_nav_drawer_feed_counter_sum">Abonelik sayacı tarafından görüntülenen bilgileri değiştirin. Ayrıca \'Abonelik Sırası\' \'Sayaç\' olarak ayarlanmışsa aboneliklerin sıralanmasını da etkiler.</string>
   <string name="pref_automatic_download_title">Otomatik indirme</string>
-  <string name="pref_automatic_download_sum">Bölümlerin otomatik indirilmesini yapılandır.</string>
   <string name="pref_autodl_wifi_filter_title">Wi-Fi filtresini etkinleştir</string>
   <string name="pref_autodl_wifi_filter_sum">Seçilen kablosuz ağlar için otomatik indirmeye izin ver.</string>
   <string name="pref_automatic_download_on_battery_title">Şarj olmuyorken indir</string>
@@ -451,7 +441,6 @@
   <string name="pref_expandNotify_title">Yüksek bildirim önceliği</string>
   <string name="pref_expandNotify_sum">Bu genellikle bildirimi oynatma düğmelerini gösterecek şekilde genişletir.</string>
   <string name="pref_persistNotify_title">Kalıcı oynatma kontrolleri</string>
-  <string name="pref_persistNotify_sum">Çalma duraklatıldığında bildirim ve ekran kilidi ayarlarını sakla.</string>
   <string name="pref_compact_notification_buttons_title">Kompakt bildirim düğmelerini ayarlayın</string>
   <string name="pref_compact_notification_buttons_sum">Bildirim daraltıldığında oynatma düğmelerini değiştirin. Oynat/Duraklat düğmesi her zaman dahil edilir.</string>
   <string name="pref_compact_notification_buttons_dialog_title">En fazla %1$d öğe seçiniz</string>
@@ -477,14 +466,11 @@
   <string name="pref_skip_silence_title">Sesteki boşlukları atla</string>
   <string name="behavior">Davranış</string>
   <string name="pref_default_page">Varsayılan sayfa</string>
-  <string name="pref_default_page_sum">AntennaPod başlatıldığında açılan ekran</string>
   <string name="pref_back_button_opens_drawer">Geri düğmesi çekmeceyi açar</string>
   <string name="pref_back_button_opens_drawer_summary">Varsayılan sayfada geri düğmesine basmak, gezinme çekmecesini açar</string>
   <string name="remember_last_page">Kaldığım hatırlat</string>
   <string name="pref_delete_removes_from_queue_title">Kuyruktan silme</string>
-  <string name="pref_delete_removes_from_queue_sum">Bir bölüm silindiğinde otomatik olarak kuyruktan kaldırın.</string>
   <string name="pref_filter_feed_title">Abonelik filtresi</string>
-  <string name="pref_filter_feed_sum">Navigasyon çekmecesinde ve abonelikler ekranında aboneliklerinizi filtreleyin.</string>
   <string name="subscriptions_are_filtered">Abonelikler filtrelendi.</string>
   <string name="subscriptions_counter_greater_zero">Sayacı sıfırdan büyük olanlar</string>
   <string name="auto_downloaded">Otomatik indirildi</string>
@@ -496,7 +482,6 @@
   <string name="pref_feed_settings_dialog_msg">Bu ayar her Podcast için benzersizdir. Podcast sayfasını açarak değiştirebilirsiniz.</string>
   <string name="pref_contribute">Katkıda bulunanlar</string>
   <string name="pref_show_subscription_title">Abonelik başlığını göster</string>
-  <string name="pref_show_subscription_title_summary">Kapak resminin altında Abonelik başlığını göster.</string>
   <string name="pref_new_episodes_action_title">Yeni bölüm işlemleri</string>
   <string name="pref_new_episodes_action_sum">Yeni bölümler için işlemler</string>
   <!--About screen-->
@@ -548,7 +533,6 @@
   <string name="please_wait">Lütfen bekleyin...</string>
   <string name="export_error_label">Dışa aktarma hatası</string>
   <string name="export_success_title">Dışa aktarma başarılı</string>
-  <string name="export_success_sum">Dışa aktarılan dosya şu konuma kaydedildi:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">OPML dosyasını okumak için harici depolama alanına erişim gereklidir</string>
   <string name="successful_import_label">İçe aktarma başarılı</string>
   <string name="import_ok">AntennaPod\'u yeniden başlatmak için lütfen OK tuşuna basın</string>
@@ -581,7 +565,6 @@
   </plurals>
   <string name="auto_enable_label">Oynata basıldığında, uyku zamanlayıcısı otomatik olarak etkinleştirilsin</string>
   <string name="auto_enable_label_with_times">%s ile %s arasında oynata basıldığında, uyku zamanlayıcısı otomatik olarak etkinleştirilsin</string>
-  <string name="auto_enable_change_times">Zamanı değiştir</string>
   <string name="sleep_timer_enabled_label">Uyku zamanlayıcısı açıldı</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">Senkronizasyon sağlayıcınızı seçin</string>
@@ -639,9 +622,6 @@
   <string name="decrease_speed">Hızı azalt</string>
   <string name="media_type_video_label">Vidyo</string>
   <string name="status_downloading_label">Bölüm indiriliyor</string>
-  <string name="in_queue_label">Bölüm kuyrukta</string>
-  <string name="is_favorite_label">Bölüm favori olarak işaretlendi</string>
-  <string name="is_inbox_label">Bölüm gelen kutusunda</string>
   <string name="load_next_page_label">Sonraki sayfayı yükle</string>
   <string name="position">Pozisyon: %1$s</string>
   <string name="apply_action">Eylemi uygula</string>
@@ -765,8 +745,6 @@
   <string name="notification_channel_download_error_description">İndirme veya besleme güncellemesi başarısız olduğunda gösterilir.</string>
   <string name="notification_channel_sync_error">Senkronizasyon başarısız</string>
   <string name="notification_channel_sync_error_description">gpodder senkronizasyonu başarısız olduğunda gösterilir.</string>
-  <string name="notification_channel_auto_download">Otomatik indirmeler tamamlandı</string>
-  <string name="notification_channel_episode_auto_download">Shown when episodes have been automatically downloaded.</string>
   <string name="notification_channel_new_episode">Yeni bölüm</string>
   <string name="notification_channel_new_episode_description">Bölümler otomatik olarak indirildiğinde gösterilir.</string>
   <!--Widget settings-->

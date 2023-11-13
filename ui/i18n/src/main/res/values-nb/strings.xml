@@ -53,7 +53,6 @@
   <string name="home_downloads_title">Forvalte nedlastninger</string>
   <string name="home_welcome_title">Velkommen til AntennaPod!</string>
   <string name="home_welcome_text">Du har ikke abonnert noen podcaster enda. Åpne menuen til side for å legge til en podcast.</string>
-  <string name="notification_permission_text">AntennaPod trenger tillatelser for å vise beskjeder mens det nedlastes episoder.</string>
   <string name="notification_permission_denied">Du avslå tillatelsen.</string>
   <string name="open_settings">Åpne innstillinger</string>
   <string name="configure_home">Konfigurer hjemmeskjermen</string>
@@ -110,16 +109,10 @@
   <string name="retry_label">Prøv igjen</string>
   <string name="auto_download_label">Inkluder i automatiske nedlastninger</string>
   <string name="auto_delete_label">Slett episode automatisk</string>
-  <string name="feed_volume_reduction">Volumreduksjon</string>
-  <string name="feed_volume_reduction_summary">Demp volumet for episoder i denne strømmen: %1$s</string>
-  <string name="feed_volume_reduction_off">Av</string>
-  <string name="feed_volume_reduction_light">Lett</string>
-  <string name="feed_volume_reduction_heavy">Tung</string>
   <string name="feed_auto_download_always">Alltid</string>
   <string name="feed_auto_download_never">Aldri</string>
   <string name="feed_new_episodes_action_add_to_inbox">Legg til Inboksen</string>
   <string name="feed_new_episodes_action_nothing">Ingen ting</string>
-  <string name="send_label">Send...</string>
   <string name="episode_cleanup_never">Aldri</string>
   <string name="episode_cleanup_except_favorite_removal">Hvis ikke favoritt</string>
   <string name="episode_cleanup_queue_removal">Når ikke i kø</string>
@@ -389,7 +382,6 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Gjeninnkopling av hodetelefoner</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Blutetooth tilkoblet igjen</string>
   <string name="pref_stream_over_download_title">Foretrekk strømming</string>
-  <string name="pref_stream_over_download_sum">Vis knapp for å strømme i stedet for for nedlasting i lister.</string>
   <string name="pref_mobileUpdate_title">Mobiloppdateringer</string>
   <string name="pref_mobileUpdate_sum">Velg hva som skal tillates over mobildata</string>
   <string name="pref_mobileUpdate_refresh">Last podkast på nytt</string>
@@ -404,13 +396,11 @@
   <string name="pref_tinted_theme_title">Dynamiske farger</string>
   <string name="pref_tinted_theme_message">Endre app fargene basert på bakgrunnsbildet</string>
   <string name="pref_nav_drawer_items_title">Velg elementer i navigasjonsskuffen</string>
-  <string name="pref_nav_drawer_items_sum">Endre hvilke elementer som vises i navigeringsfanen.</string>
   <string name="pref_nav_drawer_feed_order_title">Velg rekkefølge på abonnementer</string>
   <string name="pref_nav_drawer_feed_order_sum">Endre rekkefølgen på abonnementene dine</string>
   <string name="pref_nav_drawer_feed_counter_title">Velg abonnementsteller</string>
   <string name="pref_nav_drawer_feed_counter_sum">Endre informasjonen som vises av abonnement-telleren. Påvirker også sorteringen av abonnementer hvis rekkefølgen er satt til \"Teller\"</string>
   <string name="pref_automatic_download_title">Automatisk nedlasting</string>
-  <string name="pref_automatic_download_sum">Konfigurer automatisk nedlasting av episoder.</string>
   <string name="pref_autodl_wifi_filter_title">Skru på Wi-Fi-filter</string>
   <string name="pref_autodl_wifi_filter_sum">Tillat automatisk nedlasting kun for valgte Wi-Fi-nettverk.</string>
   <string name="pref_automatic_download_on_battery_title">Last ned når enheten ikke lader</string>
@@ -442,7 +432,6 @@
   <string name="pref_expandNotify_title">Høy varsling-prioritet</string>
   <string name="pref_expandNotify_sum">Dette utvider som regel varslingen for å vise avspillingskontroller.</string>
   <string name="pref_persistNotify_title">Vedvarende avspillingskontroller</string>
-  <string name="pref_persistNotify_sum">Behold varsel- og låseskjermkontroller når avspilling er satt på pause.</string>
   <string name="pref_compact_notification_buttons_title">Velg sammentrengte varselsknapper</string>
   <string name="pref_compact_notification_buttons_sum">Endre avspillingsknappene når varslinga er sammentrengt. Spill av/pause-knappen er alltid vist.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Velg opp til %1$d ting</string>
@@ -468,14 +457,11 @@
   <string name="pref_skip_silence_title">Hopp over stillhet</string>
   <string name="behavior">Oppførsel</string>
   <string name="pref_default_page">Standard side</string>
-  <string name="pref_default_page_sum">Skjerm som åpnes først nå AntennaPod åpnes.</string>
   <string name="pref_back_button_opens_drawer">Tilbake knappen åpner skuffen</string>
   <string name="pref_back_button_opens_drawer_summary">Å trykke tilbake knappen på standard siden åpner navigasjons skuffen</string>
   <string name="remember_last_page">Husk siste side</string>
   <string name="pref_delete_removes_from_queue_title">Sletting fjerner fra køen</string>
-  <string name="pref_delete_removes_from_queue_sum">Å slette en episode fjerner den automatisk også fra køen.</string>
   <string name="pref_filter_feed_title">Abonnement filter</string>
-  <string name="pref_filter_feed_sum">Filtrer dine abonnementer i navigasjonslinjen og på abonnementer skjermen.</string>
   <string name="subscriptions_are_filtered">Abonnementer er filtrert.</string>
   <string name="subscriptions_counter_greater_zero">Teller er større en null</string>
   <string name="auto_downloaded">Automatisk nedlastet</string>
@@ -487,7 +473,6 @@
   <string name="pref_feed_settings_dialog_msg">Den innstillingen er unik til hver podkast. Du kan endre den med å åpne siden til podkasten.</string>
   <string name="pref_contribute">Bidra</string>
   <string name="pref_show_subscription_title">Vis abonnement titel</string>
-  <string name="pref_show_subscription_title_summary">Vis titelen til abonnement under bildet.</string>
   <string name="pref_new_episodes_action_title">Aksjon til nye episoder</string>
   <string name="pref_new_episodes_action_sum">Aksjon som utføres for nye episoder</string>
   <!--About screen-->
@@ -539,7 +524,6 @@
   <string name="please_wait">Vennligst vent…</string>
   <string name="export_error_label">Feil ved eksportering</string>
   <string name="export_success_title">Eksportering vellykket!</string>
-  <string name="export_success_sum">Den eksporterte filen ble skrevet til:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Tilgang til ekstern lagring er nødvendig for å lese OPML filen</string>
   <string name="successful_import_label">Eksportering vellykket</string>
   <string name="import_ok">Trykk OK for å starte AntennaPod på nytt</string>
@@ -572,7 +556,6 @@
   </plurals>
   <string name="auto_enable_label">Aktivere sove-timer automatisk når det presses play</string>
   <string name="auto_enable_label_with_times">Aktivere sove-timer automatisk når det presses play mellom %s og %s</string>
-  <string name="auto_enable_change_times">Endre tidene</string>
   <string name="sleep_timer_enabled_label">Søvnnedtelling skrudd på</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">Velg synkroniserings-provider</string>
@@ -630,9 +613,6 @@
   <string name="decrease_speed">Reduser hastigheten</string>
   <string name="media_type_video_label">Video</string>
   <string name="status_downloading_label">Episode lastes ned nå</string>
-  <string name="in_queue_label">Episoden er i køen</string>
-  <string name="is_favorite_label">Episoden er markert som favoritt</string>
-  <string name="is_inbox_label">Episoder i innboksen</string>
   <string name="load_next_page_label">Last inn neste side</string>
   <string name="position">Posisjon: %1$s</string>
   <string name="apply_action">Anvend handling</string>
@@ -756,8 +736,6 @@
   <string name="notification_channel_download_error_description">Vis når nedlastingen eller strøm oppdatering feilet.</string>
   <string name="notification_channel_sync_error">Synkronisering feilet</string>
   <string name="notification_channel_sync_error_description">Vises når synkronisering mot gpodder feiler</string>
-  <string name="notification_channel_auto_download">Automatisk nedlasting fullført</string>
-  <string name="notification_channel_episode_auto_download">Vises når episoder har blitt lastet ned automatisk</string>
   <string name="notification_channel_new_episode">Ny episode</string>
   <string name="notification_channel_new_episode_description">Vis når en ny episode av podkasten ble funnet, hvis varslinger er aktiv</string>
   <!--Widget settings-->

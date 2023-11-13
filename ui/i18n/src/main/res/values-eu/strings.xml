@@ -1,24 +1,38 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activity and fragment titles-->
+  <string name="feed_update_receiver_name">Eguneratu harpidetzak</string>
   <string name="feeds_label">Podcastak</string>
   <string name="statistics_label">Estatistikak</string>
+  <string name="add_feed_label">Gehitu podcasta</string>
   <string name="episodes_label">Saioak</string>
+  <string name="home_label">Hasiera</string>
   <string name="queue_label">Ilara</string>
-  <string name="inbox_label">Sarrera-erretilua</string>
+  <string name="inbox_label">Sarrerako ontzia</string>
   <string name="favorite_episodes_label">Gogokoak</string>
   <string name="settings_label">Ezarpenak</string>
   <string name="downloads_label">Deskargak</string>
+  <string name="open_autodownload_settings">Ireki ezarpenak</string>
+  <string name="downloads_log_label">Deskargen egunkaria</string>
   <string name="subscriptions_label">Harpidetzak</string>
-  <string name="episode_cache_full_title">Saioen katxea beteta</string>
-  <string name="episode_cache_full_message">Saioen katxea mugara iritsi da. Ezarpenetan katxearen tamaina handitu dezakezu.</string>
+  <string name="subscriptions_list_label">Harpidetza zerrenda</string>
+  <string name="cancel_download_label">Ezeztatu deskarga</string>
+  <string name="playback_history_label">Erreprodukzio historia</string>
+  <string name="episode_cache_full_title">Saioen cache-a beteta</string>
+  <string name="episode_cache_full_message">Saioen cache-a mugara iritsi da. Ezarpenetan cache-aren tamaina handitu dezakezu.</string>
   <string name="years_statistics_label">Urteak</string>
   <string name="notification_pref_fragment">Jakinarazpenak</string>
+  <string name="recently_played_episodes">Azkena erreproduzitutako saioak</string>
   <!--Google Assistant-->
-  <string name="app_action_not_found">\"%1$s\" ezin da aurkitu</string>
+  <string name="app_action_not_found">\"%1$s\" ez da aurkitu</string>
   <!--SwipeActions-->
+  <string name="swipeactions_label">Hatza pasatzeko ekintzak</string>
   <string name="swipeactions_summary">Aukeratu zer gertatzen den zerrendako saio bat irristatzean</string>
+  <string name="swipe_right">Pasatu hatza eskuinera</string>
+  <string name="swipe_left">Pasatu hatza ezkerrera</string>
+  <string name="enable_swipeactions">Gaitu hatza pasatzeko ekintzak pantaila honetan</string>
   <string name="change_setting">Aldatu</string>
+  <string name="individual_subscription">Harpidetutako podcast baten orria</string>
   <!--Statistics fragment-->
   <string name="statistics_include_marked">Sartu jo berri gisa markatutako saioen iraupena</string>
   <string name="statistics_speed_not_counted">Oharra: erreprodukzioaren abiadura ez da sekula kontutan hartzen.</string>
@@ -26,33 +40,48 @@
   <string name="statistics_to">Nora</string>
   <string name="statistics_today">Gaur</string>
   <string name="statistics_filter_all_time">Denbora guztia</string>
-  <string name="statistics_filter_past_year">Ihaz</string>
-  <string name="statistics_reset_data">Estatistikak ezabatu</string>
+  <string name="statistics_filter_past_year">Iaz</string>
+  <string name="statistics_reset_data">Berrezarri datu estatistikoak</string>
   <string name="statistics_reset_data_msg">Honek saio guztien entzundako iraupenaren historia ezabatuko du. Ziur zaude egin nahi duzula?</string>
   <string name="statistics_counting_range">%1$s eta %2$s bitartean joa</string>
   <string name="statistics_counting_total">Joa guztira</string>
   <!--Home fragment-->
+  <string name="home_classics_title">Arakatu zure klasikoak</string>
+  <string name="home_continue_title">Jarraitu entzuten</string>
+  <string name="home_new_title">Ikusi berriak</string>
+  <string name="home_downloads_title">Kudeatu deskargak</string>
+  <string name="home_welcome_title">Ongi etorri AntennaPod-era!</string>
+  <string name="home_welcome_text">Oraindik ez zara harpidetu podcast bakar batera ere. Ireki alboko menua podcast bat gehitzeko.</string>
+  <string name="notification_permission_text">AntennaPodek zure baimena behar du jakinarazpenak bistaratzeko. Modu lehenetsian AntennaPodek bi kasutan soilik erakusten ditu jakinarazpenak: zerbait deskargatu bitartean edo zerbait oker doanean.</string>
+  <string name="notification_permission_denied">Baimena ukatu duzu.</string>
+  <string name="deny_label">Ukatu</string>
+  <string name="open_settings">Ireki ezarpenak</string>
+  <string name="configure_home">Konfiguratu hasierako pantaila</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Gailuko saioen tamaina guztira</string>
   <!--Main activity-->
-  <string name="drawer_open">Zabaldu menua</string>
+  <string name="drawer_open">Ireki menua</string>
   <string name="drawer_close">Itxi menua</string>
   <string name="drawer_feed_order_unplayed_episodes">Antolatu kontagailuaren arabera</string>
   <string name="drawer_feed_order_alphabetical">Antolatu alfabetikoki</string>
   <string name="drawer_feed_order_last_update">Antolatu argitaratze dataz</string>
   <string name="drawer_feed_order_most_played">Antolatu ikusitako saioen arabera</string>
-  <string name="drawer_feed_counter_inbox">Sarrerako erretiluan izandako kapituluen kopurua</string>
+  <string name="drawer_feed_counter_inbox">Sarrerako ontziko saio kopurua</string>
   <string name="drawer_feed_counter_unplayed">Entzun gabeko saioen zenbatekoa</string>
-  <string name="drawer_feed_counter_downloaded">Deskargatutako saioen zenbatekoa</string>
+  <string name="drawer_feed_counter_downloaded">Deskargatutako saio kopurua</string>
   <string name="drawer_feed_counter_none">Bat ere ez</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">Ez dago app bateragarririk</string>
   <string name="export_logs_menu_title">Esportatu log zehatzak</string>
   <string name="confirm_export_log_dialog_message">Erregistro zehatzek informazio sentikorra izan dezakete, hala nola zure harpidetza-zerrendak.</string>
   <!--Webview actions-->
-  <string name="copy_url_label">URLa kopiatu</string>
-  <string name="share_url_label">URLa partekatu</string>
+  <string name="open_in_browser_label">Ireki nabigatzailean</string>
+  <string name="copy_url_label">Kopiatu URLa</string>
+  <string name="share_url_label">Partekatu URLa</string>
   <!--Playback history-->
+  <string name="clear_history_label">Garbitu historia</string>
+  <string name="remove_history_label">Kendu historiatik</string>
+  <string name="removed_history_label">Historiatik kendua</string>
   <!--Other-->
   <string name="confirm_label">Baieztatu</string>
   <string name="cancel_label">Ezeztatu</string>
@@ -61,10 +90,12 @@
   <string name="reset">Berrezarri</string>
   <string name="url_label">URL</string>
   <string name="support_funding_label">Lagundu</string>
+  <string name="support_podcast">Babestu podcast hau</string>
   <string name="error_label">Errorea</string>
   <string name="error_msg_prefix">Errorea gertatu da:</string>
   <string name="refresh_label">Eguneratu</string>
   <string name="chapters_label">Kapituluak</string>
+  <string name="no_chapters_label">Kapitulurik ez</string>
   <string name="chapter_duration">Iraupena: %1$s</string>
   <string name="description_label">Deskribapena</string>
   <string name="shownotes_label">Programaren oharrak</string>
@@ -72,14 +103,19 @@
   <string name="episodes_suffix">\u0020saio</string>
   <string name="close_label">Itxi</string>
   <string name="retry_label">Saiatu berriro</string>
-  <string name="auto_download_label">Deskarga automatikoetan sartu</string>
-  <string name="feed_volume_reduction_summary">Jaitsi podcast honetako saioen bolumena: %1$s</string>
-  <string name="feed_volume_reduction_off">Itzalita</string>
-  <string name="feed_volume_reduction_light">Gozoa</string>
-  <string name="feed_volume_reduction_heavy">Indartsua</string>
+  <string name="auto_download_label">Sartu deskarga automatikoetan</string>
+  <string name="auto_delete_label">Ezabatu automatikoki saioa</string>
+  <string name="feed_volume_adapdation">Bolumena egokitzea</string>
+  <string name="feed_volume_reduction_off">Egokitzerik ez</string>
+  <string name="feed_volume_reduction_light">Jaitsiera arina</string>
+  <string name="feed_volume_reduction_heavy">Jaitsiera handia</string>
+  <string name="feed_volume_boost_light">Igoera arina</string>
+  <string name="feed_volume_boost_medium">Igoera ertaina</string>
+  <string name="feed_volume_boost_heavy">Igoera handia</string>
   <string name="feed_auto_download_always">Beti</string>
   <string name="feed_auto_download_never">Inoiz ez</string>
-  <string name="send_label">Bidali...</string>
+  <string name="feed_new_episodes_action_add_to_inbox">Gehitu sarrerako ontzira</string>
+  <string name="feed_new_episodes_action_nothing">Ezer ez</string>
   <string name="episode_cleanup_never">Inoiz ez</string>
   <string name="episode_cleanup_except_favorite_removal">Gogoko ez denean</string>
   <string name="episode_cleanup_queue_removal">Ilaran ez dagoenean</string>
@@ -100,16 +136,21 @@
     <item quantity="one">%d saio</item>
     <item quantity="other">%d saioak</item>
   </plurals>
+  <string name="episode_notification">Saio jakinarazpenak</string>
   <string name="episode_notification_summary">Erakutsi jakinarazpena saio berri bat kaleratzen denean.</string>
   <plurals name="new_episode_notification_message">
     <item quantity="one">%2$s (e)k saio berri bat du</item>
     <item quantity="other">%2$s (e)k %1$d saio berri ditu</item>
   </plurals>
+  <plurals name="new_episode_notification_title">
+    <item quantity="one">Saio berria</item>
+    <item quantity="other">Saio berriak</item>
+  </plurals>
   <string name="new_episode_notification_group_text">Zure harpidetzak saio berriak ditu.</string>
   <!--Actions on feeds-->
-  <string name="remove_all_inbox_label">Sarrerako erretilutik dena kendu</string>
-  <string name="removed_all_inbox_msg">Sarrera-erretilutik dena kendu da</string>
-  <string name="remove_all_inbox_confirmation_msg">Mesedez, baieztatu sarrera-erretilutik dena kendu nahi duzula.</string>
+  <string name="remove_all_inbox_label">Kendu dena sarrerako ontzitik</string>
+  <string name="removed_all_inbox_msg">Sarrerako ontzitik dena kendu da</string>
+  <string name="remove_all_inbox_confirmation_msg">Mesedez, baieztatu dena kendu nahi duzula sarrerako ontzitik.</string>
   <string name="multi_select_mark_played_confirmation">Egiaztatu erreproduzitutzat hautatutako elementu guztiak markatu nahi dituzula.</string>
   <string name="multi_select_mark_unplayed_confirmation">Egiaztatu hautatutako elementu guztiak erreproduzitu gabekotzat markatu nahi dituzula.</string>
   <string name="show_info_label">Programaren informazioa</string>
@@ -118,13 +159,15 @@
   <string name="rename_feed_label">Berrizendatu podcasta</string>
   <string name="remove_feed_label">Kendu podcasta</string>
   <string name="share_label">Partekatu</string>
+  <string name="share_file_label">Partekatu fitxategia</string>
   <string name="share_rss_address_label">RSS helbidea:</string>
   <string name="feed_remover_msg">Podcasta ezabatzen</string>
   <string name="load_complete_feed">Eguneratu osatutako podcasta</string>
   <string name="multi_select">Hautaketa anitza</string>
-  <string name="select_all_above">Aukeratu dena goian</string>
-  <string name="select_all_below">Aukeratu dena behean</string>
+  <string name="select_all_above">Hautatu goiko guztiak</string>
+  <string name="select_all_below">Hautatu beheko guztiak</string>
   <string name="filtered_label">Iragaziak</string>
+  <string name="open_podcast">Ireki podcasta</string>
   <string name="please_wait_for_data">Mesedez, itxaron datuak kargatu arte</string>
   <string name="updates_disabled_label">Eguneraketak desgaiturik</string>
   <plurals name="updated_feeds_batch_label">
@@ -132,25 +175,27 @@
     <item quantity="other">%d harpidetzak eguneratu dira.</item>
   </plurals>
   <string name="edit_tags">Editatu etiketak</string>
-  <string name="rename_tag_label">Etiketa berriz izendatu</string>
+  <string name="add_tag">Editatu etiketa</string>
+  <string name="rename_tag_label">Aldatu izena etiketari</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">Datu mugikorren konexioaren bidez kapituluen deskarga desaktibatuta dago ezarpenetan. \n\nOraindik podcasts guztiak eguneratu nahi dituzu datu mugikorren bidez?</string>
   <!--actions on feeditems-->
   <string name="download_label">Deskargatu</string>
   <plurals name="downloading_batch_label">
-    <item quantity="one">Deskargatzen %d saioa.</item>
-    <item quantity="other">Deskargatzen %d saio.</item>
+    <item quantity="one">Saio %d deskargatzen.</item>
+    <item quantity="other"> %d saio deskargatzen.</item>
   </plurals>
   <string name="play_label">Entzun</string>
   <string name="pause_label">Pausatu</string>
-  <string name="stream_label">Zuzenean entzun</string>
+  <string name="stream_label">Entzun zuzenean</string>
   <string name="delete_label">Ezabatu</string>
   <string name="delete_failed">Ezin da fitxategia ezabatu. Gailua berrabiarazteak lagun dezake.</string>
+  <string name="delete_episode_label">Ezabatu saioa</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">deskargatutako kapitulu 1 ezabatu egin da</item>
     <item quantity="other">%d deskargatutako kapituluak ezabatu egin dira</item>
   </plurals>
-  <string name="remove_inbox_label">Kendu sarrera-erretilutik</string>
-  <string name="removed_inbox_label">Sarrera-erretilutik kenduta</string>
+  <string name="remove_inbox_label">Kendu sarrerako ontzitik</string>
+  <string name="removed_inbox_label">Sarrerako ontzitik kenduta</string>
   <string name="mark_read_label">Markatu entzundakotzat</string>
   <string name="toggle_played_label">Erreprodukzio-egoera txandakatu</string>
   <string name="marked_as_played_label">Entzundakotzat markatua</string>
@@ -167,27 +212,44 @@
     <item quantity="one">%d saio markatuta ikusita bezala.</item>
     <item quantity="other">%d saio markatuta ez ikusita bezala.</item>
   </plurals>
+  <string name="add_to_queue_label">Gehitu ilaran</string>
   <plurals name="added_to_queue_batch_label">
     <item quantity="one">%d saio ilaran gehitua.</item>
     <item quantity="other">%d saio ilaran gehituak.</item>
   </plurals>
+  <string name="remove_from_queue_label">Kendu ilaratik</string>
   <plurals name="removed_from_queue_batch_label">
     <item quantity="one">%d saio ilaratik kenduta.</item>
     <item quantity="other">%d saio ilaratik kenduta.</item>
   </plurals>
-  <string name="skip_episode_label">Baztertu saioa</string>
+  <plurals name="removed_from_inbox_batch_label">
+    <item quantity="one">Saio %d kendu da sarrerako ontzitik.</item>
+    <item quantity="other">%d saio kendu dira sarrerako ontzitik.</item>
+  </plurals>
+  <string name="add_to_favorite_label">Gehitu gogokoetara</string>
+  <string name="remove_from_favorite_label">Kendu gogokoetatik</string>
+  <string name="visit_website_label">Bisitatu webgunea</string>
+  <string name="skip_episode_label">Saltatu saioa</string>
   <string name="no_items_selected">Ez da elementurik hautatu</string>
   <!--Download messages and labels-->
   <string name="download_successful">arrakastatsua</string>
   <string name="download_pending">Deskargatzeko zain</string>
   <string name="download_running">Deskarga abian</string>
   <string name="download_error_details">Xehetasunak</string>
+  <string name="download_log_details_message">%1$s \n\nArrazoi teknikoa: \n%2$s \n\nFitxategiaren URLa:\n%3$s</string>
+  <string name="download_error_retrying">\"%1$s\" deskargak huts egin du. Gero beste saiakera bat egingo da.</string>
+  <string name="download_error_not_retrying">\"%1$s\" deskargak huts egin du.</string>
   <string name="download_error_tap_for_details">Sakatu xehetasunak ikusteko.</string>
   <string name="download_error_device_not_found">Ez da biltegiratze gailurik aurkitu</string>
   <string name="download_error_insufficient_space">Ez dago nahikoa lekurik zure gailan.</string>
-  <string name="download_error_parser_exception">Podcast ostalariaren zerbitzariak hautsitako podcast iturria bidali du.</string>
+  <string name="download_error_http_data_error">HTTP datuen errorea</string>
+  <string name="download_error_error_unknown">Errore ezezaguna</string>
+  <string name="download_error_parser_exception">Podcast ostalariaren zerbitzariak hondatutako podcast jarioa bidali du.</string>
+  <string name="download_error_unsupported_type">Onartzen ez den jario-mota</string>
   <string name="download_error_unsupported_type_html">Podcast ostalariaren zerbitzariak webgune bat bidali du, ez podcast bat.</string>
   <string name="download_error_not_found">Podcast ostalariaren zerbitzariak ez daki non aurkitu fitxategia. Baliteke ezabatu izana.</string>
+  <string name="download_error_connection_error">Konexio-errorea</string>
+  <string name="download_error_no_connection">Ez dago sareko konexiorik</string>
   <string name="download_error_unknown_host">Ezin da zerbitzaria aurkitu. Egiaztatu helbidea ondo idatzita dagoen eta lan egiten duen sareko konexiorik baduzun.</string>
   <string name="download_error_forbidden">Podcast ostalariaren zerbitzariak ez du erantzun nahi.</string>
   <string name="download_canceled_msg">Deskarga ezeztatua</string>
@@ -195,17 +257,22 @@
   <string name="download_error_blocked">Deskarga beste aplikazio batek blokeatu zuen zure gailuan (VPN batek edo iragarki-blokeatzaile batek, adibidez).</string>
   <string name="download_error_certificate">Ezin da konexio segururik ezarri. Horrek esan nahi du zure gailuaren beste aplikazio batek (hala nola VPN batek edo iragarki-blokeatzaile batek) deskarga blokeatu duela, edo arazoren bat dagoela zerbitzariaren ziurtagiriekin.</string>
   <string name="download_report_title">Erroreren bat egon da deskargetan</string>
+  <string name="download_error_io_error">S/I errorea</string>
+  <string name="download_error_request_error">Eskaera-errorea</string>
   <plurals name="downloads_left">
     <item quantity="one">%d deskarga zain</item>
     <item quantity="other">%d deskarga zain</item>
   </plurals>
   <string name="download_notification_title_feeds">Podcastak eguneratzen</string>
   <string name="download_notification_title_episodes">Saioak deskargatzen</string>
-  <string name="download_type_feed">Kanala</string>
-  <string name="download_type_media">Media artxibategia</string>
+  <string name="download_log_title_unknown">Izenburu ezezaguna</string>
+  <string name="download_type_feed">Jarioa</string>
+  <string name="download_type_media">Multimedia fitxategia</string>
   <string name="null_value_podcast_error">Ez da erakutsi zitekeen podcast-ik eman.</string>
   <string name="no_feed_url_podcast_found_by_search">Iradokitako podcastak ez zuen RSS estekarik, AntennaPodek bat etor zitekeen podcast bat aurkitu du</string>
   <string name="authentication_notification_title">Egiaztatzea beharrezkoa da</string>
+  <string name="confirm_mobile_download_dialog_download_later">Deskargatu beranduago</string>
+  <string name="confirm_mobile_download_dialog_allow_this_time">Deskargatu hala ere</string>
   <string name="confirm_mobile_streaming_notification_message">Konexioaren datu bidezko zuzenekoa desgaiturik dago ezarpenetan. Sakatu halere ikusteko.</string>
   <string name="confirm_mobile_streaming_button_always">Beti</string>
   <string name="confirm_mobile_streaming_button_once">Behin</string>
@@ -214,15 +281,18 @@
   <string name="playback_error_unsupported">Media mota hori ez da onartzen</string>
   <string name="playback_error_timeout">Ekintzak denbora muga gainditu du</string>
   <string name="playback_error_source">Ezinezkoa da fitxategia atzematea</string>
+  <string name="playback_error_unknown">Errore ezezaguna</string>
   <string name="no_media_playing_label">Ez dago ezer erreproduzitzen</string>
   <string name="unknown_media_key">AntennaPod - Media tekla ezezaguna: %1$d</string>
-  <string name="error_file_not_found">Ez da artxibategirik aurkitu</string>
+  <string name="error_file_not_found">Ez da fitxategirik aurkitu</string>
   <string name="no_media_label">Elementuak ez du multimedia fitxategirik</string>
   <!--Queue operations-->
+  <string name="lock_queue">Blokeatu ilara</string>
   <string name="queue_locked">Ilara blokeaturik</string>
   <string name="queue_unlocked">Ilara desblokeaturik</string>
   <string name="queue_lock_warning">Ilara blokeatzen baduzu, ezin izango dituzu saioak mugitu edo markatu.</string>
   <string name="checkbox_do_not_show_again">Ez erakutsi berriro</string>
+  <string name="clear_queue_label">Garbitu ilara</string>
   <string name="undo">Desegin</string>
   <string name="move_to_top_label">Eraman hasierara</string>
   <string name="move_to_bottom_label">Eraman bukaerara</string>
@@ -233,6 +303,8 @@
   <string name="episode_title">Saioaren izenburua</string>
   <string name="feed_title">Podcastaren izenburua</string>
   <string name="random">Ausaz</string>
+  <string name="smart_shuffle">Nahasketa adimentsua</string>
+  <string name="size">Tamaina</string>
   <string name="clear_queue_confirmation_msg">Ziurtatu ilarako saio DENAK ezabatu nahi dituzula</string>
   <string name="time_left_label">Gelditzen den denbora:\u0020</string>
   <!--Variable Speed-->
@@ -246,10 +318,12 @@
   <string name="no_comp_downloads_label">Saioak deskarga ditzakezu podcastaren xehetasun pantailan.</string>
   <string name="no_log_downloads_head_label">Ez dago deskargen erregistrorik</string>
   <string name="no_log_downloads_label">Deskargen erregistroak hemen azalduko dira eskuragarri daudenean.</string>
+  <string name="no_history_head_label">Ez dago historiarik</string>
   <string name="no_history_label">Saioa entzundakoan hemen azalduko da.</string>
+  <string name="no_all_episodes_head_label">Ez dago saiorik</string>
   <string name="no_all_episodes_label">Podcast bat gehitzen duzunean saioak hemen azalduko dira.</string>
   <string name="no_all_episodes_filtered_label">Saiatu iragazkia ezabatzen kapitulu gehiago ikusteko.</string>
-  <string name="no_inbox_head_label">Sarrerako erretiluan ez dago kapitulurik</string>
+  <string name="no_inbox_head_label">Ez dago saiorik sarrerako ontzian</string>
   <string name="no_inbox_label">Kapitulu berriak iristen direnean, hemen agertuko dira. Orduan erabaki ahal izango duzu ea interesatzen zaizun ala ez.</string>
   <string name="no_subscriptions_head_label">Ez dago harpidetzarik</string>
   <string name="no_subscriptions_label">Podcast batean harpidetzeko, sakatu beheko \"gehi\" ikonoa.</string>
@@ -273,41 +347,70 @@
   <string name="pref_pauseOnDisconnect_sum">Erreprodukzioa gelditu entzungailu edo bluetootha kentzean</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Erreprodukzioa jarraitu entzungailu edo bluettota berriz konektatzean</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Erreprodukzioa jarraitu bluetootha berriz konektatzean</string>
+  <string name="pref_hardware_forward_button_title">Aurrera botoia</string>
   <string name="pref_hardware_forward_button_summary">Pertsonalizatu aurrera botoiaren portaera</string>
+  <string name="pref_hardware_previous_button_title">Atzera botoia</string>
   <string name="pref_hardware_previous_button_summary">Pertsonalizatu atzera botoiaren portaera</string>
-  <string name="button_action_rewind">Atzera egin</string>
+  <string name="button_action_rewind">Birbobinatu</string>
+  <string name="button_action_skip_episode">Saltatu saioa</string>
+  <string name="button_action_restart_episode">Hasi berriz saioa</string>
   <string name="pref_followQueue_sum">Erreprodukzioa amaitzean ilarako hurrengo elementura  jauzi</string>
   <string name="pref_auto_delete_sum">Saioa ezabatu erreprodukzioa amaitzean</string>
+  <string name="pref_auto_delete_title">Ezabatu automatikoki</string>
   <string name="pref_smart_mark_as_played_sum">Erreproduzitutako saioak markatu nahiz bukatzeko segundo batzuk falta</string>
   <string name="pref_skip_keeps_episodes_sum">Saioak gorde jaustean</string>
+  <string name="pref_skip_keeps_episodes_title">Mantendu saltatutako saioak</string>
+  <string name="pref_favorite_keeps_episodes_sum">Mantendu gogoko gisa markatutako saioak</string>
+  <string name="pref_favorite_keeps_episodes_title">Mantendu gogoko saioak</string>
   <string name="playback_pref">Erreprodukzioa</string>
   <string name="playback_pref_sum">Aurikularren kontrolak, saltatu tarteak, ilara</string>
+  <string name="downloads_pref">Deskargak</string>
   <string name="feed_refresh_title">Eguneratu podcastak</string>
   <string name="feed_refresh_never">Inoiz ez</string>
+  <string name="feed_every_hour">Orduero</string>
+  <string name="feed_every_2_hours">2 ordutik behin</string>
+  <string name="feed_every_4_hours">4 ordutik behin</string>
+  <string name="feed_every_8_hours">8 ordutik behin</string>
+  <string name="feed_every_12_hours">12 ordutik behin</string>
+  <string name="feed_every_24_hours">Egunero</string>
+  <string name="feed_every_72_hours">3 egunetik behin</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Entzungailu edo Bluetootharen deskonexioa</string>
-  <string name="pref_stream_over_download_sum">Zuzenean botoia erakusten du, zerrendetan deskargatzeko botoiaren ordez.</string>
+  <string name="pref_stream_over_download_title">Hobetsi streaming-a</string>
   <string name="pref_mobileUpdate_sum">Aukeratu datu mugikorrez deskarga daitekeena</string>
   <string name="pref_mobileUpdate_refresh">Jarri egunean podcastak</string>
   <string name="pref_mobileUpdate_images">Azaleko irudiak</string>
   <string name="pref_mobileUpdate_auto_download">Deskargatu automatikoki</string>
   <string name="pref_mobileUpdate_episode_download">Saioaren deskarga</string>
   <string name="pref_mobileUpdate_streaming"> Zuzenean</string>
-  <string name="pref_nav_drawer_items_sum">Aldatu nabigatze kutxan azaltzen diren elementuak</string>
+  <string name="user_interface_label">Erabiltzaile-interfazea</string>
+  <string name="user_interface_sum">Itxura, harpidetzak, pantaila blokeatzea</string>
+  <string name="pref_black_theme_title">Erabateko beltza</string>
+  <string name="pref_black_theme_message">Erabili erabateko beltza gai ilunean</string>
+  <string name="pref_tinted_theme_title">Kolore dinamikoak</string>
+  <string name="pref_tinted_theme_message">Egokitu aplikazioaren koloreak horma-paperaren arabera</string>
+  <string name="pref_nav_drawer_feed_order_title">Ezarri harpidetzen ordena</string>
   <string name="pref_nav_drawer_feed_order_sum">Aldatu harpidetzen ordena</string>
+  <string name="pref_nav_drawer_feed_counter_title">Ezarri harpidetzen kontagailua</string>
   <string name="pref_nav_drawer_feed_counter_sum">Aldatu harpidetzen kontagailuan erakutsitako informazioa aldatzea. Harpidetzen ordenari ere eragiten dio, \'Harpidetzaren ordena\' \'kontagailu\' moduan badago.</string>
+  <string name="pref_automatic_download_title">Deskarga automatikoa</string>
   <string name="pref_automatic_download_sum">Konfiguratu saioen deskarga automatikoa</string>
   <string name="pref_autodl_wifi_filter_title">Gaitu Wifi iragazkia</string>
   <string name="pref_autodl_wifi_filter_sum">Onartu deskarga automatikoak aukeratutako Wifi sareetan bakarrik</string>
   <string name="pref_automatic_download_on_battery_title">Deskargatu kargatzen ari ez denean</string>
   <string name="pref_automatic_download_on_battery_sum">Onartu deskarga bateria kargatzen ari ez denean</string>
+  <string name="pref_episode_cache_title">Saioen cache-a</string>
   <string name="pref_episode_cache_summary">Gailuan katxeatutako saioen zenbatekoa. Deskarga automatikoa bertan behera utziko da zenbaki honetara heltzean.</string>
+  <string name="pref_episode_cover_title">Erabili saioaren azala</string>
   <string name="pref_episode_cover_summary">Erabili atalaren azal espezifikoa zerrendetan eskuragarri dagoenean. Desaktibatzen bada, aplikazioak podcastaren azala erabiliko du beti.</string>
+  <string name="pref_show_remain_time_title">Erakutsi geratzen den denbora</string>
   <string name="pref_show_remain_time_summary">Erakutsi saioen gelditzen denbora markatuta daudenean. Markatu gabe badaude, erakutsi saioen iraupen osoa.</string>
+  <string name="pref_theme_title_automatic">Automatikoa</string>
   <string name="pref_theme_title_light">Argia</string>
   <string name="pref_theme_title_dark">Iluna</string>
   <string name="pref_episode_cache_unlimited">Neurri gabe</string>
   <string name="pref_playback_speed_sum">Pertsonalizatu abiadura aldakorreko erreprodukzioan dauden abiadurak</string>
   <string name="pref_feed_playback_speed_sum">Podcast hauen berezko irakurtze abiadura</string>
+  <string name="pref_feed_skip">Saltatu automatikoki</string>
   <string name="pref_feed_skip_sum">Saltatu sarrera eta amaiera kredituak.</string>
   <string name="pref_feed_skip_ending">Saltatu azkena</string>
   <string name="pref_feed_skip_intro">Saltatu lehenengoa</string>
@@ -320,7 +423,6 @@
   <string name="pref_rewind_sum">Pertsonalizatu zenbat segundu egingo duen atzera atzera botoia sakatzean
 </string>
   <string name="pref_expandNotify_sum">Honek jakinarazpenak zabaltzen ditu erreprodukzio botoiak erakusteko</string>
-  <string name="pref_persistNotify_sum">Eutsi jakinarazpenak eta kontrolak blokeo pantailan erreprodukzioa gelditzean</string>
   <string name="pref_compact_notification_buttons_sum">Aldatu botoiak jakinarazpena hartuta dagoenean. Erreproduzitu/eten botoia beti dago sartuta.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Aukeratu gehienez %1$d elementu</string>
   <string name="pref_compact_notification_buttons_dialog_error">Ezingo duzu %1$d elementu baino gehiago aukeratu.</string>
@@ -328,6 +430,7 @@
   <string name="enqueue_location_back">Bukaera</string>
   <string name="enqueue_location_front">Hasiera</string>
   <string name="enqueue_location_after_current">Oraingo saioaren ondoren</string>
+  <string name="enqueue_location_random">Ausaz</string>
   <string name="pref_smart_mark_as_played_disabled">Desgaitua</string>
   <string name="visit_user_forum">Erabiltzaileen foroa</string>
   <string name="bug_report_title">Errorearen berri eman</string>
@@ -339,8 +442,7 @@
   <string name="pref_no_browser_found">Ez da web nabigatzailea aurkitu</string>
   <string name="pref_enqueue_downloaded_summary">Gehitu deskargatutako saioak ilarara</string>
   <string name="behavior">Joera</string>
-  <string name="pref_delete_removes_from_queue_sum">Kendu saio bat automatikoki ilaratik ezabatzean.</string>
-  <string name="pref_filter_feed_sum">Iragazi harpidetzak nabigazio-kutxan eta harpidetza-pantailetan.</string>
+  <string name="pref_default_page">Orri lehenetsia</string>
   <string name="subscriptions_are_filtered">Harpidetzak iragazita daude.</string>
   <string name="subscriptions_counter_greater_zero">Kontagailua zero baino handiagoa</string>
   <string name="auto_downloaded">Automatikoki deskargatuta</string>
@@ -351,7 +453,6 @@
   <string name="new_episode_notification_disabled">Jakinarazpenak desgaiturik</string>
   <string name="pref_feed_settings_dialog_msg">Ezarpen hau podcast bakoitzeko bakarra da. Podcast orria irekiz alda dezakezu.</string>
   <string name="pref_contribute">Lagundu</string>
-  <string name="pref_show_subscription_title_summary">Erakutsi harpidetzaren izenburua azaleko irudiaren azpian.</string>
   <!--About screen-->
   <string name="about_pref">Honi buruz</string>
   <string name="antennapod_version">AntennaPod bertsioa</string>
@@ -368,6 +469,7 @@
   <string name="type_to_search">Idatzi kontsulta bilatzeko</string>
   <string name="search_label">Bilatu</string>
   <string name="no_results_for_query">Ez da \"%1$s\"emaitzarik aurkitu</string>
+  <string name="search_online">Bilatu online</string>
   <!--Synchronization-->
   <string name="sync_status_started">Sinkronizatzen hasi da</string>
   <string name="sync_status_episodes_upload">Saio aldaketak kargatzen…</string>
@@ -390,7 +492,7 @@
   <string name="opml_import_label">Inportatu OPMLtik</string>
   <string name="opml_add_podcast_label">Podcasten zerrenda inportatu (OPML)</string>
   <string name="opml_reader_error">Errorea OPML dokkumentua irakurtzean:</string>
-  <string name="opml_import_error_no_file">Artxibategi bat aukeratu behar duzu!</string>
+  <string name="opml_import_error_no_file">Fitxategi bat aukeratu behar duzu!</string>
   <string name="select_all_label">Aukeratu dena</string>
   <string name="deselect_all_label">Aukera kendu denei</string>
   <string name="opml_export_label">OPMLra esportatu</string>
@@ -401,17 +503,17 @@
   <string name="please_wait">Itxaron mesedez...</string>
   <string name="export_error_label">Errorea esportatzean</string>
   <string name="export_success_title">Esportatzea ongi burutu da</string>
-  <string name="export_success_sum">Esportatutako artxibategia hemen gorde da:\n\n%1$s</string>
-  <string name="opml_import_ask_read_permission">Kanpo biltegirako sarrera behar duzu OPML artxibategiak irakurtzeko</string>
+  <string name="opml_import_ask_read_permission">Kanpo biltegiratzerako sarbidea behar duzu OPML fitxategia irakurtzeko</string>
   <string name="successful_import_label">Inportate arrakastatsua</string>
   <string name="import_ok">Sakatu OK AntennaPod berrabiarazteko</string>
-  <string name="import_no_downgrade">Datu-basea AntennaPod-en bertsio berriago batekin esportatu zen. Uneko aplikazioak ez daki nola inportatu.</string>
+  <string name="import_no_downgrade">Datu-basea AntennaPod-en bertsio berriago batekin esportatu zen. Uneko aplikazioak ez daki fitxategi hori nola inportatu.</string>
   <string name="favorites_export_label">Gogokoak esportatu</string>
-  <string name="favorites_export_summary">Gorde diren gogokoak esportatu artxibatzeko</string>
+  <string name="favorites_export_summary">Esportatu gordetako gogokoak fitxategian</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Ezarri tenporizadore bat</string>
   <string name="disable_sleeptimer_label">Desgaitu tenporizadorea</string>
   <string name="extend_sleep_timer_label">+%d minutu</string>
+  <string name="sleep_timer_always">Beti</string>
   <string name="sleep_timer_label">Tenporizadorea</string>
   <string name="time_dialog_invalid_input">Baliogabeko sarrera, denbora zenbaki osoa izan behar du</string>
   <string name="shake_to_reset_label">Astindu berrezarteko</string>
@@ -438,11 +540,13 @@
   <string name="dialog_choose_sync_service_title">Aukeratu sinkronizazio-hornitzailea</string>
   <string name="gpodnet_description">Gpodder.net kode irekiko podcastak sinkronizatzeko zerbitzu bat da, zure zerbitzarian bertan instala dezakezuna. Gpodder.net AntennaPod proiektutik independentea da.</string>
   <string name="synchronization_summary_nextcloud">Gpoddersync kode irekiko Nextcloud aplikazio bat da, zure zerbitzarian erraz instala dezakezuna. Aplikazioa ez dator bat AntennaPod proiektuarekin.</string>
+  <string name="synchronization_host_label">Zerbitzariaren helbidea</string>
   <string name="synchronization_nextcloud_authenticate_browser">Eman sarbidea web nabigatzaile irekiaren bidez eta itzuli AntennaPodera.</string>
   <string name="gpodnetauth_login_butLabel">Hasi saioa</string>
   <string name="gpodnetauth_encryption_warning">Pasahitza eta datuak ez daude enkriptaturik!</string>
   <string name="username_label">Erabioltzailea</string>
   <string name="password_label">Pasahitza</string>
+  <string name="synchronization_login_butLabel">Hasi saioa</string>
   <string name="gpodnetauth_device_name">Gailuaren izena</string>
   <string name="gpodnetauth_device_name_default">AntennaPod aktibatuta %1$s</string>
   <string name="gpodnetauth_existing_devices">Dauden gailuak</string>
@@ -464,6 +568,7 @@
   <string name="gpodnetsync_pref_report_failed">Huts egin du</string>
   <string name="gpodnetsync_username_characters_error">Erabiltzaile-izenek letrak, digitu, erdiko gidoi eta gidoi baxuak baino ezin dituzte eduki.</string>
   <!--Directory chooser-->
+  <string name="choose_data_directory">Aukeratu datu-karpeta</string>
   <string name="choose_data_directory_message">Aukeratu datuen karpetaren erroa. AntennaPod-ek azpidirektorio egokiak sortuko ditu.</string>
   <string name="choose_data_directory_available_space">%1$s  %2$s -tik libre</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Bolumena jaitsi beharrean erreprodukzioa geldiarazi beste aplikazio batek soinuak erreproduzitzen dituenean</string>
@@ -480,15 +585,18 @@
   <string name="decrease_speed">Gutxitu abiadura</string>
   <string name="media_type_video_label">Bideoa</string>
   <string name="status_downloading_label">Saioa deskargatzen ari da</string>
-  <string name="in_queue_label">Saioa ilaran dago</string>
-  <string name="is_favorite_label">Saioa gogokoa bezala markatu da</string>
-  <string name="is_inbox_label">Kapitulua sarrera-erretiluan dago</string>
+  <string name="in_queue_label">Ilaran</string>
+  <string name="is_favorite_label">Gogoko gisa markatua</string>
+  <string name="is_inbox_label">Sarrerako ontzian</string>
+  <string name="is_played">Erreproduzitua</string>
   <string name="load_next_page_label">Hurrengo orria kargatu</string>
   <string name="position">Kokalekua: %1$s</string>
+  <string name="remaining_time">Geratzen den denbora: %1$s</string>
   <string name="apply_action">Aplikatu ekintza</string>
-  <string name="play_chapter">Kapitulua abiarazi</string>
+  <string name="play_chapter">Erreproduzitu kapitulua</string>
   <string name="prev_chapter">Aurreko kapitulua</string>
   <string name="next_chapter">Hurrengo kapitulua</string>
+  <string name="shuffle_suggestions">Nahastu iradokizunak</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">Egiaztatzea</string>
   <string name="authentication_descr">Aldatu podcast honen eta bere saioen erabiltzaile izena eta pasahitza.</string>
@@ -496,6 +604,7 @@
   <string name="feed_tags_summary">Aldatu podcast honen etiketak zure harpidetzak antolatzen laguntzeko</string>
   <string name="multi_feed_common_tags_info">{fa-info-circle} Hautatutako harpidetza guztien ohiko etiketak baino ez dira erakusten. Gainerako etiketek ez dute eraginik izango.</string>
   <string name="episode_filters_description">Saio bat deskarga automatikotik kanpo utzi behar den edo ez erabakitzeko erabilitako terminoen zerrenda</string>
+  <string name="keep_updated">Mantendu eguneratuta</string>
   <string name="keep_updated_summary">Eguneratu podcast hau ere podcast guztiak (auto-)eguneratzean</string>
   <string name="auto_download_disabled_globally">Deskarga automatikoa desgaituta dago AntennaPod-en lehentasun orokorretan</string>
   <string name="statistics_time_played">Jokatutako denbora:</string>
@@ -504,10 +613,13 @@
   <string name="statistics_space_used">Erabilitako espazioa:</string>
   <string name="statistics_episodes_started_total">Hasitako kapituluak/guztira:</string>
   <string name="statistics_view_all">Podcast guztietarako ikusi »</string>
+  <string name="edit_url_menu">Editatu jarioaren URLa</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Berariazko erabilerako aplikazioen harpidetzak inportatuz …</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Bilatu podcasta</string>
+  <string name="search_itunes_label">Bilatu Apple Podcasts-en</string>
+  <string name="search_podcastindex_label">Bilatu Podcast Index-en</string>
   <string name="search_fyyd_label">Bilatu fyyd-en</string>
   <string name="gpodnet_search_hint">Bilatu gpodder.net-en</string>
   <string name="advanced">Aurreratua</string>
@@ -516,14 +628,17 @@
   <string name="discover_hide">Ezkutatu</string>
   <string name="discover_is_hidden">Iradokizunak ezkutatzea erabaki duzu.</string>
   <string name="discover_more">gehiago »</string>
+  <string name="discover_powered_by_itunes">Apple Podcasts-en iradokizunak</string>
+  <string name="discover_confirm">Erakutsi iradokizunak</string>
   <string name="search_powered_by">%1$s -ren emaitzak</string>
+  <string name="select_country">Hautatu herrialdea</string>
   <!--Local feeds-->
   <string name="add_local_folder">Gehitu tokiko karpeta</string>
   <string name="local_folder">Tokiko karpeta</string>
   <string name="reconnect_local_folder">Birkonektatu tokiko karpeta</string>
   <string name="reconnect_local_folder_warning">Baimenik izan ezean, hau erabil dezakezu karpeta berdina birkonektatzeko. Ez aukeratu beste karpetarik.</string>
   <string name="local_feed_description">Podcast birtual hau AntennaPod-i karpeta bat gehituta sortu da</string>
-  <string name="unable_to_start_system_file_manager">Ezin da sistemaren fitxategi kudeatzailea abiarazi</string>
+  <string name="unable_to_start_system_file_manager">Ezin da sistemaren fitxategi-kudeatzailea abiarazi</string>
   <string name="filter">Iragazia</string>
   <string name="hide_is_favorite_label">Gogokoa da</string>
   <string name="not_favorite">Ez da gogokoa</string>
@@ -552,15 +667,19 @@
   <string name="sort_old_new">Zaharra \u2192 berria</string>
   <string name="sort_short_long">Motza \u2192 luzea</string>
   <string name="sort_long_short">Luzea \u2192 motza</string>
+  <string name="sort_small_large">Motza \u2192 luzea</string>
+  <string name="sort_large_small">Luzea \u2192 motza</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Sartu erreprodukzioaren unea</string>
   <string name="share_dialog_episode_website_label">Saioaren orrialdea</string>
   <string name="share_dialog_for_social">Gizarte mezua</string>
   <string name="share_dialog_media_address">Multimediaren helbidea</string>
-  <string name="share_dialog_media_file_label">Media artxibategiak</string>
+  <string name="share_dialog_media_file_label">Multimedia fitxategia</string>
   <string name="share_starting_position_label">Hemendik aurrera</string>
   <!--Audio controls-->
   <string name="audio_controls">Audio kontrolak</string>
+  <string name="playback_speed">Erreprodukzio abiadura</string>
+  <string name="audio_effects">Audio efektuak</string>
   <string name="player_switch_to_audio_only">Aldatu soilik audiora</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Mota</string>
@@ -589,8 +708,7 @@
   <string name="notification_channel_download_error_description">Deskargak edo jarioen eguneratzeak huts egiten duenean erakusten da.</string>
   <string name="notification_channel_sync_error">Sinkronizazioak huts egin du</string>
   <string name="notification_channel_sync_error_description">Erakutsi gpoder -en sinkronizazioak huts egitean.</string>
-  <string name="notification_channel_auto_download">Deskarga automatikoak osatuta</string>
-  <string name="notification_channel_episode_auto_download">Pasarteak automatikoki deskargatu direnean erakusten da.</string>
+  <string name="notification_channel_new_episode">Saio berria</string>
   <string name="notification_channel_new_episode_description">Saio berriak eskuragarri daudenean eta jakinarazpenak aktibatu direnean erakusten da</string>
   <!--Widget settings-->
   <string name="widget_settings">Widget ezarpenak</string>
@@ -602,4 +720,5 @@
   <string name="on_demand_config_download_text">Badirudi asko deskargatzen duzula. Gertaera-zerrendek deskarga-botoiak erakustea nahi duzu?</string>
   <string name="shortcut_subscription_label">Harpidetzarako zuzeneko sarbidea</string>
   <string name="shortcut_select_subscription">Aukeratu harpidetza</string>
+  <string name="add_shortcut">Gehitu lasterbidea</string>
 </resources>

@@ -63,12 +63,8 @@
   <string name="close_label">關閉</string>
   <string name="retry_label">重試</string>
   <string name="auto_download_label">加入自動下載</string>
-  <string name="feed_volume_reduction_off">關閉</string>
-  <string name="feed_volume_reduction_light">輕</string>
-  <string name="feed_volume_reduction_heavy">重</string>
   <string name="feed_auto_download_always">總是</string>
   <string name="feed_auto_download_never">不予下載</string>
-  <string name="send_label">發送中…</string>
   <string name="episode_cleanup_never">不予刪除</string>
   <string name="episode_cleanup_except_favorite_removal">若未標記為最愛</string>
   <string name="episode_cleanup_queue_removal">若未列入待播清單</string>
@@ -217,17 +213,14 @@
   <string name="playback_pref">播放</string>
   <string name="playback_pref_sum">耳機線控、快轉時間、待播清單</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">耳機或藍牙裝置拔除時</string>
-  <string name="pref_stream_over_download_sum">在清單中顯示串流播放按鈕取代下載鈕</string>
   <string name="pref_mobileUpdate_sum">選擇以行動網路連線時可以做的事</string>
   <string name="pref_mobileUpdate_refresh">更新 Podcast</string>
   <string name="pref_mobileUpdate_images">更新封面圖</string>
   <string name="pref_mobileUpdate_auto_download">自動下載</string>
   <string name="pref_mobileUpdate_episode_download">下載單集</string>
   <string name="pref_mobileUpdate_streaming">串流播放</string>
-  <string name="pref_nav_drawer_items_sum">調整側邊選單裡要顯示的項目</string>
   <string name="pref_nav_drawer_feed_order_sum">更改您訂閱頻道的排序方式</string>
   <string name="pref_nav_drawer_feed_counter_sum">調整訂閱計數器中要顯示的東西，同時也會在排序方式設定為「計數」時影響排序</string>
-  <string name="pref_automatic_download_sum">設定單集自動下載機制</string>
   <string name="pref_autodl_wifi_filter_title">限定 Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">限定於特定 Wi-Fi 連線時自動下載</string>
   <string name="pref_automatic_download_on_battery_title">未充電時下載</string>
@@ -250,7 +243,6 @@
   <string name="pref_fast_forward_sum">自訂快轉鈕要往前快轉多少時間</string>
   <string name="pref_rewind_sum">自訂倒轉鈕要往後倒轉多少時間</string>
   <string name="pref_expandNotify_sum">此功能通常會加大通知訊息以便顯示控制鈕</string>
-  <string name="pref_persistNotify_sum">暫停播放時，在通知列及鎖定畫面上保留播放控制鈕</string>
   <string name="pref_compact_notification_buttons_sum">設定精簡通知訊息上的播放控制鈕。「暫停/播放」鈕一定會出現</string>
   <string name="pref_compact_notification_buttons_dialog_title">最多可選擇 %1$d 項</string>
   <string name="pref_compact_notification_buttons_dialog_error">您最多只能選擇 %1$d 項。</string>
@@ -269,8 +261,6 @@
   <string name="pref_no_browser_found">找不到任何瀏覽器</string>
   <string name="pref_enqueue_downloaded_summary">下載單集以後自動加入待播清單</string>
   <string name="behavior">操作行為</string>
-  <string name="pref_delete_removes_from_queue_sum">刪除某單集後，也自動將其從待播清單中移除</string>
-  <string name="pref_filter_feed_sum">篩選側邊選單及訂閱畫面中顯示的訂閱清單</string>
   <string name="subscriptions_are_filtered">此為篩選過的訂閱清單。</string>
   <string name="subscriptions_counter_greater_zero">計數大於 0 的</string>
   <string name="auto_downloaded">已自動下載</string>
@@ -323,7 +313,6 @@
   <string name="please_wait">請稍候…</string>
   <string name="export_error_label">匯出錯誤</string>
   <string name="export_success_title">匯出成功</string>
-  <string name="export_success_sum">檔案已匯出至：\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">讀取 OPML 檔需要存取外部儲存空間的權限</string>
   <string name="successful_import_label">匯入完畢</string>
   <string name="import_ok">請按下 OK 重新啟動 AntennaPod</string>
@@ -387,8 +376,6 @@
   <string name="decrease_speed">放慢</string>
   <string name="media_type_video_label">影片</string>
   <string name="status_downloading_label">正在下載這集</string>
-  <string name="in_queue_label">單集已在待播清單中</string>
-  <string name="is_favorite_label">已將此單集標為最愛</string>
   <string name="load_next_page_label">載入下一頁</string>
   <string name="position">播放進度：%1$s</string>
   <string name="apply_action">套用</string>
@@ -480,8 +467,6 @@
   <string name="notification_channel_download_error_description">當下載或更新出錯時顯示。</string>
   <string name="notification_channel_sync_error">同步失敗</string>
   <string name="notification_channel_sync_error_description">在 gpodder 同步發生錯誤時顯示</string>
-  <string name="notification_channel_auto_download">自動下載完畢</string>
-  <string name="notification_channel_episode_auto_download">自動下載後顯示</string>
   <string name="notification_channel_new_episode_description">啟用通知的情形下，有新單集上架時顯示通知訊息</string>
   <!--Widget settings-->
   <string name="widget_settings">小工具設定</string>
