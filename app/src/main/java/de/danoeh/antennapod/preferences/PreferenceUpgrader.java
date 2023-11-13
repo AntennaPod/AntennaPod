@@ -6,12 +6,15 @@ import android.view.KeyEvent;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.preference.PreferenceManager;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.error.CrashReportWriter;
+import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.fragment.QueueFragment;
@@ -148,6 +151,20 @@ public class PreferenceUpgrader {
         }
         if (oldVersion < 3020000) {
             NotificationManagerCompat.from(context).deleteNotificationChannel("auto_download");
+        }
+
+        if (oldVersion < 3020002) {
+            SharedPreferences allEpisodesPreferences =
+                    context.getSharedPreferences(AllEpisodesFragment.PREF_NAME, Context.MODE_PRIVATE);
+            String oldEpisodeSort = allEpisodesPreferences.getString(UserPreferences.PREF_SORT_ALL_EPISODES, "");
+            if (! StringUtils.isAllEmpty(oldEpisodeSort)) {
+                prefs.edit().putString(UserPreferences.PREF_SORT_ALL_EPISODES, oldEpisodeSort).apply();
+            }
+
+            String oldEpisodeFilter = allEpisodesPreferences.getString("filter", "");
+            if (! StringUtils.isAllEmpty(oldEpisodeFilter)) {
+                prefs.edit().putString(UserPreferences.PREF_FILTER_ALL_EPISODES, oldEpisodeFilter).apply();
+            }
         }
     }
 }

@@ -26,6 +26,7 @@ import java.util.List;
  */
 public class AllEpisodesFragment extends EpisodesListFragment {
     public static final String TAG = "EpisodesFragment";
+    public static final String PREF_NAME = "PrefAllEpisodesFragment";
 
     @NonNull
     @Override
@@ -72,7 +73,6 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         return DBReader.getTotalEpisodeCount(getFilter());
     }
 
-
     @Override
     protected FeedItemFilter getFilter() {
         return new FeedItemFilter(UserPreferences.getPrefFilterAllEpisodes());
@@ -81,6 +81,10 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     @Override
     protected String getFragmentTag() {
         return TAG;
+    }
+
+    protected String getPrefName() {
+        return PREF_NAME;
     }
 
     @Override
@@ -111,7 +115,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     }
 
     private void saveSortOrderAndRefresh(SortOrder type) {
-        UserPreferences.setAllEpisodeSortOrder(type);
+        UserPreferences.setAllEpisodesSortOrder(type);
         loadItems();
     }
 
@@ -121,10 +125,6 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         updateFilterUi();
         page = 1;
         loadItems();
-    }
-
-    protected String getPrefName() {
-        return "PrefAllEpisodesFragment";
     }
 
     private void updateFilterUi() {
