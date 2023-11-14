@@ -6,7 +6,9 @@ body:
     attributes:
       label: Checklist
       options:
-        - label: I have used the search function for [open](https://github.com/AntennaPod/AntennaPod/issues) **and** [closed](https://github.com/AntennaPod/AntennaPod/issues?q=is%3Aissue+is%3Aclosed) issues to see if someone else has already submitted the same feature request.
+        - label: I have used the search function for [**OPEN**](https://github.com/AntennaPod/AntennaPod/issues) issues to see if someone else has already submitted the same feature request.
+          required: true
+        - label: I have **also** used the search function for [**CLOSED**](https://github.com/AntennaPod/AntennaPod/issues?q=is%3Aissue+is%3Aclosed) issues to see if the feature was already implemented and is just waiting to be released, or if the feature was rejected.
           required: true
         - label: I will describe the problem with as much detail as possible.
           required: true
