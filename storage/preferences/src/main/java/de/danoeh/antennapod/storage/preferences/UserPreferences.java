@@ -876,7 +876,7 @@ public class UserPreferences {
         prefs.edit().putString(PREF_SORT_ALL_EPISODES, "" + s.code).apply();
     }
 
-    public static SortOrder getAllEpisodeSortOrder() {
+    public static SortOrder getAllEpisodesSortOrder() {
         return SortOrder.fromCodeString(prefs.getString(PREF_SORT_ALL_EPISODES,
                 "" + SortOrder.DATE_NEW_OLD.code));
     }
