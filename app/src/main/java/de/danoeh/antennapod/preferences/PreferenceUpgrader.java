@@ -162,7 +162,7 @@ public class PreferenceUpgrader {
             }
 
             String oldEpisodeFilter = allEpisodesPreferences.getString("filter", "");
-            if (! StringUtils.isAllEmpty(oldEpisodeFilter)) {
+            if (!StringUtils.isAllEmpty(oldEpisodeFilter)) {
                 prefs.edit().putString(UserPreferences.PREF_FILTER_ALL_EPISODES, oldEpisodeFilter).apply();
             }
         }
