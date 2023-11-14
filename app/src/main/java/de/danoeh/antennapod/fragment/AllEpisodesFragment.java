@@ -58,14 +58,14 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     @Override
     protected List<FeedItem> loadData() {
         return DBReader.getEpisodes(0, page * EPISODES_PER_PAGE, getFilter(),
-                UserPreferences.getAllEpisodeSortOrder());
+                UserPreferences.getAllEpisodesSortOrder());
     }
 
     @NonNull
     @Override
     protected List<FeedItem> loadMoreData(int page) {
         return DBReader.getEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, getFilter(),
-                UserPreferences.getAllEpisodeSortOrder());
+                UserPreferences.getAllEpisodesSortOrder());
     }
 
     @Override
