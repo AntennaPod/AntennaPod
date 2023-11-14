@@ -153,7 +153,7 @@ public class PreferenceUpgrader {
             NotificationManagerCompat.from(context).deleteNotificationChannel("auto_download");
         }
 
-        if (oldVersion < 3020002) {
+        if (oldVersion < 3030000) {
             SharedPreferences allEpisodesPreferences =
                     context.getSharedPreferences(AllEpisodesFragment.PREF_NAME, Context.MODE_PRIVATE);
             String oldEpisodeSort = allEpisodesPreferences.getString(UserPreferences.PREF_SORT_ALL_EPISODES, "");
