@@ -873,8 +873,7 @@ public class UserPreferences {
     }
 
     public static void setAllEpisodesSortOrder(SortOrder s) {
-        prefs.edit()
-                .putString(PREF_SORT_ALL_EPISODES, "" + s.code).apply();
+        prefs.edit().putString(PREF_SORT_ALL_EPISODES, "" + s.code).apply();
     }
 
     public static SortOrder getAllEpisodeSortOrder() {
