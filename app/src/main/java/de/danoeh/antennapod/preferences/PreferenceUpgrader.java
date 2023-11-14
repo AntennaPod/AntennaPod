@@ -157,7 +157,7 @@ public class PreferenceUpgrader {
             SharedPreferences allEpisodesPreferences =
                     context.getSharedPreferences(AllEpisodesFragment.PREF_NAME, Context.MODE_PRIVATE);
             String oldEpisodeSort = allEpisodesPreferences.getString(UserPreferences.PREF_SORT_ALL_EPISODES, "");
-            if (! StringUtils.isAllEmpty(oldEpisodeSort)) {
+            if (!StringUtils.isAllEmpty(oldEpisodeSort)) {
                 prefs.edit().putString(UserPreferences.PREF_SORT_ALL_EPISODES, oldEpisodeSort).apply();
             }
 
