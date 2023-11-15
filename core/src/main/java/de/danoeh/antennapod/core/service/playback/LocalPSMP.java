@@ -345,7 +345,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
         if (t >= getDuration()) {
             Log.d(TAG, "Seek reached end of file, skipping to next episode");
-            skip();
+            endPlayback(true, true, true, true);
             return;
         }
 
