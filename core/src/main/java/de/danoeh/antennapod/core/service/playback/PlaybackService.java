@@ -1434,12 +1434,18 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             } else {
                 PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
                 if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
-                        mediaPlayer.resume();
+                    mediaPlayer.resume();
+                    if (PlaybackPreferences.getUserManuallyPaused()) {
+                        mediaPlayer.pause(true, true);
+                    }
                 } else if (playerStatus == PlayerStatus.PREPARING) {
                     mediaPlayer.setStartWhenPrepared(!mediaPlayer.isStartWhenPrepared());
                 } else if (playerStatus == PlayerStatus.STOPPED) {
-                    if (PlaybackPreferences.getPlayerStatusInPreferences() == PLAYER_STATUS_PAUSED) {
-                        startPlayingFromPreferences();
+                    startPlayingFromPreferences();
+                    if ((PlaybackPreferences.getPlayerStatusInPreferences() == PLAYER_STATUS_PAUSED)) {
+                        if (PlaybackPreferences.getUserManuallyPaused()) {
+                            mediaPlayer.pause(true, true);
+                        }
                     }
                 } else if (playerStatus == PlayerStatus.INITIALIZED) {
                     mediaPlayer.setStartWhenPrepared(true);

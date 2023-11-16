@@ -182,9 +182,6 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(PREF_CURRENT_PLAYER_STATUS, getCurrentPlayerStatusAsInt(playerStatus));
         editor.apply();
-        if (getCurrentPlayerStatusAsInt(playerStatus) == PLAYER_STATUS_PLAYING) {
-            writeUserManuallyPaused(false);
-        }
     }
 
     public static int getPlayerStatusInPreferences() {
