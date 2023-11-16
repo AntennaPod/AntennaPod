@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.service.playback;
 
+import static de.danoeh.antennapod.core.preferences.PlaybackPreferences.PLAYER_STATUS_PAUSED;
 import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 import android.annotation.SuppressLint;
@@ -407,6 +408,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private List<MediaBrowserCompat.MediaItem> loadChildrenSynchronous(@NonNull String parentId) {
         List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
+
         if (parentId.equals(getResources().getString(R.string.app_name))) {
             mediaItems.add(createBrowsableMediaItem(R.string.queue_label, R.drawable.ic_playlist_play_black,
                     DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.QUEUED))));
@@ -453,6 +455,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
             }
         }
+
+        // We are connected to the car, Android Auto is buggy and not sending the broadcast message
+        Intent i = new Intent("com.google.android.gms.car.media.STATUS");
+                i.putExtra("media_connection_status", "media_connected");
+        sendBroadcast(i);
         return mediaItems;
     }
 
@@ -628,8 +635,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             case KeyEvent.KEYCODE_HEADSETHOOK:
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
+                    PlaybackPreferences.writeUserManuallyPaused(true);
                     mediaPlayer.pause(!UserPreferences.isPersistNotify(), false);
                 } else if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
+                    PlaybackPreferences.writeUserManuallyPaused(false);
                     mediaPlayer.resume();
                 } else if (status == PlayerStatus.PREPARING) {
                     mediaPlayer.setStartWhenPrepared(!mediaPlayer.isStartWhenPrepared());
@@ -637,6 +646,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     mediaPlayer.setStartWhenPrepared(true);
                     mediaPlayer.prepare();
                 } else if (mediaPlayer.getPlayable() == null) {
+                    PlaybackPreferences.writeUserManuallyPaused(true);
                     startPlayingFromPreferences();
                 } else {
                     return false;
@@ -646,10 +656,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             case KeyEvent.KEYCODE_MEDIA_PLAY:
                 if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
                     mediaPlayer.resume();
+                    PlaybackPreferences.writeUserManuallyPaused(false);
                 } else if (status == PlayerStatus.INITIALIZED) {
                     mediaPlayer.setStartWhenPrepared(true);
                     mediaPlayer.prepare();
                 } else if (mediaPlayer.getPlayable() == null) {
+                    PlaybackPreferences.writeUserManuallyPaused(true);
                     startPlayingFromPreferences();
                 } else {
                     return false;
@@ -658,6 +670,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
+                    PlaybackPreferences.writeUserManuallyPaused(true);
                     mediaPlayer.pause(!UserPreferences.isPersistNotify(), false);
                     return true;
                 }
@@ -694,6 +707,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 return false;
             case KeyEvent.KEYCODE_MEDIA_STOP:
                 if (status == PlayerStatus.PLAYING) {
+                    PlaybackPreferences.writeUserManuallyPaused(true);
                     mediaPlayer.pause(true, true);
                 }
 
@@ -1420,9 +1434,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             } else {
                 PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
                 if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
-                    mediaPlayer.resume();
+                        mediaPlayer.resume();
                 } else if (playerStatus == PlayerStatus.PREPARING) {
                     mediaPlayer.setStartWhenPrepared(!mediaPlayer.isStartWhenPrepared());
+                } else if (playerStatus == PlayerStatus.STOPPED) {
+                    if (PlaybackPreferences.getPlayerStatusInPreferences() == PLAYER_STATUS_PAUSED) {
+                        startPlayingFromPreferences();
+                    }
                 } else if (playerStatus == PlayerStatus.INITIALIZED) {
                     mediaPlayer.setStartWhenPrepared(true);
                     mediaPlayer.prepare();
@@ -1594,6 +1612,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     public void pause(boolean abandonAudioFocus, boolean reinit) {
+        PlaybackPreferences.writeUserManuallyPaused(true);
         mediaPlayer.pause(abandonAudioFocus, reinit);
     }
 

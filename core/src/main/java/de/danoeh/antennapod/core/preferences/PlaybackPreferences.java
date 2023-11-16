@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
+import android.service.controls.actions.BooleanAction;
 import android.util.Log;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
@@ -56,6 +57,11 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
      * The current player status as int.
      */
     private static final String PREF_CURRENT_PLAYER_STATUS = "de.danoeh.antennapod.preferences.currentPlayerStatus";
+
+    /**
+     * Did the user manually pause or external event did it?
+     */
+    private static final String PREF_USER_PAUSED = "de.danoeh.antennapod.preferences.user_paused";
 
     /**
      * A temporary playback speed which overrides the per-feed playback speed for the currently playing
@@ -151,17 +157,40 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
             }
             playable.writeToPreferences(editor);
         }
-        editor.putInt(PREF_CURRENT_PLAYER_STATUS, getCurrentPlayerStatusAsInt(playerStatus));
+        writePlayerStatus(playerStatus);
 
         editor.apply();
     }
 
+    public static void writeUserManuallyPaused(Boolean b) {
+        Log.d(TAG, "Writing user hit paused " + b);
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(PREF_USER_PAUSED, b);
+        editor.apply();
+    }
+
+    public static Boolean getUserManuallyPaused() {
+        Log.d(TAG, "Getting manual user hit paused " + prefs.getBoolean(PREF_USER_PAUSED, false));
+
+        return prefs.getBoolean(PREF_USER_PAUSED, false);
+    }
+
     public static void writePlayerStatus(PlayerStatus playerStatus) {
-        Log.d(TAG, "Writing player status playback preferences");
+        Log.d(TAG, "Writing player status playback preferences " + playerStatus);
 
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(PREF_CURRENT_PLAYER_STATUS, getCurrentPlayerStatusAsInt(playerStatus));
         editor.apply();
+        if (getCurrentPlayerStatusAsInt(playerStatus) == PLAYER_STATUS_PLAYING) {
+            writeUserManuallyPaused(false);
+        }
+    }
+
+    public static int getPlayerStatusInPreferences() {
+        Log.d(TAG, "Getting player status playback preferences");
+
+        return prefs.getInt(PREF_CURRENT_PLAYER_STATUS, PLAYER_STATUS_OTHER);
     }
 
     public static void setCurrentlyPlayingTemporaryPlaybackSpeed(float speed) {

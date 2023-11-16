@@ -297,6 +297,7 @@ public abstract class PlaybackController {
         switch (status) {
             case PLAYING:
                 playbackService.pause(true, false);
+                PlaybackPreferences.writeUserManuallyPaused(true);
                 break;
             case PAUSED:
             case PREPARED:
