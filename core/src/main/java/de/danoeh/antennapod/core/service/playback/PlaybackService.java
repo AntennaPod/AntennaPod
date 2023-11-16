@@ -458,7 +458,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         // We are connected to the car, Android Auto is buggy and not sending the broadcast message
         Intent i = new Intent("com.google.android.gms.car.media.STATUS");
-                i.putExtra("media_connection_status", "media_connected");
+        i.putExtra("media_connection_status", "media_connected");
         sendBroadcast(i);
         return mediaItems;
     }
