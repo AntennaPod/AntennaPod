@@ -46,7 +46,6 @@ public class FeedItem extends FeedComponent implements Serializable {
     private transient Feed feed;
     private long feedId;
     private String podcastIndexChapterUrl;
-    private String podcastIndexTranscriptText;
     private Hashtable<String, String> podcastIndexTranscriptUrls;
 
     private int state;
@@ -65,11 +64,6 @@ public class FeedItem extends FeedComponent implements Serializable {
     private final boolean hasChapters;
 
     /**
-     * Is true if database or feeditem has podcast:transcript
-     */
-    private boolean hasTranscript;
-
-    /**
      * The list of chapters of this item. This might be null even if there are chapters of this item
      * in the database. The 'hasChapters' attribute should be used to check if this item has any chapters.
      * */
@@ -86,7 +80,6 @@ public class FeedItem extends FeedComponent implements Serializable {
     public FeedItem() {
         this.state = UNPLAYED;
         this.hasChapters = false;
-        this.hasTranscript = false;
     }
 
     /**
@@ -111,10 +104,7 @@ public class FeedItem extends FeedComponent implements Serializable {
         if (transcriptUrl != null) {
             this.podcastIndexTranscriptUrls = new Hashtable<String, String>();
             this.podcastIndexTranscriptUrls.put(transcriptType, transcriptUrl);
-            this.hasTranscript = true;
         }
-        // TT TODO  Load this from disk
-        // this.podcastIndexTranscriptText = transcriptText;
     }
 
     /**
@@ -184,11 +174,6 @@ public class FeedItem extends FeedComponent implements Serializable {
         }
         if (other.getPodcastIndexTranscriptUrls() != null) {
             podcastIndexTranscriptUrls = other.podcastIndexTranscriptUrls;
-            hasTranscript = true;
-        }
-
-        if (other.podcastIndexTranscriptText != null) {
-            podcastIndexTranscriptText = other.podcastIndexTranscriptText;
         }
     }
 
@@ -473,7 +458,6 @@ public class FeedItem extends FeedComponent implements Serializable {
             podcastIndexTranscriptUrls = new Hashtable<String, String>();
         }
         podcastIndexTranscriptUrls.put(t, url);
-        hasTranscript = true;
     }
 
 
@@ -511,19 +495,6 @@ public class FeedItem extends FeedComponent implements Serializable {
             return new Pair("application/srr", podcastIndexTranscriptUrls.get("application/x-subrip"));
         }
         return null;
-    }
-
-    public String getPodcastIndexTranscriptText() {
-        return podcastIndexTranscriptText;
-    }
-
-    public String setPodcastIndexTranscriptText(String str) {
-        hasTranscript = !StringUtils.isBlank(str);
-        return podcastIndexTranscriptText = str;
-    }
-
-    public boolean hasTranscript() {
-        return hasTranscript;
     }
 
     @NonNull
