@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,6 +12,8 @@ import de.danoeh.antennapod.dialog.AllEpisodesFilterDialog;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -26,10 +26,7 @@ import java.util.List;
  */
 public class AllEpisodesFragment extends EpisodesListFragment {
     public static final String TAG = "EpisodesFragment";
-    private static final String PREF_NAME = "PrefAllEpisodesFragment";
-    private static final String PREF_FILTER = "filter";
-    public static final String PREF_SORT = "prefEpisodesSort";
-    private SharedPreferences prefs;
+    public static final String PREF_NAME = "PrefAllEpisodesFragment";
 
     @NonNull
     @Override
@@ -40,7 +37,6 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         toolbar.setTitle(R.string.episodes_label);
         updateToolbar();
         updateFilterUi();
-        prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         txtvInformation.setOnClickListener(
                 v -> AllEpisodesFilterDialog.newInstance(getFilter()).show(getChildFragmentManager(), null));
         return root;
@@ -61,13 +57,15 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     @NonNull
     @Override
     protected List<FeedItem> loadData() {
-        return DBReader.getEpisodes(0, page * EPISODES_PER_PAGE, getFilter(), getSortOrder());
+        return DBReader.getEpisodes(0, page * EPISODES_PER_PAGE, getFilter(),
+                UserPreferences.getAllEpisodesSortOrder());
     }
 
     @NonNull
     @Override
     protected List<FeedItem> loadMoreData(int page) {
-        return DBReader.getEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, getFilter(), getSortOrder());
+        return DBReader.getEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, getFilter(),
+                UserPreferences.getAllEpisodesSortOrder());
     }
 
     @Override
@@ -77,8 +75,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
 
     @Override
     protected FeedItemFilter getFilter() {
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        return new FeedItemFilter(prefs.getString(PREF_FILTER, ""));
+        return new FeedItemFilter(UserPreferences.getPrefFilterAllEpisodes());
     }
 
     @Override
@@ -119,13 +116,13 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     }
 
     private void saveSortOrderAndRefresh(SortOrder type) {
-        prefs.edit().putString(PREF_SORT, "" + type.code).apply();
+        UserPreferences.setAllEpisodesSortOrder(type);
         loadItems();
     }
 
     @Subscribe
     public void onFilterChanged(AllEpisodesFilterDialog.AllEpisodesFilterChangedEvent event) {
-        prefs.edit().putString(PREF_FILTER, StringUtils.join(event.filterValues, ",")).apply();
+        UserPreferences.setPrefFilterAllEpisodes(StringUtils.join(event.filterValues, ","));
         updateFilterUi();
         page = 1;
         loadItems();
@@ -142,9 +139,5 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         }
         toolbar.getMenu().findItem(R.id.action_favorites).setIcon(
                 getFilter().showIsFavorite ? R.drawable.ic_star : R.drawable.ic_star_border);
-    }
-
-    private SortOrder getSortOrder() {
-        return SortOrder.fromCodeString(prefs.getString(PREF_SORT, "" + SortOrder.DATE_NEW_OLD.code));
     }
 }
