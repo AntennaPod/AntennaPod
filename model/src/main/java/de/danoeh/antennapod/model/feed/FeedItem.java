@@ -45,7 +45,6 @@ public class FeedItem extends FeedComponent implements Serializable {
     private transient Feed feed;
     private long feedId;
     private String podcastIndexChapterUrl;
-    private String podcastIndexTranscriptText;
     private Hashtable<String, String> podcastIndexTranscriptUrls;
 
     private int state;
@@ -87,7 +86,6 @@ public class FeedItem extends FeedComponent implements Serializable {
     public FeedItem() {
         this.state = UNPLAYED;
         this.hasChapters = false;
-        this.hasTranscript = false;
     }
 
     /**
@@ -112,7 +110,6 @@ public class FeedItem extends FeedComponent implements Serializable {
         if (transcriptUrl != null) {
             this.podcastIndexTranscriptUrls = new Hashtable<String, String>();
             this.podcastIndexTranscriptUrls.put(transcriptType, transcriptUrl);
-            this.hasTranscript = true;
         }
     }
 
@@ -183,11 +180,6 @@ public class FeedItem extends FeedComponent implements Serializable {
         }
         if (other.getPodcastIndexTranscriptUrls() != null) {
             podcastIndexTranscriptUrls = other.podcastIndexTranscriptUrls;
-            hasTranscript = true;
-        }
-
-        if (other.podcastIndexTranscriptText != null) {
-            podcastIndexTranscriptText = other.podcastIndexTranscriptText;
         }
     }
 
@@ -472,7 +464,6 @@ public class FeedItem extends FeedComponent implements Serializable {
             podcastIndexTranscriptUrls = new Hashtable<String, String>();
         }
         podcastIndexTranscriptUrls.put(t, url);
-        hasTranscript = true;
     }
 
 
@@ -496,7 +487,7 @@ public class FeedItem extends FeedComponent implements Serializable {
         }
         // We prefer JSON if that is available
         if (podcastIndexTranscriptUrls.get("application/json") != null) {
-           return new Pair("application/json", podcastIndexTranscriptUrls.get("application/json"));
+            return new Pair("application/json", podcastIndexTranscriptUrls.get("application/json"));
         }
 
         // SRR format, but feeds use different mime types

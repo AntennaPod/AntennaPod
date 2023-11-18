@@ -2,12 +2,12 @@
 <rss version="2.0" xmlns:podcast="https://podcastindex.org/namespace/1.0">
     <channel>
         <title>title</title>
-<item>
-    <title>Podcasts in YouTube make it to the UK</title>
-    <link>https://podnews.net/update/youtube-podcasts-uk</link>
-    <pubDate>Tue, 10 Oct 2023 08:46:31 +0000</pubDate>
-    <podcast:transcript url="https://podnews.net/audio/podnews231011.mp3.json" type="application/json" />
-    <podcast:transcript url="https://podnews.net/audio/podnews231011.mp3.srt" type="application/srt" />
-</item>
+        <item>
+            <title>Podcasts in YouTube make it to the UK</title>
+            <link>https://podnews.net/update/youtube-podcasts-uk</link>
+            <pubDate>Tue, 10 Oct 2023 08:46:31 +0000</pubDate>
+            <podcast:transcript url="https://podnews.net/audio/podnews231011.mp3.json" type="application/json" />
+            <podcast:transcript url="https://podnews.net/audio/podnews231011.mp3.srt" type="application/srt" />
+        </item>
     </channel>
 </rss>
