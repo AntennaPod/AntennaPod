@@ -45,7 +45,6 @@ public class FeedItem extends FeedComponent implements Serializable {
     private transient Feed feed;
     private long feedId;
     private String podcastIndexChapterUrl;
-    private String podcastIndexTranscriptText;
     private Hashtable<String, String> podcastIndexTranscriptUrls;
 
     private int state;
@@ -67,8 +66,8 @@ public class FeedItem extends FeedComponent implements Serializable {
      * Is true if database or feeditem has podcast:transcript
      */
     private boolean hasTranscript;
-
-    Transcript transcript;
+    private String podcastIndexTranscriptText;
+    private Transcript transcript;
 
     /**
      * The list of chapters of this item. This might be null even if there are chapters of this item
@@ -87,7 +86,6 @@ public class FeedItem extends FeedComponent implements Serializable {
     public FeedItem() {
         this.state = UNPLAYED;
         this.hasChapters = false;
-        this.hasTranscript = false;
     }
 
     /**
@@ -112,7 +110,6 @@ public class FeedItem extends FeedComponent implements Serializable {
         if (transcriptUrl != null) {
             this.podcastIndexTranscriptUrls = new Hashtable<String, String>();
             this.podcastIndexTranscriptUrls.put(transcriptType, transcriptUrl);
-            this.hasTranscript = true;
         }
     }
 
@@ -183,11 +180,6 @@ public class FeedItem extends FeedComponent implements Serializable {
         }
         if (other.getPodcastIndexTranscriptUrls() != null) {
             podcastIndexTranscriptUrls = other.podcastIndexTranscriptUrls;
-            hasTranscript = true;
-        }
-
-        if (other.podcastIndexTranscriptText != null) {
-            podcastIndexTranscriptText = other.podcastIndexTranscriptText;
         }
     }
 
@@ -472,7 +464,6 @@ public class FeedItem extends FeedComponent implements Serializable {
             podcastIndexTranscriptUrls = new Hashtable<String, String>();
         }
         podcastIndexTranscriptUrls.put(t, url);
-        hasTranscript = true;
     }
 
 
