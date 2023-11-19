@@ -104,12 +104,16 @@ public class PodcastIndexTranscriptParser {
 
         static long parseTimecode(String timecode) {
             String[] parts = timecode.split(":");
-            int hours = Integer.parseInt(parts[0]);
-            int minutes = Integer.parseInt(parts[1]);
-            int seconds = Integer.parseInt(parts[2].substring(0, 2));
-            int milliseconds = Integer.parseInt(parts[2].substring(3));
-
-            return (hours * 60 * 60 * 1000) + (minutes * 60 * 1000) + (seconds * 1000) + milliseconds;
+            try {
+                int hours = Integer.parseInt(parts[0]);
+                int minutes = Integer.parseInt(parts[1]);
+                int seconds = Integer.parseInt(parts[2].substring(0, 2));
+                int milliseconds = Integer.parseInt(parts[2].substring(3));
+                return (hours * 60 * 60 * 1000) + (minutes * 60 * 1000) + (seconds * 1000) + milliseconds;
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                return -1;
+            }
         }
     }
 
