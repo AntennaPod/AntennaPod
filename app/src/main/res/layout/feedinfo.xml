@@ -81,12 +81,13 @@
 
             <TextView
                 android:id="@+id/txtvUrl"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
                 android:maxLines="4"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
+                android:drawablePadding="4dp"
                 tools:background="@android:color/holo_green_dark"
                 tools:text="http://www.example.com/feed" />
 

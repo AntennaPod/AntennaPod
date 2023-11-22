@@ -32,7 +32,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.snackbar.Snackbar;
-import com.joanzapata.iconify.Iconify;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -228,7 +227,8 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
             txtvAuthorHeader.setText(feed.getAuthor());
         }
 
-        txtvUrl.setText(feed.getDownload_url() + " {fa-paperclip}");
+        txtvUrl.setText(feed.getDownload_url());
+        txtvUrl.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_paperclip, 0);
 
         if (feed.getPaymentLinks() == null || feed.getPaymentLinks().size() == 0) {
             lblSupport.setVisibility(View.GONE);
@@ -263,7 +263,6 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
             txtvFundingUrl.setText(str.toString());
         }
 
-        Iconify.addIcons(txtvUrl);
         refreshToolbarState();
     }
 
@@ -312,8 +311,8 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 @Override
                 protected void setUrl(String url) {
                     feed.setDownload_url(url);
-                    txtvUrl.setText(feed.getDownload_url() + " {fa-paperclip}");
-                    Iconify.addIcons(txtvUrl);
+                    txtvUrl.setText(feed.getDownload_url());
+                    txtvUrl.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_paperclip, 0);
                 }
             }.show();
 
