@@ -44,6 +44,9 @@ public class FeedItemDuplicateGuesserTest {
         assertFalse(FeedItemDuplicateGuesser.seemDuplicates(
                 item("id1", "Title", "example.com/episode1", 10, 5 * MINUTES, "audio/*"),
                 item("id2", "Title", "example.com/episode2", 10, 5 * MINUTES, "video/*")));
+        assertTrue(FeedItemDuplicateGuesser.seemDuplicates(
+                item("id1", "Title", "example.com/episode1", 10, 5 * MINUTES, "audio/mpeg"),
+                item("id2", "Title", "example.com/episode2", 10, 5 * MINUTES, "audio/mp3")));
         assertFalse(FeedItemDuplicateGuesser.seemDuplicates(
                 item("id1", "Title", "example.com/episode1", 5 * DAYS, 5 * MINUTES, "audio/*"),
                 item("id2", "Title", "example.com/episode2", 2 * DAYS, 5 * MINUTES, "audio/*")));
