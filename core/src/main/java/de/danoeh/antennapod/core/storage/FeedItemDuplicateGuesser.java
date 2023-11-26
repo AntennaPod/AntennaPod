@@ -28,7 +28,7 @@ public class FeedItemDuplicateGuesser {
         return titlesLookSimilar(item1, item2)
                 && datesLookSimilar(item1, item2)
                 && durationsLookSimilar(media1, media2)
-                && TextUtils.equals(media1.getMime_type(), media2.getMime_type());
+                && mimeTypeLooksSimilar(media1, media2);
     }
 
     private static boolean sameAndNotEmpty(String string1, String string2) {
@@ -50,6 +50,19 @@ public class FeedItemDuplicateGuesser {
 
     private static boolean durationsLookSimilar(FeedMedia media1, FeedMedia media2) {
         return Math.abs(media1.getDuration() - media2.getDuration()) < 10 * 60L * 1000L;
+    }
+
+    private static boolean mimeTypeLooksSimilar(FeedMedia media1, FeedMedia media2) {
+        String mimeType1 = media1.getMime_type();
+        String mimeType2 = media2.getMime_type();
+        if (mimeType1 == null || mimeType2 == null) {
+            return true;
+        }
+        if (mimeType1.contains("/") && mimeType2.contains("/")) {
+            mimeType1 = mimeType1.substring(0, mimeType1.indexOf("/"));
+            mimeType2 = mimeType2.substring(0, mimeType2.indexOf("/"));
+        }
+        return TextUtils.equals(mimeType1, mimeType2);
     }
 
     private static boolean titlesLookSimilar(FeedItem item1, FeedItem item2) {
