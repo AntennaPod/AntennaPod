@@ -1765,6 +1765,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onPlayFromSearch(String query, Bundle extras) {
             Log.d(TAG, "onPlayFromSearch  query=" + query + " extras=" + extras.toString());
 
+            if (query.equals("")) {
+                Log.d(TAG, "onPlayFromSearch called with empty query, resuming from the last position");
+                startPlayingFromPreferences();
+                return;
+            }
+
             List<FeedItem> results = FeedSearcher.searchFeedItems(query, 0);
             if (results.size() > 0 && results.get(0).getMedia() != null) {
                 FeedMedia media = results.get(0).getMedia();
