@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation,PluralsCandidate">
+    <string name="echo_home_header">Review the year</string>
+    <string name="echo_home_subtitle">Your top podcasts and stats from the past year. Exclusively on your phone.</string>
+
+    <string name="echo_intro_your_year">Your year</string>
+    <string name="echo_intro_in_podcasts">in podcasts</string>
+    <string name="echo_intro_locally">generated privately on your phone</string>
+
+    <string name="echo_hours_this_year">This year you played</string>
+    <plurals name="echo_hours_podcasts">
+        <item quantity="one">hours of episodes\nfrom %1$d podcast</item>
+        <item quantity="other">hours of episodes\nfrom %1$d different podcasts</item>
+    </plurals>
+
+    <string name="echo_queue_title_clean">And you\'re ready to make a clean start of the year. You have</string>
+    <string name="echo_queue_title_many">And you still have quite a bit to go this year. You have</string>
+    <plurals name="echo_queue_hours_waiting">
+        <item quantity="one">hours waiting in your queue\nfrom %1$d episode</item>
+        <item quantity="other">hours waiting in your queue\nfrom %1$d episodes</item>
+    </plurals>
+    <string name="echo_queue_hours_clean">That\'s about %1$s each day until %2$d starts.</string>
+    <string name="echo_queue_hours_normal">That\'s about %1$s each day until %2$d starts. You can start the year clean if you skip a few episodes.</string>
+    <string name="echo_queue_hours_much">That\'s about %1$s each day until %2$d starts. Wait, what?</string>
+
+    <string name="echo_listened_after_title">We\'ve run some analysis on when episodes are released, and when you completed them. Our conclusion?</string>
+    <string name="echo_listened_after_emoji_yoga" translatable="false">\uD83E\uDDD8</string>
+    <string name="echo_listened_after_comment_easy">You\'re easy going</string>
+    <string name="echo_listened_after_time">Typically, you completed an episode %1$s after it was released.</string>
+    <string name="echo_listened_after_emoji_run" translatable="false">\uD83C\uDFC3</string>
+    <string name="echo_listened_after_comment_addict">You\'re a podcast addict</string>
+
+    <string name="echo_hoarder_title">We\'ve also been wondering: do you listen to the podcasts that you\'re subscribed to?</string>
+    <string name="echo_hoarder_subtitle_hoarder">Looking at the numbers, we think you\'re a hoarder</string>
+    <string name="echo_hoarder_emoji_cabinet" translatable="false">\uD83D\uDDC4\uFE0F</string>
+    <string name="echo_hoarder_comment_hoarder">Numbers don\'t lie, they say. And with only %1$d%% of your %2$d active subscriptions having been played this year, we\'re probably right.</string>
+    <string name="echo_hoarder_subtitle_medium">Check. No hoarding here.</string>
+    <string name="echo_hoarder_emoji_check" translatable="false">\u2705</string>
+    <string name="echo_hoarder_comment_medium">You\'ve played episodes from %1$d%% of your %2$d active subscriptions this year. How about checking out \"%3$s\" again?</string>
+    <string name="echo_hoarder_subtitle_clean">Clean!</string>
+    <string name="echo_hoarder_emoji_clean" translatable="false">\u2728</string>
+    <string name="echo_hoarder_comment_clean">You\'ve played episodes from %1$d%% of your %2$d active subscriptions this year. We bet you keep your desk clean, too!</string>
+
+    <string name="echo_thanks_large">Thanks</string>
+    <string name="echo_thanks_we_are_glad_old">for sticking with us this year!\n\nYou played your first episode with us in %1$s. It\'s been our honor to serve you since.</string>
+    <string name="echo_thanks_we_are_glad_new">for joining us this year!\n\nWhether you\'ve moved over from another app, or started your podcast adventure with us: we\'re glad to have you!</string>
+    <string name="echo_thanks_now_favorite">Now, let\'s take a look at your favorite podcasts…</string>
+
+    <string name="echo_share_heading">My favorite podcasts</string>
+    <string name="echo_share">My year %d in podcasts. #AntennaPodEcho</string>
+</resources>

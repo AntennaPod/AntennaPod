@@ -806,6 +806,17 @@ public final class DBReader {
         return result;
     }
 
+    public static long getTimeBetweenReleaseAndPlayback(long timeFilterFrom, long timeFilterTo) {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try (Cursor cursor = adapter.getTimeBetweenReleaseAndPlayback(timeFilterFrom, timeFilterTo)) {
+            cursor.moveToFirst();
+            long result = Long.parseLong(cursor.getString(0));
+            adapter.close();
+            return result;
+        }
+    }
+
     /**
      * Returns data necessary for displaying the navigation drawer. This includes
      * the list of subscriptions, the number of items in the queue and the number of unread
