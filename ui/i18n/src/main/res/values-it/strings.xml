@@ -54,7 +54,7 @@
   <string name="home_welcome_title">Benvenuti su AntennaPod!</string>
   <string name="home_welcome_text">Non sei iscritto a nessun podcast. Apri il menù laterale per aggiungerne uno.</string>
   <string name="notification_permission_text">AntennaPod ha bisogno del tuo permesso per mostrarti le notifiche. Per impostazione predefinita, AntennaPod ti mostra notifiche solo quando stai scaricando qualcosa o quando qualcosa va storto.</string>
-  <string name="notification_permission_denied">Hai negato l\\'autorizzazione.</string>
+  <string name="notification_permission_denied">Hai negato l\'autorizzazione.</string>
   <string name="notification_permission_deny_warning">Se disabiliti le notifiche e qualcosa va storto, potresti non essere in grado di individuare la causa del problema.</string>
   <string name="deny_label">Nega</string>
   <string name="open_settings">Apri le impostazioni</string>
@@ -106,7 +106,7 @@
   <string name="chapter_duration">Durata: %1$s</string>
   <string name="description_label">Descrizione</string>
   <string name="shownotes_label">Note episodio</string>
-  <string name="shownotes_contentdescription">scorri verso l\\'alto per leggere le note dell\\'episodio</string>
+  <string name="shownotes_contentdescription">scorri verso l\'alto per leggere le note dell\'episodio</string>
   <string name="episodes_suffix">\u0020episodi</string>
   <string name="close_label">Chiudi</string>
   <string name="retry_label">Riprova</string>
@@ -196,7 +196,7 @@
   <string name="edit_tags">Modifica i tag</string>
   <string name="add_tag">Aggiungi tag</string>
   <string name="rename_tag_label">Rinomina tag</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">L\\'aggiornamento dei podcast da connessione dati mobile è disabilitato nelle impostazioni.\n\nVuoi aggiornare comunque?</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">L\'aggiornamento dei podcast da connessione dati mobile è disabilitato nelle impostazioni.\n\nVuoi aggiornare comunque?</string>
   <string name="confirm_mobile_feed_refresh_dialog_message_vpn">La tua app VPN finge di essere una rete mobile (connessione a consumo). L\'aggiornamento dei podcast su rete dati mobile è disabilitato nelle impostazioni.\n\nVuoi aggiornare comunque? Se vuoi che questo problema sia risolto, contatta i creatori della tua app VPN.</string>
   <!--actions on feeditems-->
   <string name="download_label">Download</string>
@@ -224,7 +224,7 @@
   <string name="marked_as_played_label">Segnato come riprodotto</string>
   <string name="marked_as_unplayed_label">Segnato come non riprodotto</string>
   <string name="mark_read_no_media_label">Segna come letto</string>
-  <string name="play_this_to_seek_position">Per saltare alla posizione devi riprodurre l\\'episodio</string>
+  <string name="play_this_to_seek_position">Per saltare alla posizione devi riprodurre l\'episodio</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">%d episodio segnato come riprodotto.</item>
     <item quantity="many">%d di episodi segnati come riprodotti.</item>
@@ -257,7 +257,7 @@
   <string name="add_to_favorite_label">Aggiungi ai preferiti</string>
   <string name="remove_from_favorite_label">Rimuovi dai preferiti</string>
   <string name="visit_website_label">Visita il sito</string>
-  <string name="skip_episode_label">Salta l\\'episodio</string>
+  <string name="skip_episode_label">Salta l\'episodio</string>
   <string name="reset_position">Azzera la posizione di riproduzione</string>
   <string name="no_items_selected">Nessun elemento selezionato</string>
   <string name="delete_local_feed_warning_body">Eliminare rimuove l\'episodio da AntennaPod ed elimina il file multimediale dallo spazio di archiviazione del tuo dispositivo. Non potrà essere scaricato di nuovo attraverso AntennaPod.</string>
@@ -274,19 +274,19 @@
   <string name="download_error_insufficient_space">Spazio libero nel dispositivo insufficiente.</string>
   <string name="download_error_http_data_error">Errore dei dati HTTP</string>
   <string name="download_error_error_unknown">Errore sconosciuto</string>
-  <string name="download_error_parser_exception">L\\'host del podcast ha trasmesso un feed non valido.</string>
+  <string name="download_error_parser_exception">L\'host del podcast ha trasmesso un feed non valido.</string>
   <string name="download_error_unsupported_type">Tipo di feed non supportato</string>
-  <string name="download_error_unsupported_type_html">L\\'host del podcast ha trasmesso un sito web, non un podcast.</string>
-  <string name="download_error_not_found">L\\'host del server non riesce a trovare il file. Potrebbe essere stato cancellato.</string>
+  <string name="download_error_unsupported_type_html">L\'host del podcast ha trasmesso un sito web, non un podcast.</string>
+  <string name="download_error_not_found">L\'host del server non riesce a trovare il file. Potrebbe essere stato cancellato.</string>
   <string name="download_error_connection_error">Errore di connessione</string>
   <string name="download_error_no_connection">Nessuna connessione di rete</string>
-  <string name="download_error_unknown_host">Impossibile trovare il server. Verifica che l\\'indirizzo sia digitato correttamente e la connessione sia funzionante.</string>
+  <string name="download_error_unknown_host">Impossibile trovare il server. Verifica che l\'indirizzo sia digitato correttamente e la connessione sia funzionante.</string>
   <string name="download_error_unauthorized">Errore di autenticazione. Assicurati che username e password siano corretti.</string>
   <string name="download_error_file_type_type">Errore del tipo di file</string>
-  <string name="download_error_forbidden">L\\'host del podcast ha rifiutato di rispondere.</string>
+  <string name="download_error_forbidden">L\'host del podcast ha rifiutato di rispondere.</string>
   <string name="download_canceled_msg">Download annullato</string>
   <string name="download_error_wrong_size">Connessione al server persa prima del completamento del download</string>
-  <string name="download_error_blocked">Il download è stato bloccato da un\\'altra app presente sul tuo dispositivo (per esempio una VPN o un ad blocker).</string>
+  <string name="download_error_blocked">Il download è stato bloccato da un\'altra app presente sul tuo dispositivo (per esempio una VPN o un ad blocker).</string>
   <string name="download_error_certificate">Impossibile stabilire una connessione sicura. Un\'altra app sul dispositivo (come una VPN o un ad blocker) ha impedito il download oppure qualcosa non ha funzionato con i certificati del server.</string>
   <string name="download_report_title">Download completato con un errore (o errori)</string>
   <string name="download_error_io_error">Errore IO</string>
@@ -306,7 +306,7 @@
   <string name="no_feed_url_podcast_found_by_search">Il podcast suggerito non ha un link RSS, AntennaPod ha trovato un podcast che potrebbe corrispondere</string>
   <string name="authentication_notification_title">Autenticazione richiesta</string>
   <string name="confirm_mobile_download_dialog_title">Conferma download su rete mobile</string>
-  <string name="confirm_mobile_download_dialog_message">Il download su rete mobile è disabilitato nelle impostazioni. AntennaPod può scaricare l\\'episodio più tardi, quando il Wi-Fi sarà disponibile.</string>
+  <string name="confirm_mobile_download_dialog_message">Il download su rete mobile è disabilitato nelle impostazioni. AntennaPod può scaricare l\'episodio più tardi, quando il Wi-Fi sarà disponibile.</string>
   <string name="confirm_mobile_download_dialog_message_vpn">La tua app VPN finge di essere una rete mobile (connessione a consumo). Il download su rete dati mobile è disabilitato nelle impostazioni. Se vuoi che questo problema sia risolto, contatta i creatori della tua app VPN.</string>
   <string name="confirm_mobile_download_dialog_download_later">Scarica più tardi</string>
   <string name="confirm_mobile_download_dialog_allow_this_time">Scarica comunque</string>
@@ -322,9 +322,9 @@
   <string name="playback_error_source">Impossibile accedere al file</string>
   <string name="playback_error_unknown">Errore sconosciuto</string>
   <string name="no_media_playing_label">Nessun elemento multimediale in riproduzione</string>
-  <string name="unknown_media_key">AntennaPod - Tasto dell\\'elemento multimediale sconosciuto: %1$d</string>
+  <string name="unknown_media_key">AntennaPod - Tasto dell\'elemento multimediale sconosciuto: %1$d</string>
   <string name="error_file_not_found">File non trovato</string>
-  <string name="no_media_label">L\\'oggetto non contiene un file multimediale</string>
+  <string name="no_media_label">L\'oggetto non contiene un file multimediale</string>
   <!--Queue operations-->
   <string name="lock_queue">Blocca la coda</string>
   <string name="queue_locked">Coda bloccata</string>
@@ -333,7 +333,7 @@
   <string name="checkbox_do_not_show_again">Non mostrare più</string>
   <string name="clear_queue_label">Svuota la coda</string>
   <string name="undo">Annulla</string>
-  <string name="move_to_top_label">Sposta all\\'inizio</string>
+  <string name="move_to_top_label">Sposta all\'inizio</string>
   <string name="move_to_bottom_label">Sposta alla fine</string>
   <string name="sort">Ordina</string>
   <string name="keep_sorted">Mantieni ordine</string>
@@ -388,19 +388,19 @@
   <string name="pref_unpauseOnHeadsetReconnect_sum">Riprendi la riproduzione quando le cuffie vengono ricollegate</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Riprende la riproduzione quando il Bluetooth si riconnette</string>
   <string name="pref_hardware_forward_button_title">Tasto Avanti</string>
-  <string name="pref_hardware_forward_button_summary">Personalizza l\\'azione del tasto Avanti</string>
+  <string name="pref_hardware_forward_button_summary">Personalizza l\'azione del tasto Avanti</string>
   <string name="pref_hardware_previous_button_title">Tasto Indietro</string>
-  <string name="pref_hardware_previous_button_summary">Personalizza l\\'azione del tasto Indietro</string>
+  <string name="pref_hardware_previous_button_summary">Personalizza l\'azione del tasto Indietro</string>
   <string name="button_action_fast_forward">Avanti veloce</string>
   <string name="button_action_rewind">Riavvolgi</string>
-  <string name="button_action_skip_episode">Salta l\\'episodio</string>
+  <string name="button_action_skip_episode">Salta l\'episodio</string>
   <string name="button_action_restart_episode">Riavvia episodio</string>
   <string name="pref_followQueue_sum">Passa al prossimo episodio in coda al termine della riproduzione</string>
-  <string name="pref_auto_delete_sum">Elimina l\\'episodio al termine della riproduzione</string>
+  <string name="pref_auto_delete_sum">Elimina l\'episodio al termine della riproduzione</string>
   <string name="pref_auto_delete_title">Elimina automaticamente</string>
   <string name="pref_auto_local_delete_title">Eliminazione automatica da cartelle locali</string>
   <string name="pref_auto_local_delete_sum">Includi le cartelle locali nella funzione di eliminazione automatica</string>
-  <string name="pref_auto_local_delete_dialog_body">Nota che per le cartelle locali questa funzione rimuoverà gli episodi da AntennaPod ed eliminerà i file multimediali dallo spazio di archiviazione del tuo dispositivo. Non potranno essere scaricati di nuovo attraverso AntennaPod. Sei sicuro di voler abilitare l\\'eliminazione automatica?</string>
+  <string name="pref_auto_local_delete_dialog_body">Nota che per le cartelle locali questa funzione rimuoverà gli episodi da AntennaPod ed eliminerà i file multimediali dallo spazio di archiviazione del tuo dispositivo. Non potranno essere scaricati di nuovo attraverso AntennaPod. Sei sicuro di voler abilitare l\'eliminazione automatica?</string>
   <string name="pref_smart_mark_as_played_sum">Contrassegna gli episodi come riprodotti anche se rimangono alcuni secondi da riprodurre</string>
   <string name="pref_smart_mark_as_played_title">Marcatura intelligente</string>
   <string name="pref_skip_keeps_episodes_sum">Mantiene gli episodi nella coda quando vengono saltati</string>
@@ -412,7 +412,7 @@
   <string name="downloads_pref">Download</string>
   <string name="downloads_pref_sum">Intervallo di aggiornamento, rete mobile, download ed eliminazione automatici</string>
   <string name="feed_refresh_title">Aggiorna i podcast</string>
-  <string name="feed_refresh_sum">Definisce l\\'intervallo di ricerca automatica dei nuovi episodi.</string>
+  <string name="feed_refresh_sum">Definisce l\'intervallo di ricerca automatica dei nuovi episodi.</string>
   <string name="feed_refresh_never">Mai</string>
   <string name="feed_every_hour">Ogni ora</string>
   <string name="feed_every_2_hours">Ogni 2 ore</string>
@@ -439,13 +439,13 @@
   <string name="pref_black_theme_title">Nero totale</string>
   <string name="pref_black_theme_message">Usa il nero come tema scuro</string>
   <string name="pref_tinted_theme_title">Colori dinamici</string>
-  <string name="pref_tinted_theme_message">Adatta i colori dell\\'app in base allo sfondo</string>
+  <string name="pref_tinted_theme_message">Adatta i colori dell\'app in base allo sfondo</string>
   <string name="pref_nav_drawer_items_title">Seleziona elementi del menù</string>
   <string name="pref_nav_drawer_items_sum">Modifica gli elementi che appaiono nel menù laterale</string>
   <string name="pref_nav_drawer_feed_order_title">Ordine delle iscrizioni</string>
-  <string name="pref_nav_drawer_feed_order_sum">Modifica l\\'ordine delle iscrizioni</string>
+  <string name="pref_nav_drawer_feed_order_sum">Modifica l\'ordine delle iscrizioni</string>
   <string name="pref_nav_drawer_feed_counter_title">Contatore delle iscrizioni</string>
-  <string name="pref_nav_drawer_feed_counter_sum">Cambia il criterio di calcolo del contatore delle iscrizioni. Influenza anche l\\'ordinamento quando è impostato su \\"Ordina per contatore\\".</string>
+  <string name="pref_nav_drawer_feed_counter_sum">Cambia il criterio di calcolo del contatore delle iscrizioni. Influenza anche l\'ordinamento quando è impostato su \\"Ordina per contatore\\".</string>
   <string name="pref_automatic_download_title">Download automatici</string>
   <string name="pref_automatic_download_sum">Configura il download automatico degli episodi</string>
   <string name="pref_autodl_wifi_filter_title">Abilita il filtro Wi-Fi</string>
@@ -455,7 +455,7 @@
   <string name="pref_episode_cache_title">Cache degli episodi</string>
   <string name="pref_episode_cache_summary">Numero di episodi scaricati memorizzabili sul dispositivo. I download automatici vengono interrotti se si raggiunge questo valore.</string>
   <string name="pref_episode_cover_title">Usa immagine episodio</string>
-  <string name="pref_episode_cover_summary">Usa l\\'immagine dell\'episodio quando disponibile. Se disattivato, l\\'app userà sempre l\\'immagine di copertina del podcast.</string>
+  <string name="pref_episode_cover_summary">Usa l\'immagine dell\'episodio quando disponibile. Se disattivato, l\'app userà sempre l\'immagine di copertina del podcast.</string>
   <string name="pref_show_remain_time_title">Mostra tempo residuo</string>
   <string name="pref_show_remain_time_summary">Mostra il tempo residuo degli episodi quando è selezionato. Se non selezionato, mostra la durata totale degli episodi.</string>
   <string name="pref_theme_title_automatic">Automatico</string>
@@ -487,8 +487,8 @@
   <string name="pref_enqueue_location_title">Posizione in coda</string>
   <string name="pref_enqueue_location_sum">Posizione nuovi episodi: %1$s</string>
   <string name="enqueue_location_back">Alla fine</string>
-  <string name="enqueue_location_front">All\\'inizio</string>
-  <string name="enqueue_location_after_current">Dopo l\\'episodio attuale</string>
+  <string name="enqueue_location_front">All\'inizio</string>
+  <string name="enqueue_location_after_current">Dopo l\'episodio attuale</string>
   <string name="enqueue_location_random">Casuale</string>
   <string name="pref_smart_mark_as_played_disabled">Disabilitato</string>
   <string name="documentation_support">Documentazione &amp; supporto</string>
@@ -508,7 +508,7 @@
   <string name="pref_default_page_sum">La schermata da aprire quando avvii AntennaPod</string>
   <string name="pref_back_button_opens_drawer">Il tasto Indietro apre il menù</string>
   <string name="pref_back_button_opens_drawer_summary">Premendo il tasto indietro nella pagina predefinita viene aperto il menù di navigazione</string>
-  <string name="remember_last_page">Riapri l\\'ultima pagina</string>
+  <string name="remember_last_page">Riapri l\'ultima pagina</string>
   <string name="pref_delete_removes_from_queue_title">Rimuovi dalla coda gli eliminati</string>
   <string name="pref_delete_removes_from_queue_sum">Rimuovi automaticamente un episodio dalla coda quando viene eliminato</string>
   <string name="pref_filter_feed_title">Filtro iscrizioni</string>
@@ -546,8 +546,8 @@
   <string name="search_online">Cerca online</string>
   <!--Synchronization-->
   <string name="sync_status_started">Sincronizzazione avviata</string>
-  <string name="sync_status_episodes_upload">Caricamento modifiche dell\\'episodio...</string>
-  <string name="sync_status_episodes_download">Download modifiche dell\\'episodio...</string>
+  <string name="sync_status_episodes_upload">Caricamento modifiche dell\'episodio...</string>
+  <string name="sync_status_episodes_download">Download modifiche dell\'episodio...</string>
   <string name="sync_status_upload_played">Invio stato della riproduzione...</string>
   <string name="sync_status_subscriptions">Sincronizzazione iscrizioni...</string>
   <string name="sync_status_wait_for_downloads">In attesa che i download vengano completati...</string>
@@ -559,8 +559,8 @@
   <string name="opml">OPML</string>
   <string name="html">HTML</string>
   <string name="html_export_summary">Mostra le tue iscrizioni ad un amico</string>
-  <string name="opml_export_summary">Sposta le tue iscrizioni in un\\'altra app per i podcast</string>
-  <string name="opml_import_summary">Importa le tue iscrizioni da un\\'altra app per i podcast</string>
+  <string name="opml_export_summary">Sposta le tue iscrizioni in un\'altra app per i podcast</string>
+  <string name="opml_import_summary">Importa le tue iscrizioni da un\'altra app per i podcast</string>
   <string name="database_export_summary">Sposta le iscrizioni, gli episodi ascoltati e la coda su AntennaPod di un altro dispositivo</string>
   <string name="database_import_summary">Importa il database di AntennaPod da un altro dispositivo</string>
   <string name="opml_import_label">Importa da OPML</string>
@@ -573,7 +573,7 @@
   <string name="html_export_label">Esporta in HTML</string>
   <string name="database_export_label">Esporta database</string>
   <string name="database_import_label">Importa database</string>
-  <string name="database_import_warning">L\\'importazione di un database sostituirà tutte le iscrizioni attuali e la cronologia di riproduzione. Dovresti eseguire un backup del tuo database attuale. Vuoi proseguire?</string>
+  <string name="database_import_warning">L\'importazione di un database sostituirà tutte le iscrizioni attuali e la cronologia di riproduzione. Dovresti eseguire un backup del tuo database attuale. Vuoi proseguire?</string>
   <string name="please_wait">Attendi...</string>
   <string name="export_error_label">Errore di esportazione</string>
   <string name="export_success_title">Esportazione eseguita</string>
@@ -624,11 +624,11 @@
   <string name="synchronization_summary_unchoosen">Puoi scegliere tra diversi fornitori con cui sincronizzare le iscrizioni e lo stato di riproduzione degli episodi</string>
   <string name="dialog_choose_sync_service_title">Scegli provider di sincronizzazione</string>
   <string name="gpodnet_description">Gpodder.net è un servizio di sincronizzazione podcast che puoi installare sul tuo server. Gpodder.net è indipendente dal progetto AntennaPod.</string>
-  <string name="synchronization_summary_nextcloud">Gpoddersync è un\\'app open source per Nextcloud che puoi installare facilmente sul tuo server. L\\'app è indipendente dal progetto AntennaPod.</string>
-  <string name="synchronization_host_explanation">Puoi scegliere un server personale per la sincronizzazione. Quando hai  trovato il server più adatto inserisci qui l\\'indirizzo.</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync è un\'app open source per Nextcloud che puoi installare facilmente sul tuo server. L\'app è indipendente dal progetto AntennaPod.</string>
+  <string name="synchronization_host_explanation">Puoi scegliere un server personale per la sincronizzazione. Quando hai  trovato il server più adatto inserisci qui l\'indirizzo.</string>
   <string name="synchronization_host_label">Indirizzo server</string>
-  <string name="proceed_to_login_butLabel">Effettua l\\'accesso</string>
-  <string name="synchronization_nextcloud_authenticate_browser">Permetti l\\'accesso dalla finestra del browser aperta e ritorna ad AntennaPod.</string>
+  <string name="proceed_to_login_butLabel">Effettua l\'accesso</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Permetti l\'accesso dalla finestra del browser aperta e ritorna ad AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Login</string>
   <string name="synchronization_credentials_explanation">Inserisci le tue credenziali di accesso al server di sincronizzazione.</string>
   <string name="gpodnetauth_encryption_warning">Dati e password non cifrati!</string>
@@ -645,11 +645,11 @@
   <string name="pref_gpodnet_setlogin_information_title">Cambia le informazioni di login</string>
   <string name="pref_gpodnet_setlogin_information_sum">Cambia le informazioni di login per il tuo account gpodder.net.</string>
   <string name="synchronization_sync_changes_title">Sincronizza ora</string>
-  <string name="synchronization_sync_summary">Sincronizza l\\'iscrizione e le modifiche dello stato dell\\'episodio</string>
+  <string name="synchronization_sync_summary">Sincronizza l\'iscrizione e le modifiche dello stato dell\'episodio</string>
   <string name="synchronization_full_sync_title">Forza sincronizzazione completa</string>
-  <string name="synchronization_force_sync_summary">Risincronizza tutte le iscrizioni e gli stati dell\\'episodio</string>
+  <string name="synchronization_force_sync_summary">Risincronizza tutte le iscrizioni e gli stati dell\'episodio</string>
   <string name="synchronization_logout">Logout</string>
-  <string name="synchronization_login_status"><![CDATA[Accesso come <i>%1$s</i> su <i>%2$s</i>. <br/><br/>Potrai selezionare un\\'altra sincronizzazione una volta effettuato il logout]]></string>
+  <string name="synchronization_login_status"><![CDATA[Accesso come <i>%1$s</i> su <i>%2$s</i>. <br/><br/>Potrai selezionare un\'altra sincronizzazione una volta effettuato il logout]]></string>
   <string name="pref_synchronization_logout_toast">Logout eseguito con successo</string>
   <string name="gpodnetsync_error_title">errore di sincronizzazione di gpodder.net</string>
   <string name="gpodnetsync_error_descr">Rilevato un errore in fase di sincronizzazione:\u0020</string>
@@ -660,7 +660,7 @@
   <string name="choose_data_directory">Scegli la cartella per i dati</string>
   <string name="choose_data_directory_message">Scegli dove salvare la tua cartella dati. AntennaPod creerà le sottocartelle appropriate.</string>
   <string name="choose_data_directory_available_space">%1$s di %2$s liberi</string>
-  <string name="pref_pausePlaybackForFocusLoss_sum">Quando un\\'altra app emette un suono, sospendi la riproduzione invece di abbassare il volume</string>
+  <string name="pref_pausePlaybackForFocusLoss_sum">Quando un\'altra app emette un suono, sospendi la riproduzione invece di abbassare il volume</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pausa su interruzione</string>
   <!--Online feed view-->
   <string name="subscribe_label">Iscriviti</string>
@@ -692,7 +692,7 @@
   <string name="authentication_label">Autenticazione</string>
   <string name="authentication_descr">Cambia il nome utente e la password per questo podcast e i suoi episodi.</string>
   <string name="feed_tags_label">Tag</string>
-  <string name="feed_tags_summary">Cambia i tag di questo podcast per agevolare l\\'organizzazione delle tue iscrizioni</string>
+  <string name="feed_tags_summary">Cambia i tag di questo podcast per agevolare l\'organizzazione delle tue iscrizioni</string>
   <string name="feed_folders_include_root">Mostra il podcast nella lista principale</string>
   <string name="multi_feed_common_tags_info">{fa-info-circle} Vengono mostrati solo i tag comuni alle iscrizioni selezionate. Gli altri tag non vengono modificati.</string>
   <string name="auto_download_settings_label">Impostazioni download automatico</string>
@@ -703,7 +703,7 @@
   <string name="include_terms">Includi solo gli episodi che contengono uno dei termini qui sotto</string>
   <string name="exclude_episodes_shorter_than">Escludi episodi più brevi di</string>
   <string name="keep_updated">Mantieni aggiornato</string>
-  <string name="keep_updated_summary">Includi questo podcast nell\\'(auto-)aggiornamento generale</string>
+  <string name="keep_updated_summary">Includi questo podcast nell\'(auto-)aggiornamento generale</string>
   <string name="auto_download_disabled_globally">Il download automatico è disabilitato nelle impostazioni generali.</string>
   <string name="statistics_time_played">Tempo di riproduzione:</string>
   <string name="statistics_total_duration">Durata totale (stimata):</string>
@@ -735,7 +735,7 @@
   <string name="add_local_folder">Aggiungi cartella locale</string>
   <string name="local_folder">Cartella locale</string>
   <string name="reconnect_local_folder">Riconnetti cartella locale</string>
-  <string name="reconnect_local_folder_warning">In caso di rifiuto dell\'autorizzazione, puoi usare questa opzione per riconnetterti alla stessa cartella. Non selezionare un\\'altra cartella.</string>
+  <string name="reconnect_local_folder_warning">In caso di rifiuto dell\'autorizzazione, puoi usare questa opzione per riconnetterti alla stessa cartella. Non selezionare un\'altra cartella.</string>
   <string name="local_feed_description">Questo podcast virtuale è stato generato aggiungendo una cartella locale ad AntennaPod</string>
   <string name="unable_to_start_system_file_manager">Impossibile avviare il gestore file di sistema</string>
   <string name="filter">Filtra</string>
@@ -789,8 +789,8 @@
   <string name="proxy_checking">Controllo in corso...</string>
   <string name="proxy_test_successful">Test avvenuto con successo</string>
   <string name="proxy_test_failed">Test fallito</string>
-  <string name="proxy_host_empty_error">L\\'host non può essere vuoto</string>
-  <string name="proxy_host_invalid_error">L\\'host non è un IP o un dominio valido</string>
+  <string name="proxy_host_empty_error">L\'host non può essere vuoto</string>
+  <string name="proxy_host_invalid_error">L\'host non è un IP o un dominio valido</string>
   <string name="proxy_port_invalid_error">Porta non valida</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Numero di colonne</string>
