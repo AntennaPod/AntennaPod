@@ -27,6 +27,8 @@
     <string name="years_statistics_label">Years</string>
     <string name="notification_pref_fragment">Notifications</string>
     <string name="recently_played_episodes">Recently played episodes</string>
+    <string name="antennapod_echo" translatable="false">AntennaPod Echo</string>
+    <string name="antennapod_echo_year" translatable="false">AntennaPod Echo %d</string>
 
     <!-- Google Assistant -->
     <string name="app_action_not_found">\"%1$s\" not found</string>
@@ -619,6 +621,10 @@
     <plurals name="time_hours_quantified">
         <item quantity="one">1 hour</item>
         <item quantity="other">%d hours</item>
+    </plurals>
+    <plurals name="time_days_quantified">
+        <item quantity="one">1 day</item>
+        <item quantity="other">%d days</item>
     </plurals>
     <string name="auto_enable_label">Automatically activate the sleep timer when pressing play</string>
     <string name="auto_enable_label_with_times">Automatically activate the sleep timer when pressing play between %s and %s</string>
