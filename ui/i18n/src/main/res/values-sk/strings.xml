@@ -628,6 +628,12 @@
     <item quantity="many">%d hodín</item>
     <item quantity="other">%d hodín</item>
   </plurals>
+  <plurals name="time_days_quantified">
+    <item quantity="one">1 deň</item>
+    <item quantity="few">%d dni</item>
+    <item quantity="many">%d dní</item>
+    <item quantity="other">%d dní</item>
+  </plurals>
   <string name="auto_enable_label">Po stlačení tlačidla prehrávania automaticky aktivovať časovač vypnutia</string>
   <string name="auto_enable_label_with_times">Po stlačení tlačidla prehrávania medzi %s a %s automaticky aktivovať časovač vypnutia</string>
   <string name="auto_enable_change_times">Zmeniť časový rozsah</string>

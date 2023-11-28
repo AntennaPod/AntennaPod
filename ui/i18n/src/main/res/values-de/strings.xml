@@ -17,7 +17,7 @@
   <string name="subscriptions_label">Abonnements</string>
   <string name="subscriptions_list_label">Abonnement-Übersicht</string>
   <string name="cancel_download_label">Download abbrechen</string>
-  <string name="playback_history_label">Zuletzt gespielt</string>
+  <string name="playback_history_label">Zuletzt abgespielt</string>
   <string name="episode_cache_full_title">Episodenspeicher voll</string>
   <string name="episode_cache_full_message">Der Episodenspeicher ist voll. Du kannst die Größe des Episodenspeichers in den Einstellungen erhöhen.</string>
   <string name="years_statistics_label">Jahre</string>
@@ -53,7 +53,7 @@
   <string name="home_downloads_title">Verwalte Downloads</string>
   <string name="home_welcome_title">Willkommen bei AntennaPod!</string>
   <string name="home_welcome_text">Du hast noch keinen Podcast abonniert. Öffne das Seitenmenü, um einen Podcast hinzuzufügen.</string>
-  <string name="notification_permission_text">AntennaPod benötigt die Berechtigung, um Benachrichtigungen anzuzeigen. Standardmäßig zeigt AntennaPod nur Benachrichtigungen an, wenn etwas heruntergeladen wird oder wenn etwas schief läuft.</string>
+  <string name="notification_permission_text">AntennaPod benötigt deine Erlaubnis, um Benachrichtigungen anzuzeigen. Standardmäßig zeigt AntennaPod nur Benachrichtigungen an, wenn etwas heruntergeladen wird oder wenn etwas schief läuft.</string>
   <string name="notification_permission_denied">Du hast die Berechtigung abgelehnt.</string>
   <string name="notification_permission_deny_warning">Wenn die Benachrichtigungen deaktiviert werden und etwas schief geht, kannst du möglicherweise nicht herausfinden, warum dies passiert ist.</string>
   <string name="deny_label">Ablehnen</string>
@@ -262,7 +262,7 @@
   <string name="download_error_error_unknown">Unbekannter Fehler</string>
   <string name="download_error_parser_exception">Der vom Podcast-Server übermittelte Feed ist defekt.</string>
   <string name="download_error_unsupported_type">Nicht unterstützter Feed-Typ</string>
-  <string name="download_error_unsupported_type_html">Der Podcast-Server hat eine Webseite statt eines Podcasts gesendet.</string>
+  <string name="download_error_unsupported_type_html">Der Podcast-Server hat eine Webseite anstatt eines Podcasts gesendet.</string>
   <string name="download_error_not_found">Datei auf Podcast-Server nicht vorhanden. Sie könnte gelöscht worden sein.</string>
   <string name="download_error_connection_error">Verbindungsfehler</string>
   <string name="download_error_no_connection">Keine Netzwerkverbindung</string>
@@ -337,7 +337,7 @@
   <!--Empty list labels-->
   <string name="no_items_header_label">Leere Warteschlange</string>
   <string name="no_items_label">Du kannst Episoden hinzufügen, indem du sie herunterlädst oder sie lange antippst und \"Zur Warteschlange hinzufügen\" auswählst.</string>
-  <string name="no_shownotes_label">Episode hat keine Shownotizen.</string>
+  <string name="no_shownotes_label">Episode hat keine Shownotes.</string>
   <string name="no_comp_downloads_head_label">Keine heruntergeladenen Episoden</string>
   <string name="no_comp_downloads_label">Du kannst Episoden auf der Podcast-Seite herunterladen.</string>
   <string name="no_log_downloads_head_label">Keine Downloadhistorie</string>
@@ -410,8 +410,8 @@
   <string name="pref_pauseOnHeadsetDisconnect_title">Kopfhörer oder Bluetooth getrennt</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Kopfhörer wieder eingesteckt</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth wieder verbunden</string>
-  <string name="pref_stream_over_download_title">Streamen bevorzugen</string>
-  <string name="pref_stream_over_download_sum">Stream-Knopf anstatt Download-Knopf in Listen anzeigen</string>
+  <string name="pref_stream_over_download_title">Streaming bevorzugen</string>
+  <string name="pref_stream_over_download_sum">Stream-Button anstatt Download-Button in Listen anzeigen</string>
   <string name="pref_mobileUpdate_title">Mobile Aktualisierungen</string>
   <string name="pref_mobileUpdate_sum">Auswählen, was über mobile Daten erlaubt sein soll</string>
   <string name="pref_mobileUpdate_refresh">Aktualisierung der Podcasts</string>
@@ -424,7 +424,7 @@
   <string name="pref_black_theme_title">Komplett schwarz</string>
   <string name="pref_black_theme_message">Schwarz für das dunkle Design verwenden</string>
   <string name="pref_tinted_theme_title">Dynamische Farben</string>
-  <string name="pref_tinted_theme_message">App-Farben basierend auf dem Hintergrundbild anpassen.</string>
+  <string name="pref_tinted_theme_message">App-Farben basierend auf dem Hintergrundbild anpassen</string>
   <string name="pref_nav_drawer_items_title">Seitenleiste ändern</string>
   <string name="pref_nav_drawer_items_sum">Die in der Seitenleiste angezeigten Einträge ändern</string>
   <string name="pref_nav_drawer_feed_order_title">Reihenfolge der Abonnements einstellen</string>
@@ -462,7 +462,7 @@
   <string name="pref_rewind">Rückspulzeit</string>
   <string name="pref_rewind_sum">Wie viele Sekunden zurückgespult wird, wenn die entsprechende Hardwaretaste gedrückt wird</string>
   <string name="pref_expandNotify_title">Hohe Benachrichtigungspriorität</string>
-  <string name="pref_expandNotify_sum">Dies erweitert normalerweise die Benachrichtigung und zeigt so die Wiedergabetasten an.</string>
+  <string name="pref_expandNotify_sum">Dies erweitert normalerweise die Benachrichtigung und zeigt so die Wiedergabetasten an</string>
   <string name="pref_persistNotify_title">Persistente Wiedergabesteuerung</string>
   <string name="pref_persistNotify_sum">Bedienelemente in der Benachrichtigungsleiste und auf dem Sperrbildschirm anzeigen, während die Wiedergabe pausiert ist</string>
   <string name="pref_compact_notification_buttons_title">Kompakte Benachrichtigungstasten</string>
@@ -483,7 +483,7 @@
   <string name="copy_to_clipboard">In die Zwischenablage kopieren</string>
   <string name="copied_to_clipboard">In die Zwischenablage kopiert</string>
   <string name="pref_proxy_title">Proxy</string>
-  <string name="pref_proxy_sum">Richte einen Netzwerk-Proxy ein</string>
+  <string name="pref_proxy_sum">Einen Netzwerk-Proxy einrichten</string>
   <string name="pref_no_browser_found">Kein Browser gefunden.</string>
   <string name="pref_enqueue_downloaded_title">Downloads einreihen</string>
   <string name="pref_enqueue_downloaded_summary">Heruntergeladene Episoden zur Warteschlange hinzufügen</string>
@@ -543,10 +543,10 @@
   <string name="database">Datenbank</string>
   <string name="opml">OPML</string>
   <string name="html">HTML</string>
-  <string name="html_export_summary">Abonnements mit deinen Freunden teilen</string>
+  <string name="html_export_summary">Deine Abonnements mit Freunden teilen</string>
   <string name="opml_export_summary">Deine Abonnements auf eine andere Podcast-App übertragen</string>
   <string name="opml_import_summary">Deine Abonnements aus einer anderen Podcast-App importieren</string>
-  <string name="database_export_summary">Deine Abonnements, gehörte Episoden und die Warteschlange auf AntennaPod auf einem anderen Gerät übertragen</string>
+  <string name="database_export_summary">Deine Abonnements, angehörten Episoden und die Warteschlange zu AntennaPod auf einem anderen Gerät übertragen</string>
   <string name="database_import_summary">AntennaPod-Datenbank von einem anderen Gerät importieren</string>
   <string name="opml_import_label">OPML importieren</string>
   <string name="opml_add_podcast_label">Podcast-Liste importieren (OPML)</string>
@@ -564,7 +564,7 @@
   <string name="export_success_title">Export erfolgreich</string>
   <string name="opml_import_ask_read_permission">Zugriff auf externen Speicher wird benötigt, um die OPML-Datei zu lesen</string>
   <string name="successful_import_label">Import erfolgreich</string>
-  <string name="import_ok">Bitte drücke OK, um AntennaPod neu zu starten.</string>
+  <string name="import_ok">Bitte OK drücken, um AntennaPod neu zu starten</string>
   <string name="import_no_downgrade">Diese Datenbank wurde mit einer neueren Version von AntennaPod exportiert. Deine im Moment installierte Version kann die Datei leider nicht bearbeiten.</string>
   <string name="favorites_export_label">Favoriten exportieren</string>
   <string name="favorites_export_summary">Favoriten in einer Datei speichern</string>
@@ -591,6 +591,10 @@
   <plurals name="time_hours_quantified">
     <item quantity="one">1 Stunde</item>
     <item quantity="other">%d Stunden</item>
+  </plurals>
+  <plurals name="time_days_quantified">
+    <item quantity="one">1 Tag</item>
+    <item quantity="other">%d Tage</item>
   </plurals>
   <string name="auto_enable_label">Schlummerfunktion automatisch aktivieren, wenn auf Play gedrückt wird</string>
   <string name="auto_enable_label_with_times">Schlummerfunktion automatisch aktivieren, wenn zwischen %s und %s auf Play gedrückt wird</string>
@@ -637,7 +641,7 @@
   <string name="choose_data_directory">Datenordner auswählen</string>
   <string name="choose_data_directory_message">Bitte wähle das Basisverzeichnis deines Datenordners aus. AntennaPod erstellt automatisch die richtigen Unterverzeichnisse.</string>
   <string name="choose_data_directory_available_space">%1$s von %2$s frei</string>
-  <string name="pref_pausePlaybackForFocusLoss_sum">Wiedergabe pausieren, statt die Lautstärke zu reduzieren, wenn eine andere Anwendung Töne abspielt</string>
+  <string name="pref_pausePlaybackForFocusLoss_sum">Wiedergabe pausieren, anstatt die Lautstärke zu reduzieren, wenn eine andere Anwendung Töne abspielt</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Bei Unterbrechungen pausieren</string>
   <!--Online feed view-->
   <string name="subscribe_label">Abonnieren</string>
@@ -779,7 +783,7 @@
   <string name="notification_channel_downloading">Herunterladen</string>
   <string name="notification_channel_downloading_description">Wird beim Herunterladen angezeigt.</string>
   <string name="notification_channel_playing">Jetzt spielt</string>
-  <string name="notification_channel_playing_description">Erlaubt es, die Wiedergabe zu steuern. Dies ist die Hauptbenachrichtigung, die du siehst, während ein Podcast abgespielt wird.</string>
+  <string name="notification_channel_playing_description">Ermöglicht es, die Wiedergabe zu steuern. Dies ist die Hauptbenachrichtigung, die du siehst, während ein Podcast abgespielt wird.</string>
   <string name="notification_channel_download_error">Download fehlgeschlagen</string>
   <string name="notification_channel_download_error_description">Wird angezeigt, wenn der Download oder die Feed-Aktualisierung fehlschlägt.</string>
   <string name="notification_channel_sync_error">Synchronisation fehlgeschlagen</string>
@@ -792,8 +796,8 @@
   <string name="widget_opacity">Deckkraft</string>
   <!--On-Demand configuration-->
   <string name="on_demand_config_setting_changed">Einstellung erfolgreich aktualisiert.</string>
-  <string name="on_demand_config_stream_text">Es sieht so aus, als würdest du viel streamen. Möchtest du in Listen den Streamen-Knopf anzeigen?</string>
-  <string name="on_demand_config_download_text">Es sieht so aus, als würdest du viel herunterladen. Möchtest du in Listen den Download-Knopf anzeigen?</string>
+  <string name="on_demand_config_stream_text">Es sieht so aus, als würdest du viel streamen. Möchtest du in Listen den Streamen-Button anzeigen?</string>
+  <string name="on_demand_config_download_text">Es sieht so aus, als würdest du viel herunterladen. Möchtest du in Listen den Download-Button anzeigen?</string>
   <string name="shortcut_subscription_label">Abonnement-Verknüpfung</string>
   <string name="shortcut_select_subscription">Abonnement auswählen</string>
   <string name="add_shortcut">Verknüpfung hinzufügen</string>

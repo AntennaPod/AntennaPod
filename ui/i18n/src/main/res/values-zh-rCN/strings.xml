@@ -575,6 +575,9 @@
   <plurals name="time_hours_quantified">
     <item quantity="other">%d 小时</item>
   </plurals>
+  <plurals name="time_days_quantified">
+    <item quantity="other">%d 天</item>
+  </plurals>
   <string name="auto_enable_label">按下播放时自动激活睡眠定时器</string>
   <string name="auto_enable_label_with_times">在 %s 和 %s间按下播放时自动激活睡眠定时器</string>
   <string name="auto_enable_change_times">更改时间范围</string>

@@ -610,6 +610,11 @@
     <item quantity="many">%d horas</item>
     <item quantity="other">%d horas</item>
   </plurals>
+  <plurals name="time_days_quantified">
+    <item quantity="one">1 día</item>
+    <item quantity="many">%d días</item>
+    <item quantity="other">%d días</item>
+  </plurals>
   <string name="auto_enable_label">Activar el temporizador de sueño automáticamente al pulsar play</string>
   <string name="auto_enable_label_with_times">Activar el temporizador de sueño automáticamente al pulsar el botón de play  entre %s y %s</string>
   <string name="auto_enable_change_times">Cambiar rango de tiempo</string>

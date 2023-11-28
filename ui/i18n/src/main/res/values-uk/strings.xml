@@ -73,7 +73,7 @@
   <string name="drawer_feed_counter_unplayed">Кількість непрослуханих епізодів</string>
   <string name="drawer_feed_counter_downloaded">Кількість завантажених епізодів</string>
   <string name="drawer_feed_counter_downloaded_unplayed">Кількість завантажених але не прослуханих епізодів</string>
-  <string name="drawer_feed_counter_none">Жодних</string>
+  <string name="drawer_feed_counter_none">Немає</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">Сумісних програм не знайдено</string>
   <string name="export_logs_menu_title">Експорт детальних журналів</string>
@@ -105,7 +105,7 @@
   <string name="no_chapters_label">Немає розділів</string>
   <string name="chapter_duration">Тривалість: %1$s</string>
   <string name="description_label">Опис</string>
-  <string name="shownotes_label">Анотація</string>
+  <string name="shownotes_label">Примітки</string>
   <string name="shownotes_contentdescription">проведіть пальцем угору, щоб прочитати примітки</string>
   <string name="episodes_suffix">\u0020епізодів</string>
   <string name="close_label">Закрити</string>
@@ -181,10 +181,10 @@
   <string name="share_label">Поділитися</string>
   <string name="share_file_label">Поділитися файлом</string>
   <string name="share_rss_address_label">Адреса RSS:</string>
-  <string name="feed_delete_confirmation_msg">Будь ласка, підтвердіть, що ви хочете видалити подкаст \"%1$s\", ВСІ його епізоди (включно із завантаженими) та його статистику.</string>
-  <string name="feed_delete_confirmation_msg_batch">Будь ласка, підтвердіть, що ви хочете видалити вибрані подкасти, ВСІ їх епізоди (включно із завантаженими) та їх статистику.</string>
-  <string name="feed_delete_confirmation_local_msg">Будь ласка, підтвердіть, що ви хочете видалити подкаст \"%1$s\" та його статистику. Файли в теці локального джерела не будуть видалені.</string>
-  <string name="feed_remover_msg">Видалення подкасту</string>
+  <string name="feed_delete_confirmation_msg">Будь ласка, підтвердьте, що ви хочете видалити подкаст \"%1$s\", а також УСІ його епізоди (разом із завантаженими) і статистику.</string>
+  <string name="feed_delete_confirmation_msg_batch">Будь ласка, підтвердьте, що ви хочете видалити вибрані подкасти, а також УСІ їхні епізоди (разом із завантаженими) і статистику.</string>
+  <string name="feed_delete_confirmation_local_msg">Будь ласка, підтвердьте, що ви хочете видалити подкаст \"%1$s\" і його статистику. Файли в теці локального джерела не будуть видалені.</string>
+  <string name="feed_remover_msg">Видаляємо подкаст</string>
   <string name="load_complete_feed">Оновити весь подкаст</string>
   <string name="multi_select">Мультивибір</string>
   <string name="select_all_above">Вибрати все вище</string>
@@ -218,7 +218,7 @@
   <string name="stream_label">Прослухати без завантаження</string>
   <string name="delete_label">Видалити</string>
   <string name="delete_failed">Не вдається видалити файл. Перезавантаження пристрою може допомогти.</string>
-  <string name="delete_local_failed">Не вдалося видалити файл. Спробуйте перепідключити локальну теку з екрана інформації про подкаст.</string>
+  <string name="delete_local_failed">Не вдалося видалити файл. Спробуйте перепід\'єднати локальну теку з екрана інформації про подкаст.</string>
   <string name="delete_episode_label">Видалити епізод</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 завантажений епізод видалено.</item>
@@ -229,7 +229,7 @@
   <string name="remove_inbox_label">Вилучити з вхідних</string>
   <string name="removed_inbox_label">Вилучено з вхідних</string>
   <string name="mark_read_label">Позначити як відтворений</string>
-  <string name="toggle_played_label">Переключити стан відтворення</string>
+  <string name="toggle_played_label">Перемикнути стан прослуханості</string>
   <string name="marked_as_played_label">Позначено як відтворений</string>
   <string name="marked_as_unplayed_label">Позначено як невідтворений</string>
   <string name="mark_read_no_media_label">Позначити як прочитане</string>
@@ -273,7 +273,7 @@
   <string name="visit_website_label">Відвідати сайт</string>
   <string name="skip_episode_label">Пропустити епізод</string>
   <string name="reset_position">Скинути позицію відтворення</string>
-  <string name="no_items_selected">Не вибрано жодного елемента</string>
+  <string name="no_items_selected">Не вибрано жодний елемент</string>
   <string name="delete_local_feed_warning_body">Видалення видаляє епізод з AntennaPod і видаляє медіафайл зі сховища вашого пристрою. Його не можна буде знову завантажити через AntennaPod.</string>
   <!--Download messages and labels-->
   <string name="download_successful">успішно</string>
@@ -318,7 +318,7 @@
   <string name="download_type_feed">Канал</string>
   <string name="download_type_media">Файл з медіа</string>
   <string name="null_value_podcast_error">Не надано подкаст для перегляду.</string>
-  <string name="no_feed_url_podcast_found_by_search">Запропонований подкаст не мав RSS-посилання, AntennaPod знайшов схожий подкаст</string>
+  <string name="no_feed_url_podcast_found_by_search">Запропонований подкаст не мав посилання на RSS-стрічку, але AntennaPod вдалося знайти схожий</string>
   <string name="authentication_notification_title">Потрібна автентифікація</string>
   <string name="confirm_mobile_download_dialog_title">Підтвердження завантаження через мобільну мережу</string>
   <string name="confirm_mobile_download_dialog_message">Завантаження через мобільний зв\'язок вимкнено в налаштуваннях. AntennaPod може завантажити епізод пізніше автоматично, коли з\'явиться Wi-Fi.</string>
@@ -628,6 +628,12 @@
     <item quantity="many">%d годин</item>
     <item quantity="other">%d годин</item>
   </plurals>
+  <plurals name="time_days_quantified">
+    <item quantity="one">1 день</item>
+    <item quantity="few">%d дні</item>
+    <item quantity="many">%d днів</item>
+    <item quantity="other">%d днів</item>
+  </plurals>
   <string name="auto_enable_label">Автоматично активувати таймер сну при натисканні кнопки відтворення</string>
   <string name="auto_enable_label_with_times">Автоматично активувати таймер сну при натисканні на кнопку відтворення в проміжок часу між %s та %s</string>
   <string name="auto_enable_change_times">Змінити проміжок часу</string>
@@ -730,24 +736,24 @@
   <string name="sp_apps_importing_feeds_msg">Імпорт подкастів з інших програм...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Шукати подкаст...</string>
-  <string name="search_itunes_label">Пошук серед подкастів Apple</string>
-  <string name="search_podcastindex_label">Пошук в Індексі Подкастів, podcastindex.org</string>
-  <string name="search_fyyd_label">Пошук в Fyyd</string>
+  <string name="search_itunes_label">Шукати на Apple Podcasts</string>
+  <string name="search_podcastindex_label">Шукати на Podcast Index</string>
+  <string name="search_fyyd_label">Шукати на Fyyd</string>
   <string name="gpodnet_search_hint">Пошук на gpodder.net</string>
   <string name="advanced">Розширені можливості</string>
-  <string name="add_podcast_by_url">Додати подкаст за RSS адресою</string>
+  <string name="add_podcast_by_url">Додати подкаст за адресою RSS-стрічки</string>
   <string name="discover">Знайдіть канали</string>
   <string name="discover_hide">Сховати</string>
   <string name="discover_is_hidden">Ви вибрали, щоб приховати пропозиції.</string>
   <string name="discover_more">більше »</string>
-  <string name="discover_powered_by_itunes">Рекомендації від Apple Podcasts</string>
+  <string name="discover_powered_by_itunes">Рекомендації Apple Podcasts</string>
   <string name="discover_confirm">Показати рекомендації</string>
   <string name="search_powered_by">Результати за %1$s</string>
   <string name="select_country">Обрати країну</string>
   <!--Local feeds-->
   <string name="add_local_folder">Додати локальну папку</string>
   <string name="local_folder">Локальна папка</string>
-  <string name="reconnect_local_folder">Перепідключити локальну папку</string>
+  <string name="reconnect_local_folder">Перепід\'єднати локальну папку</string>
   <string name="reconnect_local_folder_warning">У разі відмови у дозволі ви можете використовувати це для повторного підключення до тієї ж папки. Не вибирайте іншу папку.</string>
   <string name="local_feed_description">Цей віртуальний подкаст був створений шляхом додавання папки до AntennaPod.</string>
   <string name="unable_to_start_system_file_manager">Не запускається системний файловий менеджер</string>
@@ -773,12 +779,12 @@
   <string name="sort_duration_long_short">Тривалість (Коротка - Довга)</string>
   <string name="sort_filename_a_z">Назва файлу (A \u2192 Z)</string>
   <string name="sort_filename_z_a">Назва файлу (Z \u2192 A)</string>
-  <string name="sort_a_z">A - Z</string>
-  <string name="sort_z_a">Z - A</string>
-  <string name="sort_new_old">Нове - Старе</string>
-  <string name="sort_old_new">Старе - Нове</string>
-  <string name="sort_short_long">Коротка - Довга</string>
-  <string name="sort_long_short">Довга - Коротка</string>
+  <string name="sort_a_z">A \u2192 Z</string>
+  <string name="sort_z_a">Z \u2192 A</string>
+  <string name="sort_new_old">Нове \u2192 Старе</string>
+  <string name="sort_old_new">Старе \u2192 Нове</string>
+  <string name="sort_short_long">Коротка \u2192 Довга</string>
+  <string name="sort_long_short">Довга \u2192 Коротка</string>
   <string name="sort_small_large">Маленькі \u2192 Великі</string>
   <string name="sort_large_small">Великі \u2192 Маленькі</string>
   <!--Share episode dialog-->
@@ -799,11 +805,11 @@
   <string name="port_label">Порт</string>
   <string name="optional_hint">(Необов\'язково)</string>
   <string name="proxy_test_label">Тест</string>
-  <string name="proxy_checking">Перевіряється...</string>
+  <string name="proxy_checking">Триває перевірка...</string>
   <string name="proxy_test_successful">Протестовано успішно</string>
   <string name="proxy_test_failed">Протестовано з помилками</string>
-  <string name="proxy_host_empty_error">Хост не може бути пустим</string>
-  <string name="proxy_host_invalid_error">Хост не є правильною IP-адресою або доменним ім’ям</string>
+  <string name="proxy_host_empty_error">Поле \"Хост\" не може бути пустим</string>
+  <string name="proxy_host_invalid_error">Поле \"Хост\" містить неправильну IP-адресу чи назву домену</string>
   <string name="proxy_port_invalid_error">Порт недійсний</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Кількість стовпців</string>
@@ -814,16 +820,16 @@
   <string name="notification_channel_user_action_description">Відображається, якщо потрібна ваша дія, наприклад, якщо потрібно ввести пароль.</string>
   <string name="notification_channel_downloading">Завантаження</string>
   <string name="notification_channel_downloading_description">Показується під час завантаження.</string>
-  <string name="notification_channel_playing">Відтворюється зараз</string>
+  <string name="notification_channel_playing">Слухаєте зараз</string>
   <string name="notification_channel_playing_description">Дозволяє керувати відтворенням. Це сповіщення, яке ви бачите під час відтворення подкасту.</string>
   <string name="notification_channel_download_error">Не вдалося завантажити</string>
   <string name="notification_channel_download_error_description">Відображається, коли не вдається завантажити або оновити канал.</string>
-  <string name="notification_channel_sync_error">Помилка синхронізації</string>
+  <string name="notification_channel_sync_error">Не вдалося синхронізувати</string>
   <string name="notification_channel_sync_error_description">Відображається, коли не вдається синхронізувати gpodder.</string>
   <string name="notification_channel_new_episode">Новий епізод</string>
   <string name="notification_channel_new_episode_description">Відображається, коли був знайдений новий епізод подкасту, де увімкнено сповіщення</string>
   <!--Widget settings-->
-  <string name="widget_settings">Налаштування віджету</string>
+  <string name="widget_settings">Налаштування віджета</string>
   <string name="widget_create_button">Створити віджет</string>
   <string name="widget_opacity">Непрозорість</string>
   <!--On-Demand configuration-->

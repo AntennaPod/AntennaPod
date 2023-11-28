@@ -592,6 +592,10 @@
     <item quantity="one">1 time</item>
     <item quantity="other">%d timer</item>
   </plurals>
+  <plurals name="time_days_quantified">
+    <item quantity="one">1 dag</item>
+    <item quantity="other">%d dage</item>
+  </plurals>
   <string name="auto_enable_label">Aktivér automatisk slukkefunktion ved at tryk på afspil</string>
   <string name="auto_enable_label_with_times">Aktivér automatisk slukkefunktion ved tryk på afspil mellem %s og %s</string>
   <string name="auto_enable_change_times">Skift tidsinterval</string>

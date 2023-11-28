@@ -110,16 +110,16 @@
   <string name="episodes_suffix">\u0020épisodes</string>
   <string name="close_label">Fermer</string>
   <string name="retry_label">Réessayer</string>
-  <string name="auto_download_label">Télécharger automatiquement</string>
+  <string name="auto_download_label">Téléchargement automatique</string>
   <string name="auto_delete_label">Suppression automatique des épisodes</string>
   <string name="feed_volume_adapdation">Ajustement du volume</string>
-  <string name="feed_volume_adaptation_summary">Modification du volume des épisodes pour ce podcast : %1$s</string>
-  <string name="feed_volume_reduction_off">Aucun</string>
-  <string name="feed_volume_reduction_light">Diminution faible</string>
-  <string name="feed_volume_reduction_heavy">Diminution forte</string>
-  <string name="feed_volume_boost_light">Augmentation faible</string>
-  <string name="feed_volume_boost_medium">Augmentation moyenne</string>
-  <string name="feed_volume_boost_heavy">Augmentation forte</string>
+  <string name="feed_volume_adaptation_summary">Ajustement du volume des épisodes : %1$s</string>
+  <string name="feed_volume_reduction_off">Aucun ajustement</string>
+  <string name="feed_volume_reduction_light">Faible atténuation</string>
+  <string name="feed_volume_reduction_heavy">Forte atténuation</string>
+  <string name="feed_volume_boost_light">Faible amplification</string>
+  <string name="feed_volume_boost_medium">Moyenne amplification</string>
+  <string name="feed_volume_boost_heavy">Forte amplification</string>
   <string name="feed_auto_download_always">Toujours</string>
   <string name="feed_auto_download_never">Jamais</string>
   <string name="feed_new_episodes_action_add_to_inbox">Ajouter à la boîte de réception</string>
@@ -383,7 +383,7 @@
   <string name="preference_search_no_results">Aucun résultat</string>
   <string name="preference_search_clear_history">Effacer l\'historique</string>
   <string name="pref_episode_cleanup_title">Nettoyage des épisodes</string>
-  <string name="pref_episode_cleanup_summary">Épisodes pouvant être supprimés si le téléchargement automatique a besoin de plus de place.</string>
+  <string name="pref_episode_cleanup_summary">Définir quels épisodes peuvent être supprimés si le téléchargement automatique a besoin de plus de place</string>
   <string name="pref_pauseOnDisconnect_sum">Interrompre la lecture quand les écouteurs ou le bluetooth sont déconnectés</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Reprendre la lecture quand des écouteurs sont branchés</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Reprendre la lecture quand le Bluetooth se reconnecte</string>
@@ -489,7 +489,7 @@
   <string name="enqueue_location_back">en fin de liste</string>
   <string name="enqueue_location_front">en début de liste</string>
   <string name="enqueue_location_after_current">après l\'épisode courant</string>
-  <string name="enqueue_location_random">aléatoire</string>
+  <string name="enqueue_location_random">au hasard</string>
   <string name="pref_smart_mark_as_played_disabled">Désactivé</string>
   <string name="documentation_support">Documentation &amp; support</string>
   <string name="visit_user_forum">Forum des utilisateurs</string>
@@ -610,6 +610,11 @@
     <item quantity="many">%d heures</item>
     <item quantity="other">%d heures</item>
   </plurals>
+  <plurals name="time_days_quantified">
+    <item quantity="one">1 jour</item>
+    <item quantity="many">%d jours</item>
+    <item quantity="other">%d jours</item>
+  </plurals>
   <string name="auto_enable_label">Activation automatique lorsque la lecture commence</string>
   <string name="auto_enable_label_with_times">Activer automatiquement lorsque la lecture commence entre %s et %s</string>
   <string name="auto_enable_change_times">Changer la plage horaire</string>
@@ -727,7 +732,7 @@
   <string name="search_powered_by">Résultats de %1$s</string>
   <string name="select_country">Changer le pays</string>
   <!--Local feeds-->
-  <string name="add_local_folder">Ajouter un dossier</string>
+  <string name="add_local_folder">Ajouter un dossier local</string>
   <string name="local_folder">Dossier local</string>
   <string name="reconnect_local_folder">Se reconnecter au dossier</string>
   <string name="reconnect_local_folder_warning">En cas de refus de permission vous pouvez utiliser cette option pour vous reconnecter au même dossier. Ne sélectionnez pas un autre dossier.</string>

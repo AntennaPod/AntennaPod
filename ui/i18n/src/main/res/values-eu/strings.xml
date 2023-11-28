@@ -78,6 +78,7 @@
   <string name="open_in_browser_label">Ireki nabigatzailean</string>
   <string name="copy_url_label">Kopiatu URLa</string>
   <string name="share_url_label">Partekatu URLa</string>
+  <string name="go_to_position_label">Kokapen horretara joan</string>
   <!--Playback history-->
   <string name="clear_history_label">Garbitu historia</string>
   <string name="remove_history_label">Kendu historiatik</string>

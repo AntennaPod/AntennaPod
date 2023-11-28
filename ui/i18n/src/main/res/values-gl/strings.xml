@@ -48,7 +48,7 @@
   <!--Home fragment-->
   <string name="home_surprise_title">Sorpréndete!</string>
   <string name="home_classics_title">Mira os teus clásicos</string>
-  <string name="home_continue_title">Segue escoitando</string>
+  <string name="home_continue_title">Sigue escoitando</string>
   <string name="home_new_title">Olla as novidades</string>
   <string name="home_downloads_title">Xestiona as descargas</string>
   <string name="home_welcome_title">Sexas ben vida a AntennaPod!</string>
@@ -326,7 +326,7 @@
   <string name="duration">Duración</string>
   <string name="episode_title">Título do episodio</string>
   <string name="feed_title">Título do podcast</string>
-  <string name="random">Aleatorio</string>
+  <string name="random">Ao chou</string>
   <string name="smart_shuffle">Barallado intelixente</string>
   <string name="size">Tamaño</string>
   <string name="clear_queue_confirmation_msg">Por favor confirma que queres eliminar a cola e TODOS os episodios nela</string>
@@ -591,6 +591,10 @@
   <plurals name="time_hours_quantified">
     <item quantity="one">1 hora</item>
     <item quantity="other">%d horas</item>
+  </plurals>
+  <plurals name="time_days_quantified">
+    <item quantity="one">1 día</item>
+    <item quantity="other">%d días</item>
   </plurals>
   <string name="auto_enable_label">Activar automáticamente o temporizador ao iniciar a reprodución</string>
   <string name="auto_enable_label_with_times">Activa automáticamente o temporizador de apagado ao escoitar entre as %s e as %s</string>
