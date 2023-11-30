@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
@@ -17,7 +16,7 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.content.res.AppCompatResources;
+
 import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -61,7 +60,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
-import de.danoeh.antennapod.view.ToolbarIconTintManager;
+import de.danoeh.antennapod.view.ToolbarColorManager;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
@@ -73,6 +72,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -95,6 +95,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private Disposable disposable;
     private FeedItemListFragmentBinding viewBinding;
     private MultiSelectSpeedDialBinding speedDialBinding;
+
+    private ToolbarColorManager toolbarColorManager;
 
     /**
      * Creates new ItemlistFragment which shows the Feeditems of a specific
@@ -148,18 +150,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         swipeActions = new SwipeActions(this, TAG).attachTo(viewBinding.recyclerView);
         viewBinding.progressBar.setVisibility(View.VISIBLE);
 
-        ToolbarIconTintManager iconTintManager = new ToolbarIconTintManager(
-                getContext(), viewBinding.toolbar, viewBinding.collapsingToolbar) {
-            @Override
-            protected void doTint(Context themedContext) {
-                viewBinding.toolbar.getMenu().findItem(R.id.refresh_item)
-                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_refresh));
-                viewBinding.toolbar.getMenu().findItem(R.id.action_search)
-                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_search));
-            }
-        };
-        iconTintManager.updateTint();
-        viewBinding.appBar.addOnOffsetChangedListener(iconTintManager);
+        toolbarColorManager = new ToolbarColorManager(
+                getActivity(), viewBinding.toolbar,
+                Arrays.asList(viewBinding.toolbar.getMenu().findItem(R.id.refresh_item).getIcon(),
+                        viewBinding.toolbar.getMenu().findItem(R.id.action_search).getIcon()));
+
+        viewBinding.appBar.addOnOffsetChangedListener(toolbarColorManager);
 
         nextPageLoader = new MoreContentListFooterUtil(viewBinding.moreContent.moreContentListFooter);
         nextPageLoader.setClickListener(() -> {
@@ -227,6 +223,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             disposable.dispose();
         }
         adapter.endSelectMode();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (toolbarColorManager != null) {
+            toolbarColorManager.resetStatusBar();
+        }
     }
 
     @Override
