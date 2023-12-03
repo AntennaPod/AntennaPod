@@ -6,15 +6,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.dialog.AllEpisodesFilterDialog;
+import de.danoeh.antennapod.dialog.ItemSortDialog;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-
 import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
@@ -33,25 +36,12 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = super.onCreateView(inflater, container, savedInstanceState);
         toolbar.inflateMenu(R.menu.episodes);
-        inflateSortMenu();
         toolbar.setTitle(R.string.episodes_label);
         updateToolbar();
         updateFilterUi();
         txtvInformation.setOnClickListener(
                 v -> AllEpisodesFilterDialog.newInstance(getFilter()).show(getChildFragmentManager(), null));
         return root;
-    }
-
-    private void inflateSortMenu() {
-        MenuItem sortItem = toolbar.getMenu().findItem(R.id.episodes_sort);
-        getActivity().getMenuInflater().inflate(R.menu.sort_menu, sortItem.getSubMenu());
-
-        // Remove the sorting options that are not needed in this fragment
-        toolbar.getMenu().findItem(R.id.sort_episode_title).setVisible(false);
-        toolbar.getMenu().findItem(R.id.sort_feed_title).setVisible(false);
-        toolbar.getMenu().findItem(R.id.sort_random).setVisible(false);
-        toolbar.getMenu().findItem(R.id.sort_smart_shuffle).setVisible(false);
-        toolbar.getMenu().findItem(R.id.keep_sorted).setVisible(false);
     }
 
     @NonNull
@@ -105,19 +95,11 @@ public class AllEpisodesFragment extends EpisodesListFragment {
             }
             onFilterChanged(new AllEpisodesFilterDialog.AllEpisodesFilterChangedEvent(new HashSet<>(filter)));
             return true;
-        } else {
-            SortOrder sortOrder = MenuItemToSortOrderConverter.convert(item);
-            if (sortOrder != null) {
-                saveSortOrderAndRefresh(sortOrder);
-                return true;
-            }
+        } else if (item.getItemId() == R.id.episodes_sort) {
+            new AllEpisodesSortDialog().show(getChildFragmentManager().beginTransaction(), "SortDialog");
+            return true;
         }
         return false;
-    }
-
-    private void saveSortOrderAndRefresh(SortOrder type) {
-        UserPreferences.setAllEpisodesSortOrder(type);
-        loadItems();
     }
 
     @Subscribe
@@ -139,5 +121,27 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         }
         toolbar.getMenu().findItem(R.id.action_favorites).setIcon(
                 getFilter().showIsFavorite ? R.drawable.ic_star : R.drawable.ic_star_border);
+    }
+
+    public static class AllEpisodesSortDialog extends ItemSortDialog {
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            sortOrder = UserPreferences.getAllEpisodesSortOrder();
+        }
+
+        @Override
+        protected void onAddItem(int title, SortOrder ascending, SortOrder descending, boolean ascendingIsDefault) {
+            if (ascending == SortOrder.DATE_OLD_NEW || ascending == SortOrder.DURATION_SHORT_LONG) {
+                super.onAddItem(title, ascending, descending, ascendingIsDefault);
+            }
+        }
+
+        @Override
+        protected void onSelectionChanged() {
+            super.onSelectionChanged();
+            UserPreferences.setAllEpisodesSortOrder(sortOrder);
+            EventBus.getDefault().post(new FeedListUpdateEvent(0));
+        }
     }
 }

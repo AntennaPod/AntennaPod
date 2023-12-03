@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/button"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    app:layout_gravity="fill_horizontal|center_vertical"
+    app:layout_columnWeight="1"
+    style="@style/Widget.Material3.Button.TonalButton" />
