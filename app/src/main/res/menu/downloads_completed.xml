@@ -24,8 +24,5 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/downloads_sort"
-        android:title="@string/sort">
-        <menu></menu>
-    </item>
-
+        android:title="@string/sort" />
 </menu>

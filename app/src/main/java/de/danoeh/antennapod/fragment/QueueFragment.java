@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,6 +39,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
+import de.danoeh.antennapod.dialog.ItemSortDialog;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
@@ -159,6 +160,8 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             case MOVED:
                 return;
         }
+        recyclerAdapter.updateDragDropEnabled();
+        refreshToolbarState();
         recyclerView.saveScrollPosition(QueueFragment.TAG);
         refreshInfoBar();
     }
@@ -258,8 +261,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         boolean keepSorted = UserPreferences.isQueueKeepSorted();
         toolbar.getMenu().findItem(R.id.queue_lock).setChecked(UserPreferences.isQueueLocked());
         toolbar.getMenu().findItem(R.id.queue_lock).setVisible(!keepSorted);
-        toolbar.getMenu().findItem(R.id.sort_random).setVisible(!keepSorted);
-        toolbar.getMenu().findItem(R.id.keep_sorted).setChecked(keepSorted);
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
@@ -272,6 +273,9 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         final int itemId = item.getItemId();
         if (itemId == R.id.queue_lock) {
             toggleQueueLock();
+            return true;
+        } else if (itemId == R.id.queue_sort) {
+            new QueueSortDialog().show(getChildFragmentManager().beginTransaction(), "SortDialog");
             return true;
         } else if (itemId == R.id.refresh_item) {
             FeedUpdateManager.runOnceOrAsk(requireContext());
@@ -291,28 +295,9 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             };
             conDialog.createNewDialog().show();
             return true;
-        } else if (itemId == R.id.keep_sorted) {
-            boolean keepSortedOld = UserPreferences.isQueueKeepSorted();
-            boolean keepSortedNew = !keepSortedOld;
-            UserPreferences.setQueueKeepSorted(keepSortedNew);
-            if (keepSortedNew) {
-                SortOrder sortOrder = UserPreferences.getQueueKeepSortedOrder();
-                DBWriter.reorderQueue(sortOrder, true);
-            }
-            if (recyclerAdapter != null) {
-                recyclerAdapter.updateDragDropEnabled();
-            }
-            refreshToolbarState();
-            return true;
         } else if (itemId == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             return true;
-        }  else {
-            SortOrder sortOrder = MenuItemToSortOrderConverter.convert(item);
-            if (sortOrder != null) {
-                setSortOrder(sortOrder);
-                return true;
-            }
         }
         return false;
     }
@@ -357,16 +342,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.queue_unlocked, Snackbar.LENGTH_SHORT);
             }
         }
-    }
-
-    /**
-     * This method is called if the user clicks on a sort order menu item.
-     *
-     * @param sortOrder New sort order.
-     */
-    private void setSortOrder(SortOrder sortOrder) {
-        UserPreferences.setQueueKeepSortedOrder(sortOrder);
-        DBWriter.reorderQueue(sortOrder, true);
     }
 
     @Override
@@ -422,10 +397,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
         ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
         toolbar.inflateMenu(R.menu.queue);
-
-        MenuItem queueItem = toolbar.getMenu().findItem(R.id.queue_sort);
-        MenuInflater menuInflater = getActivity().getMenuInflater();
-        menuInflater.inflate(R.menu.sort_menu, queueItem.getSubMenu());
         refreshToolbarState();
         progressBar = root.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
@@ -565,6 +536,40 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         speedDialView.setVisibility(View.GONE);
         infoBar.setVisibility(View.VISIBLE);
         swipeActions.attachTo(recyclerView);
+    }
+
+    public static class QueueSortDialog extends ItemSortDialog {
+        @Nullable
+        @Override
+        public View onCreateView(@NonNull LayoutInflater inflater,
+                                 @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            if (UserPreferences.isQueueKeepSorted()) {
+                sortOrder = UserPreferences.getQueueKeepSortedOrder();
+            }
+            View view = super.onCreateView(inflater, container, savedInstanceState);
+            viewBinding.keepSortedCheckbox.setVisibility(View.VISIBLE);
+            viewBinding.keepSortedCheckbox.setChecked(UserPreferences.isQueueKeepSorted());
+            return view;
+        }
+
+        @Override
+        protected void onAddItem(int title, SortOrder ascending, SortOrder descending, boolean ascendingIsDefault) {
+            if (ascending != SortOrder.EPISODE_FILENAME_A_Z && ascending != SortOrder.SIZE_SMALL_LARGE) {
+                super.onAddItem(title, ascending, descending, ascendingIsDefault);
+            }
+        }
+
+        @Override
+        protected void onSelectionChanged() {
+            super.onSelectionChanged();
+            viewBinding.keepSortedCheckbox.setEnabled(sortOrder != SortOrder.RANDOM);
+            if (sortOrder == SortOrder.RANDOM) {
+                viewBinding.keepSortedCheckbox.setChecked(false);
+            }
+            UserPreferences.setQueueKeepSorted(viewBinding.keepSortedCheckbox.isChecked());
+            UserPreferences.setQueueKeepSortedOrder(sortOrder);
+            DBWriter.reorderQueue(sortOrder, true);
+        }
     }
 
     private class QueueSwipeActions extends SwipeActions {

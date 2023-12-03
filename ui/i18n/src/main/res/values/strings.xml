@@ -767,25 +767,7 @@
     <string name="not_paused">Not paused</string>
     <string name="hide_played_episodes_label">Played</string>
     <string name="not_played">Not played</string>
-
-    <!-- Sort  -->
-    <string name="sort_title_a_z">Title (A \u2192 Z)</string>
-    <string name="sort_title_z_a">Title (Z \u2192 A)</string>
-    <string name="sort_date_new_old">Date (New \u2192 Old)</string>
-    <string name="sort_date_old_new">Date (Old \u2192 New)</string>
-    <string name="sort_duration_short_long">Duration (Short \u2192 Long)</string>
-    <string name="sort_duration_long_short">Duration (Long \u2192 Short)</string>
-    <string name="sort_filename_a_z">File Name (A \u2192 Z)</string>
-    <string name="sort_filename_z_a">File Name (Z \u2192 A)</string>
-
-    <string name="sort_a_z">A \u2192 Z</string>
-    <string name="sort_z_a">Z \u2192 A</string>
-    <string name="sort_new_old">New \u2192 Old</string>
-    <string name="sort_old_new">Old \u2192 New</string>
-    <string name="sort_short_long">Short \u2192 Long</string>
-    <string name="sort_long_short">Long \u2192 Short</string>
-    <string name="sort_small_large">Small \u2192 Large</string>
-    <string name="sort_large_small">Large \u2192 Small</string>
+    <string name="filename">File name</string>
 
     <!-- Share episode dialog -->
     <string name="share_playback_position_dialog_label">Include playback position</string>
