@@ -47,7 +47,9 @@ public class FeedUpdateManager {
         } else {
             PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(
                     FeedUpdateWorker.class, UserPreferences.getUpdateInterval(), TimeUnit.HOURS)
-                    .setConstraints(getConstraints())
+                    .setConstraints(new Constraints.Builder()
+                        .setRequiredNetworkType(UserPreferences.isAllowMobileFeedRefresh()
+                            ? NetworkType.CONNECTED : NetworkType.UNMETERED).build())
                     .build();
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(WORK_ID_FEED_UPDATE,
                     replace ? ExistingPeriodicWorkPolicy.REPLACE : ExistingPeriodicWorkPolicy.KEEP, workRequest);
@@ -66,9 +68,11 @@ public class FeedUpdateManager {
         OneTimeWorkRequest.Builder workRequest = new OneTimeWorkRequest.Builder(FeedUpdateWorker.class)
                 .setInitialDelay(0L, TimeUnit.MILLISECONDS)
                 .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-                .addTag(WORK_TAG_FEED_UPDATE)
-                .setConstraints(new Constraints.Builder()
+                .addTag(WORK_TAG_FEED_UPDATE);
+        if (feed == null || !feed.isLocalFeed()) {
+            workRequest.setConstraints(new Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED).build());
+        }
         Data.Builder builder = new Data.Builder();
         builder.putBoolean(EXTRA_EVEN_ON_MOBILE, true);
         if (feed != null) {
@@ -86,7 +90,9 @@ public class FeedUpdateManager {
 
     public static void runOnceOrAsk(@NonNull Context context, @Nullable Feed feed) {
         Log.d(TAG, "Run auto update immediately in background.");
-        if (!NetworkUtils.networkAvailable()) {
+        if (feed != null && feed.isLocalFeed()) {
+            runOnce(context, feed);
+        } else if (!NetworkUtils.networkAvailable()) {
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.download_error_no_connection)));
         } else if (NetworkUtils.isFeedRefreshAllowed()) {
             runOnce(context, feed);
@@ -98,7 +104,6 @@ public class FeedUpdateManager {
     private static void confirmMobileRefresh(final Context context, @Nullable Feed feed) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.feed_refresh_title)
-                .setMessage(R.string.confirm_mobile_feed_refresh_dialog_message)
                 .setPositiveButton(R.string.confirm_mobile_streaming_button_once,
                         (dialog, which) -> runOnce(context, feed))
                 .setNeutralButton(R.string.confirm_mobile_streaming_button_always, (dialog, which) -> {
@@ -106,18 +111,11 @@ public class FeedUpdateManager {
                     runOnce(context, feed);
                 })
                 .setNegativeButton(R.string.no, null);
+        if (NetworkUtils.isNetworkRestricted() && NetworkUtils.isVpnOverWifi()) {
+            builder.setMessage(R.string.confirm_mobile_feed_refresh_dialog_message_vpn);
+        } else {
+            builder.setMessage(R.string.confirm_mobile_feed_refresh_dialog_message);
+        }
         builder.show();
     }
-
-    private static Constraints getConstraints() {
-        Constraints.Builder constraints = new Constraints.Builder();
-
-        if (UserPreferences.isAllowMobileFeedRefresh()) {
-            constraints.setRequiredNetworkType(NetworkType.CONNECTED);
-        } else {
-            constraints.setRequiredNetworkType(NetworkType.UNMETERED);
-        }
-        return constraints.build();
-    }
-
 }

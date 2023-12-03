@@ -104,7 +104,7 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             if (clipboardManager != null) {
                 clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", r.getExtra()));
             }
-            if (Build.VERSION.SDK_INT < 32 && this.getContext() instanceof MainActivity) {
+            if (Build.VERSION.SDK_INT <= 32 && this.getContext() instanceof MainActivity) {
                 ((MainActivity) this.getContext()).showSnackbarAbovePlayer(
                         getResources().getString(R.string.copied_to_clipboard),
                         Snackbar.LENGTH_SHORT);

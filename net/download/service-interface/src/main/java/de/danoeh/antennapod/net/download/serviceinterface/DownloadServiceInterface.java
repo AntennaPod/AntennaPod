@@ -3,6 +3,7 @@ package de.danoeh.antennapod.net.download.serviceinterface;
 import android.content.Context;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +39,7 @@ public abstract class DownloadServiceInterface {
      */
     public abstract void download(Context context, FeedItem item);
 
-    public abstract void cancel(Context context, String url);
+    public abstract void cancel(Context context, FeedMedia media);
 
     public abstract void cancelAll(Context context);
 

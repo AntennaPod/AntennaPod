@@ -118,7 +118,7 @@
   <string name="feed_auto_download_always">Toujours</string>
   <string name="feed_auto_download_never">Jamais</string>
   <string name="feed_new_episodes_action_add_to_inbox">Ajouter à la boîte de réception</string>
-  <string name="feed_new_episodes_action_nothing">Aucune</string>
+  <string name="feed_new_episodes_action_nothing">Ne rien faire</string>
   <string name="send_label">Envoyer...</string>
   <string name="episode_cleanup_never">Jamais</string>
   <string name="episode_cleanup_except_favorite_removal">Quand pas un favori</string>
@@ -250,7 +250,7 @@
   </plurals>
   <string name="add_to_favorite_label">Ajouter aux favoris</string>
   <string name="remove_from_favorite_label">Supprimer des favoris</string>
-  <string name="visit_website_label">Voir le site web</string>
+  <string name="visit_website_label">Ouvrir le site web</string>
   <string name="skip_episode_label">Passer cet épisode</string>
   <string name="reset_position">Réinitialiser la position de lecture</string>
   <string name="no_items_selected">Rien n\'a été sélectionné</string>
@@ -388,7 +388,7 @@
   <string name="pref_followQueue_sum">Après la fin d\'un épisode, lire le suivant dans la liste de lecture</string>
   <string name="pref_auto_delete_sum">Supprimer l\'épisode quand la lecture est finie</string>
   <string name="pref_auto_delete_title">Suppression automatique</string>
-  <string name="pref_smart_mark_as_played_sum">Les épisodes seront marqués comme lus même s\'il reste quelques secondes pour les finir</string>
+  <string name="pref_smart_mark_as_played_sum">En dessous de la durée choisie les épisodes seront marqués comme lus même s\'ils n\'ont pas été terminés</string>
   <string name="pref_smart_mark_as_played_title">Marquer comme lu intelligemment</string>
   <string name="pref_skip_keeps_episodes_sum">Garder les épisodes quand ils sont passés</string>
   <string name="pref_skip_keeps_episodes_title">Garder les épisodes passés</string>
@@ -397,9 +397,9 @@
   <string name="playback_pref">Lecture</string>
   <string name="playback_pref_sum">Contrôles du casque, durée des sauts, liste de lecture</string>
   <string name="downloads_pref">Téléchargements</string>
-  <string name="downloads_pref_sum">Fréquence de mise à jour, connexion mobile, téléchargements et suppressions automatiques</string>
+  <string name="downloads_pref_sum">Fréquence de mise à jour, utilisation de la connexion mobile, téléchargements et suppressions automatiques</string>
   <string name="feed_refresh_title">Actualiser les podcasts</string>
-  <string name="feed_refresh_sum">Indiquer la fréquence de mise à jour automatique par AntennaPod des épisodes</string>
+  <string name="feed_refresh_sum">Choisir la fréquence de mise à jour automatique des épisodes par AntennaPod</string>
   <string name="feed_refresh_never">Jamais</string>
   <string name="feed_every_hour">Toutes les heures</string>
   <string name="feed_every_2_hours">Toutes les 2 heures</string>
@@ -476,7 +476,7 @@
   <string name="enqueue_location_back">en fin de liste</string>
   <string name="enqueue_location_front">en début de liste</string>
   <string name="enqueue_location_after_current">après l\'épisode courant</string>
-  <string name="enqueue_location_random">Aléatoire</string>
+  <string name="enqueue_location_random">aléatoire</string>
   <string name="pref_smart_mark_as_played_disabled">Désactivé</string>
   <string name="documentation_support">Documentation &amp; support</string>
   <string name="visit_user_forum">Forum des utilisateurs</string>
@@ -597,8 +597,8 @@
     <item quantity="many">%d heures</item>
     <item quantity="other">%d heures</item>
   </plurals>
-  <string name="auto_enable_label">Activation automatique</string>
-  <string name="auto_enable_label_with_times">Activer automatiquement le minuteur lorsque la lecture commence entre %s et %s</string>
+  <string name="auto_enable_label">Activation automatique lorsque la lecture commence</string>
+  <string name="auto_enable_label_with_times">Activation automatique lorsque la lecture commence entre %s et %s</string>
   <string name="auto_enable_change_times">Changer la plage horaire</string>
   <string name="sleep_timer_enabled_label">Arrêt automatique activé</string>
   <!--Synchronisation-->
@@ -606,7 +606,7 @@
   <string name="synchronization_summary_unchoosen">Vous pouvez choisir entre plusieurs services pour synchroniser les abonnements et les statuts des épisodes</string>
   <string name="dialog_choose_sync_service_title">Choisir le service de synchronisation</string>
   <string name="gpodnet_description">Gpodder.net est un service open-source de synchronisation que vous pouvez installer facilement sur votre propre serveur. Gpodder.net est indépendant du projet AntennaPod.</string>
-  <string name="synchronization_summary_nextcloud">Gpoddersync est une application Nextcloud open-source que vous pouvez installer facilement sur votre serveur. L\'application est indépendante du projet AntennaPod.</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync est une application Nextcloud open-source que vous pouvez installer facilement sur votre propre serveur. L\'application est indépendante du projet AntennaPod.</string>
   <string name="synchronization_host_explanation">Vous pouvez décider du serveur à utiliser pour synchroniser vos données. Quand vous en aurez choisi un, entrer son adresse ici.</string>
   <string name="synchronization_host_label">Adresse du serveur</string>
   <string name="proceed_to_login_butLabel">S\'identifier</string>

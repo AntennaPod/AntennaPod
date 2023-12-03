@@ -23,9 +23,7 @@
 
     <item
         android:id="@+id/queue_sort"
-        android:title="@string/sort">
-        <menu></menu>
-    </item>
+        android:title="@string/sort" />
 
     <item
         android:id="@+id/clear_queue"

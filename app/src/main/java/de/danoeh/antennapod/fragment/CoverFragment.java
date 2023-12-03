@@ -332,7 +332,7 @@ public class CoverFragment extends Fragment {
         if (clipboardManager != null) {
             clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", text));
         }
-        if (Build.VERSION.SDK_INT < 32) {
+        if (Build.VERSION.SDK_INT <= 32) {
             ((MainActivity) requireActivity()).showSnackbarAbovePlayer(
                     getResources().getString(R.string.copied_to_clipboard), Snackbar.LENGTH_SHORT);
         }

@@ -4,13 +4,17 @@ import android.app.Notification;
 import android.content.Context;
 import android.util.Log;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.work.ForegroundInfo;
 import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import de.danoeh.antennapod.core.ClientConfigurator;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
@@ -53,15 +57,10 @@ public class FeedUpdateWorker extends Worker {
         ClientConfigurator.initialize(getApplicationContext());
         newEpisodesNotification.loadCountersBeforeRefresh();
 
-        if (!getInputData().getBoolean(FeedUpdateManager.EXTRA_EVEN_ON_MOBILE, false)) {
-            if (!NetworkUtils.networkAvailable() || !NetworkUtils.isFeedRefreshAllowed()) {
-                Log.d(TAG, "Blocking automatic update: no wifi available / no mobile updates allowed");
-                return Result.retry();
-            }
-        }
-
         List<Feed> toUpdate;
         long feedId = getInputData().getLong(FeedUpdateManager.EXTRA_FEED_ID, -1);
+        boolean allAreLocal = true;
+        boolean force = false;
         if (feedId == -1) { // Update all
             toUpdate = DBReader.getFeedList();
             Iterator<Feed> itr = toUpdate.iterator();
@@ -70,29 +69,47 @@ public class FeedUpdateWorker extends Worker {
                 if (!feed.getPreferences().getKeepUpdated()) {
                     itr.remove();
                 }
+                if (!feed.isLocalFeed()) {
+                    allAreLocal = false;
+                }
             }
             Collections.shuffle(toUpdate); // If the worker gets cancelled early, every feed has a chance to be updated
-            refreshFeeds(toUpdate, false);
         } else {
-            toUpdate = new ArrayList<>();
             Feed feed = DBReader.getFeed(feedId);
             if (feed == null) {
                 return Result.success();
             }
-            toUpdate.add(feed);
-            refreshFeeds(toUpdate, true);
+            if (!feed.isLocalFeed()) {
+                allAreLocal = false;
+            }
+            toUpdate = new ArrayList<>();
+            toUpdate.add(feed); // Needs to be updatable, so no singletonList
+            force = true;
         }
+
+        if (!getInputData().getBoolean(FeedUpdateManager.EXTRA_EVEN_ON_MOBILE, false) && !allAreLocal) {
+            if (!NetworkUtils.networkAvailable() || !NetworkUtils.isFeedRefreshAllowed()) {
+                Log.d(TAG, "Blocking automatic update");
+                return Result.retry();
+            }
+        }
+        refreshFeeds(toUpdate,  force);
+
         notificationManager.cancel(R.id.notification_updating_feeds);
         DBTasks.autodownloadUndownloadedItems(getApplicationContext());
         return Result.success();
     }
 
     @NonNull
-    private Notification createNotification(List<Feed> toUpdate) {
+    private Notification createNotification(@Nullable List<Feed> toUpdate) {
         Context context = getApplicationContext();
-        String contentText = context.getResources().getQuantityString(R.plurals.downloads_left,
-                toUpdate.size(), toUpdate.size());
-        String bigText = Stream.of(toUpdate).map(feed -> "• " + feed.getTitle()).collect(Collectors.joining("\n"));
+        String contentText = "";
+        String bigText = "";
+        if (toUpdate != null) {
+            contentText = context.getResources().getQuantityString(R.plurals.downloads_left,
+                    toUpdate.size(), toUpdate.size());
+            bigText = Stream.of(toUpdate).map(feed -> "• " + feed.getTitle()).collect(Collectors.joining("\n"));
+        }
         return new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_DOWNLOADING)
                 .setContentTitle(context.getString(R.string.download_notification_title_feeds))
                 .setContentText(contentText)
@@ -102,6 +119,12 @@ public class FeedUpdateWorker extends Worker {
                 .addAction(R.drawable.ic_cancel, context.getString(R.string.cancel_label),
                         WorkManager.getInstance(context).createCancelPendingIntent(getId()))
                 .build();
+    }
+
+    @NonNull
+    @Override
+    public ListenableFuture<ForegroundInfo> getForegroundInfoAsync() {
+        return Futures.immediateFuture(new ForegroundInfo(R.id.notification_updating_feeds, createNotification(null)));
     }
 
     private void refreshFeeds(List<Feed> toUpdate, boolean force) {

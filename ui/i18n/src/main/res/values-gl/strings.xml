@@ -26,10 +26,10 @@
   <!--Google Assistant-->
   <string name="app_action_not_found">Non se atopa \"%1$s\"</string>
   <!--SwipeActions-->
-  <string name="swipeactions_label">Accións ao escorregar</string>
+  <string name="swipeactions_label">Accións ao desprazar</string>
   <string name="swipeactions_summary">Elixe o que acontecerá cando desprazas sobre un episodio na lista</string>
-  <string name="swipe_right">Escorregar á dereita</string>
-  <string name="swipe_left">Escorregar á esquerda</string>
+  <string name="swipe_right">Desprazar á dereita</string>
+  <string name="swipe_left">Desprazar á esquerda</string>
   <string name="enable_swipeactions">Activar accións de escorregamento para esta pantalla</string>
   <string name="change_setting">Cambiar</string>
   <string name="individual_subscription">Subscrición individual</string>
@@ -152,9 +152,9 @@
   </plurals>
   <string name="new_episode_notification_group_text">As túas subscricións teñen novos episodios.</string>
   <!--Actions on feeds-->
-  <string name="remove_all_inbox_label">Baleirar a lista de novos episodios</string>
+  <string name="remove_all_inbox_label">Limpar lista de novidades</string>
   <string name="removed_all_inbox_msg">Baleirouse a lista de novos episodios</string>
-  <string name="remove_all_inbox_confirmation_msg">Confirma que desexas baleirar lista de novos episodios.</string>
+  <string name="remove_all_inbox_confirmation_msg">Confirma que desexas baleirar a lista de novos episodios.</string>
   <string name="multi_select_mark_played_confirmation">Confirma que desexas marcar tódolos elementos seleccionados como reproducidos.</string>
   <string name="multi_select_mark_unplayed_confirmation">Confirma que desexas marcar tódolos elementos seleccionados como non reproducidos.</string>
   <string name="show_info_label">Mostrar información</string>
@@ -297,7 +297,7 @@
   <string name="playback_error_timeout">A operación caducou</string>
   <string name="playback_error_source">O ficheiro de medios non está accesible</string>
   <string name="playback_error_unknown">Erro descoñecido</string>
-  <string name="no_media_playing_label">Non reproducindo</string>
+  <string name="no_media_playing_label">Sen reprodución</string>
   <string name="unknown_media_key">AntennaPod - chave de medios descoñecida: %1$d</string>
   <string name="error_file_not_found">Non se atopa o ficheiro</string>
   <string name="no_media_label">O elemento non conten un ficheiro multimedia</string>
@@ -478,7 +478,7 @@
   <string name="behavior">Comportamento</string>
   <string name="pref_default_page">Páxina por defecto</string>
   <string name="pref_default_page_sum">Pantalla que se abre ao iniciar AntennaPod.</string>
-  <string name="pref_back_button_opens_drawer">O botón atraś abre o panel</string>
+  <string name="pref_back_button_opens_drawer">O botón Atrás abre o panel</string>
   <string name="pref_back_button_opens_drawer_summary">Ao premer o botón atrás na páxina por defecto abre o panel de navegación</string>
   <string name="remember_last_page">Lembrar última páxina</string>
   <string name="pref_delete_removes_from_queue_title">Eliminar quita da cola</string>
@@ -580,7 +580,7 @@
     <item quantity="other">%d horas</item>
   </plurals>
   <string name="auto_enable_label">Activar automáticamente o temporizador ao iniciar a reprodución</string>
-  <string name="auto_enable_label_with_times">Activa o temporizador de apagado ao premer o reprodutor entre as %s e as %s</string>
+  <string name="auto_enable_label_with_times">Activa automáticamente o temporizador de apagado ao escoitar entre as %s e as %s</string>
   <string name="auto_enable_change_times">Cambiar horas</string>
   <string name="sleep_timer_enabled_label">Apagado automático habilitado</string>
   <!--Synchronisation-->
@@ -760,7 +760,7 @@
   <string name="notification_channel_downloading">Descargando</string>
   <string name="notification_channel_downloading_description">Mostrado durante a descarga actual.</string>
   <string name="notification_channel_playing">Soando agora</string>
-  <string name="notification_channel_playing_description">Permite controlar a reprodución. Esta é a notificación principal que verá mentras reproduce un podcast.</string>
+  <string name="notification_channel_playing_description">Permite controlar a reprodución. Esta é a notificación principal que verás mentras escoitas un podcast.</string>
   <string name="notification_channel_download_error">Fallou a descarga</string>
   <string name="notification_channel_download_error_description">Mostrado cando a descarga ou actualización da fonte fallou.</string>
   <string name="notification_channel_sync_error">Fallou a sincronización</string>

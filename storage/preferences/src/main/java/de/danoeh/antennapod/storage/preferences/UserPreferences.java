@@ -67,6 +67,10 @@ public class UserPreferences {
     private static final String PREF_DOWNLOADS_SORTED_ORDER = "prefDownloadSortedOrder";
     private static final String PREF_INBOX_SORTED_ORDER = "prefInboxSortedOrder";
 
+    // Episode
+    public static final String PREF_SORT_ALL_EPISODES = "prefEpisodesSort";
+    public static final String PREF_FILTER_ALL_EPISODES = "prefEpisodesFilter";
+
     // Playback
     public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
     public static final String PREF_UNPAUSE_ON_HEADSET_RECONNECT = "prefUnpauseOnHeadsetReconnect";
@@ -866,5 +870,22 @@ public class UserPreferences {
 
     public static boolean shouldShowSubscriptionTitle() {
         return prefs.getBoolean(PREF_SUBSCRIPTION_TITLE, false);
+    }
+
+    public static void setAllEpisodesSortOrder(SortOrder s) {
+        prefs.edit().putString(PREF_SORT_ALL_EPISODES, "" + s.code).apply();
+    }
+
+    public static SortOrder getAllEpisodesSortOrder() {
+        return SortOrder.fromCodeString(prefs.getString(PREF_SORT_ALL_EPISODES,
+                "" + SortOrder.DATE_NEW_OLD.code));
+    }
+
+    public static String getPrefFilterAllEpisodes() {
+        return prefs.getString(PREF_FILTER_ALL_EPISODES, "");
+    }
+
+    public static void setPrefFilterAllEpisodes(String filter) {
+        prefs.edit().putString(PREF_FILTER_ALL_EPISODES, filter).apply();
     }
 }

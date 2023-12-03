@@ -15,9 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.DownloadResultComparator;
-import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.core.util.comparator.PlaybackCompletionDateComparator;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -170,13 +170,18 @@ public final class DBReader {
     }
 
     public static List<FeedItem> getFeedItemList(final Feed feed, final FeedItemFilter filter) {
+        return getFeedItemList(feed, filter, SortOrder.DATE_NEW_OLD);
+    }
+
+    public static List<FeedItem> getFeedItemList(final Feed feed, final FeedItemFilter filter, SortOrder sortOrder) {
         Log.d(TAG, "getFeedItemList() called with: " + "feed = [" + feed + "]");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try (Cursor cursor = adapter.getItemsOfFeedCursor(feed, filter)) {
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
-            Collections.sort(items, new FeedItemPubdateComparator());
+            FeedItemPermutors.getPermutor(sortOrder).reorder(items);
+            feed.setItems(items);
             for (FeedItem item : items) {
                 item.setFeed(feed);
             }
