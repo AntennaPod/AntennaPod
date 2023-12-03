@@ -147,7 +147,7 @@
 
             </LinearLayout>
 
-                <CheckBox
+            <CheckBox
                 android:id="@+id/cbVibrate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
