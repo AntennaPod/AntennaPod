@@ -2,7 +2,6 @@ package de.danoeh.antennapod.core.util;
 
 import android.os.NetworkOnMainThreadException;
 import android.util.Log;
-import android.util.Pair;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -59,18 +58,18 @@ public class PodcastIndexTranscriptUtils {
     }
 
     public static Transcript loadTranscript(FeedMedia media) {
-        Pair<String, String> urlType = null;
-        urlType = media.getItem().getPodcastIndexTranscriptUrlPreferred();
-        if (urlType == null) {
+        String type = media.getItem().getPodcastIndexTranscriptType();
+        String url = media.getItem().getPodcastIndexTranscriptUrl();
+        if (url == null) {
             return null;
         }
 
-        if (media.getItem().gettTranscript() != null) {
-            return media.getItem().gettTranscript();
+        if (media.getItem().getTranscript() != null) {
+            return media.getItem().getTranscript();
         }
 
         if (media.getItem().getPodcastIndexTranscriptText() != null) {
-            return PodcastIndexTranscriptParser.parse(media.getItem().getPodcastIndexTranscriptText(), urlType.first);
+            return PodcastIndexTranscriptParser.parse(media.getItem().getPodcastIndexTranscriptText(), type);
         }
 
         if (media.getTranscriptFile_url() != null) {
@@ -95,16 +94,16 @@ public class PodcastIndexTranscriptUtils {
                 media.getItem().setPodcastIndexTranscriptText(transcriptStr);
                 Transcript t = PodcastIndexTranscriptParser.parse(
                         media.getItem().getPodcastIndexTranscriptText(),
-                        urlType.first);
+                        type);
                 media.getItem().setTranscript(t);
                 return t;
             }
         }
 
 
-        if (urlType != null) {
-            Transcript t = PodcastIndexTranscriptUtils.loadTranscriptFromUrl(urlType.first,
-                    urlType.second,
+        if (url != null) {
+            Transcript t = PodcastIndexTranscriptUtils.loadTranscriptFromUrl(type,
+                    url,
                     false);
             if (t != null) {
                 media.getItem().setPodcastIndexTranscriptText(t.toString());
