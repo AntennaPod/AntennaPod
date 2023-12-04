@@ -12,7 +12,6 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -664,10 +663,11 @@ public class PodDBAdapter {
         values.put(KEY_PODCASTINDEX_CHAPTER_URL, item.getPodcastIndexChapterUrl());
 
         // We only store one transcript url, we prefer JSON if it exists
-        Pair<String, String> typeUrl = item.getPodcastIndexTranscriptUrlPreferred();
-        if (typeUrl != null) {
-            values.put(KEY_PODCASTINDEX_TRANSCRIPT_TYPE, typeUrl.first);
-            values.put(KEY_PODCASTINDEX_TRANSCRIPT_URL, typeUrl.second);
+        String type = item.getPodcastIndexTranscriptType();
+        String url = item.getPodcastIndexTranscriptUrl();
+        if (url != null) {
+            values.put(KEY_PODCASTINDEX_TRANSCRIPT_TYPE, type);
+            values.put(KEY_PODCASTINDEX_TRANSCRIPT_URL, url);
         }
 
         if (item.getId() == 0) {
