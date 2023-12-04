@@ -482,7 +482,7 @@ public class FeedItem extends FeedComponent implements Serializable {
             case "application/srr":
             case "application/srt":
             case "application/x-subrip":
-                if (! podcastIndexTranscriptType.equals(jsonType)) {
+                if (podcastIndexTranscriptUrl == null || ! podcastIndexTranscriptType.equals(jsonType)) {
                     podcastIndexTranscriptUrl = url;
                     podcastIndexTranscriptType = canonicalSrr;
                 }
