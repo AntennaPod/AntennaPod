@@ -471,8 +471,8 @@ public class FeedItem extends FeedComponent implements Serializable {
             return;
         }
 
-        String canonical_srr = "application/srr";
-        String json_type_str = "application/json";
+        String canonicalSrr = "application/srr";
+        String jsonType = "application/json";
 
         switch (type) {
             case "application/json":
@@ -482,9 +482,9 @@ public class FeedItem extends FeedComponent implements Serializable {
             case "application/srr":
             case "application/srt":
             case "application/x-subrip":
-                if (! podcastIndexTranscriptType.equals(json_type_str)) {
+                if (! podcastIndexTranscriptType.equals(jsonType)) {
                     podcastIndexTranscriptUrl = url;
-                    podcastIndexTranscriptType = canonical_srr;
+                    podcastIndexTranscriptType = canonicalSrr;
                 }
                 break;
             default:
