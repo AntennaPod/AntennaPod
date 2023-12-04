@@ -2,7 +2,6 @@ package de.danoeh.antennapod.core.util;
 
 import android.os.NetworkOnMainThreadException;
 import android.util.Log;
-import android.util.Pair;
 
 import java.io.BufferedReader;
 import java.io.File;
