@@ -253,37 +253,27 @@ public final class DBTasks {
                 }
 
                 FeedItem oldItem = searchFeedItemByIdentifyingValue(savedFeed.getItems(), item);
-                if (!newFeed.isLocalFeed()) {
+                if (!newFeed.isLocalFeed() && oldItem == null) {
+                    oldItem = searchFeedItemGuessDuplicate(savedFeed.getItems(), item);
                     if (oldItem != null) {
-                        // Detect case where a feed item is re-posted to the feed with
-                        // an identical guid but a new timestamp.
-                        Date oldItemPubDate = oldItem.getPubDate();
-                        if (oldItemPubDate.before(item.getPubDate())) {
-                            Log.d(TAG, "Detected re-posted episode: " + item.getTitle());
-                            oldItem = null;
-                        }
-                    } else {
-                        oldItem = searchFeedItemGuessDuplicate(savedFeed.getItems(), item);
-                        if (oldItem != null) {
-                            Log.d(TAG, "Repaired duplicate: " + oldItem + ", " + item);
-                            DBWriter.addDownloadStatus(new DownloadResult(savedFeed,
-                                    item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
-                                    "The podcast host changed the ID of an existing episode instead of just "
-                                            + "updating the episode itself. AntennaPod still refreshed the feed and "
-                                            + "attempted to repair it."
-                                            + "\n\nOriginal episode:\n" + duplicateEpisodeDetails(oldItem)
-                                            + "\n\nNow the feed contains:\n" + duplicateEpisodeDetails(item)));
-                            oldItem.setItemIdentifier(item.getItemIdentifier());
+                        Log.d(TAG, "Repaired duplicate: " + oldItem + ", " + item);
+                        DBWriter.addDownloadStatus(new DownloadResult(savedFeed,
+                                item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
+                                "The podcast host changed the ID of an existing episode instead of just "
+                                        + "updating the episode itself. AntennaPod still refreshed the feed and "
+                                        + "attempted to repair it."
+                                        + "\n\nOriginal episode:\n" + duplicateEpisodeDetails(oldItem)
+                                        + "\n\nNow the feed contains:\n" + duplicateEpisodeDetails(item)));
+                        oldItem.setItemIdentifier(item.getItemIdentifier());
 
-                            if (oldItem.isPlayed() && oldItem.getMedia() != null) {
-                                EpisodeAction action = new EpisodeAction.Builder(oldItem, EpisodeAction.PLAY)
-                                        .currentTimestamp()
-                                        .started(oldItem.getMedia().getDuration() / 1000)
-                                        .position(oldItem.getMedia().getDuration() / 1000)
-                                        .total(oldItem.getMedia().getDuration() / 1000)
-                                        .build();
-                                SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
-                            }
+                        if (oldItem.isPlayed() && oldItem.getMedia() != null) {
+                            EpisodeAction action = new EpisodeAction.Builder(oldItem, EpisodeAction.PLAY)
+                                    .currentTimestamp()
+                                    .started(oldItem.getMedia().getDuration() / 1000)
+                                    .position(oldItem.getMedia().getDuration() / 1000)
+                                    .total(oldItem.getMedia().getDuration() / 1000)
+                                    .build();
+                            SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
                         }
                     }
                 }
