@@ -1,17 +1,16 @@
 package de.danoeh.antennapod.model.feed;
 
-import android.util.Pair;
-
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -22,6 +21,8 @@ import java.util.concurrent.TimeUnit;
  * @author daniel
  */
 public class FeedItem extends FeedComponent implements Serializable {
+
+    public static String TAG = "FeedItem";
 
     /** tag that indicates this item is in the queue */
     public static final String TAG_QUEUE = "Queue";
@@ -45,7 +46,8 @@ public class FeedItem extends FeedComponent implements Serializable {
     private transient Feed feed;
     private long feedId;
     private String podcastIndexChapterUrl;
-    private Hashtable<String, String> podcastIndexTranscriptUrls;
+    private String podcastIndexTranscriptUrl;
+    private String podcastIndexTranscriptType;
 
     private int state;
     public static final int NEW = -1;
@@ -101,8 +103,8 @@ public class FeedItem extends FeedComponent implements Serializable {
         this.autoDownload = autoDownload;
         this.podcastIndexChapterUrl = podcastIndexChapterUrl;
         if (transcriptUrl != null) {
-            this.podcastIndexTranscriptUrls = new Hashtable<String, String>();
-            this.podcastIndexTranscriptUrls.put(transcriptType, transcriptUrl);
+            this.podcastIndexTranscriptUrl = transcriptUrl;
+            this.podcastIndexTranscriptType = transcriptType;
         }
     }
 
@@ -171,8 +173,8 @@ public class FeedItem extends FeedComponent implements Serializable {
         if (other.podcastIndexChapterUrl != null) {
             podcastIndexChapterUrl = other.podcastIndexChapterUrl;
         }
-        if (other.getPodcastIndexTranscriptUrls() != null) {
-            podcastIndexTranscriptUrls = other.podcastIndexTranscriptUrls;
+        if (other.getPodcastIndexTranscriptUrl() != null) {
+            podcastIndexTranscriptUrl = other.podcastIndexTranscriptUrl;
         }
     }
 
@@ -452,48 +454,43 @@ public class FeedItem extends FeedComponent implements Serializable {
         podcastIndexChapterUrl = url;
     }
 
-    public void setPodcastIndexTranscriptUrl(String t, String url) {
-        if (podcastIndexTranscriptUrls == null) {
-            podcastIndexTranscriptUrls = new Hashtable<String, String>();
-        }
-        podcastIndexTranscriptUrls.put(t, url);
+    public void setPodcastIndexTranscriptUrl(String type, String url) {
+        updateTranscriptPreferredFormat(type, url);
     }
 
-
-    public String getPodcastIndexTranscriptUrls(String t) {
-        if (podcastIndexTranscriptUrls == null) {
-            return null;
-        }
-        return podcastIndexTranscriptUrls.get(t);
+    public String getPodcastIndexTranscriptUrl() {
+        return podcastIndexTranscriptUrl;
     }
 
-    public Hashtable<String, String> getPodcastIndexTranscriptUrls() {
-        if (podcastIndexTranscriptUrls == null) {
-            return null;
-        }
-        return podcastIndexTranscriptUrls;
+    public String getPodcastIndexTranscriptType() {
+        return podcastIndexTranscriptType;
     }
 
-    public Pair<String, String> getPodcastIndexTranscriptUrlPreferred() {
-        if (podcastIndexTranscriptUrls == null) {
-            return null;
-        }
-        // We prefer JSON if that is available
-        if (podcastIndexTranscriptUrls.get("application/json") != null) {
-            return new Pair("application/json", podcastIndexTranscriptUrls.get("application/json"));
+    public void updateTranscriptPreferredFormat(String type, String url) {
+        if (StringUtils.isEmpty(type) || StringUtils.isEmpty(url)) {
+            return;
         }
 
-        // SRR format, but feeds use different mime types
-        if (podcastIndexTranscriptUrls.get("application/srr") != null) {
-            return new Pair("application/srr", podcastIndexTranscriptUrls.get("application/srr"));
+        String canonical_srr = "application/srr";
+        String json_type_str = "application/json";
+
+        switch (type) {
+            case "application/json":
+                podcastIndexTranscriptUrl = url;
+                podcastIndexTranscriptType = type;
+                break;
+            case "application/srr":
+            case "application/srt":
+            case "application/x-subrip":
+                if (! podcastIndexTranscriptType.equals(json_type_str)) {
+                    podcastIndexTranscriptUrl = url;
+                    podcastIndexTranscriptType = canonical_srr;
+                }
+                break;
+            default:
+                Log.d(TAG, "Invalid format for transcript " + type);
+                break;
         }
-        if (podcastIndexTranscriptUrls.get("application/srt") != null) {
-            return new Pair("application/srt", podcastIndexTranscriptUrls.get("application/srt"));
-        }
-        if (podcastIndexTranscriptUrls.get("application/x-subrip") != null) {
-            return new Pair("application/srr", podcastIndexTranscriptUrls.get("application/x-subrip"));
-        }
-        return null;
     }
 
     @NonNull
