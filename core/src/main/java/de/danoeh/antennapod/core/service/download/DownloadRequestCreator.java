@@ -47,7 +47,7 @@ public class DownloadRequestCreator {
             dest = findUnusedFile(dest);
         }
         Log.d(TAG, "Requesting download of transcript url "
-                + media.getItem().getPodcastIndexTranscriptUrlPreferred().second);
+                + media.getItem().getPodcastIndexTranscriptUrl());
 
         String username = (media.getItem().getFeed().getPreferences() != null)
                 ? media.getItem().getFeed().getPreferences().getUsername() : null;
@@ -56,7 +56,7 @@ public class DownloadRequestCreator {
 
         return new DownloadRequest.Builder(dest.toString(),
                 media,
-                media.getItem().getPodcastIndexTranscriptUrlPreferred().second
+                media.getItem().getPodcastIndexTranscriptUrl()
         ).withAuthentication(username, password);
     }
 
