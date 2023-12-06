@@ -21,6 +21,7 @@ include ':storage:preferences'
 
 include ':ui:app-start-intent'
 include ':ui:common'
+include ':ui:echo'
 include ':ui:glide'
 include ':ui:i18n'
 include ':ui:png-icons'

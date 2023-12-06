@@ -53,8 +53,10 @@
   <string name="home_downloads_title">Gestionați descărcările</string>
   <string name="home_welcome_title">Bine ați venit la AntennaPod!</string>
   <string name="home_welcome_text">Nu ești abonat la nici-un podcast. Deschide meniul din laterală pentru a adăuga un podcast.</string>
-  <string name="notification_permission_text">AntennaPod are nevoie de permisiunea ta pentru a afișa notificări în timpul descărcării episoadelor.</string>
+  <string name="notification_permission_text">AntennaPod necesită permisiunea ta pentru a afișa notificări. În mod implicit AntennaPod afișează notificări doar în momentul în care un podcast este descărcat sau în momentul în care apare o eroare.</string>
   <string name="notification_permission_denied">Ați refuzat permisiunea.</string>
+  <string name="notification_permission_deny_warning">Dacă dezactivezi notificările și ceva nu funcționează corect, există posibilitatea de a nu putea să afli ce a mers greșit.</string>
+  <string name="deny_label">Refuză</string>
   <string name="open_settings">Deschide setările</string>
   <string name="configure_home">Setează ecranul Acasă</string>
   <!--Download Statistics fragment-->
@@ -110,16 +112,18 @@
   <string name="retry_label">Reîncearcă</string>
   <string name="auto_download_label">Include în descărcările automate</string>
   <string name="auto_delete_label">Șterge epidosul automat</string>
-  <string name="feed_volume_reduction">Reducerea volumului</string>
-  <string name="feed_volume_reduction_summary">Micșorează volumul pentru episoadele din acest podcast: %1$s</string>
-  <string name="feed_volume_reduction_off">Oprește</string>
-  <string name="feed_volume_reduction_light">Lumină</string>
-  <string name="feed_volume_reduction_heavy">Greu</string>
+  <string name="feed_volume_adapdation">Adaptarea volumului</string>
+  <string name="feed_volume_adaptation_summary">Modifică volumul acestui podcast: %1$s</string>
+  <string name="feed_volume_reduction_off">Nu există adaptări ale volumului</string>
+  <string name="feed_volume_reduction_light">Reducerea luminozității</string>
+  <string name="feed_volume_reduction_heavy">Reducere puternică</string>
+  <string name="feed_volume_boost_light">Mărire ușoară</string>
+  <string name="feed_volume_boost_medium">Mărire medie</string>
+  <string name="feed_volume_boost_heavy">Mărire puternică</string>
   <string name="feed_auto_download_always">Întotdeauna</string>
   <string name="feed_auto_download_never">Niciodată</string>
   <string name="feed_new_episodes_action_add_to_inbox">Adaugă la inbox</string>
   <string name="feed_new_episodes_action_nothing">Nimic</string>
-  <string name="send_label">Trimite...</string>
   <string name="episode_cleanup_never">Niciodată</string>
   <string name="episode_cleanup_except_favorite_removal">Cănd nu este preferată</string>
   <string name="episode_cleanup_queue_removal">Când nu e în coadă</string>
@@ -193,6 +197,7 @@
   <string name="add_tag">Adaugă etichetă</string>
   <string name="rename_tag_label">Redenumește etichetele</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">Funcți de reîncărcare a podcasturilor folosind o conexiune mobilă este dezactivată.\n\nDorești să reîncarci oricum ?</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Aplicația ta VPN pretinde a fi o rețea de date mobilă. Reîmprospătarea podcasturilor folosind o conexiune de date mobile este dezactivată în setări.\n\nDorești totuși să reîmprospătezi ? Dacă dorești să rezolvi această problemă re rugăm să contactezi dezvoltatorii aplicației tale VPN.</string>
   <!--actions on feeditems-->
   <string name="download_label">Descarcă</string>
   <plurals name="downloading_batch_label">
@@ -205,6 +210,7 @@
   <string name="stream_label">Stream</string>
   <string name="delete_label">Șterge</string>
   <string name="delete_failed">Imposibil de șters. Restartarea dispozitivului ar putea ajuta.</string>
+  <string name="delete_local_failed">Nu s-a putut șterge fisierul. Incearcă să reconectezi dosarul local din ecranul cu informații a podcastului.</string>
   <string name="delete_episode_label">Șterge episod</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 episod descărcat a fost șters.</item>
@@ -254,6 +260,7 @@
   <string name="skip_episode_label">Sari peste episod</string>
   <string name="reset_position">Resetează poziția de redare</string>
   <string name="no_items_selected">Niciun articol selectat</string>
+  <string name="delete_local_feed_warning_body">Ștergerea episoadelor înseamnă înlăturarea acestora din AntennaPod și eliminarea fișierelor media din memoria dispozitivului dumneavoastră. Aceste episoade nu vor putea fi descărcate din nou folosind AntennaPod.</string>
   <!--Download messages and labels-->
   <string name="download_successful">de succes</string>
   <string name="download_pending">Descărcare în așteptare</string>
@@ -272,6 +279,7 @@
   <string name="download_error_unsupported_type_html">Serverul podcastului a trimis un website, nu un podcast. </string>
   <string name="download_error_not_found">Serverul podcastului nu știe unde să găsească fisierul dorit. Acesta ar putea fii sters.</string>
   <string name="download_error_connection_error">Eroare de conexiune</string>
+  <string name="download_error_no_connection">Nu există o conexiune la rețea</string>
   <string name="download_error_unknown_host">Nu se poate găsi serverul. Vă rugăm verificați dacă adresa introdusă este corectă și dacă aveți o conexiune funcțională la internet.</string>
   <string name="download_error_unauthorized">Eroare de autentificare. Trebuie să vă asigurați că numele de utilizator și parola sunt corecte.</string>
   <string name="download_error_file_type_type">Eroare fișier</string>
@@ -299,6 +307,7 @@
   <string name="authentication_notification_title">Autentificare necesară</string>
   <string name="confirm_mobile_download_dialog_title">Confirmă descărcarea folosind datele mobile</string>
   <string name="confirm_mobile_download_dialog_message">Descărcarea folosind conexiunea de date mobile este oprită. AntennaPod poate descărca acest episod mai târziu automat în momentul în care este disponibilă o conexiune Wi-Fi.</string>
+  <string name="confirm_mobile_download_dialog_message_vpn">Aplicația ta VPN pretinde a fi o rețea de date mobilă(rețea contorizată). Reîmprospătarea podcasturilor folosind o conexiune de date mobile este dezactivată în setări. Dacă dorești să rezolvi această problemă re rugăm să contactezi dezvoltatorii aplicației tale VPN.</string>
   <string name="confirm_mobile_download_dialog_download_later">Descarcă mai târziu</string>
   <string name="confirm_mobile_download_dialog_allow_this_time">Descarcă oricum</string>
   <string name="confirm_mobile_streaming_notification_title">Confirmă streamingul folosind datele mobile</string>
@@ -334,6 +343,7 @@
   <string name="feed_title">Titlul podcastului</string>
   <string name="random">Aleatoriu</string>
   <string name="smart_shuffle">Smart shuffle</string>
+  <string name="size">Mărime</string>
   <string name="clear_queue_confirmation_msg">Vă rugăm să confirmați că doriți să stergeți toată coada pentru TOATE episoadele.</string>
   <string name="time_left_label">Timp rămas:\u0020</string>
   <!--Variable Speed-->
@@ -388,6 +398,9 @@
   <string name="pref_followQueue_sum">Sari la următorul element din coadă cand se termină ascultarea</string>
   <string name="pref_auto_delete_sum">Sterge episodul când redarea este completă</string>
   <string name="pref_auto_delete_title">Șterge automat</string>
+  <string name="pref_auto_local_delete_title">Ștergere automată din dosarul local</string>
+  <string name="pref_auto_local_delete_sum">Include dosare locale în funcționalitatea de ștergere automată</string>
+  <string name="pref_auto_local_delete_dialog_body">Reține faptul ca pentru dosare locale această funcție va elimina episoade din AntennaPod și va șterge fișiere media din memoria dispozitivului folosit. Aceste fișiere nu vor mai putea fi descărcate din nou folosind AntennaPod. Dorești activarea duncției de ștergere automată?</string>
   <string name="pref_smart_mark_as_played_sum">Marchează episoadele ca redate chiar dacă un anumit număr de secunde din episod au rămas</string>
   <string name="pref_smart_mark_as_played_title">Marchează inteligent ca fiind redate</string>
   <string name="pref_skip_keeps_episodes_sum">Păstrează episoade când acestea sunt sărite</string>
@@ -413,7 +426,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Reconectare căști</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Reconectare Bluetooth</string>
   <string name="pref_stream_over_download_title">Preferă streamingul</string>
-  <string name="pref_stream_over_download_sum">Afișează butonul de stream în locul butonului de descărcare în listă.</string>
+  <string name="pref_stream_over_download_sum">Afișează butonul de stream în locul butonului de descărcare</string>
   <string name="pref_mobileUpdate_title">Actualizări mobile</string>
   <string name="pref_mobileUpdate_sum">Selectează ce ar trebui să fie permis să folosească conexiunea de date mobile</string>
   <string name="pref_mobileUpdate_refresh">Reîmprospătare podcast</string>
@@ -428,13 +441,13 @@
   <string name="pref_tinted_theme_title">Culori dinamice</string>
   <string name="pref_tinted_theme_message">Adaptează culorile aplicației în funcție de imaginea de fundal</string>
   <string name="pref_nav_drawer_items_title">Setează obiectele din sertar</string>
-  <string name="pref_nav_drawer_items_sum">Schimbă ce obiecte apar în sertarul de navigare.</string>
+  <string name="pref_nav_drawer_items_sum">Schimbă ce funcționalităti apar în sertarul de navigare</string>
   <string name="pref_nav_drawer_feed_order_title">Setează ordinea abonamentelor</string>
   <string name="pref_nav_drawer_feed_order_sum">Schimbă ordinea abonamentelor</string>
   <string name="pref_nav_drawer_feed_counter_title">Setează contorul de abonamente</string>
   <string name="pref_nav_drawer_feed_counter_sum">Schimbă informațiile afișate de către contorul de abonamente. De asemenea afectează sortarea abonamentelor dacă \"Ordinea abonamentelor\" este setată pe \"Contor\"</string>
   <string name="pref_automatic_download_title">Descărcare automată</string>
-  <string name="pref_automatic_download_sum">Configurează descărcarea automată a episoadelor.</string>
+  <string name="pref_automatic_download_sum">Configurează descărcarea automată a episoadelor</string>
   <string name="pref_autodl_wifi_filter_title">Pornește filtru Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Pornește descărcarea automată doar pentru rețele Wi-Fi selectate.</string>
   <string name="pref_automatic_download_on_battery_title">Descarcă când nu se incarcă</string>
@@ -466,7 +479,7 @@
   <string name="pref_expandNotify_title">Prioritatea notificărilor importante</string>
   <string name="pref_expandNotify_sum">Această funcție extinde alertele pentru a arăta butoanele de control media.</string>
   <string name="pref_persistNotify_title">Control media persistent</string>
-  <string name="pref_persistNotify_sum">Păstrați notificările și ecranul de blocare când redarea este oprită.</string>
+  <string name="pref_persistNotify_sum">Păstrează controlul din notificări și de pe ecranul blocat chiar și «in momentul în care redarea este oprită</string>
   <string name="pref_compact_notification_buttons_title">Setează butoanele compacte de notificări</string>
   <string name="pref_compact_notification_buttons_sum">Schimbă butonul de redare când notificările sunt restrânse. Butonul de start/pauzâ este mereu inclus.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Selectează un număr de %1$d de obiecte.</string>
@@ -492,14 +505,14 @@
   <string name="pref_skip_silence_title">Sari peste liniște în fișierul audio</string>
   <string name="behavior">Comportament</string>
   <string name="pref_default_page">Pagină prestabilită</string>
-  <string name="pref_default_page_sum">Ecranul de pornire</string>
+  <string name="pref_default_page_sum">Ecranul ce este pornit când aplicația este pornită</string>
   <string name="pref_back_button_opens_drawer">Butonul înapoi deschide sertarul</string>
   <string name="pref_back_button_opens_drawer_summary">Apăsarea butonului înapoi pe pagina principală deschide sertarul de navigare</string>
   <string name="remember_last_page">Amintiți-vă ultima pagină</string>
   <string name="pref_delete_removes_from_queue_title">Ștergerea unui episod îl elimină și din coada de redare</string>
-  <string name="pref_delete_removes_from_queue_sum">Șterge automat episoadele din coadă când acestea sunt șterse</string>
+  <string name="pref_delete_removes_from_queue_sum">Elimină automat un episod din coada de redare când acesta este șters</string>
   <string name="pref_filter_feed_title">Filtru de abonamente</string>
-  <string name="pref_filter_feed_sum">Filtrează abonamentele în sertarul de navigare și ecranul cu abonamente</string>
+  <string name="pref_filter_feed_sum">Filtrează abonamentele tale în sertarul de navigare și ecranul cu abonamente</string>
   <string name="subscriptions_are_filtered">Abonamentele sunt filtrate</string>
   <string name="subscriptions_counter_greater_zero">Contor diferit de zero</string>
   <string name="auto_downloaded">Descărcare automată</string>
@@ -511,7 +524,7 @@
   <string name="pref_feed_settings_dialog_msg">Această setare este unică pentru fiecare podcast. Poți schimba această setare dacă deschizi pagina podcastului.</string>
   <string name="pref_contribute">Contribuie</string>
   <string name="pref_show_subscription_title">Arată titlul abonamentului</string>
-  <string name="pref_show_subscription_title_summary">Arată titlul abonamentului sub imaginea de copertă.</string>
+  <string name="pref_show_subscription_title_summary">Afișează titlul abonamentului sub imaginea de album</string>
   <string name="pref_new_episodes_action_title">Acțiunea pentru episoadele noi</string>
   <string name="pref_new_episodes_action_sum">Acțiunea executată pentru episoade noi</string>
   <!--About screen-->
@@ -530,6 +543,7 @@
   <string name="type_to_search">Introdu o întrebare pentru a începe căutarea </string>
   <string name="search_label">Caută</string>
   <string name="no_results_for_query">Nu au fost găsite rezultate pentru \"%1$s\"</string>
+  <string name="search_online">Caută online</string>
   <!--Synchronization-->
   <string name="sync_status_started">Sincronizarea a început</string>
   <string name="sync_status_episodes_upload">Se încarcă schimbările episoadelor...</string>
@@ -563,7 +577,6 @@
   <string name="please_wait">Vă rugăm așteptați...</string>
   <string name="export_error_label">Eroare exportare</string>
   <string name="export_success_title">Exportarea a reușit</string>
-  <string name="export_success_sum">Fișierul exportat a fost salvat în:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Accesarea memoriei externe este necesară pentru a citi fișierul OPML</string>
   <string name="successful_import_label">Importul a reușit</string>
   <string name="import_ok">Vă rugăm să apăsa|ți OK pentru a reporni AntennaPod</string>
@@ -599,7 +612,7 @@
   </plurals>
   <string name="auto_enable_label">Activează automat cronometrul de somn în momenul redării</string>
   <string name="auto_enable_label_with_times">Activează automat cronometrul de somn în momenul redării între %s și %s</string>
-  <string name="auto_enable_change_times">Schimbă intervavele de timp</string>
+  <string name="auto_enable_change_times">Schimbă intervalul de timp</string>
   <string name="sleep_timer_enabled_label">Cronometru pentru somn pornit</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">Alege furnizorul de sincronizare</string>
@@ -657,15 +670,19 @@
   <string name="decrease_speed">Micșorează viteza</string>
   <string name="media_type_video_label">Video</string>
   <string name="status_downloading_label">Episodul se descarcă</string>
-  <string name="in_queue_label">Episodul se află în coada de redare</string>
-  <string name="is_favorite_label">Episodul este marcat ca favorit</string>
-  <string name="is_inbox_label">Episodul este în inbox</string>
+  <string name="in_queue_label">În coada de redare</string>
+  <string name="is_favorite_label">Marchează ca favorit</string>
+  <string name="is_inbox_label">În inbox</string>
+  <string name="is_played">Redat</string>
   <string name="load_next_page_label">Încarcă următoarea pagină</string>
   <string name="position">Poziția: %1$s</string>
+  <string name="remaining_time">Timp rămas: %1$s</string>
   <string name="apply_action">Aplică setarea</string>
   <string name="play_chapter">Redă capitolul</string>
   <string name="prev_chapter">Capitolul precedent</string>
   <string name="next_chapter">Următorul capitol</string>
+  <string name="shuffle_suggestions">Sugestii aleatorii</string>
+  <string name="add_preset">Adaugă valoare predefinită</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">Autentificare</string>
   <string name="authentication_descr">Schimbăți numele si parola pentru acest podcast și episoadele sale,</string>
@@ -744,6 +761,8 @@
   <string name="sort_old_new">Vechi \u2192 Noi</string>
   <string name="sort_short_long">Scurt \u2192  Lung</string>
   <string name="sort_long_short">Lung \u2192 Scurt</string>
+  <string name="sort_small_large">Mic \u2192 Mare</string>
+  <string name="sort_large_small">Mare \u2192 Mic</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Include poziția de redare</string>
   <string name="share_dialog_episode_website_label">Pagina web a episodului</string>
@@ -783,8 +802,6 @@
   <string name="notification_channel_download_error_description">Afișate când descărcarea sau reîmprospătarea fluxului de date a eșuat. </string>
   <string name="notification_channel_sync_error">Sincronizarea a eșuat</string>
   <string name="notification_channel_sync_error_description">Indicată când sincronizarea cu gpodder eșuează</string>
-  <string name="notification_channel_auto_download">Descărcările automate sunt complete</string>
-  <string name="notification_channel_episode_auto_download">Afișată când episoadele au fost descărcate automat.</string>
   <string name="notification_channel_new_episode">Episod nou</string>
   <string name="notification_channel_new_episode_description">Afișată când un episod nou a fost găsit, când notificările sunt pornite</string>
   <!--Widget settings-->

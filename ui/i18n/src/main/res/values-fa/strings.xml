@@ -53,7 +53,6 @@
   <string name="home_downloads_title">مدیریت موارد بارگیری‌شده</string>
   <string name="home_welcome_title">به آنتناپاد خوش‌آمدید!</string>
   <string name="home_welcome_text">شما هنوز عضو پادکستی نشده اید. منو برای اضافه کردن پادکست باز نمایید.</string>
-  <string name="notification_permission_text">آنتناپاد برای نمایش آگاهی‌ها هنگام بارگیری قسمت‌ها نیاز به اجازه‌تان دارد.</string>
   <string name="notification_permission_denied">اجازه را رد کردید.</string>
   <string name="open_settings">گشودن تنظمیات</string>
   <string name="configure_home">پیکربندی صفحه اصلی</string>
@@ -110,16 +109,10 @@
   <string name="retry_label">تلاش مجدد</string>
   <string name="auto_download_label">شامل بارگیری خودکار شود</string>
   <string name="auto_delete_label">حذف خودکار قسمت</string>
-  <string name="feed_volume_reduction">کاهش حجم صدا</string>
-  <string name="feed_volume_reduction_summary">کاهش حجم صدا برای قسمت‌های این پادکست: %1$s</string>
-  <string name="feed_volume_reduction_off">خاموش</string>
-  <string name="feed_volume_reduction_light">سبک</string>
-  <string name="feed_volume_reduction_heavy">سنگین</string>
   <string name="feed_auto_download_always">همیشه</string>
   <string name="feed_auto_download_never">هیچگاه</string>
   <string name="feed_new_episodes_action_add_to_inbox">افزودن به صندوق ورودی</string>
   <string name="feed_new_episodes_action_nothing">هیچ</string>
-  <string name="send_label">ارسال…</string>
   <string name="episode_cleanup_never">هرگز</string>
   <string name="episode_cleanup_except_favorite_removal">وقتی که جزو علاقه‌مندی‌ها نباشد</string>
   <string name="episode_cleanup_queue_removal">وقتی که در صف نیست</string>
@@ -398,7 +391,6 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">وصل دوبارهٔ گوشی</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">وصل دوبارهٔ بلوتوث</string>
   <string name="pref_stream_over_download_title">ترجیح جریان</string>
-  <string name="pref_stream_over_download_sum">دکمه پخش جریان را به جای دکمه بارگیری در لیست ها نمایش بده.</string>
   <string name="pref_mobileUpdate_title">به‌روز رسانی‌های همراه</string>
   <string name="pref_mobileUpdate_sum">آنچه که باید از طریق اتصال داده تلفن همراه مجاز است را انتخاب کنید</string>
   <string name="pref_mobileUpdate_refresh">تازه سازی پادکست</string>
@@ -413,13 +405,11 @@
   <string name="pref_tinted_theme_title">رنگ‌های پویا</string>
   <string name="pref_tinted_theme_message">سازگاری رنگ‌های کاره بر اساس کاغذدیواری</string>
   <string name="pref_nav_drawer_items_title">تنظیم موارد کشوی پیمایش</string>
-  <string name="pref_nav_drawer_items_sum">تغییر موارد قابل نمایش در کشوی پیمایش</string>
   <string name="pref_nav_drawer_feed_order_title">تنظیم ترتیب اشتراک</string>
   <string name="pref_nav_drawer_feed_order_sum">تغییر ترتیب اشتراک هایتان</string>
   <string name="pref_nav_drawer_feed_counter_title">تنظیم شمارشگر اشتراک</string>
   <string name="pref_nav_drawer_feed_counter_sum">اطلاعات نمایش داده شده توسط شمارندهٔ اشتراک را تغییر دهید. همچنین اگر «ترتیب اشتراک» روی «شمارنده» تنظیم شود، بر مرتب‌سازی اشتراک‌ها نیز تأثیر می‌گذارد.</string>
   <string name="pref_automatic_download_title">بارگیری خودکار</string>
-  <string name="pref_automatic_download_sum">پیکربندی بارگیری خودکار قسمت‌ها.</string>
   <string name="pref_autodl_wifi_filter_title">فیلتر Wi-Fi را فعال کنید</string>
   <string name="pref_autodl_wifi_filter_sum">بارگیری خودکار فقط باید از طریق شبکه های Wi-Fi انتخاب شده مجاز باشد.</string>
   <string name="pref_automatic_download_on_battery_title">بارگیری زمانی که سیستم شارژ نمیشود مجاز باشد</string>
@@ -451,7 +441,6 @@
   <string name="pref_expandNotify_title">اولویت زیاد آگاهی</string>
   <string name="pref_expandNotify_sum">معمولاً آگاهی را برای نمایش دکمه های پخش می‌گستراند.</string>
   <string name="pref_persistNotify_title">واپایشگرهای پخش ثابت</string>
-  <string name="pref_persistNotify_sum">نگه داشتن آگاهی و واپایش‌های صفحهٔ قفل هنگام مکث پخش.</string>
   <string name="pref_compact_notification_buttons_title">تنظیم دکمه‌های آگاهی فشرده</string>
   <string name="pref_compact_notification_buttons_sum">تغییر دکمه‌های پخش هنگام جمع شدن آگاهی. دکمهٔ پخش و مکث همواره آشکار است.</string>
   <string name="pref_compact_notification_buttons_dialog_title">حداکثر %1$d مورد را انتخاب کنید</string>
@@ -477,14 +466,11 @@
   <string name="pref_skip_silence_title">پرش از سکوت در صدا</string>
   <string name="behavior">رفتار</string>
   <string name="pref_default_page">صفحهٔ پیش‌گزیده</string>
-  <string name="pref_default_page_sum">صفحه‌ای که هنگام راه‌اندازی AntennaPod باز می‌شود.</string>
   <string name="pref_back_button_opens_drawer">دکمهٔ بارگشت کشو را می‌گشاید</string>
   <string name="pref_back_button_opens_drawer_summary">زدن دکمهٔ بارگگشت روی صفحهٔ پیش‌گزیده، گشوی ناوبری را می‌گشاید</string>
   <string name="remember_last_page">صفحه آخر را به خاطر بسپار</string>
   <string name="pref_delete_removes_from_queue_title">خذف از صف برمی‌دارد</string>
-  <string name="pref_delete_removes_from_queue_sum">برداشتن خودکار قسمت از صف هنگام حذفش.</string>
   <string name="pref_filter_feed_title">پالایهٔ اشتراک</string>
-  <string name="pref_filter_feed_sum">اشتراک های خود را در کشوی ناوبری و صفحه اشتراک ها فیلتر کنید.</string>
   <string name="subscriptions_are_filtered">اشتراک ها فیلتر می شوند.</string>
   <string name="subscriptions_counter_greater_zero">شمارنده بزرگتر از صفر</string>
   <string name="auto_downloaded">بارگیری خودکار</string>
@@ -496,7 +482,6 @@
   <string name="pref_feed_settings_dialog_msg">این تنظیم برای هر پادکست منحصر به فرد است. با باز کردن صفحه پادکست می توانید آن را تغییر دهید.</string>
   <string name="pref_contribute">مشارکت</string>
   <string name="pref_show_subscription_title">نمایش عنوان اشتراک</string>
-  <string name="pref_show_subscription_title_summary">عنوان اشتراک را در زیر تصویر جلد نمایش دهید.</string>
   <string name="pref_new_episodes_action_title">کنش قسمت جدید</string>
   <string name="pref_new_episodes_action_sum">کنشی که برای قسمت‌های جدید انجام می‌شود</string>
   <!--About screen-->
@@ -548,7 +533,6 @@
   <string name="please_wait">صبر کنید لطفا ...</string>
   <string name="export_error_label">خطا در خارج کردن</string>
   <string name="export_success_title">خارج کردن موفقیت آمیز</string>
-  <string name="export_success_sum">پروندهٔ برون‌ریخته نوشته شد در:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">برای خواندن پروندهٔ OPML نباز به دسترسی حافظهٔ خارجی است</string>
   <string name="successful_import_label">وارد کردن موفقیت آمیز</string>
   <string name="import_ok">لطفاً OK را فشار دهید تا آنتن پاد دوباره راه اندازی شود</string>
@@ -581,7 +565,6 @@
   </plurals>
   <string name="auto_enable_label">فعّال سازی خودکار شمارشگر معکوس خواب هنگام زدن پخش</string>
   <string name="auto_enable_label_with_times">فعّال سازی خودکار شمارشگر معکوس خواب هنگام زدن پخش بین %s و %s</string>
-  <string name="auto_enable_change_times">زمان‌های تعویض</string>
   <string name="sleep_timer_enabled_label">زمان‌سنج خواب به کار افتاد</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">گزینش فراهمگر همگام سازی</string>
@@ -639,9 +622,6 @@
   <string name="decrease_speed">کاهش سرعت</string>
   <string name="media_type_video_label">ویدئو</string>
   <string name="status_downloading_label">قسمت در حال بارگیری است</string>
-  <string name="in_queue_label">قسمت در صف است</string>
-  <string name="is_favorite_label">قسمت به عنوان موردعلاقه علامت گذاری شده است</string>
-  <string name="is_inbox_label">قسمت در صندوق ورودی است</string>
   <string name="load_next_page_label">صفحه بعدی را لود کن</string>
   <string name="position">موقعیت: %1$s</string>
   <string name="apply_action">حرکت را اعمال کن</string>
@@ -765,8 +745,6 @@
   <string name="notification_channel_download_error_description">نمایش به هنگامی که بارگیری یا بروزرسانی فید با شکست مواجه می شود.</string>
   <string name="notification_channel_sync_error">همگام سازی ناموفقیت آمیز</string>
   <string name="notification_channel_sync_error_description">هنگامی که همگام سازی gpodder انجام نشد نشان داده می شود.</string>
-  <string name="notification_channel_auto_download">بارگیری خودکار انجام شد</string>
-  <string name="notification_channel_episode_auto_download">نمایش داده شده هنگام بار گرفته شدن خودکار قسمت‌ها.</string>
   <string name="notification_channel_new_episode">قسمت جدید</string>
   <string name="notification_channel_new_episode_description">نمایش داده شده هنگام یافتن قسمت جدیدی از یک پادکست، هنگامی که آگاهی ها به کار افتاده اند</string>
   <!--Widget settings-->

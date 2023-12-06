@@ -53,7 +53,6 @@
   <string name="home_downloads_title">다운로드 관리</string>
   <string name="home_welcome_title">안테나팟에 잘 오셨습니다!</string>
   <string name="home_welcome_text">아직 어떤 팟캐스트도 구독하지 않았습니다. 가장자리 메뉴를 열어 팟캐스트를 추가하십시오.</string>
-  <string name="notification_permission_text">에피소드를 다운로드할 때 알림을 표시하려면 권한이 필요합니다.</string>
   <string name="notification_permission_denied">권한을 거부했습니다.</string>
   <string name="open_settings">설정 열기</string>
   <string name="configure_home">홈 화면 구성</string>
@@ -110,16 +109,10 @@
   <string name="retry_label">다시 시도</string>
   <string name="auto_download_label">자동 다운로드에 포함</string>
   <string name="auto_delete_label">에피소드 자동 삭제</string>
-  <string name="feed_volume_reduction">볼륨 줄이기</string>
-  <string name="feed_volume_reduction_summary">이 팟캐스트의 에피소드에 대해 볼륨을 줄이기: %1$s</string>
-  <string name="feed_volume_reduction_off">끄기</string>
-  <string name="feed_volume_reduction_light">가볍게</string>
-  <string name="feed_volume_reduction_heavy">무겁게</string>
   <string name="feed_auto_download_always">항상</string>
   <string name="feed_auto_download_never">안 함</string>
   <string name="feed_new_episodes_action_add_to_inbox">새로 받음 목록에 추가</string>
   <string name="feed_new_episodes_action_nothing">없음</string>
-  <string name="send_label">보내기…</string>
   <string name="episode_cleanup_never">안 함</string>
   <string name="episode_cleanup_except_favorite_removal">즐겨찾기 아닐 때</string>
   <string name="episode_cleanup_queue_removal">대기열에 없을 때</string>
@@ -383,7 +376,6 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">헤드폰 재연결</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">블루투스 다시 연결</string>
   <string name="pref_stream_over_download_title">스트리밍 선호</string>
-  <string name="pref_stream_over_download_sum">목록에서 다운로드 버튼 대신 스트리밍 버튼을 표시합니다.</string>
   <string name="pref_mobileUpdate_title">휴대전화 망 업데이트</string>
   <string name="pref_mobileUpdate_sum">휴대전화 데이터 연결을 통해 무엇을 허용할지 선택합니다.</string>
   <string name="pref_mobileUpdate_refresh">팟캐스트 새로 고침</string>
@@ -398,13 +390,11 @@
   <string name="pref_tinted_theme_title">동적으로 색깔 바꾸기</string>
   <string name="pref_tinted_theme_message">배경에 따라 앱의 색 맞추기</string>
   <string name="pref_nav_drawer_items_title">네비게이션 드로어 항목 설정</string>
-  <string name="pref_nav_drawer_items_sum">네비게이션 드로어에 어떤 항목을 표시할지 바꿉니다.</string>
   <string name="pref_nav_drawer_feed_order_title">구독 순서 설정</string>
   <string name="pref_nav_drawer_feed_order_sum">구독 순서를 바꿉니다</string>
   <string name="pref_nav_drawer_feed_counter_title">구독 카운터 설정</string>
   <string name="pref_nav_drawer_feed_counter_sum">구독 카운터로 표시하는 정보를 바꿉니다. \'구독 순서\'를 \'카운터\'로 설정한 경우 구독 목록의 정렬 순서에도 영향을 미칩니다.</string>
   <string name="pref_automatic_download_title">자동 다운로드</string>
-  <string name="pref_automatic_download_sum">에피소드 자동 다운로드를 설정합니다.</string>
   <string name="pref_autodl_wifi_filter_title">Wi-Fi 필터 사용</string>
   <string name="pref_autodl_wifi_filter_sum">선택한 Wi-Fi 네트워크에 대해서만 자동 다운로드를 허용합니다.</string>
   <string name="pref_automatic_download_on_battery_title">충전하지 않을 때 다운로드</string>
@@ -436,7 +426,6 @@
   <string name="pref_expandNotify_title">높은 알림 우선순위</string>
   <string name="pref_expandNotify_sum">알림에서 재생 버튼이 표시되도록 확장합니다.</string>
   <string name="pref_persistNotify_title">재생 조작 항상 표시</string>
-  <string name="pref_persistNotify_sum">재생이 일시 중지했을 때에도 알림과 잠금 화면의 조작 기능을 유지합니다.</string>
   <string name="pref_compact_notification_buttons_title">간략한 알림 버튼 사용</string>
   <string name="pref_compact_notification_buttons_sum">알림이 중첩되었을 경우 재생 버튼을 바꿉니다. 재생/일시정지 단추는 항상 포함됩니다.</string>
   <string name="pref_compact_notification_buttons_dialog_title">최대 %1$d개 항목 선택</string>
@@ -462,14 +451,11 @@
   <string name="pref_skip_silence_title">오디오 묵음 건너뛰기</string>
   <string name="behavior">동작</string>
   <string name="pref_default_page">기본 페이지</string>
-  <string name="pref_default_page_sum">안테나팟을 시작했을 때 열리는 화면.</string>
   <string name="pref_back_button_opens_drawer">뒤로 버튼을 누르면 드로어 열기</string>
   <string name="pref_back_button_opens_drawer_summary">기본 페이지에서 뒤로 버튼을 누르면 네비게이션 드로어를 엽니다</string>
   <string name="remember_last_page">마지막 페이지 저장</string>
   <string name="pref_delete_removes_from_queue_title">제거된 항목 대기열에서 삭제</string>
-  <string name="pref_delete_removes_from_queue_sum">삭제된 항목을 대기열에서 자동으로 삭제합니다.</string>
   <string name="pref_filter_feed_title">구독 필터</string>
-  <string name="pref_filter_feed_sum">네비게이션 드로어 및 구독 화면의 구독 내용을 필터링합니다.</string>
   <string name="subscriptions_are_filtered">구독 필터 적용함.</string>
   <string name="subscriptions_counter_greater_zero">0보다 큰 개수</string>
   <string name="auto_downloaded">자동 다운로드</string>
@@ -481,7 +467,6 @@
   <string name="pref_feed_settings_dialog_msg">이 설정은 팟캐스트마다 다릅니다. 팟캐스트 페이지를 열어서 바꿀 수 있습니다.</string>
   <string name="pref_contribute">기여</string>
   <string name="pref_show_subscription_title">구독 제목 표시</string>
-  <string name="pref_show_subscription_title_summary">커버 이미지 아래에 구독 제목 표시.</string>
   <string name="pref_new_episodes_action_title">새 에피소드 동작</string>
   <string name="pref_new_episodes_action_sum">새 에피소드에 대해 할 동작</string>
   <!--About screen-->
@@ -533,7 +518,6 @@
   <string name="please_wait">기다리십시오…</string>
   <string name="export_error_label">내보내기 오류</string>
   <string name="export_success_title">내보내기 성공</string>
-  <string name="export_success_sum">내보낸 파일을 다음에 저장했습니다:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">OPML 파일을 읽으려면 외부 저장소 접근이 필요합니다</string>
   <string name="successful_import_label">가져오기 성공</string>
   <string name="import_ok">안테나팟을 다시 시작하려면 확인을 누르십시오</string>
@@ -563,7 +547,6 @@
   </plurals>
   <string name="auto_enable_label">재생을 누를 때 자동으로 취침 타이머를 활성화</string>
   <string name="auto_enable_label_with_times">%s와 %s 사이에 재생을 누를 때 자동으로 취침 타이머를 활성화</string>
-  <string name="auto_enable_change_times">시간 바꾸기</string>
   <string name="sleep_timer_enabled_label">취침 타이머 사용함</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">동기화 프로바이더 선택</string>
@@ -621,9 +604,6 @@
   <string name="decrease_speed">속도 감소</string>
   <string name="media_type_video_label">비디오</string>
   <string name="status_downloading_label">에피소드를 다운로드하는 중입니다</string>
-  <string name="in_queue_label">에피소드가 대기열에 들어 있습니다</string>
-  <string name="is_favorite_label">에피소드를 좋아한다고 표시되었습니다</string>
-  <string name="is_inbox_label">새로 받음 목록에 에피소드 있음</string>
   <string name="load_next_page_label">다음 페이지 읽기</string>
   <string name="position">위치: %1$s</string>
   <string name="apply_action">동작 적용</string>
@@ -747,8 +727,6 @@
   <string name="notification_channel_download_error_description">다운로드 또는 피드 업데이트가 실패할 때 표시.</string>
   <string name="notification_channel_sync_error">동기화 실패</string>
   <string name="notification_channel_sync_error_description">gpodder 동기화가 실패할 때 표시.</string>
-  <string name="notification_channel_auto_download">자동 다운로드 마침</string>
-  <string name="notification_channel_episode_auto_download">에피소드를 자동으로 다운로드했을 때 표시됩니다.</string>
   <string name="notification_channel_new_episode">새 에피소드</string>
   <string name="notification_channel_new_episode_description">알림 기능을 켰을 경우, 팟캐스트의 새 에피소드를 찾으면 표시됩니다.</string>
   <!--Widget settings-->

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="echo_home_header">Bilan de l\'année</string>
+    <string name="echo_home_subtitle">Vos podcasts et statistiques de cette année. Exclusivement sur votre téléphone.</string>
+
+    <string name="echo_intro_your_year">Votre année</string>
+    <string name="echo_intro_in_podcasts">de podcasts</string>
+    <string name="echo_intro_locally">généré par votre téléphone pour respecter votre vie privée</string>
+
+    <string name="echo_hours_this_year">Cette année vous avez écouté</string>
+    <plurals name="echo_hours_podcasts">
+        <item quantity="one">heures d\'épisodes\nd\'%1$d seul podcast</item>
+        <item quantity="many">heures d\'épisodes\nde %1$d podcasts différents</item>
+        <item quantity="other">heures d\'épisodes\nde %1$d podcasts différents</item>
+    </plurals>
+
+    <string name="echo_queue_title_clean">Et vous êtes prêt à finir à l\'année avec seulement</string>
+    <string name="echo_queue_title_many">Et vous avez de la réserve pour finir l\'année avec</string>
+    <plurals name="echo_queue_hours_waiting">
+        <item quantity="one">heures pour finir votre liste de lecture\nd\'%1$d seul épisode</item>
+        <item quantity="many">heures finir votre liste de lecture\nde %1$d épisodes</item>
+        <item quantity="other">heures finir votre liste de lecture\nde %1$d épisodes</item>
+    </plurals>
+    <string name="echo_queue_hours_clean">C\'est environ %1$s tous les jours avant que %2$d ne commence.</string>
+    <string name="echo_queue_hours_normal">C\'est environ %1$s tous les jours avant que %2$d ne commence. Si vous voulez y arriver des épisodes vont devoir être sautés !</string>
+    <string name="echo_queue_hours_much">C\'est environ %1$s tous les jours avant que %2$d ne commence. Hein !? Ça semble tendu !</string>
+
+    <string name="echo_listened_after_title">On a lancé quelques analyses entre le moment où un épisode est publié et son écoute. Notre conclusion ?</string>
+    <string name="echo_listened_after_comment_easy">Vous êtes zen</string>
+    <string name="echo_listened_after_time">En général, vous avez écouté un episode %1$s après sa publication.</string>
+    <string name="echo_listened_after_comment_addict">Vous êtes accro aux podcasts</string>
+
+    <string name="echo_hoarder_title">On s\'est aussi demandé si vous écoutiez les podcasts auxquels vous êtes abonné ?</string>
+    <string name="echo_hoarder_subtitle_hoarder">Au vu des chiffres on a détecté un petit syndrome de collectionnite !</string>
+    <string name="echo_hoarder_comment_hoarder">Et il parait que les chiffres ne mentent pas. Avec seulement %1$d%% de vos %2$d abonnements actifs ayant été lu cette année, nous avons probablement raison.</string>
+    <string name="echo_hoarder_subtitle_medium">Rien à signaler ! Pas de collectionnite aigüe détectée !</string>
+    <string name="echo_hoarder_comment_medium">Vous avez lu %1$d%% de vos %2$d abonnements actifs cette année. Pourquoi ne pas allez rejeter un coup d\'oeil à \"%3$s\" ?</string>
+    <string name="echo_hoarder_subtitle_clean">Nickel !</string>
+    <string name="echo_hoarder_comment_clean">Vous avez lu %1$d%% de vos %2$d abonnements actifs cette année. On parie que vous ête du genre à avoir un bureau propre !</string>
+
+    <string name="echo_thanks_large">Merci</string>
+    <string name="echo_thanks_we_are_glad_old">d\'avoir partagé cette année avec nous !\n\nVotre premier épisode avec nous a été lu en %1$s et on est fier de continuer à vous être utile.</string>
+    <string name="echo_thanks_we_are_glad_new">de nous avoir rejoint cette année !\n\nPeu importe si vous avez changé d\'application ou commencé à écouter les podcasts avec nous : on est content de vous avoir !</string>
+    <string name="echo_thanks_now_favorite">Maintenant, jetons un coup d\'oeil à vos podcasts préférés…</string>
+
+    <string name="echo_share_heading">Mes podcasts préférés</string>
+    <string name="echo_share">Mon année %d en podcasts. #AntennaPodEcho</string>
+</resources>
