@@ -296,8 +296,6 @@
     </string-array>
 
     <string-array name="full_notification_buttons_options">
-        <item>@string/rewind_label</item>
-        <item>@string/fast_forward_label</item>
         <item>@string/skip_episode_label</item>
         <item>@string/next_chapter</item>
         <item>@string/playback_speed</item>

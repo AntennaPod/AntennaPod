@@ -238,9 +238,7 @@ public class UserPreferences {
     public static List<Integer> getFullNotificationButtons() {
         String[] buttons = TextUtils.split(
             prefs.getString(PREF_FULL_NOTIFICATION_BUTTONS,
-                NOTIFICATION_BUTTON_REWIND + ","
-                    + NOTIFICATION_BUTTON_FAST_FORWARD + ","
-                    + NOTIFICATION_BUTTON_SKIP),
+                    Integer.toString(NOTIFICATION_BUTTON_SKIP)),
             ",");
 
         List<Integer> notificationButtons = new ArrayList<>();
@@ -261,14 +259,6 @@ public class UserPreferences {
      */
     private static boolean showButtonOnFullNotification(int buttonId) {
         return getFullNotificationButtons().contains(buttonId);
-    }
-
-    public static boolean showRewindOnFullNotification() {
-        return showButtonOnFullNotification(NOTIFICATION_BUTTON_REWIND);
-    }
-
-    public static boolean showFastForwardOnFullNotification() {
-        return showButtonOnFullNotification(NOTIFICATION_BUTTON_FAST_FORWARD);
     }
 
     public static boolean showSkipOnFullNotification() {

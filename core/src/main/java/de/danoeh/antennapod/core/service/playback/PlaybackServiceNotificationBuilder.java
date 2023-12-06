@@ -176,16 +176,14 @@ public class PlaybackServiceNotificationBuilder {
 
         int numActions = 0; // we start and 0 and then increment by 1 for each call to addAction
 
-        if (UserPreferences.showRewindOnFullNotification()) {
-            PendingIntent rewindButtonPendingIntent = getPendingIntentForMediaAction(
+        PendingIntent rewindButtonPendingIntent = getPendingIntentForMediaAction(
                 KeyEvent.KEYCODE_MEDIA_REWIND, numActions);
-            notification.addAction(R.drawable.ic_notification_fast_rewind, context.getString(R.string.rewind_label),
+        notification.addAction(R.drawable.ic_notification_fast_rewind, context.getString(R.string.rewind_label),
                 rewindButtonPendingIntent);
-            if (UserPreferences.showRewindOnCompactNotification()) {
-                compactActionList.add(numActions);
-            }
-            numActions++;
+        if (UserPreferences.showRewindOnCompactNotification()) {
+            compactActionList.add(numActions);
         }
+        numActions++;
 
         if (playerStatus == PlayerStatus.PLAYING) {
             PendingIntent pauseButtonPendingIntent = getPendingIntentForMediaAction(
@@ -202,20 +200,18 @@ public class PlaybackServiceNotificationBuilder {
         }
         compactActionList.add(numActions++);
 
-        if (UserPreferences.showFastForwardOnFullNotification()) {
-            // ff follows play, then we have skip (if it's present)
-            PendingIntent ffButtonPendingIntent = getPendingIntentForMediaAction(
+        // ff follows play, then we have skip (if it's present)
+        PendingIntent ffButtonPendingIntent = getPendingIntentForMediaAction(
                 KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, numActions);
-            notification.addAction(
-                    R.drawable.ic_notification_fast_forward,
-                    context.getString(R.string.fast_forward_label),
-                    ffButtonPendingIntent
-            );
-            if (UserPreferences.showFastForwardOnCompactNotification()) {
-                compactActionList.add(numActions);
-            }
-            numActions++;
+        notification.addAction(
+                R.drawable.ic_notification_fast_forward,
+                context.getString(R.string.fast_forward_label),
+                ffButtonPendingIntent
+        );
+        if (UserPreferences.showFastForwardOnCompactNotification()) {
+            compactActionList.add(numActions);
         }
+        numActions++;
 
         if (UserPreferences.showNextChapterOnFullNotification() && playable.getChapters() != null) {
             PendingIntent nextChapterPendingIntent = getPendingIntentForCustomMediaAction(

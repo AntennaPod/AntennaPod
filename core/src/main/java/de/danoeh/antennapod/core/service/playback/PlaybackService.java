@@ -1234,31 +1234,27 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         sessionState.setActions(capabilities);
 
-        if (UserPreferences.showRewindOnFullNotification()) {
-            // On Android Auto, custom actions are added in the following order around the play button, if no default
-            // actions are present: Near left, near right, far left, far right, additional actions panel
-            PlaybackStateCompat.CustomAction.Builder rewindBuilder = new PlaybackStateCompat.CustomAction.Builder(
+        // On Android Auto, custom actions are added in the following order around the play button, if no default
+        // actions are present: Near left, near right, far left, far right, additional actions panel
+        PlaybackStateCompat.CustomAction.Builder rewindBuilder = new PlaybackStateCompat.CustomAction.Builder(
                 CUSTOM_ACTION_REWIND,
-                getString(R.string.rewind_label),
-                R.drawable.ic_notification_fast_rewind
-            );
-            WearMediaSession.addWearExtrasToAction(rewindBuilder);
-            sessionState.addCustomAction(rewindBuilder.build());
-        }
+               getString(R.string.rewind_label),
+              R.drawable.ic_notification_fast_rewind
+        );
+        WearMediaSession.addWearExtrasToAction(rewindBuilder);
+        sessionState.addCustomAction(rewindBuilder.build());
 
-        if (UserPreferences.showFastForwardOnFullNotification()) {
-            PlaybackStateCompat.CustomAction.Builder fastForwardBuilder = new PlaybackStateCompat.CustomAction.Builder(
-                CUSTOM_ACTION_FAST_FORWARD,
+        PlaybackStateCompat.CustomAction.Builder fastForwardBuilder = new PlaybackStateCompat.CustomAction.Builder(
+            CUSTOM_ACTION_FAST_FORWARD,
                 getString(R.string.fast_forward_label),
                 R.drawable.ic_notification_fast_forward
-            );
-            WearMediaSession.addWearExtrasToAction(fastForwardBuilder);
-            sessionState.addCustomAction(fastForwardBuilder.build());
-        }
+        );
+        WearMediaSession.addWearExtrasToAction(fastForwardBuilder);
+        sessionState.addCustomAction(fastForwardBuilder.build());
 
         if (UserPreferences.showPlaybackSpeedOnFullNotification()) {
             sessionState.addCustomAction(
-                new PlaybackStateCompat.CustomAction.Builder(
+                    new PlaybackStateCompat.CustomAction.Builder(
                     CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED,
                     getString(R.string.playback_speed),
                     R.drawable.ic_notification_playback_speed

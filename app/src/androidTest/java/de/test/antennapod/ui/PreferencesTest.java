@@ -89,13 +89,9 @@ public class PreferencesTest {
         onView(withText(R.string.confirm_label)).perform(click());
 
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> !UserPreferences.showRewindOnFullNotification());
+                .until(() -> !UserPreferences.showSkipOnFullNotification());
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> !UserPreferences.showFastForwardOnFullNotification());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.showSkipOnFullNotification());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> !UserPreferences.showNextChapterOnFullNotification());
+                .until(() -> UserPreferences.showNextChapterOnFullNotification());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> !UserPreferences.showPlaybackSpeedOnFullNotification());
     }
