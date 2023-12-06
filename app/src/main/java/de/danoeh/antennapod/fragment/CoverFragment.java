@@ -387,8 +387,8 @@ public class CoverFragment extends Fragment {
                 Map.Entry<Long, TranscriptSegment> nextSeg = transcript.getSegmentAfterTime(seg.getEndTime());
                 int origLen = 0;
                 int ellipsisAway = l.getEllipsisCount(lines - 1);
-                // TT TODO Using spaces to find which words we trim will not work for transcripts
-                //  like Chinese that don't have spaces
+                // Using spaces to find which words we trim will not work for transcripts
+                // like Chinese that don't have spaces
                 if (lines >= 2 && ellipsisAway > 0) {
                     origLen = seg.getWords().length();
                     int ellipsisStart = seg.getWords().length() - ((int) (ellipsisAway));
