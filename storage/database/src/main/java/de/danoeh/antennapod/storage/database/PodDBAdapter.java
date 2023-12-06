@@ -122,6 +122,8 @@ public class PodDBAdapter {
     public static final String KEY_NEW_EPISODES_ACTION = "new_episodes_action";
     public static final String KEY_PODCASTINDEX_CHAPTER_URL = "podcastindex_chapter_url";
     public static final String KEY_STATE = "state";
+    public static final String KEY_PODCASTINDEX_TRANSCRIPT_URL = "podcastindex_transcript_url";
+    public static final String KEY_PODCASTINDEX_TRANSCRIPT_TYPE = "podcastindex_transcript_type";
 
     // Table names
     public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -184,7 +186,9 @@ public class PodDBAdapter {
             + KEY_HAS_CHAPTERS + " INTEGER," + KEY_ITEM_IDENTIFIER + " TEXT,"
             + KEY_IMAGE_URL + " TEXT,"
             + KEY_AUTO_DOWNLOAD_ENABLED + " INTEGER,"
-            + KEY_PODCASTINDEX_CHAPTER_URL + " TEXT)";
+            + KEY_PODCASTINDEX_CHAPTER_URL + " TEXT,"
+            + KEY_PODCASTINDEX_TRANSCRIPT_TYPE + " TEXT,"
+            + KEY_PODCASTINDEX_TRANSCRIPT_URL + " TEXT" + ")";
 
     private static final String CREATE_TABLE_FEED_MEDIA = "CREATE TABLE "
             + TABLE_NAME_FEED_MEDIA + " (" + TABLE_PRIMARY_KEY + KEY_DURATION
@@ -272,7 +276,9 @@ public class PodDBAdapter {
             + TABLE_NAME_FEED_ITEMS + "." + KEY_ITEM_IDENTIFIER + ", "
             + TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE_URL + ", "
             + TABLE_NAME_FEED_ITEMS + "." + KEY_AUTO_DOWNLOAD_ENABLED + ", "
-            + TABLE_NAME_FEED_ITEMS + "." + KEY_PODCASTINDEX_CHAPTER_URL;
+            + TABLE_NAME_FEED_ITEMS + "." + KEY_PODCASTINDEX_CHAPTER_URL + ", "
+            + TABLE_NAME_FEED_ITEMS + "." + KEY_PODCASTINDEX_TRANSCRIPT_TYPE + ", "
+            + TABLE_NAME_FEED_ITEMS + "." + KEY_PODCASTINDEX_TRANSCRIPT_URL;
 
     private static final String KEYS_FEED_MEDIA =
             TABLE_NAME_FEED_MEDIA + "." + KEY_ID + " AS " + SELECT_KEY_MEDIA_ID + ", "
@@ -674,6 +680,14 @@ public class PodDBAdapter {
         values.put(KEY_AUTO_DOWNLOAD_ENABLED, item.isAutoDownloadEnabled());
         values.put(KEY_IMAGE_URL, item.getImageUrl());
         values.put(KEY_PODCASTINDEX_CHAPTER_URL, item.getPodcastIndexChapterUrl());
+
+        // We only store one transcript url, we prefer JSON if it exists
+        String type = item.getPodcastIndexTranscriptType();
+        String url = item.getPodcastIndexTranscriptUrl();
+        if (url != null) {
+            values.put(KEY_PODCASTINDEX_TRANSCRIPT_TYPE, type);
+            values.put(KEY_PODCASTINDEX_TRANSCRIPT_URL, url);
+        }
 
         if (item.getId() == 0) {
             item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));
