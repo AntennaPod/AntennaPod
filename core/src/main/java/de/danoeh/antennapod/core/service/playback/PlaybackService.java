@@ -1238,14 +1238,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         // actions are present: Near left, near right, far left, far right, additional actions panel
         PlaybackStateCompat.CustomAction.Builder rewindBuilder = new PlaybackStateCompat.CustomAction.Builder(
                 CUSTOM_ACTION_REWIND,
-               getString(R.string.rewind_label),
-              R.drawable.ic_notification_fast_rewind
+                getString(R.string.rewind_label),
+                R.drawable.ic_notification_fast_rewind
         );
         WearMediaSession.addWearExtrasToAction(rewindBuilder);
         sessionState.addCustomAction(rewindBuilder.build());
 
         PlaybackStateCompat.CustomAction.Builder fastForwardBuilder = new PlaybackStateCompat.CustomAction.Builder(
-            CUSTOM_ACTION_FAST_FORWARD,
+                CUSTOM_ACTION_FAST_FORWARD,
                 getString(R.string.fast_forward_label),
                 R.drawable.ic_notification_fast_forward
         );

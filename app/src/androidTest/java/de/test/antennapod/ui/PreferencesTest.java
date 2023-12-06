@@ -83,13 +83,13 @@ public class PreferencesTest {
         String[] buttons = res.getStringArray(R.array.full_notification_buttons_options);
         clickPreference(R.string.pref_full_notification_buttons_title);
         // First uncheck checkboxes
-        onView(withText(buttons[0])).perform(click());
         onView(withText(buttons[1])).perform(click());
+        onView(withText(buttons[2])).perform(click());
 
         onView(withText(R.string.confirm_label)).perform(click());
 
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> !UserPreferences.showSkipOnFullNotification());
+                .until(() -> UserPreferences.showSkipOnFullNotification());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> UserPreferences.showNextChapterOnFullNotification());
         Awaitility.await().atMost(1000, MILLISECONDS)
