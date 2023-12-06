@@ -1262,16 +1262,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             );
         }
 
-        if (UserPreferences.showSkipOnFullNotification()) {
-            sessionState.addCustomAction(
-                    new PlaybackStateCompat.CustomAction.Builder(
-                    CUSTOM_ACTION_SKIP_TO_NEXT,
-                    getString(R.string.skip_episode_label),
-                    R.drawable.ic_notification_skip
-                ).build()
-            );
-        }
-
         if (UserPreferences.showNextChapterOnFullNotification()) {
             if (getPlayable() != null && getPlayable().getChapters() != null) {
                 sessionState.addCustomAction(
@@ -1280,6 +1270,16 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         getString(R.string.next_chapter), R.drawable.ic_notification_next_chapter)
                         .build());
             }
+        }
+
+        if (UserPreferences.showSkipOnFullNotification()) {
+            sessionState.addCustomAction(
+                new PlaybackStateCompat.CustomAction.Builder(
+                    CUSTOM_ACTION_SKIP_TO_NEXT,
+                    getString(R.string.skip_episode_label),
+                    R.drawable.ic_notification_skip
+                ).build()
+            );
         }
 
         WearMediaSession.mediaSessionSetExtraForWear(mediaSession);
