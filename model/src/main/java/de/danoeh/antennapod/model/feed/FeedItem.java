@@ -1,8 +1,10 @@
 package de.danoeh.antennapod.model.feed;
 
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -19,6 +21,8 @@ import java.util.concurrent.TimeUnit;
  * @author daniel
  */
 public class FeedItem extends FeedComponent implements Serializable {
+
+    public static String TAG = "FeedItem";
 
     /** tag that indicates this item is in the queue */
     public static final String TAG_QUEUE = "Queue";
@@ -42,6 +46,8 @@ public class FeedItem extends FeedComponent implements Serializable {
     private transient Feed feed;
     private long feedId;
     private String podcastIndexChapterUrl;
+    private String podcastIndexTranscriptUrl;
+    private String podcastIndexTranscriptType;
 
     private int state;
     public static final int NEW = -1;
@@ -82,7 +88,8 @@ public class FeedItem extends FeedComponent implements Serializable {
      * */
     public FeedItem(long id, String title, String link, Date pubDate, String paymentLink, long feedId,
                     boolean hasChapters, String imageUrl, int state,
-                    String itemIdentifier, long autoDownload, String podcastIndexChapterUrl) {
+                    String itemIdentifier, long autoDownload, String podcastIndexChapterUrl,
+                    String transcriptType, String transcriptUrl) {
         this.id = id;
         this.title = title;
         this.link = link;
@@ -95,6 +102,10 @@ public class FeedItem extends FeedComponent implements Serializable {
         this.itemIdentifier = itemIdentifier;
         this.autoDownload = autoDownload;
         this.podcastIndexChapterUrl = podcastIndexChapterUrl;
+        if (transcriptUrl != null) {
+            this.podcastIndexTranscriptUrl = transcriptUrl;
+            this.podcastIndexTranscriptType = transcriptType;
+        }
     }
 
     /**
@@ -161,6 +172,9 @@ public class FeedItem extends FeedComponent implements Serializable {
         }
         if (other.podcastIndexChapterUrl != null) {
             podcastIndexChapterUrl = other.podcastIndexChapterUrl;
+        }
+        if (other.getPodcastIndexTranscriptUrl() != null) {
+            podcastIndexTranscriptUrl = other.podcastIndexTranscriptUrl;
         }
     }
 
@@ -438,6 +452,45 @@ public class FeedItem extends FeedComponent implements Serializable {
 
     public void setPodcastIndexChapterUrl(String url) {
         podcastIndexChapterUrl = url;
+    }
+
+    public void setPodcastIndexTranscriptUrl(String type, String url) {
+        updateTranscriptPreferredFormat(type, url);
+    }
+
+    public String getPodcastIndexTranscriptUrl() {
+        return podcastIndexTranscriptUrl;
+    }
+
+    public String getPodcastIndexTranscriptType() {
+        return podcastIndexTranscriptType;
+    }
+
+    public void updateTranscriptPreferredFormat(String type, String url) {
+        if (StringUtils.isEmpty(type) || StringUtils.isEmpty(url)) {
+            return;
+        }
+
+        String canonicalSrr = "application/srr";
+        String jsonType = "application/json";
+
+        switch (type) {
+            case "application/json":
+                podcastIndexTranscriptUrl = url;
+                podcastIndexTranscriptType = type;
+                break;
+            case "application/srr":
+            case "application/srt":
+            case "application/x-subrip":
+                if (podcastIndexTranscriptUrl == null || !podcastIndexTranscriptType.equals(jsonType)) {
+                    podcastIndexTranscriptUrl = url;
+                    podcastIndexTranscriptType = canonicalSrr;
+                }
+                break;
+            default:
+                Log.d(TAG, "Invalid format for transcript " + type);
+                break;
+        }
     }
 
     @NonNull
