@@ -61,8 +61,10 @@
     <string name="home_downloads_title">Manage downloads</string>
     <string name="home_welcome_title">Welcome to AntennaPod!</string>
     <string name="home_welcome_text">You are not subscribed to any podcasts yet. Open the side menu to add a podcast.</string>
-    <string name="notification_permission_text">AntennaPod needs your permission to show notifications while downloading episodes.</string>
+    <string name="notification_permission_text">AntennaPod needs your permission to show notifications. By default, AntennaPod only shows notifications while something is being downloaded or when something goes wrong.</string>
     <string name="notification_permission_denied">You denied the permission.</string>
+    <string name="notification_permission_deny_warning">If you disable notifications and something goes wrong, you might be unable to find out why it went wrong.</string>
+    <string name="deny_label">Deny</string>
     <string name="open_settings">Open settings</string>
     <string name="configure_home">Configure Home Screen</string>
 
@@ -136,7 +138,6 @@
     <string name="feed_auto_download_never">Never</string>
     <string name="feed_new_episodes_action_add_to_inbox">Add to inbox</string>
     <string name="feed_new_episodes_action_nothing">Nothing</string>
-    <string name="send_label">Send&#8230;</string>
     <string name="episode_cleanup_never">Never</string>
     <string name="episode_cleanup_except_favorite_removal">When not favorited</string>
     <string name="episode_cleanup_queue_removal">When not in queue</string>
@@ -204,6 +205,7 @@
     <string name="add_tag">Add tag</string>
     <string name="rename_tag_label">Rename tag</string>
     <string name="confirm_mobile_feed_refresh_dialog_message">Refreshing podcasts over mobile data connection is disabled in the settings.\n\nDo you want to refresh anyway?</string>
+    <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Your VPN app pretends to be a mobile network (metered connection). Refreshing podcasts over mobile data connection is disabled in the settings.\n\nDo you want to refresh anyway? If you want this problem to be fixed, contact the creators of your VPN app.</string>
 
     <!-- actions on feeditems -->
     <string name="download_label">Download</string>
@@ -307,6 +309,7 @@
     <string name="authentication_notification_title">Authentication required</string>
     <string name="confirm_mobile_download_dialog_title">Confirm mobile download</string>
     <string name="confirm_mobile_download_dialog_message">Downloading over mobile data connection is disabled in the settings. AntennaPod can download the episode later automatically when Wi-Fi is available.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">Your VPN app pretends to be a mobile network (metered connection). Downloading over mobile data connection is disabled in the settings. If you want this problem to be fixed, contact the creators of your VPN app.</string>
     <string name="confirm_mobile_download_dialog_download_later">Download later</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Download anyway</string>
     <string name="confirm_mobile_streaming_notification_title">Confirm mobile streaming</string>
@@ -589,7 +592,6 @@
     <string name="please_wait">Please wait&#8230;</string>
     <string name="export_error_label">Export error</string>
     <string name="export_success_title">Export successful</string>
-    <string name="export_success_sum">The exported file was written to:\n\n%1$s</string>
     <string name="opml_import_ask_read_permission">Access to external storage is required to read the OPML file</string>
     <string name="successful_import_label">Import successful</string>
     <string name="import_ok">Please press OK to restart AntennaPod</string>
@@ -685,9 +687,10 @@
     <string name="decrease_speed">Decrease speed</string>
     <string name="media_type_video_label">Video</string>
     <string name="status_downloading_label">Episode is being downloaded</string>
-    <string name="in_queue_label">Episode is in the queue</string>
-    <string name="is_favorite_label">Episode is marked as favorite</string>
-    <string name="is_inbox_label">Episode is in the inbox</string>
+    <string name="in_queue_label">In the queue</string>
+    <string name="is_favorite_label">Marked as favorite</string>
+    <string name="is_inbox_label">In the inbox</string>
+    <string name="is_played">Played</string>
     <string name="load_next_page_label">Load next page</string>
     <string name="position">Position: %1$s</string>
     <string name="remaining_time">Remaining time: %1$s</string>
@@ -767,25 +770,7 @@
     <string name="not_paused">Not paused</string>
     <string name="hide_played_episodes_label">Played</string>
     <string name="not_played">Not played</string>
-
-    <!-- Sort  -->
-    <string name="sort_title_a_z">Title (A \u2192 Z)</string>
-    <string name="sort_title_z_a">Title (Z \u2192 A)</string>
-    <string name="sort_date_new_old">Date (New \u2192 Old)</string>
-    <string name="sort_date_old_new">Date (Old \u2192 New)</string>
-    <string name="sort_duration_short_long">Duration (Short \u2192 Long)</string>
-    <string name="sort_duration_long_short">Duration (Long \u2192 Short)</string>
-    <string name="sort_filename_a_z">File Name (A \u2192 Z)</string>
-    <string name="sort_filename_z_a">File Name (Z \u2192 A)</string>
-
-    <string name="sort_a_z">A \u2192 Z</string>
-    <string name="sort_z_a">Z \u2192 A</string>
-    <string name="sort_new_old">New \u2192 Old</string>
-    <string name="sort_old_new">Old \u2192 New</string>
-    <string name="sort_short_long">Short \u2192 Long</string>
-    <string name="sort_long_short">Long \u2192 Short</string>
-    <string name="sort_small_large">Small \u2192 Large</string>
-    <string name="sort_large_small">Large \u2192 Small</string>
+    <string name="filename">File name</string>
 
     <!-- Share episode dialog -->
     <string name="share_playback_position_dialog_label">Include playback position</string>

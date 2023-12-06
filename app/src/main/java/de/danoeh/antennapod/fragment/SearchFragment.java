@@ -248,6 +248,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         item.expandActionView();
         searchView = (SearchView) item.getActionView();
         searchView.setQueryHint(getString(R.string.search_label));
+        searchView.setQuery(getArguments().getString(ARG_QUERY), true);
         searchView.requestFocus();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

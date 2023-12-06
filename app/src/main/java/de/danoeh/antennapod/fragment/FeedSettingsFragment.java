@@ -1,12 +1,22 @@
 package de.danoeh.antennapod.fragment;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
@@ -121,6 +131,23 @@ public class FeedSettingsFragment extends Fragment {
             fragment.setArguments(arguments);
             return fragment;
         }
+
+        boolean notificationPermissionDenied = false;
+        private final ActivityResultLauncher<String> requestPermissionLauncher =
+                registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                    if (isGranted) {
+                        return;
+                    }
+                    if (notificationPermissionDenied) {
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", getContext().getPackageName(), null);
+                        intent.setData(uri);
+                        startActivity(intent);
+                        return;
+                    }
+                    Toast.makeText(getContext(), R.string.notification_permission_denied, Toast.LENGTH_LONG).show();
+                    notificationPermissionDenied = true;
+                });
 
         @Override
         public RecyclerView onCreateRecyclerView(LayoutInflater inflater, ViewGroup parent, Bundle state) {
@@ -466,6 +493,11 @@ public class FeedSettingsFragment extends Fragment {
 
             pref.setChecked(feedPreferences.getShowEpisodeNotification());
             pref.setOnPreferenceChangeListener((preference, newValue) -> {
+                if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+                    return false;
+                }
                 boolean checked = newValue == Boolean.TRUE;
                 feedPreferences.setShowEpisodeNotification(checked);
                 DBWriter.setFeedPreferences(feedPreferences);

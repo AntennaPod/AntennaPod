@@ -608,7 +608,7 @@ public class MainActivity extends CastEnabledActivity {
         } else if (intent.getBooleanExtra(MainActivityStarter.EXTRA_OPEN_PLAYER, false)) {
             sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             bottomSheetCallback.onSlide(null, 1.0f);
-        } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+        } else {
             handleDeeplink(intent.getData());
         }
 

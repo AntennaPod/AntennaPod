@@ -358,7 +358,9 @@ public class ExoPlayerWrapper {
         LoudnessEnhancer oldEnhancer = this.loudnessEnhancer;
         if (oldEnhancer != null) {
             newEnhancer.setEnabled(oldEnhancer.getEnabled());
-            newEnhancer.setTargetGain((int) oldEnhancer.getTargetGain());
+            if (oldEnhancer.getEnabled()) {
+                newEnhancer.setTargetGain((int) oldEnhancer.getTargetGain());
+            }
             oldEnhancer.release();
         }
 

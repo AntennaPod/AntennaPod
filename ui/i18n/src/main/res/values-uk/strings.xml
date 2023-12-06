@@ -1,39 +1,61 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activity and fragment titles-->
+  <string name="feed_update_receiver_name">Оновити підписки</string>
   <string name="feeds_label">Подкасти</string>
   <string name="statistics_label">Статистика</string>
+  <string name="add_feed_label">Додати подкаст</string>
   <string name="episodes_label">Епізоди</string>
   <string name="home_label">Домашня</string>
   <string name="queue_label">Черга</string>
+  <string name="inbox_label">Вхідні</string>
   <string name="favorite_episodes_label">Відібрані</string>
   <string name="settings_label">Налаштування</string>
   <string name="downloads_label">Завантаження</string>
+  <string name="open_autodownload_settings">Відкрити налаштування</string>
+  <string name="downloads_log_label">Завантажити файли журналу</string>
   <string name="subscriptions_label">Підписки</string>
+  <string name="subscriptions_list_label">Список підписок</string>
+  <string name="cancel_download_label">Скасувати завантаження</string>
+  <string name="playback_history_label">Історія прослуховувань</string>
   <string name="episode_cache_full_title">Кеш епізодів заповнений</string>
   <string name="episode_cache_full_message">Досягнута межа розміру кешу епізодів. Його можна збільшити в налаштуваннях.</string>
   <string name="years_statistics_label">Роки</string>
   <string name="notification_pref_fragment">Сповіщення</string>
+  <string name="recently_played_episodes">Недавно відтворені епізоди</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">«%1$s» не знайдено</string>
   <!--SwipeActions-->
-  <string name="swipeactions_summary">Оберіть, що відбуватиметься під час прокручування епізоду зі списку</string>
+  <string name="swipeactions_label">Дії проведенням пальцями</string>
+  <string name="swipeactions_summary">Оберіть, що відбуватиметься під час проведення пальцем по епізоду в списку</string>
+  <string name="swipe_right">Проведення пальцем управо</string>
+  <string name="swipe_left">Проведення пальцем уліво</string>
+  <string name="enable_swipeactions">Увімкнути дії проведенням пальцями для цього екрану</string>
   <string name="change_setting">Змінити</string>
+  <string name="individual_subscription">Індивідуальна підписка</string>
   <!--Statistics fragment-->
+  <string name="statistics_include_marked">Враховувати тривалість епізодів, які просто позначені як відтворені</string>
   <string name="statistics_speed_not_counted">Зауваження: Швидкість відтворення не береться до уваги.</string>
   <string name="statistics_from">З</string>
   <string name="statistics_to">До</string>
   <string name="statistics_today">Сьогодні</string>
   <string name="statistics_filter_all_time">Увесь час</string>
+  <string name="statistics_filter_past_year">Минулий рік</string>
   <string name="statistics_reset_data">Cкинути статистику</string>
   <string name="statistics_reset_data_msg">Це зітре історію тривалості відтворення всіх епізодів. Ви впевнені, що хочете продовжити?</string>
+  <string name="statistics_counting_range">Прослухано між %1$sта%2$s </string>
+  <string name="statistics_counting_total">Прослухано взагалі</string>
   <!--Home fragment-->
+  <string name="home_surprise_title">Здувуйтеся</string>
   <string name="home_continue_title">Продовжити прослуховування</string>
   <string name="home_new_title">Переглянути, що нового</string>
   <string name="home_downloads_title">Керування завантаженнями</string>
   <string name="home_welcome_title">Вітаємо у AntennaPod!</string>
   <string name="home_welcome_text">Ви не підписані на щодний подкаст.
 Відкрийте бокове меню для додавання.</string>
+  <string name="notification_permission_text">AntennaPod потребує вашого дозволу, щоб показувати сповіщення під час завантаження епізодів.</string>
+  <string name="notification_permission_denied">Ви відмовили в дозволі.</string>
+  <string name="open_settings">Відкрити налаштування</string>
   <string name="configure_home">Налаштувати домашній екран</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Загальний розмір епізодів на цьому пристрої</string>
@@ -53,6 +75,7 @@
   <string name="export_logs_menu_title">Експорт детальних журналів</string>
   <string name="confirm_export_log_dialog_message">Детальні журнали можуть містити конфіденційну інформацію, наприклад, список ваших підписок</string>
   <!--Webview actions-->
+  <string name="open_in_browser_label">Відкрити в браузері</string>
   <string name="copy_url_label">Копіювати URL</string>
   <string name="share_url_label">Поділитися URL</string>
   <!--Playback history-->

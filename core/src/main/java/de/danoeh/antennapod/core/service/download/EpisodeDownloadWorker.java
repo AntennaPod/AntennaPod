@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.service.download;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,8 +10,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.work.Data;
+import androidx.work.ForegroundInfo;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import de.danoeh.antennapod.core.ClientConfigurator;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.service.download.handler.MediaDownloadedHandler;
@@ -58,16 +62,23 @@ public class EpisodeDownloadWorker extends Worker {
         Thread progressUpdaterThread = new Thread() {
             @Override
             public void run() {
-                while (!isInterrupted()) {
+                while (true) {
                     try {
-                        Thread.sleep(1000);
-                        notificationProgress.put(media.getEpisodeTitle(), request.getProgressPercent());
+                        synchronized (notificationProgress) {
+                            if (isInterrupted()) {
+                                return;
+                            }
+                            notificationProgress.put(media.getEpisodeTitle(), request.getProgressPercent());
+                        }
                         setProgressAsync(
                                 new Data.Builder()
                                     .putInt(DownloadServiceInterface.WORK_DATA_PROGRESS, request.getProgressPercent())
                                     .build())
                                 .get();
-                        sendProgressNotification();
+                        NotificationManager nm = (NotificationManager) getApplicationContext()
+                                .getSystemService(Context.NOTIFICATION_SERVICE);
+                        nm.notify(R.id.notification_downloading, generateProgressNotification());
+                        Thread.sleep(1000);
                     } catch (InterruptedException | ExecutionException e) {
                         return;
                     }
@@ -75,18 +86,29 @@ public class EpisodeDownloadWorker extends Worker {
             }
         };
         progressUpdaterThread.start();
-        final Result result = performDownload(media, request);
+        Result result;
+        try {
+            result = performDownload(media, request);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = Result.failure();
+        }
+        if (result.equals(Result.failure()) && downloader != null) {
+            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
+        }
         progressUpdaterThread.interrupt();
         try {
             progressUpdaterThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        notificationProgress.remove(media.getEpisodeTitle());
-        if (notificationProgress.isEmpty()) {
-            NotificationManager nm = (NotificationManager) getApplicationContext()
-                    .getSystemService(Context.NOTIFICATION_SERVICE);
-            nm.cancel(R.id.notification_downloading);
+        synchronized (notificationProgress) {
+            notificationProgress.remove(media.getEpisodeTitle());
+            if (notificationProgress.isEmpty()) {
+                NotificationManager nm = (NotificationManager) getApplicationContext()
+                        .getSystemService(Context.NOTIFICATION_SERVICE);
+                nm.cancel(R.id.notification_downloading);
+            }
         }
         Log.d(TAG, "Worker for " + media.getDownload_url() + " returned.");
         return result;
@@ -98,6 +120,13 @@ public class EpisodeDownloadWorker extends Worker {
         if (downloader != null) {
             downloader.cancel();
         }
+    }
+
+    @NonNull
+    @Override
+    public ListenableFuture<ForegroundInfo> getForegroundInfoAsync() {
+        return Futures.immediateFuture(
+                new ForegroundInfo(R.id.notification_downloading, generateProgressNotification()));
     }
 
     private Result performDownload(FeedMedia media, DownloadRequest request) {
@@ -129,23 +158,12 @@ public class EpisodeDownloadWorker extends Worker {
             downloader.call();
         } catch (Exception e) {
             DBWriter.addDownloadStatus(downloader.getResult());
-            if (EventBus.getDefault().hasSubscriberForEvent(MessageEvent.class)) {
-                sendMessage(request.getTitle(), false);
-            } else {
-                sendErrorNotification();
-            }
-            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
+            sendErrorNotification(request.getTitle());
             return Result.failure();
         }
 
         if (downloader.cancelled) {
-            if (getInputData().getBoolean(DownloadServiceInterface.WORK_DATA_WAS_QUEUED, false)) {
-                try {
-                    DBWriter.removeQueueItem(getApplicationContext(), false, media.getItem()).get();
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+            // This also happens when the worker was preempted, not just when the user cancelled it
             return Result.success();
         }
 
@@ -162,10 +180,7 @@ public class EpisodeDownloadWorker extends Worker {
                 && Integer.parseInt(status.getReasonDetailed()) == 416) {
             Log.d(TAG, "Requested invalid range, restarting download from the beginning");
             FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
-            sendMessage(request.getTitle(), true);
-            if (isLastRunAttempt()) {
-                FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
-            }
+            sendMessage(request.getTitle(), false);
             return retry3times();
         }
 
@@ -176,24 +191,16 @@ public class EpisodeDownloadWorker extends Worker {
                 || status.getReason() == DownloadError.ERROR_UNAUTHORIZED
                 || status.getReason() == DownloadError.ERROR_IO_BLOCKED) {
             // Fail fast, these are probably unrecoverable
-            if (EventBus.getDefault().hasSubscriberForEvent(MessageEvent.class)) {
-                sendMessage(request.getTitle(), false);
-            } else {
-                sendErrorNotification();
-            }
-            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
+            sendErrorNotification(request.getTitle());
             return Result.failure();
         }
-        sendMessage(request.getTitle(), true);
-        if (isLastRunAttempt()) {
-            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
-        }
+        sendMessage(request.getTitle(), false);
         return retry3times();
     }
 
     private Result retry3times() {
         if (isLastRunAttempt()) {
-            sendErrorNotification();
+            sendErrorNotification(downloader.getDownloadRequest().getTitle());
             return Result.failure();
         } else {
             return Result.retry();
@@ -204,7 +211,8 @@ public class EpisodeDownloadWorker extends Worker {
         return getRunAttemptCount() >= 2;
     }
 
-    private void sendMessage(String episodeTitle, boolean retrying) {
+    private void sendMessage(String episodeTitle, boolean isImmediateFail) {
+        boolean retrying = !isLastRunAttempt() && !isImmediateFail;
         if (episodeTitle.length() > 20) {
             episodeTitle = episodeTitle.substring(0, 19) + "…";
         }
@@ -227,7 +235,12 @@ public class EpisodeDownloadWorker extends Worker {
                 PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
     }
 
-    private void sendErrorNotification() {
+    private void sendErrorNotification(String title) {
+        if (EventBus.getDefault().hasSubscriberForEvent(MessageEvent.class)) {
+            sendMessage(title, false);
+            return;
+        }
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(),
                 NotificationUtils.CHANNEL_ID_DOWNLOAD_ERROR);
         builder.setTicker(getApplicationContext().getString(R.string.download_report_title))
@@ -242,19 +255,22 @@ public class EpisodeDownloadWorker extends Worker {
         nm.notify(R.id.notification_download_report, builder.build());
     }
 
-    private void sendProgressNotification() {
+    private Notification generateProgressNotification() {
         StringBuilder bigTextB = new StringBuilder();
-        Map<String, Integer> progressCopy = new HashMap<>(notificationProgress);
+        Map<String, Integer> progressCopy;
+        synchronized (notificationProgress) {
+            progressCopy = new HashMap<>(notificationProgress);
+        }
         for (Map.Entry<String, Integer> entry : progressCopy.entrySet()) {
             bigTextB.append(String.format(Locale.getDefault(), "%s (%d%%)\n", entry.getKey(), entry.getValue()));
         }
         String bigText = bigTextB.toString().trim();
         String contentText;
-        if (notificationProgress.size() == 1) {
+        if (progressCopy.size() == 1) {
             contentText = bigText;
         } else {
             contentText = getApplicationContext().getResources().getQuantityString(R.plurals.downloads_left,
-                    notificationProgress.size(), notificationProgress.size());
+                    progressCopy.size(), progressCopy.size());
         }
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(),
                 NotificationUtils.CHANNEL_ID_DOWNLOADING);
@@ -270,8 +286,6 @@ public class EpisodeDownloadWorker extends Worker {
                 .setShowWhen(false)
                 .setSmallIcon(R.drawable.ic_notification_sync)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-        NotificationManager nm = (NotificationManager) getApplicationContext()
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.notify(R.id.notification_downloading, builder.build());
+        return builder.build();
     }
 }

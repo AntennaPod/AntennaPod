@@ -25,7 +25,7 @@ public class AboutFragment extends PreferenceFragmentCompat {
             ClipData clip = ClipData.newPlainText(getString(R.string.bug_report_title),
                     findPreference("about_version").getSummary());
             clipboard.setPrimaryClip(clip);
-            if (Build.VERSION.SDK_INT < 32) {
+            if (Build.VERSION.SDK_INT <= 32) {
                 Snackbar.make(getView(), R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
             }
             return true;

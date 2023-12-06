@@ -28,6 +28,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.documentfile.provider.DocumentFile;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.util.FastDocumentFile;
+import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
@@ -194,8 +195,8 @@ public class LocalFeedUpdater {
         return item;
     }
 
-    private static void loadMetadata(FeedItem item, FastDocumentFile file, Context context) throws IOException {
-        try (MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever()) {
+    private static void loadMetadata(FeedItem item, FastDocumentFile file, Context context) {
+        try (MediaMetadataRetrieverCompat mediaMetadataRetriever = new MediaMetadataRetrieverCompat()) {
             mediaMetadataRetriever.setDataSource(context, file.getUri());
 
             String dateStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DATE);

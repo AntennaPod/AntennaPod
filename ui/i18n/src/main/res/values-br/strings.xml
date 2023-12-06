@@ -230,6 +230,7 @@ Digorit al lañser evit ouzhpennañ unan.</string>
     <item quantity="many">%d rann merket evel anlennet.</item>
     <item quantity="other">%d rann merket evel anlennet. </item>
   </plurals>
+  <string name="add_to_queue_label">Ouzhpennañ el lost</string>
   <plurals name="added_to_queue_batch_label">
     <item quantity="one">%d rann ouzhpennet el lost</item>
     <item quantity="two">%d rann ouzhpennet el lost</item>
@@ -237,6 +238,7 @@ Digorit al lañser evit ouzhpennañ unan.</string>
     <item quantity="many">%d rann ouzhpennet el lost</item>
     <item quantity="other">%d rann ouzhpennet el lost</item>
   </plurals>
+  <string name="remove_from_queue_label">Dilemel eus al lost</string>
   <plurals name="removed_from_queue_batch_label">
     <item quantity="one">%d rann tennet eus al lost</item>
     <item quantity="two">%d rann tennet eus al lost</item>
@@ -251,6 +253,7 @@ Digorit al lañser evit ouzhpennañ unan.</string>
     <item quantity="many">%d rann tennet eus ar voest degemer</item>
     <item quantity="other">%d rann tennet eus ar voest degemer</item>
   </plurals>
+  <string name="visit_website_label">Gweladenniñ al lec\'hienn</string>
   <string name="skip_episode_label">Tremen a rann</string>
   <string name="no_items_selected">N\'eus bet diuzet netra</string>
   <!--Download messages and labels-->
@@ -261,9 +264,13 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="download_error_tap_for_details">Stokit evit diskouez ar munudoù.</string>
   <string name="download_error_device_not_found">N\'eo ket bet kavet ar c\'hadaviñ</string>
   <string name="download_error_insufficient_space">N\'eus ket trawalc\'h a blas war ho penveg.</string>
+  <string name="download_error_http_data_error">Fazi roadennoù HTTP</string>
+  <string name="download_error_error_unknown">Fazi dianav</string>
   <string name="download_error_parser_exception">Kaset ez eus bet ur wazh torret gant servijer an ostiz.</string>
+  <string name="download_error_unsupported_type">Doare gwazh diembreget</string>
   <string name="download_error_unsupported_type_html">Kaset ez eus bet gant servijer an ostiz ul lec\'hienn e plas ur podskignad.</string>
   <string name="download_error_not_found">Ne oar ket servijer ostiz ar podskignad pelec\'h kavout ar restr. Marteze eo bet dilamet.</string>
+  <string name="download_error_connection_error">Fazi kennaskañ</string>
   <string name="download_error_unknown_host">Dibosupl kavout ar servijer. Gwiriit eo bet skrivet mat ar chomlec\'h hag ez a en-dro ho kennask.</string>
   <string name="download_error_forbidden">Reiñ ur respont a nac\'h servijer ostiz ar podskignad.</string>
   <string name="download_canceled_msg">Pellgargadur nullet</string>
@@ -271,6 +278,7 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="download_error_blocked">Ar bellgargadur \'zo bet paouezet dre faot un arload all (\'giz ur VPN pe un arload enep-bruderezh).  </string>
   <string name="download_error_certificate">N\'haller ket implijout ur c\'hennask suraet. Marteze ez eus un arload all eus ho penveg (e-giz ur VPN pe ur stanker bruderezh) o stankañ ar pellgargadur, pe n\'ez a ket en-dro un dra bennak gant testenioù ar servijer.</string>
   <string name="download_report_title">Pellgargañ echuet gant fazi(où)</string>
+  <string name="download_error_io_error">Fazi lenn/skrivañ</string>
   <plurals name="downloads_left">
     <item quantity="one">%d pellgargadur a chom</item>
     <item quantity="two">%d bellgargadur a chom</item>
@@ -293,6 +301,7 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="playback_error_unsupported">Rizh media anskor</string>
   <string name="playback_error_timeout">Gwezhiadur diamzeret</string>
   <string name="playback_error_source">N\'haller ket haeziñ ar restr</string>
+  <string name="playback_error_unknown">Fazi dianav</string>
   <string name="no_media_playing_label">N\'eus netra o vezañ lennet</string>
   <string name="unknown_media_key">AntennaPod - stokell vedia dianav: %1$d</string>
   <string name="error_file_not_found">N\'eo ket bet kavet ar restr</string>
@@ -302,6 +311,7 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="queue_unlocked">Lost dibrennet</string>
   <string name="queue_lock_warning">Ma prennit al lost ne vo ket tu deoc\'h riklañ pe adurzhiañ ar rannoù.</string>
   <string name="checkbox_do_not_show_again">Na ziskouez ken</string>
+  <string name="clear_queue_label">Skarzhañ al lost</string>
   <string name="undo">Nullañ</string>
   <string name="move_to_top_label">Lakaat e penn ar roll</string>
   <string name="move_to_bottom_label">Lakaat e dibenn ar roll</string>
@@ -362,6 +372,7 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="playback_pref_sum">Reoliadur ar selaouelloù, hirder al lammoù, lostoù</string>
   <string name="feed_refresh_title">Hizivaat ar podskignadoù</string>
   <string name="feed_refresh_never">Morse</string>
+  <string name="pref_followQueue_title">Lenn kendalc\'hus</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Digennask ar selaouelloù pe ar bluetooth</string>
   <string name="pref_stream_over_download_sum">Diskouez an afell stream e plas an afell pellgargañ er rolloù.</string>
   <string name="pref_mobileUpdate_sum">Dibab ar pezh a zo aotreet gant ar c\'hennask hezoug</string>
