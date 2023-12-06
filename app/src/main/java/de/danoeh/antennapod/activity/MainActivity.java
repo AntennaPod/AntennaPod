@@ -702,7 +702,7 @@ public class MainActivity extends CastEnabledActivity {
                 break;
         }
     }
-
+  
     //Hardware keyboard support
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
