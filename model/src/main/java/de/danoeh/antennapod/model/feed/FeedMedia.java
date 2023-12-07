@@ -483,4 +483,11 @@ public class FeedMedia extends FeedFile implements Playable {
         }
         return super.equals(o);
     }
+
+    public String getTranscriptFile_url() {
+        if (getFile_url() == null) {
+            return null;
+        }
+        return getFile_url() + ".transcript";
+    }
 }
