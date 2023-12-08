@@ -39,67 +39,63 @@ public class PodcastIndexTranscriptParser {
             long span = 1000L;
             long duration = 0L;
 
-            while (true) {
-                try {
-                    line = iter.next();
+            do {
+                line = iter.next();
 
-                    if (line.isEmpty()) {
+                if (line.isEmpty()) {
+                    continue;
+                }
+
+                if (line.contains("-->")) {
+                    String[] timecodes = line.split("-->");
+                    if (timecodes.length < 2) {
                         continue;
                     }
+                    startTimecode = parseTimecode(timecodes[0].trim());
+                    endTimecode = parseTimecode(timecodes[1].trim());
+                    if (spanStartTimecode == 0) {
+                        spanStartTimecode = startTimecode;
+                    }
+                    duration += endTimecode - startTimecode;
+                    do {
+                        line = iter.next();
+                        if (StringUtil.isBlank(line)) {
+                            break;
+                        }
+                        body = body.concat(" " + line.strip());
+                    } while (iter.hasNext());
+                }
 
-                    if (line.contains("-->")) {
-                        String[] timecodes = line.split("-->");
-                        if (timecodes.length < 2) {
-                            continue;
-                        }
-                        startTimecode = parseTimecode(timecodes[0].trim());
-                        endTimecode = parseTimecode(timecodes[1].trim());
-                        if (spanStartTimecode == 0) {
-                            spanStartTimecode = startTimecode;
-                        }
-                        duration += endTimecode - startTimecode;
-                        do {
-                            line = iter.next();
-                            if (StringUtil.isBlank(line)) {
-                                break;
-                            }
-                            body = body.concat(" " + line.strip());
-                        } while (iter.hasNext());
-                    }
-
-                    if (body.contains(":")) {
-                        String [] parts = body.split(":");
-                        speaker = parts[0];
-                        body = parts[1].strip();
-                    }
-                    if (!StringUtil.isBlank(body)) {
-                        segmentBody += " " + body;
-                        if (duration >= span) {
-                            Log.d(TAG, "SRT : " + Long.toString(spanStartTimecode) + " " + segmentBody);
-                            transcript.addSegment(new TranscriptSegment(spanStartTimecode,
-                                    endTimecode,
-                                    segmentBody,
-                                    speaker));
-                            startTimecode = endTimecode;
-                            duration = 0L;
-                            spanStartTimecode = 0L;
-                            segmentBody = "";
-                        }
-                        body = "";
-                    }
-                } catch (NoSuchElementException e) {
-                    if (! StringUtil.isBlank(segmentBody)) {
+                if (body.contains(":")) {
+                    String [] parts = body.split(":");
+                    speaker = parts[0];
+                    body = parts[1].strip();
+                }
+                if (!StringUtil.isBlank(body)) {
+                    segmentBody += " " + body;
+                    if (duration >= span) {
                         Log.d(TAG, "SRT : " + Long.toString(spanStartTimecode) + " " + segmentBody);
-
                         transcript.addSegment(new TranscriptSegment(spanStartTimecode,
                                 endTimecode,
                                 segmentBody,
                                 speaker));
+                        duration = 0L;
+                        spanStartTimecode = 0L;
+                        segmentBody = "";
                     }
-
-                    return transcript;
+                    body = "";
                 }
+            } while (iter.hasNext());
+
+            if (! StringUtil.isBlank(segmentBody)) {
+                Log.d(TAG, "SRT : " + Long.toString(spanStartTimecode) + " " + segmentBody);
+
+                transcript.addSegment(new TranscriptSegment(spanStartTimecode,
+                        endTimecode,
+                        segmentBody,
+                        speaker));
             }
+            return transcript;
         }
 
         static long parseTimecode(String timecode) {
@@ -116,7 +112,6 @@ public class PodcastIndexTranscriptParser {
             }
         }
     }
-
 
     public static class PodcastIndexTranscriptJsonParser {
         static String TAG = "PodcastIndexTranscriptJsonParser";
@@ -184,11 +179,5 @@ public class PodcastIndexTranscriptParser {
             return PodcastIndexTranscriptSrtParser.parse(str);
         }
         return null;
-    }
-
-    public static String secondsToTime(long msecs) {
-        int duration = Math.toIntExact(msecs / 1000L);
-        // TT TODO - There should be a more Locale friendly way to format
-        return String.format(Locale.US, "%d:%02d:%02d", duration / 3600, (duration % 3600) / 60, (duration % 60));
     }
 }
