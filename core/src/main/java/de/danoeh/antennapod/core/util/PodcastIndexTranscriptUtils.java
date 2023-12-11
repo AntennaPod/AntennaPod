@@ -49,7 +49,7 @@ public class PodcastIndexTranscriptUtils {
         return str.toString();
     }
 
-    static public void storeTranscript(FeedMedia media, String transcript) {
+    public static void storeTranscript(FeedMedia media, String transcript) {
         File transcriptFile = new File(media.getTranscriptFile_url());
         try {
             if (!transcriptFile.exists()) {
