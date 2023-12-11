@@ -21,15 +21,13 @@ public class PodcastIndexTranscriptUtils {
     private static final String TAG = "PodcastIndexTranscript";
 
     public static Transcript loadTranscriptFromUrl(String type, String url, boolean forceRefresh) {
-        Transcript transcript = null;
+        Transcript transcript;
         StringBuffer str = new StringBuffer();
         Thread downloadThread = new Thread() {
             @Override
             public void run() {
                 Response response = null;
                 try {
-                    // TT TODO : Should we save this as if we downloaded it?
-                    // Also, should we be sending user/password along just in case the transcript is protected?
                     Log.d(TAG, "Downloading transcript URL " + url.toString());
                     Request request = new Request.Builder().url(url).build();
                     response = AntennapodHttpClient.getHttpClient().newCall(request).execute();

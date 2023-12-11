@@ -27,7 +27,14 @@ public class Transcript {
         return segmentsMap.floorEntry(time).getValue();
     }
 
-    public Map.Entry<Long, TranscriptSegment> getSegmentAfterTime(long time) {
+    public int getSegmentCount() {
+        if (segmentsMap == null) {
+           return 0;
+        }
+        return segmentsMap.size();
+    }
+
+    public Map.Entry<Long, TranscriptSegment> getEntryAfterTime(long time) {
         if (segmentsMap.ceilingEntry(time) == null) {
             return null;
         }

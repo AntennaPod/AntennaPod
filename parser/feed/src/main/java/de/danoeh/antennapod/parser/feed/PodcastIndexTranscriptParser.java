@@ -2,6 +2,7 @@ package de.danoeh.antennapod.parser.feed;
 
 import android.util.Log;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,12 +26,11 @@ public class PodcastIndexTranscriptParser {
         public static Transcript parse(String str) {
             Transcript transcript = new Transcript();
 
-            transcript.setRawString(str);
             TranscriptSegment transcriptSegment;
             List<String> lines = Arrays.asList(str.split("\n"));
             Iterator<String> iter = lines.iterator();
             String speaker = "";
-            String body = "";
+            StringBuffer body = new StringBuffer("");
             String line;
             String segmentBody = "";
             long startTimecode = 0L;
@@ -62,18 +62,20 @@ public class PodcastIndexTranscriptParser {
                         if (StringUtil.isBlank(line)) {
                             break;
                         }
-                        body = body.concat(" " + line.strip());
+                        body.append(line.strip());
+                        body.append(" ");
                     } while (iter.hasNext());
                 }
 
-                if (body.contains(":")) {
-                    String [] parts = body.split(":");
+                if (body.indexOf(":") != -1) {
+                    String [] parts = body.toString().split(":");
                     speaker = parts[0];
-                    body = parts[1].strip();
+                    body = new StringBuffer(parts[1].strip());
                 }
-                if (!StringUtil.isBlank(body)) {
+                if (!StringUtil.isBlank(body.toString())) {
                     segmentBody += " " + body;
-                    if (duration >= span) {
+                    segmentBody = StringUtils.trim(segmentBody);
+                    if (duration >= span && endTimecode > spanStartTimecode) {
                         Log.d(TAG, "SRT : " + Long.toString(spanStartTimecode) + " " + segmentBody);
                         transcript.addSegment(new TranscriptSegment(spanStartTimecode,
                                 endTimecode,
@@ -83,19 +85,25 @@ public class PodcastIndexTranscriptParser {
                         spanStartTimecode = 0L;
                         segmentBody = "";
                     }
-                    body = "";
+                    body = new StringBuffer("");
                 }
             } while (iter.hasNext());
 
-            if (! StringUtil.isBlank(segmentBody)) {
+            if (! StringUtil.isBlank(segmentBody) && endTimecode > spanStartTimecode) {
                 Log.d(TAG, "SRT : " + Long.toString(spanStartTimecode) + " " + segmentBody);
 
+                segmentBody = StringUtils.trim(segmentBody);
                 transcript.addSegment(new TranscriptSegment(spanStartTimecode,
                         endTimecode,
                         segmentBody,
                         speaker));
             }
-            return transcript;
+            if (transcript.getSegmentCount() > 0) {
+                transcript.setRawString(str);
+                return transcript;
+            } else {
+                return null;
+            }
         }
 
         static long parseTimecode(String timecode) {
@@ -149,6 +157,7 @@ public class PodcastIndexTranscriptParser {
                     segmentBody += body + " ";
 
                     if (duration >= span) {
+                        segmentBody = StringUtils.trim(segmentBody);
                         transcript.addSegment(new TranscriptSegment(segmentStartTime, endTime, segmentBody, speaker));
                         Log.d(TAG, "JSON " + segmentBody);
                         duration = 0L;
@@ -158,6 +167,7 @@ public class PodcastIndexTranscriptParser {
                 }
 
                 if (! StringUtil.isBlank(segmentBody)) {
+                    segmentBody = StringUtils.trim(segmentBody);
                     transcript.addSegment(new TranscriptSegment(segmentStartTime, endTime, segmentBody, speaker));
                     Log.d(TAG, "JSON [last]" + segmentBody);
                 }
