@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
+import de.danoeh.antennapod.ui.echo.EchoActivity;
 import de.danoeh.antennapod.ui.home.sections.EchoSection;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -104,10 +105,10 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                 addSection(new AllowNotificationsSection());
             }
         }
-        if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER
-                && Calendar.getInstance().get(Calendar.YEAR) == 2023
+        if (Calendar.getInstance().get(Calendar.YEAR) == EchoActivity.RELEASE_YEAR
+                && Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER
                 && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) >= 10
-                && prefs.getInt(PREF_HIDE_ECHO, 0) != 2023) {
+                && prefs.getInt(PREF_HIDE_ECHO, 0) != EchoActivity.RELEASE_YEAR) {
             addSection(new EchoSection());
         }
 

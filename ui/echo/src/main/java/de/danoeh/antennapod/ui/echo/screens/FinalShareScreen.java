@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.util.Pair;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.res.ResourcesCompat;
+import de.danoeh.antennapod.ui.echo.EchoActivity;
 import de.danoeh.antennapod.ui.echo.R;
 import java.util.ArrayList;
 
@@ -19,6 +20,7 @@ public class FinalShareScreen extends BubbleScreen {
     private final Paint paintTextMain;
     private final Paint paintCoverBorder;
     private final String heading;
+    private final String year;
     private final Drawable logo;
     private final ArrayList<Pair<String, Drawable>> favoritePods;
     private final Typeface typefaceNormal;
@@ -28,6 +30,7 @@ public class FinalShareScreen extends BubbleScreen {
         super(context);
         this.heading = context.getString(R.string.echo_share_heading);
         this.logo = AppCompatResources.getDrawable(context, R.drawable.echo);
+        this.year = String.valueOf(EchoActivity.RELEASE_YEAR);
         this.favoritePods = favoritePods;
         typefaceNormal = ResourcesCompat.getFont(context, R.font.sarabun_regular);
         typefaceBold = ResourcesCompat.getFont(context, R.font.sarabun_semi_bold);
@@ -49,7 +52,7 @@ public class FinalShareScreen extends BubbleScreen {
         paintTextMain.setTextSize(headingSize);
         canvas.drawText(heading, innerBoxX + 0.5f * innerBoxSize, innerBoxY + headingSize, paintTextMain);
         paintTextMain.setTextSize(0.12f * innerBoxSize);
-        canvas.drawText("2023", innerBoxX + 0.8f * innerBoxSize, innerBoxY + 0.25f * innerBoxSize, paintTextMain);
+        canvas.drawText(year, innerBoxX + 0.8f * innerBoxSize, innerBoxY + 0.25f * innerBoxSize, paintTextMain);
 
         paintTextMain.setTextAlign(Paint.Align.LEFT);
         float fontSizePods = innerBoxSize / 18; // First one only

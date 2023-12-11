@@ -35,6 +35,7 @@ import de.danoeh.antennapod.ui.echo.screens.FinalShareScreen;
 import de.danoeh.antennapod.ui.echo.screens.RotatingSquaresScreen;
 import de.danoeh.antennapod.ui.echo.screens.StripesScreen;
 import de.danoeh.antennapod.ui.echo.screens.WaveformScreen;
+import de.danoeh.antennapod.ui.echo.screens.WavesScreen;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -53,6 +54,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class EchoActivity extends AppCompatActivity {
+    public static final int RELEASE_YEAR = 2023;
     private static final String TAG = "EchoActivity";
     private static final int NUM_SCREENS = 7;
     private static final int SHARE_SIZE = 1000;
@@ -134,7 +136,7 @@ public class EchoActivity extends AppCompatActivity {
             new ShareCompat.IntentBuilder(this)
                     .setType("image/png")
                     .addStream(fileUri)
-                    .setText(getString(R.string.echo_share, 2023))
+                    .setText(getString(R.string.echo_share, RELEASE_YEAR))
                     .setChooserTitle(R.string.share_file_label)
                     .startChooser();
         } catch (Exception e) {
@@ -190,7 +192,7 @@ public class EchoActivity extends AppCompatActivity {
             switch (currentScreen) {
                 case 0:
                     viewBinding.aboveLabel.setText(R.string.echo_intro_your_year);
-                    viewBinding.largeLabel.setText(String.format(getEchoLanguage(), "%d", 2023));
+                    viewBinding.largeLabel.setText(String.format(getEchoLanguage(), "%d", RELEASE_YEAR));
                     viewBinding.belowLabel.setText(R.string.echo_intro_in_podcasts);
                     viewBinding.smallLabel.setText(R.string.echo_intro_locally);
                     currentDrawable = new BubbleScreen(this);
@@ -207,20 +209,23 @@ public class EchoActivity extends AppCompatActivity {
                     viewBinding.largeLabel.setText(String.format(getEchoLanguage(), "%d", queueSecondsLeft / 3600));
                     viewBinding.belowLabel.setText(getResources().getQuantityString(
                             R.plurals.echo_queue_hours_waiting, queueNumEpisodes, queueNumEpisodes));
-                    int daysUntil2024 = Math.max(356 - Calendar.getInstance().get(Calendar.DAY_OF_YEAR) + 1, 1);
-                    long secondsPerDay = queueSecondsLeft / daysUntil2024;
+                    int daysUntilNextYear = Math.max(356 - Calendar.getInstance().get(Calendar.DAY_OF_YEAR) + 1, 1);
+                    long secondsPerDay = queueSecondsLeft / daysUntilNextYear;
                     String timePerDay = Converter.getDurationStringLocalized(
                             getLocalizedResources(this, getEchoLanguage()), secondsPerDay * 1000);
                     double hoursPerDay = (double) (secondsPerDay / 3600);
+                    int nextYear = RELEASE_YEAR + 1;
                     if (hoursPerDay < 1.5) {
                         viewBinding.aboveLabel.setText(R.string.echo_queue_title_clean);
-                        viewBinding.smallLabel.setText(getString(R.string.echo_queue_hours_clean, timePerDay, 2024));
+                        viewBinding.smallLabel.setText(
+                                getString(R.string.echo_queue_hours_clean, timePerDay, nextYear));
                     } else if (hoursPerDay <= 24) {
                         viewBinding.aboveLabel.setText(R.string.echo_queue_title_many);
-                        viewBinding.smallLabel.setText(getString(R.string.echo_queue_hours_normal, timePerDay, 2024));
+                        viewBinding.smallLabel.setText(
+                                getString(R.string.echo_queue_hours_normal, timePerDay, nextYear));
                     } else {
                         viewBinding.aboveLabel.setText(R.string.echo_queue_title_many);
-                        viewBinding.smallLabel.setText(getString(R.string.echo_queue_hours_much, timePerDay, 2024));
+                        viewBinding.smallLabel.setText(getString(R.string.echo_queue_hours_much, timePerDay, nextYear));
                     }
                     currentDrawable = new StripesScreen(this);
                     break;
@@ -257,7 +262,7 @@ public class EchoActivity extends AppCompatActivity {
                         viewBinding.smallLabel.setText(getString(R.string.echo_hoarder_comment_clean,
                                 percentagePlayed, totalActivePodcasts));
                     }
-                    currentDrawable = new StripesScreen(this);
+                    currentDrawable = new WavesScreen(this);
                     break;
                 case 5:
                     viewBinding.aboveLabel.setText("");
@@ -312,7 +317,7 @@ public class EchoActivity extends AppCompatActivity {
         date.set(Calendar.MILLISECOND, 0);
         date.set(Calendar.DAY_OF_MONTH, 1);
         date.set(Calendar.MONTH, 0);
-        date.set(Calendar.YEAR, 2023);
+        date.set(Calendar.YEAR, RELEASE_YEAR);
         return date.getTimeInMillis();
     }
 

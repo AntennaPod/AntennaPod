@@ -32,11 +32,11 @@ public class EchoSection extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         viewBinding = HomeSectionEchoBinding.inflate(inflater);
-        viewBinding.titleLabel.setText(getString(R.string.antennapod_echo_year, 2023));
+        viewBinding.titleLabel.setText(getString(R.string.antennapod_echo_year, EchoActivity.RELEASE_YEAR));
         viewBinding.echoButton.setOnClickListener(v -> startActivity(new Intent(getContext(), EchoActivity.class)));
         viewBinding.closeButton.setOnClickListener(v -> {
             getContext().getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE)
-                    .edit().putInt(HomeFragment.PREF_HIDE_ECHO, 2023).apply();
+                    .edit().putInt(HomeFragment.PREF_HIDE_ECHO, EchoActivity.RELEASE_YEAR).apply();
             ((MainActivity) getActivity()).loadFragment(HomeFragment.TAG, null);
         });
         updateVisibility();
@@ -51,7 +51,7 @@ public class EchoSection extends Fragment {
         date.set(Calendar.MILLISECOND, 0);
         date.set(Calendar.DAY_OF_MONTH, 1);
         date.set(Calendar.MONTH, 0);
-        date.set(Calendar.YEAR, 2023);
+        date.set(Calendar.YEAR, EchoActivity.RELEASE_YEAR);
         return date.getTimeInMillis();
     }
 
