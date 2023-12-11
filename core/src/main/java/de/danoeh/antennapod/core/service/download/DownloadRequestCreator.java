@@ -18,7 +18,6 @@ public class DownloadRequestCreator {
     private static final String TAG = "DownloadRequestCreat";
     private static final String FEED_DOWNLOADPATH = "cache/";
     private static final String MEDIA_DOWNLOADPATH = "media/";
-    private static final String TRANSCRIPT_EXT = ".transcript";
 
     public static DownloadRequest.Builder create(Feed feed) {
         File dest = new File(getFeedfilePath(), getFeedfileName(feed));
@@ -30,34 +29,6 @@ public class DownloadRequestCreator {
         return new DownloadRequest.Builder(dest.toString(), feed)
                 .withAuthentication(username, password)
                 .lastModified(feed.getLastUpdate());
-    }
-
-    public static DownloadRequest.Builder createTranscript(FeedMedia media) {
-        final boolean partiallyDownloadedFileExists =
-                media.getTranscriptFile_url() != null
-                && new File(media.getTranscriptFile_url()).exists();
-        File dest;
-        if (partiallyDownloadedFileExists) {
-            dest = new File(media.getTranscriptFile_url());
-        } else {
-            dest = new File(getMediafilePath(media), getTranscriptFilename(media));
-        }
-
-        if (dest.exists() && !partiallyDownloadedFileExists) {
-            dest = findUnusedFile(dest);
-        }
-        Log.d(TAG, "Requesting download of transcript url "
-                + media.getItem().getPodcastIndexTranscriptUrl());
-
-        String username = (media.getItem().getFeed().getPreferences() != null)
-                ? media.getItem().getFeed().getPreferences().getUsername() : null;
-        String password = (media.getItem().getFeed().getPreferences() != null)
-                ? media.getItem().getFeed().getPreferences().getPassword() : null;
-
-        return new DownloadRequest.Builder(dest.toString(),
-                media,
-                media.getItem().getPodcastIndexTranscriptUrl()
-        ).withAuthentication(username, password);
     }
 
     public static DownloadRequest.Builder create(FeedMedia media) {
@@ -120,10 +91,6 @@ public class DownloadRequestCreator {
         String mediaPath = MEDIA_DOWNLOADPATH
                 + FileNameGenerator.generateFileName(media.getItem().getFeed().getTitle());
         return UserPreferences.getDataFolder(mediaPath).toString() + "/";
-    }
-
-    private static String getTranscriptFilename(FeedMedia media) {
-        return DownloadRequestCreator.getMediafilename(media) + TRANSCRIPT_EXT;
     }
 
     private static String getMediafilename(FeedMedia media) {

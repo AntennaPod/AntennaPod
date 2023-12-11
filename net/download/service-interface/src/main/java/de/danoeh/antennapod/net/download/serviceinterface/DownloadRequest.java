@@ -255,14 +255,6 @@ public class DownloadRequest implements Parcelable {
             this.feedfileType = media.getTypeAsInt();
         }
 
-        public Builder(@NonNull String destination, @NonNull FeedMedia media, @NonNull String url) {
-            this.destination = destination;
-            this.source = UrlChecker.prepareUrl(url);
-            this.title = media.getHumanReadableIdentifier();
-            this.feedfileId = media.getId();
-            this.feedfileType = media.getTypeAsInt();
-        }
-
         public Builder(@NonNull String destination, @NonNull Feed feed) {
             this.destination = destination;
             this.source = feed.isLocalFeed() ? feed.getDownload_url() : UrlChecker.prepareUrl(feed.getDownload_url());

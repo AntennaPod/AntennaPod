@@ -6,11 +6,13 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 
+import de.danoeh.antennapod.core.util.PodcastIndexTranscriptUtils;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.model.download.DownloadResult;
@@ -61,6 +63,18 @@ public class MediaDownloadedHandler implements Runnable {
         if (media.getItem() != null && media.getItem().getPodcastIndexChapterUrl() != null) {
             ChapterUtils.loadChaptersFromUrl(media.getItem().getPodcastIndexChapterUrl(), false);
         }
+
+        if (media.getItem() != null && media.getItem().getPodcastIndexTranscriptUrl() != null) {
+            String transcript = PodcastIndexTranscriptUtils.loadTranscriptFromUrl(
+                    media.getItem().getPodcastIndexTranscriptType(),
+                    media.getItem().getPodcastIndexTranscriptUrl(),
+                    false);
+            if (! StringUtils.isEmpty(transcript)) {
+                media.getItem().setPodcastIndexTranscriptText(transcript);
+                PodcastIndexTranscriptUtils.storeTranscript(media, transcript);
+            }
+        }
+
         // Get duration
         String durationStr = null;
         try (MediaMetadataRetriever mmr = new MediaMetadataRetriever()) {

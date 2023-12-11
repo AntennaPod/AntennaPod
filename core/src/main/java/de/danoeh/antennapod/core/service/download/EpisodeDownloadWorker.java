@@ -27,9 +27,7 @@ import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import org.apache.commons.io.FileUtils;
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
@@ -57,7 +55,6 @@ public class EpisodeDownloadWorker extends Worker {
         }
 
         DownloadRequest request = DownloadRequestCreator.create(media).build();
-        DownloadRequest transcriptRequest = DownloadRequestCreator.createTranscript(media).build();
         Thread progressUpdaterThread = new Thread() {
             @Override
             public void run() {
@@ -79,8 +76,6 @@ public class EpisodeDownloadWorker extends Worker {
         };
         progressUpdaterThread.start();
         final Result result = performDownload(media, request);
-        final Result resultTranscript = performDownloadTranscript(media, transcriptRequest);
-
         progressUpdaterThread.interrupt();
         try {
             progressUpdaterThread.join();
@@ -93,7 +88,6 @@ public class EpisodeDownloadWorker extends Worker {
                     .getSystemService(Context.NOTIFICATION_SERVICE);
             nm.cancel(R.id.notification_downloading);
         }
-
         Log.d(TAG, "Worker for " + media.getDownload_url() + " returned.");
         return result;
     }
@@ -104,78 +98,6 @@ public class EpisodeDownloadWorker extends Worker {
         if (downloader != null) {
             downloader.cancel();
         }
-    }
-
-    private Result performDownloadTranscript(FeedMedia media, DownloadRequest request) {
-        File dest = new File(request.getDestination());
-        if (!dest.exists()) {
-            try {
-                dest.createNewFile();
-            } catch (IOException e) {
-                Log.e(TAG, "Unable to create file");
-            }
-        }
-
-        downloader = new DefaultDownloaderFactory().create(request);
-        if (downloader == null) {
-            Log.d(TAG, "Unable to create downloader");
-            return Result.failure();
-        }
-
-        try {
-            downloader.call();
-            // read the transcript from the file that is downloaded
-            BufferedReader reader = new BufferedReader(
-                    new FileReader(downloader.getDownloadRequest().getDestination()));
-            StringBuilder stringBuilder = new StringBuilder();
-            char[] buffer = new char[128];
-            while (reader.read(buffer) != -1) {
-                stringBuilder.append(new String(buffer));
-                buffer = new char[128];
-            }
-            reader.close();
-
-            media.getItem().setPodcastIndexTranscriptText(stringBuilder.toString());
-        } catch (Exception e) {
-            sendErrorNotification(request.getTitle());
-            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
-            return Result.failure();
-        }
-
-        if (downloader.cancelled) {
-            return Result.success();
-        }
-
-        DownloadResult status = downloader.getResult();
-        if (status.isSuccessful()) {
-            return Result.success();
-        }
-
-        if (status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
-                && Integer.parseInt(status.getReasonDetailed()) == 416) {
-            Log.d(TAG, "Requested invalid range, restarting download from the beginning");
-            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
-            sendMessage(request.getTitle(), true);
-            if (isLastRunAttempt()) {
-                FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
-            }
-            return retry3times();
-        }
-
-        Log.e(TAG, "Download failed");
-        if (status.getReason() == DownloadError.ERROR_FORBIDDEN
-                || status.getReason() == DownloadError.ERROR_NOT_FOUND
-                || status.getReason() == DownloadError.ERROR_UNAUTHORIZED
-                || status.getReason() == DownloadError.ERROR_IO_BLOCKED) {
-            // Fail fast, these are probably unrecoverable
-            sendErrorNotification(request.getTitle());
-            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
-            return Result.failure();
-        }
-        if (isLastRunAttempt()) {
-            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
-        }
-        return retry3times();
     }
 
     private Result performDownload(FeedMedia media, DownloadRequest request) {
