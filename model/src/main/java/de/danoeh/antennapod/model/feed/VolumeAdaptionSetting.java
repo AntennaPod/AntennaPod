@@ -38,10 +38,13 @@ public enum VolumeAdaptionSetting {
     public static boolean BOOST_SUPPORTED = false;
 
     static  {
-        for (AudioEffect.Descriptor effect : AudioEffect.queryEffects()) {
-            if (effect.type.equals(AudioEffect.EFFECT_TYPE_LOUDNESS_ENHANCER)) {
-                BOOST_SUPPORTED = true;
-                break;
+        final AudioEffect.Descriptor[] audioEffects = AudioEffect.queryEffects();
+        if (audioEffects != null) {
+            for (AudioEffect.Descriptor effect : audioEffects) {
+                if (effect.type.equals(AudioEffect.EFFECT_TYPE_LOUDNESS_ENHANCER)) {
+                    BOOST_SUPPORTED = true;
+                    break;
+                }
             }
         }
     }
