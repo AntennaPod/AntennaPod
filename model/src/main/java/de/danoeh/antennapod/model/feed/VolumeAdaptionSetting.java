@@ -2,8 +2,6 @@ package de.danoeh.antennapod.model.feed;
 
 import android.media.audiofx.AudioEffect;
 
-import java.util.Arrays;
-
 public enum VolumeAdaptionSetting {
     OFF(0, 1.0f),
     LIGHT_REDUCTION(1, 0.5f),
