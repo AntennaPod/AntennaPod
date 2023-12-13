@@ -37,6 +37,14 @@ public enum VolumeAdaptionSetting {
         return adaptionFactor;
     }
 
-    public static boolean BOOST_SUPPORTED = Arrays.stream(AudioEffect.queryEffects())
-            .anyMatch((e -> e.type.equals(AudioEffect.EFFECT_TYPE_LOUDNESS_ENHANCER)));
+    public static boolean BOOST_SUPPORTED = false;
+
+    static  {
+        for (AudioEffect.Descriptor effect : AudioEffect.queryEffects()) {
+            if (effect.type.equals(AudioEffect.EFFECT_TYPE_LOUDNESS_ENHANCER)) {
+                BOOST_SUPPORTED = true;
+                break;
+            }
+        }
+    }
 }
