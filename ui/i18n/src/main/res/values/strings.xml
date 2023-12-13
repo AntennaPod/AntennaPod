@@ -493,6 +493,7 @@
     <string name="pref_compact_notification_buttons_dialog_title">Select a maximum of %1$d items</string>
     <string name="pref_compact_notification_buttons_dialog_error">You can only select a maximum of %1$d items.</string>
     <string name="pref_compact_notification_buttons_dialog_error_min">You must select a minimum of %1$d items.</string>
+    <string name="pref_compact_notification_buttons_dialog_error_exact">You must select exactly %1$d items.</string>
     <string name="pref_full_notification_buttons_title">Set notification buttons</string>
     <string name="pref_full_notification_buttons_sum">Change the playback buttons on the playback notification. The play/pause button and forward/reverse are always included.</string>
     <string name="pref_enqueue_location_title">Enqueue location</string>

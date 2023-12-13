@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ListView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
@@ -133,7 +134,7 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                 R.array.full_notification_buttons_options);
         final int[] buttonIDs = {2, 3, 4};
         final int minItems = 2;
-        final int maxItems = Integer.MAX_VALUE;
+        final int maxItems = 2;
         final DialogInterface.OnClickListener completeListener = (dialog, which) ->
                 UserPreferences.setFullNotificationButtons(preferredButtons);
         final String title = context.getResources().getString(
@@ -182,7 +183,7 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
             checked[which] = isChecked;
 
             if (isChecked) {
-                if (preferredButtons.size() < maxItems) {
+                if (preferredButtons.size() < maxItems || maxItems == minItems) {
                     preferredButtons.add(buttonIds[which]);
                 } else {
                     // Only allow a maximum of two selections. This is because the notification
@@ -198,7 +199,7 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                             Snackbar.LENGTH_SHORT).show();
                 }
             } else {
-                if (preferredButtons.size() > minItems) {
+                if (preferredButtons.size() > minItems || maxItems == minItems) {
                     preferredButtons.remove((Integer) buttonIds[which]);
                 } else {
                     // Only allow a minimum selections. This isto ensure Skip button stays
@@ -215,8 +216,28 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
 
             }
         });
-        builder.setPositiveButton(R.string.confirm_label, completeListener);
+        builder.setPositiveButton(R.string.confirm_label, null);
         builder.setNegativeButton(R.string.cancel_label, null);
-        builder.create().show();
+        final AlertDialog dialog = builder.create();
+
+        dialog.show();
+
+        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+
+        positiveButton.setOnClickListener(v -> {
+            if (minItems == maxItems && preferredButtons.size() != minItems) {
+                ListView selectionView = dialog.getListView();
+                Snackbar.make(
+                    selectionView,
+                    String.format(context.getResources().getString(
+                        R.string.pref_compact_notification_buttons_dialog_error_exact), minItems),
+                    Snackbar.LENGTH_SHORT).show();
+
+            } else {
+                completeListener.onClick(dialog, AlertDialog.BUTTON_POSITIVE);
+                dialog.cancel();
+            }
+        }
+        );
     }
 }
