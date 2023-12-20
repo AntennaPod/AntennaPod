@@ -410,7 +410,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             long currentlyPlayingMedia = PlaybackPreferences.getCurrentlyPlayingMediaType();
             if (currentlyPlayingMedia == PlaybackPreferences.PLAYER_STATUS_PLAYING
                     || currentlyPlayingMedia == PlaybackPreferences.PLAYER_STATUS_PAUSED) {
-                       mediaItems.add(createBrowsableMediaItem(R.string.current_playing_episode,
+                mediaItems.add(createBrowsableMediaItem(R.string.current_playing_episode,
                                R.drawable.ic_play_48dp,
                                1));
             }
