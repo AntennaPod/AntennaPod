@@ -323,12 +323,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public BrowserRoot onGetRoot(@NonNull String clientPackageName, int clientUid, Bundle rootHints) {
         Log.d(TAG, "OnGetRoot: clientPackageName=" + clientPackageName +
                 "; clientUid=" + clientUid + " ; rootHints=" + rootHints);
-
-/*
-        long currentlyPlayingMedia = PlaybackPreferences.getCurrentlyPlayingMediaType();
-        if ((rootHints != null && rootHints.getBoolean(BrowserRoot.EXTRA_RECENT)
-                || currentlyPlayingMedia == PlaybackPreferences.PLAYER_STATUS_PLAYING )) {
- */
         if (rootHints != null && rootHints.getBoolean(BrowserRoot.EXTRA_RECENT)) {
             Bundle extras = new Bundle();
             extras.putBoolean(BrowserRoot.EXTRA_RECENT, true);
