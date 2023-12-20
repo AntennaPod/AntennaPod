@@ -323,6 +323,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public BrowserRoot onGetRoot(@NonNull String clientPackageName, int clientUid, Bundle rootHints) {
         Log.d(TAG, "OnGetRoot: clientPackageName=" + clientPackageName +
                 "; clientUid=" + clientUid + " ; rootHints=" + rootHints);
+
+/*
+        long currentlyPlayingMedia = PlaybackPreferences.getCurrentlyPlayingMediaType();
+        if ((rootHints != null && rootHints.getBoolean(BrowserRoot.EXTRA_RECENT)
+                || currentlyPlayingMedia == PlaybackPreferences.PLAYER_STATUS_PLAYING )) {
+ */
         if (rootHints != null && rootHints.getBoolean(BrowserRoot.EXTRA_RECENT)) {
             Bundle extras = new Bundle();
             extras.putBoolean(BrowserRoot.EXTRA_RECENT, true);
@@ -407,6 +413,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private List<MediaBrowserCompat.MediaItem> loadChildrenSynchronous(@NonNull String parentId) {
         List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
         if (parentId.equals(getResources().getString(R.string.app_name))) {
+            long currentlyPlayingMedia = PlaybackPreferences.getCurrentlyPlayingMediaType();
+            if (currentlyPlayingMedia == PlaybackPreferences.PLAYER_STATUS_PLAYING
+                    || currentlyPlayingMedia == PlaybackPreferences.PLAYER_STATUS_PAUSED) {
+                mediaItems.add(createBrowsableMediaItem(R.string.current_playing_episode, R.drawable.ic_play_48dp,
+                        DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.QUEUED))));
+            }
             mediaItems.add(createBrowsableMediaItem(R.string.queue_label, R.drawable.ic_playlist_play_black,
                     DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.QUEUED))));
             mediaItems.add(createBrowsableMediaItem(R.string.downloads_label, R.drawable.ic_download_black,
@@ -433,7 +445,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             long feedId = Long.parseLong(parentId.split(":")[1]);
             Feed feed = DBReader.getFeed(feedId);
             feedItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(), feed.getSortOrder());
-        } else if (parentId.equals(getString(R.string.recently_played_episodes))) {
+        } else if (parentId.equals(getString(R.string.recently_played_episodes))
+                || parentId.equals(getString(R.string.current_playing_episode))) {
             Playable playable = PlaybackPreferences.createInstanceFromPreferences(this);
             if (playable instanceof FeedMedia) {
                 feedItems = Collections.singletonList(((FeedMedia) playable).getItem());
