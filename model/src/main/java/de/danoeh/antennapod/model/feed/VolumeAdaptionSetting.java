@@ -2,6 +2,9 @@ package de.danoeh.antennapod.model.feed;
 
 import android.media.audiofx.AudioEffect;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+
 public enum VolumeAdaptionSetting {
     OFF(0, 1.0f),
     LIGHT_REDUCTION(1, 0.5f),
@@ -35,17 +38,30 @@ public enum VolumeAdaptionSetting {
         return adaptionFactor;
     }
 
-    public static boolean BOOST_SUPPORTED = false;
+    @Nullable
+    private static Boolean boostSupported = null;
 
-    static  {
-        final AudioEffect.Descriptor[] audioEffects = AudioEffect.queryEffects();
-        if (audioEffects != null) {
-            for (AudioEffect.Descriptor effect : audioEffects) {
-                if (effect.type.equals(AudioEffect.EFFECT_TYPE_LOUDNESS_ENHANCER)) {
-                    BOOST_SUPPORTED = true;
-                    break;
+    @Nullable
+    public static boolean isBoostSupported() {
+        if (boostSupported == null) {
+            boostSupported = false;
+
+            final AudioEffect.Descriptor[] audioEffects = AudioEffect.queryEffects();
+            if (audioEffects != null) {
+                for (AudioEffect.Descriptor effect : audioEffects) {
+                    if (effect.type.equals(AudioEffect.EFFECT_TYPE_LOUDNESS_ENHANCER)) {
+                        boostSupported = true;
+                        break;
+                    }
                 }
             }
         }
+
+        return boostSupported;
+    }
+
+    @VisibleForTesting
+    public static void setBoostSupported(@Nullable Boolean boostSupported) {
+        VolumeAdaptionSetting.boostSupported = boostSupported;
     }
 }

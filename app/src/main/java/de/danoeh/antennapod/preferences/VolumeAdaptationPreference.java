@@ -18,7 +18,7 @@ public class VolumeAdaptationPreference extends MaterialListPreference {
 
     @Override
     public CharSequence[] getEntries() {
-        if (VolumeAdaptionSetting.BOOST_SUPPORTED) {
+        if (VolumeAdaptionSetting.isBoostSupported()) {
             return super.getEntries();
         } else {
             return Arrays.copyOfRange(super.getEntries(), 0, 3);

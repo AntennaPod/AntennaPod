@@ -20,10 +20,6 @@ android {
             }
         }
     }
-
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
 }
 
 dependencies {

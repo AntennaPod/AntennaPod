@@ -361,7 +361,7 @@ public class ExoPlayerWrapper {
     }
 
     private void initLoudnessEnhancer(int audioStreamId) {
-        if (!VolumeAdaptionSetting.BOOST_SUPPORTED) {
+        if (!VolumeAdaptionSetting.isBoostSupported()) {
             return;
         }
 
