@@ -158,8 +158,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 getContext(), viewBinding.toolbar, viewBinding.collapsingToolbar) {
             @Override
             protected void doTint(Context themedContext) {
-                viewBinding.toolbar.getMenu().findItem(R.id.refresh_item)
-                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_refresh));
+                /*viewBinding.toolbar.getMenu().findItem(R.id.refresh_item)
+                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_refresh));*/
                 viewBinding.toolbar.getMenu().findItem(R.id.action_search)
                         .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_search));
             }
@@ -275,8 +275,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             IntentUtils.openInBrowser(getContext(), feed.getLink());
         } else if (item.getItemId() == R.id.share_item) {
             ShareUtils.shareFeedLink(getContext(), feed);
-        } else if (item.getItemId() == R.id.refresh_item) {
-            FeedUpdateManager.runOnceOrAsk(getContext(), feed);
+        /*} else if (item.getItemId() == R.id.refresh_item) {
+            FeedUpdateManager.runOnceOrAsk(getContext(), feed);*/
         } else if (item.getItemId() == R.id.refresh_complete_item) {
             new Thread(() -> {
                 feed.setNextPageLink(feed.getDownload_url());
@@ -431,8 +431,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (!event.isFeedUpdateRunning) {
             nextPageLoader.getRoot().setVisibility(View.GONE);
         }
-        MenuItemUtils.updateRefreshMenuItem(viewBinding.toolbar.getMenu(),
-                R.id.refresh_item, event.isFeedUpdateRunning);
+        /*MenuItemUtils.updateRefreshMenuItem(viewBinding.toolbar.getMenu(),
+                R.id.refresh_item, event.isFeedUpdateRunning);*/
     }
 
     private void refreshHeaderView() {

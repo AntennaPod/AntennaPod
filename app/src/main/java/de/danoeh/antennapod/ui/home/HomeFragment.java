@@ -152,20 +152,20 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenSectionsString, ",")));
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    /*@Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedUpdateRunningEvent event) {
         MenuItemUtils.updateRefreshMenuItem(viewBinding.toolbar.getMenu(),
                 R.id.refresh_item, event.isFeedUpdateRunning);
-    }
+    }*/
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.homesettings_items) {
             HomeSectionsSettingsDialog.open(getContext(), (dialogInterface, i) -> populateSectionList());
             return true;
-        } else if (item.getItemId() == R.id.refresh_item) {
+        /*} else if (item.getItemId() == R.id.refresh_item) {
             FeedUpdateManager.runOnceOrAsk(requireContext());
-            return true;
+            return true;*/
         } else if (item.getItemId() == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             return true;

@@ -209,18 +209,18 @@ public class SubscriptionFragment extends Fragment
         toolbar.getMenu().findItem(COLUMN_CHECKBOX_IDS[columns - MIN_NUM_COLUMNS]).setChecked(true);
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    /*@Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedUpdateRunningEvent event) {
         MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(), R.id.refresh_item, event.isFeedUpdateRunning);
-    }
+    }*/
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         final int itemId = item.getItemId();
-        if (itemId == R.id.refresh_item) {
+        /*if (itemId == R.id.refresh_item) {
             FeedUpdateManager.runOnceOrAsk(requireContext());
             return true;
-        } else if (itemId == R.id.subscriptions_filter) {
+        } else*/ if (itemId == R.id.subscriptions_filter) {
             SubscriptionsFilterDialog.showDialog(requireContext());
             return true;
         } else if (itemId == R.id.subscriptions_sort) {

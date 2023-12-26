@@ -263,10 +263,10 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         toolbar.getMenu().findItem(R.id.queue_lock).setVisible(!keepSorted);
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    /*@Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedUpdateRunningEvent event) {
         MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(), R.id.refresh_item, event.isFeedUpdateRunning);
-    }
+    }*/
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
@@ -277,9 +277,9 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         } else if (itemId == R.id.queue_sort) {
             new QueueSortDialog().show(getChildFragmentManager().beginTransaction(), "SortDialog");
             return true;
-        } else if (itemId == R.id.refresh_item) {
+        /*} else if (itemId == R.id.refresh_item) {
             FeedUpdateManager.runOnceOrAsk(requireContext());
-            return true;
+            return true;*/
         } else if (itemId == R.id.clear_queue) {
             // make sure the user really wants to clear the queue
             ConfirmationDialog conDialog = new ConfirmationDialog(getActivity(),

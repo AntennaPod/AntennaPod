@@ -121,10 +121,10 @@ public abstract class EpisodesListFragment extends Fragment
             return true;
         }
         final int itemId = item.getItemId();
-        if (itemId == R.id.refresh_item) {
+        /*if (itemId == R.id.refresh_item) {
             FeedUpdateManager.runOnceOrAsk(requireContext());
             return true;
-        } else if (itemId == R.id.action_search) {
+        } else*/ if (itemId == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             return true;
         }
@@ -454,12 +454,12 @@ public abstract class EpisodesListFragment extends Fragment
     protected void updateToolbar() {
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    /*@Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedUpdateRunningEvent event) {
         if (toolbar.getMenu().findItem(R.id.refresh_item) != null) {
             MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(), R.id.refresh_item, event.isFeedUpdateRunning);
         }
-    }
+    }*/
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
