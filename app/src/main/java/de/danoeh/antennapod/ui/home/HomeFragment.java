@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -21,8 +22,14 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
+import de.danoeh.antennapod.fragment.AllEpisodesFragment;
+import de.danoeh.antennapod.fragment.EpisodesFragementInHome;
+import de.danoeh.antennapod.fragment.InboxFragment;
+import de.danoeh.antennapod.fragment.InboxFragmentInHome;
 import de.danoeh.antennapod.ui.echo.EchoActivity;
 import de.danoeh.antennapod.ui.home.sections.EchoSection;
+
+import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -102,40 +109,51 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             if (!prefs.getBoolean(HomeFragment.PREF_DISABLE_NOTIFICATION_PERMISSION_NAG, false)) {
-                addSection(new AllowNotificationsSection());
+                addSection(new AllowNotificationsSection(), false);
             }
         }
         if (Calendar.getInstance().get(Calendar.YEAR) == EchoActivity.RELEASE_YEAR
                 && Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER
                 && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) >= 10
                 && prefs.getInt(PREF_HIDE_ECHO, 0) != EchoActivity.RELEASE_YEAR) {
-            addSection(new EchoSection());
+            addSection(new EchoSection(), false);
         }
 
         List<String> hiddenSections = getHiddenSections(getContext());
         String[] sectionTags = getResources().getStringArray(R.array.home_section_tags);
+        int sectionsCount = sectionTags.length-hiddenSections.size(); //test if always correct?
         for (String sectionTag : sectionTags) {
             if (hiddenSections.contains(sectionTag)) {
                 continue;
             }
-            addSection(getSection(sectionTag));
+            Fragment section = getSection(sectionTag, sectionsCount <= 2);
+            //expand if there its inbox or episodes list (not descendants of HomeSection)
+            addSection(section, !HomeSection.class.isAssignableFrom(section.getClass()));
         }
     }
 
-    private void addSection(Fragment section) {
+    private void addSection(Fragment section, boolean expand) {
         FragmentContainerView containerView = new FragmentContainerView(getContext());
+        if (expand) {
+            containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 2f));
+            viewBinding.homeContainer.setPadding(0,0,0,0);
+        }
         containerView.setId(View.generateViewId());
         viewBinding.homeContainer.addView(containerView);
         getChildFragmentManager().beginTransaction().add(containerView.getId(), section).commit();
     }
 
-    private Fragment getSection(String tag) {
+    private Fragment getSection(String tag, boolean expandable) {
         switch (tag) {
             case QueueSection.TAG:
                 return new QueueSection();
             case InboxSection.TAG:
+                if (expandable) {
+                    return new InboxFragmentInHome(); }
                 return new InboxSection();
             case EpisodesSurpriseSection.TAG:
+                if (expandable) {
+                    return new EpisodesFragementInHome(); }
                 return new EpisodesSurpriseSection();
             case SubscriptionsSection.TAG:
                 return new SubscriptionsSection();
