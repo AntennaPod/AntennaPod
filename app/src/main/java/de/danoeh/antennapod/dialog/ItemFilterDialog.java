@@ -3,6 +3,7 @@ package de.danoeh.antennapod.dialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -53,6 +55,23 @@ public abstract class ItemFilterDialog extends BottomSheetDialogFragment {
             binding.filterButton2.setSingleLine(false);
             rows.addView(binding.getRoot());
         }
+
+        //reset button
+        FilterDialogRowBinding binding = FilterDialogRowBinding.inflate(inflater);
+        binding.getRoot().addOnButtonCheckedListener(
+                (group, checkedId, isChecked) -> {
+                    onFilterChanged(Collections.emptySet());
+                    for (int i = 0; i < rows.getChildCount(); i++) {
+                        ((MaterialButtonToggleGroup) rows.getChildAt(i)).clearChecked();
+                    }
+                });
+        binding.filterButton1.setText(getString(R.string.reset));
+        binding.filterButton1.setTag(null);
+        binding.filterButton1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        binding.filterButton2.setVisibility(View.GONE);
+        binding.filterButton1.setMaxLines(3);
+        binding.filterButton1.setSingleLine(false);
+        rows.addView(binding.getRoot());
 
         for (String filterId : filter.getValues()) {
             if (!TextUtils.isEmpty(filterId)) {
