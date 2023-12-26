@@ -79,6 +79,8 @@ public abstract class EpisodesListFragment extends Fragment
     EpisodeItemListAdapter listAdapter;
     EmptyViewHandler emptyView;
     SpeedDialView speedDialView;
+
+    FloatingActionButton fab;
     MaterialToolbar toolbar;
     SwipeActions swipeActions;
     private ProgressBar progressBar;
@@ -175,7 +177,7 @@ public abstract class EpisodesListFragment extends Fragment
         setupLoadMoreScrollListener();
         recyclerView.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
 
-        FloatingActionButton fab = root.findViewById(R.id.filterEpisodesFAB);
+        fab = root.findViewById(R.id.filterEpisodesFAB);
         fab.setOnClickListener(view -> {
             AllEpisodesFilterDialog.newInstance(getFilter()).show(getChildFragmentManager(), null);
         });

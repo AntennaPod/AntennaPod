@@ -60,6 +60,7 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         app:fabSize="mini"
+        android:visibility="gone"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         app:layout_gravity="bottom|end"
         app:srcCompat="@drawable/ic_filter" />
