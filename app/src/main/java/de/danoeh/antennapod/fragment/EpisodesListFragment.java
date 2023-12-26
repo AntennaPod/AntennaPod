@@ -178,26 +178,6 @@ public abstract class EpisodesListFragment extends Fragment
         recyclerView.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
 
         fab = root.findViewById(R.id.filterEpisodesFAB);
-        fab.setOnClickListener(view -> {
-            AllEpisodesFilterDialog.newInstance(getFilter()).show(getChildFragmentManager(), null);
-        });
-        fab.setOnLongClickListener(view -> {
-            //reset on long click
-            EventBus.getDefault().post(new AllEpisodesFilterDialog.AllEpisodesFilterChangedEvent(new HashSet<>()));
-            return true;
-        });
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                //hide on scrolling down
-                if (dy > 10 && fab.isShown()) {
-                    fab.hide();
-                } else if (dy < -10 && !fab.isShown()) {
-                    fab.show();
-                }
-            }
-        });
 
         swipeActions = new SwipeActions(this, getFragmentTag()).attachTo(recyclerView);
         swipeActions.setFilter(getFilter());
@@ -280,6 +260,30 @@ public abstract class EpisodesListFragment extends Fragment
         });
 
         return root;
+    }
+
+    public void activateFAB() {
+        fab.setVisibility(View.VISIBLE);
+        fab.setOnClickListener(view -> {
+            AllEpisodesFilterDialog.newInstance(getFilter()).show(getChildFragmentManager(), null);
+        });
+        fab.setOnLongClickListener(view -> {
+            //reset on long click
+            EventBus.getDefault().post(new AllEpisodesFilterDialog.AllEpisodesFilterChangedEvent(new HashSet<>()));
+            return true;
+        });
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //hide on scrolling down
+                if (dy > 10 && fab.isShown()) {
+                    fab.hide();
+                } else if (dy < -10 && !fab.isShown()) {
+                    fab.show();
+                }
+            }
+        });
     }
 
     private void performMultiSelectAction(int actionItemId) {
