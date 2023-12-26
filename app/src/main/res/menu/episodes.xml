@@ -14,7 +14,7 @@
         android:icon="@drawable/ic_filter"
         android:menuCategory="container"
         android:title="@string/filter"
-        custom:showAsAction="ifRoom"/>
+        custom:showAsAction="always"/>
 
     <item
         android:id="@+id/action_favorites"
