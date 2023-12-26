@@ -36,6 +36,7 @@ public class EpisodesFragementInHome extends EpisodesListFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = super.onCreateView(inflater, container, savedInstanceState);
         toolbar.setVisibility(View.GONE);
+        swipeRefreshLayout.setEnabled(false);
         updateFilterUi();
         txtvInformation.setOnClickListener(
                 v -> AllEpisodesFilterDialog.newInstance(getFilter()).show(getChildFragmentManager(), null));

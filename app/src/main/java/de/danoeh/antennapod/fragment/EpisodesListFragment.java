@@ -77,6 +77,8 @@ public abstract class EpisodesListFragment extends Fragment
     EmptyViewHandler emptyView;
     SpeedDialView speedDialView;
     MaterialToolbar toolbar;
+
+    SwipeRefreshLayout swipeRefreshLayout;
     SwipeActions swipeActions;
     private ProgressBar progressBar;
 
@@ -180,7 +182,7 @@ public abstract class EpisodesListFragment extends Fragment
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
         }
 
-        SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
         swipeRefreshLayout.setOnRefreshListener(() -> {
             FeedUpdateManager.runOnceOrAsk(requireContext());
