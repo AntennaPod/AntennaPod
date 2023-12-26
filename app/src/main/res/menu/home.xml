@@ -9,6 +9,13 @@
         android:title="@string/search_label"/>
 
     <item
+        android:id="@+id/action_addpodcast"
+        android:title="@string/add_feed_label"
+        android:menuCategory="container"
+        custom:showAsAction="always"
+        android:icon="@drawable/ic_add"/>
+
+    <item
         android:id="@+id/homesettings_items"
         android:icon="@drawable/ic_settings"
         android:menuCategory="container"

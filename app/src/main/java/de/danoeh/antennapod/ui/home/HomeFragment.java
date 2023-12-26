@@ -166,6 +166,8 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         /*} else if (item.getItemId() == R.id.refresh_item) {
             FeedUpdateManager.runOnceOrAsk(requireContext());
             return true;*/
+        } else if (item.getItemId() == R.id.action_addpodcast) {
+            //navigate to add
         } else if (item.getItemId() == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             return true;
