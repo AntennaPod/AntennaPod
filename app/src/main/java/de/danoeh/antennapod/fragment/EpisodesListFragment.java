@@ -184,6 +184,18 @@ public abstract class EpisodesListFragment extends Fragment
             EventBus.getDefault().post(new AllEpisodesFilterDialog.AllEpisodesFilterChangedEvent(new HashSet<>()));
             return true;
         });
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //hide on scrolling down
+                if (dy > 10 && fab.isShown()) {
+                    fab.hide();
+                } else if (dy < -10 && !fab.isShown()) {
+                    fab.show();
+                }
+            }
+        });
 
         swipeActions = new SwipeActions(this, getFragmentTag()).attachTo(recyclerView);
         swipeActions.setFilter(getFilter());
