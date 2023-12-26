@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
+import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.ui.echo.EchoActivity;
 import de.danoeh.antennapod.ui.home.sections.EchoSection;
 import org.greenrobot.eventbus.EventBus;
@@ -167,7 +168,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             FeedUpdateManager.runOnceOrAsk(requireContext());
             return true;*/
         } else if (item.getItemId() == R.id.action_addpodcast) {
-            //navigate to add
+            ((MainActivity) getActivity()).loadFragment(AddFeedFragment.TAG, null);
         } else if (item.getItemId() == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             return true;
