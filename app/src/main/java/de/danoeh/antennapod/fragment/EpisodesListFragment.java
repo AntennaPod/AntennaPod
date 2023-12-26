@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.leinardi.android.speeddial.SpeedDialView;
 import de.danoeh.antennapod.R;
@@ -30,6 +31,7 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
+import de.danoeh.antennapod.dialog.AllEpisodesFilterDialog;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
@@ -57,6 +59,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -171,6 +174,16 @@ public abstract class EpisodesListFragment extends Fragment
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         setupLoadMoreScrollListener();
         recyclerView.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
+
+        FloatingActionButton fab = root.findViewById(R.id.filterEpisodesFAB);
+        fab.setOnClickListener(view -> {
+            AllEpisodesFilterDialog.newInstance(getFilter()).show(getChildFragmentManager(), null);
+        });
+        fab.setOnLongClickListener(view -> {
+            //reset on long click
+            EventBus.getDefault().post(new AllEpisodesFilterDialog.AllEpisodesFilterChangedEvent(new HashSet<>()));
+            return true;
+        });
 
         swipeActions = new SwipeActions(this, getFragmentTag()).attachTo(recyclerView);
         swipeActions.setFilter(getFilter());

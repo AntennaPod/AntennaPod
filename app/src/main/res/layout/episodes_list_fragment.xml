@@ -34,6 +34,8 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
@@ -47,6 +49,21 @@
             android:paddingHorizontal="@dimen/additional_horizontal_spacing" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/filterEpisodesFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+        app:layout_gravity="bottom|end"
+        app:srcCompat="@drawable/ic_filter" />
+
 
     <ProgressBar
         android:id="@+id/progressBar"
