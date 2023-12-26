@@ -66,7 +66,10 @@ public abstract class ItemFilterDialog extends BottomSheetDialogFragment {
                 });
         binding.filterButton1.setText(getString(R.string.reset));
         binding.filterButton1.setTag(null);
-        binding.filterButton1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        binding.filterButton1.setLayoutParams(
+                new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT));
         binding.filterButton2.setVisibility(View.GONE);
         binding.filterButton1.setMaxLines(3);
         binding.filterButton1.setSingleLine(false);
