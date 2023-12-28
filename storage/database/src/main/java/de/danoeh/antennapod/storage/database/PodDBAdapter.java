@@ -95,7 +95,6 @@ public class PodDBAdapter {
     public static final String KEY_REASON_DETAILED = "reason_detailed";
     public static final String KEY_DOWNLOADSTATUS_TITLE = "title";
     public static final String KEY_PLAYBACK_COMPLETION_DATE = "playback_completion_date";
-    public static final String KEY_AUTO_DOWNLOAD_ATTEMPTS = "auto_download";
     public static final String KEY_AUTO_DOWNLOAD_ENABLED = "auto_download"; // Both tables use the same key
     public static final String KEY_KEEP_UPDATED = "keep_updated";
     public static final String KEY_AUTO_DELETE_ACTION = "auto_delete_action";
@@ -171,7 +170,7 @@ public class PodDBAdapter {
             + KEY_MEDIA + " INTEGER," + KEY_FEED + " INTEGER,"
             + KEY_HAS_CHAPTERS + " INTEGER," + KEY_ITEM_IDENTIFIER + " TEXT,"
             + KEY_IMAGE_URL + " TEXT,"
-            + KEY_AUTO_DOWNLOAD_ATTEMPTS + " INTEGER,"
+            + KEY_AUTO_DOWNLOAD_ENABLED + " INTEGER,"
             + KEY_PODCASTINDEX_CHAPTER_URL + " TEXT)";
 
     private static final String CREATE_TABLE_FEED_MEDIA = "CREATE TABLE "
@@ -259,7 +258,7 @@ public class PodDBAdapter {
             + TABLE_NAME_FEED_ITEMS + "." + KEY_HAS_CHAPTERS + ", "
             + TABLE_NAME_FEED_ITEMS + "." + KEY_ITEM_IDENTIFIER + ", "
             + TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE_URL + ", "
-            + TABLE_NAME_FEED_ITEMS + "." + KEY_AUTO_DOWNLOAD_ATTEMPTS + ", "
+            + TABLE_NAME_FEED_ITEMS + "." + KEY_AUTO_DOWNLOAD_ENABLED + ", "
             + TABLE_NAME_FEED_ITEMS + "." + KEY_PODCASTINDEX_CHAPTER_URL;
 
     private static final String KEYS_FEED_MEDIA =
@@ -652,7 +651,7 @@ public class PodDBAdapter {
         }
         values.put(KEY_HAS_CHAPTERS, item.getChapters() != null || item.hasChapters());
         values.put(KEY_ITEM_IDENTIFIER, item.getItemIdentifier());
-        values.put(KEY_AUTO_DOWNLOAD_ATTEMPTS, item.getAutoDownloadAttemptsAndTime());
+        values.put(KEY_AUTO_DOWNLOAD_ENABLED, item.isAutoDownloadEnabled());
         values.put(KEY_IMAGE_URL, item.getImageUrl());
         values.put(KEY_PODCASTINDEX_CHAPTER_URL, item.getPodcastIndexChapterUrl());
 
