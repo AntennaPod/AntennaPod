@@ -82,8 +82,7 @@ public class ChapterUtils {
         List<Chapter> chaptersMergePhase1 = ChapterMerger.merge(chaptersFromDatabase, chaptersFromMediaFile);
         List<Chapter> chapters = ChapterMerger.merge(chaptersMergePhase1, chaptersFromPodcastIndex);
         if (chapters == null) {
-            // Do not try loading again. There are no chapters.
-            playable.setChapters(Collections.emptyList());
+            playable.setChapters(null);
         } else {
             playable.setChapters(chapters);
         }
