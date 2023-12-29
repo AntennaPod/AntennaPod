@@ -41,6 +41,7 @@ public class InboxFragmentInHome extends EpisodesListFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = super.onCreateView(inflater, container, savedInstanceState);
         toolbar.setVisibility(View.GONE);
+        swipeRefreshLayout.setEnabled(false);
         prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         emptyView.setIcon(R.drawable.ic_inbox);
         emptyView.setTitle(R.string.no_inbox_head_label);
