@@ -43,20 +43,19 @@ public enum VolumeAdaptionSetting {
 
     @Nullable
     public static boolean isBoostSupported() {
-        if (boostSupported == null) {
-            boostSupported = false;
-
-            final AudioEffect.Descriptor[] audioEffects = AudioEffect.queryEffects();
-            if (audioEffects != null) {
-                for (AudioEffect.Descriptor effect : audioEffects) {
-                    if (effect.type.equals(AudioEffect.EFFECT_TYPE_LOUDNESS_ENHANCER)) {
-                        boostSupported = true;
-                        break;
-                    }
+        if (boostSupported != null) {
+            return boostSupported;
+        }
+        final AudioEffect.Descriptor[] audioEffects = AudioEffect.queryEffects();
+        if (audioEffects != null) {
+            for (AudioEffect.Descriptor effect : audioEffects) {
+                if (effect.type.equals(AudioEffect.EFFECT_TYPE_LOUDNESS_ENHANCER)) {
+                    boostSupported = true;
+                    return boostSupported;
                 }
             }
         }
-
+        boostSupported = false;
         return boostSupported;
     }
 
