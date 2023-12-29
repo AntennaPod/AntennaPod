@@ -25,7 +25,7 @@ public abstract class FeedItemCursorMapper {
         int indexHasChapters = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_HAS_CHAPTERS);
         int indexRead = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_READ);
         int indexItemIdentifier = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_ITEM_IDENTIFIER);
-        int indexAutoDownload = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_AUTO_DOWNLOAD_ATTEMPTS);
+        int indexAutoDownload = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_AUTO_DOWNLOAD_ENABLED);
         int indexImageUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_IMAGE_URL);
         int indexPodcastIndexChapterUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PODCASTINDEX_CHAPTER_URL);
 
@@ -38,11 +38,11 @@ public abstract class FeedItemCursorMapper {
         boolean hasChapters = cursor.getInt(indexHasChapters) > 0;
         int state = cursor.getInt(indexRead);
         String itemIdentifier = cursor.getString(indexItemIdentifier);
-        long autoDownload = cursor.getLong(indexAutoDownload);
+        boolean autoDownloadEnabled = cursor.getLong(indexAutoDownload) > 0;
         String imageUrl = cursor.getString(indexImageUrl);
         String podcastIndexChapterUrl = cursor.getString(indexPodcastIndexChapterUrl);
 
         return new FeedItem(id, title, link, pubDate, paymentLink, feedId,
-                hasChapters, imageUrl, state, itemIdentifier, autoDownload, podcastIndexChapterUrl);
+                hasChapters, imageUrl, state, itemIdentifier, autoDownloadEnabled, podcastIndexChapterUrl);
     }
 }
