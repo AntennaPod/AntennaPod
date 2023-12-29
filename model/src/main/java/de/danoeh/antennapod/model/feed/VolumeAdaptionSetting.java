@@ -41,7 +41,6 @@ public enum VolumeAdaptionSetting {
     @Nullable
     private static Boolean boostSupported = null;
 
-    @Nullable
     public static boolean isBoostSupported() {
         if (boostSupported != null) {
             return boostSupported;
