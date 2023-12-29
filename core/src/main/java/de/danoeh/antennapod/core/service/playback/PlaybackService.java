@@ -327,7 +327,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Bundle extras = new Bundle();
             extras.putBoolean(BrowserRoot.EXTRA_RECENT, true);
             Log.d(TAG, "OnGetRoot: Returning BrowserRoot " + R.string.recently_played_episodes);
-            return new BrowserRoot(getResources().getString(R.string.recently_played_episodes), extras);
+            return new BrowserRoot(getResources().getString(R.string.current_playing_episode), extras);
         }
 
         // Name visible in Android Auto
@@ -441,8 +441,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             long feedId = Long.parseLong(parentId.split(":")[1]);
             Feed feed = DBReader.getFeed(feedId);
             feedItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(), feed.getSortOrder());
-        } else if (parentId.equals(getString(R.string.recently_played_episodes))
-                || parentId.equals(getString(R.string.current_playing_episode))) {
+        } else if (parentId.equals(getString(R.string.current_playing_episode))) {
             Playable playable = PlaybackPreferences.createInstanceFromPreferences(this);
             if (playable instanceof FeedMedia) {
                 feedItems = Collections.singletonList(((FeedMedia) playable).getItem());
