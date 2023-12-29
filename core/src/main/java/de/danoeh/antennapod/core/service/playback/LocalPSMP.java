@@ -161,7 +161,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         try {
             callback.ensureMediaInfoLoaded(media);
             callback.onMediaChanged(false);
-            setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media), UserPreferences.isSkipSilence());
+            setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media), PlaybackSpeedUtils.getCurrentSkipSilencePreference(media));
             if (stream) {
                 if (playable instanceof FeedMedia) {
                     FeedMedia feedMedia = (FeedMedia) playable;
@@ -212,7 +212,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 Log.d(TAG, "Resuming/Starting playback");
                 acquireWifiLockIfNecessary();
 
-                setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media), UserPreferences.isSkipSilence());
+                setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media), PlaybackSpeedUtils.getCurrentSkipSilencePreference(media));
                 setVolume(1.0f, 1.0f);
 
                 if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
@@ -457,6 +457,18 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 || playerStatus == PlayerStatus.INITIALIZED
                 || playerStatus == PlayerStatus.PREPARED)) {
             retVal = mediaPlayer.getCurrentSpeedMultiplier();
+        }
+        return retVal;
+    }
+
+    @Override
+    public boolean getSkipSilence() {
+        boolean retVal = false;
+        if ((playerStatus == PlayerStatus.PLAYING
+                || playerStatus == PlayerStatus.PAUSED
+                || playerStatus == PlayerStatus.INITIALIZED
+                || playerStatus == PlayerStatus.PREPARED)) {
+            retVal = mediaPlayer.getCurrentSkipSilence();
         }
         return retVal;
     }

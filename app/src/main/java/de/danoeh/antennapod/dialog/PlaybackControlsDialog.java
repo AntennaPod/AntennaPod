@@ -10,7 +10,9 @@ import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import android.widget.Button;
+import android.widget.CheckBox;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import java.util.List;
 
