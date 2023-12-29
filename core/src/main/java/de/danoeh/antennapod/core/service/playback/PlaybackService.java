@@ -326,7 +326,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (rootHints != null && rootHints.getBoolean(BrowserRoot.EXTRA_RECENT)) {
             Bundle extras = new Bundle();
             extras.putBoolean(BrowserRoot.EXTRA_RECENT, true);
-            Log.d(TAG, "OnGetRoot: Returning BrowserRoot " + R.string.recently_played_episodes);
+            Log.d(TAG, "OnGetRoot: Returning BrowserRoot " + R.string.current_playing_episode);
             return new BrowserRoot(getResources().getString(R.string.current_playing_episode), extras);
         }
 
@@ -411,9 +411,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             long currentlyPlaying = PlaybackPreferences.getCurrentPlayerStatus();
             if (currentlyPlaying == PlaybackPreferences.PLAYER_STATUS_PLAYING
                     || currentlyPlaying == PlaybackPreferences.PLAYER_STATUS_PAUSED) {
-                mediaItems.add(createBrowsableMediaItem(R.string.current_playing_episode,
-                               R.drawable.ic_play_48dp,
-                               1));
+                mediaItems.add(createBrowsableMediaItem(R.string.current_playing_episode, R.drawable.ic_play_48dp, 1));
             }
             mediaItems.add(createBrowsableMediaItem(R.string.queue_label, R.drawable.ic_playlist_play_black,
                     DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.QUEUED))));
