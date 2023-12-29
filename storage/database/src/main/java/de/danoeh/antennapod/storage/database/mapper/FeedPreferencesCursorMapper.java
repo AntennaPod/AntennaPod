@@ -31,6 +31,7 @@ public abstract class FeedPreferencesCursorMapper {
         int indexExcludeFilter = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_EXCLUDE_FILTER);
         int indexMinimalDurationFilter = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_MINIMAL_DURATION_FILTER);
         int indexFeedPlaybackSpeed = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEED_PLAYBACK_SPEED);
+        int indexFeedSkipSilence = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEED_SKIP_SILENCE);
         int indexAutoSkipIntro = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEED_SKIP_INTRO);
         int indexAutoSkipEnding = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEED_SKIP_ENDING);
         int indexEpisodeNotification = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_EPISODE_NOTIFICATION);
@@ -52,6 +53,7 @@ public abstract class FeedPreferencesCursorMapper {
         float feedPlaybackSpeed = cursor.getFloat(indexFeedPlaybackSpeed);
         int feedAutoSkipIntro = cursor.getInt(indexAutoSkipIntro);
         int feedAutoSkipEnding = cursor.getInt(indexAutoSkipEnding);
+        Boolean feedSkipSilence = cursor.isNull(indexFeedSkipSilence) ? null : cursor.getInt(indexFeedSkipSilence) > 0;
         FeedPreferences.NewEpisodesAction feedNewEpisodesAction =
                 FeedPreferences.NewEpisodesAction.fromCode(cursor.getInt(indexNewEpisodesAction));
         boolean showNotification = cursor.getInt(indexEpisodeNotification) > 0;
@@ -59,9 +61,6 @@ public abstract class FeedPreferencesCursorMapper {
         if (TextUtils.isEmpty(tagsString)) {
             tagsString = FeedPreferences.TAG_ROOT;
         }
-
-        // Todo - read from db
-        Boolean skipSilence = null;
 
         return new FeedPreferences(feedId,
                 autoDownload,
@@ -74,7 +73,7 @@ public abstract class FeedPreferencesCursorMapper {
                 feedPlaybackSpeed,
                 feedAutoSkipIntro,
                 feedAutoSkipEnding,
-                skipSilence,
+                feedSkipSilence,
                 showNotification,
                 feedNewEpisodesAction,
                 new HashSet<>(Arrays.asList(tagsString.split(FeedPreferences.TAG_SEPARATOR))));
