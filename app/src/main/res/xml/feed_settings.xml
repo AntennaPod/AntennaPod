@@ -34,6 +34,8 @@
         android:summary="@string/pref_feed_playback_speed_sum"
         android:title="@string/playback_speed" />
 
+<!--    Todo skip silence-->
+
     <Preference
         android:icon="@drawable/ic_skip_24dp"
         android:key="feedAutoSkip"
