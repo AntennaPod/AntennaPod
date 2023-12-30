@@ -3,6 +3,7 @@ package de.danoeh.antennapod.dialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 
 import java.util.Collections;
@@ -40,6 +42,7 @@ public abstract class ItemFilterDialog extends BottomSheetDialogFragment {
         rows = layout.findViewById(R.id.filter_rows);
         FeedItemFilter filter = (FeedItemFilter) getArguments().getSerializable(ARGUMENT_FILTER);
 
+        //add filter rows
         for (FeedItemFilterGroup item : FeedItemFilterGroup.values()) {
             FilterDialogRowBinding binding = FilterDialogRowBinding.inflate(inflater);
             binding.getRoot().addOnButtonCheckedListener(
@@ -55,25 +58,40 @@ public abstract class ItemFilterDialog extends BottomSheetDialogFragment {
             rows.addView(binding.getRoot());
         }
 
-        //reset button
-        FilterDialogRowBinding binding = FilterDialogRowBinding.inflate(inflater);
-        binding.getRoot().addOnButtonCheckedListener(
-                (group, checkedId, isChecked) -> {
-                    onFilterChanged(Collections.emptySet());
-                    for (int i = 0; i < rows.getChildCount(); i++) {
-                        ((MaterialButtonToggleGroup) rows.getChildAt(i)).clearChecked();
-                    }
-                });
-        binding.filterButton1.setText(getString(R.string.reset));
-        binding.filterButton1.setTag(null);
-        binding.filterButton1.setLayoutParams(
-                new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT));
-        binding.filterButton2.setVisibility(View.GONE);
-        binding.filterButton1.setMaxLines(3);
-        binding.filterButton1.setSingleLine(false);
-        rows.addView(binding.getRoot());
+        //add confirm and reset button
+        MaterialButton confirmButton = new MaterialButton(getContext());
+        confirmButton.setText(getString(R.string.confirm_label));
+        confirmButton.setOnClickListener(view1 -> {
+            dismiss();
+        });
+        MaterialButton resetButton = new MaterialButton(getContext());
+        resetButton.setText(getString(R.string.reset));
+        resetButton.setOnClickListener(view1 -> {
+            onFilterChanged(Collections.emptySet());
+            for (int i = 0; i < rows.getChildCount(); i++) {
+                if (rows.getChildAt(i) instanceof MaterialButtonToggleGroup) {
+                    ((MaterialButtonToggleGroup) rows.getChildAt(i)).clearChecked();
+                }
+            }
+            dismiss();
+        });
+        float eightDp = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8,
+                getResources().getDisplayMetrics());
+        LinearLayout.LayoutParams matchParamsMarginEnd = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+        matchParamsMarginEnd.setMarginEnd(Math.round(eightDp));
+        LinearLayout.LayoutParams matchParamsMarginStart = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+        matchParamsMarginStart.setMarginStart(Math.round(eightDp));
+        resetButton.setLayoutParams(matchParamsMarginEnd);
+        confirmButton.setLayoutParams(matchParamsMarginStart);
+        LinearLayout horizontalLinearLayout = new LinearLayout(getContext());
+        horizontalLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        horizontalLinearLayout.addView(resetButton);
+        horizontalLinearLayout.addView(confirmButton);
+        rows.addView(horizontalLinearLayout);
 
         for (String filterId : filter.getValues()) {
             if (!TextUtils.isEmpty(filterId)) {
