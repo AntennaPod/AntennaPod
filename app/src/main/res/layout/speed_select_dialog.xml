@@ -11,11 +11,11 @@
         android:layout_height="wrap_content">
 
         <TextView
-            style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/playback_speed" />
+            android:text="@string/playback_speed"
+            style="@style/AntennaPod.TextView.ListItemPrimaryTitle" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/add_current_speed_chip"
@@ -30,11 +30,11 @@
         android:layout_marginBottom="8dp" />
 
     <TextView
-        style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="@string/speed_presets" />
+        android:text="@string/speed_presets"
+        style="@style/AntennaPod.TextView.ListItemPrimaryTitle" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/selected_speeds_grid"
