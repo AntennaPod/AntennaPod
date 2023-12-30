@@ -503,11 +503,8 @@ public class AudioPlayerFragment extends Fragment implements
         if (itemId == R.id.disable_sleeptimer_item || itemId == R.id.set_sleeptimer_item) {
             new SleepTimerDialog().show(getChildFragmentManager(), "SleepTimerDialog");
             return true;
-        } else if (itemId == R.id.audio_controls) {
-            PlaybackControlsDialog dialog = PlaybackControlsDialog.newInstance();
-            dialog.show(getChildFragmentManager(), "playback_controls");
-            return true;
-        } else if (itemId == R.id.open_feed_item) {
+        }
+        else if (itemId == R.id.open_feed_item) {
             if (feedItem != null) {
                 Intent intent = MainActivity.getIntentToOpenFeed(getContext(), feedItem.getFeedId());
                 startActivity(intent);

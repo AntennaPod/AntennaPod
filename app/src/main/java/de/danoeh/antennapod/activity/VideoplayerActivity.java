@@ -69,6 +69,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -567,7 +568,14 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         menu.findItem(R.id.disable_sleeptimer_item).setVisible(controller.sleepTimerActive());
 
         menu.findItem(R.id.player_switch_to_audio_only).setVisible(true);
-        menu.findItem(R.id.audio_controls).setIcon(R.drawable.ic_sliders);
+
+        List<String> audioTracks = controller.getAudioTracks();
+        int selectedAudioTrack = controller.getSelectedAudioTrack();
+
+        if (audioTracks.size() >= 2 && selectedAudioTrack >= 0) {
+            menu.findItem(R.id.audio_controls).setVisible(true);
+            menu.findItem(R.id.audio_controls).setIcon(R.drawable.ic_sliders);
+        }
         menu.findItem(R.id.playback_speed).setVisible(true);
         menu.findItem(R.id.player_show_chapters).setVisible(true);
         return true;

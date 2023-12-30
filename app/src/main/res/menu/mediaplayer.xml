@@ -32,6 +32,7 @@
         android:id="@+id/audio_controls"
         android:icon="@drawable/ic_sliders"
         android:title="@string/audio_controls"
+        android:visible="false"
         custom:showAsAction="always">
     </item>
 

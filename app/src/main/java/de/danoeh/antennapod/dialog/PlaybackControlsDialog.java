@@ -37,12 +37,12 @@ public class PlaybackControlsDialog extends DialogFragment {
         controller = new PlaybackController(getActivity()) {
             @Override
             public void loadMediaInfo() {
-                setupUi();
+//                setupUi();
                 setupAudioTracks();
             }
         };
         controller.init();
-        setupUi();
+//        setupUi();
     }
 
     @Override
@@ -62,14 +62,15 @@ public class PlaybackControlsDialog extends DialogFragment {
         return dialog;
     }
 
-    private void setupUi() {
-        final CheckBox skipSilence = dialog.findViewById(R.id.skipSilence);
-        skipSilence.setChecked(UserPreferences.isSkipSilence());
-        skipSilence.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            UserPreferences.setSkipSilence(isChecked);
-            controller.setSkipSilence(isChecked);
-        });
-    }
+    //Todo - move to new location
+//    private void setupUi() {
+//        final CheckBox skipSilence = dialog.findViewById(R.id.skipSilence);
+//        skipSilence.setChecked(UserPreferences.isSkipSilence());
+//        skipSilence.setOnCheckedChangeListener((buttonView, isChecked) -> {
+//            UserPreferences.setSkipSilence(isChecked);
+//            controller.setSkipSilence(isChecked);
+//        });
+//    }
 
     private void setupAudioTracks() {
         List<String> audioTracks = controller.getAudioTracks();
