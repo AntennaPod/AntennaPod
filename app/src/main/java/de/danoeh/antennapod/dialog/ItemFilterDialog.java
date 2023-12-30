@@ -26,6 +26,7 @@ import java.util.Set;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItemFilterGroup;
+import de.danoeh.antennapod.databinding.FilterDialogBinding;
 import de.danoeh.antennapod.databinding.FilterDialogRowBinding;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
@@ -39,34 +40,31 @@ public abstract class ItemFilterDialog extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.filter_dialog, null, false);
-        rows = layout.findViewById(R.id.filter_rows);
+        FilterDialogBinding binding = FilterDialogBinding.bind(layout);
+        rows = binding.filterRows;
         FeedItemFilter filter = (FeedItemFilter) getArguments().getSerializable(ARGUMENT_FILTER);
 
         //add filter rows
         for (FeedItemFilterGroup item : FeedItemFilterGroup.values()) {
-            FilterDialogRowBinding binding = FilterDialogRowBinding.inflate(inflater);
-            binding.getRoot().addOnButtonCheckedListener(
+            FilterDialogRowBinding rowBinding = FilterDialogRowBinding.inflate(inflater);
+            rowBinding.getRoot().addOnButtonCheckedListener(
                     (group, checkedId, isChecked) -> onFilterChanged(getNewFilterValues()));
-            binding.filterButton1.setText(item.values[0].displayName);
-            binding.filterButton1.setTag(item.values[0].filterId);
-            binding.filterButton2.setText(item.values[1].displayName);
-            binding.filterButton2.setTag(item.values[1].filterId);
-            binding.filterButton1.setMaxLines(3);
-            binding.filterButton1.setSingleLine(false);
-            binding.filterButton2.setMaxLines(3);
-            binding.filterButton2.setSingleLine(false);
-            rows.addView(binding.getRoot());
+            rowBinding.filterButton1.setText(item.values[0].displayName);
+            rowBinding.filterButton1.setTag(item.values[0].filterId);
+            rowBinding.filterButton2.setText(item.values[1].displayName);
+            rowBinding.filterButton2.setTag(item.values[1].filterId);
+            rowBinding.filterButton1.setMaxLines(3);
+            rowBinding.filterButton1.setSingleLine(false);
+            rowBinding.filterButton2.setMaxLines(3);
+            rowBinding.filterButton2.setSingleLine(false);
+            rows.addView(rowBinding.getRoot(), rows.getChildCount()-1);
         }
 
-        //add confirm and reset button
-        MaterialButton confirmButton = new MaterialButton(getContext());
-        confirmButton.setText(getString(R.string.confirm_label));
-        confirmButton.setOnClickListener(view1 -> {
+        binding.confirmFiltermenu.setOnClickListener(view1 -> {
             dismiss();
         });
-        MaterialButton resetButton = new MaterialButton(getContext());
-        resetButton.setText(getString(R.string.reset));
-        resetButton.setOnClickListener(view1 -> {
+        binding.resetFiltermenu.setText(getString(R.string.reset));
+        binding.resetFiltermenu.setOnClickListener(view1 -> {
             onFilterChanged(Collections.emptySet());
             for (int i = 0; i < rows.getChildCount(); i++) {
                 if (rows.getChildAt(i) instanceof MaterialButtonToggleGroup) {
@@ -75,23 +73,6 @@ public abstract class ItemFilterDialog extends BottomSheetDialogFragment {
             }
             dismiss();
         });
-        float eightDp = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8,
-                getResources().getDisplayMetrics());
-        LinearLayout.LayoutParams matchParamsMarginEnd = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
-        matchParamsMarginEnd.setMarginEnd(Math.round(eightDp));
-        LinearLayout.LayoutParams matchParamsMarginStart = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
-        matchParamsMarginStart.setMarginStart(Math.round(eightDp));
-        resetButton.setLayoutParams(matchParamsMarginEnd);
-        confirmButton.setLayoutParams(matchParamsMarginStart);
-        LinearLayout horizontalLinearLayout = new LinearLayout(getContext());
-        horizontalLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        horizontalLinearLayout.addView(resetButton);
-        horizontalLinearLayout.addView(confirmButton);
-        rows.addView(horizontalLinearLayout);
 
         for (String filterId : filter.getValues()) {
             if (!TextUtils.isEmpty(filterId)) {
