@@ -18,33 +18,22 @@ public class PodcastIndexTranscriptUtils {
 
     public static String loadTranscriptFromUrl(String type, String url, boolean forceRefresh) {
         StringBuffer str = new StringBuffer();
-        Thread downloadThread = new Thread() {
-            @Override
-            public void run() {
-                Response response = null;
-                try {
-                    Log.d(TAG, "Downloading transcript URL " + url.toString());
-                    Request request = new Request.Builder().url(url).build();
-                    response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
-                    if (response.isSuccessful() && response.body() != null) {
-                        str.append(response.body().string());
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (NetworkOnMainThreadException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (response != null) {
-                        response.close();
-                    }
-                }
-            }
-        };
-        downloadThread.start();
+        Response response = null;
         try {
-            downloadThread.join();
-        } catch (InterruptedException e) {
+            Log.d(TAG, "Downloading transcript URL " + url.toString());
+            Request request = new Request.Builder().url(url).build();
+            response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
+            if (response.isSuccessful() && response.body() != null) {
+                str.append(response.body().string());
+            }
+        } catch (IOException e) {
             e.printStackTrace();
+        } catch (NetworkOnMainThreadException e) {
+            e.printStackTrace();
+        } finally {
+            if (response != null) {
+                response.close();
+            }
         }
         return str.toString();
     }
