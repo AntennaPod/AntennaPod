@@ -55,7 +55,7 @@ public abstract class ItemFilterDialog extends BottomSheetDialogFragment {
             rowBinding.filterButton1.setSingleLine(false);
             rowBinding.filterButton2.setMaxLines(3);
             rowBinding.filterButton2.setSingleLine(false);
-            rows.addView(rowBinding.getRoot(), rows.getChildCount()-1);
+            rows.addView(rowBinding.getRoot(), rows.getChildCount() - 1);
         }
 
         binding.confirmFiltermenu.setOnClickListener(view1 -> {
