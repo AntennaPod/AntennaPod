@@ -58,10 +58,7 @@ public abstract class ItemFilterDialog extends BottomSheetDialogFragment {
             rows.addView(rowBinding.getRoot(), rows.getChildCount() - 1);
         }
 
-        binding.confirmFiltermenu.setOnClickListener(view1 -> {
-            dismiss();
-        });
-        binding.resetFiltermenu.setText(getString(R.string.reset));
+        binding.confirmFiltermenu.setOnClickListener(view1 -> dismiss());
         binding.resetFiltermenu.setOnClickListener(view1 -> {
             onFilterChanged(Collections.emptySet());
             for (int i = 0; i < rows.getChildCount(); i++) {
@@ -69,7 +66,6 @@ public abstract class ItemFilterDialog extends BottomSheetDialogFragment {
                     ((MaterialButtonToggleGroup) rows.getChildAt(i)).clearChecked();
                 }
             }
-            dismiss();
         });
 
         for (String filterId : filter.getValues()) {
