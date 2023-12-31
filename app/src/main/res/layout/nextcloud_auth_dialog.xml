@@ -71,4 +71,5 @@
             android:text="@string/proceed_to_login_butLabel" />
 
     </LinearLayout>
+
 </androidx.core.widget.NestedScrollView>
