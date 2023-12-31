@@ -7,6 +7,11 @@
         android:icon="@drawable/ic_search"
         custom:showAsAction="ifRoom"
         android:title="@string/search_label"/>
+    <item
+        android:id="@+id/action_recent"
+        android:icon="@drawable/ic_history"
+        custom:showAsAction="ifRoom"
+        android:title="@string/recently_played_episodes"/>
 
     <item
         android:id="@+id/queue_lock"
