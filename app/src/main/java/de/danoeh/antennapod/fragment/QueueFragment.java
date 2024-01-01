@@ -90,7 +90,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     private List<FeedItem> queue;
 
     private static final String PREFS = "QueueFragment";
-    private static final String PREF_SHOW_LOCK_WARNING = "show_lock_warning";
 
     private Disposable disposable;
     private SwipeActions swipeActions;
@@ -261,12 +260,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
     }
 
-    private void refreshToolbarState() {
-        boolean keepSorted = UserPreferences.isQueueKeepSorted();
-        toolbar.getMenu().findItem(R.id.queue_lock).setChecked(UserPreferences.isQueueLocked());
-        toolbar.getMenu().findItem(R.id.queue_lock).setVisible(!keepSorted);
-    }
-
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedUpdateRunningEvent event) {
         if (event.isFeedUpdateRunning) {
@@ -279,11 +272,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         final int itemId = item.getItemId();
-        if (itemId == R.id.queue_lock || itemId == R.id.queue_locked) {
-            toggleQueueLock();
-            requireActivity().invalidateOptionsMenu();
-            return true;
-        } else if (itemId == R.id.action_recent) {
+        if (itemId == R.id.action_recent) {
             ((MainActivity) getActivity()).loadFragment(PlaybackHistoryFragment.TAG, null);
         } else if (itemId == R.id.queue_sort) {
             new QueueSortDialog().show(getChildFragmentManager().beginTransaction(), "SortDialog");
@@ -312,49 +301,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
         return false;
     }
-
-    private void toggleQueueLock() {
-        boolean isLocked = UserPreferences.isQueueLocked();
-        if (isLocked) {
-            setQueueLocked(false);
-        } else {
-            boolean shouldShowLockWarning = prefs.getBoolean(PREF_SHOW_LOCK_WARNING, true);
-            if (!shouldShowLockWarning) {
-                setQueueLocked(true);
-            } else {
-                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
-                builder.setTitle(R.string.lock_queue);
-                builder.setMessage(R.string.queue_lock_warning);
-
-                View view = View.inflate(getContext(), R.layout.checkbox_do_not_show_again, null);
-                CheckBox checkDoNotShowAgain = view.findViewById(R.id.checkbox_do_not_show_again);
-                builder.setView(view);
-
-                builder.setPositiveButton(R.string.lock_queue, (dialog, which) -> {
-                    prefs.edit().putBoolean(PREF_SHOW_LOCK_WARNING, !checkDoNotShowAgain.isChecked()).apply();
-                    setQueueLocked(true);
-                });
-                builder.setNegativeButton(R.string.cancel_label, null);
-                builder.show();
-            }
-        }
-    }
-
-    private void setQueueLocked(boolean locked) {
-        UserPreferences.setQueueLocked(locked);
-        refreshToolbarState();
-        if (recyclerAdapter != null) {
-            recyclerAdapter.updateDragDropEnabled();
-        }
-        if (queue.size() == 0) {
-            if (locked) {
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.queue_locked, Snackbar.LENGTH_SHORT);
-            } else {
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.queue_unlocked, Snackbar.LENGTH_SHORT);
-            }
-        }
-    }
-
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         Log.d(TAG, "onContextItemSelected() called with: " + "item = [" + item + "]");
