@@ -788,7 +788,8 @@
   <!--Audio controls-->
   <string name="audio_controls">ضوابط الصوت</string>
   <string name="playback_speed">سرعة التشغيل</string>
-    <string name="player_switch_to_audio_only">قم بالتبديل إلى الصوت فقط</string>
+  <string name="audio_effects">المؤثرات الصوتية</string>
+  <string name="player_switch_to_audio_only">قم بالتبديل إلى الصوت فقط</string>
   <!--proxy settings-->
   <string name="proxy_type_label">النوع</string>
   <string name="host_label">خادم</string>

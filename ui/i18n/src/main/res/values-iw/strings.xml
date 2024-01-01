@@ -791,7 +791,8 @@
   <!--Audio controls-->
   <string name="audio_controls">פקדי שמע</string>
   <string name="playback_speed">מהירות נגינה</string>
-    <string name="player_switch_to_audio_only">מעבר לשמע בלבד</string>
+  <string name="audio_effects">אפקטי שמע</string>
+  <string name="player_switch_to_audio_only">מעבר לשמע בלבד</string>
   <!--proxy settings-->
   <string name="proxy_type_label">סוג</string>
   <string name="host_label">מארח</string>

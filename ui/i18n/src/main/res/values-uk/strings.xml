@@ -797,7 +797,8 @@
   <!--Audio controls-->
   <string name="audio_controls">Керування звуком</string>
   <string name="playback_speed">Швидкість відтворення</string>
-    <string name="player_switch_to_audio_only">Відтворювати лише аудіо</string>
+  <string name="audio_effects">Аудіоефекти</string>
+  <string name="player_switch_to_audio_only">Відтворювати лише аудіо</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Тип</string>
   <string name="host_label">Хост</string>

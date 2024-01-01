@@ -611,7 +611,8 @@
   <!--Audio controls-->
   <string name="audio_controls">Kontrol audio</string>
   <string name="playback_speed">Kecepatan putar</string>
-    <string name="player_switch_to_audio_only">Ganti ke audio saja</string>
+  <string name="audio_effects">Efek audio</string>
+  <string name="player_switch_to_audio_only">Ganti ke audio saja</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tipe</string>
   <string name="host_label">Host</string>

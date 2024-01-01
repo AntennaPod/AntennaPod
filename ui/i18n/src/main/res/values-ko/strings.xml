@@ -698,7 +698,8 @@
   <!--Audio controls-->
   <string name="audio_controls">오디오 조작</string>
   <string name="playback_speed">재생 속도</string>
-    <string name="player_switch_to_audio_only">오디오 전용으로 전환</string>
+  <string name="audio_effects">오디오 효과</string>
+  <string name="player_switch_to_audio_only">오디오 전용으로 전환</string>
   <!--proxy settings-->
   <string name="proxy_type_label">종류</string>
   <string name="host_label">호스트</string>

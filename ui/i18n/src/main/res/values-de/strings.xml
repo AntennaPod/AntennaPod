@@ -759,7 +759,8 @@
   <!--Audio controls-->
   <string name="audio_controls">Audioregler</string>
   <string name="playback_speed">Abspielgeschwindigkeit</string>
-    <string name="player_switch_to_audio_only">Auf nur Audio umschalten</string>
+  <string name="audio_effects">Audioeffekte</string>
+  <string name="player_switch_to_audio_only">Auf nur Audio umschalten</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Typ</string>
   <string name="host_label">Host</string>
