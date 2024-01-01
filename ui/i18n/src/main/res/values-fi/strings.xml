@@ -700,7 +700,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Audiokontrollit</string>
   <string name="playback_speed">Toistonopeus</string>
-  <string name="audio_effects">Audioefektit</string>
   <string name="player_switch_to_audio_only">Vain ääni</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tyyppi</string>
