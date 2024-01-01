@@ -48,6 +48,7 @@ public class FeedItem extends FeedComponent implements Serializable {
     private String podcastIndexChapterUrl;
     private String podcastIndexTranscriptUrl;
     private String podcastIndexTranscriptType;
+    private String podcastIndexTranscriptText;
 
     private int state;
     public static final int NEW = -1;
@@ -491,6 +492,14 @@ public class FeedItem extends FeedComponent implements Serializable {
                 Log.d(TAG, "Invalid format for transcript " + type);
                 break;
         }
+    }
+
+    public String getPodcastIndexTranscriptText() {
+        return podcastIndexTranscriptText;
+    }
+
+    public String setPodcastIndexTranscriptText(String str) {
+        return podcastIndexTranscriptText = str;
     }
 
     @NonNull
