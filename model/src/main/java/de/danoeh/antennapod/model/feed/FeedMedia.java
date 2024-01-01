@@ -513,4 +513,11 @@ public class FeedMedia implements Playable {
         }
         return super.equals(o);
     }
+
+    public String getTranscriptFileUrl() {
+        if (getLocalFileUrl() == null) {
+            return null;
+        }
+        return getLocalFileUrl() + ".transcript";
+    }
 }
