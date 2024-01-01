@@ -81,6 +81,7 @@ public class SubscriptionFragment extends Fragment
     private EmptyViewHandler emptyView;
     private LinearLayout feedsFilteredMsg;
     private MaterialToolbar toolbar;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressBar progressBar;
     private String displayedFolder = null;
     private boolean displayUpArrow;
@@ -168,7 +169,7 @@ public class SubscriptionFragment extends Fragment
         feedsFilteredMsg = root.findViewById(R.id.feeds_filtered_message);
         feedsFilteredMsg.setOnClickListener((l) -> SubscriptionsFilterDialog.showDialog(requireContext()));
 
-        SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
         swipeRefreshLayout.setOnRefreshListener(() -> {
             FeedUpdateManager.runOnceOrAsk(requireContext());
@@ -209,18 +210,22 @@ public class SubscriptionFragment extends Fragment
         toolbar.getMenu().findItem(COLUMN_CHECKBOX_IDS[columns - MIN_NUM_COLUMNS]).setChecked(true);
     }
 
-    /*@Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedUpdateRunningEvent event) {
-        swipeRefreshLayout.setRefreshing(event.isFeedUpdateRunning);
-    }*/
+        if (event.isFeedUpdateRunning) {
+            swipeRefreshLayout.setRefreshing(true);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
+                    getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
+        }
+    }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         final int itemId = item.getItemId();
-        /*if (itemId == R.id.refresh_item) {
+        if (itemId == R.id.refresh_item) {
             FeedUpdateManager.runOnceOrAsk(requireContext());
             return true;
-        } else*/ if (itemId == R.id.subscriptions_filter) {
+        } else if (itemId == R.id.subscriptions_filter) {
             SubscriptionsFilterDialog.showDialog(requireContext());
             return true;
         } else if (itemId == R.id.subscriptions_sort) {

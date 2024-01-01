@@ -178,10 +178,10 @@ public class CompletedDownloadsFragment extends Fragment
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        /*if (item.getItemId() == R.id.refresh_item) {
+        if (item.getItemId() == R.id.refresh_item) {
             FeedUpdateManager.runOnceOrAsk(requireContext());
             return true;
-        } else*/ if (item.getItemId() == R.id.action_download_logs) {
+        } else if (item.getItemId() == R.id.action_download_logs) {
             new DownloadLogFragment().show(getChildFragmentManager(), null);
             return true;
         } else if (item.getItemId() == R.id.action_search) {

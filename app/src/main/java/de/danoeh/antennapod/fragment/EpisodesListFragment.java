@@ -122,10 +122,10 @@ public abstract class EpisodesListFragment extends Fragment
             return true;
         }
         final int itemId = item.getItemId();
-        /*if (itemId == R.id.refresh_item) {
+        if (itemId == R.id.refresh_item) {
             FeedUpdateManager.runOnceOrAsk(requireContext());
             return true;
-        } else*/ if (itemId == R.id.action_search) {
+        } else if (itemId == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             return true;
         }
@@ -455,10 +455,14 @@ public abstract class EpisodesListFragment extends Fragment
     protected void updateToolbar() {
     }
 
-    /*@Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedUpdateRunningEvent event) {
-        swipeRefreshLayout.setRefreshing(event.isFeedUpdateRunning);
-    }*/
+        if (event.isFeedUpdateRunning) {
+            swipeRefreshLayout.setRefreshing(true);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
+                    getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
+        }
+    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {

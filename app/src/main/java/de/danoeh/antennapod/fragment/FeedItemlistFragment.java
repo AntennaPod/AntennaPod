@@ -20,6 +20,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -158,8 +160,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 getContext(), viewBinding.toolbar, viewBinding.collapsingToolbar) {
             @Override
             protected void doTint(Context themedContext) {
-                /*viewBinding.toolbar.getMenu().findItem(R.id.refresh_item)
-                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_refresh));*/
                 viewBinding.toolbar.getMenu().findItem(R.id.action_search)
                         .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_search));
             }
@@ -275,8 +275,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             IntentUtils.openInBrowser(getContext(), feed.getLink());
         } else if (item.getItemId() == R.id.share_item) {
             ShareUtils.shareFeedLink(getContext(), feed);
-        /*} else if (item.getItemId() == R.id.refresh_item) {
-            FeedUpdateManager.runOnceOrAsk(getContext(), feed);*/
+        } else if (item.getItemId() == R.id.refresh_item) {
+            FeedUpdateManager.runOnceOrAsk(getContext(), feed);
         } else if (item.getItemId() == R.id.refresh_complete_item) {
             new Thread(() -> {
                 feed.setNextPageLink(feed.getDownload_url());
@@ -431,7 +431,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (!event.isFeedUpdateRunning) {
             nextPageLoader.getRoot().setVisibility(View.GONE);
         }
-        /*swipeRefreshLayout.setRefreshing(event.isFeedUpdateRunning);*/
+        if (event.isFeedUpdateRunning) {
+            viewBinding.swipeRefresh.setRefreshing(true);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> viewBinding.swipeRefresh.setRefreshing(false),
+                    getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
+        }
     }
 
     private void refreshHeaderView() {

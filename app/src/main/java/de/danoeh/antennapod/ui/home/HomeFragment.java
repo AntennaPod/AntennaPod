@@ -20,6 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.ui.echo.EchoActivity;
@@ -153,19 +154,23 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenSectionsString, ",")));
     }
 
-    /*@Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedUpdateRunningEvent event) {
-        swipeRefreshLayout.setRefreshing(event.isFeedUpdateRunning);
-    }*/
+        if (event.isFeedUpdateRunning) {
+            viewBinding.swipeRefresh.setRefreshing(true);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> viewBinding.swipeRefresh.setRefreshing(false),
+                    getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
+        }
+    }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.homesettings_items) {
             HomeSectionsSettingsDialog.open(getContext(), (dialogInterface, i) -> populateSectionList());
             return true;
-        /*} else if (item.getItemId() == R.id.refresh_item) {
+        } else if (item.getItemId() == R.id.refresh_item) {
             FeedUpdateManager.runOnceOrAsk(requireContext());
-            return true;*/
+            return true;
         } else if (item.getItemId() == R.id.action_addpodcast) {
             ((MainActivity) getActivity()).loadFragment(AddFeedFragment.TAG, null);
         } else if (item.getItemId() == R.id.action_search) {
