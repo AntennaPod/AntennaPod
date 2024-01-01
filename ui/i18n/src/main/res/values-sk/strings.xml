@@ -797,8 +797,7 @@
   <!--Audio controls-->
   <string name="audio_controls">Ovládanie zvuku</string>
   <string name="playback_speed">Rýchlosť prehrávania</string>
-  <string name="audio_effects">Zvukové efekty</string>
-  <string name="player_switch_to_audio_only">Prepnúť len na audio</string>
+    <string name="player_switch_to_audio_only">Prepnúť len na audio</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Typ</string>
   <string name="host_label">Hostiteľ</string>

@@ -707,8 +707,7 @@
   <!--Audio controls-->
   <string name="audio_controls">Lyd-kontroller</string>
   <string name="playback_speed">Avspillingshastighet</string>
-  <string name="audio_effects">Lydeffekter</string>
-  <string name="player_switch_to_audio_only">Bytt til kun audio</string>
+    <string name="player_switch_to_audio_only">Bytt til kun audio</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Type</string>
   <string name="host_label">Vert</string>

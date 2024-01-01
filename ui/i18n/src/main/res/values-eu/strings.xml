@@ -680,8 +680,7 @@
   <!--Audio controls-->
   <string name="audio_controls">Audio kontrolak</string>
   <string name="playback_speed">Erreprodukzio abiadura</string>
-  <string name="audio_effects">Audio efektuak</string>
-  <string name="player_switch_to_audio_only">Aldatu soilik audiora</string>
+    <string name="player_switch_to_audio_only">Aldatu soilik audiora</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Mota</string>
   <string name="host_label">Host</string>

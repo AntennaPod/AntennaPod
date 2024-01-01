@@ -716,8 +716,7 @@
   <!--Audio controls-->
   <string name="audio_controls">Ses kontrolleri</string>
   <string name="playback_speed">Oynatma hızı</string>
-  <string name="audio_effects">Ses efektleri</string>
-  <string name="player_switch_to_audio_only">Sadece Ses Moduna Dön</string>
+    <string name="player_switch_to_audio_only">Sadece Ses Moduna Dön</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tür</string>
   <string name="host_label">Ana sunucu</string>

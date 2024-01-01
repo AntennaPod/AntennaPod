@@ -728,8 +728,7 @@
   <!--Audio controls-->
   <string name="audio_controls">Controls d\'audio</string>
   <string name="playback_speed">Velocitat de reproducció</string>
-  <string name="audio_effects">Efectes d\'àudio</string>
-  <string name="player_switch_to_audio_only">Canvia a només àudio</string>
+    <string name="player_switch_to_audio_only">Canvia a només àudio</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tipus</string>
   <string name="host_label">Host</string>
