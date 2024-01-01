@@ -16,8 +16,14 @@
     <item
         android:id="@+id/queue_lock"
         android:title="@string/lock_queue"
-        android:menuCategory="container"
-        android:checkable="true" />
+        android:icon="@drawable/ic_lock"
+        custom:showAsAction="always"/>
+
+    <item
+        android:id="@+id/queue_locked"
+        android:title="@string/lock_queue"
+        android:icon="@drawable/ic_locked"
+        custom:showAsAction="always"/>
 
     <item
         android:id="@+id/queue_sort"
