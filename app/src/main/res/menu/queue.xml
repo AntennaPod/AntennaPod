@@ -16,12 +16,6 @@
         android:icon="@drawable/ic_refresh"/>
 
     <item
-        android:id="@+id/queue_lock"
-        android:title="@string/lock_queue"
-        android:menuCategory="container"
-        android:checkable="true" />
-
-    <item
         android:id="@+id/queue_sort"
         android:title="@string/sort" />
 
