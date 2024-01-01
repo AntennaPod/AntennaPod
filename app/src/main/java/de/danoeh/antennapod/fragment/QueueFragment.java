@@ -164,7 +164,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 return;
         }
         recyclerAdapter.updateDragDropEnabled();
-        refreshToolbarState();
         recyclerView.saveScrollPosition(QueueFragment.TAG);
         refreshInfoBar();
     }
@@ -220,14 +219,12 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
         loadItems(false);
-        refreshToolbarState();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
         // Sent when playback position is reset
         loadItems(false);
-        refreshToolbarState();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -354,7 +351,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
         ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
         toolbar.inflateMenu(R.menu.queue);
-        refreshToolbarState();
         progressBar = root.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
 
@@ -494,7 +490,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     public void onStartSelectMode() {
         swipeActions.detach();
         speedDialView.setVisibility(View.VISIBLE);
-        refreshToolbarState();
         infoBar.setVisibility(View.GONE);
     }
 

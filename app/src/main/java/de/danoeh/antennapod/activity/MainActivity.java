@@ -551,14 +551,6 @@ public class MainActivity extends CastEnabledActivity {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        boolean isLocked = UserPreferences.isQueueLocked();
-        menu.findItem(R.id.queue_lock).setVisible(!isLocked);
-        menu.findItem(R.id.queue_locked).setVisible(isLocked);
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
     public void onBackPressed() {
         if (isDrawerOpen()) {
             drawerLayout.closeDrawer(navDrawer);
