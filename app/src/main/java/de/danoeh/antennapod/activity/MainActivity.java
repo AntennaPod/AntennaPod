@@ -456,17 +456,6 @@ public class MainActivity extends CastEnabledActivity {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.queue_lock).setVisible(false);
-        boolean isLocked = UserPreferences.isQueueLocked();
-        if (isLocked) {
-            menu.findItem(R.id.queue_lock).setVisible(!isLocked);
-            menu.findItem(R.id.queue_locked).setVisible(isLocked);
-        }
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (drawerToggle != null) { // Tablet layout does not have a drawer

@@ -431,8 +431,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (!event.isFeedUpdateRunning) {
             nextPageLoader.getRoot().setVisibility(View.GONE);
         }
-        /*MenuItemUtils.updateRefreshMenuItem(viewBinding.toolbar.getMenu(),
-                R.id.refresh_item, event.isFeedUpdateRunning);*/
+        /*swipeRefreshLayout.setRefreshing(event.isFeedUpdateRunning);*/
     }
 
     private void refreshHeaderView() {

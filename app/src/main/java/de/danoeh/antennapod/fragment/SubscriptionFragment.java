@@ -211,7 +211,7 @@ public class SubscriptionFragment extends Fragment
 
     /*@Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedUpdateRunningEvent event) {
-        MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(), R.id.refresh_item, event.isFeedUpdateRunning);
+        swipeRefreshLayout.setRefreshing(event.isFeedUpdateRunning);
     }*/
 
     @Override

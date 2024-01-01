@@ -268,7 +268,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
 
     /*@Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedUpdateRunningEvent event) {
-        MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(), R.id.refresh_item, event.isFeedUpdateRunning);
+        swipeRefreshLayout.setRefreshing(event.isFeedUpdateRunning);
     }*/
 
     @Override
@@ -306,6 +306,18 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        //TODO not working :(
+        menu.findItem(R.id.queue_locked).setVisible(false);
+        boolean isLocked = UserPreferences.isQueueLocked();
+        if (isLocked) {
+            menu.findItem(R.id.queue_lock).setVisible(!isLocked);
+            menu.findItem(R.id.queue_locked).setVisible(isLocked);
+        }
     }
 
     private void toggleQueueLock() {

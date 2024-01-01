@@ -17,13 +17,13 @@
         android:id="@+id/queue_lock"
         android:title="@string/lock_queue"
         android:icon="@drawable/ic_lock"
-        custom:showAsAction="always"/>
+        custom:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/queue_locked"
         android:title="@string/lock_queue"
         android:icon="@drawable/ic_locked"
-        custom:showAsAction="always"/>
+        custom:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/queue_sort"
