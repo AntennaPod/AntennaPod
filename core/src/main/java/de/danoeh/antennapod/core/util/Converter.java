@@ -83,14 +83,16 @@ public final class Converter {
      * Converts milliseconds to a localized string containing hours and minutes.
      */
     public static String getDurationStringLocalized(Context context, long duration) {
-        return getDurationStringLocalized(context.getResources(), duration);
+        return getDurationStringLocalized(context.getResources(), duration, false);
     }
 
-    public static String getDurationStringLocalized(Resources resources, long duration) {
+    public static String getDurationStringLocalized(Resources resources, long duration, boolean includeDays) {
         String result = "";
         int h = (int) (duration / HOURS_MIL);
         int d = h / 24;
-        if (d > 0) {
+        if (!includeDays) {
+            d = 0;
+        } else if (d > 0) {
             String days = resources.getQuantityString(R.plurals.time_days_quantified, d, d);
             result += days.replace(" ", "\u00A0") + " ";
             h -= d * 24;

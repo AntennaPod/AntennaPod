@@ -210,7 +210,7 @@ public class EchoActivity extends AppCompatActivity {
                     int daysUntil2024 = Math.max(356 - Calendar.getInstance().get(Calendar.DAY_OF_YEAR) + 1, 1);
                     long secondsPerDay = queueSecondsLeft / daysUntil2024;
                     String timePerDay = Converter.getDurationStringLocalized(
-                            getLocalizedResources(this, getEchoLanguage()), secondsPerDay * 1000);
+                            getLocalizedResources(this, getEchoLanguage()), secondsPerDay * 1000, true);
                     double hoursPerDay = (double) (secondsPerDay / 3600);
                     if (hoursPerDay < 1.5) {
                         viewBinding.aboveLabel.setText(R.string.echo_queue_title_clean);
@@ -235,7 +235,7 @@ public class EchoActivity extends AppCompatActivity {
                     }
                     viewBinding.smallLabel.setText(getString(R.string.echo_listened_after_time,
                             Converter.getDurationStringLocalized(
-                                getLocalizedResources(this, getEchoLanguage()), timeBetweenReleaseAndPlay)));
+                                getLocalizedResources(this, getEchoLanguage()), timeBetweenReleaseAndPlay, true)));
                     currentDrawable = new RotatingSquaresScreen(this);
                     break;
                 case 4:
