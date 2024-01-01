@@ -574,7 +574,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
         if (audioTracks.size() >= 2 && selectedAudioTrack >= 0) {
             menu.findItem(R.id.audio_controls).setVisible(true);
-            menu.findItem(R.id.audio_controls).setIcon(R.drawable.ic_sliders);
         }
         menu.findItem(R.id.playback_speed).setVisible(true);
         menu.findItem(R.id.player_show_chapters).setVisible(true);
