@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -452,6 +453,17 @@ public class MainActivity extends CastEnabledActivity {
         if (drawerToggle != null) { // Tablet layout does not have a drawer
             drawerToggle.syncState();
         }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.queue_lock).setVisible(false);
+        boolean isLocked = UserPreferences.isQueueLocked();
+        if (isLocked) {
+            menu.findItem(R.id.queue_lock).setVisible(!isLocked);
+            menu.findItem(R.id.queue_locked).setVisible(isLocked);
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override

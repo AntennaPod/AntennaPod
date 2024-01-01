@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -271,8 +274,9 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         final int itemId = item.getItemId();
-        if (itemId == R.id.queue_lock) {
+        if (itemId == R.id.queue_lock || itemId == R.id.queue_locked) {
             toggleQueueLock();
+            requireActivity().invalidateOptionsMenu();
             return true;
         } else if (itemId == R.id.action_recent) {
             ((MainActivity) getActivity()).loadFragment(PlaybackHistoryFragment.TAG, null);
@@ -469,6 +473,17 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                     .handleAction(recyclerAdapter.getSelectedItems());
             recyclerAdapter.endSelectMode();
             return true;
+        });
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return false;
+            }
         });
         return root;
     }
