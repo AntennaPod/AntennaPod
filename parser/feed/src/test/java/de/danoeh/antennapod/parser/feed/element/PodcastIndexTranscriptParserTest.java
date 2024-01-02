@@ -16,9 +16,9 @@ public class PodcastIndexTranscriptParserTest {
             + "00:00:02,730 --> 00:00:04,600\n"
             + "way. The latest from PogNews.";
     private static String jsonStr = "{'version': '1.0.0', "
-        + "'segments': [ "
-        + "{ 'speaker' : 'John Doe', 'startTime': 0.8, 'endTime': 1.9, 'body': 'And' },"
-        + "{ 'startTime': 2.9, 'endTime': 3.4, 'body': 'the' }]}";
+            + "'segments': [ "
+            + "{ 'speaker' : 'John Doe', 'startTime': 0.8, 'endTime': 1.9, 'body': 'And' },"
+            + "{ 'startTime': 2.9, 'endTime': 3.4, 'body': 'the' }]}";
 
     @Test
     public void testParseJson() {
