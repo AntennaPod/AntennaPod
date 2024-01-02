@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
@@ -272,7 +273,8 @@ public class EchoActivity extends AppCompatActivity {
                     viewBinding.aboveLabel.setText("");
                     viewBinding.largeLabel.setText(R.string.echo_thanks_large);
                     if (oldestDate < jan1()) {
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy", getEchoLanguage());
+                        String skeleton = DateFormat.getBestDateTimePattern(getEchoLanguage(), "MMMM yyyy");
+                        SimpleDateFormat dateFormat = new SimpleDateFormat(skeleton, getEchoLanguage());
                         String dateFrom = dateFormat.format(new Date(oldestDate));
                         viewBinding.belowLabel.setText(getString(R.string.echo_thanks_we_are_glad_old, dateFrom));
                     } else {
