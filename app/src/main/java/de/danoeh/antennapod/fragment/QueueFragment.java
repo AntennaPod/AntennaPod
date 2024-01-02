@@ -84,11 +84,8 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
 
     private List<FeedItem> queue;
 
-    private static final String PREFS = "QueueFragment";
-
     private Disposable disposable;
     private SwipeActions swipeActions;
-    private SharedPreferences prefs;
 
     private SpeedDialView speedDialView;
     private ProgressBar progressBar;
@@ -97,7 +94,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -158,7 +154,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 return;
         }
         recyclerAdapter.updateDragDropEnabled();
-        refreshToolbarState();
         recyclerView.saveScrollPosition(QueueFragment.TAG);
         refreshInfoBar();
     }
@@ -214,14 +209,12 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
         loadItems(false);
-        refreshToolbarState();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
         // Sent when playback position is reset
         loadItems(false);
-        refreshToolbarState();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -252,10 +245,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             toolbar.setOnMenuItemClickListener(null);
             toolbar.setOnLongClickListener(null);
         }
-    }
-
-    private void refreshToolbarState() {
-        boolean keepSorted = UserPreferences.isQueueKeepSorted();
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
@@ -347,7 +336,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
         ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
         toolbar.inflateMenu(R.menu.queue);
-        refreshToolbarState();
         progressBar = root.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
 
@@ -476,7 +464,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     public void onStartSelectMode() {
         swipeActions.detach();
         speedDialView.setVisibility(View.VISIBLE);
-        refreshToolbarState();
         infoBar.setVisibility(View.GONE);
     }
 

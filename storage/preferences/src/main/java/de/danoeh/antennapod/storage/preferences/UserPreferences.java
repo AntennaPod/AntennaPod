@@ -573,10 +573,6 @@ public class UserPreferences {
         return new ProxyConfig(type, host, port, username, password);
     }
 
-    public static boolean isQueueLocked() {
-        return prefs.getBoolean(PREF_QUEUE_LOCKED, false);
-    }
-
     public static void setFastForwardSecs(int secs) {
         prefs.edit()
              .putInt(PREF_FAST_FORWARD_SECS, secs)
