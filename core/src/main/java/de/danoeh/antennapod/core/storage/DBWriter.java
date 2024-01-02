@@ -126,7 +126,6 @@ public class DBWriter {
                     return false;
                 }
             }
-
             // delete downloaded media file
             File mediaFile = new File(media.getFile_url());
             if (mediaFile.exists() && !mediaFile.delete()) {

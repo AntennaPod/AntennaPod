@@ -3,12 +3,17 @@ package de.danoeh.antennapod.core.util;
 import android.os.NetworkOnMainThreadException;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.Transcript;
+import de.danoeh.antennapod.parser.feed.PodcastIndexTranscriptParser;
 import okhttp3.Request;
 import okhttp3.Response;
 
