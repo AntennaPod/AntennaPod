@@ -166,7 +166,8 @@ public class SubscriptionFragment extends Fragment
         });
 
         feedsFilteredMsg = root.findViewById(R.id.feeds_filtered_message);
-        feedsFilteredMsg.setOnClickListener((l) -> SubscriptionsFilterDialog.showDialog(requireContext()));
+        feedsFilteredMsg.setOnClickListener((l) ->
+                new SubscriptionsFilterDialog().show(getChildFragmentManager(), "filter"));
 
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
@@ -221,7 +222,7 @@ public class SubscriptionFragment extends Fragment
             FeedUpdateManager.runOnceOrAsk(requireContext());
             return true;
         } else if (itemId == R.id.subscriptions_filter) {
-            SubscriptionsFilterDialog.showDialog(requireContext());
+            new SubscriptionsFilterDialog().show(getChildFragmentManager(), "filter");
             return true;
         } else if (itemId == R.id.subscriptions_sort) {
             FeedSortDialog.showDialog(requireContext());
