@@ -21,8 +21,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
-import de.danoeh.antennapod.ui.echo.EchoActivity;
-import de.danoeh.antennapod.ui.home.sections.EchoSection;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -40,10 +38,13 @@ import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.databinding.HomeFragmentBinding;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
+import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.SearchFragment;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.echo.EchoActivity;
 import de.danoeh.antennapod.ui.home.sections.AllowNotificationsSection;
 import de.danoeh.antennapod.ui.home.sections.DownloadsSection;
+import de.danoeh.antennapod.ui.home.sections.EchoSection;
 import de.danoeh.antennapod.ui.home.sections.EpisodesSurpriseSection;
 import de.danoeh.antennapod.ui.home.sections.InboxSection;
 import de.danoeh.antennapod.ui.home.sections.QueueSection;
@@ -163,6 +164,8 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         if (item.getItemId() == R.id.homesettings_items) {
             HomeSectionsSettingsDialog.open(getContext(), (dialogInterface, i) -> populateSectionList());
             return true;
+        } else if (item.getItemId() == R.id.action_link_to_discovery) {
+            ((MainActivity) getActivity()).loadFragment(AddFeedFragment.TAG, null);
         } else if (item.getItemId() == R.id.refresh_item) {
             FeedUpdateManager.runOnceOrAsk(requireContext());
             return true;
