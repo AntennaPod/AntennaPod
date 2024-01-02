@@ -39,10 +39,16 @@ public class PodcastIndexTranscriptParserTest {
 
     @Test
     public void testParse() {
-        String type = "application/json"; // or "application/srt"
+        String type = "application/json";
         Transcript result = PodcastIndexTranscriptParser.parse(jsonStr, type);
         assertEquals(result.getSegmentAtTime(800L).getSpeaker(), "John Doe");
+        assertEquals(result.getSegmentAtTime(800L).getWords(), "And");
 
+        type = "application/srr";
+        result = PodcastIndexTranscriptParser.parse(srtStr, type);
+        assertEquals(result.getSegmentAtTime(800L).getWords(), "Promoting your podcast in a new");
+
+        // negative testing
         type = "application/srt";
         result = PodcastIndexTranscriptParser.parse(jsonStr, type);
         assertEquals(result, null);
