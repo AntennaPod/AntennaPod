@@ -4,23 +4,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatCheckedTextView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.fragment.EpisodesFragementInHome;
-import de.danoeh.antennapod.fragment.InboxFragmentInHome;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.fragment.EpisodesFragementInHome;
+import de.danoeh.antennapod.fragment.InboxFragmentInHome;
 
 public class HomeSectionsSettingsDialog {
     public static void open(Context context, DialogInterface.OnClickListener onSettingsChanged) {
@@ -44,8 +41,8 @@ public class HomeSectionsSettingsDialog {
                 hiddenSections.add(sectionTags[which]);
             }
 
-            int episodesIndex = Arrays.asList(sectionTags).indexOf("Episodes");
-            int inboxIndex = Arrays.asList(sectionTags).indexOf("Inbox");
+            int episodesIndex = Arrays.asList(sectionTags).indexOf(EpisodesFragementInHome.TAG);
+            int inboxIndex = Arrays.asList(sectionTags).indexOf(InboxFragmentInHome.TAG);
             ListView listView = ((AlertDialog) dialog).getListView();
             boolean notNewNorSuprise = !EpisodesFragementInHome.TAG.equals(sectionTags[which])
                     && !InboxFragmentInHome.TAG.equals(sectionTags[which]);

@@ -23,15 +23,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
-import de.danoeh.antennapod.fragment.AllEpisodesFragment;
-import de.danoeh.antennapod.fragment.EpisodesFragementInHome;
-import de.danoeh.antennapod.fragment.InboxFragment;
-import de.danoeh.antennapod.fragment.InboxFragmentInHome;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
-import de.danoeh.antennapod.ui.echo.EchoActivity;
-import de.danoeh.antennapod.ui.home.sections.EchoSection;
-
-import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -49,10 +40,14 @@ import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.databinding.HomeFragmentBinding;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
+import de.danoeh.antennapod.fragment.EpisodesFragementInHome;
+import de.danoeh.antennapod.fragment.InboxFragmentInHome;
 import de.danoeh.antennapod.fragment.SearchFragment;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.echo.EchoActivity;
 import de.danoeh.antennapod.ui.home.sections.AllowNotificationsSection;
 import de.danoeh.antennapod.ui.home.sections.DownloadsSection;
+import de.danoeh.antennapod.ui.home.sections.EchoSection;
 import de.danoeh.antennapod.ui.home.sections.EpisodesSurpriseSection;
 import de.danoeh.antennapod.ui.home.sections.InboxSection;
 import de.danoeh.antennapod.ui.home.sections.QueueSection;
@@ -175,7 +170,8 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
     public static List<String> getHiddenSections(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
-        String hiddenSectionsString = prefs.getString(HomeFragment.PREF_HIDDEN_SECTIONS, "Episodes,Inbox");
+        String hiddenSectionsString = prefs.getString(HomeFragment.PREF_HIDDEN_SECTIONS,
+                EpisodesFragementInHome.TAG+","+InboxFragmentInHome.TAG);
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenSectionsString, ",")));
     }
 
