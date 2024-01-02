@@ -546,9 +546,11 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             if (UserPreferences.isQueueKeepSorted()) {
                 sortOrder = UserPreferences.getQueueKeepSortedOrder();
             }
-            View view = super.onCreateView(inflater, container, savedInstanceState);
+            final View view = super.onCreateView(inflater, container, savedInstanceState);
             viewBinding.keepSortedCheckbox.setVisibility(View.VISIBLE);
             viewBinding.keepSortedCheckbox.setChecked(UserPreferences.isQueueKeepSorted());
+            // Disable until something gets selected
+            viewBinding.keepSortedCheckbox.setEnabled(UserPreferences.isQueueKeepSorted());
             return view;
         }
 

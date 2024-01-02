@@ -27,6 +27,8 @@ public class ItemSortDialog extends BottomSheetDialogFragment {
                              @Nullable Bundle savedInstanceState) {
         viewBinding = SortDialogBinding.inflate(inflater);
         populateList();
+        viewBinding.keepSortedCheckbox.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> ItemSortDialog.this.onSelectionChanged());
         return viewBinding.getRoot();
     }
 
