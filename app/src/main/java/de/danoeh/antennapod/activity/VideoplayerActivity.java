@@ -249,7 +249,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         }
         showTimeLeft = UserPreferences.shouldShowRemainingTime();
         onPositionObserverUpdate();
-        invalidateOptionsMenu();
         checkFavorite();
         Playable media = controller.getMedia();
         if (media != null) {
