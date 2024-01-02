@@ -741,6 +741,7 @@
   <!--Audio controls-->
   <string name="audio_controls">音频控制</string>
   <string name="playback_speed">播放速度</string>
+  <string name="audio_effects">音效</string>
   <string name="player_switch_to_audio_only">切换到仅音频</string>
   <!--proxy settings-->
   <string name="proxy_type_label">类型</string>

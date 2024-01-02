@@ -759,6 +759,7 @@
   <!--Audio controls-->
   <string name="audio_controls">Lydknapper</string>
   <string name="playback_speed">Afspilningshastighed</string>
+  <string name="audio_effects">Lydeffekter</string>
   <string name="player_switch_to_audio_only">Skift til ren lyd</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Type</string>

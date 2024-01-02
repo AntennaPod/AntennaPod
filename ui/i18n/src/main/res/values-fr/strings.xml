@@ -778,6 +778,7 @@
   <!--Audio controls-->
   <string name="audio_controls">Contrôles audio</string>
   <string name="playback_speed">Vitesse de lecture</string>
+  <string name="audio_effects">Effets audio</string>
   <string name="player_switch_to_audio_only">Audio seulement</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Type</string>
