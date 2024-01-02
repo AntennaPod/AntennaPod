@@ -5,8 +5,7 @@ import java.util.TreeMap;
 
 public class Transcript {
 
-    private TreeMap<Long, TranscriptSegment> segmentsMap = new TreeMap<>();
-    private String rawString;
+    private final TreeMap<Long, TranscriptSegment> segmentsMap = new TreeMap<>();
 
     public void addSegment(TranscriptSegment segment) {
         segmentsMap.put(segment.getStartTime(), segment);
@@ -28,16 +27,10 @@ public class Transcript {
     }
 
     public int getSegmentCount() {
-        if (segmentsMap == null) {
-            return 0;
-        }
         return segmentsMap.size();
     }
 
     public Map.Entry<Long, TranscriptSegment> getEntryAfterTime(long time) {
-        if (segmentsMap.ceilingEntry(time) == null) {
-            return null;
-        }
         return segmentsMap.ceilingEntry(time);
     }
 
@@ -46,14 +39,5 @@ public class Transcript {
             return null;
         }
         return segmentsMap.remove(entry.getKey());
-    }
-
-    public void setRawString(java.lang.String rawString) {
-        rawString.trim().replaceAll(" +", " ");
-        this.rawString = rawString;
-    }
-
-    public String toString() {
-        return rawString;
     }
 }

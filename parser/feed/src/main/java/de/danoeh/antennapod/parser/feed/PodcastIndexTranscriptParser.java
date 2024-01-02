@@ -37,7 +37,7 @@ public class PodcastIndexTranscriptParser {
             long span = 1000L;
             long duration = 0L;
 
-            do {
+            while (iter.hasNext()) {
                 line = iter.next();
 
                 if (line.isEmpty()) {
@@ -51,6 +51,10 @@ public class PodcastIndexTranscriptParser {
                     }
                     startTimecode = parseTimecode(timecodes[0].trim());
                     endTimecode = parseTimecode(timecodes[1].trim());
+                    if (startTimecode == -1 || endTimecode == -1) {
+                        continue;
+                    }
+
                     if (spanStartTimecode == 0) {
                         spanStartTimecode = startTimecode;
                     }
@@ -85,7 +89,7 @@ public class PodcastIndexTranscriptParser {
                     }
                     body = new StringBuffer("");
                 }
-            } while (iter.hasNext());
+            }
 
             if (! StringUtil.isBlank(segmentBody) && endTimecode > spanStartTimecode) {
                 Log.d(TAG, "SRT : " + Long.toString(spanStartTimecode) + " " + segmentBody);
@@ -97,7 +101,6 @@ public class PodcastIndexTranscriptParser {
                         speaker));
             }
             if (transcript.getSegmentCount() > 0) {
-                transcript.setRawString(str);
                 return transcript;
             } else {
                 return null;
@@ -106,6 +109,9 @@ public class PodcastIndexTranscriptParser {
 
         static long parseTimecode(String timecode) {
             String[] parts = timecode.split(":");
+            if (parts.length < 3) {
+                return -1;
+            }
             try {
                 int hours = Integer.parseInt(parts[0]);
                 int minutes = Integer.parseInt(parts[1]);
@@ -125,7 +131,6 @@ public class PodcastIndexTranscriptParser {
         public static Transcript parse(String jsonStr) {
             try {
                 Transcript transcript = new Transcript();
-                transcript.setRawString(jsonStr);
                 long startTime = 0L;
                 long endTime = 0L;
                 String speaker = "";
@@ -178,6 +183,8 @@ public class PodcastIndexTranscriptParser {
     }
 
     public static Transcript parse(String str, String type) {
+
+        str = str.replaceAll("\r\n", "\n");
 
         if ("application/json".equals(type)) {
             return PodcastIndexTranscriptJsonParser.parse(str);
