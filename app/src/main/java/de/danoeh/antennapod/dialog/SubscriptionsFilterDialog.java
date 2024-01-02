@@ -7,17 +7,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.SubscriptionsFilterGroup;
+import de.danoeh.antennapod.databinding.FilterDialogBinding;
 import de.danoeh.antennapod.databinding.FilterDialogRowBinding;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
@@ -32,7 +36,8 @@ public class SubscriptionsFilterDialog {
 
         LayoutInflater inflater = LayoutInflater.from(context);
         View layout = inflater.inflate(R.layout.filter_dialog, null, false);
-        LinearLayout rows = layout.findViewById(R.id.filter_rows);
+        FilterDialogBinding dialogBinding = FilterDialogBinding.bind(layout);
+        LinearLayout rows = dialogBinding.filterRows;
         builder.setView(layout);
 
         for (SubscriptionsFilterGroup item : SubscriptionsFilterGroup.values()) {
@@ -50,7 +55,7 @@ public class SubscriptionsFilterDialog {
             binding.filterButton1.setSingleLine(false);
             binding.filterButton2.setMaxLines(3);
             binding.filterButton2.setSingleLine(false);
-            rows.addView(binding.getRoot());
+            rows.addView(binding.getRoot(), rows.getChildCount() - 1);
         }
 
         for (String filterId : filterValues) {
@@ -62,7 +67,9 @@ public class SubscriptionsFilterDialog {
             }
         }
 
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+        AlertDialog dialog = builder.create();
+
+        dialogBinding.confirmFiltermenu.setOnClickListener(view -> {
             filterValues.clear();
             for (int i = 0; i < rows.getChildCount(); i++) {
                 if (!(rows.getChildAt(i) instanceof MaterialButtonToggleGroup)) {
@@ -79,9 +86,17 @@ public class SubscriptionsFilterDialog {
                 filterValues.add(tag);
             }
             updateFilter(filterValues);
+            dialog.dismiss();
         });
-        builder.setNegativeButton(R.string.cancel_label, null);
-        builder.show();
+        dialogBinding.resetFiltermenu.setOnClickListener(view -> {
+            updateFilter(Collections.emptySet());
+            for (int i = 0; i < rows.getChildCount(); i++) {
+                if (rows.getChildAt(i) instanceof MaterialButtonToggleGroup) {
+                    ((MaterialButtonToggleGroup) rows.getChildAt(i)).clearChecked();
+                }
+            }
+        });
+        dialog.show();
     }
 
     private static void updateFilter(Set<String> filterValues) {
