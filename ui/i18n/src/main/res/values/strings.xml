@@ -333,10 +333,6 @@
     <string name="no_media_label">Item does not contain a media file</string>
 
     <!-- Queue operations -->
-    <string name="lock_queue">Lock queue</string>
-    <string name="queue_locked">Queue locked</string>
-    <string name="queue_unlocked">Queue unlocked</string>
-    <string name="queue_lock_warning">If you lock the queue, you can no longer swipe or reorder episodes.</string>
     <string name="checkbox_do_not_show_again">Do not show again</string>
     <string name="clear_queue_label">Clear queue</string>
     <string name="undo">Undo</string>
