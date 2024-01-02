@@ -129,11 +129,12 @@ public class PodcastIndexTranscriptParserTest {
         result = PodcastIndexTranscriptParser.parse(strBad3, type);
         assertNull(result);
 
-        // negative testing
+        // passing the wrong type
         type = "application/srt";
         result = PodcastIndexTranscriptParser.parse(jsonStr, type);
         assertEquals(result, null);
 
+        // passing the wrong type
         type = "application/json";
         result = PodcastIndexTranscriptParser.parse(srtStr, type);
         assertEquals(result, null);
