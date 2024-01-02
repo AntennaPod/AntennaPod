@@ -153,11 +153,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedUpdateRunningEvent event) {
-        if (event.isFeedUpdateRunning) {
-            viewBinding.swipeRefresh.setRefreshing(true);
-            new Handler(Looper.getMainLooper()).postDelayed(() -> viewBinding.swipeRefresh.setRefreshing(false),
-                    getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
-        }
+        viewBinding.swipeRefresh.setRefreshing(event.isFeedUpdateRunning);
     }
 
     @Override

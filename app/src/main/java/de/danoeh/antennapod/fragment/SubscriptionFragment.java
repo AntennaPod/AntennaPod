@@ -212,11 +212,7 @@ public class SubscriptionFragment extends Fragment
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedUpdateRunningEvent event) {
-        if (event.isFeedUpdateRunning) {
-            swipeRefreshLayout.setRefreshing(true);
-            new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
-                    getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
-        }
+        swipeRefreshLayout.setRefreshing(event.isFeedUpdateRunning);
     }
 
     @Override
