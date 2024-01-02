@@ -567,7 +567,8 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         menu.findItem(R.id.disable_sleeptimer_item).setVisible(controller.sleepTimerActive());
 
         menu.findItem(R.id.player_switch_to_audio_only).setVisible(true);
-        menu.findItem(R.id.audio_controls).setIcon(R.drawable.ic_sliders);
+
+        menu.findItem(R.id.audio_controls).setVisible(controller.getAudioTracks().size() >= 2);
         menu.findItem(R.id.playback_speed).setVisible(true);
         menu.findItem(R.id.player_show_chapters).setVisible(true);
         return true;

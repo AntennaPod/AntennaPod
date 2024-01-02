@@ -30,9 +30,9 @@
 
     <item
         android:id="@+id/audio_controls"
-        android:icon="@drawable/ic_sliders"
         android:title="@string/audio_controls"
-        custom:showAsAction="always">
+        android:visible="false"
+        custom:showAsAction="never">
     </item>
 
     <item
