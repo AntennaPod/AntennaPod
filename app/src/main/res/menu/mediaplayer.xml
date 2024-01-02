@@ -32,7 +32,7 @@
         android:id="@+id/audio_controls"
         android:icon="@drawable/ic_sliders"
         android:title="@string/audio_controls"
-        custom:showAsAction="always">
+        custom:showAsAction="never">
     </item>
 
     <item
@@ -74,8 +74,9 @@
 
     <item
         android:id="@+id/share_item"
+        android:icon="@drawable/ic_share"
         android:menuCategory="container"
-        custom:showAsAction="never"
+        custom:showAsAction="always"
         android:title="@string/share_label">
     </item>
 </menu>
