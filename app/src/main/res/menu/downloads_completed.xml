@@ -21,7 +21,7 @@
         android:title="@string/refresh_label"
         android:menuCategory="container"
         android:icon="@drawable/ic_refresh"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
     <item
         android:id="@+id/downloads_sort"
         android:title="@string/sort" />
