@@ -118,7 +118,6 @@ public class UserPreferences {
     public static final String PREF_PLAYBACK_SKIP_SILENCE = "prefSkipSilence";
     private static final String PREF_FAST_FORWARD_SECS = "prefFastForwardSecs";
     private static final String PREF_REWIND_SECS = "prefRewindSecs";
-    private static final String PREF_QUEUE_LOCKED = "prefQueueLocked";
 
     // Experimental
     public static final int EPISODE_CLEANUP_QUEUE = -1;
@@ -653,12 +652,6 @@ public class UserPreferences {
         String str = TextUtils.join(",", items);
         prefs.edit()
              .putString(PREF_COMPACT_NOTIFICATION_BUTTONS, str)
-             .apply();
-    }
-
-    public static void setQueueLocked(boolean locked) {
-        prefs.edit()
-             .putBoolean(PREF_QUEUE_LOCKED, locked)
              .apply();
     }
 
