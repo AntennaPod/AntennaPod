@@ -24,7 +24,6 @@ public class PodcastIndexTranscriptParser {
         public static Transcript parse(String str) {
             Transcript transcript = new Transcript();
 
-            TranscriptSegment transcriptSegment;
             List<String> lines = Arrays.asList(str.split("\n"));
             Iterator<String> iter = lines.iterator();
             String speaker = "";
@@ -71,6 +70,9 @@ public class PodcastIndexTranscriptParser {
 
                 if (body.indexOf(":") != -1) {
                     String [] parts = body.toString().split(":");
+                    if (parts.length < 2) {
+                        continue;
+                    }
                     speaker = parts[0];
                     body = new StringBuffer(parts[1].strip());
                 }
@@ -144,11 +146,14 @@ public class PodcastIndexTranscriptParser {
 
                 for (int i = 0; i < objSegments.length(); i++) {
                     JSONObject jsonObject = objSegments.getJSONObject(i);
-                    startTime = Double.valueOf(jsonObject.optDouble("startTime", 0) * 1000L).longValue();
+                    startTime = Double.valueOf(jsonObject.optDouble("startTime", -1) * 1000L).longValue();
+                    endTime = Double.valueOf(jsonObject.optDouble("endTime", -1) * 1000L).longValue();
+                    if (startTime < 0 || endTime < 0) {
+                        continue;
+                    }
                     if (segmentStartTime == 0L) {
                         segmentStartTime = startTime;
                     }
-                    endTime = Double.valueOf(jsonObject.optDouble("endTime", startTime) * 1000L).longValue();
                     duration += endTime - startTime;
                     if (spanStartTime == 0L) {
                         spanStartTime = startTime;
@@ -174,8 +179,14 @@ public class PodcastIndexTranscriptParser {
                     transcript.addSegment(new TranscriptSegment(segmentStartTime, endTime, segmentBody, speaker));
                     Log.d(TAG, "JSON [last]" + segmentBody);
                 }
-                return transcript;
-            } catch (JSONException e) {
+
+                if (transcript.getSegmentCount() > 0) {
+                    return transcript;
+                } else {
+                    return null;
+                }
+
+            } catch (org.json.JSONException e) {
                 e.printStackTrace();
             }
             return null;
@@ -183,6 +194,9 @@ public class PodcastIndexTranscriptParser {
     }
 
     public static Transcript parse(String str, String type) {
+        if (str == null || StringUtils.isBlank(str)) {
+            return null;
+        }
 
         str = str.replaceAll("\r\n", "\n");
 
