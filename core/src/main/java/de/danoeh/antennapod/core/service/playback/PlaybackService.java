@@ -326,7 +326,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (rootHints != null && rootHints.getBoolean(BrowserRoot.EXTRA_RECENT)) {
             Bundle extras = new Bundle();
             extras.putBoolean(BrowserRoot.EXTRA_RECENT, true);
-            return new BrowserRoot(getResources().getString(R.string.recently_played_episodes), extras);
+            Log.d(TAG, "OnGetRoot: Returning BrowserRoot " + R.string.current_playing_episode);
+            return new BrowserRoot(getResources().getString(R.string.current_playing_episode), extras);
         }
 
         // Name visible in Android Auto
@@ -407,6 +408,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private List<MediaBrowserCompat.MediaItem> loadChildrenSynchronous(@NonNull String parentId) {
         List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
         if (parentId.equals(getResources().getString(R.string.app_name))) {
+            long currentlyPlaying = PlaybackPreferences.getCurrentPlayerStatus();
+            if (currentlyPlaying == PlaybackPreferences.PLAYER_STATUS_PLAYING
+                    || currentlyPlaying == PlaybackPreferences.PLAYER_STATUS_PAUSED) {
+                mediaItems.add(createBrowsableMediaItem(R.string.current_playing_episode, R.drawable.ic_play_48dp, 1));
+            }
             mediaItems.add(createBrowsableMediaItem(R.string.queue_label, R.drawable.ic_playlist_play_black,
                     DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.QUEUED))));
             mediaItems.add(createBrowsableMediaItem(R.string.downloads_label, R.drawable.ic_download_black,
@@ -433,7 +439,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             long feedId = Long.parseLong(parentId.split(":")[1]);
             Feed feed = DBReader.getFeed(feedId);
             feedItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(), feed.getSortOrder());
-        } else if (parentId.equals(getString(R.string.recently_played_episodes))) {
+        } else if (parentId.equals(getString(R.string.current_playing_episode))) {
             Playable playable = PlaybackPreferences.createInstanceFromPreferences(this);
             if (playable instanceof FeedMedia) {
                 feedItems = Collections.singletonList(((FeedMedia) playable).getItem());

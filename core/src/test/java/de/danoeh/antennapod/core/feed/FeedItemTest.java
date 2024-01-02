@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.core.feed;
 
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,13 +10,11 @@ import java.util.Date;
 import static de.danoeh.antennapod.core.feed.FeedItemMother.anyFeedItemWithImage;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class FeedItemTest {
 
     private static final String TEXT_LONG = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
     private static final String TEXT_SHORT = "Lorem ipsum";
-    private static final long ONE_HOUR = 1000L * 3600L;
 
     private FeedItem original;
     private FeedItem changedFeedItem;
@@ -138,37 +135,5 @@ public class FeedItemTest {
         item.setDescriptionIfLonger(description);
         item.setDescriptionIfLonger(contentEncoded);
         assertEquals(TEXT_LONG, item.getDescription());
-    }
-
-    @Test
-    public void testAutoDownloadBackoff() {
-        FeedItem item = new FeedItem();
-        item.setMedia(new FeedMedia(item, "https://example.com/file.mp3", 0, "audio/mpeg"));
-
-        long now = ONE_HOUR; // In reality, this is System.currentTimeMillis()
-        assertTrue(item.isAutoDownloadable(now));
-        item.increaseFailedAutoDownloadAttempts(now);
-        assertFalse(item.isAutoDownloadable(now));
-
-        now += ONE_HOUR;
-        assertTrue(item.isAutoDownloadable(now));
-        item.increaseFailedAutoDownloadAttempts(now);
-        assertFalse(item.isAutoDownloadable(now));
-
-        now += ONE_HOUR;
-        assertFalse(item.isAutoDownloadable(now)); // Should backoff, so more than 1 hour needed
-
-        now += ONE_HOUR;
-        assertTrue(item.isAutoDownloadable(now)); // Now it's enough
-        item.increaseFailedAutoDownloadAttempts(now);
-        item.increaseFailedAutoDownloadAttempts(now);
-        item.increaseFailedAutoDownloadAttempts(now);
-
-        now += 1000L * ONE_HOUR;
-        assertFalse(item.isAutoDownloadable(now)); // Should have given up
-        item.increaseFailedAutoDownloadAttempts(now);
-
-        now += 1000L * ONE_HOUR;
-        assertFalse(item.isAutoDownloadable(now)); // Still given up
     }
 }

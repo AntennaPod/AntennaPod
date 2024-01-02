@@ -18,11 +18,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItemFilterGroup;
+import de.danoeh.antennapod.databinding.FilterDialogBinding;
 import de.danoeh.antennapod.databinding.FilterDialogRowBinding;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
@@ -36,23 +38,35 @@ public abstract class ItemFilterDialog extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.filter_dialog, null, false);
-        rows = layout.findViewById(R.id.filter_rows);
+        FilterDialogBinding binding = FilterDialogBinding.bind(layout);
+        rows = binding.filterRows;
         FeedItemFilter filter = (FeedItemFilter) getArguments().getSerializable(ARGUMENT_FILTER);
 
+        //add filter rows
         for (FeedItemFilterGroup item : FeedItemFilterGroup.values()) {
-            FilterDialogRowBinding binding = FilterDialogRowBinding.inflate(inflater);
-            binding.getRoot().addOnButtonCheckedListener(
+            FilterDialogRowBinding rowBinding = FilterDialogRowBinding.inflate(inflater);
+            rowBinding.getRoot().addOnButtonCheckedListener(
                     (group, checkedId, isChecked) -> onFilterChanged(getNewFilterValues()));
-            binding.filterButton1.setText(item.values[0].displayName);
-            binding.filterButton1.setTag(item.values[0].filterId);
-            binding.filterButton2.setText(item.values[1].displayName);
-            binding.filterButton2.setTag(item.values[1].filterId);
-            binding.filterButton1.setMaxLines(3);
-            binding.filterButton1.setSingleLine(false);
-            binding.filterButton2.setMaxLines(3);
-            binding.filterButton2.setSingleLine(false);
-            rows.addView(binding.getRoot());
+            rowBinding.filterButton1.setText(item.values[0].displayName);
+            rowBinding.filterButton1.setTag(item.values[0].filterId);
+            rowBinding.filterButton2.setText(item.values[1].displayName);
+            rowBinding.filterButton2.setTag(item.values[1].filterId);
+            rowBinding.filterButton1.setMaxLines(3);
+            rowBinding.filterButton1.setSingleLine(false);
+            rowBinding.filterButton2.setMaxLines(3);
+            rowBinding.filterButton2.setSingleLine(false);
+            rows.addView(rowBinding.getRoot(), rows.getChildCount() - 1);
         }
+
+        binding.confirmFiltermenu.setOnClickListener(view1 -> dismiss());
+        binding.resetFiltermenu.setOnClickListener(view1 -> {
+            onFilterChanged(Collections.emptySet());
+            for (int i = 0; i < rows.getChildCount(); i++) {
+                if (rows.getChildAt(i) instanceof MaterialButtonToggleGroup) {
+                    ((MaterialButtonToggleGroup) rows.getChildAt(i)).clearChecked();
+                }
+            }
+        });
 
         for (String filterId : filter.getValues()) {
             if (!TextUtils.isEmpty(filterId)) {

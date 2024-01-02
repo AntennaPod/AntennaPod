@@ -121,9 +121,9 @@ class DBUpgrader {
         }
         if (oldVersion <= 14) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
-                    + " ADD COLUMN " + PodDBAdapter.KEY_AUTO_DOWNLOAD_ATTEMPTS + " INTEGER");
+                    + " ADD COLUMN " + PodDBAdapter.KEY_AUTO_DOWNLOAD_ENABLED + " INTEGER");
             db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
-                    + " SET " + PodDBAdapter.KEY_AUTO_DOWNLOAD_ATTEMPTS + " = "
+                    + " SET " + PodDBAdapter.KEY_AUTO_DOWNLOAD_ENABLED + " = "
                     + "(SELECT " + PodDBAdapter.KEY_AUTO_DOWNLOAD_ENABLED
                     + " FROM " + PodDBAdapter.TABLE_NAME_FEEDS
                     + " WHERE " + PodDBAdapter.TABLE_NAME_FEEDS + "." + PodDBAdapter.KEY_ID
