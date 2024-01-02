@@ -29,7 +29,7 @@ public class Transcript {
 
     public int getSegmentCount() {
         if (segmentsMap == null) {
-           return 0;
+            return 0;
         }
         return segmentsMap.size();
     }
