@@ -262,7 +262,7 @@ public abstract class EpisodesListFragment extends Fragment
         return root;
     }
 
-    public void activateFAB() {
+    public void activateFab() {
         fab.setVisibility(View.VISIBLE);
         fab.setOnClickListener(view -> {
             AllEpisodesFilterDialog.newInstance(getFilter()).show(getChildFragmentManager(), null);
