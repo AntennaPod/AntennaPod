@@ -236,6 +236,8 @@
         <item>@string/home_surprise_title</item>
         <item>@string/home_classics_title</item>
         <item>@string/home_downloads_title</item>
+        <item>@string/episodes_label</item>
+        <item>@string/inbox_label</item>
     </string-array>
 
     <string-array name="home_section_tags">
@@ -244,6 +246,8 @@
         <item>EpisodesSurpriseSection</item>
         <item>SubscriptionsSection</item>
         <item>DownloadsSection</item>
+        <item>EpisodesInHome</item>
+        <item>InboxInHome</item>
     </string-array>
 
     <string-array name="compact_notification_buttons_options">

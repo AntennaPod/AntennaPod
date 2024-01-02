@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +27,7 @@ import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragementInHome;
 import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.InboxFragmentInHome;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.echo.EchoActivity;
 import de.danoeh.antennapod.ui.home.sections.EchoSection;
 
@@ -121,12 +123,11 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
         List<String> hiddenSections = getHiddenSections(getContext());
         String[] sectionTags = getResources().getStringArray(R.array.home_section_tags);
-        int sectionsCount = sectionTags.length-hiddenSections.size(); //test if always correct?
         for (String sectionTag : sectionTags) {
             if (hiddenSections.contains(sectionTag)) {
                 continue;
             }
-            Fragment section = getSection(sectionTag, sectionsCount <= 2);
+            Fragment section = getSection(sectionTag);
             //expand if there its inbox or episodes list (not descendants of HomeSection)
             addSection(section, !HomeSection.class.isAssignableFrom(section.getClass()));
         }
@@ -135,6 +136,14 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     private void addSection(Fragment section, boolean expand) {
         FragmentContainerView containerView = new FragmentContainerView(getContext());
         if (expand) {
+            //add separator
+            View separator = new View(getContext());
+            int onedp = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1f, getResources().getDisplayMetrics()));
+            separator.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, onedp));
+            separator.setBackgroundColor(getResources().getColor(R.color.grey600));
+            //separator.setBackgroundColor(ThemeUtils.getColorFromAttr(getContext(), android.R.attr.dividerVertical));
+            viewBinding.homeContainer.addView(separator);
+            //expand section
             containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 2f));
             viewBinding.homeContainer.setPadding(0,0,0,0);
         }
@@ -143,22 +152,22 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         getChildFragmentManager().beginTransaction().add(containerView.getId(), section).commit();
     }
 
-    private Fragment getSection(String tag, boolean expandable) {
+    private Fragment getSection(String tag) {
         switch (tag) {
             case QueueSection.TAG:
                 return new QueueSection();
             case InboxSection.TAG:
-                if (expandable) {
-                    return new InboxFragmentInHome(); }
                 return new InboxSection();
             case EpisodesSurpriseSection.TAG:
-                if (expandable) {
-                    return new EpisodesFragementInHome(); }
                 return new EpisodesSurpriseSection();
             case SubscriptionsSection.TAG:
                 return new SubscriptionsSection();
             case DownloadsSection.TAG:
                 return new DownloadsSection();
+            case EpisodesFragementInHome.TAG:
+                return new EpisodesFragementInHome();
+            case InboxFragmentInHome.TAG:
+                return new InboxFragmentInHome();
             default:
                 return null;
         }
@@ -166,7 +175,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
     public static List<String> getHiddenSections(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
-        String hiddenSectionsString = prefs.getString(HomeFragment.PREF_HIDDEN_SECTIONS, "");
+        String hiddenSectionsString = prefs.getString(HomeFragment.PREF_HIDDEN_SECTIONS, "Episodes,Inbox");
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenSectionsString, ",")));
     }
 
