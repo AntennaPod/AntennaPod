@@ -10,9 +10,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import android.widget.Button;
-import android.widget.CheckBox;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import java.util.List;
 
@@ -37,12 +35,10 @@ public class PlaybackControlsDialog extends DialogFragment {
         controller = new PlaybackController(getActivity()) {
             @Override
             public void loadMediaInfo() {
-                setupUi();
                 setupAudioTracks();
             }
         };
         controller.init();
-        setupUi();
     }
 
     @Override
@@ -60,15 +56,6 @@ public class PlaybackControlsDialog extends DialogFragment {
                 .setView(R.layout.audio_controls)
                 .setPositiveButton(R.string.close_label, null).create();
         return dialog;
-    }
-
-    private void setupUi() {
-        final CheckBox skipSilence = dialog.findViewById(R.id.skipSilence);
-        skipSilence.setChecked(UserPreferences.isSkipSilence());
-        skipSilence.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            UserPreferences.setSkipSilence(isChecked);
-            controller.setSkipSilence(isChecked);
-        });
     }
 
     private void setupAudioTracks() {

@@ -785,7 +785,6 @@
     <!-- Audio controls -->
     <string name="audio_controls">Audio controls</string>
     <string name="playback_speed">Playback speed</string>
-    <string name="audio_effects">Audio effects</string>
     <string name="player_switch_to_audio_only">Switch to audio only</string>
 
     <!-- proxy settings -->
