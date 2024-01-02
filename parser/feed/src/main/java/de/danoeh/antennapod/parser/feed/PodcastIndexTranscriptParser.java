@@ -11,8 +11,6 @@ import org.jsoup.internal.StringUtil;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-import java.util.NoSuchElementException;
 
 import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
