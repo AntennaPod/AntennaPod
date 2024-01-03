@@ -108,15 +108,12 @@ public class SrtTranscriptParser {
 
     // Time format 00:00:00,000
     static long parseTimecode(String timecode) {
-        int hours;
-        int minutes;
-        int seconds;
-        int milliseconds;
         Pattern pattern = Pattern.compile("^([0-9]{2}):([0-9]{2}):([0-9]{2}),([0-9]{3})$");
         Matcher matcher = pattern.matcher(timecode);
         if (! matcher.matches()) {
             return -1;
         }
+        int hours; int minutes; int seconds; int milliseconds;
         hours = Integer.parseInt(matcher.group(1));
         minutes = Integer.parseInt(matcher.group(2));
         seconds = Integer.parseInt(matcher.group(3));
