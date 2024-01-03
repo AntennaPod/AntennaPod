@@ -81,7 +81,7 @@ public class SubscriptionFragment extends Fragment
     private EmptyViewHandler emptyView;
     private LinearLayout feedsFilteredMsg;
     private MaterialToolbar toolbar;
-    SwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressBar progressBar;
     private String displayedFolder = null;
     private boolean displayUpArrow;
