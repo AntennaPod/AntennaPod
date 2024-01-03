@@ -40,6 +40,7 @@ public class FeedPreferences implements Serializable {
     public enum NewEpisodesAction {
         GLOBAL(0),
         ADD_TO_INBOX(1),
+        ADD_TO_QUEUE(3),
         NOTHING(2);
 
         public final int code;

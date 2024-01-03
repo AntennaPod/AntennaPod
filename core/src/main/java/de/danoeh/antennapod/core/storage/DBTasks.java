@@ -197,6 +197,7 @@ public final class DBTasks {
     public static synchronized Feed updateFeed(Context context, Feed newFeed, boolean removeUnlistedItems) {
         Feed resultFeed;
         List<FeedItem> unlistedItems = new ArrayList<>();
+        List<FeedItem> itemsToAddToQueue = new ArrayList<>();
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -294,7 +295,8 @@ public final class DBTasks {
                     if (action == FeedPreferences.NewEpisodesAction.GLOBAL) {
                         action = UserPreferences.getNewEpisodesAction();
                     }
-                    if (action == FeedPreferences.NewEpisodesAction.ADD_TO_INBOX
+                    if ((action == FeedPreferences.NewEpisodesAction.ADD_TO_INBOX
+                            || action == FeedPreferences.NewEpisodesAction.ADD_TO_QUEUE)
                             && (item.getPubDate() == null
                                 || priorMostRecentDate == null
                                 || priorMostRecentDate.before(item.getPubDate())
@@ -302,6 +304,10 @@ public final class DBTasks {
                         Log.d(TAG, "Marking item published on " + item.getPubDate()
                                 + " new, prior most recent date = " + priorMostRecentDate);
                         item.setNew();
+
+                        if (action == FeedPreferences.NewEpisodesAction.ADD_TO_QUEUE) {
+                            itemsToAddToQueue.add(item);
+                        }
                     }
                 }
             }
@@ -340,6 +346,12 @@ public final class DBTasks {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+
+        // We need to add to queue after items are saved to database
+        DBWriter.addQueueItem(
+                context,
+                itemsToAddToQueue.toArray(new FeedItem[itemsToAddToQueue.size()])
+        );
 
         adapter.close();
 
