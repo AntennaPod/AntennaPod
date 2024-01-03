@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.parser.feed.element;
+package de.danoeh.antennapod.parser.transcript;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -6,7 +6,7 @@ import org.robolectric.RobolectricTestRunner;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import de.danoeh.antennapod.parser.feed.PodcastIndexTranscriptParser;
+import de.danoeh.antennapod.parser.transcript.PodcastIndexTranscriptParser;
 import de.danoeh.antennapod.model.feed.Transcript;
 
 @RunWith(RobolectricTestRunner.class)
@@ -60,7 +60,7 @@ public class PodcastIndexTranscriptParserTest {
 
     @Test
     public void testParseJson() {
-        Transcript result = PodcastIndexTranscriptParser.PodcastIndexTranscriptJsonParser.parse(jsonStr);
+        Transcript result = PodcastIndexJsonTranscriptParser.parse(jsonStr);
 
         assertEquals(result.getSegmentAtTime(0L), null);
         assertEquals(result.getSegmentAtTime(800L).getSpeaker(), "John Doe");
@@ -72,7 +72,7 @@ public class PodcastIndexTranscriptParserTest {
 
     @Test
     public void testParseSrt() {
-        Transcript result = PodcastIndexTranscriptParser.PodcastIndexTranscriptSrtParser.parse(srtStr);
+        Transcript result = SrtTranscriptParser.parse(srtStr);
 
         assertEquals(result.getSegmentAtTime(0L).getWords(), "Promoting your podcast in a new");
         assertEquals(result.getSegmentAtTime(0L).getSpeaker(), "John Doe");
