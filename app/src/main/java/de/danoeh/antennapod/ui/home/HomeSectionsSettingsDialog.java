@@ -17,8 +17,6 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.fragment.EpisodesFragementInHome;
 import de.danoeh.antennapod.fragment.InboxFragmentInHome;
-import de.danoeh.antennapod.ui.home.sections.EpisodesSurpriseSection;
-import de.danoeh.antennapod.ui.home.sections.InboxSection;
 
 public class HomeSectionsSettingsDialog {
     public static void open(Context context, DialogInterface.OnClickListener onSettingsChanged) {
@@ -65,20 +63,21 @@ public class HomeSectionsSettingsDialog {
         int episodesIndex = Arrays.asList(sectionTags).indexOf(EpisodesFragementInHome.TAG);
         int inboxIndex = Arrays.asList(sectionTags).indexOf(InboxFragmentInHome.TAG);
 
-        boolean notNewNorSuprise = hiddenSections.contains(InboxSection.TAG)
-                && hiddenSections.contains(EpisodesSurpriseSection.TAG);
+        /*boolean notNew = hiddenSections.contains(InboxSection.TAG)
+                && hiddenSections.contains(EpisodesSurpriseSection.TAG);*/
         if (!hiddenSections.contains(InboxFragmentInHome.TAG)) { //only one
             listView.getChildAt(episodesIndex).setEnabled(false);
             ((AppCompatCheckedTextView) listView.getChildAt(episodesIndex)).setChecked(false);
         } else if (!hiddenSections.contains(EpisodesFragementInHome.TAG)) {
             listView.getChildAt(inboxIndex).setEnabled(false);
             ((AppCompatCheckedTextView) listView.getChildAt(inboxIndex)).setChecked(false);
-        } else if (sectionTags.length-hiddenSections.size() < cutoff && notNewNorSuprise) {
+        } else if (sectionTags.length-hiddenSections.size() < cutoff /*&& notNewNorSuprise*/) {
             listView.getChildAt(episodesIndex).setEnabled(true);
             listView.getChildAt(inboxIndex).setEnabled(true);
         } else {
             listView.getChildAt(episodesIndex).setEnabled(false);
             listView.getChildAt(inboxIndex).setEnabled(false);
+            //TODO make clickable
         }
     }
 }
