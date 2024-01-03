@@ -8,12 +8,17 @@ import org.jsoup.internal.StringUtil;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
 
 public class SrtTranscriptParser {
     private static String TAG = "SrtTranscriptParser";
+    // merge short segments together to form a span of 1 second
+    public static long minSpan = 1000L;
 
     public static Transcript parse(String str) {
         Transcript transcript = new Transcript();
@@ -27,7 +32,6 @@ public class SrtTranscriptParser {
         long startTimecode = 0L;
         long spanStartTimecode = 0L;
         long endTimecode = 0L;
-        long span = 1000L;
         long duration = 0L;
 
         while (iter.hasNext()) {
@@ -73,7 +77,7 @@ public class SrtTranscriptParser {
             if (!StringUtil.isBlank(body.toString())) {
                 segmentBody += " " + body;
                 segmentBody = StringUtils.trim(segmentBody);
-                if (duration >= span && endTimecode > spanStartTimecode) {
+                if (duration >= minSpan && endTimecode > spanStartTimecode) {
                     Log.d(TAG, "SRT : " + Long.toString(spanStartTimecode) + " " + segmentBody);
                     transcript.addSegment(new TranscriptSegment(spanStartTimecode,
                             endTimecode,
@@ -103,20 +107,18 @@ public class SrtTranscriptParser {
         }
     }
 
+    // Time format 00:00:00,000
     static long parseTimecode(String timecode) {
-        String[] parts = timecode.split(":");
-        if (parts.length < 3) {
+        Pattern pattern = Pattern.compile("^([0-9]{2}):([0-9]{2}):([0-9]{2}),([0-9]{3})$");
+        Matcher matcher = pattern.matcher(timecode);
+        if (! matcher.matches()) {
             return -1;
         }
-        try {
-            int hours = Integer.parseInt(parts[0]);
-            int minutes = Integer.parseInt(parts[1]);
-            int seconds = Integer.parseInt(parts[2].substring(0, 2));
-            int milliseconds = Integer.parseInt(parts[2].substring(3));
-            return (hours * 60 * 60 * 1000) + (minutes * 60 * 1000) + (seconds * 1000) + milliseconds;
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            return -1;
-        }
+        int hours, minutes, seconds, milliseconds ;
+        hours = Integer.parseInt(matcher.group(1));
+        minutes = Integer.parseInt(matcher.group(2));
+        seconds = Integer.parseInt(matcher.group(3));
+        milliseconds = Integer.parseInt(matcher.group(4));
+        return (hours * 60 * 60 * 1000) + (minutes * 60 * 1000) + (seconds * 1000) + milliseconds;
     }
 }

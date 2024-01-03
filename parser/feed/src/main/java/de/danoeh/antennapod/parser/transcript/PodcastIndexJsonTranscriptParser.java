@@ -11,6 +11,8 @@ import de.danoeh.antennapod.model.feed.TranscriptSegment;
 
 public class PodcastIndexJsonTranscriptParser {
     static String TAG = "PodcastIndexJsonTranscriptParser";
+    // merge short segments together to form a span of 1 second
+    static long minSpan = 1000L;
 
     public static Transcript parse(String jsonStr) {
         try {
@@ -18,7 +20,6 @@ public class PodcastIndexJsonTranscriptParser {
             long startTime = 0L;
             long endTime = 0L;
             String speaker = "";
-            long span = 1000L;
             long spanStartTime = 0L;
             long duration = 0L;
             String segmentBody = "";
@@ -46,7 +47,7 @@ public class PodcastIndexJsonTranscriptParser {
                 String body = jsonObject.optString("body");
                 segmentBody += body + " ";
 
-                if (duration >= span) {
+                if (duration >= minSpan) {
                     segmentBody = StringUtils.trim(segmentBody);
                     transcript.addSegment(new TranscriptSegment(segmentStartTime, endTime, segmentBody, speaker));
                     Log.d(TAG, "JSON " + segmentBody);
