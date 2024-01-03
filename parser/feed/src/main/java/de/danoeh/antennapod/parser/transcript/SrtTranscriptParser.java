@@ -114,12 +114,12 @@ public class SrtTranscriptParser {
             return -1;
         }
         int hours;
-        int minutes;
-        int seconds;
-        int milliseconds;
         hours = Integer.parseInt(matcher.group(1));
+        int minutes;
         minutes = Integer.parseInt(matcher.group(2));
+        int seconds;
         seconds = Integer.parseInt(matcher.group(3));
+        int milliseconds;
         milliseconds = Integer.parseInt(matcher.group(4));
         return (hours * 60 * 60 * 1000) + (minutes * 60 * 1000) + (seconds * 1000) + milliseconds;
     }
