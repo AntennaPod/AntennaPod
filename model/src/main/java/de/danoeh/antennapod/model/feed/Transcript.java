@@ -12,7 +12,7 @@ public class Transcript {
     }
 
     public void updateSegment(Long timeOld, Long timeNew) {
-        Map.Entry<Long, TranscriptSegment> entry1 = (Map.Entry<Long, TranscriptSegment>) segmentsMap.floorEntry(timeOld);
+        Map.Entry<Long, TranscriptSegment> entry1 = segmentsMap.floorEntry(timeOld);
         if (entry1 != null) {
             segmentsMap.remove(entry1.getKey());
             segmentsMap.put(timeNew, entry1.getValue());
