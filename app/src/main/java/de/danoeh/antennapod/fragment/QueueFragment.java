@@ -84,7 +84,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     private QueueRecyclerAdapter recyclerAdapter;
     private EmptyViewHandler emptyView;
     private MaterialToolbar toolbar;
-    SwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private boolean displayUpArrow;
 
     private List<FeedItem> queue;
