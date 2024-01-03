@@ -8,7 +8,6 @@ import org.jsoup.internal.StringUtil;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -109,12 +108,15 @@ public class SrtTranscriptParser {
 
     // Time format 00:00:00,000
     static long parseTimecode(String timecode) {
+        int hours;
+        int minutes;
+        int seconds;
+        int milliseconds;
         Pattern pattern = Pattern.compile("^([0-9]{2}):([0-9]{2}):([0-9]{2}),([0-9]{3})$");
         Matcher matcher = pattern.matcher(timecode);
         if (! matcher.matches()) {
             return -1;
         }
-        int hours, minutes, seconds, milliseconds ;
         hours = Integer.parseInt(matcher.group(1));
         minutes = Integer.parseInt(matcher.group(2));
         seconds = Integer.parseInt(matcher.group(3));
