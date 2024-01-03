@@ -11,11 +11,11 @@ public class Transcript {
         segmentsMap.put(segment.getStartTime(), segment);
     }
 
-    public void replace(Long k1, Long k2) {
-        Map.Entry<Long, TranscriptSegment> entry1 = (Map.Entry<Long, TranscriptSegment>) segmentsMap.floorEntry(k1);
+    public void updateSegment(Long timeOld, Long timeNew) {
+        Map.Entry<Long, TranscriptSegment> entry1 = (Map.Entry<Long, TranscriptSegment>) segmentsMap.floorEntry(timeOld);
         if (entry1 != null) {
             segmentsMap.remove(entry1.getKey());
-            segmentsMap.put(k2, entry1.getValue());
+            segmentsMap.put(timeNew, entry1.getValue());
         }
     }
 

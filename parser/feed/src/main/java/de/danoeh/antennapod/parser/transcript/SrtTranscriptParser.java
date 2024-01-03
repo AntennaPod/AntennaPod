@@ -28,9 +28,9 @@ public class SrtTranscriptParser {
         StringBuffer body = new StringBuffer("");
         String line;
         String segmentBody = "";
-        long startTimecode = 0L;
-        long spanStartTimecode = 0L;
-        long endTimecode = 0L;
+        long startTimecode = -1L;
+        long spanStartTimecode = -1L;
+        long endTimecode = -1L;
         long duration = 0L;
 
         while (iter.hasNext()) {
@@ -51,7 +51,7 @@ public class SrtTranscriptParser {
                     continue;
                 }
 
-                if (spanStartTimecode == 0) {
+                if (spanStartTimecode == -1) {
                     spanStartTimecode = startTimecode;
                 }
                 duration += endTimecode - startTimecode;
@@ -83,7 +83,7 @@ public class SrtTranscriptParser {
                             segmentBody,
                             speaker));
                     duration = 0L;
-                    spanStartTimecode = 0L;
+                    spanStartTimecode = -1L;
                     segmentBody = "";
                 }
                 body = new StringBuffer("");

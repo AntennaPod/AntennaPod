@@ -17,13 +17,12 @@ public class PodcastIndexJsonTranscriptParser {
     public static Transcript parse(String jsonStr) {
         try {
             Transcript transcript = new Transcript();
-            long startTime = 0L;
-            long endTime = 0L;
-            String speaker = "";
-            long spanStartTime = 0L;
+            long startTime = -1L;
+            long endTime = -1L;
+            long segmentStartTime = -1L;
             long duration = 0L;
+            String speaker = "";
             String segmentBody = "";
-            long segmentStartTime = 0L;
             JSONObject obj = new JSONObject(jsonStr);
             JSONArray objSegments = obj.getJSONArray("segments");
 
@@ -34,16 +33,12 @@ public class PodcastIndexJsonTranscriptParser {
                 if (startTime < 0 || endTime < 0) {
                     continue;
                 }
-                if (segmentStartTime == 0L) {
+                if (segmentStartTime == -1L) {
                     segmentStartTime = startTime;
                 }
                 duration += endTime - startTime;
-                if (spanStartTime == 0L) {
-                    spanStartTime = startTime;
-                }
 
                 speaker = jsonObject.optString("speaker");
-
                 String body = jsonObject.optString("body");
                 segmentBody += body + " ";
 
@@ -53,7 +48,7 @@ public class PodcastIndexJsonTranscriptParser {
                     Log.d(TAG, "JSON " + segmentBody);
                     duration = 0L;
                     segmentBody = "";
-                    segmentStartTime = 0L;
+                    segmentStartTime = -1L;
                 }
             }
 
