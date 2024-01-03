@@ -189,8 +189,6 @@ public abstract class EpisodesListFragment extends Fragment
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
         swipeRefreshLayout.setOnRefreshListener(() -> {
             FeedUpdateManager.runOnceOrAsk(requireContext());
-            new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
-                    getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
         });
 
         listAdapter = new EpisodeItemListAdapter((MainActivity) getActivity()) {
@@ -461,9 +459,7 @@ public abstract class EpisodesListFragment extends Fragment
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedUpdateRunningEvent event) {
-        if (toolbar.getMenu().findItem(R.id.refresh_item) != null) {
-            swipeRefreshLayout.setRefreshing(event.isFeedUpdateRunning);
-        }
+        swipeRefreshLayout.setRefreshing(event.isFeedUpdateRunning);
     }
 
     @Override
