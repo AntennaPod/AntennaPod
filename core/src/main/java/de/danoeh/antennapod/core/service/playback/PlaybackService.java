@@ -795,6 +795,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onChapterLoaded(Playable media) {
             sendNotificationBroadcast(PlaybackServiceInterface.NOTIFICATION_TYPE_RELOAD, 0);
+            updateMediaSession(mediaPlayer.getPlayerStatus());
         }
     };
 
