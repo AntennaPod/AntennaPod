@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -43,27 +42,10 @@ public class HomeSectionsSettingsDialog {
                 hiddenSections.add(sectionTags[which]);
             }
 
-            int episodesIndex = Arrays.asList(sectionTags).indexOf(EpisodesFragementInHome.TAG);
-            int inboxIndex = Arrays.asList(sectionTags).indexOf(InboxFragmentInHome.TAG);
             ListView listView = ((AlertDialog) dialog).getListView();
-            boolean notNewNorSuprise = hiddenSections.contains(InboxSection.TAG)
-                    && hiddenSections.contains(EpisodesSurpriseSection.TAG);
             int cutoff = (EpisodesFragementInHome.TAG.equals(sectionTags[which])
                     || InboxFragmentInHome.TAG.equals(sectionTags[which])) ? 3 : 2;
-            Log.d("safa", "open: "+(sectionTags.length-hiddenSections.size()));
-            if (!hiddenSections.contains(InboxFragmentInHome.TAG)) { //only one
-                listView.getChildAt(episodesIndex).setEnabled(false);
-                ((AppCompatCheckedTextView) listView.getChildAt(episodesIndex)).setChecked(false);
-            } else if (!hiddenSections.contains(EpisodesFragementInHome.TAG)) {
-                listView.getChildAt(inboxIndex).setEnabled(false);
-                ((AppCompatCheckedTextView) listView.getChildAt(inboxIndex)).setChecked(false);
-            } else if (sectionTags.length-hiddenSections.size() < cutoff && notNewNorSuprise) {
-                listView.getChildAt(episodesIndex).setEnabled(true);
-                listView.getChildAt(inboxIndex).setEnabled(true);
-            } else {
-                listView.getChildAt(episodesIndex).setEnabled(false);
-                listView.getChildAt(inboxIndex).setEnabled(false);
-            }
+            toggleExpanableSections(listView, sectionTags, hiddenSections, cutoff);
         });
         https://stackoverflow.com/questions/39053333/disable-checkbox-items-in-alertdialog
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
@@ -72,6 +54,31 @@ public class HomeSectionsSettingsDialog {
             onSettingsChanged.onClick(dialog, which);
         });
         builder.setNegativeButton(R.string.cancel_label, null);
-        builder.create().show();
+        AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(dialogInterface -> {
+            toggleExpanableSections(dialog.getListView(), sectionTags, hiddenSections, 2);
+        });
+        dialog.show();
+    }
+
+    private static void toggleExpanableSections(ListView listView, String[] sectionTags, List<String> hiddenSections, int cutoff) {
+        int episodesIndex = Arrays.asList(sectionTags).indexOf(EpisodesFragementInHome.TAG);
+        int inboxIndex = Arrays.asList(sectionTags).indexOf(InboxFragmentInHome.TAG);
+
+        boolean notNewNorSuprise = hiddenSections.contains(InboxSection.TAG)
+                && hiddenSections.contains(EpisodesSurpriseSection.TAG);
+        if (!hiddenSections.contains(InboxFragmentInHome.TAG)) { //only one
+            listView.getChildAt(episodesIndex).setEnabled(false);
+            ((AppCompatCheckedTextView) listView.getChildAt(episodesIndex)).setChecked(false);
+        } else if (!hiddenSections.contains(EpisodesFragementInHome.TAG)) {
+            listView.getChildAt(inboxIndex).setEnabled(false);
+            ((AppCompatCheckedTextView) listView.getChildAt(inboxIndex)).setChecked(false);
+        } else if (sectionTags.length-hiddenSections.size() < cutoff && notNewNorSuprise) {
+            listView.getChildAt(episodesIndex).setEnabled(true);
+            listView.getChildAt(inboxIndex).setEnabled(true);
+        } else {
+            listView.getChildAt(episodesIndex).setEnabled(false);
+            listView.getChildAt(inboxIndex).setEnabled(false);
+        }
     }
 }
