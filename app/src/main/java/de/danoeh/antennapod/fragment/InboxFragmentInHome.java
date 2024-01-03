@@ -31,7 +31,7 @@ import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public class InboxFragmentInHome extends EpisodesListFragment {
-    public static final String TAG = "NewEpisodesFragment";
+    public static final String TAG = "InboxInHome";
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
     private static final String PREF_DO_NOT_PROMPT_REMOVE_ALL_FROM_INBOX = "prefDoNotPromptRemovalAllFromInbox";
     private SharedPreferences prefs;
