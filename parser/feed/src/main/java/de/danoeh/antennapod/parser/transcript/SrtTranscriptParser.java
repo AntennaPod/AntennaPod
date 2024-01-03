@@ -113,7 +113,10 @@ public class SrtTranscriptParser {
         if (! matcher.matches()) {
             return -1;
         }
-        int hours; int minutes; int seconds; int milliseconds;
+        int hours;
+        int minutes;
+        int seconds;
+        int milliseconds;
         hours = Integer.parseInt(matcher.group(1));
         minutes = Integer.parseInt(matcher.group(2));
         seconds = Integer.parseInt(matcher.group(3));
