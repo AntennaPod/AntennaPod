@@ -74,8 +74,9 @@
 
     <item
         android:id="@+id/share_item"
+        android:icon="@drawable/ic_share"
         android:menuCategory="container"
-        custom:showAsAction="never"
+        custom:showAsAction="always"
         android:title="@string/share_label">
     </item>
 </menu>
