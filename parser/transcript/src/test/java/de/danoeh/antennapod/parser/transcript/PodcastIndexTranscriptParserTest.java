@@ -16,24 +16,30 @@ public class PodcastIndexTranscriptParserTest {
             + "John Doe: Promoting your podcast in a new\n\n"
             + "2\n"
             + "00:00:02,730 --> 00:00:04,600\n"
+            + "way. The latest from PogNews.\n\n"
+            + "00:00:04,730 --> 00:00:05,600\n"
             + "way. The latest from PogNews.";
     private static String jsonStr = "{'version': '1.0.0', "
             + "'segments': [ "
             + "{ 'speaker' : 'John Doe', 'startTime': 0.8, 'endTime': 1.9, 'body': 'And' },"
             + "{ 'speaker' : 'Sally Green', 'startTime': 1.91, 'endTime': 2.8, 'body': 'this merges' },"
-            + "{ 'startTime': 2.9, 'endTime': 3.4, 'body': 'the' }]}";
+            + "{ 'startTime': 2.9, 'endTime': 3.4, 'body': 'the' },"
+            + "{ 'startTime': 3.5, 'endTime': 3.6, 'body': 'person' }]}";
 
     // segments is missing
     private static String jsonStrBad1 = "{'version': '1.0.0', "
             + "'segmentsX': [ "
             + "{ 'speaker' : 'John Doe', 'startTime': 0.8, 'endTime': 1.9, 'body': 'And' },"
-            + "{ 'startTime': 2.9, 'endTime': 3.4, 'body': 'the' }]}";
+            + "{ 'startTime': 2.9, 'endTime': 3.4, 'body': 'the' },"
+            + "{ 'startTime': 3.5, 'endTime': 3.6, 'body': 'person' }]}";
 
     // invalid time formatting
     private static String jsonStrBad2 = "{'version': '1.0.0', "
             + "'segments': [ "
-            + "{ 'speaker' : 'John Doe', 'startTime': stringTime, 'endTime': stringTime, 'body': 'And' },"
-            + "{ 'XstartTime': 2.9, 'XendTime': 3.4, 'body': 'the' }]}";
+            + "{ 'speaker' : 'XJohn Doe', 'startTime': stringTime, 'endTime': stringTime, 'body': 'And' },"
+            + "{ 'XstartTime': 2.9, 'XendTime': 3.4, 'body': 'the' },"
+            + "{ 'startTime': '-2.9', 'endTime': '-3.4', 'body': 'the' },"
+            + "{ 'startTime': 'bad_time', 'endTime': '-3.4', 'body': 'the' }]}";
 
     // blank string
     private static String blankStr = "";
@@ -50,10 +56,14 @@ public class PodcastIndexTranscriptParserTest {
 
     // first segment has invalid time in end time, 2nd segment has invalid time in both start time and end time
     private static String srtStrBad2 = "00:00:00,000 --> 00:0002,730\n"
-            + "John Doe: Promoting your podcast in a new\n\n"
+            + "Jane Doe: Promoting your podcast in a new\n\n"
             + "2\n"
             + "badstarttime --> badendtime\n"
-            + "way. The latest from PogNews.";
+            + "way. The latest from PogNews.\n"
+            + "badstarttime -->\n"
+            + "Jane Doe says something\n"
+            + "00:00:00,000 --> 00:00:02,730\n"
+            + "Jane Doe:";
 
     // Just plain text
     private static String strBad3 = "John Doe: Promoting your podcast in a new\n\n"
@@ -140,5 +150,8 @@ public class PodcastIndexTranscriptParserTest {
         type = "application/json";
         result = PodcastIndexTranscriptParser.parse(srtStr, type);
         assertEquals(result, null);
+
+        type = "unknown";
+        result = PodcastIndexTranscriptParser.parse(srtStr, type);
     }
 }

@@ -66,7 +66,7 @@ public class SrtTranscriptParser {
             }
 
             if (body.indexOf(":") != -1) {
-                String [] parts = body.toString().split(":");
+                String [] parts = body.toString().trim().split(":");
                 if (parts.length < 2) {
                     continue;
                 }
