@@ -56,7 +56,6 @@ public class FinalShareScreen extends BubbleScreen {
         paintTextMain.setTextSize(0.12f * innerBoxSize);
         canvas.drawText(year, innerBoxX + 0.8f * innerBoxSize, innerBoxY + 0.25f * innerBoxSize, paintTextMain);
 
-        paintTextMain.setTextAlign(Paint.Align.LEFT);
         float fontSizePods = innerBoxSize / 18; // First one only
         float textY = innerBoxY + 0.62f * innerBoxSize;
         for (int i = 0; i < favoritePodNames.size(); i++) {
@@ -80,10 +79,13 @@ public class FinalShareScreen extends BubbleScreen {
                 canvas.drawText(" ...", pos.left, pos.centerY(), paintTextMain);
             }
 
+            paintTextMain.setTextAlign(Paint.Align.CENTER);
             paintTextMain.setTextSize(fontSizePods);
-            canvas.drawText((i + 1) + ".", innerBoxX, textY, paintTextMain);
-            String ellipsizedTitle = ellipsize(favoritePodNames.get(i), paintTextMain, (1.0f - 0.055f) * innerBoxSize);
-            canvas.drawText(ellipsizedTitle, innerBoxX + 0.055f * innerBoxSize, textY, paintTextMain);
+            final float numberWidth = 0.06f * innerBoxSize;
+            canvas.drawText((i + 1) + ".", innerBoxX + numberWidth / 2, textY, paintTextMain);
+            paintTextMain.setTextAlign(Paint.Align.LEFT);
+            String ellipsizedTitle = ellipsize(favoritePodNames.get(i), paintTextMain, innerBoxSize - numberWidth);
+            canvas.drawText(ellipsizedTitle, innerBoxX + numberWidth, textY, paintTextMain);
             fontSizePods = innerBoxSize / 24; // Starting with second text is smaller
             textY += 1.3f * fontSizePods;
             paintTextMain.setTypeface(typefaceNormal);
