@@ -7,7 +7,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.util.Pair;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.res.ResourcesCompat;
 import de.danoeh.antennapod.ui.echo.EchoActivity;
@@ -22,16 +21,19 @@ public class FinalShareScreen extends BubbleScreen {
     private final String heading;
     private final String year;
     private final Drawable logo;
-    private final ArrayList<Pair<String, Drawable>> favoritePods;
+    private final ArrayList<String> favoritePodNames;
+    private final ArrayList<Drawable> favoritePodImages;
     private final Typeface typefaceNormal;
     private final Typeface typefaceBold;
 
-    public FinalShareScreen(Context context, ArrayList<Pair<String, Drawable>> favoritePods) {
+    public FinalShareScreen(Context context,
+                            ArrayList<String> favoritePodNames, ArrayList<Drawable> favoritePodImages) {
         super(context);
         this.heading = context.getString(R.string.echo_share_heading);
         this.logo = AppCompatResources.getDrawable(context, R.drawable.echo);
+        this.favoritePodNames = favoritePodNames;
+        this.favoritePodImages = favoritePodImages;
         this.year = String.valueOf(EchoActivity.RELEASE_YEAR);
-        this.favoritePods = favoritePods;
         typefaceNormal = ResourcesCompat.getFont(context, R.font.sarabun_regular);
         typefaceBold = ResourcesCompat.getFont(context, R.font.sarabun_semi_bold);
         paintTextMain = new Paint();
@@ -57,7 +59,7 @@ public class FinalShareScreen extends BubbleScreen {
         paintTextMain.setTextAlign(Paint.Align.LEFT);
         float fontSizePods = innerBoxSize / 18; // First one only
         float textY = innerBoxY + 0.62f * innerBoxSize;
-        for (int i = 0; i < favoritePods.size(); i++) {
+        for (int i = 0; i < favoritePodNames.size(); i++) {
             float coverSize = (i == 0) ? (0.4f * innerBoxSize) : (0.2f * innerBoxSize);
             float coverX = COVER_POSITIONS[i][0];
             float coverY = COVER_POSITIONS[i][1];
@@ -71,12 +73,16 @@ public class FinalShareScreen extends BubbleScreen {
             logo1Pos.inset((int) (0.003f * innerBoxSize), (int) (0.003f * innerBoxSize));
             Rect pos = new Rect();
             logo1Pos.round(pos);
-            favoritePods.get(i).second.setBounds(pos);
-            favoritePods.get(i).second.draw(canvas);
+            if (favoritePodImages.size() > i) {
+                favoritePodImages.get(i).setBounds(pos);
+                favoritePodImages.get(i).draw(canvas);
+            } else {
+                canvas.drawText(" ...", pos.left, pos.centerY(), paintTextMain);
+            }
 
             paintTextMain.setTextSize(fontSizePods);
             canvas.drawText((i + 1) + ".", innerBoxX, textY, paintTextMain);
-            canvas.drawText(favoritePods.get(i).first, innerBoxX + 0.055f * innerBoxSize, textY, paintTextMain);
+            canvas.drawText(favoritePodNames.get(i), innerBoxX + 0.055f * innerBoxSize, textY, paintTextMain);
             fontSizePods = innerBoxSize / 24; // Starting with second text is smaller
             textY += 1.3f * fontSizePods;
             paintTextMain.setTypeface(typefaceNormal);
