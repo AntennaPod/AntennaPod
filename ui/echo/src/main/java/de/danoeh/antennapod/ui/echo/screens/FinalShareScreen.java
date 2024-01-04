@@ -82,7 +82,8 @@ public class FinalShareScreen extends BubbleScreen {
 
             paintTextMain.setTextSize(fontSizePods);
             canvas.drawText((i + 1) + ".", innerBoxX, textY, paintTextMain);
-            canvas.drawText(favoritePodNames.get(i), innerBoxX + 0.055f * innerBoxSize, textY, paintTextMain);
+            String ellipsizedTitle = ellipsize(favoritePodNames.get(i), paintTextMain, (1.0f - 0.055f) * innerBoxSize);
+            canvas.drawText(ellipsizedTitle, innerBoxX + 0.055f * innerBoxSize, textY, paintTextMain);
             fontSizePods = innerBoxSize / 24; // Starting with second text is smaller
             textY += 1.3f * fontSizePods;
             paintTextMain.setTypeface(typefaceNormal);
@@ -94,5 +95,15 @@ public class FinalShareScreen extends BubbleScreen {
                 (int) (innerBoxX + 0.9 * innerBoxSize),
                 (int) (innerBoxY + innerBoxSize));
         logo.draw(canvas);
+    }
+
+    String ellipsize(String string, Paint paint, float maxWidth) {
+        if (paint.measureText(string) <= maxWidth) {
+            return string;
+        }
+        while (paint.measureText(string + "…") > maxWidth || string.endsWith(" ")) {
+            string = string.substring(0, string.length() - 1);
+        }
+        return string + "…";
     }
 }
