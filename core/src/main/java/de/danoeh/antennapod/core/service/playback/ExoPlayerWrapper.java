@@ -6,8 +6,10 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
+
 import androidx.annotation.NonNull;
 import androidx.core.util.Consumer;
+
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -19,6 +21,7 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SeekParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioAttributes;
+import com.google.android.exoplayer2.database.ExoDatabaseProvider;
 import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.mp3.Mp3Extractor;
@@ -35,6 +38,10 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
 import com.google.android.exoplayer2.upstream.HttpDataSource;
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource;
+import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
+import com.google.android.exoplayer2.upstream.cache.SimpleCache;
+
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -46,6 +53,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -70,6 +78,9 @@ public class ExoPlayerWrapper {
     private DefaultTrackSelector trackSelector;
 
     private LoudnessEnhancer loudnessEnhancer;
+    // cache the download data
+    private SimpleCache simpleCache;
+    int cacheSize = 200 * 1024 * 1024; // 200 MB
 
     ExoPlayerWrapper(Context context) {
         this.context = context;
@@ -82,6 +93,9 @@ public class ExoPlayerWrapper {
                         bufferingUpdateListener.accept(exoPlayer.getBufferedPercentage());
                     }
                 });
+        File cacheFile = new File(context.getCacheDir(), "temp");
+        simpleCache = new SimpleCache(cacheFile, new LeastRecentlyUsedCacheEvictor(cacheSize),
+                new ExoDatabaseProvider(context));
     }
 
     private void createPlayer() {
@@ -179,6 +193,10 @@ public class ExoPlayerWrapper {
         if (exoPlayer != null) {
             exoPlayer.release();
         }
+        if (simpleCache != null) {
+            simpleCache.release();
+            simpleCache = null;
+        }
         audioSeekCompleteListener = null;
         audioCompletionListener = null;
         audioErrorListener = null;
@@ -221,7 +239,15 @@ public class ExoPlayerWrapper {
             );
             httpDataSourceFactory.setDefaultRequestProperties(requestProperties);
         }
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, null, httpDataSourceFactory);
+        DataSource.Factory dataSourceFactory;
+        if (!s.startsWith("http")) {
+            dataSourceFactory = new DefaultDataSourceFactory(context, null, httpDataSourceFactory);
+        } else { // cache the vide data,it will be played quickly while switch back this audio
+            CacheDataSource.Factory cacheSourceFactory = new CacheDataSource.Factory();
+            cacheSourceFactory.setCache(simpleCache);
+            cacheSourceFactory.setUpstreamDataSourceFactory(httpDataSourceFactory);
+            dataSourceFactory = cacheSourceFactory;
+        }
         DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         extractorsFactory.setConstantBitrateSeekingEnabled(true);
         extractorsFactory.setMp3ExtractorFlags(Mp3Extractor.FLAG_DISABLE_ID3_METADATA);
