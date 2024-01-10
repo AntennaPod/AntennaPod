@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.View;
 import androidx.annotation.NonNull;
@@ -70,6 +69,7 @@ public class EchoActivity extends AppCompatActivity {
     private long timeTouchDown;
     private long timeLastFrame;
     private Disposable disposable;
+    private Disposable disposableFavorite;
 
     private long totalTime = 0;
     private int totalActivePodcasts = 0;
@@ -80,7 +80,8 @@ public class EchoActivity extends AppCompatActivity {
     private long queueSecondsLeft = 0;
     private long timeBetweenReleaseAndPlay = 0;
     private long oldestDate = 0;
-    private final ArrayList<Pair<String, Drawable>> favoritePods = new ArrayList<>();
+    private final ArrayList<String> favoritePodNames = new ArrayList<>();
+    private final ArrayList<Drawable> favoritePodImages = new ArrayList<>();
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -178,6 +179,9 @@ public class EchoActivity extends AppCompatActivity {
         redrawTimer.dispose();
         if (disposable != null) {
             disposable.dispose();
+        }
+        if (disposableFavorite != null) {
+            disposableFavorite.dispose();
         }
     }
 
@@ -288,7 +292,7 @@ public class EchoActivity extends AppCompatActivity {
                     viewBinding.largeLabel.setText("");
                     viewBinding.belowLabel.setText("");
                     viewBinding.smallLabel.setText("");
-                    currentDrawable = new FinalShareScreen(this, favoritePods);
+                    currentDrawable = new FinalShareScreen(this, favoritePodNames, favoritePodImages);
                     break;
                 default: // Keep
             }
@@ -340,25 +344,11 @@ public class EchoActivity extends AppCompatActivity {
                     Collections.sort(statisticsData.feedTime, (item1, item2) ->
                             Long.compare(item2.timePlayed, item1.timePlayed));
 
-                    favoritePods.clear();
+                    favoritePodNames.clear();
                     for (int i = 0; i < 5 && i < statisticsData.feedTime.size(); i++) {
-                        BitmapDrawable cover = new BitmapDrawable(getResources(), (Bitmap) null);
-                        try {
-                            final int size = SHARE_SIZE / 3;
-                            final int radius = (i == 0) ? (size / 16) : (size / 8);
-                            cover = new BitmapDrawable(getResources(), Glide.with(this)
-                                    .asBitmap()
-                                    .load(statisticsData.feedTime.get(i).feed.getImageUrl())
-                                    .apply(new RequestOptions()
-                                            .fitCenter()
-                                            .transform(new RoundedCorners(radius)))
-                                    .submit(size, size)
-                                    .get(1, TimeUnit.SECONDS));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        favoritePods.add(new Pair<>(statisticsData.feedTime.get(i).feed.getTitle(), cover));
+                        favoritePodNames.add(statisticsData.feedTime.get(i).feed.getTitle());
                     }
+                    loadFavoritePodImages(statisticsData);
 
                     totalActivePodcasts = 0;
                     playedActivePodcasts = 0;
@@ -405,6 +395,39 @@ public class EchoActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> loadScreen(currentScreen, true),
+                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
+    void loadFavoritePodImages(DBReader.StatisticsResult statisticsData) {
+        if (disposableFavorite != null) {
+            disposableFavorite.dispose();
+        }
+        disposableFavorite = Observable.fromCallable(
+                () -> {
+                    favoritePodImages.clear();
+                    for (int i = 0; i < 5 && i < statisticsData.feedTime.size(); i++) {
+                        BitmapDrawable cover = new BitmapDrawable(getResources(), (Bitmap) null);
+                        try {
+                            final int size = SHARE_SIZE / 3;
+                            final int radius = (i == 0) ? (size / 16) : (size / 8);
+                            cover = new BitmapDrawable(getResources(), Glide.with(this)
+                                    .asBitmap()
+                                    .load(statisticsData.feedTime.get(i).feed.getImageUrl())
+                                    .apply(new RequestOptions()
+                                            .fitCenter()
+                                            .transform(new RoundedCorners(radius)))
+                                    .submit(size, size)
+                                    .get(5, TimeUnit.SECONDS));
+                        } catch (Exception e) {
+                            Log.d(TAG, "Loading cover: " + e.getMessage());
+                        }
+                        favoritePodImages.add(cover);
+                    }
+                    return statisticsData;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> { },
                         error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 }
