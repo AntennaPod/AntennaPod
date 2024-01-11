@@ -82,7 +82,6 @@ public class PreferenceUpgrader {
                 prefs.edit().putString(UserPreferences.PREF_THEME, "system").apply();
             }
 
-            UserPreferences.setQueueLocked(false);
             UserPreferences.setStreamOverDownload(false);
 
             if (!prefs.contains(UserPreferences.PREF_ENQUEUE_LOCATION)) {
