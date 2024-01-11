@@ -16,12 +16,17 @@ import de.danoeh.antennapod.model.feed.TranscriptSegment;
 
 public class SrtTranscriptParser {
     private static String TAG = "SrtTranscriptParser";
+    private static Pattern timecodePattern = Pattern.compile("^([0-9]{2}):([0-9]{2}):([0-9]{2}),([0-9]{3})$");
     // merge short segments together to form a span of 1 second
     public static long minSpan = 1000L;
 
     public static Transcript parse(String str) {
-        Transcript transcript = new Transcript();
+        if (StringUtils.isBlank(str)) {
+            return null;
+        }
+        str = str.replaceAll("\r\n", "\n");
 
+        Transcript transcript = new Transcript();
         List<String> lines = Arrays.asList(str.split("\n"));
         Iterator<String> iter = lines.iterator();
         String speaker = "";
@@ -90,7 +95,7 @@ public class SrtTranscriptParser {
             }
         }
 
-        if (! StringUtil.isBlank(segmentBody) && endTimecode > spanStartTimecode) {
+        if (!StringUtil.isBlank(segmentBody) && endTimecode > spanStartTimecode) {
             Log.d(TAG, "SRT : " + Long.toString(spanStartTimecode) + " " + segmentBody);
 
             segmentBody = StringUtils.trim(segmentBody);
@@ -108,8 +113,7 @@ public class SrtTranscriptParser {
 
     // Time format 00:00:00,000
     static long parseTimecode(String timecode) {
-        Pattern pattern = Pattern.compile("^([0-9]{2}):([0-9]{2}):([0-9]{2}),([0-9]{3})$");
-        Matcher matcher = pattern.matcher(timecode);
+        Matcher matcher = timecodePattern.matcher(timecode);
         if (! matcher.matches()) {
             return -1;
         }

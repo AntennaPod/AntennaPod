@@ -11,8 +11,6 @@ public class PodcastIndexTranscriptParser {
             return null;
         }
 
-        str = str.replaceAll("\r\n", "\n");
-
         if ("application/json".equals(type)) {
             return PodcastIndexJsonTranscriptParser.parse(str);
         }

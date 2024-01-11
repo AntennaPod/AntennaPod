@@ -11,14 +11,6 @@ public class Transcript {
         segmentsMap.put(segment.getStartTime(), segment);
     }
 
-    public void updateSegment(Long timeOld, Long timeNew) {
-        Map.Entry<Long, TranscriptSegment> entry1 = segmentsMap.floorEntry(timeOld);
-        if (entry1 != null) {
-            segmentsMap.remove(entry1.getKey());
-            segmentsMap.put(timeNew, entry1.getValue());
-        }
-    }
-
     public TranscriptSegment getSegmentAtTime(long time) {
         if (segmentsMap.floorEntry(time) == null) {
             return null;
