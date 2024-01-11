@@ -37,10 +37,12 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         final View root = super.onCreateView(inflater, container, savedInstanceState);
         toolbar.inflateMenu(R.menu.episodes);
         toolbar.setTitle(R.string.episodes_label);
+        activateFAB();
         updateToolbar();
         updateFilterUi();
         txtvInformation.setOnClickListener(
                 v -> AllEpisodesFilterDialog.newInstance(getFilter()).show(getChildFragmentManager(), null));
+
         return root;
     }
 

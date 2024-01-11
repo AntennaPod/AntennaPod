@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.leinardi.android.speeddial.SpeedDialView;
 import de.danoeh.antennapod.R;
@@ -30,6 +31,7 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
+import de.danoeh.antennapod.dialog.AllEpisodesFilterDialog;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
@@ -57,6 +59,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -76,6 +79,8 @@ public abstract class EpisodesListFragment extends Fragment
     EpisodeItemListAdapter listAdapter;
     EmptyViewHandler emptyView;
     SpeedDialView speedDialView;
+
+    FloatingActionButton fab;
     MaterialToolbar toolbar;
     SwipeActions swipeActions;
     private ProgressBar progressBar;
@@ -172,6 +177,8 @@ public abstract class EpisodesListFragment extends Fragment
         setupLoadMoreScrollListener();
         recyclerView.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
 
+        fab = root.findViewById(R.id.filterEpisodesFAB);
+
         swipeActions = new SwipeActions(this, getFragmentTag()).attachTo(recyclerView);
         swipeActions.setFilter(getFilter());
 
@@ -253,6 +260,30 @@ public abstract class EpisodesListFragment extends Fragment
         });
 
         return root;
+    }
+
+    public void activateFab() {
+        fab.setVisibility(View.VISIBLE);
+        fab.setOnClickListener(view -> {
+            AllEpisodesFilterDialog.newInstance(getFilter()).show(getChildFragmentManager(), null);
+        });
+        fab.setOnLongClickListener(view -> {
+            //reset on long click
+            EventBus.getDefault().post(new AllEpisodesFilterDialog.AllEpisodesFilterChangedEvent(new HashSet<>()));
+            return true;
+        });
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //hide on scrolling down
+                if (dy > 10 && fab.isShown()) {
+                    fab.hide();
+                } else if (dy < -10 && !fab.isShown()) {
+                    fab.show();
+                }
+            }
+        });
     }
 
     private void performMultiSelectAction(int actionItemId) {

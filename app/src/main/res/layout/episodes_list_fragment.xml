@@ -48,6 +48,20 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/filterEpisodesFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:visibility="gone"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+        app:layout_gravity="bottom|end"
+        app:srcCompat="@drawable/ic_filter" />
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
