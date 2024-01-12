@@ -18,13 +18,17 @@ public class TlvInputParser {
      * @param profileData
      * @return java.util.List
      */
-    public static List<String> profile(byte[] profileData){
+    public static List<String> profile(byte[] profileData) throws NostrException {
         List<String> readableProfileData = new ArrayList<>();
         Tlv profileTlv = Tlv.parse(profileData);
 
         //Could return null
         String profileHex = profileTlv.firstAsHex(TlvTypes.SPECIAL.getId());
         String firstRelayHint = profileTlv.firstAsString(TlvTypes.RELAY.getId());
+
+        if (firstRelayHint == null){
+            throw new NostrException("No relay found.");
+        }
 
         //We store the items as parsed, i.e, list[0] = profileHex, list[1] = relayHint, etc
         readableProfileData.add(profileHex);
