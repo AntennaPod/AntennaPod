@@ -52,6 +52,7 @@ public class NostrFilter {
             for (Integer kind: kindList) {
                 kindsArray.put(kind.intValue());
             }
+            filterObject.put("kinds", kindsArray);
         }
 
         return filterObject.toString();
