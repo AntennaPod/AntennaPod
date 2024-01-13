@@ -179,9 +179,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 throw new IOException("Unable to read local file " + media.getLocalMediaUrl());
             }
             UiModeManager uiModeManager = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
-            if (uiModeManager.getCurrentModeType() != Configuration.UI_MODE_TYPE_CAR) {
-                setPlayerStatus(PlayerStatus.INITIALIZED, media);
-            }
 
             if (prepareImmediately) {
                 setPlayerStatus(PlayerStatus.PREPARING, media);
