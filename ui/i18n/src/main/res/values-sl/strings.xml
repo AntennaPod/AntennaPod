@@ -70,13 +70,8 @@
   <string name="close_label">Zapri</string>
   <string name="retry_label">Ponovno poizkusi</string>
   <string name="auto_download_label">Vključi v samodejne prenose</string>
-  <string name="feed_volume_reduction_summary">Zmanjšajte glasnost za epizode tega podcasta: %1$s</string>
-  <string name="feed_volume_reduction_off">Izklop</string>
-  <string name="feed_volume_reduction_light">Lahko</string>
-  <string name="feed_volume_reduction_heavy">Težko</string>
   <string name="feed_auto_download_always">Vedno</string>
   <string name="feed_auto_download_never">Nikoli</string>
-  <string name="send_label">Pošlji ...</string>
   <string name="episode_cleanup_never">Nikoli</string>
   <string name="episode_cleanup_except_favorite_removal">Ko ni dodan med priljubljene</string>
   <string name="episode_cleanup_queue_removal">Ko ne čaka v čakalni vrsti</string>
@@ -286,17 +281,14 @@
   <string name="feed_refresh_title">Osveži podcaste</string>
   <string name="feed_refresh_never">Nikoli</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Povezava s slušalkam ali Bluetoothom je prekinjena</string>
-  <string name="pref_stream_over_download_sum">Prikaži gumb za pretočno predvajanje namesto gumba za prenos na seznamih.</string>
   <string name="pref_mobileUpdate_sum">Izberite, kaj naj bo dovoljeno prek mobilne podatkovne povezave</string>
   <string name="pref_mobileUpdate_refresh">Osvežitev podcasta</string>
   <string name="pref_mobileUpdate_images">Naslovne slike</string>
   <string name="pref_mobileUpdate_auto_download">Samodejni prenos</string>
   <string name="pref_mobileUpdate_episode_download">Prenos epizode</string>
   <string name="pref_mobileUpdate_streaming">Pretakanje</string>
-  <string name="pref_nav_drawer_items_sum">Spremenite, kateri elementi se prikažejo v navigacijskem predalu.</string>
   <string name="pref_nav_drawer_feed_order_sum">Spremenite vrstni red svojih naročnin</string>
   <string name="pref_nav_drawer_feed_counter_sum">Spremenite informacije, ki jih prikazuje števec naročnin. Vpliva tudi na razvrščanje naročnin, če je \"Naročilo naročnine\" nastavljeno na \"Števec\".</string>
-  <string name="pref_automatic_download_sum">Konfigurirajte samodejni prenos epizod.</string>
   <string name="pref_autodl_wifi_filter_title">Omogočite Wi-Fi filter</string>
   <string name="pref_autodl_wifi_filter_sum">Dovoli samodejni prenos samo za izbrana omrežja Wi-Fi.</string>
   <string name="pref_automatic_download_on_battery_title">Prenesite, ko se ne polni</string>
@@ -319,7 +311,6 @@
   <string name="pref_fast_forward_sum">Prilagodite število sekund za skok naprej, ko kliknete gumb za hitro previjanje naprej</string>
   <string name="pref_rewind_sum">Prilagodite število sekund za skok nazaj, ko kliknete gumb za previjanje nazaj</string>
   <string name="pref_expandNotify_sum">To običajno razširi obvestilo, da prikaže gumbe za predvajanje.</string>
-  <string name="pref_persistNotify_sum">Ko je predvajanje zaustavljeno, ohranite nastavitve za obvestila in zaklenjeni zaslon.</string>
   <string name="pref_compact_notification_buttons_sum">Ko je obvestilo strnjeno, spremenite gumbe za predvajanje. Gumb za predvajanje/pavza je vedno vključen.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Izberite največ %1$d elementov</string>
   <string name="pref_compact_notification_buttons_dialog_error">Izberete lahko samo največ %1$d elementov.</string>
@@ -338,8 +329,6 @@
   <string name="pref_no_browser_found">Najden ni bil noben spletni brskalnik.</string>
   <string name="pref_enqueue_downloaded_summary">Dodajte prenesene epizode v čakalno vrsto</string>
   <string name="behavior">Obnašanje</string>
-  <string name="pref_delete_removes_from_queue_sum">Samodejno odstranite epizodo iz čakalne vrste, ko je izbrisana.</string>
-  <string name="pref_filter_feed_sum">Filtrirajte svoje naročnine v navigacijskem predalu in na zaslonu z naročninami.</string>
   <string name="subscriptions_are_filtered">Naročnine so filtrirane.</string>
   <string name="subscriptions_counter_greater_zero">Števec je večji od nič</string>
   <string name="auto_downloaded">Samodejni prenos</string>
@@ -398,7 +387,6 @@
   <string name="please_wait">Prosimo počakajte...</string>
   <string name="export_error_label">Napaka pri izvozu</string>
   <string name="export_success_title">Izvoz uspešen</string>
-  <string name="export_success_sum">Izvožena datoteka je bila zapisana v:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Za branje datoteke OPML je potreben dostop do zunanjega pomnilnika</string>
   <string name="successful_import_label">Uvoz uspešen</string>
   <string name="import_ok">Pritisnite OK, da znova zaženete AntennaPod</string>
@@ -479,8 +467,6 @@
   <string name="decrease_speed">Zmanjšaj hitrost</string>
   <string name="media_type_video_label">Video</string>
   <string name="status_downloading_label">Epizoda se prenaša</string>
-  <string name="in_queue_label">Epizoda je v čakalni vrsti</string>
-  <string name="is_favorite_label">Epizoda je označena kot priljubljena</string>
   <string name="load_next_page_label">Naloži naslednjo stran</string>
   <string name="position">Pozicija: %1$s</string>
   <string name="apply_action">Uporabite dejanje</string>
@@ -581,8 +567,6 @@
   <string name="notification_channel_download_error_description">Prikazano, ko prenos ali posodobitev vira ne uspe.</string>
   <string name="notification_channel_sync_error">Sinhronizacija ni uspela</string>
   <string name="notification_channel_sync_error_description">Prikazano, ko sinhronizacija gpodderja ne uspe.</string>
-  <string name="notification_channel_auto_download">Samodejni prenos je končan</string>
-  <string name="notification_channel_episode_auto_download">Prikazano, ko so epizode samodejno prenesene.</string>
   <string name="notification_channel_new_episode_description">Prikazano, ko je najdena nova epizoda podcasta, kjer so omogočena obvestila</string>
   <!--Widget settings-->
   <string name="widget_settings">Nastavitve pripomočka</string>

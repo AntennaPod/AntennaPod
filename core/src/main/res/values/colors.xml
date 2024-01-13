@@ -23,4 +23,9 @@
 
     <color name="accent_light">#0078C2</color>
     <color name="accent_dark">#3D8BFF</color>
+    
+    <color name="gradient_000">#364ff3</color>
+    <color name="gradient_025">#2E6FF6</color>
+    <color name="gradient_075">#1EB0FC</color>
+    <color name="gradient_100">#16d0ff</color>
 </resources>

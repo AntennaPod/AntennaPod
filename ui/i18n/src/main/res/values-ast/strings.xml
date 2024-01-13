@@ -55,13 +55,8 @@
   <string name="close_label">Zarrar</string>
   <string name="retry_label">Retentar</string>
   <string name="auto_download_label">Incluyir nes descargues automátiques</string>
-  <string name="feed_volume_reduction_summary">Baxar el volume de los episodios d\'esti podcast: %1$s</string>
-  <string name="feed_volume_reduction_off">Non</string>
-  <string name="feed_volume_reduction_light">Poco</string>
-  <string name="feed_volume_reduction_heavy">Muncho</string>
   <string name="feed_auto_download_always">Siempres</string>
   <string name="feed_auto_download_never">Enxamás</string>
-  <string name="send_label">Unviar…</string>
   <string name="episode_cleanup_never">Enxamás</string>
   <string name="episode_cleanup_except_favorite_removal">Al nun tar en Favoritos</string>
   <string name="episode_cleanup_queue_removal">Al nun tar na cola</string>
@@ -203,10 +198,8 @@
   <string name="pref_mobileUpdate_images">Portaes</string>
   <string name="pref_mobileUpdate_auto_download">Descarga automática</string>
   <string name="pref_mobileUpdate_episode_download">Descarga d\'episodios</string>
-  <string name="pref_nav_drawer_items_sum">Camuda los elementos qu\'apaecen nel caxón de navegación.</string>
   <string name="pref_nav_drawer_feed_order_sum">Camuda l\'orde de les soscripciones</string>
   <string name="pref_nav_drawer_feed_counter_sum">Camuda la información qu\'amuesa\'l contador de soscripciones. Tamién afeuta al orde de les soscripciones si «Orde de les soscripciones» s\'afita a «Contador».</string>
-  <string name="pref_automatic_download_sum">Configura la descarga automática d\'episodios.</string>
   <string name="pref_autodl_wifi_filter_title">Activar la peñera de redes Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Namás permite la descarga automática nes redes Wi-Fi esbillaes.</string>
   <string name="pref_automatic_download_on_battery_title">Baxar al nun tar cargando la batería</string>
@@ -241,8 +234,6 @@
   <string name="pref_no_browser_found">Nun s\'atopó nengún restolador web.</string>
   <string name="pref_enqueue_downloaded_summary">Amiesta los episodios baxaos a la cola</string>
   <string name="behavior">Comportamientu</string>
-  <string name="pref_delete_removes_from_queue_sum">Quita automáticamente los episodios de la cola al desanicialos.</string>
-  <string name="pref_filter_feed_sum">Peñera les soscripciones del caxón de navegación y de la pantalla de soscripciones.</string>
   <string name="auto_downloaded">Baxó automáticamente</string>
   <string name="not_auto_downloaded">Nun baxó automáticamente</string>
   <string name="new_episode_notification_enabled">Avisu activáu</string>
@@ -285,7 +276,6 @@
   <string name="database_import_warning">La importación d\'una base de datos troca toles soscripciones actuales y l\'historial de reproducciones. Habríes esportar la base de datos actual como copia de seguranza. ¿Quies trocar?</string>
   <string name="please_wait">Espera…</string>
   <string name="export_success_title">La esportación fízose correutamente</string>
-  <string name="export_success_sum">El ficheru esportáu escribióse en:\n\n%1$s</string>
   <string name="successful_import_label">La importación fízose correutamente</string>
   <string name="import_ok">Primi «D\'acuerdu» pa reaniciar AntennaPod</string>
   <string name="import_no_downgrade">Esta base de datos esportóse con una versión nueva d\'AntennaPod. La instalación actual entá nun sabe cómo remanar esti ficheru.</string>
@@ -342,8 +332,6 @@
   <string name="decrease_speed">Amenorgar la velocidá</string>
   <string name="media_type_video_label">Videu</string>
   <string name="status_downloading_label">L\'episodiu ta baxando</string>
-  <string name="in_queue_label">L\'episodiu ta na cola</string>
-  <string name="is_favorite_label">L\'episodiu marcóse como favoritu</string>
   <string name="load_next_page_label">Cargar la páxina siguiente</string>
   <string name="position">Posición: %1$s</string>
   <string name="prev_chapter">Capítulu anterior</string>
@@ -420,8 +408,6 @@
   <string name="notification_channel_download_error">Descargues fallíes</string>
   <string name="notification_channel_sync_error">Sincronización fallida</string>
   <string name="notification_channel_sync_error_description">Apaez cuando falla la sincronización con gpodder.</string>
-  <string name="notification_channel_auto_download">Descargues automátiques completaes</string>
-  <string name="notification_channel_episode_auto_download">Apaez al baxar episodios nuevos automáticamente</string>
   <string name="notification_channel_new_episode_description">Apaez al atopar l\'episodiu nuevu d\'un podcast si los avisos tán disponibles</string>
   <!--Widget settings-->
   <string name="widget_settings">Axustes del widget</string>

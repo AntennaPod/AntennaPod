@@ -26,7 +26,9 @@
     <string name="episode_cache_full_message">The episode cache limit has been reached. You can increase the cache size in the Settings.</string>
     <string name="years_statistics_label">Years</string>
     <string name="notification_pref_fragment">Notifications</string>
-    <string name="recently_played_episodes">Recently played episodes</string>
+    <string name="current_playing_episode">Current</string>
+    <string name="antennapod_echo" translatable="false">AntennaPod Echo</string>
+    <string name="antennapod_echo_year" translatable="false">AntennaPod Echo %d</string>
 
     <!-- Google Assistant -->
     <string name="app_action_not_found">\"%1$s\" not found</string>
@@ -183,7 +185,6 @@
     <string name="remove_feed_label">Remove podcast</string>
     <string name="share_label">Share</string>
     <string name="share_file_label">Share file</string>
-    <string name="share_rss_address_label">RSS address:</string>
     <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\", ALL its episodes (including downloaded episodes), and its statistics.</string>
     <string name="feed_delete_confirmation_msg_batch">Please confirm that you want to remove the selected podcasts, ALL their episodes (including downloaded episodes), and its statistics.</string>
     <string name="feed_delete_confirmation_local_msg">Please confirm that you want to remove the podcast \"%1$s\" and its statistics. The files in the local source folder will not be deleted.</string>
@@ -620,6 +621,10 @@
         <item quantity="one">1 hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
+    <plurals name="time_days_quantified">
+        <item quantity="one">1 day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
     <string name="auto_enable_label">Automatically activate the sleep timer when pressing play</string>
     <string name="auto_enable_label_with_times">Automatically activate the sleep timer when pressing play between %s and %s</string>
     <string name="auto_enable_change_times">Change time range</string>
@@ -782,7 +787,6 @@
     <!-- Audio controls -->
     <string name="audio_controls">Audio controls</string>
     <string name="playback_speed">Playback speed</string>
-    <string name="audio_effects">Audio effects</string>
     <string name="player_switch_to_audio_only">Switch to audio only</string>
 
     <!-- proxy settings -->

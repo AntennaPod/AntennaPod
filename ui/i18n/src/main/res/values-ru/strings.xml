@@ -53,7 +53,6 @@
   <string name="home_downloads_title">Загрузки</string>
   <string name="home_welcome_title">Привет, это AntennaPod!</string>
   <string name="home_welcome_text">Вы ещё не подписаны ни на один подкаст. Откройте боковое меню, чтобы добавить подкаст.</string>
-  <string name="notification_permission_text">Для показа уведомлений во время загрузки AntennaPod требуется разрешение.</string>
   <string name="notification_permission_denied">Вы не дали разрешения.</string>
   <string name="open_settings">Открыть настройки</string>
   <string name="configure_home">Настроить главную</string>
@@ -110,16 +109,10 @@
   <string name="retry_label">Повторить</string>
   <string name="auto_download_label">Добавить в автозагрузки</string>
   <string name="auto_delete_label">Автоматическое удаление выпусков</string>
-  <string name="feed_volume_reduction">Приглушение</string>
-  <string name="feed_volume_reduction_summary">Приглушать громкость для выпусков этого подкаста: %1$s</string>
-  <string name="feed_volume_reduction_off">Нет</string>
-  <string name="feed_volume_reduction_light">Слабое</string>
-  <string name="feed_volume_reduction_heavy">Сильное</string>
   <string name="feed_auto_download_always">всегда</string>
   <string name="feed_auto_download_never">никогда</string>
   <string name="feed_new_episodes_action_add_to_inbox">Во входящие</string>
   <string name="feed_new_episodes_action_nothing">ничего</string>
-  <string name="send_label">Отправить…</string>
   <string name="episode_cleanup_never">никогда</string>
   <string name="episode_cleanup_except_favorite_removal">Когда не в избранном</string>
   <string name="episode_cleanup_queue_removal">Когда не в очереди</string>
@@ -428,7 +421,6 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">При подключении наушников</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">При подключении Bluetooth</string>
   <string name="pref_stream_over_download_title">Трансляция вместо загрузки</string>
-  <string name="pref_stream_over_download_sum">Заменяет кнопку загрузки на кнопку трансляции в списках.</string>
   <string name="pref_mobileUpdate_title">Обновления в мобильной сети</string>
   <string name="pref_mobileUpdate_sum">Выберите, что разрешено загружать через мобильное подключение</string>
   <string name="pref_mobileUpdate_refresh">Обновление подкастов</string>
@@ -443,13 +435,11 @@
   <string name="pref_tinted_theme_title">Динамические цвета</string>
   <string name="pref_tinted_theme_message">Менять цвета в приложении по цвету обоев</string>
   <string name="pref_nav_drawer_items_title">Выбрать пункты боковой панели</string>
-  <string name="pref_nav_drawer_items_sum">Изменение отображения пунктов меню боковой панели</string>
   <string name="pref_nav_drawer_feed_order_title">Сортировка подписок</string>
   <string name="pref_nav_drawer_feed_order_sum">Выбрать порядок отображения подписок</string>
   <string name="pref_nav_drawer_feed_counter_title">Выбрать счётчик подписок</string>
   <string name="pref_nav_drawer_feed_counter_sum">Какую информацию показывать в счетчике подписок. Влияет также на очередность подписок, если сортировка подписок производится по счетчику.</string>
   <string name="pref_automatic_download_title">Автоматическая загрузка</string>
-  <string name="pref_automatic_download_sum">Настроить автоматическую загрузку выпусков.</string>
   <string name="pref_autodl_wifi_filter_title">Включить фильтр Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Разрешать автоматическую загрузку только для выбранных сетей Wi-Fi.</string>
   <string name="pref_automatic_download_on_battery_title">Загружать без зарядки</string>
@@ -481,7 +471,6 @@
   <string name="pref_expandNotify_title">Уведомление с высоким приоритетом</string>
   <string name="pref_expandNotify_sum">Как правило, разворачивает уведомление, показывая кнопки управления воспроизведением.</string>
   <string name="pref_persistNotify_title">Постоянное управление воспроизведением</string>
-  <string name="pref_persistNotify_sum">Сохранять уведомление и кнопки на экране блокировки во время паузы.</string>
   <string name="pref_compact_notification_buttons_title">Выбрать кнопки компактного уведомления</string>
   <string name="pref_compact_notification_buttons_sum">Сменить кнопки воспроизведения свёрнутого уведомления. Кнопка воспроизведения/паузы присутствует всегда.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Выберите не более %1$d элементов</string>
@@ -507,14 +496,11 @@
   <string name="pref_skip_silence_title">Пропускать участки тишины</string>
   <string name="behavior">Поведение</string>
   <string name="pref_default_page">Первая страница</string>
-  <string name="pref_default_page_sum">Страница, которая показывается при запуске AntennaPod.</string>
   <string name="pref_back_button_opens_drawer">Кнопка Возврат открывает боковую панель</string>
   <string name="pref_back_button_opens_drawer_summary">Нажатие кнопки Возврат на первой странице откроет панель навигации</string>
   <string name="remember_last_page">Запоминать последнюю страницу</string>
   <string name="pref_delete_removes_from_queue_title">Убирать удаленные из очереди</string>
-  <string name="pref_delete_removes_from_queue_sum">Автоматически убирать выпуск из очереди при его удалении.</string>
   <string name="pref_filter_feed_title">Фильтр подписок</string>
-  <string name="pref_filter_feed_sum">Фильтруйте свои подписки на панели навигации и экране подписок.</string>
   <string name="subscriptions_are_filtered">Подписки отфильтрованы.</string>
   <string name="subscriptions_counter_greater_zero">Ненулевой счётчик подписок</string>
   <string name="auto_downloaded">С автозагрузкой</string>
@@ -526,7 +512,6 @@
   <string name="pref_feed_settings_dialog_msg">Эта настройка у каждого подкаста своя. Изменить её можно на странице подкаста.</string>
   <string name="pref_contribute">Поучаствовать</string>
   <string name="pref_show_subscription_title">Показывать название</string>
-  <string name="pref_show_subscription_title_summary">Показывать называние под обложкой.</string>
   <string name="pref_new_episodes_action_title">Действие для новых выпусков</string>
   <string name="pref_new_episodes_action_sum">Действие для новых выпусков</string>
   <!--About screen-->
@@ -578,7 +563,6 @@
   <string name="please_wait">Подождите…</string>
   <string name="export_error_label">Ошибка экспорта</string>
   <string name="export_success_title">Экспорт выполнен</string>
-  <string name="export_success_sum">Файл экспорта был сохранен в папку:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Для чтения файла OPML необходим доступ к внешнему хранилищу</string>
   <string name="successful_import_label">Импорт успешен</string>
   <string name="import_ok">Нажмите OK, чтобы перезапустить AntennaPod</string>
@@ -617,7 +601,6 @@
   </plurals>
   <string name="auto_enable_label">Запускать таймер сна вместе с началом воспроизведения</string>
   <string name="auto_enable_label_with_times">Автоматически запускать таймер сна при пуске воспроизведения в интервале с%s до %s</string>
-  <string name="auto_enable_change_times">Поменять периоды</string>
   <string name="sleep_timer_enabled_label">Таймер сна включен</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">Выберите провайдера синхронизации</string>
@@ -675,9 +658,6 @@
   <string name="decrease_speed">Уменьшить скорость</string>
   <string name="media_type_video_label">Видео</string>
   <string name="status_downloading_label">Выпуск загружается</string>
-  <string name="in_queue_label">Выпуск в очереди</string>
-  <string name="is_favorite_label">Эпизод добавлен в избранное</string>
-  <string name="is_inbox_label">Выпуск во входящих</string>
   <string name="load_next_page_label">Загрузить следующую страницу</string>
   <string name="position">Позиция: %1$s</string>
   <string name="apply_action">Применить действие</string>
@@ -801,8 +781,6 @@
   <string name="notification_channel_download_error_description">Отображается, когда загрузка или обновление канала завершилось с ошибкой</string>
   <string name="notification_channel_sync_error">Синхронизация не удалась</string>
   <string name="notification_channel_sync_error_description">Отображается, если сбоит синхронизация gpodder.</string>
-  <string name="notification_channel_auto_download">Автоматическая загрузка завершена</string>
-  <string name="notification_channel_episode_auto_download">Показывается, когда новые выпуски были автоматически загружены</string>
   <string name="notification_channel_new_episode">Новый выпуск</string>
   <string name="notification_channel_new_episode_description">Отображается, когда появился новый выпуск подкаста, для которого включены уведомления</string>
   <!--Widget settings-->

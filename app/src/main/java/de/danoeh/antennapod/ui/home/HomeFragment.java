@@ -21,12 +21,15 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
+import de.danoeh.antennapod.ui.echo.EchoActivity;
+import de.danoeh.antennapod.ui.home.sections.EchoSection;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -60,6 +63,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     public static final String PREF_NAME = "PrefHomeFragment";
     public static final String PREF_HIDDEN_SECTIONS = "PrefHomeSectionsString";
     public static final String PREF_DISABLE_NOTIFICATION_PERMISSION_NAG = "DisableNotificationPermissionNag";
+    public static final String PREF_HIDE_ECHO = "HideEcho";
 
     private static final String KEY_UP_ARROW = "up_arrow";
     private boolean displayUpArrow;
@@ -94,12 +98,18 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     private void populateSectionList() {
         viewBinding.homeContainer.removeAllViews();
 
+        SharedPreferences prefs = getContext().getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
         if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            SharedPreferences prefs = getContext().getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
             if (!prefs.getBoolean(HomeFragment.PREF_DISABLE_NOTIFICATION_PERMISSION_NAG, false)) {
                 addSection(new AllowNotificationsSection());
             }
+        }
+        if (Calendar.getInstance().get(Calendar.YEAR) == EchoActivity.RELEASE_YEAR
+                && Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER
+                && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) >= 10
+                && prefs.getInt(PREF_HIDE_ECHO, 0) != EchoActivity.RELEASE_YEAR) {
+            addSection(new EchoSection());
         }
 
         List<String> hiddenSections = getHiddenSections(getContext());

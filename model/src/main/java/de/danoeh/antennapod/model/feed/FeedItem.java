@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Item (episode) within a feed.
@@ -65,7 +64,7 @@ public class FeedItem extends FeedComponent implements Serializable {
     private transient List<Chapter> chapters;
     private String imageUrl;
 
-    private long autoDownload = 1;
+    private boolean autoDownloadEnabled = true;
 
     /**
      * Any tags assigned to this item
@@ -82,7 +81,7 @@ public class FeedItem extends FeedComponent implements Serializable {
      * */
     public FeedItem(long id, String title, String link, Date pubDate, String paymentLink, long feedId,
                     boolean hasChapters, String imageUrl, int state,
-                    String itemIdentifier, long autoDownload, String podcastIndexChapterUrl) {
+                    String itemIdentifier, boolean autoDownloadEnabled, String podcastIndexChapterUrl) {
         this.id = id;
         this.title = title;
         this.link = link;
@@ -93,7 +92,7 @@ public class FeedItem extends FeedComponent implements Serializable {
         this.imageUrl = imageUrl;
         this.state = state;
         this.itemIdentifier = itemIdentifier;
-        this.autoDownload = autoDownload;
+        this.autoDownloadEnabled = autoDownloadEnabled;
         this.podcastIndexChapterUrl = podcastIndexChapterUrl;
     }
 
@@ -361,50 +360,11 @@ public class FeedItem extends FeedComponent implements Serializable {
     }
 
     public void disableAutoDownload() {
-        this.autoDownload = 0;
+        this.autoDownloadEnabled = false;
     }
 
-    public long getAutoDownloadAttemptsAndTime() {
-        return autoDownload;
-    }
-
-    public int getFailedAutoDownloadAttempts() {
-        // 0: auto download disabled
-        // 1: auto download enabled (default)
-        // > 1: auto download enabled, timestamp of last failed attempt, last digit denotes number of failed attempts
-        if (autoDownload <= 1) {
-            return 0;
-        }
-        int failedAttempts = (int)(autoDownload % 10);
-        if (failedAttempts == 0) {
-            failedAttempts = 10;
-        }
-        return failedAttempts;
-    }
-
-    public void increaseFailedAutoDownloadAttempts(long now) {
-        if (autoDownload == 0) {
-            return; // Don't re-enable
-        }
-        int failedAttempts = getFailedAutoDownloadAttempts() + 1;
-        if (failedAttempts >= 5) {
-            disableAutoDownload(); // giving up
-        } else {
-            autoDownload = (now / 10) * 10 + failedAttempts;
-        }
-    }
-
-    public boolean isAutoDownloadable(long now) {
-        if (media == null || media.isDownloaded() || autoDownload == 0) {
-            return false;
-        }
-        if (autoDownload == 1) {
-            return true; // Never failed
-        }
-        int failedAttempts = getFailedAutoDownloadAttempts();
-        long waitingTime = TimeUnit.HOURS.toMillis((long) Math.pow(2, failedAttempts - 1));
-        long lastAttempt = (autoDownload / 10) * 10;
-        return now >= (lastAttempt + waitingTime);
+    public boolean isAutoDownloadEnabled() {
+        return this.autoDownloadEnabled;
     }
 
     public boolean isDownloaded() {

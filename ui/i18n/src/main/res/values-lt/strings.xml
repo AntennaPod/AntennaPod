@@ -71,13 +71,8 @@
   <string name="close_label">Užverti</string>
   <string name="retry_label">Bandyti vėl</string>
   <string name="auto_download_label">Įtraukti į automatinius atsiuntimus</string>
-  <string name="feed_volume_reduction_summary">Sumažinti garsį šios tinklalaidės epizodams: %1$s</string>
-  <string name="feed_volume_reduction_off">Išjungta</string>
-  <string name="feed_volume_reduction_light">Švelniai</string>
-  <string name="feed_volume_reduction_heavy">Gausiai</string>
   <string name="feed_auto_download_always">Visada</string>
   <string name="feed_auto_download_never">Niekada</string>
-  <string name="send_label">Siųsti...</string>
   <string name="episode_cleanup_never">Niekada</string>
   <string name="episode_cleanup_except_favorite_removal">Kai nėra mėgstamas</string>
   <string name="episode_cleanup_queue_removal">Jei nėra eilėje</string>
@@ -298,17 +293,14 @@
   <string name="feed_refresh_title">Tinklalaidžių atnaujinimas</string>
   <string name="feed_refresh_never">Niekada</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Atjungiamos ausinės ar „Bluetooth“</string>
-  <string name="pref_stream_over_download_sum">Vietoje atsiuntimo mygtuko sąrašuose atvaizduoti tiesioginio klausymosi mygtuką.</string>
   <string name="pref_mobileUpdate_sum">Pasirinkite, kas bus leidžiama naudojantis mobiliuoju internetu</string>
   <string name="pref_mobileUpdate_refresh">Tinklalaidžių atnaujinimas</string>
   <string name="pref_mobileUpdate_images">Viršelio paveikslėliai</string>
   <string name="pref_mobileUpdate_auto_download">Automatinis atsiuntimas</string>
   <string name="pref_mobileUpdate_episode_download">Epizodų atsiuntimas</string>
   <string name="pref_mobileUpdate_streaming">Klausymasis tiesiogiai</string>
-  <string name="pref_nav_drawer_items_sum">Keisti naršymo stalčiuje rodomus elementus.</string>
   <string name="pref_nav_drawer_feed_order_sum">Keiskite prenumeratų tvarką</string>
   <string name="pref_nav_drawer_feed_counter_sum">Keisti prenumeratų skaitiklyje atvaizduojamą informaciją. Gali paveikti prenumeratų rikiavimą, jei prenumeratų tvarka nustatyta rikiuoti pagal skaitiklio reikšmę.</string>
-  <string name="pref_automatic_download_sum">Konfigūruoti automatinį epizodų atsiuntimą.</string>
   <string name="pref_autodl_wifi_filter_title">Įjungti belaidžių tinklų filtrą</string>
   <string name="pref_autodl_wifi_filter_sum">Leisti automatinį atsiuntimą tik prisijungus prie nurodytų belaidžių tinklų.</string>
   <string name="pref_automatic_download_on_battery_title">Atsiuntimas ne įkrovimo metu</string>
@@ -331,7 +323,6 @@
   <string name="pref_fast_forward_sum">Derinkite, per kiek sekundžių šoktelėti į priekį kai paspaudžiamas persukimo į priekį mygtukas</string>
   <string name="pref_rewind_sum">Derinkite, per kiek sekundžių šoktelėti atgal kai paspaudžiamas atsukimo atgal mygtukas</string>
   <string name="pref_expandNotify_sum">Tai dažniausiai išskleidžia pranešimą, kad būtų rodomi atkūrimo valdymo mygtukai.</string>
-  <string name="pref_persistNotify_sum">Pristabdžius atkūrimą palikti valdiklius ekrano užrakte bei programų pranešimuose. </string>
   <string name="pref_compact_notification_buttons_sum">Keisti atkūrimo valdymo mygtukus, matomus, kai pranešimas yra suskleistas. Atkūrimo/pristabdymo mygtukas matomas visada.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Pasirinkite daugiausiai %1$d elementus</string>
   <string name="pref_compact_notification_buttons_dialog_error">Galite pasirinkti daugiausiai %1$d elementus.</string>
@@ -350,8 +341,6 @@
   <string name="pref_no_browser_found">Nerasta jokia interneto naršyklė.</string>
   <string name="pref_enqueue_downloaded_summary">Parsiuntus epizodus, pridėti juos į eilę</string>
   <string name="behavior">Elgsena</string>
-  <string name="pref_delete_removes_from_queue_sum">Ištrynus epizodą automatiškai pašalinti jį iš eilės</string>
-  <string name="pref_filter_feed_sum">Filtruokite prenumeratas naršymo stalčiuje ir prenumeratų lange.</string>
   <string name="subscriptions_are_filtered">Yra taikomas prenumeratų filtras.</string>
   <string name="subscriptions_counter_greater_zero">Skaitiklio reikšmė didesnė už nulį</string>
   <string name="auto_downloaded">Atsiųstas automatiškai</string>
@@ -362,7 +351,6 @@
   <string name="new_episode_notification_disabled">Pranešimas išjungtas</string>
   <string name="pref_feed_settings_dialog_msg">Šis nustatymas individualus kiekvienai tinklalaidei. Jį pakeisti galite atvėrę tinklalaidės langą.</string>
   <string name="pref_contribute">Prisidėti</string>
-  <string name="pref_show_subscription_title_summary">Atvaizduoti prenumeratos pavadinimą viršelio paveikslėlio apačioje.</string>
   <!--About screen-->
   <string name="about_pref">Apie</string>
   <string name="antennapod_version">„AntennaPod“ versija</string>
@@ -412,7 +400,6 @@
   <string name="please_wait">Prašome luktelėti...</string>
   <string name="export_error_label">Eksporto klaida</string>
   <string name="export_success_title">Sėkmingai eksportuota</string>
-  <string name="export_success_sum">Eksporto failas išsaugotas:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Norint nuskaityti OPML failą reikalinga prieiga prie išorinės laikmenos</string>
   <string name="successful_import_label">Sėkmingai importuota</string>
   <string name="import_ok">Spauskite „OK“, kad paleisti „AntennaPod“ iš naujo</string>
@@ -496,8 +483,6 @@
   <string name="decrease_speed">Sumažinti spartą</string>
   <string name="media_type_video_label">Vaizdas</string>
   <string name="status_downloading_label">Epizodas atsiunčiamas</string>
-  <string name="in_queue_label">Epizodas yra eilėje</string>
-  <string name="is_favorite_label">Epizodas pažymėtas kaip mėgstamas</string>
   <string name="load_next_page_label">Įkelti kitą puslapį</string>
   <string name="position">Pozicija: %1$s</string>
   <string name="apply_action">Pritaikyti veiksmą</string>
@@ -604,8 +589,6 @@
   <string name="notification_channel_download_error_description">Rodomas, kai atsiuntimas ar sklaidos kanalo atnaujinimas nepavyksta.</string>
   <string name="notification_channel_sync_error">Nepavykęs sinchronizavimas</string>
   <string name="notification_channel_sync_error_description">Rodomas nepavykus sinchronizavimui su „gpodder“.</string>
-  <string name="notification_channel_auto_download">Automatinis atsiuntimas užbaigtas</string>
-  <string name="notification_channel_episode_auto_download">Rodomas automatiškai atsiuntus epizodus.</string>
   <string name="notification_channel_new_episode_description">Rodomas, kai randamas naujas prenumeratos, kuriai įjungti pranešimai, epizodas</string>
   <!--Widget settings-->
   <string name="widget_settings">Valdiklio nustatymai</string>
