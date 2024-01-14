@@ -176,11 +176,12 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             } else {
                 throw new IOException("Unable to read local file " + media.getLocalMediaUrl());
             }
-            setPlayerStatus(PlayerStatus.INITIALIZED, media);
             if (prepareImmediately) {
                 setPlayerStatus(PlayerStatus.PREPARING, media);
                 mediaPlayer.prepare();
                 onPrepared(startWhenPrepared);
+            } else {
+                setPlayerStatus(PlayerStatus.INITIALIZED, media);
             }
 
         } catch (IOException | IllegalStateException e) {
