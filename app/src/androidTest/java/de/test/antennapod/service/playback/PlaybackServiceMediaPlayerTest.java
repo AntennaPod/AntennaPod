@@ -163,7 +163,7 @@ public class PlaybackServiceMediaPlayerTest {
                         assertEquals(PlayerStatus.INITIALIZING, newInfo.playerStatus);
                         countDownLatch.countDown();
                     } else {
-                        assertEquals(PlayerStatus.INITIALIZED, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.PREPARING, newInfo.playerStatus);
                         countDownLatch.countDown();
                     }
                 } catch (AssertionFailedError e) {
