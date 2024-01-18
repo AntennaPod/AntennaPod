@@ -630,7 +630,7 @@
   <string name="synchronization_full_sync_title">Komplette Synchronisation erzwingen</string>
   <string name="synchronization_force_sync_summary">Alle Abonnements und Episodenzustände neu synchronisieren</string>
   <string name="synchronization_logout">Abmelden</string>
-  <string name="synchronization_login_status"><![CDATA[Angemeldet als <i>%1$s</i> auf <i>%2$s</i>. <br/><br/>Nach dem Abmelden kann der Synchronisationsanbieter erneut auswählt werden.]]></string>
+  <string name="synchronization_login_status"><![CDATA[Angemeldet als <i>%1$s</i> auf <i>%2$s</i>. <br/><br/>Nach dem Abmelden kann der Synchronisationsanbieter erneut ausgewählt werden.]]></string>
   <string name="pref_synchronization_logout_toast">Abmeldung war erfolgreich</string>
   <string name="gpodnetsync_error_title">gpodder.net Synchronisierungsfehler</string>
   <string name="gpodnetsync_error_descr">Ein Fehler ist beim Synchronisieren aufgetreten:\u0020</string>
