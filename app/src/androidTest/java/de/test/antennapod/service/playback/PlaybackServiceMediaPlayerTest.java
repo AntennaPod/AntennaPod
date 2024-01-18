@@ -180,7 +180,7 @@ public class PlaybackServiceMediaPlayerTest {
             throw assertionError;
         assertTrue(res);
 
-        assertSame(PlayerStatus.INITIALIZED, psmp.getPSMPInfo().playerStatus);
+        assertSame(PlayerStatus.PREPARING, psmp.getPSMPInfo().playerStatus);
         assertFalse(psmp.isStartWhenPrepared());
         callback.cancel();
         psmp.shutdown();
