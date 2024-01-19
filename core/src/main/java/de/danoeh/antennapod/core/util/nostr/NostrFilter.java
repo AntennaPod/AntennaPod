@@ -15,22 +15,11 @@ import java.util.List;
 public class NostrFilter {
     private static final String TAG = "NostrFilterCodec";
 
-    private List<String> eventIds;
     private List<String> authors;
     private List<Integer> kindList;
 
-    public static NostrFilter get(){
-        return new NostrFilter();
-    }
-
-    public NostrFilter addAuthors(List<String> authors){
-        this.authors = authors;
-        return this;
-    }
-
-    public NostrFilter addKinds(List<Integer> kinds){
-        this.kindList = kinds;
-        return this;
+    private NostrFilter() {
+        
     }
 
     public List<String> getAuthors() {
@@ -39,6 +28,10 @@ public class NostrFilter {
 
     public List<Integer> getKindList() {
         return kindList;
+    }
+
+    public static Builder newFilter(){
+        return new Builder();
     }
 
     public String toJson() throws JSONException {
@@ -56,6 +49,28 @@ public class NostrFilter {
         }
 
         return filterObject.toString();
+    }
+
+    public static class Builder {
+        private List<String> authorList;
+        private List<Integer> kindList;
+
+        public Builder authors(List<String> authors){
+            this.authorList = authors;
+            return this;
+        }
+
+        public Builder kinds(List<Integer> kinds){
+            this.kindList = kinds;
+            return this;
+        }
+
+        public NostrFilter build(){
+            NostrFilter filter = new NostrFilter();
+            filter.authors = this.authorList;
+            filter.kindList = this.kindList;
+            return filter;
+        }
     }
 
 }
