@@ -185,9 +185,7 @@ public abstract class EpisodesListFragment extends Fragment
 
         swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            FeedUpdateManager.runOnceOrAsk(requireContext());
-        });
+        swipeRefreshLayout.setOnRefreshListener(() -> FeedUpdateManager.runOnceOrAsk(requireContext()));
 
         listAdapter = new EpisodeItemListAdapter((MainActivity) getActivity()) {
             @Override

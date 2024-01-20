@@ -430,9 +430,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
 
         swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            FeedUpdateManager.runOnceOrAsk(requireContext());
-        });
+        swipeRefreshLayout.setOnRefreshListener(() -> FeedUpdateManager.runOnceOrAsk(requireContext()));
 
         emptyView = new EmptyViewHandler(getContext());
         emptyView.attachToRecyclerView(recyclerView);

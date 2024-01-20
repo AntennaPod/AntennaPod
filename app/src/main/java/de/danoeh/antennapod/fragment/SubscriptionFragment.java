@@ -169,9 +169,7 @@ public class SubscriptionFragment extends Fragment
 
         swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            FeedUpdateManager.runOnceOrAsk(requireContext());
-        });
+        swipeRefreshLayout.setOnRefreshListener(() -> FeedUpdateManager.runOnceOrAsk(requireContext()));
 
         speedDialView = root.findViewById(R.id.fabSD);
         speedDialView.setOverlayLayout(root.findViewById(R.id.fabSDOverlay));

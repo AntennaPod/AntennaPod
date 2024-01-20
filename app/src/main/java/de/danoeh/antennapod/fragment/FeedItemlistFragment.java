@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -193,11 +191,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         EventBus.getDefault().register(this);
 
         viewBinding.swipeRefresh.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
-        viewBinding.swipeRefresh.setOnRefreshListener(() -> {
-            FeedUpdateManager.runOnceOrAsk(requireContext(), feed);
-            new Handler(Looper.getMainLooper()).postDelayed(() -> viewBinding.swipeRefresh.setRefreshing(false),
-                    getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
-        });
+        viewBinding.swipeRefresh.setOnRefreshListener(() -> FeedUpdateManager.runOnceOrAsk(requireContext(), feed));
 
         loadItems();
 
