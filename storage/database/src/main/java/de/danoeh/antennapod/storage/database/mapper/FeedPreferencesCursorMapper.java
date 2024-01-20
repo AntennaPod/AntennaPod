@@ -59,6 +59,10 @@ public abstract class FeedPreferencesCursorMapper {
         if (TextUtils.isEmpty(tagsString)) {
             tagsString = FeedPreferences.TAG_ROOT;
         }
+
+        // Todo - read from db
+        Boolean skipSilence = null;
+
         return new FeedPreferences(feedId,
                 autoDownload,
                 autoRefresh,
@@ -70,6 +74,7 @@ public abstract class FeedPreferencesCursorMapper {
                 feedPlaybackSpeed,
                 feedAutoSkipIntro,
                 feedAutoSkipEnding,
+                skipSilence,
                 showNotification,
                 feedNewEpisodesAction,
                 new HashSet<>(Arrays.asList(tagsString.split(FeedPreferences.TAG_SEPARATOR))));

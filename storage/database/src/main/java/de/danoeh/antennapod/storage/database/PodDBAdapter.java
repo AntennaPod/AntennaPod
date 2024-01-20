@@ -159,6 +159,7 @@ public class PodDBAdapter {
             + KEY_FEED_TAGS + " TEXT,"
             + KEY_FEED_SKIP_INTRO + " INTEGER DEFAULT 0,"
             + KEY_FEED_SKIP_ENDING + " INTEGER DEFAULT 0,"
+            // Todo - add skip silence - allow null
             + KEY_EPISODE_NOTIFICATION + " INTEGER DEFAULT 0,"
             + KEY_NEW_EPISODES_ACTION + " INTEGER DEFAULT 0)";
 
@@ -310,6 +311,7 @@ public class PodDBAdapter {
             + TABLE_NAME_FEEDS + "." + KEY_FEED_TAGS + ", "
             + TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_INTRO + ", "
             + TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_ENDING + ", "
+                    // Todo - add skip silence
             + TABLE_NAME_FEEDS + "." + KEY_EPISODE_NOTIFICATION + ", "
             + TABLE_NAME_FEEDS + "." + KEY_NEW_EPISODES_ACTION;
 
@@ -456,6 +458,7 @@ public class PodDBAdapter {
         values.put(KEY_EXCLUDE_FILTER, prefs.getFilter().getExcludeFilterRaw());
         values.put(KEY_MINIMAL_DURATION_FILTER, prefs.getFilter().getMinimalDurationFilter());
         values.put(KEY_FEED_PLAYBACK_SPEED, prefs.getFeedPlaybackSpeed());
+        // Todo - add skip silence
         values.put(KEY_FEED_TAGS, prefs.getTagsAsString());
         values.put(KEY_FEED_SKIP_INTRO, prefs.getFeedSkipIntro());
         values.put(KEY_FEED_SKIP_ENDING, prefs.getFeedSkipEnding());

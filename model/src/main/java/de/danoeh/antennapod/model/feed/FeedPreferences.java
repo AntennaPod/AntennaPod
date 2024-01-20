@@ -71,6 +71,7 @@ public class FeedPreferences implements Serializable {
     private float feedPlaybackSpeed;
     private int feedSkipIntro;
     private int feedSkipEnding;
+    private Boolean feedSkipSilence;
     private boolean showEpisodeNotification;
     private final Set<String> tags = new HashSet<>();
 
@@ -78,13 +79,13 @@ public class FeedPreferences implements Serializable {
                            VolumeAdaptionSetting volumeAdaptionSetting, NewEpisodesAction newEpisodesAction,
                            String username, String password) {
         this(feedID, autoDownload, true, autoDeleteAction, volumeAdaptionSetting, username, password,
-                new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, false, newEpisodesAction, new HashSet<>());
+                new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, null, false, newEpisodesAction, new HashSet<>());
     }
 
     public FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated,
                             AutoDeleteAction autoDeleteAction, VolumeAdaptionSetting volumeAdaptionSetting,
                             String username, String password, @NonNull FeedFilter filter,
-                            float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding,
+                            float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding, Boolean feedSkipSilence,
                             boolean showEpisodeNotification, NewEpisodesAction newEpisodesAction,
                             Set<String> tags) {
         this.feedID = feedID;
@@ -98,6 +99,7 @@ public class FeedPreferences implements Serializable {
         this.feedPlaybackSpeed = feedPlaybackSpeed;
         this.feedSkipIntro = feedSkipIntro;
         this.feedSkipEnding = feedSkipEnding;
+        this.feedSkipSilence = feedSkipSilence;
         this.showEpisodeNotification = showEpisodeNotification;
         this.newEpisodesAction = newEpisodesAction;
         this.tags.addAll(tags);
@@ -238,6 +240,14 @@ public class FeedPreferences implements Serializable {
 
     public int getFeedSkipEnding() {
         return feedSkipEnding;
+    }
+
+    public void setFeedSkipSilence(boolean skipSilence) {
+        feedSkipSilence = skipSilence;
+    }
+
+    public Boolean getFeedSkipSilence() {
+        return feedSkipSilence;
     }
 
     public Set<String> getTags() {

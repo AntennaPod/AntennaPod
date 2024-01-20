@@ -234,6 +234,8 @@ public class FeedSettingsFragment extends Fragment {
             });
         }
 
+        // Todo - add one for skip silence
+
         private void setupPlaybackSpeedPreference() {
             Preference feedPlaybackSpeedPreference = findPreference(PREF_FEED_PLAYBACK_SPEED);
             feedPlaybackSpeedPreference.setOnPreferenceClickListener(preference -> {

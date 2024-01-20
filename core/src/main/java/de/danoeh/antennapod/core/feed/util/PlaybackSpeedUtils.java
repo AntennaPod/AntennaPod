@@ -50,4 +50,36 @@ public final class PlaybackSpeedUtils {
 
         return playbackSpeed;
     }
+
+    //Todo - put this code somewhere else
+    /**
+     * Returns the currently configured skip silence for the specified media.
+     */
+    public static boolean getCurrentSkipSilencePreference(Playable media) {
+        Boolean skipSilence = null;
+        MediaType mediaType = null;
+
+        if (media != null) {
+//            playbackSpeed = PlaybackPreferences.getCurrentlyPlayingTemporaryPlaybackSpeed();
+
+//            if (playbackSpeed == SPEED_USE_GLOBAL && media instanceof FeedMedia) {
+            if (media instanceof FeedMedia) {
+                FeedItem item = ((FeedMedia) media).getItem();
+                if (item != null) {
+                    Feed feed = item.getFeed();
+                    if (feed != null && feed.getPreferences() != null) {
+                        skipSilence = feed.getPreferences().getFeedSkipSilence();
+                    } else {
+                        Log.d(TAG, "Can not get feed specific skip silence: " + feed);
+                    }
+                }
+            }
+        }
+
+        if (skipSilence == null){
+            skipSilence = UserPreferences.isSkipSilence();
+        }
+
+        return skipSilence;
+    }
 }

@@ -64,6 +64,7 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
     private static final String PREF_CURRENTLY_PLAYING_TEMPORARY_PLAYBACK_SPEED
             = "de.danoeh.antennapod.preferences.temporaryPlaybackSpeed";
 
+    // Todo?? have pref for temporary skip silence?
 
     /**
      * Value of PREF_CURRENTLY_PLAYING_MEDIA if no media is playing.
