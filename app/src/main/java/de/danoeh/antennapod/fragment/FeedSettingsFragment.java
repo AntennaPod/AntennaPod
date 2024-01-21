@@ -234,8 +234,6 @@ public class FeedSettingsFragment extends Fragment {
             });
         }
 
-        // Todo - add one for skip silence
-
         private void setupPlaybackSpeedPreference() {
             Preference feedPlaybackSpeedPreference = findPreference(PREF_FEED_PLAYBACK_SPEED);
             feedPlaybackSpeedPreference.setOnPreferenceClickListener(preference -> {
@@ -244,13 +242,18 @@ public class FeedSettingsFragment extends Fragment {
                 viewBinding.seekBar.setProgressChangedListener(speed ->
                         viewBinding.currentSpeedLabel.setText(String.format(Locale.getDefault(), "%.2fx", speed)));
                 float speed = feedPreferences.getFeedPlaybackSpeed();
+                Boolean skipSilence = feedPreferences.getFeedSkipSilence();
                 viewBinding.useGlobalCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     viewBinding.seekBar.setEnabled(!isChecked);
                     viewBinding.seekBar.setAlpha(isChecked ? 0.4f : 1f);
                     viewBinding.currentSpeedLabel.setAlpha(isChecked ? 0.4f : 1f);
+
+                    viewBinding.skipSilenceFeed.setEnabled(!isChecked);
+                    viewBinding.skipSilenceFeed.setAlpha(isChecked ? 0.4f : 1f);
                 });
                 viewBinding.useGlobalCheckbox.setChecked(speed == FeedPreferences.SPEED_USE_GLOBAL);
                 viewBinding.seekBar.updateSpeed(speed == FeedPreferences.SPEED_USE_GLOBAL ? 1 : speed);
+                viewBinding.skipSilenceFeed.setChecked(skipSilence != null && skipSilence);
                 new MaterialAlertDialogBuilder(getContext())
                         .setTitle(R.string.playback_speed)
                         .setView(viewBinding.getRoot())
@@ -258,7 +261,11 @@ public class FeedSettingsFragment extends Fragment {
                             float newSpeed = viewBinding.useGlobalCheckbox.isChecked()
                                     ? FeedPreferences.SPEED_USE_GLOBAL : viewBinding.seekBar.getCurrentSpeed();
                             feedPreferences.setFeedPlaybackSpeed(newSpeed);
+                            Boolean newSkipSilence = viewBinding.useGlobalCheckbox.isChecked()
+                                ? null : viewBinding.skipSilenceFeed.isChecked();
+                            feedPreferences.setFeedSkipSilence(newSkipSilence);
                             DBWriter.setFeedPreferences(feedPreferences);
+                            // Todo - event for skip silence?
                             EventBus.getDefault().post(
                                     new SpeedPresetChangedEvent(feedPreferences.getFeedPlaybackSpeed(), feed.getId()));
                         })

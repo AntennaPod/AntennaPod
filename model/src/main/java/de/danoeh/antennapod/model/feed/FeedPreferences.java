@@ -242,7 +242,7 @@ public class FeedPreferences implements Serializable {
         return feedSkipEnding;
     }
 
-    public void setFeedSkipSilence(boolean skipSilence) {
+    public void setFeedSkipSilence(Boolean skipSilence) {
         feedSkipSilence = skipSilence;
     }
 
