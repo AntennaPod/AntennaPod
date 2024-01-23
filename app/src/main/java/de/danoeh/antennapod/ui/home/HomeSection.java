@@ -28,6 +28,7 @@ import java.util.Locale;
  */
 public abstract class HomeSection extends Fragment implements View.OnCreateContextMenuListener {
     public static final String TAG = "HomeSection";
+    public static final Boolean expandable = false;
     protected HomeSectionBinding viewBinding;
 
     @Nullable
