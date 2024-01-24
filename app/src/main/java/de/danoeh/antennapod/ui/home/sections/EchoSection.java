@@ -34,11 +34,7 @@ public class EchoSection extends Fragment {
         viewBinding = HomeSectionEchoBinding.inflate(inflater);
         viewBinding.titleLabel.setText(getString(R.string.antennapod_echo_year, EchoActivity.RELEASE_YEAR));
         viewBinding.echoButton.setOnClickListener(v -> startActivity(new Intent(getContext(), EchoActivity.class)));
-        viewBinding.closeButton.setOnClickListener(v -> {
-            getContext().getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE)
-                    .edit().putInt(HomeFragment.PREF_HIDE_ECHO, EchoActivity.RELEASE_YEAR).apply();
-            ((MainActivity) getActivity()).loadFragment(HomeFragment.TAG, null);
-        });
+        viewBinding.closeButton.setOnClickListener(v -> hideThisYear());
         updateVisibility();
         return viewBinding.getRoot();
     }
@@ -70,8 +66,18 @@ public class EchoSection extends Fragment {
             })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(totalTime -> viewBinding.getRoot()
-                            .setVisibility((totalTime >= 3600 * 10) ? View.VISIBLE : View.GONE),
-                    Throwable::printStackTrace);
+            .subscribe(totalTime -> {
+                boolean shouldShow = (totalTime >= 3600 * 10);
+                viewBinding.getRoot().setVisibility(shouldShow ? View.VISIBLE : View.GONE);
+                if (!shouldShow) {
+                    hideThisYear();
+                }
+            }, Throwable::printStackTrace);
+    }
+
+    void hideThisYear() {
+        getContext().getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE)
+                .edit().putInt(HomeFragment.PREF_HIDE_ECHO, EchoActivity.RELEASE_YEAR).apply();
+        ((MainActivity) getActivity()).loadFragment(HomeFragment.TAG, null);
     }
 }

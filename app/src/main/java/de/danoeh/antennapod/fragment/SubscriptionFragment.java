@@ -3,8 +3,6 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -81,6 +79,7 @@ public class SubscriptionFragment extends Fragment
     private EmptyViewHandler emptyView;
     private LinearLayout feedsFilteredMsg;
     private MaterialToolbar toolbar;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressBar progressBar;
     private String displayedFolder = null;
     private boolean displayUpArrow;
@@ -166,15 +165,12 @@ public class SubscriptionFragment extends Fragment
         });
 
         feedsFilteredMsg = root.findViewById(R.id.feeds_filtered_message);
-        feedsFilteredMsg.setOnClickListener((l) -> SubscriptionsFilterDialog.showDialog(requireContext()));
+        feedsFilteredMsg.setOnClickListener((l) ->
+                new SubscriptionsFilterDialog().show(getChildFragmentManager(), "filter"));
 
-        SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            FeedUpdateManager.runOnceOrAsk(requireContext());
-            new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
-                    getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
-        });
+        swipeRefreshLayout.setOnRefreshListener(() -> FeedUpdateManager.runOnceOrAsk(requireContext()));
 
         speedDialView = root.findViewById(R.id.fabSD);
         speedDialView.setOverlayLayout(root.findViewById(R.id.fabSDOverlay));
@@ -211,7 +207,7 @@ public class SubscriptionFragment extends Fragment
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedUpdateRunningEvent event) {
-        MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(), R.id.refresh_item, event.isFeedUpdateRunning);
+        swipeRefreshLayout.setRefreshing(event.isFeedUpdateRunning);
     }
 
     @Override
@@ -221,7 +217,7 @@ public class SubscriptionFragment extends Fragment
             FeedUpdateManager.runOnceOrAsk(requireContext());
             return true;
         } else if (itemId == R.id.subscriptions_filter) {
-            SubscriptionsFilterDialog.showDialog(requireContext());
+            new SubscriptionsFilterDialog().show(getChildFragmentManager(), "filter");
             return true;
         } else if (itemId == R.id.subscriptions_sort) {
             FeedSortDialog.showDialog(requireContext());
