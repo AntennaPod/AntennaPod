@@ -124,12 +124,16 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         }
     }
 
-    private void addSection(Fragment section,boolean expandable) {
+    private void addSection(Fragment section, boolean expandable) {
         FragmentContainerView containerView = new FragmentContainerView(requireContext());
         containerView.setId(View.generateViewId());
         if (expandable) {
 
-            containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 2f));
+            containerView.setLayoutParams(
+                    new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            2f));
         }
         viewBinding.homeContainer.addView(containerView);
         getChildFragmentManager().beginTransaction().add(containerView.getId(), section).commit();
@@ -161,7 +165,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     public static List<String> getHiddenSections(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
         String hiddenSectionsString = prefs.getString(HomeFragment.PREF_HIDDEN_SECTIONS,
-                EpisodesExpanableSection.TAG+","+InboxExpanableSection.TAG+","+ QueueExpanableSection.TAG);
+                EpisodesExpanableSection.TAG + "," + InboxExpanableSection.TAG+"," + QueueExpanableSection.TAG);
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenSectionsString, ",")));
     }
 

@@ -53,7 +53,9 @@ public abstract class HomeSection extends Fragment implements View.OnCreateConte
             viewBinding.recyclerView.setVisibility(View.GONE);
             viewBinding.homeExpandableContainer.setVisibility(View.VISIBLE);
             viewBinding.parent.setLayoutParams(
-                    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                    new ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT));
             viewBinding.parent.setPadding(0,0,0,0);
             getChildFragmentManager().beginTransaction().add(viewBinding.homeExpandableContainer.getId(), expand).commit();
         } else {
@@ -99,15 +101,19 @@ public abstract class HomeSection extends Fragment implements View.OnCreateConte
     @Override
     public void onStart() {
         super.onStart();
-        if (!isExpandable()) EventBus.getDefault().register(this);
-        if (!isExpandable()) registerForContextMenu(viewBinding.recyclerView);
+        if (!isExpandable()) {
+            EventBus.getDefault().register(this);
+            registerForContextMenu(viewBinding.recyclerView);
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (!isExpandable()) EventBus.getDefault().unregister(this);
-        if (!isExpandable()) unregisterForContextMenu(viewBinding.recyclerView);
+        if (!isExpandable()) {
+            EventBus.getDefault().unregister(this);
+            unregisterForContextMenu(viewBinding.recyclerView);
+        }
     }
 
     protected abstract String getSectionTitle();
@@ -115,7 +121,7 @@ public abstract class HomeSection extends Fragment implements View.OnCreateConte
     protected Fragment getExpandable() {
         return null;
     }
-    
+
     protected boolean isExpandable() {
         return false;
     }
