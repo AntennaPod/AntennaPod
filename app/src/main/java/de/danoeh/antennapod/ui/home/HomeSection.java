@@ -56,8 +56,11 @@ public abstract class HomeSection extends Fragment implements View.OnCreateConte
                     new ViewGroup.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT));
-            viewBinding.parent.setPadding(0,0,0,0);
-            getChildFragmentManager().beginTransaction().add(viewBinding.homeExpandableContainer.getId(), expand).commit();
+            viewBinding.parent.setPadding(0, 0, 0, 0);
+            getChildFragmentManager()
+                    .beginTransaction()
+                    .add(viewBinding.homeExpandableContainer.getId(), expand)
+                    .commit();
         } else {
             // Dummies are necessary to ensure height, but do not animate them
             viewBinding.recyclerView.setItemAnimator(null);

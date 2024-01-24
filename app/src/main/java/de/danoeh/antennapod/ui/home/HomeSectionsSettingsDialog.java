@@ -90,7 +90,10 @@ public class HomeSectionsSettingsDialog {
         dialog.show();
     }
 
-    private static void toggleExpanableSections(HomeSettingsDialogBinding binding, String[] sectionTags, List hiddenTags, String[] bottomhalfTags) {
+    private static void toggleExpanableSections(HomeSettingsDialogBinding binding,
+                                                String[] sectionTags,
+                                                List hiddenTags,
+                                                String[] bottomhalfTags) {
         int offset = 0;
         for (int i = 0; i < bottomhalfTags.length; i++) {
             if (!hiddenTags.contains(bottomhalfTags[i])) {
