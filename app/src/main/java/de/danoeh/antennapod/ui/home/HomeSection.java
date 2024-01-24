@@ -115,6 +115,7 @@ public abstract class HomeSection extends Fragment implements View.OnCreateConte
     protected Fragment getExpandable() {
         return null;
     }
+    
     protected boolean isExpandable() {
         return false;
     }
