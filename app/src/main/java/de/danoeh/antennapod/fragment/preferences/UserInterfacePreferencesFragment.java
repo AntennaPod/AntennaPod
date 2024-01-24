@@ -108,7 +108,11 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
         final List<Integer> preferredButtons = UserPreferences.getCompactNotificationButtons();
         final String[] allButtonNames = context.getResources().getStringArray(
                 R.array.compact_notification_buttons_options);
-        final int[] buttonIDs = {0, 1, 2, 3};
+        final int[] buttonIDs = {UserPreferences.NOTIFICATION_BUTTON_REWIND,
+            UserPreferences.NOTIFICATION_BUTTON_FAST_FORWARD,
+            UserPreferences.NOTIFICATION_BUTTON_SKIP,
+            UserPreferences.NOTIFICATION_BUTTON_NEXT_CHAPTER};
+
         final int minItems = 0;
         final int maxItems = 2;
         final DialogInterface.OnClickListener completeListener = (dialog, which) ->

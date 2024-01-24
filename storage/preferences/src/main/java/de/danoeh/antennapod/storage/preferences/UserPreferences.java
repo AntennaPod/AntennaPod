@@ -128,12 +128,12 @@ public class UserPreferences {
     public static final int EPISODE_CLEANUP_DEFAULT = 0;
 
     // Constants
-    private static final int NOTIFICATION_BUTTON_REWIND = 0;
-    private static final int NOTIFICATION_BUTTON_FAST_FORWARD = 1;
-    private static final int NOTIFICATION_BUTTON_SKIP = 2;
+    public static final int NOTIFICATION_BUTTON_REWIND = 0;
+    public static final int NOTIFICATION_BUTTON_FAST_FORWARD = 1;
+    public static final int NOTIFICATION_BUTTON_SKIP = 2;
 
-    private static final int NOTIFICATION_BUTTON_NEXT_CHAPTER = 3;
-    private static final int NOTIFICATION_BUTTON_PLAYBACK_SPEED = 4;
+    public static final int NOTIFICATION_BUTTON_NEXT_CHAPTER = 3;
+    public static final int NOTIFICATION_BUTTON_PLAYBACK_SPEED = 4;
     public static final int EPISODE_CACHE_SIZE_UNLIMITED = -1;
     public static final int FEED_ORDER_COUNTER = 0;
     public static final int FEED_ORDER_ALPHABETICAL = 1;
