@@ -5,32 +5,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ListView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatCheckedTextView;
-import androidx.appcompat.widget.AppCompatSpinner;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.Arrays;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.HomeSettingsDialogBinding;
-import de.danoeh.antennapod.fragment.EpisodesFragementInHome;
-import de.danoeh.antennapod.fragment.InboxFragmentInHome;
 
 public class HomeSectionsSettingsDialog {
     public static void open(Activity activity, DialogInterface.OnClickListener onSettingsChanged) {
@@ -87,7 +75,6 @@ public class HomeSectionsSettingsDialog {
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
             SharedPreferences prefs = activity.getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
             prefs.edit().putString(HomeFragment.PREF_HIDDEN_SECTIONS, TextUtils.join(",", hiddenSections)).apply();
-            Log.d("ufuefh", hiddenSections.toString());
             onSettingsChanged.onClick(dialog, which);
         });
         builder.setNegativeButton(R.string.cancel_label, null);
