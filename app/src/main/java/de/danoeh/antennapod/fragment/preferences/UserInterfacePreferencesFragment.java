@@ -120,13 +120,8 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
         final String title = context.getResources().getString(
                 R.string.pref_compact_notification_buttons_dialog_title);
 
-        showNotificationButtonsDialog(preferredButtons,
-                allButtonNames,
-                buttonIDs,
-                title,
-                minItems,
-                maxItems,
-                completeListener
+        showNotificationButtonsDialog(preferredButtons, allButtonNames, buttonIDs, title, minItems,
+                maxItems, completeListener
         );
     }
 
