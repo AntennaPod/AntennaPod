@@ -119,7 +119,6 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                 continue;
             }
             HomeSection section = getSection(sectionTag);
-            //expand if there is inbox or episodes list or queue (not descendants of HomeSection)
             addSection(section, section.isExpandable());
         }
     }
@@ -128,12 +127,12 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         FragmentContainerView containerView = new FragmentContainerView(requireContext());
         containerView.setId(View.generateViewId());
         if (expandable) {
-
             containerView.setLayoutParams(
                     new LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             2f));
+            viewBinding.homeContainer.setPadding(0, 0, 0, 0);
         }
         viewBinding.homeContainer.addView(containerView);
         getChildFragmentManager().beginTransaction().add(containerView.getId(), section).commit();
