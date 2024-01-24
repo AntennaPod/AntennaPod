@@ -54,7 +54,6 @@ public class UserPreferences {
     public static final String PREF_USE_EPISODE_COVER = "prefEpisodeCover";
     public static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
     private static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
-    public static final String PREF_COMPACT_NOTIFICATION_BUTTONS = "prefCompactNotificationButtons";
     public static final String PREF_FULL_NOTIFICATION_BUTTONS = "prefFullNotificationButtons";
     private static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
     public static final String PREF_DEFAULT_PAGE = "prefDefaultPage";
@@ -197,46 +196,6 @@ public class UserPreferences {
     public static List<String> getHiddenDrawerItems() {
         String hiddenItems = prefs.getString(PREF_HIDDEN_DRAWER_ITEMS, "");
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenItems, ",")));
-    }
-
-    public static List<Integer> getCompactNotificationButtons() {
-        String[] buttons = TextUtils.split(
-                prefs.getString(PREF_COMPACT_NOTIFICATION_BUTTONS,
-                        NOTIFICATION_BUTTON_REWIND + "," + NOTIFICATION_BUTTON_FAST_FORWARD),
-                ",");
-        List<Integer> notificationButtons = new ArrayList<>();
-        for (String button : buttons) {
-            notificationButtons.add(Integer.parseInt(button));
-        }
-        return notificationButtons;
-    }
-
-    /**
-     * Helper function to return whether the specified button should be shown on compact
-     * notifications.
-     *
-     * @param buttonId Either NOTIFICATION_BUTTON_REWIND, NOTIFICATION_BUTTON_FAST_FORWARD or
-     *                 NOTIFICATION_BUTTON_SKIP.
-     * @return {@code true} if button should be shown, {@code false}  otherwise
-     */
-    private static boolean showButtonOnCompactNotification(int buttonId) {
-        return getCompactNotificationButtons().contains(buttonId);
-    }
-
-    public static boolean showRewindOnCompactNotification() {
-        return showButtonOnCompactNotification(NOTIFICATION_BUTTON_REWIND);
-    }
-
-    public static boolean showFastForwardOnCompactNotification() {
-        return showButtonOnCompactNotification(NOTIFICATION_BUTTON_FAST_FORWARD);
-    }
-
-    public static boolean showSkipOnCompactNotification() {
-        return showButtonOnCompactNotification(NOTIFICATION_BUTTON_SKIP);
-    }
-
-    public static boolean showNextChapterOnCompactNotification() {
-        return showButtonOnCompactNotification(NOTIFICATION_BUTTON_NEXT_CHAPTER);
     }
 
     public static List<Integer> getFullNotificationButtons() {
@@ -695,13 +654,6 @@ public class UserPreferences {
         String str = TextUtils.join(",", items);
         prefs.edit()
              .putString(PREF_HIDDEN_DRAWER_ITEMS, str)
-             .apply();
-    }
-
-    public static void setCompactNotificationButtons(List<Integer> items) {
-        String str = TextUtils.join(",", items);
-        prefs.edit()
-             .putString(PREF_COMPACT_NOTIFICATION_BUTTONS, str)
              .apply();
     }
 

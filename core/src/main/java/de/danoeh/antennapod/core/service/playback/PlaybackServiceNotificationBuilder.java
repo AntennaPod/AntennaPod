@@ -180,9 +180,7 @@ public class PlaybackServiceNotificationBuilder {
                 KeyEvent.KEYCODE_MEDIA_REWIND, numActions);
         notification.addAction(R.drawable.ic_notification_fast_rewind, context.getString(R.string.rewind_label),
                 rewindButtonPendingIntent);
-        if (UserPreferences.showRewindOnCompactNotification()) {
-            compactActionList.add(numActions);
-        }
+        compactActionList.add(numActions);
         numActions++;
 
         if (playerStatus == PlayerStatus.PLAYING) {
@@ -208,9 +206,7 @@ public class PlaybackServiceNotificationBuilder {
                 context.getString(R.string.fast_forward_label),
                 ffButtonPendingIntent
         );
-        if (UserPreferences.showFastForwardOnCompactNotification()) {
             compactActionList.add(numActions);
-        }
         numActions++;
 
         if (UserPreferences.showNextChapterOnFullNotification() && playable.getChapters() != null) {
@@ -218,9 +214,6 @@ public class PlaybackServiceNotificationBuilder {
                     PlaybackService.CUSTOM_ACTION_NEXT_CHAPTER, numActions);
             notification.addAction(R.drawable.ic_notification_next_chapter, context.getString(R.string.next_chapter),
                     nextChapterPendingIntent);
-            if (UserPreferences.showNextChapterOnCompactNotification()) {
-                compactActionList.add(numActions);
-            }
             numActions++;
         }
 
@@ -229,9 +222,6 @@ public class PlaybackServiceNotificationBuilder {
                     KeyEvent.KEYCODE_MEDIA_NEXT, numActions);
             notification.addAction(R.drawable.ic_notification_skip, context.getString(R.string.skip_episode_label),
                     skipButtonPendingIntent);
-            if (UserPreferences.showSkipOnCompactNotification()) {
-                compactActionList.add(numActions);
-            }
             numActions++;
         }
 

@@ -66,15 +66,6 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                     return true;
                 });
 
-        if (Build.VERSION.SDK_INT >= 30) {
-            findPreference(UserPreferences.PREF_COMPACT_NOTIFICATION_BUTTONS).setVisible(false);
-        } else {
-            findPreference(UserPreferences.PREF_COMPACT_NOTIFICATION_BUTTONS)
-                .setOnPreferenceClickListener(preference -> {
-                    showCompatNotificationButtonsDialog();
-                    return true;
-                });
-        }
         findPreference(UserPreferences.PREF_FULL_NOTIFICATION_BUTTONS)
                 .setOnPreferenceClickListener(preference -> {
                     showFullNotificationButtonsDialog();
@@ -102,28 +93,6 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
         }
     }
 
-    private void showCompatNotificationButtonsDialog() {
-        final Context context = getActivity();
-
-        final List<Integer> preferredButtons = UserPreferences.getCompactNotificationButtons();
-        final String[] allButtonNames = context.getResources().getStringArray(
-                R.array.compact_notification_buttons_options);
-        final int[] buttonIDs = {UserPreferences.NOTIFICATION_BUTTON_REWIND,
-            UserPreferences.NOTIFICATION_BUTTON_FAST_FORWARD,
-            UserPreferences.NOTIFICATION_BUTTON_SKIP,
-            UserPreferences.NOTIFICATION_BUTTON_NEXT_CHAPTER};
-
-        final int minItems = 0;
-        final int maxItems = 2;
-        final DialogInterface.OnClickListener completeListener = (dialog, which) ->
-                UserPreferences.setCompactNotificationButtons(preferredButtons);
-        final String title = context.getResources().getString(
-                R.string.pref_compact_notification_buttons_dialog_title);
-
-        showNotificationButtonsDialog(preferredButtons, allButtonNames, buttonIDs, title, minItems,
-                maxItems, completeListener
-        );
-    }
 
     private void showFullNotificationButtonsDialog() {
         final Context context = getActivity();
@@ -132,26 +101,20 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
         final String[] allButtonNames = context.getResources().getStringArray(
                 R.array.full_notification_buttons_options);
         final int[] buttonIDs = {2, 3, 4};
-        final int minItems = 2;
-        final int maxItems = 2;
+        final int exactItems = 2;
         final DialogInterface.OnClickListener completeListener = (dialog, which) ->
                 UserPreferences.setFullNotificationButtons(preferredButtons);
         final String title = context.getResources().getString(
                 R.string.pref_full_notification_buttons_title);
 
-        showNotificationButtonsDialog(preferredButtons,
-                allButtonNames,
-                buttonIDs,
-                title,
-                minItems,
-                maxItems,
-                completeListener
+        showNotificationButtonsDialog(preferredButtons, allButtonNames, buttonIDs, title,
+                exactItems, completeListener
         );
     }
 
     private void showNotificationButtonsDialog(List<Integer> preferredButtons,
             String[] allButtonNames, int[] buttonIds, String title,
-            int minItems, int maxItems, DialogInterface.OnClickListener completeListener) {
+            int exactItems, DialogInterface.OnClickListener completeListener) {
         boolean[] checked = new boolean[allButtonNames.length]; // booleans default to false in java
 
         final Context context = getActivity();
@@ -177,42 +140,14 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
         }
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
-        builder.setTitle(String.format(title, maxItems));
+        builder.setTitle(title);
         builder.setMultiChoiceItems(allButtonNames, checked, (dialog, which, isChecked) -> {
             checked[which] = isChecked;
 
             if (isChecked) {
-                if (preferredButtons.size() < maxItems || maxItems == minItems) {
-                    preferredButtons.add(buttonIds[which]);
-                } else {
-                    // Only allow a maximum of two selections. This is because the notification
-                    // on the lock screen can only display 3 buttons, and the play/pause button
-                    // is always included.
-                    checked[which] = false;
-                    ListView selectionView = ((AlertDialog) dialog).getListView();
-                    selectionView.setItemChecked(which, false);
-                    Snackbar.make(
-                            selectionView,
-                            String.format(context.getResources().getString(
-                                    R.string.pref_compact_notification_buttons_dialog_error), maxItems),
-                            Snackbar.LENGTH_SHORT).show();
-                }
+                preferredButtons.add(buttonIds[which]);
             } else {
-                if (preferredButtons.size() > minItems || maxItems == minItems) {
-                    preferredButtons.remove((Integer) buttonIds[which]);
-                } else {
-                    // Only allow a minimum selections. This isto ensure Skip button stays
-                    // on the right on Android Auto
-                    checked[which] = true;
-                    ListView selectionView = ((AlertDialog) dialog).getListView();
-                    selectionView.setItemChecked(which, true);
-                    Snackbar.make(
-                        selectionView,
-                        String.format(context.getResources().getString(
-                            R.string.pref_compact_notification_buttons_dialog_error_min), minItems),
-                        Snackbar.LENGTH_SHORT).show();
-                }
-
+                preferredButtons.remove((Integer) buttonIds[which]);
             }
         });
         builder.setPositiveButton(R.string.confirm_label, null);
@@ -224,12 +159,12 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
         Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
 
         positiveButton.setOnClickListener(v -> {
-            if (minItems == maxItems && preferredButtons.size() != minItems) {
+            if (preferredButtons.size() != exactItems) {
                 ListView selectionView = dialog.getListView();
                 Snackbar.make(
                     selectionView,
                     String.format(context.getResources().getString(
-                        R.string.pref_compact_notification_buttons_dialog_error_exact), minItems),
+                        R.string.pref_compact_notification_buttons_dialog_error_exact), exactItems),
                     Snackbar.LENGTH_SHORT).show();
 
             } else {
