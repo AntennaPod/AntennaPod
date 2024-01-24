@@ -93,7 +93,9 @@ public class HomeSectionsSettingsDialog {
     private static void toggleExpanableSections(HomeSettingsDialogBinding binding, String[] sectionTags, List hiddenTags, String[] bottomhalfTags) {
         int offset = 0;
         for (int i = 0; i < bottomhalfTags.length; i++) {
-            if (!hiddenTags.contains(bottomhalfTags[i])) { offset++; };
+            if (!hiddenTags.contains(bottomhalfTags[i])) {
+                offset++;
+            }
         }
         int selectedSections = sectionTags.length - hiddenTags.size();
         if (selectedSections < 2 + offset) {
