@@ -6,6 +6,8 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -94,6 +96,13 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         addCurrentSpeedChip.setOnCloseIconClickListener(v -> addCurrentSpeed());
         addCurrentSpeedChip.setCloseIconContentDescription(getString(R.string.add_preset));
         addCurrentSpeedChip.setOnClickListener(v -> addCurrentSpeed());
+
+        final CheckBox skipSilence = root.findViewById(R.id.skipSilence);
+        skipSilence.setChecked(UserPreferences.isSkipSilence());
+        skipSilence.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            UserPreferences.setSkipSilence(isChecked);
+            controller.setSkipSilence(isChecked);
+        });
         return root;
     }
 

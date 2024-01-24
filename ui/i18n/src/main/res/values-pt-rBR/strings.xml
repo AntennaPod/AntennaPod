@@ -53,7 +53,6 @@
   <string name="home_downloads_title">Gerenciar downloads</string>
   <string name="home_welcome_title">Bem-vindo(a) ao AntennaPod!</string>
   <string name="home_welcome_text">Você ainda não está inscrito em nenhum podcast. Abra o menu ao lado para adicionar algum.</string>
-  <string name="notification_permission_text">AntennaPod precisa de sua permissão para exibir notificações enquanto baixa episódios.</string>
   <string name="notification_permission_denied">Você negou a permissão.</string>
   <string name="open_settings">Abrir as configurações</string>
   <string name="configure_home">Configurar Página Principal</string>
@@ -110,16 +109,10 @@
   <string name="retry_label">Tentar novamente</string>
   <string name="auto_download_label">Incluir em downloads automáticos</string>
   <string name="auto_delete_label">Excluir episódio automaticamente</string>
-  <string name="feed_volume_reduction">Redução de volume</string>
-  <string name="feed_volume_reduction_summary">Diminui o volume dos episódios deste podcast: %1$s</string>
-  <string name="feed_volume_reduction_off">Desligar</string>
-  <string name="feed_volume_reduction_light">Leve</string>
-  <string name="feed_volume_reduction_heavy">Pesado</string>
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Nunca</string>
   <string name="feed_new_episodes_action_add_to_inbox">Adicionar à caixa de entrada</string>
   <string name="feed_new_episodes_action_nothing">Nada</string>
-  <string name="send_label">Enviar...</string>
   <string name="episode_cleanup_never">Nunca</string>
   <string name="episode_cleanup_except_favorite_removal">Quando não estiver entre os favoritos</string>
   <string name="episode_cleanup_queue_removal">Quando não está na fila</string>
@@ -409,7 +402,6 @@
   <string name="pref_pauseOnHeadsetDisconnect_title">Fones de ouvido ou Bluetooth desconectado</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Fones de ouvido reconectados</string>
   <string name="pref_stream_over_download_title">Preferir streaming</string>
-  <string name="pref_stream_over_download_sum">Mostrar o botão de streaming ao invés do botão de download nas listas.</string>
   <string name="pref_mobileUpdate_title">Atualização usando dados móveis</string>
   <string name="pref_mobileUpdate_sum">Selecione o que deve ser permitido na conexão de dados móveis</string>
   <string name="pref_mobileUpdate_refresh">Atualizar podcast</string>
@@ -419,11 +411,9 @@
   <string name="pref_mobileUpdate_streaming">Streaming</string>
   <string name="user_interface_sum">Aparência, Assinaturas, Tela de Bloqueio</string>
   <string name="pref_tinted_theme_message">Adaptar cores do aplicativo baseado na imagem de fundo</string>
-  <string name="pref_nav_drawer_items_sum">Escolher quais itens irão aparecer na gaveta de navegação.</string>
   <string name="pref_nav_drawer_feed_order_sum">Mudar a ordem de suas assinaturas</string>
   <string name="pref_nav_drawer_feed_counter_sum">Altera a informação exibida pelo contador de assinaturas. Também afeta a ordenação das assinaturas caso a \'Ordem das assinaturas\' esteja definida como \'Contador\'.</string>
   <string name="pref_automatic_download_title">Download automático</string>
-  <string name="pref_automatic_download_sum">Configurar download automático de episódios.</string>
   <string name="pref_autodl_wifi_filter_title">Habilitar filtro Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Permitir download automático somente pelas redes Wi-Fi selecionadas.</string>
   <string name="pref_automatic_download_on_battery_title">Baixar enquanto não está carregando</string>
@@ -453,7 +443,6 @@
   <string name="pref_expandNotify_title">Prioridade de notificação alta</string>
   <string name="pref_expandNotify_sum">Isso normalmente expande a notificação para exibir os botões de reprodução.</string>
   <string name="pref_persistNotify_title">Controles de reprodução persistentes</string>
-  <string name="pref_persistNotify_sum">Manter a notificação e controles na tela de bloqueio enquanto a reprodução está pausada.</string>
   <string name="pref_compact_notification_buttons_title">Definir botões de notificação compactos</string>
   <string name="pref_compact_notification_buttons_sum">Altere os botões de reprodução quando a notificação for recolhida. O botão play / pause está sempre incluído.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Selecione no máximo %1$d itens</string>
@@ -477,14 +466,11 @@
   <string name="pref_skip_silence_title">Pular silêncio no áudio</string>
   <string name="behavior">Comportamento</string>
   <string name="pref_default_page">Página inicial</string>
-  <string name="pref_default_page_sum">Tela aberta ao iniciar o AntennaPod.</string>
   <string name="pref_back_button_opens_drawer">O botão Voltar abre o menu</string>
   <string name="pref_back_button_opens_drawer_summary">Pressionar o botão Voltar na Página inicial abre o menu de navegação</string>
   <string name="remember_last_page">Lembrar última página</string>
   <string name="pref_delete_removes_from_queue_title">Excluir removidos da fila</string>
-  <string name="pref_delete_removes_from_queue_sum">Remove automaticamente um episódio da fila quando ele é excluído.</string>
   <string name="pref_filter_feed_title">Filtro de assinaturas</string>
-  <string name="pref_filter_feed_sum">Filtre suas assinaturas na navegação e na tela de assinaturas.</string>
   <string name="subscriptions_are_filtered">Assinaturas estão filtradas.</string>
   <string name="subscriptions_counter_greater_zero">Contador maior que zero</string>
   <string name="auto_downloaded">Download automático</string>
@@ -496,7 +482,6 @@
   <string name="pref_feed_settings_dialog_msg">Essa configuração é única para cada podcast. Você pode alterá-la abrindo a página do podcast.</string>
   <string name="pref_contribute">Contribuir</string>
   <string name="pref_show_subscription_title">Mostrar título da assinatura</string>
-  <string name="pref_show_subscription_title_summary">Mostrar o título da assinatura abaixo da imagem da capa.</string>
   <string name="pref_new_episodes_action_title">Ação para novos episódios</string>
   <string name="pref_new_episodes_action_sum">Ação que deve ser executada para novos episódios</string>
   <!--About screen-->
@@ -548,7 +533,6 @@
   <string name="please_wait">Por favor aguarde...</string>
   <string name="export_error_label">Erro na exportação</string>
   <string name="export_success_title">Exportado com sucesso</string>
-  <string name="export_success_sum">O arquivo foi exportado para:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">É necessário acesso ao armazenamento externo para ler o arquivo OPML</string>
   <string name="successful_import_label">Importação bem sucedida</string>
   <string name="import_ok">Por favor, pressione OK para reiniciar o AntennaPod</string>
@@ -639,9 +623,6 @@
   <string name="decrease_speed">Diminuir velocidade</string>
   <string name="media_type_video_label">Vídeo</string>
   <string name="status_downloading_label">O episódio está sendo baixado</string>
-  <string name="in_queue_label">O episódio está na fila</string>
-  <string name="is_favorite_label">Episódio está marcado como favorito</string>
-  <string name="is_inbox_label">O episódio está na caixa de entrada</string>
   <string name="load_next_page_label">Carregar a próxima página</string>
   <string name="position">Posição: %1$s</string>
   <string name="apply_action">Aplicar ação</string>
@@ -758,8 +739,6 @@
   <string name="notification_channel_download_error_description">Exibido quando ocorrerem erros no download ou na atualização do feed.</string>
   <string name="notification_channel_sync_error">Não foi possível sincronizar</string>
   <string name="notification_channel_sync_error_description">Exibido quando a sincronização com o gpodder falhar.</string>
-  <string name="notification_channel_auto_download">O download automático foi concluído</string>
-  <string name="notification_channel_episode_auto_download">Exibido quando os episódios foram baixados automaticamente.</string>
   <string name="notification_channel_new_episode">Novo episódio</string>
   <string name="notification_channel_new_episode_description">Exibido quando for encontrado um novo episódio de um podcast, quando as notificações estiverem habilitadas</string>
   <!--Widget settings-->

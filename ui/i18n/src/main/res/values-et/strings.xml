@@ -100,14 +100,8 @@
   <string name="retry_label">Proovi uuesti</string>
   <string name="auto_download_label">Lisa automaatsetesse allalaadimistesse</string>
   <string name="auto_delete_label">Saadete automaatne kustutamine</string>
-  <string name="feed_volume_reduction">Valjuse vähendamine</string>
-  <string name="feed_volume_reduction_summary">Keera alla selle taskuhäälingu saadete helitase: %1$s</string>
-  <string name="feed_volume_reduction_off">Väljas</string>
-  <string name="feed_volume_reduction_light">Kerge</string>
-  <string name="feed_volume_reduction_heavy">Tugev</string>
   <string name="feed_auto_download_always">Alati</string>
   <string name="feed_auto_download_never">Mitte kunagi</string>
-  <string name="send_label">Saada...</string>
   <string name="episode_cleanup_never">Mitte kunagi</string>
   <string name="episode_cleanup_except_favorite_removal">Kui pole lemmik</string>
   <string name="episode_cleanup_queue_removal">Kui pole järjekorras</string>
@@ -317,17 +311,14 @@
   <string name="feed_refresh_title">Värskenda taskuhäälinguid</string>
   <string name="feed_refresh_never">Mitte kunagi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Peakomplekti või Bluetoothi lahti ühendamisel</string>
-  <string name="pref_stream_over_download_sum">Loeteludes kuvatakse allalaadimise asemel voogedastuse nuppu.</string>
   <string name="pref_mobileUpdate_sum">Vali, mis peaks olema lubatud andmeside kaudu</string>
   <string name="pref_mobileUpdate_refresh">Taskuhäälingu värskendamine</string>
   <string name="pref_mobileUpdate_images">Kaanepildid</string>
   <string name="pref_mobileUpdate_auto_download">Automaatne allalaadimine</string>
   <string name="pref_mobileUpdate_episode_download">Saate allalaadimine</string>
   <string name="pref_mobileUpdate_streaming">Voogedastus</string>
-  <string name="pref_nav_drawer_items_sum">Määra, mis osad on peamenüüs.</string>
   <string name="pref_nav_drawer_feed_order_sum">Muuda oma tellimuste järjekorda</string>
   <string name="pref_nav_drawer_feed_counter_sum">Muuda, millist infot kuvatakse tellimuste loenduris. See mõjutab ka tellimuste järjekorda, kui \"Tellimuste järjekorra\" aluseks on \"Loendur\".</string>
-  <string name="pref_automatic_download_sum">Saadete automaatse allalaadimise seadistamine.</string>
   <string name="pref_autodl_wifi_filter_title">Luba Wifi filter</string>
   <string name="pref_autodl_wifi_filter_sum">Luba automaatne allalaadimine ainult valitud Wifi võrkudes.</string>
   <string name="pref_automatic_download_on_battery_title">Allalaadimine, kui seade ei lae</string>
@@ -350,7 +341,6 @@
   <string name="pref_fast_forward_sum">Määra, mitu sekundit edasi hüpatakse, kui vajutatakse edasi kerimise nuppu</string>
   <string name="pref_rewind_sum">Määra, mitu sekundit tagasi hüpatakse, kui vajutatakse tagasi kerimise nuppu</string>
   <string name="pref_expandNotify_sum">See tavaliselt kuvab teadet laiemana ning näha on esitusnupud.</string>
-  <string name="pref_persistNotify_sum">Säilita märguande ja lukustuskuva juhtnupud, kui esitus on pausil.</string>
   <string name="pref_compact_notification_buttons_sum">Muuda esitamise nuppe, kui teavitus on suletud. Eritamise/pausi nupp on alati saadaval.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Vali maksimaalselt %1$d kirjet</string>
   <string name="pref_compact_notification_buttons_dialog_error">Maksimaalselt saab valida %1$d kirjet.</string>
@@ -369,8 +359,6 @@
   <string name="pref_no_browser_found">Veebilehitsejat ei leitud.</string>
   <string name="pref_enqueue_downloaded_summary">Allalaaditud saadete lisamine järjekorda</string>
   <string name="behavior">Käitumine</string>
-  <string name="pref_delete_removes_from_queue_sum">Saade eemaldatakse järjekorrast pärast kustutamist automaatselt.</string>
-  <string name="pref_filter_feed_sum">Filtreeri oma tellimusi navigeerimisribal ja tellimuste lehel.</string>
   <string name="subscriptions_are_filtered">Tellimused on filtreeritud.</string>
   <string name="subscriptions_counter_greater_zero">Loendur on suurem kui null</string>
   <string name="auto_downloaded">Automaatselt alla laaditud</string>
@@ -426,7 +414,6 @@
   <string name="please_wait">Palun oota…</string>
   <string name="export_error_label">Viga eksportimisel</string>
   <string name="export_success_title">Eksportimine edukas</string>
-  <string name="export_success_sum">Eksporditud fail salvestati asukohta:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">OPML faili lugemiseks on vajalik ligipääs välisele salvestusruumile</string>
   <string name="successful_import_label">Importimine oli edukas</string>
   <string name="import_ok">Vajuta OK, et AntennaPod taaskäivitada</string>
@@ -491,8 +478,6 @@
   <string name="decrease_speed">Vähenda kiirust</string>
   <string name="media_type_video_label">Video</string>
   <string name="status_downloading_label">Saade laaditakse alla</string>
-  <string name="in_queue_label">Saade on järjekorras</string>
-  <string name="is_favorite_label">Saade on märgitud lemmikuks</string>
   <string name="load_next_page_label">Laadi järgmine lehekülg</string>
   <string name="position">Asukoht: %1$s</string>
   <string name="apply_action">Vii ellu</string>
@@ -586,8 +571,6 @@
   <string name="notification_channel_download_error_description">Näita, kui allalaadimine või uudivoo uuendamine ebaõnnestus.</string>
   <string name="notification_channel_sync_error">Sünkroonimine nurjus</string>
   <string name="notification_channel_sync_error_description">Näidatakse, kui gpodder sünkroniseerimine ebaõnnestub.</string>
-  <string name="notification_channel_auto_download">Automaatne allalaadimine lõpetatud</string>
-  <string name="notification_channel_episode_auto_download">Näita, kui saateid laaditi automaatselt alla.</string>
   <string name="notification_channel_new_episode_description">Näita, kui leiti uus saade, kui teated on lubatud</string>
   <!--Widget settings-->
   <string name="widget_settings">Vidina seaded</string>

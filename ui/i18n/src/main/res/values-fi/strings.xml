@@ -53,7 +53,6 @@
   <string name="home_downloads_title">Hallinnoi latauksia</string>
   <string name="home_welcome_title">Tervetuloa AntennaPodiin!</string>
   <string name="home_welcome_text">Et tilaa yhtään podcastia vielä. Avaa sivuvalikko lisätäksesi podcastin.</string>
-  <string name="notification_permission_text">AntennaPod tarvitsee lupasi ilmoitusten näyttämiseen jaksojen lataamisen aikana.</string>
   <string name="notification_permission_denied">Et antanut lupaa.</string>
   <string name="open_settings">Avaa asetukset</string>
   <string name="configure_home">Mukauta kotinäkymä</string>
@@ -110,16 +109,10 @@
   <string name="retry_label">Yritä uudelleen</string>
   <string name="auto_download_label">Lataa automaattisesti</string>
   <string name="auto_delete_label">Poista jakso automaattisesti</string>
-  <string name="feed_volume_reduction">Äänenvoimakkuuden vähentäminen</string>
-  <string name="feed_volume_reduction_summary">Voimakkuuden laskun taso: %1$s</string>
-  <string name="feed_volume_reduction_off">Pois käytöstä</string>
-  <string name="feed_volume_reduction_light">Kevyt</string>
-  <string name="feed_volume_reduction_heavy">Voimakas</string>
   <string name="feed_auto_download_always">Aina</string>
   <string name="feed_auto_download_never">Ei koskaan</string>
   <string name="feed_new_episodes_action_add_to_inbox">Lisää saapuneisiin</string>
   <string name="feed_new_episodes_action_nothing">Ei mitään</string>
-  <string name="send_label">Lähetä...</string>
   <string name="episode_cleanup_never">Ei koskaan</string>
   <string name="episode_cleanup_except_favorite_removal">Kun ei ole suosikeissa</string>
   <string name="episode_cleanup_queue_removal">Kun ei ole jonossa</string>
@@ -395,7 +388,6 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Kuulokkeiden uudelleenyhdistyminen</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetoothin uudelleenyhdistyminen</string>
   <string name="pref_stream_over_download_title">Suosi suoratoistoa</string>
-  <string name="pref_stream_over_download_sum">Näytä suoratoistonappi latausnapin sijaan listauksissa</string>
   <string name="pref_mobileUpdate_title">Mobiilipäivitykset</string>
   <string name="pref_mobileUpdate_sum">Valitse, mikä on sallittua mobiiliyhteydellä</string>
   <string name="pref_mobileUpdate_refresh">Podcastien päivitys</string>
@@ -408,13 +400,11 @@
   <string name="pref_tinted_theme_title">Dynaamiset värit</string>
   <string name="pref_tinted_theme_message">Mukauta sovelluksen värit taustakuvaan perustuen</string>
   <string name="pref_nav_drawer_items_title">Navigointivalikon kohteet</string>
-  <string name="pref_nav_drawer_items_sum">Valitse navigointivalikossa näytettävät toiminnot.</string>
   <string name="pref_nav_drawer_feed_order_title">Aseta tilausten järjestys</string>
   <string name="pref_nav_drawer_feed_order_sum">Vaihda tilauksiesi järjestystä</string>
   <string name="pref_nav_drawer_feed_counter_title">Aseta tilauslaskuri</string>
   <string name="pref_nav_drawer_feed_counter_sum">Vaihda tilauslaskurin näyttämiä tietoja. Tämä vaikuttaa myös tilausten järjestykseen, jos \"Tilausjärjestys\" on \"Laskuri\".</string>
   <string name="pref_automatic_download_title">Automaattinen lataus</string>
-  <string name="pref_automatic_download_sum">Aseta jaksojen automaattinen lataus</string>
   <string name="pref_autodl_wifi_filter_title">Aseta Wi-Fi-suodatin</string>
   <string name="pref_autodl_wifi_filter_sum">Salli automaattiset lataukset vain sallittujen Wi-Fi-verkkojen kautta.</string>
   <string name="pref_automatic_download_on_battery_title">Lataa, kun akkua ei ladata</string>
@@ -444,7 +434,6 @@
   <string name="pref_expandNotify_title">Korkea ilmoitusprioriteetti</string>
   <string name="pref_expandNotify_sum">Tämä laajentaa ilmoituksen näyttämään toistopainikkeet</string>
   <string name="pref_persistNotify_title">Pysyvät toistokontrollit</string>
-  <string name="pref_persistNotify_sum">Säilytä ilmoitus- ja lukitusnäytön kontrollit, kun toisto on pysäytetty.</string>
   <string name="pref_compact_notification_buttons_title">Aseta kompaktit ilmoituspainikkeet</string>
   <string name="pref_compact_notification_buttons_sum">Muuta toistopainikkeita, kun ilmoitus on tiivistetty. Toisto/tauko-painike on aina mukana.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Valitse maksimi %1$d asioita</string>
@@ -470,12 +459,9 @@
   <string name="pref_skip_silence_title">Ohita hiljaisuus</string>
   <string name="behavior">Toiminta</string>
   <string name="pref_default_page">Oletusnäkymä</string>
-  <string name="pref_default_page_sum">Näkymä, joka avataan AntennaPodin käynnistyessä.</string>
   <string name="remember_last_page">Muista viimeisin näkymä</string>
   <string name="pref_delete_removes_from_queue_title">Deletointi poistaa jonosta</string>
-  <string name="pref_delete_removes_from_queue_sum">Poista jakso automaattisesti jonosta kun se deletoidaan.</string>
   <string name="pref_filter_feed_title">Tilaussuodin</string>
-  <string name="pref_filter_feed_sum">Suodata navigointivalikossa ja tilausnäkymässä näytettäviä tilauksia.</string>
   <string name="subscriptions_are_filtered">Tilauksia on suodatettu.</string>
   <string name="subscriptions_counter_greater_zero">Laskurin arvo suurempi kuin nolla</string>
   <string name="auto_downloaded">Automaattisesti ladattu</string>
@@ -487,7 +473,6 @@
   <string name="pref_feed_settings_dialog_msg">Tämä asetus on podcast-kohtainen. Voit muuttaa sitä avaamalla podcastin-sivun.</string>
   <string name="pref_contribute">Osallistu</string>
   <string name="pref_show_subscription_title">Näytä tilauksen nimi</string>
-  <string name="pref_show_subscription_title_summary">Näytä tilauksen nimi kansikuvan alapuolella</string>
   <!--About screen-->
   <string name="about_pref">Tietoja</string>
   <string name="antennapod_version">AntennaPod versio</string>
@@ -537,7 +522,6 @@
   <string name="please_wait">Ole hyvä ja odota...</string>
   <string name="export_error_label">Vientivirhe</string>
   <string name="export_success_title">Vienti onnistunut</string>
-  <string name="export_success_sum">Viety tiedosto on kirjoitettu:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Pääsy ulkoiseen solvellukseen tarvitaan OPML tiedoston lukemiseen</string>
   <string name="successful_import_label">Tuonti onnistui</string>
   <string name="import_ok">Valitse OK käynnistääksesi AntennaPodin uudelleen</string>
@@ -625,9 +609,6 @@
   <string name="decrease_speed">Hidasta</string>
   <string name="media_type_video_label">Video</string>
   <string name="status_downloading_label">Jaksoa ladataan</string>
-  <string name="in_queue_label">Jakso on jonossa</string>
-  <string name="is_favorite_label">Jakso on merkitty suosikiksi</string>
-  <string name="is_inbox_label">Jakso on saapuneissa</string>
   <string name="load_next_page_label">Lataa seuraava sivu</string>
   <string name="position">Kohta: %1$s</string>
   <string name="apply_action">Käytä toiminto</string>
@@ -748,8 +729,6 @@
   <string name="notification_channel_download_error_description">Näytetään, kun lataus tai syötteen päivitys epäonnistuu.</string>
   <string name="notification_channel_sync_error">Synkronointi epäonnistui</string>
   <string name="notification_channel_sync_error_description">Näytetään, kun gpodder-synkronointi epäonnistuu.</string>
-  <string name="notification_channel_auto_download">Automaattinen lataus valmis</string>
-  <string name="notification_channel_episode_auto_download">Näytetään, kun jaksot on automaattisesti ladattu.</string>
   <string name="notification_channel_new_episode">Uusi jakso</string>
   <string name="notification_channel_new_episode_description">Näytetään ilmoitusten ollessa käytössä, kun podcastin uusi jakso löytyy</string>
   <!--Widget settings-->

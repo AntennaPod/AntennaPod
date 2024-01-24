@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="echo_home_header">Passa in rassegna l\'anno</string>
+    <string name="echo_home_subtitle">I tuoi podcast più ascoltati e statistiche sull\'anno appena trascorso. In esclusiva sul tuo telefono.</string>
+
+    <string name="echo_intro_your_year">Il tuo anno</string>
+    <string name="echo_intro_in_podcasts">in podcast</string>
+    <string name="echo_intro_locally">generato in privato sul tuo telefono</string>
+
+    <string name="echo_hours_this_year">Quest\'anno hai riprodotto</string>
+    <plurals name="echo_hours_podcasts">
+        <item quantity="one">ore di episodi\nda %1$d podcast</item>
+        <item quantity="other">ore di episodi\nda %1$d podcast diversi</item>
+    </plurals>
+
+    <string name="echo_queue_title_clean">E sei pronto a cominciare da zero il nuovo anno. Hai</string>
+    <string name="echo_queue_title_many">E ti resta ancora un bel po\' da fare quest\'anno. Hai</string>
+    <plurals name="echo_queue_hours_waiting">
+        <item quantity="one">ore provenienti da %1$d episodio\nin attesa nella tua coda</item>
+        <item quantity="other">ore provenienti da %1$d episodi\nin attesa nella tua coda</item>
+    </plurals>
+    <string name="echo_queue_hours_clean">Cioè circa %1$s al giorno da qui al %2$d.</string>
+    <string name="echo_queue_hours_normal">Cioè circa %1$s al giorno da qui al %2$d. Puoi cominciare da zero il nuovo anno se salti qualche episodio.</string>
+    <string name="echo_queue_hours_much">Cioè circa %1$s al giorno da qui al %2$d. Aspetta, come hai detto?</string>
+
+    <string name="echo_listened_after_title">Abbiamo analizzato quando gli episodi sono pubblicati e quando finisci di ascoltarli. La nostra conclusione?</string>
+    <string name="echo_listened_after_comment_easy">Te la prendi comoda</string>
+    <string name="echo_listened_after_time">In genere, finisci di ascoltare un episodio %1$s dopo la sua pubblicazione.</string>
+    <string name="echo_listened_after_comment_addict">Sei podcast-dipendente</string>
+
+    <string name="echo_hoarder_title">Ci siamo chiesti anche: ascolti davvero i podcast a cui sei iscritto?</string>
+    <string name="echo_hoarder_subtitle_hoarder">Dati alla mano, pensiamo che tu sia un accumulatore</string>
+    <string name="echo_hoarder_comment_hoarder">Si dice che i numeri non mentano. E visto che quest\'anno hai riprodotto solo il %1$d%% delle tue %2$d iscrizioni attive, probabilmente abbiamo ragione.</string>
+    <string name="echo_hoarder_subtitle_medium">Verificato. Non c\'è traccia di accumulo seriale.</string>
+    <string name="echo_hoarder_comment_medium">Quest\'anno hai riprodotto episodi dal %1$d%% delle tue %2$d iscrizioni attive. Che ne dici di ascoltare di nuovo \"%3$s\"?</string>
+    <string name="echo_hoarder_subtitle_clean">In ordine!</string>
+    <string name="echo_hoarder_comment_clean">Quest\'anno hai riprodotto episodi dal %1$d%% delle tue %2$d iscrizioni attive. Scommettiamo che tieni in ordine anche la tua scrivania!</string>
+
+    <string name="echo_thanks_large">Grazie</string>
+    <string name="echo_thanks_we_are_glad_old">per essere rimasto con noi quest\'anno!\n\nHai riprodotto il tuo primo episodio con noi in %1$s. Da allora, siamo onorati di essere al tuo servizio.</string>
+    <string name="echo_thanks_we_are_glad_new">per esserti unito a noi quest\'anno!\n\nChe tu sia arrivato qui da un\'altra app o che tu abbia iniziato la tua avventura coi podcast con noi, siamo felici di averti qui!</string>
+    <string name="echo_thanks_now_favorite">Ora diamo un\'occhiata ai tuoi podcast preferiti…</string>
+
+    <string name="echo_share_heading">I miei podcast preferiti</string>
+    <string name="echo_share">Il mio %d in podcast. #AntennaPodEcho</string>
+</resources>

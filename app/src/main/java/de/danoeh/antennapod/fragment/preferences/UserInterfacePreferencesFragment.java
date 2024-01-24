@@ -73,7 +73,7 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                 });
         findPreference(UserPreferences.PREF_FILTER_FEED)
                 .setOnPreferenceClickListener((preference -> {
-                    SubscriptionsFilterDialog.showDialog(requireContext());
+                    new SubscriptionsFilterDialog().show(getChildFragmentManager(), "filter");
                     return true;
                 }));
 

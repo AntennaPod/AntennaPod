@@ -53,8 +53,10 @@
   <string name="home_downloads_title">ניהול הורדות</string>
   <string name="home_welcome_title">ברוך בואך לאנטנה־פּוֹד!</string>
   <string name="home_welcome_text">לא נרשמת עדיין לאף פודקאסט. יש לפתוח את תפריט הצד ולהוסיף פודקאסט.</string>
-  <string name="notification_permission_text">לאנטנה־פּוֹד דרושה הרשאה ממך כדי להציג התראות בזמן הורדת פרקים.</string>
+  <string name="notification_permission_text">לאנטנה־פּוֹד דרושה ההרשאה שלך להציג התראות. כברירת מחדל, אנטנה־פּוֹד תציג הורדות רק כשמשהו יורד או משהו השתבש.</string>
   <string name="notification_permission_denied">דחית את בקשת ההרשאה.</string>
+  <string name="notification_permission_deny_warning">אם בחרת להשבית את ההתראות ומשהו משתבש, יכול להיות שהתקלה תחמוק מעיניך.</string>
+  <string name="deny_label">דחייה</string>
   <string name="open_settings">פתיחת הגדרות</string>
   <string name="configure_home">הגדרת מסך הבית</string>
   <!--Download Statistics fragment-->
@@ -110,16 +112,18 @@
   <string name="retry_label">לנסות שוב</string>
   <string name="auto_download_label">לכלול בהורדות אוטומטיות</string>
   <string name="auto_delete_label">מחיקת פרק אוטומטית</string>
-  <string name="feed_volume_reduction">הנמכת עצמת שמע</string>
-  <string name="feed_volume_reduction_summary">הנמכת עצמת השמע לפרקים של הפודקאסט הזה: %1$s</string>
-  <string name="feed_volume_reduction_off">כבוי</string>
-  <string name="feed_volume_reduction_light">טיפה</string>
-  <string name="feed_volume_reduction_heavy">מאוד</string>
+  <string name="feed_volume_adapdation">התאמת עוצמת שמע</string>
+  <string name="feed_volume_adaptation_summary">הנמכה או הגברה של עוצמת השמע לפרקים של הפודקאסט הזה: %1$s</string>
+  <string name="feed_volume_reduction_off">ללא התאמה</string>
+  <string name="feed_volume_reduction_light">הפחתה קלילה</string>
+  <string name="feed_volume_reduction_heavy">הפחתה משמעותית</string>
+  <string name="feed_volume_boost_light">הגברה קלילה</string>
+  <string name="feed_volume_boost_medium">הגברה בינונית</string>
+  <string name="feed_volume_boost_heavy">הגברה משמעותית</string>
   <string name="feed_auto_download_always">תמיד</string>
   <string name="feed_auto_download_never">אף פעם</string>
   <string name="feed_new_episodes_action_add_to_inbox">הוספה לדואר נכנס</string>
   <string name="feed_new_episodes_action_nothing">כלום</string>
-  <string name="send_label">שליחה…</string>
   <string name="episode_cleanup_never">אף פעם</string>
   <string name="episode_cleanup_except_favorite_removal">כאשר לא במועדפים</string>
   <string name="episode_cleanup_queue_removal">כאשר לא בתור</string>
@@ -200,6 +204,7 @@
   <string name="add_tag">הוספת תגית</string>
   <string name="rename_tag_label">שינוי שם תגית</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">רענון פודקאסטים דרך חיבור סלולרי מושבת בהגדרות.\n\nלרענן בכל זאת?</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message_vpn">יישום ה־VPN שלך מתחזה לרשת סלולרית (חיבור מדוד). הורדה דרך חיבור רשת סלולרית מושבת בהגדרות.\n\nלרענן בכל זאת? כדי שהבעיה הזאת תתוקן, יש ליצור קשר עם מפתחי יישומון ה־VPN שלך.</string>
   <!--actions on feeditems-->
   <string name="download_label">הורדה</string>
   <plurals name="downloading_batch_label">
@@ -213,6 +218,7 @@
   <string name="stream_label">הזרמה</string>
   <string name="delete_label">מחיקה</string>
   <string name="delete_failed">לא ניתן למחוק קובץ. הפעלת המכשיר מחדש עשויה לסייע.</string>
+  <string name="delete_local_failed">לא ניתן למחוק קובץ. יש לנסות לחבר את התיקייה המקומית מחדש ממסך פרטי הפודקאסט.</string>
   <string name="delete_episode_label">מחיקת פרק</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">פרק שהורד נמחק.</item>
@@ -268,6 +274,7 @@
   <string name="skip_episode_label">דילוג על פרק</string>
   <string name="reset_position">איפוס מיקום נגינה</string>
   <string name="no_items_selected">לא נבחרו פריטים</string>
+  <string name="delete_local_feed_warning_body">מחיקה מסירה את הפרק מאנטנה־פּוֹד ומוחקת את קובץ המדיה מאחסון המכשיר שלך. אי אפשר יהיה להוריד אותו שוב דרך אנטנה־פּוֹד.</string>
   <!--Download messages and labels-->
   <string name="download_successful">הצלחה</string>
   <string name="download_pending">הורדה ממתינה</string>
@@ -286,6 +293,7 @@
   <string name="download_error_unsupported_type_html">השרת של מארח הפודקאסטים שלח אתר במקום פודקאסט.</string>
   <string name="download_error_not_found">השרת של מארח הפודקאסטים לא יודע איפה למצוא את הקובץ. יכול להיות שהוא נמחק.</string>
   <string name="download_error_connection_error">שגיאת חיבור</string>
+  <string name="download_error_no_connection">אין חיבור לאינטרנט</string>
   <string name="download_error_unknown_host">לא ניתן לאתר את השרת. יש לבדוק אם הכתובת הוקלדה כראוי ושחיבור הרשת שלך תקין.</string>
   <string name="download_error_unauthorized">שגיאת אימות. נא לוודא ששם המשתמש והסיסמה נכונים.</string>
   <string name="download_error_file_type_type">שגיאת סוג קובץ</string>
@@ -314,6 +322,7 @@
   <string name="authentication_notification_title">נדרש אימות</string>
   <string name="confirm_mobile_download_dialog_title">אישור הורדה דרך רשת סלולרית</string>
   <string name="confirm_mobile_download_dialog_message">הורדה דרך חיבור סלולרי מושבתת בהגדרות. לאנטנה־פּוֹד יש אפשרות להוריד את הפרק הזה מאוחר יותר כשרשת אלחוטית תהיה זמינה.</string>
+  <string name="confirm_mobile_download_dialog_message_vpn">יישום ה־VPN שלך מתחזה לרשת סלולרית (חיבור מדוד). הורדה דרך חיבור רשת סלולרית מושבת בהגדרות. כדי שהבעיה הזאת תתוקן, יש ליצור קשר עם מפתחי יישומון ה־VPN שלך.</string>
   <string name="confirm_mobile_download_dialog_download_later">להוריד אח״כ</string>
   <string name="confirm_mobile_download_dialog_allow_this_time">להוריד בכ״ז</string>
   <string name="confirm_mobile_streaming_notification_title">אישור הזרמה דרך רשת סלולרית</string>
@@ -349,6 +358,7 @@
   <string name="feed_title">כותרת הפודקאסט</string>
   <string name="random">אקראי</string>
   <string name="smart_shuffle">ערבול חכם</string>
+  <string name="size">גודל</string>
   <string name="clear_queue_confirmation_msg">נא לאשר את פינוי התור מכל הפרקים שבו</string>
   <string name="time_left_label">זמן שנותר:\u0020</string>
   <!--Variable Speed-->
@@ -403,6 +413,9 @@
   <string name="pref_followQueue_sum">לעבור לפריט הבא בתור כאשר הניגון מסתיים</string>
   <string name="pref_auto_delete_sum">מחיקת פרק כשהניגון מסתיים</string>
   <string name="pref_auto_delete_title">מחיקה אוטומטית</string>
+  <string name="pref_auto_local_delete_title">מחיקה אוטומטית מהתיקיות המקומיות</string>
+  <string name="pref_auto_local_delete_sum">לכלול את התיקיות המקומיות ביכולת המחיקה האוטומטית</string>
+  <string name="pref_auto_local_delete_dialog_body">נא לשים לב שעבור תיקיות מקומיות פעולה זו תסיר פרקים מאנטנה־פּוֹד ותמחק את קובצי המדיה שלהן מאחסון המכשיר שלך. אי אפשר להוריד אותם שום דרך אנטנה־פּוֹד. להפעיל מחיקה אוטומטית?</string>
   <string name="pref_smart_mark_as_played_sum">סימון פרקים כנוגנו אפילו אם נשארו כמה שניות לנגינה</string>
   <string name="pref_smart_mark_as_played_title">סימון חכם כנוגנו</string>
   <string name="pref_skip_keeps_episodes_sum">להשאיר פרקים למרות שדילגת עליהם</string>
@@ -428,7 +441,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">חיבור אוזניות מחדש</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">חיבור Bluetooth מחדש</string>
   <string name="pref_stream_over_download_title">העדפת הזרמה</string>
-  <string name="pref_stream_over_download_sum">הצגת כפתור הזרמה במקום כפתור הורדה ברשימות.</string>
+  <string name="pref_stream_over_download_sum">הצגת כפתור הזרמה במקום כפתור הורדה ברשימות</string>
   <string name="pref_mobileUpdate_title">עדכונים דרך רשת סלולרית</string>
   <string name="pref_mobileUpdate_sum">לבחור מה מותר דרך חיבור רשת סלולרית</string>
   <string name="pref_mobileUpdate_refresh">רענון פודקאסטים</string>
@@ -443,13 +456,13 @@
   <string name="pref_tinted_theme_title">צבעים דינמיים</string>
   <string name="pref_tinted_theme_message">להתאים את צבעי היישומון לפי הטפט</string>
   <string name="pref_nav_drawer_items_title">הגדרת פריטים במגירות הניווט</string>
-  <string name="pref_nav_drawer_items_sum">החלפת הפריטים שמופיעים במגירת הניווט.</string>
+  <string name="pref_nav_drawer_items_sum">החלפת הפריטים שמופיעים במגירת הניווט</string>
   <string name="pref_nav_drawer_feed_order_title">הגדרת סדר מינוי</string>
   <string name="pref_nav_drawer_feed_order_sum">שינוי סדר המינויים שלך</string>
   <string name="pref_nav_drawer_feed_counter_title">הגדרת מונה מינוי</string>
   <string name="pref_nav_drawer_feed_counter_sum">שינוי המידע שמוצג במונה המינויים. משפיע גם על סדר המינויים אם ‚סדר המינויים’ מוגדר כ־‚מונה’.</string>
   <string name="pref_automatic_download_title">הורדה אוטומטית</string>
-  <string name="pref_automatic_download_sum">הגדרת הורדה אטומטית של פרקים.</string>
+  <string name="pref_automatic_download_sum">הגדרת הורדה אטומטית של פרקים</string>
   <string name="pref_autodl_wifi_filter_title">הפעלת סינון רשתות אלחוטיות</string>
   <string name="pref_autodl_wifi_filter_sum">לאפשר הורדה אוטומטית רק דרך רשתות אלחוטיות נבחרות.</string>
   <string name="pref_automatic_download_on_battery_title">להוריד שלא בזמן טעינה</string>
@@ -481,7 +494,7 @@
   <string name="pref_expandNotify_title">התראה בעדיפות גבוהה</string>
   <string name="pref_expandNotify_sum">הגדרה זו מרחיבה את ההתראה כדי שתציג גם כפתורי נגינה.</string>
   <string name="pref_persistNotify_title">פקדי נגינה קבועים</string>
-  <string name="pref_persistNotify_sum">להשאיר את פקדי ההתרעות ומסך הנעילה גם כשהנגינה מושהית.</string>
+  <string name="pref_persistNotify_sum">להשאיר את פקדי ההתרעות ומסך הנעילה גם כשהנגינה מושהית</string>
   <string name="pref_compact_notification_buttons_title">הגדרת כפתורי התראה מוקטנים</string>
   <string name="pref_compact_notification_buttons_sum">להחליף את כפתורי הנגינה כאשר ההתראה מצומצמת. כפתור נגינה/השהיה תמיד יופיע.</string>
   <string name="pref_compact_notification_buttons_dialog_title">בחירה עד %1$d פריטים</string>
@@ -507,14 +520,14 @@
   <string name="pref_skip_silence_title">דילוג על שקט בשמע</string>
   <string name="behavior">התנהגות</string>
   <string name="pref_default_page">עמוד ברירת מחדל</string>
-  <string name="pref_default_page_sum">המסך שייפתח בהפעלת אנטנה־פּוֹד.</string>
+  <string name="pref_default_page_sum">המסך שייפתח בהפעלת אנטנה־פּוֹד</string>
   <string name="pref_back_button_opens_drawer">כפתור חזרה פותח מגירה</string>
   <string name="pref_back_button_opens_drawer_summary">לחיצה על כפתור החזרה בעמוד ברירת המחדל פותח את מגירת הניווט</string>
   <string name="remember_last_page">זכירת העמוד האחרון</string>
   <string name="pref_delete_removes_from_queue_title">מחיקה מסירה מהתור</string>
-  <string name="pref_delete_removes_from_queue_sum">הסרת פרק מהתור אוטומטית עם מחיקתו.</string>
+  <string name="pref_delete_removes_from_queue_sum">הסרת פרק מהתור אוטומטית עם מחיקתו</string>
   <string name="pref_filter_feed_title">מסנן מינויים</string>
-  <string name="pref_filter_feed_sum">סינון המינויים שלך במגירת הניווט ובמסך המינויים.</string>
+  <string name="pref_filter_feed_sum">סינון המינויים שלך במגירת הניווט ובמסך המינויים</string>
   <string name="subscriptions_are_filtered">המינויים מסוננים.</string>
   <string name="subscriptions_counter_greater_zero">המונה גדול מאפס</string>
   <string name="auto_downloaded">התקבלו אוטומטית</string>
@@ -526,7 +539,7 @@
   <string name="pref_feed_settings_dialog_msg">הגדרה זו היא ייחודית לפי פודקאסט. ניתן לשנות אותה על ידי פתיחת עמוד הפודקאסט.</string>
   <string name="pref_contribute">תרומה</string>
   <string name="pref_show_subscription_title">הצגת כותרת מינוי</string>
-  <string name="pref_show_subscription_title_summary">הצגת כותרת המינוי מתחת לתמונת העטיפה.</string>
+  <string name="pref_show_subscription_title_summary">הצגת כותרת המינוי מתחת לתמונת העטיפה</string>
   <string name="pref_new_episodes_action_title">פעולת פרקים חדשים</string>
   <string name="pref_new_episodes_action_sum">פעולה שיש לנקוט מול פרקים חדשים</string>
   <!--About screen-->
@@ -545,6 +558,7 @@
   <string name="type_to_search">נא להקליד שאילתה כדי לחפש</string>
   <string name="search_label">חיפוש</string>
   <string name="no_results_for_query">לא נמצאו תוצאות עבור „%1$s”</string>
+  <string name="search_online">חיפוש מקוון</string>
   <!--Synchronization-->
   <string name="sync_status_started">הסנכרון החל</string>
   <string name="sync_status_episodes_upload">השינויים לפרק נשלחים…</string>
@@ -578,7 +592,6 @@
   <string name="please_wait">נא להמתין…</string>
   <string name="export_error_label">שגיאת ייצוא</string>
   <string name="export_success_title">הייצוא הצליח</string>
-  <string name="export_success_sum">הקובץ שייוצא נכתב אל:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">נדרשת גישה לאחסון חיצוני כדי לקרוא את קובץ ה־OPML</string>
   <string name="successful_import_label">הייבוא הצליח</string>
   <string name="import_ok">נא ללחוץ על אישור כדי להפעיל את אנטנה־פּוֹד מחדש</string>
@@ -617,7 +630,7 @@
   </plurals>
   <string name="auto_enable_label">להפעיל את מתזמן השינה עם לחיצה על נגינה</string>
   <string name="auto_enable_label_with_times">להפעיל את מתזמן השינה עם לחיצה על נגינה בין %s ל־%s</string>
-  <string name="auto_enable_change_times">החלפת זמנים</string>
+  <string name="auto_enable_change_times">שינוי טווח הזמן</string>
   <string name="sleep_timer_enabled_label">מתזמן השינה פעיל</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">בחירת ספק סנכרון</string>
@@ -675,15 +688,19 @@
   <string name="decrease_speed">האטה</string>
   <string name="media_type_video_label">וידאו</string>
   <string name="status_downloading_label">הפרק יורד</string>
-  <string name="in_queue_label">הפרק בתור</string>
-  <string name="is_favorite_label">הפרק מסומן כמועדף</string>
-  <string name="is_inbox_label">הפרק בדואר הנכנס</string>
+  <string name="in_queue_label">בתור</string>
+  <string name="is_favorite_label">מסומן כמועדף</string>
+  <string name="is_inbox_label">בפריטים הנכנסים</string>
+  <string name="is_played">התנגן</string>
   <string name="load_next_page_label">טעינת הדף הבא</string>
   <string name="position">מיקום: %1$s</string>
+  <string name="remaining_time">זמן שנותר: %1$s</string>
   <string name="apply_action">החלת פעולה</string>
   <string name="play_chapter">לנגן פרק</string>
   <string name="prev_chapter">הפרק הקודם</string>
   <string name="next_chapter">הפרק הבא</string>
+  <string name="shuffle_suggestions">ערבוב הצעות</string>
+  <string name="add_preset">הוספת ערכה</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">אימות</string>
   <string name="authentication_descr">שינוי שם המשתמש והססמה שלך לפודקאסט הזה ולפרקים שלו.</string>
@@ -762,6 +779,8 @@
   <string name="sort_old_new">ישן \u2192 חדש</string>
   <string name="sort_short_long">קצר \u2192 ארוך</string>
   <string name="sort_long_short">ארוך \u2192 קצר</string>
+  <string name="sort_small_large">קטן \u2190 גדול</string>
+  <string name="sort_large_small">גדול \u2190 קטן</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">לכלול את נקודת הנגינה</string>
   <string name="share_dialog_episode_website_label">עמוד הפרק</string>
@@ -801,8 +820,6 @@
   <string name="notification_channel_download_error_description">מופיע כאשר הורדה או עדכון הזנה נכשלים.</string>
   <string name="notification_channel_sync_error">הסנכרון נכשל</string>
   <string name="notification_channel_sync_error_description">מופיע כאשר הסנכרון מול gpodder נכשל.</string>
-  <string name="notification_channel_auto_download">ההורדה האוטומטית הושלמה</string>
-  <string name="notification_channel_episode_auto_download">מופיע כאשר פרקים התקבלו אוטומטית.</string>
   <string name="notification_channel_new_episode">פרק חדש</string>
   <string name="notification_channel_new_episode_description">מופיע כאשר נמצא פרק חדש בפודקאסט, כאשר התראות פעילות</string>
   <!--Widget settings-->

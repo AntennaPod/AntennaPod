@@ -36,6 +36,7 @@ import de.danoeh.antennapod.core.feed.FeedUrlNotFoundException;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
 import de.danoeh.antennapod.core.util.DownloadErrorLabel;
+import de.danoeh.antennapod.databinding.EditTextDialogBinding;
 import de.danoeh.antennapod.databinding.OnlinefeedviewHeaderBinding;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
@@ -95,7 +96,7 @@ import java.util.Map;
 public class OnlineFeedViewActivity extends AppCompatActivity {
 
     public static final String ARG_FEEDURL = "arg.feedurl";
-    // Optional argument: specify a title for the actionbar.
+    public static final String ARG_WAS_MANUAL_URL = "manual_url";
     private static final int RESULT_ERROR = 2;
     private static final String TAG = "OnlineFeedViewActivity";
     private static final String PREFS = "OnlineFeedViewActivityPreferences";
@@ -598,7 +599,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 builder.setMessage(R.string.download_error_error_unknown);
             }
             builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
-            builder.setOnDismissListener(dialog -> {
+            if (getIntent().getBooleanExtra(ARG_WAS_MANUAL_URL, false)) {
+                builder.setNeutralButton(R.string.edit_url_menu, (dialog, which) -> editUrl());
+            }
+            builder.setOnCancelListener(dialog -> {
                 setResult(RESULT_ERROR);
                 finish();
             });
@@ -607,6 +611,26 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             }
             dialog = builder.show();
         }
+    }
+
+    private void editUrl() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(R.string.edit_url_menu);
+        final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
+        if (downloader != null) {
+            dialogBinding.urlEditText.setText(downloader.getDownloadRequest().getSource());
+        }
+        builder.setView(dialogBinding.getRoot());
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+            setLoadingLayout();
+            lookupUrlAndDownload(dialogBinding.urlEditText.getText().toString());
+        });
+        builder.setNegativeButton(R.string.cancel_label, (dialog1, which) -> dialog1.cancel());
+        builder.setOnCancelListener(dialog1 -> {
+            setResult(RESULT_ERROR);
+            finish();
+        });
+        builder.show();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

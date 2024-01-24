@@ -86,13 +86,8 @@
   <string name="close_label">閉じる</string>
   <string name="retry_label">再試行</string>
   <string name="auto_download_label">自動ダウンロードに含める</string>
-  <string name="feed_volume_reduction_summary">このポッドキャストの音量を下げる: %1$s</string>
-  <string name="feed_volume_reduction_off">オフ</string>
-  <string name="feed_volume_reduction_light">ライト</string>
-  <string name="feed_volume_reduction_heavy">ヘビー</string>
   <string name="feed_auto_download_always">常に</string>
   <string name="feed_auto_download_never">しない</string>
-  <string name="send_label">送信…</string>
   <string name="episode_cleanup_never">しない</string>
   <string name="episode_cleanup_except_favorite_removal">お気に入りされていない</string>
   <string name="episode_cleanup_queue_removal">キューにない時</string>
@@ -290,17 +285,14 @@
   <string name="feed_refresh_title">ポッドキャストの更新</string>
   <string name="feed_refresh_never">しない</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">ヘッドホン/Bluetoothの切断</string>
-  <string name="pref_stream_over_download_sum">ダウンロードボタンの代わりにストリームボタンをリストに表示します。</string>
   <string name="pref_mobileUpdate_sum">モバイルデータ接続時に許可するものを選択します</string>
   <string name="pref_mobileUpdate_refresh">ポッドキャストの更新</string>
   <string name="pref_mobileUpdate_images">カバー画像</string>
   <string name="pref_mobileUpdate_auto_download">自動ダウンロード</string>
   <string name="pref_mobileUpdate_episode_download">エピソードのダウンロード</string>
   <string name="pref_mobileUpdate_streaming">ストリーミング</string>
-  <string name="pref_nav_drawer_items_sum">ナビゲーションドロワーに表示するアイテムを変更します。</string>
   <string name="pref_nav_drawer_feed_order_sum">購読の順序を変更します</string>
   <string name="pref_nav_drawer_feed_counter_sum">購読カウンターに表示される情報を変更します。「購読の順序」に「カウンター」が設定されている場合は、購読の並べ替えにも影響します。</string>
-  <string name="pref_automatic_download_sum">エピソードの自動ダウンロードを設定します。</string>
   <string name="pref_autodl_wifi_filter_title">Wi-Fiフィルターを有効にする</string>
   <string name="pref_autodl_wifi_filter_sum">選択したWi-Fiネットワークに対してのみ自動ダウンロードを許可します。</string>
   <string name="pref_automatic_download_on_battery_title">充電時以外にダウンロード</string>
@@ -323,7 +315,6 @@
   <string name="pref_fast_forward_sum">早送りボタンをタップしたときに進む秒数をカスタマイズします</string>
   <string name="pref_rewind_sum">巻き戻しボタンをタップしたときに戻る秒数をカスタマイズします</string>
   <string name="pref_expandNotify_sum">これは通常再生ボタンを表示するように通知を展開します。</string>
-  <string name="pref_persistNotify_sum">再生が一時停止された時に、通知およびロック画面のコントロールを保持します。</string>
   <string name="pref_compact_notification_buttons_sum">通知が折りたたまれたときの再生ボタンを変更します。再生/一時停止ボタンは常に含まれています。</string>
   <string name="pref_compact_notification_buttons_dialog_title">最大 %1$d 個のアイテムを選択</string>
   <string name="pref_compact_notification_buttons_dialog_error">最大で %1$d 個のアイテムを選択できます。</string>
@@ -342,10 +333,7 @@
   <string name="pref_no_browser_found">Webブラウザーが見つかりません。</string>
   <string name="pref_enqueue_downloaded_summary">ダウンロードしたエピソードをキューに追加します</string>
   <string name="behavior">動作</string>
-  <string name="pref_default_page_sum">AntennaPodの起動時に表示する画面を選択します。</string>
   <string name="remember_last_page">最後のページを記憶</string>
-  <string name="pref_delete_removes_from_queue_sum">削除した時に、自動的にキューからエピソードを削除します</string>
-  <string name="pref_filter_feed_sum">ナビゲーションドロワーと購読画面で購読をフィルター処理します。</string>
   <string name="subscriptions_are_filtered">購読はフィルター処理されています。</string>
   <string name="subscriptions_counter_greater_zero">count &gt; 0</string>
   <string name="auto_downloaded">自動DL</string>
@@ -356,7 +344,6 @@
   <string name="new_episode_notification_disabled">通知が無効</string>
   <string name="pref_feed_settings_dialog_msg">この設定は各ポッドキャストに固有のものです。ポッドキャストのページを開くと、変更することができます。</string>
   <string name="pref_contribute">貢献</string>
-  <string name="pref_show_subscription_title_summary">カバーの画像の下に購読タイトルを表示します。</string>
   <!--About screen-->
   <string name="about_pref">AntennaPodについて</string>
   <string name="antennapod_version">AntennaPod バージョン</string>
@@ -406,7 +393,6 @@
   <string name="please_wait">しばらくお待ちください…</string>
   <string name="export_error_label">エクスポートエラー</string>
   <string name="export_success_title">エクスポートしました</string>
-  <string name="export_success_sum">エクスポートしたファイルを書き込みました:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">OPML ファイルを読み込むために、外部ストレージへのアクセスが必要です</string>
   <string name="successful_import_label">インポートしました</string>
   <string name="import_ok">OKを押してAntennaPodを再起動してください</string>
@@ -488,9 +474,6 @@
   <string name="decrease_speed">速度ダウン</string>
   <string name="media_type_video_label">動画</string>
   <string name="status_downloading_label">エピソードをダウンロード中</string>
-  <string name="in_queue_label">エピソードはキューの中にあります</string>
-  <string name="is_favorite_label">エピソードはお気に入りとしてマークされています</string>
-  <string name="is_inbox_label">エピソードは受信トレイにあります</string>
   <string name="load_next_page_label">次のページをロード</string>
   <string name="position">位置: %1$s</string>
   <string name="apply_action">アクションを適用</string>
@@ -604,8 +587,6 @@
   <string name="notification_channel_download_error_description">フィードのダウンロードや更新に失敗したときに表示されます。</string>
   <string name="notification_channel_sync_error">同期の失敗</string>
   <string name="notification_channel_sync_error_description">gpodderの同期に失敗した時に表示されます。</string>
-  <string name="notification_channel_auto_download">自動ダウンロード完了</string>
-  <string name="notification_channel_episode_auto_download">エピソードが自動ダウンロードされた時に表示します。</string>
   <string name="notification_channel_new_episode_description">通知が有効な場合、ポッドキャストの新しいエピソードが見つかったときに表示されます。</string>
   <!--Widget settings-->
   <string name="widget_settings">ウィジェット設定</string>

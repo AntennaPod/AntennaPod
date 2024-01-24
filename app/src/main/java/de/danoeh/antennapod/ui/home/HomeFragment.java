@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,11 +25,11 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.databinding.HomeFragmentBinding;
@@ -39,8 +37,10 @@ import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.fragment.SearchFragment;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.echo.EchoActivity;
 import de.danoeh.antennapod.ui.home.sections.AllowNotificationsSection;
 import de.danoeh.antennapod.ui.home.sections.DownloadsSection;
+import de.danoeh.antennapod.ui.home.sections.EchoSection;
 import de.danoeh.antennapod.ui.home.sections.EpisodesSurpriseSection;
 import de.danoeh.antennapod.ui.home.sections.InboxSection;
 import de.danoeh.antennapod.ui.home.sections.QueueSection;
@@ -60,6 +60,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     public static final String PREF_NAME = "PrefHomeFragment";
     public static final String PREF_HIDDEN_SECTIONS = "PrefHomeSectionsString";
     public static final String PREF_DISABLE_NOTIFICATION_PERMISSION_NAG = "DisableNotificationPermissionNag";
+    public static final String PREF_HIDE_ECHO = "HideEcho";
 
     private static final String KEY_UP_ARROW = "up_arrow";
     private boolean displayUpArrow;
@@ -82,11 +83,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         updateWelcomeScreenVisibility();
 
         viewBinding.swipeRefresh.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
-        viewBinding.swipeRefresh.setOnRefreshListener(() -> {
-            FeedUpdateManager.runOnceOrAsk(requireContext());
-            new Handler(Looper.getMainLooper()).postDelayed(() -> viewBinding.swipeRefresh.setRefreshing(false),
-                    getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
-        });
+        viewBinding.swipeRefresh.setOnRefreshListener(() -> FeedUpdateManager.runOnceOrAsk(requireContext()));
 
         return viewBinding.getRoot();
     }
@@ -94,12 +91,18 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     private void populateSectionList() {
         viewBinding.homeContainer.removeAllViews();
 
+        SharedPreferences prefs = getContext().getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
         if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            SharedPreferences prefs = getContext().getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
             if (!prefs.getBoolean(HomeFragment.PREF_DISABLE_NOTIFICATION_PERMISSION_NAG, false)) {
                 addSection(new AllowNotificationsSection());
             }
+        }
+        if (Calendar.getInstance().get(Calendar.YEAR) == EchoActivity.RELEASE_YEAR
+                && Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER
+                && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) >= 10
+                && prefs.getInt(PREF_HIDE_ECHO, 0) != EchoActivity.RELEASE_YEAR) {
+            addSection(new EchoSection());
         }
 
         List<String> hiddenSections = getHiddenSections(getContext());
@@ -144,8 +147,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedUpdateRunningEvent event) {
-        MenuItemUtils.updateRefreshMenuItem(viewBinding.toolbar.getMenu(),
-                R.id.refresh_item, event.isFeedUpdateRunning);
+        viewBinding.swipeRefresh.setRefreshing(event.isFeedUpdateRunning);
     }
 
     @Override
