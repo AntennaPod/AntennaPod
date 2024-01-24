@@ -201,12 +201,9 @@ public class PlaybackServiceNotificationBuilder {
         // ff follows play, then we have skip (if it's present)
         PendingIntent ffButtonPendingIntent = getPendingIntentForMediaAction(
                 KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, numActions);
-        notification.addAction(
-                R.drawable.ic_notification_fast_forward,
-                context.getString(R.string.fast_forward_label),
-                ffButtonPendingIntent
-        );
-            compactActionList.add(numActions);
+        notification.addAction(R.drawable.ic_notification_fast_forward, context.getString(R.string.fast_forward_label),
+                ffButtonPendingIntent);
+        compactActionList.add(numActions);
         numActions++;
 
         if (UserPreferences.showNextChapterOnFullNotification() && playable.getChapters() != null) {
