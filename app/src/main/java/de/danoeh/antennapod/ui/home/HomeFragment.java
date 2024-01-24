@@ -54,8 +54,11 @@ import de.danoeh.antennapod.ui.echo.EchoActivity;
 import de.danoeh.antennapod.ui.home.sections.AllowNotificationsSection;
 import de.danoeh.antennapod.ui.home.sections.DownloadsSection;
 import de.danoeh.antennapod.ui.home.sections.EchoSection;
+import de.danoeh.antennapod.ui.home.sections.EpisodesExpanableSection;
 import de.danoeh.antennapod.ui.home.sections.EpisodesSurpriseSection;
+import de.danoeh.antennapod.ui.home.sections.InboxExpanableSection;
 import de.danoeh.antennapod.ui.home.sections.InboxSection;
+import de.danoeh.antennapod.ui.home.sections.QueueExpanableSection;
 import de.danoeh.antennapod.ui.home.sections.QueueSection;
 import de.danoeh.antennapod.ui.home.sections.SubscriptionsSection;
 import de.danoeh.antennapod.view.LiftOnScrollListener;
@@ -130,37 +133,25 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             if (hiddenSections.contains(sectionTag)) {
                 continue;
             }
-            Fragment section = getSection(sectionTag);
-            //expand if there its inbox or episodes list (not descendants of HomeSection)
-            addSection(section, !HomeSection.class.isAssignableFrom(section.getClass()));
+            HomeSection section = getSection(sectionTag);
+            //expand if there is inbox or episodes list or queue (not descendants of HomeSection)
+            addSection(section, section.isExpandable());
         }
     }
 
-    private void addSection(Fragment section, boolean expand) {
-        FragmentContainerView containerView = new FragmentContainerView(getContext());
-        if (expand) {
-            //add separator
-            TextView title = new TextView(getContext());
-            int eightDp = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8f, getResources().getDisplayMetrics()));
-            title.setText("Episodes"); //TODO
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0,eightDp,0,eightDp);
-            params.setMarginStart(eightDp*2);
-            title.setTextSize(18f);
-            title.setLayoutParams(params);
-            title.setTextColor(MaterialColors.getColor(getContext(), R.attr.primaryTextColor, Color.WHITE));
-            //separator.setBackgroundColor(ThemeUtils.getColorFromAttr(getContext(), android.R.attr.dividerVertical));
-            viewBinding.homeContainer.addView(title);
-            //expand section
-            containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 2f));
-            viewBinding.homeContainer.setPadding(0,0,0,0);
-        }
+    private void addSection(Fragment section,boolean expandable) {
+        FragmentContainerView containerView = new FragmentContainerView(requireContext());
         containerView.setId(View.generateViewId());
+        Log.d("gfgkjfa", "addSection: "+expandable);
+        if (expandable) {
+
+            containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 2f));
+        }
         viewBinding.homeContainer.addView(containerView);
         getChildFragmentManager().beginTransaction().add(containerView.getId(), section).commit();
     }
 
-    private Fragment getSection(String tag) {
+    private HomeSection getSection(String tag) {
         switch (tag) {
             case QueueSection.TAG:
                 return new QueueSection();
@@ -172,10 +163,12 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                 return new SubscriptionsSection();
             case DownloadsSection.TAG:
                 return new DownloadsSection();
-            case EpisodesFragementInHome.TAG:
-                return new EpisodesFragementInHome();
-            case InboxFragmentInHome.TAG:
-                return new InboxFragmentInHome();
+            case EpisodesExpanableSection.TAG:
+                return new EpisodesExpanableSection();
+            case InboxExpanableSection.TAG:
+                return new InboxExpanableSection();
+            case QueueExpanableSection.TAG:
+                return new QueueExpanableSection();
             default:
                 return null;
         }
@@ -184,7 +177,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     public static List<String> getHiddenSections(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
         String hiddenSectionsString = prefs.getString(HomeFragment.PREF_HIDDEN_SECTIONS,
-                EpisodesFragementInHome.TAG+","+InboxFragmentInHome.TAG+","+ QueueFragmentInHome.TAG);
+                EpisodesExpanableSection.TAG+","+InboxExpanableSection.TAG+","+ QueueExpanableSection.TAG);
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenSectionsString, ",")));
     }
 

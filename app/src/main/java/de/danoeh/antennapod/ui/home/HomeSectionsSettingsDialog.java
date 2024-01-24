@@ -96,7 +96,7 @@ public class HomeSectionsSettingsDialog {
             toggleExpanableSections(binding, sectionTags, hiddenSections, bottomHalfTags);
             for (int i = 0; i < bottomHalfTags.length; i++) {
                 if (!hiddenSections.contains(bottomHalfTags[i])) {
-                    //binding.bottomhalfDropdown.setText(bottomHalfLabels[i]);
+                    binding.bottomhalfDropdown.setText(bottomHalfLabels[i], false);
                 }
             }
         });

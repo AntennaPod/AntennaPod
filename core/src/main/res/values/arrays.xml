@@ -253,9 +253,9 @@
     </string-array>
 
     <string-array name="home_bottomhalf_tags">
-        <item>EpisodesInHome</item>
-        <item>InboxInHome</item>
-        <item>QueueInHome</item>
+        <item>EpisodesExpandable</item>
+        <item>InboxExpandable</item>
+        <item>QueueExpandable</item>
     </string-array>
 
     <string-array name="compact_notification_buttons_options">
