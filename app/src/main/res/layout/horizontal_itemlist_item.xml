@@ -36,8 +36,8 @@
                     android:orientation="vertical">
 
                     <FrameLayout
-                        android:layout_width="128dp"
-                        android:layout_height="128dp"
+                        android:layout_width="112dp"
+                        android:layout_height="112dp"
                         android:background="@color/image_readability_tint">
 
                         <de.danoeh.antennapod.ui.common.SquareImageView
@@ -100,7 +100,7 @@
 
             <TextView
                 android:id="@+id/titleLabel"
-                android:layout_width="128dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:ellipsize="end"
