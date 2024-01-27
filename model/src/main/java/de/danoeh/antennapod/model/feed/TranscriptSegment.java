@@ -1,11 +1,11 @@
 package de.danoeh.antennapod.model.feed;
 
 public class TranscriptSegment {
-    private long startTime;
-    private long endTime;
-    private String words;
-    private String speaker;
-    private Boolean trimmed;
+    final private long startTime;
+    final private long endTime;
+    final private String words;
+    final private String speaker;
+    final private Boolean trimmed;
 
     public TranscriptSegment(long start, long end, String w, String s) {
         startTime = start;
@@ -19,14 +19,6 @@ public class TranscriptSegment {
         return startTime;
     }
 
-    public long setStartTime(long t) {
-        return startTime = t;
-    }
-
-    public long setEndTime(long t) {
-        return endTime = t;
-    }
-
     public long getEndTime() {
         return endTime;
     }
@@ -35,14 +27,6 @@ public class TranscriptSegment {
         return words;
     }
 
-    public String setWords(String str) {
-        return words = str;
-    }
-
-    public Boolean setTrimmed(Boolean t) {
-        trimmed = t;
-        return trimmed;
-    }
 
     public Boolean isTrimmed() {
         return trimmed;
