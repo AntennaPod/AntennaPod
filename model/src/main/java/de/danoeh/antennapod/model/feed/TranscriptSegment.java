@@ -27,7 +27,6 @@ public class TranscriptSegment {
         return words;
     }
 
-
     public Boolean isTrimmed() {
         return trimmed;
     }
