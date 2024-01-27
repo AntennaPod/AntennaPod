@@ -1,11 +1,11 @@
 package de.danoeh.antennapod.model.feed;
 
 public class TranscriptSegment {
-    final private long startTime;
-    final private long endTime;
-    final private String words;
-    final private String speaker;
-    final private Boolean trimmed;
+    private final long startTime;
+    private final long endTime;
+    private final String words;
+    private final String speaker;
+    private final Boolean trimmed;
 
     public TranscriptSegment(long start, long end, String w, String s) {
         startTime = start;
