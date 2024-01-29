@@ -163,8 +163,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             callback.ensureMediaInfoLoaded(media);
             callback.onMediaChanged(false);
             setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media),
-                    PlaybackSpeedUtils.getCurrentSkipSilencePreference(media)
-                            == FeedPreferences.SkipSilence.AGGRESSIVE);
+                    PlaybackSpeedUtils.getCurrentSkipSilencePreference(media));
             if (stream) {
                 if (playable instanceof FeedMedia) {
                     FeedMedia feedMedia = (FeedMedia) playable;
@@ -216,8 +215,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 acquireWifiLockIfNecessary();
 
                 setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media),
-                        PlaybackSpeedUtils.getCurrentSkipSilencePreference(media)
-                                == FeedPreferences.SkipSilence.AGGRESSIVE);
+                        PlaybackSpeedUtils.getCurrentSkipSilencePreference(media));
                 setVolume(1.0f, 1.0f);
 
                 if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
@@ -444,7 +442,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      * This method is executed on an internal executor service.
      */
     @Override
-    public void setPlaybackParams(final float speed, final boolean skipSilence) {
+    public void setPlaybackParams(final float speed, final FeedPreferences.SkipSilence skipSilence) {
         Log.d(TAG, "Playback speed was set to " + speed);
         EventBus.getDefault().post(new SpeedChangedEvent(speed));
         mediaPlayer.setPlaybackParams(speed, skipSilence);
@@ -466,15 +464,14 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     }
 
     @Override
-    public boolean getSkipSilence() {
-        boolean retVal = false;
+    public FeedPreferences.SkipSilence getSkipSilence() {
         if ((playerStatus == PlayerStatus.PLAYING
                 || playerStatus == PlayerStatus.PAUSED
                 || playerStatus == PlayerStatus.INITIALIZED
                 || playerStatus == PlayerStatus.PREPARED)) {
-            retVal = mediaPlayer.getCurrentSkipSilence();
+            return mediaPlayer.getCurrentSkipSilence();
         }
-        return retVal;
+        return FeedPreferences.SkipSilence.OFF;
     }
 
     /**

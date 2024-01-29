@@ -13,6 +13,7 @@ import java.util.List;
 import androidx.annotation.Nullable;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 
 
 /*
@@ -144,14 +145,14 @@ public abstract class PlaybackServiceMediaPlayer {
      * - SkipSilence (ExoPlayer only)
      * This method is executed on an internal executor service.
      */
-    public abstract void  setPlaybackParams(final float speed, final boolean skipSilence);
+    public abstract void  setPlaybackParams(final float speed, final FeedPreferences.SkipSilence skipSilence);
 
     /**
      * Returns the current playback speed. If the playback speed could not be retrieved, 1 is returned.
      */
     public abstract float getPlaybackSpeed();
 
-    public abstract boolean getSkipSilence();
+    public abstract FeedPreferences.SkipSilence getSkipSilence();
 
     /**
      * Sets the playback volume.

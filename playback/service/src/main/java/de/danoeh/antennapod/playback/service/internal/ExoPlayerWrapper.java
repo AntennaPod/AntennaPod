@@ -32,6 +32,12 @@ import androidx.media3.common.Player;
 import androidx.media3.exoplayer.SeekParameters;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.common.AudioAttributes;
+import androidx.media3.exoplayer.audio.AudioCapabilities;
+import androidx.media3.exoplayer.audio.AudioSink;
+import androidx.media3.exoplayer.audio.DefaultAudioSink;
+import androidx.media3.exoplayer.audio.DefaultAudioSink.DefaultAudioProcessorChain;
+import androidx.media3.exoplayer.audio.SilenceSkippingAudioProcessor;
+import androidx.media3.exoplayer.audio.SonicAudioProcessor;
 import androidx.media3.exoplayer.source.MediaSource;
 import androidx.media3.exoplayer.source.ProgressiveMediaSource;
 import androidx.media3.exoplayer.source.TrackGroupArray;
@@ -51,6 +57,7 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.danoeh.antennapod.net.common.HttpCredentialEncoder;
 import de.danoeh.antennapod.net.common.NetworkUtils;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.Playable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -84,6 +91,8 @@ public class ExoPlayerWrapper {
     @Nullable
     private LoudnessEnhancer loudnessEnhancer = null;
 
+    private FeedPreferences.SkipSilence skipSilence = FeedPreferences.SkipSilence.OFF;
+
     ExoPlayerWrapper(Context context) {
         this.context = context;
         createPlayer();
@@ -104,7 +113,41 @@ public class ExoPlayerWrapper {
                 DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
         loadControl.setBackBuffer(UserPreferences.getRewindSecs() * 1000 + 500, true);
         trackSelector = new DefaultTrackSelector(context);
-        exoPlayer = new ExoPlayer.Builder(context, new DefaultRenderersFactory(context))
+        final int skipSilenceDurationUs;
+        switch (skipSilence) {
+        case MEDIUM: skipSilenceDurationUs = 300_000; break;
+        case AGGRESSIVE: skipSilenceDurationUs = 50_000; break;
+        default: skipSilenceDurationUs = 0;
+        }
+        exoPlayer = new ExoPlayer.Builder(context, new DefaultRenderersFactory(context) {
+            @Override
+            protected AudioSink buildAudioSink(
+                    Context context,
+                    boolean enableFloatOutput,
+                    boolean enableAudioTrackPlaybackParams,
+                    boolean enableOffload) {
+                // https://github.com/google/ExoPlayer/blob/r2.14.2/library/core/src/main/java/com/google/android/exoplayer2/DefaultRenderersFactory.java#L637
+                return new DefaultAudioSink.Builder()
+                        .setAudioCapabilities(AudioCapabilities.getCapabilities(context))
+                        .setAudioProcessorChain(
+                                new DefaultAudioProcessorChain(
+                                        new SilenceSkippingAudioProcessor(
+                                                skipSilenceDurationUs,
+                                                skipSilenceDurationUs,
+                                                SilenceSkippingAudioProcessor.DEFAULT_SILENCE_THRESHOLD_LEVEL
+                                        ),
+                                        new SonicAudioProcessor()
+                                )
+                        )
+                        .setEnableFloatOutput(enableFloatOutput)
+                        .setEnableAudioTrackPlaybackParams(enableAudioTrackPlaybackParams)
+                        .setOffloadMode(
+                                enableOffload
+                                        ? DefaultAudioSink.OFFLOAD_MODE_ENABLED_GAPLESS_REQUIRED
+                                        : DefaultAudioSink.OFFLOAD_MODE_DISABLED)
+                        .build();
+            }
+        })
                 .setTrackSelector(trackSelector)
                 .setLoadControl(loadControl.build())
                 .build();
@@ -155,7 +198,8 @@ public class ExoPlayerWrapper {
                 initLoudnessEnhancer(audioSessionId);
             }
         });
-        simpleCache = new SimpleCache(new File(context.getCacheDir(), "streaming"),
+        if (simpleCache != null)
+            simpleCache = new SimpleCache(new File(context.getCacheDir(), "streaming"),
                 new LeastRecentlyUsedCacheEvictor(50 * 1024 * 1024), new StandaloneDatabaseProvider(context));
         initLoudnessEnhancer(exoPlayer.getAudioSessionId());
     }
@@ -168,8 +212,11 @@ public class ExoPlayerWrapper {
         return playbackParameters.speed;
     }
 
-    public boolean getCurrentSkipSilence() {
-        return exoPlayer.getSkipSilenceEnabled();
+    public FeedPreferences.SkipSilence getCurrentSkipSilence() {
+        if (!exoPlayer.getSkipSilenceEnabled()) {
+            return FeedPreferences.SkipSilence.OFF;
+        }
+        return this.skipSilence;
     }
 
     public int getDuration() {
@@ -269,9 +316,20 @@ public class ExoPlayerWrapper {
         exoPlayer.setVideoSurfaceHolder(sh);
     }
 
-    public void setPlaybackParams(float speed, boolean skipSilence) {
+    public void setPlaybackParams(float speed, FeedPreferences.SkipSilence skipSilence) {
         playbackParameters = new PlaybackParameters(speed, playbackParameters.pitch);
-        exoPlayer.setSkipSilenceEnabled(skipSilence);
+        // update skip silence duration in audio pipeline
+        if (skipSilence != FeedPreferences.SkipSilence.OFF && skipSilence != this.skipSilence) {
+            this.skipSilence = skipSilence;
+            final boolean wasPlaying = isPlaying();
+            final int position = getCurrentPosition();
+            exoPlayer.release();
+            createPlayer();
+            if (mediaSource != null) prepare();
+            exoPlayer.seekTo(position);
+            if (wasPlaying) exoPlayer.play();
+        }
+        exoPlayer.setSkipSilenceEnabled(skipSilence != FeedPreferences.SkipSilence.OFF);
         exoPlayer.setPlaybackParameters(playbackParameters);
     }
 
