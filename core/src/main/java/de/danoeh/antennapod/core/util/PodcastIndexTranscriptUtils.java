@@ -9,7 +9,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import de.danoeh.antennapod.parser.transcript.*;
+import de.danoeh.antennapod.parser.transcript.PodcastIndexTranscriptParser;
 
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.model.feed.FeedMedia;
