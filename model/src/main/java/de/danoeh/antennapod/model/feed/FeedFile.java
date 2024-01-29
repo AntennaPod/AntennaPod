@@ -78,7 +78,6 @@ public abstract class FeedFile extends FeedComponent {
         return file_url;
     }
 
-
     /**
      * Changes the file_url of this FeedFile. Setting this value to
      * null will also set the downloaded-attribute to false.
