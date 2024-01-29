@@ -11,6 +11,14 @@ public class Transcript {
         segmentsMap.put(segment.getStartTime(), segment);
     }
 
+    public void replace(Long k1, Long k2) {
+        Map.Entry<Long, TranscriptSegment> entry1 = (Map.Entry<Long, TranscriptSegment>) segmentsMap.floorEntry(k1);
+        if (entry1 != null) {
+            segmentsMap.remove(entry1.getKey());
+            segmentsMap.put(k2, entry1.getValue());
+        }
+    }
+
     public TranscriptSegment getSegmentAtTime(long time) {
         if (segmentsMap.floorEntry(time) == null) {
             return null;
@@ -22,14 +30,17 @@ public class Transcript {
         return segmentsMap.size();
     }
 
-    public Map.Entry<Long, TranscriptSegment> getEntryAfterTime(long time) {
+    public Map.Entry<Long, TranscriptSegment> getSegmentAfterTime(long time) {
+        if (segmentsMap.ceilingEntry(time) == null) {
+            return null;
+        }
         return segmentsMap.ceilingEntry(time);
     }
 
-    public TranscriptSegment remove(Map.Entry<Long, TranscriptSegment> entry) {
-        if (entry == null) {
+    public TranscriptSegment remove(TranscriptSegment seg) {
+        if (seg == null) {
             return null;
         }
-        return segmentsMap.remove(entry.getKey());
+        return segmentsMap.remove(seg.getStartTime());
     }
 }

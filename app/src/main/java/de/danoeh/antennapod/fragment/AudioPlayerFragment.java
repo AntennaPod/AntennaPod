@@ -301,14 +301,20 @@ public class AudioPlayerFragment extends Fragment implements
             return;
         }
         duration = controller.getDuration();
-        updatePosition(new PlaybackPositionEvent(media.getPosition(), media.getDuration()));
+        int pos = updatePosition(new PlaybackPositionEvent(media.getPosition(), media.getDuration()));
         updatePlaybackSpeedButton(new SpeedChangedEvent(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media)));
         setChapterDividers(media);
         setupOptionsMenu(media);
     }
 
+    private void updateTranscript(Playable media, int pos) {
+        CoverFragment coverFragment = (CoverFragment)  getChildFragmentManager().findFragmentByTag("f" + POS_COVER);
+        if (coverFragment != null) {
+            coverFragment.updateTranscript(media, pos);
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    @SuppressWarnings("unused")
     public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
         if (event.isCancelled() || event.wasJustEnabled()) {
             AudioPlayerFragment.this.loadMediaInfo(false);
@@ -359,9 +365,9 @@ public class AudioPlayerFragment extends Fragment implements
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void updatePosition(PlaybackPositionEvent event) {
+    public int updatePosition(PlaybackPositionEvent event) {
         if (controller == null || txtvPosition == null || txtvLength == null || sbPosition == null) {
-            return;
+            return Playable.INVALID_TIME;
         }
 
         TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
@@ -372,7 +378,7 @@ public class AudioPlayerFragment extends Fragment implements
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
         if (currentPosition == Playable.INVALID_TIME || duration == Playable.INVALID_TIME) {
             Log.w(TAG, "Could not react to position observer update because of invalid time");
-            return;
+            return Playable.INVALID_TIME;
         }
         txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
         txtvPosition.setContentDescription(getString(R.string.position,
@@ -392,6 +398,10 @@ public class AudioPlayerFragment extends Fragment implements
             float progress = ((float) event.getPosition()) / event.getDuration();
             sbPosition.setProgress((int) (progress * sbPosition.getMax()));
         }
+
+        updateTranscript(controller.getMedia(), currentPosition);
+
+        return currentPosition;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

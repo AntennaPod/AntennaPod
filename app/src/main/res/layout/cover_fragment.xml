@@ -70,8 +70,24 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textIsSelectable="false"
             android:textSize="@dimen/text_size_small"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="14sp"
             tools:text="Episode" />
+
+        <TextView
+            android:id="@+id/txtvTranscript"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14sp"
+            android:ellipsize="end"
+            android:fontFamily="serif-monospace"
+            android:gravity="center_horizontal"
+            android:maxLines="2"
+            android:minLines="2"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="@dimen/text_size_small"
+            android:visibility="visible" />
 
     </LinearLayout>
 

@@ -5,14 +5,13 @@ public class TranscriptSegment {
     private final long endTime;
     private final String words;
     private final String speaker;
-    private final Boolean trimmed;
+    private Boolean trimmed = false;
 
     public TranscriptSegment(long start, long end, String w, String s) {
         startTime = start;
         endTime = end;
         words = w;
         speaker = s;
-        trimmed = false;
     }
 
     public long getStartTime() {
@@ -27,11 +26,15 @@ public class TranscriptSegment {
         return words;
     }
 
-    public Boolean isTrimmed() {
+    public String getSpeaker() {
+        return speaker;
+    }
+
+    public Boolean getTrimmed() {
         return trimmed;
     }
 
-    public String getSpeaker() {
-        return speaker;
+    public Boolean setTrimmed(Boolean flag) {
+        return trimmed = flag;
     }
 }
