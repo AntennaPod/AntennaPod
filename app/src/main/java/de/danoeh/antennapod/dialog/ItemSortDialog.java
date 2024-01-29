@@ -42,6 +42,7 @@ public class ItemSortDialog extends BottomSheetDialogFragment {
         onAddItem(R.string.filename, SortOrder.EPISODE_FILENAME_A_Z, SortOrder.EPISODE_FILENAME_Z_A, true);
         onAddItem(R.string.random, SortOrder.RANDOM, SortOrder.RANDOM, true);
         onAddItem(R.string.smart_shuffle, SortOrder.SMART_SHUFFLE_OLD_NEW, SortOrder.SMART_SHUFFLE_NEW_OLD, false);
+        onAddItem(R.string.marked_as_played_label, SortOrder.MARKED_PLAYED_YES, SortOrder.MARKED_PLAYED_NO, true);
     }
 
     protected void onAddItem(int title, SortOrder ascending, SortOrder descending, boolean ascendingIsDefault) {

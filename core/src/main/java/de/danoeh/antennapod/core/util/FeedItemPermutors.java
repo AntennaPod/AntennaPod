@@ -78,6 +78,11 @@ public class FeedItemPermutors {
             case SIZE_LARGE_SMALL:
                 comparator = (f1, f2) -> Long.compare(size(f2), size(f1));
                 break;
+            case MARKED_PLAYED_NO:
+                comparator = (f1, f2) -> Boolean.compare(f2.isPlayed(), f1.isPlayed());
+                break;
+            case MARKED_PLAYED_YES:
+                comparator = (f1, f2) -> Boolean.compare(f1.isPlayed(), f2.isPlayed());
         }
 
         if (comparator != null) {

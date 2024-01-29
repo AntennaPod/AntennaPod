@@ -377,7 +377,8 @@ public class CompletedDownloadsFragment extends Fragment
         @Override
         protected void onAddItem(int title, SortOrder ascending, SortOrder descending, boolean ascendingIsDefault) {
             if (ascending == SortOrder.DATE_OLD_NEW || ascending == SortOrder.DURATION_SHORT_LONG
-                    || ascending == SortOrder.EPISODE_TITLE_A_Z || ascending == SortOrder.SIZE_SMALL_LARGE) {
+                    || ascending == SortOrder.EPISODE_TITLE_A_Z || ascending == SortOrder.SIZE_SMALL_LARGE
+                    || ascending == SortOrder.MARKED_PLAYED_YES) {
                 super.onAddItem(title, ascending, descending, ascendingIsDefault);
             }
         }

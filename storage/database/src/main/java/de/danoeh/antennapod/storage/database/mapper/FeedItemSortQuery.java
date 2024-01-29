@@ -19,6 +19,12 @@ public class FeedItemSortQuery {
             case DATE_NEW_OLD:
                 sortQuery = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_PUBDATE + " " + "DESC";
                 break;
+            case MARKED_PLAYED_NO:
+                sortQuery = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_READ + " " + "ASC";
+                break;
+            case MARKED_PLAYED_YES:
+                sortQuery = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_READ + " " + "DESC";
+                break;
             case DURATION_SHORT_LONG:
                 sortQuery = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_DURATION + " " + "ASC";
                 break;
