@@ -23,6 +23,12 @@ import com.google.android.exoplayer2.SeekParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.database.ExoDatabaseProvider;
+import com.google.android.exoplayer2.audio.AudioCapabilities;
+import com.google.android.exoplayer2.audio.AudioSink;
+import com.google.android.exoplayer2.audio.DefaultAudioSink;
+import com.google.android.exoplayer2.audio.DefaultAudioSink.DefaultAudioProcessorChain;
+import com.google.android.exoplayer2.audio.SilenceSkippingAudioProcessor;
+import com.google.android.exoplayer2.audio.SonicAudioProcessor;
 import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.mp3.Mp3Extractor;
@@ -101,7 +107,31 @@ public class ExoPlayerWrapper {
                 DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
         loadControl.setBackBuffer(UserPreferences.getRewindSecs() * 1000 + 500, true);
         trackSelector = new DefaultTrackSelector(context);
-        exoPlayer = new SimpleExoPlayer.Builder(context, new DefaultRenderersFactory(context))
+        exoPlayer = new SimpleExoPlayer.Builder(context, new DefaultRenderersFactory(context) {
+            @Override
+            protected AudioSink buildAudioSink(
+                    Context context,
+                    boolean enableFloatOutput,
+                    boolean enableAudioTrackPlaybackParams,
+                    boolean enableOffload) {
+                // https://github.com/google/ExoPlayer/blob/r2.14.2/library/core/src/main/java/com/google/android/exoplayer2/DefaultRenderersFactory.java#L637
+                return new DefaultAudioSink(
+                        AudioCapabilities.getCapabilities(context),
+                        new DefaultAudioProcessorChain(
+                            new SilenceSkippingAudioProcessor(
+                                SilenceSkippingAudioProcessor.DEFAULT_MINIMUM_SILENCE_DURATION_US,
+                                /* paddingSilenceUs */ 50_000,
+                                SilenceSkippingAudioProcessor.DEFAULT_SILENCE_THRESHOLD_LEVEL
+                            ),
+                            new SonicAudioProcessor()
+                        ),
+                        enableFloatOutput,
+                        enableAudioTrackPlaybackParams,
+                        enableOffload
+                            ? DefaultAudioSink.OFFLOAD_MODE_ENABLED_GAPLESS_REQUIRED
+                            : DefaultAudioSink.OFFLOAD_MODE_DISABLED);
+            }
+        })
                 .setTrackSelector(trackSelector)
                 .setLoadControl(loadControl.build())
                 .build();
