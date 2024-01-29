@@ -9,11 +9,11 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import de.danoeh.antennapod.parser.transcript.*;
 
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.Transcript;
-import de.danoeh.antennapod.parser.feed.PodcastIndexTranscriptParser;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -69,7 +69,7 @@ public class PodcastIndexTranscriptUtils {
         }
 
         if (media.getItem().getPodcastIndexTranscriptText() != null) {
-            return PodcastIndexTranscriptParser.parse(media.getItem().getPodcastIndexTranscriptText(), type);
+            new PodcastIndexTranscriptParser.parse(media.getItem().getPodcastIndexTranscriptText(), type);
         }
 
         if (media.getTranscriptFile_url() != null) {
