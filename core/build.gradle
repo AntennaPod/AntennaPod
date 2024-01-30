@@ -32,6 +32,7 @@ dependencies {
     implementation project(':net:sync:model')
     implementation project(':parser:feed')
     implementation project(':parser:media')
+    implementation project(':parser:transcript')
     implementation project(':playback:base')
     implementation project(':playback:cast')
     implementation project(':storage:database')

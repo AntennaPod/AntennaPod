@@ -496,15 +496,6 @@ public class FeedItem extends FeedComponent implements Serializable {
         }
     }
 
-    public String getPodcastIndexTranscriptText() {
-        return podcastIndexTranscriptText;
-    }
-
-    public String setPodcastIndexTranscriptText(String str) {
-        hasTranscript = true;
-        return podcastIndexTranscriptText = str;
-    }
-
     public boolean hasTranscript() {
         return hasTranscript;
     }

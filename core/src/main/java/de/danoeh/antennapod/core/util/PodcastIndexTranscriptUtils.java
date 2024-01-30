@@ -9,8 +9,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import de.danoeh.antennapod.parser.transcript.PodcastIndexTranscriptParser;
 
+import de.danoeh.antennapod.parser.transcript.PodcastIndexTranscriptParser;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.Transcript;
@@ -68,8 +68,8 @@ public class PodcastIndexTranscriptUtils {
             return media.getItem().getTranscript();
         }
 
-        if (media.getItem().getPodcastIndexTranscriptText() != null) {
-            new PodcastIndexTranscriptParser.parse(media.getItem().getPodcastIndexTranscriptText(), type);
+        if (media.getItem().hasTranscript()) {
+            return media.getItem().getTranscript();
         }
 
         if (media.getTranscriptFile_url() != null) {
@@ -91,9 +91,8 @@ public class PodcastIndexTranscriptUtils {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                media.getItem().setPodcastIndexTranscriptText(transcriptStr);
                 Transcript t = PodcastIndexTranscriptParser.parse(
-                        media.getItem().getPodcastIndexTranscriptText(),
+                        transcriptStr,
                         type);
                 media.getItem().setTranscript(t);
                 return t;
@@ -106,8 +105,7 @@ public class PodcastIndexTranscriptUtils {
                     url,
                     false);
             if (t != null) {
-                // TODO
-                media.getItem().setPodcastIndexTranscriptText(t);
+                // TODO do we need to save the raw text?
                 Transcript transcript = PodcastIndexTranscriptParser.parse(t, type);
                 media.getItem().setTranscript(transcript);
                 return transcript;
