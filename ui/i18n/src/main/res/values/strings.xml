@@ -578,7 +578,7 @@
     <string name="database_import_summary">Import AntennaPod database from another device</string>
     <string name="opml_import_label">OPML import</string>
     <string name="opml_add_podcast_label">Import podcast list (OPML)</string>
-    <string name="opml_reader_error">An error has occurred while reading the OPML document:</string>
+    <string name="opml_reader_error">An error has occurred while reading the file. Make sure that you have actually selected an OPML file and that the file is valid.</string>
     <string name="opml_import_error_no_file">No file selected!</string>
     <string name="select_all_label">Select all</string>
     <string name="deselect_all_label">Deselect all</string>
