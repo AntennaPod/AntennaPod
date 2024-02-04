@@ -25,11 +25,4 @@ public class Transcript {
     public Map.Entry<Long, TranscriptSegment> getEntryAfterTime(long time) {
         return segmentsMap.ceilingEntry(time);
     }
-
-    public TranscriptSegment remove(Map.Entry<Long, TranscriptSegment> entry) {
-        if (entry == null) {
-            return null;
-        }
-        return segmentsMap.remove(entry.getKey());
-    }
 }

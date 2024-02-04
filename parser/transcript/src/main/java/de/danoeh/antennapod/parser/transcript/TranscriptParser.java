@@ -4,7 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import de.danoeh.antennapod.model.feed.Transcript;
 
-public class PodcastIndexTranscriptParser {
+public class TranscriptParser {
+    static final long MIN_SPAN = 1000L; // merge short segments together to form a span of 1 second
 
     public static Transcript parse(String str, String type) {
         if (str == null || StringUtils.isBlank(str)) {
@@ -12,7 +13,7 @@ public class PodcastIndexTranscriptParser {
         }
 
         if ("application/json".equals(type)) {
-            return PodcastIndexJsonTranscriptParser.parse(str);
+            return JsonTranscriptParser.parse(str);
         }
 
         if ("application/srt".equals(type) || "application/srr".equals(type) || "application/x-subrip".equals(type)) {

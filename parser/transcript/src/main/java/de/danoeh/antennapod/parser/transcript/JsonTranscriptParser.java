@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.parser.transcript;
 
-import android.util.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -9,11 +8,7 @@ import org.jsoup.internal.StringUtil;
 import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
 
-public class PodcastIndexJsonTranscriptParser {
-    static String TAG = "PodcastIndexJsonTranscriptParser";
-    // merge short segments together to form a span of 1 second
-    static long minSpan = 1000L;
-
+public class JsonTranscriptParser {
     public static Transcript parse(String jsonStr) {
         try {
             Transcript transcript = new Transcript();
@@ -42,20 +37,18 @@ public class PodcastIndexJsonTranscriptParser {
                 String body = jsonObject.optString("body");
                 segmentBody += body + " ";
 
-                if (duration >= minSpan) {
+                if (duration >= TranscriptParser.MIN_SPAN) {
                     segmentBody = StringUtils.trim(segmentBody);
                     transcript.addSegment(new TranscriptSegment(segmentStartTime, endTime, segmentBody, speaker));
-                    Log.d(TAG, "JSON " + segmentBody);
                     duration = 0L;
                     segmentBody = "";
                     segmentStartTime = -1L;
                 }
             }
 
-            if (! StringUtil.isBlank(segmentBody)) {
+            if (!StringUtil.isBlank(segmentBody)) {
                 segmentBody = StringUtils.trim(segmentBody);
                 transcript.addSegment(new TranscriptSegment(segmentStartTime, endTime, segmentBody, speaker));
-                Log.d(TAG, "JSON [last]" + segmentBody);
             }
 
             if (transcript.getSegmentCount() > 0) {
