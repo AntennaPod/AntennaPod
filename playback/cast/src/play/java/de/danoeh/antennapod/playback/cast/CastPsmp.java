@@ -428,6 +428,12 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     }
 
     @Override
+    public boolean getSkipSilence() {
+        // Don't think this is supported
+        return false;
+    }
+
+    @Override
     public void setVolume(float volumeLeft, float volumeRight) {
         Log.d(TAG, "Setting the Stream volume on Remote Media Player");
         remoteMediaClient.setStreamVolume(volumeLeft);
