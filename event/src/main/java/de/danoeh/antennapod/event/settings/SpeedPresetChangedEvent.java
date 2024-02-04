@@ -14,6 +14,7 @@ public class SpeedPresetChangedEvent {
     public float getSpeed() {
         return speed;
     }
+
     public Boolean getSkipSilence() {
         return skipSilence;
     }
