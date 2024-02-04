@@ -81,28 +81,32 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     }
 
     /**
-     * Starts or prepares playback of the specified Playable object. If another Playable object is already being played, the currently playing
-     * episode will be stopped and replaced with the new Playable object. If the Playable object is already being played, the method will
-     * not do anything.
+     * Starts or prepares playback of the specified Playable object.
+     * If another Playable object is already being played, the currently playing
+     * episode will be stopped and replaced with the new Playable object.
+     * If the Playable object is already being played, the method will not do anything.
      * Whether playback starts immediately depends on the given parameters. See below for more details.
      * <p/>
      * States:
-     * During execution of the method, the object will be in the INITIALIZING state. The end state depends on the given parameters.
+     * During execution of the method, the object will be in the INITIALIZING state.
+     * The end state depends on the given parameters.
      * <p/>
-     * If 'prepareImmediately' is set to true, the method will go into PREPARING state and after that into PREPARED state. If
-     * 'startWhenPrepared' is set to true, the method will additionally go into PLAYING state.
+     * If 'prepareImmediately' is true, the method will go into PREPARING state and after that into PREPARED state.
+     * If 'startWhenPrepared' is set to true, the method will additionally go into PLAYING state.
      * <p/>
-     * If an unexpected error occurs while loading the Playable's metadata or while setting the MediaPlayers data source, the object
-     * will enter the ERROR state.
+     * If an unexpected error occurs while loading the Playable's metadata or while setting the MediaPlayers data
+     * source, the object will enter the ERROR state.
      * <p/>
      * This method is executed on an internal executor service.
      *
      * @param playable           The Playable object that is supposed to be played. This parameter must not be null.
-     * @param stream             The type of playback. If false, the Playable object MUST provide access to a locally available file via
-     *                           getLocalMediaUrl. If true, the Playable object MUST provide access to a resource that can be streamed by
+     * @param stream             The type of playback. If false, the Playable object MUST provide access to a locally
+     *                           available file via getLocalMediaUrl.
+     *                           If true, the Playable object MUST provide access to a resource that can be streamed by
      *                           the Android MediaPlayer via getStreamUrl.
-     * @param startWhenPrepared  Sets the 'startWhenPrepared' flag. This flag determines whether playback will start immediately after the
-     *                           episode has been prepared for playback. Setting this flag to true does NOT mean that the episode will be prepared
+     * @param startWhenPrepared  Sets the 'startWhenPrepared' flag. This flag determines whether playback will start
+     *                           immediately after the episode has been prepared for playback.
+     *                           Setting this flag to true does NOT mean that the episode will be prepared
      *                           for playback immediately (see 'prepareImmediately' parameter for more details)
      * @param prepareImmediately Set to true if the method should also prepare the episode for playback.
      */
@@ -118,8 +122,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     }
 
     /**
-     * Internal implementation of playMediaObject. This method has an additional parameter that allows the caller to force a media player reset even if
-     * the given playable parameter is the same object as the currently playing media.
+     * Internal implementation of playMediaObject. This method has an additional parameter that allows the caller to
+     * force a media player reset even if the given playable parameter is the same object as the currently playing media
      * <p/>
      * This method requires the playerLock and is executed on the caller's thread.
      *
@@ -134,7 +138,9 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 return;
             } else {
                 // stop playback of this episode
-                if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PLAYING || playerStatus == PlayerStatus.PREPARED) {
+                if (playerStatus == PlayerStatus.PAUSED
+                        || playerStatus == PlayerStatus.PLAYING
+                        || playerStatus == PlayerStatus.PREPARED) {
                     mediaPlayer.stop();
                 }
                 // set temporarily to pause in order to update list with current position
@@ -161,7 +167,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         try {
             callback.ensureMediaInfoLoaded(media);
             callback.onMediaChanged(false);
-            setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media), PlaybackSpeedUtils.getCurrentSkipSilencePreference(media));
+            setPlaybackParams(
+                    PlaybackSpeedUtils.getCurrentPlaybackSpeed(media),
+                    PlaybackSpeedUtils.getCurrentSkipSilencePreference(media)
+            );
             if (stream) {
                 if (playable instanceof FeedMedia) {
                     FeedMedia feedMedia = (FeedMedia) playable;
@@ -212,7 +221,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 Log.d(TAG, "Resuming/Starting playback");
                 acquireWifiLockIfNecessary();
 
-                setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media), PlaybackSpeedUtils.getCurrentSkipSilencePreference(media));
+                setPlaybackParams(
+                        PlaybackSpeedUtils.getCurrentPlaybackSpeed(media),
+                        PlaybackSpeedUtils.getCurrentSkipSilencePreference(media)
+                );
                 setVolume(1.0f, 1.0f);
 
                 if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {

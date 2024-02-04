@@ -75,7 +75,7 @@ public final class PlaybackSpeedUtils {
             }
         }
 
-        if (skipSilence == null){
+        if (skipSilence == null) {
             skipSilence = UserPreferences.isSkipSilence();
         }
 

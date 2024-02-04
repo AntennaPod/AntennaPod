@@ -154,7 +154,9 @@ public class ExoPlayerWrapper {
         return playbackParameters.speed;
     }
 
-    public boolean getCurrentSkipSilence() {return exoPlayer.getSkipSilenceEnabled(); }
+    public boolean getCurrentSkipSilence() {
+        return exoPlayer.getSkipSilenceEnabled();
+    }
 
     public int getDuration() {
         if (exoPlayer.getDuration() == C.TIME_UNSET) {

@@ -251,9 +251,10 @@ public class FeedSettingsFragment extends Fragment {
                 });
                 float speed = feedPreferences.getFeedPlaybackSpeed();
                 Boolean skipSilence = feedPreferences.getFeedSkipSilence();
-                viewBinding.useGlobalCheckbox.setChecked(speed == FeedPreferences.SPEED_USE_GLOBAL);
-                viewBinding.seekBar.updateSpeed(speed == FeedPreferences.SPEED_USE_GLOBAL ? 1 : speed);
-                viewBinding.skipSilenceFeed.setChecked(speed != FeedPreferences.SPEED_USE_GLOBAL && skipSilence != null && skipSilence);
+                boolean isGlobal = speed == FeedPreferences.SPEED_USE_GLOBAL;
+                viewBinding.useGlobalCheckbox.setChecked(isGlobal);
+                viewBinding.seekBar.updateSpeed(isGlobal ? 1 : speed);
+                viewBinding.skipSilenceFeed.setChecked(!isGlobal && skipSilence != null && skipSilence);
                 new MaterialAlertDialogBuilder(getContext())
                         .setTitle(R.string.playback_speed)
                         .setView(viewBinding.getRoot())
@@ -265,8 +266,11 @@ public class FeedSettingsFragment extends Fragment {
                                     ? null : viewBinding.skipSilenceFeed.isChecked();
                             feedPreferences.setFeedSkipSilence(newSkipSilence);
                             DBWriter.setFeedPreferences(feedPreferences);
-                            EventBus.getDefault().post(
-                                    new SpeedPresetChangedEvent(feedPreferences.getFeedPlaybackSpeed(), feed.getId(), feedPreferences.getFeedSkipSilence()));
+                            EventBus.getDefault().post(new SpeedPresetChangedEvent(
+                                    feedPreferences.getFeedPlaybackSpeed(),
+                                    feed.getId(),
+                                    feedPreferences.getFeedSkipSilence()
+                            ));
                         })
                         .setNegativeButton(R.string.cancel_label, null)
                         .show();
