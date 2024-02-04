@@ -30,6 +30,7 @@ include ':net:sync:service'
 
 include ':parser:feed'
 include ':parser:media'
+include ':parser:transcript'
 
 include ':playback:base'
 include ':playback:cast'
