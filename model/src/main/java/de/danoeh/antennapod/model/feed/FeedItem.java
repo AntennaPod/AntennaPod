@@ -46,6 +46,7 @@ public class FeedItem implements Serializable {
     private String podcastIndexTranscriptUrl;
     private String podcastIndexTranscriptType;
     private String podcastIndexTranscriptText;
+    private Transcript transcript;
 
     private int state;
     public static final int NEW = -1;
@@ -461,6 +462,14 @@ public class FeedItem implements Serializable {
                 System.out.println("Invalid format for transcript " + type);
                 break;
         }
+    }
+
+    public Transcript getTranscript() {
+        return transcript;
+    }
+
+    public void setTranscript(Transcript t) {
+        transcript = t;
     }
 
     public String getPodcastIndexTranscriptText() {
