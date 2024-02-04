@@ -175,14 +175,12 @@ public class PlaybackServiceNotificationBuilder {
         ArrayList<Integer> compactActionList = new ArrayList<>();
 
         int numActions = 0; // we start and 0 and then increment by 1 for each call to addAction
-        // always let them rewind
+
         PendingIntent rewindButtonPendingIntent = getPendingIntentForMediaAction(
                 KeyEvent.KEYCODE_MEDIA_REWIND, numActions);
         notification.addAction(R.drawable.ic_notification_fast_rewind, context.getString(R.string.rewind_label),
                 rewindButtonPendingIntent);
-        if (UserPreferences.showRewindOnCompactNotification()) {
-            compactActionList.add(numActions);
-        }
+        compactActionList.add(numActions);
         numActions++;
 
         if (playerStatus == PlayerStatus.PLAYING) {
@@ -205,19 +203,24 @@ public class PlaybackServiceNotificationBuilder {
                 KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, numActions);
         notification.addAction(R.drawable.ic_notification_fast_forward, context.getString(R.string.fast_forward_label),
                 ffButtonPendingIntent);
-        if (UserPreferences.showFastForwardOnCompactNotification()) {
-            compactActionList.add(numActions);
-        }
+        compactActionList.add(numActions);
         numActions++;
 
-        PendingIntent skipButtonPendingIntent = getPendingIntentForMediaAction(
-                KeyEvent.KEYCODE_MEDIA_NEXT, numActions);
-        notification.addAction(R.drawable.ic_notification_skip, context.getString(R.string.skip_episode_label),
-                skipButtonPendingIntent);
-        if (UserPreferences.showSkipOnCompactNotification()) {
-            compactActionList.add(numActions);
+        if (UserPreferences.showNextChapterOnFullNotification() && playable.getChapters() != null) {
+            PendingIntent nextChapterPendingIntent = getPendingIntentForCustomMediaAction(
+                    PlaybackService.CUSTOM_ACTION_NEXT_CHAPTER, numActions);
+            notification.addAction(R.drawable.ic_notification_next_chapter, context.getString(R.string.next_chapter),
+                    nextChapterPendingIntent);
+            numActions++;
         }
-        numActions++;
+
+        if (UserPreferences.showSkipOnFullNotification()) {
+            PendingIntent skipButtonPendingIntent = getPendingIntentForMediaAction(
+                    KeyEvent.KEYCODE_MEDIA_NEXT, numActions);
+            notification.addAction(R.drawable.ic_notification_skip, context.getString(R.string.skip_episode_label),
+                    skipButtonPendingIntent);
+            numActions++;
+        }
 
         PendingIntent stopButtonPendingIntent = getPendingIntentForMediaAction(
                 KeyEvent.KEYCODE_MEDIA_STOP, numActions);
@@ -232,6 +235,20 @@ public class PlaybackServiceNotificationBuilder {
         Intent intent = new Intent(context, PlaybackService.class);
         intent.setAction("MediaCode" + keycodeValue);
         intent.putExtra(MediaButtonReceiver.EXTRA_KEYCODE, keycodeValue);
+
+        if (Build.VERSION.SDK_INT >= 26) {
+            return PendingIntent.getForegroundService(context, requestCode, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        } else {
+            return PendingIntent.getService(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT
+                    | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+        }
+    }
+
+    private PendingIntent getPendingIntentForCustomMediaAction(String action, int requestCode) {
+        Intent intent = new Intent(context, PlaybackService.class);
+        intent.setAction("MediaAction" + action);
+        intent.putExtra(MediaButtonReceiver.EXTRA_CUSTOM_ACTION, action);
 
         if (Build.VERSION.SDK_INT >= 26) {
             return PendingIntent.getForegroundService(context, requestCode, intent,
