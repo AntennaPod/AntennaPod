@@ -64,7 +64,12 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
     private static final String PREF_CURRENTLY_PLAYING_TEMPORARY_PLAYBACK_SPEED
             = "de.danoeh.antennapod.preferences.temporaryPlaybackSpeed";
 
-    // Todo?? have pref for temporary skip silence?
+    /**
+     * A temporary playback speed which overrides the per-feed skip silence for the currently playing
+     * media. Considered unset if set to null;
+     */
+    private static final String PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE
+            = "de.danoeh.antennapod.preferences.temporarySkipSilence";
 
     /**
      * Value of PREF_CURRENTLY_PLAYING_MEDIA if no media is playing.
@@ -124,6 +129,11 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
         return prefs.getFloat(PREF_CURRENTLY_PLAYING_TEMPORARY_PLAYBACK_SPEED, SPEED_USE_GLOBAL);
     }
 
+    public static Boolean getCurrentlyPlayingTemporarySkipSilence() {
+        return prefs.contains(PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE)
+                ? prefs.getBoolean(PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE, false) : null;
+    }
+
     public static void writeNoMediaPlaying() {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putLong(PREF_CURRENTLY_PLAYING_MEDIA_TYPE, NO_MEDIA_PLAYING);
@@ -171,9 +181,16 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
         editor.apply();
     }
 
-    public static void clearCurrentlyPlayingTemporaryPlaybackSpeed() {
+    public static void setCurrentlyPlayingTemporarySkipSilence(boolean skipSilence) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE, skipSilence);
+        editor.apply();
+    }
+
+    public static void clearCurrentlyPlayingTemporaryPlaybackSettings() {
         SharedPreferences.Editor editor = prefs.edit();
         editor.remove(PREF_CURRENTLY_PLAYING_TEMPORARY_PLAYBACK_SPEED);
+        editor.remove(PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE);
         editor.apply();
     }
 

@@ -37,6 +37,7 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
     private final List<Float> selectedSpeeds;
     private PlaybackSpeedSeekBar speedSeekBar;
     private Chip addCurrentSpeedChip;
+    private CheckBox skipSilenceCheckbox;
 
     public VariableSpeedDialog() {
         DecimalFormatSymbols format = new DecimalFormatSymbols(Locale.US);
@@ -51,11 +52,14 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
             @Override
             public void loadMediaInfo() {
                 updateSpeed(new SpeedChangedEvent(controller.getCurrentPlaybackSpeedMultiplier()));
+                updateSkipSilence(controller.getCurrentPlaybackSkipSilence());
             }
         };
         controller.init();
         EventBus.getDefault().register(this);
         updateSpeed(new SpeedChangedEvent(controller.getCurrentPlaybackSpeedMultiplier()));
+        updateSkipSilence(controller.getCurrentPlaybackSkipSilence());
+
     }
 
     @Override
@@ -70,6 +74,11 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
     public void updateSpeed(SpeedChangedEvent event) {
         speedSeekBar.updateSpeed(event.getNewSpeed());
         addCurrentSpeedChip.setText(String.format(Locale.getDefault(), "%1$.2f", event.getNewSpeed()));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateSkipSilence(boolean skipSilence) {
+        skipSilenceCheckbox.setChecked(skipSilence);
     }
 
     @Nullable
@@ -97,9 +106,9 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         addCurrentSpeedChip.setCloseIconContentDescription(getString(R.string.add_preset));
         addCurrentSpeedChip.setOnClickListener(v -> addCurrentSpeed());
 
-        final CheckBox skipSilence = root.findViewById(R.id.skipSilence);
-        skipSilence.setChecked(UserPreferences.isSkipSilence());
-        skipSilence.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        skipSilenceCheckbox = root.findViewById(R.id.skipSilence);
+        skipSilenceCheckbox.setChecked(UserPreferences.isSkipSilence());
+        skipSilenceCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             UserPreferences.setSkipSilence(isChecked);
             controller.setSkipSilence(isChecked);
         });

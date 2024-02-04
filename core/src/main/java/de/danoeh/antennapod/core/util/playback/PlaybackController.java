@@ -419,6 +419,14 @@ public abstract class PlaybackController {
         }
     }
 
+    public boolean getCurrentPlaybackSkipSilence() {
+        if (playbackService != null) {
+            return playbackService.getCurrentSkipSilence();
+        } else {
+            return PlaybackSpeedUtils.getCurrentSkipSilencePreference(getMedia());
+        }
+    }
+
     public List<String> getAudioTracks() {
         if (playbackService == null) {
             return Collections.emptyList();

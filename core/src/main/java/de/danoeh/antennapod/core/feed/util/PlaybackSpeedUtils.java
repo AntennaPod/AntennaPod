@@ -60,10 +60,9 @@ public final class PlaybackSpeedUtils {
         MediaType mediaType = null;
 
         if (media != null) {
-//            playbackSpeed = PlaybackPreferences.getCurrentlyPlayingTemporaryPlaybackSpeed();
+            skipSilence = PlaybackPreferences.getCurrentlyPlayingTemporarySkipSilence();
 
-//            if (playbackSpeed == SPEED_USE_GLOBAL && media instanceof FeedMedia) {
-            if (media instanceof FeedMedia) {
+            if (skipSilence == null && media instanceof FeedMedia) {
                 FeedItem item = ((FeedMedia) media).getItem();
                 if (item != null) {
                     Feed feed = item.getFeed();

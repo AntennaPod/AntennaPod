@@ -741,7 +741,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         if (!playable.getIdentifier().equals(PlaybackPreferences.getCurrentlyPlayingFeedMediaId())) {
-            PlaybackPreferences.clearCurrentlyPlayingTemporaryPlaybackSpeed();
+            PlaybackPreferences.clearCurrentlyPlayingTemporaryPlaybackSettings();
         }
 
         mediaPlayer.playMediaObject(playable, stream, true, true);
@@ -1030,7 +1030,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     private void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
         Log.d(TAG, "Playback ended");
-        PlaybackPreferences.clearCurrentlyPlayingTemporaryPlaybackSpeed();
+        PlaybackPreferences.clearCurrentlyPlayingTemporaryPlaybackSettings();
         if (stopPlaying) {
             taskManager.cancelPositionSaver();
             cancelPositionObserver();
@@ -1562,8 +1562,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             if (((FeedMedia) getPlayable()).getItem().getFeed().getId() == event.getFeedId()) {
                 if (event.getSpeed() == SPEED_USE_GLOBAL) {
                     setSpeed(UserPreferences.getPlaybackSpeed(getPlayable().getMediaType()));
+                    skipSilence(UserPreferences.isSkipSilence());
+
                 } else {
                     setSpeed(event.getSpeed());
+                    Boolean skipSilence = event.getSkipSilence();
+                    if (skipSilence != null) {
+                        skipSilence(skipSilence);
+                    }
                 }
             }
         }
@@ -1584,8 +1590,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
         }
     }
-
-    // Todo - set for skip silence
 
     public static MediaType getCurrentMediaType() {
         return currentMediaType;
@@ -1633,19 +1637,20 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     public void skipSilence(boolean skipSilence) {
-        // Todo - handle
+        PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(skipSilence);
+        UserPreferences.setSkipSilence(skipSilence);
         mediaPlayer.setPlaybackParams(getCurrentPlaybackSpeed(), skipSilence);
     }
 
     public float getCurrentPlaybackSpeed() {
-        if(mediaPlayer == null) {
+        if (mediaPlayer == null) {
             return 1.0f;
         }
         return mediaPlayer.getPlaybackSpeed();
     }
 
-    private boolean getCurrentSkipSilence() {
-        if(mediaPlayer == null) {
+    public boolean getCurrentSkipSilence() {
+        if (mediaPlayer == null) {
             return false;
         }
         return mediaPlayer.getSkipSilence();
