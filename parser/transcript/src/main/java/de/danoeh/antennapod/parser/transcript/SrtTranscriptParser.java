@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.parser.transcript;
 
-import android.util.Log;
-
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.internal.StringUtil;
 
@@ -15,10 +13,7 @@ import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
 
 public class SrtTranscriptParser {
-    private static String TAG = "SrtTranscriptParser";
-    private static Pattern timecodePattern = Pattern.compile("^([0-9]{2}):([0-9]{2}):([0-9]{2}),([0-9]{3})$");
-    // merge short segments together to form a span of 1 second
-    public static long minSpan = 1000L;
+    private static final Pattern TIMECODE_PATTERN = Pattern.compile("^([0-9]{2}):([0-9]{2}):([0-9]{2}),([0-9]{3})$");
 
     public static Transcript parse(String str) {
         if (StringUtils.isBlank(str)) {
@@ -30,7 +25,7 @@ public class SrtTranscriptParser {
         List<String> lines = Arrays.asList(str.split("\n"));
         Iterator<String> iter = lines.iterator();
         String speaker = "";
-        StringBuffer body = new StringBuffer("");
+        StringBuilder body = new StringBuilder();
         String line;
         String segmentBody = "";
         long startTimecode = -1L;
@@ -76,13 +71,12 @@ public class SrtTranscriptParser {
                     continue;
                 }
                 speaker = parts[0];
-                body = new StringBuffer(parts[1].strip());
+                body = new StringBuilder(parts[1].strip());
             }
             if (!StringUtil.isBlank(body.toString())) {
                 segmentBody += " " + body;
                 segmentBody = StringUtils.trim(segmentBody);
-                if (duration >= minSpan && endTimecode > spanStartTimecode) {
-                    Log.d(TAG, "SRT : " + Long.toString(spanStartTimecode) + " " + segmentBody);
+                if (duration >= TranscriptParser.MIN_SPAN && endTimecode > spanStartTimecode) {
                     transcript.addSegment(new TranscriptSegment(spanStartTimecode,
                             endTimecode,
                             segmentBody,
@@ -91,13 +85,11 @@ public class SrtTranscriptParser {
                     spanStartTimecode = -1L;
                     segmentBody = "";
                 }
-                body = new StringBuffer("");
+                body = new StringBuilder();
             }
         }
 
         if (!StringUtil.isBlank(segmentBody) && endTimecode > spanStartTimecode) {
-            Log.d(TAG, "SRT : " + Long.toString(spanStartTimecode) + " " + segmentBody);
-
             segmentBody = StringUtils.trim(segmentBody);
             transcript.addSegment(new TranscriptSegment(spanStartTimecode,
                     endTimecode,
@@ -113,18 +105,14 @@ public class SrtTranscriptParser {
 
     // Time format 00:00:00,000
     static long parseTimecode(String timecode) {
-        Matcher matcher = timecodePattern.matcher(timecode);
-        if (! matcher.matches()) {
+        Matcher matcher = TIMECODE_PATTERN.matcher(timecode);
+        if (!matcher.matches()) {
             return -1;
         }
-        int hours;
-        hours = Integer.parseInt(matcher.group(1));
-        int minutes;
-        minutes = Integer.parseInt(matcher.group(2));
-        int seconds;
-        seconds = Integer.parseInt(matcher.group(3));
-        int milliseconds;
-        milliseconds = Integer.parseInt(matcher.group(4));
+        long hours = Integer.parseInt(matcher.group(1));
+        long minutes = Integer.parseInt(matcher.group(2));
+        long seconds = Integer.parseInt(matcher.group(3));
+        long milliseconds = Integer.parseInt(matcher.group(4));
         return (hours * 60 * 60 * 1000) + (minutes * 60 * 1000) + (seconds * 1000) + milliseconds;
     }
 }

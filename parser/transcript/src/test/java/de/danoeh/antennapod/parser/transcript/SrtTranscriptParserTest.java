@@ -35,21 +35,21 @@ public class SrtTranscriptParserTest {
         String type = "application/srr";
         Transcript result;
 
-        result = PodcastIndexTranscriptParser.parse(srtStr, type);
+        result = TranscriptParser.parse(srtStr, type);
         // There isn't a segment at 800L, so go backwards and get the segment at 0L
         assertEquals(result.getSegmentAtTime(800L).getWords(), "Promoting your podcast in a new");
 
-        result = PodcastIndexTranscriptParser.parse(null, type);
+        result = TranscriptParser.parse(null, type);
         assertEquals(result, null);
 
         // blank string
         String blankStr = "";
-        result = PodcastIndexTranscriptParser.parse(blankStr, type);
+        result = TranscriptParser.parse(blankStr, type);
         assertNull(result);
 
         // All empty lines
         String allNewlinesStr = "\r\n\r\n\r\n\r\n";
-        result = PodcastIndexTranscriptParser.parse(allNewlinesStr, type);
+        result = TranscriptParser.parse(allNewlinesStr, type);
         assertEquals(result, null);
 
         // first segment has invalid time formatting, so the entire segment will be thrown out
@@ -58,7 +58,7 @@ public class SrtTranscriptParserTest {
                 + "2\n"
                 + "00:00:02,730 --> 00:00:04,600\n"
                 + "way. The latest from PogNews.";
-        result = PodcastIndexTranscriptParser.parse(srtStrBad1, type);
+        result = TranscriptParser.parse(srtStrBad1, type);
         assertEquals(result.getSegmentAtTime(2730L).getWords(), "way. The latest from PogNews.");
 
         // first segment has invalid time in end time, 2nd segment has invalid time in both start time and end time
@@ -71,22 +71,22 @@ public class SrtTranscriptParserTest {
                 + "Jane Doe says something\n"
                 + "00:00:00,000 --> 00:00:02,730\n"
                 + "Jane Doe:";
-        result = PodcastIndexTranscriptParser.parse(srtStrBad2, type);
+        result = TranscriptParser.parse(srtStrBad2, type);
         assertNull(result);
 
         // Just plain text
         String strBad3 = "John Doe: Promoting your podcast in a new\n\n"
                 + "way. The latest from PogNews.";
-        result = PodcastIndexTranscriptParser.parse(strBad3, type);
+        result = TranscriptParser.parse(strBad3, type);
         assertNull(result);
 
         // passing the wrong type
         type = "application/json";
-        result = PodcastIndexTranscriptParser.parse(srtStr, type);
+        result = TranscriptParser.parse(srtStr, type);
         assertEquals(result, null);
 
         type = "unknown";
-        result = PodcastIndexTranscriptParser.parse(srtStr, type);
+        result = TranscriptParser.parse(srtStr, type);
         assertEquals(result, null);
     }
 }

@@ -48,9 +48,7 @@ public class FeedItem extends FeedComponent implements Serializable {
     private String podcastIndexChapterUrl;
     private String podcastIndexTranscriptUrl;
     private String podcastIndexTranscriptType;
-    private boolean hasTranscript;
-    private String podcastIndexTranscriptText;
-    private Transcript transcript;
+    private Transcript transcript = null;
 
     private int state;
     public static final int NEW = -1;
@@ -496,17 +494,12 @@ public class FeedItem extends FeedComponent implements Serializable {
         }
     }
 
-    public boolean hasTranscript() {
-        return hasTranscript;
+    public Transcript getTranscript() {
+        return transcript;
     }
 
     public void setTranscript(Transcript t) {
-        hasTranscript = true;
         transcript = t;
-    }
-
-    public Transcript getTranscript() {
-        return transcript;
     }
 
     @NonNull

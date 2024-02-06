@@ -55,6 +55,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Map;
 
 import static android.widget.LinearLayout.LayoutParams.MATCH_PARENT;
@@ -70,6 +74,8 @@ public class CoverFragment extends Fragment {
     private Disposable disposable;
     private int displayedChapterIndex = -1;
     private Playable media;
+
+    static HashMap<TranscriptSegment, Boolean> trimmed = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -177,7 +183,7 @@ public class CoverFragment extends Fragment {
             return;
         }
 
-        if (! ((FeedMedia) media).getItem().hasTranscript()) {
+        if (((FeedMedia) media).getItem().getTranscript() == null) {
             viewBinding.txtvTranscript.setVisibility(View.GONE);
         } else {
             viewBinding.txtvTranscript.setVisibility(View.VISIBLE);
@@ -354,6 +360,10 @@ public class CoverFragment extends Fragment {
     }
 
     void updateTranscript(Playable media, int pos) {
+        if (trimmed == null) {
+            trimmed = new HashMap<TranscriptSegment, Boolean>();
+        }
+
         if (! (media instanceof FeedMedia)) {
             return;
         }
@@ -421,7 +431,7 @@ public class CoverFragment extends Fragment {
                     transcript.addSegment(newSeg);
                     seg = newSeg;
 
-                    seg.setTrimmed(true);
+                    trimmed.put(seg, true);
                     long duration = seg.getEndTime() - seg.getStartTime();
                     float ratio = ((float) (origLen - indexLastTwoWord) / (float) origLen);
                     TranscriptSegment nextNewSeg = new TranscriptSegment(
@@ -437,7 +447,7 @@ public class CoverFragment extends Fragment {
                     break;
                 } else {
                     // Keep on filling until we have ellipse
-                    if (seg.getTrimmed()) {
+                    if (trimmed.containsKey(seg) && trimmed.get(seg)) {
                         break;
                     }
 

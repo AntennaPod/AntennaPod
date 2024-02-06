@@ -68,7 +68,7 @@ public class PodcastIndexTranscriptUtils {
             return media.getItem().getTranscript();
         }
 
-        if (media.getItem().hasTranscript()) {
+        if (media.getItem().getTranscript() != null) {
             return media.getItem().getTranscript();
         }
 
