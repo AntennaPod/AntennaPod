@@ -402,9 +402,7 @@ public class CoverFragment extends Fragment {
                         break;
                     }
                     String firstWordsMinusLast = firstWords.substring(0, indexLastTwoWord);
-                    String lastTwoWords = firstWords.substring(indexLastTwoWord);
 
-                    String ellipsisStr  = seg.getWords().substring(indexLastWord);
                     TranscriptSegment newSeg = new TranscriptSegment(
                             seg.getStartTime(),
                             seg.getEndTime(),
@@ -413,10 +411,12 @@ public class CoverFragment extends Fragment {
                     transcript.remove(seg);
                     transcript.addSegment(newSeg);
                     seg = newSeg;
-
                     trimmed.put(seg, true);
+                    
                     long duration = seg.getEndTime() - seg.getStartTime();
                     float ratio = ((float) (origLen - indexLastTwoWord) / (float) origLen);
+                    String lastTwoWords = firstWords.substring(indexLastTwoWord);
+                    String ellipsisStr  = seg.getWords().substring(indexLastWord);
                     TranscriptSegment nextNewSeg = new TranscriptSegment(
                             nextSeg.getStartTime() - (long) (ratio * duration),
                             nextSeg.getEndTime(),
