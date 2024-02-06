@@ -4,23 +4,24 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Vibrator;
-import androidx.annotation.NonNull;
 import android.util.Log;
 
-import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
-import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
-import de.danoeh.antennapod.core.util.ChapterUtils;
-import de.danoeh.antennapod.core.widget.WidgetUpdater;
-import io.reactivex.disposables.Disposable;
+import androidx.annotation.NonNull;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
+import de.danoeh.antennapod.core.util.ChapterUtils;
+import de.danoeh.antennapod.core.widget.WidgetUpdater;
+import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.model.playback.Playable;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -173,6 +174,19 @@ public class PlaybackServiceTaskManager {
         if (isSleepTimerActive()) {
             Log.d(TAG, "Disabling sleep timer");
             sleepTimer.cancel();
+        }
+    }
+
+    /**
+     * Enables the sleep timer.
+     */
+    public synchronized void enableSleepTimer() {
+        if (!isSleepTimerActive()) {
+            Log.d(TAG, "Enabling sleep timer");
+            if (sleepTimer == null) {
+                sleepTimer = new SleepTimer(SleepTimerPreferences.timerMillis());
+            }
+            sleepTimer.restart();
         }
     }
 
