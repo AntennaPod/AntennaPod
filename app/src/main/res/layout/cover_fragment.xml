@@ -70,14 +70,14 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textIsSelectable="false"
             android:textSize="@dimen/text_size_small"
-            android:layout_marginBottom="14sp"
+            android:layout_marginBottom="12sp"
             tools:text="Episode" />
 
         <TextView
             android:id="@+id/txtvTranscript"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="14sp"
+            android:layout_marginBottom="12sp"
             android:ellipsize="end"
             android:fontFamily="serif-monospace"
             android:gravity="center_horizontal"

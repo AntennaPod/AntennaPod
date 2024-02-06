@@ -105,7 +105,6 @@ public class PodcastIndexTranscriptUtils {
                     url,
                     false);
             if (t != null) {
-                // TODO do we need to save the raw text?
                 Transcript transcript = PodcastIndexTranscriptParser.parse(t, type);
                 media.getItem().setTranscript(transcript);
                 return transcript;

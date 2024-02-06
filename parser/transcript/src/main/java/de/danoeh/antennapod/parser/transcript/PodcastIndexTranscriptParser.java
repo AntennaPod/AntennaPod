@@ -12,7 +12,7 @@ public class PodcastIndexTranscriptParser {
         }
 
         if ("application/json".equals(type)) {
-            return PodcastIndexJsonTranscriptParser.parse(str);
+            return JsonTranscriptParser.parse(str);
         }
 
         if ("application/srt".equals(type) || "application/srr".equals(type) || "application/x-subrip".equals(type)) {

@@ -56,8 +56,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -92,7 +90,6 @@ public class CoverFragment extends Fragment {
                 new ChaptersFragment().show(getChildFragmentManager(), ChaptersFragment.TAG));
         viewBinding.butPrevChapter.setOnClickListener(v -> seekToPrevChapter());
         viewBinding.butNextChapter.setOnClickListener(v -> seekToNextChapter());
-        viewBinding.txtvTranscript.setOnClickListener(v -> onTranscriptOverlay());
         return viewBinding.getRoot();
     }
 
@@ -354,12 +351,7 @@ public class CoverFragment extends Fragment {
         controller.playPause();
     }
 
-    void onTranscriptOverlay() {
-        // TT TODO
-        return;
-    }
-
-    void updateTranscript(Playable media, int pos) {
+    void displayTranscriptAtPosition(Playable media, int pos) {
         if (trimmed == null) {
             trimmed = new HashMap<TranscriptSegment, Boolean>();
         }
@@ -367,18 +359,15 @@ public class CoverFragment extends Fragment {
         if (! (media instanceof FeedMedia)) {
             return;
         }
-        // TT TODO - only get a snippet from previously saved transcript
         Transcript transcript = PodcastIndexTranscriptUtils.loadTranscript((FeedMedia) media);
         if (transcript == null) {
             return;
         }
-        Log.d(TAG, "looking for transcript at " + pos);
 
         TranscriptSegment seg = transcript.getSegmentAtTime(pos);
         if (seg != null) {
-            Log.d(TAG, "showing transcript at " + pos + " -> " + seg.getWords());
-            // TT TODO when we detect an ellipse on the textview, then remove the words from the end of the
-            //  segment until the ellipse no longer
+            //  when we detect an ellipse on the textview, then remove the words from the end of the
+            //  segment until the ellipse no longer displays
             Layout l;
             int lines = 0;
             do {
@@ -387,9 +376,6 @@ public class CoverFragment extends Fragment {
                 l = viewBinding.txtvTranscript.getLayout();
                 if (l != null) {
                     lines = l.getLineCount();
-                    //if (lines <= 1) {
-                    //   break;
-                    //}
                 } else {
                     break;
                 }
@@ -419,9 +405,6 @@ public class CoverFragment extends Fragment {
                     String lastTwoWords = firstWords.substring(indexLastTwoWord);
 
                     String ellipsisStr  = seg.getWords().substring(indexLastWord);
-                    Log.d(TAG, "sink trim ellipsis [" + ellipsisStr
-                            + "] along with {" + lastTwoWords + "}"
-                            + "from (" + seg.getWords() + ")");
                     TranscriptSegment newSeg = new TranscriptSegment(
                             seg.getStartTime(),
                             seg.getEndTime(),
@@ -451,12 +434,9 @@ public class CoverFragment extends Fragment {
                         break;
                     }
 
-                    Log.d(TAG, "start seg " + seg.getStartTime()
-                            + " next seg " + nextSeg.getStartTime());
                     if (nextSeg != null && seg.getStartTime() == nextSeg.getStartTime()) {
                         break;
                     }
-                    Log.d(TAG, "sink combining " + seg.getWords() + " + " + nextSeg.getWords());
                     TranscriptSegment newSeg = new TranscriptSegment(
                             seg.getStartTime(),
                             nextSeg.getEndTime(),
