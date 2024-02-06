@@ -12,7 +12,7 @@ import java.util.Arrays;
  *
  * @author squirrel
  *
- * Copied from: <a href="https://github.com/tcheeric/nostr-java">this repository</a>
+ * Copied and trimmed down from: <a href="https://github.com/tcheeric/nostr-java">this repository</a>
  */
 public class NostrUtil {
 
@@ -39,21 +39,6 @@ public class NostrUtil {
 
     public static byte[] bytesFromInt(int n) {
         return ByteBuffer.allocate(4).order(ByteOrder.BIG_ENDIAN).putInt(n).array();
-    }
-
-    public static byte[] bytesFromBigInteger(BigInteger n) {
-
-        byte[] b = n.toByteArray();
-
-        if (b.length == 32) {
-            return b;
-        } else if (b.length > 32) {
-            return Arrays.copyOfRange(b, b.length - 32, b.length);
-        } else {
-            byte[] buf = new byte[32];
-            System.arraycopy(b, 0, buf, buf.length - b.length, b.length);
-            return buf;
-        }
     }
 
     public static BigInteger bigIntFromBytes(byte[] b) {
