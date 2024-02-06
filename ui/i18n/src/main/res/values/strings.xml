@@ -26,7 +26,7 @@
     <string name="episode_cache_full_message">The episode cache limit has been reached. You can increase the cache size in the Settings.</string>
     <string name="years_statistics_label">Years</string>
     <string name="notification_pref_fragment">Notifications</string>
-    <string name="recently_played_episodes">Recently played episodes</string>
+    <string name="current_playing_episode">Current</string>
     <string name="antennapod_echo" translatable="false">AntennaPod Echo</string>
     <string name="antennapod_echo_year" translatable="false">AntennaPod Echo %d</string>
 
