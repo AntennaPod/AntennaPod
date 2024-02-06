@@ -412,7 +412,7 @@ public class CoverFragment extends Fragment {
                     transcript.addSegment(newSeg);
                     seg = newSeg;
                     trimmed.put(seg, true);
-                    
+
                     long duration = seg.getEndTime() - seg.getStartTime();
                     float ratio = ((float) (origLen - indexLastTwoWord) / (float) origLen);
                     String lastTwoWords = firstWords.substring(indexLastTwoWord);
