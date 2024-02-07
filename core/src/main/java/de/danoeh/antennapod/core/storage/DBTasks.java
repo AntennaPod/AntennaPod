@@ -295,17 +295,15 @@ public final class DBTasks {
                     if (action == FeedPreferences.NewEpisodesAction.GLOBAL) {
                         action = UserPreferences.getNewEpisodesAction();
                     }
-                    if ((action == FeedPreferences.NewEpisodesAction.ADD_TO_INBOX
-                            || action == FeedPreferences.NewEpisodesAction.ADD_TO_QUEUE)
-                            && (item.getPubDate() == null
-                                || priorMostRecentDate == null
-                                || priorMostRecentDate.before(item.getPubDate())
-                                || priorMostRecentDate.equals(item.getPubDate()))) {
-                        Log.d(TAG, "Marking item published on " + item.getPubDate()
+                    if (item.getPubDate() == null
+                            || priorMostRecentDate == null
+                            || priorMostRecentDate.before(item.getPubDate())
+                            || priorMostRecentDate.equals(item.getPubDate())) {
+                        if (action == FeedPreferences.NewEpisodesAction.ADD_TO_INBOX) {
+                            Log.d(TAG, "Marking item published on " + item.getPubDate()
                                 + " new, prior most recent date = " + priorMostRecentDate);
-                        item.setNew();
-
-                        if (action == FeedPreferences.NewEpisodesAction.ADD_TO_QUEUE) {
+                            item.setNew();
+                        } else if (action == FeedPreferences.NewEpisodesAction.ADD_TO_QUEUE) {
                             itemsToAddToQueue.add(item);
                         }
                     }
@@ -348,10 +346,9 @@ public final class DBTasks {
         }
 
         // We need to add to queue after items are saved to database
-        DBWriter.addQueueItem(
-                context,
-                itemsToAddToQueue.toArray(new FeedItem[itemsToAddToQueue.size()])
-        );
+        DBWriter.addQueueItem(context, itemsToAddToQueue.toArray(
+            new FeedItem[itemsToAddToQueue.size()]
+        ));
 
         adapter.close();
 
