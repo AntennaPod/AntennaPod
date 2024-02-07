@@ -453,7 +453,7 @@ public class PlaybackServiceMediaPlayerTest {
                     if (countDownLatch.getCount() == 0) {
                         fail();
                     } else if (countDownLatch.getCount() == 5) {
-                         assertEquals(PlayerStatus.INITIALIZING, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.INITIALIZING, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 4) {
                         assertEquals(PlayerStatus.INITIALIZED, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 3) {
