@@ -295,17 +295,18 @@ public final class DBTasks {
                     if (action == FeedPreferences.NewEpisodesAction.GLOBAL) {
                         action = UserPreferences.getNewEpisodesAction();
                     }
-                    if (item.getPubDate() == null
-                            || priorMostRecentDate == null
-                            || priorMostRecentDate.before(item.getPubDate())
-                            || priorMostRecentDate.equals(item.getPubDate())) {
-                        if (action == FeedPreferences.NewEpisodesAction.ADD_TO_INBOX) {
-                            Log.d(TAG, "Marking item published on " + item.getPubDate()
+                    if (action == FeedPreferences.NewEpisodesAction.ADD_TO_INBOX
+                            && (item.getPubDate() == null
+                                || priorMostRecentDate == null
+                                || priorMostRecentDate.before(item.getPubDate())
+                                || priorMostRecentDate.equals(item.getPubDate()))) {
+                        Log.d(TAG, "Marking item published on " + item.getPubDate()
                                 + " new, prior most recent date = " + priorMostRecentDate);
-                            item.setNew();
-                        } else if (action == FeedPreferences.NewEpisodesAction.ADD_TO_QUEUE) {
-                            itemsToAddToQueue.add(item);
-                        }
+                        item.setNew();
+                    }
+
+                    if (action == FeedPreferences.NewEpisodesAction.ADD_TO_QUEUE) {
+                        itemsToAddToQueue.add(item);
                     }
                 }
             }
