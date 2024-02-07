@@ -4,9 +4,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.List;
 
-class PodcastMetadataEvent extends NostrEvent {
+public class PodcastMetadataEvent extends NostrEvent {
 
-    private PodcastMetadataEvent() {
+    public PodcastMetadataEvent() {
 
     }
 
