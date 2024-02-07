@@ -245,7 +245,7 @@ public class PlaybackServiceMediaPlayerTest {
                     } else if (countDownLatch.getCount() == 4) {
                         assertEquals(PlayerStatus.INITIALIZING, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 3) {
-                        assertEquals(PlayerStatus.INITIALIZED, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.PREPARING, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 2) {
                         assertEquals(PlayerStatus.PREPARING, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 1) {
@@ -289,7 +289,7 @@ public class PlaybackServiceMediaPlayerTest {
                     } else if (countDownLatch.getCount() == 5) {
                         assertEquals(PlayerStatus.INITIALIZING, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 4) {
-                        assertEquals(PlayerStatus.INITIALIZED, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.PREPARING, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 3) {
                         assertEquals(PlayerStatus.PREPARING, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 2) {
@@ -413,7 +413,7 @@ public class PlaybackServiceMediaPlayerTest {
                     } else if (countDownLatch.getCount() == 4) {
                         assertEquals(PlayerStatus.INITIALIZING, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 3) {
-                        assertEquals(PlayerStatus.INITIALIZED, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.PREPARING, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 2) {
                         assertEquals(PlayerStatus.PREPARING, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 1) {
@@ -453,7 +453,7 @@ public class PlaybackServiceMediaPlayerTest {
                     if (countDownLatch.getCount() == 0) {
                         fail();
                     } else if (countDownLatch.getCount() == 5) {
-                        assertEquals(PlayerStatus.INITIALIZING, newInfo.playerStatus);
+                         assertEquals(PlayerStatus.INITIALIZING, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 4) {
                         assertEquals(PlayerStatus.INITIALIZED, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 3) {
