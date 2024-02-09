@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.util.nostr;
 
+import androidx.annotation.NonNull;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,7 +36,7 @@ public class NostrFilter {
         return new Builder();
     }
 
-    public String toJson() throws JSONException {
+    public JSONObject toJson() throws JSONException {
         JSONObject filterObject = new JSONObject();
         if (authors != null){
             JSONArray authorsArray = new JSONArray(authors);
@@ -48,7 +50,17 @@ public class NostrFilter {
             filterObject.put("kinds", kindsArray);
         }
 
-        return filterObject.toString();
+        return filterObject;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        try {
+            return toJson().toString();
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static class Builder {

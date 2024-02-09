@@ -12,6 +12,7 @@ public class TlvInputParser {
     /**
      * Parses data from Bech32 entities(strings) starting with 'nprofile1',
      * according to <a href="https://github.com/nostr-protocol/nips/blob/master/19.md">NIP-19</a>.
+     * Elements are stored in the order they are parsed.
      * Code copied and converted
      * from <a href="https://github.com/vitorpamplona/amethyst/blob/main/quartz/src/main/java/com/vitorpamplona/quartz/encoders/Nip19.kt">here</a>
      *
