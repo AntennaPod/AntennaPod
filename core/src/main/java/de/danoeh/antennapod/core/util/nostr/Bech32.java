@@ -83,7 +83,7 @@ public class Bech32 {
             throw new RuntimeException("Invalid null data");
         }
         // Remove trailing bit
-        data = Arrays.copyOfRange(data, 0, data.length);
+        data = Arrays.copyOfRange(data, 0, data.length - 1);
 
         return NostrUtil.bytesToHex(data);
     }
