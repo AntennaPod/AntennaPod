@@ -1282,7 +1282,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     new PlaybackStateCompat.CustomAction.Builder(
                             CUSTOM_ACTION_TOGGLE_SLEEP_TIMER,
                             getString(R.string.sleep_timer_label),
-                            R.drawable.ic_sleep
+                            R.drawable.ic_notification_sleep
                     ).build()
             );
         }
