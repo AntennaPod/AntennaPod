@@ -33,7 +33,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
-import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -477,9 +476,8 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     }
 
     private void refreshInfoBar() {
-        String info = String.format(Locale.getDefault(), "%d%s",
-                queue.size(), getString(R.string.episodes_suffix));
-        if (queue.size() > 0) {
+        String info = getResources().getQuantityString(R.plurals.num_episodes, queue.size(), queue.size());
+        if (!queue.isEmpty()) {
             long timeLeft = 0;
             for (FeedItem item : queue) {
                 float playbackSpeed = 1;
