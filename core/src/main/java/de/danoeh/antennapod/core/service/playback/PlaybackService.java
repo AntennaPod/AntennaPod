@@ -978,6 +978,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
     public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
+        updateMediaSession(mediaPlayer.getPlayerStatus());
         if (event.isOver()) {
             mediaPlayer.pause(true, true);
             mediaPlayer.setVolume(1.0f, 1.0f);
@@ -1274,11 +1275,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         if (UserPreferences.showSleepTimerOnFullNotification()) {
+            @DrawableRes int icon = R.drawable.ic_notification_sleep;
+            if (sleepTimerActive()) {
+                icon = R.drawable.ic_notification_sleep_off;
+            }
             sessionState.addCustomAction(
                     new PlaybackStateCompat.CustomAction.Builder(
                             CUSTOM_ACTION_TOGGLE_SLEEP_TIMER,
                             getString(R.string.sleep_timer_label),
-                            R.drawable.ic_notification_sleep
+                            icon
                     ).build()
             );
         }
