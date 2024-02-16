@@ -178,19 +178,6 @@ public class PlaybackServiceTaskManager {
     }
 
     /**
-     * Enables the sleep timer.
-     */
-    public synchronized void enableSleepTimer() {
-        if (!isSleepTimerActive()) {
-            Log.d(TAG, "Enabling sleep timer");
-            if (sleepTimer == null) {
-                sleepTimer = new SleepTimer(SleepTimerPreferences.timerMillis());
-            }
-            sleepTimer.restart();
-        }
-    }
-
-    /**
      * Restarts the sleep timer. If the sleep timer is not active, nothing will happen.
      */
     public synchronized void restartSleepTimer() {

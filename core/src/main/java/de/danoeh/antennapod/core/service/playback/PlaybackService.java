@@ -1158,10 +1158,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         taskManager.disableSleepTimer();
     }
 
-    public void enableSleepTimer() {
-        taskManager.enableSleepTimer();
-    }
-
     private void sendNotificationBroadcast(int type, int code) {
         Intent intent = new Intent(PlaybackServiceInterface.ACTION_PLAYER_NOTIFICATION);
         intent.putExtra(PlaybackServiceInterface.EXTRA_NOTIFICATION_TYPE, type);
@@ -1970,7 +1966,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (sleepTimerActive()) {
                     disableSleepTimer();
                 } else {
-                    enableSleepTimer();
+                    setSleepTimer(SleepTimerPreferences.timerMillis());
                 }
             }
         }
