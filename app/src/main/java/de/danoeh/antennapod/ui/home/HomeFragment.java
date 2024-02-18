@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +19,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
-import de.danoeh.antennapod.ui.home.sections.EchoSection;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -33,7 +30,6 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.databinding.HomeFragmentBinding;
@@ -41,8 +37,10 @@ import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.fragment.SearchFragment;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.echo.EchoActivity;
 import de.danoeh.antennapod.ui.home.sections.AllowNotificationsSection;
 import de.danoeh.antennapod.ui.home.sections.DownloadsSection;
+import de.danoeh.antennapod.ui.home.sections.EchoSection;
 import de.danoeh.antennapod.ui.home.sections.EpisodesSurpriseSection;
 import de.danoeh.antennapod.ui.home.sections.InboxSection;
 import de.danoeh.antennapod.ui.home.sections.QueueSection;
@@ -85,11 +83,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         updateWelcomeScreenVisibility();
 
         viewBinding.swipeRefresh.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
-        viewBinding.swipeRefresh.setOnRefreshListener(() -> {
-            FeedUpdateManager.runOnceOrAsk(requireContext());
-            new Handler(Looper.getMainLooper()).postDelayed(() -> viewBinding.swipeRefresh.setRefreshing(false),
-                    getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
-        });
+        viewBinding.swipeRefresh.setOnRefreshListener(() -> FeedUpdateManager.runOnceOrAsk(requireContext()));
 
         return viewBinding.getRoot();
     }
@@ -104,10 +98,10 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                 addSection(new AllowNotificationsSection());
             }
         }
-        if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER
-                && Calendar.getInstance().get(Calendar.YEAR) == 2023
+        if (Calendar.getInstance().get(Calendar.YEAR) == EchoActivity.RELEASE_YEAR
+                && Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER
                 && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) >= 10
-                && prefs.getInt(PREF_HIDE_ECHO, 0) != 2023) {
+                && prefs.getInt(PREF_HIDE_ECHO, 0) != EchoActivity.RELEASE_YEAR) {
             addSection(new EchoSection());
         }
 
@@ -153,8 +147,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedUpdateRunningEvent event) {
-        MenuItemUtils.updateRefreshMenuItem(viewBinding.toolbar.getMenu(),
-                R.id.refresh_item, event.isFeedUpdateRunning);
+        viewBinding.swipeRefresh.setRefreshing(event.isFeedUpdateRunning);
     }
 
     @Override

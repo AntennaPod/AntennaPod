@@ -10,8 +10,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
-import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.View;
 import androidx.annotation.NonNull;
@@ -35,6 +35,7 @@ import de.danoeh.antennapod.ui.echo.screens.FinalShareScreen;
 import de.danoeh.antennapod.ui.echo.screens.RotatingSquaresScreen;
 import de.danoeh.antennapod.ui.echo.screens.StripesScreen;
 import de.danoeh.antennapod.ui.echo.screens.WaveformScreen;
+import de.danoeh.antennapod.ui.echo.screens.WavesScreen;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -53,6 +54,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class EchoActivity extends AppCompatActivity {
+    public static final int RELEASE_YEAR = 2023;
     private static final String TAG = "EchoActivity";
     private static final int NUM_SCREENS = 7;
     private static final int SHARE_SIZE = 1000;
@@ -67,6 +69,7 @@ public class EchoActivity extends AppCompatActivity {
     private long timeTouchDown;
     private long timeLastFrame;
     private Disposable disposable;
+    private Disposable disposableFavorite;
 
     private long totalTime = 0;
     private int totalActivePodcasts = 0;
@@ -77,7 +80,8 @@ public class EchoActivity extends AppCompatActivity {
     private long queueSecondsLeft = 0;
     private long timeBetweenReleaseAndPlay = 0;
     private long oldestDate = 0;
-    private final ArrayList<Pair<String, Drawable>> favoritePods = new ArrayList<>();
+    private final ArrayList<String> favoritePodNames = new ArrayList<>();
+    private final ArrayList<Drawable> favoritePodImages = new ArrayList<>();
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -134,7 +138,7 @@ public class EchoActivity extends AppCompatActivity {
             new ShareCompat.IntentBuilder(this)
                     .setType("image/png")
                     .addStream(fileUri)
-                    .setText(getString(R.string.echo_share, 2023))
+                    .setText(getString(R.string.echo_share, RELEASE_YEAR))
                     .setChooserTitle(R.string.share_file_label)
                     .startChooser();
         } catch (Exception e) {
@@ -176,6 +180,9 @@ public class EchoActivity extends AppCompatActivity {
         if (disposable != null) {
             disposable.dispose();
         }
+        if (disposableFavorite != null) {
+            disposableFavorite.dispose();
+        }
     }
 
     private void loadScreen(int screen, boolean force) {
@@ -190,7 +197,7 @@ public class EchoActivity extends AppCompatActivity {
             switch (currentScreen) {
                 case 0:
                     viewBinding.aboveLabel.setText(R.string.echo_intro_your_year);
-                    viewBinding.largeLabel.setText(String.format(getEchoLanguage(), "%d", 2023));
+                    viewBinding.largeLabel.setText(String.format(getEchoLanguage(), "%d", RELEASE_YEAR));
                     viewBinding.belowLabel.setText(R.string.echo_intro_in_podcasts);
                     viewBinding.smallLabel.setText(R.string.echo_intro_locally);
                     currentDrawable = new BubbleScreen(this);
@@ -207,20 +214,27 @@ public class EchoActivity extends AppCompatActivity {
                     viewBinding.largeLabel.setText(String.format(getEchoLanguage(), "%d", queueSecondsLeft / 3600));
                     viewBinding.belowLabel.setText(getResources().getQuantityString(
                             R.plurals.echo_queue_hours_waiting, queueNumEpisodes, queueNumEpisodes));
-                    int daysUntil2024 = Math.max(356 - Calendar.getInstance().get(Calendar.DAY_OF_YEAR) + 1, 1);
-                    long secondsPerDay = queueSecondsLeft / daysUntil2024;
+                    Calendar dec31 = Calendar.getInstance();
+                    dec31.set(Calendar.DAY_OF_MONTH, 31);
+                    dec31.set(Calendar.MONTH, Calendar.DECEMBER);
+                    int daysUntilNextYear = Math.max(1,
+                            dec31.get(Calendar.DAY_OF_YEAR) - Calendar.getInstance().get(Calendar.DAY_OF_YEAR) + 1);
+                    long secondsPerDay = queueSecondsLeft / daysUntilNextYear;
                     String timePerDay = Converter.getDurationStringLocalized(
                             getLocalizedResources(this, getEchoLanguage()), secondsPerDay * 1000, true);
                     double hoursPerDay = (double) (secondsPerDay / 3600);
+                    int nextYear = RELEASE_YEAR + 1;
                     if (hoursPerDay < 1.5) {
                         viewBinding.aboveLabel.setText(R.string.echo_queue_title_clean);
-                        viewBinding.smallLabel.setText(getString(R.string.echo_queue_hours_clean, timePerDay, 2024));
+                        viewBinding.smallLabel.setText(
+                                getString(R.string.echo_queue_hours_clean, timePerDay, nextYear));
                     } else if (hoursPerDay <= 24) {
                         viewBinding.aboveLabel.setText(R.string.echo_queue_title_many);
-                        viewBinding.smallLabel.setText(getString(R.string.echo_queue_hours_normal, timePerDay, 2024));
+                        viewBinding.smallLabel.setText(
+                                getString(R.string.echo_queue_hours_normal, timePerDay, nextYear));
                     } else {
                         viewBinding.aboveLabel.setText(R.string.echo_queue_title_many);
-                        viewBinding.smallLabel.setText(getString(R.string.echo_queue_hours_much, timePerDay, 2024));
+                        viewBinding.smallLabel.setText(getString(R.string.echo_queue_hours_much, timePerDay, nextYear));
                     }
                     currentDrawable = new StripesScreen(this);
                     break;
@@ -257,13 +271,14 @@ public class EchoActivity extends AppCompatActivity {
                         viewBinding.smallLabel.setText(getString(R.string.echo_hoarder_comment_clean,
                                 percentagePlayed, totalActivePodcasts));
                     }
-                    currentDrawable = new StripesScreen(this);
+                    currentDrawable = new WavesScreen(this);
                     break;
                 case 5:
                     viewBinding.aboveLabel.setText("");
                     viewBinding.largeLabel.setText(R.string.echo_thanks_large);
                     if (oldestDate < jan1()) {
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy", getEchoLanguage());
+                        String skeleton = DateFormat.getBestDateTimePattern(getEchoLanguage(), "MMMM yyyy");
+                        SimpleDateFormat dateFormat = new SimpleDateFormat(skeleton, getEchoLanguage());
                         String dateFrom = dateFormat.format(new Date(oldestDate));
                         viewBinding.belowLabel.setText(getString(R.string.echo_thanks_we_are_glad_old, dateFrom));
                     } else {
@@ -277,7 +292,7 @@ public class EchoActivity extends AppCompatActivity {
                     viewBinding.largeLabel.setText("");
                     viewBinding.belowLabel.setText("");
                     viewBinding.smallLabel.setText("");
-                    currentDrawable = new FinalShareScreen(this, favoritePods);
+                    currentDrawable = new FinalShareScreen(this, favoritePodNames, favoritePodImages);
                     break;
                 default: // Keep
             }
@@ -312,7 +327,7 @@ public class EchoActivity extends AppCompatActivity {
         date.set(Calendar.MILLISECOND, 0);
         date.set(Calendar.DAY_OF_MONTH, 1);
         date.set(Calendar.MONTH, 0);
-        date.set(Calendar.YEAR, 2023);
+        date.set(Calendar.YEAR, RELEASE_YEAR);
         return date.getTimeInMillis();
     }
 
@@ -329,25 +344,11 @@ public class EchoActivity extends AppCompatActivity {
                     Collections.sort(statisticsData.feedTime, (item1, item2) ->
                             Long.compare(item2.timePlayed, item1.timePlayed));
 
-                    favoritePods.clear();
+                    favoritePodNames.clear();
                     for (int i = 0; i < 5 && i < statisticsData.feedTime.size(); i++) {
-                        BitmapDrawable cover = new BitmapDrawable(getResources(), (Bitmap) null);
-                        try {
-                            final int size = SHARE_SIZE / 3;
-                            final int radius = (i == 0) ? (size / 16) : (size / 8);
-                            cover = new BitmapDrawable(getResources(), Glide.with(this)
-                                    .asBitmap()
-                                    .load(statisticsData.feedTime.get(i).feed.getImageUrl())
-                                    .apply(new RequestOptions()
-                                            .fitCenter()
-                                            .transform(new RoundedCorners(radius)))
-                                    .submit(size, size)
-                                    .get(1, TimeUnit.SECONDS));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        favoritePods.add(new Pair<>(statisticsData.feedTime.get(i).feed.getTitle(), cover));
+                        favoritePodNames.add(statisticsData.feedTime.get(i).feed.getTitle());
                     }
+                    loadFavoritePodImages(statisticsData);
 
                     totalActivePodcasts = 0;
                     playedActivePodcasts = 0;
@@ -394,6 +395,39 @@ public class EchoActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> loadScreen(currentScreen, true),
+                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
+    void loadFavoritePodImages(DBReader.StatisticsResult statisticsData) {
+        if (disposableFavorite != null) {
+            disposableFavorite.dispose();
+        }
+        disposableFavorite = Observable.fromCallable(
+                () -> {
+                    favoritePodImages.clear();
+                    for (int i = 0; i < 5 && i < statisticsData.feedTime.size(); i++) {
+                        BitmapDrawable cover = new BitmapDrawable(getResources(), (Bitmap) null);
+                        try {
+                            final int size = SHARE_SIZE / 3;
+                            final int radius = (i == 0) ? (size / 16) : (size / 8);
+                            cover = new BitmapDrawable(getResources(), Glide.with(this)
+                                    .asBitmap()
+                                    .load(statisticsData.feedTime.get(i).feed.getImageUrl())
+                                    .apply(new RequestOptions()
+                                            .fitCenter()
+                                            .transform(new RoundedCorners(radius)))
+                                    .submit(size, size)
+                                    .get(5, TimeUnit.SECONDS));
+                        } catch (Exception e) {
+                            Log.d(TAG, "Loading cover: " + e.getMessage());
+                        }
+                        favoritePodImages.add(cover);
+                    }
+                    return statisticsData;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> { },
                         error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 }

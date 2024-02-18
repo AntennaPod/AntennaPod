@@ -261,7 +261,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             int spaceUsed = itemAccess.getNumberOfDownloadedItems()
                     - itemAccess.getReclaimableItems();
             if (epCacheSize > 0 && spaceUsed >= epCacheSize) {
-                holder.count.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_disc_full, 0);
+                holder.count.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_disc_alert, 0);
                 holder.count.setVisibility(View.VISIBLE);
                 holder.count.setOnClickListener(v ->
                         new MaterialAlertDialogBuilder(context)

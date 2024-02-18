@@ -17,6 +17,8 @@ import de.danoeh.antennapod.core.ClientConfigurator;
 public class MediaButtonReceiver extends BroadcastReceiver {
     private static final String TAG = "MediaButtonReceiver";
     public static final String EXTRA_KEYCODE = "de.danoeh.antennapod.core.service.extra.MediaButtonReceiver.KEYCODE";
+    public static final String EXTRA_CUSTOM_ACTION =
+            "de.danoeh.antennapod.core.service.extra.MediaButtonReceiver.CUSTOM_ACTION";
     public static final String EXTRA_SOURCE = "de.danoeh.antennapod.core.service.extra.MediaButtonReceiver.SOURCE";
     public static final String EXTRA_HARDWAREBUTTON
             = "de.danoeh.antennapod.core.service.extra.MediaButtonReceiver.HARDWAREBUTTON";

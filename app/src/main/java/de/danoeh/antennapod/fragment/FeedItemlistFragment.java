@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -15,31 +13,48 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
-import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 import com.joanzapata.iconify.Iconify;
 import com.leinardi.android.speeddial.SpeedDialView;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.databinding.FeedItemListFragmentBinding;
 import de.danoeh.antennapod.databinding.MultiSelectSpeedDialBinding;
 import de.danoeh.antennapod.dialog.DownloadLogDetailsDialog;
 import de.danoeh.antennapod.dialog.FeedItemFilterDialog;
+import de.danoeh.antennapod.dialog.ItemSortDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameItemDialog;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
@@ -54,11 +69,11 @@ import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
-import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 import de.danoeh.antennapod.view.ToolbarIconTintManager;
@@ -68,13 +83,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.apache.commons.lang3.Validate;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Displays a list of FeedItems.
@@ -183,11 +191,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         EventBus.getDefault().register(this);
 
         viewBinding.swipeRefresh.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
-        viewBinding.swipeRefresh.setOnRefreshListener(() -> {
-            FeedUpdateManager.runOnceOrAsk(requireContext(), feed);
-            new Handler(Looper.getMainLooper()).postDelayed(() -> viewBinding.swipeRefresh.setRefreshing(false),
-                    getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
-        });
+        viewBinding.swipeRefresh.setOnRefreshListener(() -> FeedUpdateManager.runOnceOrAsk(requireContext(), feed));
 
         loadItems();
 
@@ -240,8 +244,13 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             return;
         }
         viewBinding.toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(feed.getLink() != null);
-
-        FeedMenuHandler.onPrepareOptionsMenu(viewBinding.toolbar.getMenu(), feed);
+        viewBinding.toolbar.getMenu().findItem(R.id.refresh_complete_item).setVisible(feed.isPaged());
+        if (StringUtils.isBlank(feed.getLink())) {
+            viewBinding.toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(false);
+        }
+        if (feed.isLocalFeed()) {
+            viewBinding.toolbar.getMenu().findItem(R.id.share_item).setVisible(false);
+        }
     }
 
     @Override
@@ -260,26 +269,39 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     R.string.please_wait_for_data, Toast.LENGTH_LONG);
             return true;
         }
-        boolean feedMenuHandled = FeedMenuHandler.onOptionsItemClicked(getActivity(), item, feed);
-        if (feedMenuHandled) {
-            return true;
-        }
-        final int itemId = item.getItemId();
-        if (itemId == R.id.rename_item) {
+        if (item.getItemId() == R.id.visit_website_item) {
+            IntentUtils.openInBrowser(getContext(), feed.getLink());
+        } else if (item.getItemId() == R.id.share_item) {
+            ShareUtils.shareFeedLink(getContext(), feed);
+        } else if (item.getItemId() == R.id.refresh_item) {
+            FeedUpdateManager.runOnceOrAsk(getContext(), feed);
+        } else if (item.getItemId() == R.id.refresh_complete_item) {
+            new Thread(() -> {
+                feed.setNextPageLink(feed.getDownload_url());
+                feed.setPageNr(0);
+                try {
+                    DBWriter.resetPagedFeedPage(feed).get();
+                    FeedUpdateManager.runOnce(getContext(), feed);
+                } catch (ExecutionException | InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
+        } else if (item.getItemId() == R.id.sort_items) {
+            SingleFeedSortDialog.newInstance(feed).show(getChildFragmentManager(), "SortDialog");
+        } else if (item.getItemId() == R.id.rename_item) {
             new RenameItemDialog(getActivity(), feed).show();
-            return true;
-        } else if (itemId == R.id.remove_feed) {
+        } else if (item.getItemId() == R.id.remove_feed) {
             RemoveFeedDialog.show(getContext(), feed, () -> {
                 ((MainActivity) getActivity()).loadFragment(UserPreferences.getDefaultPage(), null);
                 // Make sure fragment is hidden before actually starting to delete
                 getActivity().getSupportFragmentManager().executePendingTransactions();
             });
-            return true;
-        } else if (itemId == R.id.action_search) {
+        } else if (item.getItemId() == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(feed.getId(), feed.getTitle()));
-            return true;
+        } else {
+            return false;
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -407,8 +429,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (!event.isFeedUpdateRunning) {
             nextPageLoader.getRoot().setVisibility(View.GONE);
         }
-        MenuItemUtils.updateRefreshMenuItem(viewBinding.toolbar.getMenu(),
-                R.id.refresh_item, event.isFeedUpdateRunning);
+        viewBinding.swipeRefresh.setRefreshing(event.isFeedUpdateRunning);
     }
 
     private void refreshHeaderView() {
@@ -590,6 +611,47 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 menu.findItem(R.id.multi_select).setVisible(true);
             }
             MenuItemUtils.setOnClickListeners(menu, FeedItemlistFragment.this::onContextItemSelected);
+        }
+    }
+
+    public static class SingleFeedSortDialog extends ItemSortDialog {
+        private static final String ARG_FEED_ID = "feedId";
+        private static final String ARG_FEED_IS_LOCAL = "isLocal";
+        private static final String ARG_SORT_ORDER = "sortOrder";
+
+        private static SingleFeedSortDialog newInstance(Feed feed) {
+            Bundle bundle = new Bundle();
+            bundle.putLong(ARG_FEED_ID, feed.getId());
+            bundle.putBoolean(ARG_FEED_IS_LOCAL, feed.isLocalFeed());
+            if (feed.getSortOrder() == null) {
+                bundle.putString(ARG_SORT_ORDER, String.valueOf(SortOrder.DATE_NEW_OLD.code));
+            } else {
+                bundle.putString(ARG_SORT_ORDER, String.valueOf(feed.getSortOrder().code));
+            }
+            SingleFeedSortDialog dialog = new SingleFeedSortDialog();
+            dialog.setArguments(bundle);
+            return dialog;
+        }
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            sortOrder = SortOrder.fromCodeString(getArguments().getString(ARG_SORT_ORDER));
+        }
+
+        @Override
+        protected void onAddItem(int title, SortOrder ascending, SortOrder descending, boolean ascendingIsDefault) {
+            if (ascending == SortOrder.DATE_OLD_NEW || ascending == SortOrder.DURATION_SHORT_LONG
+                    || ascending == SortOrder.EPISODE_TITLE_A_Z
+                    || (getArguments().getBoolean(ARG_FEED_IS_LOCAL) && ascending == SortOrder.EPISODE_FILENAME_A_Z)) {
+                super.onAddItem(title, ascending, descending, ascendingIsDefault);
+            }
+        }
+
+        @Override
+        protected void onSelectionChanged() {
+            super.onSelectionChanged();
+            DBWriter.setFeedItemSortOrder(getArguments().getLong(ARG_FEED_ID), sortOrder);
         }
     }
 }

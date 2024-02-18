@@ -63,10 +63,12 @@ import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.QuickSettingsTileService;
+import de.danoeh.antennapod.core.service.playback.PlaybackServiceTaskManager.SleepTimer;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
+import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.FeedUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
@@ -84,12 +86,12 @@ import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.event.settings.SkipIntroEndingChangedEvent;
 import de.danoeh.antennapod.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
+import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
@@ -127,6 +129,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private static final String CUSTOM_ACTION_REWIND = "action.de.danoeh.antennapod.core.service.rewind";
     private static final String CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED =
             "action.de.danoeh.antennapod.core.service.changePlaybackSpeed";
+    public static final String CUSTOM_ACTION_NEXT_CHAPTER = "action.de.danoeh.antennapod.core.service.next_chapter";
 
     /**
      * Set a max number of episodes to load for Android Auto, otherwise there could be performance issues
@@ -327,7 +330,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (rootHints != null && rootHints.getBoolean(BrowserRoot.EXTRA_RECENT)) {
             Bundle extras = new Bundle();
             extras.putBoolean(BrowserRoot.EXTRA_RECENT, true);
-            return new BrowserRoot(getResources().getString(R.string.recently_played_episodes), extras);
+            Log.d(TAG, "OnGetRoot: Returning BrowserRoot " + R.string.current_playing_episode);
+            return new BrowserRoot(getResources().getString(R.string.current_playing_episode), extras);
         }
 
         // Name visible in Android Auto
@@ -408,6 +412,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private List<MediaBrowserCompat.MediaItem> loadChildrenSynchronous(@NonNull String parentId) {
         List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
         if (parentId.equals(getResources().getString(R.string.app_name))) {
+            long currentlyPlaying = PlaybackPreferences.getCurrentPlayerStatus();
+            if (currentlyPlaying == PlaybackPreferences.PLAYER_STATUS_PLAYING
+                    || currentlyPlaying == PlaybackPreferences.PLAYER_STATUS_PAUSED) {
+                mediaItems.add(createBrowsableMediaItem(R.string.current_playing_episode, R.drawable.ic_play_48dp, 1));
+            }
             mediaItems.add(createBrowsableMediaItem(R.string.queue_label, R.drawable.ic_playlist_play_black,
                     DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.QUEUED))));
             mediaItems.add(createBrowsableMediaItem(R.string.downloads_label, R.drawable.ic_download_black,
@@ -429,11 +438,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     new FeedItemFilter(FeedItemFilter.DOWNLOADED), UserPreferences.getDownloadsSortedOrder());
         } else if (parentId.equals(getResources().getString(R.string.episodes_label))) {
             feedItems = DBReader.getEpisodes(0, MAX_ANDROID_AUTO_EPISODES_PER_FEED,
-                    new FeedItemFilter(FeedItemFilter.UNPLAYED), SortOrder.DATE_NEW_OLD);
+                    new FeedItemFilter(FeedItemFilter.UNPLAYED), UserPreferences.getAllEpisodesSortOrder());
         } else if (parentId.startsWith("FeedId:")) {
             long feedId = Long.parseLong(parentId.split(":")[1]);
-            feedItems = DBReader.getFeedItemList(DBReader.getFeed(feedId));
-        } else if (parentId.equals(getString(R.string.recently_played_episodes))) {
+            Feed feed = DBReader.getFeed(feedId);
+            feedItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(), feed.getSortOrder());
+        } else if (parentId.equals(getString(R.string.current_playing_episode))) {
             Playable playable = PlaybackPreferences.createInstanceFromPreferences(this);
             if (playable instanceof FeedMedia) {
                 feedItems = Collections.singletonList(((FeedMedia) playable).getItem());
@@ -476,9 +486,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         notificationManager.cancel(R.id.notification_streaming_confirmation);
 
         final int keycode = intent.getIntExtra(MediaButtonReceiver.EXTRA_KEYCODE, -1);
+        final String customAction = intent.getStringExtra(MediaButtonReceiver.EXTRA_CUSTOM_ACTION);
         final boolean hardwareButton = intent.getBooleanExtra(MediaButtonReceiver.EXTRA_HARDWAREBUTTON, false);
         Playable playable = intent.getParcelableExtra(PlaybackServiceInterface.EXTRA_PLAYABLE);
-        if (keycode == -1 && playable == null) {
+        if (keycode == -1 && playable == null && customAction == null) {
             Log.e(TAG, "PlaybackService was started with no arguments");
             stateManager.stopService();
             return Service.START_NOT_STICKY;
@@ -502,7 +513,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     stateManager.stopService();
                     return Service.START_NOT_STICKY;
                 }
-            } else {
+            } else if (playable != null) {
                 stateManager.validStartCommandWasReceived();
                 boolean allowStreamThisTime = intent.getBooleanExtra(
                         PlaybackServiceInterface.EXTRA_ALLOW_STREAM_THIS_TIME, false);
@@ -530,6 +541,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                                     stateManager.stopService();
                                 });
                 return Service.START_NOT_STICKY;
+            } else {
+                mediaSession.getController().getTransportControls().sendCustomAction(customAction, null);
             }
         }
 
@@ -777,6 +790,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onChapterLoaded(Playable media) {
             sendNotificationBroadcast(PlaybackServiceInterface.NOTIFICATION_TYPE_RELOAD, 0);
+            updateMediaSession(mediaPlayer.getPlayerStatus());
         }
     };
 
@@ -965,7 +979,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (event.isOver()) {
             mediaPlayer.pause(true, true);
             mediaPlayer.setVolume(1.0f, 1.0f);
-        } else if (event.getTimeLeft() < PlaybackServiceTaskManager.SleepTimer.NOTIFICATION_THRESHOLD) {
+            int newPosition = mediaPlayer.getPosition() - (int) SleepTimer.NOTIFICATION_THRESHOLD / 2;
+            newPosition = Math.max(newPosition, 0);
+            seekTo(newPosition);
+        } else if (event.getTimeLeft() < SleepTimer.NOTIFICATION_THRESHOLD) {
             final float[] multiplicators = {0.1f, 0.2f, 0.3f, 0.3f, 0.3f, 0.4f, 0.4f, 0.4f, 0.6f, 0.8f};
             float multiplicator = multiplicators[Math.max(0, (int) event.getTimeLeft() / 1000)];
             Log.d(TAG, "onSleepTimerAlmostExpired: " + multiplicator);
@@ -1244,20 +1261,35 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         WearMediaSession.addWearExtrasToAction(fastForwardBuilder);
         sessionState.addCustomAction(fastForwardBuilder.build());
 
-        sessionState.addCustomAction(
-                new PlaybackStateCompat.CustomAction.Builder(
-                        CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED,
-                        getString(R.string.playback_speed),
-                        R.drawable.ic_notification_playback_speed
+        if (UserPreferences.showPlaybackSpeedOnFullNotification()) {
+            sessionState.addCustomAction(
+                    new PlaybackStateCompat.CustomAction.Builder(
+                    CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED,
+                    getString(R.string.playback_speed),
+                    R.drawable.ic_notification_playback_speed
                 ).build()
-        );
-        sessionState.addCustomAction(
+            );
+        }
+
+        if (UserPreferences.showNextChapterOnFullNotification()) {
+            if (getPlayable() != null && getPlayable().getChapters() != null) {
+                sessionState.addCustomAction(
+                        new PlaybackStateCompat.CustomAction.Builder(
+                        CUSTOM_ACTION_NEXT_CHAPTER,
+                        getString(R.string.next_chapter), R.drawable.ic_notification_next_chapter)
+                        .build());
+            }
+        }
+
+        if (UserPreferences.showSkipOnFullNotification()) {
+            sessionState.addCustomAction(
                 new PlaybackStateCompat.CustomAction.Builder(
-                        CUSTOM_ACTION_SKIP_TO_NEXT,
-                        getString(R.string.skip_episode_label),
-                        R.drawable.ic_notification_skip
+                    CUSTOM_ACTION_SKIP_TO_NEXT,
+                    getString(R.string.skip_episode_label),
+                    R.drawable.ic_notification_skip
                 ).build()
-        );
+            );
+        }
 
         WearMediaSession.mediaSessionSetExtraForWear(mediaSession);
 
@@ -1765,6 +1797,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onPlayFromSearch(String query, Bundle extras) {
             Log.d(TAG, "onPlayFromSearch  query=" + query + " extras=" + extras.toString());
 
+            if (query.equals("")) {
+                Log.d(TAG, "onPlayFromSearch called with empty query, resuming from the last position");
+                startPlayingFromPreferences();
+                return;
+            }
+
             List<FeedItem> results = FeedSearcher.searchFeedItems(query, 0);
             if (results.size() > 0 && results.get(0).getMedia() != null) {
                 FeedMedia media = results.get(0).getMedia();
@@ -1798,6 +1836,26 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onRewind() {
             Log.d(TAG, "onRewind()");
             seekDelta(-UserPreferences.getRewindSecs() * 1000);
+        }
+
+        public void onNextChapter() {
+            List<Chapter> chapters = mediaPlayer.getPlayable().getChapters();
+            if (chapters == null) {
+                // No chapters, just fallback to next episode
+                mediaPlayer.skip();
+                return;
+            }
+
+            int nextChapter = ChapterUtils.getCurrentChapterIndex(
+                    mediaPlayer.getPlayable(), mediaPlayer.getPosition()) + 1;
+
+            if (chapters.size() < nextChapter + 1) {
+                // We are on the last chapter, just fallback to the next episode
+                mediaPlayer.skip();
+                return;
+            }
+
+            mediaPlayer.seekTo((int) chapters.get(nextChapter).getStart());
         }
 
         @Override
@@ -1872,6 +1930,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 onRewind();
             } else if (CUSTOM_ACTION_SKIP_TO_NEXT.equals(action)) {
                 mediaPlayer.skip();
+            } else if (CUSTOM_ACTION_NEXT_CHAPTER.equals(action)) {
+                onNextChapter();
             } else if (CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED.equals(action)) {
                 List<Float> selectedSpeeds = UserPreferences.getPlaybackSpeedArray();
 
