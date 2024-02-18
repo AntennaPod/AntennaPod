@@ -12,8 +12,8 @@ android {
         // Version code schema:
         // "1.2.3-beta4"    -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 3030001
-        versionName "3.3.0-beta1"
+        versionCode 3030002
+        versionName "3.3.0-beta2"
 
         def commit = ""
         try {
