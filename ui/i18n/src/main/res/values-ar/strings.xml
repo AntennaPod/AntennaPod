@@ -22,7 +22,6 @@
   <string name="episode_cache_full_message">لقد تم تجاوز الحد الأقصى لتخزين الحلقات. يمكنك رفع قيمة التخزين في الإعدادات.</string>
   <string name="years_statistics_label">السنين</string>
   <string name="notification_pref_fragment">إشعارات</string>
-  <string name="recently_played_episodes">الحلقات التي شغّلت مؤخرا</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">لم يتم العثور على %1$s</string>
   <!--SwipeActions-->
@@ -53,7 +52,10 @@
   <string name="home_downloads_title">إدارة التنزيلات</string>
   <string name="home_welcome_title">مرحبا بك في AntennaPod!</string>
   <string name="home_welcome_text">أنت لست مشتركا بأي بودكاست، أفتح الدرج لإضافة بودكاست.</string>
+  <string name="notification_permission_text">يحتاج آنتينابود إلى إذنك لكي يعرض الإشعارات. بشكل افتراضي، سيعرض آنتينابود الإشعارات إذا كان هناك شيء قيد التنزيل، أو إذا حصل خطأ.</string>
   <string name="notification_permission_denied">لقد رفضت السماح بلإشعارات</string>
+  <string name="notification_permission_deny_warning">إذا عطلت الإشعارات وحصل خطأ، قد لا تتمكن من معرفة سببه.</string>
+  <string name="deny_label">أرفض</string>
   <string name="open_settings">افتح الإعدادات</string>
   <string name="configure_home">أضبط شاشة المنزل</string>
   <!--Download Statistics fragment-->
@@ -104,11 +106,18 @@
   <string name="description_label">الوصف</string>
   <string name="shownotes_label">ملاحظات الحلقة</string>
   <string name="shownotes_contentdescription">أسحب لأعلى لقراءة ملاحظات الحلقة</string>
-  <string name="episodes_suffix">\u0020حلقات</string>
   <string name="close_label">اغلاق</string>
   <string name="retry_label">اعادة المحاولة</string>
   <string name="auto_download_label">تضمين في التنزيل التلقائي</string>
   <string name="auto_delete_label">مسح الحلقات تلقائيا</string>
+  <string name="feed_volume_adapdation">تكييف الصوت</string>
+  <string name="feed_volume_adaptation_summary">قلل أو ارفع شدة الصوت لحلقات هذه القناة: %1$s</string>
+  <string name="feed_volume_reduction_off">بدون تكييف</string>
+  <string name="feed_volume_reduction_light">تقليل خفيف</string>
+  <string name="feed_volume_reduction_heavy">تقليل شديد</string>
+  <string name="feed_volume_boost_light">زيادة خفيفة</string>
+  <string name="feed_volume_boost_medium">زيادة متوسطة</string>
+  <string name="feed_volume_boost_heavy">زيادة شديدة</string>
   <string name="feed_auto_download_always">دائما</string>
   <string name="feed_auto_download_never">ابدا</string>
   <string name="feed_new_episodes_action_add_to_inbox">اضف إلى صندوق الوارد</string>
@@ -181,7 +190,6 @@
   <string name="remove_feed_label">ازل البودكاست</string>
   <string name="share_label">مشاركة</string>
   <string name="share_file_label">مشاركة ملف</string>
-  <string name="share_rss_address_label">عنوان الـ RSS</string>
   <string name="feed_delete_confirmation_msg">نرجو تأكيد رغبتك في مسح بودكاست \"%1$s\" وكل حلقاته (بما فيها المنزلة)، وإحصاءاته.</string>
   <string name="feed_delete_confirmation_msg_batch">نرجو تأكيد رغبتك في مسح كل البودكاستات المحددة وحلقاتها (بما فيها المنزلة)، وإحصاءاتها.</string>
   <string name="feed_delete_confirmation_local_msg">نرجو تأكيد رغبتك في إزالة بودكاست \"%1$s\" وإحصاءاته. لن يتم مسح الملفات المنزلة.</string>
@@ -501,10 +509,6 @@
   <string name="pref_expandNotify_title">أولوية عالية للإشعار</string>
   <string name="pref_expandNotify_sum">هذه عادة توسع الإشعار ليظهر أزرار التشغيل.</string>
   <string name="pref_persistNotify_title">تحكم التشغيل ظاهر دائما</string>
-  <string name="pref_compact_notification_buttons_title">تعيين أزرار إشعار مضغوطة</string>
-  <string name="pref_compact_notification_buttons_sum">غير أزرار التشغيل عند إزالة الإشعار. زري تشغيل/إيقاف سيكونا دوما ظاهران.</string>
-  <string name="pref_compact_notification_buttons_dialog_title">حدد كحد أقصى %1$d عنصر</string>
-  <string name="pref_compact_notification_buttons_dialog_error">بإمكانك إختيار بحد أقصى %1$dعنصر</string>
   <string name="pref_enqueue_location_title">مكان الإضافة في لائحة الاستماع</string>
   <string name="pref_enqueue_location_sum">أضف حلقات إلى: %1$s</string>
   <string name="enqueue_location_back">خلف</string>
@@ -581,7 +585,6 @@
   <string name="database_import_summary">استوراد قاعدة بيانات AntennaPod من جهاز آخر</string>
   <string name="opml_import_label">استيراد ملف بصيغة OPML</string>
   <string name="opml_add_podcast_label">استورد قائمة بودكاستات (OPML)</string>
-  <string name="opml_reader_error">حدث خطأ أثناء قراءة مستند OPML:</string>
   <string name="opml_import_error_no_file">لم يتم اختيار أي ملف</string>
   <string name="select_all_label">اختر الكل</string>
   <string name="deselect_all_label">ألغ اختيار الكل</string>
@@ -700,6 +703,8 @@
   <string name="play_chapter">تشغيل فصل</string>
   <string name="prev_chapter">الفصل السابق</string>
   <string name="next_chapter">الفصل التالي</string>
+  <string name="shuffle_suggestions">اخلط الإقتراحات</string>
+  <string name="add_preset">أضف إعدادا مسبقا</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">تسجيل الدخول</string>
   <string name="authentication_descr">غيّر اسم المستخدم وكلمة المرور لهذا البودكاست وحلقاته.</string>
@@ -763,21 +768,6 @@
   <string name="not_paused">غير متوقف</string>
   <string name="hide_played_episodes_label">تم تشغيلها</string>
   <string name="not_played">لم يتم تشغيلها</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">عنوان (أ \u2192 ي)</string>
-  <string name="sort_title_z_a">عنوان (ي \u2192 أ)</string>
-  <string name="sort_date_new_old">تاريخ (حديث \u2192 قديم)</string>
-  <string name="sort_date_old_new">تاريخ (قديم \u2192 حديث)</string>
-  <string name="sort_duration_short_long">مدة (قصيرة \u2192 طويلة)</string>
-  <string name="sort_duration_long_short">مدة (طويلة \u2192 قصيرة)</string>
-  <string name="sort_filename_a_z">أسم الملف (A \u2192 Z)</string>
-  <string name="sort_filename_z_a">أسم الملف (Z \u2192 A)</string>
-  <string name="sort_a_z">أ \u2192 ي</string>
-  <string name="sort_z_a">ي \u2192 أ</string>
-  <string name="sort_new_old">حديث \u2192 قديم</string>
-  <string name="sort_old_new">قديم \u2192 حديث</string>
-  <string name="sort_short_long">قصيرة \u2192 طويلة</string>
-  <string name="sort_long_short">طويلة \u2192 قصيرة</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">اشمل موضع التشغيل</string>
   <string name="share_dialog_episode_website_label">صفحة وب الحلقة</string>
@@ -788,7 +778,6 @@
   <!--Audio controls-->
   <string name="audio_controls">ضوابط الصوت</string>
   <string name="playback_speed">سرعة التشغيل</string>
-  <string name="audio_effects">المؤثرات الصوتية</string>
   <string name="player_switch_to_audio_only">قم بالتبديل إلى الصوت فقط</string>
   <!--proxy settings-->
   <string name="proxy_type_label">النوع</string>

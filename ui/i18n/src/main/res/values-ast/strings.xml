@@ -51,7 +51,6 @@
   <string name="chapter_duration">Duración: %1$s</string>
   <string name="description_label">Descripción</string>
   <string name="shownotes_label">Sinopsis</string>
-  <string name="episodes_suffix">\u0020episodios</string>
   <string name="close_label">Zarrar</string>
   <string name="retry_label">Retentar</string>
   <string name="auto_download_label">Incluyir nes descargues automátiques</string>
@@ -217,9 +216,6 @@
   <string name="pref_feed_skip_ending_toast">Saltáronse los últimos %d segundos</string>
   <string name="pref_feed_skip_intro_toast">Saltáronse los primeros %d segundos</string>
   <string name="pref_fast_forward_sum">Personaliza\'l númberu de segundos que s\'avancen al calcar el botón d\'avance rápidu</string>
-  <string name="pref_compact_notification_buttons_sum">Camuda los botones de reproducción al contrayer l\'avisu. El botón de reproducir/posar siempres s\'inclúin.</string>
-  <string name="pref_compact_notification_buttons_dialog_title">Esbilla un máximu de %1$d elementos</string>
-  <string name="pref_compact_notification_buttons_dialog_error">Namás pues esbillar un máximu de %1$d elementos.</string>
   <string name="pref_enqueue_location_sum">Los episodios amiéstense: %1$s</string>
   <string name="enqueue_location_back">A lo cabero</string>
   <string name="enqueue_location_front">Al comienzu</string>
@@ -371,15 +367,6 @@
   <string name="no_media">Nun tien multimedia</string>
   <string name="hide_paused_episodes_label">En posa</string>
   <string name="hide_played_episodes_label">Reprodúxose</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">Títulu (A \u2192 Z)</string>
-  <string name="sort_title_z_a">Títulu (Z \u2192 A)</string>
-  <string name="sort_duration_short_long">Duración (Poca \u2192 Muncha)</string>
-  <string name="sort_duration_long_short">Duración (Muncha \u2192 Poca)</string>
-  <string name="sort_a_z">A \u2192 Z</string>
-  <string name="sort_z_a">Z \u2192 A</string>
-  <string name="sort_new_old">Nuevo \u2192 Vieyo</string>
-  <string name="sort_old_new">Vieyo \u2192 Nuevo</string>
   <!--Share episode dialog-->
   <string name="share_dialog_episode_website_label">Páxina web del episodiu</string>
   <string name="share_dialog_media_file_label">Ficheru multimedia</string>

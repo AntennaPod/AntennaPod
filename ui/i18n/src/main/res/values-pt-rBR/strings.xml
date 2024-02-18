@@ -22,7 +22,6 @@
   <string name="episode_cache_full_message">O limite de cache de episódios foi alcançado. Você pode aumentar o tamanho do cache em Configurações.</string>
   <string name="years_statistics_label">Anos</string>
   <string name="notification_pref_fragment">Notificações</string>
-  <string name="recently_played_episodes">Episódios reproduzidos recentemente</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" não foi encontrado</string>
   <!--SwipeActions-->
@@ -104,7 +103,6 @@
   <string name="description_label">Descrição</string>
   <string name="shownotes_label">Notas do episódio</string>
   <string name="shownotes_contentdescription">arraste para cima para ver as notas do episódio</string>
-  <string name="episodes_suffix">\u0020episódios</string>
   <string name="close_label">Fechar</string>
   <string name="retry_label">Tentar novamente</string>
   <string name="auto_download_label">Incluir em downloads automáticos</string>
@@ -163,7 +161,6 @@
   <string name="remove_feed_label">Remover podcast</string>
   <string name="share_label">Compartilhar</string>
   <string name="share_file_label">Compartilhar arquivo</string>
-  <string name="share_rss_address_label">Endereço RSS:</string>
   <string name="feed_delete_confirmation_msg">Por favor, confirme que você deseja excluir o podcast \"%1$s\", TODOS os seus episódios (incluindo os baixados) e suas estatísticas.</string>
   <string name="feed_delete_confirmation_msg_batch">Por favor, confirme que você deseja remover os podcasts selecionados, TODOS os seus episódios (incluindo os baixados) e suas estatísticas.</string>
   <string name="feed_delete_confirmation_local_msg">Por favor, confirme que você deseja remover o podcast \"%1$s\"  e suas estatísticas. Os arquivos na pasta fonte local não será excluído.</string>
@@ -443,10 +440,6 @@
   <string name="pref_expandNotify_title">Prioridade de notificação alta</string>
   <string name="pref_expandNotify_sum">Isso normalmente expande a notificação para exibir os botões de reprodução.</string>
   <string name="pref_persistNotify_title">Controles de reprodução persistentes</string>
-  <string name="pref_compact_notification_buttons_title">Definir botões de notificação compactos</string>
-  <string name="pref_compact_notification_buttons_sum">Altere os botões de reprodução quando a notificação for recolhida. O botão play / pause está sempre incluído.</string>
-  <string name="pref_compact_notification_buttons_dialog_title">Selecione no máximo %1$d itens</string>
-  <string name="pref_compact_notification_buttons_dialog_error">Você pode selecionar, no máximo, %1$d itens.</string>
   <string name="pref_enqueue_location_title">Localização na fila</string>
   <string name="pref_enqueue_location_sum">Adicionar episódios para: %1$s</string>
   <string name="enqueue_location_back">Final</string>
@@ -521,7 +514,6 @@
   <string name="database_import_summary">Importa o banco de dados AntennaPod de outro dispositivo</string>
   <string name="opml_import_label">Importação de OPML</string>
   <string name="opml_add_podcast_label">Importar lista de podcasts (OPML)</string>
-  <string name="opml_reader_error">Ocorreu um erro ao ler o documento OPML:</string>
   <string name="opml_import_error_no_file">Nenhum arquivo selecionado!</string>
   <string name="select_all_label">Selecionar todos</string>
   <string name="deselect_all_label">Remover seleção</string>
@@ -687,21 +679,6 @@
   <string name="not_paused">Não pausado</string>
   <string name="hide_played_episodes_label">Reproduzido</string>
   <string name="not_played">Não tocado</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">Título (A \u2192 Z)</string>
-  <string name="sort_title_z_a">Título (Z \u2192 A)</string>
-  <string name="sort_date_new_old">Data (Novo \u2192 Velho)</string>
-  <string name="sort_date_old_new">Data (Velho \u2192 Novo)</string>
-  <string name="sort_duration_short_long">Duração (Curta \u2192 Longa)</string>
-  <string name="sort_duration_long_short">Duração (Longa \u2192 Curta)</string>
-  <string name="sort_filename_a_z">Nome do arquivo (A \u2192 Z)</string>
-  <string name="sort_filename_z_a">Nome do arquivo (Z \u2192 A)</string>
-  <string name="sort_a_z">A \u2192 Z</string>
-  <string name="sort_z_a">Z \u2192 A</string>
-  <string name="sort_new_old">Novo \u2192 Antigo</string>
-  <string name="sort_old_new">Antigo \u2192 Novo</string>
-  <string name="sort_short_long">Curto \u2192 Longo</string>
-  <string name="sort_long_short">Longo \u2192 Curto</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Incluir posição de reprodução</string>
   <string name="share_dialog_episode_website_label">Webpage do episódio</string>

@@ -22,7 +22,6 @@
   <string name="episode_cache_full_message">Acadouse o límite de espazo na caché de episodios. Podes incrementalo nos Axustes do tamaño da caché.</string>
   <string name="years_statistics_label">Anos</string>
   <string name="notification_pref_fragment">Notificacións</string>
-  <string name="recently_played_episodes">Episodios reproducidos recentemente</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">Non se atopa \"%1$s\"</string>
   <!--SwipeActions-->
@@ -107,7 +106,6 @@
   <string name="description_label">Descrición</string>
   <string name="shownotes_label">Notas do episodio</string>
   <string name="shownotes_contentdescription">despraza hacia arriba para ler as notas</string>
-  <string name="episodes_suffix">\u0020episodios</string>
   <string name="close_label">Pechar</string>
   <string name="retry_label">Reintentar</string>
   <string name="auto_download_label">Incluír en descargas automáticas</string>
@@ -168,7 +166,6 @@
   <string name="remove_feed_label">Eliminar o podcast</string>
   <string name="share_label">Compartir</string>
   <string name="share_file_label">Compartir ficheiro</string>
-  <string name="share_rss_address_label">Enderezo RSS:</string>
   <string name="feed_delete_confirmation_msg">Confirma que queres eliminar o podcast \"%1$s\" e TODOS os seus episodios (incluídos os xa descargados) e estatísticas.</string>
   <string name="feed_delete_confirmation_msg_batch">Confirma que desexas eliminar os podcast seleccionados e TODOS os seus episodios (incluńdo os descargados) e estatísticas.</string>
   <string name="feed_delete_confirmation_local_msg">Confirma que queres eliminar o podcast \"%1$s\" e as súas estatísticas. Non se eliminarán os ficheiros no cartafol local.</string>
@@ -465,10 +462,6 @@
   <string name="pref_expandNotify_sum">Isto expande as notificacións para mostrar os botóns de reprodución</string>
   <string name="pref_persistNotify_title">Controis persistentes de reprodución</string>
   <string name="pref_persistNotify_sum">Manter a notificación e os controis de reprodución na pantalla de bloqueo cando está detida a reprodución</string>
-  <string name="pref_compact_notification_buttons_title">Establecer botóns de notificación compactos</string>
-  <string name="pref_compact_notification_buttons_sum">Cambia os botóns de reprodución cando a notificación está comprimida. O botón reproducir/pausar sempre se inclúe.</string>
-  <string name="pref_compact_notification_buttons_dialog_title">Escolle un máximo de %1$d elementos</string>
-  <string name="pref_compact_notification_buttons_dialog_error">Só podes selecionar un máximo de %1$d elementos.</string>
   <string name="pref_enqueue_location_title">Situación na cola</string>
   <string name="pref_enqueue_location_sum">Engadir episodios a: %1$s</string>
   <string name="enqueue_location_back">Atrás</string>
@@ -550,7 +543,6 @@
   <string name="database_import_summary">Importar a base de datos AntennaPod desde outro dispositivo</string>
   <string name="opml_import_label">Importar OPML</string>
   <string name="opml_add_podcast_label">Importar lista de podcast (OPML)</string>
-  <string name="opml_reader_error">Houbo un fallo ao ler o documento OPML:</string>
   <string name="opml_import_error_no_file">Non hai ficheiro seleccionado!</string>
   <string name="select_all_label">Seleccionar todo</string>
   <string name="deselect_all_label">Deseleccionar todo</string>
@@ -732,23 +724,6 @@
   <string name="not_paused">Non pausado</string>
   <string name="hide_played_episodes_label">Reproducido</string>
   <string name="not_played">Non reproducido</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">Título (A \u2192 Z)</string>
-  <string name="sort_title_z_a">Título (Z \u2192 A)</string>
-  <string name="sort_date_new_old">Data (Novo \u2192 Vello)</string>
-  <string name="sort_date_old_new">Data (Vello \u2192 Novo)</string>
-  <string name="sort_duration_short_long">Duración (Curto \u2192 Longo)</string>
-  <string name="sort_duration_long_short">Duración (Longo \u2192 Curto)</string>
-  <string name="sort_filename_a_z">Nome do ficheiro (A \u2192 Z)</string>
-  <string name="sort_filename_z_a">Nome do ficheiro (Z \u2192 A)</string>
-  <string name="sort_a_z">A \u2192 Z</string>
-  <string name="sort_z_a">Z \u2192 A</string>
-  <string name="sort_new_old">Novo \u2192 Antigo</string>
-  <string name="sort_old_new">Antigo \u2192 Novo</string>
-  <string name="sort_short_long">Curto \u2192 Longo</string>
-  <string name="sort_long_short">Longo \u2192 Curto</string>
-  <string name="sort_small_large">Pequeno \u2192 Grande</string>
-  <string name="sort_large_small">Grande \u2192 Pequeno</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Incluír posición de reprodución</string>
   <string name="share_dialog_episode_website_label">Sitio web do episodio</string>
@@ -759,7 +734,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Controis de audio</string>
   <string name="playback_speed">Velocidade de reprodución</string>
-  <string name="audio_effects">Efectos de audio</string>
   <string name="player_switch_to_audio_only">Cambiar a só audio</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tipo</string>

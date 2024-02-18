@@ -22,7 +22,6 @@
   <string name="episode_cache_full_message">تجاوز از کران انبارهٔ قسمت. می‌توانید اندازهٔ انباره را در تنظیمات افزایش دهید.</string>
   <string name="years_statistics_label">سال</string>
   <string name="notification_pref_fragment">آگاهی‌ها</string>
-  <string name="recently_played_episodes">قسمت‌های پخش شدهٔ اخیر</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">«%1$s» یافت نشد</string>
   <!--SwipeActions-->
@@ -53,7 +52,10 @@
   <string name="home_downloads_title">مدیریت موارد بارگیری‌شده</string>
   <string name="home_welcome_title">به آنتناپاد خوش‌آمدید!</string>
   <string name="home_welcome_text">شما هنوز عضو پادکستی نشده اید. منو برای اضافه کردن پادکست باز نمایید.</string>
+  <string name="notification_permission_text">AntennaPod برای نمایش اعلان‌ها به اجازه شما نیاز دارد. به‌طور پیش‌فرض، AntennaPod فقط زمانی که چیزی دانلود شده باشد و یا زمانی که مشکلی پیش می‌آید، اعلان‌ها را نشان می‌دهد.</string>
   <string name="notification_permission_denied">اجازه را رد کردید.</string>
+  <string name="notification_permission_deny_warning">اگر اعلان‌ها را غیرفعال کنید و مشکلی پیش بیاید، ممکن است نتوانید علت اشتباه را پیدا کنید.</string>
+  <string name="deny_label">رد کردن</string>
   <string name="open_settings">گشودن تنظمیات</string>
   <string name="configure_home">پیکربندی صفحه اصلی</string>
   <!--Download Statistics fragment-->
@@ -104,11 +106,18 @@
   <string name="description_label">شرح</string>
   <string name="shownotes_label">متن نمایش</string>
   <string name="shownotes_contentdescription">برای خواندن متن نمایش به سمت بالا بکشید</string>
-  <string name="episodes_suffix">\u0020قسمت</string>
   <string name="close_label">بستن</string>
   <string name="retry_label">تلاش مجدد</string>
   <string name="auto_download_label">شامل بارگیری خودکار شود</string>
   <string name="auto_delete_label">حذف خودکار قسمت</string>
+  <string name="feed_volume_adapdation">سازگارسازی صدا</string>
+  <string name="feed_volume_adaptation_summary">تغییر حجم صدا برای اپیزودهای این پادکست: %1$s</string>
+  <string name="feed_volume_reduction_off">ناسازگاری:</string>
+  <string name="feed_volume_reduction_light">کاهش اندازه‌ی روشنایی</string>
+  <string name="feed_volume_reduction_heavy">کاهش زیاد</string>
+  <string name="feed_volume_boost_light">تقویت کم</string>
+  <string name="feed_volume_boost_medium">تقویت متوسط</string>
+  <string name="feed_volume_boost_heavy">تقویت زیاد</string>
   <string name="feed_auto_download_always">همیشه</string>
   <string name="feed_auto_download_never">هیچگاه</string>
   <string name="feed_new_episodes_action_add_to_inbox">افزودن به صندوق ورودی</string>
@@ -157,7 +166,6 @@
   <string name="remove_feed_label">پاک کردن پادکست</string>
   <string name="share_label">هم‌رسانی</string>
   <string name="share_file_label">هم‌رسانی پرونده</string>
-  <string name="share_rss_address_label">نشانی خوراک:</string>
   <string name="feed_delete_confirmation_msg">لطفا تأیید کنید که می‌خواهید پادکست «%1$s» و تمامی قسمت‌ها (از جمله قسمت‌های بار گرفته)  و آمارهایش را حذف کنید.</string>
   <string name="feed_delete_confirmation_msg_batch">لطفا تأیید کنید که می‌خواهید پادکست‌های گزیده و تمامی قسمت‌ها (از جمله قسمت‌های بار گرفته) و آمارهایشان را بردارید.</string>
   <string name="feed_delete_confirmation_local_msg">لطفا تأیید کنید که می‌خواهید پادکست «%1$s» و آمارهایش را بردارید. پرونده‌ها در شاخهٔ منبع محلّی حذف نخواهند شد.</string>
@@ -179,6 +187,7 @@
   <string name="add_tag">افزودن برچسب</string>
   <string name="rename_tag_label">تغییر نام برچسب</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">بازخوانی پادکست‌ها از طریق اتصال داده تلفن همراه در تنظیمات غیرفعال است.\n\n همچنان می‌خواهید بازخوانی کنید؟</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message_vpn">برنامه VPN شما وانمود می کند که یک شبکه تلفن همراه است (اتصال اندازه گیری شده). بازخوانی پادکست‌ها از طریق اتصال داده تلفن همراه در تنظیمات غیرفعال است.\n\nبه این وجود می‌خواهید ریفرش کنید؟ اگر می خواهید این مشکل برطرف شود، با سازندگان برنامه VPN خود تماس بگیرید.</string>
   <!--actions on feeditems-->
   <string name="download_label">بارگیری</string>
   <plurals name="downloading_batch_label">
@@ -190,6 +199,7 @@
   <string name="stream_label">جریان</string>
   <string name="delete_label">حذف</string>
   <string name="delete_failed">ناتوان در حذف پرونده. شاید راه‌اندازی دوبارهٔ افزاره کمک کند.</string>
+  <string name="delete_local_failed">امکان حذف فایل وجود ندارد. سعی کنید مجددا پوشه محلی را از صفحه اطلاعات پادکست وصل کنید.</string>
   <string name="delete_episode_label">حذف قسمت</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">۱ قسمت بارگرفته حذف شد.</item>
@@ -233,6 +243,7 @@
   <string name="skip_episode_label">رد شدن از قسمت</string>
   <string name="reset_position">بازنشانی مکان پخش</string>
   <string name="no_items_selected">چیزی انتخاب نشده است</string>
+  <string name="delete_local_feed_warning_body">حذف  باعث میشود که قسمت از AntennaPod حذف شده و فایل از حافظه دستگاه شما حذف شود. و نتوان آن را دوباره از طریق AntennaPod بارگیری کرد.</string>
   <!--Download messages and labels-->
   <string name="download_successful">موفقیت‌آمیز</string>
   <string name="download_pending">بارگیری معوق</string>
@@ -251,6 +262,7 @@
   <string name="download_error_unsupported_type_html">سرور میزبان پادکست یک وب سایت ارسال کرده است و نه یک پادکست.</string>
   <string name="download_error_not_found">کارساز میزبان پادکست نمی‌داند پرونده را کجا بیابد. شاید حذف شده باشد.</string>
   <string name="download_error_connection_error">خطای اتّصال</string>
+  <string name="download_error_no_connection">اتصال برقرار نیست</string>
   <string name="download_error_unknown_host">سرور پیدا نمی شود. بررسی کنید که آیا آدرس به درستی تایپ شده است و آیا اتصال شبکه به درستی کار میکند.</string>
   <string name="download_error_unauthorized">خطای هویت‌سنجی. مطمين شوید نام کاربری و گذرواژه درستند.</string>
   <string name="download_error_file_type_type">خطای گونهٔ پرونده</string>
@@ -277,6 +289,7 @@
   <string name="authentication_notification_title">هویت‌سنجی مورد نیاز است</string>
   <string name="confirm_mobile_download_dialog_title">تأیید بارگیری همراه</string>
   <string name="confirm_mobile_download_dialog_message">بارگیری روی دادهٔ همراه در تنظیمات از کار افتاده. آنتناپاد می‌تواند قسمت را بعداً که وای‌فای موجود بود به صورت خودکار بار بگیرد.</string>
+  <string name="confirm_mobile_download_dialog_message_vpn">برنامه VPN شما وانمود می کند که یک شبکه تلفن همراه است (اتصال اندازه گیری شده). دانلود از طریق اتصال داده تلفن همراه در تنظیمات غیرفعال است. اگر می خواهید این مشکل برطرف شود، با سازندگان برنامه VPN خود تماس بگیرید.</string>
   <string name="confirm_mobile_download_dialog_download_later">بعداً بار گرفته شود</string>
   <string name="confirm_mobile_download_dialog_allow_this_time">به هر روی بار گرفته شود</string>
   <string name="confirm_mobile_streaming_notification_title">تأیید جریان همراه</string>
@@ -312,6 +325,7 @@
   <string name="feed_title">عنوان پادکست</string>
   <string name="random">تصادفی</string>
   <string name="smart_shuffle">بر زدن هوشمند</string>
+  <string name="size">اندازه</string>
   <string name="clear_queue_confirmation_msg">لطفاً تأیید کنید که می‌خواهید صف را از همهٔ قسمت‌های درونش پاک‌سازی کنید</string>
   <string name="time_left_label">زمان مانده:\u0020</string>
   <!--Variable Speed-->
@@ -366,6 +380,9 @@
   <string name="pref_followQueue_sum">پس از پایان پخش ، به مورد صف بعدی بروید</string>
   <string name="pref_auto_delete_sum">حذف قسمت هنگام تکمیل پخش</string>
   <string name="pref_auto_delete_title">حذف خودکار</string>
+  <string name="pref_auto_local_delete_title">حذف خودکار از پوشه‌های محلی</string>
+  <string name="pref_auto_local_delete_sum">پوشه های محلی را در لیست قابلیت حذف خودکار قرار دهید</string>
+  <string name="pref_auto_local_delete_dialog_body">توجه داشته باشید که برای پوشه‌های محلی، این گزینه قسمت‌ها را از AntennaPod حذف می‌کند و فایل‌های آن‌ها را از حافظه دستگاه شما نیز حذف می‌کند بطوریکه آنها را نمی توان دوباره از طریق AntennaPod بارگیری کرد. آیا حذف خودکار فعال شود؟</string>
   <string name="pref_smart_mark_as_played_sum">علامت زدن قسمت‌ها به پخش شده حتا اگر کم‌تر از مقدار مشخّصی از آن مانده باشد</string>
   <string name="pref_smart_mark_as_played_title">علامت گذاری هوشمند به پخش شده</string>
   <string name="pref_skip_keeps_episodes_sum">نگه داشتن قسمت‌ها هنگام پریدن از رویشان</string>
@@ -391,6 +408,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">وصل دوبارهٔ گوشی</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">وصل دوبارهٔ بلوتوث</string>
   <string name="pref_stream_over_download_title">ترجیح جریان</string>
+  <string name="pref_stream_over_download_sum">دکمه پخش جریان را به جای دکمه بارگیری در لیست ها نمایش بده.</string>
   <string name="pref_mobileUpdate_title">به‌روز رسانی‌های همراه</string>
   <string name="pref_mobileUpdate_sum">آنچه که باید از طریق اتصال داده تلفن همراه مجاز است را انتخاب کنید</string>
   <string name="pref_mobileUpdate_refresh">تازه سازی پادکست</string>
@@ -405,11 +423,13 @@
   <string name="pref_tinted_theme_title">رنگ‌های پویا</string>
   <string name="pref_tinted_theme_message">سازگاری رنگ‌های کاره بر اساس کاغذدیواری</string>
   <string name="pref_nav_drawer_items_title">تنظیم موارد کشوی پیمایش</string>
+  <string name="pref_nav_drawer_items_sum">تغییر موارد قابل نمایش در کشوی پیمایش</string>
   <string name="pref_nav_drawer_feed_order_title">تنظیم ترتیب اشتراک</string>
   <string name="pref_nav_drawer_feed_order_sum">تغییر ترتیب اشتراک هایتان</string>
   <string name="pref_nav_drawer_feed_counter_title">تنظیم شمارشگر اشتراک</string>
   <string name="pref_nav_drawer_feed_counter_sum">اطلاعات نمایش داده شده توسط شمارندهٔ اشتراک را تغییر دهید. همچنین اگر «ترتیب اشتراک» روی «شمارنده» تنظیم شود، بر مرتب‌سازی اشتراک‌ها نیز تأثیر می‌گذارد.</string>
   <string name="pref_automatic_download_title">بارگیری خودکار</string>
+  <string name="pref_automatic_download_sum">پیکربندی بارگیری خودکار قسمت‌ها.</string>
   <string name="pref_autodl_wifi_filter_title">فیلتر Wi-Fi را فعال کنید</string>
   <string name="pref_autodl_wifi_filter_sum">بارگیری خودکار فقط باید از طریق شبکه های Wi-Fi انتخاب شده مجاز باشد.</string>
   <string name="pref_automatic_download_on_battery_title">بارگیری زمانی که سیستم شارژ نمیشود مجاز باشد</string>
@@ -441,10 +461,7 @@
   <string name="pref_expandNotify_title">اولویت زیاد آگاهی</string>
   <string name="pref_expandNotify_sum">معمولاً آگاهی را برای نمایش دکمه های پخش می‌گستراند.</string>
   <string name="pref_persistNotify_title">واپایشگرهای پخش ثابت</string>
-  <string name="pref_compact_notification_buttons_title">تنظیم دکمه‌های آگاهی فشرده</string>
-  <string name="pref_compact_notification_buttons_sum">تغییر دکمه‌های پخش هنگام جمع شدن آگاهی. دکمهٔ پخش و مکث همواره آشکار است.</string>
-  <string name="pref_compact_notification_buttons_dialog_title">حداکثر %1$d مورد را انتخاب کنید</string>
-  <string name="pref_compact_notification_buttons_dialog_error">شما فقط می توانید حداکثر %1$d مورد را انتخاب کنید.</string>
+  <string name="pref_persistNotify_sum">نگه داشتن آگاهی و واپایش‌های صفحهٔ قفل هنگام مکث پخش.</string>
   <string name="pref_enqueue_location_title">مکان صف‌بندی</string>
   <string name="pref_enqueue_location_sum">افزودن قسمت‌ها به : %1$s</string>
   <string name="enqueue_location_back">عقب</string>
@@ -466,11 +483,14 @@
   <string name="pref_skip_silence_title">پرش از سکوت در صدا</string>
   <string name="behavior">رفتار</string>
   <string name="pref_default_page">صفحهٔ پیش‌گزیده</string>
+  <string name="pref_default_page_sum">صفحه‌ای که هنگام راه‌اندازی AntennaPod باز می‌شود.</string>
   <string name="pref_back_button_opens_drawer">دکمهٔ بارگشت کشو را می‌گشاید</string>
   <string name="pref_back_button_opens_drawer_summary">زدن دکمهٔ بارگگشت روی صفحهٔ پیش‌گزیده، گشوی ناوبری را می‌گشاید</string>
   <string name="remember_last_page">صفحه آخر را به خاطر بسپار</string>
   <string name="pref_delete_removes_from_queue_title">خذف از صف برمی‌دارد</string>
+  <string name="pref_delete_removes_from_queue_sum">برداشتن خودکار قسمت از صف هنگام حذفش.</string>
   <string name="pref_filter_feed_title">پالایهٔ اشتراک</string>
+  <string name="pref_filter_feed_sum">اشتراک های خود را در کشوی ناوبری و صفحه اشتراک ها فیلتر کنید.</string>
   <string name="subscriptions_are_filtered">اشتراک ها فیلتر می شوند.</string>
   <string name="subscriptions_counter_greater_zero">شمارنده بزرگتر از صفر</string>
   <string name="auto_downloaded">بارگیری خودکار</string>
@@ -482,6 +502,7 @@
   <string name="pref_feed_settings_dialog_msg">این تنظیم برای هر پادکست منحصر به فرد است. با باز کردن صفحه پادکست می توانید آن را تغییر دهید.</string>
   <string name="pref_contribute">مشارکت</string>
   <string name="pref_show_subscription_title">نمایش عنوان اشتراک</string>
+  <string name="pref_show_subscription_title_summary">عنوان اشتراک را در زیر تصویر جلد نمایش دهید.</string>
   <string name="pref_new_episodes_action_title">کنش قسمت جدید</string>
   <string name="pref_new_episodes_action_sum">کنشی که برای قسمت‌های جدید انجام می‌شود</string>
   <!--About screen-->
@@ -500,6 +521,7 @@
   <string name="type_to_search">برای جستجو عبارت را وارد نمایید</string>
   <string name="search_label">جستجو</string>
   <string name="no_results_for_query">هیچ نتیجه ای برای \"%1$s\" یافت نشد</string>
+  <string name="search_online">جستجوی آنلاین</string>
   <!--Synchronization-->
   <string name="sync_status_started">همگام سازی شروع شد</string>
   <string name="sync_status_episodes_upload">بارگذاری تغییرات قسمت…</string>
@@ -521,7 +543,6 @@
   <string name="database_import_summary">پایگاه داده آنتن پاد را از دستگاه دیگری وارد کنید</string>
   <string name="opml_import_label">وارد کردن OPML</string>
   <string name="opml_add_podcast_label">وارد کردن لیست پادکست (OPML)</string>
-  <string name="opml_reader_error">هنگام خواندن سند OPML خطایی رخ داده است:</string>
   <string name="opml_import_error_no_file">پرونده‌ای گزیده نشده!</string>
   <string name="select_all_label">انتخاب همه</string>
   <string name="deselect_all_label">انتخاب هیچ</string>
@@ -565,6 +586,7 @@
   </plurals>
   <string name="auto_enable_label">فعّال سازی خودکار شمارشگر معکوس خواب هنگام زدن پخش</string>
   <string name="auto_enable_label_with_times">فعّال سازی خودکار شمارشگر معکوس خواب هنگام زدن پخش بین %s و %s</string>
+  <string name="auto_enable_change_times">زمان‌های تعویض</string>
   <string name="sleep_timer_enabled_label">زمان‌سنج خواب به کار افتاد</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">گزینش فراهمگر همگام سازی</string>
@@ -622,12 +644,19 @@
   <string name="decrease_speed">کاهش سرعت</string>
   <string name="media_type_video_label">ویدئو</string>
   <string name="status_downloading_label">قسمت در حال بارگیری است</string>
+  <string name="in_queue_label">در لیست پخش</string>
+  <string name="is_favorite_label">علامتگذاری به عنوان مورد علاقه</string>
+  <string name="is_inbox_label">در صندوق ورودی</string>
+  <string name="is_played">پخش شده</string>
   <string name="load_next_page_label">صفحه بعدی را لود کن</string>
   <string name="position">موقعیت: %1$s</string>
+  <string name="remaining_time">زمان اجرا:%1$s</string>
   <string name="apply_action">حرکت را اعمال کن</string>
   <string name="play_chapter">اجرای فصل</string>
   <string name="prev_chapter">فصل قبل</string>
   <string name="next_chapter">فصل بعد</string>
+  <string name="shuffle_suggestions">نمایش پیشنهادات</string>
+  <string name="add_preset">اضافه کردن پیش تنظیم</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">احراز هویت</string>
   <string name="authentication_descr">تغییر نام کاربری و گذرواژه‌تان برای این پادکست و قسمت‌هایش</string>
@@ -691,21 +720,6 @@
   <string name="not_paused">مکث نشده</string>
   <string name="hide_played_episodes_label">پخش شد</string>
   <string name="not_played">اجرا نشده</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">عنوان (الفبایی معکوس)</string>
-  <string name="sort_title_z_a">عنوان (الفبایی)</string>
-  <string name="sort_date_new_old">تاریخ (جدید به قدیم)</string>
-  <string name="sort_date_old_new">تاریخ (قدیم به جدید)</string>
-  <string name="sort_duration_short_long">طول (کوتاه به بلند)</string>
-  <string name="sort_duration_long_short">طول (بلند به کوتاه)</string>
-  <string name="sort_filename_a_z">نام پرونده (A تا Z)</string>
-  <string name="sort_filename_z_a">نام پرونده (A تا Z)</string>
-  <string name="sort_a_z">برعکس الفبایی</string>
-  <string name="sort_z_a">الفبایی</string>
-  <string name="sort_new_old">جدید به قدیم</string>
-  <string name="sort_old_new">قدیم به جدید</string>
-  <string name="sort_short_long">کوتاه به بلند</string>
-  <string name="sort_long_short">بلند به کوتاه</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">موقعیت پخش را لحاظ کنید</string>
   <string name="share_dialog_episode_website_label">پایگاه وب قسمت</string>
@@ -716,7 +730,6 @@
   <!--Audio controls-->
   <string name="audio_controls">کنترل های صوتی</string>
   <string name="playback_speed">سرعت پخش</string>
-  <string name="audio_effects">جلوه های صوتی</string>
   <string name="player_switch_to_audio_only">تعییر به فقط صدا</string>
   <!--proxy settings-->
   <string name="proxy_type_label">نوع</string>

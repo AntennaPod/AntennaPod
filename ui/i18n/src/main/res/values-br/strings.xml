@@ -22,7 +22,6 @@
   <string name="episode_cache_full_message">Tizhet eo bet bevenn pellgargadurioù ar rannoù. Gallout a rit kreskaat ment ar c\'hrubuilh en arventennoù.</string>
   <string name="years_statistics_label">Bloavezhioù</string>
   <string name="notification_pref_fragment">Rebuzadurioù</string>
-  <string name="recently_played_episodes">Rannoù lennet nevez \'zo</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">N\'eo ket bet kavet \"%1$s\"</string>
   <!--SwipeActions-->
@@ -100,7 +99,6 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="description_label">Deskrivadur</string>
   <string name="shownotes_label">Notennoù ar rann</string>
   <string name="shownotes_contentdescription">Riklit d\'an nec\'h evit lenn notennoù ar rann</string>
-  <string name="episodes_suffix">\u0020rannoù</string>
   <string name="close_label">Serriñ</string>
   <string name="retry_label">Klask en-dro</string>
   <string name="auto_download_label">Pellgargañ emgefreek</string>
@@ -159,7 +157,6 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="rename_feed_label">Adenvel ar podskignad</string>
   <string name="remove_feed_label">Dilemel ar podskignad</string>
   <string name="share_label">Rannañ</string>
-  <string name="share_rss_address_label">Chomlec\'h RSS:</string>
   <string name="feed_remover_msg">O tilemel ar podskignad</string>
   <string name="load_complete_feed">Hizivaat ar podskignad a-bezh</string>
   <string name="multi_select">Diuzañ meur a elfenn</string>
@@ -399,9 +396,6 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="pref_fast_forward_sum">Personelaat an niver a eilennoù da lammat war-raok pa vez pouezet war an afell war-raok.</string>
   <string name="pref_rewind_sum">Dibabit ar c\'hementad a eilennoù da lammat an a-dreñv pa vez pouezet war \'lamm a-dreñv\'</string>
   <string name="pref_expandNotify_sum">Sañset e brasa ar rebuzadur evit diskouez an afelloù lenn.</string>
-  <string name="pref_compact_notification_buttons_sum">Kemmañ a ra an afelloù lenn pa vez gwasket ar rebuzadur. An afell lenn/ehan a vo diskouezet bepred.</string>
-  <string name="pref_compact_notification_buttons_dialog_title">Dibab %1$d elfenn d\'ar muiañ</string>
-  <string name="pref_compact_notification_buttons_dialog_error">Gallout a rit dibab %1$d elfenn d\'ar muiañ.</string>
   <string name="pref_enqueue_location_sum">Ouzhpennañ ar rannoù da: %1$s</string>
   <string name="enqueue_location_back">E dibenn ar roll</string>
   <string name="enqueue_location_front">E penn ar roll</string>
@@ -465,7 +459,6 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="database_import_summary">Enporzhiañ stlennvon AntennaPod adalek ur benveg all</string>
   <string name="opml_import_label">Enporzhiañ ur restr OPML</string>
   <string name="opml_add_podcast_label">Enporzhiañ ul listenn podskignadoù (OPML)</string>
-  <string name="opml_reader_error">Degouezhet ez eus bet ur fazi en ul lenn ar restr OPML</string>
   <string name="opml_import_error_no_file">Restr ebet diuzet!</string>
   <string name="select_all_label">Diuzañ an holl</string>
   <string name="deselect_all_label">Na zibab netra</string>
@@ -626,21 +619,6 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="not_paused">N\'eo ket ehanet</string>
   <string name="hide_played_episodes_label">Lennet</string>
   <string name="not_played">N\'eo ket lennet</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">Titl (A \u2192 Z)</string>
-  <string name="sort_title_z_a">Titl (Z \u2192 A)</string>
-  <string name="sort_date_new_old">Deiziad (Nevez \u2192 Kozh)</string>
-  <string name="sort_date_old_new">Deiziad (Kozh \u2192 Nevez)</string>
-  <string name="sort_duration_short_long">Padelezh (Berr \u2192 Hir)</string>
-  <string name="sort_duration_long_short">Padelezh (Hir \u2192 Berr)</string>
-  <string name="sort_filename_a_z">Anv ar restr (A \u2192 Z)</string>
-  <string name="sort_filename_z_a">Anv ar restr (Z \u2192 A)</string>
-  <string name="sort_a_z">A \u2192 Z</string>
-  <string name="sort_z_a">Z  \u2192 A</string>
-  <string name="sort_new_old">Nevez \u2192 Kozh</string>
-  <string name="sort_old_new">Kozh \u2192 Nevez</string>
-  <string name="sort_short_long">Berr \u2192 Hir</string>
-  <string name="sort_long_short">Hir \u2192 Berr</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Endelc\'her al lec\'hiadur lenn</string>
   <string name="share_dialog_episode_website_label">Lec\'hienn ar rann</string>
