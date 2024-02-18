@@ -491,7 +491,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             }
             info += " • ";
             info += getString(R.string.time_left_label);
-            info += Converter.getDurationStringLocalized(getActivity(), timeLeft);
+            info += Converter.getDurationStringLocalized(getResources(), timeLeft, false);
         }
         infoBar.setText(info);
     }
