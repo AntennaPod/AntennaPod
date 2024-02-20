@@ -122,7 +122,6 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
         automaticSearchDebouncer = new Handler(Looper.getMainLooper());
     }
 

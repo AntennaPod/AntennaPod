@@ -26,7 +26,6 @@ public class ContributorsPagerFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        setHasOptionsMenu(true);
 
         View rootView = inflater.inflate(R.layout.pager_fragment, container, false);
         ViewPager2 viewPager = rootView.findViewById(R.id.viewpager);

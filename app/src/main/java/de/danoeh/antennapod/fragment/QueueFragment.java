@@ -101,7 +101,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
         prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
     }
 
