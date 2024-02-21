@@ -347,9 +347,7 @@ public final class DBTasks {
         }
 
         // We need to add to queue after items are saved to database
-        DBWriter.addQueueItem(context, itemsToAddToQueue.toArray(
-                new FeedItem[itemsToAddToQueue.size()]
-        ));
+        DBWriter.addQueueItem(context, itemsToAddToQueue.toArray(new FeedItem[0]));
 
         adapter.close();
 
