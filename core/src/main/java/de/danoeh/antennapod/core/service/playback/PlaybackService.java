@@ -978,8 +978,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
     public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
-        updateMediaSession(mediaPlayer.getPlayerStatus());
         if (event.isOver()) {
+            updateMediaSession(mediaPlayer.getPlayerStatus());
             mediaPlayer.pause(true, true);
             mediaPlayer.setVolume(1.0f, 1.0f);
             int newPosition = mediaPlayer.getPosition() - (int) SleepTimer.NOTIFICATION_THRESHOLD / 2;
@@ -991,7 +991,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.d(TAG, "onSleepTimerAlmostExpired: " + multiplicator);
             mediaPlayer.setVolume(multiplicator, multiplicator);
         } else if (event.isCancelled()) {
+            updateMediaSession(mediaPlayer.getPlayerStatus());
             mediaPlayer.setVolume(1.0f, 1.0f);
+        } else if (event.wasJustEnabled()) {
+            updateMediaSession(mediaPlayer.getPlayerStatus());
         }
     }
 
