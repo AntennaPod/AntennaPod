@@ -23,7 +23,6 @@ jobs:
         id: vars
         run: |
           git fetch origin develop
-          echo "::set-output name=branchBaseCommit::$(git merge-base origin/develop HEAD)"
           echo "branchBaseCommit=$(git merge-base origin/develop HEAD)" >> $GITHUB_OUTPUT
       - name: Diff-Checkstyle
         run: |
