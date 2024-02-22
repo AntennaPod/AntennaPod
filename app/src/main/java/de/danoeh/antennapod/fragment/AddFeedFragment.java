@@ -147,6 +147,7 @@ public class AddFeedFragment extends Fragment {
     private void addUrl(String url) {
         Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
         intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, url);
+        intent.putExtra(OnlineFeedViewActivity.ARG_WAS_MANUAL_URL, true);
         startActivity(intent);
     }
 
@@ -161,12 +162,6 @@ public class AddFeedFragment extends Fragment {
         }
         activity.loadChildFragment(OnlineSearchFragment.newInstance(CombinedSearcher.class, query));
         viewBinding.combinedFeedSearchEditText.post(() -> viewBinding.combinedFeedSearchEditText.setText(""));
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
     }
 
     private void chooseOpmlImportPathResult(final Uri uri) {

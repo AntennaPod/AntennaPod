@@ -246,10 +246,10 @@
         <item>DownloadsSection</item>
     </string-array>
 
-    <string-array name="compact_notification_buttons_options">
-        <item>@string/rewind_label</item>
-        <item>@string/fast_forward_label</item>
+    <string-array name="full_notification_buttons_options">
         <item>@string/skip_episode_label</item>
+        <item>@string/next_chapter</item>
+        <item>@string/playback_speed</item>
     </string-array>
 
     <string-array name="default_page_values">

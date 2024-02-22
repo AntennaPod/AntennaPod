@@ -210,9 +210,6 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        if (super.onOptionsItemSelected(item)) {
-            return true;
-        }
         final int itemId = item.getItemId();
         if (itemId == R.id.discover_hide_item) {
             item.setChecked(!item.isChecked());

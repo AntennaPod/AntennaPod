@@ -56,6 +56,7 @@
         android:layout_marginStart="8dp"
         android:background="@drawable/bg_pill"
         android:paddingHorizontal="8dp"
+        android:paddingBottom="1sp"
         android:textAlignment="center"
         android:textColor="?attr/colorPrimary"
         android:textSize="16sp"

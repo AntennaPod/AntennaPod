@@ -26,7 +26,7 @@
     <string name="episode_cache_full_message">The episode cache limit has been reached. You can increase the cache size in the Settings.</string>
     <string name="years_statistics_label">Years</string>
     <string name="notification_pref_fragment">Notifications</string>
-    <string name="recently_played_episodes">Recently played episodes</string>
+    <string name="current_playing_episode">Current</string>
     <string name="antennapod_echo" translatable="false">AntennaPod Echo</string>
     <string name="antennapod_echo_year" translatable="false">AntennaPod Echo %d</string>
 
@@ -123,7 +123,6 @@
     <string name="description_label">Description</string>
     <string name="shownotes_label">Shownotes</string>
     <string name="shownotes_contentdescription">swipe up to read shownotes</string>
-    <string name="episodes_suffix">\u0020episodes</string>
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto downloads</string>
@@ -185,7 +184,6 @@
     <string name="remove_feed_label">Remove podcast</string>
     <string name="share_label">Share</string>
     <string name="share_file_label">Share file</string>
-    <string name="share_rss_address_label">RSS address:</string>
     <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\", ALL its episodes (including downloaded episodes), and its statistics.</string>
     <string name="feed_delete_confirmation_msg_batch">Please confirm that you want to remove the selected podcasts, ALL their episodes (including downloaded episodes), and its statistics.</string>
     <string name="feed_delete_confirmation_local_msg">Please confirm that you want to remove the podcast \"%1$s\" and its statistics. The files in the local source folder will not be deleted.</string>
@@ -490,10 +488,9 @@
     <string name="pref_expandNotify_sum">This usually expands the notification to show playback buttons.</string>
     <string name="pref_persistNotify_title">Persistent playback controls</string>
     <string name="pref_persistNotify_sum">Keep notification and lockscreen controls when playback is paused</string>
-    <string name="pref_compact_notification_buttons_title">Set compact notification buttons</string>
-    <string name="pref_compact_notification_buttons_sum">Change the playback buttons when the notification is collapsed. The play/pause button is always included.</string>
-    <string name="pref_compact_notification_buttons_dialog_title">Select a maximum of %1$d items</string>
-    <string name="pref_compact_notification_buttons_dialog_error">You can only select a maximum of %1$d items.</string>
+    <string name="pref_compact_notification_buttons_dialog_error_exact">You must select exactly %1$d items.</string>
+    <string name="pref_full_notification_buttons_title">Set notification buttons</string>
+    <string name="pref_full_notification_buttons_sum">Change the playback buttons on the playback notification.</string>
     <string name="pref_enqueue_location_title">Enqueue location</string>
     <string name="pref_enqueue_location_sum">Add episodes to: %1$s</string>
     <string name="enqueue_location_back">Back</string>
@@ -579,7 +576,7 @@
     <string name="database_import_summary">Import AntennaPod database from another device</string>
     <string name="opml_import_label">OPML import</string>
     <string name="opml_add_podcast_label">Import podcast list (OPML)</string>
-    <string name="opml_reader_error">An error has occurred while reading the OPML document:</string>
+    <string name="opml_reader_error">An error has occurred while reading the file. Make sure that you have actually selected an OPML file and that the file is valid.</string>
     <string name="opml_import_error_no_file">No file selected!</string>
     <string name="select_all_label">Select all</string>
     <string name="deselect_all_label">Deselect all</string>
@@ -786,7 +783,6 @@
     <!-- Audio controls -->
     <string name="audio_controls">Audio controls</string>
     <string name="playback_speed">Playback speed</string>
-    <string name="audio_effects">Audio effects</string>
     <string name="player_switch_to_audio_only">Switch to audio only</string>
 
     <!-- proxy settings -->

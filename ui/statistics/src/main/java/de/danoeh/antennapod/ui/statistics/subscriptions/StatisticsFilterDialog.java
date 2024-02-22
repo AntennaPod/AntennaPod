@@ -2,6 +2,7 @@ package de.danoeh.antennapod.ui.statistics.subscriptions;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.widget.ArrayAdapter;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -114,7 +115,8 @@ public class StatisticsFilterDialog {
         date.set(Calendar.DAY_OF_MONTH, 1);
         ArrayList<String> names = new ArrayList<>();
         ArrayList<Long> timestamps = new ArrayList<>();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
+        String skeleton = DateFormat.getBestDateTimePattern(Locale.getDefault(), "MMM yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat(skeleton, Locale.getDefault());
         while (date.getTimeInMillis() < System.currentTimeMillis()) {
             names.add(dateFormat.format(new Date(date.getTimeInMillis())));
             if (!inclusive) {
