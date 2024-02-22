@@ -10,12 +10,11 @@ import java.util.Map;
 /**
  * Follows the Nostr standard for Bech32 encoded entities
  * It can be read <a href="https://github.com/nostr-protocol/nips/blob/master/19.md">here</a>
- * <p>
- * Code copied, converted and
- * trimmed down from
+ *
+ *<p>Code copied, converted and trimmed down from
  * <a href="https://github.com/vitorpamplona/amethyst/blob/main/quartz/src/main/java/com/vitorpamplona/quartz/encoders/Tlv.kt">here</a>
- * <p>
- * Author: vitorpamplona
+ *
+ * <p>Author: vitorpamplona
  */
 
 public class Tlv {

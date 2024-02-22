@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.core.util.nostr;
 
-import com.google.common.hash.Hashing;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +28,7 @@ public class NostrEvent {
     private String content;
     private String signature;
 
-    public NostrEvent(){
+    public NostrEvent() {
 
     }
 
@@ -38,7 +36,7 @@ public class NostrEvent {
                       Long creationDate,
                       int kind,
                       List<List<String>> tags,
-                      String content){
+                      String content) {
         this.eventId = eventIdFrom(pubkey, creationDate, kind, tags, content);
         this.pubkey = pubkey;
         this.creationDate = creationDate;
@@ -56,7 +54,7 @@ public class NostrEvent {
             List<List<String>> tags,
             String content,
             String signature
-    ){
+    ) {
         eventId = id;
         this.pubkey = pubkey;
         this.creationDate = creationDate;
@@ -92,16 +90,16 @@ public class NostrEvent {
             int kind,
             List<List<String>> tags,
             String content
-    ){
-      JSONArray idGenerationStruct = new JSONArray();
-      idGenerationStruct.put(0);
-      idGenerationStruct.put(pubkey.toLowerCase(Locale.ENGLISH));
-      idGenerationStruct.put(creationDate);
-      idGenerationStruct.put(kind);
-      idGenerationStruct.put(tags);
-      idGenerationStruct.put(content);
-      String json = idGenerationStruct.toString();
-      String eventId = "";
+    ) {
+        JSONArray idGenerationStruct = new JSONArray();
+        idGenerationStruct.put(0);
+        idGenerationStruct.put(pubkey.toLowerCase(Locale.ENGLISH));
+        idGenerationStruct.put(creationDate);
+        idGenerationStruct.put(kind);
+        idGenerationStruct.put(tags);
+        idGenerationStruct.put(content);
+        String json = idGenerationStruct.toString();
+        String eventId = "";
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] jsonHash = digest.digest(json.getBytes(StandardCharsets.UTF_8));
@@ -123,10 +121,9 @@ public class NostrEvent {
         for (int listIndex = 0; listIndex < tagListJSon.length(); listIndex++) {
             JSONArray currentSubList = tagListJSon.getJSONArray(listIndex);
             int subListLength = currentSubList.length();
-            if (subListLength == 1){
+            if (subListLength == 1) {
                 tags.add(Collections.singletonList(currentSubList.getString(0)));
-            }
-            else {
+            } else {
                 List<String> tagArray = new ArrayList<>(subListLength);
                 for (int i = 0; i < subListLength; i++) {
                     tagArray.add(currentSubList.getString(i));

@@ -6,13 +6,12 @@ import java.nio.ByteOrder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Arrays;
 
 /**
  *
  * @author squirrel
- *
- * Copied and trimmed down from: <a href="https://github.com/tcheeric/nostr-java">this repository</a>
+ *     Copied and trimmed down from:
+ *     <a href="https://github.com/tcheeric/nostr-java">this repository</a>
  */
 public class NostrUtil {
 

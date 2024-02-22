@@ -5,7 +5,7 @@ import java.util.List;
 
 public class TlvInputParser {
 
-    private TlvInputParser(){
+    private TlvInputParser() {
 
     }
 
@@ -16,8 +16,9 @@ public class TlvInputParser {
      * Code copied and converted
      * from <a href="https://github.com/vitorpamplona/amethyst/blob/main/quartz/src/main/java/com/vitorpamplona/quartz/encoders/Nip19.kt">here</a>
      *
-     * @param profileData
-     * @return java.util.List
+     * @param profileData The raw profile data in bytes,
+     *                    converted from the hex-based representation of the 'nprofile' string.
+     * @return {@link List}
      */
     public static List<String> profile(byte[] profileData) throws NostrException {
         List<String> readableProfileData = new ArrayList<>();
@@ -27,7 +28,7 @@ public class TlvInputParser {
         String profileHex = profileTlv.firstAsHex(TlvTypes.SPECIAL.getId());
         String firstRelayHint = profileTlv.firstAsString(TlvTypes.RELAY.getId());
 
-        if (firstRelayHint == null){
+        if (firstRelayHint == null) {
             throw new NostrException("No relay found.");
         }
 

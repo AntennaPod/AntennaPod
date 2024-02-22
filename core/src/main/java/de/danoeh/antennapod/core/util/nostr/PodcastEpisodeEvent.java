@@ -6,7 +6,7 @@ import java.util.List;
 
 public class PodcastEpisodeEvent extends NostrEvent {
 
-    public PodcastEpisodeEvent(){
+    public PodcastEpisodeEvent() {
 
     }
 

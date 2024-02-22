@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- *
  * Author: tcheeric
  * Copied from: <a href="https://github.com/tcheeric/nostr-java">this repository</a>
  *
@@ -79,7 +78,7 @@ public class Bech32 {
 
         data = convertBits(data, 5, 8, true);
 
-        if(data == null) {
+        if (data == null) {
             throw new RuntimeException("Invalid null data");
         }
         // Remove trailing bit
@@ -90,10 +89,10 @@ public class Bech32 {
 
     /**
      * Encode a Bech32 string.
-     *
-     * @param bech32
-     * @return
-     * @throws NostrException
+     * @param bech32 A {@link Bech32Data}-formatted structure containing necessary data
+     *               to form a Bech32 string.
+     * @return {@link String}
+     * @throws NostrException See {@link Bech32#encode(Encoding, String, byte[])} for more.
      */
     public static String encode(final Bech32Data bech32) throws NostrException {
         return encode(bech32.encoding, bech32.hrp, bech32.data);
@@ -102,11 +101,12 @@ public class Bech32 {
     /**
      * Encode a Bech32 string.
      *
-     * @param encoding
-     * @param hrp
-     * @param values
-     * @return
-     * @throws NostrException
+     * @param encoding the encoding of the string to be converted. See {@link Encoding}.
+     * @param hrp The human-readable portion of the string
+     * @param values other data to be included in the final Bech32-converted String.
+     * @return String
+     * @throws NostrException If the HRP(human-readable portion) of the Bech32 string
+     *                        doesn't exist.
      */
     // Modified to throw NostrExceptions
     public static String encode(Encoding encoding, String hrp, final byte[] values) throws NostrException {
@@ -131,13 +131,14 @@ public class Bech32 {
     /**
      * Decode a Bech32 string.
      *
-     * @param str
-     * @return
-     * @throws NostrException
+     * @param str the Bech32-encoded string
+     * @return {@link Bech32Data}
+     * @throws NostrException If there is a character or length mismatch.
      */
     // Modified to throw NostrExceptions
     public static Bech32Data decode(final String str) throws NostrException {
-        boolean lower = false, upper = false;
+        boolean lower = false;
+        boolean upper = false;
         if (str.length() < 8) {
             throw new NostrException("Input too short: " + str.length());
         }
@@ -189,9 +190,9 @@ public class Bech32 {
      */
     private static int polymod(final byte[] values) {
         int c = 1;
-        for (byte v_i : values) {
+        for (byte v : values) {
             int c0 = (c >>> 25) & 0xff;
-            c = ((c & 0x1ffffff) << 5) ^ (v_i & 0xff);
+            c = ((c & 0x1ffffff) << 5) ^ (v & 0xff);
             if ((c0 & 1) != 0) {
                 c ^= 0x3b6a57b2;
             }
@@ -235,12 +236,12 @@ public class Bech32 {
         System.arraycopy(hrpExpanded, 0, combined, 0, hrpExpanded.length);
         System.arraycopy(values, 0, combined, hrpExpanded.length, values.length);
         final int check = polymod(combined);
-        if(check == BECH32_CONST) {
-           return Encoding.BECH32;
+        if (check == BECH32_CONST) {
+            return Encoding.BECH32;
         } else if (check == BECH32M_CONST) {
-           return Encoding.BECH32M;
+            return Encoding.BECH32M;
         } else {
-           return null;
+            return null;
         }
     }
 
