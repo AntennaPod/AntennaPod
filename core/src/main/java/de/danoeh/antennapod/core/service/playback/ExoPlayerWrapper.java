@@ -80,7 +80,7 @@ public class ExoPlayerWrapper {
     private LoudnessEnhancer loudnessEnhancer;
     // cache the download data
     private SimpleCache simpleCache;
-    int cacheSize = 200 * 1024 * 1024; // 200 MB
+    int cacheSize = 50 * 1024 * 1024; // 50 MB
 
     ExoPlayerWrapper(Context context) {
         this.context = context;
