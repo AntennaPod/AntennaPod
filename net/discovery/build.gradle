@@ -23,6 +23,7 @@ dependencies {
     implementation project(':model')
     implementation project(':net:sync:gpoddernet')
     implementation project(':net:sync:model')
+    implementation project(':net:sync:nostr')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
 

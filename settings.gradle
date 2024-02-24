@@ -9,6 +9,7 @@ include ':net:download:service-interface'
 include ':net:ssl'
 include ':net:sync:gpoddernet'
 include ':net:sync:model'
+include ':net:sync:nostr'
 
 include ':parser:feed'
 include ':parser:media'

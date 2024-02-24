@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util.nostr;
+package de.danoeh.antennapod.net.sync.nostr.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;

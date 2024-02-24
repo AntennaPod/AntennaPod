@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util.nostr;
+package de.danoeh.antennapod.net.sync.nostr.model;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+
+import de.danoeh.antennapod.net.sync.nostr.util.NostrUtil;
 
 /**
  * Represents the Nostr Event structure as

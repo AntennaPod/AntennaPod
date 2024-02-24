@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util.nostr;
+package de.danoeh.antennapod.net.sync.nostr.model;
 
 import org.json.JSONException;
 
