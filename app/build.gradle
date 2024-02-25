@@ -69,7 +69,7 @@ android {
     }
 
     androidResources {
-        additionalParameters "--no-version-vectors"
+        additionalParameters += ["--no-version-vectors"]
     }
 }
 
@@ -150,7 +150,7 @@ if (project.hasProperty("antennaPodPlayPublisherCredentials")) {
     }
 }
 
-task copyLicense(type: Copy) {
+tasks.register('copyLicense', Copy) {
     from "../LICENSE"
     into "src/main/assets/"
     rename { String fileName ->
