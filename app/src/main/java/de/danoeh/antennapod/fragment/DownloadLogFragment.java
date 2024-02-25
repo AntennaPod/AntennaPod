@@ -3,7 +3,6 @@ package de.danoeh.antennapod.fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,15 +98,8 @@ public class DownloadLogFragment extends BottomSheetDialogFragment
     }
 
     @Override
-    public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        menu.findItem(R.id.clear_logs_item).setVisible(!downloadLog.isEmpty());
-    }
-
-    @Override
     public boolean onMenuItemClick(MenuItem item) {
-        if (super.onOptionsItemSelected(item)) {
-            return true;
-        } else if (item.getItemId() == R.id.clear_logs_item) {
+        if (item.getItemId() == R.id.clear_logs_item) {
             DBWriter.clearDownloadLog();
             return true;
         }

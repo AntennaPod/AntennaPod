@@ -6,17 +6,13 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
-import de.danoeh.antennapod.model.download.ProxyConfig;
-import de.danoeh.antennapod.model.feed.FeedCounter;
-import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.model.feed.SortOrder;
-import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
-import de.danoeh.antennapod.model.playback.MediaType;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -31,6 +27,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+
+import de.danoeh.antennapod.model.download.ProxyConfig;
+import de.danoeh.antennapod.model.feed.FeedCounter;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
+import de.danoeh.antennapod.model.playback.MediaType;
 
 /**
  * Provides access to preferences set by the user in the settings screen. A
@@ -130,9 +133,9 @@ public class UserPreferences {
     public static final int NOTIFICATION_BUTTON_REWIND = 0;
     public static final int NOTIFICATION_BUTTON_FAST_FORWARD = 1;
     public static final int NOTIFICATION_BUTTON_SKIP = 2;
-
     public static final int NOTIFICATION_BUTTON_NEXT_CHAPTER = 3;
     public static final int NOTIFICATION_BUTTON_PLAYBACK_SPEED = 4;
+    public static final int NOTIFICATION_BUTTON_SLEEP_TIMER = 5;
     public static final int EPISODE_CACHE_SIZE_UNLIMITED = -1;
     public static final int FEED_ORDER_COUNTER = 0;
     public static final int FEED_ORDER_ALPHABETICAL = 1;
@@ -233,6 +236,10 @@ public class UserPreferences {
 
     public static boolean showPlaybackSpeedOnFullNotification() {
         return showButtonOnFullNotification(NOTIFICATION_BUTTON_PLAYBACK_SPEED);
+    }
+
+    public static boolean showSleepTimerOnFullNotification() {
+        return showButtonOnFullNotification(NOTIFICATION_BUTTON_SLEEP_TIMER);
     }
 
     public static int getFeedOrder() {
