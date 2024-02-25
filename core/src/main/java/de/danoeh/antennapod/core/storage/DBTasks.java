@@ -291,22 +291,26 @@ public final class DBTasks {
                         savedFeed.getItems().add(idx, item);
                     }
 
-                    FeedPreferences.NewEpisodesAction action = savedFeed.getPreferences().getNewEpisodesAction();
-                    if (action == FeedPreferences.NewEpisodesAction.GLOBAL) {
-                        action = UserPreferences.getNewEpisodesAction();
-                    }
-                    if (action == FeedPreferences.NewEpisodesAction.ADD_TO_INBOX
-                            && (item.getPubDate() == null
-                                || priorMostRecentDate == null
-                                || priorMostRecentDate.before(item.getPubDate())
-                                || priorMostRecentDate.equals(item.getPubDate()))) {
-                        Log.d(TAG, "Marking item published on " + item.getPubDate()
-                                + " new, prior most recent date = " + priorMostRecentDate);
-                        item.setNew();
-                    }
-
-                    if (action == FeedPreferences.NewEpisodesAction.ADD_TO_QUEUE) {
-                        itemsToAddToQueue.add(item);
+                    if (item.getPubDate() == null
+                            || priorMostRecentDate == null
+                            || priorMostRecentDate.before(item.getPubDate())
+                            || priorMostRecentDate.equals(item.getPubDate())) {
+                        Log.d(TAG, "Performing new episode action for item published on " + item.getPubDate()
+                                + ", prior most recent date = " + priorMostRecentDate);
+                        FeedPreferences.NewEpisodesAction action = savedFeed.getPreferences().getNewEpisodesAction();
+                        if (action == FeedPreferences.NewEpisodesAction.GLOBAL) {
+                            action = UserPreferences.getNewEpisodesAction();
+                        }
+                        switch (action) {
+                            case ADD_TO_INBOX:
+                                item.setNew();
+                                break;
+                            case ADD_TO_QUEUE:
+                                itemsToAddToQueue.add(item);
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
             }
