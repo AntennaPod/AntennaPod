@@ -4,24 +4,23 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Vibrator;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
+import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
+import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
+import de.danoeh.antennapod.core.util.ChapterUtils;
+import de.danoeh.antennapod.core.widget.WidgetUpdater;
+import io.reactivex.disposables.Disposable;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
-import de.danoeh.antennapod.core.util.ChapterUtils;
-import de.danoeh.antennapod.core.widget.WidgetUpdater;
-import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.model.playback.Playable;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 

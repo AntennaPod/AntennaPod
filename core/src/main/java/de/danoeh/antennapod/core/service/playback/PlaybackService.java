@@ -1283,12 +1283,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 icon = R.drawable.ic_notification_sleep_off;
             }
             sessionState.addCustomAction(
-                    new PlaybackStateCompat.CustomAction.Builder(
-                            CUSTOM_ACTION_TOGGLE_SLEEP_TIMER,
-                            getString(R.string.sleep_timer_label),
-                            icon
-                    ).build()
-            );
+                    new PlaybackStateCompat.CustomAction.Builder(CUSTOM_ACTION_TOGGLE_SLEEP_TIMER,
+                            getString(R.string.sleep_timer_label), icon).build());
         }
 
         if (UserPreferences.showNextChapterOnFullNotification()) {
