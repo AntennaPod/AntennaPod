@@ -19,7 +19,6 @@ import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentChapterReader;
 import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentReaderException;
 import okhttp3.CacheControl;
-import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.io.input.CountingInputStream;
@@ -164,8 +163,7 @@ public class ChapterUtils {
         Response response = null;
         try {
             Request request = new Request.Builder().url(url).cacheControl(cacheControl).build();
-            Call call = AntennapodHttpClient.getHttpClient().newCall(request);
-            response = call.execute();
+            response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
             if (response.isSuccessful() && response.body() != null) {
                 return PodcastIndexChapterParser.parse(response.body().string());
             }
