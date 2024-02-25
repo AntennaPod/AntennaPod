@@ -725,6 +725,7 @@
     <string name="statistics_space_used">Space used:</string>
     <string name="statistics_episodes_started_total">Episodes started/total:</string>
     <string name="statistics_expected_next_episode">Expected next episode:</string>
+    <string name="statistics_expected_next_episode_any_day">Any day now</string>
     <string name="statistics_expected_next_episode_unknown">Unknown</string>
     <string name="statistics_view_all">View for all podcasts »</string>
     <string name="wait_icon" translatable="false">{fa-spinner}</string>
@@ -735,16 +736,16 @@
     <string name="release_schedule_daily">daily</string>
     <string name="release_schedule_weekdays">on weekdays</string>
     <string name="release_schedule_weekly">weekly</string>
-    <string name="release_schedule_biweekly">bi-weekly</string>
+    <string name="release_schedule_biweekly">every two weeks</string>
     <string name="release_schedule_monthly">monthly</string>
 
-    <string name="release_schedule_monday">Monday</string>
-    <string name="release_schedule_tuesday">Tuesday</string>
-    <string name="release_schedule_wednesday">Wednesday</string>
-    <string name="release_schedule_thursday">Thursday</string>
-    <string name="release_schedule_friday">Friday</string>
-    <string name="release_schedule_saturday">Saturday</string>
-    <string name="release_schedule_sunday">Sunday</string>
+    <string name="release_schedule_monday">Mon</string>
+    <string name="release_schedule_tuesday">Tue</string>
+    <string name="release_schedule_wednesday">Wed</string>
+    <string name="release_schedule_thursday">Thu</string>
+    <string name="release_schedule_friday">Fri</string>
+    <string name="release_schedule_saturday">Sat</string>
+    <string name="release_schedule_sunday">Sun</string>
 
     <!-- AntennaPodSP -->
     <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>

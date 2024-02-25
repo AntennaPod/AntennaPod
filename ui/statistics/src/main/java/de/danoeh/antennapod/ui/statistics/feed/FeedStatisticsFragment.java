@@ -158,11 +158,14 @@ public class FeedStatisticsFragment extends Fragment {
         ReleaseScheduleGuesser.Guess guess = p.second;
         if (!s.feed.getPreferences().getKeepUpdated()) {
             viewBinding.expectedNextEpisodeLabel.setText(R.string.updates_disabled_label);
-        } else if (guess == null || guess.nextExpectedDate.getTime() <= new Date().getTime() - 30 * 24 * 3600000L) {
+        } else if (guess == null || guess.nextExpectedDate.getTime() <= new Date().getTime() - 7 * 24 * 3600000L) {
             // More than 30 days delayed
             viewBinding.expectedNextEpisodeLabel.setText(R.string.statistics_expected_next_episode_unknown);
         } else {
             String text = DateFormatter.formatAbbrev(getContext(), guess.nextExpectedDate);
+            if (guess.nextExpectedDate.getTime() <= new Date().getTime()) {
+                text = getString(R.string.statistics_expected_next_episode_any_day);
+            }
             if (guess.schedule != ReleaseScheduleGuesser.Schedule.UNKNOWN) {
                 text += " (" + getReadableSchedule(guess) + ")";
             }
