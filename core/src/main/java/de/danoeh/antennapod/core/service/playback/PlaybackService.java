@@ -129,6 +129,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private static final String CUSTOM_ACTION_REWIND = "action.de.danoeh.antennapod.core.service.rewind";
     private static final String CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED =
             "action.de.danoeh.antennapod.core.service.changePlaybackSpeed";
+    private static final String CUSTOM_ACTION_TOGGLE_SLEEP_TIMER =
+            "action.de.danoeh.antennapod.core.service.toggleSleepTimer";
     public static final String CUSTOM_ACTION_NEXT_CHAPTER = "action.de.danoeh.antennapod.core.service.next_chapter";
 
     /**
@@ -977,6 +979,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     @SuppressWarnings("unused")
     public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
         if (event.isOver()) {
+            updateMediaSession(mediaPlayer.getPlayerStatus());
             mediaPlayer.pause(true, true);
             mediaPlayer.setVolume(1.0f, 1.0f);
             int newPosition = mediaPlayer.getPosition() - (int) SleepTimer.NOTIFICATION_THRESHOLD / 2;
@@ -988,7 +991,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.d(TAG, "onSleepTimerAlmostExpired: " + multiplicator);
             mediaPlayer.setVolume(multiplicator, multiplicator);
         } else if (event.isCancelled()) {
+            updateMediaSession(mediaPlayer.getPlayerStatus());
             mediaPlayer.setVolume(1.0f, 1.0f);
+        } else if (event.wasJustEnabled()) {
+            updateMediaSession(mediaPlayer.getPlayerStatus());
         }
     }
 
@@ -1269,6 +1275,16 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     R.drawable.ic_notification_playback_speed
                 ).build()
             );
+        }
+
+        if (UserPreferences.showSleepTimerOnFullNotification()) {
+            @DrawableRes int icon = R.drawable.ic_notification_sleep;
+            if (sleepTimerActive()) {
+                icon = R.drawable.ic_notification_sleep_off;
+            }
+            sessionState.addCustomAction(
+                    new PlaybackStateCompat.CustomAction.Builder(CUSTOM_ACTION_TOGGLE_SLEEP_TIMER,
+                            getString(R.string.sleep_timer_label), icon).build());
         }
 
         if (UserPreferences.showNextChapterOnFullNotification()) {
@@ -1949,6 +1965,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         newSpeed = selectedSpeeds.get(speedPosition + 1);
                     }
                     onSetPlaybackSpeed(newSpeed);
+                }
+            } else if (CUSTOM_ACTION_TOGGLE_SLEEP_TIMER.equals(action)) {
+                if (sleepTimerActive()) {
+                    disableSleepTimer();
+                } else {
+                    setSleepTimer(SleepTimerPreferences.timerMillis());
                 }
             }
         }

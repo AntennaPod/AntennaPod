@@ -6,12 +6,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ListView;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.dialog.DrawerPreferencesDialog;
@@ -20,9 +27,6 @@ import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.List;
 
 public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_SWIPE = "prefSwipe";
@@ -100,7 +104,12 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
         final List<Integer> preferredButtons = UserPreferences.getFullNotificationButtons();
         final String[] allButtonNames = context.getResources().getStringArray(
                 R.array.full_notification_buttons_options);
-        final int[] buttonIDs = {2, 3, 4};
+        final int[] buttonIDs = {
+                UserPreferences.NOTIFICATION_BUTTON_SKIP,
+                UserPreferences.NOTIFICATION_BUTTON_NEXT_CHAPTER,
+                UserPreferences.NOTIFICATION_BUTTON_PLAYBACK_SPEED,
+                UserPreferences.NOTIFICATION_BUTTON_SLEEP_TIMER,
+        };
         final int exactItems = 2;
         final DialogInterface.OnClickListener completeListener = (dialog, which) ->
                 UserPreferences.setFullNotificationButtons(preferredButtons);
