@@ -237,14 +237,11 @@ public class ExoPlayerWrapper {
             );
             httpDataSourceFactory.setDefaultRequestProperties(requestProperties);
         }
-        DataSource.Factory dataSourceFactory;
-        if (!s.startsWith("http")) {
-            dataSourceFactory = new DefaultDataSourceFactory(context, null, httpDataSourceFactory);
-        } else { // cache the vide data,it will be played quickly while switch back this audio
-            CacheDataSource.Factory cacheSourceFactory = new CacheDataSource.Factory();
-            cacheSourceFactory.setCache(simpleCache);
-            cacheSourceFactory.setUpstreamDataSourceFactory(httpDataSourceFactory);
-            dataSourceFactory = cacheSourceFactory;
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, null, httpDataSourceFactory);
+        if (s.startsWith("http")) {
+            dataSourceFactory = new CacheDataSource.Factory()
+                    .setCache(simpleCache)
+                    .setUpstreamDataSourceFactory(dataSourceFactory);
         }
         DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         extractorsFactory.setConstantBitrateSeekingEnabled(true);
