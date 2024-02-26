@@ -47,20 +47,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.media.MediaBrowserServiceCompat;
 
-import de.danoeh.antennapod.core.service.QuickSettingsTileService;
-import de.danoeh.antennapod.core.util.ChapterUtils;
-import de.danoeh.antennapod.core.util.playback.PlayableUtils;
-import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
-import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
-import de.danoeh.antennapod.event.PlayerErrorEvent;
-import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
-import de.danoeh.antennapod.model.feed.Chapter;
-import de.danoeh.antennapod.model.feed.FeedItemFilter;
-import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
-import de.danoeh.antennapod.playback.base.PlayerStatus;
-import de.danoeh.antennapod.playback.cast.CastPsmp;
-import de.danoeh.antennapod.playback.cast.CastStateListener;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -77,10 +63,12 @@ import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.QuickSettingsTileService;
+import de.danoeh.antennapod.core.service.playback.PlaybackServiceTaskManager.SleepTimer;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
+import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.FeedUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
@@ -98,6 +86,7 @@ import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.event.settings.SkipIntroEndingChangedEvent;
 import de.danoeh.antennapod.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
+import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
@@ -140,6 +129,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private static final String CUSTOM_ACTION_REWIND = "action.de.danoeh.antennapod.core.service.rewind";
     private static final String CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED =
             "action.de.danoeh.antennapod.core.service.changePlaybackSpeed";
+    private static final String CUSTOM_ACTION_TOGGLE_SLEEP_TIMER =
+            "action.de.danoeh.antennapod.core.service.toggleSleepTimer";
     public static final String CUSTOM_ACTION_NEXT_CHAPTER = "action.de.danoeh.antennapod.core.service.next_chapter";
 
     /**
@@ -988,15 +979,22 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     @SuppressWarnings("unused")
     public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
         if (event.isOver()) {
+            updateMediaSession(mediaPlayer.getPlayerStatus());
             mediaPlayer.pause(true, true);
             mediaPlayer.setVolume(1.0f, 1.0f);
-        } else if (event.getTimeLeft() < PlaybackServiceTaskManager.SleepTimer.NOTIFICATION_THRESHOLD) {
+            int newPosition = mediaPlayer.getPosition() - (int) SleepTimer.NOTIFICATION_THRESHOLD / 2;
+            newPosition = Math.max(newPosition, 0);
+            seekTo(newPosition);
+        } else if (event.getTimeLeft() < SleepTimer.NOTIFICATION_THRESHOLD) {
             final float[] multiplicators = {0.1f, 0.2f, 0.3f, 0.3f, 0.3f, 0.4f, 0.4f, 0.4f, 0.6f, 0.8f};
             float multiplicator = multiplicators[Math.max(0, (int) event.getTimeLeft() / 1000)];
             Log.d(TAG, "onSleepTimerAlmostExpired: " + multiplicator);
             mediaPlayer.setVolume(multiplicator, multiplicator);
         } else if (event.isCancelled()) {
+            updateMediaSession(mediaPlayer.getPlayerStatus());
             mediaPlayer.setVolume(1.0f, 1.0f);
+        } else if (event.wasJustEnabled()) {
+            updateMediaSession(mediaPlayer.getPlayerStatus());
         }
     }
 
@@ -1277,6 +1275,16 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     R.drawable.ic_notification_playback_speed
                 ).build()
             );
+        }
+
+        if (UserPreferences.showSleepTimerOnFullNotification()) {
+            @DrawableRes int icon = R.drawable.ic_notification_sleep;
+            if (sleepTimerActive()) {
+                icon = R.drawable.ic_notification_sleep_off;
+            }
+            sessionState.addCustomAction(
+                    new PlaybackStateCompat.CustomAction.Builder(CUSTOM_ACTION_TOGGLE_SLEEP_TIMER,
+                            getString(R.string.sleep_timer_label), icon).build());
         }
 
         if (UserPreferences.showNextChapterOnFullNotification()) {
@@ -1957,6 +1965,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         newSpeed = selectedSpeeds.get(speedPosition + 1);
                     }
                     onSetPlaybackSpeed(newSpeed);
+                }
+            } else if (CUSTOM_ACTION_TOGGLE_SLEEP_TIMER.equals(action)) {
+                if (sleepTimerActive()) {
+                    disableSleepTimer();
+                } else {
+                    setSleepTimer(SleepTimerPreferences.timerMillis());
                 }
             }
         }

@@ -6,12 +6,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ListView;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.dialog.DrawerPreferencesDialog;
@@ -20,9 +27,6 @@ import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.List;
 
 public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_SWIPE = "prefSwipe";
@@ -93,31 +97,23 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
         }
     }
 
-
     private void showFullNotificationButtonsDialog() {
         final Context context = getActivity();
 
         final List<Integer> preferredButtons = UserPreferences.getFullNotificationButtons();
         final String[] allButtonNames = context.getResources().getStringArray(
                 R.array.full_notification_buttons_options);
-        final int[] buttonIDs = {2, 3, 4};
-        final int exactItems = 2;
+        final int[] buttonIds = {
+                UserPreferences.NOTIFICATION_BUTTON_SKIP,
+                UserPreferences.NOTIFICATION_BUTTON_NEXT_CHAPTER,
+                UserPreferences.NOTIFICATION_BUTTON_PLAYBACK_SPEED,
+                UserPreferences.NOTIFICATION_BUTTON_SLEEP_TIMER,
+        };
         final DialogInterface.OnClickListener completeListener = (dialog, which) ->
                 UserPreferences.setFullNotificationButtons(preferredButtons);
-        final String title = context.getResources().getString(
-                R.string.pref_full_notification_buttons_title);
+        final String title = context.getResources().getString(R.string.pref_full_notification_buttons_title);
 
-        showNotificationButtonsDialog(preferredButtons, allButtonNames, buttonIDs, title,
-                exactItems, completeListener
-        );
-    }
-
-    private void showNotificationButtonsDialog(List<Integer> preferredButtons,
-            String[] allButtonNames, int[] buttonIds, String title,
-            int exactItems, DialogInterface.OnClickListener completeListener) {
         boolean[] checked = new boolean[allButtonNames.length]; // booleans default to false in java
-
-        final Context context = getActivity();
 
         // Clear buttons that are not part of the setting anymore
         for (int i = preferredButtons.size() - 1; i >= 0; i--) {
@@ -125,6 +121,7 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
             for (int j = 0; j < checked.length; j++) {
                 if (buttonIds[j] == preferredButtons.get(i)) {
                     isValid = true;
+                    break;
                 }
             }
 
@@ -133,7 +130,7 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
             }
         }
 
-        for(int i=0; i < checked.length; i++) {
+        for (int i = 0; i < checked.length; i++) {
             if (preferredButtons.contains(buttonIds[i])) {
                 checked[i] = true;
             }
@@ -143,7 +140,6 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
         builder.setTitle(title);
         builder.setMultiChoiceItems(allButtonNames, checked, (dialog, which, isChecked) -> {
             checked[which] = isChecked;
-
             if (isChecked) {
                 preferredButtons.add(buttonIds[which]);
             } else {
@@ -159,19 +155,17 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
         Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
 
         positiveButton.setOnClickListener(v -> {
-            if (preferredButtons.size() != exactItems) {
+            if (preferredButtons.size() != 2) {
                 ListView selectionView = dialog.getListView();
                 Snackbar.make(
                     selectionView,
-                    String.format(context.getResources().getString(
-                        R.string.pref_compact_notification_buttons_dialog_error_exact), exactItems),
+                    context.getResources().getString(R.string.pref_compact_notification_buttons_dialog_error_exact),
                     Snackbar.LENGTH_SHORT).show();
 
             } else {
                 completeListener.onClick(dialog, AlertDialog.BUTTON_POSITIVE);
                 dialog.cancel();
             }
-        }
-        );
+        });
     }
 }

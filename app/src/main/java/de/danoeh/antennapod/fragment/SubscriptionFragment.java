@@ -102,8 +102,6 @@ public class SubscriptionFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-
         prefs = requireActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
     }
 

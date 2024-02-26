@@ -65,7 +65,7 @@ checkstyle {
     toolVersion '10.3.1'
 }
 
-task checkstyle(type: Checkstyle) {
+tasks.register('checkstyle', Checkstyle) {
     classpath = files()
     source "${project.rootDir}"
     exclude("**/gen/**")

@@ -119,10 +119,7 @@ public abstract class EpisodesListFragment extends Fragment
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (super.onOptionsItemSelected(item)) {
-            return true;
-        }
+    public boolean onMenuItemClick(MenuItem item) {
         final int itemId = item.getItemId();
         if (itemId == R.id.refresh_item) {
             FeedUpdateManager.runOnceOrAsk(requireContext());

@@ -162,7 +162,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             return true;
         }
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 
     @Override

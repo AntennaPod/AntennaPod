@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.util.Consumer;
 
 import com.google.android.exoplayer2.C;
@@ -44,6 +45,7 @@ import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.service.download.HttpCredentialEncoder;
@@ -76,11 +78,9 @@ public class ExoPlayerWrapper {
     private Consumer<Integer> bufferingUpdateListener;
     private PlaybackParameters playbackParameters;
     private DefaultTrackSelector trackSelector;
-
-    private LoudnessEnhancer loudnessEnhancer;
-    // cache the download data
     private SimpleCache simpleCache;
-    int cacheSize = 50 * 1024 * 1024; // 50 MB
+    @Nullable
+    private LoudnessEnhancer loudnessEnhancer = null;
 
     ExoPlayerWrapper(Context context) {
         this.context = context;
@@ -94,7 +94,7 @@ public class ExoPlayerWrapper {
                     }
                 });
         File cacheFile = new File(context.getCacheDir(), "temp");
-        simpleCache = new SimpleCache(cacheFile, new LeastRecentlyUsedCacheEvictor(cacheSize),
+        simpleCache = new SimpleCache(cacheFile, new LeastRecentlyUsedCacheEvictor(50 * 1024 * 1024),
                 new ExoDatabaseProvider(context));
     }
 
@@ -273,11 +273,15 @@ public class ExoPlayerWrapper {
     public void setVolume(float v, float v1) {
         if (v > 1) {
             exoPlayer.setVolume(1f);
-            loudnessEnhancer.setEnabled(true);
-            loudnessEnhancer.setTargetGain((int) (1000 * (v - 1)));
+            if (loudnessEnhancer != null) {
+                loudnessEnhancer.setEnabled(true);
+                loudnessEnhancer.setTargetGain((int) (1000 * (v - 1)));
+            }
         } else {
             exoPlayer.setVolume(v);
-            loudnessEnhancer.setEnabled(false);
+            if (loudnessEnhancer != null) {
+                loudnessEnhancer.setEnabled(false);
+            }
         }
     }
 
@@ -380,6 +384,10 @@ public class ExoPlayerWrapper {
     }
 
     private void initLoudnessEnhancer(int audioStreamId) {
+        if (!VolumeAdaptionSetting.isBoostSupported()) {
+            return;
+        }
+
         LoudnessEnhancer newEnhancer = new LoudnessEnhancer(audioStreamId);
         LoudnessEnhancer oldEnhancer = this.loudnessEnhancer;
         if (oldEnhancer != null) {

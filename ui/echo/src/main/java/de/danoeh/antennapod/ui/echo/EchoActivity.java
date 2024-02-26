@@ -221,7 +221,7 @@ public class EchoActivity extends AppCompatActivity {
                             dec31.get(Calendar.DAY_OF_YEAR) - Calendar.getInstance().get(Calendar.DAY_OF_YEAR) + 1);
                     long secondsPerDay = queueSecondsLeft / daysUntilNextYear;
                     String timePerDay = Converter.getDurationStringLocalized(
-                            getLocalizedResources(this, getEchoLanguage()), secondsPerDay * 1000);
+                            getLocalizedResources(this, getEchoLanguage()), secondsPerDay * 1000, true);
                     double hoursPerDay = (double) (secondsPerDay / 3600);
                     int nextYear = RELEASE_YEAR + 1;
                     if (hoursPerDay < 1.5) {
@@ -249,7 +249,7 @@ public class EchoActivity extends AppCompatActivity {
                     }
                     viewBinding.smallLabel.setText(getString(R.string.echo_listened_after_time,
                             Converter.getDurationStringLocalized(
-                                getLocalizedResources(this, getEchoLanguage()), timeBetweenReleaseAndPlay)));
+                                getLocalizedResources(this, getEchoLanguage()), timeBetweenReleaseAndPlay, true)));
                     currentDrawable = new RotatingSquaresScreen(this);
                     break;
                 case 4:

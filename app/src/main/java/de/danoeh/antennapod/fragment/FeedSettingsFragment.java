@@ -421,6 +421,9 @@ public class FeedSettingsFragment extends Fragment {
                 case ADD_TO_INBOX:
                     newEpisodesAction.setSummary(R.string.feed_new_episodes_action_add_to_inbox);
                     break;
+                case ADD_TO_QUEUE:
+                    newEpisodesAction.setSummary(R.string.feed_new_episodes_action_add_to_queue);
+                    break;
                 case NOTHING:
                     newEpisodesAction.setSummary(R.string.feed_new_episodes_action_nothing);
                     break;

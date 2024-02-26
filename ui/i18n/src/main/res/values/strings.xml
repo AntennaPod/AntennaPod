@@ -138,6 +138,7 @@
     <string name="feed_auto_download_always">Always</string>
     <string name="feed_auto_download_never">Never</string>
     <string name="feed_new_episodes_action_add_to_inbox">Add to inbox</string>
+    <string name="feed_new_episodes_action_add_to_queue">Add to queue</string>
     <string name="feed_new_episodes_action_nothing">Nothing</string>
     <string name="episode_cleanup_never">Never</string>
     <string name="episode_cleanup_except_favorite_removal">When not favorited</string>
@@ -488,9 +489,9 @@
     <string name="pref_expandNotify_sum">This usually expands the notification to show playback buttons.</string>
     <string name="pref_persistNotify_title">Persistent playback controls</string>
     <string name="pref_persistNotify_sum">Keep notification and lockscreen controls when playback is paused</string>
-    <string name="pref_compact_notification_buttons_dialog_error_exact">You must select exactly %1$d items.</string>
+    <string name="pref_compact_notification_buttons_dialog_error_exact">You must select exactly two items</string>
     <string name="pref_full_notification_buttons_title">Set notification buttons</string>
-    <string name="pref_full_notification_buttons_sum">Change the playback buttons on the playback notification.</string>
+    <string name="pref_full_notification_buttons_sum">Change the buttons on the playback notification</string>
     <string name="pref_enqueue_location_title">Enqueue location</string>
     <string name="pref_enqueue_location_sum">Add episodes to: %1$s</string>
     <string name="enqueue_location_back">Back</string>
@@ -723,10 +724,28 @@
     <string name="statistics_episodes_on_device">Episodes on the device:</string>
     <string name="statistics_space_used">Space used:</string>
     <string name="statistics_episodes_started_total">Episodes started/total:</string>
+    <string name="statistics_expected_next_episode">Expected next episode:</string>
+    <string name="statistics_expected_next_episode_any_day">Any day now</string>
+    <string name="statistics_expected_next_episode_unknown">Unknown</string>
     <string name="statistics_view_all">View for all podcasts »</string>
     <string name="wait_icon" translatable="false">{fa-spinner}</string>
     <string name="edit_url_menu">Edit feed URL</string>
     <string name="edit_url_confirmation_msg">Changing the RSS address can easily break the playback state and episode listings of the podcast. We do NOT recommend changing it and will NOT provide support if anything goes wrong. This cannot be undone. The broken subscription CANNOT be repaired by simply changing the address back. We suggest creating a backup before continuing.</string>
+
+    <!-- Podcast release schedules -->
+    <string name="release_schedule_daily">daily</string>
+    <string name="release_schedule_weekdays">on weekdays</string>
+    <string name="release_schedule_weekly">weekly</string>
+    <string name="release_schedule_biweekly">every two weeks</string>
+    <string name="release_schedule_monthly">monthly</string>
+
+    <string name="release_schedule_monday">Mon</string>
+    <string name="release_schedule_tuesday">Tue</string>
+    <string name="release_schedule_wednesday">Wed</string>
+    <string name="release_schedule_thursday">Thu</string>
+    <string name="release_schedule_friday">Fri</string>
+    <string name="release_schedule_saturday">Sat</string>
+    <string name="release_schedule_sunday">Sun</string>
 
     <!-- AntennaPodSP -->
     <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>

@@ -55,23 +55,27 @@
 
     <string-array name="globalNewEpisodesActionItems">
         <item>@string/feed_new_episodes_action_add_to_inbox</item>
+        <item>@string/feed_new_episodes_action_add_to_queue</item>
         <item>@string/feed_new_episodes_action_nothing</item>
     </string-array>
 
     <string-array name="globalNewEpisodesActionValues">
         <item>1</item>
+        <item>3</item>
         <item>2</item>
     </string-array>
 
     <string-array name="feedNewEpisodesActionItems">
         <item>@string/global_default</item>
         <item>@string/feed_new_episodes_action_add_to_inbox</item>
+        <item>@string/feed_new_episodes_action_add_to_queue</item>
         <item>@string/feed_new_episodes_action_nothing</item>
     </string-array>
 
     <string-array name="feedNewEpisodesActionValues">
         <item>0</item>
         <item>1</item>
+        <item>3</item>
         <item>2</item>
     </string-array>
 
@@ -250,6 +254,7 @@
         <item>@string/skip_episode_label</item>
         <item>@string/next_chapter</item>
         <item>@string/playback_speed</item>
+        <item>@string/sleep_timer_label</item>
     </string-array>
 
     <string-array name="default_page_values">
