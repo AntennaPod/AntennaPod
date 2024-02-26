@@ -93,9 +93,6 @@ public class ExoPlayerWrapper {
                         bufferingUpdateListener.accept(exoPlayer.getBufferedPercentage());
                     }
                 });
-        File cacheFile = new File(context.getCacheDir(), "temp");
-        simpleCache = new SimpleCache(cacheFile, new LeastRecentlyUsedCacheEvictor(50 * 1024 * 1024),
-                new ExoDatabaseProvider(context));
     }
 
     private void createPlayer() {
@@ -156,7 +153,8 @@ public class ExoPlayerWrapper {
                 initLoudnessEnhancer(audioSessionId);
             }
         });
-
+        simpleCache = new SimpleCache(new File(context.getCacheDir(), "streaming"),
+                new LeastRecentlyUsedCacheEvictor(50 * 1024 * 1024), new ExoDatabaseProvider(context));
         initLoudnessEnhancer(exoPlayer.getAudioSessionId());
     }
 
