@@ -122,7 +122,7 @@ dependencies {
 
     implementation "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
     implementation "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
-    implementation 'com.leinardi.android:speed-dial:3.2.0'
+    implementation 'com.leinardi.android:speed-dial:3.3.0'
     implementation 'com.github.ByteHamster:SearchPreference:v2.5.0'
     implementation 'com.github.skydoves:balloon:1.5.3'
     implementation 'com.github.xabaras:RecyclerViewSwipeDecorator:1.3'
