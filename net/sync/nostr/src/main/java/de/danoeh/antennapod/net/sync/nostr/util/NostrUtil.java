@@ -6,6 +6,7 @@ import java.nio.ByteOrder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Locale;
 
 /**
  *
@@ -24,7 +25,7 @@ public class NostrUtil {
             hexChars[j * 2] = HEX_ARRAY[v >>> 4];
             hexChars[j * 2 + 1] = HEX_ARRAY[v & 0x0F];
         }
-        return new String(hexChars).toLowerCase();
+        return new String(hexChars).toLowerCase(Locale.ROOT);
     }
 
     public static byte[] hexToBytes(String s) {
