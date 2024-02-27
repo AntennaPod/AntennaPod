@@ -1,6 +1,10 @@
 package de.danoeh.antennapod.net.discovery;
 
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,10 +20,9 @@ import de.danoeh.antennapod.net.sync.nostr.util.NostrException;
 import de.danoeh.antennapod.net.sync.nostr.util.NostrUtil;
 import de.danoeh.antennapod.net.sync.nostr.util.TlvInputParser;
 import io.reactivex.Single;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class NostrPodcastSearcher implements PodcastSearcher {
 
@@ -51,18 +54,28 @@ public class NostrPodcastSearcher implements PodcastSearcher {
             throw new RuntimeException(e);
         }
         String relay = parsedData.get(1);
-        NostrService service = new NostrService(AntennapodHttpClient.getHttpClient(), relay);
-        try {
-            List<NostrEvent> matchingMetadataEvents = service.fetchEvents(requestJson);
-            List<PodcastSearchResult> results = new ArrayList<>();
-            for (NostrEvent event : matchingMetadataEvents) {
-                results.add(PodcastSearchResult.fromNostrMetadataEvent((PodcastMetadataEvent) event, query));
+        return Single.create((SingleOnSubscribe<List<PodcastSearchResult>>) subscriber -> {
+            NostrService service = new NostrService(AntennapodHttpClient.getHttpClient(), relay);
+            try {
+                List<NostrEvent> matchingMetadataEvents = service.fetchEvents(requestJson);
+                List<PodcastSearchResult> results = new ArrayList<>();
+                for (NostrEvent event : matchingMetadataEvents) {
+                    results.add(PodcastSearchResult.fromNostrMetadataEvent((PodcastMetadataEvent) event, query));
+                }
+                subscriber.onSuccess(results);
+            } catch (Exception e) {
+                if (e instanceof NostrException || e instanceof JSONException || e instanceof NostrServiceException) {
+                    e.printStackTrace();
+                    subscriber.onError(e);
+                } else if (e instanceof NullPointerException) {
+                    e.printStackTrace();
+                    subscriber.onError(e);
+                }
             }
-        } catch (NostrServiceException | JSONException e) {
-            throw new RuntimeException(e);
-        }
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread());
 
-        return null;
     }
 
     @Override
