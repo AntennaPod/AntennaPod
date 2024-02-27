@@ -1,11 +1,16 @@
 package de.danoeh.antennapod.net.discovery;
 
 import androidx.annotation.Nullable;
-import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetPodcast;
-import de.mfietz.fyydlin.SearchHit;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
+
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetPodcast;
+import de.danoeh.antennapod.net.sync.nostr.model.PodcastMetadataEvent;
+import de.mfietz.fyydlin.SearchHit;
 
 public class PodcastSearchResult {
 
@@ -106,5 +111,14 @@ public class PodcastSearchResult {
         String feedUrl = json.optString("url", null);
         String author = json.optString("author", null);
         return new PodcastSearchResult(title, imageUrl, feedUrl, author);
+    }
+
+    public static PodcastSearchResult fromNostrMetadataEvent(PodcastMetadataEvent event, String feedReference)
+            throws JSONException {
+        String authorId = event.getPubkey();
+        List<String> podcastInfo = event.getPodcastInfo();
+        String title = podcastInfo.get(0);
+        String imageUrl = podcastInfo.get(2);
+        return new PodcastSearchResult(title, imageUrl, feedReference, authorId);
     }
 }
