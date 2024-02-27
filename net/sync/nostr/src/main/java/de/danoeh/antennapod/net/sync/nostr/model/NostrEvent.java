@@ -113,7 +113,7 @@ public class NostrEvent {
     }
 
 
-    public NostrEvent fromJson(String eventJson) throws JSONException {
+    public static NostrEvent fromJson(String eventJson) throws JSONException {
         JSONObject eventReader = new JSONObject(eventJson);
         String pubkey = eventReader.getString("pubkey");
         Long creationDate = eventReader.getLong("created_at");

@@ -13,14 +13,12 @@ public class PodcastMetadataEvent extends NostrEvent {
     /**
      * Extracts the podcast metadata and populates a list with the metadata,
      * in the order: name, description, image.
-     * @param infoEventJson The JSON containing creator metadata.
      * @return {@link List} An ordered list of strings.
      * @throws JSONException If an error occurs during parsing of the Nostr event JSON.
      */
-    public List<String> getPodcastInfo(String infoEventJson) throws JSONException {
-        NostrEvent infoEvent = fromJson(infoEventJson);
+    public List<String> getPodcastInfo() throws JSONException {
 
-        String infoEventContent = infoEvent.getContent();
+        String infoEventContent = this.getContent();
         JSONObject infoJson = new JSONObject(infoEventContent);
         String podcastName = infoJson.getString("name");
         String podcastDescription = infoJson.getString("about");
