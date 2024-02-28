@@ -1,5 +1,6 @@
 name: Feature request
 description: Request a new feature or enhancement
+labels: ["Needs: Triage", "Type: Feature request"]
 body:
   - type: checkboxes
     id: checklist
