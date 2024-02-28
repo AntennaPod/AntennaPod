@@ -203,6 +203,10 @@ public class ExoPlayerWrapper {
 
     public void reset() {
         exoPlayer.release();
+        if (simpleCache != null) {
+            simpleCache.release();
+            simpleCache = null;
+        }
         createPlayer();
     }
 
@@ -241,7 +245,7 @@ public class ExoPlayerWrapper {
         if (s.startsWith("http")) {
             dataSourceFactory = new CacheDataSource.Factory()
                     .setCache(simpleCache)
-                    .setUpstreamDataSourceFactory(dataSourceFactory);
+                    .setUpstreamDataSourceFactory(httpDataSourceFactory);
         }
         DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         extractorsFactory.setConstantBitrateSeekingEnabled(true);
