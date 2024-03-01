@@ -95,8 +95,8 @@ public class MediaDownloadedHandler implements Runnable {
             Log.e(TAG, "MediaHandlerThread was interrupted");
         } catch (ExecutionException e) {
             Log.e(TAG, "ExecutionException in MediaHandlerThread: " + e.getMessage());
-            updatedStatus = new DownloadResult(media, media.getEpisodeTitle(),
-                    DownloadError.ERROR_DB_ACCESS_ERROR, false, e.getMessage());
+            updatedStatus = new DownloadResult(media.getEpisodeTitle(), media.getId(),
+                    FeedMedia.FEEDFILETYPE_FEEDMEDIA, false, DownloadError.ERROR_DB_ACCESS_ERROR, e.getMessage());
         }
 
         if (item != null) {

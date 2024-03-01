@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.danoeh.antennapod.model.feed.FeedComponent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedMother;
@@ -145,7 +144,7 @@ public class ItemEnqueuePositionCalculatorTest {
             Collections.unmodifiableList(Arrays.asList(
                     createFeedItem(11), createFeedItem(12), createFeedItem(13), createFeedItem(14)));
     static final List<Long> QUEUE_DEFAULT_IDS =
-            QUEUE_DEFAULT.stream().map(FeedComponent::getId).collect(Collectors.toList());
+            QUEUE_DEFAULT.stream().map(FeedItem::getId).collect(Collectors.toList());
 
 
     static Playable getCurrentlyPlaying(long idCurrentlyPlaying) {

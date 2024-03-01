@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.model.feed;
 
-public class Chapter extends FeedComponent {
+public class Chapter {
+    private long id;
     /** Defines starting point in milliseconds. */
     private long start;
     private String title;
@@ -62,12 +63,15 @@ public class Chapter extends FeedComponent {
     }
 
     @Override
-    public String getHumanReadableIdentifier() {
-        return title;
-    }
-
-    @Override
     public String toString() {
         return "ID3Chapter [title=" + getTitle() + ", start=" + getStart() + ", url=" + getLink() + "]";
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

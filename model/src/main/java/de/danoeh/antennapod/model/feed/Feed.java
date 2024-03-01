@@ -3,6 +3,7 @@ package de.danoeh.antennapod.model.feed;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +14,7 @@ import java.util.List;
  *
  * @author daniel
  */
-public class Feed extends FeedFile {
+public class Feed {
 
     public static final int FEEDFILETYPE_FEED = 0;
     public static final String TYPE_RSS2 = "rss";
@@ -21,6 +22,10 @@ public class Feed extends FeedFile {
     public static final String PREFIX_LOCAL_FOLDER = "antennapod_local:";
     public static final String PREFIX_GENERATIVE_COVER = "antennapod_generative_cover:";
 
+    private long id;
+    private String localFileUrl;
+    private String downloadUrl;
+    private boolean downloaded;
     /**
      * title as defined by the feed.
      */
@@ -107,7 +112,9 @@ public class Feed extends FeedFile {
                 String type, String feedIdentifier, String imageUrl, String fileUrl,
                 String downloadUrl, boolean downloaded, boolean paged, String nextPageLink,
                 String filter, @Nullable SortOrder sortOrder, boolean lastUpdateFailed) {
-        super(fileUrl, downloadUrl, downloaded);
+        this.localFileUrl = fileUrl;
+        this.downloadUrl = downloadUrl;
+        this.downloaded = downloaded;
         this.id = id;
         this.feedTitle = title;
         this.customTitle = customTitle;
@@ -138,8 +145,8 @@ public class Feed extends FeedFile {
     public Feed(long id, String lastUpdate, String title, String link, String description, String paymentLink,
                 String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
                 String downloadUrl, boolean downloaded) {
-        this(id, lastUpdate, title, null, link, description, paymentLink, author, language, type, feedIdentifier, imageUrl,
-                fileUrl, downloadUrl, downloaded, false, null, null, null, false);
+        this(id, lastUpdate, title, null, link, description, paymentLink, author, language, type, feedIdentifier,
+                imageUrl, fileUrl, downloadUrl, downloaded, false, null, null, null, false);
     }
 
     /**
@@ -154,7 +161,9 @@ public class Feed extends FeedFile {
      * used if the title of the feed is already known.
      */
     public Feed(String url, String lastUpdate) {
-        super(null, url, false);
+        this.localFileUrl = null;
+        this.downloadUrl = url;
+        this.downloaded = false;
         this.lastUpdate = lastUpdate;
     }
 
@@ -194,8 +203,8 @@ public class Feed extends FeedFile {
     public String getIdentifyingValue() {
         if (feedIdentifier != null && !feedIdentifier.isEmpty()) {
             return feedIdentifier;
-        } else if (download_url != null && !download_url.isEmpty()) {
-            return download_url;
+        } else if (downloadUrl != null && !downloadUrl.isEmpty()) {
+            return downloadUrl;
         } else if (feedTitle != null && !feedTitle.isEmpty()) {
             return feedTitle;
         } else {
@@ -203,14 +212,13 @@ public class Feed extends FeedFile {
         }
     }
 
-    @Override
     public String getHumanReadableIdentifier() {
         if (!TextUtils.isEmpty(customTitle)) {
             return customTitle;
         } else if (!TextUtils.isEmpty(feedTitle)) {
             return feedTitle;
         } else {
-            return download_url;
+            return downloadUrl;
         }
     }
 
@@ -249,8 +257,15 @@ public class Feed extends FeedFile {
         }
     }
 
+    /**
+     * Compare's this FeedFile's attribute values with another FeedFile's
+     * attribute values. This method will only compare attributes which were
+     * read from the feed.
+     *
+     * @return true if attribute values are different, false otherwise
+     */
     public boolean compareWithOther(Feed other) {
-        if (super.compareWithOther(other)) {
+        if (!StringUtils.equals(downloadUrl, other.downloadUrl)) {
             return true;
         }
         if (other.imageUrl != null) {
@@ -311,11 +326,6 @@ public class Feed extends FeedFile {
             }
         }
         return mostRecentItem;
-    }
-
-    @Override
-    public int getTypeAsInt() {
-        return FEEDFILETYPE_FEED;
     }
 
     public String getTitle() {
@@ -434,12 +444,42 @@ public class Feed extends FeedFile {
         return preferences;
     }
 
-    @Override
     public void setId(long id) {
-        super.setId(id);
+        this.id = id;
         if (preferences != null) {
             preferences.setFeedID(id);
         }
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getFile_url() {
+        return localFileUrl;
+    }
+
+    public void setFile_url(String fileUrl) {
+        this.localFileUrl = fileUrl;
+        if (fileUrl == null) {
+            downloaded = false;
+        }
+    }
+
+    public String getDownload_url() {
+        return downloadUrl;
+    }
+
+    public void setDownload_url(String downloadUrl) {
+        this.downloadUrl = downloadUrl;
+    }
+
+    public boolean isDownloaded() {
+        return downloaded;
+    }
+
+    public void setDownloaded(boolean downloaded) {
+        this.downloaded = downloaded;
     }
 
     public int getPageNr() {
@@ -499,6 +539,6 @@ public class Feed extends FeedFile {
     }
 
     public boolean isLocalFeed() {
-        return download_url.startsWith(PREFIX_LOCAL_FOLDER);
+        return downloadUrl.startsWith(PREFIX_LOCAL_FOLDER);
     }
 }
