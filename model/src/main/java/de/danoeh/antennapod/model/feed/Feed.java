@@ -56,7 +56,7 @@ public class Feed {
     /**
      * String that identifies the last update (adopted from Last-Modified or ETag header).
      */
-    private String lastUpdate;
+    private String lastModified;
 
     private ArrayList<FeedFunding> fundingList;
     /**
@@ -107,7 +107,7 @@ public class Feed {
     /**
      * This constructor is used for restoring a feed from the database.
      */
-    public Feed(long id, String lastUpdate, String title, String customTitle, String link,
+    public Feed(long id, String lastModified, String title, String customTitle, String link,
                 String description, String paymentLinks, String author, String language,
                 String type, String feedIdentifier, String imageUrl, String fileUrl,
                 String downloadUrl, boolean downloaded, boolean paged, String nextPageLink,
@@ -118,7 +118,7 @@ public class Feed {
         this.id = id;
         this.feedTitle = title;
         this.customTitle = customTitle;
-        this.lastUpdate = lastUpdate;
+        this.lastModified = lastModified;
         this.link = link;
         this.description = description;
         this.fundingList = FeedFunding.extractPaymentLinks(paymentLinks);
@@ -142,10 +142,10 @@ public class Feed {
     /**
      * This constructor is used for test purposes.
      */
-    public Feed(long id, String lastUpdate, String title, String link, String description, String paymentLink,
+    public Feed(long id, String lastModified, String title, String link, String description, String paymentLink,
                 String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
                 String downloadUrl, boolean downloaded) {
-        this(id, lastUpdate, title, null, link, description, paymentLink, author, language, type, feedIdentifier,
+        this(id, lastModified, title, null, link, description, paymentLink, author, language, type, feedIdentifier,
                 imageUrl, fileUrl, downloadUrl, downloaded, false, null, null, null, false);
     }
 
@@ -160,19 +160,19 @@ public class Feed {
      * This constructor is used for requesting a feed download (it must not be used for anything else!). It should NOT be
      * used if the title of the feed is already known.
      */
-    public Feed(String url, String lastUpdate) {
+    public Feed(String url, String lastModified) {
         this.localFileUrl = null;
         this.downloadUrl = url;
         this.downloaded = false;
-        this.lastUpdate = lastUpdate;
+        this.lastModified = lastModified;
     }
 
     /**
      * This constructor is used for requesting a feed download (it must not be used for anything else!). It should be
      * used if the title of the feed is already known.
      */
-    public Feed(String url, String lastUpdate, String title) {
-        this(url, lastUpdate);
+    public Feed(String url, String lastModified, String title) {
+        this(url, lastModified);
         this.feedTitle = title;
     }
 
@@ -180,8 +180,8 @@ public class Feed {
      * This constructor is used for requesting a feed download (it must not be used for anything else!). It should be
      * used if the title of the feed is already known.
      */
-    public Feed(String url, String lastUpdate, String title, String username, String password) {
-        this(url, lastUpdate, title);
+    public Feed(String url, String lastModified, String title, String username, String password) {
+        this(url, lastModified, title);
         preferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL, VolumeAdaptionSetting.OFF,
             FeedPreferences.NewEpisodesAction.GLOBAL, username, password);
     }
@@ -385,12 +385,12 @@ public class Feed {
         this.items = list;
     }
 
-    public String getLastUpdate() {
-        return lastUpdate;
+    public String getLastModified() {
+        return lastModified;
     }
 
-    public void setLastUpdate(String lastModified) {
-        this.lastUpdate = lastModified;
+    public void setLastModified(String lastModified) {
+        this.lastModified = lastModified;
     }
 
     public String getFeedIdentifier() {

@@ -330,7 +330,7 @@ public final class DBTasks {
             }
 
             // update attributes
-            savedFeed.setLastUpdate(newFeed.getLastUpdate());
+            savedFeed.setLastModified(newFeed.getLastModified());
             savedFeed.setType(newFeed.getType());
             savedFeed.setLastUpdateFailed(false);
 
