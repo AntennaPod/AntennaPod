@@ -142,8 +142,9 @@ public class FeedUpdateWorker extends Worker {
                 }
             } catch (Exception e) {
                 DBWriter.setFeedLastUpdateFailed(feed.getId(), true);
-                DownloadResult status = new DownloadResult(feed, feed.getTitle(),
-                        DownloadError.ERROR_IO_ERROR, false, e.getMessage());
+                DownloadResult status = new DownloadResult(feed.getTitle(),
+                        feed.getId(), Feed.FEEDFILETYPE_FEED, false,
+                        DownloadError.ERROR_IO_ERROR, e.getMessage());
                 DBWriter.addDownloadStatus(status);
             }
             toUpdate.remove(0);

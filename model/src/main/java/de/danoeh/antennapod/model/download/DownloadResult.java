@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 
 import java.util.Date;
 
-import de.danoeh.antennapod.model.feed.FeedFile;
-
 /**
  * Contains status attributes for one download
  */
@@ -42,18 +40,13 @@ public class DownloadResult {
     private boolean successful;
     private final Date completionDate;
 
-    /**
-     * Constructor for creating new completed downloads.
-     */
-    public DownloadResult(@NonNull FeedFile feedfile, String title, DownloadError reason, boolean successful,
-                          String reasonDetailed) {
-        this(0, title, feedfile.getId(), feedfile.getTypeAsInt(), successful, reason, new Date(),
-                reasonDetailed);
+    public DownloadResult(String title, long feedfileId, int feedfileType, boolean successful,
+                          DownloadError reason, String reasonDetailed) {
+        this(0, title, feedfileId, feedfileType, successful, reason, new Date(), reasonDetailed);
     }
 
     public DownloadResult(long id, String title, long feedfileId, int feedfileType, boolean successful,
-                          DownloadError reason, Date completionDate,
-                          String reasonDetailed) {
+                          DownloadError reason, Date completionDate, String reasonDetailed) {
         this.id = id;
         this.title = title;
         this.feedfileId = feedfileId;

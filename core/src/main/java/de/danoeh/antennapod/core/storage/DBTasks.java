@@ -243,8 +243,9 @@ public final class DBTasks {
                 FeedItem possibleDuplicate = searchFeedItemGuessDuplicate(newFeed.getItems(), item);
                 if (!newFeed.isLocalFeed() && possibleDuplicate != null && item != possibleDuplicate) {
                     // Canonical episode is the first one returned (usually oldest)
-                    DBWriter.addDownloadStatus(new DownloadResult(savedFeed,
-                            item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
+                    DBWriter.addDownloadStatus(new DownloadResult(item.getTitle(),
+                            savedFeed.getId(), Feed.FEEDFILETYPE_FEED, false,
+                            DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE,
                             "The podcast host appears to have added the same episode twice. "
                                     + "AntennaPod still refreshed the feed and attempted to repair it."
                                     + "\n\nOriginal episode:\n" + duplicateEpisodeDetails(item)
@@ -258,8 +259,9 @@ public final class DBTasks {
                     oldItem = searchFeedItemGuessDuplicate(savedFeed.getItems(), item);
                     if (oldItem != null) {
                         Log.d(TAG, "Repaired duplicate: " + oldItem + ", " + item);
-                        DBWriter.addDownloadStatus(new DownloadResult(savedFeed,
-                                item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
+                        DBWriter.addDownloadStatus(new DownloadResult(item.getTitle(),
+                                savedFeed.getId(), Feed.FEEDFILETYPE_FEED, false,
+                                DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE,
                                 "The podcast host changed the ID of an existing episode instead of just "
                                         + "updating the episode itself. AntennaPod still refreshed the feed and "
                                         + "attempted to repair it."
@@ -328,7 +330,7 @@ public final class DBTasks {
             }
 
             // update attributes
-            savedFeed.setLastUpdate(newFeed.getLastUpdate());
+            savedFeed.setLastModified(newFeed.getLastModified());
             savedFeed.setType(newFeed.getType());
             savedFeed.setLastUpdateFailed(false);
 

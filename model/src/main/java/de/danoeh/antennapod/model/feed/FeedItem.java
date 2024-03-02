@@ -17,13 +17,14 @@ import java.util.Set;
  *
  * @author daniel
  */
-public class FeedItem extends FeedComponent implements Serializable {
+public class FeedItem implements Serializable {
 
     /** tag that indicates this item is in the queue */
     public static final String TAG_QUEUE = "Queue";
     /** tag that indicates this item is in favorites */
     public static final String TAG_FAVORITE = "Favorite";
 
+    private long id;
     /**
      * The id/guid that can be found in the rss/atom feed. Might not be set.
      */
@@ -125,7 +126,6 @@ public class FeedItem extends FeedComponent implements Serializable {
     }
 
     public void updateFromOther(FeedItem other) {
-        super.updateFromOther(other);
         if (other.imageUrl != null) {
             this.imageUrl = other.imageUrl;
         }
@@ -161,6 +161,14 @@ public class FeedItem extends FeedComponent implements Serializable {
         if (other.podcastIndexChapterUrl != null) {
             podcastIndexChapterUrl = other.podcastIndexChapterUrl;
         }
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     /**
@@ -348,11 +356,6 @@ public class FeedItem extends FeedComponent implements Serializable {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    @Override
-    public String getHumanReadableIdentifier() {
-        return title;
     }
 
     public boolean hasChapters() {

@@ -31,7 +31,7 @@ public class DownloadRequestCreator {
 
         return new DownloadRequest.Builder(dest.toString(), feed)
                 .withAuthentication(username, password)
-                .lastModified(feed.getLastUpdate());
+                .lastModified(feed.getLastModified());
     }
 
     public static DownloadRequest.Builder create(FeedMedia media) {
