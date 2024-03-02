@@ -51,7 +51,6 @@ public final class PlaybackSpeedUtils {
         return playbackSpeed;
     }
 
-    //Todo - put this code somewhere else
     /**
      * Returns the currently configured skip silence for the specified media.
      */
