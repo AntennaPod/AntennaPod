@@ -65,7 +65,7 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
             = "de.danoeh.antennapod.preferences.temporaryPlaybackSpeed";
 
     /**
-     * A temporary playback speed which overrides the per-feed skip silence for the currently playing
+     * A temporary skip silence preference which overrides the per-feed skip silence for the currently playing
      * media. Considered unset if set to null;
      */
     private static final String PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE
