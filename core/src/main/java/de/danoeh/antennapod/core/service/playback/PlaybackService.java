@@ -1562,13 +1562,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             if (((FeedMedia) getPlayable()).getItem().getFeed().getId() == event.getFeedId()) {
                 if (event.getSpeed() == SPEED_USE_GLOBAL) {
                     setSpeed(UserPreferences.getPlaybackSpeed(getPlayable().getMediaType()));
-                    skipSilence(UserPreferences.isSkipSilence());
+                    setSkipSilence(UserPreferences.isSkipSilence());
 
                 } else {
                     setSpeed(event.getSpeed());
                     Boolean skipSilence = event.getSkipSilence();
                     if (skipSilence != null) {
-                        skipSilence(skipSilence);
+                        setSkipSilence(skipSilence);
                     }
                 }
             }
@@ -1636,7 +1636,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         mediaPlayer.setPlaybackParams(speed, getCurrentSkipSilence());
     }
 
-    public void skipSilence(boolean skipSilence) {
+    public void setSkipSilence(boolean skipSilence) {
         PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(skipSilence);
         UserPreferences.setSkipSilence(skipSilence);
         mediaPlayer.setPlaybackParams(getCurrentPlaybackSpeed(), skipSilence);

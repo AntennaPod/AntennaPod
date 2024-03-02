@@ -407,7 +407,7 @@ public abstract class PlaybackController {
 
     public void setSkipSilence(boolean skipSilence) {
         if (playbackService != null) {
-            playbackService.skipSilence(skipSilence);
+            playbackService.setSkipSilence(skipSilence);
         }
     }
 
