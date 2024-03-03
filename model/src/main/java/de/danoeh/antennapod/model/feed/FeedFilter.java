@@ -12,11 +12,18 @@ public class FeedFilter implements Serializable {
     private final String excludeFilter;
     private final int minimalDuration;
 
+    private final boolean markExcludedAsPlayed;
+
     public FeedFilter() {
-        this("", "", -1);
+        this("", "", -1, false);
     }
 
-    public FeedFilter(String includeFilter, String excludeFilter, int minimalDuration) {
+    public FeedFilter(
+            String includeFilter,
+            String excludeFilter,
+            int minimalDuration,
+            boolean markExcludedAsPlayed
+    ) {
         // We're storing the strings and not the parsed terms because
         // 1. It's easier to show the user exactly what they typed in this way
         //    (we don't have to recreate it)
@@ -24,10 +31,15 @@ public class FeedFilter implements Serializable {
         this.includeFilter = includeFilter;
         this.excludeFilter = excludeFilter;
         this.minimalDuration = minimalDuration;
+        this.markExcludedAsPlayed = markExcludedAsPlayed;
+    }
+
+    public FeedFilter(String includeFilter, String excludeFilter, int minimalDuration) {
+        this(includeFilter, excludeFilter, minimalDuration, false);
     }
 
     public FeedFilter(String includeFilter, String excludeFilter) {
-        this(includeFilter, excludeFilter, -1);
+        this(includeFilter, excludeFilter, -1, false);
     }
 
     /**
@@ -146,5 +158,9 @@ public class FeedFilter implements Serializable {
 
     public boolean hasMinimalDurationFilter() {
         return minimalDuration > -1;
+    }
+
+    public boolean isMarkExcludedAsPlayed() {
+        return markExcludedAsPlayed;
     }
 }

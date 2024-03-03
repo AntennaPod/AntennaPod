@@ -46,6 +46,9 @@ public abstract class EpisodeFilterDialog extends MaterialAlertDialogBuilder {
             termList = filter.getIncludeFilter();
             viewBinding.includeRadio.setChecked(true);
         }
+
+        viewBinding.markAsPlayedCheckBox.setChecked(filter.isMarkExcludedAsPlayed());
+
         setupWordsList();
 
         setNegativeButton(R.string.cancel_label, null);
@@ -99,7 +102,10 @@ public abstract class EpisodeFilterDialog extends MaterialAlertDialogBuilder {
         } else {
             excludeFilter = toFilterString(termList);
         }
-        onConfirmed(new FeedFilter(includeFilter, excludeFilter, minimalDuration));
+        boolean markExcludedAsRead = viewBinding.markAsPlayedCheckBox.isChecked();
+        onConfirmed(
+                new FeedFilter(includeFilter, excludeFilter, minimalDuration, markExcludedAsRead)
+        );
     }
 
     private String toFilterString(List<String> words) {

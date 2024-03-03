@@ -51,17 +51,21 @@ public class AutomaticDownloadAlgorithm {
                 Log.d(TAG, "Performing auto-dl of undownloaded episodes");
 
                 List<FeedItem> candidates;
+                List<FeedItem> markAsPlayedCandidates;
                 final List<FeedItem> queue = DBReader.getQueue();
                 final List<FeedItem> newItems = DBReader.getEpisodes(0, Integer.MAX_VALUE,
                         new FeedItemFilter(FeedItemFilter.NEW), SortOrder.DATE_NEW_OLD);
                 candidates = new ArrayList<>(queue.size() + newItems.size());
+                markAsPlayedCandidates = new ArrayList<>(queue.size() + newItems.size());
                 candidates.addAll(queue);
                 for (FeedItem newItem : newItems) {
                     FeedPreferences feedPrefs = newItem.getFeed().getPreferences();
-                    if (feedPrefs.getAutoDownload()
-                            && !candidates.contains(newItem)
-                            && feedPrefs.getFilter().shouldAutoDownload(newItem)) {
-                        candidates.add(newItem);
+                    if (feedPrefs.getAutoDownload() && !candidates.contains(newItem)) {
+                        if (feedPrefs.getFilter().shouldAutoDownload(newItem)) {
+                            candidates.add(newItem);
+                        } else if (feedPrefs.getFilter().isMarkExcludedAsPlayed()) {
+                            markAsPlayedCandidates.add(newItem);
+                        }
                     }
                 }
 
@@ -100,6 +104,10 @@ public class AutomaticDownloadAlgorithm {
                     for (FeedItem episode : itemsToDownload) {
                         DownloadServiceInterface.get().download(context, episode);
                     }
+                }
+
+                for (FeedItem itemToMarkAsPlayed: markAsPlayedCandidates) {
+                    DBWriter.markItemPlayed(itemToMarkAsPlayed, FeedItem.PLAYED, true);
                 }
             }
         };
