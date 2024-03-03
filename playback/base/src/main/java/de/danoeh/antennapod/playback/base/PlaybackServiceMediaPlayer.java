@@ -151,6 +151,8 @@ public abstract class PlaybackServiceMediaPlayer {
      */
     public abstract float getPlaybackSpeed();
 
+    public abstract boolean getSkipSilence();
+
     /**
      * Sets the playback volume.
      * This method is executed on an internal executor service.

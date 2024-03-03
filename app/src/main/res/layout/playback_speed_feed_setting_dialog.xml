@@ -34,4 +34,10 @@
 
     </LinearLayout>
 
+    <CheckBox
+        android:id="@+id/skipSilenceFeed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pref_skip_silence_title" />
+
 </LinearLayout>

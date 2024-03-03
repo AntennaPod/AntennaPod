@@ -4,6 +4,7 @@ import android.util.Log;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -49,5 +50,26 @@ public final class PlaybackSpeedUtils {
         }
 
         return playbackSpeed;
+    }
+
+    /**
+     * Returns the currently configured skip silence for the specified media.
+     */
+    public static FeedPreferences.SkipSilence getCurrentSkipSilencePreference(Playable media) {
+        FeedPreferences.SkipSilence skipSilence = FeedPreferences.SkipSilence.GLOBAL;
+        if (media != null) {
+            skipSilence = PlaybackPreferences.getCurrentlyPlayingTemporarySkipSilence();
+            if (skipSilence == FeedPreferences.SkipSilence.GLOBAL && media instanceof FeedMedia) {
+                FeedItem item = ((FeedMedia) media).getItem();
+                if (item != null && item.getFeed() != null && item.getFeed().getPreferences() != null) {
+                    skipSilence = item.getFeed().getPreferences().getFeedSkipSilence();
+                }
+            }
+        }
+        if (skipSilence == FeedPreferences.SkipSilence.GLOBAL) {
+            skipSilence = UserPreferences.isSkipSilence()
+                    ? FeedPreferences.SkipSilence.AGGRESSIVE : FeedPreferences.SkipSilence.OFF;
+        }
+        return skipSilence;
     }
 }

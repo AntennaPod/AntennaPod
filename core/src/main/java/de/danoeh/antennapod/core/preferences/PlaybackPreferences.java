@@ -10,6 +10,7 @@ import android.util.Log;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
@@ -64,6 +65,12 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
     private static final String PREF_CURRENTLY_PLAYING_TEMPORARY_PLAYBACK_SPEED
             = "de.danoeh.antennapod.preferences.temporaryPlaybackSpeed";
 
+    /**
+     * A temporary skip silence preference which overrides the per-feed skip silence for the currently playing
+     * media. Considered unset if set to null;
+     */
+    private static final String PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE
+            = "de.danoeh.antennapod.preferences.temporarySkipSilence";
 
     /**
      * Value of PREF_CURRENTLY_PLAYING_MEDIA if no media is playing.
@@ -123,6 +130,11 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
         return prefs.getFloat(PREF_CURRENTLY_PLAYING_TEMPORARY_PLAYBACK_SPEED, SPEED_USE_GLOBAL);
     }
 
+    public static FeedPreferences.SkipSilence getCurrentlyPlayingTemporarySkipSilence() {
+        return FeedPreferences.SkipSilence.fromCode(prefs.getInt(
+                PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE, FeedPreferences.SkipSilence.GLOBAL.code));
+    }
+
     public static void writeNoMediaPlaying() {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putLong(PREF_CURRENTLY_PLAYING_MEDIA_TYPE, NO_MEDIA_PLAYING);
@@ -170,9 +182,17 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
         editor.apply();
     }
 
-    public static void clearCurrentlyPlayingTemporaryPlaybackSpeed() {
+    public static void setCurrentlyPlayingTemporarySkipSilence(boolean skipSilence) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE, skipSilence
+                ? FeedPreferences.SkipSilence.AGGRESSIVE.code : FeedPreferences.SkipSilence.OFF.code);
+        editor.apply();
+    }
+
+    public static void clearCurrentlyPlayingTemporaryPlaybackSettings() {
         SharedPreferences.Editor editor = prefs.edit();
         editor.remove(PREF_CURRENTLY_PLAYING_TEMPORARY_PLAYBACK_SPEED);
+        editor.remove(PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE);
         editor.apply();
     }
 
