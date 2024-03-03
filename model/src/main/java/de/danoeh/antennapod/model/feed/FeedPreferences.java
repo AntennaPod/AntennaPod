@@ -98,7 +98,8 @@ public class FeedPreferences implements Serializable {
                            VolumeAdaptionSetting volumeAdaptionSetting, NewEpisodesAction newEpisodesAction,
                            String username, String password) {
         this(feedID, autoDownload, true, autoDeleteAction, volumeAdaptionSetting, username, password,
-                new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, null, false, newEpisodesAction, new HashSet<>());
+                new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, SkipSilence.GLOBAL,
+                false, newEpisodesAction, new HashSet<>());
     }
 
     public FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated,
