@@ -156,7 +156,7 @@ public class PodDBAdapter {
             + KEY_LAST_UPDATE_FAILED + " INTEGER DEFAULT 0,"
             + KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0,"
             + KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL + ","
-            + KEY_FEED_SKIP_SILENCE + " INTEGER,"
+            + KEY_FEED_SKIP_SILENCE + " INTEGER DEFAULT 1,"
             + KEY_FEED_VOLUME_ADAPTION + " INTEGER DEFAULT 0,"
             + KEY_FEED_TAGS + " TEXT,"
             + KEY_FEED_SKIP_INTRO + " INTEGER DEFAULT 0,"
