@@ -296,6 +296,11 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private static class BackupDatabase extends ActivityResultContracts.CreateDocument {
+
+        BackupDatabase() {
+            super("application/x-sqlite3");
+        }
+
         @NonNull
         @Override
         public Intent createIntent(@NonNull final Context context, @NonNull final String input) {
