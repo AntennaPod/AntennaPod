@@ -58,6 +58,25 @@ public class FeedPreferences implements Serializable {
         }
     }
 
+    public enum SkipSilence {
+        OFF(0), GLOBAL(1), AGGRESSIVE(2);
+
+        public final int code;
+
+        SkipSilence(int code) {
+            this.code = code;
+        }
+
+        public static SkipSilence fromCode(int code) {
+            for (SkipSilence s : values()) {
+                if (s.code == code) {
+                    return s;
+                }
+            }
+            return GLOBAL;
+        }
+    }
+
     @NonNull
     private FeedFilter filter;
     private long feedID;
@@ -71,7 +90,7 @@ public class FeedPreferences implements Serializable {
     private float feedPlaybackSpeed;
     private int feedSkipIntro;
     private int feedSkipEnding;
-    private Boolean feedSkipSilence;
+    private SkipSilence feedSkipSilence;
     private boolean showEpisodeNotification;
     private final Set<String> tags = new HashSet<>();
 
@@ -85,7 +104,7 @@ public class FeedPreferences implements Serializable {
     public FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated,
                             AutoDeleteAction autoDeleteAction, VolumeAdaptionSetting volumeAdaptionSetting,
                             String username, String password, @NonNull FeedFilter filter,
-                            float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding, Boolean feedSkipSilence,
+                            float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding, SkipSilence feedSkipSilence,
                             boolean showEpisodeNotification, NewEpisodesAction newEpisodesAction,
                             Set<String> tags) {
         this.feedID = feedID;
@@ -242,11 +261,11 @@ public class FeedPreferences implements Serializable {
         return feedSkipEnding;
     }
 
-    public void setFeedSkipSilence(Boolean skipSilence) {
+    public void setFeedSkipSilence(SkipSilence skipSilence) {
         feedSkipSilence = skipSilence;
     }
 
-    public Boolean getFeedSkipSilence() {
+    public SkipSilence getFeedSkipSilence() {
         return feedSkipSilence;
     }
 

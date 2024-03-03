@@ -1563,12 +1563,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (event.getSpeed() == SPEED_USE_GLOBAL) {
                     setSpeed(UserPreferences.getPlaybackSpeed(getPlayable().getMediaType()));
                     setSkipSilence(UserPreferences.isSkipSilence());
-
                 } else {
                     setSpeed(event.getSpeed());
-                    Boolean skipSilence = event.getSkipSilence();
-                    if (skipSilence != null) {
-                        setSkipSilence(skipSilence);
+                    FeedPreferences.SkipSilence skipSilence = event.getSkipSilence();
+                    if (skipSilence == FeedPreferences.SkipSilence.GLOBAL) {
+                        setSkipSilence(UserPreferences.isSkipSilence());
+                    } else {
+                        setSkipSilence(skipSilence == FeedPreferences.SkipSilence.AGGRESSIVE);
                     }
                 }
             }

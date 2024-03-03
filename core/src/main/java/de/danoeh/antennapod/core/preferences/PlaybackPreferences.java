@@ -10,6 +10,7 @@ import android.util.Log;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
@@ -129,9 +130,9 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
         return prefs.getFloat(PREF_CURRENTLY_PLAYING_TEMPORARY_PLAYBACK_SPEED, SPEED_USE_GLOBAL);
     }
 
-    public static Boolean getCurrentlyPlayingTemporarySkipSilence() {
-        return prefs.contains(PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE)
-                ? prefs.getBoolean(PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE, false) : null;
+    public static FeedPreferences.SkipSilence getCurrentlyPlayingTemporarySkipSilence() {
+        return FeedPreferences.SkipSilence.fromCode(prefs.getInt(
+                PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE, FeedPreferences.SkipSilence.GLOBAL.code));
     }
 
     public static void writeNoMediaPlaying() {

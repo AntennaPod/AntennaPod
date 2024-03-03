@@ -250,11 +250,12 @@ public class FeedSettingsFragment extends Fragment {
                     viewBinding.skipSilenceFeed.setAlpha(isChecked ? 0.4f : 1f);
                 });
                 float speed = feedPreferences.getFeedPlaybackSpeed();
-                Boolean skipSilence = feedPreferences.getFeedSkipSilence();
+                FeedPreferences.SkipSilence skipSilence = feedPreferences.getFeedSkipSilence();
                 boolean isGlobal = speed == FeedPreferences.SPEED_USE_GLOBAL;
                 viewBinding.useGlobalCheckbox.setChecked(isGlobal);
                 viewBinding.seekBar.updateSpeed(isGlobal ? 1 : speed);
-                viewBinding.skipSilenceFeed.setChecked(!isGlobal && skipSilence != null && skipSilence);
+                viewBinding.skipSilenceFeed.setChecked(!isGlobal
+                        && skipSilence == FeedPreferences.SkipSilence.AGGRESSIVE);
                 new MaterialAlertDialogBuilder(getContext())
                         .setTitle(R.string.playback_speed)
                         .setView(viewBinding.getRoot())
@@ -262,8 +263,14 @@ public class FeedSettingsFragment extends Fragment {
                             float newSpeed = viewBinding.useGlobalCheckbox.isChecked()
                                     ? FeedPreferences.SPEED_USE_GLOBAL : viewBinding.seekBar.getCurrentSpeed();
                             feedPreferences.setFeedPlaybackSpeed(newSpeed);
-                            Boolean newSkipSilence = viewBinding.useGlobalCheckbox.isChecked()
-                                    ? null : viewBinding.skipSilenceFeed.isChecked();
+                            FeedPreferences.SkipSilence newSkipSilence;
+                            if (viewBinding.useGlobalCheckbox.isChecked()) {
+                                newSkipSilence = FeedPreferences.SkipSilence.GLOBAL;
+                            } else if (viewBinding.skipSilenceFeed.isChecked()) {
+                                newSkipSilence = FeedPreferences.SkipSilence.AGGRESSIVE;
+                            } else {
+                                newSkipSilence = FeedPreferences.SkipSilence.OFF;
+                            }
                             feedPreferences.setFeedSkipSilence(newSkipSilence);
                             DBWriter.setFeedPreferences(feedPreferences);
                             EventBus.getDefault().post(new SpeedPresetChangedEvent(

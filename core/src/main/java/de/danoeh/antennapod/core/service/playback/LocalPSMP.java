@@ -167,10 +167,9 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         try {
             callback.ensureMediaInfoLoaded(media);
             callback.onMediaChanged(false);
-            setPlaybackParams(
-                    PlaybackSpeedUtils.getCurrentPlaybackSpeed(media),
+            setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media),
                     PlaybackSpeedUtils.getCurrentSkipSilencePreference(media)
-            );
+                            == FeedPreferences.SkipSilence.AGGRESSIVE);
             if (stream) {
                 if (playable instanceof FeedMedia) {
                     FeedMedia feedMedia = (FeedMedia) playable;
@@ -221,10 +220,9 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 Log.d(TAG, "Resuming/Starting playback");
                 acquireWifiLockIfNecessary();
 
-                setPlaybackParams(
-                        PlaybackSpeedUtils.getCurrentPlaybackSpeed(media),
+                setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media),
                         PlaybackSpeedUtils.getCurrentSkipSilencePreference(media)
-                );
+                                == FeedPreferences.SkipSilence.AGGRESSIVE);
                 setVolume(1.0f, 1.0f);
 
                 if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {

@@ -53,7 +53,8 @@ public abstract class FeedPreferencesCursorMapper {
         float feedPlaybackSpeed = cursor.getFloat(indexFeedPlaybackSpeed);
         int feedAutoSkipIntro = cursor.getInt(indexAutoSkipIntro);
         int feedAutoSkipEnding = cursor.getInt(indexAutoSkipEnding);
-        Boolean feedSkipSilence = cursor.isNull(indexFeedSkipSilence) ? null : cursor.getInt(indexFeedSkipSilence) > 0;
+        FeedPreferences.SkipSilence feedSkipSilence =
+                FeedPreferences.SkipSilence.fromCode(cursor.getInt(indexFeedSkipSilence));
         FeedPreferences.NewEpisodesAction feedNewEpisodesAction =
                 FeedPreferences.NewEpisodesAction.fromCode(cursor.getInt(indexNewEpisodesAction));
         boolean showNotification = cursor.getInt(indexEpisodeNotification) > 0;
