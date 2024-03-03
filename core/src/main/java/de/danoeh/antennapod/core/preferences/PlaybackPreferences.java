@@ -184,7 +184,8 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
 
     public static void setCurrentlyPlayingTemporarySkipSilence(boolean skipSilence) {
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean(PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE, skipSilence);
+        editor.putInt(PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE, skipSilence
+                ? FeedPreferences.SkipSilence.AGGRESSIVE.code : FeedPreferences.SkipSilence.OFF.code);
         editor.apply();
     }
 

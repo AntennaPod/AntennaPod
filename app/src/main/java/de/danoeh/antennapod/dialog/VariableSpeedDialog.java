@@ -75,7 +75,6 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         addCurrentSpeedChip.setText(String.format(Locale.getDefault(), "%1$.2f", event.getNewSpeed()));
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateSkipSilence(boolean skipSilence) {
         skipSilenceCheckbox.setChecked(skipSilence);
     }

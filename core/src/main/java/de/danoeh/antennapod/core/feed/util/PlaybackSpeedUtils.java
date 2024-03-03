@@ -59,7 +59,7 @@ public final class PlaybackSpeedUtils {
         FeedPreferences.SkipSilence skipSilence = FeedPreferences.SkipSilence.GLOBAL;
         if (media != null) {
             skipSilence = PlaybackPreferences.getCurrentlyPlayingTemporarySkipSilence();
-            if (media instanceof FeedMedia) {
+            if (skipSilence == FeedPreferences.SkipSilence.GLOBAL && media instanceof FeedMedia) {
                 FeedItem item = ((FeedMedia) media).getItem();
                 if (item != null && item.getFeed() != null && item.getFeed().getPreferences() != null) {
                     skipSilence = item.getFeed().getPreferences().getFeedSkipSilence();

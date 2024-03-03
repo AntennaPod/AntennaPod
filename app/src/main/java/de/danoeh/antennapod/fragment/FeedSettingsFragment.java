@@ -275,9 +275,7 @@ public class FeedSettingsFragment extends Fragment {
                             DBWriter.setFeedPreferences(feedPreferences);
                             EventBus.getDefault().post(new SpeedPresetChangedEvent(
                                     feedPreferences.getFeedPlaybackSpeed(),
-                                    feed.getId(),
-                                    feedPreferences.getFeedSkipSilence()
-                            ));
+                                    feed.getId(), feedPreferences.getFeedSkipSilence()));
                         })
                         .setNegativeButton(R.string.cancel_label, null)
                         .show();
