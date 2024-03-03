@@ -167,38 +167,6 @@ public class GpodnetService implements ISyncService {
     }
 
     /**
-     * Uploads the subscriptions of a specific device.
-     * <p/>
-     * This method requires authentication.
-     *
-     * @param deviceId      The ID of the device whose subscriptions should be updated.
-     * @param subscriptions A list of feed URLs containing all subscriptions of the
-     *                      device.
-     * @throws IllegalArgumentException              If username, deviceId or subscriptions is null.
-     * @throws GpodnetServiceAuthenticationException If there is an authentication error.
-     */
-    public void uploadSubscriptions(@NonNull String deviceId, @NonNull List<String> subscriptions)
-            throws GpodnetServiceException {
-        requireLoggedIn();
-        try {
-            URL url = new URI(baseScheme, null, baseHost, basePort,
-                    String.format("/subscriptions/%s/%s.txt", username, deviceId), null, null).toURL();
-            StringBuilder builder = new StringBuilder();
-            for (String s : subscriptions) {
-                builder.append(s);
-                builder.append("\n");
-            }
-            RequestBody body = RequestBody.create(TEXT, builder.toString());
-            Request.Builder request = new Request.Builder().put(body).url(url);
-            executeRequest(request);
-        } catch (MalformedURLException | URISyntaxException e) {
-            e.printStackTrace();
-            throw new GpodnetServiceException(e);
-        }
-
-    }
-
-    /**
      * Updates the subscription list of a specific device.
      * <p/>
      * This method requires authentication.

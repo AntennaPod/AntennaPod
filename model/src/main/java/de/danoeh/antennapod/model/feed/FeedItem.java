@@ -333,10 +333,6 @@ public class FeedItem implements Serializable {
         }
     }
 
-    public enum State {
-        UNREAD, IN_PROGRESS, READ, PLAYING
-    }
-
     public long getFeedId() {
         return feedId;
     }

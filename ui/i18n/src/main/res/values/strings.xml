@@ -320,11 +320,6 @@
 
     <!-- Mediaplayer messages -->
     <string name="playback_error_generic"><![CDATA[The media file could not be played.\n\n- Try deleting and re-downloading the episode.\n- Check your network connection, and make sure no VPN or login page is blocking access.\n- Try long-pressing and sharing the \"Media address\" to your web browser to see if it can be played there. If not, contact the podcast creators.]]></string>
-    <string name="playback_error_server_died">Server died</string>
-    <string name="playback_error_unsupported">Unsupported media type</string>
-    <string name="playback_error_timeout">Operation timed out</string>
-    <string name="playback_error_source">Unable to access media file</string>
-    <string name="playback_error_unknown">Unknown error</string>
     <string name="no_media_playing_label">No media playing</string>
     <string name="position_default_label" translatable="false">00:00:00</string>
     <string name="unknown_media_key">AntennaPod - Unknown media key: %1$d</string>

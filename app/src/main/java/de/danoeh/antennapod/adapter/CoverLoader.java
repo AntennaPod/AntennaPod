@@ -11,7 +11,6 @@ import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomViewTarget;
 import com.bumptech.glide.request.transition.Transition;
-import de.danoeh.antennapod.activity.MainActivity;
 
 import java.lang.ref.WeakReference;
 
@@ -21,11 +20,9 @@ public class CoverLoader {
     private String fallbackUri;
     private ImageView imgvCover;
     private boolean textAndImageCombined;
-    private MainActivity activity;
     private TextView fallbackTitle;
 
-    public CoverLoader(MainActivity activity) {
-        this.activity = activity;
+    public CoverLoader() {
     }
 
     public CoverLoader withUri(String uri) {
