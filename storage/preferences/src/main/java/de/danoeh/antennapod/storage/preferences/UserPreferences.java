@@ -372,7 +372,9 @@ public class UserPreferences {
         prefs.edit().putBoolean(UserPreferences.PREF_FOLLOW_QUEUE, value).apply();
     }
 
-    public static boolean shouldSkipKeepEpisode() { return prefs.getBoolean(PREF_SKIP_KEEPS_EPISODE, true); }
+    public static boolean shouldSkipKeepEpisode() {
+        return prefs.getBoolean(PREF_SKIP_KEEPS_EPISODE, true);
+    }
 
     public static boolean shouldFavoriteKeepEpisode() {
         return prefs.getBoolean(PREF_FAVORITE_KEEPS_EPISODE, true);
@@ -589,33 +591,23 @@ public class UserPreferences {
     }
 
     public static void setFastForwardSecs(int secs) {
-        prefs.edit()
-             .putInt(PREF_FAST_FORWARD_SECS, secs)
-             .apply();
+        prefs.edit().putInt(PREF_FAST_FORWARD_SECS, secs).apply();
     }
 
     public static void setRewindSecs(int secs) {
-        prefs.edit()
-             .putInt(PREF_REWIND_SECS, secs)
-             .apply();
+        prefs.edit().putInt(PREF_REWIND_SECS, secs).apply();
     }
 
     public static void setPlaybackSpeed(float speed) {
-        prefs.edit()
-             .putString(PREF_PLAYBACK_SPEED, String.valueOf(speed))
-             .apply();
+        prefs.edit().putString(PREF_PLAYBACK_SPEED, String.valueOf(speed)).apply();
     }
 
     public static void setVideoPlaybackSpeed(float speed) {
-        prefs.edit()
-                .putString(PREF_VIDEO_PLAYBACK_SPEED, String.valueOf(speed))
-                .apply();
+        prefs.edit().putString(PREF_VIDEO_PLAYBACK_SPEED, String.valueOf(speed)).apply();
     }
 
     public static void setSkipSilence(boolean skipSilence) {
-        prefs.edit()
-                .putBoolean(PREF_PLAYBACK_SKIP_SILENCE, skipSilence)
-                .apply();
+        prefs.edit().putBoolean(PREF_PLAYBACK_SKIP_SILENCE, skipSilence).apply();
     }
 
     public static void setPlaybackSpeedArray(List<Float> speeds) {
@@ -626,15 +618,11 @@ public class UserPreferences {
         for (float speed : speeds) {
             jsonArray.put(speedFormat.format(speed));
         }
-        prefs.edit()
-             .putString(PREF_PLAYBACK_SPEED_ARRAY, jsonArray.toString())
-             .apply();
+        prefs.edit().putString(PREF_PLAYBACK_SPEED_ARRAY, jsonArray.toString()).apply();
     }
 
     public static void setAutodownloadSelectedNetworks(String[] value) {
-        prefs.edit()
-             .putString(PREF_AUTODL_SELECTED_NETWORKS, TextUtils.join(",", value))
-             .apply();
+        prefs.edit().putString(PREF_AUTODL_SELECTED_NETWORKS, TextUtils.join(",", value)).apply();
     }
 
     public static boolean gpodnetNotificationsEnabled() {
@@ -652,29 +640,21 @@ public class UserPreferences {
     }
 
     public static void setGpodnetNotificationsEnabled() {
-        prefs.edit()
-                .putBoolean(PREF_GPODNET_NOTIFICATIONS, true)
-                .apply();
+        prefs.edit().putBoolean(PREF_GPODNET_NOTIFICATIONS, true).apply();
     }
 
     public static void setHiddenDrawerItems(List<String> items) {
         String str = TextUtils.join(",", items);
-        prefs.edit()
-             .putString(PREF_HIDDEN_DRAWER_ITEMS, str)
-             .apply();
+        prefs.edit().putString(PREF_HIDDEN_DRAWER_ITEMS, str).apply();
     }
 
     public static void setFullNotificationButtons(List<Integer> items) {
         String str = TextUtils.join(",", items);
-        prefs.edit()
-             .putString(PREF_FULL_NOTIFICATION_BUTTONS, str)
-             .apply();
+        prefs.edit().putString(PREF_FULL_NOTIFICATION_BUTTONS, str).apply();
     }
 
     public static void setQueueLocked(boolean locked) {
-        prefs.edit()
-             .putBoolean(PREF_QUEUE_LOCKED, locked)
-             .apply();
+        prefs.edit().putBoolean(PREF_QUEUE_LOCKED, locked).apply();
     }
 
     private static List<Float> readPlaybackSpeedArray(String valueFromPrefs) {
@@ -700,9 +680,7 @@ public class UserPreferences {
     }
 
     public static void setEpisodeCleanupValue(int episodeCleanupValue) {
-        prefs.edit()
-                .putString(PREF_EPISODE_CLEANUP, Integer.toString(episodeCleanupValue))
-                .apply();
+        prefs.edit().putString(PREF_EPISODE_CLEANUP, Integer.toString(episodeCleanupValue)).apply();
     }
 
     /**
@@ -748,9 +726,7 @@ public class UserPreferences {
 
     public static void setDataFolder(String dir) {
         Log.d(TAG, "setDataFolder(dir: " + dir + ")");
-        prefs.edit()
-             .putString(PREF_DATA_FOLDER, dir)
-             .apply();
+        prefs.edit().putString(PREF_DATA_FOLDER, dir).apply();
     }
 
     /**
@@ -808,9 +784,7 @@ public class UserPreferences {
      * @see #setQueueKeepSortedOrder(SortOrder)
      */
     public static void setQueueKeepSorted(boolean keepSorted) {
-        prefs.edit()
-                .putBoolean(PREF_QUEUE_KEEP_SORTED, keepSorted)
-                .apply();
+        prefs.edit().putBoolean(PREF_QUEUE_KEEP_SORTED, keepSorted).apply();
     }
 
     /**
@@ -833,9 +807,7 @@ public class UserPreferences {
         if (sortOrder == null) {
             return;
         }
-        prefs.edit()
-                .putString(PREF_QUEUE_KEEP_SORTED_ORDER, sortOrder.name())
-                .apply();
+        prefs.edit().putString(PREF_QUEUE_KEEP_SORTED_ORDER, sortOrder.name()).apply();
     }
 
     public static FeedPreferences.NewEpisodesAction getNewEpisodesAction() {
@@ -874,9 +846,7 @@ public class UserPreferences {
     }
 
     public static void setSubscriptionsFilter(SubscriptionsFilter value) {
-        prefs.edit()
-                .putString(PREF_FILTER_FEED, value.serialize())
-                .apply();
+        prefs.edit().putString(PREF_FILTER_FEED, value.serialize()).apply();
     }
 
     public static boolean shouldShowSubscriptionTitle() {

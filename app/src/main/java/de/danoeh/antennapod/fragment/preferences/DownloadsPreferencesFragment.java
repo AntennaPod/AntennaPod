@@ -96,13 +96,13 @@ public class DownloadsPreferencesFragment extends PreferenceFragmentCompat
 
     private void showAutoDeleteEnableDialog() {
         new MaterialAlertDialogBuilder(requireContext())
-            .setMessage(R.string.pref_auto_local_delete_dialog_body)
-            .setPositiveButton(R.string.yes, (dialog, which) -> {
-                blockAutoDeleteLocal = false;
-                ((TwoStatePreference) findPreference(PREF_AUTO_DELETE_LOCAL)).setChecked(true);
-                blockAutoDeleteLocal = true;
-            })
-            .setNegativeButton(R.string.cancel_label, null)
-            .show();
+                .setMessage(R.string.pref_auto_local_delete_dialog_body)
+                .setPositiveButton(R.string.yes, (dialog, which) -> {
+                    blockAutoDeleteLocal = false;
+                    ((TwoStatePreference) findPreference(PREF_AUTO_DELETE_LOCAL)).setChecked(true);
+                    blockAutoDeleteLocal = true;
+                })
+                .setNegativeButton(R.string.cancel_label, null)
+                .show();
     }
 }

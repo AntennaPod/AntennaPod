@@ -221,8 +221,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
                 if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
                     int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
-                        media.getPosition(),
-                        media.getLastPlayedTime());
+                            media.getPosition(), media.getLastPlayedTime());
                     seekTo(newPosition);
                 }
                 mediaPlayer.start();
