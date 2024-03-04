@@ -54,8 +54,12 @@ checkstyle {
 }
 
 tasks.register('checkstyle', Checkstyle) {
+    minHeapSize = "200m"
+    maxHeapSize = "2g"
     classpath = files()
     source "${project.rootDir}"
+    exclude("**/generated-sources/**")
     exclude("**/gen/**")
+    exclude("**/build/**")
     exclude("**/generated/**")
 }
