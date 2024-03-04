@@ -77,7 +77,7 @@ dependencies {
     testImplementation "androidx.test:core:$testCoreVersion"
     testImplementation "org.awaitility:awaitility:$awaitilityVersion"
     testImplementation "junit:junit:$junitVersion"
-    testImplementation 'org.mockito:mockito-inline:3.5.13'
+    testImplementation 'org.mockito:mockito-core:5.11.0'
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
     testImplementation 'javax.inject:javax.inject:1'
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
