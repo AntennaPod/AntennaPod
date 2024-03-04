@@ -1,22 +1,11 @@
 buildscript {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
-        classpath "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.0"
-        classpath 'org.codehaus.groovy:groovy-xml:3.0.13'
-    }
+    ext.agpVersion = "8.0.2"
 }
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        maven { url "https://jitpack.io" }
-    }
+plugins {
+    id 'com.android.application' version "$agpVersion" apply false
+    id 'com.android.library' version "$agpVersion" apply false
+    id 'com.github.spotbugs' version '4.7.0' apply false
+    id 'checkstyle'
 }
 
 project.ext {
@@ -60,7 +49,6 @@ project.ext {
     testCoreVersion = "1.5.0"
 }
 
-apply plugin: "checkstyle"
 checkstyle {
     toolVersion '10.3.1'
 }
