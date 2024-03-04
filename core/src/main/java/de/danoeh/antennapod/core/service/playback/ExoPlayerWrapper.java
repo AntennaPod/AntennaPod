@@ -66,7 +66,6 @@ public class ExoPlayerWrapper {
     public static final int BUFFERING_STARTED = -1;
     public static final int BUFFERING_ENDED = -2;
     private static final String TAG = "ExoPlayerWrapper";
-    public static final int ERROR_CODE_OFFSET = 1000;
 
     private final Context context;
     private final Disposable bufferingUpdateDisposable;

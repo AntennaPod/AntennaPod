@@ -58,7 +58,7 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
         card.setAlpha(1.0f);
         float density = activity.getResources().getDisplayMetrics().density;
         card.setCardBackgroundColor(SurfaceColors.getColorForElevation(activity, 1 * density));
-        new CoverLoader(activity)
+        new CoverLoader()
                 .withUri(ImageResourceUtils.getEpisodeListImageLocation(item))
                 .withFallbackUri(item.getFeed().getImageUrl())
                 .withCoverView(cover)
@@ -102,7 +102,7 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
 
     public void bindDummy() {
         card.setAlpha(0.1f);
-        new CoverLoader(activity)
+        new CoverLoader()
                 .withResource(android.R.color.transparent)
                 .withCoverView(cover)
                 .load();

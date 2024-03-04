@@ -13,6 +13,7 @@ public class TextUtils {
      * @param b second CharSequence to check
      * @return true if a and b are equal
      */
+    @SuppressWarnings("unused")
     public static boolean equals(CharSequence a, CharSequence b) {
         if (a == b) return true;
         int length;

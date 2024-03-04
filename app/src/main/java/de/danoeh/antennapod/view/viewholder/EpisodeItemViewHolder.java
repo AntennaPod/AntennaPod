@@ -129,7 +129,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         }
 
         if (coverHolder.getVisibility() == View.VISIBLE) {
-            new CoverLoader(activity)
+            new CoverLoader()
                     .withUri(ImageResourceUtils.getEpisodeListImageLocation(item))
                     .withFallbackUri(item.getFeed().getImageUrl())
                     .withPlaceholderView(placeholder)
@@ -225,7 +225,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         itemView.setBackgroundResource(ThemeUtils.getDrawableFromAttr(activity, R.attr.selectableItemBackground));
         placeholder.setText("");
         if (coverHolder.getVisibility() == View.VISIBLE) {
-            new CoverLoader(activity)
+            new CoverLoader()
                     .withResource(R.color.medium_gray)
                     .withPlaceholderView(placeholder)
                     .withCoverView(cover)
