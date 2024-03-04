@@ -11,6 +11,10 @@
         <property name="file" value="${config_loc}/suppressions.xml" />
     </module>
 
+    <module name="FileTabCharacter">
+        <property name="eachLine" value="true"/>
+    </module>
+
     <module name="TreeWalker">
         <module name="OuterTypeFilename"/>
         <module name="IllegalTokenText">
