@@ -1195,7 +1195,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             this.autoSkippedFeedMediaId = feedMedia.getItem().getIdentifyingValue();
             mediaPlayer.skip();
         }
-   }
+    }
 
     /**
      * Updates the Media Session for the corresponding status.
@@ -1624,11 +1624,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (getPlayable() instanceof FeedMedia) {
             if (((FeedMedia) getPlayable()).getItem().getFeed().getId() == event.getFeedId()) {
                 if (event.getSkipEnding() != 0) {
-                   FeedPreferences feedPreferences
-                           = ((FeedMedia) getPlayable()).getItem().getFeed().getPreferences();
-                   feedPreferences.setFeedSkipIntro(event.getSkipIntro());
-                   feedPreferences.setFeedSkipEnding(event.getSkipEnding());
-
+                    FeedPreferences feedPreferences
+                            = ((FeedMedia) getPlayable()).getItem().getFeed().getPreferences();
+                    feedPreferences.setFeedSkipIntro(event.getSkipIntro());
+                    feedPreferences.setFeedSkipEnding(event.getSkipEnding());
                 }
             }
         }
