@@ -341,7 +341,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         if (context == null) {
             return;
         }
-        if (tag.isOpen) {
+        if (tag.isOpen()) {
             holder.count.setVisibility(View.GONE);
         }
         Glide.with(context).clear(holder.image);

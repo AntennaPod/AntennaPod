@@ -12,7 +12,7 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 
 public class FastBlurTransformation extends BitmapTransformation {
-    private static final String ID = "de.danoeh.antennapod.core.glide.FastBlurTransformation";
+    private static final String ID = "de.danoeh.antennapod.ui.glide.FastBlurTransformation";
 
     private static final String TAG = FastBlurTransformation.class.getSimpleName();
 

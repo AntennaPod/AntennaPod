@@ -551,7 +551,7 @@ public class MainActivity extends CastEnabledActivity {
 
     @Override
     public void onBackPressed() {
-        if (isDrawerOpen()) {
+        if (isDrawerOpen() && drawerLayout != null) {
             drawerLayout.closeDrawer(navDrawer);
         } else if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);

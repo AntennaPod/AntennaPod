@@ -5,10 +5,6 @@
         <Class name="de.danoeh.antennapod.adapter.NavListAdapter"/>
     </Match>
     <Match>
-        <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-        <Class name="de.danoeh.antennapod.net.ssl.NoV1SslSocketFactory"/>
-    </Match>
-    <Match>
         <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
         <Class name="de.danoeh.antennapod.ui.statistics.StatisticsFragment"/>
     </Match>
@@ -41,10 +37,6 @@
         <Class name="de.danoeh.antennapod.fragment.NavDrawerFragment"/>
     </Match>
     <Match>
-        <Bug pattern="NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"/>
-        <Class name="de.danoeh.antennapod.menuhandler.MenuItemUtils"/>
-    </Match>
-    <Match>
         <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
         <Class name="de.danoeh.antennapod.activity.MainActivity"/>
     </Match>
@@ -57,28 +49,12 @@
         <Class name="de.danoeh.antennapod.model.feed.FeedMedia"/>
     </Match>
     <Match>
-        <Bug pattern="NP_NULL_PARAM_DEREF"/>
-        <Class name="de.danoeh.antennapod.model.feed.FeedMedia"/>
-    </Match>
-    <Match>
         <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
         <Class name="de.danoeh.antennapod.core.service.download.DownloadRequestCreator"/>
     </Match>
     <Match>
         <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
         <Class name="de.danoeh.antennapod.preferences.PreferenceUpgrader"/>
-    </Match>
-    <Match>
-        <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
-        <Class name="de.danoeh.antennapod.PodcastApp"/>
-    </Match>
-    <Match>
-        <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
-        <Class name="de.danoeh.antennapod.core.service.download.DownloadService"/>
-    </Match>
-    <Match>
-        <Bug pattern="MS_CANNOT_BE_FINAL"/>
-        <Class name="de.danoeh.antennapod.core.service.download.DownloadService"/>
     </Match>
     <Match>
         <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
@@ -100,18 +76,9 @@
         <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"/>
         <Class name="de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer$PSMPInfo"/>
     </Match>
-    <Match>
-        <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
-        <Class name="de.danoeh.antennapod.core.storage.NavDrawerData$TagDrawerItem"/>
-    </Match>
-    <Match>
-        <Bug pattern="UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"/>
-        <Class name="de.danoeh.antennapod.core.cast.CastButtonVisibilityManager"/>
-    </Match>
 
     <Match><Class name="de.danoeh.antennapod.core.ClientConfig"/></Match>
 
-    <Match><Package name="de.danoeh.antennapod.core.glide"/></Match>
     <Match><Package name="de.danoeh.antennapod.databinding"/></Match>
     <Match><Package name="de.danoeh.antennapod.core.databinding"/></Match>
     <Match><Package name="de.danoeh.antennapod.ui.common.databinding"/></Match>
