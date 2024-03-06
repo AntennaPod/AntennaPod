@@ -139,8 +139,8 @@ public class TimeRangeDialog extends MaterialAlertDialogBuilder {
         }
 
         protected Point radToPoint(float angle, float radius) {
-            return new Point((int) (getWidth() / 2 + radius * Math.sin(-angle * Math.PI / 180 + Math.PI)),
-                    (int) (getHeight() / 2 + radius * Math.cos(-angle * Math.PI / 180 + Math.PI)));
+            return new Point((int) (getWidth() / 2.0 + radius * Math.sin(-angle * Math.PI / 180.0 + Math.PI)),
+                    (int) (getHeight() / 2.0 + radius * Math.cos(-angle * Math.PI / 180.0 + Math.PI)));
         }
 
         @Override

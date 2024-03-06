@@ -290,7 +290,7 @@ public class MainActivity extends CastEnabledActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (drawerLayout != null) {
+        if (drawerLayout != null && drawerToggle != null) {
             drawerLayout.removeDrawerListener(drawerToggle);
         }
     }

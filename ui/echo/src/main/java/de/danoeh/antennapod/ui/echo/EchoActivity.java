@@ -222,7 +222,7 @@ public class EchoActivity extends AppCompatActivity {
                     long secondsPerDay = queueSecondsLeft / daysUntilNextYear;
                     String timePerDay = Converter.getDurationStringLocalized(
                             getLocalizedResources(this, getEchoLanguage()), secondsPerDay * 1000, true);
-                    double hoursPerDay = (double) (secondsPerDay / 3600);
+                    double hoursPerDay = secondsPerDay / 3600.0;
                     int nextYear = RELEASE_YEAR + 1;
                     if (hoursPerDay < 1.5) {
                         viewBinding.aboveLabel.setText(R.string.echo_queue_title_clean);

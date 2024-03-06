@@ -49,7 +49,7 @@ public class BarChartView extends AppCompatImageView {
         drawable.data = data;
         drawable.maxValue = 1;
         for (DBReader.MonthlyStatisticsItem item : data) {
-            drawable.maxValue = Math.max(drawable.maxValue, item.timePlayed);
+            drawable.maxValue = Math.max(drawable.maxValue, item.getTimePlayed());
         }
     }
 
@@ -89,21 +89,21 @@ public class BarChartView extends AppCompatImageView {
             paintBars.setStrokeWidth(height * 0.015f);
             paintBars.setColor(colors[0]);
             int colorIndex = 0;
-            int lastYear = data.size() > 0 ? data.get(0).year : 0;
+            int lastYear = data.size() > 0 ? data.get(0).getYear() : 0;
             for (int i = 0; i < data.size(); i++) {
                 float x = textPadding + (i + 1) * stepSize;
-                if (lastYear != data.get(i).year) {
-                    lastYear = data.get(i).year;
+                if (lastYear != data.get(i).getYear()) {
+                    lastYear = data.get(i).getYear();
                     colorIndex++;
                     paintBars.setColor(colors[colorIndex % 2]);
                     if (i < data.size() - 2) {
-                        canvas.drawText(String.valueOf(data.get(i).year), x + stepSize,
+                        canvas.drawText(String.valueOf(data.get(i).getYear()), x + stepSize,
                                 barHeight + (height - barHeight + textSize) / 2, paintGridText);
                     }
                     canvas.drawLine(x, height, x, barHeight, paintGridText);
                 }
 
-                float valuePercentage = (float) Math.max(0.005, (float) data.get(i).timePlayed / maxValue);
+                float valuePercentage = (float) Math.max(0.005, (float) data.get(i).getTimePlayed() / maxValue);
                 float y = (1 - valuePercentage) * barHeight;
                 canvas.drawRect(x, y, x + stepSize * 0.95f, barHeight, paintBars);
             }
