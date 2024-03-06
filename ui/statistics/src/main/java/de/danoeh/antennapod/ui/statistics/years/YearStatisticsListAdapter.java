@@ -57,41 +57,41 @@ public class YearStatisticsListAdapter extends RecyclerView.Adapter<RecyclerView
         } else {
             StatisticsHolder holder = (StatisticsHolder) h;
             DBReader.MonthlyStatisticsItem statsItem = yearlyAggregate.get(position - 1);
-            holder.year.setText(String.format(Locale.getDefault(), "%d ", statsItem.year));
-            holder.hours.setText(String.format(Locale.getDefault(), "%.1f ", statsItem.timePlayed / 3600000.0f)
+            holder.year.setText(String.format(Locale.getDefault(), "%d ", statsItem.getYear()));
+            holder.hours.setText(String.format(Locale.getDefault(), "%.1f ", statsItem.getTimePlayed() / 3600000.0f)
                     + context.getString(R.string.time_hours));
         }
     }
 
     public void update(List<DBReader.MonthlyStatisticsItem> statistics) {
-        int lastYear = statistics.size() > 0 ? statistics.get(0).year : 0;
-        int lastDataPoint = statistics.size() > 0 ? (statistics.get(0).month - 1) + lastYear * 12 : 0;
+        int lastYear = statistics.size() > 0 ? statistics.get(0).getYear() : 0;
+        int lastDataPoint = statistics.size() > 0 ? (statistics.get(0).getMonth() - 1) + lastYear * 12 : 0;
         long yearSum = 0;
         yearlyAggregate.clear();
         statisticsData.clear();
         for (DBReader.MonthlyStatisticsItem statistic : statistics) {
-            if (statistic.year != lastYear) {
+            if (statistic.getYear() != lastYear) {
                 DBReader.MonthlyStatisticsItem yearAggregate = new DBReader.MonthlyStatisticsItem();
-                yearAggregate.year = lastYear;
-                yearAggregate.timePlayed = yearSum;
+                yearAggregate.setYear(lastYear);
+                yearAggregate.setTimePlayed(yearSum);
                 yearlyAggregate.add(yearAggregate);
                 yearSum = 0;
-                lastYear = statistic.year;
+                lastYear = statistic.getYear();
             }
-            yearSum += statistic.timePlayed;
-            while (lastDataPoint + 1 < (statistic.month - 1) + statistic.year * 12) {
+            yearSum += statistic.getTimePlayed();
+            while (lastDataPoint + 1 < (statistic.getMonth() - 1) + statistic.getYear() * 12) {
                 lastDataPoint++;
                 DBReader.MonthlyStatisticsItem item = new DBReader.MonthlyStatisticsItem();
-                item.year = lastDataPoint / 12;
-                item.month = lastDataPoint % 12 + 1;
+                item.setYear(lastDataPoint / 12);
+                item.setMonth(lastDataPoint % 12 + 1);
                 statisticsData.add(item); // Compensate for months without playback
             }
             statisticsData.add(statistic);
-            lastDataPoint = (statistic.month - 1) + statistic.year * 12;
+            lastDataPoint = (statistic.getMonth() - 1) + statistic.getYear() * 12;
         }
         DBReader.MonthlyStatisticsItem yearAggregate = new DBReader.MonthlyStatisticsItem();
-        yearAggregate.year = lastYear;
-        yearAggregate.timePlayed = yearSum;
+        yearAggregate.setYear(lastYear);
+        yearAggregate.setTimePlayed(yearSum);
         yearlyAggregate.add(yearAggregate);
         Collections.reverse(yearlyAggregate);
         notifyDataSetChanged();

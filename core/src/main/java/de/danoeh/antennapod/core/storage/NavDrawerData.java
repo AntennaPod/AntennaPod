@@ -57,8 +57,8 @@ public class NavDrawerData {
 
     public static class TagDrawerItem extends DrawerItem {
         public final List<DrawerItem> children = new ArrayList<>();
-        public final String name;
-        public boolean isOpen;
+        private final String name;
+        private boolean isOpen;
 
         public TagDrawerItem(String name) {
             // Keep IDs >0 but make room for many feeds
@@ -68,6 +68,14 @@ public class NavDrawerData {
 
         public String getTitle() {
             return name;
+        }
+
+        public boolean isOpen() {
+            return isOpen;
+        }
+
+        public void setOpen(final boolean open) {
+            isOpen = open;
         }
 
         public int getCounter() {

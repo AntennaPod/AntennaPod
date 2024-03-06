@@ -65,7 +65,7 @@ jobs:
       - name: Lint :app module recursively
         run: ./gradlew :app:lintPlayRelease
       - name: SpotBugs
-        run: ./gradlew spotbugsPlayDebug spotbugsDebug 2>&1 | grep -i "spotbugs"
+        run: ./gradlew spotbugsPlayDebug spotbugsDebug
 
   unit-test:
     name: "Unit Test: ${{ matrix.variant }}"

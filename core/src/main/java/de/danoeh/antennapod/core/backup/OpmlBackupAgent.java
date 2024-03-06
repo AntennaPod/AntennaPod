@@ -90,17 +90,18 @@ public class OpmlBackupAgent extends BackupAgentHelper {
 
                     // Get the old checksum
                     if (oldState != null) {
-                        FileInputStream inState = new FileInputStream(oldState.getFileDescriptor());
-                        int len = inState.read();
+                        try (final FileInputStream inState = new FileInputStream(oldState.getFileDescriptor())) {
+                            int len = inState.read();
 
-                        if (len != -1) {
-                            byte[] oldChecksum = new byte[len];
-                            IOUtils.read(inState, oldChecksum, 0, len);
-                            Log.d(TAG, "Old checksum: " + new BigInteger(1, oldChecksum).toString(16));
+                            if (len != -1) {
+                                byte[] oldChecksum = new byte[len];
+                                IOUtils.read(inState, oldChecksum, 0, len);
+                                Log.d(TAG, "Old checksum: " + new BigInteger(1, oldChecksum).toString(16));
 
-                            if (Arrays.equals(oldChecksum, newChecksum)) {
-                                Log.d(TAG, "Checksums are the same; won't backup");
-                                return;
+                                if (Arrays.equals(oldChecksum, newChecksum)) {
+                                    Log.d(TAG, "Checksums are the same; won't backup");
+                                    return;
+                                }
                             }
                         }
                     }

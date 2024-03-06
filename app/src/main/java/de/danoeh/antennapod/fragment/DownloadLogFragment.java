@@ -86,9 +86,9 @@ public class DownloadLogFragment extends BottomSheetDialogFragment
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Object item = adapter.getItem(position);
-        if (item instanceof DownloadResult) {
-            new DownloadLogDetailsDialog(getContext(), (DownloadResult) item).show();
+        final DownloadResult item = adapter.getItem(position);
+        if (item != null) {
+            new DownloadLogDetailsDialog(getContext(), item).show();
         }
     }
 

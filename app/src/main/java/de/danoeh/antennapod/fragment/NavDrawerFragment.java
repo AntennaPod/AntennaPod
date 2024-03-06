@@ -359,10 +359,10 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                                 .setState(BottomSheetBehavior.STATE_COLLAPSED);
                     } else {
                         NavDrawerData.TagDrawerItem folder = ((NavDrawerData.TagDrawerItem) clickedItem);
-                        if (openFolders.contains(folder.name)) {
-                            openFolders.remove(folder.name);
+                        if (openFolders.contains(folder.getTitle())) {
+                            openFolders.remove(folder.getTitle());
                         } else {
-                            openFolders.add(folder.name);
+                            openFolders.add(folder.getTitle());
                         }
 
                         getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -438,8 +438,8 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             flatItems.add(item);
             if (item.type == NavDrawerData.DrawerItem.Type.TAG) {
                 NavDrawerData.TagDrawerItem folder = ((NavDrawerData.TagDrawerItem) item);
-                folder.isOpen = openFolders.contains(folder.name);
-                if (folder.isOpen) {
+                folder.setOpen(openFolders.contains(folder.getTitle()));
+                if (folder.isOpen()) {
                     flatItems.addAll(makeFlatDrawerData(((NavDrawerData.TagDrawerItem) item).children, layer + 1));
                 }
             }

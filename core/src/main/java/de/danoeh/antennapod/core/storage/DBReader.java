@@ -736,9 +736,33 @@ public final class DBReader {
     }
 
     public static class MonthlyStatisticsItem {
-        public int year = 0;
-        public int month = 0;
-        public long timePlayed = 0;
+        private int year = 0;
+        private int month = 0;
+        private long timePlayed = 0;
+
+        public int getYear() {
+            return year;
+        }
+
+        public void setYear(final int year) {
+            this.year = year;
+        }
+
+        public int getMonth() {
+            return month;
+        }
+
+        public void setMonth(final int month) {
+            this.month = month;
+        }
+
+        public long getTimePlayed() {
+            return timePlayed;
+        }
+
+        public void setTimePlayed(final long timePlayed) {
+            this.timePlayed = timePlayed;
+        }
     }
 
     @NonNull
@@ -752,9 +776,9 @@ public final class DBReader {
             int indexTotalDuration = cursor.getColumnIndexOrThrow("total_duration");
             while (cursor.moveToNext()) {
                 MonthlyStatisticsItem item = new MonthlyStatisticsItem();
-                item.month = Integer.parseInt(cursor.getString(indexMonth));
-                item.year = Integer.parseInt(cursor.getString(indexYear));
-                item.timePlayed = cursor.getLong(indexTotalDuration);
+                item.setMonth(Integer.parseInt(cursor.getString(indexMonth)));
+                item.setYear(Integer.parseInt(cursor.getString(indexYear)));
+                item.setTimePlayed(cursor.getLong(indexTotalDuration));
                 months.add(item);
             }
         }
