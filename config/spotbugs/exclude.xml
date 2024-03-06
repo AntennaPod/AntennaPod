@@ -65,10 +65,6 @@
         <Class name="de.danoeh.antennapod.ui.home.sections.EpisodesSurpriseSection"/>
     </Match>
     <Match>
-        <Bug pattern="URF_UNREAD_FIELD"/>
-        <Class name="de.danoeh.antennapod.ui.common.TriangleLabelView$PaintHolder"/>
-    </Match>
-    <Match>
         <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"/>
         <Class name="de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer"/>
     </Match>
