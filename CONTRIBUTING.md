@@ -51,11 +51,17 @@ Building From Source
 --------------------------
 1. Fork this repository
 1. Download Android Studio
-1. In Android Studio
-   1. File » New » Project from version control
-   2. Enter the remote url of the forked repo
-   2. Wait for a long time until all progress bars go away
-   3. Press the Play button
+1. Download AntennaPod
+   1. Option A: Using the git command line (recommended)
+       1. Use `git clone <url>` with the remote url of your forked repo.
+          The AntennaPod repo contains a large submodule with app store metadata like screenshots.
+          You **do not need that** for normal development.
+       1. In Android Studio: File » New » Project from existing sources
+   1. Option B: From Android Studio
+       1. File » New » Project from version control
+       1. Enter the remote url of the forked repo
+1. Wait for a long time until all progress bars go away
+1. Press the Play button
 
 Testing and Verifying
 --------------------------
