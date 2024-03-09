@@ -194,7 +194,7 @@
     <string name="select_all_above">Select all above</string>
     <string name="select_all_below">Select all below</string>
     <string name="filtered_label">Filtered</string>
-    <string name="refresh_failed_msg">{fa-exclamation-circle} Last refresh failed. Tap to view details.</string>
+    <string name="refresh_failed_msg">Last refresh failed. Tap to view details.</string>
     <string name="open_podcast">Open podcast</string>
     <string name="please_wait_for_data">Please wait until the data is loaded</string>
     <string name="updates_disabled_label">Updates disabled</string>
@@ -703,7 +703,7 @@
     <string name="feed_tags_label">Tags</string>
     <string name="feed_tags_summary">Change the tags of this podcast to help organize your subscriptions</string>
     <string name="feed_folders_include_root">Show this podcast in main list</string>
-    <string name="multi_feed_common_tags_info">{fa-info-circle} Only common tags from all selected subscriptions are shown. Other tags stay unaffected.</string>
+    <string name="multi_feed_common_tags_info">Only common tags from all selected subscriptions are shown. Other tags stay unaffected.</string>
     <string name="auto_download_settings_label">Auto download settings</string>
     <string name="episode_filters_label">Episode filter</string>
     <string name="episode_filters_description">List of terms used to decide if an episode should be included or excluded when auto downloading</string>
@@ -723,7 +723,7 @@
     <string name="statistics_expected_next_episode_any_day">Any day now</string>
     <string name="statistics_expected_next_episode_unknown">Unknown</string>
     <string name="statistics_view_all">View for all podcasts »</string>
-    <string name="wait_icon" translatable="false">{fa-spinner}</string>
+    <string name="wait_icon" translatable="false">…</string>
     <string name="edit_url_menu">Edit feed URL</string>
     <string name="edit_url_confirmation_msg">Changing the RSS address can easily break the playback state and episode listings of the podcast. We do NOT recommend changing it and will NOT provide support if anything goes wrong. This cannot be undone. The broken subscription CANNOT be repaired by simply changing the address back. We suggest creating a backup before continuing.</string>
 

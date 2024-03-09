@@ -28,13 +28,12 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-            <com.joanzapata.iconify.widget.IconTextView
-                android:id="@+id/txtvIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:importantForAccessibility="no"
                 android:layout_marginEnd="4dp"
-                android:padding="2dp"
-                android:textSize="18sp"
                 android:gravity="center" />
 
             <TextView
