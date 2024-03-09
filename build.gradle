@@ -27,7 +27,7 @@ project.ext {
     commonsioVersion = "2.5"
     jsoupVersion = "1.15.1"
     glideVersion = "4.13.2"
-    okhttpVersion = "3.12.10"
+    okhttpVersion = "4.12.0"
     eventbusVersion = "3.3.1"
     rxAndroidVersion = "2.1.1"
     rxJavaVersion = "2.2.2"
