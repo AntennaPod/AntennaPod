@@ -103,12 +103,6 @@
         license="Apache 2.0"
         licenseText="LICENSE_OKHTTP.txt" />
     <library
-        name="Okio"
-        author="Square"
-        website="https://github.com/square/okio"
-        license="Apache 2.0"
-        licenseText="LICENSE_APACHE-2.0.txt" />
-    <library
         name="RecyclerViewSwipeDecorator"
         author="Paolo Montalto"
         website="https://github.com/xabaras/RecyclerViewSwipeDecorator"
