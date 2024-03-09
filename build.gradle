@@ -32,7 +32,6 @@ project.ext {
     rxAndroidVersion = "2.1.1"
     rxJavaVersion = "2.2.2"
     iconifyVersion = "2.2.2"
-    annimonStreamVersion = "1.2.2"
     exoPlayerVersion = "1.1.1"
 
     // Google Play build
