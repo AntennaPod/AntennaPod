@@ -34,7 +34,7 @@ project.ext {
     rxJavaVersion = "2.2.2"
     iconifyVersion = "2.2.2"
     annimonStreamVersion = "1.2.2"
-    exoPlayerVersion = "2.14.2"
+    exoPlayerVersion = "1.1.1"
 
     // Google Play build
     wearableSupportVersion = "2.6.0"
