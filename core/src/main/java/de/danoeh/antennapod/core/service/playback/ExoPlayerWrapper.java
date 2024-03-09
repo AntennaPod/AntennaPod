@@ -11,38 +11,37 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Consumer;
 
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.PlaybackParameters;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.SeekParameters;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.audio.AudioAttributes;
-import com.google.android.exoplayer2.database.ExoDatabaseProvider;
-import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.extractor.mp3.Mp3Extractor;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.ExoTrackSelection;
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.ui.DefaultTrackNameProvider;
-import com.google.android.exoplayer2.ui.TrackNameProvider;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import androidx.media3.common.C;
+import androidx.media3.common.PlaybackException;
+import androidx.media3.database.ExoDatabaseProvider;
+import androidx.media3.datasource.DataSource;
+import androidx.media3.datasource.DefaultDataSourceFactory;
+import androidx.media3.datasource.HttpDataSource;
+import androidx.media3.datasource.cache.CacheDataSource;
+import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor;
+import androidx.media3.datasource.cache.SimpleCache;
+import androidx.media3.datasource.okhttp.OkHttpDataSource;
+import androidx.media3.exoplayer.DefaultLoadControl;
+import androidx.media3.exoplayer.DefaultRenderersFactory;
+import androidx.media3.common.Format;
+import androidx.media3.common.MediaItem;
+import androidx.media3.common.PlaybackParameters;
+import androidx.media3.common.Player;
+import androidx.media3.exoplayer.SeekParameters;
+import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.common.AudioAttributes;
+import androidx.media3.exoplayer.source.MediaSource;
+import androidx.media3.exoplayer.source.ProgressiveMediaSource;
+import androidx.media3.exoplayer.source.TrackGroupArray;
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector;
+import androidx.media3.exoplayer.trackselection.ExoTrackSelection;
+import androidx.media3.exoplayer.trackselection.MappingTrackSelector;
+import androidx.media3.exoplayer.trackselection.TrackSelectionArray;
 
-import com.google.android.exoplayer2.upstream.HttpDataSource;
-import com.google.android.exoplayer2.upstream.cache.CacheDataSource;
-import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
-import com.google.android.exoplayer2.upstream.cache.SimpleCache;
-
+import androidx.media3.extractor.DefaultExtractorsFactory;
+import androidx.media3.extractor.mp3.Mp3Extractor;
+import androidx.media3.ui.DefaultTrackNameProvider;
+import androidx.media3.ui.TrackNameProvider;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
@@ -69,7 +68,7 @@ public class ExoPlayerWrapper {
 
     private final Context context;
     private final Disposable bufferingUpdateDisposable;
-    private SimpleExoPlayer exoPlayer;
+    private ExoPlayer exoPlayer;
     private MediaSource mediaSource;
     private Runnable audioSeekCompleteListener;
     private Runnable audioCompletionListener;
@@ -101,7 +100,7 @@ public class ExoPlayerWrapper {
                 DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
         loadControl.setBackBuffer(UserPreferences.getRewindSecs() * 1000 + 500, true);
         trackSelector = new DefaultTrackSelector(context);
-        exoPlayer = new SimpleExoPlayer.Builder(context, new DefaultRenderersFactory(context))
+        exoPlayer = new ExoPlayer.Builder(context, new DefaultRenderersFactory(context))
                 .setTrackSelector(trackSelector)
                 .setLoadControl(loadControl.build())
                 .build();
@@ -119,7 +118,7 @@ public class ExoPlayerWrapper {
             }
 
             @Override
-            public void onPlayerError(@NonNull ExoPlaybackException error) {
+            public void onPlayerError(@NonNull PlaybackException error) {
                 if (audioErrorListener != null) {
                     if (NetworkUtils.wasDownloadBlocked(error)) {
                         audioErrorListener.accept(context.getString(R.string.download_error_blocked));
@@ -233,7 +232,7 @@ public class ExoPlayerWrapper {
             throws IllegalArgumentException, IllegalStateException {
         Log.d(TAG, "setDataSource: " + s);
         final OkHttpDataSource.Factory httpDataSourceFactory =
-                new OkHttpDataSource.Factory(AntennapodHttpClient.getHttpClient())
+                new OkHttpDataSource.Factory((okhttp3.Call.Factory) AntennapodHttpClient.getHttpClient())
                         .setUserAgent(ClientConfig.USER_AGENT);
 
         if (!TextUtils.isEmpty(user) && !TextUtils.isEmpty(password)) {
@@ -326,8 +325,8 @@ public class ExoPlayerWrapper {
         }
         TrackGroupArray trackGroups = trackInfo.getTrackGroups(getAudioRendererIndex());
         DefaultTrackSelector.SelectionOverride override = new DefaultTrackSelector.SelectionOverride(track, 0);
-        DefaultTrackSelector.ParametersBuilder params = trackSelector.buildUponParameters()
-                .setSelectionOverride(getAudioRendererIndex(), trackGroups, override);
+        DefaultTrackSelector.Parameters params = trackSelector.buildUponParameters()
+                .setSelectionOverride(getAudioRendererIndex(), trackGroups, override).build();
         trackSelector.setParameters(params);
     }
 
