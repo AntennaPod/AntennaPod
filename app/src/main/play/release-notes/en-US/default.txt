@@ -1,8 +1,0 @@
-🥂 A small treat for our users - check the Home screen on 10 December! (@ByteHamster, @keunes)
-∙ Accessibility & synchronisation improvements (@ByteHamster)
-∙ Add 'boost' options in the 'Volume adaptation' podcast setting (@matejdro)
-∙ Support double/triple-pressing headset buttons (@blairun)
-∙ Improve support for password-protected feeds (@ByteHamster)
-∙ Add multi-select actions on search results (@vinodpatildev)
-∙ Allow deleting local feed episodes (@matejdro)
-∙ Android Auto bugfix (@harshad1)

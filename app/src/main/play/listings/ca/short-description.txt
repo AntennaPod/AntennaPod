@@ -1,1 +1,0 @@
-Reproductor i organitzador de podcasts, fàcil d'usar, flexible i de codi obert.
