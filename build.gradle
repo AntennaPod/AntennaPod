@@ -35,9 +35,6 @@ project.ext {
     annimonStreamVersion = "1.2.2"
     exoPlayerVersion = "1.1.1"
 
-    // Google Play build
-    wearableSupportVersion = "2.6.0"
-
     //Tests
     awaitilityVersion = "3.1.6"
     junitVersion = "4.13"

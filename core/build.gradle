@@ -69,10 +69,6 @@ dependencies {
     implementation "androidx.media3:media3-ui:$exoPlayerVersion"
     implementation "androidx.media3:media3-datasource-okhttp:$exoPlayerVersion"
 
-    // Non-free dependencies:
-    playApi "com.google.android.support:wearable:$wearableSupportVersion"
-    compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
-
     testImplementation "androidx.test:core:$testCoreVersion"
     testImplementation "org.awaitility:awaitility:$awaitilityVersion"
     testImplementation "junit:junit:$junitVersion"

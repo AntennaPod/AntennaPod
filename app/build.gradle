@@ -128,8 +128,7 @@ dependencies {
     implementation "com.annimon:stream:$annimonStreamVersion"
 
     // Non-free dependencies:
-    playImplementation 'com.google.android.play:core:1.8.0'
-    compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
+    playImplementation "com.google.android.play:review:2.0.1"
 
     androidTestImplementation "org.awaitility:awaitility:$awaitilityVersion"
     androidTestImplementation 'com.nanohttpd:nanohttpd:2.1.1'
