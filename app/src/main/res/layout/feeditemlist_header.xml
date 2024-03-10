@@ -140,7 +140,7 @@
 
     </RelativeLayout>
 
-    <com.joanzapata.iconify.widget.IconTextView
+    <TextView
         android:id="@+id/txtvFailure"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

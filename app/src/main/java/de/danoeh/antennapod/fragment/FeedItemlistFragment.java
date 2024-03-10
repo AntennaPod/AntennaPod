@@ -24,7 +24,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
-import com.joanzapata.iconify.Iconify;
 import com.leinardi.android.speeddial.SpeedDialView;
 
 import org.apache.commons.lang3.StringUtils;
@@ -445,9 +444,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             viewBinding.header.txtvFailure.setVisibility(View.GONE);
         }
         if (!feed.getPreferences().getKeepUpdated()) {
-            viewBinding.header.txtvUpdatesDisabled.setText("{md-pause-circle-outline} "
-                    + this.getString(R.string.updates_disabled_label));
-            Iconify.addIcons(viewBinding.header.txtvUpdatesDisabled);
+            viewBinding.header.txtvUpdatesDisabled.setText(R.string.updates_disabled_label);
             viewBinding.header.txtvUpdatesDisabled.setVisibility(View.VISIBLE);
         } else {
             viewBinding.header.txtvUpdatesDisabled.setVisibility(View.GONE);
@@ -457,9 +454,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (feed.getItemFilter() != null) {
             FeedItemFilter filter = feed.getItemFilter();
             if (filter.getValues().length > 0) {
-                viewBinding.header.txtvInformation.setText("{md-info-outline} "
-                        + this.getString(R.string.filtered_label));
-                Iconify.addIcons(viewBinding.header.txtvInformation);
+                viewBinding.header.txtvInformation.setText(R.string.filtered_label);
                 viewBinding.header.txtvInformation.setOnClickListener(l ->
                         FeedItemFilterDialog.newInstance(feed).show(getChildFragmentManager(), null));
                 viewBinding.header.txtvInformation.setVisibility(View.VISIBLE);

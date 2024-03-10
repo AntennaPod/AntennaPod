@@ -15,7 +15,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.elevation.SurfaceColors;
-import com.joanzapata.iconify.Iconify;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -187,8 +186,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         if (media.getSize() > 0) {
             size.setText(Formatter.formatShortFileSize(activity, media.getSize()));
         } else if (NetworkUtils.isEpisodeHeadDownloadAllowed() && !media.checkedOnSizeButUnknown()) {
-            size.setText("{fa-spinner}");
-            Iconify.addIcons(size);
+            size.setText("");
             MediaSizeLoader.getFeedMediaSizeObservable(media).subscribe(
                     sizeValue -> {
                         if (sizeValue > 0) {

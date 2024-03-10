@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
-import com.joanzapata.iconify.widget.IconTextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
 
@@ -17,7 +16,7 @@ public class DownloadLogItemViewHolder extends RecyclerView.ViewHolder {
     public final View secondaryActionButton;
     public final ImageView secondaryActionIcon;
     public final CircularProgressBar secondaryActionProgress;
-    public final IconTextView icon;
+    public final ImageView icon;
     public final TextView title;
     public final TextView status;
     public final TextView reason;
@@ -26,7 +25,7 @@ public class DownloadLogItemViewHolder extends RecyclerView.ViewHolder {
     public DownloadLogItemViewHolder(Context context, ViewGroup parent) {
         super(LayoutInflater.from(context).inflate(R.layout.downloadlog_item, parent, false));
         status = itemView.findViewById(R.id.status);
-        icon = itemView.findViewById(R.id.txtvIcon);
+        icon = itemView.findViewById(R.id.icon);
         reason = itemView.findViewById(R.id.txtvReason);
         tapForDetails = itemView.findViewById(R.id.txtvTapForDetails);
         secondaryActionButton = itemView.findViewById(R.id.secondaryActionButton);

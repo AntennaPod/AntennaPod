@@ -15,6 +15,7 @@ project.ext {
     coreVersion = "1.8.0"
     fragmentVersion = "1.5.5"
     mediaVersion = "1.6.0"
+    media3Version = "1.1.1"
     paletteVersion = "1.0.0"
     preferenceVersion = "1.1.1"
     recyclerViewVersion = "1.2.1"
@@ -27,12 +28,10 @@ project.ext {
     commonsioVersion = "2.5"
     jsoupVersion = "1.15.1"
     glideVersion = "4.13.2"
-    okhttpVersion = "3.12.10"
+    okhttpVersion = "4.12.0"
     eventbusVersion = "3.3.1"
     rxAndroidVersion = "2.1.1"
     rxJavaVersion = "2.2.2"
-    iconifyVersion = "2.2.2"
-    exoPlayerVersion = "1.1.1"
 
     // Google Play build
     wearableSupportVersion = "2.6.0"
