@@ -22,6 +22,7 @@
   <string name="episode_cache_full_message">Došlo k zaplnění limitu odkládacího prostoru pro epizody. Můžete navýšit vyhrazený prostor v Nastavení.</string>
   <string name="years_statistics_label">Roky</string>
   <string name="notification_pref_fragment">Upozornění</string>
+  <string name="current_playing_episode">Právě přehrávaný&lt;br&gt;</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" nenalezen</string>
   <!--SwipeActions-->
@@ -492,6 +493,9 @@
   <string name="pref_expandNotify_sum">Toto obvykle přidá tlačítka ovládání přehrávání do zpráv upozornění</string>
   <string name="pref_persistNotify_title">Trvalé ovládací prvky přehrávání</string>
   <string name="pref_persistNotify_sum">Zachovat oznámení a ovládání na obrazovce uzamčení i při pozastaveném přehrávání.</string>
+  <string name="pref_compact_notification_buttons_dialog_error_exact">Musíte zvolil přesně %1$d položek.</string>
+  <string name="pref_full_notification_buttons_title">Nastavit tlačítka v oznámení</string>
+  <string name="pref_full_notification_buttons_sum">Změňte tlačítka přehrávače v oznámení.</string>
   <string name="pref_enqueue_location_title">Pozice přidávání do fronty</string>
   <string name="pref_enqueue_location_sum">Přidávat epizody na: %1$s</string>
   <string name="enqueue_location_back">konec</string>
@@ -573,6 +577,7 @@
   <string name="database_import_summary">Importovat AntennaPod databázi z jiného zařízení</string>
   <string name="opml_import_label">OPML import</string>
   <string name="opml_add_podcast_label">Importovat podcasty (OPML)</string>
+  <string name="opml_reader_error">Při čtení souboru nastala chyba. Zkontrolijte se, že jste opravdu zvolili soubor OPML a že je platný.</string>
   <string name="opml_import_error_no_file">Nebyl vybrán žádný soubor!</string>
   <string name="select_all_label">Označit vše</string>
   <string name="deselect_all_label">Zrušit výběr</string>
@@ -619,6 +624,12 @@
     <item quantity="few">%d hodiny</item>
     <item quantity="many">%d hodin</item>
     <item quantity="other">%d hodin</item>
+  </plurals>
+  <plurals name="time_days_quantified">
+    <item quantity="one">1 day</item>
+    <item quantity="few">%d dny</item>
+    <item quantity="many">%d dní</item>
+    <item quantity="other">%ddní</item>
   </plurals>
   <string name="auto_enable_label">Automatická aktivace časovače spánku při stisknutí tlačítka přehrávání</string>
   <string name="auto_enable_label_with_times">Automatická aktivace časovače spánku při stisknutí tlačítka přehrávání mezi %s a %s</string>
@@ -756,6 +767,7 @@
   <string name="not_paused">Nepozastaveno</string>
   <string name="hide_played_episodes_label">Poslechnuté</string>
   <string name="not_played">Nepřehraných</string>
+  <string name="filename">Název souboru</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Zahrnout pozici přehrávání</string>
   <string name="share_dialog_episode_website_label">Webová stránka epizody</string>

@@ -22,6 +22,7 @@
   <string name="episode_cache_full_message">Su lìmite de memòria temporànea de episòdios est istadu lòmpidu. Podes crèschere sa mannària de sa memòria temporànea in sa Cunfiguratzione.</string>
   <string name="years_statistics_label">Annos</string>
   <string name="notification_pref_fragment">Notìficas</string>
+  <string name="current_playing_episode">Atuale</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" no agatadu</string>
   <!--SwipeActions-->
@@ -269,7 +270,7 @@
   <string name="download_error_forbidden">Su serbidore de su podcast non rispondet.</string>
   <string name="download_canceled_msg">Iscarrigamentu annulladu</string>
   <string name="download_error_wrong_size">Sa connessione cun su serbidore est istada pèrdida prima chi s\'iscarrigamentu esseret cumpletu.</string>
-  <string name="download_error_blocked">S\'iscarrigamentu est istadu blocadu dae un\'àtera aplicatzione in su dispositivu tuo (comente un VPN o unu blocadore de publicidade).</string>
+  <string name="download_error_blocked">S\'iscarrigamentu est istadu blocadu dae un\'àtera aplicatzione in su dispositivu tuo (comente un VPN o unu blocadore de publitzidade).</string>
   <string name="download_error_certificate">Impossìbile istabilire una connessione sicura. Custu podet bòlere nàrrere chi un\'àtera aplicatzione in su dispositivu tuo (comente un VPN o un blocadore de publitzidade) at blocadu s\'iscarrigamentu, o chi nc\'est unu problema cun is tzertificados de su serbidore.</string>
   <string name="download_report_title">Iscarrigamentos cumpletados cun errore(s)</string>
   <string name="download_error_io_error">Errore IO</string>
@@ -462,6 +463,9 @@
   <string name="pref_expandNotify_sum">Custu ismànniat sa notìfica pro chi ammustret is butones de riprodutzione.</string>
   <string name="pref_persistNotify_title">Controllos de riprodutzione permanentes</string>
   <string name="pref_persistNotify_sum">Mantene is controllos de notìfica e de blocu cando sa riprodutzione est in pàusa</string>
+  <string name="pref_compact_notification_buttons_dialog_error_exact">Depes seletzionare giustu %1$d elementos.</string>
+  <string name="pref_full_notification_buttons_title">Cunfigura is butones de notìfica</string>
+  <string name="pref_full_notification_buttons_sum">Modìfica is butones de riprodutzione dae sa notìfica de riprodutzione.</string>
   <string name="pref_enqueue_location_title">Agiunghe a sa lista in una positzione ispetzìfica</string>
   <string name="pref_enqueue_location_sum">Agiunghe episòdios a: %1$s</string>
   <string name="enqueue_location_back">A sa fine</string>
@@ -543,6 +547,7 @@
   <string name="database_import_summary">Importa una base de datos de AntennaPod dae un\'àteru dispositivu</string>
   <string name="opml_import_label">Importatzione OPML</string>
   <string name="opml_add_podcast_label">Importa una lista de podcasts (OPML)</string>
+  <string name="opml_reader_error">Errore in sa letura de s\'archìviu. Assegura·ti chi siat istadu seletzionadu un\'archìviu OPML e chi s\'archìviu siat bàlidu.</string>
   <string name="opml_import_error_no_file">Nissunu archìviu seletzionadu.</string>
   <string name="select_all_label">Seletziona totu</string>
   <string name="deselect_all_label">Deseletziona totu</string>
@@ -724,6 +729,7 @@
   <string name="not_paused">Non pausadu</string>
   <string name="hide_played_episodes_label">Riproduidu</string>
   <string name="not_played">Non riproduidu</string>
+  <string name="filename">Nòmine de s\'archìviu</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Include sa positzione de riprodutzione</string>
   <string name="share_dialog_episode_website_label">Situ web de s\'episòdiu</string>
