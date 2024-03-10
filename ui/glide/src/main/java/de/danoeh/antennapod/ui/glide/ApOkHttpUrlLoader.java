@@ -104,7 +104,7 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
                         .protocol(Protocol.HTTP_2)
                         .code(420)
                         .message("Policy Not Fulfilled")
-                        .body(ResponseBody.create(null, new byte[0]))
+                        .body(ResponseBody.create(new byte[0], null))
                         .request(chain.request())
                         .build();
             }
