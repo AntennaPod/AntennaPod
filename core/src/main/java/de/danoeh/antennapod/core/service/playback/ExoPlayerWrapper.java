@@ -13,9 +13,9 @@ import androidx.core.util.Consumer;
 
 import androidx.media3.common.C;
 import androidx.media3.common.PlaybackException;
-import androidx.media3.database.ExoDatabaseProvider;
+import androidx.media3.database.StandaloneDatabaseProvider;
 import androidx.media3.datasource.DataSource;
-import androidx.media3.datasource.DefaultDataSourceFactory;
+import androidx.media3.datasource.DefaultDataSource;
 import androidx.media3.datasource.HttpDataSource;
 import androidx.media3.datasource.cache.CacheDataSource;
 import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor;
@@ -153,7 +153,7 @@ public class ExoPlayerWrapper {
             }
         });
         simpleCache = new SimpleCache(new File(context.getCacheDir(), "streaming"),
-                new LeastRecentlyUsedCacheEvictor(50 * 1024 * 1024), new ExoDatabaseProvider(context));
+                new LeastRecentlyUsedCacheEvictor(50 * 1024 * 1024), new StandaloneDatabaseProvider(context));
         initLoudnessEnhancer(exoPlayer.getAudioSessionId());
     }
 
@@ -244,7 +244,7 @@ public class ExoPlayerWrapper {
             );
             httpDataSourceFactory.setDefaultRequestProperties(requestProperties);
         }
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, null, httpDataSourceFactory);
+        DataSource.Factory dataSourceFactory = new DefaultDataSource.Factory(context, httpDataSourceFactory);
         if (s.startsWith("http")) {
             dataSourceFactory = new CacheDataSource.Factory()
                     .setCache(simpleCache)
