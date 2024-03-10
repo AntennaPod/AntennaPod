@@ -3,11 +3,9 @@ package de.danoeh.antennapod.core.util;
 import android.content.Context;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 
 /**
  * Formats dates.
@@ -15,11 +13,6 @@ import java.util.Locale;
 public class DateFormatter {
     private DateFormatter() {
 
-    }
-
-    public static String formatRfc822Date(Date date) {
-        SimpleDateFormat format = new SimpleDateFormat("dd MMM yy HH:mm:ss Z", Locale.US);
-        return format.format(date);
     }
 
     public static String formatAbbrev(final Context context, final Date date) {

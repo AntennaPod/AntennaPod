@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.export.opml;
+package de.danoeh.antennapod.storage.importexport;
 
 /**
  * Represents a single feed in an OPML file.

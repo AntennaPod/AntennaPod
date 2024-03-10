@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.storage;
+package de.danoeh.antennapod.storage.importexport;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.text.format.Formatter;
 import android.util.Log;
-import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;

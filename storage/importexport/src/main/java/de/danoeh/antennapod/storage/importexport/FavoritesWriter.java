@@ -1,9 +1,8 @@
-package de.danoeh.antennapod.core.export.favorites;
+package de.danoeh.antennapod.storage.importexport;
 
 import android.content.Context;
 import android.util.Log;
 
-import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -14,21 +13,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.model.feed.SortOrder;
 
 /** Writes saved favorites to file. */
-public class FavoritesWriter implements ExportWriter {
+public class FavoritesWriter {
     private static final String TAG = "FavoritesWriter";
     private static final String FAVORITE_TEMPLATE = "html-export-favorites-item-template.html";
     private static final String FEED_TEMPLATE = "html-export-feed-template.html";
     private static final String UTF_8 = "UTF-8";
 
-    @Override
-    public void writeDocument(List<Feed> feeds, Writer writer, Context context)
+    public static void writeDocument(List<FeedItem> allFavorites, Writer writer, Context context)
             throws IllegalArgumentException, IllegalStateException, IOException {
         Log.d(TAG, "Starting to write document");
 
@@ -43,8 +38,6 @@ public class FavoritesWriter implements ExportWriter {
         InputStream feedTemplateStream = context.getAssets().open(FEED_TEMPLATE);
         String feedTemplate = IOUtils.toString(feedTemplateStream, UTF_8);
 
-        List<FeedItem> allFavorites = DBReader.getEpisodes(0, Integer.MAX_VALUE,
-                new FeedItemFilter(FeedItemFilter.IS_FAVORITE), SortOrder.DATE_NEW_OLD);
         Map<Long, List<FeedItem>> favoriteByFeed = getFeedMap(allFavorites);
 
         writer.append(templateParts[0]);
@@ -72,7 +65,7 @@ public class FavoritesWriter implements ExportWriter {
      * @param favoritesList {@code List} of all favorite episodes.
      * @return A {@code Map} favorite episodes, keyed by feed ID.
      */
-    private Map<Long, List<FeedItem>> getFeedMap(List<FeedItem> favoritesList) {
+    private static Map<Long, List<FeedItem>> getFeedMap(List<FeedItem> favoritesList) {
         Map<Long, List<FeedItem>> feedMap = new TreeMap<>();
 
         for (FeedItem item : favoritesList) {
@@ -89,7 +82,7 @@ public class FavoritesWriter implements ExportWriter {
         return feedMap;
     }
 
-    private void writeFeed(Writer writer, Feed feed, String feedTemplate) throws IOException {
+    private static void writeFeed(Writer writer, Feed feed, String feedTemplate) throws IOException {
         String feedInfo = feedTemplate
                 .replace("{FEED_IMG}", feed.getImageUrl())
                 .replace("{FEED_TITLE}", feed.getTitle())
@@ -99,7 +92,7 @@ public class FavoritesWriter implements ExportWriter {
         writer.append(feedInfo);
     }
 
-    private void writeFavoriteItem(Writer writer, FeedItem item, String favoriteTemplate) throws IOException {
+    private static void writeFavoriteItem(Writer writer, FeedItem item, String favoriteTemplate) throws IOException {
         String favItem = favoriteTemplate.replace("{FAV_TITLE}", item.getTitle().trim());
         if (item.getLink() != null) {
             favItem = favItem.replace("{FAV_WEBSITE}", item.getLink());
@@ -113,10 +106,5 @@ public class FavoritesWriter implements ExportWriter {
         }
 
         writer.append(favItem);
-    }
-
-    @Override
-    public String fileExtension() {
-        return "html";
     }
 }

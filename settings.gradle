@@ -34,6 +34,7 @@ include ':playback:base'
 include ':playback:cast'
 
 include ':storage:database'
+include ':storage:importexport'
 include ':storage:preferences'
 
 include ':ui:app-start-intent'
