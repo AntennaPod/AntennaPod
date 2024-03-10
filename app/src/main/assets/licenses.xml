@@ -67,12 +67,6 @@
         license="MIT"
         licenseText="LICENSE_JSOUP.txt" />
     <library
-        name="Lightweight-Stream-API"
-        author="Victor Melnik"
-        website="https://github.com/aNNiMON/Lightweight-Stream-API"
-        license="Apache 2.0"
-        licenseText="LICENSE_APACHE-2.0.txt" />
-    <library
         name="Material Components for Android"
         author="Google"
         website="https://github.com/material-components/material-components-android"

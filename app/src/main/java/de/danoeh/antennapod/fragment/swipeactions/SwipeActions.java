@@ -13,8 +13,6 @@ import androidx.lifecycle.OnLifecycleEvent;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.annimon.stream.Stream;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -37,12 +35,11 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
     public static final String KEY_PREFIX_SWIPEACTIONS = "PrefSwipeActions";
     public static final String KEY_PREFIX_NO_ACTION = "PrefNoSwipeAction";
 
-    public static final List<SwipeAction> swipeActions = Collections.unmodifiableList(
+    private static final List<SwipeAction> swipeActions = Collections.unmodifiableList(
             Arrays.asList(new AddToQueueSwipeAction(), new RemoveFromInboxSwipeAction(),
                     new StartDownloadSwipeAction(), new MarkFavoriteSwipeAction(),
                     new TogglePlaybackStateSwipeAction(), new RemoveFromQueueSwipeAction(),
-                    new DeleteSwipeAction(), new RemoveFromHistorySwipeAction())
-    );
+                    new DeleteSwipeAction(), new RemoveFromHistorySwipeAction()));
 
     private final Fragment fragment;
     private final String tag;
@@ -63,6 +60,15 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
 
     public SwipeActions(Fragment fragment, String tag) {
         this(0, fragment, tag);
+    }
+
+    public static SwipeAction getAction(String key) {
+        for (SwipeAction action : swipeActions) {
+            if (action.getId().equals(key)) {
+                return action;
+            }
+        }
+        return null;
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
@@ -255,10 +261,8 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
         public Actions(String prefs) {
             String[] actions = prefs.split(",");
             if (actions.length == 2) {
-                this.right = Stream.of(swipeActions)
-                        .filter(a -> a.getId().equals(actions[0])).single();
-                this.left = Stream.of(swipeActions)
-                        .filter(a -> a.getId().equals(actions[1])).single();
+                right = getAction(actions[0]);
+                left = getAction(actions[1]);
             }
         }
 

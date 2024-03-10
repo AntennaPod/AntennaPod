@@ -11,8 +11,6 @@ import androidx.work.ForegroundInfo;
 import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-import com.annimon.stream.Collectors;
-import com.annimon.stream.Stream;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import de.danoeh.antennapod.core.ClientConfigurator;
@@ -104,11 +102,16 @@ public class FeedUpdateWorker extends Worker {
     private Notification createNotification(@Nullable List<Feed> toUpdate) {
         Context context = getApplicationContext();
         String contentText = "";
-        String bigText = "";
+        StringBuilder bigText = new StringBuilder();
         if (toUpdate != null) {
             contentText = context.getResources().getQuantityString(R.plurals.downloads_left,
                     toUpdate.size(), toUpdate.size());
-            bigText = Stream.of(toUpdate).map(feed -> "• " + feed.getTitle()).collect(Collectors.joining("\n"));
+            for (int i = 0; i < toUpdate.size(); i++) {
+                bigText.append("• ").append(toUpdate.get(i).getTitle());
+                if (i != toUpdate.size() - 1) {
+                    bigText.append("\n");
+                }
+            }
         }
         return new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_DOWNLOADING)
                 .setContentTitle(context.getString(R.string.download_notification_title_feeds))
