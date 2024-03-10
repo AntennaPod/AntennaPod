@@ -117,7 +117,7 @@ public class NextcloudLoginFlow {
 
     private JSONObject doRequest(URL url, String bodyContent) throws IOException, JSONException {
         RequestBody requestBody = RequestBody.create(
-                MediaType.get("application/x-www-form-urlencoded"), bodyContent);
+                bodyContent, MediaType.get("application/x-www-form-urlencoded"));
         Request request = new Request.Builder().url(url).method("POST", requestBody).build();
         Response response = httpClient.newCall(request).execute();
         if (response.code() != 200) {

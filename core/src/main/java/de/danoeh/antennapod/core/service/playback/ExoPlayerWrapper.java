@@ -53,6 +53,7 @@ import de.danoeh.antennapod.model.playback.Playable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import okhttp3.Call;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -232,7 +233,7 @@ public class ExoPlayerWrapper {
             throws IllegalArgumentException, IllegalStateException {
         Log.d(TAG, "setDataSource: " + s);
         final OkHttpDataSource.Factory httpDataSourceFactory =
-                new OkHttpDataSource.Factory((okhttp3.Call.Factory) AntennapodHttpClient.getHttpClient())
+                new OkHttpDataSource.Factory((Call.Factory) AntennapodHttpClient.getHttpClient())
                         .setUserAgent(ClientConfig.USER_AGENT);
 
         if (!TextUtils.isEmpty(user) && !TextUtils.isEmpty(password)) {
