@@ -14,7 +14,7 @@
             android:layout_weight="1"
             android:text="@string/statistics_episodes_started_total" />
 
-        <com.joanzapata.iconify.widget.IconTextView
+        <TextView
             android:id="@+id/startedTotalLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
             android:layout_weight="1"
             android:text="@string/statistics_time_played" />
 
-        <com.joanzapata.iconify.widget.IconTextView
+        <TextView
             android:id="@+id/timePlayedLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
             android:layout_weight="1"
             android:text="@string/statistics_total_duration" />
 
-        <com.joanzapata.iconify.widget.IconTextView
+        <TextView
             android:id="@+id/totalDurationLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
             android:layout_weight="1"
             android:text="@string/statistics_episodes_on_device" />
 
-        <com.joanzapata.iconify.widget.IconTextView
+        <TextView
             android:id="@+id/onDeviceLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
             android:layout_weight="1"
             android:text="@string/statistics_space_used" />
 
-        <com.joanzapata.iconify.widget.IconTextView
+        <TextView
             android:id="@+id/spaceUsedLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
             android:layout_weight="1"
             android:text="@string/statistics_expected_next_episode" />
 
-        <com.joanzapata.iconify.widget.IconTextView
+        <TextView
             android:id="@+id/expectedNextEpisodeLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

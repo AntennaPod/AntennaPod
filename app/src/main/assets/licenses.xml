@@ -61,12 +61,6 @@
         license="Simplified BSD"
         licenseText="LICENSE_GLIDE.txt" />
     <library
-        name="Iconify"
-        author="Joan Zapata"
-        website="https://github.com/JoanZapata/android-iconify"
-        license="Apache 2.0"
-        licenseText="LICENSE_ANDROID_ICONIFY.txt" />
-    <library
         name="jsoup"
         author="Jonathan Hedley"
         website="https://jsoup.org/"

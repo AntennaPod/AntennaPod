@@ -17,7 +17,6 @@ import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.view.viewholder.DownloadLogItemViewHolder;
 
 import java.util.ArrayList;
@@ -74,19 +73,16 @@ public class DownloadLogAdapter extends BaseAdapter {
         }
 
         if (status.isSuccessful()) {
-            holder.icon.setTextColor(ThemeUtils.getColorFromAttr(context, R.attr.icon_green));
-            holder.icon.setText("{fa-check-circle}");
+            holder.icon.setImageResource(R.drawable.ic_check);
             holder.icon.setContentDescription(context.getString(R.string.download_successful));
             holder.secondaryActionButton.setVisibility(View.INVISIBLE);
             holder.reason.setVisibility(View.GONE);
             holder.tapForDetails.setVisibility(View.GONE);
         } else {
             if (status.getReason() == DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE) {
-                holder.icon.setTextColor(ThemeUtils.getColorFromAttr(context, R.attr.icon_yellow));
-                holder.icon.setText("{fa-exclamation-circle}");
+                holder.icon.setImageResource(R.drawable.ic_info);
             } else {
-                holder.icon.setTextColor(ThemeUtils.getColorFromAttr(context, R.attr.icon_red));
-                holder.icon.setText("{fa-times-circle}");
+                holder.icon.setImageResource(R.drawable.ic_error);
             }
             holder.icon.setContentDescription(context.getString(R.string.error_label));
             holder.reason.setText(DownloadErrorLabel.from(status.getReason()));
