@@ -13,9 +13,9 @@ import androidx.core.util.Consumer;
 
 import androidx.media3.common.C;
 import androidx.media3.common.PlaybackException;
-import androidx.media3.database.ExoDatabaseProvider;
+import androidx.media3.database.StandaloneDatabaseProvider;
 import androidx.media3.datasource.DataSource;
-import androidx.media3.datasource.DefaultDataSourceFactory;
+import androidx.media3.datasource.DefaultDataSource;
 import androidx.media3.datasource.HttpDataSource;
 import androidx.media3.datasource.cache.CacheDataSource;
 import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor;
@@ -53,6 +53,7 @@ import de.danoeh.antennapod.model.playback.Playable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import okhttp3.Call;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -152,7 +153,7 @@ public class ExoPlayerWrapper {
             }
         });
         simpleCache = new SimpleCache(new File(context.getCacheDir(), "streaming"),
-                new LeastRecentlyUsedCacheEvictor(50 * 1024 * 1024), new ExoDatabaseProvider(context));
+                new LeastRecentlyUsedCacheEvictor(50 * 1024 * 1024), new StandaloneDatabaseProvider(context));
         initLoudnessEnhancer(exoPlayer.getAudioSessionId());
     }
 
@@ -232,7 +233,7 @@ public class ExoPlayerWrapper {
             throws IllegalArgumentException, IllegalStateException {
         Log.d(TAG, "setDataSource: " + s);
         final OkHttpDataSource.Factory httpDataSourceFactory =
-                new OkHttpDataSource.Factory((okhttp3.Call.Factory) AntennapodHttpClient.getHttpClient())
+                new OkHttpDataSource.Factory((Call.Factory) AntennapodHttpClient.getHttpClient())
                         .setUserAgent(ClientConfig.USER_AGENT);
 
         if (!TextUtils.isEmpty(user) && !TextUtils.isEmpty(password)) {
@@ -243,7 +244,7 @@ public class ExoPlayerWrapper {
             );
             httpDataSourceFactory.setDefaultRequestProperties(requestProperties);
         }
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, null, httpDataSourceFactory);
+        DataSource.Factory dataSourceFactory = new DefaultDataSource.Factory(context, httpDataSourceFactory);
         if (s.startsWith("http")) {
             dataSourceFactory = new CacheDataSource.Factory()
                     .setCache(simpleCache)

@@ -48,6 +48,9 @@ dependencies {
     implementation 'androidx.documentfile:documentfile:1.0.1'
     implementation "androidx.fragment:fragment:$fragmentVersion"
     implementation "androidx.media:media:$mediaVersion"
+    implementation "androidx.media3:media3-datasource-okhttp:$media3Version"
+    implementation "androidx.media3:media3-exoplayer:$media3Version"
+    implementation "androidx.media3:media3-ui:$media3Version"
     implementation "androidx.preference:preference:$preferenceVersion"
     implementation "androidx.work:work-runtime:$workManagerVersion"
     implementation "com.google.android.material:material:$googleMaterialVersion"
@@ -64,10 +67,6 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
     implementation "com.annimon:stream:$annimonStreamVersion"
-
-    implementation "androidx.media3:media3-exoplayer:$exoPlayerVersion"
-    implementation "androidx.media3:media3-ui:$exoPlayerVersion"
-    implementation "androidx.media3:media3-datasource-okhttp:$exoPlayerVersion"
 
     testImplementation "androidx.test:core:$testCoreVersion"
     testImplementation "org.awaitility:awaitility:$awaitilityVersion"

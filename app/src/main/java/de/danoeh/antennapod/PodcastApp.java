@@ -6,9 +6,6 @@ import android.content.Intent;
 import android.os.StrictMode;
 
 import com.google.android.material.color.DynamicColors;
-import com.joanzapata.iconify.Iconify;
-import com.joanzapata.iconify.fonts.FontAwesomeModule;
-import com.joanzapata.iconify.fonts.MaterialModule;
 
 import de.danoeh.antennapod.activity.SplashActivity;
 import de.danoeh.antennapod.config.ApplicationCallbacksImpl;
@@ -54,9 +51,6 @@ public class PodcastApp extends Application {
 
         ClientConfigurator.initialize(this);
         PreferenceUpgrader.checkUpgrades(this);
-
-        Iconify.with(new FontAwesomeModule());
-        Iconify.with(new MaterialModule());
 
         SPAUtil.sendSPAppsQueryFeedsIntent(this);
         EventBus.builder()

@@ -71,7 +71,7 @@ public class NextcloudSyncService implements ISyncService {
             requestObject.put("add", new JSONArray(addedFeeds));
             requestObject.put("remove", new JSONArray(removedFeeds));
             RequestBody requestBody = RequestBody.create(
-                    MediaType.get("application/json"), requestObject.toString());
+                    requestObject.toString(), MediaType.get("application/json"));
             performRequest(url, "POST", requestBody);
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,7 +121,7 @@ public class NextcloudSyncService implements ISyncService {
             }
             HttpUrl.Builder url = makeUrl("/index.php/apps/gpoddersync/episode_action/create");
             RequestBody requestBody = RequestBody.create(
-                    MediaType.get("application/json"), list.toString());
+                    list.toString(), MediaType.get("application/json"));
             performRequest(url, "POST", requestBody);
         } catch (Exception e) {
             e.printStackTrace();
