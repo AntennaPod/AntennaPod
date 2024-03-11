@@ -65,7 +65,7 @@ public class OpmlReader {
                         element.setHtmlUrl(xpp.getAttributeValue(null, OpmlSymbols.HTMLURL));
                         element.setType(xpp.getAttributeValue(null, OpmlSymbols.TYPE));
                         if (!TextUtils.isEmpty(element.getXmlUrl())) {
-                            if (!TextUtils.isEmpty(element.getText())) {
+                            if (TextUtils.isEmpty(element.getText())) {
                                 Log.i(TAG, "Opml element has no text attribute.");
                                 element.setText(element.getXmlUrl());
                             }
