@@ -1,8 +1,7 @@
-package de.danoeh.antennapod.core.export.html;
+package de.danoeh.antennapod.storage.importexport;
 
 import android.content.Context;
 import android.util.Log;
-import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.model.feed.Feed;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,15 +10,14 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 
 /** Writes HTML documents. */
-public class HtmlWriter implements ExportWriter {
+public class HtmlWriter {
     private static final String TAG = "HtmlWriter";
 
     /**
      * Takes a list of feeds and a writer and writes those into an HTML
      * document.
      */
-    @Override
-    public void writeDocument(List<Feed> feeds, Writer writer, Context context)
+    public static void writeDocument(List<Feed> feeds, Writer writer, Context context)
             throws IllegalArgumentException, IllegalStateException, IOException {
         Log.d(TAG, "Starting to write document");
 
@@ -43,9 +41,4 @@ public class HtmlWriter implements ExportWriter {
         writer.append(templateParts[1]);
         Log.d(TAG, "Finished writing document");
     }
-
-    public String fileExtension() {
-        return "html";
-    }
-
 }

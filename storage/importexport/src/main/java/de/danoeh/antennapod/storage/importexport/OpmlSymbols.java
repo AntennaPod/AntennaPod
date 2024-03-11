@@ -1,12 +1,14 @@
-package de.danoeh.antennapod.core.export.opml;
-
-import de.danoeh.antennapod.core.export.CommonSymbols;
+package de.danoeh.antennapod.storage.importexport;
 
 /**
  * Contains symbols for reading and writing OPML documents.
  */
-final class OpmlSymbols extends CommonSymbols {
+final class OpmlSymbols {
+    public static final String XML_FEATURE_INDENT_OUTPUT = "http://xmlpull.org/v1/doc/features.html#indent-output";
 
+    public static final String HEAD = "head";
+    public static final String BODY = "body";
+    public static final String TITLE = "title";
     public static final String OPML = "opml";
     static final String OUTLINE = "outline";
     static final String TEXT = "text";
@@ -19,5 +21,4 @@ final class OpmlSymbols extends CommonSymbols {
     private OpmlSymbols() {
 
     }
-
 }

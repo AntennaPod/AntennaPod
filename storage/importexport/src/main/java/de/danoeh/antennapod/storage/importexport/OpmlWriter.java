@@ -1,22 +1,21 @@
-package de.danoeh.antennapod.core.export.opml;
+package de.danoeh.antennapod.storage.importexport;
 
-import android.content.Context;
 import android.util.Log;
 import android.util.Xml;
 
-import de.danoeh.antennapod.core.util.DateFormatter;
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
-import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.model.feed.Feed;
 
 /** Writes OPML documents. */
-public class OpmlWriter implements ExportWriter {
+public class OpmlWriter {
 
     private static final String TAG = "OpmlWriter";
     private static final String ENCODING = "UTF-8";
@@ -27,8 +26,7 @@ public class OpmlWriter implements ExportWriter {
      * Takes a list of feeds and a writer and writes those into an OPML
      * document.
      */
-    @Override
-    public void writeDocument(List<Feed> feeds, Writer writer, Context context)
+    public static void writeDocument(List<Feed> feeds, Writer writer)
             throws IllegalArgumentException, IllegalStateException, IOException {
         Log.d(TAG, "Starting to write document");
         XmlSerializer xs = Xml.newSerializer();
@@ -44,7 +42,7 @@ public class OpmlWriter implements ExportWriter {
         xs.text(OPML_TITLE);
         xs.endTag(null, OpmlSymbols.TITLE);
         xs.startTag(null, OpmlSymbols.DATE_CREATED);
-        xs.text(DateFormatter.formatRfc822Date(new Date()));
+        xs.text(formatRfc822Date(new Date()));
         xs.endTag(null, OpmlSymbols.DATE_CREATED);
         xs.endTag(null, OpmlSymbols.HEAD);
 
@@ -68,8 +66,8 @@ public class OpmlWriter implements ExportWriter {
         Log.d(TAG, "Finished writing document");
     }
 
-    public String fileExtension() {
-        return "opml";
+    private static String formatRfc822Date(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("dd MMM yy HH:mm:ss Z", Locale.US);
+        return format.format(date);
     }
-
 }

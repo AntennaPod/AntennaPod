@@ -1,7 +1,9 @@
-package de.danoeh.antennapod.core.export.opml;
+package de.danoeh.antennapod.storage.importexport;
 
+import android.text.TextUtils;
 import android.util.Log;
 
+import de.danoeh.antennapod.storage.preferences.BuildConfig;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -9,8 +11,6 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
-
-import de.danoeh.antennapod.core.BuildConfig;
 
 /**
  * Reads OPML documents.
@@ -53,7 +53,7 @@ public class OpmlReader {
                         OpmlElement element = new OpmlElement();
 
                         final String title = xpp.getAttributeValue(null, OpmlSymbols.TITLE);
-                        if (title != null) {
+                        if (!TextUtils.isEmpty(title)) {
                             Log.i(TAG, "Using title: " + title);
                             element.setText(title);
                         } else {
@@ -63,8 +63,8 @@ public class OpmlReader {
                         element.setXmlUrl(xpp.getAttributeValue(null, OpmlSymbols.XMLURL));
                         element.setHtmlUrl(xpp.getAttributeValue(null, OpmlSymbols.HTMLURL));
                         element.setType(xpp.getAttributeValue(null, OpmlSymbols.TYPE));
-                        if (element.getXmlUrl() != null) {
-                            if (element.getText() == null) {
+                        if (!TextUtils.isEmpty(element.getXmlUrl())) {
+                            if (TextUtils.isEmpty(element.getText())) {
                                 Log.i(TAG, "Opml element has no text attribute.");
                                 element.setText(element.getXmlUrl());
                             }
