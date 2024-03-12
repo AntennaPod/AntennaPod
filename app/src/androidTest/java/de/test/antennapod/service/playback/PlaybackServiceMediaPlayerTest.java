@@ -85,12 +85,12 @@ public class PlaybackServiceMediaPlayerTest {
         assertTrue(cacheDir.canWrite());
         assertTrue(cacheDir.canRead());
         if (!dest.exists()) {
-            InputStream i = getInstrumentation().getContext().getAssets().open("3sec.mp3");
-            OutputStream o = new FileOutputStream(new File(cacheDir, PLAYABLE_DEST_URL));
-            IOUtils.copy(i, o);
-            o.flush();
-            o.close();
-            i.close();
+            try (final InputStream i = getInstrumentation().getContext().getAssets().open("3sec.mp3");
+                    final OutputStream o = new FileOutputStream(new File(cacheDir, PLAYABLE_DEST_URL))
+            ) {
+                IOUtils.copy(i, o);
+                o.flush();
+            }
         }
         PLAYABLE_LOCAL_URL = dest.getAbsolutePath();
         assertEquals(0, httpServer.serveFile(dest));

@@ -48,10 +48,11 @@ public class ResizingOkHttpStreamFetcher extends OkHttpStreamFetcher {
                 try {
                     tempIn = File.createTempFile("resize_", null);
                     tempOut = File.createTempFile("resize_", null);
-                    OutputStream outputStream = new FileOutputStream(tempIn);
-                    IOUtils.copy(data, outputStream);
-                    outputStream.close();
-                    IOUtils.closeQuietly(data);
+                    try (final InputStream inputStream = data;
+                            final OutputStream outputStream = new FileOutputStream(tempIn)
+                    ) {
+                        IOUtils.copy(inputStream, outputStream);
+                    }
 
                     if (tempIn.length() <= MAX_FILE_SIZE) {
                         try {
@@ -65,10 +66,9 @@ public class ResizingOkHttpStreamFetcher extends OkHttpStreamFetcher {
 
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inJustDecodeBounds = true;
-                    FileInputStream in = new FileInputStream(tempIn);
-                    BitmapFactory.decodeStream(in, null, options);
-                    IOUtils.closeQuietly(in);
-
+                    try (final FileInputStream in = new FileInputStream(tempIn)) {
+                        BitmapFactory.decodeStream(in, null, options);
+                    }
                     if (options.outWidth == -1 || options.outHeight == -1) {
                         throw new IOException("Not a valid image");
                     } else if (Math.max(options.outHeight, options.outWidth) >= MAX_DIMENSIONS) {
@@ -77,18 +77,19 @@ public class ResizingOkHttpStreamFetcher extends OkHttpStreamFetcher {
                     }
 
                     options.inJustDecodeBounds = false;
-                    in = new FileInputStream(tempIn);
-                    Bitmap bitmap = BitmapFactory.decodeStream(in, null, options);
-                    IOUtils.closeQuietly(in);
+                    Bitmap bitmap;
+                    try (final FileInputStream in = new FileInputStream(tempIn)) {
+                        bitmap = BitmapFactory.decodeStream(in, null, options);
+                    }
 
                     Bitmap.CompressFormat format = Build.VERSION.SDK_INT < 30
                             ? Bitmap.CompressFormat.WEBP : Bitmap.CompressFormat.WEBP_LOSSY;
 
                     int quality = 100;
                     while (true) {
-                        FileOutputStream out = new FileOutputStream(tempOut);
-                        bitmap.compress(format, quality, out);
-                        IOUtils.closeQuietly(out);
+                        try (final FileOutputStream out = new FileOutputStream(tempOut)) {
+                            bitmap.compress(format, quality, out);
+                        }
 
                         if (tempOut.length() > 3 * MAX_FILE_SIZE && quality >= 45) {
                             quality -= 40;

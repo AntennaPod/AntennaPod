@@ -9,7 +9,6 @@ import android.text.format.Formatter;
 import android.util.Log;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,37 +22,22 @@ public class DatabaseExporter {
     private static final String TEMP_DB_NAME = PodDBAdapter.DATABASE_NAME + "_tmp";
 
     public static void exportToDocument(Uri uri, Context context) throws IOException {
-        ParcelFileDescriptor pfd = null;
-        FileOutputStream fileOutputStream = null;
-        try {
-            pfd = context.getContentResolver().openFileDescriptor(uri, "wt");
-            fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
+        try (final ParcelFileDescriptor pfd = context.getContentResolver().openFileDescriptor(uri, "wt");
+                final FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor())
+        ) {
             exportToStream(fileOutputStream, context);
         } catch (IOException e) {
             Log.e(TAG, Log.getStackTraceString(e));
             throw e;
-        } finally {
-            IOUtils.closeQuietly(fileOutputStream);
-
-            if (pfd != null) {
-                try {
-                    pfd.close();
-                } catch (IOException e) {
-                    Log.d(TAG, "Unable to close ParcelFileDescriptor");
-                }
-            }
         }
     }
 
     public static void exportToStream(FileOutputStream outFileStream, Context context) throws IOException {
-        FileChannel src = null;
-        FileChannel dst = null;
-        try {
-            File currentDB = context.getDatabasePath(PodDBAdapter.DATABASE_NAME);
-
-            if (currentDB.exists()) {
-                src = new FileInputStream(currentDB).getChannel();
-                dst = outFileStream.getChannel();
+        final File currentDb = context.getDatabasePath(PodDBAdapter.DATABASE_NAME);
+        try (final FileChannel src = new FileInputStream(currentDb).getChannel();
+                final FileChannel dst = outFileStream.getChannel()
+        ) {
+            if (currentDb.exists()) {
                 long srcSize = src.size();
                 dst.transferFrom(src, 0, srcSize);
 
@@ -70,17 +54,12 @@ public class DatabaseExporter {
         } catch (IOException e) {
             Log.e(TAG, Log.getStackTraceString(e));
             throw e;
-        } finally {
-            IOUtils.closeQuietly(src);
-            IOUtils.closeQuietly(dst);
         }
     }
 
     public static void importBackup(Uri inputUri, Context context) throws IOException {
-        InputStream inputStream = null;
-        try {
+        try (final InputStream inputStream = context.getContentResolver().openInputStream(inputUri)) {
             File tempDB = context.getDatabasePath(TEMP_DB_NAME);
-            inputStream = context.getContentResolver().openInputStream(inputUri);
             FileUtils.copyInputStreamToFile(inputStream, tempDB);
 
             SQLiteDatabase db = SQLiteDatabase.openDatabase(tempDB.getAbsolutePath(),
@@ -99,8 +78,6 @@ public class DatabaseExporter {
         } catch (IOException | SQLiteException e) {
             Log.e(TAG, Log.getStackTraceString(e));
             throw e;
-        } finally {
-            IOUtils.closeQuietly(inputStream);
         }
     }
 }

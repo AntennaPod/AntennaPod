@@ -80,10 +80,10 @@ public class UITestUtils {
 
     public String hostFeed(Feed feed) throws IOException {
         File feedFile = new File(hostedFeedDir, feed.getTitle());
-        FileOutputStream out = new FileOutputStream(feedFile);
-        Rss2Generator generator = new Rss2Generator();
-        generator.writeFeed(feed, out, "UTF-8", 0);
-        out.close();
+        try (final FileOutputStream out = new FileOutputStream(feedFile)) {
+            Rss2Generator generator = new Rss2Generator();
+            generator.writeFeed(feed, out, "UTF-8", 0);
+        }
         int id = server.serveFile(feedFile);
         Assert.assertTrue(id != -1);
         return String.format(Locale.US, "%s/files/%d", server.getBaseUrl(), id);
@@ -106,9 +106,9 @@ public class UITestUtils {
                 .getAssets().open(testFileName);
         Assert.assertNotNull(in);
 
-        FileOutputStream out = new FileOutputStream(mediaFile);
-        IOUtils.copy(in, out);
-        out.close();
+        try (final FileOutputStream out = new FileOutputStream(mediaFile)) {
+            IOUtils.copy(in, out);
+        }
 
         return mediaFile;
     }

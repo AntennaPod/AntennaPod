@@ -220,11 +220,9 @@ public class OpmlImportActivity extends AppCompatActivity {
             BOMInputStream bomInputStream = new BOMInputStream(opmlFileStream);
             ByteOrderMark bom = bomInputStream.getBOM();
             String charsetName = (bom == null) ? "UTF-8" : bom.getCharsetName();
-            Reader reader = new InputStreamReader(bomInputStream, charsetName);
-            OpmlReader opmlReader = new OpmlReader();
-            ArrayList<OpmlElement> result = opmlReader.readDocument(reader);
-            reader.close();
-            return result;
+            try (final Reader reader = new InputStreamReader(bomInputStream, charsetName)) {
+                return new OpmlReader().readDocument(reader);
+            }
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

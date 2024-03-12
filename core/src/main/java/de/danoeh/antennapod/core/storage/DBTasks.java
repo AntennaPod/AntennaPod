@@ -68,16 +68,16 @@ public final class DBTasks {
     public static void removeFeedWithDownloadUrl(Context context, String downloadUrl) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        Cursor cursor = adapter.getFeedCursorDownloadUrls();
         long feedID = 0;
-        if (cursor.moveToFirst()) {
-            do {
-                if (cursor.getString(1).equals(downloadUrl)) {
-                    feedID = cursor.getLong(0);
-                }
-            } while (cursor.moveToNext());
+        try (final Cursor cursor = adapter.getFeedCursorDownloadUrls()) {
+            if (cursor.moveToFirst()) {
+                do {
+                    if (cursor.getString(1).equals(downloadUrl)) {
+                        feedID = cursor.getLong(0);
+                    }
+                } while (cursor.moveToNext());
+            }
         }
-        cursor.close();
         adapter.close();
 
         if (feedID != 0) {
@@ -384,11 +384,11 @@ public final class DBTasks {
         return new FutureTask<>(new QueryTask<List<FeedItem>>() {
             @Override
             public void execute(PodDBAdapter adapter) {
-                Cursor searchResult = adapter.searchItems(feedID, query);
-                List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
-                DBReader.loadAdditionalFeedItemListData(items);
-                setResult(items);
-                searchResult.close();
+                try (final Cursor searchResult = adapter.searchItems(feedID, query)) {
+                    List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
+                    DBReader.loadAdditionalFeedItemListData(items);
+                    setResult(items);
+                }
             }
         });
     }
@@ -397,15 +397,15 @@ public final class DBTasks {
         return new FutureTask<>(new QueryTask<List<Feed>>() {
             @Override
             public void execute(PodDBAdapter adapter) {
-                Cursor cursor = adapter.searchFeeds(query);
-                List<Feed> items = new ArrayList<>();
-                if (cursor.moveToFirst()) {
-                    do {
-                        items.add(FeedCursorMapper.convert(cursor));
-                    } while (cursor.moveToNext());
+                try (final Cursor cursor = adapter.searchFeeds(query)) {
+                    List<Feed> items = new ArrayList<>();
+                    if (cursor.moveToFirst()) {
+                        do {
+                            items.add(FeedCursorMapper.convert(cursor));
+                        } while (cursor.moveToNext());
+                    }
+                    setResult(items);
                 }
-                setResult(items);
-                cursor.close();
             }
         });
     }

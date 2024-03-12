@@ -57,12 +57,10 @@ public final class ChapterImageModelLoader implements ModelLoader<EmbeddedChapte
 
         @Override
         public void loadData(@NonNull Priority priority, @NonNull DataCallback<? super ByteBuffer> callback) {
-
-            BufferedInputStream stream = null;
-            try {
+            final File localFile = new File(image.getMedia().getLocalMediaUrl());
+            try (final BufferedInputStream stream = new BufferedInputStream(new FileInputStream(localFile))
+            ) {
                 if (image.getMedia().localFileAvailable()) {
-                    File localFile = new File(image.getMedia().getLocalMediaUrl());
-                    stream = new BufferedInputStream(new FileInputStream(localFile));
                     IOUtils.skip(stream, image.getPosition());
                     byte[] imageContent = new byte[image.getLength()];
                     IOUtils.read(stream, imageContent, 0, image.getLength());
@@ -81,8 +79,6 @@ public final class ChapterImageModelLoader implements ModelLoader<EmbeddedChapte
                 }
             } catch (IOException e) {
                 callback.onLoadFailed(e);
-            } finally {
-                IOUtils.closeQuietly(stream);
             }
         }
 
