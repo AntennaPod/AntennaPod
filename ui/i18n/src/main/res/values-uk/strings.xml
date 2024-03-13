@@ -493,8 +493,7 @@
   <string name="pref_expandNotify_sum">Зазвичай це розширює сповіщення, щоб показати кнопки відтворення.</string>
   <string name="pref_persistNotify_title">Завжди показувати елементи керування відтворенням</string>
   <string name="pref_persistNotify_sum">Не ховайте сповіщення та елементи керування на екрані блокування, коли відтворення призупинено</string>
-  <string name="pref_compact_notification_buttons_dialog_error_exact">Ви повинні вибрати рівно %1$d елементів.</string>
-  <string name="pref_full_notification_buttons_title">Оберіть кнопки на сповіщенні</string>
+    <string name="pref_full_notification_buttons_title">Оберіть кнопки на сповіщенні</string>
   <string name="pref_full_notification_buttons_sum">Змініть функції кнопок на сповіщенні про відтворення.</string>
   <string name="pref_enqueue_location_title">Позиція в черзі при додаванні</string>
   <string name="pref_enqueue_location_sum">Додати епізоди до: %1$s</string>

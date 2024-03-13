@@ -492,8 +492,7 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="pref_expandNotify_sum">Sañset e brasa ar rebuzadur evit diskouez an afelloù lenn.</string>
   <string name="pref_persistNotify_title">Afelloù lenn peurzalc\'hus</string>
   <string name="pref_persistNotify_sum">Mirout ar rebuzadur ha reoliadurioù ar skramm prennañ p\'eo ehanet al lenn</string>
-  <string name="pref_compact_notification_buttons_dialog_error_exact">Rankout a rit diuzañ %1$d elfenn rik.</string>
-  <string name="pref_full_notification_buttons_title">Afelloù ar rebuzadurioù</string>
+    <string name="pref_full_notification_buttons_title">Afelloù ar rebuzadurioù</string>
   <string name="pref_enqueue_location_sum">Ouzhpennañ ar rannoù da: %1$s</string>
   <string name="enqueue_location_back">E dibenn ar roll</string>
   <string name="enqueue_location_front">E penn ar roll</string>

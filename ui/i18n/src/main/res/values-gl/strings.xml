@@ -463,8 +463,7 @@
   <string name="pref_expandNotify_sum">Isto expande as notificacións para mostrar os botóns de reprodución</string>
   <string name="pref_persistNotify_title">Controis persistentes de reprodución</string>
   <string name="pref_persistNotify_sum">Manter a notificación e os controis de reprodución na pantalla de bloqueo cando está detida a reprodución</string>
-  <string name="pref_compact_notification_buttons_dialog_error_exact">Tes que elexir exactamente %1$d elementos.</string>
-  <string name="pref_full_notification_buttons_title">Configurar botóns de notificación</string>
+    <string name="pref_full_notification_buttons_title">Configurar botóns de notificación</string>
   <string name="pref_full_notification_buttons_sum">Cambiar os botóns de reprodución na notificación de reprodución.</string>
   <string name="pref_enqueue_location_title">Situación na cola</string>
   <string name="pref_enqueue_location_sum">Engadir episodios a: %1$s</string>

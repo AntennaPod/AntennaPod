@@ -463,8 +463,7 @@
   <string name="pref_expandNotify_sum">Això normalment expandeix la notificació per a mostrar botons de reproducció</string>
   <string name="pref_persistNotify_title">Contorls de reproducció persistents</string>
   <string name="pref_persistNotify_sum">Conserveu les notificacions i els controls de la pantalla de bloqueig quan la reproducció estigui en pausa</string>
-  <string name="pref_compact_notification_buttons_dialog_error_exact">Has de seleccionar exactament %1$d elements.</string>
-  <string name="pref_full_notification_buttons_title">Configura els botons de notificació</string>
+    <string name="pref_full_notification_buttons_title">Configura els botons de notificació</string>
   <string name="pref_full_notification_buttons_sum">Canvia els botons de reproducció des de la notificació de reproducció.</string>
   <string name="pref_enqueue_location_title">Afegir a la cua en determinada posició</string>
   <string name="pref_enqueue_location_sum">Afegir episodis a: %1$s</string>

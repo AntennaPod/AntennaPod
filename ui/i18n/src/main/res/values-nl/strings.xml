@@ -463,8 +463,7 @@
   <string name="pref_expandNotify_sum">Dit breidt de melding meestal uit om afspeelknoppen te tonen.</string>
   <string name="pref_persistNotify_title">Permanente afspeelknoppen</string>
   <string name="pref_persistNotify_sum">Melding en bediening op vergrendelscherm houden indien gepauzeerd</string>
-  <string name="pref_compact_notification_buttons_dialog_error_exact">Kies precies %1$d items.</string>
-  <string name="pref_full_notification_buttons_title">Meldingsknoppen instellen</string>
+    <string name="pref_full_notification_buttons_title">Meldingsknoppen instellen</string>
   <string name="pref_full_notification_buttons_sum">Pas de bedieningsknoppen op de melding aan.</string>
   <string name="pref_enqueue_location_title">Plaatsing in wachtrij</string>
   <string name="pref_enqueue_location_sum">Afleveringen toevoegen: %1$s</string>

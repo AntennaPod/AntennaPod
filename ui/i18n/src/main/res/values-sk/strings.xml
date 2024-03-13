@@ -493,8 +493,7 @@
   <string name="pref_expandNotify_sum">Toto obvykle pridá tlačidlá ovládania prehrávania do správ upozornení</string>
   <string name="pref_persistNotify_title">Stále ovládače prehrávania</string>
   <string name="pref_persistNotify_sum">Zachovať oznámenia a ovládanie na uzamknutej obrazovke aj pri pozastavenom prehrávaní</string>
-  <string name="pref_compact_notification_buttons_dialog_error_exact">Musíte vybrať presne %1$d položky.</string>
-  <string name="pref_full_notification_buttons_title">Nastaviť tlačidlá upozornení</string>
+    <string name="pref_full_notification_buttons_title">Nastaviť tlačidlá upozornení</string>
   <string name="pref_full_notification_buttons_sum">Zmeniť tlačidlá prehrávania v upozornení na prehrávanie.</string>
   <string name="pref_enqueue_location_title">Pozícia pridávania do poradia</string>
   <string name="pref_enqueue_location_sum">Pridávať epizódy na: %1$s</string>

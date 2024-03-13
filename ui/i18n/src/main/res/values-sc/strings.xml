@@ -463,8 +463,7 @@
   <string name="pref_expandNotify_sum">Custu ismànniat sa notìfica pro chi ammustret is butones de riprodutzione.</string>
   <string name="pref_persistNotify_title">Controllos de riprodutzione permanentes</string>
   <string name="pref_persistNotify_sum">Mantene is controllos de notìfica e de blocu cando sa riprodutzione est in pàusa</string>
-  <string name="pref_compact_notification_buttons_dialog_error_exact">Depes seletzionare giustu %1$d elementos.</string>
-  <string name="pref_full_notification_buttons_title">Cunfigura is butones de notìfica</string>
+    <string name="pref_full_notification_buttons_title">Cunfigura is butones de notìfica</string>
   <string name="pref_full_notification_buttons_sum">Modìfica is butones de riprodutzione dae sa notìfica de riprodutzione.</string>
   <string name="pref_enqueue_location_title">Agiunghe a sa lista in una positzione ispetzìfica</string>
   <string name="pref_enqueue_location_sum">Agiunghe episòdios a: %1$s</string>

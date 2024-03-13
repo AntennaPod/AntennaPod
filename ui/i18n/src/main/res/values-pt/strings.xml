@@ -478,8 +478,7 @@
   <string name="pref_expandNotify_sum">Normalmente, esta opção é utilizada para expandir a notificação e mostrar os botões de reprodução</string>
   <string name="pref_persistNotify_title">Controlos de reprodução persistentes</string>
   <string name="pref_persistNotify_sum">Manter notificação e controlos no ecrã de bloqueio ao colocar em pausa</string>
-  <string name="pref_compact_notification_buttons_dialog_error_exact">Tem que selecionar, exatamente, %1$d itens</string>
-  <string name="pref_full_notification_buttons_title">Definir botões na notificação</string>
+    <string name="pref_full_notification_buttons_title">Definir botões na notificação</string>
   <string name="pref_full_notification_buttons_sum">Alterar botões de reprodução mostrados na notificação</string>
   <string name="pref_enqueue_location_title">Localização na fila</string>
   <string name="pref_enqueue_location_sum">Adicionar episódios: %1$s</string>

@@ -463,8 +463,7 @@
   <string name="pref_expandNotify_sum">Ez általában kibontja az értesítést, hogy megjelenítse a lejátszási gombokat.</string>
   <string name="pref_persistNotify_title">Állandó lejátszásvezérlők</string>
   <string name="pref_persistNotify_sum">Az értesítés és a zárképernyőn megjelenő vezérlők megtartása a lejátszás szüneteltetésekor</string>
-  <string name="pref_compact_notification_buttons_dialog_error_exact">Jelöljön ki pontosan %1$d elemet.</string>
-  <string name="pref_full_notification_buttons_title">Értesítési gombok beállítása</string>
+    <string name="pref_full_notification_buttons_title">Értesítési gombok beállítása</string>
   <string name="pref_full_notification_buttons_sum">Lejátszási gombok megváltoztatása a lejátszási értesítésen.</string>
   <string name="pref_enqueue_location_title">Hely sorba állítása</string>
   <string name="pref_enqueue_location_sum">Epizódok hozzáadása ehhez: %1$s</string>

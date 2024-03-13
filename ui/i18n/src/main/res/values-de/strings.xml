@@ -463,8 +463,7 @@
   <string name="pref_expandNotify_sum">Dies erweitert normalerweise die Benachrichtigung und zeigt so die Wiedergabe-Buttons an</string>
   <string name="pref_persistNotify_title">Persistente Wiedergabesteuerung</string>
   <string name="pref_persistNotify_sum">Bedienelemente in der Benachrichtigungsleiste und auf dem Sperrbildschirm anzeigen, während die Wiedergabe pausiert ist</string>
-  <string name="pref_compact_notification_buttons_dialog_error_exact">Du musst genau %1$d Einträge auswählen.</string>
-  <string name="pref_full_notification_buttons_title">Benachrichtigungs-Buttons einstellen</string>
+    <string name="pref_full_notification_buttons_title">Benachrichtigungs-Buttons einstellen</string>
   <string name="pref_enqueue_location_title">Position beim Einreihen</string>
   <string name="pref_enqueue_location_sum">Episoden hinzufügen: %1$s </string>
   <string name="enqueue_location_back">Hinten</string>

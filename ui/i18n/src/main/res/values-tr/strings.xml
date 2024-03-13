@@ -463,8 +463,7 @@
   <string name="pref_expandNotify_sum">Bu genellikle bildirimi oynatma düğmelerini gösterecek şekilde genişletir.</string>
   <string name="pref_persistNotify_title">Kalıcı oynatma kontrolleri</string>
   <string name="pref_persistNotify_sum">Oynatma duraklatılsa bile bildirim ve kilit ekranı kontrollerini göster</string>
-  <string name="pref_compact_notification_buttons_dialog_error_exact">Tam olarak %1$d öğe seçmelisiniz.</string>
-  <string name="pref_full_notification_buttons_title">Bildirim butonlarını ayarla</string>
+    <string name="pref_full_notification_buttons_title">Bildirim butonlarını ayarla</string>
   <string name="pref_full_notification_buttons_sum">Oynatma bildirimindeki oynatma butonlarını değiştir.</string>
   <string name="pref_enqueue_location_title">Kuyruğa alma konumu</string>
   <string name="pref_enqueue_location_sum">Bölümleri şuraya ekle: %1$s</string>

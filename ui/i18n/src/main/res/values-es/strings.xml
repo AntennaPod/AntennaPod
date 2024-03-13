@@ -478,8 +478,7 @@
   <string name="pref_expandNotify_sum">Esto suele expandir las notificaciones para mostrar los botones de reproducción.</string>
   <string name="pref_persistNotify_title">Controles de reproducción persistentes</string>
   <string name="pref_persistNotify_sum">Mantener la notificación y los controles de la pantalla de bloqueo cuando se pausa</string>
-  <string name="pref_compact_notification_buttons_dialog_error_exact">Debes seleccionar exactamente %1$d elementos.</string>
-  <string name="pref_full_notification_buttons_title">Configurar botones de notificación</string>
+    <string name="pref_full_notification_buttons_title">Configurar botones de notificación</string>
   <string name="pref_full_notification_buttons_sum">Cambiar los botones de reproducción en la notificación de reproducción.</string>
   <string name="pref_enqueue_location_title">Añadir a la cola en cierta ubicación</string>
   <string name="pref_enqueue_location_sum">Añadir episodios a: %1$s</string>
