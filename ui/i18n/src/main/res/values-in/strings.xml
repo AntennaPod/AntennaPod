@@ -87,7 +87,6 @@
   <string name="description_label">Keterangan</string>
   <string name="shownotes_label">Catatan acara</string>
   <string name="shownotes_contentdescription">Gesek ke atas untuk membaca catatan acara</string>
-  <string name="episodes_suffix">\u0020episode</string>
   <string name="close_label">Tutup</string>
   <string name="retry_label">Coba lagi</string>
   <string name="auto_download_label">Sertakan di unduh otomatis</string>
@@ -126,7 +125,6 @@
   <string name="rename_feed_label">Ubah nama podcast</string>
   <string name="remove_feed_label">Hapus podcast</string>
   <string name="share_label">Bagikan</string>
-  <string name="share_rss_address_label">Alamat RSS:</string>
   <string name="feed_remover_msg">Menghapus podcast</string>
   <string name="load_complete_feed">Segarkan podcast selesai</string>
   <string name="multi_select">Pilih banyak</string>
@@ -357,9 +355,6 @@
   <string name="pref_expandNotify_sum">Ini biasanya memperluas notifikasi untuk menunjukkan tombol pemutaran.</string>
   <string name="pref_persistNotify_title">Kontrol pemutaran tetap</string>
   <string name="pref_persistNotify_sum">Tetap tampilkan kontrol pada notifikasi dan layar kunci saat pemutaran dijeda</string>
-  <string name="pref_compact_notification_buttons_sum">Ubah tombol pemutaran ketika notifikasi diciutkan. Tombol main/jeda selalu disertakan.</string>
-  <string name="pref_compact_notification_buttons_dialog_title">Pilih maksimum dari %1$d item</string>
-  <string name="pref_compact_notification_buttons_dialog_error">Anda hanya dapat memilih maksimum dari %1$d item.</string>
   <string name="pref_enqueue_location_sum">Tambah episode ke: %1$s</string>
   <string name="enqueue_location_back">Kembali</string>
   <string name="enqueue_location_front">Depan</string>
@@ -425,7 +420,6 @@
   <string name="database_import_summary">Impor database AntennaPod dari perangkat lain</string>
   <string name="opml_import_label">Impor OPML</string>
   <string name="opml_add_podcast_label">Impor daftar podcast (OPML)</string>
-  <string name="opml_reader_error">Sebuah kesalahan terjadi ketika membaca dokumen OPML:</string>
   <string name="opml_import_error_no_file">Tidak ada berkas yang dipilih!</string>
   <string name="select_all_label">Pilih semua</string>
   <string name="deselect_all_label">Batal pilih semua</string>
@@ -586,21 +580,6 @@
   <string name="not_paused">Tidak dijeda</string>
   <string name="hide_played_episodes_label">Diputar</string>
   <string name="not_played">Tidak diputar</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">Judul (A \u2192 Z)</string>
-  <string name="sort_title_z_a">Judul (Z \u2192 A)</string>
-  <string name="sort_date_new_old">Tanggal (Baru \u2192 Lama)</string>
-  <string name="sort_date_old_new">Tanggal (Lama \u2192 Baru)</string>
-  <string name="sort_duration_short_long">Durasi (Pendek \u2192 Panjang)</string>
-  <string name="sort_duration_long_short">Durasi (Pannjang \u2192 Pendek)</string>
-  <string name="sort_filename_a_z">Nama Berkas (A \u2192 Z)</string>
-  <string name="sort_filename_z_a">Nama Berkas (Z \u2192 A)</string>
-  <string name="sort_a_z">A \u2192 Z</string>
-  <string name="sort_z_a">Z \u2192 A</string>
-  <string name="sort_new_old">Baru \u2192 Lama</string>
-  <string name="sort_old_new">Lama \u2192 Baru</string>
-  <string name="sort_short_long">Pendek \u2192 Panjang</string>
-  <string name="sort_long_short">Panjang \u2192 Pendek</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Juga masukkan posisi pemutaran</string>
   <string name="share_dialog_episode_website_label">Laman web episode</string>
@@ -611,7 +590,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Kontrol audio</string>
   <string name="playback_speed">Kecepatan putar</string>
-  <string name="audio_effects">Efek audio</string>
   <string name="player_switch_to_audio_only">Ganti ke audio saja</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tipe</string>
