@@ -523,7 +523,6 @@
   <string name="pref_expandNotify_sum">هذه عادة توسع الإشعار ليظهر أزرار التشغيل.</string>
   <string name="pref_persistNotify_title">تحكم التشغيل ظاهر دائما</string>
   <string name="pref_persistNotify_sum">أبقي تحكم التشغيل في الإشعارات وشاشة القفل عند التوقف</string>
-  <string name="pref_compact_notification_buttons_dialog_error_exact">يجب أن تحدد %1$d عنصرًا بالضبط</string>
   <string name="pref_full_notification_buttons_title">عيّن أزرار الإشعارات</string>
   <string name="pref_full_notification_buttons_sum">غير أزرار التحكم المتواجدة في إشعار التشغيل.</string>
   <string name="pref_enqueue_location_title">مكان الإضافة في لائحة الاستماع</string>
