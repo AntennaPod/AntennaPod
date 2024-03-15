@@ -357,27 +357,19 @@ public final class DBReader {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
-        Cursor mediaCursor = null;
-        Cursor itemCursor = null;
-        try {
-            mediaCursor = adapter.getCompletedMediaCursor(offset, limit);
+        try (final Cursor mediaCursor = adapter.getCompletedMediaCursor(offset, limit)) {
             String[] itemIds = new String[mediaCursor.getCount()];
             for (int i = 0; i < itemIds.length && mediaCursor.moveToPosition(i); i++) {
                 int index = mediaCursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM);
                 itemIds[i] = Long.toString(mediaCursor.getLong(index));
             }
-            itemCursor = adapter.getFeedItemCursor(itemIds);
-            List<FeedItem> items = extractItemlistFromCursor(adapter, itemCursor);
-            loadAdditionalFeedItemListData(items);
-            Collections.sort(items, new PlaybackCompletionDateComparator());
-            return items;
+            try (final Cursor itemCursor = adapter.getFeedItemCursor(itemIds)) {
+                List<FeedItem> items = extractItemlistFromCursor(adapter, itemCursor);
+                loadAdditionalFeedItemListData(items);
+                Collections.sort(items, new PlaybackCompletionDateComparator());
+                return items;
+            }
         } finally {
-            if (mediaCursor != null) {
-                mediaCursor.close();
-            }
-            if (itemCursor != null) {
-                itemCursor.close();
-            }
             adapter.close();
         }
     }

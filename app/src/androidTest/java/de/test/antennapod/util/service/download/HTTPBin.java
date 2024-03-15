@@ -276,9 +276,9 @@ public class HTTPBin extends NanoHTTPD {
         random.nextBytes(buffer);
 
         ByteArrayOutputStream compressed = new ByteArrayOutputStream(buffer.length);
-        GZIPOutputStream gzipOutputStream = new GZIPOutputStream(compressed);
-        gzipOutputStream.write(buffer);
-        gzipOutputStream.close();
+        try (final GZIPOutputStream gzipOutputStream = new GZIPOutputStream(compressed)) {
+            gzipOutputStream.write(buffer);
+        }
 
         InputStream inputStream = new ByteArrayInputStream(compressed.toByteArray());
         Response response = new Response(Response.Status.OK, MIME_PLAIN, inputStream);

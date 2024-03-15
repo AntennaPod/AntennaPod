@@ -348,21 +348,14 @@ public class GpodnetService implements ISyncService {
     private String executeRequest(@NonNull Request.Builder requestB) throws GpodnetServiceException {
         Request request = requestB.build();
         String responseString;
-        Response response;
-        ResponseBody body = null;
-        try {
-
-            response = httpClient.newCall(request).execute();
+        try (final Response response = httpClient.newCall(request).execute();
+                final ResponseBody body = response.body()
+        ) {
             checkStatusCode(response);
-            body = response.body();
             responseString = getStringFromResponseBody(body);
         } catch (IOException e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
-        } finally {
-            if (body != null) {
-                body.close();
-            }
         }
         return responseString;
     }

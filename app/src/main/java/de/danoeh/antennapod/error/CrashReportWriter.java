@@ -4,7 +4,6 @@ import android.os.Build;
 import android.util.Log;
 
 import de.danoeh.antennapod.BuildConfig;
-import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,9 +36,7 @@ public class CrashReportWriter implements Thread.UncaughtExceptionHandler {
 
     public static void write(Throwable exception) {
         File path = getFile();
-        PrintWriter out = null;
-        try {
-            out = new PrintWriter(path, "UTF-8");
+        try (final PrintWriter out = new PrintWriter(path, "UTF-8")) {
             out.println("## Crash info");
             out.println("Time: " + new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault()).format(new Date()));
             out.println("AntennaPod version: " + BuildConfig.VERSION_NAME);
@@ -50,8 +47,6 @@ public class CrashReportWriter implements Thread.UncaughtExceptionHandler {
             out.println("```");
         } catch (IOException e) {
             Log.e(TAG, Log.getStackTraceString(e));
-        } finally {
-            IOUtils.closeQuietly(out);
         }
     }
 

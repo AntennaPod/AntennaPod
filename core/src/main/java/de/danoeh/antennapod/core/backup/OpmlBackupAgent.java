@@ -26,6 +26,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.DigestInputStream;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
@@ -73,10 +74,9 @@ public class OpmlBackupAgent extends BackupAgentHelper {
 
             try {
                 digester = MessageDigest.getInstance("MD5");
-                writer = new OutputStreamWriter(new DigestOutputStream(byteStream, digester),
-                        Charset.forName("UTF-8"));
+                writer = new OutputStreamWriter(new DigestOutputStream(byteStream, digester), StandardCharsets.UTF_8);
             } catch (NoSuchAlgorithmException e) {
-                writer = new OutputStreamWriter(byteStream, Charset.forName("UTF-8"));
+                writer = new OutputStreamWriter(byteStream, StandardCharsets.UTF_8);
             }
 
             try {
@@ -174,12 +174,10 @@ public class OpmlBackupAgent extends BackupAgentHelper {
                 return;
             }
 
-            try {
-                FileOutputStream outState = new FileOutputStream(newState.getFileDescriptor());
+            try (final FileOutputStream outState = new FileOutputStream(newState.getFileDescriptor())) {
                 outState.write(checksum.length);
                 outState.write(checksum);
                 outState.flush();
-                outState.close();
             } catch (IOException e) {
                 Log.e(TAG, "Failed to write new state description", e);
             }
