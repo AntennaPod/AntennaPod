@@ -9,6 +9,11 @@
                 search:keywords="@string/import_export_search_keywords"
                 android:title="@string/database_export_label"
                 android:summary="@string/database_export_summary"/>
+        <SwitchPreferenceCompat
+                android:key="prefAutomaticDatabaseExport"
+                android:title="@string/automatic_database_export_label"
+                android:summary="@string/automatic_database_export_summary"
+                android:defaultValue="false" />
         <Preference
                 android:key="prefDatabaseImport"
                 search:keywords="@string/import_export_search_keywords"

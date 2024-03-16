@@ -59,6 +59,7 @@ import de.danoeh.antennapod.fragment.TransitionEffect;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
+import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
@@ -167,6 +168,7 @@ public class MainActivity extends CastEnabledActivity {
 
         FeedUpdateManager.restartUpdateAlarm(this, false);
         SynchronizationQueueSink.syncNowIfNotSyncedRecently();
+        AutomaticDatabaseExportWorker.enqueueIfNeeded(this, false);
 
         WorkManager.getInstance(this)
                 .getWorkInfosByTagLiveData(FeedUpdateManager.WORK_TAG_FEED_UPDATE)
