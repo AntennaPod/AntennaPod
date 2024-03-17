@@ -13,5 +13,7 @@ android {
 }
 
 dependencies {
+    implementation project(":ui:common")
+
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
 }

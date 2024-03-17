@@ -17,7 +17,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.elevation.SurfaceColors;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.Chapter;
-import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.model.playback.Playable;

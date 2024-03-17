@@ -20,7 +20,7 @@ import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
 
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
+import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.databinding.SettingsActivityBinding;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.fragment.preferences.AutoDownloadPreferencesFragment;
