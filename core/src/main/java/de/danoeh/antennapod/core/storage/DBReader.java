@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.core.storage;
 
 import android.database.Cursor;
-import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -582,42 +581,6 @@ public final class DBReader {
             }
             return null;
         }
-    }
-
-    /**
-     * Returns credentials based on image URL
-     *
-     * @param imageUrl The URL of the image
-     * @return Credentials in format "Username:Password", empty String if no authorization given
-     */
-    public static String getImageAuthentication(final String imageUrl) {
-        Log.d(TAG, "getImageAuthentication() called with: " + "imageUrl = [" + imageUrl + "]");
-
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        try {
-            return getImageAuthentication(imageUrl, adapter);
-        } finally {
-            adapter.close();
-        }
-    }
-
-    private static String getImageAuthentication(final String imageUrl, PodDBAdapter adapter) {
-        String credentials;
-        try (Cursor cursor = adapter.getImageAuthenticationCursor(imageUrl)) {
-            if (cursor.moveToFirst()) {
-                String username = cursor.getString(0);
-                String password = cursor.getString(1);
-                if (!TextUtils.isEmpty(username) && password != null) {
-                    credentials = username + ":" + password;
-                } else {
-                    credentials = "";
-                }
-            } else {
-                credentials = "";
-            }
-        }
-        return credentials;
     }
 
     /**

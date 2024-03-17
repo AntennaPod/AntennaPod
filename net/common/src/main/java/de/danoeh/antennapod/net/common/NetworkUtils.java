@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util;
+package de.danoeh.antennapod.net.common;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

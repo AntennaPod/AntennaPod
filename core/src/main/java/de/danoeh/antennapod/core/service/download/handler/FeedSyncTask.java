@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
+import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 
 public class FeedSyncTask {

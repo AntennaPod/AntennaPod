@@ -30,7 +30,6 @@ public class PodcastApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        ClientConfig.USER_AGENT = "AntennaPod/" + BuildConfig.VERSION_NAME;
         ClientConfig.applicationCallbacks = new ApplicationCallbacksImpl();
 
         Thread.setDefaultUncaughtExceptionHandler(new CrashReportWriter());

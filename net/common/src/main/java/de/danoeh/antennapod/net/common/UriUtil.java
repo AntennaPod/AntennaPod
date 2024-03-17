@@ -1,28 +1,22 @@
-package de.danoeh.antennapod.core.util;
-
-import android.util.Log;
+package de.danoeh.antennapod.net.common;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import de.danoeh.antennapod.core.BuildConfig;
-
 /**
  * Utility methods for dealing with URL encoding.
  */
-public class URIUtil {
-    private static final String TAG = "URIUtil";
-
-    private URIUtil() {}
+public class UriUtil {
+    private UriUtil() {}
 
     public static URI getURIFromRequestUrl(String source) {
         // try without encoding the URI
         try {
             return new URI(source);
-        } catch (URISyntaxException e) {
-            if (BuildConfig.DEBUG) Log.d(TAG, "Source is not encoded, encoding now");
+        } catch (URISyntaxException ignore) {
+            System.out.println("Source is not encoded, encoding now");
         }
         try {
             URL url = new URL(source);

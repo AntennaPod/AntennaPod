@@ -5,10 +5,5 @@ package de.danoeh.antennapod.core;
  * Apps using the core module of AntennaPod should register implementations of all interfaces here.
  */
 public class ClientConfig {
-    /**
-     * Should be used when setting User-Agent header for HTTP-requests.
-     */
-    public static String USER_AGENT;
-
     public static ApplicationCallbacks applicationCallbacks;
 }

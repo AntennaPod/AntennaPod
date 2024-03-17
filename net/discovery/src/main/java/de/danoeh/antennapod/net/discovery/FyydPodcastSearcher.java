@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.net.discovery;
 
-import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
+import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.mfietz.fyydlin.FyydClient;
 import de.mfietz.fyydlin.FyydResponse;
 import de.mfietz.fyydlin.SearchHit;
