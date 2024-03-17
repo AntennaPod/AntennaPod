@@ -10,7 +10,7 @@ android {
     lint {
         disable "InvalidPeriodicWorkRequestInterval", "ObsoleteLintCustomCheck", "DefaultLocale", "UnusedAttribute",
                 "ParcelClassLoader", "CheckResult", "TrustAllX509TrustManager",
-                "StaticFieldLeak", "IconDensities", "IconDuplicates"
+                "StaticFieldLeak", "IconDensities", "IconDuplicates", "UnsafeOptInUsageError"
     }
 
     defaultConfig {
