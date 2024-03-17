@@ -1,15 +1,18 @@
 package de.danoeh.antennapod.core.sync;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.util.Pair;
 import androidx.work.BackoffPolicy;
 import androidx.work.Constraints;
@@ -329,7 +332,10 @@ public class SyncService extends Worker {
                 .build();
         NotificationManager nm = (NotificationManager) getApplicationContext()
                 .getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.notify(R.id.notification_gpodnet_sync_error, notification);
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS)
+                == PackageManager.PERMISSION_GRANTED) {
+            nm.notify(R.id.notification_gpodnet_sync_error, notification);
+        }
     }
 
     private static OneTimeWorkRequest.Builder getWorkRequest() {

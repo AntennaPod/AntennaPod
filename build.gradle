@@ -12,7 +12,7 @@ project.ext {
     // AndroidX
     annotationVersion = "1.4.0"
     appcompatVersion = "1.5.1"
-    coreVersion = "1.8.0"
+    coreVersion = "1.9.0"
     fragmentVersion = "1.5.5"
     mediaVersion = "1.6.0"
     media3Version = "1.1.1"

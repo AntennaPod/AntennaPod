@@ -1,12 +1,15 @@
 package de.danoeh.antennapod.core.service;
 
+import android.Manifest;
 import android.app.Notification;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.work.ForegroundInfo;
 import androidx.work.WorkManager;
 import androidx.work.Worker;
@@ -135,7 +138,10 @@ public class FeedUpdateWorker extends Worker {
             if (isStopped()) {
                 return;
             }
-            notificationManager.notify(R.id.notification_updating_feeds, createNotification(toUpdate));
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS)
+                    == PackageManager.PERMISSION_GRANTED) {
+                notificationManager.notify(R.id.notification_updating_feeds, createNotification(toUpdate));
+            }
             Feed feed = toUpdate.get(0);
             try {
                 if (feed.isLocalFeed()) {

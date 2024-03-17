@@ -1,14 +1,17 @@
 package de.danoeh.antennapod.core.service.download;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.work.Data;
 import androidx.work.ForegroundInfo;
 import androidx.work.Worker;
@@ -77,7 +80,10 @@ public class EpisodeDownloadWorker extends Worker {
                                 .get();
                         NotificationManager nm = (NotificationManager) getApplicationContext()
                                 .getSystemService(Context.NOTIFICATION_SERVICE);
-                        nm.notify(R.id.notification_downloading, generateProgressNotification());
+                        if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                                Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                            nm.notify(R.id.notification_downloading, generateProgressNotification());
+                        }
                         Thread.sleep(1000);
                     } catch (InterruptedException | ExecutionException e) {
                         return;
@@ -252,7 +258,10 @@ public class EpisodeDownloadWorker extends Worker {
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         NotificationManager nm = (NotificationManager) getApplicationContext()
                 .getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.notify(R.id.notification_download_report, builder.build());
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS)
+                == PackageManager.PERMISSION_GRANTED) {
+            nm.notify(R.id.notification_download_report, builder.build());
+        }
     }
 
     private Notification generateProgressNotification() {
