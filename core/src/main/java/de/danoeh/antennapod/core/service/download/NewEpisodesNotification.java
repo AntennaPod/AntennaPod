@@ -19,9 +19,9 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedCounter;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 
+import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import java.util.Map;
 
 public class NewEpisodesNotification {

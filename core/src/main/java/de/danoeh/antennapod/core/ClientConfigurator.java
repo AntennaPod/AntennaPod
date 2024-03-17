@@ -12,10 +12,10 @@ import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.download.NetworkConnectionChangeHandler;
-import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.net.ssl.SslProviderInstaller;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 
+import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import java.io.File;
 
 public class ClientConfigurator {

@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util.gui;
+package de.danoeh.antennapod.ui.notifications;
 
 import android.content.Context;
 
@@ -9,7 +9,6 @@ import androidx.core.app.NotificationManagerCompat;
 import java.util.Arrays;
 import java.util.List;
 
-import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public class NotificationUtils {
