@@ -1,11 +1,9 @@
-package de.danoeh.antennapod.core.util;
+package de.danoeh.antennapod.ui.common;
 
 import android.content.Context;
 
 import android.content.res.Resources;
 import java.util.Locale;
-
-import de.danoeh.antennapod.core.R;
 
 /** Provides methods for converting various units. */
 public final class Converter {

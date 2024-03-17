@@ -21,7 +21,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 
-import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
+import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.error.CrashReportWriter;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;

@@ -17,6 +17,7 @@ import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 
+import de.danoeh.antennapod.ui.common.Converter;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
@@ -24,7 +25,6 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.receiver.PlayerWidget;
-import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.model.playback.Playable;

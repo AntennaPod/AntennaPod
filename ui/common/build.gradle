@@ -8,10 +8,12 @@ android {
 }
 
 dependencies {
+    implementation project(":storage:preferences")
     implementation project(":ui:i18n")
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation "androidx.viewpager2:viewpager2:$viewPager2Version"
     implementation "com.google.android.material:material:$googleMaterialVersion"
+    implementation "androidx.core:core-splashscreen:1.0.0"
 }

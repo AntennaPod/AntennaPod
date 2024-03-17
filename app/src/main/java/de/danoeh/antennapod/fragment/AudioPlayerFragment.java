@@ -38,7 +38,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.util.ChapterUtils;
-import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.MediaPlayerErrorDialog;

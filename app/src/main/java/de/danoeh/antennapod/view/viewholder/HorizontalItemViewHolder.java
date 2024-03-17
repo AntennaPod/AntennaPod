@@ -14,7 +14,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
 import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
-import de.danoeh.antennapod.core.util.DateFormatter;
+import de.danoeh.antennapod.ui.common.DateFormatter;
 import de.danoeh.antennapod.core.util.PlaybackStatus;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;

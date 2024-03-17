@@ -1,9 +1,8 @@
-package de.danoeh.antennapod.core.preferences;
+package de.danoeh.antennapod.ui.common;
 
 import android.content.Context;
 import android.content.res.Configuration;
 import androidx.annotation.StyleRes;
-import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public abstract class ThemeSwitcher {

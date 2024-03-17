@@ -35,7 +35,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
+import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
