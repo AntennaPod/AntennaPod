@@ -440,7 +440,8 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                 NavDrawerData.TagDrawerItem folder = ((NavDrawerData.TagDrawerItem) item);
                 folder.setOpen(openFolders.contains(folder.getTitle()));
                 if (folder.isOpen()) {
-                    flatItems.addAll(makeFlatDrawerData(((NavDrawerData.TagDrawerItem) item).children, layer + 1));
+                    flatItems.addAll(makeFlatDrawerData(
+                            ((NavDrawerData.TagDrawerItem) item).getChildren(), layer + 1));
                 }
             }
         }

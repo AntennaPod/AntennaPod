@@ -938,7 +938,7 @@ public final class DBReader {
                     folders.put(tag, folder);
                 }
                 drawerItem.id |= folder.id;
-                folder.children.add(drawerItem);
+                folder.getChildren().add(drawerItem);
             }
         }
         List<NavDrawerData.TagDrawerItem> foldersSorted = new ArrayList<>(folders.values());

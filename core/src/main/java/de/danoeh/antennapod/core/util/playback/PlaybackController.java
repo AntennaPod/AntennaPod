@@ -183,8 +183,8 @@ public abstract class PlaybackController {
             Log.d(TAG, "Received statusUpdate Intent.");
             if (playbackService != null) {
                 PlaybackServiceMediaPlayer.PSMPInfo info = playbackService.getPSMPInfo();
-                status = info.playerStatus;
-                media = info.playable;
+                status = info.getPlayerStatus();
+                media = info.getPlayable();
                 handleStatus();
             } else {
                 Log.w(TAG, "Couldn't receive status update: playbackService was null");
@@ -208,18 +208,15 @@ public abstract class PlaybackController {
                 Log.d(TAG, "Bad arguments. Won't handle intent");
                 return;
             }
-            switch (type) {
-                case PlaybackServiceInterface.NOTIFICATION_TYPE_RELOAD:
-                    if (playbackService == null && PlaybackService.isRunning) {
-                        bindToService();
-                        return;
-                    }
-                    mediaInfoLoaded = false;
-                    queryService();
-                    break;
-                case PlaybackServiceInterface.NOTIFICATION_TYPE_PLAYBACK_END:
-                    onPlaybackEnd();
-                    break;
+            if (type == PlaybackServiceInterface.NOTIFICATION_TYPE_RELOAD) {
+                if (playbackService == null && PlaybackService.isRunning) {
+                    bindToService();
+                    return;
+                }
+                mediaInfoLoaded = false;
+                queryService();
+            } else if (type == PlaybackServiceInterface.NOTIFICATION_TYPE_PLAYBACK_END) {
+                onPlaybackEnd();
             }
         }
 
@@ -276,8 +273,8 @@ public abstract class PlaybackController {
         Log.d(TAG, "Querying service info");
         if (playbackService != null) {
             PlaybackServiceMediaPlayer.PSMPInfo info = playbackService.getPSMPInfo();
-            status = info.playerStatus;
-            media = info.playable;
+            status = info.getPlayerStatus();
+            media = info.getPlayable();
 
             // make sure that new media is loaded if it's available
             mediaInfoLoaded = false;

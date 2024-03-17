@@ -638,7 +638,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private boolean handleKeycode(int keycode, boolean notificationButton) {
         Log.d(TAG, "Handling keycode: " + keycode);
         final PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
-        final PlayerStatus status = info.playerStatus;
+        final PlayerStatus status = info.getPlayerStatus();
         switch (keycode) {
             case KeyEvent.KEYCODE_HEADSETHOOK:
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
@@ -716,7 +716,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 return true;
             default:
                 Log.d(TAG, "Unhandled key code: " + keycode);
-                if (info.playable != null && info.playerStatus == PlayerStatus.PLAYING) {   // only notify the user about an unknown key event if it is actually doing something
+                // only notify the user about an unknown key event if it is actually doing something
+                if (info.getPlayable() != null && info.getPlayerStatus() == PlayerStatus.PLAYING) {
                     String message = String.format(getResources().getString(R.string.unknown_media_key), keycode);
                     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
                 }
@@ -805,24 +806,24 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 currentMediaType = MediaType.UNKNOWN;
             }
 
-            updateMediaSession(newInfo.playerStatus);
-            switch (newInfo.playerStatus) {
+            updateMediaSession(newInfo.getPlayerStatus());
+            switch (newInfo.getPlayerStatus()) {
                 case INITIALIZED:
-                    if (mediaPlayer.getPSMPInfo().playable != null) {
-                        PlaybackPreferences.writeMediaPlaying(mediaPlayer.getPSMPInfo().playable,
-                                mediaPlayer.getPSMPInfo().playerStatus);
+                    if (mediaPlayer.getPSMPInfo().getPlayable() != null) {
+                        PlaybackPreferences.writeMediaPlaying(mediaPlayer.getPSMPInfo().getPlayable(),
+                                mediaPlayer.getPSMPInfo().getPlayerStatus());
                     }
-                    updateNotificationAndMediaSession(newInfo.playable);
+                    updateNotificationAndMediaSession(newInfo.getPlayable());
                     break;
                 case PREPARED:
-                    if (mediaPlayer.getPSMPInfo().playable != null) {
-                        PlaybackPreferences.writeMediaPlaying(mediaPlayer.getPSMPInfo().playable,
-                                mediaPlayer.getPSMPInfo().playerStatus);
+                    if (mediaPlayer.getPSMPInfo().getPlayable() != null) {
+                        PlaybackPreferences.writeMediaPlaying(mediaPlayer.getPSMPInfo().getPlayable(),
+                                mediaPlayer.getPSMPInfo().getPlayerStatus());
                     }
-                    taskManager.startChapterLoader(newInfo.playable);
+                    taskManager.startChapterLoader(newInfo.getPlayable());
                     break;
                 case PAUSED:
-                    updateNotificationAndMediaSession(newInfo.playable);
+                    updateNotificationAndMediaSession(newInfo.getPlayable());
                     if (!isCasting) {
                         stateManager.stopForeground(!UserPreferences.isPersistNotify());
                     }
@@ -837,7 +838,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     PlaybackPreferences.writePlayerStatus(mediaPlayer.getPlayerStatus());
                     saveCurrentPosition(true, null, Playable.INVALID_TIME);
                     recreateMediaSessionIfNeeded();
-                    updateNotificationAndMediaSession(newInfo.playable);
+                    updateNotificationAndMediaSession(newInfo.getPlayable());
                     setupPositionObserver();
                     stateManager.validStartCommandWasReceived();
                     stateManager.startForeground(R.id.notification_playing, notificationBuilder.build());
@@ -852,7 +853,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         autoEnableByTime = SleepTimerPreferences.isInTimeRange(fromSetting, toSetting, currentHour);
                     }
 
-                    if (newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING
+                    if (newInfo.getOldPlayerStatus() != null && newInfo.getOldPlayerStatus() != PlayerStatus.SEEKING
                             && SleepTimerPreferences.autoEnable() && autoEnableByTime && !sleepTimerActive()) {
                         setSleepTimer(SleepTimerPreferences.timerMillis());
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label),
@@ -1444,19 +1445,19 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private void bluetoothNotifyChange(PlaybackServiceMediaPlayer.PSMPInfo info, String whatChanged) {
         boolean isPlaying = false;
 
-        if (info.playerStatus == PlayerStatus.PLAYING) {
+        if (info.getPlayerStatus() == PlayerStatus.PLAYING) {
             isPlaying = true;
         }
 
-        if (info.playable != null) {
+        if (info.getPlayable() != null) {
             Intent i = new Intent(whatChanged);
             i.putExtra("id", 1L);
             i.putExtra("artist", "");
-            i.putExtra("album", info.playable.getFeedTitle());
-            i.putExtra("track", info.playable.getEpisodeTitle());
+            i.putExtra("album", info.getPlayable().getFeedTitle());
+            i.putExtra("track", info.getPlayable().getEpisodeTitle());
             i.putExtra("playing", isPlaying);
-            i.putExtra("duration", (long) info.playable.getDuration());
-            i.putExtra("position", (long) info.playable.getPosition());
+            i.putExtra("duration", (long) info.getPlayable().getDuration());
+            i.putExtra("position", (long) info.getPlayable().getPosition());
             sendBroadcast(i);
         }
     }

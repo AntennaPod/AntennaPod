@@ -31,9 +31,9 @@ public final class Converter {
 
     private static int[] millisecondsToHms(long duration) {
         int h = (int) (duration / HOURS_MIL);
-        long rest = duration - h * HOURS_MIL;
+        long rest = duration - (long) h * HOURS_MIL;
         int m = (int) (rest / MINUTES_MIL);
-        rest -= m * MINUTES_MIL;
+        rest -= (long) m * MINUTES_MIL;
         int s = (int) (rest / SECONDS_MIL);
         return new int[] {h, m, s};
     }
@@ -97,7 +97,7 @@ public final class Converter {
             result += days.replace(" ", "\u00A0") + " ";
             h -= d * 24;
         }
-        int rest = (int) (duration - (d * 24 + h) * HOURS_MIL);
+        int rest = (int) (duration - ((long) d * 24 + h) * HOURS_MIL);
         int m = rest / MINUTES_MIL;
         if (h > 0) {
             String hours = resources.getQuantityString(R.plurals.time_hours_quantified, h, h);

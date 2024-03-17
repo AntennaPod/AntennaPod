@@ -66,7 +66,7 @@ public class RenameItemDialog {
     private void renameTag(String title) {
         if (NavDrawerData.DrawerItem.Type.TAG == drawerItem.type) {
             List<FeedPreferences> feedPreferences = new ArrayList<>();
-            for (NavDrawerData.DrawerItem item : ((NavDrawerData.TagDrawerItem) drawerItem).children) {
+            for (NavDrawerData.DrawerItem item : ((NavDrawerData.TagDrawerItem) drawerItem).getChildren()) {
                 feedPreferences.add(((NavDrawerData.FeedDrawerItem) item).feed.getPreferences());
             }
 

@@ -490,8 +490,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
 
             alternateUrlsList.addAll(alternateFeedUrls.keySet());
-            for (String url : alternateFeedUrls.keySet()) {
-                alternateUrlsTitleList.add(alternateFeedUrls.get(url));
+            for (final Map.Entry<String, String> url : alternateFeedUrls.entrySet()) {
+                alternateUrlsTitleList.add(url.getValue());
             }
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,

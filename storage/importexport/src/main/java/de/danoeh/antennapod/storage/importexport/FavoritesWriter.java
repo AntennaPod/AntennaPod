@@ -42,8 +42,8 @@ public class FavoritesWriter {
 
         writer.append(templateParts[0]);
 
-        for (Long feedId : favoriteByFeed.keySet()) {
-            List<FeedItem> favorites = favoriteByFeed.get(feedId);
+        for (final Map.Entry<Long, List<FeedItem>> feedId : favoriteByFeed.entrySet()) {
+            final List<FeedItem> favorites = feedId.getValue();
             writer.append("<li><div>\n");
             writeFeed(writer, favorites.get(0).getFeed(), feedTemplate);
 

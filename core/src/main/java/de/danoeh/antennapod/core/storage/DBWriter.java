@@ -536,39 +536,35 @@ public class DBWriter {
         adapter.open();
         final List<FeedItem> queue = DBReader.getQueue(adapter);
 
-        if (queue != null) {
-            boolean queueModified = false;
-            List<QueueEvent> events = new ArrayList<>();
-            List<FeedItem> updatedItems = new ArrayList<>();
-            for (long itemId : itemIds) {
-                int position = indexInItemList(queue, itemId);
-                if (position >= 0) {
-                    final FeedItem item = DBReader.getFeedItem(itemId);
-                    if (item == null) {
-                        Log.e(TAG, "removeQueueItem - item in queue but somehow cannot be loaded." +
-                                " Item ignored. It should never happen. id:" + itemId);
-                        continue;
-                    }
-                    queue.remove(position);
-                    item.removeTag(FeedItem.TAG_QUEUE);
-                    events.add(QueueEvent.removed(item));
-                    updatedItems.add(item);
-                    queueModified = true;
-                } else {
-                    Log.v(TAG, "removeQueueItem - item  not in queue:" + itemId);
+        boolean queueModified = false;
+        List<QueueEvent> events = new ArrayList<>();
+        List<FeedItem> updatedItems = new ArrayList<>();
+        for (long itemId : itemIds) {
+            int position = indexInItemList(queue, itemId);
+            if (position >= 0) {
+                final FeedItem item = DBReader.getFeedItem(itemId);
+                if (item == null) {
+                    Log.e(TAG, "removeQueueItem - item in queue but somehow cannot be loaded."
+                            + " Item ignored. It should never happen. id:" + itemId);
+                    continue;
                 }
-            }
-            if (queueModified) {
-                adapter.setQueue(queue);
-                for (QueueEvent event : events) {
-                    EventBus.getDefault().post(event);
-                }
-                EventBus.getDefault().post(FeedItemEvent.updated(updatedItems));
+                queue.remove(position);
+                item.removeTag(FeedItem.TAG_QUEUE);
+                events.add(QueueEvent.removed(item));
+                updatedItems.add(item);
+                queueModified = true;
             } else {
-                Log.w(TAG, "Queue was not modified by call to removeQueueItem");
+                Log.v(TAG, "removeQueueItem - item  not in queue:" + itemId);
             }
+        }
+        if (queueModified) {
+            adapter.setQueue(queue);
+            for (QueueEvent event : events) {
+                EventBus.getDefault().post(event);
+            }
+            EventBus.getDefault().post(FeedItemEvent.updated(updatedItems));
         } else {
-            Log.e(TAG, "removeQueueItem: Could not load queue");
+            Log.w(TAG, "Queue was not modified by call to removeQueueItem");
         }
         adapter.close();
         if (performAutoDownload) {
@@ -675,18 +671,14 @@ public class DBWriter {
         adapter.open();
         final List<FeedItem> queue = DBReader.getQueue(adapter);
 
-        if (queue != null) {
-            if (from >= 0 && from < queue.size() && to >= 0 && to < queue.size()) {
-                final FeedItem item = queue.remove(from);
-                queue.add(to, item);
+        if (from >= 0 && from < queue.size() && to >= 0 && to < queue.size()) {
+            final FeedItem item = queue.remove(from);
+            queue.add(to, item);
 
-                adapter.setQueue(queue);
-                if (broadcastUpdate) {
-                    EventBus.getDefault().post(QueueEvent.moved(item, to));
-                }
+            adapter.setQueue(queue);
+            if (broadcastUpdate) {
+                EventBus.getDefault().post(QueueEvent.moved(item, to));
             }
-        } else {
-            Log.e(TAG, "moveQueueItemHelper: Could not load queue");
         }
         adapter.close();
     }
@@ -700,7 +692,7 @@ public class DBWriter {
         });
     }
 
-    /*
+    /**
      * Sets the 'read'-attribute of all specified FeedItems
      *
      * @param played  New value of the 'read'-attribute, one of FeedItem.PLAYED, FeedItem.NEW,
@@ -711,7 +703,7 @@ public class DBWriter {
         return markItemPlayed(played, true, itemIds);
     }
 
-    /*
+    /**
      * Sets the 'read'-attribute of all specified FeedItems
      *
      * @param played  New value of the 'read'-attribute, one of FeedItem.PLAYED, FeedItem.NEW,
@@ -961,14 +953,10 @@ public class DBWriter {
             adapter.open();
             final List<FeedItem> queue = DBReader.getQueue(adapter);
 
-            if (queue != null) {
-                permutor.reorder(queue);
-                adapter.setQueue(queue);
-                if (broadcastUpdate) {
-                    EventBus.getDefault().post(QueueEvent.sorted(queue));
-                }
-            } else {
-                Log.e(TAG, "reorderQueue: Could not load queue");
+            permutor.reorder(queue);
+            adapter.setQueue(queue);
+            if (broadcastUpdate) {
+                EventBus.getDefault().post(QueueEvent.sorted(queue));
             }
             adapter.close();
         });

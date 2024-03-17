@@ -282,7 +282,7 @@ public class SubscriptionFragment extends Fragment
                     for (NavDrawerData.DrawerItem item : items) {
                         if (item.type == NavDrawerData.DrawerItem.Type.TAG
                                 && item.getTitle().equals(displayedFolder)) {
-                            return ((NavDrawerData.TagDrawerItem) item).children;
+                            return ((NavDrawerData.TagDrawerItem) item).getChildren();
                         }
                     }
                     return items;

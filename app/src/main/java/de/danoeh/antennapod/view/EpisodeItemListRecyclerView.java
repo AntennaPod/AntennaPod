@@ -5,12 +5,13 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.view.View;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
-import io.reactivex.annotations.Nullable;
 
 public class EpisodeItemListRecyclerView extends RecyclerView {
     private static final String TAG = "EpisodeItemListRecyclerView";
@@ -19,17 +20,17 @@ public class EpisodeItemListRecyclerView extends RecyclerView {
 
     private LinearLayoutManager layoutManager;
 
-    public EpisodeItemListRecyclerView(Context context) {
+    public EpisodeItemListRecyclerView(@NonNull Context context) {
         super(new ContextThemeWrapper(context, R.style.FastScrollRecyclerView));
         setup();
     }
 
-    public EpisodeItemListRecyclerView(Context context, @Nullable AttributeSet attrs) {
+    public EpisodeItemListRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(new ContextThemeWrapper(context, R.style.FastScrollRecyclerView), attrs);
         setup();
     }
 
-    public EpisodeItemListRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public EpisodeItemListRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(new ContextThemeWrapper(context, R.style.FastScrollRecyclerView), attrs, defStyleAttr);
         setup();
     }

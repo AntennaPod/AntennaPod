@@ -71,7 +71,7 @@ public class DownloadsPreferencesFragment extends PreferenceFragmentCompat
             return true;
         });
         findPreference(PREF_AUTO_DELETE_LOCAL).setOnPreferenceChangeListener((preference, newValue) -> {
-            if (blockAutoDeleteLocal && newValue == Boolean.TRUE) {
+            if (blockAutoDeleteLocal && newValue.equals(Boolean.TRUE)) {
                 showAutoDeleteEnableDialog();
                 return false;
             } else {

@@ -423,17 +423,14 @@ public class MainActivity extends CastEnabledActivity {
         Validate.notNull(fragment);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        switch (transition) {
-            case FADE:
-                transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-                break;
-            case SLIDE:
-                transaction.setCustomAnimations(
-                        R.anim.slide_right_in,
-                        R.anim.slide_left_out,
-                        R.anim.slide_left_in,
-                        R.anim.slide_right_out);
-                break;
+        if (transition == TransitionEffect.FADE) {
+            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        } else if (transition == TransitionEffect.SLIDE) {
+            transaction.setCustomAnimations(
+                    R.anim.slide_right_in,
+                    R.anim.slide_left_out,
+                    R.anim.slide_left_in,
+                    R.anim.slide_right_out);
         }
 
         transaction

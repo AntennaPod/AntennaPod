@@ -15,6 +15,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class TranslatorsFragment extends ListFragment {
@@ -28,14 +29,15 @@ public class TranslatorsFragment extends ListFragment {
 
         translatorsLoader = Single.create((SingleOnSubscribe<ArrayList<SimpleIconListAdapter.ListItem>>) emitter -> {
             ArrayList<SimpleIconListAdapter.ListItem> translators = new ArrayList<>();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    getContext().getAssets().open("translators.csv"), "UTF-8"));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] info = line.split(";");
-                translators.add(new SimpleIconListAdapter.ListItem(info[0], info[1], null));
+            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    getContext().getAssets().open("translators.csv"), StandardCharsets.UTF_8))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] info = line.split(";");
+                    translators.add(new SimpleIconListAdapter.ListItem(info[0], info[1], null));
+                }
+                emitter.onSuccess(translators);
             }
-            emitter.onSuccess(translators);
         })
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())

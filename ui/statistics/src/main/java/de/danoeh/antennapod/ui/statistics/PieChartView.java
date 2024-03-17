@@ -11,23 +11,23 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
-import io.reactivex.annotations.Nullable;
 
 public class PieChartView extends AppCompatImageView {
     private PieChartDrawable drawable;
 
-    public PieChartView(Context context) {
+    public PieChartView(@NonNull Context context) {
         super(context);
         setup();
     }
 
-    public PieChartView(Context context, @Nullable AttributeSet attrs) {
+    public PieChartView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         setup();
     }
 
-    public PieChartView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public PieChartView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setup();
     }

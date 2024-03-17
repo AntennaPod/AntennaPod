@@ -174,12 +174,10 @@ public class OpmlBackupAgent extends BackupAgentHelper {
                 return;
             }
 
-            try {
-                FileOutputStream outState = new FileOutputStream(newState.getFileDescriptor());
+            try (final FileOutputStream outState = new FileOutputStream(newState.getFileDescriptor())) {
                 outState.write(checksum.length);
                 outState.write(checksum);
                 outState.flush();
-                outState.close();
             } catch (IOException e) {
                 Log.e(TAG, "Failed to write new state description", e);
             }
