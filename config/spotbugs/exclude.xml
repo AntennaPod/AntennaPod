@@ -37,6 +37,10 @@
         <Class name="de.danoeh.antennapod.fragment.NavDrawerFragment"/>
     </Match>
     <Match>
+        <Bug pattern="MS_SHOULD_BE_FINAL"/>
+        <Class name="de.danoeh.antennapod.net.common.UserAgentInterceptor"/>
+    </Match>
+    <Match>
         <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
         <Class name="de.danoeh.antennapod.activity.MainActivity"/>
     </Match>

@@ -3,6 +3,7 @@ package de.danoeh.antennapod.net.download.serviceinterface;
 import android.os.Bundle;
 import android.os.Parcel;
 
+import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 @RunWith(RobolectricTestRunner.class)
-public class DownloadRequestTest {
+public class DownloadRequestBuilderTest {
 
     @Test
     public void parcelInArrayListTest_WithAuth() {
@@ -40,15 +41,15 @@ public class DownloadRequestTest {
         String username = "testUser";
         String password = "testPassword";
         FeedMedia item = createFeedItem(1);
-        DownloadRequest request1 = new DownloadRequest.Builder(destStr, item)
+        DownloadRequest request1 = new DownloadRequestBuilder(destStr, item)
                 .withAuthentication(username, password)
                 .build();
 
-        DownloadRequest request2 = new DownloadRequest.Builder(destStr, item)
+        DownloadRequest request2 = new DownloadRequestBuilder(destStr, item)
                 .withAuthentication(username, password)
                 .build();
 
-        DownloadRequest request3 = new DownloadRequest.Builder(destStr, item)
+        DownloadRequest request3 = new DownloadRequestBuilder(destStr, item)
                 .withAuthentication("diffUsername", "diffPassword")
                 .build();
 
@@ -65,12 +66,12 @@ public class DownloadRequestTest {
         { // test DownloadRequests to parcel
             String destStr = "file://location/media.mp3";
             FeedMedia item1 = createFeedItem(1);
-            DownloadRequest request1 = new DownloadRequest.Builder(destStr, item1)
+            DownloadRequest request1 = new DownloadRequestBuilder(destStr, item1)
                     .withAuthentication(username1, password1)
                     .build();
 
             FeedMedia item2 = createFeedItem(2);
-            DownloadRequest request2 = new DownloadRequest.Builder(destStr, item2)
+            DownloadRequest request2 = new DownloadRequestBuilder(destStr, item2)
                     .withAuthentication(username2, password2)
                     .build();
 

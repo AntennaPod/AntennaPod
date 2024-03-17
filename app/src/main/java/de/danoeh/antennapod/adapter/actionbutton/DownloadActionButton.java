@@ -13,7 +13,7 @@ import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfa
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UsageStatistics;
-import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.net.common.NetworkUtils;
 
 public class DownloadActionButton extends ItemActionButton {
 

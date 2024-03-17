@@ -42,13 +42,13 @@ import androidx.media3.extractor.DefaultExtractorsFactory;
 import androidx.media3.extractor.mp3.Mp3Extractor;
 import androidx.media3.ui.DefaultTrackNameProvider;
 import androidx.media3.ui.TrackNameProvider;
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.net.common.UserAgentInterceptor;
 import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
-import de.danoeh.antennapod.core.service.download.HttpCredentialEncoder;
-import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.net.common.AntennapodHttpClient;
+import de.danoeh.antennapod.net.common.HttpCredentialEncoder;
+import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.model.playback.Playable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -234,7 +234,7 @@ public class ExoPlayerWrapper {
         Log.d(TAG, "setDataSource: " + s);
         final OkHttpDataSource.Factory httpDataSourceFactory =
                 new OkHttpDataSource.Factory((Call.Factory) AntennapodHttpClient.getHttpClient())
-                        .setUserAgent(ClientConfig.USER_AGENT);
+                        .setUserAgent(UserAgentInterceptor.USER_AGENT);
 
         if (!TextUtils.isEmpty(user) && !TextUtils.isEmpty(password)) {
             final HashMap<String, String> requestProperties = new HashMap<>();

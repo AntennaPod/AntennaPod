@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.net.discovery;
 
 import de.danoeh.antennapod.core.sync.SynchronizationCredentials;
-import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
+import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetPodcast;

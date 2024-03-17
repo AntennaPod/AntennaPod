@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.net.discovery;
 
 import de.danoeh.antennapod.core.feed.FeedUrlNotFoundException;
-import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
+import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;

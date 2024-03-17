@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.net.download.serviceinterface;
+package de.danoeh.antennapod.model.download;
 
 import android.os.Bundle;
 import android.os.Parcel;
@@ -7,10 +7,6 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.net.common.UrlChecker;
-import de.danoeh.antennapod.model.feed.FeedMedia;
 
 public class DownloadRequest implements Parcelable {
     public static final String REQUEST_ARG_PAGE_NR = "page";
@@ -39,19 +35,13 @@ public class DownloadRequest implements Parcelable {
                 arguments, initiatedByUser);
     }
 
-    private DownloadRequest(Builder builder) {
-        this(builder.destination, builder.source, builder.title, builder.feedfileId, builder.feedfileType,
-                builder.lastModified, builder.username, builder.password, false,
-                builder.arguments, builder.initiatedByUser);
-    }
-
     private DownloadRequest(Parcel in) {
         this(in.readString(), in.readString(), in.readString(), in.readLong(), in.readInt(), in.readString(),
                 nullIfEmpty(in.readString()), nullIfEmpty(in.readString()), in.readByte() > 0,
                 in.readBundle(), in.readByte() > 0);
     }
 
-    private DownloadRequest(String destination, String source, String title, long feedfileId, int feedfileType,
+    public DownloadRequest(String destination, String source, String title, long feedfileId, int feedfileType,
                             String lastModified, String username, String password,
                             boolean mediaEnqueued, Bundle arguments, boolean initiatedByUser) {
         this.destination = destination;
@@ -233,65 +223,5 @@ public class DownloadRequest implements Parcelable {
 
     public Bundle getArguments() {
         return arguments;
-    }
-
-    public static class Builder {
-        private final String destination;
-        private String source;
-        private final String title;
-        private String username;
-        private String password;
-        private String lastModified;
-        private final long feedfileId;
-        private final int feedfileType;
-        private final Bundle arguments = new Bundle();
-        private boolean initiatedByUser = true;
-
-        public Builder(@NonNull String destination, @NonNull FeedMedia media) {
-            this.destination = destination;
-            this.source = UrlChecker.prepareUrl(media.getDownload_url());
-            this.title = media.getHumanReadableIdentifier();
-            this.feedfileId = media.getId();
-            this.feedfileType = FeedMedia.FEEDFILETYPE_FEEDMEDIA;
-        }
-
-        public Builder(@NonNull String destination, @NonNull Feed feed) {
-            this.destination = destination;
-            this.source = feed.isLocalFeed() ? feed.getDownload_url() : UrlChecker.prepareUrl(feed.getDownload_url());
-            this.title = feed.getHumanReadableIdentifier();
-            this.feedfileId = feed.getId();
-            this.feedfileType = Feed.FEEDFILETYPE_FEED;
-            arguments.putInt(REQUEST_ARG_PAGE_NR, feed.getPageNr());
-        }
-
-        public Builder withInitiatedByUser(boolean initiatedByUser) {
-            this.initiatedByUser = initiatedByUser;
-            return this;
-        }
-
-        public void setSource(String source) {
-            this.source = source;
-        }
-
-        public void setForce(boolean force) {
-            if (force) {
-                lastModified = null;
-            }
-        }
-
-        public Builder lastModified(String lastModified) {
-            this.lastModified = lastModified;
-            return this;
-        }
-
-        public Builder withAuthentication(String username, String password) {
-            this.username = username;
-            this.password = password;
-            return this;
-        }
-
-        public DownloadRequest build() {
-            return new DownloadRequest(this);
-        }
     }
 }

@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.net.discovery;
 
+import de.danoeh.antennapod.net.common.AntennapodHttpClient;
+import de.danoeh.antennapod.net.common.UserAgentInterceptor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,8 +17,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -100,7 +100,7 @@ public class PodcastIndexPodcastSearcher implements PodcastSearcher {
                 .addHeader("X-Auth-Date", apiHeaderTime)
                 .addHeader("X-Auth-Key", BuildConfig.PODCASTINDEX_API_KEY)
                 .addHeader("Authorization", hashString)
-                .addHeader("User-Agent", ClientConfig.USER_AGENT)
+                .addHeader("User-Agent", UserAgentInterceptor.USER_AGENT)
                 .url(url);
         return httpReq.build();
     }

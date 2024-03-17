@@ -2,8 +2,8 @@ package de.danoeh.antennapod.net.discovery;
 
 import android.content.Context;
 import android.util.Log;
-import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import okhttp3.CacheControl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

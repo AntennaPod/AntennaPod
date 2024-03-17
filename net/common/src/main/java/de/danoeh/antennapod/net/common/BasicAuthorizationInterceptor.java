@@ -1,12 +1,11 @@
-package de.danoeh.antennapod.core.service;
+package de.danoeh.antennapod.net.common;
 
 import android.text.TextUtils;
 import android.util.Log;
 import androidx.annotation.NonNull;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.HttpCredentialEncoder;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.util.URIUtil;
+import de.danoeh.antennapod.model.download.DownloadRequest;
+import de.danoeh.antennapod.net.common.HttpCredentialEncoder;
+import de.danoeh.antennapod.net.common.UriUtil;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.List;
@@ -43,17 +42,15 @@ public class BasicAuthorizationInterceptor implements Interceptor {
             }
         }
 
-        String userInfo;
+        String userInfo = null;
         if (request.tag() instanceof DownloadRequest) {
             DownloadRequest downloadRequest = (DownloadRequest) request.tag();
-            userInfo = URIUtil.getURIFromRequestUrl(downloadRequest.getSource()).getUserInfo();
+            userInfo = UriUtil.getURIFromRequestUrl(downloadRequest.getSource()).getUserInfo();
             if (TextUtils.isEmpty(userInfo)
                     && (!TextUtils.isEmpty(downloadRequest.getUsername())
                         || !TextUtils.isEmpty(downloadRequest.getPassword()))) {
                 userInfo = downloadRequest.getUsername() + ":" + downloadRequest.getPassword();
             }
-        } else {
-            userInfo = DBReader.getImageAuthentication(request.url().toString());
         }
 
         if (TextUtils.isEmpty(userInfo)) {

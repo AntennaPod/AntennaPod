@@ -24,13 +24,14 @@ import de.danoeh.antennapod.core.service.download.handler.FeedSyncTask;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
+import de.danoeh.antennapod.model.download.DownloadRequest;
 
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequestBuilder;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -160,7 +161,7 @@ public class FeedUpdateWorker extends Worker {
         if (nextPage) {
             feed.setPageNr(feed.getPageNr() + 1);
         }
-        DownloadRequest.Builder builder = DownloadRequestCreator.create(feed);
+        DownloadRequestBuilder builder = DownloadRequestCreator.create(feed);
         builder.setForce(force || feed.hasLastUpdateFailed());
         if (nextPage) {
             builder.setSource(feed.getNextPageLink());

@@ -10,7 +10,7 @@ android {
 
 dependencies {
     implementation project(":model")
-    implementation project(":core")
+    implementation project(':net:common')
     implementation project(':storage:preferences')
 
     implementation "androidx.palette:palette:$paletteVersion"

@@ -24,7 +24,7 @@ import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
+import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;

@@ -73,7 +73,7 @@ import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.FeedUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.core.util.playback.PlayableUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.core.widget.WidgetUpdater;
