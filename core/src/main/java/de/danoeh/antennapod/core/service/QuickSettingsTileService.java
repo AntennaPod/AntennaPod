@@ -12,8 +12,8 @@ import android.view.KeyEvent;
 import androidx.annotation.RequiresApi;
 
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class QuickSettingsTileService extends TileService {
@@ -29,11 +29,7 @@ public class QuickSettingsTileService extends TileService {
     @Override
     public void onClick() {
         super.onClick();
-        Intent intent = new Intent(this, MediaButtonReceiver.class);
-        intent.setAction(MediaButtonReceiver.NOTIFY_BUTTON_RECEIVER);
-        intent.putExtra(Intent.EXTRA_KEY_EVENT,
-                new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
-        sendBroadcast(intent);
+        sendBroadcast(MediaButtonStarter.createIntent(this, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
     }
 
     // Update the tile status when TileService.requestListeningState() is called elsewhere
