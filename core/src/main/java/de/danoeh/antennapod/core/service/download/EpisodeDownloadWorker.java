@@ -80,8 +80,8 @@ public class EpisodeDownloadWorker extends Worker {
                                 .get();
                         NotificationManager nm = (NotificationManager) getApplicationContext()
                                 .getSystemService(Context.NOTIFICATION_SERVICE);
-                        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS)
-                                == PackageManager.PERMISSION_GRANTED) {
+                        if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                                Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
                             nm.notify(R.id.notification_downloading, generateProgressNotification());
                         }
                         Thread.sleep(1000);
