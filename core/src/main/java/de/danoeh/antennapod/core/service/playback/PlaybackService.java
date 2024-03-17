@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.service.playback;
 
 import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -14,6 +15,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.net.Uri;
@@ -45,6 +47,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.media.MediaBrowserServiceCompat;
 
 import org.greenrobot.eventbus.EventBus;
@@ -303,7 +306,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (notificationBuilder.getPlayerStatus() == PlayerStatus.PLAYING) {
             notificationBuilder.setPlayerStatus(PlayerStatus.STOPPED);
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-            notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS)
+                    == PackageManager.PERMISSION_GRANTED) {
+                notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
+            }
         }
         stateManager.stopForeground(!UserPreferences.isPersistNotify());
         isRunning = false;
@@ -628,7 +634,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         pendingIntentAlwaysAllow)
                 .setAutoCancel(true);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(R.id.notification_streaming_confirmation, builder.build());
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS)
+                == PackageManager.PERMISSION_GRANTED) {
+            notificationManager.notify(R.id.notification_streaming_confirmation, builder.build());
+        }
     }
 
     /**
@@ -1394,7 +1403,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS)
+                == PackageManager.PERMISSION_GRANTED) {
+            notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
+        }
 
         if (!notificationBuilder.isIconCached()) {
             playableIconLoaderThread = new Thread(() -> {
