@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.feed.util;
+package de.danoeh.antennapod.ui.episodes;
 
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;

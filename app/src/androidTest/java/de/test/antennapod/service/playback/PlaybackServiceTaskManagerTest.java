@@ -7,8 +7,8 @@ import androidx.test.filters.LargeTest;
 
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
-import de.danoeh.antennapod.core.widget.WidgetUpdater;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
+import de.danoeh.antennapod.ui.widget.WidgetUpdater;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.junit.After;

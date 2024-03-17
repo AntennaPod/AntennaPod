@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.widget;
+package de.danoeh.antennapod.ui.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -19,19 +19,17 @@ import com.bumptech.glide.request.RequestOptions;
 
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.common.Converter;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.core.receiver.PlayerWidget;
-import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
-import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.PlaybackSpeedActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.VideoPlayerActivityStarter;
+import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
+import de.danoeh.antennapod.ui.episodes.TimeSpeedConverter;
 
 /**
  * Updates the state of the player widget.

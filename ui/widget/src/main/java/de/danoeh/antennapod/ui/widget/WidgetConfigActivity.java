@@ -1,6 +1,8 @@
-package de.danoeh.antennapod.activity;
+package de.danoeh.antennapod.ui.widget;
 
+import android.app.Activity;
 import android.appwidget.AppWidgetManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -11,10 +13,9 @@ import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.receiver.PlayerWidget;
-import de.danoeh.antennapod.core.widget.WidgetUpdaterWorker;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
+
+import java.util.Locale;
 
 public class WidgetConfigActivity extends AppCompatActivity {
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -42,7 +43,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
 
         Intent resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        setResult(RESULT_CANCELED, resultValue);
+        setResult(Activity.RESULT_CANCELED, resultValue);
         if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
         }
@@ -55,7 +56,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                opacityTextView.setText(seekBar.getProgress() + "%");
+                opacityTextView.setText(String.format(Locale.getDefault(), "%d%%", seekBar.getProgress()));
                 int color = getColorWithAlpha(PlayerWidget.DEFAULT_COLOR, opacitySeekBar.getProgress());
                 widgetPreview.setBackgroundColor(color);
             }
@@ -91,7 +92,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
     }
 
     private void setInitialState() {
-        SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, Context.MODE_PRIVATE);
         ckPlaybackSpeed.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_PLAYBACK_SPEED + appWidgetId, false));
         ckRewind.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + appWidgetId, false));
         ckFastForward.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + appWidgetId, false));
@@ -122,7 +123,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
     private void confirmCreateWidget() {
         int backgroundColor = getColorWithAlpha(PlayerWidget.DEFAULT_COLOR, opacitySeekBar.getProgress());
 
-        SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(PlayerWidget.KEY_WIDGET_COLOR + appWidgetId, backgroundColor);
         editor.putBoolean(PlayerWidget.KEY_WIDGET_PLAYBACK_SPEED + appWidgetId, ckPlaybackSpeed.isChecked());
@@ -133,7 +134,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
 
         Intent resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        setResult(RESULT_OK, resultValue);
+        setResult(Activity.RESULT_OK, resultValue);
         finish();
         WidgetUpdaterWorker.enqueueWork(this);
     }

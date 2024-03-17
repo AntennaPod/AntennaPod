@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.receiver;
+package de.danoeh.antennapod.ui.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -9,7 +9,6 @@ import android.util.Log;
 import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
-import de.danoeh.antennapod.core.widget.WidgetUpdaterWorker;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;

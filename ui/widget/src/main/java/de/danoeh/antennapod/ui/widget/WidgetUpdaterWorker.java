@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.widget;
+package de.danoeh.antennapod.ui.widget;
 
 import android.content.Context;
 import android.util.Log;
@@ -8,11 +8,11 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
-import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
+import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
 
 public class WidgetUpdaterWorker extends Worker {
 

@@ -142,28 +142,6 @@
         </activity>
 
         <activity
-            android:name=".activity.WidgetConfigActivity"
-            android:label="@string/widget_settings"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGUR"/>
-            </intent-filter>
-        </activity>
-
-        <receiver
-            android:name=".core.receiver.PlayerWidget"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-                <action android:name="de.danoeh.antennapod.FORCE_WIDGET_UPDATE"/>
-                <action android:name="de.danoeh.antennapod.STOP_WIDGET_UPDATE"/>
-            </intent-filter>
-            <meta-data
-                    android:name="android.appwidget.provider"
-                    android:resource="@xml/player_widget_info"/>
-        </receiver>
-
-        <activity
             android:name=".activity.OpmlImportActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/opml_import_label"
