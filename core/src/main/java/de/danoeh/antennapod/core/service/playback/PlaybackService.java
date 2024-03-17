@@ -1413,7 +1413,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 Log.d(TAG, "Loading notification icon");
                 notificationBuilder.loadIcon();
                 if (!Thread.currentThread().isInterrupted()) {
-                    notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
+                    if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                            Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                        notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
+                    }
                     updateMediaSessionMetadata(playable);
                 }
             });
@@ -1791,7 +1794,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
                         NotificationManager notificationManager = (NotificationManager)
                                 getSystemService(NOTIFICATION_SERVICE);
-                        notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
+                        if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                                Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                            notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
+                        }
                     }
                     skipEndingIfNecessary();
                 });
