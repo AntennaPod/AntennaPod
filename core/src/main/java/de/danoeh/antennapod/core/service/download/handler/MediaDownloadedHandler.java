@@ -10,6 +10,7 @@ import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.io.InterruptedIOException;
 import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -54,14 +55,18 @@ public class MediaDownloadedHandler implements Runnable {
         media.setSize(new File(request.getDestination()).length());
         media.checkEmbeddedPicture(); // enforce check
 
-        // check if file has chapters
-        if (media.getItem() != null && !media.getItem().hasChapters()) {
-            media.setChapters(ChapterUtils.loadChaptersFromMediaFile(media, context));
+        try {
+            // Cache chapters if file has them
+            if (media.getItem() != null && !media.getItem().hasChapters()) {
+                media.setChapters(ChapterUtils.loadChaptersFromMediaFile(media, context));
+            }
+            if (media.getItem() != null && media.getItem().getPodcastIndexChapterUrl() != null) {
+                ChapterUtils.loadChaptersFromUrl(media.getItem().getPodcastIndexChapterUrl(), false);
+            }
+        } catch (InterruptedIOException ignore) {
+            // Ignore
         }
 
-        if (media.getItem() != null && media.getItem().getPodcastIndexChapterUrl() != null) {
-            ChapterUtils.loadChaptersFromUrl(media.getItem().getPodcastIndexChapterUrl(), false);
-        }
         // Get duration
         String durationStr = null;
         try (MediaMetadataRetrieverCompat mmr = new MediaMetadataRetrieverCompat()) {
