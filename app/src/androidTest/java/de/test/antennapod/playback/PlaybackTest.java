@@ -12,7 +12,6 @@ import androidx.test.rule.ActivityTestRule;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.LongList;
@@ -23,6 +22,7 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.test.antennapod.EspressoTestUtils;
 import de.test.antennapod.IgnoreOnCi;
 import de.test.antennapod.ui.UITestUtils;
@@ -224,11 +224,11 @@ public class PlaybackTest {
     }
 
     private void skipEpisode() {
-        context.sendBroadcast(MediaButtonReceiver.createIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT));
+        context.sendBroadcast(MediaButtonStarter.createIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT));
     }
 
     protected void pauseEpisode() {
-        context.sendBroadcast(MediaButtonReceiver.createIntent(context, KeyEvent.KEYCODE_MEDIA_PAUSE));
+        context.sendBroadcast(MediaButtonStarter.createIntent(context, KeyEvent.KEYCODE_MEDIA_PAUSE));
     }
 
     protected void startLocalPlayback() {

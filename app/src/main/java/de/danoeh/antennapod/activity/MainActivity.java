@@ -35,8 +35,8 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
-import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.dialog.RatingDialog;
@@ -750,7 +750,7 @@ public class MainActivity extends CastEnabledActivity {
         }
 
         if (customKeyCode != null) {
-            sendBroadcast(MediaButtonReceiver.createIntent(this, customKeyCode));
+            sendBroadcast(MediaButtonStarter.createIntent(this, customKeyCode));
             return true;
         }
         return super.onKeyUp(keyCode, event);

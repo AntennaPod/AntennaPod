@@ -18,7 +18,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.util.FeedUtil;
-import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.sync.SynchronizationSettings;
@@ -31,6 +30,7 @@ import de.danoeh.antennapod.dialog.ShareDialog;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
+import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.view.LocalDeleteModal;
 
 /**
@@ -150,7 +150,7 @@ public class FeedItemMenuHandler {
 
         @NonNull Context context = fragment.requireContext();
         if (menuItemId == R.id.skip_episode_item) {
-            context.sendBroadcast(MediaButtonReceiver.createIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT));
+            context.sendBroadcast(MediaButtonStarter.createIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT));
         } else if (menuItemId == R.id.remove_item) {
             LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(context, Arrays.asList(selectedItem),
                     () -> DBWriter.deleteFeedMediaOfItem(context, selectedItem.getMedia().getId()));

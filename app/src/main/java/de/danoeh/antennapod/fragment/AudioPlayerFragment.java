@@ -25,6 +25,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.elevation.SurfaceColors;
 
+import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -36,7 +37,6 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
-import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
@@ -211,7 +211,7 @@ public class AudioPlayerFragment extends Fragment implements
             return false;
         });
         butSkip.setOnClickListener(v -> getActivity().sendBroadcast(
-                MediaButtonReceiver.createIntent(getContext(), KeyEvent.KEYCODE_MEDIA_NEXT)));
+                MediaButtonStarter.createIntent(getContext(), KeyEvent.KEYCODE_MEDIA_NEXT)));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
