@@ -15,8 +15,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.activity.result.contract.ActivityResultContracts.GetContent;
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.documentfile.provider.DocumentFile;
+import androidx.preference.SwitchPreferenceCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
@@ -30,6 +32,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
 import de.danoeh.antennapod.storage.importexport.DatabaseExporter;
 import de.danoeh.antennapod.storage.importexport.FavoritesWriter;
 import de.danoeh.antennapod.storage.importexport.HtmlWriter;
@@ -59,6 +62,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_HTML_EXPORT = "prefHtmlExport";
     private static final String PREF_DATABASE_IMPORT = "prefDatabaseImport";
     private static final String PREF_DATABASE_EXPORT = "prefDatabaseExport";
+    private static final String PREF_AUTOMATIC_DATABASE_EXPORT = "prefAutomaticDatabaseExport";
     private static final String PREF_FAVORITE_EXPORT = "prefFavoritesExport";
     private static final String DEFAULT_OPML_OUTPUT_NAME = "antennapod-feeds-%s.opml";
     private static final String CONTENT_TYPE_OPML = "text/x-opml";
@@ -88,6 +92,8 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                     startActivity(intent);
                 }
             });
+    private final ActivityResultLauncher<Uri> automaticBackupLauncher =
+            registerForActivityResult(new PickWritableFolder(), this::setupAutomaticBackup);
 
     private Disposable disposable;
     private ProgressDialog progressDialog;
@@ -143,7 +149,26 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                 });
         findPreference(PREF_DATABASE_EXPORT).setOnPreferenceClickListener(
                 preference -> {
-                    exportDatabase();
+                    backupDatabaseLauncher.launch(dateStampFilename(DATABASE_EXPORT_FILENAME));
+                    return true;
+                });
+        ((SwitchPreferenceCompat) findPreference(PREF_AUTOMATIC_DATABASE_EXPORT))
+                .setChecked(UserPreferences.getAutomaticExportFolder() != null);
+        findPreference(PREF_AUTOMATIC_DATABASE_EXPORT).setOnPreferenceChangeListener(
+                (preference, newValue) -> {
+                    if (Boolean.TRUE.equals(newValue)) {
+                        try {
+                            automaticBackupLauncher.launch(null);
+                        } catch (ActivityNotFoundException e) {
+                            e.printStackTrace();
+                            Snackbar.make(getView(), R.string.unable_to_start_system_file_manager, Snackbar.LENGTH_LONG)
+                                    .show();
+                        }
+                        return false;
+                    } else {
+                        UserPreferences.setAutomaticExportFolder(null);
+                        AutomaticDatabaseExportWorker.enqueueIfNeeded(getContext(), false);
+                    }
                     return true;
                 });
         findPreference(PREF_FAVORITE_EXPORT).setOnPreferenceClickListener(
@@ -155,10 +180,6 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
 
     private String dateStampFilename(String fname) {
         return String.format(fname, new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date()));
-    }
-
-    private void exportDatabase() {
-        backupDatabaseLauncher.launch(dateStampFilename(DATABASE_EXPORT_FILENAME));
     }
 
     private void importDatabase() {
@@ -330,6 +351,17 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         }
     }
 
+    private void setupAutomaticBackup(Uri uri) {
+        if (uri == null) {
+            return;
+        }
+        getActivity().getContentResolver().takePersistableUriPermission(uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        UserPreferences.setAutomaticExportFolder(uri.toString());
+        AutomaticDatabaseExportWorker.enqueueIfNeeded(getContext(), true);
+        ((SwitchPreferenceCompat) findPreference(PREF_AUTOMATIC_DATABASE_EXPORT)).setChecked(true);
+    }
+
     private static class BackupDatabase extends ActivityResultContracts.CreateDocument {
 
         BackupDatabase() {
@@ -342,6 +374,15 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
             return super.createIntent(context, input)
                     .addCategory(Intent.CATEGORY_OPENABLE)
                     .setType("application/x-sqlite3");
+        }
+    }
+
+    private static class PickWritableFolder extends ActivityResultContracts.OpenDocumentTree {
+        @NonNull
+        @Override
+        public Intent createIntent(@NonNull final Context context, @Nullable final Uri input) {
+            return super.createIntent(context, input)
+                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         }
     }
 
