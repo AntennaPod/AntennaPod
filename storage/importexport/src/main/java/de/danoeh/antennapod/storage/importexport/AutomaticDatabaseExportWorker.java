@@ -84,7 +84,7 @@ public class AutomaticDatabaseExportWorker extends Worker {
         Iterator<DocumentFile> itr = files.iterator();
         while (itr.hasNext()) {
             DocumentFile file = itr.next();
-            if (!file.getName().startsWith("AntennaPod")) {
+            if (!file.getName().matches("AntennaPodBackup-\\d\\d\\d\\d-\\d\\d-\\d\\d\\.db")) {
                 itr.remove();
             }
         }
