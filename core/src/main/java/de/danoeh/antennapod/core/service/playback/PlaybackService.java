@@ -867,8 +867,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                TileService.requestListeningState(getApplicationContext(),
-                        new ComponentName(getApplicationContext(), QuickSettingsTileService.class));
+                try {
+                    TileService.requestListeningState(getApplicationContext(),
+                            new ComponentName(getApplicationContext(), QuickSettingsTileService.class));
+                } catch (IllegalArgumentException e) {
+                    Log.d(TAG, "Skipping quick settings tile setup");
+                }
             }
 
             IntentUtils.sendLocalBroadcast(getApplicationContext(), ACTION_PLAYER_STATUS_CHANGED);
