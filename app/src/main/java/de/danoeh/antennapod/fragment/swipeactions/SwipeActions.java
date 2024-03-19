@@ -178,14 +178,12 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
         float sign = dx > 0 ? 1 : -1;
         float limitMovement = Math.min(maxMovement, sign * dx);
         float displacementPercentage = limitMovement / maxMovement;
+        boolean swipeThresholdReached = displacementPercentage >= 0.85;
 
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE && wontLeave) {
             swipeOutEnabled = false;
-
-            boolean swipeThresholdReached = displacementPercentage == 1;
-
             // Move slower when getting near the maxMovement
-            dx = sign * maxMovement * (float) Math.sin((Math.PI / 2) * displacementPercentage);
+            dx = sign * maxMovement * 0.7f * (float) Math.sin((Math.PI / 2) * displacementPercentage);
 
             if (isCurrentlyActive) {
                 int dir = dx > 0 ? ItemTouchHelper.RIGHT : ItemTouchHelper.LEFT;
@@ -206,12 +204,9 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
                 .addSwipeLeftActionIcon(left.getActionIcon())
                 .addSwipeRightBackgroundColor(ThemeUtils.getColorFromAttr(context, R.attr.background_elevated))
                 .addSwipeLeftBackgroundColor(ThemeUtils.getColorFromAttr(context, R.attr.background_elevated))
-                .setActionIconTint(
-                        ColorUtils.blendARGB(themeColor,
-                                actionColor,
-                                Math.max(0.5f, displacementPercentage)));
+                .setActionIconTint(ColorUtils.blendARGB(themeColor, actionColor,
+                        (!wontLeave || swipeThresholdReached) ? 1.0f : 0.7f));
         builder.create().decorate();
-
 
         super.onChildDraw(c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive);
     }
