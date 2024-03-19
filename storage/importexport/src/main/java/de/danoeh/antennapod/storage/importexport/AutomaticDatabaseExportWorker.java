@@ -41,7 +41,7 @@ public class AutomaticDatabaseExportWorker extends Worker {
             WorkManager.getInstance(context).cancelUniqueWork(WORK_ID_AUTOMATIC_DATABASE_EXPORT);
         } else {
             PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(
-                        AutomaticDatabaseExportWorker.class, 1, TimeUnit.DAYS)
+                        AutomaticDatabaseExportWorker.class, 3, TimeUnit.DAYS)
                     .build();
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(WORK_ID_AUTOMATIC_DATABASE_EXPORT,
                     replace ? ExistingPeriodicWorkPolicy.REPLACE : ExistingPeriodicWorkPolicy.KEEP, workRequest);

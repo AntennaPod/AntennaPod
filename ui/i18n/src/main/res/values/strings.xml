@@ -580,7 +580,7 @@
     <string name="html_export_label">HTML export</string>
     <string name="database_export_label">Database export</string>
     <string name="automatic_database_export_label">Automatic database export</string>
-    <string name="automatic_database_export_summary">Automatically create daily backups of the AntennaPod database</string>
+    <string name="automatic_database_export_summary">Create a backup of the AntennaPod database every 3 days. Only keep the 5 most recent backups.</string>
     <string name="automatic_database_export_error">Error during automatic database backup</string>
     <string name="database_import_label">Database import</string>
     <string name="database_import_warning">Importing a database will replace all of your current subscriptions and playing history. You should export your current database as a backup. Do you want to replace?</string>
