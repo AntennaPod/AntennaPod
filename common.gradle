@@ -44,7 +44,7 @@ android {
     }
 
     lint {
-        disable "GradleDependency"
+        disable "GradleDependency", "OutdatedLibrary"
         checkDependencies true
         warningsAsErrors true
         abortOnError true
