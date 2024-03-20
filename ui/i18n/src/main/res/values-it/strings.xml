@@ -383,7 +383,7 @@
   <string name="pref_episode_cleanup_summary">Episodi cancellabili se il download automatico richiede altro spazio per nuovi episodi</string>
   <string name="pref_pauseOnDisconnect_sum">Sospende la riproduzione quando le cuffie o il bluetooth vengono disconnessi</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Riprendi la riproduzione quando le cuffie vengono ricollegate</string>
-  <string name="pref_unpauseOnBluetoothReconnect_sum">Riprende la riproduzione quando il Bluetooth si riconnette</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Riprendi la riproduzione quando il Bluetooth si riconnette</string>
   <string name="pref_hardware_forward_button_title">Tasto Avanti</string>
   <string name="pref_hardware_forward_button_summary">Personalizza l\'azione del tasto Avanti</string>
   <string name="pref_hardware_previous_button_title">Tasto Indietro</string>
@@ -476,7 +476,7 @@
   <string name="pref_expandNotify_title">Priorità notifiche superiore</string>
   <string name="pref_expandNotify_sum">Di solito espande la notifica per mostrare i tasti di riproduzione.</string>
   <string name="pref_persistNotify_title">Controlli di riproduzione persistenti</string>
-  <string name="pref_persistNotify_sum">Mantieni le notifiche e i controlli del blocco schermo anche quando la riproduzione è in pausa</string>
+  <string name="pref_persistNotify_sum">Mantieni la notifica e i controlli sulla schermata di blocco anche quando la riproduzione è in pausa</string>
   <string name="pref_enqueue_location_title">Posizione in coda</string>
   <string name="pref_enqueue_location_sum">Posizione nuovi episodi: %1$s</string>
   <string name="enqueue_location_back">Alla fine</string>
