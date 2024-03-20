@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.fragment.preferences.about;
+package de.danoeh.antennapod.ui.preferences.screen.about;
 
 import android.os.Bundle;
 import android.view.View;
@@ -6,12 +6,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.ListFragment;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.adapter.SimpleIconListAdapter;
 import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.ui.preferences.R;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -121,6 +120,6 @@ public class LicensesFragment extends ListFragment {
     @Override
     public void onStart() {
         super.onStart();
-        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.licenses);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.licenses);
     }
 }

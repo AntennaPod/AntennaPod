@@ -11,6 +11,8 @@ import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.ui.preferences.screen.about.ContributorsPagerFragment;
+import de.danoeh.antennapod.ui.preferences.screen.about.LicensesFragment;
 
 public class AboutFragment extends PreferenceFragmentCompat {
 

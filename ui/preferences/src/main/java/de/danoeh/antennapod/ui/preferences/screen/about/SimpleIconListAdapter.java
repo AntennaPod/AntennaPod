@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.adapter;
+package de.danoeh.antennapod.ui.preferences.screen.about;
 
 import android.content.Context;
 import android.view.View;
@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.preferences.R;
 
 import java.util.List;
 

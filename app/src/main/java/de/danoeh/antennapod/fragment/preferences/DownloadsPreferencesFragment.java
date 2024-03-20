@@ -11,7 +11,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
-import de.danoeh.antennapod.dialog.ChooseDataFolderDialog;
+import de.danoeh.antennapod.ui.preferences.screen.downloads.ChooseDataFolderDialog;
 import de.danoeh.antennapod.dialog.ProxyDialog;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 

@@ -79,11 +79,7 @@
 
     <Match><Class name="de.danoeh.antennapod.core.ClientConfig"/></Match>
 
-    <Match><Package name="de.danoeh.antennapod.databinding"/></Match>
-    <Match><Package name="de.danoeh.antennapod.core.databinding"/></Match>
-    <Match><Package name="de.danoeh.antennapod.ui.common.databinding"/></Match>
-    <Match><Package name="de.danoeh.antennapod.ui.echo.databinding"/></Match>
-    <Match><Package name="de.danoeh.antennapod.ui.statistics.databinding"/></Match>
+    <Match><Package name="~.*\.databinding"/></Match>
 
     <Match><Bug pattern="DMI_RANDOM_USED_ONLY_ONCE"/></Match>
     <Match><Bug pattern="EI_EXPOSE_REP"/></Match>

@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.fragment.preferences.about;
+package de.danoeh.antennapod.ui.preferences.screen.about;
 
 import android.os.Bundle;
 import android.view.View;
@@ -6,7 +6,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.ListFragment;
-import de.danoeh.antennapod.adapter.SimpleIconListAdapter;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -17,8 +16,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class TranslatorsFragment extends ListFragment {
-    private Disposable translatorsLoader;
+public class DevelopersFragment extends ListFragment {
+    private Disposable developersLoader;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -26,21 +25,22 @@ public class TranslatorsFragment extends ListFragment {
         getListView().setDivider(null);
         getListView().setSelector(android.R.color.transparent);
 
-        translatorsLoader = Single.create((SingleOnSubscribe<ArrayList<SimpleIconListAdapter.ListItem>>) emitter -> {
-            ArrayList<SimpleIconListAdapter.ListItem> translators = new ArrayList<>();
+        developersLoader = Single.create((SingleOnSubscribe<ArrayList<SimpleIconListAdapter.ListItem>>) emitter -> {
+            ArrayList<SimpleIconListAdapter.ListItem> developers = new ArrayList<>();
             BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    getContext().getAssets().open("translators.csv"), "UTF-8"));
+                    getContext().getAssets().open("developers.csv"), "UTF-8"));
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] info = line.split(";");
-                translators.add(new SimpleIconListAdapter.ListItem(info[0], info[1], null));
+                developers.add(new SimpleIconListAdapter.ListItem(info[0], info[2],
+                        "https://avatars2.githubusercontent.com/u/" + info[1] + "?s=60&v=4"));
             }
-            emitter.onSuccess(translators);
+            emitter.onSuccess(developers);
         })
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
-                translators -> setListAdapter(new SimpleIconListAdapter<>(getContext(), translators)),
+                developers -> setListAdapter(new SimpleIconListAdapter<>(getContext(), developers)),
                 error -> Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show()
         );
 
@@ -49,8 +49,8 @@ public class TranslatorsFragment extends ListFragment {
     @Override
     public void onStop() {
         super.onStop();
-        if (translatorsLoader != null) {
-            translatorsLoader.dispose();
+        if (developersLoader != null) {
+            developersLoader.dispose();
         }
     }
 }

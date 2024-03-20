@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.fragment.preferences.synchronization;
+package de.danoeh.antennapod.ui.preferences.screen.synchronization;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.text.HtmlCompat;
 import androidx.preference.Preference;
@@ -20,18 +21,16 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import de.danoeh.antennapod.ui.preferences.R;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.event.SyncServiceEvent;
 import de.danoeh.antennapod.core.sync.SynchronizationCredentials;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
 import de.danoeh.antennapod.core.sync.SynchronizationSettings;
-import de.danoeh.antennapod.dialog.AuthenticationDialog;
 
 public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREFERENCE_SYNCHRONIZATION_DESCRIPTION = "preference_synchronization_description";
@@ -50,7 +49,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
     @Override
     public void onStart() {
         super.onStart();
-        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.synchronization_pref);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.synchronization_pref);
         updateScreen();
         EventBus.getDefault().register(this);
     }
@@ -59,7 +58,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-        ((PreferenceActivity) getActivity()).getSupportActionBar().setSubtitle("");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle("");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
@@ -73,7 +72,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             updateLastSyncReport(SynchronizationSettings.isLastSyncSuccessful(),
                     SynchronizationSettings.getLastSyncAttempt());
         } else {
-            ((PreferenceActivity) getActivity()).getSupportActionBar().setSubtitle(event.getMessageResId());
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(event.getMessageResId());
         }
     }
 
@@ -144,7 +143,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                     SynchronizationSettings.getLastSyncAttempt());
         } else {
             findPreference(PREFERENCE_LOGOUT).setSummary(null);
-            ((PreferenceActivity) getActivity()).getSupportActionBar().setSubtitle(null);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(null);
         }
     }
 
@@ -216,6 +215,6 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                         ? R.string.gpodnetsync_pref_report_successful : R.string.gpodnetsync_pref_report_failed),
                 DateUtils.getRelativeDateTimeString(getContext(),
                         lastTime, DateUtils.MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, DateUtils.FORMAT_SHOW_TIME));
-        ((PreferenceActivity) getActivity()).getSupportActionBar().setSubtitle(status);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(status);
     }
 }

@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.adapter;
+package de.danoeh.antennapod.ui.preferences.screen.downloads;
 
 import android.content.Context;
 import android.text.format.Formatter;
@@ -11,9 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.util.Consumer;
 import androidx.recyclerview.widget.RecyclerView;
-import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.StorageUtils;
+import de.danoeh.antennapod.ui.preferences.R;
 
 import java.io.File;
 import java.util.ArrayList;

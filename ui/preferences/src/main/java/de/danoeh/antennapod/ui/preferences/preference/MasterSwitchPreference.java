@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.preferences;
+package de.danoeh.antennapod.ui.preferences.preference;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -7,8 +7,8 @@ import androidx.preference.PreferenceViewHolder;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
+import de.danoeh.antennapod.ui.preferences.R;
 
 public class MasterSwitchPreference extends SwitchPreferenceCompat {
 

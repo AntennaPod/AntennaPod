@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.fragment.preferences.synchronization;
+package de.danoeh.antennapod.ui.preferences.screen.synchronization;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -18,7 +18,6 @@ import androidx.annotation.Nullable;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.button.MaterialButton;
-import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.SynchronizationCredentials;
@@ -27,6 +26,7 @@ import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 import de.danoeh.antennapod.core.util.FileNameGenerator;
 import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetDevice;
+import de.danoeh.antennapod.ui.preferences.R;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;

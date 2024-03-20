@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import java.util.Arrays;
 
 import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
+import de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference;
 
 public class VolumeAdaptationPreference extends MaterialListPreference {
     public VolumeAdaptationPreference(Context context) {

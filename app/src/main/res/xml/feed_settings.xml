@@ -40,7 +40,7 @@
         android:summary="@string/pref_feed_skip_sum"
         android:title="@string/pref_feed_skip" />
 
-    <de.danoeh.antennapod.preferences.MaterialListPreference
+    <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
         android:entries="@array/spnAutoDeleteItems"
         android:entryValues="@array/spnAutoDeleteValues"
         android:icon="@drawable/ic_delete"
@@ -57,7 +57,7 @@
         android:summary="@string/feed_volume_adaptation_summary"
         android:title="@string/feed_volume_adapdation" />
 
-    <de.danoeh.antennapod.preferences.MaterialListPreference
+    <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
         android:entries="@array/feedNewEpisodesActionItems"
         android:entryValues="@array/feedNewEpisodesActionValues"
         android:icon="@drawable/ic_feed"

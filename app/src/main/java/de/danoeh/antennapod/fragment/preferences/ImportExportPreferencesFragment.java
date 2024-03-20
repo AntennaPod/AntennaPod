@@ -24,7 +24,6 @@ import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceFragmentCompat;
 import com.google.android.material.snackbar.Snackbar;
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
@@ -38,6 +37,7 @@ import de.danoeh.antennapod.storage.importexport.FavoritesWriter;
 import de.danoeh.antennapod.storage.importexport.HtmlWriter;
 import de.danoeh.antennapod.storage.importexport.OpmlWriter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -205,7 +205,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         builder.setTitle(R.string.successful_import_label);
         builder.setMessage(R.string.import_ok);
         builder.setCancelable(false);
-        builder.setPositiveButton(android.R.string.ok, (dialogInterface, i) -> PodcastApp.forceRestart());
+        builder.setPositiveButton(android.R.string.ok, (dialogInterface, i) -> forceRestart());
         builder.show();
     }
 
@@ -360,6 +360,12 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         UserPreferences.setAutomaticExportFolder(uri.toString());
         AutomaticDatabaseExportWorker.enqueueIfNeeded(getContext(), true);
         ((SwitchPreferenceCompat) findPreference(PREF_AUTOMATIC_DATABASE_EXPORT)).setChecked(true);
+    }
+
+    private void forceRestart() {
+        Intent intent = new MainActivityStarter(getContext()).getIntent();
+        getContext().getApplicationContext().startActivity(intent);
+        Runtime.getRuntime().exit(0);
     }
 
     private static class BackupDatabase extends ActivityResultContracts.CreateDocument {
