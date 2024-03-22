@@ -33,7 +33,6 @@ import de.danoeh.antennapod.model.feed.FeedCounter;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
-import de.danoeh.antennapod.model.playback.MediaType;
 
 /**
  * Provides access to preferences set by the user in the settings screen. A
@@ -118,7 +117,6 @@ public class UserPreferences {
 
     // Mediaplayer
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
-    private static final String PREF_VIDEO_PLAYBACK_SPEED = "prefVideoPlaybackSpeed";
     public static final String PREF_PLAYBACK_SKIP_SILENCE = "prefSkipSilence";
     private static final String PREF_FAST_FORWARD_SECS = "prefFastForwardSecs";
     private static final String PREF_REWIND_SECS = "prefRewindSecs";
@@ -131,8 +129,6 @@ public class UserPreferences {
     public static final int EPISODE_CLEANUP_DEFAULT = 0;
 
     // Constants
-    public static final int NOTIFICATION_BUTTON_REWIND = 0;
-    public static final int NOTIFICATION_BUTTON_FAST_FORWARD = 1;
     public static final int NOTIFICATION_BUTTON_SKIP = 2;
     public static final int NOTIFICATION_BUTTON_NEXT_CHAPTER = 3;
     public static final int NOTIFICATION_BUTTON_PLAYBACK_SPEED = 4;
@@ -406,30 +402,12 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_DELETE_REMOVES_FROM_QUEUE, false);
     }
 
-    public static float getPlaybackSpeed(MediaType mediaType) {
-        if (mediaType == MediaType.VIDEO) {
-            return getVideoPlaybackSpeed();
-        } else {
-            return getAudioPlaybackSpeed();
-        }
-    }
-
-    private static float getAudioPlaybackSpeed() {
+    public static float getPlaybackSpeed() {
         try {
             return Float.parseFloat(prefs.getString(PREF_PLAYBACK_SPEED, "1.00"));
         } catch (NumberFormatException e) {
             Log.e(TAG, Log.getStackTraceString(e));
             UserPreferences.setPlaybackSpeed(1.0f);
-            return 1.0f;
-        }
-    }
-
-    private static float getVideoPlaybackSpeed() {
-        try {
-            return Float.parseFloat(prefs.getString(PREF_VIDEO_PLAYBACK_SPEED, "1.00"));
-        } catch (NumberFormatException e) {
-            Log.e(TAG, Log.getStackTraceString(e));
-            UserPreferences.setVideoPlaybackSpeed(1.0f);
             return 1.0f;
         }
     }
@@ -610,10 +588,6 @@ public class UserPreferences {
 
     public static void setPlaybackSpeed(float speed) {
         prefs.edit().putString(PREF_PLAYBACK_SPEED, String.valueOf(speed)).apply();
-    }
-
-    public static void setVideoPlaybackSpeed(float speed) {
-        prefs.edit().putString(PREF_VIDEO_PLAYBACK_SPEED, String.valueOf(speed)).apply();
     }
 
     public static void setSkipSilence(boolean skipSilence) {

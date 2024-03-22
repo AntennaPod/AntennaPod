@@ -1616,18 +1616,17 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     @SuppressWarnings("unused")
     public void speedPresetChanged(SpeedPresetChangedEvent event) {
         if (getPlayable() instanceof FeedMedia) {
-            if (((FeedMedia) getPlayable()).getItem().getFeed().getId() == event.getFeedId()) {
+            FeedMedia playable = (FeedMedia) getPlayable();
+            if (playable.getItem().getFeed().getId() == event.getFeedId()) {
                 if (event.getSpeed() == SPEED_USE_GLOBAL) {
-                    setSpeed(UserPreferences.getPlaybackSpeed(getPlayable().getMediaType()));
-                    setSkipSilence(UserPreferences.isSkipSilence());
+                    setSpeed(UserPreferences.getPlaybackSpeed());
                 } else {
                     setSpeed(event.getSpeed());
-                    FeedPreferences.SkipSilence skipSilence = event.getSkipSilence();
-                    if (skipSilence == FeedPreferences.SkipSilence.GLOBAL) {
-                        setSkipSilence(UserPreferences.isSkipSilence());
-                    } else {
-                        setSkipSilence(skipSilence == FeedPreferences.SkipSilence.AGGRESSIVE);
-                    }
+                }
+                if (event.getSkipSilence() == FeedPreferences.SkipSilence.GLOBAL) {
+                    setSkipSilence(UserPreferences.isSkipSilence());
+                } else {
+                    setSkipSilence(event.getSkipSilence() == FeedPreferences.SkipSilence.AGGRESSIVE);
                 }
             }
         }
@@ -1637,10 +1636,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     @SuppressWarnings("unused")
     public void skipIntroEndingPresetChanged(SkipIntroEndingChangedEvent event) {
         if (getPlayable() instanceof FeedMedia) {
-            if (((FeedMedia) getPlayable()).getItem().getFeed().getId() == event.getFeedId()) {
+            FeedMedia playable = (FeedMedia) getPlayable();
+            if (playable.getItem().getFeed().getId() == event.getFeedId()) {
                 if (event.getSkipEnding() != 0) {
-                    FeedPreferences feedPreferences
-                            = ((FeedMedia) getPlayable()).getItem().getFeed().getPreferences();
+                    FeedPreferences feedPreferences = playable.getItem().getFeed().getPreferences();
                     feedPreferences.setFeedSkipIntro(event.getSkipIntro());
                     feedPreferences.setFeedSkipEnding(event.getSkipEnding());
                 }
@@ -1684,18 +1683,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public void setSpeed(float speed) {
         PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(speed);
-        if (currentMediaType == MediaType.VIDEO) {
-            UserPreferences.setVideoPlaybackSpeed(speed);
-        } else {
-            UserPreferences.setPlaybackSpeed(speed);
-        }
-
         mediaPlayer.setPlaybackParams(speed, getCurrentSkipSilence());
     }
 
     public void setSkipSilence(boolean skipSilence) {
         PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(skipSilence);
-        UserPreferences.setSkipSilence(skipSilence);
         mediaPlayer.setPlaybackParams(getCurrentPlaybackSpeed(), skipSilence);
     }
 

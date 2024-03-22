@@ -86,6 +86,7 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         View root = View.inflate(getContext(), R.layout.speed_select_dialog, null);
         speedSeekBar = root.findViewById(R.id.speed_seek_bar);
         speedSeekBar.setProgressChangedListener(multiplier -> {
+            UserPreferences.setPlaybackSpeed(multiplier);
             if (controller != null) {
                 controller.setPlaybackSpeed(multiplier);
             }
@@ -148,10 +149,11 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
                 return true;
             });
             holder.chip.setOnClickListener(v -> {
+                UserPreferences.setPlaybackSpeed(speed);
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
                     if (controller != null) {
-                        dismiss();
                         controller.setPlaybackSpeed(speed);
+                        dismiss();
                     }
                 }, 200);
             });
