@@ -672,6 +672,14 @@
     <string name="pref_pausePlaybackForFocusLoss_sum">Pause playback instead of lowering volume when another app wants to play sounds</string>
     <string name="pref_pausePlaybackForFocusLoss_title">Pause for interruptions</string>
 
+    <!-- Rating dialog -->
+    <string name="rating_tagline">Since %1$s, you played %2$s%3$d%4$s hours of podcasts.</string>
+    <string name="rating_contribute_label">Want to join? Whether you want to translate, support, design or code, we would be happy to have you!</string>
+    <string name="rating_contribute_button">Discover ways to contribute</string>
+    <string name="rating_volunteers_label">AntennaPod is developed by volunteers in our free time. We would be happy if you appreciated our work by leaving a nice rating.</string>
+    <string name="rating_rate">Rate AntennaPod</string>
+    <string name="rating_later">Later</string>
+
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
     <string name="subscribing_label">Subscribing&#8230;</string>

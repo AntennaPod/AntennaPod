@@ -25,7 +25,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import org.awaitility.Awaitility;
 import org.awaitility.core.ConditionTimeoutException;
@@ -166,9 +165,6 @@ public class EspressoTestUtils {
                 .edit()
                 .putString(UserPreferences.PREF_UPDATE_INTERVAL, "0")
                 .commit();
-
-        RatingDialog.init(InstrumentationRegistry.getInstrumentation().getTargetContext());
-        RatingDialog.saveRated();
     }
 
     public static void setLaunchScreen(String tag) {

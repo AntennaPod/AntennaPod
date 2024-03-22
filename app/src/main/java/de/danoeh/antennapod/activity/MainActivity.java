@@ -39,7 +39,7 @@ import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
-import de.danoeh.antennapod.dialog.RatingDialog;
+import de.danoeh.antennapod.dialog.rating.RatingDialogManager;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.MessageEvent;
@@ -496,14 +496,13 @@ public class MainActivity extends CastEnabledActivity {
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        RatingDialog.init(this);
+        new RatingDialogManager(this).showIfNeeded();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         handleNavIntent();
-        RatingDialog.check();
 
         if (lastTheme != ThemeSwitcher.getNoTitleTheme(this)) {
             finish();

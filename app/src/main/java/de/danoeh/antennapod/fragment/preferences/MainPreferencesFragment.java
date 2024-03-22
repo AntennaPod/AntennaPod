@@ -17,13 +17,6 @@ import de.danoeh.antennapod.activity.BugReportActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.fragment.preferences.about.AboutFragment;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.ArrayUtils;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Locale;
 
 public class MainPreferencesFragment extends PreferenceFragmentCompat {
 
@@ -113,7 +106,8 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
                 }
         );
         findPreference(PREF_DOCUMENTATION).setOnPreferenceClickListener(preference -> {
-            IntentUtils.openInBrowser(getContext(), getLocalizedWebsiteLink() + "/documentation/");
+            IntentUtils.openInBrowser(getContext(),
+                    IntentUtils.getLocalizedWebsiteLink(getContext()) + "/documentation/");
             return true;
         });
         findPreference(PREF_VIEW_FORUM).setOnPreferenceClickListener(preference -> {
@@ -121,27 +115,14 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
             return true;
         });
         findPreference(PREF_CONTRIBUTE).setOnPreferenceClickListener(preference -> {
-            IntentUtils.openInBrowser(getContext(), getLocalizedWebsiteLink() + "/contribute/");
+            IntentUtils.openInBrowser(getContext(),
+                    IntentUtils.getLocalizedWebsiteLink(getContext()) + "/contribute/");
             return true;
         });
         findPreference(PREF_SEND_BUG_REPORT).setOnPreferenceClickListener(preference -> {
             startActivity(new Intent(getActivity(), BugReportActivity.class));
             return true;
         });
-    }
-
-    private String getLocalizedWebsiteLink() {
-        try (InputStream is = getContext().getAssets().open("website-languages.txt")) {
-            String[] languages = IOUtils.toString(is, StandardCharsets.UTF_8.name()).split("\n");
-            String deviceLanguage = Locale.getDefault().getLanguage();
-            if (ArrayUtils.contains(languages, deviceLanguage) && !"en".equals(deviceLanguage)) {
-                return "https://antennapod.org/" + deviceLanguage;
-            } else {
-                return "https://antennapod.org";
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private void setupSearch() {
