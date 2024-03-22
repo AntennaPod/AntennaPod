@@ -110,9 +110,9 @@ public class Rss2Generator implements FeedGenerator {
                 }
                 if (item.getMedia() != null) {
                     xml.startTag(null, "enclosure");
-                    xml.attribute(null, "url", item.getMedia().getDownload_url());
+                    xml.attribute(null, "url", item.getMedia().getDownloadUrl());
                     xml.attribute(null, "length", String.valueOf(item.getMedia().getSize()));
-                    xml.attribute(null, "type", item.getMedia().getMime_type());
+                    xml.attribute(null, "type", item.getMedia().getMimeType());
                     xml.endTag(null, "enclosure");
                 }
                 if (fundingList != null) {

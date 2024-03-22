@@ -133,7 +133,7 @@ public class Feed {
         if (filter != null) {
             this.itemfilter = new FeedItemFilter(filter);
         } else {
-            this.itemfilter = new FeedItemFilter(new String[0]);
+            this.itemfilter = new FeedItemFilter();
         }
         setSortOrder(sortOrder);
         this.lastUpdateFailed = lastUpdateFailed;
@@ -455,22 +455,22 @@ public class Feed {
         return id;
     }
 
-    public String getFile_url() {
+    public String getLocalFileUrl() {
         return localFileUrl;
     }
 
-    public void setFile_url(String fileUrl) {
+    public void setLocalFileUrl(String fileUrl) {
         this.localFileUrl = fileUrl;
         if (fileUrl == null) {
             downloaded = false;
         }
     }
 
-    public String getDownload_url() {
+    public String getDownloadUrl() {
         return downloadUrl;
     }
 
-    public void setDownload_url(String downloadUrl) {
+    public void setDownloadUrl(String downloadUrl) {
         this.downloadUrl = downloadUrl;
     }
 
@@ -509,12 +509,6 @@ public class Feed {
     @Nullable
     public FeedItemFilter getItemFilter() {
         return itemfilter;
-    }
-
-    public void setItemFilter(String[] properties) {
-        if (properties != null) {
-            this.itemfilter = new FeedItemFilter(properties);
-        }
     }
 
     @Nullable

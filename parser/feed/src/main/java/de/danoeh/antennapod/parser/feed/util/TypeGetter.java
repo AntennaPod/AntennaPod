@@ -29,7 +29,7 @@ public class TypeGetter {
 
     public Type getType(Feed feed) throws UnsupportedFeedtypeException {
         XmlPullParserFactory factory;
-        if (feed.getFile_url() != null) {
+        if (feed.getLocalFileUrl() != null) {
             Reader reader = null;
             try {
                 factory = XmlPullParserFactory.newInstance();
@@ -86,7 +86,7 @@ public class TypeGetter {
                 // XML document might actually be a HTML document -> try to parse as HTML
                 String rootElement = null;
                 try {
-                    Jsoup.parse(new File(feed.getFile_url()));
+                    Jsoup.parse(new File(feed.getLocalFileUrl()));
                     rootElement = "html";
                 } catch (IOException e1) {
                     e1.printStackTrace();
@@ -112,7 +112,7 @@ public class TypeGetter {
     private Reader createReader(Feed feed) {
         Reader reader;
         try {
-            reader = new XmlStreamReader(new File(feed.getFile_url()));
+            reader = new XmlStreamReader(new File(feed.getLocalFileUrl()));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return null;

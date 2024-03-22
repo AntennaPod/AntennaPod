@@ -53,8 +53,8 @@ public class FeedItemDuplicateGuesser {
     }
 
     private static boolean mimeTypeLooksSimilar(FeedMedia media1, FeedMedia media2) {
-        String mimeType1 = media1.getMime_type();
-        String mimeType2 = media2.getMime_type();
+        String mimeType1 = media1.getMimeType();
+        String mimeType2 = media2.getMimeType();
         if (mimeType1 == null || mimeType2 == null) {
             return true;
         }

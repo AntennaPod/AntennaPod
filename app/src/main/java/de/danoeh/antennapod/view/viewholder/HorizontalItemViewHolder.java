@@ -85,11 +85,11 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
                 setProgressBar(false, 0);
             }
 
-            if (DownloadServiceInterface.get().isDownloadingEpisode(media.getDownload_url())) {
-                float percent = 0.01f * DownloadServiceInterface.get().getProgress(media.getDownload_url());
+            if (DownloadServiceInterface.get().isDownloadingEpisode(media.getDownloadUrl())) {
+                float percent = 0.01f * DownloadServiceInterface.get().getProgress(media.getDownloadUrl());
                 circularProgressBar.setPercentage(Math.max(percent, 0.01f), item);
                 circularProgressBar.setIndeterminate(
-                        DownloadServiceInterface.get().isEpisodeQueued(media.getDownload_url()));
+                        DownloadServiceInterface.get().isEpisodeQueued(media.getDownloadUrl()));
             } else if (media.isDownloaded()) {
                 circularProgressBar.setPercentage(1, item); // Do not animate 100% -> 0%
                 circularProgressBar.setIndeterminate(false);

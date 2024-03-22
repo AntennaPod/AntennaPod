@@ -116,7 +116,7 @@ public class EpisodeDownloadWorker extends Worker {
                 nm.cancel(R.id.notification_downloading);
             }
         }
-        Log.d(TAG, "Worker for " + media.getDownload_url() + " returned.");
+        Log.d(TAG, "Worker for " + media.getDownloadUrl() + " returned.");
         return result;
     }
 
@@ -146,7 +146,7 @@ public class EpisodeDownloadWorker extends Worker {
         }
 
         if (dest.exists()) {
-            media.setFile_url(request.getDestination());
+            media.setLocalFileUrl(request.getDestination());
             try {
                 DBWriter.setFeedMedia(media).get();
             } catch (Exception e) {

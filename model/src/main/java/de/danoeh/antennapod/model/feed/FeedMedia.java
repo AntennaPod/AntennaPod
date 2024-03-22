@@ -239,7 +239,7 @@ public class FeedMedia implements Playable {
         return (CHECKED_ON_SIZE_BUT_UNKNOWN == this.size);
     }
 
-    public String getMime_type() {
+    public String getMimeType() {
         return mimeType;
     }
 
@@ -355,12 +355,16 @@ public class FeedMedia implements Playable {
     }
 
     @Override
-    public String getLocalMediaUrl() {
+    public String getLocalFileUrl() {
         return localFileUrl;
     }
 
     @Override
     public String getStreamUrl() {
+        return downloadUrl;
+    }
+
+    public String getDownloadUrl() {
         return downloadUrl;
     }
 
@@ -402,16 +406,8 @@ public class FeedMedia implements Playable {
         this.id = id;
     }
 
-    public String getFile_url() {
-        return localFileUrl;
-    }
-
     public boolean isDownloaded() {
         return downloaded;
-    }
-
-    public String getDownload_url() {
-        return downloadUrl;
     }
 
     public long getItemId() {
@@ -470,7 +466,7 @@ public class FeedMedia implements Playable {
         if (item != null) {
             return item.getImageLocation();
         } else if (hasEmbeddedPicture()) {
-            return FILENAME_PREFIX_EMBEDDED_COVER + getLocalMediaUrl();
+            return FILENAME_PREFIX_EMBEDDED_COVER + getLocalFileUrl();
         } else {
             return null;
         }
@@ -487,9 +483,9 @@ public class FeedMedia implements Playable {
         }
     }
 
-    public void setFile_url(String file_url) {
-        this.localFileUrl = file_url;
-        if (file_url == null) {
+    public void setLocalFileUrl(String fileUrl) {
+        this.localFileUrl = fileUrl;
+        if (fileUrl == null) {
             downloaded = false;
         }
     }
@@ -500,7 +496,7 @@ public class FeedMedia implements Playable {
             return;
         }
         try (MediaMetadataRetrieverCompat mmr = new MediaMetadataRetrieverCompat()) {
-            mmr.setDataSource(getLocalMediaUrl());
+            mmr.setDataSource(getLocalFileUrl());
             byte[] image = mmr.getEmbeddedPicture();
             if (image != null) {
                 hasEmbeddedPicture = Boolean.TRUE;

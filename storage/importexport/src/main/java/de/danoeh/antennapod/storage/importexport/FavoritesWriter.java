@@ -87,7 +87,7 @@ public class FavoritesWriter {
                 .replace("{FEED_IMG}", feed.getImageUrl())
                 .replace("{FEED_TITLE}", feed.getTitle())
                 .replace("{FEED_LINK}", feed.getLink())
-                .replace("{FEED_WEBSITE}", feed.getDownload_url());
+                .replace("{FEED_WEBSITE}", feed.getDownloadUrl());
 
         writer.append(feedInfo);
     }
@@ -99,8 +99,8 @@ public class FavoritesWriter {
         } else {
             favItem = favItem.replace("{FAV_WEBSITE}", "");
         }
-        if (item.getMedia() != null && item.getMedia().getDownload_url() != null) {
-            favItem = favItem.replace("{FAV_MEDIA}", item.getMedia().getDownload_url());
+        if (item.getMedia() != null && item.getMedia().getDownloadUrl() != null) {
+            favItem = favItem.replace("{FAV_MEDIA}", item.getMedia().getDownloadUrl());
         } else {
             favItem = favItem.replace("{FAV_MEDIA}", "");
         }

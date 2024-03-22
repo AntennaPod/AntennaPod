@@ -35,7 +35,7 @@ public class HtmlWriter {
             writer.append(" <span><a href=\"");
             writer.append(feed.getLink());
             writer.append("\">Website</a> • <a href=\"");
-            writer.append(feed.getDownload_url());
+            writer.append(feed.getDownloadUrl());
             writer.append("\">Feed</a></span></p></div></li>\n");
         }
         writer.append(templateParts[1]);

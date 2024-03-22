@@ -88,7 +88,7 @@ public interface Playable extends Parcelable, Serializable {
      * Returns an url to a local file that can be played or null if this file
      * does not exist.
      */
-    String getLocalMediaUrl();
+    String getLocalFileUrl();
 
     /**
      * Returns an url to a file that can be streamed by the player or null if

@@ -30,14 +30,14 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
         } else {
             workRequest.setConstraints(getConstraints());
         }
-        WorkManager.getInstance(context).enqueueUniqueWork(item.getMedia().getDownload_url(),
+        WorkManager.getInstance(context).enqueueUniqueWork(item.getMedia().getDownloadUrl(),
                 ExistingWorkPolicy.KEEP, workRequest.build());
     }
 
     public void download(Context context, FeedItem item) {
         OneTimeWorkRequest.Builder workRequest = getRequest(context, item);
         workRequest.setConstraints(getConstraints());
-        WorkManager.getInstance(context).enqueueUniqueWork(item.getMedia().getDownload_url(),
+        WorkManager.getInstance(context).enqueueUniqueWork(item.getMedia().getDownloadUrl(),
                 ExistingWorkPolicy.KEEP, workRequest.build());
     }
 
@@ -45,7 +45,7 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
         OneTimeWorkRequest.Builder workRequest = new OneTimeWorkRequest.Builder(EpisodeDownloadWorker.class)
                 .setInitialDelay(0L, TimeUnit.MILLISECONDS)
                 .addTag(DownloadServiceInterface.WORK_TAG)
-                .addTag(DownloadServiceInterface.WORK_TAG_EPISODE_URL + item.getMedia().getDownload_url());
+                .addTag(DownloadServiceInterface.WORK_TAG_EPISODE_URL + item.getMedia().getDownloadUrl());
         if (!item.isTagged(FeedItem.TAG_QUEUE) && UserPreferences.enqueueDownloadedEpisodes()) {
             DBWriter.addQueueItem(context, false, item.getId());
             workRequest.addTag(DownloadServiceInterface.WORK_DATA_WAS_QUEUED);
@@ -68,7 +68,7 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
     public void cancel(Context context, FeedMedia media) {
         // This needs to be done here, not in the worker. Reason: The worker might or might not be running.
         DBWriter.deleteFeedMediaOfItem(context, media.getId()); // Remove partially downloaded file
-        String tag = WORK_TAG_EPISODE_URL + media.getDownload_url();
+        String tag = WORK_TAG_EPISODE_URL + media.getDownloadUrl();
         Future<List<WorkInfo>> future = WorkManager.getInstance(context).getWorkInfosByTag(tag);
         Observable.fromFuture(future)
                 .subscribeOn(Schedulers.io())

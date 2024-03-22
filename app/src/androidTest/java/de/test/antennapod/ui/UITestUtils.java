@@ -138,7 +138,7 @@ public class UITestUtils {
                 }
             }
             feed.setItems(items);
-            feed.setDownload_url(hostFeed(feed));
+            feed.setDownloadUrl(hostFeed(feed));
             hostedFeeds.add(feed);
         }
         feedDataHosted = true;
@@ -174,8 +174,8 @@ public class UITestUtils {
                 for (FeedItem item : feed.getItems()) {
                     if (item.hasMedia()) {
                         FeedMedia media = item.getMedia();
-                        int fileId = Integer.parseInt(StringUtils.substringAfter(media.getDownload_url(), "files/"));
-                        media.setFile_url(server.accessFile(fileId).getAbsolutePath());
+                        int fileId = Integer.parseInt(StringUtils.substringAfter(media.getDownloadUrl(), "files/"));
+                        media.setLocalFileUrl(server.accessFile(fileId).getAbsolutePath());
                         media.setDownloaded(true);
                     }
                 }

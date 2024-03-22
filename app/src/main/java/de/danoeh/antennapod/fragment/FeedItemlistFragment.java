@@ -276,7 +276,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             FeedUpdateManager.runOnceOrAsk(getContext(), feed);
         } else if (item.getItemId() == R.id.refresh_complete_item) {
             new Thread(() -> {
-                feed.setNextPageLink(feed.getDownload_url());
+                feed.setNextPageLink(feed.getDownloadUrl());
                 feed.setPageNr(0);
                 try {
                     DBWriter.resetPagedFeedPage(feed).get();

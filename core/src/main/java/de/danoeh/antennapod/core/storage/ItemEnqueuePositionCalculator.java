@@ -74,7 +74,7 @@ class ItemEnqueuePositionCalculator {
         }
         return curItem != null
                 && curItem.getMedia() != null
-                && DownloadServiceInterface.get().isDownloadingEpisode(curItem.getMedia().getDownload_url());
+                && DownloadServiceInterface.get().isDownloadingEpisode(curItem.getMedia().getDownloadUrl());
     }
 
     private static int getCurrentlyPlayingPosition(@NonNull List<FeedItem> curQueue,

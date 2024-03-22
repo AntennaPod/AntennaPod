@@ -148,11 +148,11 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
             itemView.setBackgroundResource(ThemeUtils.getDrawableFromAttr(activity, R.attr.selectableItemBackground));
         }
 
-        if (DownloadServiceInterface.get().isDownloadingEpisode(media.getDownload_url())) {
-            float percent = 0.01f * DownloadServiceInterface.get().getProgress(media.getDownload_url());
+        if (DownloadServiceInterface.get().isDownloadingEpisode(media.getDownloadUrl())) {
+            float percent = 0.01f * DownloadServiceInterface.get().getProgress(media.getDownloadUrl());
             secondaryActionProgress.setPercentage(Math.max(percent, 0.01f), item);
             secondaryActionProgress.setIndeterminate(
-                    DownloadServiceInterface.get().isEpisodeQueued(media.getDownload_url()));
+                    DownloadServiceInterface.get().isEpisodeQueued(media.getDownloadUrl()));
         } else if (media.isDownloaded()) {
             secondaryActionProgress.setPercentage(1, item); // Do not animate 100% -> 0%
             secondaryActionProgress.setIndeterminate(false);

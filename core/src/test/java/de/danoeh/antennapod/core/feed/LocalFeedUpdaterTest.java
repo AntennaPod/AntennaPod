@@ -112,7 +112,7 @@ public class LocalFeedUpdaterTest {
         // verify new feed in database
         verifySingleFeedInDatabaseAndItemCount(2);
         Feed feedAfter = verifySingleFeedInDatabase();
-        assertEquals(FEED_URL, feedAfter.getDownload_url());
+        assertEquals(FEED_URL, feedAfter.getDownloadUrl());
     }
 
     /**

@@ -416,8 +416,8 @@ public class PodDBAdapter {
         values.put(KEY_LANGUAGE, feed.getLanguage());
         values.put(KEY_IMAGE_URL, feed.getImageUrl());
 
-        values.put(KEY_FILE_URL, feed.getFile_url());
-        values.put(KEY_DOWNLOAD_URL, feed.getDownload_url());
+        values.put(KEY_FILE_URL, feed.getLocalFileUrl());
+        values.put(KEY_DOWNLOAD_URL, feed.getDownloadUrl());
         values.put(KEY_DOWNLOADED, feed.isDownloaded());
         values.put(KEY_LASTUPDATE, feed.getLastModified());
         values.put(KEY_TYPE, feed.getType());
@@ -493,10 +493,10 @@ public class PodDBAdapter {
         values.put(KEY_DURATION, media.getDuration());
         values.put(KEY_POSITION, media.getPosition());
         values.put(KEY_SIZE, media.getSize());
-        values.put(KEY_MIME_TYPE, media.getMime_type());
-        values.put(KEY_DOWNLOAD_URL, media.getDownload_url());
+        values.put(KEY_MIME_TYPE, media.getMimeType());
+        values.put(KEY_DOWNLOAD_URL, media.getDownloadUrl());
         values.put(KEY_DOWNLOADED, media.isDownloaded());
-        values.put(KEY_FILE_URL, media.getFile_url());
+        values.put(KEY_FILE_URL, media.getLocalFileUrl());
         values.put(KEY_HAS_EMBEDDED_PICTURE, media.hasEmbeddedPicture());
         values.put(KEY_LAST_PLAYED_TIME, media.getLastPlayedTime());
 

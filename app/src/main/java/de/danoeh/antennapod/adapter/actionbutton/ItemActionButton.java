@@ -39,7 +39,7 @@ public abstract class ItemActionButton {
             return new MarkAsPlayedActionButton(item);
         }
 
-        final boolean isDownloadingMedia = DownloadServiceInterface.get().isDownloadingEpisode(media.getDownload_url());
+        final boolean isDownloadingMedia = DownloadServiceInterface.get().isDownloadingEpisode(media.getDownloadUrl());
         if (PlaybackStatus.isCurrentlyPlaying(media)) {
             return new PauseActionButton(item);
         } else if (item.getFeed().isLocalFeed()) {

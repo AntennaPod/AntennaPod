@@ -54,7 +54,7 @@ public class LocalFeedUpdater {
     public static void updateFeed(Feed feed, Context context,
                                   @Nullable UpdaterProgressListener updaterProgressListener) {
         try {
-            String uriString = feed.getDownload_url().replace(Feed.PREFIX_LOCAL_FOLDER, "");
+            String uriString = feed.getDownloadUrl().replace(Feed.PREFIX_LOCAL_FOLDER, "");
             DocumentFile documentFolder = DocumentFile.fromTreeUri(context, Uri.parse(uriString));
             if (documentFolder == null) {
                 throw new IOException("Unable to retrieve document tree. "
@@ -178,7 +178,7 @@ public class LocalFeedUpdater {
 
         for (FeedItem existingItem : feed.getItems()) {
             if (existingItem.getMedia() != null
-                    && existingItem.getMedia().getDownload_url().equals(file.getUri().toString())
+                    && existingItem.getMedia().getDownloadUrl().equals(file.getUri().toString())
                     && file.getLength() == existingItem.getMedia().getSize()) {
                 // We found an old file that we already scanned. Re-use metadata.
                 item.updateFromOther(existingItem);

@@ -51,7 +51,7 @@ public class MediaDownloadedHandler implements Runnable {
         // media.setDownloaded modifies played state
         boolean broadcastUnreadStateUpdate = media.getItem() != null && media.getItem().isNew();
         media.setDownloaded(true);
-        media.setFile_url(request.getDestination());
+        media.setLocalFileUrl(request.getDestination());
         media.setSize(new File(request.getDestination()).length());
         media.checkEmbeddedPicture(); // enforce check
 
@@ -70,7 +70,7 @@ public class MediaDownloadedHandler implements Runnable {
         // Get duration
         String durationStr = null;
         try (MediaMetadataRetrieverCompat mmr = new MediaMetadataRetrieverCompat()) {
-            mmr.setDataSource(media.getFile_url());
+            mmr.setDataSource(media.getLocalFileUrl());
             durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
             media.setDuration(Integer.parseInt(durationStr));
             Log.d(TAG, "Duration of file is " + media.getDuration());
