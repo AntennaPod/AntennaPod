@@ -185,8 +185,7 @@
                 <data android:scheme="https"/>
 
                 <data android:host="*"/>
-                <data android:pathPattern=".*.xml" />
-                <data android:pathPattern=".*.opml" />
+                <data android:pathPattern="/.*.opml" />
             </intent-filter>
         </activity>
         <activity
@@ -232,9 +231,9 @@
                 <data android:scheme="http"/>
                 <data android:scheme="https"/>
                 <data android:host="*"/>
-                <data android:pathPattern=".*\\.xml"/>
-                <data android:pathPattern=".*\\.rss"/>
-                <data android:pathPattern=".*\\.atom"/>
+                <data android:pathPattern="/.*\\.xml"/>
+                <data android:pathPattern="/.*\\.rss"/>
+                <data android:pathPattern="/.*\\.atom"/>
             </intent-filter>
 
             <!-- Feedburner URLs -->
@@ -287,7 +286,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:pathPattern=".*\\..*/.*" />
+                <data android:pathPattern="/.*\\..*/.*" />
                 <data android:host="subscribeonandroid.com" />
                 <data android:host="www.subscribeonandroid.com" />
                 <data android:host="*subscribeonandroid.com" />
