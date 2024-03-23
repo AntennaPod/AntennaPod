@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,7 +38,6 @@ import de.danoeh.antennapod.storage.importexport.FavoritesWriter;
 import de.danoeh.antennapod.storage.importexport.HtmlWriter;
 import de.danoeh.antennapod.storage.importexport.OpmlWriter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -363,7 +363,9 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void forceRestart() {
-        Intent intent = new MainActivityStarter(getContext()).getIntent();
+        PackageManager pm = getContext().getPackageManager();
+        Intent intent = pm.getLaunchIntentForPackage(getContext().getPackageName());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getContext().getApplicationContext().startActivity(intent);
         Runtime.getRuntime().exit(0);
     }
