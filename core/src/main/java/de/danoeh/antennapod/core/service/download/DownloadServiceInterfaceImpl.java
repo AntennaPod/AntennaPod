@@ -67,7 +67,9 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
     @Override
     public void cancel(Context context, FeedMedia media) {
         // This needs to be done here, not in the worker. Reason: The worker might or might not be running.
-        DBWriter.deleteFeedMediaOfItem(context, media.getId()); // Remove partially downloaded file
+        if (media.fileExists()) {
+            DBWriter.deleteFeedMediaOfItem(context, media); // Remove partially downloaded file
+        }
         String tag = WORK_TAG_EPISODE_URL + media.getDownloadUrl();
         Future<List<WorkInfo>> future = WorkManager.getInstance(context).getWorkInfosByTag(tag);
         Observable.fromFuture(future)

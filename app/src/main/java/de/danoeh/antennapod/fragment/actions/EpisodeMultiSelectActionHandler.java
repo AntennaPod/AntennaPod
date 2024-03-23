@@ -104,7 +104,7 @@ public class EpisodeMultiSelectActionHandler {
         for (FeedItem feedItem : items) {
             if (feedItem.hasMedia() && feedItem.getMedia().isDownloaded()) {
                 countHasMedia++;
-                DBWriter.deleteFeedMediaOfItem(activity, feedItem.getMedia().getId());
+                DBWriter.deleteFeedMediaOfItem(activity, feedItem.getMedia());
             }
         }
         showMessage(R.plurals.deleted_multi_episode_batch_label, countHasMedia);
