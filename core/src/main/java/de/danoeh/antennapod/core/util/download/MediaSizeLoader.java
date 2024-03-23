@@ -28,14 +28,14 @@ public abstract class MediaSizeLoader {
             }
             long size = Integer.MIN_VALUE;
             if (media.isDownloaded()) {
-                File mediaFile = new File(media.getLocalMediaUrl());
+                File mediaFile = new File(media.getLocalFileUrl());
                 if (mediaFile.exists()) {
                     size = mediaFile.length();
                 }
             } else if (!media.checkedOnSizeButUnknown()) {
                 // only query the network if we haven't already checked
 
-                String url = media.getDownload_url();
+                String url = media.getDownloadUrl();
                 if (TextUtils.isEmpty(url)) {
                     emitter.onSuccess(0L);
                     return;

@@ -24,7 +24,7 @@ public class DownloadRequestCreator {
         if (dest.exists()) {
             dest.delete();
         }
-        Log.d(TAG, "Requesting download of url " + feed.getDownload_url());
+        Log.d(TAG, "Requesting download of url " + feed.getDownloadUrl());
 
         String username = (feed.getPreferences() != null) ? feed.getPreferences().getUsername() : null;
         String password = (feed.getPreferences() != null) ? feed.getPreferences().getPassword() : null;
@@ -36,10 +36,10 @@ public class DownloadRequestCreator {
 
     public static DownloadRequestBuilder create(FeedMedia media) {
         final boolean partiallyDownloadedFileExists =
-                media.getFile_url() != null && new File(media.getFile_url()).exists();
+                media.getLocalFileUrl() != null && new File(media.getLocalFileUrl()).exists();
         File dest;
         if (partiallyDownloadedFileExists) {
-            dest = new File(media.getFile_url());
+            dest = new File(media.getLocalFileUrl());
         } else {
             dest = new File(getMediafilePath(media), getMediafilename(media));
         }
@@ -47,7 +47,7 @@ public class DownloadRequestCreator {
         if (dest.exists() && !partiallyDownloadedFileExists) {
             dest = findUnusedFile(dest);
         }
-        Log.d(TAG, "Requesting download of url " + media.getDownload_url());
+        Log.d(TAG, "Requesting download of url " + media.getDownloadUrl());
 
         String username = (media.getItem().getFeed().getPreferences() != null)
                 ? media.getItem().getFeed().getPreferences().getUsername() : null;
@@ -83,7 +83,7 @@ public class DownloadRequestCreator {
     }
 
     private static String getFeedfileName(Feed feed) {
-        String filename = feed.getDownload_url();
+        String filename = feed.getDownloadUrl();
         if (feed.getTitle() != null && !feed.getTitle().isEmpty()) {
             filename = feed.getTitle();
         }
@@ -105,7 +105,7 @@ public class DownloadRequestCreator {
             titleBaseFilename = FileNameGenerator.generateFileName(title);
         }
 
-        String urlBaseFilename = URLUtil.guessFileName(media.getDownload_url(), null, media.getMime_type());
+        String urlBaseFilename = URLUtil.guessFileName(media.getDownloadUrl(), null, media.getMimeType());
 
         String baseFilename;
         if (!titleBaseFilename.equals("")) {

@@ -54,7 +54,7 @@ public class OpmlWriter {
             if (feed.getType() != null) {
                 xs.attribute(null, OpmlSymbols.TYPE, feed.getType());
             }
-            xs.attribute(null, OpmlSymbols.XMLURL, feed.getDownload_url());
+            xs.attribute(null, OpmlSymbols.XMLURL, feed.getDownloadUrl());
             if (feed.getLink() != null) {
                 xs.attribute(null, OpmlSymbols.HTMLURL, feed.getLink());
             }

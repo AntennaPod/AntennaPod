@@ -97,8 +97,8 @@ public class MediaInfoCreator {
                 if (!TextUtils.isEmpty(feed.getAuthor())) {
                     metadata.putString(MediaMetadata.KEY_ARTIST, feed.getAuthor());
                 }
-                if (!TextUtils.isEmpty(feed.getDownload_url())) {
-                    metadata.putString(CastUtils.KEY_FEED_URL, feed.getDownload_url());
+                if (!TextUtils.isEmpty(feed.getDownloadUrl())) {
+                    metadata.putString(CastUtils.KEY_FEED_URL, feed.getDownloadUrl());
                 }
                 if (!TextUtils.isEmpty(feed.getLink())) {
                     metadata.putString(CastUtils.KEY_FEED_WEBSITE, feed.getLink());
@@ -124,7 +124,7 @@ public class MediaInfoCreator {
         metadata.putString(CastUtils.KEY_STREAM_URL, media.getStreamUrl());
 
         MediaInfo.Builder builder = new MediaInfo.Builder(media.getStreamUrl())
-                .setContentType(media.getMime_type())
+                .setContentType(media.getMimeType())
                 .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
                 .setMetadata(metadata);
         if (media.getDuration() > 0) {

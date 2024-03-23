@@ -239,7 +239,7 @@ public class EpisodeAction {
         private String guid;
 
         public Builder(FeedItem item, Action action) {
-            this(item.getFeed().getDownload_url(), item.getMedia().getDownload_url(), action);
+            this(item.getFeed().getDownloadUrl(), item.getMedia().getDownloadUrl(), action);
             this.guid(item.getItemIdentifier());
         }
 

@@ -116,25 +116,25 @@ public class DBWriter {
         Log.i(TAG, String.format(Locale.US, "Requested to delete FeedMedia [id=%d, title=%s, downloaded=%s",
                 media.getId(), media.getEpisodeTitle(), media.isDownloaded()));
         boolean localDelete = false;
-        if (media.getFile_url() != null && media.getFile_url().startsWith("content://")) {
+        if (media.getLocalFileUrl() != null && media.getLocalFileUrl().startsWith("content://")) {
             // Local feed
-            DocumentFile documentFile = DocumentFile.fromSingleUri(context, Uri.parse(media.getFile_url()));
+            DocumentFile documentFile = DocumentFile.fromSingleUri(context, Uri.parse(media.getLocalFileUrl()));
             if (documentFile == null || !documentFile.exists() || !documentFile.delete()) {
                 EventBus.getDefault().post(new MessageEvent(context.getString(R.string.delete_local_failed)));
                 return false;
             }
-            media.setFile_url(null);
+            media.setLocalFileUrl(null);
             localDelete = true;
-        } else if (media.getFile_url() != null) {
+        } else if (media.getLocalFileUrl() != null) {
             // delete downloaded media file
-            File mediaFile = new File(media.getFile_url());
+            File mediaFile = new File(media.getLocalFileUrl());
             if (mediaFile.exists() && !mediaFile.delete()) {
                 MessageEvent evt = new MessageEvent(context.getString(R.string.delete_failed));
                 EventBus.getDefault().post(evt);
                 return false;
             }
             media.setDownloaded(false);
-            media.setFile_url(null);
+            media.setLocalFileUrl(null);
             media.setHasEmbeddedPicture(false);
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
@@ -192,7 +192,7 @@ public class DBWriter {
             adapter.close();
 
             if (!feed.isLocalFeed()) {
-                SynchronizationQueueSink.enqueueFeedRemovedIfSynchronizationIsActive(context, feed.getDownload_url());
+                SynchronizationQueueSink.enqueueFeedRemovedIfSynchronizationIsActive(context, feed.getDownloadUrl());
             }
             EventBus.getDefault().post(new FeedListUpdateEvent(feed));
         });
@@ -802,7 +802,7 @@ public class DBWriter {
 
             for (Feed feed : feeds) {
                 if (!feed.isLocalFeed()) {
-                    SynchronizationQueueSink.enqueueFeedAddedIfSynchronizationIsActive(context, feed.getDownload_url());
+                    SynchronizationQueueSink.enqueueFeedAddedIfSynchronizationIsActive(context, feed.getDownloadUrl());
                 }
             }
 

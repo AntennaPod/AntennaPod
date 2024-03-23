@@ -48,9 +48,9 @@ public class RssParserTest {
             assertTrue(item.hasMedia());
             FeedMedia media = item.getMedia();
             //noinspection ConstantConditions
-            assertEquals("http://example.com/media-" + i, media.getDownload_url());
+            assertEquals("http://example.com/media-" + i, media.getDownloadUrl());
             assertEquals(1024 * 1024, media.getSize());
-            assertEquals("audio/mp3", media.getMime_type());
+            assertEquals("audio/mp3", media.getMimeType());
             // chapters
             assertNull(item.getChapters());
         }
@@ -81,7 +81,7 @@ public class RssParserTest {
         FeedItem feedItem = feed.getItems().get(0);
         //noinspection ConstantConditions
         assertEquals(MediaType.VIDEO, feedItem.getMedia().getMediaType());
-        assertEquals("https://www.example.com/file.mp4", feedItem.getMedia().getDownload_url());
+        assertEquals("https://www.example.com/file.mp4", feedItem.getMedia().getDownloadUrl());
     }
 
     @Test

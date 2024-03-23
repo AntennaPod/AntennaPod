@@ -211,7 +211,7 @@ public class DbCleanupTests {
         FeedMedia m = feeds.get(0).getItems().get(0).getMedia();
         //noinspection ConstantConditions
         m.setDownloaded(true);
-        m.setFile_url("file");
+        m.setLocalFileUrl("file");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.setMedia(m);

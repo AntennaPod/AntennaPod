@@ -382,7 +382,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private FeedHandlerResult doParseFeed(String destination) throws Exception {
         FeedHandler handler = new FeedHandler();
         Feed feed = new Feed(selectedDownloadUrl, null);
-        feed.setFile_url(destination);
+        feed.setLocalFileUrl(destination);
         File destinationFile = new File(destination);
         try {
             return handler.parseFeed(feed);
@@ -485,7 +485,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             final List<String> alternateUrlsList = new ArrayList<>();
             final List<String> alternateUrlsTitleList = new ArrayList<>();
 
-            alternateUrlsList.add(feed.getDownload_url());
+            alternateUrlsList.add(feed.getDownloadUrl());
             alternateUrlsTitleList.add(feed.getTitle());
 
 
@@ -577,7 +577,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             return 0;
         }
         for (Feed f : feeds) {
-            if (f.getDownload_url().equals(selectedDownloadUrl)) {
+            if (f.getDownloadUrl().equals(selectedDownloadUrl)) {
                 return f.getId();
             }
         }

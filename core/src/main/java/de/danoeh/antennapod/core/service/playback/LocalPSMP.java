@@ -175,10 +175,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 } else {
                     mediaPlayer.setDataSource(media.getStreamUrl());
                 }
-            } else if (media.getLocalMediaUrl() != null && new File(media.getLocalMediaUrl()).canRead()) {
-                mediaPlayer.setDataSource(media.getLocalMediaUrl());
+            } else if (media.getLocalFileUrl() != null && new File(media.getLocalFileUrl()).canRead()) {
+                mediaPlayer.setDataSource(media.getLocalFileUrl());
             } else {
-                throw new IOException("Unable to read local file " + media.getLocalMediaUrl());
+                throw new IOException("Unable to read local file " + media.getLocalFileUrl());
             }
             UiModeManager uiModeManager = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
             if (uiModeManager.getCurrentModeType() != Configuration.UI_MODE_TYPE_CAR) {

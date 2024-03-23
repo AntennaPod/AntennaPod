@@ -132,7 +132,7 @@ public class CastUtils {
             return false;
         }
         Feed feed = fi.getFeed();
-        return feed != null && TextUtils.equals(metadata.getString(KEY_FEED_URL), feed.getDownload_url());
+        return feed != null && TextUtils.equals(metadata.getString(KEY_FEED_URL), feed.getDownloadUrl());
     }
 
     /**

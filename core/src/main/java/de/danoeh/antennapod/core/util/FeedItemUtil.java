@@ -27,7 +27,7 @@ public class FeedItemUtil {
     public static int indexOfItemWithDownloadUrl(List<FeedItem> items, String downloadUrl) {
         for (int i = 0; i < items.size(); i++) {
             FeedItem item = items.get(i);
-            if (item != null && item.getMedia() != null && item.getMedia().getDownload_url().equals(downloadUrl)) {
+            if (item != null && item.getMedia() != null && item.getMedia().getDownloadUrl().equals(downloadUrl)) {
                 return i;
             }
         }

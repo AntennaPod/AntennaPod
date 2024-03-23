@@ -39,7 +39,7 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
     @Override
     public FeedHandlerResult call() {
         Feed feed = new Feed(request.getSource(), request.getLastModified());
-        feed.setFile_url(request.getDestination());
+        feed.setLocalFileUrl(request.getDestination());
         feed.setId(request.getFeedfileId());
         feed.setDownloaded(true);
         feed.setPreferences(new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL,
@@ -57,7 +57,7 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
             Log.d(TAG, feed.getTitle() + " parsed");
             checkFeedData(feed);
             if (TextUtils.isEmpty(feed.getImageUrl())) {
-                feed.setImageUrl(Feed.PREFIX_GENERATIVE_COVER + feed.getDownload_url());
+                feed.setImageUrl(Feed.PREFIX_GENERATIVE_COVER + feed.getDownloadUrl());
             }
         } catch (SAXException | IOException | ParserConfigurationException e) {
             successful = false;

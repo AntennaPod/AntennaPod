@@ -47,9 +47,9 @@ public class AtomParserTest {
             assertTrue(item.hasMedia());
             FeedMedia media = item.getMedia();
             //noinspection ConstantConditions
-            assertEquals("http://example.com/media-" + i, media.getDownload_url());
+            assertEquals("http://example.com/media-" + i, media.getDownloadUrl());
             assertEquals(1024 * 1024, media.getSize());
-            assertEquals("audio/mp3", media.getMime_type());
+            assertEquals("audio/mp3", media.getMimeType());
             // chapters
             assertNull(item.getChapters());
         }

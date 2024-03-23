@@ -81,7 +81,7 @@ public final class ChapterImageModelLoader implements ModelLoader<EmbeddedChapte
                         Uri uri = Uri.parse(image.getMedia().getStreamUrl());
                         stream = new BufferedInputStream(context.getContentResolver().openInputStream(uri));
                     } else {
-                        File localFile = new File(image.getMedia().getLocalMediaUrl());
+                        File localFile = new File(image.getMedia().getLocalFileUrl());
                         stream = new BufferedInputStream(new FileInputStream(localFile));
                     }
                     IOUtils.skip(stream, image.getPosition());

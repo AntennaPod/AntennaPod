@@ -92,8 +92,8 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
     private final View.OnClickListener copyUrlToClipboard = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (feed != null && feed.getDownload_url() != null) {
-                String url = feed.getDownload_url();
+            if (feed != null && feed.getDownloadUrl() != null) {
+                String url = feed.getDownloadUrl();
                 ClipData clipData = ClipData.newPlainText(url, url);
                 android.content.ClipboardManager cm = (android.content.ClipboardManager) getContext()
                         .getSystemService(Context.CLIPBOARD_SERVICE);
@@ -198,7 +198,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
     private void showFeed() {
         Log.d(TAG, "Language is " + feed.getLanguage());
         Log.d(TAG, "Author is " + feed.getAuthor());
-        Log.d(TAG, "URL is " + feed.getDownload_url());
+        Log.d(TAG, "URL is " + feed.getDownloadUrl());
         Glide.with(this)
                 .load(feed.getImageUrl())
                 .apply(new RequestOptions()
@@ -227,7 +227,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
             txtvAuthorHeader.setText(feed.getAuthor());
         }
 
-        txtvUrl.setText(feed.getDownload_url());
+        txtvUrl.setText(feed.getDownloadUrl());
         txtvUrl.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_paperclip, 0);
 
         if (feed.getPaymentLinks() == null || feed.getPaymentLinks().size() == 0) {
@@ -309,8 +309,8 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
             new EditUrlSettingsDialog(getActivity(), feed) {
                 @Override
                 protected void setUrl(String url) {
-                    feed.setDownload_url(url);
-                    txtvUrl.setText(feed.getDownload_url());
+                    feed.setDownloadUrl(url);
+                    txtvUrl.setText(feed.getDownloadUrl());
                     txtvUrl.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_paperclip, 0);
                 }
             }.show();
@@ -339,7 +339,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
             if (documentFile == null) {
                 throw new IllegalArgumentException("Unable to retrieve document tree");
             }
-            feed.setDownload_url(Feed.PREFIX_LOCAL_FOLDER + uri.toString());
+            feed.setDownloadUrl(Feed.PREFIX_LOCAL_FOLDER + uri.toString());
             DBTasks.updateFeed(getContext(), feed, true);
         })
                 .subscribeOn(Schedulers.io())

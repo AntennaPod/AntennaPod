@@ -125,10 +125,10 @@ public class ChapterUtils {
 
     private static CountingInputStream openStream(Playable playable, Context context) throws IOException {
         if (playable.localFileAvailable()) {
-            if (playable.getLocalMediaUrl() == null) {
+            if (playable.getLocalFileUrl() == null) {
                 throw new IOException("No local url");
             }
-            File source = new File(playable.getLocalMediaUrl());
+            File source = new File(playable.getLocalFileUrl());
             if (!source.exists()) {
                 throw new IOException("Local file does not exist");
             }

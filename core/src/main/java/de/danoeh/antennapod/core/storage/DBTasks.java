@@ -98,7 +98,7 @@ public final class DBTasks {
     public static void notifyMissingFeedMediaFile(final Context context, final FeedMedia media) {
         Log.i(TAG, "The feedmanager was notified about a missing episode. It will update its database now.");
         media.setDownloaded(false);
-        media.setFile_url(null);
+        media.setLocalFileUrl(null);
         DBWriter.setFeedMedia(media);
         EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
         EventBus.getDefault().post(new MessageEvent(context.getString(R.string.error_file_not_found)));
@@ -369,7 +369,7 @@ public final class DBTasks {
     private static String duplicateEpisodeDetails(FeedItem item) {
         return "Title: " + item.getTitle()
                 + "\nID: " + item.getItemIdentifier()
-                + ((item.getMedia() == null) ? "" : "\nURL: " + item.getMedia().getDownload_url());
+                + ((item.getMedia() == null) ? "" : "\nURL: " + item.getMedia().getDownloadUrl());
     }
 
     /**

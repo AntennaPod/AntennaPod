@@ -67,7 +67,7 @@ public class HttpDownloaderTest {
         if (deleteExisting) {
             Log.d(TAG, "Deleting file: " + file.delete());
         }
-        feedfile.setFile_url(fileUrl);
+        feedfile.setLocalFileUrl(fileUrl);
         return feedfile;
     }
 
@@ -78,7 +78,7 @@ public class HttpDownloaderTest {
     private Downloader download(String url, String title, boolean expectedResult, boolean deleteExisting,
                                 String username, String password) {
         Feed feedFile = setupFeedFile(url, title, deleteExisting);
-        DownloadRequest request = new DownloadRequest(feedFile.getFile_url(), url, title, 0, Feed.FEEDFILETYPE_FEED,
+        DownloadRequest request = new DownloadRequest(feedFile.getLocalFileUrl(), url, title, 0, Feed.FEEDFILETYPE_FEED,
                 username, password, null, false);
         Downloader downloader = new HttpDownloader(request);
         downloader.call();
@@ -86,7 +86,7 @@ public class HttpDownloaderTest {
         assertNotNull(status);
         assertEquals(expectedResult, status.isSuccessful());
         // the file should not exist if the download has failed and deleteExisting was true
-        assertTrue(!deleteExisting || new File(feedFile.getFile_url()).exists() == expectedResult);
+        assertTrue(!deleteExisting || new File(feedFile.getLocalFileUrl()).exists() == expectedResult);
         return downloader;
     }
 
@@ -114,8 +114,8 @@ public class HttpDownloaderTest {
     public void testCancel() {
         final String url = httpServer.getBaseUrl() + "/delay/3";
         Feed feedFile = setupFeedFile(url, "delay", true);
-        final Downloader downloader = new HttpDownloader(new DownloadRequest(feedFile.getFile_url(), url, "delay", 0,
-                Feed.FEEDFILETYPE_FEED, null, null, null, false));
+        final Downloader downloader = new HttpDownloader(new DownloadRequest(feedFile.getLocalFileUrl(),
+                url, "delay", 0, Feed.FEEDFILETYPE_FEED, null, null, null, false));
         Thread t = new Thread() {
             @Override
             public void run() {

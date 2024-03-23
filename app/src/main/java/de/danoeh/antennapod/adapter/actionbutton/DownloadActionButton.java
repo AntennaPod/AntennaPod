@@ -68,7 +68,7 @@ public class DownloadActionButton extends ItemActionButton {
     }
 
     private boolean shouldNotDownload(@NonNull FeedMedia media) {
-        boolean isDownloading = DownloadServiceInterface.get().isDownloadingEpisode(media.getDownload_url());
+        boolean isDownloading = DownloadServiceInterface.get().isDownloadingEpisode(media.getDownloadUrl());
         return isDownloading || media.isDownloaded();
     }
 }

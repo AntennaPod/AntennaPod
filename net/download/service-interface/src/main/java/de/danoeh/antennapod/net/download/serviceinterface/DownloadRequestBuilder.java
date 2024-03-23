@@ -21,7 +21,7 @@ public class DownloadRequestBuilder {
 
     public DownloadRequestBuilder(@NonNull String destination, @NonNull FeedMedia media) {
         this.destination = destination;
-        this.source = UrlChecker.prepareUrl(media.getDownload_url());
+        this.source = UrlChecker.prepareUrl(media.getDownloadUrl());
         this.title = media.getHumanReadableIdentifier();
         this.feedfileId = media.getId();
         this.feedfileType = FeedMedia.FEEDFILETYPE_FEEDMEDIA;
@@ -29,7 +29,7 @@ public class DownloadRequestBuilder {
 
     public DownloadRequestBuilder(@NonNull String destination, @NonNull Feed feed) {
         this.destination = destination;
-        this.source = feed.isLocalFeed() ? feed.getDownload_url() : UrlChecker.prepareUrl(feed.getDownload_url());
+        this.source = feed.isLocalFeed() ? feed.getDownloadUrl() : UrlChecker.prepareUrl(feed.getDownloadUrl());
         this.title = feed.getHumanReadableIdentifier();
         this.feedfileId = feed.getId();
         this.feedfileType = Feed.FEEDFILETYPE_FEED;

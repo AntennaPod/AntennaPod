@@ -112,7 +112,7 @@ public class DbReaderTest {
             assertNotNull(urls);
             assertEquals(feeds.size(), urls.size());
             for (int i = 0; i < urls.size(); i++) {
-                assertEquals(urls.get(i), feeds.get(i).getDownload_url());
+                assertEquals(urls.get(i), feeds.get(i).getDownloadUrl());
             }
         }
 
@@ -225,7 +225,7 @@ public class DbReaderTest {
                 if (!downloaded.contains(items.get(i))) {
                     FeedItem item = items.get(i);
                     item.getMedia().setDownloaded(true);
-                    item.getMedia().setFile_url("file" + i);
+                    item.getMedia().setLocalFileUrl("file" + i);
                     downloaded.add(item);
                 }
             }
@@ -247,7 +247,7 @@ public class DbReaderTest {
             for (FeedItem item : downloadedSaved) {
                 assertNotNull(item.getMedia());
                 assertTrue(item.getMedia().isDownloaded());
-                assertNotNull(item.getMedia().getDownload_url());
+                assertNotNull(item.getMedia().getDownloadUrl());
             }
         }
 
@@ -434,7 +434,7 @@ public class DbReaderTest {
             List<Feed> feeds = saveFeedlist(1, 1, true);
             FeedItem item1 = feeds.get(0).getItems().get(0);
             FeedItem feedItemByEpisodeUrl = DBReader.getFeedItemByGuidOrEpisodeUrl(null,
-                    item1.getMedia().getDownload_url());
+                    item1.getMedia().getDownloadUrl());
             assertEquals(item1.getItemIdentifier(), feedItemByEpisodeUrl.getItemIdentifier());
         }
 
@@ -444,7 +444,7 @@ public class DbReaderTest {
             FeedItem item1 = feeds.get(0).getItems().get(0);
 
             FeedItem feedItemByGuid = DBReader.getFeedItemByGuidOrEpisodeUrl(item1.getItemIdentifier(),
-                    item1.getMedia().getDownload_url());
+                    item1.getMedia().getDownloadUrl());
             assertEquals(item1.getItemIdentifier(), feedItemByGuid.getItemIdentifier());
         }
 

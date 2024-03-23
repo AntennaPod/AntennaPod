@@ -304,12 +304,12 @@ public class ItemFragment extends Fragment {
     private void updateButtons() {
         progbarDownload.setVisibility(View.GONE);
         if (item.hasMedia()) {
-            if (DownloadServiceInterface.get().isDownloadingEpisode(item.getMedia().getDownload_url())) {
+            if (DownloadServiceInterface.get().isDownloadingEpisode(item.getMedia().getDownloadUrl())) {
                 progbarDownload.setVisibility(View.VISIBLE);
                 progbarDownload.setPercentage(0.01f * Math.max(1,
-                        DownloadServiceInterface.get().getProgress(item.getMedia().getDownload_url())), item);
+                        DownloadServiceInterface.get().getProgress(item.getMedia().getDownloadUrl())), item);
                 progbarDownload.setIndeterminate(
-                        DownloadServiceInterface.get().isEpisodeQueued(item.getMedia().getDownload_url()));
+                        DownloadServiceInterface.get().isEpisodeQueued(item.getMedia().getDownloadUrl()));
             }
         }
 
@@ -334,7 +334,7 @@ public class ItemFragment extends Fragment {
             } else {
                 actionButton1 = new StreamActionButton(item);
             }
-            if (DownloadServiceInterface.get().isDownloadingEpisode(media.getDownload_url())) {
+            if (DownloadServiceInterface.get().isDownloadingEpisode(media.getDownloadUrl())) {
                 actionButton2 = new CancelDownloadActionButton(item);
             } else if (!media.isDownloaded()) {
                 actionButton2 = new DownloadActionButton(item);
@@ -383,7 +383,7 @@ public class ItemFragment extends Fragment {
         if (item == null || item.getMedia() == null) {
             return;
         }
-        if (!event.getUrls().contains(item.getMedia().getDownload_url())) {
+        if (!event.getUrls().contains(item.getMedia().getDownloadUrl())) {
             return;
         }
         if (itemsLoaded && getActivity() != null) {

@@ -45,10 +45,10 @@ public class UITestUtilsTest {
         assertFalse(feeds.isEmpty());
 
         for (Feed feed : feeds) {
-            testUrlReachable(feed.getDownload_url());
+            testUrlReachable(feed.getDownloadUrl());
             for (FeedItem item : feed.getItems()) {
                 if (item.hasMedia()) {
-                    testUrlReachable(item.getMedia().getDownload_url());
+                    testUrlReachable(item.getMedia().getDownloadUrl());
                 }
             }
         }
@@ -77,8 +77,8 @@ public class UITestUtilsTest {
                     assertTrue(item.getMedia().getId() != 0);
                     if (downloadEpisodes) {
                         assertTrue(item.getMedia().isDownloaded());
-                        assertNotNull(item.getMedia().getFile_url());
-                        File file = new File(item.getMedia().getFile_url());
+                        assertNotNull(item.getMedia().getLocalFileUrl());
+                        File file = new File(item.getMedia().getLocalFileUrl());
                         assertTrue(file.exists());
                     }
                 }

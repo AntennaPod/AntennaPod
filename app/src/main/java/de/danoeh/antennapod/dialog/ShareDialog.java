@@ -82,7 +82,7 @@ public class ShareDialog extends BottomSheetDialogFragment {
         boolean downloaded = hasMedia && item.getMedia().isDownloaded();
         viewBinding.shareMediaFileRadio.setVisibility(downloaded ? View.VISIBLE : View.GONE);
 
-        boolean hasDownloadUrl = hasMedia && item.getMedia().getDownload_url() != null;
+        boolean hasDownloadUrl = hasMedia && item.getMedia().getDownloadUrl() != null;
         if (!hasDownloadUrl) {
             viewBinding.shareMediaReceiverRadio.setVisibility(View.GONE);
         }

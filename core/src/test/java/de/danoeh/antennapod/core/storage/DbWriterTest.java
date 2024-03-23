@@ -157,7 +157,7 @@ public class DbWriterTest {
         assertNotNull(media);
         assertFalse(dest.exists());
         assertFalse(media.isDownloaded());
-        assertNull(media.getFile_url());
+        assertNull(media.getLocalFileUrl());
     }
 
     @Test
@@ -197,7 +197,7 @@ public class DbWriterTest {
         assertNotNull(media);
         assertFalse(dest.exists());
         assertFalse(media.isDownloaded());
-        assertNull(media.getFile_url());
+        assertNull(media.getLocalFileUrl());
         Awaitility.await().timeout(2, TimeUnit.SECONDS).until(() -> DBReader.getQueue().isEmpty());
     }
 

@@ -33,7 +33,7 @@ public abstract class EditUrlSettingsDialog {
 
         final EditTextDialogBinding binding = EditTextDialogBinding.inflate(LayoutInflater.from(activity));
 
-        binding.urlEditText.setText(feed.getDownload_url());
+        binding.urlEditText.setText(feed.getDownloadUrl());
 
         new MaterialAlertDialogBuilder(activity)
                 .setView(binding.getRoot())
@@ -47,7 +47,7 @@ public abstract class EditUrlSettingsDialog {
     private void onConfirmed(String original, String updated) {
         try {
             DBWriter.updateFeedDownloadURL(original, updated).get();
-            feed.setDownload_url(updated);
+            feed.setDownloadUrl(updated);
             FeedUpdateManager.runOnce(activityRef.get(), feed);
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
@@ -61,7 +61,7 @@ public abstract class EditUrlSettingsDialog {
                 .setTitle(R.string.edit_url_menu)
                 .setMessage(R.string.edit_url_confirmation_msg)
                 .setPositiveButton(android.R.string.ok, (d, input) -> {
-                    onConfirmed(feed.getDownload_url(), url);
+                    onConfirmed(feed.getDownloadUrl(), url);
                     setUrl(url);
                 })
                 .setNegativeButton(R.string.cancel_label, null)
