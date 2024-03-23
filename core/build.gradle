@@ -10,7 +10,7 @@ android {
     lint {
         disable "InvalidPeriodicWorkRequestInterval", "ObsoleteLintCustomCheck", "DefaultLocale", "UnusedAttribute",
                 "ParcelClassLoader", "CheckResult", "TrustAllX509TrustManager",
-                "StaticFieldLeak", "IconDensities", "IconDuplicates"
+                "StaticFieldLeak", "IconDensities", "IconDuplicates", "UnsafeOptInUsageError"
     }
 
     defaultConfig {
@@ -35,19 +35,23 @@ dependencies {
     implementation project(':playback:base')
     implementation project(':playback:cast')
     implementation project(':storage:database')
+    implementation project(':storage:importexport')
     implementation project(':storage:preferences')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
     implementation project(':ui:i18n')
-    implementation project(':ui:png-icons')
+    implementation project(':ui:notifications')
+    implementation project(':ui:widget')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation "androidx.core:core:$coreVersion"
-    implementation "androidx.core:core-splashscreen:1.0.0"
     implementation 'androidx.documentfile:documentfile:1.0.1'
     implementation "androidx.fragment:fragment:$fragmentVersion"
     implementation "androidx.media:media:$mediaVersion"
+    implementation "androidx.media3:media3-datasource-okhttp:$media3Version"
+    implementation "androidx.media3:media3-exoplayer:$media3Version"
+    implementation "androidx.media3:media3-ui:$media3Version"
     implementation "androidx.preference:preference:$preferenceVersion"
     implementation "androidx.work:work-runtime:$workManagerVersion"
     implementation "com.google.android.material:material:$googleMaterialVersion"
@@ -59,25 +63,15 @@ dependencies {
     implementation "com.github.bumptech.glide:okhttp3-integration:$glideVersion@aar"
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
-    implementation "com.squareup.okio:okio:$okioVersion"
     implementation "org.greenrobot:eventbus:$eventbusVersion"
     annotationProcessor "org.greenrobot:eventbus-annotation-processor:$eventbusVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
-    implementation "com.annimon:stream:$annimonStreamVersion"
-
-    implementation "com.google.android.exoplayer:exoplayer-core:$exoPlayerVersion"
-    implementation "com.google.android.exoplayer:exoplayer-ui:$exoPlayerVersion"
-    implementation "com.google.android.exoplayer:extension-okhttp:$exoPlayerVersion"
-
-    // Non-free dependencies:
-    playApi "com.google.android.support:wearable:$wearableSupportVersion"
-    compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
 
     testImplementation "androidx.test:core:$testCoreVersion"
     testImplementation "org.awaitility:awaitility:$awaitilityVersion"
     testImplementation "junit:junit:$junitVersion"
-    testImplementation 'org.mockito:mockito-inline:3.5.13'
+    testImplementation 'org.mockito:mockito-core:5.11.0'
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
     testImplementation 'javax.inject:javax.inject:1'
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"

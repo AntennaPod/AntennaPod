@@ -5,16 +5,28 @@
         <Class name="de.danoeh.antennapod.adapter.NavListAdapter"/>
     </Match>
     <Match>
-        <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-        <Class name="de.danoeh.antennapod.net.ssl.NoV1SslSocketFactory"/>
+        <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+        <Class name="de.danoeh.antennapod.ui.statistics.StatisticsFragment"/>
     </Match>
     <Match>
         <Bug pattern="DM_DEFAULT_ENCODING"/>
         <Class name="de.danoeh.antennapod.parser.media.vorbis.VorbisCommentReader"/>
     </Match>
     <Match>
+        <Bug pattern="EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS"/>
+        <Class name="de.danoeh.antennapod.model.feed.FeedMedia"/>
+    </Match>
+    <Match>
+        <Bug pattern="EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS"/>
+        <Class name="de.danoeh.antennapod.model.playback.RemoteMedia"/>
+    </Match>
+    <Match>
         <Bug pattern="HSC_HUGE_SHARED_STRING_CONSTANT"/>
         <Class name="de.danoeh.antennapod.net.ssl.BackportCaCerts"/>
+    </Match>
+    <Match>
+        <Bug pattern="ICAST_IDIV_CAST_TO_DOUBLE"/>
+        <Class name="de.danoeh.antennapod.ui.echo.screens.RotatingSquaresScreen"/>
     </Match>
     <Match>
         <Bug pattern="MS_CANNOT_BE_FINAL"/>
@@ -25,8 +37,8 @@
         <Class name="de.danoeh.antennapod.fragment.NavDrawerFragment"/>
     </Match>
     <Match>
-        <Bug pattern="NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"/>
-        <Class name="de.danoeh.antennapod.menuhandler.MenuItemUtils"/>
+        <Bug pattern="MS_SHOULD_BE_FINAL"/>
+        <Class name="de.danoeh.antennapod.net.common.UserAgentInterceptor"/>
     </Match>
     <Match>
         <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
@@ -41,8 +53,8 @@
         <Class name="de.danoeh.antennapod.model.feed.FeedMedia"/>
     </Match>
     <Match>
-        <Bug pattern="NP_NULL_PARAM_DEREF"/>
-        <Class name="de.danoeh.antennapod.model.feed.FeedMedia"/>
+        <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
+        <Class name="de.danoeh.antennapod.core.service.download.DownloadRequestCreator"/>
     </Match>
     <Match>
         <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
@@ -50,37 +62,30 @@
     </Match>
     <Match>
         <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
-        <Class name="de.danoeh.antennapod.PodcastApp"/>
-    </Match>
-    <Match>
-        <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
-        <Class name="de.danoeh.antennapod.core.service.download.DownloadService"/>
-    </Match>
-    <Match>
-        <Bug pattern="MS_CANNOT_BE_FINAL"/>
-        <Class name="de.danoeh.antennapod.core.service.download.DownloadService"/>
-    </Match>
-    <Match>
-        <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
         <Class name="de.danoeh.antennapod.core.service.playback.PlaybackService"/>
     </Match>
     <Match>
-        <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
-        <Class name="de.danoeh.antennapod.core.storage.NavDrawerData$TagDrawerItem"/>
+        <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
+        <Class name="de.danoeh.antennapod.ui.home.sections.EpisodesSurpriseSection"/>
     </Match>
     <Match>
-        <Bug pattern="UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"/>
-        <Class name="de.danoeh.antennapod.core.cast.CastButtonVisibilityManager"/>
+        <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"/>
+        <Class name="de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer"/>
+    </Match>
+    <Match>
+        <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"/>
+        <Class name="de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer$PSMPInfo"/>
     </Match>
 
     <Match><Class name="de.danoeh.antennapod.core.ClientConfig"/></Match>
 
-    <Match><Package name="de.danoeh.antennapod.core.glide"/></Match>
-    <Match><Package name="de.danoeh.antennapod.databinding"/></Match>
+    <Match><Package name="~.*\.databinding"/></Match>
 
+    <Match><Bug pattern="DMI_RANDOM_USED_ONLY_ONCE"/></Match>
     <Match><Bug pattern="EI_EXPOSE_REP"/></Match>
     <Match><Bug pattern="EI_EXPOSE_REP2"/></Match>
     <Match><Bug pattern="HE_EQUALS_NO_HASHCODE"/></Match>
+    <Match><Bug pattern="HE_EQUALS_USE_HASHCODE"/></Match>
     <Match><Bug pattern="ICAST_INTEGER_MULTIPLY_CAST_TO_LONG"/></Match>
     <Match><Bug pattern="IS2_INCONSISTENT_SYNC"/></Match>
     <Match><Bug pattern="NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION"/></Match>
@@ -96,6 +101,8 @@
     <Match><Bug pattern="SE_TRANSIENT_FIELD_NOT_RESTORED"/></Match>
     <Match><Bug pattern="SF_SWITCH_NO_DEFAULT"/></Match>
     <Match><Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/></Match>
+    <Match><Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/></Match>
     <Match><Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/></Match>
+    <Match><Bug pattern="VA_FORMAT_STRING_USES_NEWLINE"/></Match>
     <Match><Bug pattern="WMI_WRONG_MAP_ITERATOR"/></Match>
 </FindBugsFilter>

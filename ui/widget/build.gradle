@@ -1,0 +1,19 @@
+plugins {
+    id("com.android.library")
+}
+apply from: "../../common.gradle"
+
+android {
+    namespace "de.danoeh.antennapod.ui.widget"
+
+    defaultConfig {
+        vectorDrawables.useSupportLibrary false
+        vectorDrawables.generatedDensities = ["xhdpi"]
+    }
+}
+
+dependencies {
+    implementation project(":ui:common")
+
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+}

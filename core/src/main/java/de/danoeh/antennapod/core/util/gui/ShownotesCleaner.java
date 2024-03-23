@@ -23,7 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.ui.common.Converter;
 
 /**
  * Cleans up and prepares shownotes:

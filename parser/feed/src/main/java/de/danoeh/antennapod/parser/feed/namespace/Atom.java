@@ -108,9 +108,9 @@ public class Atom extends Namespace {
                      * feed-object has no link yet b) type of link is
                      * LINK_TYPE_HTML or LINK_TYPE_XHTML
                      */
-                    if (state.getFeed() != null &&
-                        ((type == null && state.getFeed().getLink() == null) ||
-                            (LINK_TYPE_HTML.equals(type) || LINK_TYPE_XHTML.equals(type)))) {
+                    if (state.getFeed() != null
+                            && ((type == null && state.getFeed().getLink() == null)
+                                || (LINK_TYPE_HTML.equals(type) || LINK_TYPE_XHTML.equals(type)))) {
                         state.getFeed().setLink(href);
                     } else if (LINK_TYPE_ATOM.equals(type) || LINK_TYPE_RSS.equals(type)) {
                         // treat as podlove alternate feed
@@ -188,17 +188,17 @@ public class Atom extends Namespace {
                 } else if (ENTRY.equals(second) && state.getCurrentItem() != null) {
                     state.getCurrentItem().setTitle(textElement.getProcessedContent());
                 }
-            } else if (SUBTITLE.equals(top) && FEED.equals(second) && textElement != null &&
-                state.getFeed() != null) {
+            } else if (SUBTITLE.equals(top) && FEED.equals(second) && textElement != null
+                    && state.getFeed() != null) {
                 state.getFeed().setDescription(textElement.getProcessedContent());
-            } else if (CONTENT.equals(top) && ENTRY.equals(second) && textElement != null &&
-                state.getCurrentItem() != null) {
+            } else if (CONTENT.equals(top) && ENTRY.equals(second) && textElement != null
+                    && state.getCurrentItem() != null) {
                 state.getCurrentItem().setDescriptionIfLonger(textElement.getProcessedContent());
             } else if (SUMMARY.equals(top) && ENTRY.equals(second) && textElement != null
                     && state.getCurrentItem() != null) {
                 state.getCurrentItem().setDescriptionIfLonger(textElement.getProcessedContent());
-            } else if (UPDATED.equals(top) && ENTRY.equals(second) && state.getCurrentItem() != null &&
-                state.getCurrentItem().getPubDate() == null) {
+            } else if (UPDATED.equals(top) && ENTRY.equals(second) && state.getCurrentItem() != null
+                    && state.getCurrentItem().getPubDate() == null) {
                 state.getCurrentItem().setPubDate(DateUtils.parseOrNullIfFuture(content));
             } else if (PUBLISHED.equals(top) && ENTRY.equals(second) && state.getCurrentItem() != null) {
                 state.getCurrentItem().setPubDate(DateUtils.parseOrNullIfFuture(content));
@@ -206,8 +206,8 @@ public class Atom extends Namespace {
                 state.getFeed().setImageUrl(content);
             } else if (IMAGE_ICON.equals(top) && state.getFeed() != null) {
                 state.getFeed().setImageUrl(content);
-            } else if (AUTHOR_NAME.equals(top) && AUTHOR.equals(second) &&
-                    state.getFeed() != null && state.getCurrentItem() == null) {
+            } else if (AUTHOR_NAME.equals(top) && AUTHOR.equals(second)
+                    && state.getFeed() != null && state.getCurrentItem() == null) {
                 String currentName = state.getFeed().getAuthor();
                 if (currentName == null) {
                     state.getFeed().setAuthor(content);

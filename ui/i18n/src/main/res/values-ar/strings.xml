@@ -22,7 +22,7 @@
   <string name="episode_cache_full_message">لقد تم تجاوز الحد الأقصى لتخزين الحلقات. يمكنك رفع قيمة التخزين في الإعدادات.</string>
   <string name="years_statistics_label">السنين</string>
   <string name="notification_pref_fragment">إشعارات</string>
-  <string name="recently_played_episodes">الحلقات التي شغّلت مؤخرا</string>
+  <string name="current_playing_episode">الحالي</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">لم يتم العثور على %1$s</string>
   <!--SwipeActions-->
@@ -53,7 +53,10 @@
   <string name="home_downloads_title">إدارة التنزيلات</string>
   <string name="home_welcome_title">مرحبا بك في AntennaPod!</string>
   <string name="home_welcome_text">أنت لست مشتركا بأي بودكاست، أفتح الدرج لإضافة بودكاست.</string>
+  <string name="notification_permission_text">يحتاج آنتينابود إلى إذنك لكي يعرض الإشعارات. بشكل افتراضي، سيعرض آنتينابود الإشعارات إذا كان هناك شيء قيد التنزيل، أو إذا حصل خطأ.</string>
   <string name="notification_permission_denied">لقد رفضت السماح بلإشعارات</string>
+  <string name="notification_permission_deny_warning">إذا عطلت الإشعارات وحصل خطأ، قد لا تتمكن من معرفة سببه.</string>
+  <string name="deny_label">أرفض</string>
   <string name="open_settings">افتح الإعدادات</string>
   <string name="configure_home">أضبط شاشة المنزل</string>
   <!--Download Statistics fragment-->
@@ -104,11 +107,18 @@
   <string name="description_label">الوصف</string>
   <string name="shownotes_label">ملاحظات الحلقة</string>
   <string name="shownotes_contentdescription">أسحب لأعلى لقراءة ملاحظات الحلقة</string>
-  <string name="episodes_suffix">\u0020حلقات</string>
   <string name="close_label">اغلاق</string>
   <string name="retry_label">اعادة المحاولة</string>
   <string name="auto_download_label">تضمين في التنزيل التلقائي</string>
-  <string name="auto_delete_label">مسح الحلقات تلقائيا</string>
+  <string name="auto_delete_label">حذف الحلقات تلقائيا</string>
+  <string name="feed_volume_adapdation">تكييف الصوت</string>
+  <string name="feed_volume_adaptation_summary">قلل أو ارفع شدة الصوت لحلقات هذه القناة: %1$s</string>
+  <string name="feed_volume_reduction_off">بدون تكييف</string>
+  <string name="feed_volume_reduction_light">تقليل خفيف</string>
+  <string name="feed_volume_reduction_heavy">تقليل شديد</string>
+  <string name="feed_volume_boost_light">زيادة خفيفة</string>
+  <string name="feed_volume_boost_medium">زيادة متوسطة</string>
+  <string name="feed_volume_boost_heavy">زيادة شديدة</string>
   <string name="feed_auto_download_always">دائما</string>
   <string name="feed_auto_download_never">ابدا</string>
   <string name="feed_new_episodes_action_add_to_inbox">اضف إلى صندوق الوارد</string>
@@ -181,10 +191,9 @@
   <string name="remove_feed_label">ازل البودكاست</string>
   <string name="share_label">مشاركة</string>
   <string name="share_file_label">مشاركة ملف</string>
-  <string name="share_rss_address_label">عنوان الـ RSS</string>
-  <string name="feed_delete_confirmation_msg">نرجو تأكيد رغبتك في مسح بودكاست \"%1$s\" وكل حلقاته (بما فيها المنزلة)، وإحصاءاته.</string>
+  <string name="feed_delete_confirmation_msg">نرجو تأكيد رغبتك في حذف بودكاست \"%1$s\" وكل حلقاته (بما فيها المنزلة)، وإحصاءاته.</string>
   <string name="feed_delete_confirmation_msg_batch">نرجو تأكيد رغبتك في مسح كل البودكاستات المحددة وحلقاتها (بما فيها المنزلة)، وإحصاءاتها.</string>
-  <string name="feed_delete_confirmation_local_msg">نرجو تأكيد رغبتك في إزالة بودكاست \"%1$s\" وإحصاءاته. لن يتم مسح الملفات المنزلة.</string>
+  <string name="feed_delete_confirmation_local_msg">نرجو تأكيد رغبتك في إزالة بودكاست \"%1$s\" وإحصاءاته. لن يتم حذف الملفات المنزلة.</string>
   <string name="feed_remover_msg">جار إزالة البودكاست</string>
   <string name="load_complete_feed">حدث كامل البودكاست</string>
   <string name="multi_select">اختيار متعدد</string>
@@ -207,6 +216,7 @@
   <string name="add_tag">أضف علامة</string>
   <string name="rename_tag_label">إعادة تسمية العلامات</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">لقد تم إيقاف ميزة تحديث الاشتراكات باستخدام بيانات الهاتف.\n\nهل تريد التحديث على أي حال؟</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message_vpn">يدّعي تطبيق VPN الخاص بك بأنه شبكة جوال(إتصال محدود الاستخدام). عطل تحديث البودكاست عن طريق شبكة الجوال في الإعدادات.\n\nهل ترغب في التحديث على أي حال؟ إذا أردت حل هذه المشلكة، نرجو التواصل مع مطوري تطبيق VPN المستخدم.</string>
   <!--actions on feeditems-->
   <string name="download_label">تنزيل</string>
   <plurals name="downloading_batch_label">
@@ -220,16 +230,17 @@
   <string name="play_label">تشغيل</string>
   <string name="pause_label">ايقاف مؤقت</string>
   <string name="stream_label">البث التدفقي</string>
-  <string name="delete_label">مسح</string>
-  <string name="delete_failed">لم نتمكن من مسح الملف. إعادة تشغيل الجهاز قد تساعد.</string>
-  <string name="delete_episode_label">مسح الحلقة</string>
+  <string name="delete_label">احذف</string>
+  <string name="delete_failed">تعذر حذف الملف. جرب إعادة تشغيل الجهاز.</string>
+  <string name="delete_local_failed">تعذر حذف الملف. حاول إعادة وصل المجلد المحلي من شاشة معلومات البودكاست.</string>
+  <string name="delete_episode_label">حذف الحلقة</string>
   <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="zero">تم مسح %d حلقة</item>
-    <item quantity="one">تم مسح حلقة 1.</item>
-    <item quantity="two">تم مسح حلقتين %d.</item>
-    <item quantity="few">تم مسح %d حلقات منزلة.</item>
-    <item quantity="many">تم مسح %d حلقة منزلة.</item>
-    <item quantity="other">تم مسح %d حلقات منزلة.</item>
+    <item quantity="zero">%d لم تحذف أي حلقة منزلة.</item>
+    <item quantity="one">حذفت حلقة منزلة واحدة 1.</item>
+    <item quantity="two">حذفت حلقتان اثنان %d.</item>
+    <item quantity="few">حذفت %d حلقات منزلة.</item>
+    <item quantity="many">حذفت %d حلقة منزلة.</item>
+    <item quantity="other">حذفت %d حلقات منزلة.</item>
   </plurals>
   <string name="remove_inbox_label">أزل من صندوق الوارد</string>
   <string name="removed_inbox_label">تم الإزالة من صندوق الوارد</string>
@@ -289,6 +300,7 @@
   <string name="skip_episode_label">تخطي الحلقة</string>
   <string name="reset_position">صفر موضع التشغيل</string>
   <string name="no_items_selected">لم يتم اختيار أي عنصر</string>
+  <string name="delete_local_feed_warning_body">سيزيل الحذف الحلقة من آنتينابود وسيحذف ملفها من ذاكرة تخزين جهازك، ولن تتمكن من تنزيلها عن طريق آنتينابود مرة أخرى.</string>
   <!--Download messages and labels-->
   <string name="download_successful">نجحت العملية</string>
   <string name="download_pending">التنزيل فى الانتظار</string>
@@ -305,8 +317,9 @@
   <string name="download_error_parser_exception">خادم البودكاست المستضيف ارسل ملف تغذية معطوب</string>
   <string name="download_error_unsupported_type">نمط قناة غير مدعوم</string>
   <string name="download_error_unsupported_type_html">خادم البودكاست المستضيف ارسل موقع و ليس بودكاست</string>
-  <string name="download_error_not_found">خادم البودكاست لم يتمكن من العثور على الملف. من الارجح ان الملف محذوف.</string>
+  <string name="download_error_not_found">تعذر خادم البودكاست من العثور على الملف. من الارجح أن الملف محذوف.</string>
   <string name="download_error_connection_error">خطأ في الاتصال</string>
+  <string name="download_error_no_connection">لا يوجد إتصال بالشبكة</string>
   <string name="download_error_unknown_host">لم يتم العثور على الخادم. تأكد من كتابة العنوان بشكل صحيح و توفر اتصال بالشبكة.</string>
   <string name="download_error_unauthorized">لقد فشل التحقق. قم بالتأكد من صحة اسم المستخدم وكلمة المرور.</string>
   <string name="download_error_file_type_type">خطأ في نوع الملف</string>
@@ -337,6 +350,7 @@
   <string name="authentication_notification_title">التحقق مطلوب</string>
   <string name="confirm_mobile_download_dialog_title">أكد رغبة التنزيل باستخدام بيانات الجوال</string>
   <string name="confirm_mobile_download_dialog_message">تم تعطيل ميزة التنزيل باستخدام بيانات الجوال من داخل الإعدادات. يمكن لـ AntennaPod أن يقوم بتنزيل الحلقة تلقائيا عند توفر شبكة واي-فاي.</string>
+  <string name="confirm_mobile_download_dialog_message_vpn">يدّعي تطبيق VPN الخاص بك بأنه شبكة جوال(إتصال محدود الاستخدام). عطّل التنزيل عن طريق شبكة الجوال في الإعدادات. إذا أردت حل هذه المشلكة، نرجو التواصل مع مطوري تطبيق VPN المستخدم.</string>
   <string name="confirm_mobile_download_dialog_download_later">التنزيل لاحقا</string>
   <string name="confirm_mobile_download_dialog_allow_this_time">التنزيل على أي حال</string>
   <string name="confirm_mobile_streaming_notification_title">أكد البث التدفقي باستخدام بيانات الجوال</string>
@@ -372,6 +386,7 @@
   <string name="feed_title">عنوان البودكاست</string>
   <string name="random">عشوائي</string>
   <string name="smart_shuffle">الخلط الذكي</string>
+  <string name="size">الحجم</string>
   <string name="clear_queue_confirmation_msg">نرجو تأكيد تصفية لائحة الإستماع من كل الحلقات فيها</string>
   <string name="time_left_label">الوقت المتبقى:\u0020</string>
   <!--Variable Speed-->
@@ -379,7 +394,7 @@
   <string name="preset_already_exists">%1$.2fx محفوظة كإعداد أولي.</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">لا يوجد حلقات بلائحة الاستماع</string>
-  <string name="no_items_label">أضف حلقة بإختيار تنزيل, أو أضغط مطولا على الحلقة وأختر  \"أضف الى لائحة الاستماع\".</string>
+  <string name="no_items_label">أضف حلقة بإختيار تنزيل, أو أضغط مطولا على الحلقة وأختر  \"أضف إلى لائحة الاستماع\".</string>
   <string name="no_shownotes_label">لا تحتوي الحلقة على أي ملاحظات.</string>
   <string name="no_comp_downloads_head_label">لا توجد حلقات منزلة</string>
   <string name="no_comp_downloads_label">يمكنك تنزيل حلقات من صفحة تفاصيل البودكاست.</string>
@@ -424,8 +439,11 @@
   <string name="button_action_skip_episode">تخطى الحلقة</string>
   <string name="button_action_restart_episode">إعادة تشغيل الحلقة</string>
   <string name="pref_followQueue_sum">أذهب الى الحلقة التالية في لائحة الاستماع عندما ينتهي استماع السابقة. </string>
-  <string name="pref_auto_delete_sum">أمسح الحلقة عندما ينتهي تشغيلها</string>
-  <string name="pref_auto_delete_title">مسح تلقائي</string>
+  <string name="pref_auto_delete_sum">احذف الحلقة عندما ينتهي تشغيلها</string>
+  <string name="pref_auto_delete_title">الحذف التلقائي</string>
+  <string name="pref_auto_local_delete_title">إحذف من المجلدات المحلية تلقائيًا</string>
+  <string name="pref_auto_local_delete_sum">ضمّن المجلدات المحلية في خاصية الحذف التلقائي</string>
+  <string name="pref_auto_local_delete_dialog_body">فيما يخص المجلدات المحلية، يرجى ملاحظة أنه ستحذف الحلقات من آنتينابود وستحذف ملفاتها من ذاكرة تخزين جهازك، ولن تتمكن من تنزيلها عن طريق آنتينابود مرة أخرى. هل تود بأن تفعل الحذف التلقائي؟</string>
   <string name="pref_smart_mark_as_played_sum">علم على الحلقات على أنها إنتهت حتى لو بقي أقل من مقدار ثوانٍ معين من وقت التشغيل</string>
   <string name="pref_smart_mark_as_played_title">علم بذكاء أنها انتهت</string>
   <string name="pref_skip_keeps_episodes_sum">ابقي الحلقات التي يتم تخطيها</string>
@@ -451,6 +469,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">إعادة توصيل سماعات الرأس</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">إعادة توصيل البلوتوث</string>
   <string name="pref_stream_over_download_title">أفضّل البث التدفقي</string>
+  <string name="pref_stream_over_download_sum">اعرض زر البث بدلا من زر التنزيل في القوائم</string>
   <string name="pref_mobileUpdate_title">التحديث باستخدام شبكة الجوال</string>
   <string name="pref_mobileUpdate_sum">حدد ما يجب السماح به أثناء الاتصال على شبكة الجوال</string>
   <string name="pref_mobileUpdate_refresh">تحديث البودكاست</string>
@@ -465,11 +484,13 @@
   <string name="pref_tinted_theme_title">الألوان الحركية</string>
   <string name="pref_tinted_theme_message">تكييف ألوان التطبيق بناءً على الخلفية</string>
   <string name="pref_nav_drawer_items_title">حدد عناصر درج التنقل</string>
+  <string name="pref_nav_drawer_items_sum">غيّر العناصر التي تظهر في درج التنقل</string>
   <string name="pref_nav_drawer_feed_order_title">حدد ترتيب الإشتراكات</string>
   <string name="pref_nav_drawer_feed_order_sum">غير ترتيب إشتراكاتك</string>
   <string name="pref_nav_drawer_feed_counter_title">حدد عداد الاشتراكات</string>
   <string name="pref_nav_drawer_feed_counter_sum">غير المعلومات المعروضة بعداد الاشتراكات. ايضا يغير ترتيب الاشتراكات إذا كان ترتيبها يحدد بالـ\'العداد\'</string>
   <string name="pref_automatic_download_title">تنزيل تلقائي</string>
+  <string name="pref_automatic_download_sum">أضبط التنزيل التلقائي للحلقات</string>
   <string name="pref_autodl_wifi_filter_title">تمكين اختيار شبكة الWi-Fi المستخدمة</string>
   <string name="pref_autodl_wifi_filter_sum">أسمح بالتنزيل التلقائي فقط على شبكات الواي فاي المختارة.</string>
   <string name="pref_automatic_download_on_battery_title">التنزيل عند عدم الشحن الجهاز</string>
@@ -501,10 +522,9 @@
   <string name="pref_expandNotify_title">أولوية عالية للإشعار</string>
   <string name="pref_expandNotify_sum">هذه عادة توسع الإشعار ليظهر أزرار التشغيل.</string>
   <string name="pref_persistNotify_title">تحكم التشغيل ظاهر دائما</string>
-  <string name="pref_compact_notification_buttons_title">تعيين أزرار إشعار مضغوطة</string>
-  <string name="pref_compact_notification_buttons_sum">غير أزرار التشغيل عند إزالة الإشعار. زري تشغيل/إيقاف سيكونا دوما ظاهران.</string>
-  <string name="pref_compact_notification_buttons_dialog_title">حدد كحد أقصى %1$d عنصر</string>
-  <string name="pref_compact_notification_buttons_dialog_error">بإمكانك إختيار بحد أقصى %1$dعنصر</string>
+  <string name="pref_persistNotify_sum">أبقي تحكم التشغيل في الإشعارات وشاشة القفل عند التوقف</string>
+  <string name="pref_full_notification_buttons_title">عيّن أزرار الإشعارات</string>
+  <string name="pref_full_notification_buttons_sum">غير أزرار التحكم المتواجدة في إشعار التشغيل.</string>
   <string name="pref_enqueue_location_title">مكان الإضافة في لائحة الاستماع</string>
   <string name="pref_enqueue_location_sum">أضف حلقات إلى: %1$s</string>
   <string name="enqueue_location_back">خلف</string>
@@ -526,11 +546,14 @@
   <string name="pref_skip_silence_title">تخطي الصمت في الصوت</string>
   <string name="behavior">السلوك</string>
   <string name="pref_default_page">الصفحة الافتراضية</string>
+  <string name="pref_default_page_sum">الشاشة التي يتم عرضها عند تشغيل آنتينابود</string>
   <string name="pref_back_button_opens_drawer">يقوم زر الرجوع بفتح الدرج</string>
   <string name="pref_back_button_opens_drawer_summary">يقوم الضغط على زر الرجوع في الصفحة الافتراضية في فتح الدرج</string>
   <string name="remember_last_page">تذكر الصفحة الأخيرة</string>
-  <string name="pref_delete_removes_from_queue_title">المسح يزيل الحلقة من لائحة الاستماع</string>
+  <string name="pref_delete_removes_from_queue_title">الحذف يزيل الحلقة من لائحة الاستماع</string>
+  <string name="pref_delete_removes_from_queue_sum">أزل الحلقة من لائحة الاستماع آليا عند حذفها</string>
   <string name="pref_filter_feed_title">مصفاة الاشتراكات</string>
+  <string name="pref_filter_feed_sum">صفي إشتراكاتك في درج التنقل وشاشة الإشتراكات</string>
   <string name="subscriptions_are_filtered">الاشتراكات مصفاة.</string>
   <string name="subscriptions_counter_greater_zero">العداد به رقم أكبر من صفر</string>
   <string name="auto_downloaded">تنزيل تلقائي</string>
@@ -542,6 +565,7 @@
   <string name="pref_feed_settings_dialog_msg">هذا الإعداد فريد لكل بودكاست. يمكنك تغييره بفتح صفحة البودكاست.</string>
   <string name="pref_contribute">ساهم</string>
   <string name="pref_show_subscription_title">إظهار عنوان الاشتراك</string>
+  <string name="pref_show_subscription_title_summary">أعرض عنوان الاشتراك أسفل صورة الغلاف</string>
   <string name="pref_new_episodes_action_title">التعامل مع الحلقات الجديدة</string>
   <string name="pref_new_episodes_action_sum">كيف يتم التعامل مع الحلقات الجديدة</string>
   <!--About screen-->
@@ -560,6 +584,7 @@
   <string name="type_to_search">اكتب شيئاً للبحث</string>
   <string name="search_label">البحث</string>
   <string name="no_results_for_query">لا توجد نتائج لـ\"%1$s\"</string>
+  <string name="search_online">ابحث في الإنترنت</string>
   <!--Synchronization-->
   <string name="sync_status_started">بدأت المزامنة</string>
   <string name="sync_status_episodes_upload">جارٍ تحميل تغييرات الحلقة ...</string>
@@ -581,7 +606,7 @@
   <string name="database_import_summary">استوراد قاعدة بيانات AntennaPod من جهاز آخر</string>
   <string name="opml_import_label">استيراد ملف بصيغة OPML</string>
   <string name="opml_add_podcast_label">استورد قائمة بودكاستات (OPML)</string>
-  <string name="opml_reader_error">حدث خطأ أثناء قراءة مستند OPML:</string>
+  <string name="opml_reader_error">حدث خطأ أثناء قراءة الملف. تأكد من إختيار ملف OPML وأنه صالح</string>
   <string name="opml_import_error_no_file">لم يتم اختيار أي ملف</string>
   <string name="select_all_label">اختر الكل</string>
   <string name="deselect_all_label">ألغ اختيار الكل</string>
@@ -635,8 +660,17 @@
     <item quantity="many">%d ساعة</item>
     <item quantity="other">%d ساعة</item>
   </plurals>
+  <plurals name="time_days_quantified">
+    <item quantity="zero">%d يوم </item>
+    <item quantity="one">يوم واحد</item>
+    <item quantity="two">%d يومان</item>
+    <item quantity="few">%d أيام</item>
+    <item quantity="many">%d يوما</item>
+    <item quantity="other">%d يوما</item>
+  </plurals>
   <string name="auto_enable_label">قم بتشغيل مؤقت النوم آليا عند تشغيل الحلقة</string>
   <string name="auto_enable_label_with_times">قم بتشغيل مؤقت النوم آليا عند تشغيل الحلقة بين %s و %s</string>
+  <string name="auto_enable_change_times">غير النطاق الزمني</string>
   <string name="sleep_timer_enabled_label">مؤقت النوم مفعل</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">اختر مزود خدمة التزامن</string>
@@ -694,12 +728,19 @@
   <string name="decrease_speed">قلل السرعة</string>
   <string name="media_type_video_label">فيديو</string>
   <string name="status_downloading_label">يتم تنزيل الحلقة</string>
+  <string name="in_queue_label">في لائحة الاستماع</string>
+  <string name="is_favorite_label">علمت كمفضلة</string>
+  <string name="is_inbox_label">في صندوق الوارد</string>
+  <string name="is_played">تم تشغيلها</string>
   <string name="load_next_page_label">تحميل الصفحة التالية</string>
   <string name="position">موقع: %1$s</string>
+  <string name="remaining_time">الوقت المتبقي: %1$s</string>
   <string name="apply_action">طبق القرار</string>
   <string name="play_chapter">تشغيل فصل</string>
   <string name="prev_chapter">الفصل السابق</string>
   <string name="next_chapter">الفصل التالي</string>
+  <string name="shuffle_suggestions">اخلط الإقتراحات</string>
+  <string name="add_preset">أضف إعدادا مسبقا</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">تسجيل الدخول</string>
   <string name="authentication_descr">غيّر اسم المستخدم وكلمة المرور لهذا البودكاست وحلقاته.</string>
@@ -763,21 +804,7 @@
   <string name="not_paused">غير متوقف</string>
   <string name="hide_played_episodes_label">تم تشغيلها</string>
   <string name="not_played">لم يتم تشغيلها</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">عنوان (أ \u2192 ي)</string>
-  <string name="sort_title_z_a">عنوان (ي \u2192 أ)</string>
-  <string name="sort_date_new_old">تاريخ (حديث \u2192 قديم)</string>
-  <string name="sort_date_old_new">تاريخ (قديم \u2192 حديث)</string>
-  <string name="sort_duration_short_long">مدة (قصيرة \u2192 طويلة)</string>
-  <string name="sort_duration_long_short">مدة (طويلة \u2192 قصيرة)</string>
-  <string name="sort_filename_a_z">أسم الملف (A \u2192 Z)</string>
-  <string name="sort_filename_z_a">أسم الملف (Z \u2192 A)</string>
-  <string name="sort_a_z">أ \u2192 ي</string>
-  <string name="sort_z_a">ي \u2192 أ</string>
-  <string name="sort_new_old">حديث \u2192 قديم</string>
-  <string name="sort_old_new">قديم \u2192 حديث</string>
-  <string name="sort_short_long">قصيرة \u2192 طويلة</string>
-  <string name="sort_long_short">طويلة \u2192 قصيرة</string>
+  <string name="filename">اسم الملف</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">اشمل موضع التشغيل</string>
   <string name="share_dialog_episode_website_label">صفحة وب الحلقة</string>
@@ -788,7 +815,6 @@
   <!--Audio controls-->
   <string name="audio_controls">ضوابط الصوت</string>
   <string name="playback_speed">سرعة التشغيل</string>
-  <string name="audio_effects">المؤثرات الصوتية</string>
   <string name="player_switch_to_audio_only">قم بالتبديل إلى الصوت فقط</string>
   <!--proxy settings-->
   <string name="proxy_type_label">النوع</string>

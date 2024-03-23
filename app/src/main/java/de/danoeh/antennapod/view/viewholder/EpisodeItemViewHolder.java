@@ -15,7 +15,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.elevation.SurfaceColors;
-import com.joanzapata.iconify.Iconify;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -24,15 +23,15 @@ import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.core.util.PlaybackStatus;
 import de.danoeh.antennapod.core.util.download.MediaSizeLoader;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.util.DateFormatter;
+import de.danoeh.antennapod.ui.common.DateFormatter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.ui.common.Converter;
+import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
@@ -129,7 +128,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         }
 
         if (coverHolder.getVisibility() == View.VISIBLE) {
-            new CoverLoader(activity)
+            new CoverLoader()
                     .withUri(ImageResourceUtils.getEpisodeListImageLocation(item))
                     .withFallbackUri(item.getFeed().getImageUrl())
                     .withPlaceholderView(placeholder)
@@ -187,8 +186,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         if (media.getSize() > 0) {
             size.setText(Formatter.formatShortFileSize(activity, media.getSize()));
         } else if (NetworkUtils.isEpisodeHeadDownloadAllowed() && !media.checkedOnSizeButUnknown()) {
-            size.setText("{fa-spinner}");
-            Iconify.addIcons(size);
+            size.setText("");
             MediaSizeLoader.getFeedMediaSizeObservable(media).subscribe(
                     sizeValue -> {
                         if (sizeValue > 0) {
@@ -225,7 +223,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         itemView.setBackgroundResource(ThemeUtils.getDrawableFromAttr(activity, R.attr.selectableItemBackground));
         placeholder.setText("");
         if (coverHolder.getVisibility() == View.VISIBLE) {
-            new CoverLoader(activity)
+            new CoverLoader()
                     .withResource(R.color.medium_gray)
                     .withPlaceholderView(placeholder)
                     .withCoverView(cover)

@@ -22,7 +22,7 @@
   <string name="episode_cache_full_message">O limite de cache de episódios foi alcançado. Você pode aumentar o tamanho do cache em Configurações.</string>
   <string name="years_statistics_label">Anos</string>
   <string name="notification_pref_fragment">Notificações</string>
-  <string name="recently_played_episodes">Episódios reproduzidos recentemente</string>
+  <string name="current_playing_episode">Atual</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" não foi encontrado</string>
   <!--SwipeActions-->
@@ -53,7 +53,10 @@
   <string name="home_downloads_title">Gerenciar downloads</string>
   <string name="home_welcome_title">Bem-vindo(a) ao AntennaPod!</string>
   <string name="home_welcome_text">Você ainda não está inscrito em nenhum podcast. Abra o menu ao lado para adicionar algum.</string>
+  <string name="notification_permission_text">AntennaPod precisa de sua permissão para mostrar notificações. Por padrão, o AntennaPod mostra notificações apenas enquanto algo está sendo baixado ou quando algo dá errado.</string>
   <string name="notification_permission_denied">Você negou a permissão.</string>
+  <string name="notification_permission_deny_warning">Se desativar as notificações e ocorrer algum erro, não receberá quaisquer informações sobre esse erro.</string>
+  <string name="deny_label">Recusar</string>
   <string name="open_settings">Abrir as configurações</string>
   <string name="configure_home">Configurar Página Principal</string>
   <!--Download Statistics fragment-->
@@ -104,11 +107,18 @@
   <string name="description_label">Descrição</string>
   <string name="shownotes_label">Notas do episódio</string>
   <string name="shownotes_contentdescription">arraste para cima para ver as notas do episódio</string>
-  <string name="episodes_suffix">\u0020episódios</string>
   <string name="close_label">Fechar</string>
   <string name="retry_label">Tentar novamente</string>
   <string name="auto_download_label">Incluir em downloads automáticos</string>
   <string name="auto_delete_label">Excluir episódio automaticamente</string>
+  <string name="feed_volume_adapdation">Ajuste de volume</string>
+  <string name="feed_volume_adaptation_summary">Ajustar volume dos episódios deste podcast para: %1$s</string>
+  <string name="feed_volume_reduction_off">Não ajustar</string>
+  <string name="feed_volume_reduction_light">Redução leve</string>
+  <string name="feed_volume_reduction_heavy">Redução intensa</string>
+  <string name="feed_volume_boost_light">Amplificação leve</string>
+  <string name="feed_volume_boost_medium">Amplificação média</string>
+  <string name="feed_volume_boost_heavy">Amplificação intensa</string>
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Nunca</string>
   <string name="feed_new_episodes_action_add_to_inbox">Adicionar à caixa de entrada</string>
@@ -163,7 +173,6 @@
   <string name="remove_feed_label">Remover podcast</string>
   <string name="share_label">Compartilhar</string>
   <string name="share_file_label">Compartilhar arquivo</string>
-  <string name="share_rss_address_label">Endereço RSS:</string>
   <string name="feed_delete_confirmation_msg">Por favor, confirme que você deseja excluir o podcast \"%1$s\", TODOS os seus episódios (incluindo os baixados) e suas estatísticas.</string>
   <string name="feed_delete_confirmation_msg_batch">Por favor, confirme que você deseja remover os podcasts selecionados, TODOS os seus episódios (incluindo os baixados) e suas estatísticas.</string>
   <string name="feed_delete_confirmation_local_msg">Por favor, confirme que você deseja remover o podcast \"%1$s\"  e suas estatísticas. Os arquivos na pasta fonte local não será excluído.</string>
@@ -186,6 +195,7 @@
   <string name="add_tag">Adicionar etiqueta</string>
   <string name="rename_tag_label">Renomear etiqueta</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">A atualização de podcasts através de dados móveis está desativada nas definições.\n\nDeseja atualizar mesmo assim?</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Seu aplicativo VPN simula uma rede móvel (conexão limitada). A atualização de podcasts pela conexão de dados móveis está desativada nas configurações.\n\nDeseja atualizar mesmo assim? Se você deseja que esse problema seja resolvido, entre em contato com os criadores do seu aplicativo de VPN.</string>
   <!--actions on feeditems-->
   <string name="download_label">Download</string>
   <plurals name="downloading_batch_label">
@@ -198,6 +208,7 @@
   <string name="stream_label">Stream</string>
   <string name="delete_label">Excluir</string>
   <string name="delete_failed">Não foi possível excluir o arquivo. Experimente reiniciar o dispositivo.</string>
+  <string name="delete_local_failed">Não foi possível excluir o arquivo. Tente reconectar a pasta local na tela de informações do podcast.</string>
   <string name="delete_episode_label">Excluir o episódio</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 episódio baixado deletado.</item>
@@ -247,6 +258,7 @@
   <string name="skip_episode_label">Pular episódio</string>
   <string name="reset_position">Resetar a posição da reprodução</string>
   <string name="no_items_selected">Nenhum item selecionado</string>
+  <string name="delete_local_feed_warning_body">A exclusão remove o episódio do AntennaPod e exclui o arquivo de mídia do armazenamento do dispositivo. Ele não pode ser baixado novamente através do AntennaPod.</string>
   <!--Download messages and labels-->
   <string name="download_successful">com sucesso</string>
   <string name="download_pending">Download pendente</string>
@@ -265,6 +277,7 @@
   <string name="download_error_unsupported_type_html">O servidor de hospedagem do podcast enviou uma página web e não um podcast.</string>
   <string name="download_error_not_found">O servidor de hospedagem do podcast não conseguiu encontrar o arquivo. Ele pode ter sido excluído.</string>
   <string name="download_error_connection_error">Erro na conexão</string>
+  <string name="download_error_no_connection">Nenhuma conexão de rede</string>
   <string name="download_error_unknown_host">Não foi possível encontrar o servidor. Verifique se o endereço foi digitado corretamente e se você tem uma conexão ativa com a Internet.</string>
   <string name="download_error_unauthorized">Erro na autenticação. Certifique-se de que o nome de usuário e a senha estão corretos.</string>
   <string name="download_error_file_type_type">Erro no tipo de arquivo</string>
@@ -292,6 +305,7 @@
   <string name="authentication_notification_title">Autenticação requerida</string>
   <string name="confirm_mobile_download_dialog_title">Confirmar o download utilizando dados móveis</string>
   <string name="confirm_mobile_download_dialog_message">A utilização de dados móveis para o download está desabilitada nas configurações. AntennaPod baixará automaticamente o episódio mais tarde quando o Wi-Fi estiver disponível.</string>
+  <string name="confirm_mobile_download_dialog_message_vpn">Seu aplicativo VPN simula uma rede móvel (conexão limitada). O download pela conexão de dados móveis está desativado nas configurações. Se você deseja que esse problema seja resolvido, entre em contato com os criadores do seu aplicativo VPN.</string>
   <string name="confirm_mobile_download_dialog_download_later">Baixar mais tarde</string>
   <string name="confirm_mobile_download_dialog_allow_this_time">Baixar assim mesmo</string>
   <string name="confirm_mobile_streaming_notification_title">Confirme a transmissão via dados móveis</string>
@@ -327,6 +341,7 @@
   <string name="feed_title">Título do podcast</string>
   <string name="random">Aleatório</string>
   <string name="smart_shuffle">Ordenação inteligente</string>
+  <string name="size">Tamanho</string>
   <string name="clear_queue_confirmation_msg">Por favor confirme que você deseja limpar TODOS os episódios da fila</string>
   <string name="time_left_label">Tempo restante:\u0020</string>
   <!--Variable Speed-->
@@ -381,6 +396,9 @@
   <string name="pref_followQueue_sum">Pular para o próximo item da fila ao completar a reprodução</string>
   <string name="pref_auto_delete_sum">Excluir o episódio ao completar a reprodução</string>
   <string name="pref_auto_delete_title">Remoção automática</string>
+  <string name="pref_auto_local_delete_title">Eliminação automática para pastas locais</string>
+  <string name="pref_auto_local_delete_sum">Incluir pastas locais na função de exclusão automática</string>
+  <string name="pref_auto_local_delete_dialog_body">Observe que, para pastas locais, isso removerá episódios do AntennaPod e excluirá seus arquivos de mídia do armazenamento interno. Eles não podem ser baixados novamente através do AntennaPod. Ativar exclusão automática?</string>
   <string name="pref_smart_mark_as_played_sum">Marcar episódios como reproduzidos mesmo que ainda restem alguns segundos de reprodução</string>
   <string name="pref_smart_mark_as_played_title">Marcação inteligente quando reproduzido</string>
   <string name="pref_skip_keeps_episodes_sum">Mantém os episódios quando eles forem pulados</string>
@@ -398,10 +416,15 @@
   <string name="feed_every_2_hours">A cada 2 horas</string>
   <string name="feed_every_4_hours">A cada 4 horas</string>
   <string name="feed_every_8_hours">A cada 8 horas</string>
+  <string name="feed_every_12_hours">A cada 12 horas</string>
+  <string name="feed_every_24_hours">Todo dia</string>
+  <string name="feed_every_72_hours">A cada 3 dias</string>
   <string name="pref_followQueue_title">Reprodução contínua</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Fones de ouvido ou Bluetooth desconectado</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Fones de ouvido reconectados</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">Reconectar bluetooth</string>
   <string name="pref_stream_over_download_title">Preferir streaming</string>
+  <string name="pref_stream_over_download_sum">Exibir o botão de transmissão em vez do botão de download nas listas</string>
   <string name="pref_mobileUpdate_title">Atualização usando dados móveis</string>
   <string name="pref_mobileUpdate_sum">Selecione o que deve ser permitido na conexão de dados móveis</string>
   <string name="pref_mobileUpdate_refresh">Atualizar podcast</string>
@@ -409,11 +432,20 @@
   <string name="pref_mobileUpdate_auto_download">Download automático</string>
   <string name="pref_mobileUpdate_episode_download">Download de episódios</string>
   <string name="pref_mobileUpdate_streaming">Streaming</string>
+  <string name="user_interface_label">Interface do usuário </string>
   <string name="user_interface_sum">Aparência, Assinaturas, Tela de Bloqueio</string>
+  <string name="pref_black_theme_title">Preto total</string>
+  <string name="pref_black_theme_message">Utilizar preto total para o tema escuro</string>
+  <string name="pref_tinted_theme_title">Cores dinâmicas</string>
   <string name="pref_tinted_theme_message">Adaptar cores do aplicativo baseado na imagem de fundo</string>
+  <string name="pref_nav_drawer_items_title">Definir itens do menu de navegação</string>
+  <string name="pref_nav_drawer_items_sum">Alterar quais itens aparecem na gaveta de navegação</string>
+  <string name="pref_nav_drawer_feed_order_title">Definir ordem das inscrições</string>
   <string name="pref_nav_drawer_feed_order_sum">Mudar a ordem de suas assinaturas</string>
+  <string name="pref_nav_drawer_feed_counter_title">Definir contador de assinaturas</string>
   <string name="pref_nav_drawer_feed_counter_sum">Altera a informação exibida pelo contador de assinaturas. Também afeta a ordenação das assinaturas caso a \'Ordem das assinaturas\' esteja definida como \'Contador\'.</string>
   <string name="pref_automatic_download_title">Download automático</string>
+  <string name="pref_automatic_download_sum">Configure o download automático de episódios</string>
   <string name="pref_autodl_wifi_filter_title">Habilitar filtro Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Permitir download automático somente pelas redes Wi-Fi selecionadas.</string>
   <string name="pref_automatic_download_on_battery_title">Baixar enquanto não está carregando</string>
@@ -422,6 +454,7 @@
   <string name="pref_episode_cache_summary">Número total de episódios baixados em cache no dispositivo. O download automático será suspenso se esse número for atingido.</string>
   <string name="pref_episode_cover_title">Usar capa do episódio</string>
   <string name="pref_episode_cover_summary">Usa a capa específica do episódio em listas, sempre que disponível. Se desmarcada, o aplicativo sempre usará a imagem de capa do podcast.</string>
+  <string name="pref_show_remain_time_title">Mostrar tempo restante</string>
   <string name="pref_show_remain_time_summary">Exibe o tempo restante dos episódios, quando marcado. Se estiver desmarcado, exibe a duração total dos episódios.</string>
   <string name="pref_theme_title_automatic">Automático</string>
   <string name="pref_theme_title_light">Claro</string>
@@ -439,20 +472,22 @@
   <string name="pref_playback_time_respects_speed_sum">A posição e a duração exibidas são adaptadas à velocidade de reprodução</string>
   <string name="pref_fast_forward">Tempo de avanço rápido</string>
   <string name="pref_fast_forward_sum">Personaliza quantos segundos avançar quando o botão avanço rápido for clicado</string>
+  <string name="pref_rewind">Voltar o tempo de salto</string>
   <string name="pref_rewind_sum">Personaliza quantos segundos voltar quando o botão retroceder for clicado</string>
   <string name="pref_expandNotify_title">Prioridade de notificação alta</string>
   <string name="pref_expandNotify_sum">Isso normalmente expande a notificação para exibir os botões de reprodução.</string>
   <string name="pref_persistNotify_title">Controles de reprodução persistentes</string>
-  <string name="pref_compact_notification_buttons_title">Definir botões de notificação compactos</string>
-  <string name="pref_compact_notification_buttons_sum">Altere os botões de reprodução quando a notificação for recolhida. O botão play / pause está sempre incluído.</string>
-  <string name="pref_compact_notification_buttons_dialog_title">Selecione no máximo %1$d itens</string>
-  <string name="pref_compact_notification_buttons_dialog_error">Você pode selecionar, no máximo, %1$d itens.</string>
+  <string name="pref_persistNotify_sum">Mantenha os controles de notificação e tela de bloqueio quando a reprodução estiver pausada</string>
+    <string name="pref_full_notification_buttons_title">Definir botões na notificação</string>
+  <string name="pref_full_notification_buttons_sum">Alterar botões de reprodução mostrados na notificação</string>
   <string name="pref_enqueue_location_title">Localização na fila</string>
   <string name="pref_enqueue_location_sum">Adicionar episódios para: %1$s</string>
   <string name="enqueue_location_back">Final</string>
   <string name="enqueue_location_front">Início</string>
   <string name="enqueue_location_after_current">Depois do episódio atual</string>
+  <string name="enqueue_location_random">Aleatório</string>
   <string name="pref_smart_mark_as_played_disabled">Desabilitado</string>
+  <string name="documentation_support">Documentação &amp; suporte</string>
   <string name="visit_user_forum">Fórum de usuários</string>
   <string name="bug_report_title">Reportar um bug</string>
   <string name="open_bug_tracker">Abrir registro de bugs</string>
@@ -466,11 +501,14 @@
   <string name="pref_skip_silence_title">Pular silêncio no áudio</string>
   <string name="behavior">Comportamento</string>
   <string name="pref_default_page">Página inicial</string>
+  <string name="pref_default_page_sum">Tela padrão ao iniciar o AntennaPod</string>
   <string name="pref_back_button_opens_drawer">O botão Voltar abre o menu</string>
   <string name="pref_back_button_opens_drawer_summary">Pressionar o botão Voltar na Página inicial abre o menu de navegação</string>
   <string name="remember_last_page">Lembrar última página</string>
   <string name="pref_delete_removes_from_queue_title">Excluir removidos da fila</string>
+  <string name="pref_delete_removes_from_queue_sum">Remove automaticamente um episódio da fila quando ele é excluído.</string>
   <string name="pref_filter_feed_title">Filtro de assinaturas</string>
+  <string name="pref_filter_feed_sum">Filtre suas assinaturas na gaveta de navegação e na tela de assinaturas</string>
   <string name="subscriptions_are_filtered">Assinaturas estão filtradas.</string>
   <string name="subscriptions_counter_greater_zero">Contador maior que zero</string>
   <string name="auto_downloaded">Download automático</string>
@@ -482,6 +520,7 @@
   <string name="pref_feed_settings_dialog_msg">Essa configuração é única para cada podcast. Você pode alterá-la abrindo a página do podcast.</string>
   <string name="pref_contribute">Contribuir</string>
   <string name="pref_show_subscription_title">Mostrar título da assinatura</string>
+  <string name="pref_show_subscription_title_summary">Mostrar título da subscrição abaixo da imagem</string>
   <string name="pref_new_episodes_action_title">Ação para novos episódios</string>
   <string name="pref_new_episodes_action_sum">Ação que deve ser executada para novos episódios</string>
   <!--About screen-->
@@ -500,6 +539,7 @@
   <string name="type_to_search">Digite a consulta a ser pesquisada</string>
   <string name="search_label">Pesquisar</string>
   <string name="no_results_for_query">Nenhum resultado para \"%1$s\"</string>
+  <string name="search_online">Pesquisar online</string>
   <!--Synchronization-->
   <string name="sync_status_started">Sincronização iniciada</string>
   <string name="sync_status_episodes_upload">Enviando alterações de episódio...</string>
@@ -521,7 +561,7 @@
   <string name="database_import_summary">Importa o banco de dados AntennaPod de outro dispositivo</string>
   <string name="opml_import_label">Importação de OPML</string>
   <string name="opml_add_podcast_label">Importar lista de podcasts (OPML)</string>
-  <string name="opml_reader_error">Ocorreu um erro ao ler o documento OPML:</string>
+  <string name="opml_reader_error">Ocorreu um erro ao ler o arquivo. Certifique-se de que selecionou um arquivo OPML e que o mesmo é válido.</string>
   <string name="opml_import_error_no_file">Nenhum arquivo selecionado!</string>
   <string name="select_all_label">Selecionar todos</string>
   <string name="deselect_all_label">Remover seleção</string>
@@ -566,6 +606,9 @@
     <item quantity="many">%d horas</item>
     <item quantity="other">%d horas</item>
   </plurals>
+  <string name="auto_enable_label">Ativar temporizador automaticamente ao tocar no botão Reproduzir</string>
+  <string name="auto_enable_label_with_times">Ativar automaticamente o temporizador se apertar Reproduzir entre %s e %s</string>
+  <string name="auto_enable_change_times">Alterar intervalo</string>
   <string name="sleep_timer_enabled_label">Temporizador habilitado</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">Escolha o serviço de sincronização</string>
@@ -623,20 +666,30 @@
   <string name="decrease_speed">Diminuir velocidade</string>
   <string name="media_type_video_label">Vídeo</string>
   <string name="status_downloading_label">O episódio está sendo baixado</string>
+  <string name="in_queue_label">Na fila</string>
+  <string name="is_favorite_label">Marcar como favorito.</string>
+  <string name="is_inbox_label">Na caixa de entrada</string>
+  <string name="is_played">Reproduzido</string>
   <string name="load_next_page_label">Carregar a próxima página</string>
   <string name="position">Posição: %1$s</string>
+  <string name="remaining_time">Tempo restante: %1$s</string>
   <string name="apply_action">Aplicar ação</string>
   <string name="play_chapter">Reproduzir o capítulo</string>
   <string name="prev_chapter">Capítulo anterior</string>
   <string name="next_chapter">Próximo capítulo</string>
+  <string name="shuffle_suggestions">Sugestões de mistura</string>
+  <string name="add_preset">Adicionar pré-ajuste</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">Autenticação</string>
   <string name="authentication_descr">Altera seu nome de usuário e sua senha para este podcast e seus episódios.</string>
   <string name="feed_tags_label">Etiquetas</string>
   <string name="feed_tags_summary">Altere as etiquetas desse podcast para ajudar a organizar suas assinaturas</string>
+  <string name="feed_folders_include_root">Mostrar este podcast na lista principal</string>
   <string name="multi_feed_common_tags_info">{fa-info-circle} São mostradas apenas as etiquetas comuns às assinaturas selecionadas. As outras etiquetas não são afetadas.</string>
   <string name="auto_download_settings_label">Configurações do download automático</string>
+  <string name="episode_filters_label">Filtro de episódios</string>
   <string name="episode_filters_description">Lista de termos utilizados para decidir se um episódio deve ser incluído ou excluído no download automático</string>
+  <string name="add_term">Adicionar termo</string>
   <string name="exclude_terms">Excluir episódios que possuam qualquer um dos termos abaixo</string>
   <string name="include_terms">Incluir apenas os episódios que possuam qualquer um dos termos abaixo</string>
   <string name="exclude_episodes_shorter_than">Excluir episódios mais curtos que</string>
@@ -656,6 +709,7 @@
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Procurar podcast...</string>
   <string name="search_itunes_label">Pesquisar em Apple Podcasts</string>
+  <string name="search_podcastindex_label">Pesquisar índice de podcast</string>
   <string name="search_fyyd_label">Pesquisar em fyyd</string>
   <string name="gpodnet_search_hint">Buscar no gpodder.net</string>
   <string name="advanced">Avançado</string>
@@ -664,6 +718,7 @@
   <string name="discover_hide">Esconder</string>
   <string name="discover_is_hidden">Você selecionou esconder sugestões.</string>
   <string name="discover_more">mais »</string>
+  <string name="discover_powered_by_itunes">Sugestões por Apple Podcasts</string>
   <string name="discover_confirm">Mostrar sugestões</string>
   <string name="search_powered_by">Resultados por %1$s</string>
   <string name="select_country">Selecione o país</string>
@@ -687,21 +742,7 @@
   <string name="not_paused">Não pausado</string>
   <string name="hide_played_episodes_label">Reproduzido</string>
   <string name="not_played">Não tocado</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">Título (A \u2192 Z)</string>
-  <string name="sort_title_z_a">Título (Z \u2192 A)</string>
-  <string name="sort_date_new_old">Data (Novo \u2192 Velho)</string>
-  <string name="sort_date_old_new">Data (Velho \u2192 Novo)</string>
-  <string name="sort_duration_short_long">Duração (Curta \u2192 Longa)</string>
-  <string name="sort_duration_long_short">Duração (Longa \u2192 Curta)</string>
-  <string name="sort_filename_a_z">Nome do arquivo (A \u2192 Z)</string>
-  <string name="sort_filename_z_a">Nome do arquivo (Z \u2192 A)</string>
-  <string name="sort_a_z">A \u2192 Z</string>
-  <string name="sort_z_a">Z \u2192 A</string>
-  <string name="sort_new_old">Novo \u2192 Antigo</string>
-  <string name="sort_old_new">Antigo \u2192 Novo</string>
-  <string name="sort_short_long">Curto \u2192 Longo</string>
-  <string name="sort_long_short">Longo \u2192 Curto</string>
+  <string name="filename">Nome do arquivo</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Incluir posição de reprodução</string>
   <string name="share_dialog_episode_website_label">Webpage do episódio</string>
@@ -711,6 +752,7 @@
   <string name="share_starting_position_label">Iniciando em</string>
   <!--Audio controls-->
   <string name="audio_controls">Controles de áudio</string>
+  <string name="playback_speed">Velocidade da reprodução</string>
   <string name="player_switch_to_audio_only">Trocar para apenas áudio</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tipo</string>
@@ -751,4 +793,5 @@
   <string name="on_demand_config_download_text">Parece que você faz muitos downloads. Quer que as listas de episódios mostrem botões de download?</string>
   <string name="shortcut_subscription_label">Atalho da assinatura</string>
   <string name="shortcut_select_subscription">Selecione a assinatura</string>
+  <string name="add_shortcut">Adicionar atalho</string>
 </resources>

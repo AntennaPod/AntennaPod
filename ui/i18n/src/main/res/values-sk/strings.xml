@@ -22,7 +22,7 @@
   <string name="episode_cache_full_message">Bol dosiahnutý prednastavený limit veľkosti vyrovnávacej pamäte epizód. Veľkosť vyrovnávacej pamäte môžete zvýšiť v Nastaveniach.</string>
   <string name="years_statistics_label">Roky</string>
   <string name="notification_pref_fragment">Oznámenia</string>
-  <string name="recently_played_episodes">Nedávno hrané epizódy</string>
+  <string name="current_playing_episode">Prehrávaná</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">„%1$s“ nebol nájdený</string>
   <!--SwipeActions-->
@@ -107,7 +107,6 @@
   <string name="description_label">Popis</string>
   <string name="shownotes_label">Poznámky</string>
   <string name="shownotes_contentdescription">potiahnuť hore pre čítanie poznámok</string>
-  <string name="episodes_suffix">\u0020epizódy</string>
   <string name="close_label">Ukončiť</string>
   <string name="retry_label">Skúsiť znova</string>
   <string name="auto_download_label">Zahrnúť do automatického sťahovania</string>
@@ -180,7 +179,6 @@
   <string name="remove_feed_label">Odstrániť podcast</string>
   <string name="share_label">Zdieľanie</string>
   <string name="share_file_label">Zdielať súbor</string>
-  <string name="share_rss_address_label">RSS adresa:</string>
   <string name="feed_delete_confirmation_msg">Potvrďte prosím, že chcete zmazať podcast „%1$s“, VŠETKY jeho epizódy (vrátane stiahnutých epizód) a jeho štatistiky.</string>
   <string name="feed_delete_confirmation_msg_batch">Potvrďte prosím, že chcete zmazať vybrané podcasty, VŠETKY ich epizódy (vrátane stiahonutých epizód) a ich štatistiky.</string>
   <string name="feed_delete_confirmation_local_msg">Potvrďte, prosím, že chcete zmazať podcast „%1$s“ a jeho štatistiky. Súbory v lokálnom zdrojovom priečinku sa nezmažú.</string>
@@ -495,15 +493,13 @@
   <string name="pref_expandNotify_sum">Toto obvykle pridá tlačidlá ovládania prehrávania do správ upozornení</string>
   <string name="pref_persistNotify_title">Stále ovládače prehrávania</string>
   <string name="pref_persistNotify_sum">Zachovať oznámenia a ovládanie na uzamknutej obrazovke aj pri pozastavenom prehrávaní</string>
-  <string name="pref_compact_notification_buttons_title">Nastaviť kompaktné tlačidlá upozornení</string>
-  <string name="pref_compact_notification_buttons_sum">Zmeniť tlačidlá ovládania po zbalení upozornení. Tlačidlá prehrať/pozastaviť sú zobrazené vždy.</string>
-  <string name="pref_compact_notification_buttons_dialog_title">Vybrať maximálne %1$d položiek</string>
-  <string name="pref_compact_notification_buttons_dialog_error">Je možné vybrať maximálne %1$d položiek.</string>
+    <string name="pref_full_notification_buttons_title">Nastaviť tlačidlá upozornení</string>
+  <string name="pref_full_notification_buttons_sum">Zmeniť tlačidlá prehrávania v upozornení na prehrávanie.</string>
   <string name="pref_enqueue_location_title">Pozícia pridávania do poradia</string>
   <string name="pref_enqueue_location_sum">Pridávať epizódy na: %1$s</string>
   <string name="enqueue_location_back">Späť</string>
   <string name="enqueue_location_front">Začiatok</string>
-  <string name="enqueue_location_after_current">Za hrajúcu epizódu</string>
+  <string name="enqueue_location_after_current">Za prehrávanú epizódu</string>
   <string name="enqueue_location_random">Náhodne</string>
   <string name="pref_smart_mark_as_played_disabled">Vypnuté</string>
   <string name="documentation_support">Dokumentácia a podpora</string>
@@ -580,7 +576,7 @@
   <string name="database_import_summary">Importovať databázu AntennaPod z iného zariadenia</string>
   <string name="opml_import_label">Import OPML</string>
   <string name="opml_add_podcast_label">Importovať zoznam podcastov (OPML)</string>
-  <string name="opml_reader_error">Pri načítaní súboru OPML sa vyskytla chyba:</string>
+  <string name="opml_reader_error">Pri čítaní súboru sa vyskytla chyba. Uistite sa, že ste skutočne vybrali súbor OPML a že je platný.</string>
   <string name="opml_import_error_no_file">Nie je zvolený žiadny súbor!</string>
   <string name="select_all_label">Označiť všetko</string>
   <string name="deselect_all_label">Zrušiť označenie</string>
@@ -770,23 +766,7 @@
   <string name="not_paused">Nie je pozastavené</string>
   <string name="hide_played_episodes_label">Prehrané</string>
   <string name="not_played">Nehrá sa</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">Názov (A \u2192 Z)</string>
-  <string name="sort_title_z_a">Názov (A \u2192 Z)</string>
-  <string name="sort_date_new_old">Dátum (Nové \u2192 Staré)</string>
-  <string name="sort_date_old_new">Dátum (Staré \u2192 Nové)</string>
-  <string name="sort_duration_short_long">Trvanie (Krátke \u2192 Dlhé)</string>
-  <string name="sort_duration_long_short">Trvanie (Dlhé \u2192 Krátke)</string>
-  <string name="sort_filename_a_z">Názov súboru (A \u2192 Z)</string>
-  <string name="sort_filename_z_a">Názov súboru (Z \u2192 A)</string>
-  <string name="sort_a_z">A \u2192 Z</string>
-  <string name="sort_z_a">Z \u2192 A</string>
-  <string name="sort_new_old">Nové \u2192 Staré</string>
-  <string name="sort_old_new">Staré \u2192 Nové</string>
-  <string name="sort_short_long">Krátke \u2192 Dlhé</string>
-  <string name="sort_long_short">Dlhé \u2192 Krátke</string>
-  <string name="sort_small_large">Malé \u2192 Veľké</string>
-  <string name="sort_large_small">Veľké \u2192 Malé</string>
+  <string name="filename">Názov súboru</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Zahrnúť pozíciu prehrávania</string>
   <string name="share_dialog_episode_website_label">Webová stránka epizódy</string>
@@ -797,7 +777,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Ovládanie zvuku</string>
   <string name="playback_speed">Rýchlosť prehrávania</string>
-  <string name="audio_effects">Zvukové efekty</string>
   <string name="player_switch_to_audio_only">Prepnúť len na audio</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Typ</string>

@@ -35,11 +35,11 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
-import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
+import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
+import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
-import de.danoeh.antennapod.dialog.RatingDialog;
+import de.danoeh.antennapod.dialog.rating.RatingDialogManager;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.MessageEvent;
@@ -59,6 +59,7 @@ import de.danoeh.antennapod.fragment.TransitionEffect;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
+import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
@@ -167,6 +168,7 @@ public class MainActivity extends CastEnabledActivity {
 
         FeedUpdateManager.restartUpdateAlarm(this, false);
         SynchronizationQueueSink.syncNowIfNotSyncedRecently();
+        AutomaticDatabaseExportWorker.enqueueIfNeeded(this, false);
 
         WorkManager.getInstance(this)
                 .getWorkInfosByTagLiveData(FeedUpdateManager.WORK_TAG_FEED_UPDATE)
@@ -241,8 +243,9 @@ public class MainActivity extends CastEnabledActivity {
         outState.putInt(KEY_GENERATED_VIEW_ID, View.generateViewId());
     }
 
-    private final BottomSheetBehavior.BottomSheetCallback bottomSheetCallback =
-            new BottomSheetBehavior.BottomSheetCallback() {
+    private final BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new AntennaPodBottomSheetCallback();
+
+    private class AntennaPodBottomSheetCallback extends BottomSheetBehavior.BottomSheetCallback {
         @Override
         public void onStateChanged(@NonNull View view, int state) {
             if (state == BottomSheetBehavior.STATE_COLLAPSED) {
@@ -266,7 +269,7 @@ public class MainActivity extends CastEnabledActivity {
 
             audioPlayer.fadePlayerToToolbar(slideOffset);
         }
-    };
+    }
 
     public void setupToolbarToggle(@NonNull MaterialToolbar toolbar, boolean displayUpArrow) {
         if (drawerLayout != null) { // Tablet layout does not have a drawer
@@ -290,7 +293,7 @@ public class MainActivity extends CastEnabledActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (drawerLayout != null) {
+        if (drawerLayout != null && drawerToggle != null) {
             drawerLayout.removeDrawerListener(drawerToggle);
         }
     }
@@ -493,14 +496,13 @@ public class MainActivity extends CastEnabledActivity {
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        RatingDialog.init(this);
+        new RatingDialogManager(this).showIfNeeded();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         handleNavIntent();
-        RatingDialog.check();
 
         if (lastTheme != ThemeSwitcher.getNoTitleTheme(this)) {
             finish();
@@ -551,7 +553,7 @@ public class MainActivity extends CastEnabledActivity {
 
     @Override
     public void onBackPressed() {
-        if (isDrawerOpen()) {
+        if (isDrawerOpen() && drawerLayout != null) {
             drawerLayout.closeDrawer(navDrawer);
         } else if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -749,7 +751,7 @@ public class MainActivity extends CastEnabledActivity {
         }
 
         if (customKeyCode != null) {
-            sendBroadcast(MediaButtonReceiver.createIntent(this, customKeyCode));
+            sendBroadcast(MediaButtonStarter.createIntent(this, customKeyCode));
             return true;
         }
         return super.onKeyUp(keyCode, event);

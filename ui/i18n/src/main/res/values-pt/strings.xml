@@ -22,7 +22,7 @@
   <string name="episode_cache_full_message">Atingiu o limite máximo de itens em cache. Pode aumentar o tamanho de cache nas definições.</string>
   <string name="years_statistics_label">Anos</string>
   <string name="notification_pref_fragment">Notificações</string>
-  <string name="recently_played_episodes">Reproduzidos recentemente</string>
+  <string name="current_playing_episode">Atual</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" não encontrada</string>
   <!--SwipeActions-->
@@ -107,7 +107,6 @@
   <string name="description_label">Descrição</string>
   <string name="shownotes_label">Notas</string>
   <string name="shownotes_contentdescription">deslize acima para mostrar as notas</string>
-  <string name="episodes_suffix">\u0020episódios</string>
   <string name="close_label">Fechar</string>
   <string name="retry_label">Tentar novamente</string>
   <string name="auto_download_label">Incluir nas descargas automáticas</string>
@@ -174,7 +173,6 @@
   <string name="remove_feed_label">Remover podcast</string>
   <string name="share_label">Partilhar</string>
   <string name="share_file_label">Partilhar ficheiro</string>
-  <string name="share_rss_address_label">Endereço RSS:</string>
   <string name="feed_delete_confirmation_msg">Tem a certeza de que deseja eliminar o podcast  \"%1$s\", TODOS os seus episódios (inclusive descarregados) e as estatísticas?</string>
   <string name="feed_delete_confirmation_msg_batch">Tem a certeza de que deseja eliminar os podcasts selecionados, TODOS os seus episódios (inclusive descarregados) e as estatísticas?</string>
   <string name="feed_delete_confirmation_local_msg">Tem a certeza de que deseja eliminar o podcast \"%1$s\" e as suas estatísticas? Os ficheiros existentes na pasta não serão eliminados.</string>
@@ -480,10 +478,8 @@
   <string name="pref_expandNotify_sum">Normalmente, esta opção é utilizada para expandir a notificação e mostrar os botões de reprodução</string>
   <string name="pref_persistNotify_title">Controlos de reprodução persistentes</string>
   <string name="pref_persistNotify_sum">Manter notificação e controlos no ecrã de bloqueio ao colocar em pausa</string>
-  <string name="pref_compact_notification_buttons_title">Definir botões compactos para a notificação</string>
-  <string name="pref_compact_notification_buttons_sum">Alterar botões de reprodução ao recolher a notificação. Os botões Reproduzir/Pausa serão sempre incluídos.</string>
-  <string name="pref_compact_notification_buttons_dialog_title">Selecione, no máximo, %1$d itens</string>
-  <string name="pref_compact_notification_buttons_dialog_error">Apenas pode selecionar um máximo de %1$d itens</string>
+    <string name="pref_full_notification_buttons_title">Definir botões na notificação</string>
+  <string name="pref_full_notification_buttons_sum">Alterar botões de reprodução mostrados na notificação</string>
   <string name="pref_enqueue_location_title">Localização na fila</string>
   <string name="pref_enqueue_location_sum">Adicionar episódios: %1$s</string>
   <string name="enqueue_location_back">Antes</string>
@@ -565,7 +561,7 @@
   <string name="database_import_summary">Importar base de dados AntennaPod de outro dispositivo</string>
   <string name="opml_import_label">Importação OPML</string>
   <string name="opml_add_podcast_label">Importar lista de podcasts (OPML)</string>
-  <string name="opml_reader_error">Ocorreu um erro ao ler o ficheiro OPML:</string>
+  <string name="opml_reader_error">Ocorreu um erro ao ler o ficheiro. Certifique-se de que selecionou um ficheiro OPML e que o mesmo é válido.</string>
   <string name="opml_import_error_no_file">Nenhum ficheiro selecionado!</string>
   <string name="select_all_label">Marcar tudo</string>
   <string name="deselect_all_label">Desmarcar tudo</string>
@@ -609,6 +605,11 @@
     <item quantity="one">1 hora</item>
     <item quantity="many">%d horas</item>
     <item quantity="other">%d horas</item>
+  </plurals>
+  <plurals name="time_days_quantified">
+    <item quantity="one">1 dia</item>
+    <item quantity="many">%d dias</item>
+    <item quantity="other">%d dias</item>
   </plurals>
   <string name="auto_enable_label">Ativar temporizador automaticamente ao tocar no botão Reproduzir</string>
   <string name="auto_enable_label_with_times">Ativa automaticamente o temporizador se premir Reproduzir entre %s e %s</string>
@@ -746,23 +747,7 @@
   <string name="not_paused">Não em pausa</string>
   <string name="hide_played_episodes_label">Reproduzido</string>
   <string name="not_played">Não reproduzido</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">Título (A \u2192 Z)</string>
-  <string name="sort_title_z_a">Título (Z \u2192 A)</string>
-  <string name="sort_date_new_old">Data (Recente \u2192 Antiga)</string>
-  <string name="sort_date_old_new">Data (Antiga \u2192 Recente)</string>
-  <string name="sort_duration_short_long">Duração (Curta \u2192 Longa)</string>
-  <string name="sort_duration_long_short">Duração (Longa \u2192 Curta)</string>
-  <string name="sort_filename_a_z">Nome do ficheiro (A \u2192 Z)</string>
-  <string name="sort_filename_z_a">Nome do ficheiro (Z \u2192 A)</string>
-  <string name="sort_a_z">A \u2192 Z</string>
-  <string name="sort_z_a">Z \u2192 A</string>
-  <string name="sort_new_old">Novo \u2192 Antigo</string>
-  <string name="sort_old_new">Antigo \u2192 Novo</string>
-  <string name="sort_short_long">Curto \u2192 Longo</string>
-  <string name="sort_long_short">Longo \u2192 Curto</string>
-  <string name="sort_small_large">Pequeno \u2192 Grande</string>
-  <string name="sort_large_small">Grande \u2192 Pequeno</string>
+  <string name="filename">Nome do ficheiro</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Incluir posição de reprodução</string>
   <string name="share_dialog_episode_website_label">Página web do episódio</string>
@@ -773,7 +758,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Controlos de áudio</string>
   <string name="playback_speed">Velocidade de reprodução</string>
-  <string name="audio_effects">Efeitos de áudio</string>
   <string name="player_switch_to_audio_only">Trocar para apenas áudio</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tipo</string>

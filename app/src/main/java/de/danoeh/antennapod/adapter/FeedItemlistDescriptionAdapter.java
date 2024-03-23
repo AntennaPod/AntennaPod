@@ -13,11 +13,11 @@ import androidx.annotation.Nullable;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.util.DateFormatter;
+import de.danoeh.antennapod.ui.common.DateFormatter;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;

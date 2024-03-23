@@ -164,12 +164,6 @@ public class AddFeedFragment extends Fragment {
         viewBinding.combinedFeedSearchEditText.post(() -> viewBinding.combinedFeedSearchEditText.setText(""));
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-    }
-
     private void chooseOpmlImportPathResult(final Uri uri) {
         if (uri == null) {
             return;

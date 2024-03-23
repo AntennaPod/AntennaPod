@@ -38,10 +38,10 @@ import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.EpisodeFilterDialog;
 import de.danoeh.antennapod.dialog.FeedPreferenceSkipDialog;
 import de.danoeh.antennapod.dialog.TagSettingsDialog;
+import de.danoeh.antennapod.ui.preferences.screen.synchronization.AuthenticationDialog;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -241,14 +241,21 @@ public class FeedSettingsFragment extends Fragment {
                         PlaybackSpeedFeedSettingDialogBinding.inflate(getLayoutInflater());
                 viewBinding.seekBar.setProgressChangedListener(speed ->
                         viewBinding.currentSpeedLabel.setText(String.format(Locale.getDefault(), "%.2fx", speed)));
-                float speed = feedPreferences.getFeedPlaybackSpeed();
                 viewBinding.useGlobalCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     viewBinding.seekBar.setEnabled(!isChecked);
                     viewBinding.seekBar.setAlpha(isChecked ? 0.4f : 1f);
                     viewBinding.currentSpeedLabel.setAlpha(isChecked ? 0.4f : 1f);
+
+                    viewBinding.skipSilenceFeed.setEnabled(!isChecked);
+                    viewBinding.skipSilenceFeed.setAlpha(isChecked ? 0.4f : 1f);
                 });
-                viewBinding.useGlobalCheckbox.setChecked(speed == FeedPreferences.SPEED_USE_GLOBAL);
-                viewBinding.seekBar.updateSpeed(speed == FeedPreferences.SPEED_USE_GLOBAL ? 1 : speed);
+                float speed = feedPreferences.getFeedPlaybackSpeed();
+                FeedPreferences.SkipSilence skipSilence = feedPreferences.getFeedSkipSilence();
+                boolean isGlobal = speed == FeedPreferences.SPEED_USE_GLOBAL;
+                viewBinding.useGlobalCheckbox.setChecked(isGlobal);
+                viewBinding.seekBar.updateSpeed(isGlobal ? 1 : speed);
+                viewBinding.skipSilenceFeed.setChecked(!isGlobal
+                        && skipSilence == FeedPreferences.SkipSilence.AGGRESSIVE);
                 new MaterialAlertDialogBuilder(getContext())
                         .setTitle(R.string.playback_speed)
                         .setView(viewBinding.getRoot())
@@ -256,9 +263,19 @@ public class FeedSettingsFragment extends Fragment {
                             float newSpeed = viewBinding.useGlobalCheckbox.isChecked()
                                     ? FeedPreferences.SPEED_USE_GLOBAL : viewBinding.seekBar.getCurrentSpeed();
                             feedPreferences.setFeedPlaybackSpeed(newSpeed);
+                            FeedPreferences.SkipSilence newSkipSilence;
+                            if (viewBinding.useGlobalCheckbox.isChecked()) {
+                                newSkipSilence = FeedPreferences.SkipSilence.GLOBAL;
+                            } else if (viewBinding.skipSilenceFeed.isChecked()) {
+                                newSkipSilence = FeedPreferences.SkipSilence.AGGRESSIVE;
+                            } else {
+                                newSkipSilence = FeedPreferences.SkipSilence.OFF;
+                            }
+                            feedPreferences.setFeedSkipSilence(newSkipSilence);
                             DBWriter.setFeedPreferences(feedPreferences);
-                            EventBus.getDefault().post(
-                                    new SpeedPresetChangedEvent(feedPreferences.getFeedPlaybackSpeed(), feed.getId()));
+                            EventBus.getDefault().post(new SpeedPresetChangedEvent(
+                                    feedPreferences.getFeedPlaybackSpeed(),
+                                    feed.getId(), feedPreferences.getFeedSkipSilence()));
                         })
                         .setNegativeButton(R.string.cancel_label, null)
                         .show();
@@ -420,6 +437,9 @@ public class FeedSettingsFragment extends Fragment {
                     break;
                 case ADD_TO_INBOX:
                     newEpisodesAction.setSummary(R.string.feed_new_episodes_action_add_to_inbox);
+                    break;
+                case ADD_TO_QUEUE:
+                    newEpisodesAction.setSummary(R.string.feed_new_episodes_action_add_to_queue);
                     break;
                 case NOTHING:
                     newEpisodesAction.setSummary(R.string.feed_new_episodes_action_nothing);

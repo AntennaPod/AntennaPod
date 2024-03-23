@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.service.playback;
 
 import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -14,6 +15,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.net.Uri;
@@ -45,8 +47,10 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.media.MediaBrowserServiceCompat;
 
+import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -63,15 +67,16 @@ import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.QuickSettingsTileService;
+import de.danoeh.antennapod.core.service.playback.PlaybackServiceTaskManager.SleepTimer;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
+import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.FeedUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.NetworkUtils;
-import de.danoeh.antennapod.core.util.gui.NotificationUtils;
+import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.core.util.playback.PlayableUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.core.widget.WidgetUpdater;
@@ -84,6 +89,7 @@ import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.event.settings.SkipIntroEndingChangedEvent;
 import de.danoeh.antennapod.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
+import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
@@ -126,6 +132,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private static final String CUSTOM_ACTION_REWIND = "action.de.danoeh.antennapod.core.service.rewind";
     private static final String CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED =
             "action.de.danoeh.antennapod.core.service.changePlaybackSpeed";
+    private static final String CUSTOM_ACTION_TOGGLE_SLEEP_TIMER =
+            "action.de.danoeh.antennapod.core.service.toggleSleepTimer";
+    public static final String CUSTOM_ACTION_NEXT_CHAPTER = "action.de.danoeh.antennapod.core.service.next_chapter";
 
     /**
      * Set a max number of episodes to load for Android Auto, otherwise there could be performance issues
@@ -297,7 +306,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (notificationBuilder.getPlayerStatus() == PlayerStatus.PLAYING) {
             notificationBuilder.setPlayerStatus(PlayerStatus.STOPPED);
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-            notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS)
+                    == PackageManager.PERMISSION_GRANTED) {
+                notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
+            }
         }
         stateManager.stopForeground(!UserPreferences.isPersistNotify());
         isRunning = false;
@@ -482,9 +494,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         notificationManager.cancel(R.id.notification_streaming_confirmation);
 
         final int keycode = intent.getIntExtra(MediaButtonReceiver.EXTRA_KEYCODE, -1);
+        final String customAction = intent.getStringExtra(MediaButtonReceiver.EXTRA_CUSTOM_ACTION);
         final boolean hardwareButton = intent.getBooleanExtra(MediaButtonReceiver.EXTRA_HARDWAREBUTTON, false);
         Playable playable = intent.getParcelableExtra(PlaybackServiceInterface.EXTRA_PLAYABLE);
-        if (keycode == -1 && playable == null) {
+        if (keycode == -1 && playable == null && customAction == null) {
             Log.e(TAG, "PlaybackService was started with no arguments");
             stateManager.stopService();
             return Service.START_NOT_STICKY;
@@ -508,7 +521,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     stateManager.stopService();
                     return Service.START_NOT_STICKY;
                 }
-            } else {
+            } else if (playable != null) {
                 stateManager.validStartCommandWasReceived();
                 boolean allowStreamThisTime = intent.getBooleanExtra(
                         PlaybackServiceInterface.EXTRA_ALLOW_STREAM_THIS_TIME, false);
@@ -536,6 +549,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                                     stateManager.stopService();
                                 });
                 return Service.START_NOT_STICKY;
+            } else {
+                mediaSession.getController().getTransportControls().sendCustomAction(customAction, null);
             }
         }
 
@@ -619,7 +634,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         pendingIntentAlwaysAllow)
                 .setAutoCancel(true);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(R.id.notification_streaming_confirmation, builder.build());
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS)
+                == PackageManager.PERMISSION_GRANTED) {
+            notificationManager.notify(R.id.notification_streaming_confirmation, builder.build());
+        }
     }
 
     /**
@@ -741,7 +759,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         if (!playable.getIdentifier().equals(PlaybackPreferences.getCurrentlyPlayingFeedMediaId())) {
-            PlaybackPreferences.clearCurrentlyPlayingTemporaryPlaybackSpeed();
+            PlaybackPreferences.clearCurrentlyPlayingTemporaryPlaybackSettings();
         }
 
         mediaPlayer.playMediaObject(playable, stream, true, true);
@@ -783,6 +801,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onChapterLoaded(Playable media) {
             sendNotificationBroadcast(PlaybackServiceInterface.NOTIFICATION_TYPE_RELOAD, 0);
+            updateMediaSession(mediaPlayer.getPlayerStatus());
         }
     };
 
@@ -969,15 +988,22 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     @SuppressWarnings("unused")
     public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
         if (event.isOver()) {
+            updateMediaSession(mediaPlayer.getPlayerStatus());
             mediaPlayer.pause(true, true);
             mediaPlayer.setVolume(1.0f, 1.0f);
-        } else if (event.getTimeLeft() < PlaybackServiceTaskManager.SleepTimer.NOTIFICATION_THRESHOLD) {
+            int newPosition = mediaPlayer.getPosition() - (int) SleepTimer.NOTIFICATION_THRESHOLD / 2;
+            newPosition = Math.max(newPosition, 0);
+            seekTo(newPosition);
+        } else if (event.getTimeLeft() < SleepTimer.NOTIFICATION_THRESHOLD) {
             final float[] multiplicators = {0.1f, 0.2f, 0.3f, 0.3f, 0.3f, 0.4f, 0.4f, 0.4f, 0.6f, 0.8f};
             float multiplicator = multiplicators[Math.max(0, (int) event.getTimeLeft() / 1000)];
             Log.d(TAG, "onSleepTimerAlmostExpired: " + multiplicator);
             mediaPlayer.setVolume(multiplicator, multiplicator);
         } else if (event.isCancelled()) {
+            updateMediaSession(mediaPlayer.getPlayerStatus());
             mediaPlayer.setVolume(1.0f, 1.0f);
+        } else if (event.wasJustEnabled()) {
+            updateMediaSession(mediaPlayer.getPlayerStatus());
         }
     }
 
@@ -1030,7 +1056,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     private void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
         Log.d(TAG, "Playback ended");
-        PlaybackPreferences.clearCurrentlyPlayingTemporaryPlaybackSpeed();
+        PlaybackPreferences.clearCurrentlyPlayingTemporaryPlaybackSettings();
         if (stopPlaying) {
             taskManager.cancelPositionSaver();
             cancelPositionObserver();
@@ -1178,7 +1204,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             this.autoSkippedFeedMediaId = feedMedia.getItem().getIdentifyingValue();
             mediaPlayer.skip();
         }
-   }
+    }
 
     /**
      * Updates the Media Session for the corresponding status.
@@ -1250,20 +1276,45 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         WearMediaSession.addWearExtrasToAction(fastForwardBuilder);
         sessionState.addCustomAction(fastForwardBuilder.build());
 
-        sessionState.addCustomAction(
-                new PlaybackStateCompat.CustomAction.Builder(
-                        CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED,
-                        getString(R.string.playback_speed),
-                        R.drawable.ic_notification_playback_speed
+        if (UserPreferences.showPlaybackSpeedOnFullNotification()) {
+            sessionState.addCustomAction(
+                    new PlaybackStateCompat.CustomAction.Builder(
+                    CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED,
+                    getString(R.string.playback_speed),
+                    R.drawable.ic_notification_playback_speed
                 ).build()
-        );
-        sessionState.addCustomAction(
+            );
+        }
+
+        if (UserPreferences.showSleepTimerOnFullNotification()) {
+            @DrawableRes int icon = R.drawable.ic_notification_sleep;
+            if (sleepTimerActive()) {
+                icon = R.drawable.ic_notification_sleep_off;
+            }
+            sessionState.addCustomAction(
+                    new PlaybackStateCompat.CustomAction.Builder(CUSTOM_ACTION_TOGGLE_SLEEP_TIMER,
+                            getString(R.string.sleep_timer_label), icon).build());
+        }
+
+        if (UserPreferences.showNextChapterOnFullNotification()) {
+            if (getPlayable() != null && getPlayable().getChapters() != null) {
+                sessionState.addCustomAction(
+                        new PlaybackStateCompat.CustomAction.Builder(
+                        CUSTOM_ACTION_NEXT_CHAPTER,
+                        getString(R.string.next_chapter), R.drawable.ic_notification_next_chapter)
+                        .build());
+            }
+        }
+
+        if (UserPreferences.showSkipOnFullNotification()) {
+            sessionState.addCustomAction(
                 new PlaybackStateCompat.CustomAction.Builder(
-                        CUSTOM_ACTION_SKIP_TO_NEXT,
-                        getString(R.string.skip_episode_label),
-                        R.drawable.ic_notification_skip
+                    CUSTOM_ACTION_SKIP_TO_NEXT,
+                    getString(R.string.skip_episode_label),
+                    R.drawable.ic_notification_skip
                 ).build()
-        );
+            );
+        }
 
         WearMediaSession.mediaSessionSetExtraForWear(mediaSession);
 
@@ -1352,14 +1403,20 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS)
+                == PackageManager.PERMISSION_GRANTED) {
+            notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
+        }
 
         if (!notificationBuilder.isIconCached()) {
             playableIconLoaderThread = new Thread(() -> {
                 Log.d(TAG, "Loading notification icon");
                 notificationBuilder.loadIcon();
                 if (!Thread.currentThread().isInterrupted()) {
-                    notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
+                    if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                            Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                        notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
+                    }
                     updateMediaSessionMetadata(playable);
                 }
             });
@@ -1559,11 +1616,17 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     @SuppressWarnings("unused")
     public void speedPresetChanged(SpeedPresetChangedEvent event) {
         if (getPlayable() instanceof FeedMedia) {
-            if (((FeedMedia) getPlayable()).getItem().getFeed().getId() == event.getFeedId()) {
+            FeedMedia playable = (FeedMedia) getPlayable();
+            if (playable.getItem().getFeed().getId() == event.getFeedId()) {
                 if (event.getSpeed() == SPEED_USE_GLOBAL) {
-                    setSpeed(UserPreferences.getPlaybackSpeed(getPlayable().getMediaType()));
+                    setSpeed(UserPreferences.getPlaybackSpeed());
                 } else {
                     setSpeed(event.getSpeed());
+                }
+                if (event.getSkipSilence() == FeedPreferences.SkipSilence.GLOBAL) {
+                    setSkipSilence(UserPreferences.isSkipSilence());
+                } else {
+                    setSkipSilence(event.getSkipSilence() == FeedPreferences.SkipSilence.AGGRESSIVE);
                 }
             }
         }
@@ -1573,13 +1636,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     @SuppressWarnings("unused")
     public void skipIntroEndingPresetChanged(SkipIntroEndingChangedEvent event) {
         if (getPlayable() instanceof FeedMedia) {
-            if (((FeedMedia) getPlayable()).getItem().getFeed().getId() == event.getFeedId()) {
+            FeedMedia playable = (FeedMedia) getPlayable();
+            if (playable.getItem().getFeed().getId() == event.getFeedId()) {
                 if (event.getSkipEnding() != 0) {
-                   FeedPreferences feedPreferences
-                           = ((FeedMedia) getPlayable()).getItem().getFeed().getPreferences();
-                   feedPreferences.setFeedSkipIntro(event.getSkipIntro());
-                   feedPreferences.setFeedSkipEnding(event.getSkipEnding());
-
+                    FeedPreferences feedPreferences = playable.getItem().getFeed().getPreferences();
+                    feedPreferences.setFeedSkipIntro(event.getSkipIntro());
+                    feedPreferences.setFeedSkipEnding(event.getSkipEnding());
                 }
             }
         }
@@ -1621,24 +1683,26 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public void setSpeed(float speed) {
         PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(speed);
-        if (currentMediaType == MediaType.VIDEO) {
-            UserPreferences.setVideoPlaybackSpeed(speed);
-        } else {
-            UserPreferences.setPlaybackSpeed(speed);
-        }
-
-        mediaPlayer.setPlaybackParams(speed, UserPreferences.isSkipSilence());
+        mediaPlayer.setPlaybackParams(speed, getCurrentSkipSilence());
     }
 
-    public void skipSilence(boolean skipSilence) {
+    public void setSkipSilence(boolean skipSilence) {
+        PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(skipSilence);
         mediaPlayer.setPlaybackParams(getCurrentPlaybackSpeed(), skipSilence);
     }
 
     public float getCurrentPlaybackSpeed() {
-        if(mediaPlayer == null) {
+        if (mediaPlayer == null) {
             return 1.0f;
         }
         return mediaPlayer.getPlaybackSpeed();
+    }
+
+    public boolean getCurrentSkipSilence() {
+        if (mediaPlayer == null) {
+            return false;
+        }
+        return mediaPlayer.getSkipSilence();
     }
 
     public boolean isStartWhenPrepared() {
@@ -1722,7 +1786,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
                         NotificationManager notificationManager = (NotificationManager)
                                 getSystemService(NOTIFICATION_SERVICE);
-                        notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
+                        if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                                Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                            notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
+                        }
                     }
                     skipEndingIfNecessary();
                 });
@@ -1812,6 +1879,26 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             seekDelta(-UserPreferences.getRewindSecs() * 1000);
         }
 
+        public void onNextChapter() {
+            List<Chapter> chapters = mediaPlayer.getPlayable().getChapters();
+            if (chapters == null) {
+                // No chapters, just fallback to next episode
+                mediaPlayer.skip();
+                return;
+            }
+
+            int nextChapter = ChapterUtils.getCurrentChapterIndex(
+                    mediaPlayer.getPlayable(), mediaPlayer.getPosition()) + 1;
+
+            if (chapters.size() < nextChapter + 1) {
+                // We are on the last chapter, just fallback to the next episode
+                mediaPlayer.skip();
+                return;
+            }
+
+            mediaPlayer.seekTo((int) chapters.get(nextChapter).getStart());
+        }
+
         @Override
         public void onFastForward() {
             Log.d(TAG, "onFastForward()");
@@ -1884,6 +1971,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 onRewind();
             } else if (CUSTOM_ACTION_SKIP_TO_NEXT.equals(action)) {
                 mediaPlayer.skip();
+            } else if (CUSTOM_ACTION_NEXT_CHAPTER.equals(action)) {
+                onNextChapter();
             } else if (CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED.equals(action)) {
                 List<Float> selectedSpeeds = UserPreferences.getPlaybackSpeedArray();
 
@@ -1901,6 +1990,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         newSpeed = selectedSpeeds.get(speedPosition + 1);
                     }
                     onSetPlaybackSpeed(newSpeed);
+                }
+            } else if (CUSTOM_ACTION_TOGGLE_SLEEP_TIMER.equals(action)) {
+                if (sleepTimerActive()) {
+                    disableSleepTimer();
+                } else {
+                    setSleepTimer(SleepTimerPreferences.timerMillis());
                 }
             }
         }

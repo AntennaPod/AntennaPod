@@ -123,7 +123,6 @@
     <string name="description_label">Description</string>
     <string name="shownotes_label">Shownotes</string>
     <string name="shownotes_contentdescription">swipe up to read shownotes</string>
-    <string name="episodes_suffix">\u0020episodes</string>
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto downloads</string>
@@ -139,6 +138,7 @@
     <string name="feed_auto_download_always">Always</string>
     <string name="feed_auto_download_never">Never</string>
     <string name="feed_new_episodes_action_add_to_inbox">Add to inbox</string>
+    <string name="feed_new_episodes_action_add_to_queue">Add to queue</string>
     <string name="feed_new_episodes_action_nothing">Nothing</string>
     <string name="episode_cleanup_never">Never</string>
     <string name="episode_cleanup_except_favorite_removal">When not favorited</string>
@@ -194,7 +194,7 @@
     <string name="select_all_above">Select all above</string>
     <string name="select_all_below">Select all below</string>
     <string name="filtered_label">Filtered</string>
-    <string name="refresh_failed_msg">{fa-exclamation-circle} Last refresh failed. Tap to view details.</string>
+    <string name="refresh_failed_msg">Last refresh failed. Tap to view details.</string>
     <string name="open_podcast">Open podcast</string>
     <string name="please_wait_for_data">Please wait until the data is loaded</string>
     <string name="updates_disabled_label">Updates disabled</string>
@@ -320,11 +320,6 @@
 
     <!-- Mediaplayer messages -->
     <string name="playback_error_generic"><![CDATA[The media file could not be played.\n\n- Try deleting and re-downloading the episode.\n- Check your network connection, and make sure no VPN or login page is blocking access.\n- Try long-pressing and sharing the \"Media address\" to your web browser to see if it can be played there. If not, contact the podcast creators.]]></string>
-    <string name="playback_error_server_died">Server died</string>
-    <string name="playback_error_unsupported">Unsupported media type</string>
-    <string name="playback_error_timeout">Operation timed out</string>
-    <string name="playback_error_source">Unable to access media file</string>
-    <string name="playback_error_unknown">Unknown error</string>
     <string name="no_media_playing_label">No media playing</string>
     <string name="position_default_label" translatable="false">00:00:00</string>
     <string name="unknown_media_key">AntennaPod - Unknown media key: %1$d</string>
@@ -489,10 +484,9 @@
     <string name="pref_expandNotify_sum">This usually expands the notification to show playback buttons.</string>
     <string name="pref_persistNotify_title">Persistent playback controls</string>
     <string name="pref_persistNotify_sum">Keep notification and lockscreen controls when playback is paused</string>
-    <string name="pref_compact_notification_buttons_title">Set compact notification buttons</string>
-    <string name="pref_compact_notification_buttons_sum">Change the playback buttons when the notification is collapsed. The play/pause button is always included.</string>
-    <string name="pref_compact_notification_buttons_dialog_title">Select a maximum of %1$d items</string>
-    <string name="pref_compact_notification_buttons_dialog_error">You can only select a maximum of %1$d items.</string>
+    <string name="pref_compact_notification_buttons_dialog_error_exact">You must select exactly two items</string>
+    <string name="pref_full_notification_buttons_title">Set notification buttons</string>
+    <string name="pref_full_notification_buttons_sum">Change the buttons on the playback notification</string>
     <string name="pref_enqueue_location_title">Enqueue location</string>
     <string name="pref_enqueue_location_sum">Add episodes to: %1$s</string>
     <string name="enqueue_location_back">Back</string>
@@ -578,13 +572,16 @@
     <string name="database_import_summary">Import AntennaPod database from another device</string>
     <string name="opml_import_label">OPML import</string>
     <string name="opml_add_podcast_label">Import podcast list (OPML)</string>
-    <string name="opml_reader_error">An error has occurred while reading the OPML document:</string>
+    <string name="opml_reader_error">An error has occurred while reading the file. Make sure that you have actually selected an OPML file and that the file is valid.</string>
     <string name="opml_import_error_no_file">No file selected!</string>
     <string name="select_all_label">Select all</string>
     <string name="deselect_all_label">Deselect all</string>
     <string name="opml_export_label">OPML export</string>
     <string name="html_export_label">HTML export</string>
     <string name="database_export_label">Database export</string>
+    <string name="automatic_database_export_label">Automatic database export</string>
+    <string name="automatic_database_export_summary">Create a backup of the AntennaPod database every 3 days. Only keep the 5 most recent backups.</string>
+    <string name="automatic_database_export_error">Error during automatic database backup</string>
     <string name="database_import_label">Database import</string>
     <string name="database_import_warning">Importing a database will replace all of your current subscriptions and playing history. You should export your current database as a backup. Do you want to replace?</string>
     <string name="please_wait">Please wait&#8230;</string>
@@ -626,7 +623,7 @@
         <item quantity="other">%d days</item>
     </plurals>
     <string name="auto_enable_label">Automatically activate the sleep timer when pressing play</string>
-    <string name="auto_enable_label_with_times">Automatically activate the sleep timer when pressing play between %s and %s</string>
+    <string name="auto_enable_label_with_times">Automatically activate the sleep timer when pressing play between %1$s and %2$s</string>
     <string name="auto_enable_change_times">Change time range</string>
     <string name="sleep_timer_enabled_label">Sleep timer enabled</string>
     <string name="sleep_timer_shake_to_reset_mode_end">At end</string>
@@ -677,6 +674,14 @@
     <string name="pref_pausePlaybackForFocusLoss_sum">Pause playback instead of lowering volume when another app wants to play sounds</string>
     <string name="pref_pausePlaybackForFocusLoss_title">Pause for interruptions</string>
 
+    <!-- Rating dialog -->
+    <string name="rating_tagline">Since %1$s, you played %2$s%3$d%4$s hours of podcasts.</string>
+    <string name="rating_contribute_label">Want to join? Whether you want to translate, support, design or code, we would be happy to have you!</string>
+    <string name="rating_contribute_button">Discover ways to contribute</string>
+    <string name="rating_volunteers_label">AntennaPod is developed by volunteers in our free time. We would be happy if you appreciated our work by leaving a nice rating.</string>
+    <string name="rating_rate">Rate AntennaPod</string>
+    <string name="rating_later">Later</string>
+
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
     <string name="subscribing_label">Subscribing&#8230;</string>
@@ -711,7 +716,7 @@
     <string name="feed_tags_label">Tags</string>
     <string name="feed_tags_summary">Change the tags of this podcast to help organize your subscriptions</string>
     <string name="feed_folders_include_root">Show this podcast in main list</string>
-    <string name="multi_feed_common_tags_info">{fa-info-circle} Only common tags from all selected subscriptions are shown. Other tags stay unaffected.</string>
+    <string name="multi_feed_common_tags_info">Only common tags from all selected subscriptions are shown. Other tags stay unaffected.</string>
     <string name="auto_download_settings_label">Auto download settings</string>
     <string name="episode_filters_label">Episode filter</string>
     <string name="episode_filters_description">List of terms used to decide if an episode should be included or excluded when auto downloading</string>
@@ -727,10 +732,28 @@
     <string name="statistics_episodes_on_device">Episodes on the device:</string>
     <string name="statistics_space_used">Space used:</string>
     <string name="statistics_episodes_started_total">Episodes started/total:</string>
+    <string name="statistics_expected_next_episode">Expected next episode:</string>
+    <string name="statistics_expected_next_episode_any_day">Any day now</string>
+    <string name="statistics_expected_next_episode_unknown">Unknown</string>
     <string name="statistics_view_all">View for all podcasts »</string>
-    <string name="wait_icon" translatable="false">{fa-spinner}</string>
+    <string name="wait_icon" translatable="false">…</string>
     <string name="edit_url_menu">Edit feed URL</string>
     <string name="edit_url_confirmation_msg">Changing the RSS address can easily break the playback state and episode listings of the podcast. We do NOT recommend changing it and will NOT provide support if anything goes wrong. This cannot be undone. The broken subscription CANNOT be repaired by simply changing the address back. We suggest creating a backup before continuing.</string>
+
+    <!-- Podcast release schedules -->
+    <string name="release_schedule_daily">daily</string>
+    <string name="release_schedule_weekdays">on weekdays</string>
+    <string name="release_schedule_weekly">weekly</string>
+    <string name="release_schedule_biweekly">every two weeks</string>
+    <string name="release_schedule_monthly">monthly</string>
+
+    <string name="release_schedule_monday">Mon</string>
+    <string name="release_schedule_tuesday">Tue</string>
+    <string name="release_schedule_wednesday">Wed</string>
+    <string name="release_schedule_thursday">Thu</string>
+    <string name="release_schedule_friday">Fri</string>
+    <string name="release_schedule_saturday">Sat</string>
+    <string name="release_schedule_sunday">Sun</string>
 
     <!-- AntennaPodSP -->
     <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>

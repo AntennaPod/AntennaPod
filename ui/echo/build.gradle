@@ -16,6 +16,7 @@ dependencies {
     implementation project(":core")
     implementation project(":model")
     implementation project(":storage:preferences")
+    implementation project(':ui:common')
     implementation project(':ui:glide')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"

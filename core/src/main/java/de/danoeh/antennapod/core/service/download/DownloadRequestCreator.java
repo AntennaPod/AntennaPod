@@ -2,11 +2,11 @@ package de.danoeh.antennapod.core.service.download;
 
 import android.util.Log;
 import android.webkit.URLUtil;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequestBuilder;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.FileNameGenerator;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -19,7 +19,7 @@ public class DownloadRequestCreator {
     private static final String FEED_DOWNLOADPATH = "cache/";
     private static final String MEDIA_DOWNLOADPATH = "media/";
 
-    public static DownloadRequest.Builder create(Feed feed) {
+    public static DownloadRequestBuilder create(Feed feed) {
         File dest = new File(getFeedfilePath(), getFeedfileName(feed));
         if (dest.exists()) {
             dest.delete();
@@ -29,12 +29,12 @@ public class DownloadRequestCreator {
         String username = (feed.getPreferences() != null) ? feed.getPreferences().getUsername() : null;
         String password = (feed.getPreferences() != null) ? feed.getPreferences().getPassword() : null;
 
-        return new DownloadRequest.Builder(dest.toString(), feed)
+        return new DownloadRequestBuilder(dest.toString(), feed)
                 .withAuthentication(username, password)
-                .lastModified(feed.getLastUpdate());
+                .lastModified(feed.getLastModified());
     }
 
-    public static DownloadRequest.Builder create(FeedMedia media) {
+    public static DownloadRequestBuilder create(FeedMedia media) {
         final boolean partiallyDownloadedFileExists =
                 media.getFile_url() != null && new File(media.getFile_url()).exists();
         File dest;
@@ -54,7 +54,7 @@ public class DownloadRequestCreator {
         String password = (media.getItem().getFeed().getPreferences() != null)
                 ? media.getItem().getFeed().getPreferences().getPassword() : null;
 
-        return new DownloadRequest.Builder(dest.toString(), media)
+        return new DownloadRequestBuilder(dest.toString(), media)
                 .withAuthentication(username, password);
     }
 

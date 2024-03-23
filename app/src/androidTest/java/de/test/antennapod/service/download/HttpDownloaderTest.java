@@ -7,9 +7,9 @@ import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 
-import de.danoeh.antennapod.model.feed.FeedFile;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
+import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.service.download.HttpDownloader;
@@ -60,8 +60,8 @@ public class HttpDownloaderTest {
         urlAuth = httpServer.getBaseUrl() + "/basic-auth/user/passwd";
     }
 
-    private FeedFileImpl setupFeedFile(String downloadUrl, String title, boolean deleteExisting) {
-        FeedFileImpl feedfile = new FeedFileImpl(downloadUrl);
+    private Feed setupFeedFile(String downloadUrl, String title, boolean deleteExisting) {
+        Feed feedfile = new Feed(downloadUrl, "");
         String fileUrl = new File(destDir, title).getAbsolutePath();
         File file = new File(fileUrl);
         if (deleteExisting) {
@@ -77,8 +77,8 @@ public class HttpDownloaderTest {
 
     private Downloader download(String url, String title, boolean expectedResult, boolean deleteExisting,
                                 String username, String password) {
-        FeedFile feedFile = setupFeedFile(url, title, deleteExisting);
-        DownloadRequest request = new DownloadRequest(feedFile.getFile_url(), url, title, 0, feedFile.getTypeAsInt(),
+        Feed feedFile = setupFeedFile(url, title, deleteExisting);
+        DownloadRequest request = new DownloadRequest(feedFile.getFile_url(), url, title, 0, Feed.FEEDFILETYPE_FEED,
                 username, password, null, false);
         Downloader downloader = new HttpDownloader(request);
         downloader.call();
@@ -113,9 +113,9 @@ public class HttpDownloaderTest {
     @Test
     public void testCancel() {
         final String url = httpServer.getBaseUrl() + "/delay/3";
-        FeedFileImpl feedFile = setupFeedFile(url, "delay", true);
+        Feed feedFile = setupFeedFile(url, "delay", true);
         final Downloader downloader = new HttpDownloader(new DownloadRequest(feedFile.getFile_url(), url, "delay", 0,
-                feedFile.getTypeAsInt(), null, null, null, false));
+                Feed.FEEDFILETYPE_FEED, null, null, null, false));
         Thread t = new Thread() {
             @Override
             public void run() {
@@ -159,28 +159,4 @@ public class HttpDownloaderTest {
         Downloader downloader = download(urlAuth, "testAuthSuccess", false, true, "user", "Wrong passwd");
         assertEquals(DownloadError.ERROR_UNAUTHORIZED, downloader.getResult().getReason());
     }
-
-    /* TODO: replace with smaller test file
-    public void testUrlWithSpaces() {
-        download("http://acedl.noxsolutions.com/ace/Don't Call Salman Rushdie Sneezy in Finland.mp3", "testUrlWithSpaces", true);
-    }
-    */
-
-    private static class FeedFileImpl extends FeedFile {
-        public FeedFileImpl(String download_url) {
-            super(null, download_url, false);
-        }
-
-
-        @Override
-        public String getHumanReadableIdentifier() {
-            return download_url;
-        }
-
-        @Override
-        public int getTypeAsInt() {
-            return 0;
-        }
-    }
-
 }

@@ -3,8 +3,6 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -81,12 +79,15 @@ public class SubscriptionFragment extends Fragment
     private EmptyViewHandler emptyView;
     private LinearLayout feedsFilteredMsg;
     private MaterialToolbar toolbar;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressBar progressBar;
     private String displayedFolder = null;
     private boolean displayUpArrow;
 
     private Disposable disposable;
     private SharedPreferences prefs;
+
+    private FloatingActionButton subscriptionAddButton;
 
     private SpeedDialView speedDialView;
 
@@ -103,8 +104,6 @@ public class SubscriptionFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-
         prefs = requireActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
     }
 
@@ -158,7 +157,7 @@ public class SubscriptionFragment extends Fragment
         progressBar = root.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
 
-        FloatingActionButton subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
+        subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
         subscriptionAddButton.setOnClickListener(view -> {
             if (getActivity() instanceof MainActivity) {
                 ((MainActivity) getActivity()).loadChildFragment(new AddFeedFragment());
@@ -169,27 +168,13 @@ public class SubscriptionFragment extends Fragment
         feedsFilteredMsg.setOnClickListener((l) ->
                 new SubscriptionsFilterDialog().show(getChildFragmentManager(), "filter"));
 
-        SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            FeedUpdateManager.runOnceOrAsk(requireContext());
-            new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
-                    getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
-        });
+        swipeRefreshLayout.setOnRefreshListener(() -> FeedUpdateManager.runOnceOrAsk(requireContext()));
 
         speedDialView = root.findViewById(R.id.fabSD);
         speedDialView.setOverlayLayout(root.findViewById(R.id.fabSDOverlay));
         speedDialView.inflate(R.menu.nav_feed_action_speeddial);
-        speedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
-            @Override
-            public boolean onMainActionSelected() {
-                return false;
-            }
-
-            @Override
-            public void onToggleChanged(boolean isOpen) {
-            }
-        });
         speedDialView.setOnActionSelectedListener(actionItem -> {
             new FeedMultiSelectActionHandler((MainActivity) getActivity(), subscriptionAdapter.getSelectedItems())
                     .handleAction(actionItem.getId());
@@ -212,7 +197,7 @@ public class SubscriptionFragment extends Fragment
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedUpdateRunningEvent event) {
-        MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(), R.id.refresh_item, event.isFeedUpdateRunning);
+        swipeRefreshLayout.setRefreshing(event.isFeedUpdateRunning);
     }
 
     @Override
@@ -343,7 +328,6 @@ public class SubscriptionFragment extends Fragment
 
         Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
         if (itemId == R.id.multi_select) {
-            speedDialView.setVisibility(View.VISIBLE);
             return subscriptionAdapter.onContextItemSelected(item);
         }
         return FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), feed, this::loadSubscriptions);
@@ -363,6 +347,7 @@ public class SubscriptionFragment extends Fragment
     public void onEndSelectMode() {
         speedDialView.close();
         speedDialView.setVisibility(View.GONE);
+        subscriptionAddButton.setVisibility(View.VISIBLE);
         subscriptionAdapter.setItems(listItems);
     }
 
@@ -375,5 +360,7 @@ public class SubscriptionFragment extends Fragment
             }
         }
         subscriptionAdapter.setItems(feedsOnly);
+        speedDialView.setVisibility(View.VISIBLE);
+        subscriptionAddButton.setVisibility(View.GONE);
     }
 }

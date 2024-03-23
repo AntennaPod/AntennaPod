@@ -13,7 +13,7 @@
   <string name="settings_label">הגדרות</string>
   <string name="downloads_label">הורדות</string>
   <string name="open_autodownload_settings">פתיחת הגדרות</string>
-  <string name="downloads_log_label">הורדת יומן</string>
+  <string name="downloads_log_label">יומן הורדות</string>
   <string name="subscriptions_label">פודקאסטים</string>
   <string name="subscriptions_list_label">רשימת מינויים</string>
   <string name="cancel_download_label">ביטול הורדה</string>
@@ -22,7 +22,7 @@
   <string name="episode_cache_full_message">מטמון הפרקים התמלא. ניתן להגדיל את גודל המטמון בהגדרות.</string>
   <string name="years_statistics_label">שנים</string>
   <string name="notification_pref_fragment">התראות</string>
-  <string name="recently_played_episodes">פרקים שנוגנו לאחרונה</string>
+  <string name="current_playing_episode">נוכחי</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">„%1$s” לא נמצא</string>
   <!--SwipeActions-->
@@ -107,7 +107,6 @@
   <string name="description_label">תיאור</string>
   <string name="shownotes_label">הערות הפרק</string>
   <string name="shownotes_contentdescription">החלקה למעלה מציגה את הערות הפרק</string>
-  <string name="episodes_suffix">\u0020פרקים</string>
   <string name="close_label">סגירה</string>
   <string name="retry_label">לנסות שוב</string>
   <string name="auto_download_label">לכלול בהורדות אוטומטיות</string>
@@ -131,25 +130,21 @@
   <plurals name="episode_cleanup_hours_after_listening">
     <item quantity="one">שעה לאחר הסיום</item>
     <item quantity="two">%d שעות לאחר הסיום</item>
-    <item quantity="many">%d שעות לאחר הסיום</item>
     <item quantity="other">%d שעות לאחר הסיום</item>
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">יום לאחר סיום</item>
     <item quantity="two">יומיים לאחר סיום </item>
-    <item quantity="many">%d ימים לאחר סיום </item>
     <item quantity="other">%d ימים לאחר סיום </item>
   </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d נבחר</item>
     <item quantity="two">%1$d/%2$d נבחרו</item>
-    <item quantity="many">%1$d/%2$d נבחרו</item>
     <item quantity="other">%1$d/%2$d נבחרו</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">פרק אחד</item>
     <item quantity="two">%d פרקים</item>
-    <item quantity="many">%d פרקים</item>
     <item quantity="other">%d פרקים</item>
   </plurals>
   <string name="episode_notification">התראות פרקים</string>
@@ -157,13 +152,11 @@
   <plurals name="new_episode_notification_message">
     <item quantity="one">אצל %2$s יש פרק אחד חדש</item>
     <item quantity="two">אצל %2$s יש %1$d פרקים חדשים</item>
-    <item quantity="many">אצל %2$s יש %1$d פרקים חדשים</item>
     <item quantity="other">אצל %2$s יש %1$d פרקים חדשים</item>
   </plurals>
   <plurals name="new_episode_notification_title">
     <item quantity="one">פרק חדש</item>
     <item quantity="two">פרקים חדשים</item>
-    <item quantity="many">פרקים חדשים</item>
     <item quantity="other">פרקים חדשים</item>
   </plurals>
   <string name="new_episode_notification_group_text">למינוי שלך יש פרקים חדשים.</string>
@@ -180,7 +173,6 @@
   <string name="remove_feed_label">הסרת פודקאסט</string>
   <string name="share_label">שיתוף</string>
   <string name="share_file_label">שיתוף קובץ</string>
-  <string name="share_rss_address_label">כתובת RSS:</string>
   <string name="feed_delete_confirmation_msg">נא לאשר שרצונך הוא למחוק את הפודקאסט „%1$s” על כל פרקיו (לרבות הפרקים שכבר הורדת) ואת הסטטיסטיקה שלו.</string>
   <string name="feed_delete_confirmation_msg_batch">נא לאשר את הסרת הפודקאסטים הנבחרים, כל הפרקים שלהם (לרבות אלו שנשמרו) והסטטיסטיקה שלהם.</string>
   <string name="feed_delete_confirmation_local_msg">נא לאשר את הסרת הפודקאסט „%1$s” ואת הסטטיסטיקה שלו. הקבצים בתיקייה המקור המקומית לא יימחקו.</string>
@@ -197,7 +189,6 @@
   <plurals name="updated_feeds_batch_label">
     <item quantity="one">אחד המינויים עודכן.</item>
     <item quantity="two">%d מינויים עודכנו.</item>
-    <item quantity="many">%d מינויים עודכנו.</item>
     <item quantity="other">%d מינויים עודכנו.</item>
   </plurals>
   <string name="edit_tags">עריכת תגיות</string>
@@ -210,7 +201,6 @@
   <plurals name="downloading_batch_label">
     <item quantity="one">פרק אחד בהורדה.</item>
     <item quantity="two">%d פרקים בהורדה.</item>
-    <item quantity="many">%d פרקים בהורדה.</item>
     <item quantity="other">%d פרקים בהורדה.</item>
   </plurals>
   <string name="play_label">ניגון</string>
@@ -223,7 +213,6 @@
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">פרק שהורד נמחק.</item>
     <item quantity="two">שני פרקים שהורדו נמחקו.</item>
-    <item quantity="many">%d פרקים שהורדו נמחקו.</item>
     <item quantity="other">%d פרקים שהורדו נמחקו.</item>
   </plurals>
   <string name="remove_inbox_label">הסרה מהדואר הנכנס</string>
@@ -237,7 +226,6 @@
   <plurals name="marked_read_batch_label">
     <item quantity="one">פרק אחד סומן שנוגן.</item>
     <item quantity="two">%d פרקים סומנו שנוגנו.</item>
-    <item quantity="many">%d פרקים סומנו שנוגנו.</item>
     <item quantity="other">%d פרקים סומנו שנוגנו.</item>
   </plurals>
   <string name="mark_unread_label">סימון כלא נוגן</string>
@@ -245,27 +233,23 @@
   <plurals name="marked_unread_batch_label">
     <item quantity="one">פרק אחד סומן שטרם נוגן.</item>
     <item quantity="two">%d פרקים סומנו שטרם נוגנו.</item>
-    <item quantity="many">%d פרקים סומנו שטרם נוגנו.</item>
     <item quantity="other">%d פרקים סומנו שטרם נוגנו.</item>
   </plurals>
   <string name="add_to_queue_label">הוספה לתור</string>
   <plurals name="added_to_queue_batch_label">
     <item quantity="one">פרק אחד נוסף לתור.</item>
     <item quantity="two">%d פרקים נוספו לתור.</item>
-    <item quantity="many">%d פרקים נוספו לתור.</item>
     <item quantity="other">%d פרקים נוספו לתור.</item>
   </plurals>
   <string name="remove_from_queue_label">הסרה מהתור</string>
   <plurals name="removed_from_queue_batch_label">
     <item quantity="one">פרק אחד הוסר מהתור.</item>
     <item quantity="two">%d פרקים הוסרו מהתור.</item>
-    <item quantity="many">%d פרקים הוסרו מהתור.</item>
     <item quantity="other">%d פרקים הוסרו מהתור.</item>
   </plurals>
   <plurals name="removed_from_inbox_batch_label">
     <item quantity="one">הפרק הוסר מהדואר הנכנס.</item>
     <item quantity="two">%d פרקים הוסרו מהדואר הנכנס.</item>
-    <item quantity="many">%d פרקים הוסרו מהדואר הנכנס.</item>
     <item quantity="other">%d פרקים הוסרו מהדואר הנכנס.</item>
   </plurals>
   <string name="add_to_favorite_label">הוספה למועדפים</string>
@@ -309,7 +293,6 @@
   <plurals name="downloads_left">
     <item quantity="one">נותרה הורדה אחת</item>
     <item quantity="two">נותרו %d הורדות</item>
-    <item quantity="many">נותרו %d הורדות</item>
     <item quantity="other">נותרו %d הורדות</item>
   </plurals>
   <string name="download_notification_title_feeds">הפודקאסטים מתרעננים</string>
@@ -449,7 +432,7 @@
   <string name="pref_mobileUpdate_auto_download">הורדה אוטומטית</string>
   <string name="pref_mobileUpdate_episode_download">הורדת פרקים</string>
   <string name="pref_mobileUpdate_streaming">הזרמה</string>
-  <string name="user_interface_label">מנשק משתמש</string>
+  <string name="user_interface_label">ממשק משתמש</string>
   <string name="user_interface_sum">מראה, מינויים, מסך נעילה</string>
   <string name="pref_black_theme_title">שחור מלא</string>
   <string name="pref_black_theme_message">להשתמש בשחור מלא לערכת העיצוב המלאה</string>
@@ -495,10 +478,8 @@
   <string name="pref_expandNotify_sum">הגדרה זו מרחיבה את ההתראה כדי שתציג גם כפתורי נגינה.</string>
   <string name="pref_persistNotify_title">פקדי נגינה קבועים</string>
   <string name="pref_persistNotify_sum">להשאיר את פקדי ההתרעות ומסך הנעילה גם כשהנגינה מושהית</string>
-  <string name="pref_compact_notification_buttons_title">הגדרת כפתורי התראה מוקטנים</string>
-  <string name="pref_compact_notification_buttons_sum">להחליף את כפתורי הנגינה כאשר ההתראה מצומצמת. כפתור נגינה/השהיה תמיד יופיע.</string>
-  <string name="pref_compact_notification_buttons_dialog_title">בחירה עד %1$d פריטים</string>
-  <string name="pref_compact_notification_buttons_dialog_error">ניתן לבחור עד %1$d פריטים.</string>
+    <string name="pref_full_notification_buttons_title">הגדרת כפתורי התראה</string>
+  <string name="pref_full_notification_buttons_sum">החלפת כפתורי הנגינה בהתראות הנגינה.</string>
   <string name="pref_enqueue_location_title">מיקום הוספה לתור</string>
   <string name="pref_enqueue_location_sum">הוספת פרקים אל: %1$s</string>
   <string name="enqueue_location_back">גב</string>
@@ -544,7 +525,7 @@
   <string name="pref_new_episodes_action_sum">פעולה שיש לנקוט מול פרקים חדשים</string>
   <!--About screen-->
   <string name="about_pref">על אודות</string>
-  <string name="antennapod_version">גרסת אנטנה־פּוֹד</string>
+  <string name="antennapod_version">גרסת AntennaPod</string>
   <string name="contributors">מתנדבים</string>
   <string name="contributors_summary">כל אחד ואחת יכולים לסייע בשיפור AntennaPod באמצעות תרומת קוד, תרגום או באמצעות סיוע למשתמשים שלנו בפורום</string>
   <string name="developers">מפתחים</string>
@@ -580,7 +561,7 @@
   <string name="database_import_summary">ייבוא מסד הנתונים של אנטנה־פ‎וֹד ממכשיר אחר</string>
   <string name="opml_import_label">ייבוא OPML</string>
   <string name="opml_add_podcast_label">לייבא רשימת פודקאסטים (OPML)</string>
-  <string name="opml_reader_error">אירעה שגיאה בעת קריאת מסמך ה־OPML:</string>
+  <string name="opml_reader_error">אירעה שגיאה בקריאת הקובץ. נא לוודא שבחרת קובץ OPML בפועל ושהקובץ תקין.</string>
   <string name="opml_import_error_no_file">לא נבחר קובץ!</string>
   <string name="select_all_label">בחירת הכול</string>
   <string name="deselect_all_label">ביטול הבחירה</string>
@@ -595,7 +576,7 @@
   <string name="opml_import_ask_read_permission">נדרשת גישה לאחסון חיצוני כדי לקרוא את קובץ ה־OPML</string>
   <string name="successful_import_label">הייבוא הצליח</string>
   <string name="import_ok">נא ללחוץ על אישור כדי להפעיל את אנטנה־פּוֹד מחדש</string>
-  <string name="import_no_downgrade">מסד נתונים זה ייוצא עם גרסה עדכנית יותר של אנטנה־פ‎וֹד</string>
+  <string name="import_no_downgrade">מסד נתונים זה ייוצא עם גרסה עדכנית יותר של AntennaPod</string>
   <string name="favorites_export_label">ייצוא מועדפים</string>
   <string name="favorites_export_summary">ייצור המועדפים השמורים לקובץ</string>
   <!--Sleep timer-->
@@ -613,20 +594,22 @@
   <plurals name="time_seconds_quantified">
     <item quantity="one">שנייה אחת</item>
     <item quantity="two">%d שניות</item>
-    <item quantity="many">%d שניות</item>
     <item quantity="other">%d שניות</item>
   </plurals>
   <plurals name="time_minutes_quantified">
     <item quantity="one">דקה אחת</item>
     <item quantity="two">%d דקות</item>
-    <item quantity="many">%d דקות</item>
     <item quantity="other">%d דקות</item>
   </plurals>
   <plurals name="time_hours_quantified">
     <item quantity="one">שעה</item>
     <item quantity="two">שעתיים</item>
-    <item quantity="many">%d שעות</item>
     <item quantity="other">%d שעות</item>
+  </plurals>
+  <plurals name="time_days_quantified">
+    <item quantity="one">יום</item>
+    <item quantity="two">יומיים (%d)</item>
+    <item quantity="other">%d ימים</item>
   </plurals>
   <string name="auto_enable_label">להפעיל את מתזמן השינה עם לחיצה על נגינה</string>
   <string name="auto_enable_label_with_times">להפעיל את מתזמן השינה עם לחיצה על נגינה בין %s ל־%s</string>
@@ -764,23 +747,7 @@
   <string name="not_paused">לא מושהים</string>
   <string name="hide_played_episodes_label">נוגן</string>
   <string name="not_played">לא נוגנו</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">כותרת (א \u2192 ת)</string>
-  <string name="sort_title_z_a">כותרת (ת \u2192 א)</string>
-  <string name="sort_date_new_old">תאריך (חדש \u2192 ישן)</string>
-  <string name="sort_date_old_new">תאריך (ישן \u2192 חדש)</string>
-  <string name="sort_duration_short_long">משך (קצר \u2192 ארוך)</string>
-  <string name="sort_duration_long_short">משך (קצר \u2192 ארוך)</string>
-  <string name="sort_filename_a_z">שם קובץ (א \u2190 ת)</string>
-  <string name="sort_filename_z_a">שם קובץ (ת \u2190 א)</string>
-  <string name="sort_a_z">א \u2192 ת</string>
-  <string name="sort_z_a">ת \u2192 א</string>
-  <string name="sort_new_old">חדש \u2192 ישן</string>
-  <string name="sort_old_new">ישן \u2192 חדש</string>
-  <string name="sort_short_long">קצר \u2192 ארוך</string>
-  <string name="sort_long_short">ארוך \u2192 קצר</string>
-  <string name="sort_small_large">קטן \u2190 גדול</string>
-  <string name="sort_large_small">גדול \u2190 קטן</string>
+  <string name="filename">שם קובץ</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">לכלול את נקודת הנגינה</string>
   <string name="share_dialog_episode_website_label">עמוד הפרק</string>
@@ -791,7 +758,6 @@
   <!--Audio controls-->
   <string name="audio_controls">פקדי שמע</string>
   <string name="playback_speed">מהירות נגינה</string>
-  <string name="audio_effects">אפקטי שמע</string>
   <string name="player_switch_to_audio_only">מעבר לשמע בלבד</string>
   <!--proxy settings-->
   <string name="proxy_type_label">סוג</string>

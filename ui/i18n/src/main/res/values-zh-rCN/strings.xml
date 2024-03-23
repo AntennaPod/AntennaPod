@@ -22,7 +22,7 @@
   <string name="episode_cache_full_message">已达到节目缓存限制，可以在设置中提高缓存大小。</string>
   <string name="years_statistics_label">年</string>
   <string name="notification_pref_fragment">通知</string>
-  <string name="recently_played_episodes">最近播放的节目</string>
+  <string name="current_playing_episode">当前</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" 未找到</string>
   <!--SwipeActions-->
@@ -107,7 +107,6 @@
   <string name="description_label">描述</string>
   <string name="shownotes_label">节目信息</string>
   <string name="shownotes_contentdescription">上滑阅读播客简介</string>
-  <string name="episodes_suffix">\u0020 曲</string>
   <string name="close_label">关闭</string>
   <string name="retry_label">重试</string>
   <string name="auto_download_label">包含到自动下载</string>
@@ -162,7 +161,6 @@
   <string name="remove_feed_label">移除播客</string>
   <string name="share_label">分享</string>
   <string name="share_file_label">分享文件</string>
-  <string name="share_rss_address_label">RSS 地址：</string>
   <string name="feed_delete_confirmation_msg">请确认你想删除播客“%1$s”，该播客的所有节目（包括已下载的节目）及其统计数字。</string>
   <string name="feed_delete_confirmation_msg_batch">请确认你想删除选中的播客，这些播客的所有节目（包括已下载的节目）及它们的统计数字</string>
   <string name="feed_delete_confirmation_local_msg">请确认你想删除播客“%1$s”及其统计数字。本地源文件夹内的文件不会被删除。</string>
@@ -451,10 +449,8 @@
   <string name="pref_expandNotify_sum">这通常会拓展通知以显示播放按钮。</string>
   <string name="pref_persistNotify_title">持久性播放控制</string>
   <string name="pref_persistNotify_sum">播放暂停时保留通知和锁屏控制</string>
-  <string name="pref_compact_notification_buttons_title">设置紧凑通知按钮</string>
-  <string name="pref_compact_notification_buttons_sum">当通知被折叠时，更改播放按钮。播放/暂停按钮总是包含在内。</string>
-  <string name="pref_compact_notification_buttons_dialog_title">最多同时选择%1$d项</string>
-  <string name="pref_compact_notification_buttons_dialog_error">你最多只能同时选择%1$d项</string>
+    <string name="pref_full_notification_buttons_title">设置播放通知</string>
+  <string name="pref_full_notification_buttons_sum">更改播放通知的播放按钮</string>
   <string name="pref_enqueue_location_title">新节目在队列中的位置</string>
   <string name="pref_enqueue_location_sum">添加音频节目至：%1$s</string>
   <string name="enqueue_location_back">后退</string>
@@ -536,7 +532,7 @@
   <string name="database_import_summary">从另一台设备导入AntennaPod数据库 </string>
   <string name="opml_import_label">OPML 导入</string>
   <string name="opml_add_podcast_label">导入播客列表 (OPML)</string>
-  <string name="opml_reader_error">读取 OPML 文档时发生错误</string>
+  <string name="opml_reader_error">读取文件时发生了错误。请确保你的确选中了 OPML 文件且该文件有效。</string>
   <string name="opml_import_error_no_file">没有选择文件！</string>
   <string name="select_all_label">全选</string>
   <string name="deselect_all_label">取消所有选择</string>
@@ -714,23 +710,7 @@
   <string name="not_paused">未暂停</string>
   <string name="hide_played_episodes_label">已播放</string>
   <string name="not_played">未播放</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">标题 (A \u2192 Z)</string>
-  <string name="sort_title_z_a">标题 (Z \u2192 A)</string>
-  <string name="sort_date_new_old">日期 (新 \u2192 旧)</string>
-  <string name="sort_date_old_new">日期 (旧 \u2192 新)</string>
-  <string name="sort_duration_short_long">时长 (短 \u2192 长)</string>
-  <string name="sort_duration_long_short">时长 (长 \u2192 短)</string>
-  <string name="sort_filename_a_z">文件名 (A \u2192 Z)</string>
-  <string name="sort_filename_z_a">文件名(Z \u2192 A)</string>
-  <string name="sort_a_z">A \u2192 Z</string>
-  <string name="sort_z_a">Z \u2192 A</string>
-  <string name="sort_new_old">新\u2192旧</string>
-  <string name="sort_old_new">旧\u2192新</string>
-  <string name="sort_short_long">短\u2192长</string>
-  <string name="sort_long_short">长\u2192短</string>
-  <string name="sort_small_large">小 \u2192 大</string>
-  <string name="sort_large_small">大 \u2192 小</string>
+  <string name="filename">文件名</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">包括播放位置</string>
   <string name="share_dialog_episode_website_label">节目网页</string>
@@ -741,7 +721,6 @@
   <!--Audio controls-->
   <string name="audio_controls">音频控制</string>
   <string name="playback_speed">播放速度</string>
-  <string name="audio_effects">音效</string>
   <string name="player_switch_to_audio_only">切换到仅音频</string>
   <!--proxy settings-->
   <string name="proxy_type_label">类型</string>

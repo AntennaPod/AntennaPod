@@ -6,7 +6,9 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
@@ -24,14 +26,14 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.export.opml.OpmlElement;
-import de.danoeh.antennapod.core.export.opml.OpmlReader;
-import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
+import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.databinding.OpmlSelectionBinding;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.storage.importexport.OpmlElement;
+import de.danoeh.antennapod.storage.importexport.OpmlReader;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -45,6 +47,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Activity for Opml Import.
@@ -140,15 +143,6 @@ public class OpmlImportActivity extends AppCompatActivity {
             return;
         }
         this.uri = uri;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && uri.toString().contains(Environment.getExternalStorageDirectory().toString())) {
-            int permission = ActivityCompat.checkSelfPermission(this,
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE);
-            if (permission != PackageManager.PERMISSION_GRANTED) {
-                requestPermission();
-                return;
-            }
-        }
         startImport();
     }
 
@@ -244,12 +238,29 @@ public class OpmlImportActivity extends AppCompatActivity {
                                     getTitleList());
                             viewBinding.feedlist.setAdapter(listAdapter);
                         }, e -> {
+                            Log.d(TAG, Log.getStackTraceString(e));
+                            String message = e.getMessage() == null ? "" : e.getMessage();
+                            if (message.toLowerCase(Locale.ROOT).contains("permission")
+                                    && Build.VERSION.SDK_INT >= 23) {
+                                int permission = ActivityCompat.checkSelfPermission(this,
+                                        android.Manifest.permission.READ_EXTERNAL_STORAGE);
+                                if (permission != PackageManager.PERMISSION_GRANTED) {
+                                    requestPermission();
+                                    return;
+                                }
+                            }
                             viewBinding.progressBar.setVisibility(View.GONE);
                             MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(this);
                             alert.setTitle(R.string.error_label);
-                            alert.setMessage(getString(R.string.opml_reader_error) + e.getMessage());
-                            alert.setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
-                            alert.create().show();
+                            String userReadable = getString(R.string.opml_reader_error);
+                            String details = e.getMessage();
+                            String total = userReadable + "\n\n" + details;
+                            SpannableString errorMessage = new SpannableString(total);
+                            errorMessage.setSpan(new ForegroundColorSpan(0x88888888),
+                                    userReadable.length(), total.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            alert.setMessage(errorMessage);
+                            alert.setPositiveButton(android.R.string.ok, (dialog, which) -> finish());
+                            alert.show();
                         });
     }
 }

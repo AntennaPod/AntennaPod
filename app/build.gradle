@@ -1,6 +1,6 @@
 plugins {
     id('com.android.application')
-    id('com.github.triplet.play') version '3.8.3' apply false
+    id('com.github.triplet.play') version '3.9.0' apply false
 }
 apply from: "../common.gradle"
 apply from: "../playFlavor.gradle"
@@ -12,8 +12,8 @@ android {
         // Version code schema:
         // "1.2.3-beta4"    -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 3020095
-        versionName "3.2.0"
+        versionCode 3030095
+        versionName "3.3.0"
 
         def commit = ""
         try {
@@ -69,7 +69,7 @@ android {
     }
 
     androidResources {
-        additionalParameters "--no-version-vectors"
+        additionalParameters += ["--no-version-vectors"]
     }
 }
 
@@ -86,12 +86,14 @@ dependencies {
     implementation project(':playback:base')
     implementation project(':playback:cast')
     implementation project(':storage:database')
+    implementation project(':storage:importexport')
     implementation project(':storage:preferences')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
     implementation project(':ui:echo')
     implementation project(':ui:glide')
     implementation project(':ui:i18n')
+    implementation project(':ui:preferences')
     implementation project(':ui:statistics')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
@@ -114,23 +116,15 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
-    implementation "com.squareup.okio:okio:$okioVersion"
     implementation "org.greenrobot:eventbus:$eventbusVersion"
     annotationProcessor "org.greenrobot:eventbus-annotation-processor:$eventbusVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
 
-    implementation "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
-    implementation "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
     implementation 'com.leinardi.android:speed-dial:3.2.0'
     implementation 'com.github.ByteHamster:SearchPreference:v2.5.0'
     implementation 'com.github.skydoves:balloon:1.5.3'
     implementation 'com.github.xabaras:RecyclerViewSwipeDecorator:1.3'
-    implementation "com.annimon:stream:$annimonStreamVersion"
-
-    // Non-free dependencies:
-    playImplementation 'com.google.android.play:core:1.8.0'
-    compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
 
     androidTestImplementation "org.awaitility:awaitility:$awaitilityVersion"
     androidTestImplementation 'com.nanohttpd:nanohttpd:2.1.1'
@@ -149,13 +143,3 @@ if (project.hasProperty("antennaPodPlayPublisherCredentials")) {
         serviceAccountCredentials.set(file(antennaPodPlayPublisherCredentials))
     }
 }
-
-task copyLicense(type: Copy) {
-    from "../LICENSE"
-    into "src/main/assets/"
-    rename { String fileName ->
-        fileName + ".txt"
-    }
-}
-
-preBuild.dependsOn copyLicense

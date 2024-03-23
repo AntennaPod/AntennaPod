@@ -22,7 +22,6 @@
   <string name="episode_cache_full_message">Jaksojen välimuistin rajoitus on ylitetty. Voit lisätä välimuistin kokoa asetuksissa.</string>
   <string name="years_statistics_label">Vuosia</string>
   <string name="notification_pref_fragment">Ilmoitukset</string>
-  <string name="recently_played_episodes">Viimeksi soitetut jaksot</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">Toimintoa \"%1$s\" ei löytynyt</string>
   <!--SwipeActions-->
@@ -104,7 +103,6 @@
   <string name="description_label">Kuvaus</string>
   <string name="shownotes_label">Jaksomuistio</string>
   <string name="shownotes_contentdescription">pyyhkäise ylös nähdäksesi jaksomuistion</string>
-  <string name="episodes_suffix">\u0020jaksoa</string>
   <string name="close_label">Sulje</string>
   <string name="retry_label">Yritä uudelleen</string>
   <string name="auto_download_label">Lataa automaattisesti</string>
@@ -157,7 +155,6 @@
   <string name="remove_feed_label">Poista podcast</string>
   <string name="share_label">Jaa</string>
   <string name="share_file_label">Jaa tietodosto</string>
-  <string name="share_rss_address_label">RSS-osoite:</string>
   <string name="feed_delete_confirmation_msg">Vahvista, että haluat poistaa podcastin \"%1$s\", KAIKKI sen jaksot (mukaan lukien ladatut jaksot) ja sen tilastot.</string>
   <string name="feed_delete_confirmation_msg_batch">Vahvista, että haluat poistaa valitut podcastit, KAIKKI niiden jaksot (mukaan lukien ladatut jaksot) ja niiden tilastot.</string>
   <string name="feed_delete_confirmation_local_msg">Vahvista, että haluat poistaa podcastin \"%1$s\" ja sen tilastot. Paikallisia tiedostoja ei poisteta.</string>
@@ -434,10 +431,6 @@
   <string name="pref_expandNotify_title">Korkea ilmoitusprioriteetti</string>
   <string name="pref_expandNotify_sum">Tämä laajentaa ilmoituksen näyttämään toistopainikkeet</string>
   <string name="pref_persistNotify_title">Pysyvät toistokontrollit</string>
-  <string name="pref_compact_notification_buttons_title">Aseta kompaktit ilmoituspainikkeet</string>
-  <string name="pref_compact_notification_buttons_sum">Muuta toistopainikkeita, kun ilmoitus on tiivistetty. Toisto/tauko-painike on aina mukana.</string>
-  <string name="pref_compact_notification_buttons_dialog_title">Valitse maksimi %1$d asioita</string>
-  <string name="pref_compact_notification_buttons_dialog_error">Voit valita vain maksimissaan %1$d asioita.</string>
   <string name="pref_enqueue_location_title">Jonoon lisäyksen paikka</string>
   <string name="pref_enqueue_location_sum">Lisää jaksot kohteeseen%1$s: </string>
   <string name="enqueue_location_back">Perään</string>
@@ -510,7 +503,6 @@
   <string name="database_import_summary">Tuo AntennaPod-tietokanta toiselta laitteelta</string>
   <string name="opml_import_label">OPML-tuonti</string>
   <string name="opml_add_podcast_label">Tuo podcastien lista (OPML)</string>
-  <string name="opml_reader_error">Virhe lukiessa OPML dokumenttia:</string>
   <string name="opml_import_error_no_file">Ei tiedostoa valittuna!</string>
   <string name="select_all_label">Valitse kaikki</string>
   <string name="deselect_all_label">Poista valinta kaikista</string>
@@ -675,21 +667,6 @@
   <string name="not_paused">Ei tauotettu</string>
   <string name="hide_played_episodes_label">Toistettu</string>
   <string name="not_played">Ei toistettu</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">Otsikko (A \u2192 Z)</string>
-  <string name="sort_title_z_a">Otsikko (Z \u2192 A)</string>
-  <string name="sort_date_new_old">Aika (Uusi \u2192 Old)</string>
-  <string name="sort_date_old_new">Aika (Vanha \u2192 New)</string>
-  <string name="sort_duration_short_long">Kesto (Lyhyt \u2192 Long)</string>
-  <string name="sort_duration_long_short">Kesto (Pitkä \u2192 Short)</string>
-  <string name="sort_filename_a_z">Tiedoston nimi (A \u2192 Ö)</string>
-  <string name="sort_filename_z_a">Tiedoston nimi (Ö \u2192 A)</string>
-  <string name="sort_a_z">A \u2192 Ö</string>
-  <string name="sort_z_a">Ö \u2192 A</string>
-  <string name="sort_new_old">Uusi \u2192 vanha</string>
-  <string name="sort_old_new">Vanha \u2192 uusi</string>
-  <string name="sort_short_long">Lyhyt \u2192 pitkä</string>
-  <string name="sort_long_short">Pitkä \u2192 lyhyt</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Sisällytä toistokohta</string>
   <string name="share_dialog_episode_website_label">Jakson nettisivu</string>
@@ -700,7 +677,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Audiokontrollit</string>
   <string name="playback_speed">Toistonopeus</string>
-  <string name="audio_effects">Audioefektit</string>
   <string name="player_switch_to_audio_only">Vain ääni</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tyyppi</string>

@@ -59,7 +59,6 @@
   <string name="chapters_label">章節</string>
   <string name="chapter_duration">時長： %1$s</string>
   <string name="description_label">描述</string>
-  <string name="episodes_suffix">\u0020單集</string>
   <string name="close_label">關閉</string>
   <string name="retry_label">重試</string>
   <string name="auto_download_label">加入自動下載</string>
@@ -243,9 +242,6 @@
   <string name="pref_fast_forward_sum">自訂快轉鈕要往前快轉多少時間</string>
   <string name="pref_rewind_sum">自訂倒轉鈕要往後倒轉多少時間</string>
   <string name="pref_expandNotify_sum">此功能通常會加大通知訊息以便顯示控制鈕</string>
-  <string name="pref_compact_notification_buttons_sum">設定精簡通知訊息上的播放控制鈕。「暫停/播放」鈕一定會出現</string>
-  <string name="pref_compact_notification_buttons_dialog_title">最多可選擇 %1$d 項</string>
-  <string name="pref_compact_notification_buttons_dialog_error">您最多只能選擇 %1$d 項。</string>
   <string name="pref_enqueue_location_sum">將這幾集加到：%1$s</string>
   <string name="enqueue_location_back">放到清單最後</string>
   <string name="enqueue_location_front">放到清單最前</string>
@@ -301,7 +297,6 @@
   <string name="database_export_summary">將訂閱、聆聽紀錄、待播清單等資訊傳送到其他設備上的 AntennaPod</string>
   <string name="database_import_summary">自其他設備匯入 AntennaPod 資料庫</string>
   <string name="opml_add_podcast_label">自 OPML 匯入 Podcast 清單</string>
-  <string name="opml_reader_error">讀取 OPML 時發生錯誤：</string>
   <string name="opml_import_error_no_file">未選擇任何檔案！</string>
   <string name="select_all_label">全選</string>
   <string name="deselect_all_label">取消選取</string>
@@ -422,19 +417,6 @@
   <string name="not_paused">未暫停播放的</string>
   <string name="hide_played_episodes_label">已播放</string>
   <string name="not_played">未播放過的</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">標題 (A \u2192 Z)</string>
-  <string name="sort_title_z_a">標題 (Z \u2192 A)</string>
-  <string name="sort_date_new_old">日期 (新 \u2192 舊)</string>
-  <string name="sort_date_old_new">日期 (舊 \u2192 新)</string>
-  <string name="sort_duration_short_long">單集時間 (短 \u2192 長)</string>
-  <string name="sort_duration_long_short">單集時間 (長 \u2192 短)</string>
-  <string name="sort_a_z">A \u2192 Z</string>
-  <string name="sort_z_a">Z \u2192 A</string>
-  <string name="sort_new_old">新 \u2192 舊</string>
-  <string name="sort_old_new">舊 \u2192 新</string>
-  <string name="sort_short_long">短 \u2192 長</string>
-  <string name="sort_long_short">長 \u2192 短</string>
   <!--Share episode dialog-->
   <string name="share_dialog_episode_website_label">此單集的網頁</string>
   <string name="share_dialog_media_file_label">媒體檔案</string>

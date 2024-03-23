@@ -26,9 +26,9 @@ import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
-import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.echo.databinding.EchoActivityBinding;
 import de.danoeh.antennapod.ui.echo.screens.BubbleScreen;
 import de.danoeh.antennapod.ui.echo.screens.FinalShareScreen;
@@ -221,8 +221,8 @@ public class EchoActivity extends AppCompatActivity {
                             dec31.get(Calendar.DAY_OF_YEAR) - Calendar.getInstance().get(Calendar.DAY_OF_YEAR) + 1);
                     long secondsPerDay = queueSecondsLeft / daysUntilNextYear;
                     String timePerDay = Converter.getDurationStringLocalized(
-                            getLocalizedResources(this, getEchoLanguage()), secondsPerDay * 1000);
-                    double hoursPerDay = (double) (secondsPerDay / 3600);
+                            getLocalizedResources(this, getEchoLanguage()), secondsPerDay * 1000, true);
+                    double hoursPerDay = secondsPerDay / 3600.0;
                     int nextYear = RELEASE_YEAR + 1;
                     if (hoursPerDay < 1.5) {
                         viewBinding.aboveLabel.setText(R.string.echo_queue_title_clean);
@@ -249,7 +249,7 @@ public class EchoActivity extends AppCompatActivity {
                     }
                     viewBinding.smallLabel.setText(getString(R.string.echo_listened_after_time,
                             Converter.getDurationStringLocalized(
-                                getLocalizedResources(this, getEchoLanguage()), timeBetweenReleaseAndPlay)));
+                                getLocalizedResources(this, getEchoLanguage()), timeBetweenReleaseAndPlay, true)));
                     currentDrawable = new RotatingSquaresScreen(this);
                     break;
                 case 4:

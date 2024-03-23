@@ -22,7 +22,7 @@
   <string name="episode_cache_full_message">Došlo k zaplnění limitu odkládacího prostoru pro epizody. Můžete navýšit vyhrazený prostor v Nastavení.</string>
   <string name="years_statistics_label">Roky</string>
   <string name="notification_pref_fragment">Upozornění</string>
-  <string name="recently_played_episodes">Nedávno přehrané epizody</string>
+  <string name="current_playing_episode">Právě přehrávaný&lt;br&gt;</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" nenalezen</string>
   <!--SwipeActions-->
@@ -107,7 +107,6 @@
   <string name="description_label">Popis</string>
   <string name="shownotes_label">Poznámky</string>
   <string name="shownotes_contentdescription">přejet prstem nahoru pro čtení poznámek</string>
-  <string name="episodes_suffix">\u0020epizod</string>
   <string name="close_label">Zavřít</string>
   <string name="retry_label">Zkusit znovu</string>
   <string name="auto_download_label">Zahrnout do automaticky stahovaných</string>
@@ -180,7 +179,6 @@
   <string name="remove_feed_label">Odstranit podcast</string>
   <string name="share_label">Sdílet</string>
   <string name="share_file_label">Sdílet soubor</string>
-  <string name="share_rss_address_label">adresa RSS:</string>
   <string name="feed_delete_confirmation_msg">Potvrďte prosím, že chcete smazat podcast „%1$s“, VŠECHNY jeho epizody (včetně stažených epizod) a jeho statistiky.</string>
   <string name="feed_delete_confirmation_msg_batch">Potvrďte prosím, že chcete smazat vybrané podcasty a VŠECHNY jejich epizody (včetně stažených epizod) a jejich statistiky.</string>
   <string name="feed_delete_confirmation_local_msg">Potvrďte prosím, že chcete smazat podcast \"%1$s\" a jeho statistiky. Soubory v místním úložišti nebudou smazány.</string>
@@ -495,10 +493,8 @@
   <string name="pref_expandNotify_sum">Toto obvykle přidá tlačítka ovládání přehrávání do zpráv upozornění</string>
   <string name="pref_persistNotify_title">Trvalé ovládací prvky přehrávání</string>
   <string name="pref_persistNotify_sum">Zachovat oznámení a ovládání na obrazovce uzamčení i při pozastaveném přehrávání.</string>
-  <string name="pref_compact_notification_buttons_title">Nastavení kompaktních tlačítek oznámení</string>
-  <string name="pref_compact_notification_buttons_sum">Změnit tlačítka ovládání po zarolování upozornění. Tlačítka přehrát/pozastavit jsou vždy zobrazena.</string>
-  <string name="pref_compact_notification_buttons_dialog_title">Vybrat maximálně %1$d položek</string>
-  <string name="pref_compact_notification_buttons_dialog_error">Lze vybrat maximálně %1$d položek.</string>
+    <string name="pref_full_notification_buttons_title">Nastavit tlačítka v oznámení</string>
+  <string name="pref_full_notification_buttons_sum">Změňte tlačítka přehrávače v oznámení.</string>
   <string name="pref_enqueue_location_title">Pozice přidávání do fronty</string>
   <string name="pref_enqueue_location_sum">Přidávat epizody na: %1$s</string>
   <string name="enqueue_location_back">konec</string>
@@ -580,7 +576,7 @@
   <string name="database_import_summary">Importovat AntennaPod databázi z jiného zařízení</string>
   <string name="opml_import_label">OPML import</string>
   <string name="opml_add_podcast_label">Importovat podcasty (OPML)</string>
-  <string name="opml_reader_error">Došlo k chybě při čtení OPML dokumentu:</string>
+  <string name="opml_reader_error">Při čtení souboru nastala chyba. Zkontrolijte se, že jste opravdu zvolili soubor OPML a že je platný.</string>
   <string name="opml_import_error_no_file">Nebyl vybrán žádný soubor!</string>
   <string name="select_all_label">Označit vše</string>
   <string name="deselect_all_label">Zrušit výběr</string>
@@ -627,6 +623,12 @@
     <item quantity="few">%d hodiny</item>
     <item quantity="many">%d hodin</item>
     <item quantity="other">%d hodin</item>
+  </plurals>
+  <plurals name="time_days_quantified">
+    <item quantity="one">1 day</item>
+    <item quantity="few">%d dny</item>
+    <item quantity="many">%d dní</item>
+    <item quantity="other">%ddní</item>
   </plurals>
   <string name="auto_enable_label">Automatická aktivace časovače spánku při stisknutí tlačítka přehrávání</string>
   <string name="auto_enable_label_with_times">Automatická aktivace časovače spánku při stisknutí tlačítka přehrávání mezi %s a %s</string>
@@ -764,23 +766,7 @@
   <string name="not_paused">Nepozastaveno</string>
   <string name="hide_played_episodes_label">Poslechnuté</string>
   <string name="not_played">Nepřehraných</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">Názvu (A \u2192 Z)</string>
-  <string name="sort_title_z_a">Názvu (Z \u2192 A)</string>
-  <string name="sort_date_new_old">Data (Nové \u2192 Staré)</string>
-  <string name="sort_date_old_new">Data (Staré \u2192 Nové)</string>
-  <string name="sort_duration_short_long">Délka (Krátké \u2192 Dlouhé)</string>
-  <string name="sort_duration_long_short">Délka (Dlouhé \u2192 Krátké)</string>
-  <string name="sort_filename_a_z">Název souboru (A \u2192 Z)</string>
-  <string name="sort_filename_z_a">Název Souboru (Z \u2192 A)</string>
-  <string name="sort_a_z">A \u2192 Ž</string>
-  <string name="sort_z_a">Ž \u2192 A</string>
-  <string name="sort_new_old">Nové \u2192 Staré</string>
-  <string name="sort_old_new">Staré \u2192 Nové</string>
-  <string name="sort_short_long">Krátké \u2192 Dlouhé</string>
-  <string name="sort_long_short">Dlouhé \u2192 Krátké</string>
-  <string name="sort_small_large">Malé \u2192 Velké</string>
-  <string name="sort_large_small">Velké \u2192 Malé</string>
+  <string name="filename">Název souboru</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Zahrnout pozici přehrávání</string>
   <string name="share_dialog_episode_website_label">Webová stránka epizody</string>
@@ -791,7 +777,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Audio ovládání</string>
   <string name="playback_speed">Rychlost přehrávání</string>
-  <string name="audio_effects">Zvukové efekty</string>
   <string name="player_switch_to_audio_only">Přepnout pouze na zvuk</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Typ</string>

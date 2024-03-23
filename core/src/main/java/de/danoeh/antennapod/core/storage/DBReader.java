@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.core.storage;
 
 import android.database.Cursor;
-import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -585,42 +584,6 @@ public final class DBReader {
     }
 
     /**
-     * Returns credentials based on image URL
-     *
-     * @param imageUrl The URL of the image
-     * @return Credentials in format "Username:Password", empty String if no authorization given
-     */
-    public static String getImageAuthentication(final String imageUrl) {
-        Log.d(TAG, "getImageAuthentication() called with: " + "imageUrl = [" + imageUrl + "]");
-
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        try {
-            return getImageAuthentication(imageUrl, adapter);
-        } finally {
-            adapter.close();
-        }
-    }
-
-    private static String getImageAuthentication(final String imageUrl, PodDBAdapter adapter) {
-        String credentials;
-        try (Cursor cursor = adapter.getImageAuthenticationCursor(imageUrl)) {
-            if (cursor.moveToFirst()) {
-                String username = cursor.getString(0);
-                String password = cursor.getString(1);
-                if (!TextUtils.isEmpty(username) && password != null) {
-                    credentials = username + ":" + password;
-                } else {
-                    credentials = "";
-                }
-            } else {
-                credentials = "";
-            }
-        }
-        return credentials;
-    }
-
-    /**
      * Loads a specific FeedItem from the database.
      *
      * @param guid feed item guid
@@ -736,9 +699,33 @@ public final class DBReader {
     }
 
     public static class MonthlyStatisticsItem {
-        public int year = 0;
-        public int month = 0;
-        public long timePlayed = 0;
+        private int year = 0;
+        private int month = 0;
+        private long timePlayed = 0;
+
+        public int getYear() {
+            return year;
+        }
+
+        public void setYear(final int year) {
+            this.year = year;
+        }
+
+        public int getMonth() {
+            return month;
+        }
+
+        public void setMonth(final int month) {
+            this.month = month;
+        }
+
+        public long getTimePlayed() {
+            return timePlayed;
+        }
+
+        public void setTimePlayed(final long timePlayed) {
+            this.timePlayed = timePlayed;
+        }
     }
 
     @NonNull
@@ -752,9 +739,9 @@ public final class DBReader {
             int indexTotalDuration = cursor.getColumnIndexOrThrow("total_duration");
             while (cursor.moveToNext()) {
                 MonthlyStatisticsItem item = new MonthlyStatisticsItem();
-                item.month = Integer.parseInt(cursor.getString(indexMonth));
-                item.year = Integer.parseInt(cursor.getString(indexYear));
-                item.timePlayed = cursor.getLong(indexTotalDuration);
+                item.setMonth(Integer.parseInt(cursor.getString(indexMonth)));
+                item.setYear(Integer.parseInt(cursor.getString(indexYear)));
+                item.setTimePlayed(cursor.getLong(indexTotalDuration));
                 months.add(item);
             }
         }

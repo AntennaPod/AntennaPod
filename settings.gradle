@@ -1,3 +1,20 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+    }
+}
+
 include ':app'
 include ':core'
 include ':event'
@@ -17,6 +34,7 @@ include ':playback:base'
 include ':playback:cast'
 
 include ':storage:database'
+include ':storage:importexport'
 include ':storage:preferences'
 
 include ':ui:app-start-intent'
@@ -24,5 +42,7 @@ include ':ui:common'
 include ':ui:echo'
 include ':ui:glide'
 include ':ui:i18n'
-include ':ui:png-icons'
+include ':ui:notifications'
+include ':ui:preferences'
 include ':ui:statistics'
+include ':ui:widget'

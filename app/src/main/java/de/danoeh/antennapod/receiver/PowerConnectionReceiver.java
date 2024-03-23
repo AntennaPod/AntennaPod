@@ -16,9 +16,9 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 // Since the intent doesn't have the EXTRA_STATUS like the android.com article says it does
 // (though it used to)
 public class PowerConnectionReceiver extends BroadcastReceiver {
-	private static final String TAG = "PowerConnectionReceiver";
+    private static final String TAG = "PowerConnectionReceiver";
 
-	@Override
+    @Override
     public void onReceive(Context context, Intent intent) {
         final String action = intent.getAction();
 

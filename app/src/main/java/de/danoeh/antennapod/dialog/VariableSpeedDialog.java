@@ -37,6 +37,7 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
     private final List<Float> selectedSpeeds;
     private PlaybackSpeedSeekBar speedSeekBar;
     private Chip addCurrentSpeedChip;
+    private CheckBox skipSilenceCheckbox;
 
     public VariableSpeedDialog() {
         DecimalFormatSymbols format = new DecimalFormatSymbols(Locale.US);
@@ -51,11 +52,13 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
             @Override
             public void loadMediaInfo() {
                 updateSpeed(new SpeedChangedEvent(controller.getCurrentPlaybackSpeedMultiplier()));
+                updateSkipSilence(controller.getCurrentPlaybackSkipSilence());
             }
         };
         controller.init();
         EventBus.getDefault().register(this);
         updateSpeed(new SpeedChangedEvent(controller.getCurrentPlaybackSpeedMultiplier()));
+        updateSkipSilence(controller.getCurrentPlaybackSkipSilence());
     }
 
     @Override
@@ -72,6 +75,10 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         addCurrentSpeedChip.setText(String.format(Locale.getDefault(), "%1$.2f", event.getNewSpeed()));
     }
 
+    public void updateSkipSilence(boolean skipSilence) {
+        skipSilenceCheckbox.setChecked(skipSilence);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -79,6 +86,7 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         View root = View.inflate(getContext(), R.layout.speed_select_dialog, null);
         speedSeekBar = root.findViewById(R.id.speed_seek_bar);
         speedSeekBar.setProgressChangedListener(multiplier -> {
+            UserPreferences.setPlaybackSpeed(multiplier);
             if (controller != null) {
                 controller.setPlaybackSpeed(multiplier);
             }
@@ -97,9 +105,9 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         addCurrentSpeedChip.setCloseIconContentDescription(getString(R.string.add_preset));
         addCurrentSpeedChip.setOnClickListener(v -> addCurrentSpeed());
 
-        final CheckBox skipSilence = root.findViewById(R.id.skipSilence);
-        skipSilence.setChecked(UserPreferences.isSkipSilence());
-        skipSilence.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        skipSilenceCheckbox = root.findViewById(R.id.skipSilence);
+        skipSilenceCheckbox.setChecked(UserPreferences.isSkipSilence());
+        skipSilenceCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             UserPreferences.setSkipSilence(isChecked);
             controller.setSkipSilence(isChecked);
         });
@@ -141,10 +149,11 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
                 return true;
             });
             holder.chip.setOnClickListener(v -> {
+                UserPreferences.setPlaybackSpeed(speed);
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
                     if (controller != null) {
-                        dismiss();
                         controller.setPlaybackSpeed(speed);
+                        dismiss();
                     }
                 }, 200);
             });

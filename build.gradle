@@ -1,31 +1,21 @@
 buildscript {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
-        classpath "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.0"
-        classpath 'org.codehaus.groovy:groovy-xml:3.0.13'
-    }
+    ext.agpVersion = "8.0.2"
 }
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        maven { url "https://jitpack.io" }
-    }
+plugins {
+    id 'com.android.application' version "$agpVersion" apply false
+    id 'com.android.library' version "$agpVersion" apply false
+    id 'com.github.spotbugs' version '4.8.0' apply false
+    id 'checkstyle'
 }
 
 project.ext {
     // AndroidX
-    annotationVersion = "1.2.0"
-    appcompatVersion = "1.3.1"
-    coreVersion = "1.5.0"
-    fragmentVersion = "1.3.6"
-    mediaVersion = "1.4.3"
+    annotationVersion = "1.4.0"
+    appcompatVersion = "1.5.1"
+    coreVersion = "1.9.0"
+    fragmentVersion = "1.5.5"
+    mediaVersion = "1.6.0"
+    media3Version = "1.1.1"
     paletteVersion = "1.0.0"
     preferenceVersion = "1.1.1"
     recyclerViewVersion = "1.2.1"
@@ -38,17 +28,10 @@ project.ext {
     commonsioVersion = "2.5"
     jsoupVersion = "1.15.1"
     glideVersion = "4.13.2"
-    okhttpVersion = "3.12.10"
-    okioVersion = "1.17.5"
+    okhttpVersion = "4.12.0"
     eventbusVersion = "3.3.1"
     rxAndroidVersion = "2.1.1"
     rxJavaVersion = "2.2.2"
-    iconifyVersion = "2.2.2"
-    annimonStreamVersion = "1.2.2"
-    exoPlayerVersion = "2.14.2"
-
-    // Google Play build
-    wearableSupportVersion = "2.6.0"
 
     //Tests
     awaitilityVersion = "3.1.6"
@@ -60,14 +43,17 @@ project.ext {
     testCoreVersion = "1.5.0"
 }
 
-apply plugin: "checkstyle"
 checkstyle {
     toolVersion '10.3.1'
 }
 
-task checkstyle(type: Checkstyle) {
+tasks.register('checkstyle', Checkstyle) {
+    minHeapSize = "200m"
+    maxHeapSize = "2g"
     classpath = files()
     source "${project.rootDir}"
+    exclude("**/generated-sources/**")
     exclude("**/gen/**")
+    exclude("**/build/**")
     exclude("**/generated/**")
 }

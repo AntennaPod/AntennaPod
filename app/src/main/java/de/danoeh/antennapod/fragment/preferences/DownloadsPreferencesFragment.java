@@ -11,7 +11,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
-import de.danoeh.antennapod.dialog.ChooseDataFolderDialog;
+import de.danoeh.antennapod.ui.preferences.screen.downloads.ChooseDataFolderDialog;
 import de.danoeh.antennapod.dialog.ProxyDialog;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
@@ -96,13 +96,13 @@ public class DownloadsPreferencesFragment extends PreferenceFragmentCompat
 
     private void showAutoDeleteEnableDialog() {
         new MaterialAlertDialogBuilder(requireContext())
-            .setMessage(R.string.pref_auto_local_delete_dialog_body)
-            .setPositiveButton(R.string.yes, (dialog, which) -> {
-                blockAutoDeleteLocal = false;
-                ((TwoStatePreference) findPreference(PREF_AUTO_DELETE_LOCAL)).setChecked(true);
-                blockAutoDeleteLocal = true;
-            })
-            .setNegativeButton(R.string.cancel_label, null)
-            .show();
+                .setMessage(R.string.pref_auto_local_delete_dialog_body)
+                .setPositiveButton(R.string.yes, (dialog, which) -> {
+                    blockAutoDeleteLocal = false;
+                    ((TwoStatePreference) findPreference(PREF_AUTO_DELETE_LOCAL)).setChecked(true);
+                    blockAutoDeleteLocal = true;
+                })
+                .setNegativeButton(R.string.cancel_label, null)
+                .show();
     }
 }

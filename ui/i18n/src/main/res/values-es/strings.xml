@@ -22,7 +22,7 @@
   <string name="episode_cache_full_message">Se alcanzó el límite de la caché de episodios. Puede aumentar el tamaño en Configuración.</string>
   <string name="years_statistics_label">Años</string>
   <string name="notification_pref_fragment">Notificaciones</string>
-  <string name="recently_played_episodes">Episodios reproducidos recientemente</string>
+  <string name="current_playing_episode">Actual </string>
   <!--Google Assistant-->
   <string name="app_action_not_found">No se encontró «%1$s»</string>
   <!--SwipeActions-->
@@ -53,7 +53,7 @@
   <string name="home_downloads_title">Gestionar descargas</string>
   <string name="home_welcome_title">Le damos la bienvenida a AntennaPod.</string>
   <string name="home_welcome_text">No se ha suscrito a ningún pódcast. Abra el menú lateral para añadir un pódcast.</string>
-  <string name="notification_permission_text">AntennaPod necesita </string>
+  <string name="notification_permission_text">AntennaPod necesita tu permiso para mostrar notificaciones. Por defecto, AntennaPod solo muestra notificaciones mientras se está descargando algo o cuando algo sale mal.</string>
   <string name="notification_permission_denied">Denegaste el permiso.</string>
   <string name="notification_permission_deny_warning">Si deshabilita las notificaciones y se produce un error, puede no encontrarlo posteriormente.</string>
   <string name="deny_label">Denegar</string>
@@ -107,7 +107,6 @@
   <string name="description_label">Descripción</string>
   <string name="shownotes_label">Notas del programa</string>
   <string name="shownotes_contentdescription">deslice hacia arriba para leer las notas del programa</string>
-  <string name="episodes_suffix">\u0020episodios</string>
   <string name="close_label">Cerrar</string>
   <string name="retry_label">Reintentar</string>
   <string name="auto_download_label">Incluir en descargas automáticas</string>
@@ -174,7 +173,6 @@
   <string name="remove_feed_label">Eliminar el pódcast</string>
   <string name="share_label">Compartir</string>
   <string name="share_file_label">Compartir el archivo</string>
-  <string name="share_rss_address_label">Dirección RSS:</string>
   <string name="feed_delete_confirmation_msg">Confirme que quiere eliminar el pódcast «%1$s» TODOS los episodios (incluidos los descargados), y sus estadísticas.</string>
   <string name="feed_delete_confirmation_msg_batch">Confirme que quiere eliminar los pódcasts seleccionados, TODOS los episodios (incluidos los descargados), y sus estadísticas.</string>
   <string name="feed_delete_confirmation_local_msg">Confirme que quiere eliminar el pódcast «%1$s» y sus estadísticas. Los archivos en la carpeta origen local no se eliminarán.</string>
@@ -480,10 +478,8 @@
   <string name="pref_expandNotify_sum">Esto suele expandir las notificaciones para mostrar los botones de reproducción.</string>
   <string name="pref_persistNotify_title">Controles de reproducción persistentes</string>
   <string name="pref_persistNotify_sum">Mantener la notificación y los controles de la pantalla de bloqueo cuando se pausa</string>
-  <string name="pref_compact_notification_buttons_title">Activar botones de notificación compactos</string>
-  <string name="pref_compact_notification_buttons_sum">Cambiar los botones cuando la notificación está contraída. El botón reproducir/pausar siempre está incluido.</string>
-  <string name="pref_compact_notification_buttons_dialog_title">Seleccionar máximo %1$d elementos</string>
-  <string name="pref_compact_notification_buttons_dialog_error">Sólo puede seleccionar un máximo de %1$d elementos.</string>
+    <string name="pref_full_notification_buttons_title">Configurar botones de notificación</string>
+  <string name="pref_full_notification_buttons_sum">Cambiar los botones de reproducción en la notificación de reproducción.</string>
   <string name="pref_enqueue_location_title">Añadir a la cola en cierta ubicación</string>
   <string name="pref_enqueue_location_sum">Añadir episodios a: %1$s</string>
   <string name="enqueue_location_back">Final</string>
@@ -565,7 +561,7 @@
   <string name="database_import_summary">Importar base de datos de AntennaPod desde otro dispositivo</string>
   <string name="opml_import_label">Importación OPML</string>
   <string name="opml_add_podcast_label">Importar lista de podcast (OPML)</string>
-  <string name="opml_reader_error">Error al leer el documento OPML:</string>
+  <string name="opml_reader_error">Se ha producido un error al leer el archivo. Asegúrate de haber seleccionado un archivo OPML y de que el archivo sea válido.</string>
   <string name="opml_import_error_no_file">¡Debe seleccionar un archivo!</string>
   <string name="select_all_label">Seleccionar todo</string>
   <string name="deselect_all_label">Deseleccionar todo</string>
@@ -751,23 +747,7 @@
   <string name="not_paused">No pausado</string>
   <string name="hide_played_episodes_label">Reproducidos</string>
   <string name="not_played">No reproducido</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">Título (A \u2192 Z)</string>
-  <string name="sort_title_z_a">Título (Z \u2192 A)</string>
-  <string name="sort_date_new_old">Fecha (Nuevo \u2192 Antiguo)</string>
-  <string name="sort_date_old_new">Fecha (Antiguo \u2192 Nuevo)</string>
-  <string name="sort_duration_short_long">Duración (Corto \u2192 Largo)</string>
-  <string name="sort_duration_long_short">Duración (Largo \u2192 Corto)</string>
-  <string name="sort_filename_a_z">Nombre de archivo (A \u2192 Z)</string>
-  <string name="sort_filename_z_a">Nombre de archivo (Z \u2192 A)</string>
-  <string name="sort_a_z">A \u2192 Z</string>
-  <string name="sort_z_a">Z \u2192 A</string>
-  <string name="sort_new_old">Nuevo \u2192 Viejo</string>
-  <string name="sort_old_new">Viejo \u2192 Nuevo</string>
-  <string name="sort_short_long">Breve \u2192 Largo</string>
-  <string name="sort_long_short">Largo \u2192 Breve</string>
-  <string name="sort_small_large">Pequeño \u2192 Grande</string>
-  <string name="sort_large_small">Grande \u2192 Pequeño</string>
+  <string name="filename">Nombre de archivo</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Incluir la posición de reprodución</string>
   <string name="share_dialog_episode_website_label">Página del episodio</string>
@@ -778,7 +758,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Controles de audio</string>
   <string name="playback_speed">Velocidad de reproducción</string>
-  <string name="audio_effects">Efectos de audio</string>
   <string name="player_switch_to_audio_only">Cambiar a solo audio</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tipo</string>

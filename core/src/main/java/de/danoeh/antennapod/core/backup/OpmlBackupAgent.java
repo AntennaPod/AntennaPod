@@ -10,6 +10,9 @@ import android.util.Log;
 
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
+import de.danoeh.antennapod.storage.importexport.OpmlElement;
+import de.danoeh.antennapod.storage.importexport.OpmlReader;
+import de.danoeh.antennapod.storage.importexport.OpmlWriter;
 import org.apache.commons.io.IOUtils;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -31,9 +34,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-import de.danoeh.antennapod.core.export.opml.OpmlElement;
-import de.danoeh.antennapod.core.export.opml.OpmlReader;
-import de.danoeh.antennapod.core.export.opml.OpmlWriter;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBReader;
 
@@ -81,7 +81,7 @@ public class OpmlBackupAgent extends BackupAgentHelper {
 
             try {
                 // Write OPML
-                new OpmlWriter().writeDocument(DBReader.getFeedList(), writer, mContext);
+                OpmlWriter.writeDocument(DBReader.getFeedList(), writer);
 
                 // Compare checksum of new and old file to see if we need to perform a backup at all
                 if (digester != null) {
@@ -90,17 +90,18 @@ public class OpmlBackupAgent extends BackupAgentHelper {
 
                     // Get the old checksum
                     if (oldState != null) {
-                        FileInputStream inState = new FileInputStream(oldState.getFileDescriptor());
-                        int len = inState.read();
+                        try (final FileInputStream inState = new FileInputStream(oldState.getFileDescriptor())) {
+                            int len = inState.read();
 
-                        if (len != -1) {
-                            byte[] oldChecksum = new byte[len];
-                            IOUtils.read(inState, oldChecksum, 0, len);
-                            Log.d(TAG, "Old checksum: " + new BigInteger(1, oldChecksum).toString(16));
+                            if (len != -1) {
+                                byte[] oldChecksum = new byte[len];
+                                IOUtils.read(inState, oldChecksum, 0, len);
+                                Log.d(TAG, "Old checksum: " + new BigInteger(1, oldChecksum).toString(16));
 
-                            if (Arrays.equals(oldChecksum, newChecksum)) {
-                                Log.d(TAG, "Checksums are the same; won't backup");
-                                return;
+                                if (Arrays.equals(oldChecksum, newChecksum)) {
+                                    Log.d(TAG, "Checksums are the same; won't backup");
+                                    return;
+                                }
                             }
                         }
                     }

@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import androidx.appcompat.widget.SwitchCompat;
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 import de.danoeh.antennapod.R;
 
@@ -38,7 +38,7 @@ public class PreferenceSwitchDialog {
 
         LayoutInflater inflater = LayoutInflater.from(this.context);
         View layout = inflater.inflate(R.layout.dialog_switch_preference, null, false);
-        SwitchCompat switchButton = layout.findViewById(R.id.dialogSwitch);
+        MaterialSwitch switchButton = layout.findViewById(R.id.dialogSwitch);
         switchButton.setText(text);
         builder.setView(layout);
 

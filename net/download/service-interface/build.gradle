@@ -3,6 +3,7 @@ plugins {
     id("java-test-fixtures")
 }
 apply from: "../../../common.gradle"
+apply from: "../../../playFlavor.gradle"
 
 android {
     namespace "de.danoeh.antennapod.net.download.serviceinterface"

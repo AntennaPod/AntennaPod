@@ -56,7 +56,7 @@ public class FeedCursorMapperTest {
             assertEquals("feed file url", feed.getFile_url());
             assertEquals("feed download url", feed.getDownload_url());
             assertTrue(feed.isDownloaded());
-            assertEquals("feed last update", feed.getLastUpdate());
+            assertEquals("feed last update", feed.getLastModified());
             assertEquals("feed type", feed.getType());
             assertEquals("feed identifier", feed.getFeedIdentifier());
             assertTrue(feed.isPaged());

@@ -252,25 +252,4 @@ public class DbTasksTest {
             lastDate = item.getPubDate();
         }
     }
-
-    private Feed createSavedFeed(String title, int numFeedItems) {
-        final Feed feed = new Feed("url", null, title);
-
-        if (numFeedItems > 0) {
-            List<FeedItem> items = new ArrayList<>(numFeedItems);
-            for (int i = 1; i <= numFeedItems; i++) {
-                FeedItem item = new FeedItem(0, "item " + i + " of " + title, "id" + title + i, "link",
-                        new Date(), FeedItem.UNPLAYED, feed);
-                items.add(item);
-            }
-            feed.setItems(items);
-        }
-
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.setCompleteFeed(feed);
-        adapter.close();
-        return feed;
-    }
-
 }

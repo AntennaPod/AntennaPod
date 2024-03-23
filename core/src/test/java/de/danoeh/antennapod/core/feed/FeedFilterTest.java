@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.feed;
 
-import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.model.feed.FeedFilter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;

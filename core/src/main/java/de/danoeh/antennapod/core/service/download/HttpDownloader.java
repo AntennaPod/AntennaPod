@@ -4,9 +4,10 @@ import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
-import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.model.download.DownloadResult;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
+import de.danoeh.antennapod.model.download.DownloadRequest;
+import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import okhttp3.CacheControl;
 import okhttp3.internal.http.StatusLine;
 import org.apache.commons.io.IOUtils;
@@ -29,7 +30,7 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.parser.feed.util.DateUtils;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.core.util.StorageUtils;
-import de.danoeh.antennapod.core.util.URIUtil;
+import de.danoeh.antennapod.net.common.UriUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import okhttp3.Request;
@@ -54,7 +55,7 @@ public class HttpDownloader extends Downloader {
         ResponseBody responseBody = null;
 
         try {
-            final URI uri = URIUtil.getURIFromRequestUrl(request.getSource());
+            final URI uri = UriUtil.getURIFromRequestUrl(request.getSource());
             Request.Builder httpReq = new Request.Builder().url(uri.toURL());
             httpReq.tag(request);
             httpReq.cacheControl(new CacheControl.Builder().noStore().build());

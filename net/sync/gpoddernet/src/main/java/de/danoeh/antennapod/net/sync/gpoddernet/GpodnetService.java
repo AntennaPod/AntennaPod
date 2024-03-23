@@ -157,45 +157,13 @@ public class GpodnetService implements ISyncService {
             } else {
                 content = "";
             }
-            RequestBody body = RequestBody.create(JSON, content);
+            RequestBody body = RequestBody.create(content, JSON);
             Request.Builder request = new Request.Builder().post(body).url(url);
             executeRequest(request);
         } catch (JSONException | MalformedURLException | URISyntaxException e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
         }
-    }
-
-    /**
-     * Uploads the subscriptions of a specific device.
-     * <p/>
-     * This method requires authentication.
-     *
-     * @param deviceId      The ID of the device whose subscriptions should be updated.
-     * @param subscriptions A list of feed URLs containing all subscriptions of the
-     *                      device.
-     * @throws IllegalArgumentException              If username, deviceId or subscriptions is null.
-     * @throws GpodnetServiceAuthenticationException If there is an authentication error.
-     */
-    public void uploadSubscriptions(@NonNull String deviceId, @NonNull List<String> subscriptions)
-            throws GpodnetServiceException {
-        requireLoggedIn();
-        try {
-            URL url = new URI(baseScheme, null, baseHost, basePort,
-                    String.format("/subscriptions/%s/%s.txt", username, deviceId), null, null).toURL();
-            StringBuilder builder = new StringBuilder();
-            for (String s : subscriptions) {
-                builder.append(s);
-                builder.append("\n");
-            }
-            RequestBody body = RequestBody.create(TEXT, builder.toString());
-            Request.Builder request = new Request.Builder().put(body).url(url);
-            executeRequest(request);
-        } catch (MalformedURLException | URISyntaxException e) {
-            e.printStackTrace();
-            throw new GpodnetServiceException(e);
-        }
-
     }
 
     /**
@@ -222,7 +190,7 @@ public class GpodnetService implements ISyncService {
             requestObject.put("add", new JSONArray(added));
             requestObject.put("remove", new JSONArray(removed));
 
-            RequestBody body = RequestBody.create(JSON, requestObject.toString());
+            RequestBody body = RequestBody.create(requestObject.toString(), JSON);
             Request.Builder request = new Request.Builder().post(body).url(url);
 
             final String response = executeRequest(request);
@@ -304,7 +272,7 @@ public class GpodnetService implements ISyncService {
                 }
             }
 
-            RequestBody body = RequestBody.create(JSON, list.toString());
+            RequestBody body = RequestBody.create(list.toString(), JSON);
             Request.Builder request = new Request.Builder().post(body).url(url);
 
             final String response = executeRequest(request);
@@ -362,7 +330,7 @@ public class GpodnetService implements ISyncService {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
         }
-        RequestBody requestBody = RequestBody.create(TEXT, "");
+        RequestBody requestBody = RequestBody.create("", TEXT);
         Request request = new Request.Builder().url(url).post(requestBody).build();
         try {
             String credential = Credentials.basic(username, password, Charset.forName("UTF-8"));

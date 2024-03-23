@@ -41,7 +41,7 @@ public class LiftOnScrollListener extends RecyclerView.OnScrollListener
     }
 
     @Override
-    public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+    public void onScrollChange(@NonNull NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
         elevate(scrollY != 0);
     }
 

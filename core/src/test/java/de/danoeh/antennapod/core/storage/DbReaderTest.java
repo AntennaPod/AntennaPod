@@ -423,7 +423,10 @@ public class DbReaderTest {
             FeedItem item2 = DBReader.getFeedItem(item1.getId());
             item2.setChapters(DBReader.loadChaptersOfFeedItem(item2));
             assertTrue(item2.hasChapters());
-            assertEquals(item1.getChapters(), item2.getChapters());
+            assertEquals(item1.getChapters().size(), item2.getChapters().size());
+            for (int i = 0; i < item1.getChapters().size(); i++) {
+                assertEquals(item1.getChapters().get(i).getId(), item2.getChapters().get(i).getId());
+            }
         }
 
         @Test

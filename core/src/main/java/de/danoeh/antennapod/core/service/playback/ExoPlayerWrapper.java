@@ -6,46 +6,56 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
-import androidx.annotation.NonNull;
-import androidx.core.util.Consumer;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.PlaybackParameters;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.SeekParameters;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.audio.AudioAttributes;
-import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.extractor.mp3.Mp3Extractor;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.ExoTrackSelection;
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.ui.DefaultTrackNameProvider;
-import com.google.android.exoplayer2.ui.TrackNameProvider;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
-import com.google.android.exoplayer2.upstream.HttpDataSource;
-import de.danoeh.antennapod.core.ClientConfig;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.util.Consumer;
+
+import androidx.media3.common.C;
+import androidx.media3.common.PlaybackException;
+import androidx.media3.database.StandaloneDatabaseProvider;
+import androidx.media3.datasource.DataSource;
+import androidx.media3.datasource.DefaultDataSource;
+import androidx.media3.datasource.HttpDataSource;
+import androidx.media3.datasource.cache.CacheDataSource;
+import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor;
+import androidx.media3.datasource.cache.SimpleCache;
+import androidx.media3.datasource.okhttp.OkHttpDataSource;
+import androidx.media3.exoplayer.DefaultLoadControl;
+import androidx.media3.exoplayer.DefaultRenderersFactory;
+import androidx.media3.common.Format;
+import androidx.media3.common.MediaItem;
+import androidx.media3.common.PlaybackParameters;
+import androidx.media3.common.Player;
+import androidx.media3.exoplayer.SeekParameters;
+import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.common.AudioAttributes;
+import androidx.media3.exoplayer.source.MediaSource;
+import androidx.media3.exoplayer.source.ProgressiveMediaSource;
+import androidx.media3.exoplayer.source.TrackGroupArray;
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector;
+import androidx.media3.exoplayer.trackselection.ExoTrackSelection;
+import androidx.media3.exoplayer.trackselection.MappingTrackSelector;
+import androidx.media3.exoplayer.trackselection.TrackSelectionArray;
+
+import androidx.media3.extractor.DefaultExtractorsFactory;
+import androidx.media3.extractor.mp3.Mp3Extractor;
+import androidx.media3.ui.DefaultTrackNameProvider;
+import androidx.media3.ui.TrackNameProvider;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.net.common.UserAgentInterceptor;
+import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
-import de.danoeh.antennapod.core.service.download.HttpCredentialEncoder;
-import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.net.common.AntennapodHttpClient;
+import de.danoeh.antennapod.net.common.HttpCredentialEncoder;
+import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.model.playback.Playable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import okhttp3.Call;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,11 +66,10 @@ public class ExoPlayerWrapper {
     public static final int BUFFERING_STARTED = -1;
     public static final int BUFFERING_ENDED = -2;
     private static final String TAG = "ExoPlayerWrapper";
-    public static final int ERROR_CODE_OFFSET = 1000;
 
     private final Context context;
     private final Disposable bufferingUpdateDisposable;
-    private SimpleExoPlayer exoPlayer;
+    private ExoPlayer exoPlayer;
     private MediaSource mediaSource;
     private Runnable audioSeekCompleteListener;
     private Runnable audioCompletionListener;
@@ -68,8 +77,9 @@ public class ExoPlayerWrapper {
     private Consumer<Integer> bufferingUpdateListener;
     private PlaybackParameters playbackParameters;
     private DefaultTrackSelector trackSelector;
-
-    private LoudnessEnhancer loudnessEnhancer;
+    private SimpleCache simpleCache;
+    @Nullable
+    private LoudnessEnhancer loudnessEnhancer = null;
 
     ExoPlayerWrapper(Context context) {
         this.context = context;
@@ -91,7 +101,7 @@ public class ExoPlayerWrapper {
                 DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
         loadControl.setBackBuffer(UserPreferences.getRewindSecs() * 1000 + 500, true);
         trackSelector = new DefaultTrackSelector(context);
-        exoPlayer = new SimpleExoPlayer.Builder(context, new DefaultRenderersFactory(context))
+        exoPlayer = new ExoPlayer.Builder(context, new DefaultRenderersFactory(context))
                 .setTrackSelector(trackSelector)
                 .setLoadControl(loadControl.build())
                 .build();
@@ -109,7 +119,7 @@ public class ExoPlayerWrapper {
             }
 
             @Override
-            public void onPlayerError(@NonNull ExoPlaybackException error) {
+            public void onPlayerError(@NonNull PlaybackException error) {
                 if (audioErrorListener != null) {
                     if (NetworkUtils.wasDownloadBlocked(error)) {
                         audioErrorListener.accept(context.getString(R.string.download_error_blocked));
@@ -142,7 +152,8 @@ public class ExoPlayerWrapper {
                 initLoudnessEnhancer(audioSessionId);
             }
         });
-
+        simpleCache = new SimpleCache(new File(context.getCacheDir(), "streaming"),
+                new LeastRecentlyUsedCacheEvictor(50 * 1024 * 1024), new StandaloneDatabaseProvider(context));
         initLoudnessEnhancer(exoPlayer.getAudioSessionId());
     }
 
@@ -152,6 +163,10 @@ public class ExoPlayerWrapper {
 
     public float getCurrentSpeedMultiplier() {
         return playbackParameters.speed;
+    }
+
+    public boolean getCurrentSkipSilence() {
+        return exoPlayer.getSkipSilenceEnabled();
     }
 
     public int getDuration() {
@@ -179,6 +194,10 @@ public class ExoPlayerWrapper {
         if (exoPlayer != null) {
             exoPlayer.release();
         }
+        if (simpleCache != null) {
+            simpleCache.release();
+            simpleCache = null;
+        }
         audioSeekCompleteListener = null;
         audioCompletionListener = null;
         audioErrorListener = null;
@@ -187,6 +206,10 @@ public class ExoPlayerWrapper {
 
     public void reset() {
         exoPlayer.release();
+        if (simpleCache != null) {
+            simpleCache.release();
+            simpleCache = null;
+        }
         createPlayer();
     }
 
@@ -210,8 +233,8 @@ public class ExoPlayerWrapper {
             throws IllegalArgumentException, IllegalStateException {
         Log.d(TAG, "setDataSource: " + s);
         final OkHttpDataSource.Factory httpDataSourceFactory =
-                new OkHttpDataSource.Factory(AntennapodHttpClient.getHttpClient())
-                        .setUserAgent(ClientConfig.USER_AGENT);
+                new OkHttpDataSource.Factory((Call.Factory) AntennapodHttpClient.getHttpClient())
+                        .setUserAgent(UserAgentInterceptor.USER_AGENT);
 
         if (!TextUtils.isEmpty(user) && !TextUtils.isEmpty(password)) {
             final HashMap<String, String> requestProperties = new HashMap<>();
@@ -221,7 +244,12 @@ public class ExoPlayerWrapper {
             );
             httpDataSourceFactory.setDefaultRequestProperties(requestProperties);
         }
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, null, httpDataSourceFactory);
+        DataSource.Factory dataSourceFactory = new DefaultDataSource.Factory(context, httpDataSourceFactory);
+        if (s.startsWith("http")) {
+            dataSourceFactory = new CacheDataSource.Factory()
+                    .setCache(simpleCache)
+                    .setUpstreamDataSourceFactory(httpDataSourceFactory);
+        }
         DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         extractorsFactory.setConstantBitrateSeekingEnabled(true);
         extractorsFactory.setMp3ExtractorFlags(Mp3Extractor.FLAG_DISABLE_ID3_METADATA);
@@ -247,11 +275,15 @@ public class ExoPlayerWrapper {
     public void setVolume(float v, float v1) {
         if (v > 1) {
             exoPlayer.setVolume(1f);
-            loudnessEnhancer.setEnabled(true);
-            loudnessEnhancer.setTargetGain((int) (1000 * (v - 1)));
+            if (loudnessEnhancer != null) {
+                loudnessEnhancer.setEnabled(true);
+                loudnessEnhancer.setTargetGain((int) (1000 * (v - 1)));
+            }
         } else {
             exoPlayer.setVolume(v);
-            loudnessEnhancer.setEnabled(false);
+            if (loudnessEnhancer != null) {
+                loudnessEnhancer.setEnabled(false);
+            }
         }
     }
 
@@ -294,8 +326,8 @@ public class ExoPlayerWrapper {
         }
         TrackGroupArray trackGroups = trackInfo.getTrackGroups(getAudioRendererIndex());
         DefaultTrackSelector.SelectionOverride override = new DefaultTrackSelector.SelectionOverride(track, 0);
-        DefaultTrackSelector.ParametersBuilder params = trackSelector.buildUponParameters()
-                .setSelectionOverride(getAudioRendererIndex(), trackGroups, override);
+        DefaultTrackSelector.Parameters params = trackSelector.buildUponParameters()
+                .setSelectionOverride(getAudioRendererIndex(), trackGroups, override).build();
         trackSelector.setParameters(params);
     }
 
@@ -354,6 +386,10 @@ public class ExoPlayerWrapper {
     }
 
     private void initLoudnessEnhancer(int audioStreamId) {
+        if (!VolumeAdaptionSetting.isBoostSupported()) {
+            return;
+        }
+
         LoudnessEnhancer newEnhancer = new LoudnessEnhancer(audioStreamId);
         LoudnessEnhancer oldEnhancer = this.loudnessEnhancer;
         if (oldEnhancer != null) {

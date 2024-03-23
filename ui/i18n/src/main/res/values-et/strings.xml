@@ -21,7 +21,6 @@
   <string name="episode_cache_full_message">Saadete vahemälu limiit on täis. Vahemälu limiiti saab suurendada seadete alt.</string>
   <string name="years_statistics_label">Aastad</string>
   <string name="notification_pref_fragment">Teavitused</string>
-  <string name="recently_played_episodes">Hiljuti kuulatud saated</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" ei leitud</string>
   <!--SwipeActions-->
@@ -95,7 +94,6 @@
   <string name="description_label">Kirjeldus</string>
   <string name="shownotes_label">Saate märkmed</string>
   <string name="shownotes_contentdescription">saate märkmete lugemiseks pühi üles</string>
-  <string name="episodes_suffix">\u0020saadet</string>
   <string name="close_label">Sulge</string>
   <string name="retry_label">Proovi uuesti</string>
   <string name="auto_download_label">Lisa automaatsetesse allalaadimistesse</string>
@@ -341,9 +339,6 @@
   <string name="pref_fast_forward_sum">Määra, mitu sekundit edasi hüpatakse, kui vajutatakse edasi kerimise nuppu</string>
   <string name="pref_rewind_sum">Määra, mitu sekundit tagasi hüpatakse, kui vajutatakse tagasi kerimise nuppu</string>
   <string name="pref_expandNotify_sum">See tavaliselt kuvab teadet laiemana ning näha on esitusnupud.</string>
-  <string name="pref_compact_notification_buttons_sum">Muuda esitamise nuppe, kui teavitus on suletud. Eritamise/pausi nupp on alati saadaval.</string>
-  <string name="pref_compact_notification_buttons_dialog_title">Vali maksimaalselt %1$d kirjet</string>
-  <string name="pref_compact_notification_buttons_dialog_error">Maksimaalselt saab valida %1$d kirjet.</string>
   <string name="pref_enqueue_location_sum">Saated lisatakse: %1$s</string>
   <string name="enqueue_location_back">Algusesse</string>
   <string name="enqueue_location_front">Lõppu</string>
@@ -402,7 +397,6 @@
   <string name="database_export_summary">Tellimuste, kuulatud saadete ja ooterjärjekorra liigutamine AntennaPodi mõnes teises seadmes</string>
   <string name="database_import_summary">AntennaPodi andmebaasi import teisest seadmest</string>
   <string name="opml_add_podcast_label">Impordi taskuhäälingute nimekiri (OPML)</string>
-  <string name="opml_reader_error">OPML dokumendi lugemisel tekkis tõrge:</string>
   <string name="opml_import_error_no_file">Ühtegi faili pole valitud!</string>
   <string name="select_all_label">Vali kõik</string>
   <string name="deselect_all_label">Ära vali midagi</string>
@@ -526,19 +520,6 @@
   <string name="not_paused">Pole pausitud</string>
   <string name="hide_played_episodes_label">Esitatud</string>
   <string name="not_played">Pole esitatud</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">Pealkiri (A \u2192 Z)</string>
-  <string name="sort_title_z_a">Pealkiri (Z \u2192 A)</string>
-  <string name="sort_date_new_old">Kuupäev (uus \u2192 vana)</string>
-  <string name="sort_date_old_new">Kuupäev (vana \u2192 uus)</string>
-  <string name="sort_duration_short_long">Kestus (lühike \u2192 pikk)</string>
-  <string name="sort_duration_long_short">Kestus (pikk \u2192 lühike)</string>
-  <string name="sort_a_z">A \u2192 Z</string>
-  <string name="sort_z_a">Z \u2192 A</string>
-  <string name="sort_new_old">Uus \u2192 vana</string>
-  <string name="sort_old_new">Vana \u2192 uus</string>
-  <string name="sort_short_long">Lühike \u2192 pikk</string>
-  <string name="sort_long_short">Pikk \u2192 lühike</string>
   <!--Share episode dialog-->
   <string name="share_dialog_episode_website_label">Saate veebisait</string>
   <string name="share_dialog_media_file_label">Meediafail</string>

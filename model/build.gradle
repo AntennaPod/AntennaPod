@@ -5,6 +5,10 @@ apply from: "../common.gradle"
 
 android {
     namespace "de.danoeh.antennapod.model"
+
+    lint {
+        disable 'ParcelClassLoader'
+    }
 }
 
 dependencies {

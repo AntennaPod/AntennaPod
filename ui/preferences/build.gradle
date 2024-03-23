@@ -1,0 +1,47 @@
+plugins {
+    id("com.android.library")
+}
+apply from: "../../common.gradle"
+apply from: "../../playFlavor.gradle"
+
+android {
+    namespace "de.danoeh.antennapod.ui.preferences"
+}
+
+dependencies {
+    implementation project(":core")
+    implementation project(":event")
+    implementation project(":model")
+    implementation project(":net:common")
+    implementation project(":net:sync:model")
+    implementation project(":net:sync:gpoddernet")
+    implementation project(":storage:preferences")
+    implementation project(":storage:importexport")
+    implementation project(":ui:common")
+    implementation project(":ui:glide")
+    implementation project(":ui:i18n")
+
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation "com.google.android.material:material:$googleMaterialVersion"
+    implementation "androidx.preference:preference:$preferenceVersion"
+    implementation "androidx.work:work-runtime:$workManagerVersion"
+
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
+    implementation "org.greenrobot:eventbus:$eventbusVersion"
+    implementation 'com.github.ByteHamster:SearchPreference:v2.5.0'
+}
+
+tasks.register('copyLicense', Copy) {
+    from "../../LICENSE"
+    into "src/main/assets/"
+    rename { String fileName ->
+        fileName + ".txt"
+    }
+}
+
+preBuild.dependsOn copyLicense

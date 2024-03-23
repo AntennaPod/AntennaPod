@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.util;
 
+import de.danoeh.antennapod.ui.common.Converter;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

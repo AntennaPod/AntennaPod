@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.core.feed.ChapterMerger;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
+import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.comparator.ChapterStartTimeComparator;
 import de.danoeh.antennapod.parser.feed.PodcastIndexChapterParser;
@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InterruptedIOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -60,42 +61,50 @@ public class ChapterUtils {
             return;
         }
 
-        List<Chapter> chaptersFromDatabase = null;
-        List<Chapter> chaptersFromPodcastIndex = null;
-        if (playable instanceof FeedMedia) {
-            FeedMedia feedMedia = (FeedMedia) playable;
-            if (feedMedia.getItem() == null) {
-                feedMedia.setItem(DBReader.getFeedItem(feedMedia.getItemId()));
-            }
-            if (feedMedia.getItem().hasChapters()) {
-                chaptersFromDatabase = DBReader.loadChaptersOfFeedItem(feedMedia.getItem());
+        try {
+            List<Chapter> chaptersFromDatabase = null;
+            List<Chapter> chaptersFromPodcastIndex = null;
+            if (playable instanceof FeedMedia) {
+                FeedMedia feedMedia = (FeedMedia) playable;
+                if (feedMedia.getItem() == null) {
+                    feedMedia.setItem(DBReader.getFeedItem(feedMedia.getItemId()));
+                }
+                if (feedMedia.getItem().hasChapters()) {
+                    chaptersFromDatabase = DBReader.loadChaptersOfFeedItem(feedMedia.getItem());
+                }
+
+                if (!TextUtils.isEmpty(feedMedia.getItem().getPodcastIndexChapterUrl())) {
+                    chaptersFromPodcastIndex = ChapterUtils.loadChaptersFromUrl(
+                            feedMedia.getItem().getPodcastIndexChapterUrl(), forceRefresh);
+                }
+
             }
 
-            if (!TextUtils.isEmpty(feedMedia.getItem().getPodcastIndexChapterUrl())) {
-                chaptersFromPodcastIndex = ChapterUtils.loadChaptersFromUrl(
-                        feedMedia.getItem().getPodcastIndexChapterUrl(), forceRefresh);
+            List<Chapter> chaptersFromMediaFile = ChapterUtils.loadChaptersFromMediaFile(playable, context);
+            List<Chapter> chaptersMergePhase1 = ChapterMerger.merge(chaptersFromDatabase, chaptersFromMediaFile);
+            List<Chapter> chapters = ChapterMerger.merge(chaptersMergePhase1, chaptersFromPodcastIndex);
+            if (chapters == null) {
+                // Do not try loading again. There are no chapters or parsing failed.
+                playable.setChapters(Collections.emptyList());
+            } else {
+                playable.setChapters(chapters);
             }
-
-        }
-
-        List<Chapter> chaptersFromMediaFile = ChapterUtils.loadChaptersFromMediaFile(playable, context);
-        List<Chapter> chaptersMergePhase1 = ChapterMerger.merge(chaptersFromDatabase, chaptersFromMediaFile);
-        List<Chapter> chapters = ChapterMerger.merge(chaptersMergePhase1, chaptersFromPodcastIndex);
-        if (chapters == null) {
-            // Do not try loading again. There are no chapters.
-            playable.setChapters(Collections.emptyList());
-        } else {
-            playable.setChapters(chapters);
+        } catch (InterruptedIOException e) {
+            Log.d(TAG, "Chapter loading interrupted");
+            playable.setChapters(null); // Allow later retry
         }
     }
 
-    public static List<Chapter> loadChaptersFromMediaFile(Playable playable, Context context) {
+    public static List<Chapter> loadChaptersFromMediaFile(Playable playable, Context context)
+            throws InterruptedIOException {
         try (CountingInputStream in = openStream(playable, context)) {
             List<Chapter> chapters = readId3ChaptersFrom(in);
             if (!chapters.isEmpty()) {
                 Log.i(TAG, "Chapters loaded");
                 return chapters;
             }
+        } catch (InterruptedIOException e) {
+            throw e;
         } catch (IOException | ID3ReaderException e) {
             Log.e(TAG, "Unable to load ID3 chapters: " + e.getMessage());
         }
@@ -106,6 +115,8 @@ public class ChapterUtils {
                 Log.i(TAG, "Chapters loaded");
                 return chapters;
             }
+        } catch (InterruptedIOException e) {
+            throw e;
         } catch (IOException | VorbisCommentReaderException e) {
             Log.e(TAG, "Unable to load vorbis chapters: " + e.getMessage());
         }
@@ -135,7 +146,7 @@ public class ChapterUtils {
         }
     }
 
-    public static List<Chapter> loadChaptersFromUrl(String url, boolean forceRefresh) {
+    public static List<Chapter> loadChaptersFromUrl(String url, boolean forceRefresh) throws InterruptedIOException {
         if (forceRefresh) {
             return loadChaptersFromUrl(url, CacheControl.FORCE_NETWORK);
         }
@@ -147,7 +158,8 @@ public class ChapterUtils {
         return cachedChapters;
     }
 
-    private static List<Chapter> loadChaptersFromUrl(String url, CacheControl cacheControl) {
+    private static List<Chapter> loadChaptersFromUrl(String url, CacheControl cacheControl)
+            throws InterruptedIOException {
         Response response = null;
         try {
             Request request = new Request.Builder().url(url).cacheControl(cacheControl).build();
@@ -155,6 +167,8 @@ public class ChapterUtils {
             if (response.isSuccessful() && response.body() != null) {
                 return PodcastIndexChapterParser.parse(response.body().string());
             }
+        } catch (InterruptedIOException e) {
+            throw e;
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

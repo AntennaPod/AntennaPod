@@ -1,10 +1,12 @@
 package de.danoeh.antennapod.core.service.download;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 
 import android.graphics.Bitmap;
@@ -12,6 +14,7 @@ import android.os.Build;
 import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -19,9 +22,9 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedCounter;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 
+import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import java.util.Map;
 
 public class NewEpisodesNotification {
@@ -84,8 +87,11 @@ public class NewEpisodesNotification {
                 .setOnlyAlertOnce(true)
                 .setAutoCancel(true)
                 .build();
-
-        notificationManager.notify(NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS, feed.hashCode(), notification);
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
+                == PackageManager.PERMISSION_GRANTED) {
+            notificationManager.notify(NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS,
+                    feed.hashCode(), notification);
+        }
         showGroupSummaryNotification(context, notificationManager);
     }
 
@@ -109,7 +115,11 @@ public class NewEpisodesNotification {
                 .setOnlyAlertOnce(true)
                 .setAutoCancel(true)
                 .build();
-        notificationManager.notify(NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS, 0, notificationGroupSummary);
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
+                == PackageManager.PERMISSION_GRANTED) {
+            notificationManager.notify(NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS,
+                    0, notificationGroupSummary);
+        }
     }
 
     private static Bitmap loadIcon(Context context, Feed feed) {

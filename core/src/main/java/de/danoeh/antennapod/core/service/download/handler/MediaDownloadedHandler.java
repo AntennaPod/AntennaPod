@@ -10,10 +10,11 @@ import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.io.InterruptedIOException;
 import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
+import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -54,14 +55,18 @@ public class MediaDownloadedHandler implements Runnable {
         media.setSize(new File(request.getDestination()).length());
         media.checkEmbeddedPicture(); // enforce check
 
-        // check if file has chapters
-        if (media.getItem() != null && !media.getItem().hasChapters()) {
-            media.setChapters(ChapterUtils.loadChaptersFromMediaFile(media, context));
+        try {
+            // Cache chapters if file has them
+            if (media.getItem() != null && !media.getItem().hasChapters()) {
+                media.setChapters(ChapterUtils.loadChaptersFromMediaFile(media, context));
+            }
+            if (media.getItem() != null && media.getItem().getPodcastIndexChapterUrl() != null) {
+                ChapterUtils.loadChaptersFromUrl(media.getItem().getPodcastIndexChapterUrl(), false);
+            }
+        } catch (InterruptedIOException ignore) {
+            // Ignore
         }
 
-        if (media.getItem() != null && media.getItem().getPodcastIndexChapterUrl() != null) {
-            ChapterUtils.loadChaptersFromUrl(media.getItem().getPodcastIndexChapterUrl(), false);
-        }
         // Get duration
         String durationStr = null;
         try (MediaMetadataRetrieverCompat mmr = new MediaMetadataRetrieverCompat()) {
@@ -95,8 +100,8 @@ public class MediaDownloadedHandler implements Runnable {
             Log.e(TAG, "MediaHandlerThread was interrupted");
         } catch (ExecutionException e) {
             Log.e(TAG, "ExecutionException in MediaHandlerThread: " + e.getMessage());
-            updatedStatus = new DownloadResult(media, media.getEpisodeTitle(),
-                    DownloadError.ERROR_DB_ACCESS_ERROR, false, e.getMessage());
+            updatedStatus = new DownloadResult(media.getEpisodeTitle(), media.getId(),
+                    FeedMedia.FEEDFILETYPE_FEEDMEDIA, false, DownloadError.ERROR_DB_ACCESS_ERROR, e.getMessage());
         }
 
         if (item != null) {

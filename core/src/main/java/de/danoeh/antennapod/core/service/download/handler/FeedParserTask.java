@@ -7,7 +7,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
+import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.parser.feed.FeedHandler;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
@@ -87,12 +87,12 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
         }
 
         if (successful) {
-            downloadResult = new DownloadResult(feed, feed.getHumanReadableIdentifier(), DownloadError.SUCCESS,
-                                                successful, reasonDetailed);
+            downloadResult = new DownloadResult(feed.getHumanReadableIdentifier(), feed.getId(),
+                    Feed.FEEDFILETYPE_FEED, true, DownloadError.SUCCESS, reasonDetailed);
             return result;
         } else {
-            downloadResult = new DownloadResult(feed, feed.getHumanReadableIdentifier(), reason,
-                                                successful, reasonDetailed);
+            downloadResult = new DownloadResult(feed.getHumanReadableIdentifier(), feed.getId(),
+                    Feed.FEEDFILETYPE_FEED, false, reason, reasonDetailed);
             return null;
         }
     }

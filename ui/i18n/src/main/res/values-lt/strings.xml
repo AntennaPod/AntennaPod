@@ -67,7 +67,6 @@
   <string name="description_label">Aprašymas</string>
   <string name="shownotes_label">Laidos užrašai</string>
   <string name="shownotes_contentdescription">jei norite skaityti laidos užrašus, perbraukite pirštu į viršų</string>
-  <string name="episodes_suffix">\u0020epizodai</string>
   <string name="close_label">Užverti</string>
   <string name="retry_label">Bandyti vėl</string>
   <string name="auto_download_label">Įtraukti į automatinius atsiuntimus</string>
@@ -116,7 +115,6 @@
   <string name="rename_feed_label">Pervadinti tinklalaidę</string>
   <string name="remove_feed_label">Pašalinti tinklalaidę</string>
   <string name="share_label">Dalintis</string>
-  <string name="share_rss_address_label">RSS adresas:</string>
   <string name="feed_remover_msg">Tinklalaidė šalinama</string>
   <string name="load_complete_feed">Atnaujinti visą tinklalaidę</string>
   <string name="multi_select">Pažymėti keletą</string>
@@ -323,9 +321,6 @@
   <string name="pref_fast_forward_sum">Derinkite, per kiek sekundžių šoktelėti į priekį kai paspaudžiamas persukimo į priekį mygtukas</string>
   <string name="pref_rewind_sum">Derinkite, per kiek sekundžių šoktelėti atgal kai paspaudžiamas atsukimo atgal mygtukas</string>
   <string name="pref_expandNotify_sum">Tai dažniausiai išskleidžia pranešimą, kad būtų rodomi atkūrimo valdymo mygtukai.</string>
-  <string name="pref_compact_notification_buttons_sum">Keisti atkūrimo valdymo mygtukus, matomus, kai pranešimas yra suskleistas. Atkūrimo/pristabdymo mygtukas matomas visada.</string>
-  <string name="pref_compact_notification_buttons_dialog_title">Pasirinkite daugiausiai %1$d elementus</string>
-  <string name="pref_compact_notification_buttons_dialog_error">Galite pasirinkti daugiausiai %1$d elementus.</string>
   <string name="pref_enqueue_location_sum">Epizodus pridėti: %1$s</string>
   <string name="enqueue_location_back">Į galą</string>
   <string name="enqueue_location_front">Į pradžią</string>
@@ -388,7 +383,6 @@
   <string name="database_import_summary">Importuoti „AntennaPod“ duomenų bazę iš kito įrenginio</string>
   <string name="opml_import_label">OPML importas</string>
   <string name="opml_add_podcast_label">Importuoti tinklalaidžių sąrašą (OPML)</string>
-  <string name="opml_reader_error">Skaitant OPML failą įvyko klaida:</string>
   <string name="opml_import_error_no_file">Nepasirinktas failas!</string>
   <string name="select_all_label">Pažymėti visus</string>
   <string name="deselect_all_label">Nepažymėti nieko</string>
@@ -537,21 +531,6 @@
   <string name="not_paused">Ne pristabdyti</string>
   <string name="hide_played_episodes_label">Perklausyti</string>
   <string name="not_played">Neperklausyti</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">Pavadinimas (A \u2192 Z)</string>
-  <string name="sort_title_z_a">Pavadinimas (Z \u2192 A)</string>
-  <string name="sort_date_new_old">Data (Nauji \u2192 Seni)</string>
-  <string name="sort_date_old_new">Data (Seni \u2192 Nauji)</string>
-  <string name="sort_duration_short_long">Trukmė (Trumpi \u2192 Ilgi)</string>
-  <string name="sort_duration_long_short">Trukmė (Ilgi \u2192 Trumpi)</string>
-  <string name="sort_filename_a_z">Failo vardas (A \u2192 Z)</string>
-  <string name="sort_filename_z_a">Failo vardas (Z \u2192 A)</string>
-  <string name="sort_a_z">A \u2192 Z</string>
-  <string name="sort_z_a">Z \u2192 A</string>
-  <string name="sort_new_old">Nauji \u2192 Seni</string>
-  <string name="sort_old_new">Seni \u2192 Nauji</string>
-  <string name="sort_short_long">Trumpi \u2192 Ilgi</string>
-  <string name="sort_long_short">Ilgi \u2192 Trumpi</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Įtraukti atkūrimo poziciją</string>
   <string name="share_dialog_episode_website_label">Epizodo tinklalapiu</string>

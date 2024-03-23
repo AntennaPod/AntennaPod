@@ -22,7 +22,6 @@
   <string name="episode_cache_full_message">Grensen for størrelse på hurtigbuffer er nådd. Du kan øke størrelsen på hurtigbuffer i innstillingene.</string>
   <string name="years_statistics_label">År</string>
   <string name="notification_pref_fragment">Varslinger</string>
-  <string name="recently_played_episodes">Nylig avspilte episoder</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" ikke funnet</string>
   <!--SwipeActions-->
@@ -104,7 +103,6 @@
   <string name="description_label">Beskrivelse</string>
   <string name="shownotes_label">Shownotater</string>
   <string name="shownotes_contentdescription">Dra opp å lese shownotatene</string>
-  <string name="episodes_suffix">\u0020episoder</string>
   <string name="close_label">Lukk</string>
   <string name="retry_label">Prøv igjen</string>
   <string name="auto_download_label">Inkluder i automatiske nedlastninger</string>
@@ -153,7 +151,6 @@
   <string name="remove_feed_label">Fjern podkast</string>
   <string name="share_label">Del</string>
   <string name="share_file_label">Del fil</string>
-  <string name="share_rss_address_label">RSS adressen:</string>
   <string name="feed_delete_confirmation_msg">Bekreft at du ønsker å slette podkasten \"%1$s\" og ALLE episodene dens (inkludert nedlastede episoder) og statistikken.</string>
   <string name="feed_delete_confirmation_msg_batch">Bekreft at du ønsker å slette utvalgte podkaster og ALLE de episoder (inkludert nedlastet episoder) og statistikken.</string>
   <string name="feed_delete_confirmation_local_msg">Bekreft at du vil slette podkasten \"%1$s\" og statistikken. Filene i lokale mappen vil ikke bli slettet.</string>
@@ -432,10 +429,6 @@
   <string name="pref_expandNotify_title">Høy varsling-prioritet</string>
   <string name="pref_expandNotify_sum">Dette utvider som regel varslingen for å vise avspillingskontroller.</string>
   <string name="pref_persistNotify_title">Vedvarende avspillingskontroller</string>
-  <string name="pref_compact_notification_buttons_title">Velg sammentrengte varselsknapper</string>
-  <string name="pref_compact_notification_buttons_sum">Endre avspillingsknappene når varslinga er sammentrengt. Spill av/pause-knappen er alltid vist.</string>
-  <string name="pref_compact_notification_buttons_dialog_title">Velg opp til %1$d ting</string>
-  <string name="pref_compact_notification_buttons_dialog_error">Du kan kun velge opp til %1$d ting.</string>
   <string name="pref_enqueue_location_title">Plassering i køen</string>
   <string name="pref_enqueue_location_sum">Legg episoder til på: %1$s</string>
   <string name="enqueue_location_back">Tilbake</string>
@@ -512,7 +505,6 @@
   <string name="database_import_summary">Importer AntennaPod-database fra en annen enhet</string>
   <string name="opml_import_label">OPML-import</string>
   <string name="opml_add_podcast_label">Importere podkast listen (OPML)</string>
-  <string name="opml_reader_error">En feil oppstod ved lesing av OPML dokument: </string>
   <string name="opml_import_error_no_file">Ingen fil er valgt.</string>
   <string name="select_all_label">Velg alle</string>
   <string name="deselect_all_label">Opphev alle markeringene</string>
@@ -682,21 +674,6 @@
   <string name="not_paused">Ikke på pause</string>
   <string name="hide_played_episodes_label">Avspilt</string>
   <string name="not_played">Ikke avspillt</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">Tittel (A \u2192 Z)</string>
-  <string name="sort_title_z_a">Tittel (Z \u2192 A)</string>
-  <string name="sort_date_new_old">Dato (Ny \u2192 Gammel)</string>
-  <string name="sort_date_old_new">Dato (Gammel \u2192 Ny)</string>
-  <string name="sort_duration_short_long">Lengde (Kort \u2192 Lang)</string>
-  <string name="sort_duration_long_short">Lengde (Lang \u2192 Kort)</string>
-  <string name="sort_filename_a_z">Filnavn (A \u2192 Å)</string>
-  <string name="sort_filename_z_a">Filnavn (Å \u2192 A)</string>
-  <string name="sort_a_z">A \u2192 Å</string>
-  <string name="sort_z_a">Å \u2192 A</string>
-  <string name="sort_new_old">Ny \u2192 Gammel</string>
-  <string name="sort_old_new">Gammel \u2192 Ny</string>
-  <string name="sort_short_long">Kort \u2192 Lang</string>
-  <string name="sort_long_short">Lang \u2192 Kort</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Inkludere avspillingsposisjon</string>
   <string name="share_dialog_episode_website_label">Episodens webside</string>
@@ -707,7 +684,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Lyd-kontroller</string>
   <string name="playback_speed">Avspillingshastighet</string>
-  <string name="audio_effects">Lydeffekter</string>
   <string name="player_switch_to_audio_only">Bytt til kun audio</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Type</string>

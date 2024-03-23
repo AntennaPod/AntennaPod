@@ -1,13 +1,13 @@
 package de.danoeh.antennapod.core.util.download;
 
 import android.content.Context;
-import com.google.android.exoplayer2.util.Log;
+import android.util.Log;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.net.common.NetworkUtils;
 
 public abstract class NetworkConnectionChangeHandler {
-    private static final String TAG = "NetworkConnectionChangeHandler";
+    private static final String TAG = "NetConnChangeHandler";
     private static Context context;
 
     public static void init(Context context) {

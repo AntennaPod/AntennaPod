@@ -22,7 +22,6 @@
   <string name="episode_cache_full_message">Memoria cache pentru episoade este plină. Puteți mări mărimea memoriei in Setări.</string>
   <string name="years_statistics_label">Ani</string>
   <string name="notification_pref_fragment">Notificări</string>
-  <string name="recently_played_episodes">Episoadele redate recent</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">%1$snu a fost găsit</string>
   <!--SwipeActions-->
@@ -107,7 +106,6 @@
   <string name="description_label">Descriere</string>
   <string name="shownotes_label">Descriere</string>
   <string name="shownotes_contentdescription">trageți cu degetul în sus pentru a citi descrierea</string>
-  <string name="episodes_suffix">\u0020episoade</string>
   <string name="close_label">închide</string>
   <string name="retry_label">Reîncearcă</string>
   <string name="auto_download_label">Include în descărcările automate</string>
@@ -174,7 +172,6 @@
   <string name="remove_feed_label">Sterge podcast</string>
   <string name="share_label">Trimiteți</string>
   <string name="share_file_label">Trimite fișier</string>
-  <string name="share_rss_address_label">Adresa fluxului RSS:</string>
   <string name="feed_delete_confirmation_msg">Vă rugăm confirmați că doriți să ștergeți podcastul \"%1$s\" și toate episoadele aferente (inclusiv cele descărcate) împreună cu statisticile acelor epispade.</string>
   <string name="feed_delete_confirmation_msg_batch">Vă rugăm să confirmați că doriți să eliminați toate podcasturile selectate și TOATE episoadele aferente (inclusiv episoadele descărcate).</string>
   <string name="feed_delete_confirmation_local_msg">Vă rugăm confirmați că doriți să ștergeți podcastul \"%1$s\". Fișierele din folderul local nu vor fi șterse.</string>
@@ -480,10 +477,6 @@
   <string name="pref_expandNotify_sum">Această funcție extinde alertele pentru a arăta butoanele de control media.</string>
   <string name="pref_persistNotify_title">Control media persistent</string>
   <string name="pref_persistNotify_sum">Păstrează controlul din notificări și de pe ecranul blocat chiar și «in momentul în care redarea este oprită</string>
-  <string name="pref_compact_notification_buttons_title">Setează butoanele compacte de notificări</string>
-  <string name="pref_compact_notification_buttons_sum">Schimbă butonul de redare când notificările sunt restrânse. Butonul de start/pauzâ este mereu inclus.</string>
-  <string name="pref_compact_notification_buttons_dialog_title">Selectează un număr de %1$d de obiecte.</string>
-  <string name="pref_compact_notification_buttons_dialog_error">Puteți selecta numai un număr maxim de %1$d Obiecte.</string>
   <string name="pref_enqueue_location_title">Locația din coada de redare</string>
   <string name="pref_enqueue_location_sum">Adaugă episoade la: %1$s</string>
   <string name="enqueue_location_back">Înapoi</string>
@@ -565,7 +558,6 @@
   <string name="database_import_summary">Importă baza de date AntennaPod din alt dispozitiv</string>
   <string name="opml_import_label">Importul fișierelor OPML</string>
   <string name="opml_add_podcast_label">Importă lista de podcasturi (OPML)</string>
-  <string name="opml_reader_error">A apărut o eroare în timpul citirii fișierului OPML:</string>
   <string name="opml_import_error_no_file">Niciun fișier selectat!</string>
   <string name="select_all_label">Selectează toate</string>
   <string name="deselect_all_label">Deselectează toate</string>
@@ -746,23 +738,6 @@
   <string name="not_paused">Nu sa întrerupt</string>
   <string name="hide_played_episodes_label">Redat</string>
   <string name="not_played">Nu s-a redat</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">Titlul (A \u2192 Z)</string>
-  <string name="sort_title_z_a">Titlul (A \u2192 Z)</string>
-  <string name="sort_date_new_old">Dată  (Nouă \u2192 Veche)</string>
-  <string name="sort_date_old_new">Dată  (Veche \u2192 Nouă)</string>
-  <string name="sort_duration_short_long">Durată  (Scurtă \u2192 Lungă)</string>
-  <string name="sort_duration_long_short">Durată (Lungă \u2192 Scurtă)</string>
-  <string name="sort_filename_a_z">Numele fișierului (A \u2192 Z)</string>
-  <string name="sort_filename_z_a">Numele fișierului (Z \u2192 A)</string>
-  <string name="sort_a_z">A \u2192 Z</string>
-  <string name="sort_z_a">Z \u2192 A</string>
-  <string name="sort_new_old">Noi \u2192 Vechi</string>
-  <string name="sort_old_new">Vechi \u2192 Noi</string>
-  <string name="sort_short_long">Scurt \u2192  Lung</string>
-  <string name="sort_long_short">Lung \u2192 Scurt</string>
-  <string name="sort_small_large">Mic \u2192 Mare</string>
-  <string name="sort_large_small">Mare \u2192 Mic</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Include poziția de redare</string>
   <string name="share_dialog_episode_website_label">Pagina web a episodului</string>
@@ -773,7 +748,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Control audio</string>
   <string name="playback_speed">Viteza de redare</string>
-  <string name="audio_effects">Efecte audio</string>
   <string name="player_switch_to_audio_only">Schimbă pe modul numai de audio</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tip</string>

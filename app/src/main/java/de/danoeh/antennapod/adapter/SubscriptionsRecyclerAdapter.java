@@ -244,7 +244,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                 count.setVisibility(View.GONE);
             }
 
-            CoverLoader coverLoader = new CoverLoader(mainActivityRef.get());
+            CoverLoader coverLoader = new CoverLoader();
             boolean textAndImageCombined;
             if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
                 Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;

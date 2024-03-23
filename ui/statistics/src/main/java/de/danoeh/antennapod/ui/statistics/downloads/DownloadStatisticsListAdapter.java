@@ -10,7 +10,6 @@ import de.danoeh.antennapod.ui.statistics.StatisticsListAdapter;
 import de.danoeh.antennapod.ui.statistics.feed.FeedStatisticsDialogFragment;
 
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Adapter for the download statistics list.
@@ -45,10 +44,10 @@ public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
 
     @Override
     protected void onBindFeedViewHolder(StatisticsHolder holder, StatisticsItem item) {
-        holder.value.setText(Formatter.formatShortFileSize(context, item.totalDownloadSize)
-                + " • "
-                + String.format(Locale.getDefault(), "%d%s",
-                item.episodesDownloadCount, context.getString(R.string.episodes_suffix)));
+        int numEpisodes = (int) item.episodesDownloadCount;
+        String text = Formatter.formatShortFileSize(context, item.totalDownloadSize);
+        text += " • " + context.getResources().getQuantityString(R.plurals.num_episodes, numEpisodes, numEpisodes);
+        holder.value.setText(text);
 
         holder.itemView.setOnClickListener(v -> {
             FeedStatisticsDialogFragment yourDialogFragment = FeedStatisticsDialogFragment.newInstance(

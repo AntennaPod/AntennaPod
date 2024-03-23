@@ -1,16 +1,10 @@
 package de.danoeh.antennapod;
 
 import android.app.Application;
-import android.content.ComponentName;
-import android.content.Intent;
 import android.os.StrictMode;
 
 import com.google.android.material.color.DynamicColors;
-import com.joanzapata.iconify.Iconify;
-import com.joanzapata.iconify.fonts.FontAwesomeModule;
-import com.joanzapata.iconify.fonts.MaterialModule;
 
-import de.danoeh.antennapod.activity.SplashActivity;
 import de.danoeh.antennapod.config.ApplicationCallbacksImpl;
 import de.danoeh.antennapod.core.ApCoreEventBusIndex;
 import de.danoeh.antennapod.core.ClientConfig;
@@ -33,7 +27,6 @@ public class PodcastApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        ClientConfig.USER_AGENT = "AntennaPod/" + BuildConfig.VERSION_NAME;
         ClientConfig.applicationCallbacks = new ApplicationCallbacksImpl();
 
         Thread.setDefaultUncaughtExceptionHandler(new CrashReportWriter());
@@ -55,9 +48,6 @@ public class PodcastApp extends Application {
         ClientConfigurator.initialize(this);
         PreferenceUpgrader.checkUpgrades(this);
 
-        Iconify.with(new FontAwesomeModule());
-        Iconify.with(new MaterialModule());
-
         SPAUtil.sendSPAppsQueryFeedsIntent(this);
         EventBus.builder()
                 .addIndex(new ApEventBusIndex())
@@ -68,13 +58,4 @@ public class PodcastApp extends Application {
 
         DynamicColors.applyToActivitiesIfAvailable(this);
     }
-
-    public static void forceRestart() {
-        Intent intent = new Intent(getInstance(), SplashActivity.class);
-        ComponentName cn = intent.getComponent();
-        Intent mainIntent = Intent.makeRestartActivityTask(cn);
-        getInstance().startActivity(mainIntent);
-        Runtime.getRuntime().exit(0);
-    }
-
 }

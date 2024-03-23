@@ -17,14 +17,14 @@ import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 
+import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
+import de.danoeh.antennapod.ui.common.Converter;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.receiver.PlayerWidget;
-import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.model.playback.Playable;
@@ -137,21 +137,21 @@ public abstract class WidgetUpdater {
                 views.setContentDescription(R.id.butPlayExtended, context.getString(R.string.play_label));
             }
             views.setOnClickPendingIntent(R.id.butPlay,
-                    MediaButtonReceiver.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+                    MediaButtonStarter.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
             views.setOnClickPendingIntent(R.id.butPlayExtended,
-                    MediaButtonReceiver.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+                    MediaButtonStarter.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
             views.setOnClickPendingIntent(R.id.butRew,
-                    MediaButtonReceiver.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_REWIND));
+                    MediaButtonStarter.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_REWIND));
             views.setOnClickPendingIntent(R.id.butFastForward,
-                    MediaButtonReceiver.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD));
+                    MediaButtonStarter.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD));
             views.setOnClickPendingIntent(R.id.butSkip,
-                    MediaButtonReceiver.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT));
+                    MediaButtonStarter.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT));
         } else {
             // start the app if they click anything
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlay, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlayExtended,
-                    MediaButtonReceiver.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+                    MediaButtonStarter.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
             views.setViewVisibility(R.id.txtvProgress, View.GONE);
             views.setViewVisibility(R.id.txtvTitle, View.GONE);
             views.setViewVisibility(R.id.txtNoPlaying, View.VISIBLE);

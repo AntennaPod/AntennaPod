@@ -22,7 +22,7 @@
   <string name="episode_cache_full_message">Acadouse o límite de espazo na caché de episodios. Podes incrementalo nos Axustes do tamaño da caché.</string>
   <string name="years_statistics_label">Anos</string>
   <string name="notification_pref_fragment">Notificacións</string>
-  <string name="recently_played_episodes">Episodios reproducidos recentemente</string>
+  <string name="current_playing_episode">Actual</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">Non se atopa \"%1$s\"</string>
   <!--SwipeActions-->
@@ -30,7 +30,7 @@
   <string name="swipeactions_summary">Elixe o que acontecerá cando desprazas sobre un episodio na lista</string>
   <string name="swipe_right">Desprazar á dereita</string>
   <string name="swipe_left">Desprazar á esquerda</string>
-  <string name="enable_swipeactions">Activar accións de escorregamento para esta pantalla</string>
+  <string name="enable_swipeactions">Activar accións de desprazar para esta pantalla</string>
   <string name="change_setting">Cambiar</string>
   <string name="individual_subscription">Subscrición individual</string>
   <!--Statistics fragment-->
@@ -46,16 +46,16 @@
   <string name="statistics_counting_range">Reproducido entre %1$s e %2$s</string>
   <string name="statistics_counting_total">Total reproducido</string>
   <!--Home fragment-->
-  <string name="home_surprise_title">Sorpréndete!</string>
+  <string name="home_surprise_title">Sorpréndete</string>
   <string name="home_classics_title">Mira os teus clásicos</string>
-  <string name="home_continue_title">Sigue escoitando</string>
+  <string name="home_continue_title">Segue escoitando</string>
   <string name="home_new_title">Olla as novidades</string>
   <string name="home_downloads_title">Xestiona as descargas</string>
-  <string name="home_welcome_title">Sexas ben vida a AntennaPod!</string>
+  <string name="home_welcome_title">Benvida a AntennaPod!</string>
   <string name="home_welcome_text">Aínda non tes subscricións. Abre o menú lateral e engade un podcast.</string>
   <string name="notification_permission_text">AntennaPod precisa permiso para mostrar notificacións. Por defecto AntennaPod só mostra notificacións cando se está descargando algo ou cando algo non vai ben.</string>
   <string name="notification_permission_denied">Non outorgaches o permiso</string>
-  <string name="notification_permission_deny_warning">Se desactivas as notificacións e algo vai fall, é posible que non coñezas a razón do fallo.</string>
+  <string name="notification_permission_deny_warning">Se desactivas as notificacións e algo vai mal, é posible que non coñezas a razón do fallo.</string>
   <string name="deny_label">Rexeitar</string>
   <string name="open_settings">Ir aos axustes</string>
   <string name="configure_home">Configura a pantalla de Inicio</string>
@@ -107,7 +107,6 @@
   <string name="description_label">Descrición</string>
   <string name="shownotes_label">Notas do episodio</string>
   <string name="shownotes_contentdescription">despraza hacia arriba para ler as notas</string>
-  <string name="episodes_suffix">\u0020episodios</string>
   <string name="close_label">Pechar</string>
   <string name="retry_label">Reintentar</string>
   <string name="auto_download_label">Incluír en descargas automáticas</string>
@@ -126,15 +125,15 @@
   <string name="feed_new_episodes_action_nothing">Nada</string>
   <string name="episode_cleanup_never">Nunca</string>
   <string name="episode_cleanup_except_favorite_removal">Cando non favorito</string>
-  <string name="episode_cleanup_queue_removal">Cando non esté na cola</string>
-  <string name="episode_cleanup_after_listening">Tras rematar</string>
+  <string name="episode_cleanup_queue_removal">Cando non estea na cola</string>
+  <string name="episode_cleanup_after_listening">Após rematar</string>
   <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 hora tras rematar</item>
-    <item quantity="other">%d horas tras rematar</item>
+    <item quantity="one">1 hora após rematar</item>
+    <item quantity="other">%d horas após rematar</item>
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 día despois de rematar</item>
-    <item quantity="other">%d días despois de rematar</item>
+    <item quantity="one">1 día após rematar</item>
+    <item quantity="other">%d días após rematar</item>
   </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d / %2$d seleccionado</item>
@@ -157,8 +156,8 @@
   <string name="new_episode_notification_group_text">As túas subscricións teñen novos episodios.</string>
   <!--Actions on feeds-->
   <string name="remove_all_inbox_label">Limpar lista de novidades</string>
-  <string name="removed_all_inbox_msg">Baleirouse a lista de novos episodios</string>
-  <string name="remove_all_inbox_confirmation_msg">Confirma que desexas baleirar a lista de novos episodios.</string>
+  <string name="removed_all_inbox_msg">Baleirouse a lista de novidades</string>
+  <string name="remove_all_inbox_confirmation_msg">Confirma que desexas baleirar a lista coas novidades.</string>
   <string name="multi_select_mark_played_confirmation">Confirma que desexas marcar tódolos elementos seleccionados como reproducidos.</string>
   <string name="multi_select_mark_unplayed_confirmation">Confirma que desexas marcar tódolos elementos seleccionados como non reproducidos.</string>
   <string name="show_info_label">Mostrar información</string>
@@ -168,7 +167,6 @@
   <string name="remove_feed_label">Eliminar o podcast</string>
   <string name="share_label">Compartir</string>
   <string name="share_file_label">Compartir ficheiro</string>
-  <string name="share_rss_address_label">Enderezo RSS:</string>
   <string name="feed_delete_confirmation_msg">Confirma que queres eliminar o podcast \"%1$s\" e TODOS os seus episodios (incluídos os xa descargados) e estatísticas.</string>
   <string name="feed_delete_confirmation_msg_batch">Confirma que desexas eliminar os podcast seleccionados e TODOS os seus episodios (incluńdo os descargados) e estatísticas.</string>
   <string name="feed_delete_confirmation_local_msg">Confirma que queres eliminar o podcast \"%1$s\" e as súas estatísticas. Non se eliminarán os ficheiros no cartafol local.</string>
@@ -465,10 +463,8 @@
   <string name="pref_expandNotify_sum">Isto expande as notificacións para mostrar os botóns de reprodución</string>
   <string name="pref_persistNotify_title">Controis persistentes de reprodución</string>
   <string name="pref_persistNotify_sum">Manter a notificación e os controis de reprodución na pantalla de bloqueo cando está detida a reprodución</string>
-  <string name="pref_compact_notification_buttons_title">Establecer botóns de notificación compactos</string>
-  <string name="pref_compact_notification_buttons_sum">Cambia os botóns de reprodución cando a notificación está comprimida. O botón reproducir/pausar sempre se inclúe.</string>
-  <string name="pref_compact_notification_buttons_dialog_title">Escolle un máximo de %1$d elementos</string>
-  <string name="pref_compact_notification_buttons_dialog_error">Só podes selecionar un máximo de %1$d elementos.</string>
+    <string name="pref_full_notification_buttons_title">Configurar botóns de notificación</string>
+  <string name="pref_full_notification_buttons_sum">Cambiar os botóns de reprodución na notificación de reprodución.</string>
   <string name="pref_enqueue_location_title">Situación na cola</string>
   <string name="pref_enqueue_location_sum">Engadir episodios a: %1$s</string>
   <string name="enqueue_location_back">Atrás</string>
@@ -550,7 +546,7 @@
   <string name="database_import_summary">Importar a base de datos AntennaPod desde outro dispositivo</string>
   <string name="opml_import_label">Importar OPML</string>
   <string name="opml_add_podcast_label">Importar lista de podcast (OPML)</string>
-  <string name="opml_reader_error">Houbo un fallo ao ler o documento OPML:</string>
+  <string name="opml_reader_error">Algo fallou ao ler o ficheiro. Comproba que realmente escolleches un ficheiro OPML e que é un ficheiro válido.</string>
   <string name="opml_import_error_no_file">Non hai ficheiro seleccionado!</string>
   <string name="select_all_label">Seleccionar todo</string>
   <string name="deselect_all_label">Deseleccionar todo</string>
@@ -732,23 +728,7 @@
   <string name="not_paused">Non pausado</string>
   <string name="hide_played_episodes_label">Reproducido</string>
   <string name="not_played">Non reproducido</string>
-  <!--Sort-->
-  <string name="sort_title_a_z">Título (A \u2192 Z)</string>
-  <string name="sort_title_z_a">Título (Z \u2192 A)</string>
-  <string name="sort_date_new_old">Data (Novo \u2192 Vello)</string>
-  <string name="sort_date_old_new">Data (Vello \u2192 Novo)</string>
-  <string name="sort_duration_short_long">Duración (Curto \u2192 Longo)</string>
-  <string name="sort_duration_long_short">Duración (Longo \u2192 Curto)</string>
-  <string name="sort_filename_a_z">Nome do ficheiro (A \u2192 Z)</string>
-  <string name="sort_filename_z_a">Nome do ficheiro (Z \u2192 A)</string>
-  <string name="sort_a_z">A \u2192 Z</string>
-  <string name="sort_z_a">Z \u2192 A</string>
-  <string name="sort_new_old">Novo \u2192 Antigo</string>
-  <string name="sort_old_new">Antigo \u2192 Novo</string>
-  <string name="sort_short_long">Curto \u2192 Longo</string>
-  <string name="sort_long_short">Longo \u2192 Curto</string>
-  <string name="sort_small_large">Pequeno \u2192 Grande</string>
-  <string name="sort_large_small">Grande \u2192 Pequeno</string>
+  <string name="filename">Nome do ficheiro</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Incluír posición de reprodución</string>
   <string name="share_dialog_episode_website_label">Sitio web do episodio</string>
@@ -759,7 +739,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Controis de audio</string>
   <string name="playback_speed">Velocidade de reprodución</string>
-  <string name="audio_effects">Efectos de audio</string>
   <string name="player_switch_to_audio_only">Cambiar a só audio</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tipo</string>

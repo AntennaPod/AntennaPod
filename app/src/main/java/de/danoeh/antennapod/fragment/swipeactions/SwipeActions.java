@@ -13,8 +13,6 @@ import androidx.lifecycle.OnLifecycleEvent;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.annimon.stream.Stream;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -37,12 +35,11 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
     public static final String KEY_PREFIX_SWIPEACTIONS = "PrefSwipeActions";
     public static final String KEY_PREFIX_NO_ACTION = "PrefNoSwipeAction";
 
-    public static final List<SwipeAction> swipeActions = Collections.unmodifiableList(
+    private static final List<SwipeAction> swipeActions = Collections.unmodifiableList(
             Arrays.asList(new AddToQueueSwipeAction(), new RemoveFromInboxSwipeAction(),
                     new StartDownloadSwipeAction(), new MarkFavoriteSwipeAction(),
                     new TogglePlaybackStateSwipeAction(), new RemoveFromQueueSwipeAction(),
-                    new DeleteSwipeAction(), new RemoveFromHistorySwipeAction())
-    );
+                    new DeleteSwipeAction(), new RemoveFromHistorySwipeAction()));
 
     private final Fragment fragment;
     private final String tag;
@@ -63,6 +60,15 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
 
     public SwipeActions(Fragment fragment, String tag) {
         this(0, fragment, tag);
+    }
+
+    public static SwipeAction getAction(String key) {
+        for (SwipeAction action : swipeActions) {
+            if (action.getId().equals(key)) {
+                return action;
+            }
+        }
+        return null;
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
@@ -172,14 +178,12 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
         float sign = dx > 0 ? 1 : -1;
         float limitMovement = Math.min(maxMovement, sign * dx);
         float displacementPercentage = limitMovement / maxMovement;
+        boolean swipeThresholdReached = displacementPercentage >= 0.85;
 
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE && wontLeave) {
             swipeOutEnabled = false;
-
-            boolean swipeThresholdReached = displacementPercentage == 1;
-
             // Move slower when getting near the maxMovement
-            dx = sign * maxMovement * (float) Math.sin((Math.PI / 2) * displacementPercentage);
+            dx = sign * maxMovement * 0.7f * (float) Math.sin((Math.PI / 2) * displacementPercentage);
 
             if (isCurrentlyActive) {
                 int dir = dx > 0 ? ItemTouchHelper.RIGHT : ItemTouchHelper.LEFT;
@@ -200,12 +204,9 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
                 .addSwipeLeftActionIcon(left.getActionIcon())
                 .addSwipeRightBackgroundColor(ThemeUtils.getColorFromAttr(context, R.attr.background_elevated))
                 .addSwipeLeftBackgroundColor(ThemeUtils.getColorFromAttr(context, R.attr.background_elevated))
-                .setActionIconTint(
-                        ColorUtils.blendARGB(themeColor,
-                                actionColor,
-                                Math.max(0.5f, displacementPercentage)));
+                .setActionIconTint(ColorUtils.blendARGB(themeColor, actionColor,
+                        (!wontLeave || swipeThresholdReached) ? 1.0f : 0.7f));
         builder.create().decorate();
-
 
         super.onChildDraw(c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive);
     }
@@ -255,10 +256,8 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
         public Actions(String prefs) {
             String[] actions = prefs.split(",");
             if (actions.length == 2) {
-                this.right = Stream.of(swipeActions)
-                        .filter(a -> a.getId().equals(actions[0])).single();
-                this.left = Stream.of(swipeActions)
-                        .filter(a -> a.getId().equals(actions[1])).single();
+                right = getAction(actions[0]);
+                left = getAction(actions[1]);
             }
         }
 

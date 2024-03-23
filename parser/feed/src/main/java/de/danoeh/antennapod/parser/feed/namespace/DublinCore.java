@@ -22,8 +22,8 @@ public class DublinCore extends Namespace {
 
     @Override
     public void handleElementEnd(String localName, HandlerState state) {
-        if (state.getCurrentItem() != null && state.getContentBuf() != null &&
-            state.getTagstack() != null && state.getTagstack().size() >= 2) {
+        if (state.getCurrentItem() != null && state.getContentBuf() != null
+                && state.getTagstack() != null && state.getTagstack().size() >= 2) {
             FeedItem currentItem = state.getCurrentItem();
             String top = state.getTagstack().peek().getName();
             String second = state.getSecondTag().getName();
