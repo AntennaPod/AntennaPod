@@ -150,25 +150,6 @@ public class FeedPreferences implements Serializable {
     }
 
     /**
-     * Compare another FeedPreferences with this one. The feedID, autoDownload and AutoDeleteAction attribute are excluded from the
-     * comparison.
-     *
-     * @return True if the two objects are different.
-     */
-    public boolean compareWithOther(FeedPreferences other) {
-        if (other == null) {
-            return true;
-        }
-        if (!TextUtils.equals(username, other.username)) {
-            return true;
-        }
-        if (!TextUtils.equals(password, other.password)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Update this FeedPreferences object from another one. The feedID, autoDownload and AutoDeleteAction attributes are excluded
      * from the update.
      */

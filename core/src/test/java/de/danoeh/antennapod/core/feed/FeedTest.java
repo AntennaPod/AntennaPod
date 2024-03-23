@@ -8,9 +8,7 @@ import de.danoeh.antennapod.model.feed.SortOrder;
 
 import static de.danoeh.antennapod.core.feed.FeedMother.anyFeed;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 public class FeedTest {
 
@@ -24,92 +22,40 @@ public class FeedTest {
     }
 
     @Test
-    public void testCompareWithOther_feedImageDownloadUrlChanged() throws Exception {
-        setNewFeedImageDownloadUrl();
-        feedHasChanged();
-    }
-
-    @Test
-    public void testCompareWithOther_sameFeedImage() throws Exception {
-        changedFeed.setImageUrl(FeedMother.IMAGE_URL);
-        feedHasNotChanged();
-    }
-
-    @Test
-    public void testCompareWithOther_feedImageRemoved() throws Exception {
-        feedImageRemoved();
-        feedHasNotChanged();
-    }
-
-    @Test
-    public void testUpdateFromOther_feedImageDownloadUrlChanged() throws Exception {
-        setNewFeedImageDownloadUrl();
+    public void testUpdateFromOther_feedImageDownloadUrlChanged() {
+        changedFeed.setImageUrl("http://example.com/new_picture");
         original.updateFromOther(changedFeed);
-        feedImageWasUpdated();
+        assertEquals(original.getImageUrl(), changedFeed.getImageUrl());
     }
 
     @Test
-    public void testUpdateFromOther_feedImageRemoved() throws Exception {
-        feedImageRemoved();
+    public void testUpdateFromOther_feedImageRemoved() {
+        changedFeed.setImageUrl(null);
         original.updateFromOther(changedFeed);
-        feedImageWasNotUpdated();
+        assertEquals(anyFeed().getImageUrl(), original.getImageUrl());
     }
 
     @Test
-    public void testUpdateFromOther_feedImageAdded() throws Exception {
-        feedHadNoImage();
-        setNewFeedImageDownloadUrl();
+    public void testUpdateFromOther_feedImageAdded() {
+        original.setImageUrl(null);
+        changedFeed.setImageUrl("http://example.com/new_picture");
         original.updateFromOther(changedFeed);
-        feedImageWasUpdated();
+        assertEquals(original.getImageUrl(), changedFeed.getImageUrl());
     }
 
     @Test
-    public void testSetSortOrder_OnlyIntraFeedSortAllowed() throws Exception {
+    public void testSetSortOrder_OnlyIntraFeedSortAllowed() {
         for (SortOrder sortOrder : SortOrder.values()) {
             if (sortOrder.scope == SortOrder.Scope.INTRA_FEED) {
                 original.setSortOrder(sortOrder); // should be okay
             } else {
-                try {
-                    original.setSortOrder(sortOrder);
-                    fail("SortOrder " + sortOrder + " should not be allowed on a feed");
-                } catch (IllegalArgumentException iae) {
-                    // expected exception
-                }
+                assertThrows(IllegalArgumentException.class, () -> original.setSortOrder(sortOrder));
             }
         }
     }
 
     @Test
-    public void testSetSortOrder_NullAllowed() throws Exception {
+    public void testSetSortOrder_NullAllowed() {
         original.setSortOrder(null); // should be okay
     }
-
-    private void feedHasNotChanged() {
-        assertFalse(original.compareWithOther(changedFeed));
-    }
-
-    private void feedHadNoImage() {
-        original.setImageUrl(null);
-    }
-
-    private void setNewFeedImageDownloadUrl() {
-        changedFeed.setImageUrl("http://example.com/new_picture");
-    }
-
-    private void feedHasChanged() {
-        assertTrue(original.compareWithOther(changedFeed));
-    }
-
-    private void feedImageRemoved() {
-        changedFeed.setImageUrl(null);
-    }
-
-    private void feedImageWasUpdated() {
-        assertEquals(original.getImageUrl(), changedFeed.getImageUrl());
-    }
-
-    private void feedImageWasNotUpdated() {
-        assertEquals(anyFeed().getImageUrl(), original.getImageUrl());
-    }
-
 }
