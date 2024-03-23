@@ -3,7 +3,6 @@ package de.danoeh.antennapod.model.feed;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -150,13 +149,6 @@ public class Feed {
     }
 
     /**
-     * This constructor can be used when parsing feed data. Only the 'lastUpdate' and 'items' field are initialized.
-     */
-    public Feed() {
-        super();
-    }
-
-    /**
      * This constructor is used for requesting a feed download (it must not be used for anything else!). It should NOT be
      * used if the title of the feed is already known.
      */
@@ -255,64 +247,6 @@ public class Feed {
             this.paged = other.paged;
             this.nextPageLink = other.nextPageLink;
         }
-    }
-
-    /**
-     * Compare's this FeedFile's attribute values with another FeedFile's
-     * attribute values. This method will only compare attributes which were
-     * read from the feed.
-     *
-     * @return true if attribute values are different, false otherwise
-     */
-    public boolean compareWithOther(Feed other) {
-        if (!StringUtils.equals(downloadUrl, other.downloadUrl)) {
-            return true;
-        }
-        if (other.imageUrl != null) {
-            if (imageUrl == null || !TextUtils.equals(imageUrl, other.imageUrl)) {
-                return true;
-            }
-        }
-        if (!TextUtils.equals(feedTitle, other.feedTitle)) {
-            return true;
-        }
-        if (other.feedIdentifier != null) {
-            if (feedIdentifier == null || !feedIdentifier.equals(other.feedIdentifier)) {
-                return true;
-            }
-        }
-        if (other.link != null) {
-            if (link == null || !link.equals(other.link)) {
-                return true;
-            }
-        }
-        if (other.description != null) {
-            if (description == null || !description.equals(other.description)) {
-                return true;
-            }
-        }
-        if (other.language != null) {
-            if (language == null || !language.equals(other.language)) {
-                return true;
-            }
-        }
-        if (other.author != null) {
-            if (author == null || !author.equals(other.author)) {
-                return true;
-            }
-        }
-        if (other.fundingList != null) {
-            if (fundingList == null || !fundingList.equals(other.fundingList)) {
-                return true;
-            }
-        }
-        if (other.isPaged() && !this.isPaged()) {
-            return true;
-        }
-        if (!TextUtils.equals(other.getNextPageLink(), this.getNextPageLink())) {
-            return true;
-        }
-        return false;
     }
 
     public FeedItem getMostRecentItem() {

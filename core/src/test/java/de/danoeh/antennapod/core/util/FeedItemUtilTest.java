@@ -94,7 +94,7 @@ public class FeedItemUtilTest {
     }
 
     private static FeedItem createFeedItem(String feedLink, String itemLink) {
-        Feed feed = new Feed();
+        Feed feed = new Feed("http://example.com/feed", null);
         feed.setLink(feedLink);
         FeedItem feedItem = new FeedItem();
         feedItem.setLink(itemLink);

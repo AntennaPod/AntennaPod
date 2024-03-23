@@ -216,17 +216,11 @@ public final class DBTasks {
             Collections.sort(newFeed.getItems(), new FeedItemPubdateComparator());
 
             if (newFeed.getPageNr() == savedFeed.getPageNr()) {
-                if (savedFeed.compareWithOther(newFeed)) {
-                    Log.d(TAG, "Feed has updated attribute values. Updating old feed's attributes");
-                    savedFeed.updateFromOther(newFeed);
-                }
+                savedFeed.updateFromOther(newFeed);
+                savedFeed.getPreferences().updateFromOther(newFeed.getPreferences());
             } else {
                 Log.d(TAG, "New feed has a higher page number.");
                 savedFeed.setNextPageLink(newFeed.getNextPageLink());
-            }
-            if (savedFeed.getPreferences().compareWithOther(newFeed.getPreferences())) {
-                Log.d(TAG, "Feed has updated preferences. Updating old feed's preferences");
-                savedFeed.getPreferences().updateFromOther(newFeed.getPreferences());
             }
 
             // get the most recent date now, before we start changing the list
