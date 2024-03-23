@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.preferences;
+package de.danoeh.antennapod.ui.preferences.preference;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,9 +6,9 @@ import androidx.cardview.widget.CardView;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 import com.google.android.material.elevation.SurfaceColors;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.databinding.ThemePreferenceBinding;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.preferences.R;
+import de.danoeh.antennapod.ui.preferences.databinding.ThemePreferenceBinding;
 
 public class ThemePreference extends Preference {
     ThemePreferenceBinding viewBinding;

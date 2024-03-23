@@ -93,6 +93,7 @@ dependencies {
     implementation project(':ui:echo')
     implementation project(':ui:glide')
     implementation project(':ui:i18n')
+    implementation project(':ui:preferences')
     implementation project(':ui:statistics')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
@@ -142,13 +143,3 @@ if (project.hasProperty("antennaPodPlayPublisherCredentials")) {
         serviceAccountCredentials.set(file(antennaPodPlayPublisherCredentials))
     }
 }
-
-tasks.register('copyLicense', Copy) {
-    from "../LICENSE"
-    into "src/main/assets/"
-    rename { String fileName ->
-        fileName + ".txt"
-    }
-}
-
-preBuild.dependsOn copyLicense

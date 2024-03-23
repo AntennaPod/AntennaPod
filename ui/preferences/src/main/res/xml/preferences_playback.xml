@@ -56,14 +56,14 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/reassign_hardware_buttons">
-        <de.danoeh.antennapod.preferences.MaterialListPreference
+        <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
                 android:defaultValue="@string/keycode_media_fast_forward"
                 android:entries="@array/button_action_options"
                 android:entryValues="@array/button_action_values"
                 android:key="prefHardwareForwardButton"
                 android:title="@string/pref_hardware_forward_button_title"
                 android:summary="@string/pref_hardware_forward_button_summary"/>
-        <de.danoeh.antennapod.preferences.MaterialListPreference
+        <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
                 android:defaultValue="@string/keycode_media_rewind"
                 android:entries="@array/button_action_options"
                 android:entryValues="@array/button_action_values"
@@ -79,7 +79,7 @@
                 android:key="prefEnqueueDownloaded"
                 android:summary="@string/pref_enqueue_downloaded_summary"
                 android:title="@string/pref_enqueue_downloaded_title" />
-        <de.danoeh.antennapod.preferences.MaterialListPreference
+        <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
                 android:defaultValue="BACK"
                 android:entries="@array/enqueue_location_options"
                 android:entryValues="@array/enqueue_location_values"
@@ -91,7 +91,7 @@
                 android:key="prefFollowQueue"
                 android:summary="@string/pref_followQueue_sum"
                 android:title="@string/pref_followQueue_title"/>
-        <de.danoeh.antennapod.preferences.MaterialListPreference
+        <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
                 android:defaultValue="30"
                 android:entries="@array/smart_mark_as_played_values"
                 android:entryValues="@array/smart_mark_as_played_values"

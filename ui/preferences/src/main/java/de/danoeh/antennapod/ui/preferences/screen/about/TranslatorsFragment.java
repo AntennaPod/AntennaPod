@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.fragment.preferences.about;
+package de.danoeh.antennapod.ui.preferences.screen.about;
 
 import android.os.Bundle;
 import android.view.View;
@@ -6,7 +6,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.ListFragment;
-import de.danoeh.antennapod.adapter.SimpleIconListAdapter;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -17,7 +16,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class SpecialThanksFragment extends ListFragment {
+public class TranslatorsFragment extends ListFragment {
     private Disposable translatorsLoader;
 
     @Override
@@ -29,11 +28,11 @@ public class SpecialThanksFragment extends ListFragment {
         translatorsLoader = Single.create((SingleOnSubscribe<ArrayList<SimpleIconListAdapter.ListItem>>) emitter -> {
             ArrayList<SimpleIconListAdapter.ListItem> translators = new ArrayList<>();
             BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    getContext().getAssets().open("special_thanks.csv"), "UTF-8"));
+                    getContext().getAssets().open("translators.csv"), "UTF-8"));
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] info = line.split(";");
-                translators.add(new SimpleIconListAdapter.ListItem(info[0], info[1], info[2]));
+                translators.add(new SimpleIconListAdapter.ListItem(info[0], info[1], null));
             }
             emitter.onSuccess(translators);
         })

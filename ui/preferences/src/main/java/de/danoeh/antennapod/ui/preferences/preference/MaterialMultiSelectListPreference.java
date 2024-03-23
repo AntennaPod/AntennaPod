@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.preferences;
+package de.danoeh.antennapod.ui.preferences.preference;
 
 import android.content.Context;
 import android.content.DialogInterface;

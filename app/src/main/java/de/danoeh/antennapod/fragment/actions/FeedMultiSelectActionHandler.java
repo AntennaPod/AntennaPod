@@ -18,10 +18,10 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.databinding.PlaybackSpeedFeedSettingDialogBinding;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.TagSettingsDialog;
-import de.danoeh.antennapod.fragment.preferences.dialog.PreferenceListDialog;
-import de.danoeh.antennapod.fragment.preferences.dialog.PreferenceSwitchDialog;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.fragment.preferences.dialog.PreferenceListDialog;
+import de.danoeh.antennapod.fragment.preferences.dialog.PreferenceSwitchDialog;
 
 public class FeedMultiSelectActionHandler {
     private static final String TAG = "FeedSelectHandler";

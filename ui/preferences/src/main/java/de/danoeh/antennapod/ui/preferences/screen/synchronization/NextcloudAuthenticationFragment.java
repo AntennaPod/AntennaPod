@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.fragment.preferences.synchronization;
+package de.danoeh.antennapod.ui.preferences.screen.synchronization;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -8,14 +8,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
-import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.SynchronizationCredentials;
 import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
 import de.danoeh.antennapod.core.sync.SynchronizationSettings;
-import de.danoeh.antennapod.databinding.NextcloudAuthDialogBinding;
 import de.danoeh.antennapod.net.sync.nextcloud.NextcloudLoginFlow;
+import de.danoeh.antennapod.ui.preferences.R;
+import de.danoeh.antennapod.ui.preferences.databinding.NextcloudAuthDialogBinding;
 
 /**
  * Guides the user through the authentication process.

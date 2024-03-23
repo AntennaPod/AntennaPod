@@ -4,7 +4,7 @@
         xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch">
 
     <PreferenceCategory android:title="@string/appearance">
-        <de.danoeh.antennapod.preferences.ThemePreference
+        <de.danoeh.antennapod.ui.preferences.preference.ThemePreference
                 android:key="prefTheme" />
         <SwitchPreferenceCompat
                 android:title="@string/pref_black_theme_title"
@@ -38,7 +38,7 @@
             android:title="@string/pref_nav_drawer_feed_order_title"
             android:key="prefDrawerFeedOrder"
             android:summary="@string/pref_nav_drawer_feed_order_sum"/>
-        <de.danoeh.antennapod.preferences.MaterialListPreference
+        <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
             android:entryValues="@array/nav_drawer_feed_counter_values"
             android:entries="@array/nav_drawer_feed_counter_options"
             android:title="@string/pref_nav_drawer_feed_counter_title"
@@ -75,7 +75,7 @@
                 android:title="@string/pref_full_notification_buttons_title"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/behavior">
-        <de.danoeh.antennapod.preferences.MaterialListPreference
+        <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
                 android:entryValues="@array/default_page_values"
                 android:entries="@array/default_page_titles"
                 android:key="prefDefaultPage"

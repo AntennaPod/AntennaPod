@@ -1,13 +1,10 @@
 package de.danoeh.antennapod;
 
 import android.app.Application;
-import android.content.ComponentName;
-import android.content.Intent;
 import android.os.StrictMode;
 
 import com.google.android.material.color.DynamicColors;
 
-import de.danoeh.antennapod.activity.SplashActivity;
 import de.danoeh.antennapod.config.ApplicationCallbacksImpl;
 import de.danoeh.antennapod.core.ApCoreEventBusIndex;
 import de.danoeh.antennapod.core.ClientConfig;
@@ -61,13 +58,4 @@ public class PodcastApp extends Application {
 
         DynamicColors.applyToActivitiesIfAvailable(this);
     }
-
-    public static void forceRestart() {
-        Intent intent = new Intent(getInstance(), SplashActivity.class);
-        ComponentName cn = intent.getComponent();
-        Intent mainIntent = Intent.makeRestartActivityTask(cn);
-        getInstance().startActivity(mainIntent);
-        Runtime.getRuntime().exit(0);
-    }
-
 }

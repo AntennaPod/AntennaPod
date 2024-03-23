@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.dialog;
+package de.danoeh.antennapod.ui.preferences.screen.downloads;
 
 import android.content.Context;
 
@@ -8,8 +8,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.util.Consumer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.DataFolderAdapter;
+import de.danoeh.antennapod.ui.preferences.R;
 
 public class ChooseDataFolderDialog {
 

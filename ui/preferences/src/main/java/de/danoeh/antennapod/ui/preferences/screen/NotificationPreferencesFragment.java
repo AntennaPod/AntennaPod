@@ -1,10 +1,10 @@
-package de.danoeh.antennapod.fragment.preferences;
+package de.danoeh.antennapod.ui.preferences.screen;
 
 import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.sync.SynchronizationSettings;
+import de.danoeh.antennapod.ui.preferences.R;
 
 public class NotificationPreferencesFragment extends PreferenceFragmentCompat {
 
@@ -19,7 +19,7 @@ public class NotificationPreferencesFragment extends PreferenceFragmentCompat {
     @Override
     public void onStart() {
         super.onStart();
-        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.notification_pref_fragment);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.notification_pref_fragment);
     }
 
     private void setUpScreen() {

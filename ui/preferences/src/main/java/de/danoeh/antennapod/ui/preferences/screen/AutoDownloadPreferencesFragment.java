@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.fragment.preferences;
+package de.danoeh.antennapod.ui.preferences.screen;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -9,14 +9,14 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.preferences.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +41,7 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
     @Override
     public void onStart() {
         super.onStart();
-        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.pref_automatic_download_title);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.pref_automatic_download_title);
     }
 
     @Override

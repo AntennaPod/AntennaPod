@@ -1,12 +1,12 @@
-package de.danoeh.antennapod.dialog;
+package de.danoeh.antennapod.ui.preferences.screen.synchronization;
 
 import android.content.Context;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.databinding.AuthenticationDialogBinding;
+import de.danoeh.antennapod.ui.preferences.R;
+import de.danoeh.antennapod.ui.preferences.databinding.AuthenticationDialogBinding;
 
 /**
  * Displays a dialog with a username and password text field and an optional checkbox to save username and preferences.
