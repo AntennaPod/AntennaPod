@@ -35,7 +35,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.storage.database.DBReader;
 
 public class OpmlBackupAgent extends BackupAgentHelper {
     private static final String OPML_BACKUP_KEY = "opml";

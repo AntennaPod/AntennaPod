@@ -24,7 +24,7 @@ import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.service.download.NewEpisodesNotification;
 import de.danoeh.antennapod.core.service.download.handler.FeedParserTask;
-import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.net.common.NetworkUtils;

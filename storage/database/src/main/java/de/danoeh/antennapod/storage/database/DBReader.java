@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.storage;
+package de.danoeh.antennapod.storage.database;
 
 import android.database.Cursor;
 import android.util.Log;
@@ -14,19 +14,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.danoeh.antennapod.core.util.FeedItemPermutors;
-import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedCounter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedOrder;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.model.download.DownloadResult;
-import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.danoeh.antennapod.storage.database.mapper.ChapterCursorMapper;
 import de.danoeh.antennapod.storage.database.mapper.DownloadResultCursorMapper;
 import de.danoeh.antennapod.storage.database.mapper.FeedCursorMapper;
@@ -223,7 +221,7 @@ public final class DBReader {
     }
 
     @NonNull
-    static List<FeedItem> getQueue(PodDBAdapter adapter) {
+    public static List<FeedItem> getQueue(PodDBAdapter adapter) {
         Log.d(TAG, "getQueue()");
         try (Cursor cursor = adapter.getQueueCursor()) {
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
@@ -759,12 +757,12 @@ public final class DBReader {
      * items.
      */
     @NonNull
-    public static NavDrawerData getNavDrawerData(@Nullable SubscriptionsFilter subscriptionsFilter) {
-        Log.d(TAG, "getNavDrawerData() called with: " + "");
+    public static NavDrawerData getNavDrawerData(@Nullable SubscriptionsFilter subscriptionsFilter,
+                                                 FeedOrder feedOrder, FeedCounter feedCounter) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
-        final Map<Long, Integer> feedCounters = adapter.getFeedCounters(UserPreferences.getFeedCounterSetting());
+        final Map<Long, Integer> feedCounters = adapter.getFeedCounters(feedCounter);
         List<Feed> feeds = getFeedList(adapter);
 
         if (subscriptionsFilter != null) {
@@ -772,54 +770,57 @@ public final class DBReader {
         }
 
         Comparator<Feed> comparator;
-        int feedOrder = UserPreferences.getFeedOrder();
-        if (feedOrder == UserPreferences.FEED_ORDER_COUNTER) {
-            comparator = (lhs, rhs) -> {
-                long counterLhs = feedCounters.containsKey(lhs.getId()) ? feedCounters.get(lhs.getId()) : 0;
-                long counterRhs = feedCounters.containsKey(rhs.getId()) ? feedCounters.get(rhs.getId()) : 0;
-                if (counterLhs > counterRhs) {
-                    // reverse natural order: podcast with most unplayed episodes first
-                    return -1;
-                } else if (counterLhs == counterRhs) {
-                    return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
-                } else {
-                    return 1;
-                }
-            };
-        } else if (feedOrder == UserPreferences.FEED_ORDER_ALPHABETICAL) {
-            comparator = (lhs, rhs) -> {
-                String t1 = lhs.getTitle();
-                String t2 = rhs.getTitle();
-                if (t1 == null) {
-                    return 1;
-                } else if (t2 == null) {
-                    return -1;
-                } else {
-                    return t1.compareToIgnoreCase(t2);
-                }
-            };
-        } else if (feedOrder == UserPreferences.FEED_ORDER_MOST_PLAYED) {
-            final Map<Long, Integer> playedCounters = adapter.getPlayedEpisodesCounters();
-
-            comparator = (lhs, rhs) -> {
-                long counterLhs = playedCounters.containsKey(lhs.getId()) ? playedCounters.get(lhs.getId()) : 0;
-                long counterRhs = playedCounters.containsKey(rhs.getId()) ? playedCounters.get(rhs.getId()) : 0;
-                if (counterLhs > counterRhs) {
-                    // podcast with most played episodes first
-                    return -1;
-                } else if (counterLhs == counterRhs) {
-                    return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
-                } else {
-                    return 1;
-                }
-            };
-        } else {
-            final Map<Long, Long> recentPubDates = adapter.getMostRecentItemDates();
-            comparator = (lhs, rhs) -> {
-                long dateLhs = recentPubDates.containsKey(lhs.getId()) ? recentPubDates.get(lhs.getId()) : 0;
-                long dateRhs = recentPubDates.containsKey(rhs.getId()) ? recentPubDates.get(rhs.getId()) : 0;
-                return Long.compare(dateRhs, dateLhs);
-            };
+        switch (feedOrder) {
+            case COUNTER:
+                comparator = (lhs, rhs) -> {
+                    long counterLhs = feedCounters.containsKey(lhs.getId()) ? feedCounters.get(lhs.getId()) : 0;
+                    long counterRhs = feedCounters.containsKey(rhs.getId()) ? feedCounters.get(rhs.getId()) : 0;
+                    if (counterLhs > counterRhs) {
+                        // reverse natural order: podcast with most unplayed episodes first
+                        return -1;
+                    } else if (counterLhs == counterRhs) {
+                        return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
+                    } else {
+                        return 1;
+                    }
+                };
+                break;
+            case ALPHABETICAL:
+                comparator = (lhs, rhs) -> {
+                    String t1 = lhs.getTitle();
+                    String t2 = rhs.getTitle();
+                    if (t1 == null) {
+                        return 1;
+                    } else if (t2 == null) {
+                        return -1;
+                    } else {
+                        return t1.compareToIgnoreCase(t2);
+                    }
+                };
+                break;
+            case MOST_PLAYED:
+                final Map<Long, Integer> playedCounters = adapter.getPlayedEpisodesCounters();
+                comparator = (lhs, rhs) -> {
+                    long counterLhs = playedCounters.containsKey(lhs.getId()) ? playedCounters.get(lhs.getId()) : 0;
+                    long counterRhs = playedCounters.containsKey(rhs.getId()) ? playedCounters.get(rhs.getId()) : 0;
+                    if (counterLhs > counterRhs) {
+                        // podcast with most played episodes first
+                        return -1;
+                    } else if (counterLhs == counterRhs) {
+                        return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
+                    } else {
+                        return 1;
+                    }
+                };
+                break;
+            default:
+                final Map<Long, Long> recentPubDates = adapter.getMostRecentItemDates();
+                comparator = (lhs, rhs) -> {
+                    long dateLhs = recentPubDates.containsKey(lhs.getId()) ? recentPubDates.get(lhs.getId()) : 0;
+                    long dateRhs = recentPubDates.containsKey(rhs.getId()) ? recentPubDates.get(rhs.getId()) : 0;
+                    return Long.compare(dateRhs, dateLhs);
+                };
+                break;
         }
 
         Collections.sort(feeds, comparator);
@@ -852,8 +853,7 @@ public final class DBReader {
         Collections.sort(foldersSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
         items.addAll(foldersSorted);
 
-        NavDrawerData result = new NavDrawerData(items, queueSize, numNewItems, numDownloadedItems,
-                feedCounters, EpisodeCleanupAlgorithmFactory.build().getReclaimableItems());
+        NavDrawerData result = new NavDrawerData(items, queueSize, numNewItems, numDownloadedItems, feedCounters);
         adapter.close();
         return result;
     }

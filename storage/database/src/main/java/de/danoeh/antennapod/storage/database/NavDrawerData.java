@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.storage;
+package de.danoeh.antennapod.storage.database;
 
 import de.danoeh.antennapod.model.feed.Feed;
 
@@ -12,20 +12,17 @@ public class NavDrawerData {
     public final int numNewItems;
     public final int numDownloadedItems;
     public final Map<Long, Integer> feedCounters;
-    public final int reclaimableSpace;
 
     public NavDrawerData(List<DrawerItem> feeds,
                          int queueSize,
                          int numNewItems,
                          int numDownloadedItems,
-                         Map<Long, Integer> feedIndicatorValues,
-                         int reclaimableSpace) {
+                         Map<Long, Integer> feedIndicatorValues) {
         this.items = feeds;
         this.queueSize = queueSize;
         this.numNewItems = numNewItems;
         this.numDownloadedItems = numDownloadedItems;
         this.feedCounters = feedIndicatorValues;
-        this.reclaimableSpace = reclaimableSpace;
     }
 
     public abstract static class DrawerItem {

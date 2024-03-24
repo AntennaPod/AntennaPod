@@ -33,6 +33,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 
+import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithmFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -50,9 +51,9 @@ import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.NavDrawerData;
+import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.dialog.DrawerPreferencesDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameItemDialog;
@@ -92,6 +93,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
     };
 
     private NavDrawerData navDrawerData;
+    private int reclaimableSpace = 0;
     private List<NavDrawerData.DrawerItem> flatItemList;
     private NavDrawerData.DrawerItem contextPressedItem = null;
     private NavListAdapter navAdapter;
@@ -325,7 +327,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
 
         @Override
         public int getReclaimableItems() {
-            return (navDrawerData != null) ? navDrawerData.reclaimableSpace : 0;
+            return reclaimableSpace;
         }
 
         @Override
@@ -414,7 +416,9 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
     private void loadData() {
         disposable = Observable.fromCallable(
                 () -> {
-                    NavDrawerData data = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter());
+                    NavDrawerData data = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter(),
+                            UserPreferences.getFeedOrder(), UserPreferences.getFeedCounterSetting());
+                    reclaimableSpace = EpisodeCleanupAlgorithmFactory.build().getReclaimableItems();
                     return new Pair<>(data, makeFlatDrawerData(data.items, 0));
                 })
                 .subscribeOn(Schedulers.io())

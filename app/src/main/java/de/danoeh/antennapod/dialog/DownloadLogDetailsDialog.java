@@ -11,7 +11,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.util.DownloadErrorLabel;
 import de.danoeh.antennapod.model.download.DownloadResult;
-import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;

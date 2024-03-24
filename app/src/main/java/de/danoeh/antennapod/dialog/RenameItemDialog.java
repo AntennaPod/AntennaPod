@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.storage.NavDrawerData;
+import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;

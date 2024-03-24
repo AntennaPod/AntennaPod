@@ -36,7 +36,7 @@ import java.util.Objects;
 import de.danoeh.antennapod.core.ApplicationCallbacks;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 
 import static org.hamcrest.CoreMatchers.endsWith;

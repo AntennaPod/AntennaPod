@@ -14,6 +14,7 @@ import java.util.concurrent.ExecutionException;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.storage.database.DBReader;
 
 /**
  * A cleanup algorithm that removes any item that isn't in the queue and isn't a favorite

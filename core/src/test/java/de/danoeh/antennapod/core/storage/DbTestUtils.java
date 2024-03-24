@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.core.storage;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -9,7 +8,6 @@ import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 
 import static org.junit.Assert.assertTrue;
@@ -62,7 +60,6 @@ abstract class DbTestUtils {
                 }
                 f.getItems().add(item);
             }
-            Collections.sort(f.getItems(), new FeedItemPubdateComparator());
             adapter.setCompleteFeed(f);
             assertTrue(f.getId() != 0);
             for (FeedItem item : f.getItems()) {

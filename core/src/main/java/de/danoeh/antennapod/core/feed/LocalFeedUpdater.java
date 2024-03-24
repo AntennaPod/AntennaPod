@@ -30,7 +30,7 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.util.FastDocumentFile;
 import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
 import de.danoeh.antennapod.model.download.DownloadResult;
-import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.parser.feed.util.DateUtils;

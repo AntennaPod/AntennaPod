@@ -13,6 +13,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
+import de.danoeh.antennapod.model.feed.FeedOrder;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -134,9 +135,6 @@ public class UserPreferences {
     public static final int NOTIFICATION_BUTTON_PLAYBACK_SPEED = 4;
     public static final int NOTIFICATION_BUTTON_SLEEP_TIMER = 5;
     public static final int EPISODE_CACHE_SIZE_UNLIMITED = -1;
-    public static final int FEED_ORDER_COUNTER = 0;
-    public static final int FEED_ORDER_ALPHABETICAL = 1;
-    public static final int FEED_ORDER_MOST_PLAYED = 3;
     public static final String DEFAULT_PAGE_REMEMBER = "remember";
 
     private static Context context;
@@ -239,15 +237,13 @@ public class UserPreferences {
         return showButtonOnFullNotification(NOTIFICATION_BUTTON_SLEEP_TIMER);
     }
 
-    public static int getFeedOrder() {
-        String value = prefs.getString(PREF_DRAWER_FEED_ORDER, "" + FEED_ORDER_COUNTER);
-        return Integer.parseInt(value);
+    public static FeedOrder getFeedOrder() {
+        String value = prefs.getString(PREF_DRAWER_FEED_ORDER, "" + FeedOrder.COUNTER.id);
+        return FeedOrder.fromOrdinal(Integer.parseInt(value));
     }
 
-    public static void setFeedOrder(String selected) {
-        prefs.edit()
-                .putString(PREF_DRAWER_FEED_ORDER, selected)
-                .apply();
+    public static void setFeedOrder(FeedOrder feedOrder) {
+        prefs.edit().putString(PREF_DRAWER_FEED_ORDER, "" + feedOrder.id).apply();
     }
 
     public static FeedCounter getFeedCounterSetting() {
