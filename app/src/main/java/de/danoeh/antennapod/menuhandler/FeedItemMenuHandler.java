@@ -153,7 +153,7 @@ public class FeedItemMenuHandler {
             context.sendBroadcast(MediaButtonStarter.createIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT));
         } else if (menuItemId == R.id.remove_item) {
             LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(context, Arrays.asList(selectedItem),
-                    () -> DBWriter.deleteFeedMediaOfItem(context, selectedItem.getMedia().getId()));
+                    () -> DBWriter.deleteFeedMediaOfItem(context, selectedItem.getMedia()));
         } else if (menuItemId == R.id.remove_inbox_item) {
             removeNewFlagWithUndo(fragment, selectedItem);
         } else if (menuItemId == R.id.mark_read_item) {
@@ -232,7 +232,7 @@ public class FeedItemMenuHandler {
             FeedMedia media = item.getMedia();
             boolean shouldAutoDelete = FeedUtil.shouldAutoDeleteItemsOnThatFeed(item.getFeed());
             if (media != null && FeedItemUtil.hasAlmostEnded(media) && shouldAutoDelete) {
-                DBWriter.deleteFeedMediaOfItem(fragment.requireContext(), media.getId());
+                DBWriter.deleteFeedMediaOfItem(fragment.requireContext(), media);
             }
         };
 

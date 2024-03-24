@@ -151,7 +151,7 @@ public class DbWriterTest {
         assertTrue(media.getId() != 0);
         assertTrue(item.getId() != 0);
 
-        DBWriter.deleteFeedMediaOfItem(context, media.getId())
+        DBWriter.deleteFeedMediaOfItem(context, media)
                 .get(TIMEOUT, TimeUnit.SECONDS);
         media = DBReader.getFeedMedia(media.getId());
         assertNotNull(media);
@@ -189,9 +189,9 @@ public class DbWriterTest {
         assertTrue(media.getId() != 0);
         assertTrue(item.getId() != 0);
         queue = DBReader.getQueue();
-        assertTrue(queue.size() != 0);
+        assertFalse(queue.isEmpty());
 
-        DBWriter.deleteFeedMediaOfItem(context, media.getId());
+        DBWriter.deleteFeedMediaOfItem(context, media);
         Awaitility.await().timeout(2, TimeUnit.SECONDS).until(() -> !dest.exists());
         media = DBReader.getFeedMedia(media.getId());
         assertNotNull(media);

@@ -58,7 +58,7 @@ public class APQueueCleanupAlgorithm extends EpisodeCleanupAlgorithm {
 
         for (FeedItem item : delete) {
             try {
-                DBWriter.deleteFeedMediaOfItem(context, item.getMedia().getId()).get();
+                DBWriter.deleteFeedMediaOfItem(context, item.getMedia()).get();
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }

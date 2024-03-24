@@ -414,6 +414,10 @@ public class FeedMedia implements Playable {
         return itemID;
     }
 
+    public void setItemId(long id) {
+        itemID = id;
+    }
+
     @Override
     public void onPlaybackStart() {
         startPosition = Math.max(position, 0);

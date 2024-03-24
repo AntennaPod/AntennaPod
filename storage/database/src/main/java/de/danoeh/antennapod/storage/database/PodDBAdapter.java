@@ -667,6 +667,7 @@ public class PodDBAdapter {
         }
         if (item.getMedia() != null) {
             setMedia(item.getMedia());
+            item.getMedia().setItemId(item.getId());
         }
         if (item.getChapters() != null) {
             setChapters(item);

@@ -96,18 +96,16 @@ public class DBWriter {
      * Deletes a downloaded FeedMedia file from the storage device.
      *
      * @param context A context that is used for opening a database connection.
-     * @param mediaId ID of the FeedMedia object whose downloaded file should be deleted.
      */
     public static Future<?> deleteFeedMediaOfItem(@NonNull final Context context,
-                                                  final long mediaId) {
+                                                  final FeedMedia media) {
         return runOnDbThread(() -> {
-            final FeedMedia media = DBReader.getFeedMedia(mediaId);
-            if (media != null) {
-                boolean result = deleteFeedMediaSynchronous(context, media);
-
-                if (result && UserPreferences.shouldDeleteRemoveFromQueue()) {
-                    DBWriter.removeQueueItemSynchronous(context, false, media.getItem().getId());
-                }
+            if (media == null) {
+                return;
+            }
+            boolean result = deleteFeedMediaSynchronous(context, media);
+            if (result && UserPreferences.shouldDeleteRemoveFromQueue()) {
+                DBWriter.removeQueueItemSynchronous(context, false, media.getItemId());
             }
         });
     }
@@ -174,15 +172,11 @@ public class DBWriter {
      */
     public static Future<?> deleteFeed(final Context context, final long feedId) {
         return runOnDbThread(() -> {
-            final Feed feed = DBReader.getFeed(feedId);
+            final Feed feed = DBReader.getFeed(feedId, false);
             if (feed == null) {
                 return;
             }
 
-            // delete stored media files and mark them as read
-            if (feed.getItems() == null) {
-                DBReader.getFeedItemList(feed);
-            }
             deleteFeedItemsSynchronous(context, feed.getItems());
 
             // delete feed
@@ -225,7 +219,9 @@ public class DBWriter {
                     IntentUtils.sendLocalBroadcast(context, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
                 }
                 if (!item.getFeed().isLocalFeed()) {
-                    DownloadServiceInterface.get().cancel(context, item.getMedia());
+                    if (DownloadServiceInterface.get().isDownloadingEpisode(item.getMedia().getDownloadUrl())) {
+                        DownloadServiceInterface.get().cancel(context, item.getMedia());
+                    }
                     if (item.getMedia().isDownloaded()) {
                         deleteFeedMediaSynchronous(context, item.getMedia());
                     }
