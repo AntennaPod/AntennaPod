@@ -11,7 +11,6 @@ import de.danoeh.antennapod.core.feed.ChapterMerger;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.util.comparator.ChapterStartTimeComparator;
 import de.danoeh.antennapod.parser.feed.PodcastIndexChapterParser;
 import de.danoeh.antennapod.parser.media.id3.ChapterReader;
 import de.danoeh.antennapod.parser.media.id3.ID3ReaderException;
@@ -30,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -231,5 +231,12 @@ public class ChapterUtils {
             }
         }
         return true;
+    }
+
+    public static class ChapterStartTimeComparator implements Comparator<Chapter> {
+        @Override
+        public int compare(Chapter lhs, Chapter rhs) {
+            return Long.compare(lhs.getStart(), rhs.getStart());
+        }
     }
 }

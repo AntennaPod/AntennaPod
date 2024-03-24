@@ -983,7 +983,7 @@ public class PodDBAdapter {
     public final Cursor getDownloadLog(final int feedFileType, final long feedFileId) {
         final String query = "SELECT * FROM " + TABLE_NAME_DOWNLOAD_LOG +
                 " WHERE " + KEY_FEEDFILE + "=" + feedFileId + " AND " + KEY_FEEDFILETYPE + "=" + feedFileType
-                + " ORDER BY " + KEY_ID + " DESC";
+                + " ORDER BY " + KEY_COMPLETION_DATE + " DESC";
         return db.rawQuery(query, null);
     }
 
@@ -1107,29 +1107,6 @@ public class PodDBAdapter {
         return "((" + SELECT_KEY_ITEM_ID + " * " + seed + ") % 46471)";
     }
 
-    /**
-     * Returns a cursor which contains feed media objects with a playback
-     * completion date in ascending order.
-     *
-     * @param offset The row to start at.
-     * @param limit The maximum row count of the returned cursor. Must be an
-     *              integer >= 0.
-     * @throws IllegalArgumentException if limit < 0
-     */
-    public final Cursor getCompletedMediaCursor(int offset, int limit) {
-        if (limit < 0) {
-            throw new IllegalArgumentException("Limit must be >= 0");
-        }
-
-        return db.query(TABLE_NAME_FEED_MEDIA, null,
-                KEY_PLAYBACK_COMPLETION_DATE + " > 0", null, null,
-                null, String.format(Locale.US, "%s DESC LIMIT %d, %d", KEY_PLAYBACK_COMPLETION_DATE, offset, limit));
-    }
-
-    public final long getCompletedMediaLength() {
-        return DatabaseUtils.queryNumEntries(db, TABLE_NAME_FEED_MEDIA, KEY_PLAYBACK_COMPLETION_DATE + "> 0");
-    }
-
     public final Cursor getSingleFeedMediaCursor(long id) {
         final String query = "SELECT " + KEYS_FEED_MEDIA + " FROM " + TABLE_NAME_FEED_MEDIA
                 + " WHERE " + KEY_ID + "=" + id;
@@ -1168,7 +1145,8 @@ public class PodDBAdapter {
             urlsString.append(DatabaseUtils.sqlEscapeString(urls.get(i)));
         }
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
-                + " WHERE " + KEY_DOWNLOAD_URL + " IN (" + urlsString + ")";
+                + " WHERE " + KEY_DOWNLOAD_URL + " IN (" + urlsString + ")"
+                + " ORDER BY " + KEY_PLAYBACK_COMPLETION_DATE + " DESC";
         return db.rawQuery(query, null);
     }
 

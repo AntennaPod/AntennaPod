@@ -16,8 +16,6 @@ import java.util.Map;
 
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.LongList;
-import de.danoeh.antennapod.core.util.comparator.DownloadResultComparator;
-import de.danoeh.antennapod.core.util.comparator.PlaybackCompletionDateComparator;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -342,57 +340,6 @@ public final class DBReader {
     }
 
     /**
-     * Loads the playback history from the database. A FeedItem is in the playback history if playback of the correpsonding episode
-     * has been completed at least once.
-     *
-     * @param limit The maximum number of items to return.
-     *
-     * @return The playback history. The FeedItems are sorted by their media's playbackCompletionDate in descending order.
-     */
-    @NonNull
-    public static List<FeedItem> getPlaybackHistory(int offset, int limit) {
-        Log.d(TAG, "getPlaybackHistory() called");
-
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-
-        Cursor mediaCursor = null;
-        Cursor itemCursor = null;
-        try {
-            mediaCursor = adapter.getCompletedMediaCursor(offset, limit);
-            String[] itemIds = new String[mediaCursor.getCount()];
-            for (int i = 0; i < itemIds.length && mediaCursor.moveToPosition(i); i++) {
-                int index = mediaCursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM);
-                itemIds[i] = Long.toString(mediaCursor.getLong(index));
-            }
-            itemCursor = adapter.getFeedItemCursor(itemIds);
-            List<FeedItem> items = extractItemlistFromCursor(adapter, itemCursor);
-            loadAdditionalFeedItemListData(items);
-            Collections.sort(items, new PlaybackCompletionDateComparator());
-            return items;
-        } finally {
-            if (mediaCursor != null) {
-                mediaCursor.close();
-            }
-            if (itemCursor != null) {
-                itemCursor.close();
-            }
-            adapter.close();
-        }
-    }
-
-    public static long getPlaybackHistoryLength() {
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-
-        try {
-            return adapter.getCompletedMediaLength();
-        } finally {
-            adapter.close();
-        }
-    }
-
-    /**
      * Loads the download log from the database.
      *
      * @return A list with DownloadStatus objects that represent the download log.
@@ -408,7 +355,6 @@ public final class DBReader {
             while (cursor.moveToNext()) {
                 downloadLog.add(DownloadResultCursorMapper.convert(cursor));
             }
-            Collections.sort(downloadLog, new DownloadResultComparator());
             return downloadLog;
         } finally {
             adapter.close();
@@ -432,7 +378,6 @@ public final class DBReader {
             while (cursor.moveToNext()) {
                 downloadLog.add(DownloadResultCursorMapper.convert(cursor));
             }
-            Collections.sort(downloadLog, new DownloadResultComparator());
             return downloadLog;
         } finally {
             adapter.close();
@@ -691,7 +636,6 @@ public final class DBReader {
         try (Cursor itemCursor = adapter.getFeedItemCursorByUrl(urls)) {
             List<FeedItem> items = extractItemlistFromCursor(adapter, itemCursor);
             loadAdditionalFeedItemListData(items);
-            Collections.sort(items, new PlaybackCompletionDateComparator());
             return items;
         } finally {
             adapter.close();

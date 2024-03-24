@@ -13,7 +13,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadLogAdapter;
-import de.danoeh.antennapod.core.event.DownloadLogEvent;
+import de.danoeh.antennapod.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.databinding.DownloadLogFragmentBinding;

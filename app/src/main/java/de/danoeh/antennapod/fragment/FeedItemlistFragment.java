@@ -39,7 +39,7 @@ import java.util.concurrent.ExecutionException;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
-import de.danoeh.antennapod.core.feed.FeedEvent;
+import de.danoeh.antennapod.event.FeedEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;

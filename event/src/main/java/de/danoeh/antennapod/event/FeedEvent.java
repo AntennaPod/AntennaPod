@@ -1,9 +1,6 @@
-package de.danoeh.antennapod.core.feed;
+package de.danoeh.antennapod.event;
 
 import androidx.annotation.NonNull;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class FeedEvent {
 
@@ -23,10 +20,6 @@ public class FeedEvent {
     @NonNull
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("action", action)
-                .append("feedId", feedId)
-                .toString();
+        return "FeedEvent{action=" + action + ", feedId=" + feedId + '}';
     }
-
 }

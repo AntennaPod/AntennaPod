@@ -320,7 +320,7 @@ public class DbReaderTest {
                 }
                 adapter.close();
 
-                long len = DBReader.getPlaybackHistoryLength();
+                long len = DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.IS_IN_HISTORY));
                 assertEquals("Wrong size: ", (int) len, playedItems);
             }
 
@@ -500,7 +500,8 @@ public class DbReaderTest {
             }
             adapter.close();
 
-            List<FeedItem> saved = DBReader.getPlaybackHistory(paramOffset, paramLimit);
+            List<FeedItem> saved = DBReader.getEpisodes(paramOffset, paramLimit,
+                    new FeedItemFilter(FeedItemFilter.IS_IN_HISTORY), SortOrder.COMPLETION_DATE_NEW_OLD);
             assertNotNull(saved);
             assertEquals(String.format("Wrong size with offset %d and limit %d: ",
                             paramOffset, paramLimit),
