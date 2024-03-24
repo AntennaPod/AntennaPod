@@ -43,7 +43,7 @@ abstract class DbTestUtils {
         adapter.open();
         for (int i = 0; i < numFeeds; i++) {
             Feed f = new Feed(0, null, "feed " + i, "link" + i, "descr", null, null,
-                    null, null, "id" + i, null, null, "url" + i, false);
+                    null, null, "id" + i, null, null, "url" + i, System.currentTimeMillis());
             f.setItems(new ArrayList<>());
             for (int j = 0; j < numItems; j++) {
                 FeedItem item = new FeedItem(0, "item " + j, "id" + j, "link" + j, new Date(),

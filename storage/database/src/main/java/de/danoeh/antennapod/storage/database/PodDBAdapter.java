@@ -77,6 +77,7 @@ public class PodDBAdapter {
     public static final String KEY_FEED = "feed";
     public static final String KEY_MEDIA = "media";
     public static final String KEY_DOWNLOADED = "downloaded";
+    public static final String KEY_LAST_REFRESH_ATTEMPT = "downloaded";
     public static final String KEY_LASTUPDATE = "last_update";
     public static final String KEY_FEEDFILE = "feedfile";
     public static final String KEY_REASON = "reason";
@@ -135,14 +136,22 @@ public class PodDBAdapter {
     private static final String TABLE_PRIMARY_KEY = KEY_ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT ,";
 
-    private static final String CREATE_TABLE_FEEDS = "CREATE TABLE "
-            + TABLE_NAME_FEEDS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
-            + " TEXT," + KEY_CUSTOM_TITLE + " TEXT," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT,"
-            + KEY_DOWNLOADED + " INTEGER," + KEY_LINK + " TEXT,"
-            + KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
-            + KEY_LASTUPDATE + " TEXT," + KEY_LANGUAGE + " TEXT," + KEY_AUTHOR
-            + " TEXT," + KEY_IMAGE_URL + " TEXT," + KEY_TYPE + " TEXT,"
-            + KEY_FEED_IDENTIFIER + " TEXT," + KEY_AUTO_DOWNLOAD_ENABLED + " INTEGER DEFAULT 1,"
+    private static final String CREATE_TABLE_FEEDS = "CREATE TABLE " + TABLE_NAME_FEEDS + " ("
+            + TABLE_PRIMARY_KEY + KEY_TITLE + " TEXT,"
+            + KEY_CUSTOM_TITLE + " TEXT,"
+            + KEY_FILE_URL + " TEXT,"
+            + KEY_DOWNLOAD_URL + " TEXT,"
+            + KEY_LAST_REFRESH_ATTEMPT + " INTEGER,"
+            + KEY_LINK + " TEXT,"
+            + KEY_DESCRIPTION + " TEXT,"
+            + KEY_PAYMENT_LINK + " TEXT,"
+            + KEY_LASTUPDATE + " TEXT,"
+            + KEY_LANGUAGE + " TEXT,"
+            + KEY_AUTHOR + " TEXT,"
+            + KEY_IMAGE_URL + " TEXT,"
+            + KEY_TYPE + " TEXT,"
+            + KEY_FEED_IDENTIFIER + " TEXT,"
+            + KEY_AUTO_DOWNLOAD_ENABLED + " INTEGER DEFAULT 1,"
             + KEY_USERNAME + " TEXT,"
             + KEY_PASSWORD + " TEXT,"
             + KEY_INCLUDE_FILTER + " TEXT DEFAULT '',"
@@ -284,7 +293,7 @@ public class PodDBAdapter {
             + TABLE_NAME_FEEDS + "." + KEY_CUSTOM_TITLE + ", "
             + TABLE_NAME_FEEDS + "." + KEY_FILE_URL + ", "
             + TABLE_NAME_FEEDS + "." + KEY_DOWNLOAD_URL + ", "
-            + TABLE_NAME_FEEDS + "." + KEY_DOWNLOADED + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_LAST_REFRESH_ATTEMPT + ", "
             + TABLE_NAME_FEEDS + "." + KEY_LINK + ", "
             + TABLE_NAME_FEEDS + "." + KEY_DESCRIPTION + ", "
             + TABLE_NAME_FEEDS + "." + KEY_PAYMENT_LINK + ", "
@@ -418,7 +427,7 @@ public class PodDBAdapter {
 
         values.put(KEY_FILE_URL, feed.getLocalFileUrl());
         values.put(KEY_DOWNLOAD_URL, feed.getDownloadUrl());
-        values.put(KEY_DOWNLOADED, feed.isDownloaded());
+        values.put(KEY_LAST_REFRESH_ATTEMPT, feed.getLastRefreshAttempt());
         values.put(KEY_LASTUPDATE, feed.getLastModified());
         values.put(KEY_TYPE, feed.getType());
         values.put(KEY_FEED_IDENTIFIER, feed.getFeedIdentifier());
@@ -748,6 +757,7 @@ public class PodDBAdapter {
     public void setFeedLastUpdateFailed(long feedId, boolean failed) {
         final String sql = "UPDATE " + TABLE_NAME_FEEDS
                 + " SET " + KEY_LAST_UPDATE_FAILED + "=" + (failed ? "1" : "0")
+                + "," + KEY_LAST_REFRESH_ATTEMPT + "=" + System.currentTimeMillis()
                 + " WHERE " + KEY_ID + "=" + feedId;
         db.execSQL(sql);
     }

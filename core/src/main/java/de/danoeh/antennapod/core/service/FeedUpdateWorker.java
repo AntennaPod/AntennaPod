@@ -23,7 +23,7 @@ import de.danoeh.antennapod.core.service.download.DefaultDownloaderFactory;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.service.download.NewEpisodesNotification;
-import de.danoeh.antennapod.core.service.download.handler.FeedSyncTask;
+import de.danoeh.antennapod.core.service.download.handler.FeedParserTask;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -35,6 +35,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.download.DownloadRequest;
 
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequestBuilder;
+import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -190,29 +191,30 @@ public class FeedUpdateWorker extends Worker {
             return;
         }
 
-        FeedSyncTask feedSyncTask = new FeedSyncTask(getApplicationContext(), request);
-        boolean success = feedSyncTask.run();
-
-        if (!success) {
+        FeedParserTask parserTask = new FeedParserTask(request);
+        FeedHandlerResult feedHandlerResult = parserTask.call();
+        if (!parserTask.isSuccessful()) {
             DBWriter.setFeedLastUpdateFailed(request.getFeedfileId(), true);
-            DBWriter.addDownloadStatus(feedSyncTask.getDownloadStatus());
+            DBWriter.addDownloadStatus(parserTask.getDownloadStatus());
             return;
         }
+        feedHandlerResult.feed.setLastRefreshAttempt(System.currentTimeMillis());
+        Feed savedFeed = DBTasks.updateFeed(getApplicationContext(), feedHandlerResult.feed, false);
 
         if (request.getFeedfileId() == 0) {
             return; // No download logs for new subscriptions
         }
         // we create a 'successful' download log if the feed's last refresh failed
         List<DownloadResult> log = DBReader.getFeedDownloadLog(request.getFeedfileId());
-        if (log.size() > 0 && !log.get(0).isSuccessful()) {
-            DBWriter.addDownloadStatus(feedSyncTask.getDownloadStatus());
+        if (!log.isEmpty() && !log.get(0).isSuccessful()) {
+            DBWriter.addDownloadStatus(parserTask.getDownloadStatus());
         }
-        newEpisodesNotification.showIfNeeded(getApplicationContext(), feedSyncTask.getSavedFeed());
+        newEpisodesNotification.showIfNeeded(getApplicationContext(), savedFeed);
         if (downloader.permanentRedirectUrl != null) {
             DBWriter.updateFeedDownloadURL(request.getSource(), downloader.permanentRedirectUrl);
-        } else if (feedSyncTask.getRedirectUrl() != null
-                && !feedSyncTask.getRedirectUrl().equals(request.getSource())) {
-            DBWriter.updateFeedDownloadURL(request.getSource(), feedSyncTask.getRedirectUrl());
+        } else if (feedHandlerResult.redirectUrl != null
+                && !feedHandlerResult.redirectUrl.equals(request.getSource())) {
+            DBWriter.updateFeedDownloadURL(request.getSource(), feedHandlerResult.redirectUrl);
         }
     }
 }

@@ -32,7 +32,7 @@ public abstract class FeedCursorMapper {
         int indexFeedIdentifier = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEED_IDENTIFIER);
         int indexFileUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FILE_URL);
         int indexDownloadUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DOWNLOAD_URL);
-        int indexDownloaded = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DOWNLOADED);
+        int indexLastRefreshed = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_LAST_REFRESH_ATTEMPT);
         int indexIsPaged = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_IS_PAGED);
         int indexNextPageLink = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_NEXT_PAGE_LINK);
         int indexHide = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_HIDE);
@@ -55,7 +55,7 @@ public abstract class FeedCursorMapper {
                 cursor.getString(indexImageUrl),
                 cursor.getString(indexFileUrl),
                 cursor.getString(indexDownloadUrl),
-                cursor.getInt(indexDownloaded) > 0,
+                cursor.getLong(indexLastRefreshed),
                 cursor.getInt(indexIsPaged) > 0,
                 cursor.getString(indexNextPageLink),
                 cursor.getString(indexHide),

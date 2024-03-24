@@ -55,7 +55,7 @@ public class FeedCursorMapperTest {
             assertEquals("feed image url", feed.getImageUrl());
             assertEquals("feed file url", feed.getLocalFileUrl());
             assertEquals("feed download url", feed.getDownloadUrl());
-            assertTrue(feed.isDownloaded());
+            assertEquals(42, feed.getLastRefreshAttempt());
             assertEquals("feed last update", feed.getLastModified());
             assertEquals("feed type", feed.getType());
             assertEquals("feed identifier", feed.getFeedIdentifier());
@@ -85,7 +85,7 @@ public class FeedCursorMapperTest {
 
         values.put(PodDBAdapter.KEY_FILE_URL, "feed file url");
         values.put(PodDBAdapter.KEY_DOWNLOAD_URL, "feed download url");
-        values.put(PodDBAdapter.KEY_DOWNLOADED, true);
+        values.put(PodDBAdapter.KEY_LAST_REFRESH_ATTEMPT, 42);
         values.put(PodDBAdapter.KEY_LASTUPDATE, "feed last update");
         values.put(PodDBAdapter.KEY_TYPE, "feed type");
         values.put(PodDBAdapter.KEY_FEED_IDENTIFIER, "feed identifier");
