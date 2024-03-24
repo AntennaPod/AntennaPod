@@ -29,7 +29,6 @@ public abstract class FeedParserTestHelper {
         FeedHandler handler = new FeedHandler();
         Feed parsedFeed = new Feed("http://example.com/feed", null);
         parsedFeed.setLocalFileUrl(feedFile.getAbsolutePath());
-        parsedFeed.setDownloaded(true);
         handler.parseFeed(parsedFeed);
         return parsedFeed;
     }

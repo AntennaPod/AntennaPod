@@ -24,7 +24,6 @@ public class Feed {
     private long id;
     private String localFileUrl;
     private String downloadUrl;
-    private boolean downloaded;
     /**
      * title as defined by the feed.
      */
@@ -56,6 +55,7 @@ public class Feed {
      * String that identifies the last update (adopted from Last-Modified or ETag header).
      */
     private String lastModified;
+    private long lastRefreshAttempt;
 
     private ArrayList<FeedFunding> fundingList;
     /**
@@ -109,11 +109,11 @@ public class Feed {
     public Feed(long id, String lastModified, String title, String customTitle, String link,
                 String description, String paymentLinks, String author, String language,
                 String type, String feedIdentifier, String imageUrl, String fileUrl,
-                String downloadUrl, boolean downloaded, boolean paged, String nextPageLink,
+                String downloadUrl, long lastRefreshAttempt, boolean paged, String nextPageLink,
                 String filter, @Nullable SortOrder sortOrder, boolean lastUpdateFailed) {
         this.localFileUrl = fileUrl;
         this.downloadUrl = downloadUrl;
-        this.downloaded = downloaded;
+        this.lastRefreshAttempt = lastRefreshAttempt;
         this.id = id;
         this.feedTitle = title;
         this.customTitle = customTitle;
@@ -143,9 +143,9 @@ public class Feed {
      */
     public Feed(long id, String lastModified, String title, String link, String description, String paymentLink,
                 String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
-                String downloadUrl, boolean downloaded) {
+                String downloadUrl, long lastRefreshAttempt) {
         this(id, lastModified, title, null, link, description, paymentLink, author, language, type, feedIdentifier,
-                imageUrl, fileUrl, downloadUrl, downloaded, false, null, null, null, false);
+                imageUrl, fileUrl, downloadUrl, lastRefreshAttempt, false, null, null, null, false);
     }
 
     /**
@@ -155,7 +155,7 @@ public class Feed {
     public Feed(String url, String lastModified) {
         this.localFileUrl = null;
         this.downloadUrl = url;
-        this.downloaded = false;
+        this.lastRefreshAttempt = 0;
         this.lastModified = lastModified;
     }
 
@@ -240,6 +240,9 @@ public class Feed {
         }
         if (other.fundingList != null) {
             fundingList = other.fundingList;
+        }
+        if (other.lastRefreshAttempt > lastRefreshAttempt) {
+            lastRefreshAttempt = other.lastRefreshAttempt;
         }
         // this feed's nextPage might already point to a higher page, so we only update the nextPage value
         // if this feed is not paged and the other feed is.
@@ -395,9 +398,6 @@ public class Feed {
 
     public void setLocalFileUrl(String fileUrl) {
         this.localFileUrl = fileUrl;
-        if (fileUrl == null) {
-            downloaded = false;
-        }
     }
 
     public String getDownloadUrl() {
@@ -408,12 +408,12 @@ public class Feed {
         this.downloadUrl = downloadUrl;
     }
 
-    public boolean isDownloaded() {
-        return downloaded;
+    public long getLastRefreshAttempt() {
+        return lastRefreshAttempt;
     }
 
-    public void setDownloaded(boolean downloaded) {
-        this.downloaded = downloaded;
+    public void setLastRefreshAttempt(long lastRefreshAttempt) {
+        this.lastRefreshAttempt = lastRefreshAttempt;
     }
 
     public int getPageNr() {

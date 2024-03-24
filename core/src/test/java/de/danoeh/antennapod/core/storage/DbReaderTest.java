@@ -80,10 +80,11 @@ public class DbReaderTest {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
 
-            Feed feed1 = new Feed(0, null, "A", "link", "d", null, null, null, "rss", "A", null, "", "", true);
-            Feed feed2 = new Feed(0, null, "b", "link", "d", null, null, null, "rss", "b", null, "", "", true);
-            Feed feed3 = new Feed(0, null, "C", "link", "d", null, null, null, "rss", "C", null, "", "", true);
-            Feed feed4 = new Feed(0, null, "d", "link", "d", null, null, null, "rss", "d", null, "", "", true);
+            final long lastRefreshed = System.currentTimeMillis();
+            Feed feed1 = new Feed(0, null, "A", "link", "d", null, null, null, "rss", "A", null, "", "", lastRefreshed);
+            Feed feed2 = new Feed(0, null, "b", "link", "d", null, null, null, "rss", "b", null, "", "", lastRefreshed);
+            Feed feed3 = new Feed(0, null, "C", "link", "d", null, null, null, "rss", "C", null, "", "", lastRefreshed);
+            Feed feed4 = new Feed(0, null, "d", "link", "d", null, null, null, "rss", "d", null, "", "", lastRefreshed);
             adapter.setCompleteFeed(feed1);
             adapter.setCompleteFeed(feed2);
             adapter.setCompleteFeed(feed3);
