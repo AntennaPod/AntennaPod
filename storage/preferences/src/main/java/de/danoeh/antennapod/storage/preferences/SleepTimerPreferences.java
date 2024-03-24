@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.preferences;
+package de.danoeh.antennapod.storage.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;

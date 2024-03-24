@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.util;
 
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 

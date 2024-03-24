@@ -1,29 +1,21 @@
-package de.danoeh.antennapod.core.preferences;
+package de.danoeh.antennapod.storage.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
 import android.util.Log;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
-import de.danoeh.antennapod.playback.base.PlayerStatus;
-import org.greenrobot.eventbus.EventBus;
-
-import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 /**
  * Provides access to preferences set by the playback service. A private
  * instance of this class must first be instantiated via createInstance() or
  * otherwise every public method will throw an Exception when called.
  */
-public class PlaybackPreferences implements SharedPreferences.OnSharedPreferenceChangeListener {
+public abstract class PlaybackPreferences {
 
     private static final String TAG = "PlaybackPreferences";
 
@@ -92,22 +84,10 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
      */
     public static final int PLAYER_STATUS_OTHER = 3;
 
-    private static PlaybackPreferences instance;
     private static SharedPreferences prefs;
 
-    private PlaybackPreferences() {
-    }
-
     public static void init(Context context) {
-        instance = new PlaybackPreferences();
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        prefs.registerOnSharedPreferenceChangeListener(instance);
-    }
-
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (PREF_CURRENT_PLAYER_STATUS.equals(key)) {
-            EventBus.getDefault().post(new PlayerStatusEvent());
-        }
     }
 
     public static long getCurrentlyPlayingMediaType() {
@@ -115,6 +95,9 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
     }
 
     public static long getCurrentlyPlayingFeedMediaId() {
+        if (PlaybackPreferences.getCurrentlyPlayingMediaType() == NO_MEDIA_PLAYING) {
+            return NO_MEDIA_PLAYING;
+        }
         return prefs.getLong(PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, NO_MEDIA_PLAYING);
     }
 
@@ -127,7 +110,7 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
     }
 
     public static float getCurrentlyPlayingTemporaryPlaybackSpeed() {
-        return prefs.getFloat(PREF_CURRENTLY_PLAYING_TEMPORARY_PLAYBACK_SPEED, SPEED_USE_GLOBAL);
+        return prefs.getFloat(PREF_CURRENTLY_PLAYING_TEMPORARY_PLAYBACK_SPEED, FeedPreferences.SPEED_USE_GLOBAL);
     }
 
     public static FeedPreferences.SkipSilence getCurrentlyPlayingTemporarySkipSilence() {
@@ -144,7 +127,7 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
         editor.apply();
     }
 
-    public static void writeMediaPlaying(Playable playable, PlayerStatus playerStatus) {
+    public static void writeMediaPlaying(Playable playable) {
         Log.d(TAG, "Writing playback preferences");
         SharedPreferences.Editor editor = prefs.edit();
 
@@ -161,18 +144,7 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
                 editor.putLong(PREF_CURRENTLY_PLAYING_FEED_ID, NO_MEDIA_PLAYING);
                 editor.putLong(PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, NO_MEDIA_PLAYING);
             }
-            playable.writeToPreferences(editor);
         }
-        editor.putInt(PREF_CURRENT_PLAYER_STATUS, getCurrentPlayerStatusAsInt(playerStatus));
-
-        editor.apply();
-    }
-
-    public static void writePlayerStatus(PlayerStatus playerStatus) {
-        Log.d(TAG, "Writing player status playback preferences");
-
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(PREF_CURRENT_PLAYER_STATUS, getCurrentPlayerStatusAsInt(playerStatus));
         editor.apply();
     }
 
@@ -194,64 +166,5 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
         editor.remove(PREF_CURRENTLY_PLAYING_TEMPORARY_PLAYBACK_SPEED);
         editor.remove(PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE);
         editor.apply();
-    }
-
-    private static int getCurrentPlayerStatusAsInt(PlayerStatus playerStatus) {
-        int playerStatusAsInt;
-        switch (playerStatus) {
-            case PLAYING:
-                playerStatusAsInt = PLAYER_STATUS_PLAYING;
-                break;
-            case PAUSED:
-                playerStatusAsInt = PLAYER_STATUS_PAUSED;
-                break;
-            default:
-                playerStatusAsInt = PLAYER_STATUS_OTHER;
-        }
-        return playerStatusAsInt;
-    }
-
-    /**
-     * Restores a playable object from a sharedPreferences file. This method might load data from the database,
-     * depending on the type of playable that was restored.
-     *
-     * @return The restored Playable object
-     */
-    @Nullable
-    public static Playable createInstanceFromPreferences(@NonNull Context context) {
-        long currentlyPlayingMedia = PlaybackPreferences.getCurrentlyPlayingMediaType();
-        if (currentlyPlayingMedia != PlaybackPreferences.NO_MEDIA_PLAYING) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-            return createInstanceFromPreferences((int) currentlyPlayingMedia, prefs);
-        }
-        return null;
-    }
-
-    /**
-     * Restores a playable object from a sharedPreferences file. This method might load data from the database,
-     * depending on the type of playable that was restored.
-     *
-     * @param type An integer that represents the type of the Playable object
-     *             that is restored.
-     * @param pref The SharedPreferences file from which the Playable object
-     *             is restored
-     * @return The restored Playable object
-     */
-    private static Playable createInstanceFromPreferences(int type, SharedPreferences pref) {
-        if (type == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA) {
-            return createFeedMediaInstance(pref);
-        } else {
-            Log.e(TAG, "Could not restore Playable object from preferences");
-            return null;
-        }
-    }
-
-    private static Playable createFeedMediaInstance(SharedPreferences pref) {
-        Playable result = null;
-        long mediaId = pref.getLong(FeedMedia.PREF_MEDIA_ID, -1);
-        if (mediaId != -1) {
-            result =  DBReader.getFeedMedia(mediaId);
-        }
-        return result;
     }
 }

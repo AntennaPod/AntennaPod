@@ -11,7 +11,7 @@ import android.view.KeyEvent;
 
 import androidx.annotation.RequiresApi;
 
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 
