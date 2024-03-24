@@ -47,6 +47,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.media.MediaBrowserServiceCompat;
 
+import de.danoeh.antennapod.model.feed.SortOrder;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -442,7 +443,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         } else if (parentId.startsWith("FeedId:")) {
             long feedId = Long.parseLong(parentId.split(":")[1]);
             Feed feed = DBReader.getFeed(feedId);
-            feedItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(), feed.getSortOrder());
+            SortOrder sortOrder = feed.getSortOrder();
+            if (sortOrder == null) {
+                sortOrder = SortOrder.DATE_NEW_OLD;
+            }
+            feedItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(), sortOrder);
         } else if (parentId.equals(getString(R.string.current_playing_episode))) {
             Playable playable = PlaybackPreferences.createInstanceFromPreferences(this);
             if (playable instanceof FeedMedia) {
