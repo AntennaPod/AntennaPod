@@ -51,12 +51,12 @@ public class Itunes extends Namespace {
         }
 
         String content = state.getContentBuf().toString();
-        String contentFromHtml = HtmlCompat.fromHtml(content, HtmlCompat.FROM_HTML_MODE_COMPACT).toString();
         if (TextUtils.isEmpty(content)) {
             return;
         }
 
         if (AUTHOR.equals(localName) && state.getFeed() != null && state.getTagstack().size() <= 3) {
+            String contentFromHtml = HtmlCompat.fromHtml(content, HtmlCompat.FROM_HTML_MODE_COMPACT).toString();
             state.getFeed().setAuthor(contentFromHtml);
         } else if (DURATION.equals(localName)) {
             try {

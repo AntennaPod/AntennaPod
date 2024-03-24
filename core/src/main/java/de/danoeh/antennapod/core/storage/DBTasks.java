@@ -171,6 +171,13 @@ public final class DBTasks {
      * This is to work around podcasters breaking their GUIDs.
      */
     private static FeedItem searchFeedItemGuessDuplicate(List<FeedItem> items, FeedItem searchItem) {
+        // First, see if it is a well-behaving feed that contains an item with the same identifier
+        for (FeedItem item : items) {
+            if (FeedItemDuplicateGuesser.sameAndNotEmpty(item.getItemIdentifier(), searchItem.getItemIdentifier())) {
+                return item;
+            }
+        }
+        // Not found yet, start more expensive guessing
         for (FeedItem item : items) {
             if (FeedItemDuplicateGuesser.seemDuplicates(item, searchItem)) {
                 return item;
