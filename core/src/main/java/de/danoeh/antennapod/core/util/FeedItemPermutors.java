@@ -78,6 +78,12 @@ public class FeedItemPermutors {
             case SIZE_LARGE_SMALL:
                 comparator = (f1, f2) -> Long.compare(size(f2), size(f1));
                 break;
+            case COMPLETION_DATE_NEW_OLD:
+                comparator = (f1, f2) -> f2.getMedia().getPlaybackCompletionDate()
+                        .compareTo(f1.getMedia().getPlaybackCompletionDate());
+                break;
+            default:
+                throw new IllegalArgumentException("Permutor not implemented");
         }
 
         if (comparator != null) {

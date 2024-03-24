@@ -23,6 +23,7 @@ public class FeedItemFilter implements Serializable {
     public final boolean showNoMedia;
     public final boolean showIsFavorite;
     public final boolean showNotFavorite;
+    public final boolean showInHistory;
 
     public static final String PLAYED = "played";
     public static final String UNPLAYED = "unplayed";
@@ -37,6 +38,7 @@ public class FeedItemFilter implements Serializable {
     public static final String NOT_QUEUED = "not_queued";
     public static final String DOWNLOADED = "downloaded";
     public static final String NOT_DOWNLOADED = "not_downloaded";
+    public static final String IS_IN_HISTORY = "is_in_history";
 
     public static FeedItemFilter unfiltered() {
         return new FeedItemFilter("");
@@ -63,6 +65,7 @@ public class FeedItemFilter implements Serializable {
         showIsFavorite = hasProperty(IS_FAVORITE);
         showNotFavorite = hasProperty(NOT_FAVORITE);
         showNew = hasProperty(NEW);
+        showInHistory = hasProperty(IS_IN_HISTORY);
     }
 
     private boolean hasProperty(String property) {
@@ -105,6 +108,9 @@ public class FeedItemFilter implements Serializable {
         } else if (showIsFavorite && !item.isTagged(FeedItem.TAG_FAVORITE)) {
             return false;
         } else if (showNotFavorite && item.isTagged(FeedItem.TAG_FAVORITE)) {
+            return false;
+        } else if (showInHistory && item.getMedia() != null
+                && item.getMedia().getPlaybackCompletionDate().getTime() == 0) {
             return false;
         }
         return true;

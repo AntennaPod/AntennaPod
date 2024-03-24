@@ -12,7 +12,7 @@ import androidx.documentfile.provider.DocumentFile;
 
 import com.google.common.util.concurrent.Futures;
 
-import de.danoeh.antennapod.core.event.DownloadLogEvent;
+import de.danoeh.antennapod.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
@@ -39,7 +39,7 @@ import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.playback.PlaybackHistoryEvent;
 import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.core.feed.FeedEvent;
+import de.danoeh.antennapod.event.FeedEvent;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.model.download.DownloadResult;

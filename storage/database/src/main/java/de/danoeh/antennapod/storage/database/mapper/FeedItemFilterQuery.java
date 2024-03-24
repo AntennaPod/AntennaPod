@@ -22,6 +22,7 @@ public class FeedItemFilterQuery {
         // The keys used within this method, but explicitly combined with their table
         String keyRead = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_READ;
         String keyPosition = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_POSITION;
+        String keyCompletionDate = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_PLAYBACK_COMPLETION_DATE;
         String keyDownloaded = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_DOWNLOADED;
         String keyMediaId = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_ID;
         String keyItemId = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_ID;
@@ -61,6 +62,9 @@ public class FeedItemFilterQuery {
             statements.add(keyItemId + " IN (SELECT " + keyFeedItem + " FROM " + tableFavorites + ") ");
         } else if (filter.showNotFavorite) {
             statements.add(keyItemId + " NOT IN (SELECT " + keyFeedItem + " FROM " + tableFavorites + ") ");
+        }
+        if (filter.showInHistory) {
+            statements.add(keyCompletionDate + " > 0 ");
         }
 
         if (statements.isEmpty()) {
