@@ -31,7 +31,7 @@ public class FeedItemDuplicateGuesser {
                 && mimeTypeLooksSimilar(media1, media2);
     }
 
-    private static boolean sameAndNotEmpty(String string1, String string2) {
+    public static boolean sameAndNotEmpty(String string1, String string2) {
         if (TextUtils.isEmpty(string1) || TextUtils.isEmpty(string2)) {
             return false;
         }
