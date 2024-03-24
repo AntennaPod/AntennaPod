@@ -41,7 +41,7 @@ import de.danoeh.antennapod.databinding.OnlinefeedviewHeaderBinding;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.model.download.DownloadRequest;

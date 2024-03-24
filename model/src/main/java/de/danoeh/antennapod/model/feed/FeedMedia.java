@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.model.feed;
 
 import android.content.Context;
-import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -22,9 +21,6 @@ public class FeedMedia implements Playable {
     public static final int FEEDFILETYPE_FEEDMEDIA = 2;
     public static final int PLAYABLE_TYPE_FEEDMEDIA = 1;
     public static final String FILENAME_PREFIX_EMBEDDED_COVER = "metadata-retriever:";
-
-    public static final String PREF_MEDIA_ID = "FeedMedia.PrefMediaId";
-    private static final String PREF_FEED_ID = "FeedMedia.PrefFeedId";
 
     /**
      * Indicates we've checked on the size of the item via the network
@@ -301,16 +297,6 @@ public class FeedMedia implements Playable {
         dest.writeLong((playbackCompletionDate != null) ? playbackCompletionDate.getTime() : 0);
         dest.writeInt(playedDuration);
         dest.writeLong(lastPlayedTime);
-    }
-
-    @Override
-    public void writeToPreferences(Editor prefEditor) {
-        if (item != null && item.getFeed() != null) {
-            prefEditor.putLong(PREF_FEED_ID, item.getFeed().getId());
-        } else {
-            prefEditor.putLong(PREF_FEED_ID, 0L);
-        }
-        prefEditor.putLong(PREF_MEDIA_ID, id);
     }
 
     @Override

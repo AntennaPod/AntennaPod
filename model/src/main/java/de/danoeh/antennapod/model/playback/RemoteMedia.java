@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.model.playback;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
@@ -118,11 +117,6 @@ public class RemoteMedia implements Playable {
 
     public String getNotes() {
         return notes;
-    }
-
-    @Override
-    public void writeToPreferences(SharedPreferences.Editor prefEditor) {
-        //it seems pointless to do it, since the session should be kept by the remote device.
     }
 
     @Override

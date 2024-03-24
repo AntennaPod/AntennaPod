@@ -3,7 +3,7 @@ package de.danoeh.antennapod.core.feed.util;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.model.playback.Playable;
 

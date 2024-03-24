@@ -50,6 +50,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.media.MediaBrowserServiceCompat;
 
+import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -63,8 +64,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.QuickSettingsTileService;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceTaskManager.SleepTimer;
@@ -452,9 +453,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Feed feed = DBReader.getFeed(feedId);
             feedItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(), feed.getSortOrder());
         } else if (parentId.equals(getString(R.string.current_playing_episode))) {
-            Playable playable = PlaybackPreferences.createInstanceFromPreferences(this);
-            if (playable instanceof FeedMedia) {
-                feedItems = Collections.singletonList(((FeedMedia) playable).getItem());
+            FeedMedia playable = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+            if (playable != null) {
+                feedItems = Collections.singletonList(playable.getItem());
             } else {
                 return null;
             }
@@ -734,7 +735,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private void startPlayingFromPreferences() {
-        Observable.fromCallable(() -> PlaybackPreferences.createInstanceFromPreferences(getApplicationContext()))
+        Observable.fromCallable(() -> DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -818,15 +819,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             switch (newInfo.playerStatus) {
                 case INITIALIZED:
                     if (mediaPlayer.getPSMPInfo().playable != null) {
-                        PlaybackPreferences.writeMediaPlaying(mediaPlayer.getPSMPInfo().playable,
-                                mediaPlayer.getPSMPInfo().playerStatus);
+                        PlaybackPreferences.writeMediaPlaying(mediaPlayer.getPSMPInfo().playable);
                     }
                     updateNotificationAndMediaSession(newInfo.playable);
                     break;
                 case PREPARED:
                     if (mediaPlayer.getPSMPInfo().playable != null) {
-                        PlaybackPreferences.writeMediaPlaying(mediaPlayer.getPSMPInfo().playable,
-                                mediaPlayer.getPSMPInfo().playerStatus);
+                        PlaybackPreferences.writeMediaPlaying(mediaPlayer.getPSMPInfo().playable);
                     }
                     taskManager.startChapterLoader(newInfo.playable);
                     break;
@@ -836,14 +835,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         stateManager.stopForeground(!UserPreferences.isPersistNotify());
                     }
                     cancelPositionObserver();
-                    PlaybackPreferences.writePlayerStatus(mediaPlayer.getPlayerStatus());
                     break;
                 case STOPPED:
                     //writePlaybackPreferencesNoMediaPlaying();
                     //stopService();
                     break;
                 case PLAYING:
-                    PlaybackPreferences.writePlayerStatus(mediaPlayer.getPlayerStatus());
                     saveCurrentPosition(true, null, Playable.INVALID_TIME);
                     recreateMediaSessionIfNeeded();
                     updateNotificationAndMediaSession(newInfo.playable);
@@ -886,6 +883,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             bluetoothNotifyChange(newInfo, AVRCP_ACTION_PLAYER_STATUS_CHANGED);
             bluetoothNotifyChange(newInfo, AVRCP_ACTION_META_CHANGED);
             taskManager.requestWidgetUpdate();
+            EventBus.getDefault().post(new PlayerStatusEvent());
         }
 
         @Override
@@ -1034,7 +1032,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         if (!UserPreferences.isFollowQueue()) {
             Log.d(TAG, "getNextInQueue(), but follow queue is not enabled.");
-            PlaybackPreferences.writeMediaPlaying(nextItem.getMedia(), PlayerStatus.STOPPED);
+            PlaybackPreferences.writeMediaPlaying(nextItem.getMedia());
             updateNotificationAndMediaSession(nextItem.getMedia());
             return null;
         }

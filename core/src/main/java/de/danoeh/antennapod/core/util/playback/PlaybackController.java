@@ -13,6 +13,7 @@ import android.util.Pair;
 import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -21,7 +22,7 @@ import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
@@ -341,7 +342,7 @@ public abstract class PlaybackController {
 
     public Playable getMedia() {
         if (media == null) {
-            media = PlaybackPreferences.createInstanceFromPreferences(activity);
+            media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
         }
         return media;
     }

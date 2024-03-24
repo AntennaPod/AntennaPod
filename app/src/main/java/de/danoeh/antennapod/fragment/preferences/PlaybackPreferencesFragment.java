@@ -12,7 +12,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.core.preferences.UsageStatistics;
+import de.danoeh.antennapod.storage.preferences.UsageStatistics;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;

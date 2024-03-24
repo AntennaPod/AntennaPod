@@ -9,7 +9,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.core.preferences.UsageStatistics;
+import de.danoeh.antennapod.storage.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
