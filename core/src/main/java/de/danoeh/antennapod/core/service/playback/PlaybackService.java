@@ -52,6 +52,7 @@ import androidx.media.MediaBrowserServiceCompat;
 
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
+import de.danoeh.antennapod.ui.widget.WidgetUpdater;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -80,7 +81,6 @@ import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.core.util.playback.PlayableUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
-import de.danoeh.antennapod.core.widget.WidgetUpdater;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;

@@ -1,0 +1,19 @@
+plugins {
+    id("com.android.library")
+}
+apply from: "../../common.gradle"
+
+android {
+    namespace "de.danoeh.antennapod.ui.episodes"
+}
+
+dependencies {
+    implementation project(":model")
+    implementation project(":storage:preferences")
+    implementation project(":ui:common")
+
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation "androidx.core:core:$coreVersion"
+    implementation "com.google.android.material:material:$googleMaterialVersion"
+}

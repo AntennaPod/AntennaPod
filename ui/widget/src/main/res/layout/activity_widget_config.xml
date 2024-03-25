@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="de.danoeh.antennapod.activity.WidgetConfigActivity">
+    tools:context="de.danoeh.antennapod.ui.widget.WidgetConfigActivity">
 
     <FrameLayout
         android:layout_width="match_parent"

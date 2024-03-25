@@ -27,7 +27,6 @@ import de.danoeh.antennapod.ui.common.DateFormatter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.Converter;
@@ -35,6 +34,7 @@ import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
+import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
 
 /**
  * Holds the view which shows FeedItems.

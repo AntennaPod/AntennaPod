@@ -91,8 +91,10 @@ dependencies {
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
     implementation project(':ui:echo')
+    implementation project(':ui:episodes')
     implementation project(':ui:glide')
     implementation project(':ui:i18n')
+    implementation project(':ui:widget')
     implementation project(':ui:preferences')
     implementation project(':ui:statistics')
 

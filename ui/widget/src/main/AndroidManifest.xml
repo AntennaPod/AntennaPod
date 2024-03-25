@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <activity
+            android:name=".WidgetConfigActivity"
+            android:label="@string/widget_settings"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".PlayerWidget"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="de.danoeh.antennapod.FORCE_WIDGET_UPDATE"/>
+                <action android:name="de.danoeh.antennapod.STOP_WIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                    android:name="android.appwidget.provider"
+                    android:resource="@xml/player_widget_info"/>
+        </receiver>
+    </application>
+</manifest>

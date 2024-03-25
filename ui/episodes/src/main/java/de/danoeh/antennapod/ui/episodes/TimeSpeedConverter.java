@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util;
+package de.danoeh.antennapod.ui.episodes;
 
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 

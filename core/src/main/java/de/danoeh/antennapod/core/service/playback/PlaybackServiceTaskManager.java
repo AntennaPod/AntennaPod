@@ -10,7 +10,7 @@ import android.util.Log;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.util.ChapterUtils;
-import de.danoeh.antennapod.core.widget.WidgetUpdater;
+import de.danoeh.antennapod.ui.widget.WidgetUpdater;
 import io.reactivex.disposables.Disposable;
 import org.greenrobot.eventbus.EventBus;
 
