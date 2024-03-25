@@ -12,7 +12,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.LongList;
+import de.danoeh.antennapod.storage.database.LongList;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.view.LocalDeleteModal;
 

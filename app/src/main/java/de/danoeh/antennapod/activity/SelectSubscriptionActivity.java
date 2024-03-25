@@ -27,8 +27,8 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.NavDrawerData;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.databinding.SubscriptionSelectionActivityBinding;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -143,7 +143,8 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
         }
         disposable = Observable.fromCallable(
                 () -> {
-                    NavDrawerData data = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter());
+                    NavDrawerData data = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter(),
+                            UserPreferences.getFeedOrder(), UserPreferences.getFeedCounterSetting());
                     return getFeedItems(data.items, new ArrayList<>());
                 })
                 .subscribeOn(Schedulers.io())

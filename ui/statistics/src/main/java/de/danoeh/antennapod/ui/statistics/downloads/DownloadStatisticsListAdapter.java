@@ -3,7 +3,7 @@ package de.danoeh.antennapod.ui.statistics.downloads;
 import android.content.Context;
 import android.text.format.Formatter;
 import androidx.fragment.app.Fragment;
-import de.danoeh.antennapod.core.storage.StatisticsItem;
+import de.danoeh.antennapod.storage.database.StatisticsItem;
 import de.danoeh.antennapod.ui.statistics.PieChartView;
 import de.danoeh.antennapod.ui.statistics.R;
 import de.danoeh.antennapod.ui.statistics.StatisticsListAdapter;

@@ -34,8 +34,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.SubscriptionsRecyclerAdapter;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.NavDrawerData;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.dialog.FeedSortDialog;
 import de.danoeh.antennapod.dialog.RenameItemDialog;
@@ -277,7 +277,8 @@ public class SubscriptionFragment extends Fragment
         emptyView.hide();
         disposable = Observable.fromCallable(
                 () -> {
-                    NavDrawerData data = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter());
+                    NavDrawerData data = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter(),
+                            UserPreferences.getFeedOrder(), UserPreferences.getFeedCounterSetting());
                     List<NavDrawerData.DrawerItem> items = data.items;
                     for (NavDrawerData.DrawerItem item : items) {
                         if (item.type == NavDrawerData.DrawerItem.Type.TAG

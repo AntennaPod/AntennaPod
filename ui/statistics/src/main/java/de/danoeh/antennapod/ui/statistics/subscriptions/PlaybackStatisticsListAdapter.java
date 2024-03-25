@@ -2,7 +2,7 @@ package de.danoeh.antennapod.ui.statistics.subscriptions;
 
 import android.text.format.DateFormat;
 import androidx.fragment.app.Fragment;
-import de.danoeh.antennapod.core.storage.StatisticsItem;
+import de.danoeh.antennapod.storage.database.StatisticsItem;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.statistics.PieChartView;
 import de.danoeh.antennapod.ui.statistics.R;

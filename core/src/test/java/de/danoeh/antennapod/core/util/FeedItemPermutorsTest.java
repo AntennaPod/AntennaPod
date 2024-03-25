@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.core.util;
 
 import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.storage.database.FeedItemPermutors;
+import de.danoeh.antennapod.storage.database.Permutor;
 import org.junit.Test;
 
 import java.util.ArrayList;

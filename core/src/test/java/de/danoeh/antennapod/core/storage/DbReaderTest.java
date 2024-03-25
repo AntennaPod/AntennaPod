@@ -12,12 +12,16 @@ import java.util.Random;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedCounter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedOrder;
 import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.LongList;
+import de.danoeh.antennapod.storage.database.LongList;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import org.junit.After;
 import org.junit.Before;
@@ -331,7 +335,8 @@ public class DbReaderTest {
             final int numFeeds = 10;
             final int numItems = 10;
             DbTestUtils.saveFeedlist(numFeeds, numItems, true);
-            NavDrawerData navDrawerData = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter());
+            NavDrawerData navDrawerData = DBReader.getNavDrawerData(
+                    UserPreferences.getSubscriptionsFilter(), FeedOrder.COUNTER, FeedCounter.SHOW_NEW);
             assertEquals(numFeeds, navDrawerData.items.size());
             assertEquals(0, navDrawerData.numNewItems);
             assertEquals(0, navDrawerData.queueSize);
@@ -360,7 +365,8 @@ public class DbReaderTest {
 
             adapter.close();
 
-            NavDrawerData navDrawerData = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter());
+            NavDrawerData navDrawerData = DBReader.getNavDrawerData(
+                    UserPreferences.getSubscriptionsFilter(), FeedOrder.COUNTER, FeedCounter.SHOW_NEW);
             assertEquals(numFeeds, navDrawerData.items.size());
             assertEquals(numNew, navDrawerData.numNewItems);
             assertEquals(numQueue, navDrawerData.queueSize);

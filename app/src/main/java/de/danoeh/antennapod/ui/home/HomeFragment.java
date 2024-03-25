@@ -30,7 +30,7 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.databinding.HomeFragmentBinding;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
@@ -193,7 +193,8 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             disposable.dispose();
         }
         disposable = Observable.fromCallable(() ->
-                        DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter()).items.size())
+                        DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter(),
+                                UserPreferences.getFeedOrder(), UserPreferences.getFeedCounterSetting()).items.size())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(numSubscriptions -> {
