@@ -77,10 +77,13 @@
         android:id="@+id/subscriptions_add"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_margin="16dp"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:contentDescription="@string/add_feed_label"
         app:srcCompat="@drawable/ic_add" />
 

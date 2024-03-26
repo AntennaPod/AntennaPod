@@ -7,10 +7,16 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.Locale;
+
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.adapter.HorizontalFeedListAdapter;
 import de.danoeh.antennapod.adapter.HorizontalItemListAdapter;
@@ -19,9 +25,6 @@ import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.Locale;
 
 /**
  * Section on the HomeFragment
@@ -45,10 +48,25 @@ public abstract class HomeSection extends Fragment implements View.OnCreateConte
         if (TextUtils.isEmpty(getMoreLinkTitle())) {
             viewBinding.moreButton.setVisibility(View.INVISIBLE);
         }
-        // Dummies are necessary to ensure height, but do not animate them
-        viewBinding.recyclerView.setItemAnimator(null);
-        viewBinding.recyclerView.postDelayed(
-                () -> viewBinding.recyclerView.setItemAnimator(new DefaultItemAnimator()), 500);
+        Fragment expand = getExpandable();
+        if (expand != null) {
+            viewBinding.recyclerView.setVisibility(View.GONE);
+            viewBinding.homeExpandableContainer.setVisibility(View.VISIBLE);
+            viewBinding.parent.setLayoutParams(
+                    new ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT));
+            viewBinding.parent.setPadding(0, 0, 0, 0);
+            getChildFragmentManager()
+                    .beginTransaction()
+                    .add(viewBinding.homeExpandableContainer.getId(), expand)
+                    .commit();
+        } else {
+            // Dummies are necessary to ensure height, but do not animate them
+            viewBinding.recyclerView.setItemAnimator(null);
+            viewBinding.recyclerView.postDelayed(
+                    () -> viewBinding.recyclerView.setItemAnimator(new DefaultItemAnimator()), 500);
+        }
         return viewBinding.getRoot();
     }
 
@@ -86,18 +104,30 @@ public abstract class HomeSection extends Fragment implements View.OnCreateConte
     @Override
     public void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
-        registerForContextMenu(viewBinding.recyclerView);
+        if (!isExpandable()) {
+            EventBus.getDefault().register(this);
+            registerForContextMenu(viewBinding.recyclerView);
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
-        unregisterForContextMenu(viewBinding.recyclerView);
+        if (!isExpandable()) {
+            EventBus.getDefault().unregister(this);
+            unregisterForContextMenu(viewBinding.recyclerView);
+        }
     }
 
     protected abstract String getSectionTitle();
+
+    protected Fragment getExpandable() {
+        return null;
+    }
+
+    protected boolean isExpandable() {
+        return false;
+    }
 
     protected abstract String getMoreLinkTitle();
 

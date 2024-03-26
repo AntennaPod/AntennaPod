@@ -242,12 +242,24 @@
         <item>@string/home_downloads_title</item>
     </string-array>
 
+    <string-array name="home_bottomhalf_titles">
+        <item>@string/episodes_label</item>
+        <item>@string/inbox_label</item>
+        <item>@string/queue_label</item>
+    </string-array>
+
     <string-array name="home_section_tags">
         <item>QueueSection</item>
         <item>InboxSection</item>
         <item>EpisodesSurpriseSection</item>
         <item>SubscriptionsSection</item>
         <item>DownloadsSection</item>
+    </string-array>
+
+    <string-array name="home_bottomhalf_tags">
+        <item>EpisodesExpandable</item>
+        <item>InboxExpandable</item>
+        <item>QueueExpandable</item>
     </string-array>
 
     <string-array name="full_notification_buttons_options">
