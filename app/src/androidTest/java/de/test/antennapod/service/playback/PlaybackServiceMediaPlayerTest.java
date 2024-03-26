@@ -164,7 +164,7 @@ public class PlaybackServiceMediaPlayerTest {
                         assertEquals(PlayerStatus.INITIALIZING, newInfo.playerStatus);
                         countDownLatch.countDown();
                     } else {
-                        assertEquals(PlayerStatus.INITIALIZED, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.PREPARING, newInfo.playerStatus);
                         countDownLatch.countDown();
                     }
                 } catch (AssertionFailedError e) {
@@ -181,7 +181,7 @@ public class PlaybackServiceMediaPlayerTest {
             throw assertionError;
         assertTrue(res);
 
-        assertSame(PlayerStatus.INITIALIZED, psmp.getPSMPInfo().playerStatus);
+        assertSame(PlayerStatus.PREPARING, psmp.getPSMPInfo().playerStatus);
         assertFalse(psmp.isStartWhenPrepared());
         callback.cancel();
         psmp.shutdown();
@@ -246,7 +246,7 @@ public class PlaybackServiceMediaPlayerTest {
                     } else if (countDownLatch.getCount() == 4) {
                         assertEquals(PlayerStatus.INITIALIZING, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 3) {
-                        assertEquals(PlayerStatus.INITIALIZED, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.PREPARING, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 2) {
                         assertEquals(PlayerStatus.PREPARING, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 1) {
@@ -290,7 +290,7 @@ public class PlaybackServiceMediaPlayerTest {
                     } else if (countDownLatch.getCount() == 5) {
                         assertEquals(PlayerStatus.INITIALIZING, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 4) {
-                        assertEquals(PlayerStatus.INITIALIZED, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.PREPARING, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 3) {
                         assertEquals(PlayerStatus.PREPARING, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 2) {
@@ -414,7 +414,7 @@ public class PlaybackServiceMediaPlayerTest {
                     } else if (countDownLatch.getCount() == 4) {
                         assertEquals(PlayerStatus.INITIALIZING, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 3) {
-                        assertEquals(PlayerStatus.INITIALIZED, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.PREPARING, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 2) {
                         assertEquals(PlayerStatus.PREPARING, newInfo.playerStatus);
                     } else if (countDownLatch.getCount() == 1) {

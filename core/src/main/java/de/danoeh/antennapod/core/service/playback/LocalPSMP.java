@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.core.service.playback;
 
-import android.app.UiModeManager;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.os.Handler;
 import android.os.Looper;
@@ -180,17 +178,11 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             } else {
                 throw new IOException("Unable to read local file " + media.getLocalFileUrl());
             }
-            UiModeManager uiModeManager = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
-            if (uiModeManager.getCurrentModeType() != Configuration.UI_MODE_TYPE_CAR) {
-                setPlayerStatus(PlayerStatus.INITIALIZED, media);
-            }
-
             if (prepareImmediately) {
                 setPlayerStatus(PlayerStatus.PREPARING, media);
                 mediaPlayer.prepare();
                 onPrepared(startWhenPrepared);
             }
-
         } catch (IOException | IllegalStateException e) {
             e.printStackTrace();
             setPlayerStatus(PlayerStatus.ERROR, null);
