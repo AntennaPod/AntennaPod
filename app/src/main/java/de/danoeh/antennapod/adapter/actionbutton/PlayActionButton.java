@@ -1,17 +1,22 @@
 package de.danoeh.antennapod.adapter.actionbutton;
 
 import android.content.Context;
+import android.util.Log;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
+import org.greenrobot.eventbus.EventBus;
 
 public class PlayActionButton extends ItemActionButton {
+    private static final String TAG = "PlayActionButton";
 
     public PlayActionButton(FeedItem item) {
         super(item);
@@ -36,7 +41,12 @@ public class PlayActionButton extends ItemActionButton {
             return;
         }
         if (!media.fileExists()) {
-            DBTasks.notifyMissingFeedMediaFile(context, media);
+            Log.i(TAG, "Missing episode. Will update the database now.");
+            media.setDownloaded(false);
+            media.setLocalFileUrl(null);
+            DBWriter.setFeedMedia(media);
+            EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.error_file_not_found)));
             return;
         }
         new PlaybackServiceStarter(context, media)

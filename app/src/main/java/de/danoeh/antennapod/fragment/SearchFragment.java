@@ -42,10 +42,10 @@ import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.net.discovery.CombinedSearcher;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.LiftOnScrollListener;
@@ -407,8 +407,8 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
             return new Pair<>(Collections.emptyList(), Collections.emptyList());
         }
         long feed = getArguments().getLong(ARG_FEED);
-        List<FeedItem> items = FeedSearcher.searchFeedItems(query, feed);
-        List<Feed> feeds = FeedSearcher.searchFeeds(query);
+        List<FeedItem> items = DBReader.searchFeedItems(feed, query);
+        List<Feed> feeds = DBReader.searchFeeds(query);
         return new Pair<>(items, feeds);
     }
     

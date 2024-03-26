@@ -40,7 +40,7 @@ public class DbQueueCleanupAlgorithmTest extends DbCleanupTests {
         List<File> files = new ArrayList<>();
         populateItems(numItems, feed, items, files, FeedItem.UNPLAYED, false, false);
 
-        DBTasks.performAutoCleanup(context);
+        AutoDownloadManager.performAutoCleanup(context);
         for (int i = 0; i < files.size(); i++) {
             if (i < EPISODE_CACHE_SIZE) {
                 assertTrue(files.get(i).exists());

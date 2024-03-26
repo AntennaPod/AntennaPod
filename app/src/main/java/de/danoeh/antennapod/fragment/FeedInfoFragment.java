@@ -35,7 +35,7 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.storage.FeedDatabaseWriter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
@@ -340,7 +340,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 throw new IllegalArgumentException("Unable to retrieve document tree");
             }
             feed.setDownloadUrl(Feed.PREFIX_LOCAL_FOLDER + uri.toString());
-            DBTasks.updateFeed(getContext(), feed, true);
+            FeedDatabaseWriter.updateFeed(getContext(), feed, true);
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -857,4 +857,28 @@ public final class DBReader {
         adapter.close();
         return result;
     }
+
+    public static List<FeedItem> searchFeedItems(final long feedId, final String query) {
+        PodDBAdapter adapter = PodDBAdapter.getInstance().open();
+        Cursor searchResult = adapter.searchItems(feedId, query);
+        List<FeedItem> items = extractItemlistFromCursor(searchResult);
+        loadAdditionalFeedItemListData(items);
+        searchResult.close();
+        adapter.close();
+        return items;
+    }
+
+    public static List<Feed> searchFeeds(final String query) {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        Cursor cursor = adapter.searchFeeds(query);
+        List<Feed> items = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                items.add(FeedCursorMapper.convert(cursor));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        adapter.close();
+        return items;
+    }
 }

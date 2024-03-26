@@ -24,8 +24,9 @@ import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.service.download.NewEpisodesNotification;
 import de.danoeh.antennapod.core.service.download.handler.FeedParserTask;
+import de.danoeh.antennapod.core.storage.AutoDownloadManager;
 import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.storage.FeedDatabaseWriter;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
@@ -99,7 +100,7 @@ public class FeedUpdateWorker extends Worker {
         refreshFeeds(toUpdate,  force);
 
         notificationManager.cancel(R.id.notification_updating_feeds);
-        DBTasks.autodownloadUndownloadedItems(getApplicationContext());
+        AutoDownloadManager.autodownloadUndownloadedItems(getApplicationContext());
         return Result.success();
     }
 
@@ -199,7 +200,7 @@ public class FeedUpdateWorker extends Worker {
             return;
         }
         feedHandlerResult.feed.setLastRefreshAttempt(System.currentTimeMillis());
-        Feed savedFeed = DBTasks.updateFeed(getApplicationContext(), feedHandlerResult.feed, false);
+        Feed savedFeed = FeedDatabaseWriter.updateFeed(getApplicationContext(), feedHandlerResult.feed, false);
 
         if (request.getFeedfileId() == 0) {
             return; // No download logs for new subscriptions

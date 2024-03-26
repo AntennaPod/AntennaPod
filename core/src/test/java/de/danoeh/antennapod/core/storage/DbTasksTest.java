@@ -37,7 +37,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Test class for {@link DBTasks}.
+ * Test class for {@link FeedDatabaseWriter}.
  */
 @RunWith(RobolectricTestRunner.class)
 public class DbTasksTest {
@@ -77,7 +77,7 @@ public class DbTasksTest {
             feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i,
                     new Date(), FeedItem.UNPLAYED, feed));
         }
-        Feed newFeed = DBTasks.updateFeed(context, feed, false);
+        Feed newFeed = FeedDatabaseWriter.updateFeed(context, feed, false);
 
         assertEquals(feed.getId(), newFeed.getId());
         assertTrue(feed.getId() != 0);
@@ -97,8 +97,8 @@ public class DbTasksTest {
         feed1.setItems(new ArrayList<>());
         feed2.setItems(new ArrayList<>());
 
-        Feed savedFeed1 = DBTasks.updateFeed(context, feed1, false);
-        Feed savedFeed2 = DBTasks.updateFeed(context, feed2, false);
+        Feed savedFeed1 = FeedDatabaseWriter.updateFeed(context, feed1, false);
+        Feed savedFeed2 = FeedDatabaseWriter.updateFeed(context, feed2, false);
 
         assertTrue(savedFeed1.getId() != savedFeed2.getId());
     }
@@ -135,7 +135,7 @@ public class DbTasksTest {
                     new Date(i), FeedItem.UNPLAYED, feed));
         }
 
-        final Feed newFeed = DBTasks.updateFeed(context, feed, false);
+        final Feed newFeed = FeedDatabaseWriter.updateFeed(context, feed, false);
         assertNotSame(newFeed, feed);
 
         updatedFeedTest(newFeed, feedID, itemIDs, numItemsOld, numItemsNew);
@@ -167,7 +167,7 @@ public class DbTasksTest {
         list.add(item);
         feed.setItems(list);
 
-        final Feed newFeed = DBTasks.updateFeed(context, feed, false);
+        final Feed newFeed = FeedDatabaseWriter.updateFeed(context, feed, false);
         assertNotSame(newFeed, feed);
 
         final Feed feedFromDB = DBReader.getFeed(newFeed.getId());
@@ -190,7 +190,7 @@ public class DbTasksTest {
 
         // delete some items
         feed.getItems().subList(0, 2).clear();
-        Feed newFeed = DBTasks.updateFeed(context, feed, true);
+        Feed newFeed = FeedDatabaseWriter.updateFeed(context, feed, true);
         assertEquals(8, newFeed.getItems().size()); // 10 - 2 = 8 items
 
         Feed feedFromDB = DBReader.getFeed(newFeed.getId());
@@ -217,7 +217,7 @@ public class DbTasksTest {
         FeedItem item = feed.getItemAtIndex(0);
         item.setItemIdentifier("id 0-duplicate");
         item.setTitle("item 0 duplicate");
-        Feed newFeed = DBTasks.updateFeed(context, feed, false);
+        Feed newFeed = FeedDatabaseWriter.updateFeed(context, feed, false);
         assertEquals(10, newFeed.getItems().size()); // id 1-duplicate replaces because the stream url is the same
 
         Feed feedFromDB = DBReader.getFeed(newFeed.getId());
