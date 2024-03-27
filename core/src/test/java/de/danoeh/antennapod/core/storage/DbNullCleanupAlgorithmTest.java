@@ -114,7 +114,7 @@ public class DbNullCleanupAlgorithmTest {
             //noinspection ConstantConditions
             assertTrue(item.getMedia().getId() != 0);
         }
-        DBTasks.performAutoCleanup(context);
+        AutoDownloadManager.performAutoCleanup(context);
         for (int i = 0; i < files.size(); i++) {
             assertTrue(files.get(i).exists());
         }

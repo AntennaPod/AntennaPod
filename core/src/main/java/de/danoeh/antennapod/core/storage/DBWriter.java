@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.storage;
 
 import android.app.backup.BackupManager;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
@@ -27,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -366,7 +368,7 @@ public class DBWriter {
 
             adapter.close();
             if (performAutoDownload) {
-                DBTasks.autodownloadUndownloadedItems(context);
+                AutoDownloadManager.autodownloadUndownloadedItems(context);
             }
 
         });
@@ -460,7 +462,7 @@ public class DBWriter {
             }
             adapter.close();
             if (performAutoDownload) {
-                DBTasks.autodownloadUndownloadedItems(context);
+                AutoDownloadManager.autodownloadUndownloadedItems(context);
             }
         });
     }
@@ -569,7 +571,7 @@ public class DBWriter {
         }
         adapter.close();
         if (performAutoDownload) {
-            DBTasks.autodownloadUndownloadedItems(context);
+            AutoDownloadManager.autodownloadUndownloadedItems(context);
         }
     }
 
@@ -1014,6 +1016,38 @@ public class DBWriter {
             adapter.resetAllMediaPlayedDuration();
             adapter.close();
         });
+    }
+
+    /**
+     * Removes the feed with the given download url. This method should NOT be executed on the GUI thread.
+     *
+     * @param context     Used for accessing the db
+     * @param downloadUrl URL of the feed.
+     */
+    public static void removeFeedWithDownloadUrl(Context context, String downloadUrl) {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        Cursor cursor = adapter.getFeedCursorDownloadUrls();
+        long feedId = 0;
+        if (cursor.moveToFirst()) {
+            do {
+                if (cursor.getString(1).equals(downloadUrl)) {
+                    feedId = cursor.getLong(0);
+                }
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        adapter.close();
+
+        if (feedId != 0) {
+            try {
+                deleteFeed(context, feedId).get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.w(TAG, "removeFeedWithDownloadUrl: Could not find feed with url: " + downloadUrl);
+        }
     }
 
     /**

@@ -43,7 +43,7 @@ import de.danoeh.antennapod.event.SyncServiceEvent;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.storage.FeedDatabaseWriter;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueStorage;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
@@ -158,7 +158,7 @@ public class SyncService extends Worker {
             if (!UrlChecker.containsUrl(localSubscriptions, downloadUrl) && !queuedRemovedFeeds.contains(downloadUrl)) {
                 Feed feed = new Feed(downloadUrl, null, "Unknown podcast");
                 feed.setItems(Collections.emptyList());
-                Feed newFeed = DBTasks.updateFeed(getApplicationContext(), feed, false);
+                Feed newFeed = FeedDatabaseWriter.updateFeed(getApplicationContext(), feed, false);
                 FeedUpdateManager.runOnce(getApplicationContext(), newFeed);
             }
         }
@@ -166,7 +166,7 @@ public class SyncService extends Worker {
         // remove subscription if not just subscribed (again)
         for (String downloadUrl : subscriptionChanges.getRemoved()) {
             if (!queuedAddedFeeds.contains(downloadUrl)) {
-                DBTasks.removeFeedWithDownloadUrl(getApplicationContext(), downloadUrl);
+                DBWriter.removeFeedWithDownloadUrl(getApplicationContext(), downloadUrl);
             }
         }
 

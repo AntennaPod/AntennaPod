@@ -33,7 +33,7 @@ import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.core.feed.FeedUrlNotFoundException;
-import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.storage.FeedDatabaseWriter;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
 import de.danoeh.antennapod.core.util.DownloadErrorLabel;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
@@ -452,7 +452,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             if (feedInFeedlist()) {
                 openFeed();
             } else {
-                DBTasks.updateFeed(this, feed, false);
+                FeedDatabaseWriter.updateFeed(this, feed, false);
                 didPressSubscribe = true;
                 handleUpdatedFeedStatus();
             }

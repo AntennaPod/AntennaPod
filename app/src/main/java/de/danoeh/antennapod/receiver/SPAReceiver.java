@@ -12,7 +12,7 @@ import java.util.Collections;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.ClientConfigurator;
-import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.storage.FeedDatabaseWriter;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.model.feed.Feed;
 
@@ -46,7 +46,7 @@ public class SPAReceiver extends BroadcastReceiver{
         for (String url : feedUrls) {
             Feed feed = new Feed(url, null, "Unknown podcast");
             feed.setItems(Collections.emptyList());
-            DBTasks.updateFeed(context, feed, false);
+            FeedDatabaseWriter.updateFeed(context, feed, false);
         }
         Toast.makeText(context, R.string.sp_apps_importing_feeds_msg, Toast.LENGTH_LONG).show();
         FeedUpdateManager.runOnce(context);
