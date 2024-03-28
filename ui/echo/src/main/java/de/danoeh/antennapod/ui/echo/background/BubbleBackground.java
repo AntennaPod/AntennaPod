@@ -1,14 +1,14 @@
-package de.danoeh.antennapod.ui.echo.screens;
+package de.danoeh.antennapod.ui.echo.background;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import androidx.annotation.NonNull;
 
-public class BubbleScreen extends BaseScreen {
+public class BubbleBackground extends BaseBackground {
     protected static final double PARTICLE_SPEED = 0.00002;
     protected static final int NUM_PARTICLES = 15;
 
-    public BubbleScreen(Context context) {
+    public BubbleBackground(Context context) {
         super(context);
         for (int i = 0; i < NUM_PARTICLES; i++) {
             particles.add(new Particle(Math.random(), 2.0 * Math.random() - 0.5, // Could already be off-screen
