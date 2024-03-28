@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation,PluralsCandidate">
+    <string name="debug_echo" translatable="false">[Debug] Echo</string>
     <string name="echo_home_header">Review the year</string>
     <string name="echo_home_subtitle">Your top podcasts and stats from the past year. Exclusively on your phone.</string>
 

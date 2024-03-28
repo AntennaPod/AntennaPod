@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:importantForAccessibility="no" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="32dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/aboveLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:fontFamily="@font/sarabun_regular"
+                app:fontFamily="@font/sarabun_regular"
+                tools:text="text above"
+                style="@style/TextAppearance.Material3.TitleLarge" />
+
+            <TextView
+                android:id="@+id/largeLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:layout_marginVertical="8dp"
+                android:fontFamily="@font/sarabun_semi_bold"
+                app:fontFamily="@font/sarabun_semi_bold"
+                tools:text="large"
+                style="@style/TextAppearance.Material3.DisplayLarge"
+                tools:targetApi="p" />
+
+            <TextView
+                android:id="@+id/belowLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:fontFamily="@font/sarabun_regular"
+                app:fontFamily="@font/sarabun_regular"
+                tools:text="text below"
+                style="@style/TextAppearance.Material3.TitleLarge" />
+
+            <TextView
+                android:id="@+id/smallLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:textSize="16sp"
+                android:layout_marginTop="32dp"
+                android:fontFamily="@font/sarabun_regular"
+                app:fontFamily="@font/sarabun_regular"
+                tools:text="small" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/echoLogo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:src="@drawable/echo"
+            android:layout_margin="32dp"
+            android:importantForAccessibility="no"
+            android:layout_alignParentBottom="true" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/actionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:visibility="gone"
+            android:layout_margin="32dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:textColor="#fff"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:strokeColor="#fff"
+            tools:ignore="RtlHardcoded" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

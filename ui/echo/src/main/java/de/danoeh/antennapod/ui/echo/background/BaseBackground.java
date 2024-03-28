@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.ui.echo.screens;
+package de.danoeh.antennapod.ui.echo.background;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat;
 import java.util.ArrayList;
 import de.danoeh.antennapod.ui.echo.R;
 
-public abstract class BaseScreen extends Drawable {
+public abstract class BaseBackground extends Drawable {
     private final Paint paintBackground;
     protected final Paint paintParticles;
     protected final ArrayList<Particle> particles = new ArrayList<>();
@@ -22,7 +22,7 @@ public abstract class BaseScreen extends Drawable {
     private final int colorBackgroundTo;
     private long lastFrame = 0;
 
-    public BaseScreen(Context context) {
+    public BaseBackground(Context context) {
         colorBackgroundFrom = ContextCompat.getColor(context, R.color.gradient_000);
         colorBackgroundTo = ContextCompat.getColor(context, R.color.gradient_100);
         paintBackground = new Paint();

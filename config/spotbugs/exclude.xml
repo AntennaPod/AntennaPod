@@ -26,7 +26,7 @@
     </Match>
     <Match>
         <Bug pattern="ICAST_IDIV_CAST_TO_DOUBLE"/>
-        <Class name="de.danoeh.antennapod.ui.echo.screens.RotatingSquaresScreen"/>
+        <Class name="de.danoeh.antennapod.ui.echo.background.RotatingSquaresBackground"/>
     </Match>
     <Match>
         <Bug pattern="MS_CANNOT_BE_FINAL"/>

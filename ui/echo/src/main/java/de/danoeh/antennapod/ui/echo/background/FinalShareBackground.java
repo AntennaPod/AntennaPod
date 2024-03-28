@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.ui.echo.screens;
+package de.danoeh.antennapod.ui.echo.background;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,11 +9,11 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.res.ResourcesCompat;
-import de.danoeh.antennapod.ui.echo.EchoActivity;
+import de.danoeh.antennapod.ui.echo.EchoConfig;
 import de.danoeh.antennapod.ui.echo.R;
 import java.util.ArrayList;
 
-public class FinalShareScreen extends BubbleScreen {
+public class FinalShareBackground extends BubbleBackground {
     private static final float[][] COVER_POSITIONS = new float[][]{ new float[] {0.0f, 0.0f},
             new float[] {0.4f, 0.0f}, new float[] {0.4f, 0.2f}, new float[] {0.6f, 0.2f}, new float[] {0.8f, 0.2f}};
     private final Paint paintTextMain;
@@ -26,14 +26,14 @@ public class FinalShareScreen extends BubbleScreen {
     private final Typeface typefaceNormal;
     private final Typeface typefaceBold;
 
-    public FinalShareScreen(Context context,
-                            ArrayList<String> favoritePodNames, ArrayList<Drawable> favoritePodImages) {
+    public FinalShareBackground(Context context,
+                                ArrayList<String> favoritePodNames, ArrayList<Drawable> favoritePodImages) {
         super(context);
         this.heading = context.getString(R.string.echo_share_heading);
         this.logo = AppCompatResources.getDrawable(context, R.drawable.echo);
         this.favoritePodNames = favoritePodNames;
         this.favoritePodImages = favoritePodImages;
-        this.year = String.valueOf(EchoActivity.RELEASE_YEAR);
+        this.year = String.valueOf(EchoConfig.RELEASE_YEAR);
         typefaceNormal = ResourcesCompat.getFont(context, R.font.sarabun_regular);
         typefaceBold = ResourcesCompat.getFont(context, R.font.sarabun_semi_bold);
         paintTextMain = new Paint();

@@ -1,14 +1,14 @@
-package de.danoeh.antennapod.ui.echo.screens;
+package de.danoeh.antennapod.ui.echo.background;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import androidx.annotation.NonNull;
 
-public class WavesScreen extends BaseScreen {
+public class WavesBackground extends BaseBackground {
     protected static final int NUM_PARTICLES = 10;
 
-    public WavesScreen(Context context) {
+    public WavesBackground(Context context) {
         super(context);
         paintParticles.setStyle(Paint.Style.STROKE);
         for (int i = 0; i < NUM_PARTICLES; i++) {
