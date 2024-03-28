@@ -34,13 +34,6 @@ public class HomeSectionsSettingsDialog {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setTitle(R.string.configure_home);
         builder.setView(content);
-//        builder.setMultiChoiceItems(sectionLabels, checked, (dialog, which, isChecked) -> {
-//            if (isChecked) {
-//                hiddenSections.remove(sectionTags[which]);
-//            } else {
-//                hiddenSections.add(sectionTags[which]);
-//            }
-//        });
         RecyclerView recyclerView = content.findViewById(de.danoeh.antennapod.ui.preferences.R.id.recyclerView);
         HomeScreenSettingDialogAdapter adapter = new HomeScreenSettingDialogAdapter(context);
 
@@ -48,7 +41,7 @@ public class HomeSectionsSettingsDialog {
         ItemTouchHelper itemTouchHelper;
         itemTouchHelper = new ItemTouchHelper(itemMoveCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
-        adapter.addDragListener(itemTouchHelper::startDrag);
+        adapter.setDragListener(itemTouchHelper::startDrag);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
 
@@ -56,6 +49,8 @@ public class HomeSectionsSettingsDialog {
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
             SharedPreferences prefs = context.getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
             prefs.edit().putString(HomeFragment.PREF_HIDDEN_SECTIONS, TextUtils.join(",", hiddenSections)).apply();
+            final List<String> sectionOrder = adapter.getOrderedSectionLabels(context);
+            prefs.edit().putString(HomeFragment.PREF_SECTION_ORDER, TextUtils.join(",", sectionOrder)).apply();
             onSettingsChanged.onClick(dialog, which);
         });
         builder.setNegativeButton(R.string.cancel_label, null);

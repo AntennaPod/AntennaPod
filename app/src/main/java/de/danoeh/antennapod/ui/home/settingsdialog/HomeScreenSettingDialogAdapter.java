@@ -29,8 +29,14 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<HomeScreenSett
         this.sectionLabels = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.home_section_titles)));
     }
 
-    public void addDragListener(@Nullable Consumer<ViewHolder> dragListener){
+    public void setDragListener(@Nullable Consumer<ViewHolder> dragListener){
         this.dragListener = dragListener;
+    }
+
+    public List<String> getOrderedSectionLabels(Context context)
+    {
+
+        return Collections.unmodifiableList(sectionLabels);
     }
 
     @NonNull
@@ -79,7 +85,7 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<HomeScreenSett
         private final TextView name;
         private final ImageView dragger;
 
-        ViewHolder(View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(de.danoeh.antennapod.ui.preferences.R.id.home_screen_section_name);
             dragger = itemView.findViewById(de.danoeh.antennapod.ui.preferences.R.id.home_screen_section_drag);

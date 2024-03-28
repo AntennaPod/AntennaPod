@@ -60,6 +60,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     public static final String TAG = "HomeFragment";
     public static final String PREF_NAME = "PrefHomeFragment";
     public static final String PREF_HIDDEN_SECTIONS = "PrefHomeSectionsString";
+    public static final String PREF_SECTION_ORDER = "PrefHomeSectionOrder";
     public static final String PREF_DISABLE_NOTIFICATION_PERMISSION_NAG = "DisableNotificationPermissionNag";
     public static final String PREF_HIDE_ECHO = "HideEcho";
 
@@ -92,8 +93,9 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     private void populateSectionList() {
         viewBinding.homeContainer.removeAllViews();
 
-        SharedPreferences prefs = getContext().getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
-        if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(getContext(),
+        Context context = getContext();
+        SharedPreferences prefs = context.getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
+        if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(context,
                 Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             if (!prefs.getBoolean(HomeFragment.PREF_DISABLE_NOTIFICATION_PERMISSION_NAG, false)) {
                 addSection(new AllowNotificationsSection());
@@ -106,7 +108,8 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             addSection(new EchoSection());
         }
 
-        List<String> hiddenSections = getHiddenSections(getContext());
+        List<String> hiddenSections = getHiddenSections(context);
+        List<String> sectionOrder = getSortedSections(context);
         String[] sectionTags = getResources().getStringArray(R.array.home_section_tags);
         for (String sectionTag : sectionTags) {
             if (hiddenSections.contains(sectionTag)) {
@@ -141,8 +144,16 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     }
 
     public static List<String> getHiddenSections(Context context) {
+        return getListPreference(context, HomeFragment.PREF_HIDDEN_SECTIONS);
+    }
+
+    public static List<String> getSortedSections(Context context) {
+        return getListPreference(context, HomeFragment.PREF_SECTION_ORDER);
+    }
+
+    private static List<String> getListPreference(Context context, String preferenceKey) {
         SharedPreferences prefs = context.getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
-        String hiddenSectionsString = prefs.getString(HomeFragment.PREF_HIDDEN_SECTIONS, "");
+        String hiddenSectionsString = prefs.getString(preferenceKey, "");
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenSectionsString, ",")));
     }
 
