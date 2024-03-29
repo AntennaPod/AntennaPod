@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.net.discovery;
 
-import de.danoeh.antennapod.core.feed.FeedUrlNotFoundException;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;

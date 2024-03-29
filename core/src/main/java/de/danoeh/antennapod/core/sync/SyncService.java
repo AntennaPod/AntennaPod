@@ -28,6 +28,7 @@ import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -371,7 +372,7 @@ public class SyncService extends Worker {
         switch (selectedService) {
             case GPODDER_NET:
                 return new GpodnetService(AntennapodHttpClient.getHttpClient(),
-                        SynchronizationCredentials.getHosturl(), SynchronizationCredentials.getDeviceID(),
+                        SynchronizationCredentials.getHosturl(), SynchronizationCredentials.getDeviceId(),
                         SynchronizationCredentials.getUsername(), SynchronizationCredentials.getPassword());
             case NEXTCLOUD_GPODDER:
                 return new NextcloudSyncService(AntennapodHttpClient.getHttpClient(),

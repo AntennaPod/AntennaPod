@@ -8,9 +8,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
+import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.danoeh.antennapod.core.sync.SyncService;
-import de.danoeh.antennapod.core.sync.SynchronizationCredentials;
+import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
 import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
 import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 import de.danoeh.antennapod.net.sync.nextcloud.NextcloudLoginFlow;
@@ -88,7 +89,8 @@ public class NextcloudAuthenticationFragment extends DialogFragment
     @Override
     public void onNextcloudAuthenticated(String server, String username, String password) {
         SynchronizationSettings.setSelectedSyncProvider(SynchronizationProviderViewData.NEXTCLOUD_GPODDER);
-        SynchronizationCredentials.clear(getContext());
+        SynchronizationCredentials.clear();
+        SynchronizationQueueSink.clearQueue(getContext());
         SynchronizationCredentials.setPassword(password);
         SynchronizationCredentials.setHosturl(server);
         SynchronizationCredentials.setUsername(username);

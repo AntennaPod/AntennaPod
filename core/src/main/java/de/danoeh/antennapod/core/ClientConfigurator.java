@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.storage.preferences.UsageStatistics;
@@ -36,6 +37,7 @@ public class ClientConfigurator {
         }
         PodDBAdapter.init(context);
         UserPreferences.init(context);
+        SynchronizationCredentials.init(context);
         UsageStatistics.init(context);
         PlaybackPreferences.init(context);
         SslProviderInstaller.install(context);

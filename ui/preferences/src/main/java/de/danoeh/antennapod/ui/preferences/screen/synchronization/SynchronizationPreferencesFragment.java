@@ -21,13 +21,14 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.ui.preferences.R;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import de.danoeh.antennapod.event.SyncServiceEvent;
-import de.danoeh.antennapod.core.sync.SynchronizationCredentials;
+import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
 import de.danoeh.antennapod.core.sync.SynchronizationSettings;
@@ -100,7 +101,8 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             return true;
         });
         findPreference(PREFERENCE_LOGOUT).setOnPreferenceClickListener(preference -> {
-            SynchronizationCredentials.clear(getContext());
+            SynchronizationCredentials.clear();
+            SynchronizationQueueSink.clearQueue(getContext());
             Snackbar.make(getView(), R.string.pref_synchronization_logout_toast, Snackbar.LENGTH_LONG).show();
             SynchronizationSettings.setSelectedSyncProvider(null);
             updateScreen();
