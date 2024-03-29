@@ -15,6 +15,7 @@ dependencies {
     implementation project(':ui:i18n')
     implementation project(':ui:notifications')
     implementation project(':model')
+    implementation project(':net:download:service-interface')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.core:core:$coreVersion"

@@ -28,9 +28,11 @@ import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
+import de.danoeh.antennapod.net.download.service.feed.remote.Downloader;
+import de.danoeh.antennapod.net.download.service.feed.remote.HttpDownloader;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
-import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequestCreator;
 import de.danoeh.antennapod.net.discovery.FeedUrlNotFoundException;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
@@ -45,8 +47,6 @@ import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfa
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.model.download.DownloadResult;
-import de.danoeh.antennapod.core.service.download.Downloader;
-import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.net.discovery.CombinedSearcher;

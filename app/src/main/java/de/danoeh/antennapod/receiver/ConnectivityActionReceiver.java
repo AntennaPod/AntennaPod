@@ -7,7 +7,7 @@ import android.net.ConnectivityManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import de.danoeh.antennapod.core.ClientConfigurator;
+import de.danoeh.antennapod.ClientConfigurator;
 import de.danoeh.antennapod.core.util.download.NetworkConnectionChangeHandler;
 
 public class ConnectivityActionReceiver extends BroadcastReceiver {

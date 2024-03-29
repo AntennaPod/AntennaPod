@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import de.danoeh.antennapod.core.ClientConfigurator;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 
 /**
@@ -18,8 +17,6 @@ public class FeedUpdateReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "Received intent");
-        ClientConfigurator.initialize(context);
-
         FeedUpdateManager.getInstance().runOnce(context);
     }
 
