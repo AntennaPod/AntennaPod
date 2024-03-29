@@ -18,9 +18,10 @@ import androidx.annotation.Nullable;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.button.MaterialButton;
+import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.danoeh.antennapod.core.sync.SyncService;
-import de.danoeh.antennapod.core.sync.SynchronizationCredentials;
+import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
 import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
 import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 import de.danoeh.antennapod.core.util.FileNameGenerator;
@@ -83,10 +84,11 @@ public class GpodderAuthenticationFragment extends DialogFragment {
             if (serverUrlText.getText().length() == 0) {
                 return;
             }
-            SynchronizationCredentials.clear(getContext());
+            SynchronizationCredentials.clear();
+            SynchronizationQueueSink.clearQueue(getContext());
             SynchronizationCredentials.setHosturl(serverUrlText.getText().toString());
             service = new GpodnetService(AntennapodHttpClient.getHttpClient(),
-                    SynchronizationCredentials.getHosturl(), SynchronizationCredentials.getDeviceID(),
+                    SynchronizationCredentials.getHosturl(), SynchronizationCredentials.getDeviceId(),
                     SynchronizationCredentials.getUsername(), SynchronizationCredentials.getPassword());
             getDialog().setTitle(SynchronizationCredentials.getHosturl());
             advance();
@@ -258,7 +260,7 @@ public class GpodderAuthenticationFragment extends DialogFragment {
                     SynchronizationSettings.setSelectedSyncProvider(SynchronizationProviderViewData.GPODDER_NET);
                     SynchronizationCredentials.setUsername(username);
                     SynchronizationCredentials.setPassword(password);
-                    SynchronizationCredentials.setDeviceID(selectedDevice.getId());
+                    SynchronizationCredentials.setDeviceId(selectedDevice.getId());
                     setupFinishView(view);
                 }
             }

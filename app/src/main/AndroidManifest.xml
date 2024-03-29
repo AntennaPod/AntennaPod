@@ -309,7 +309,7 @@
 
         <activity android:name=".activity.SelectSubscriptionActivity"
             android:label="@string/shortcut_subscription_label"
-            android:icon="@drawable/ic_subscriptions_shortcut"
+            android:icon="@drawable/ic_shortcut_subscriptions"
             android:theme="@style/Theme.AntennaPod.Dark.Translucent"
             android:exported="true">
             <intent-filter>

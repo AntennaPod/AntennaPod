@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.feed;
+package de.danoeh.antennapod.net.discovery;
 
 import java.io.IOException;
 
