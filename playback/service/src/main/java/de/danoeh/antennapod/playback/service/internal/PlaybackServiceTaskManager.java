@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.service.playback;
+package de.danoeh.antennapod.playback.service.internal;
 
 import android.content.Context;
 import android.os.Handler;
@@ -275,7 +275,7 @@ public class PlaybackServiceTaskManager {
     /**
      * Sleeps for a given time and then pauses playback.
      */
-    class SleepTimer implements Runnable {
+    public class SleepTimer implements Runnable {
         private static final String TAG = "SleepTimer";
         private static final long UPDATE_INTERVAL = 1000L;
         public static final long NOTIFICATION_THRESHOLD = 10000;

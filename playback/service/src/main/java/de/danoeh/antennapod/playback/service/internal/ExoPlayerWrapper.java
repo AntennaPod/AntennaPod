@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.service.playback;
+package de.danoeh.antennapod.playback.service.internal;
 
 import android.content.Context;
 import android.media.audiofx.LoudnessEnhancer;
@@ -9,10 +9,12 @@ import android.view.SurfaceHolder;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.OptIn;
 import androidx.core.util.Consumer;
 
 import androidx.media3.common.C;
 import androidx.media3.common.PlaybackException;
+import androidx.media3.common.util.UnstableApi;
 import androidx.media3.database.StandaloneDatabaseProvider;
 import androidx.media3.datasource.DataSource;
 import androidx.media3.datasource.DefaultDataSource;
@@ -42,9 +44,9 @@ import androidx.media3.extractor.DefaultExtractorsFactory;
 import androidx.media3.extractor.mp3.Mp3Extractor;
 import androidx.media3.ui.DefaultTrackNameProvider;
 import androidx.media3.ui.TrackNameProvider;
-import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.net.common.UserAgentInterceptor;
 import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
+import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.danoeh.antennapod.net.common.HttpCredentialEncoder;
@@ -62,6 +64,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+@OptIn(markerClass = UnstableApi.class)
 public class ExoPlayerWrapper {
     public static final int BUFFERING_STARTED = -1;
     public static final int BUFFERING_ENDED = -2;

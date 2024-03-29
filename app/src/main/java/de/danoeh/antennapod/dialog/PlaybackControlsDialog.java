@@ -11,7 +11,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import android.widget.Button;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.playback.service.PlaybackController;
+
 import java.util.List;
 
 public class PlaybackControlsDialog extends DialogFragment {

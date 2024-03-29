@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.service;
+package de.danoeh.antennapod.playback.service;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -12,7 +12,6 @@ import android.view.KeyEvent;
 import androidx.annotation.RequiresApi;
 
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 
 @RequiresApi(api = Build.VERSION_CODES.N)

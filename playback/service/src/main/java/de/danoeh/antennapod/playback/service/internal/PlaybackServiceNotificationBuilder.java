@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.service.playback;
+package de.danoeh.antennapod.playback.service.internal;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -18,9 +18,10 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.NotificationCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.playback.service.MediaButtonReceiver;
+import de.danoeh.antennapod.playback.service.PlaybackService;
+import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;

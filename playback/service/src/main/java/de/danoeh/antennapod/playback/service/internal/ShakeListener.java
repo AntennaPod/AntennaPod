@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.service.playback;
+package de.danoeh.antennapod.playback.service.internal;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -7,8 +7,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
 
-class ShakeListener implements SensorEventListener
-{
+public class ShakeListener implements SensorEventListener {
     private static final String TAG = ShakeListener.class.getSimpleName();
 
     private Sensor mAccelerometer;

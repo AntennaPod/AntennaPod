@@ -5,7 +5,6 @@ import android.os.StrictMode;
 
 import com.google.android.material.color.DynamicColors;
 
-import de.danoeh.antennapod.core.ApCoreEventBusIndex;
 import de.danoeh.antennapod.error.CrashReportWriter;
 import de.danoeh.antennapod.error.RxJavaErrorHandlerSetup;
 import de.danoeh.antennapod.preferences.PreferenceUpgrader;
@@ -37,7 +36,6 @@ public class PodcastApp extends Application {
         SPAUtil.sendSPAppsQueryFeedsIntent(this);
         EventBus.builder()
                 .addIndex(new ApEventBusIndex())
-                .addIndex(new ApCoreEventBusIndex())
                 .logNoSubscriberMessages(false)
                 .sendNoSubscriberEvent(false)
                 .installDefaultEventBus();
