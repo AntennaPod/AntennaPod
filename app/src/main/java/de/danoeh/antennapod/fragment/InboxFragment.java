@@ -70,7 +70,7 @@ public class InboxFragment extends EpisodesListFragment {
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        if (super.onOptionsItemSelected(item)) {
+        if (super.onMenuItemClick(item)) {
             return true;
         }
         if (item.getItemId() == R.id.remove_all_inbox_item) {

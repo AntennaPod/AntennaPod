@@ -54,7 +54,7 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        if (super.onOptionsItemSelected(item)) {
+        if (super.onMenuItemClick(item)) {
             return true;
         }
         if (item.getItemId() == R.id.clear_history_item) {
