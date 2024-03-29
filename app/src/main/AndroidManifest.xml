@@ -305,6 +305,10 @@
                 <data android:mimeType="text/plain"/>
             </intent-filter>
 
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="de.danoeh.antennapod.intents.ONLINE_FEEDVIEW" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".activity.SelectSubscriptionActivity"

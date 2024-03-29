@@ -39,6 +39,7 @@ include ':storage:preferences'
 
 include ':ui:app-start-intent'
 include ':ui:common'
+include ':ui:discovery'
 include ':ui:echo'
 include ':ui:episodes'
 include ':ui:glide'

@@ -63,6 +63,7 @@ import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
+import de.danoeh.antennapod.ui.discovery.DiscoveryFragment;
 import de.danoeh.antennapod.ui.home.HomeFragment;
 import de.danoeh.antennapod.view.LockableBottomSheetBehavior;
 import org.apache.commons.lang3.ArrayUtils;
@@ -87,7 +88,6 @@ public class MainActivity extends CastEnabledActivity {
 
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
     public static final String EXTRA_REFRESH_ON_START = "refresh_on_start";
-    public static final String EXTRA_STARTED_FROM_SEARCH = "started_from_search";
     public static final String EXTRA_ADD_TO_BACK_STACK = "add_to_back_stack";
     public static final String KEY_GENERATED_VIEW_ID = "generated_view_id";
 
@@ -347,7 +347,7 @@ public class MainActivity extends CastEnabledActivity {
         return recycledViewPool;
     }
 
-    public void loadFragment(String tag, Bundle args) {
+    public Fragment createFragmentInstance(String tag, Bundle args) {
         Log.d(TAG, "loadFragment(tag: " + tag + ", args: " + args + ")");
         Fragment fragment;
         switch (tag) {
@@ -375,19 +375,24 @@ public class MainActivity extends CastEnabledActivity {
             case SubscriptionFragment.TAG:
                 fragment = new SubscriptionFragment();
                 break;
+            case DiscoveryFragment.TAG:
+                fragment = new DiscoveryFragment();
+                break;
             default:
                 // default to home screen
                 fragment = new HomeFragment();
-                tag = HomeFragment.TAG;
                 args = null;
                 break;
         }
-
         if (args != null) {
             fragment.setArguments(args);
         }
+        return fragment;
+    }
+
+    public void loadFragment(String tag, Bundle args) {
         NavDrawerFragment.saveLastNavFragment(this, tag);
-        loadFragment(fragment);
+        loadFragment(createFragmentInstance(tag, args));
     }
 
     public void loadFeedFragmentById(long feedId, Bundle args) {
@@ -399,7 +404,7 @@ public class MainActivity extends CastEnabledActivity {
         loadFragment(fragment);
     }
 
-    private void loadFragment(Fragment fragment) {
+    public void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         // clear back stack
         for (int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
@@ -591,9 +596,8 @@ public class MainActivity extends CastEnabledActivity {
             long feedId = intent.getLongExtra(EXTRA_FEED_ID, 0);
             Bundle args = intent.getBundleExtra(MainActivityStarter.EXTRA_FRAGMENT_ARGS);
             if (feedId > 0) {
-                boolean startedFromSearch = intent.getBooleanExtra(EXTRA_STARTED_FROM_SEARCH, false);
                 boolean addToBackStack = intent.getBooleanExtra(EXTRA_ADD_TO_BACK_STACK, false);
-                if (startedFromSearch || addToBackStack) {
+                if (addToBackStack) {
                     loadChildFragment(FeedItemlistFragment.newInstance(feedId));
                 } else {
                     loadFeedFragmentById(feedId, args);
@@ -604,7 +608,12 @@ public class MainActivity extends CastEnabledActivity {
             String tag = intent.getStringExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG);
             Bundle args = intent.getBundleExtra(MainActivityStarter.EXTRA_FRAGMENT_ARGS);
             if (tag != null) {
-                loadFragment(tag, args);
+                Fragment fragment = createFragmentInstance(tag, args);
+                if (intent.getBooleanExtra(MainActivityStarter.EXTRA_ADD_TO_BACK_STACK, false)) {
+                    loadChildFragment(fragment);
+                } else {
+                    loadFragment(fragment);
+                }
             }
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else if (intent.getBooleanExtra(MainActivityStarter.EXTRA_OPEN_PLAYER, false)) {

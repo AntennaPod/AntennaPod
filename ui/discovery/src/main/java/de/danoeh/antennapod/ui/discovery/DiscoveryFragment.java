@@ -1,7 +1,6 @@
-package de.danoeh.antennapod.fragment;
+package de.danoeh.antennapod.ui.discovery;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,14 +20,12 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
-import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
-import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.net.discovery.BuildConfig;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.event.DiscoveryDefaultUpdateEvent;
 import de.danoeh.antennapod.net.discovery.ItunesTopListLoader;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
+import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -47,15 +44,14 @@ import java.util.Map;
  * Searches iTunes store for top podcasts and displays results in a list.
  */
 public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
-
-    private static final String TAG = "ItunesSearchFragment";
+    public static final String TAG = "DiscoveryFragment";
     private static final int NUM_OF_TOP_PODCASTS = 25;
     private SharedPreferences prefs;
 
     /**
      * Adapter responsible with the search results.
      */
-    private ItunesAdapter adapter;
+    private OnlineSearchAdapter adapter;
     private GridView gridView;
     private ProgressBar progressBar;
     private TextView txtvError;
@@ -110,9 +106,9 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_itunes_search, container, false);
+        View root = inflater.inflate(R.layout.fragment_online_search, container, false);
         gridView = root.findViewById(R.id.gridView);
-        adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
+        adapter = new OnlineSearchAdapter(getActivity(), new ArrayList<>());
         gridView.setAdapter(adapter);
 
         toolbar = root.findViewById(R.id.toolbar);
@@ -128,9 +124,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
             if (podcast.feedUrl == null) {
                 return;
             }
-            Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
-            intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, podcast.feedUrl);
-            startActivity(intent);
+            startActivity(new OnlineFeedviewActivityStarter(getContext(), podcast.feedUrl).getIntent());
         });
 
         progressBar = root.findViewById(R.id.progressBar);

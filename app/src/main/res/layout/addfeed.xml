@@ -85,7 +85,7 @@
                 android:id="@+id/quickFeedDiscovery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="de.danoeh.antennapod.fragment.QuickFeedDiscoveryFragment" />
+                android:name="de.danoeh.antennapod.ui.discovery.QuickFeedDiscoveryFragment" />
 
             <TextView
                 android:layout_width="match_parent"

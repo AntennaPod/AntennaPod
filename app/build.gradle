@@ -90,6 +90,7 @@ dependencies {
     implementation project(':storage:preferences')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
+    implementation project(':ui:discovery')
     implementation project(':ui:echo')
     implementation project(':ui:episodes')
     implementation project(':ui:glide')

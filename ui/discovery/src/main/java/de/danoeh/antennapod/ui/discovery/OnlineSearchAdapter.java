@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.adapter.itunes;
+package de.danoeh.antennapod.ui.discovery;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
@@ -17,11 +17,9 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 
-public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
+public class OnlineSearchAdapter extends ArrayAdapter<PodcastSearchResult> {
     /**
      * Related Context
      */
@@ -38,7 +36,7 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
      * @param context Related context
      * @param objects Search result
      */
-    public ItunesAdapter(Context context, List<PodcastSearchResult> objects) {
+    public OnlineSearchAdapter(Context context, List<PodcastSearchResult> objects) {
         super(context, 0, objects);
         this.data = objects;
         this.context = context;
@@ -57,9 +55,8 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
         View view;
 
         //Handle view holder stuff
-        if(convertView == null) {
-            view = ((MainActivity) context).getLayoutInflater()
-                    .inflate(R.layout.itunes_podcast_listitem, parent, false);
+        if (convertView == null) {
+            view = View.inflate(context, R.layout.online_search_listitem, null);
             viewHolder = new PodcastViewHolder(view);
             view.setTag(viewHolder);
         } else {
@@ -116,7 +113,7 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
          * Constructor
          * @param view GridView cell
          */
-        PodcastViewHolder(View view){
+        PodcastViewHolder(View view) {
             coverView = view.findViewById(R.id.imgvCover);
             titleView = view.findViewById(R.id.txtvTitle);
             authorView = view.findViewById(R.id.txtvAuthor);

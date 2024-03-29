@@ -25,7 +25,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -38,6 +37,8 @@ import de.danoeh.antennapod.net.discovery.FyydPodcastSearcher;
 import de.danoeh.antennapod.net.discovery.GpodnetPodcastSearcher;
 import de.danoeh.antennapod.net.discovery.ItunesPodcastSearcher;
 import de.danoeh.antennapod.net.discovery.PodcastIndexPodcastSearcher;
+import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
+import de.danoeh.antennapod.ui.discovery.OnlineSearchFragment;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -145,10 +146,7 @@ public class AddFeedFragment extends Fragment {
     }
 
     private void addUrl(String url) {
-        Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
-        intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, url);
-        intent.putExtra(OnlineFeedViewActivity.ARG_WAS_MANUAL_URL, true);
-        startActivity(intent);
+        startActivity(new OnlineFeedviewActivityStarter(getContext(), url).withManualUrl().getIntent());
     }
 
     private void performSearch() {
