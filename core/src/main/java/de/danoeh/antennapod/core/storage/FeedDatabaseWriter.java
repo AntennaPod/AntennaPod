@@ -1,26 +1,19 @@
 package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.text.TextUtils;
 import android.util.Log;
-import androidx.annotation.VisibleForTesting;
-import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
-import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
-import de.danoeh.antennapod.storage.database.mapper.FeedCursorMapper;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import org.greenrobot.eventbus.EventBus;
 
@@ -29,116 +22,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 
 /**
- * Provides methods for doing common tasks that use DBReader and DBWriter.
+ * Creates and updates feeds in the database.
  */
-public final class DBTasks {
-    private static final String TAG = "DBTasks";
-
-    /**
-     * Executor service used by the autodownloadUndownloadedEpisodes method.
-     */
-    private static final ExecutorService autodownloadExec;
-
-    private static AutomaticDownloadAlgorithm downloadAlgorithm = new AutomaticDownloadAlgorithm();
-
-    static {
-        autodownloadExec = Executors.newSingleThreadExecutor(r -> {
-            Thread t = new Thread(r);
-            t.setPriority(Thread.MIN_PRIORITY);
-            return t;
-        });
-    }
-
-    private DBTasks() {
-    }
-
-    /**
-     * Removes the feed with the given download url. This method should NOT be executed on the GUI thread.
-     *
-     * @param context     Used for accessing the db
-     * @param downloadUrl URL of the feed.
-     */
-    public static void removeFeedWithDownloadUrl(Context context, String downloadUrl) {
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        Cursor cursor = adapter.getFeedCursorDownloadUrls();
-        long feedID = 0;
-        if (cursor.moveToFirst()) {
-            do {
-                if (cursor.getString(1).equals(downloadUrl)) {
-                    feedID = cursor.getLong(0);
-                }
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        adapter.close();
-
-        if (feedID != 0) {
-            try {
-                DBWriter.deleteFeed(context, feedID).get();
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Log.w(TAG, "removeFeedWithDownloadUrl: Could not find feed with url: " + downloadUrl);
-        }
-    }
-
-    /**
-     * Notifies the database about a missing FeedMedia file. This method will correct the FeedMedia object's
-     * values in the DB and send a FeedItemEvent.
-     */
-    public static void notifyMissingFeedMediaFile(final Context context, final FeedMedia media) {
-        Log.i(TAG, "The feedmanager was notified about a missing episode. It will update its database now.");
-        media.setDownloaded(false);
-        media.setLocalFileUrl(null);
-        DBWriter.setFeedMedia(media);
-        EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
-        EventBus.getDefault().post(new MessageEvent(context.getString(R.string.error_file_not_found)));
-    }
-
-    /**
-     * Looks for non-downloaded episodes in the queue or list of unread items and request a download if
-     * 1. Network is available
-     * 2. The device is charging or the user allows auto download on battery
-     * 3. There is free space in the episode cache
-     * This method is executed on an internal single thread executor.
-     *
-     * @param context  Used for accessing the DB.
-     * @return A Future that can be used for waiting for the methods completion.
-     */
-    public static Future<?> autodownloadUndownloadedItems(final Context context) {
-        Log.d(TAG, "autodownloadUndownloadedItems");
-        return autodownloadExec.submit(downloadAlgorithm.autoDownloadUndownloadedItems(context));
-    }
-
-    /**
-     * For testing purpose only.
-     */
-    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    public static void setDownloadAlgorithm(AutomaticDownloadAlgorithm newDownloadAlgorithm) {
-        downloadAlgorithm = newDownloadAlgorithm;
-    }
-
-    /**
-     * Removed downloaded episodes outside of the queue if the episode cache is full. Episodes with a smaller
-     * 'playbackCompletionDate'-value will be deleted first.
-     * <p/>
-     * This method should NOT be executed on the GUI thread.
-     *
-     * @param context Used for accessing the DB.
-     */
-    public static void performAutoCleanup(final Context context) {
-        EpisodeCleanupAlgorithmFactory.build().performCleanup(context);
-    }
+public abstract class FeedDatabaseWriter {
+    private static final String TAG = "FeedDbWriter";
 
     private static Feed searchFeedByIdentifyingValueOrID(Feed feed) {
         if (feed.getId() != 0) {
@@ -191,10 +81,6 @@ public final class DBTasks {
      * Adds new Feeds to the database or updates the old versions if they already exists. If another Feed with the same
      * identifying value already exists, this method will add new FeedItems from the new Feed to the existing Feed.
      * These FeedItems will be marked as unread with the exception of the most recent FeedItem.
-     * <p/>
-     * This method can update multiple feeds at once. Submitting a feed twice in the same method call can result in undefined behavior.
-     * <p/>
-     * This method should NOT be executed on the GUI thread.
      *
      * @param context Used for accessing the DB.
      * @param newFeed The new Feed object.
@@ -372,71 +258,5 @@ public final class DBTasks {
         return "Title: " + item.getTitle()
                 + "\nID: " + item.getItemIdentifier()
                 + ((item.getMedia() == null) ? "" : "\nURL: " + item.getMedia().getDownloadUrl());
-    }
-
-    /**
-     * Searches the FeedItems of a specific Feed for a given string.
-     *
-     * @param feedID  The id of the feed whose items should be searched.
-     * @param query   The search string.
-     * @return A FutureTask object that executes the search request
-     *         and returns the search result as a List of FeedItems.
-     */
-    public static FutureTask<List<FeedItem>> searchFeedItems(final long feedID, final String query) {
-        return new FutureTask<>(new QueryTask<List<FeedItem>>() {
-            @Override
-            public void execute(PodDBAdapter adapter) {
-                Cursor searchResult = adapter.searchItems(feedID, query);
-                List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
-                DBReader.loadAdditionalFeedItemListData(items);
-                setResult(items);
-                searchResult.close();
-            }
-        });
-    }
-
-    public static FutureTask<List<Feed>> searchFeeds(final String query) {
-        return new FutureTask<>(new QueryTask<List<Feed>>() {
-            @Override
-            public void execute(PodDBAdapter adapter) {
-                Cursor cursor = adapter.searchFeeds(query);
-                List<Feed> items = new ArrayList<>();
-                if (cursor.moveToFirst()) {
-                    do {
-                        items.add(FeedCursorMapper.convert(cursor));
-                    } while (cursor.moveToNext());
-                }
-                setResult(items);
-                cursor.close();
-            }
-        });
-    }
-
-    /**
-     * A runnable which should be used for database queries. The onCompletion
-     * method is executed on the database executor to handle Cursors correctly.
-     * This class automatically creates a PodDBAdapter object and closes it when
-     * it is no longer in use.
-     */
-    abstract static class QueryTask<T> implements Callable<T> {
-        private T result;
-
-        public QueryTask() {
-        }
-
-        @Override
-        public T call() throws Exception {
-            PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            execute(adapter);
-            adapter.close();
-            return result;
-        }
-
-        public abstract void execute(PodDBAdapter adapter);
-
-        void setResult(T result) {
-            this.result = result;
-        }
     }
 }

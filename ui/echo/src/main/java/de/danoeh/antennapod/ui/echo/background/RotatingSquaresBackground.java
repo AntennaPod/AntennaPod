@@ -1,11 +1,11 @@
-package de.danoeh.antennapod.ui.echo.screens;
+package de.danoeh.antennapod.ui.echo.background;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import androidx.annotation.NonNull;
 
-public class RotatingSquaresScreen extends BaseScreen {
-    public RotatingSquaresScreen(Context context) {
+public class RotatingSquaresBackground extends BaseBackground {
+    public RotatingSquaresBackground(Context context) {
         super(context);
         for (int i = 0; i < 16; i++) {
             particles.add(new Particle(

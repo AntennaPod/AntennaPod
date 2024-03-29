@@ -35,7 +35,7 @@ public class ExceptFavoriteCleanupAlgorithmTest extends DbCleanupTests {
         List<File> files = new ArrayList<>();
         populateItems(numberOfItems, feed, items, files, FeedItem.UNPLAYED, false, false);
 
-        DBTasks.performAutoCleanup(context);
+        AutoDownloadManager.performAutoCleanup(context);
         for (int i = 0; i < files.size(); i++) {
             if (i < EPISODE_CACHE_SIZE) {
                 assertTrue("Only enough items should be deleted", files.get(i).exists());
@@ -53,7 +53,7 @@ public class ExceptFavoriteCleanupAlgorithmTest extends DbCleanupTests {
         List<File> files = new ArrayList<>();
         populateItems(numberOfItems, feed, items, files, FeedItem.UNPLAYED, true, false);
 
-        DBTasks.performAutoCleanup(context);
+        AutoDownloadManager.performAutoCleanup(context);
         for (int i = 0; i < files.size(); i++) {
             if (i < EPISODE_CACHE_SIZE) {
                 assertTrue("Only enough items should be deleted", files.get(i).exists());
@@ -71,7 +71,7 @@ public class ExceptFavoriteCleanupAlgorithmTest extends DbCleanupTests {
         List<File> files = new ArrayList<>();
         populateItems(numberOfItems, feed, items, files, FeedItem.UNPLAYED, false, true);
 
-        DBTasks.performAutoCleanup(context);
+        AutoDownloadManager.performAutoCleanup(context);
         for (int i = 0; i < files.size(); i++) {
             assertTrue("Favorite episodes should should not be deleted", files.get(i).exists());
         }

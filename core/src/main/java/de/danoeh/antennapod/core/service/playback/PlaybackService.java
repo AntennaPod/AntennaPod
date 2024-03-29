@@ -72,7 +72,6 @@ import de.danoeh.antennapod.core.service.QuickSettingsTileService;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceTaskManager.SleepTimer;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
@@ -1842,7 +1841,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 return;
             }
 
-            List<FeedItem> results = FeedSearcher.searchFeedItems(query, 0);
+            List<FeedItem> results = DBReader.searchFeedItems(0, query);
             if (results.size() > 0 && results.get(0).getMedia() != null) {
                 FeedMedia media = results.get(0).getMedia();
                 startPlaying(media, false);

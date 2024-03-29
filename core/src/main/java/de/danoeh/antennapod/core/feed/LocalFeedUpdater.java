@@ -31,7 +31,7 @@ import de.danoeh.antennapod.core.util.FastDocumentFile;
 import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.storage.FeedDatabaseWriter;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.parser.feed.util.DateUtils;
 import de.danoeh.antennapod.model.download.DownloadError;
@@ -82,7 +82,7 @@ public class LocalFeedUpdater {
             feed.setItems(new ArrayList<>());
         }
         //make sure it is the latest 'version' of this feed from the db (all items etc)
-        feed = DBTasks.updateFeed(context, feed, false);
+        feed = FeedDatabaseWriter.updateFeed(context, feed, false);
 
         // list files in feed folder
         List<FastDocumentFile> allFiles = FastDocumentFile.list(context, folderUri);
@@ -127,7 +127,7 @@ public class LocalFeedUpdater {
         feed.setDescription(context.getString(R.string.local_feed_description));
         feed.setAuthor(context.getString(R.string.local_folder));
 
-        DBTasks.updateFeed(context, feed, true);
+        FeedDatabaseWriter.updateFeed(context, feed, true);
     }
 
     /**
