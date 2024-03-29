@@ -80,7 +80,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        if (super.onOptionsItemSelected(item)) {
+        if (super.onMenuItemClick(item)) {
             return true;
         }
         if (item.getItemId() == R.id.filter_items) {
