@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.storage;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import androidx.preference.PreferenceManager;
@@ -13,12 +12,11 @@ import java.util.List;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import de.danoeh.antennapod.core.ApplicationCallbacks;
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
@@ -32,8 +30,6 @@ import static de.danoeh.antennapod.core.storage.DbTestUtils.saveFeedlist;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Test class for DBTasks.
@@ -83,10 +79,7 @@ public class DbCleanupTests {
 
         UserPreferences.init(context);
         PlaybackPreferences.init(context);
-
-        Application app = (Application) context;
-        ClientConfig.applicationCallbacks = mock(ApplicationCallbacks.class);
-        when(ClientConfig.applicationCallbacks.getApplicationInstance()).thenReturn(app);
+        SynchronizationSettings.init(context);
     }
 
     @After

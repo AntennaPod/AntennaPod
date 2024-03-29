@@ -23,7 +23,7 @@ import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
 import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
-import de.danoeh.antennapod.core.sync.SynchronizationSettings;
+import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.core.util.FileNameGenerator;
 import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetDevice;
@@ -257,7 +257,8 @@ public class GpodderAuthenticationFragment extends DialogFragment {
                 if (selectedDevice == null) {
                     throw new IllegalStateException("Device must not be null here");
                 } else {
-                    SynchronizationSettings.setSelectedSyncProvider(SynchronizationProviderViewData.GPODDER_NET);
+                    SynchronizationSettings.setSelectedSyncProvider(
+                            SynchronizationProviderViewData.GPODDER_NET.getIdentifier());
                     SynchronizationCredentials.setUsername(username);
                     SynchronizationCredentials.setPassword(password);
                     SynchronizationCredentials.setDeviceId(selectedDevice.getId());

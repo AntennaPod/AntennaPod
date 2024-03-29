@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.util.Log;
 import androidx.annotation.NonNull;
@@ -160,12 +161,22 @@ public class EpisodeDownloadWorker extends Worker {
             return Result.failure();
         }
 
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        WifiManager.WifiLock wifiLock = null;
+        if (wifiManager != null) {
+            wifiLock = wifiManager.createWifiLock(TAG);
+            wifiLock.acquire();
+        }
         try {
             downloader.call();
         } catch (Exception e) {
             DBWriter.addDownloadStatus(downloader.getResult());
             sendErrorNotification(request.getTitle());
             return Result.failure();
+        } finally {
+            if (wifiLock != null) {
+                wifiLock.release();
+            }
         }
 
         if (downloader.cancelled) {

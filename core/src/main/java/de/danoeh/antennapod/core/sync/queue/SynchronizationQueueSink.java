@@ -3,7 +3,7 @@ package de.danoeh.antennapod.core.sync.queue;
 import android.content.Context;
 
 import de.danoeh.antennapod.core.sync.LockingAsyncExecutor;
-import de.danoeh.antennapod.core.sync.SynchronizationSettings;
+import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 
