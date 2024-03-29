@@ -35,7 +35,7 @@ import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequestCreator;
 import de.danoeh.antennapod.net.discovery.FeedUrlNotFoundException;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
-import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
+import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.core.util.DownloadErrorLabel;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
 import de.danoeh.antennapod.databinding.OnlinefeedviewHeaderBinding;

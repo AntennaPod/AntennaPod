@@ -1,35 +1,36 @@
-package de.danoeh.antennapod.core.service.playback;
+package de.danoeh.antennapod.playback.service.internal;
 
 import android.app.Notification;
 import android.util.Log;
 
 import androidx.core.app.ServiceCompat;
+import de.danoeh.antennapod.playback.service.PlaybackService;
 
-class PlaybackServiceStateManager {
+public class PlaybackServiceStateManager {
     private static final String TAG = "PlaybackSrvState";
     private final PlaybackService playbackService;
 
     private volatile boolean isInForeground = false;
     private volatile boolean hasReceivedValidStartCommand = false;
 
-    PlaybackServiceStateManager(PlaybackService playbackService) {
+    public PlaybackServiceStateManager(PlaybackService playbackService) {
         this.playbackService = playbackService;
     }
 
-    void startForeground(int notificationId, Notification notification) {
+    public void startForeground(int notificationId, Notification notification) {
         Log.d(TAG, "startForeground");
         playbackService.startForeground(notificationId, notification);
         isInForeground = true;
     }
 
-    void stopService() {
+    public void stopService() {
         Log.d(TAG, "stopService");
         stopForeground(true);
         playbackService.stopSelf();
         hasReceivedValidStartCommand = false;
     }
 
-    void stopForeground(boolean removeNotification) {
+    public void stopForeground(boolean removeNotification) {
         Log.d(TAG, "stopForeground");
         if (isInForeground) {
             if (removeNotification) {
@@ -41,11 +42,11 @@ class PlaybackServiceStateManager {
         isInForeground = false;
     }
 
-    boolean hasReceivedValidStartCommand() {
+    public boolean hasReceivedValidStartCommand() {
         return hasReceivedValidStartCommand;
     }
 
-    void validStartCommandWasReceived() {
+    public void validStartCommandWasReceived() {
         this.hasReceivedValidStartCommand = true;
     }
 }

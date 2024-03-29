@@ -6,6 +6,7 @@ import androidx.test.annotation.UiThreadTest;
 import androidx.test.filters.LargeTest;
 
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
+import de.danoeh.antennapod.playback.service.internal.PlaybackServiceTaskManager;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.danoeh.antennapod.ui.widget.WidgetUpdater;
@@ -23,7 +24,6 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.core.service.playback.PlaybackServiceTaskManager;
 import de.danoeh.antennapod.model.playback.Playable;
 
 import static org.junit.Assert.assertFalse;

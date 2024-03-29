@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.service.playback;
+package de.danoeh.antennapod.playback.service;
 
 public abstract class PlaybackServiceInterface {
     public static final String EXTRA_PLAYABLE = "PlaybackService.PlayableExtra";

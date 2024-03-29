@@ -35,6 +35,7 @@ include ':parser:media'
 
 include ':playback:base'
 include ':playback:cast'
+include ':playback:service'
 
 include ':storage:database'
 include ':storage:importexport'

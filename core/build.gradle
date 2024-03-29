@@ -23,32 +23,20 @@ android {
 }
 
 dependencies {
-    implementation project(':event')
     implementation project(':model')
     implementation project(':net:common')
     implementation project(':net:download:service-interface')
-    implementation project(':net:sync:service-interface')
     implementation project(':parser:feed')
     implementation project(':parser:media')
-    implementation project(':playback:base')
-    implementation project(':playback:cast')
-    implementation project(':storage:database')
     implementation project(':storage:preferences')
-    implementation project(':ui:app-start-intent')
+    implementation project(':storage:database')
     implementation project(':ui:common')
-    implementation project(':ui:episodes')
-    implementation project(':ui:notifications')
-    implementation project(':ui:widget')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation "androidx.core:core:$coreVersion"
     implementation 'androidx.documentfile:documentfile:1.0.1'
     implementation "androidx.fragment:fragment:$fragmentVersion"
-    implementation "androidx.media:media:$mediaVersion"
-    implementation "androidx.media3:media3-datasource-okhttp:$media3Version"
-    implementation "androidx.media3:media3-exoplayer:$media3Version"
-    implementation "androidx.media3:media3-ui:$media3Version"
     implementation "androidx.preference:preference:$preferenceVersion"
     implementation "androidx.work:work-runtime:$workManagerVersion"
     implementation "com.google.android.material:material:$googleMaterialVersion"

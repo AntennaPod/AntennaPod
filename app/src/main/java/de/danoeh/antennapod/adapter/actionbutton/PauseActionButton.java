@@ -5,7 +5,7 @@ import android.view.KeyEvent;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.util.PlaybackStatus;
+import de.danoeh.antennapod.playback.service.PlaybackStatus;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;

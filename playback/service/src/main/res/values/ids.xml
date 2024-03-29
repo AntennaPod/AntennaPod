@@ -1,0 +1,4 @@
+<resources>
+    <item name="notification_playing" type="id" />
+    <item name="notification_streaming_confirmation" type="id" />
+</resources>

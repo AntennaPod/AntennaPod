@@ -1,7 +1,6 @@
-package de.danoeh.antennapod.core.util;
+package de.danoeh.antennapod.playback.service;
 
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 
 public abstract class PlaybackStatus {

@@ -91,6 +91,7 @@ dependencies {
     implementation project(':ui:preferences')
     implementation project(':ui:statistics')
     implementation project(':net:sync:service-interface')
+    implementation project(':playback:service')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"

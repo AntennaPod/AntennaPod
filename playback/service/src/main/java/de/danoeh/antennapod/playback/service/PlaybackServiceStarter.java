@@ -1,12 +1,10 @@
-package de.danoeh.antennapod.core.util.playback;
+package de.danoeh.antennapod.playback.service;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
 import androidx.core.content.ContextCompat;
 
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
 import de.danoeh.antennapod.model.playback.Playable;
 
 public class PlaybackServiceStarter {
