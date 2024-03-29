@@ -18,17 +18,6 @@ import java.util.List;
 
 public class HomeSectionsSettingsDialog {
     public static void open(Context context, DialogInterface.OnClickListener onSettingsChanged) {
-        final List<String> hiddenSections = HomeFragment.getHiddenSections(context);
-        String[] sectionLabels = context.getResources().getStringArray(R.array.home_section_titles);
-        String[] sectionTags = context.getResources().getStringArray(R.array.home_section_tags);
-        final boolean[] checked = new boolean[sectionLabels.length];
-        for (int i = 0; i < sectionLabels.length; i++) {
-            String tag = sectionTags[i];
-            if (!hiddenSections.contains(tag)) {
-                checked[i] = true;
-            }
-        }
-
         View content = View.inflate(context, de.danoeh.antennapod.ui.preferences.R.layout.choose_home_screen_order_dialog, null);
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
@@ -37,7 +26,7 @@ public class HomeSectionsSettingsDialog {
         RecyclerView recyclerView = content.findViewById(de.danoeh.antennapod.ui.preferences.R.id.recyclerView);
         HomeScreenSettingDialogAdapter adapter = new HomeScreenSettingDialogAdapter(context);
 
-        ItemMoveCallback itemMoveCallback = new ItemMoveCallback(adapter);
+        ItemTouchCallback itemMoveCallback = new ItemTouchCallback(adapter);
         ItemTouchHelper itemTouchHelper;
         itemTouchHelper = new ItemTouchHelper(itemMoveCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
@@ -47,13 +36,21 @@ public class HomeSectionsSettingsDialog {
 
 
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            SharedPreferences prefs = context.getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
-            prefs.edit().putString(HomeFragment.PREF_HIDDEN_SECTIONS, TextUtils.join(",", hiddenSections)).apply();
-            final List<String> sectionOrder = adapter.getOrderedSectionLabels(context);
-            prefs.edit().putString(HomeFragment.PREF_SECTION_ORDER, TextUtils.join(",", sectionOrder)).apply();
+            saveChanges(context, adapter);
             onSettingsChanged.onClick(dialog, which);
         });
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
+    }
+
+    private static void saveChanges(Context context, HomeScreenSettingDialogAdapter adapter) {
+        SharedPreferences prefs = context.getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
+        final String[] sectionOrder = adapter.getOrderedSectionTags(context);
+        final List<String> hiddenSections = HomeFragment.getHiddenSections(context);
+
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putString(HomeFragment.PREF_HIDDEN_SECTIONS, TextUtils.join(",", hiddenSections));
+        edit.putString(HomeFragment.PREF_SECTION_ORDER, TextUtils.join(",", sectionOrder));
+        edit.apply();
     }
 }

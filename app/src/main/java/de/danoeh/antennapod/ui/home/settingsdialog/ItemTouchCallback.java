@@ -1,16 +1,14 @@
 package de.danoeh.antennapod.ui.home.settingsdialog;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ItemMoveCallback extends ItemTouchHelper.Callback {
+public class ItemTouchCallback extends ItemTouchHelper.Callback {
 
     private final TouchCallbackHelperAdapter touchCallbackHelperAdapter;
 
-    public ItemMoveCallback(TouchCallbackHelperAdapter touchCallbackHelperAdapter){
+    public ItemTouchCallback(TouchCallbackHelperAdapter touchCallbackHelperAdapter){
         this.touchCallbackHelperAdapter = touchCallbackHelperAdapter;
     }
     @Override

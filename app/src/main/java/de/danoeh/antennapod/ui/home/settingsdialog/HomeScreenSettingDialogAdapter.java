@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import de.danoeh.antennapod.R;
 
@@ -33,10 +34,13 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<HomeScreenSett
         this.dragListener = dragListener;
     }
 
-    public List<String> getOrderedSectionLabels(Context context)
+    public String[] getOrderedSectionTags(Context context)
     {
-
-        return Collections.unmodifiableList(sectionLabels);
+        String[] sectionTags = new String[sectionLabels.size()];
+        for (int i = 0; i < sectionTags.length; i++) {
+            sectionTags[i] = HomeUtil.getSectionTagFromName(context, sectionLabels.get(i));
+        }
+        return sectionTags;
     }
 
     @NonNull

@@ -30,12 +30,12 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.databinding.HomeFragmentBinding;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.fragment.SearchFragment;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.echo.EchoActivity;
 import de.danoeh.antennapod.ui.home.sections.AllowNotificationsSection;
@@ -108,15 +108,26 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             addSection(new EchoSection());
         }
 
+        addSections(context);
+    }
+
+    private void addSections(Context context) {
         List<String> hiddenSections = getHiddenSections(context);
         List<String> sectionOrder = getSortedSections(context);
         String[] sectionTags = getResources().getStringArray(R.array.home_section_tags);
+        Arrays.sort(sectionTags, (String a, String b) -> Integer.signum(indexOfOrMaxValue(sectionOrder, a) - indexOfOrMaxValue(sectionOrder, b)) );
         for (String sectionTag : sectionTags) {
             if (hiddenSections.contains(sectionTag)) {
                 continue;
             }
             addSection(getSection(sectionTag));
         }
+    }
+
+    private int indexOfOrMaxValue(List<String> haystack, String needle)
+    {
+        int index = haystack.indexOf(needle);
+        return index == -1 ? Integer.MAX_VALUE : index;
     }
 
     private void addSection(Fragment section) {
