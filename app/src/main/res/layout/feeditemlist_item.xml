@@ -71,7 +71,6 @@
                     android:gravity="center"
                     android:background="@color/light_gray"
                     android:maxLines="3"
-                    android:textSize="16sp"
                     android:padding="2dp"
                     android:ellipsize="end" />
 
