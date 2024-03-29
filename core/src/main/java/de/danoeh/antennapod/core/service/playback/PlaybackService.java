@@ -51,6 +51,7 @@ import androidx.core.content.ContextCompat;
 import androidx.media.MediaBrowserServiceCompat;
 
 import de.danoeh.antennapod.event.PlayerStatusEvent;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import de.danoeh.antennapod.ui.widget.WidgetUpdater;
 import org.greenrobot.eventbus.EventBus;
@@ -71,10 +72,8 @@ import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.QuickSettingsTileService;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceTaskManager.SleepTimer;
 import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.core.util.ChapterUtils;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.FeedUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.net.common.NetworkUtils;
@@ -1110,8 +1109,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
         FeedMedia media = (FeedMedia) playable;
         FeedItem item = media.getItem();
-        boolean smartMarkAsPlayed = FeedItemUtil.hasAlmostEnded(media);
-        if (!ended && smartMarkAsPlayed) {
+        int smartMarkAsPlayedSecs = UserPreferences.getSmartMarkAsPlayedSecs();
+        boolean almostEnded = media.getDuration() > 0
+                && media.getPosition() >= media.getDuration() - smartMarkAsPlayedSecs * 1000;
+        if (!ended && almostEnded) {
             Log.d(TAG, "smart mark as played");
         }
 
@@ -1121,7 +1122,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             autoSkipped = true;
         }
 
-        if (ended || smartMarkAsPlayed) {
+        if (ended || almostEnded) {
             SynchronizationQueueSink.enqueueEpisodePlayedIfSynchronizationIsActive(
                     getApplicationContext(), media, true);
             media.onPlaybackCompleted(getApplicationContext());
@@ -1132,11 +1133,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         if (item != null) {
-            if (ended || smartMarkAsPlayed
+            if (ended || almostEnded
                     || autoSkipped
                     || (skipped && !UserPreferences.shouldSkipKeepEpisode())) {
                 // only mark the item as played if we're not keeping it anyways
-                DBWriter.markItemPlayed(item, FeedItem.PLAYED, ended || (skipped && smartMarkAsPlayed));
+                DBWriter.markItemPlayed(item, FeedItem.PLAYED, ended || (skipped && almostEnded));
                 // don't know if it actually matters to not autodownload when smart mark as played is triggered
                 DBWriter.removeQueueItem(PlaybackService.this, ended, item);
                 // Delete episode if enabled

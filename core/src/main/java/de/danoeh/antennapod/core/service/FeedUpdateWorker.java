@@ -24,12 +24,12 @@ import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.service.download.NewEpisodesNotification;
 import de.danoeh.antennapod.core.service.download.handler.FeedParserTask;
-import de.danoeh.antennapod.core.storage.AutoDownloadManager;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManagerImpl;
+import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
 import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.core.storage.FeedDatabaseWriter;
-import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.net.common.NetworkUtils;
-import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -62,7 +62,7 @@ public class FeedUpdateWorker extends Worker {
         newEpisodesNotification.loadCountersBeforeRefresh();
 
         List<Feed> toUpdate;
-        long feedId = getInputData().getLong(FeedUpdateManager.EXTRA_FEED_ID, -1);
+        long feedId = getInputData().getLong(FeedUpdateManagerImpl.EXTRA_FEED_ID, -1);
         boolean allAreLocal = true;
         boolean force = false;
         if (feedId == -1) { // Update all
@@ -91,7 +91,7 @@ public class FeedUpdateWorker extends Worker {
             force = true;
         }
 
-        if (!getInputData().getBoolean(FeedUpdateManager.EXTRA_EVEN_ON_MOBILE, false) && !allAreLocal) {
+        if (!getInputData().getBoolean(FeedUpdateManagerImpl.EXTRA_EVEN_ON_MOBILE, false) && !allAreLocal) {
             if (!NetworkUtils.networkAvailable() || !NetworkUtils.isFeedRefreshAllowed()) {
                 Log.d(TAG, "Blocking automatic update");
                 return Result.retry();
@@ -100,7 +100,7 @@ public class FeedUpdateWorker extends Worker {
         refreshFeeds(toUpdate,  force);
 
         notificationManager.cancel(R.id.notification_updating_feeds);
-        AutoDownloadManager.autodownloadUndownloadedItems(getApplicationContext());
+        AutoDownloadManager.getInstance().autodownloadUndownloadedItems(getApplicationContext());
         return Result.success();
     }
 
@@ -164,7 +164,7 @@ public class FeedUpdateWorker extends Worker {
     }
 
     void refreshFeed(Feed feed, boolean force) throws Exception {
-        boolean nextPage = getInputData().getBoolean(FeedUpdateManager.EXTRA_NEXT_PAGE, false)
+        boolean nextPage = getInputData().getBoolean(FeedUpdateManagerImpl.EXTRA_NEXT_PAGE, false)
                 && feed.getNextPageLink() != null;
         if (nextPage) {
             feed.setPageNr(feed.getPageNr() + 1);

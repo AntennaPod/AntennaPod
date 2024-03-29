@@ -30,6 +30,8 @@ dependencies {
     implementation project(':net:ssl')
     implementation project(':net:sync:gpoddernet')
     implementation project(':net:sync:model')
+    implementation project(':net:sync:service')
+    implementation project(':net:sync:service-interface')
     implementation project(':parser:feed')
     implementation project(':parser:media')
     implementation project(':playback:base')

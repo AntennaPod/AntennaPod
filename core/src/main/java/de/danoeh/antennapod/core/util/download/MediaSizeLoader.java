@@ -2,7 +2,7 @@ package de.danoeh.antennapod.core.util.download;
 
 import android.text.TextUtils;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
-import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import io.reactivex.Single;

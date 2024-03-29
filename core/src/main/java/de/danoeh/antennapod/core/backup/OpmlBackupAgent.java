@@ -8,8 +8,8 @@ import android.content.Context;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
-import de.danoeh.antennapod.core.storage.FeedDatabaseWriter;
-import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
+import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
+import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
 import de.danoeh.antennapod.storage.importexport.OpmlElement;
 import de.danoeh.antennapod.storage.importexport.OpmlReader;
 import de.danoeh.antennapod.storage.importexport.OpmlWriter;
@@ -148,7 +148,7 @@ public class OpmlBackupAgent extends BackupAgentHelper {
                     feed.setItems(Collections.emptyList());
                     FeedDatabaseWriter.updateFeed(mContext, feed, false);
                 }
-                FeedUpdateManager.runOnce(mContext);
+                FeedUpdateManager.getInstance().runOnce(mContext);
             } catch (XmlPullParserException e) {
                 Log.e(TAG, "Error while parsing the OPML file", e);
             } catch (IOException e) {
