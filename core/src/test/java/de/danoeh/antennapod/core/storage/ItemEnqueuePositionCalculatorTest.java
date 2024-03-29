@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.storage;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfaceStub;
+import de.danoeh.antennapod.storage.database.ItemEnqueuePositionCalculator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

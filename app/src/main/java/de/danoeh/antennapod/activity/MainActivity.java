@@ -35,10 +35,11 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManagerImpl;
+import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
-import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
-import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.dialog.rating.RatingDialogManager;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
@@ -166,12 +167,12 @@ public class MainActivity extends CastEnabledActivity {
         sheetBehavior.setHideable(false);
         sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
 
-        FeedUpdateManager.restartUpdateAlarm(this, false);
+        FeedUpdateManager.getInstance().restartUpdateAlarm(this, false);
         SynchronizationQueueSink.syncNowIfNotSyncedRecently();
         AutomaticDatabaseExportWorker.enqueueIfNeeded(this, false);
 
         WorkManager.getInstance(this)
-                .getWorkInfosByTagLiveData(FeedUpdateManager.WORK_TAG_FEED_UPDATE)
+                .getWorkInfosByTagLiveData(FeedUpdateManagerImpl.WORK_TAG_FEED_UPDATE)
                 .observe(this, workInfos -> {
                     boolean isRefreshingFeeds = false;
                     for (WorkInfo workInfo : workInfos) {
@@ -301,7 +302,7 @@ public class MainActivity extends CastEnabledActivity {
     private void checkFirstLaunch() {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
-            FeedUpdateManager.restartUpdateAlarm(this, true);
+            FeedUpdateManager.getInstance().restartUpdateAlarm(this, true);
 
             SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean(PREF_IS_FIRST_LAUNCH, false);
@@ -630,7 +631,7 @@ public class MainActivity extends CastEnabledActivity {
             new DownloadLogFragment().show(getSupportFragmentManager(), null);
         }
         if (intent.getBooleanExtra(EXTRA_REFRESH_ON_START, false)) {
-            FeedUpdateManager.runOnceOrAsk(this);
+            FeedUpdateManager.getInstance().runOnceOrAsk(this);
         }
         // to avoid handling the intent twice when the configuration changes
         setIntent(new Intent(MainActivity.this, MainActivity.class));

@@ -26,6 +26,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 import com.leinardi.android.speeddial.SpeedDialView;
 
+import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
@@ -42,12 +43,11 @@ import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.event.FeedEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
-import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.databinding.FeedItemListFragmentBinding;
 import de.danoeh.antennapod.databinding.MultiSelectSpeedDialBinding;
@@ -171,7 +171,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         nextPageLoader = new MoreContentListFooterUtil(viewBinding.moreContent.moreContentListFooter);
         nextPageLoader.setClickListener(() -> {
             if (feed != null) {
-                FeedUpdateManager.runOnce(getContext(), feed, true);
+                FeedUpdateManager.getInstance().runOnce(getContext(), feed, true);
             }
         });
         viewBinding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -190,7 +190,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         EventBus.getDefault().register(this);
 
         viewBinding.swipeRefresh.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
-        viewBinding.swipeRefresh.setOnRefreshListener(() -> FeedUpdateManager.runOnceOrAsk(requireContext(), feed));
+        viewBinding.swipeRefresh.setOnRefreshListener(() ->
+                FeedUpdateManager.getInstance().runOnceOrAsk(requireContext(), feed));
 
         loadItems();
 
@@ -273,14 +274,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         } else if (item.getItemId() == R.id.share_item) {
             ShareUtils.shareFeedLink(getContext(), feed);
         } else if (item.getItemId() == R.id.refresh_item) {
-            FeedUpdateManager.runOnceOrAsk(getContext(), feed);
+            FeedUpdateManager.getInstance().runOnceOrAsk(getContext(), feed);
         } else if (item.getItemId() == R.id.refresh_complete_item) {
             new Thread(() -> {
                 feed.setNextPageLink(feed.getDownloadUrl());
                 feed.setPageNr(0);
                 try {
                     DBWriter.resetPagedFeedPage(feed).get();
-                    FeedUpdateManager.runOnce(getContext(), feed);
+                    FeedUpdateManager.getInstance().runOnce(getContext(), feed);
                 } catch (ExecutionException | InterruptedException e) {
                     throw new RuntimeException(e);
                 }

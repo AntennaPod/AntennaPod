@@ -24,6 +24,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 import com.leinardi.android.speeddial.SpeedDialView;
 
+import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -38,7 +39,6 @@ import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
@@ -122,7 +122,7 @@ public abstract class EpisodesListFragment extends Fragment
     public boolean onMenuItemClick(MenuItem item) {
         final int itemId = item.getItemId();
         if (itemId == R.id.refresh_item) {
-            FeedUpdateManager.runOnceOrAsk(requireContext());
+            FeedUpdateManager.getInstance().runOnceOrAsk(requireContext());
             return true;
         } else if (itemId == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
@@ -182,7 +182,7 @@ public abstract class EpisodesListFragment extends Fragment
 
         swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
-        swipeRefreshLayout.setOnRefreshListener(() -> FeedUpdateManager.runOnceOrAsk(requireContext()));
+        swipeRefreshLayout.setOnRefreshListener(() -> FeedUpdateManager.getInstance().runOnceOrAsk(requireContext()));
 
         listAdapter = new EpisodeItemListAdapter((MainActivity) getActivity()) {
             @Override

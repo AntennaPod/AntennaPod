@@ -10,7 +10,7 @@ import java.util.Collections;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.view.LocalDeleteModal;
 
 public class DeleteActionButton extends ItemActionButton {

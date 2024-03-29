@@ -1,0 +1,5 @@
+<resources>
+    <item name="notification_gpodnet_sync_error" type="id"/>
+    <item name="notification_gpodnet_sync_autherror" type="id"/>
+    <item name="pending_intent_sync_error" type="id"/>
+</resources>

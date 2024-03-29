@@ -26,10 +26,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 
-import de.danoeh.antennapod.core.storage.FeedDatabaseWriter;
-import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
+import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
 import de.danoeh.antennapod.databinding.OpmlSelectionBinding;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.importexport.OpmlElement;
@@ -104,7 +104,7 @@ public class OpmlImportActivity extends AppCompatActivity {
                     feed.setItems(Collections.emptyList());
                     FeedDatabaseWriter.updateFeed(this, feed, false);
                 }
-                FeedUpdateManager.runOnce(this);
+                FeedUpdateManager.getInstance().runOnce(this);
             })
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

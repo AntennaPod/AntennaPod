@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -17,8 +18,7 @@ import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.feed.FeedItem;

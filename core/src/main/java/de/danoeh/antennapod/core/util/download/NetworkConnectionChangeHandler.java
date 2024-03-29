@@ -2,7 +2,7 @@ package de.danoeh.antennapod.core.util.download;
 
 import android.content.Context;
 import android.util.Log;
-import de.danoeh.antennapod.core.storage.AutoDownloadManager;
+import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 
@@ -17,7 +17,7 @@ public abstract class NetworkConnectionChangeHandler {
     public static void networkChangedDetected() {
         if (NetworkUtils.isAutoDownloadAllowed()) {
             Log.d(TAG, "auto-dl network available, starting auto-download");
-            AutoDownloadManager.autodownloadUndownloadedItems(context);
+            AutoDownloadManager.getInstance().autodownloadUndownloadedItems(context);
         } else { // if new network is Wi-Fi, finish ongoing downloads,
             // otherwise cancel all downloads
             if (NetworkUtils.isNetworkRestricted()) {

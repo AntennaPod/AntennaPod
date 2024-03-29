@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.storage;
 
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.storage.database.FeedItemDuplicateGuesser;
 import org.junit.Test;
 
 import java.util.Date;

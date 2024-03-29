@@ -15,6 +15,8 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -80,6 +82,7 @@ public class DbCleanupTests {
         UserPreferences.init(context);
         PlaybackPreferences.init(context);
         SynchronizationSettings.init(context);
+        AutoDownloadManager.setInstance(new AutoDownloadManagerImpl());
     }
 
     @After
@@ -108,7 +111,7 @@ public class DbCleanupTests {
         List<File> files = new ArrayList<>();
         populateItems(numItems, feed, items, files, FeedItem.PLAYED, false, false);
 
-        AutoDownloadManager.performAutoCleanup(context);
+        AutoDownloadManager.getInstance().performAutoCleanup(context);
         for (int i = 0; i < files.size(); i++) {
             if (i < EPISODE_CACHE_SIZE) {
                 assertTrue(files.get(i).exists());
@@ -167,7 +170,7 @@ public class DbCleanupTests {
         List<File> files = new ArrayList<>();
         populateItems(numItems, feed, items, files, FeedItem.UNPLAYED, false, false);
 
-        AutoDownloadManager.performAutoCleanup(context);
+        AutoDownloadManager.getInstance().performAutoCleanup(context);
         for (File file : files) {
             assertTrue(file.exists());
         }
@@ -183,7 +186,7 @@ public class DbCleanupTests {
         List<File> files = new ArrayList<>();
         populateItems(numItems, feed, items, files, FeedItem.PLAYED, true, false);
 
-        AutoDownloadManager.performAutoCleanup(context);
+        AutoDownloadManager.getInstance().performAutoCleanup(context);
         for (File file : files) {
             assertTrue(file.exists());
         }
@@ -223,7 +226,7 @@ public class DbCleanupTests {
         List<File> files = new ArrayList<>();
         populateItems(numItems, feed, items, files, FeedItem.PLAYED, false, true);
 
-        AutoDownloadManager.performAutoCleanup(context);
+        AutoDownloadManager.getInstance().performAutoCleanup(context);
         for (File file : files) {
             assertTrue(file.exists());
         }

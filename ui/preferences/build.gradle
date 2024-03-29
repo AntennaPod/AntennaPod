@@ -34,6 +34,8 @@ dependencies {
     implementation project(":ui:common")
     implementation project(":ui:glide")
     implementation project(":ui:i18n")
+    implementation project(':net:sync:service-interface')
+    implementation project(':net:sync:service')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"

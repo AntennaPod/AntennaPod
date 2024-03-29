@@ -26,9 +26,9 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
-import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.core.storage.FeedDatabaseWriter;
+import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
+import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.databinding.AddfeedBinding;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
@@ -204,7 +204,7 @@ public class AddFeedFragment extends Fragment {
         dirFeed.setItems(Collections.emptyList());
         dirFeed.setSortOrder(SortOrder.EPISODE_TITLE_A_Z);
         Feed fromDatabase = FeedDatabaseWriter.updateFeed(getContext(), dirFeed, false);
-        FeedUpdateManager.runOnce(requireContext(), fromDatabase);
+        FeedUpdateManager.getInstance().runOnce(requireContext(), fromDatabase);
         return fromDatabase;
     }
 

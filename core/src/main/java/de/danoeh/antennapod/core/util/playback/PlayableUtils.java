@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.util.playback;
 
-import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;

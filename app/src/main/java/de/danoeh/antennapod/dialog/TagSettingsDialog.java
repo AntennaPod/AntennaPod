@@ -23,7 +23,7 @@ import java.util.Set;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.SimpleChipAdapter;
 import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.databinding.EditTagsDialogBinding;
 import de.danoeh.antennapod.model.feed.FeedCounter;
