@@ -15,18 +15,6 @@ android {
         versionCode 3030095
         versionName "3.3.0"
 
-        def commit = ""
-        try {
-            def hashStdOut = new ByteArrayOutputStream()
-            exec {
-                commandLine "git", "rev-parse", "--short", "HEAD"
-                standardOutput = hashStdOut
-            }
-            commit = hashStdOut.toString().trim()
-        } catch (Exception ignore) {
-        }
-        buildConfigField "String", "COMMIT_HASH", ('"' + (commit.isEmpty() ? "Unknown commit" : commit) + '"')
-
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [eventBusIndex: 'de.danoeh.antennapod.ApEventBusIndex']
