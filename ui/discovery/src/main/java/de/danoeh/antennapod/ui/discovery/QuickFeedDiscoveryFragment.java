@@ -1,6 +1,5 @@
-package de.danoeh.antennapod.fragment;
+package de.danoeh.antennapod.ui.discovery;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,15 +15,13 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
-import de.danoeh.antennapod.BuildConfig;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
-import de.danoeh.antennapod.adapter.FeedDiscoverAdapter;
+import de.danoeh.antennapod.net.discovery.BuildConfig;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.event.DiscoveryDefaultUpdateEvent;
 import de.danoeh.antennapod.net.discovery.ItunesTopListLoader;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -57,8 +54,10 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.quick_feed_discovery, container, false);
         View discoverMore = root.findViewById(R.id.discover_more);
-        discoverMore.setOnClickListener(v ->
-                ((MainActivity) getActivity()).loadChildFragment(new DiscoveryFragment()));
+        discoverMore.setOnClickListener(v -> startActivity(new MainActivityStarter(getContext())
+                .withFragmentLoaded(DiscoveryFragment.TAG)
+                .withAddToBackStack()
+                .getIntent()));
 
         discoverGridLayout = root.findViewById(R.id.discover_grid);
         errorView = root.findViewById(R.id.discover_error);
@@ -66,7 +65,7 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         errorRetry = root.findViewById(R.id.discover_error_retry_btn);
         poweredByTextView = root.findViewById(R.id.discover_powered_by_itunes);
 
-        adapter = new FeedDiscoverAdapter((MainActivity) getActivity());
+        adapter = new FeedDiscoverAdapter(getActivity());
         discoverGridLayout.setAdapter(adapter);
         discoverGridLayout.setOnItemClickListener(this);
 
@@ -171,8 +170,6 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         if (TextUtils.isEmpty(podcast.feedUrl)) {
             return;
         }
-        Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
-        intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, podcast.feedUrl);
-        startActivity(intent);
+        startActivity(new OnlineFeedviewActivityStarter(getContext(), podcast.feedUrl).getIntent());
     }
 }

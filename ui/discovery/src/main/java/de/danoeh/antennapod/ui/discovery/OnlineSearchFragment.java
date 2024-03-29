@@ -1,7 +1,6 @@
-package de.danoeh.antennapod.fragment;
+package de.danoeh.antennapod.ui.discovery;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,13 +22,10 @@ import com.google.android.material.appbar.MaterialToolbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
-import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 import de.danoeh.antennapod.net.discovery.PodcastSearcher;
 import de.danoeh.antennapod.net.discovery.PodcastSearcherRegistry;
+import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import io.reactivex.disposables.Disposable;
 
 public class OnlineSearchFragment extends Fragment {
@@ -41,7 +37,7 @@ public class OnlineSearchFragment extends Fragment {
     /**
      * Adapter responsible with the search results
      */
-    private ItunesAdapter adapter;
+    private OnlineSearchAdapter adapter;
     private PodcastSearcher searchProvider;
     private GridView gridView;
     private ProgressBar progressBar;
@@ -93,18 +89,16 @@ public class OnlineSearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_itunes_search, container, false);
+        View root = inflater.inflate(R.layout.fragment_online_search, container, false);
         gridView = root.findViewById(R.id.gridView);
-        adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
+        adapter = new OnlineSearchAdapter(getActivity(), new ArrayList<>());
         gridView.setAdapter(adapter);
 
         //Show information about the podcast when the list item is clicked
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
             PodcastSearchResult podcast = searchResults.get(position);
-            Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
-            intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, podcast.feedUrl);
-            intent.putExtra(MainActivity.EXTRA_STARTED_FROM_SEARCH, true);
-            startActivity(intent);
+            startActivity(new OnlineFeedviewActivityStarter(getContext(), podcast.feedUrl)
+                    .withStartedFromSearch().getIntent());
         });
         progressBar = root.findViewById(R.id.progressBar);
         txtvError = root.findViewById(R.id.txtvError);
