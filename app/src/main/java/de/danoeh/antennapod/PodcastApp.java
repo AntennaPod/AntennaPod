@@ -6,7 +6,6 @@ import android.os.StrictMode;
 import com.google.android.material.color.DynamicColors;
 
 import de.danoeh.antennapod.core.ApCoreEventBusIndex;
-import de.danoeh.antennapod.core.ClientConfigurator;
 import de.danoeh.antennapod.error.CrashReportWriter;
 import de.danoeh.antennapod.error.RxJavaErrorHandlerSetup;
 import de.danoeh.antennapod.preferences.PreferenceUpgrader;

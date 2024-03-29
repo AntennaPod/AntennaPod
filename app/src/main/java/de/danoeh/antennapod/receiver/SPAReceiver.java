@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.ClientConfigurator;
+import de.danoeh.antennapod.ClientConfigurator;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
 import de.danoeh.antennapod.model.feed.Feed;
