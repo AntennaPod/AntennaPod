@@ -44,7 +44,7 @@
         android:networkSecurityConfig="@xml/network_security_config">
 
         <activity
-            android:name=".activity.PlaybackSpeedDialogActivity"
+            android:name=".ui.screen.playback.PlaybackSpeedDialogActivity"
             android:noHistory="true"
             android:exported="false"
             android:excludeFromRecents="true"
@@ -129,7 +129,7 @@
         </activity>
 
         <activity
-            android:name=".activity.PreferenceActivity"
+            android:name=".ui.screen.preferences.PreferenceActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:label="@string/settings_label">
@@ -167,15 +167,15 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".activity.BugReportActivity"
+                android:name=".ui.screen.preferences.BugReportActivity"
                 android:label="@string/bug_report_title">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
+                    android:value="de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity"/>
         </activity>
 
         <activity
-            android:name=".activity.VideoplayerActivity"
+            android:name=".ui.screen.playback.video.VideoplayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
             android:supportsPictureInPicture="true"
             android:screenOrientation="sensorLandscape"
@@ -190,7 +190,7 @@
         </activity>
 
         <activity
-            android:name=".activity.OnlineFeedViewActivity"
+            android:name=".ui.screen.onlinefeedview.OnlineFeedViewActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AntennaPod.Dark.Translucent"
             android:label="@string/add_feed_label"
@@ -322,24 +322,7 @@
         </activity>
 
         <receiver
-            android:name=".receiver.ConnectivityActionReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-            </intent-filter>
-        </receiver>
-
-        <receiver
-            android:name=".receiver.PowerConnectionReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
-            </intent-filter>
-        </receiver>
-
-        <receiver
-            android:name=".receiver.SPAReceiver"
+            android:name=".spa.SPAReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="de.danoeh.antennapdsp.intent.SP_APPS_QUERY_FEEDS_RESPONSE"/>

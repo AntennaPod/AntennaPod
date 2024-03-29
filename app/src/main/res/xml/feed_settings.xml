@@ -48,7 +48,7 @@
         android:summary="@string/global_default"
         android:title="@string/auto_delete_label" />
 
-    <de.danoeh.antennapod.preferences.VolumeAdaptationPreference
+    <de.danoeh.antennapod.ui.screen.feed.preferences.VolumeAdaptationPreference
         android:defaultValue="off"
         android:entries="@array/spnVolumeAdaptationItems"
         android:entryValues="@array/spnVolumeAdaptationValues"

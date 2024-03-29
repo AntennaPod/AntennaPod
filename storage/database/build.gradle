@@ -30,4 +30,6 @@ dependencies {
     implementation "com.google.guava:guava:31.0.1-android"
 
     testImplementation "junit:junit:$junitVersion"
+    testImplementation "androidx.test:core:$testCoreVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
 }

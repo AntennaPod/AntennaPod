@@ -5,9 +5,6 @@ import android.os.StrictMode;
 
 import com.google.android.material.color.DynamicColors;
 
-import de.danoeh.antennapod.error.CrashReportWriter;
-import de.danoeh.antennapod.error.RxJavaErrorHandlerSetup;
-import de.danoeh.antennapod.preferences.PreferenceUpgrader;
 import de.danoeh.antennapod.spa.SPAUtil;
 import org.greenrobot.eventbus.EventBus;
 
@@ -30,16 +27,16 @@ public class PodcastApp extends Application {
             StrictMode.setVmPolicy(builder.build());
         }
 
-        ClientConfigurator.initialize(this);
-        PreferenceUpgrader.checkUpgrades(this);
-
-        SPAUtil.sendSPAppsQueryFeedsIntent(this);
         EventBus.builder()
                 .addIndex(new ApEventBusIndex())
                 .logNoSubscriberMessages(false)
                 .sendNoSubscriberEvent(false)
                 .installDefaultEventBus();
-
         DynamicColors.applyToActivitiesIfAvailable(this);
+
+        ClientConfigurator.initialize(this);
+        PreferenceUpgrader.checkUpgrades(this);
+
+        SPAUtil.sendSPAppsQueryFeedsIntent(this);
     }
 }

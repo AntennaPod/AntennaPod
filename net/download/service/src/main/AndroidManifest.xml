@@ -14,6 +14,24 @@
                   android:label="@string/feed_update_receiver_name"
                   android:exported="true"
                   tools:ignore="ExportedReceiver" /> <!-- allow feeds update to be triggered by external apps -->
+
+        <receiver
+            android:name=".ConnectivityActionReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" tools:ignore="BatteryLife"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".PowerConnectionReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
