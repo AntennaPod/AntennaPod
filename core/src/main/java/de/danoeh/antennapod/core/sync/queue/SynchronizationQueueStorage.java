@@ -8,7 +8,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
-import de.danoeh.antennapod.core.sync.SynchronizationSettings;
+import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 
 public class SynchronizationQueueStorage {

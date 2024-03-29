@@ -5,9 +5,7 @@ import android.os.StrictMode;
 
 import com.google.android.material.color.DynamicColors;
 
-import de.danoeh.antennapod.config.ApplicationCallbacksImpl;
 import de.danoeh.antennapod.core.ApCoreEventBusIndex;
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.ClientConfigurator;
 import de.danoeh.antennapod.error.CrashReportWriter;
 import de.danoeh.antennapod.error.RxJavaErrorHandlerSetup;
@@ -17,18 +15,9 @@ import org.greenrobot.eventbus.EventBus;
 
 /** Main application class. */
 public class PodcastApp extends Application {
-
-    private static PodcastApp singleton;
-
-    public static PodcastApp getInstance() {
-        return singleton;
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
-        ClientConfig.applicationCallbacks = new ApplicationCallbacksImpl();
-
         Thread.setDefaultUncaughtExceptionHandler(new CrashReportWriter());
         RxJavaErrorHandlerSetup.setupRxJavaErrorHandler();
 
@@ -42,8 +31,6 @@ public class PodcastApp extends Application {
                     .detectLeakedRegistrationObjects();
             StrictMode.setVmPolicy(builder.build());
         }
-
-        singleton = this;
 
         ClientConfigurator.initialize(this);
         PreferenceUpgrader.checkUpgrades(this);

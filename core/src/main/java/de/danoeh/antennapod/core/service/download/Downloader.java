@@ -1,13 +1,10 @@
 package de.danoeh.antennapod.core.service.download;
 
-import android.content.Context;
-import android.net.wifi.WifiManager;
 import androidx.annotation.NonNull;
 
 import java.util.Date;
 import java.util.concurrent.Callable;
 
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.download.DownloadRequest;
@@ -39,20 +36,7 @@ public abstract class Downloader implements Callable<Downloader> {
     protected abstract void download();
 
     public final Downloader call() {
-        WifiManager wifiManager = (WifiManager)
-                ClientConfig.applicationCallbacks.getApplicationInstance().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        WifiManager.WifiLock wifiLock = null;
-        if (wifiManager != null) {
-            wifiLock = wifiManager.createWifiLock(TAG);
-            wifiLock.acquire();
-        }
-
         download();
-
-        if (wifiLock != null) {
-            wifiLock.release();
-        }
-
         finished = true;
         return this;
     }

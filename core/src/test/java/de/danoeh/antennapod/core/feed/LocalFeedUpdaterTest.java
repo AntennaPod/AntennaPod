@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.feed;
 
-import android.app.Application;
 import android.content.Context;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
@@ -16,6 +15,7 @@ import de.danoeh.antennapod.core.util.FastDocumentFile;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
+import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,8 +33,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import de.danoeh.antennapod.core.ApplicationCallbacks;
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -46,8 +44,6 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
 /**
@@ -74,10 +70,7 @@ public class LocalFeedUpdaterTest {
         context = InstrumentationRegistry.getInstrumentation().getContext();
         UserPreferences.init(context);
         PlaybackPreferences.init(context);
-
-        Application app = (Application) context;
-        ClientConfig.applicationCallbacks = mock(ApplicationCallbacks.class);
-        when(ClientConfig.applicationCallbacks.getApplicationInstance()).thenReturn(app);
+        SynchronizationSettings.init(context);
         DownloadServiceInterface.setImpl(new DownloadServiceInterfaceStub());
 
         // Initialize database

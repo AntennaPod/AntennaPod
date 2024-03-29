@@ -31,7 +31,7 @@ import de.danoeh.antennapod.event.SyncServiceEvent;
 import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
-import de.danoeh.antennapod.core.sync.SynchronizationSettings;
+import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 
 public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREFERENCE_SYNCHRONIZATION_DESCRIPTION = "preference_synchronization_description";
