@@ -1,18 +1,18 @@
-package de.danoeh.antennapod.fragment.preferences.about;
+package de.danoeh.antennapod.ui.preferences.screen.about;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 import com.google.android.material.snackbar.Snackbar;
-import de.danoeh.antennapod.BuildConfig;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.ui.preferences.screen.about.ContributorsPagerFragment;
-import de.danoeh.antennapod.ui.preferences.screen.about.LicensesFragment;
+import de.danoeh.antennapod.ui.preferences.BuildConfig;
+import de.danoeh.antennapod.ui.preferences.R;
 
 public class AboutFragment extends PreferenceFragmentCompat {
 
@@ -20,8 +20,20 @@ public class AboutFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences_about);
 
+        String versionName = "?";
+        try {
+            PackageInfo packageInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
+            versionName = packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        //noinspection ConstantValue
+        if ("free".equals(BuildConfig.FLAVOR)) {
+            versionName += "f";
+        }
+
         findPreference("about_version").setSummary(String.format(
-                "%s (%s)", BuildConfig.VERSION_NAME, BuildConfig.COMMIT_HASH));
+                "%s (%s)", versionName, BuildConfig.COMMIT_HASH));
         findPreference("about_version").setOnPreferenceClickListener((preference) -> {
             ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText(getString(R.string.bug_report_title),
@@ -53,6 +65,6 @@ public class AboutFragment extends PreferenceFragmentCompat {
     @Override
     public void onStart() {
         super.onStart();
-        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.about_pref);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.about_pref);
     }
 }
