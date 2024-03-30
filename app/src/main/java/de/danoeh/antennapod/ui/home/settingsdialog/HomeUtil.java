@@ -20,12 +20,12 @@ public class HomeUtil {
     public static String getNameFromTag(Context context, String sectionTag)
     {
         if(sectionTagToName == null)
-            initializeMaps(context);
+            initializeMap(context);
 
         return sectionTagToName.get(sectionTag);
     }
 
-    private static void initializeMaps(Context context)
+    private static void initializeMap(Context context)
     {
         Resources resources = context.getResources();
         String[] sectionLabels = resources.getStringArray(R.array.home_section_titles);
