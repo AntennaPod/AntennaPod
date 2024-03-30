@@ -80,6 +80,7 @@
                     android:layout_height="@dimen/thumbnail_length_queue_item"
                     android:layout_centerVertical="true"
                     android:importantForAccessibility="no"
+                    android:foreground="?android:attr/selectableItemBackground"
                     tools:src="@tools:sample/avatars" />
 
             </RelativeLayout>
