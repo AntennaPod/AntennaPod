@@ -31,11 +31,10 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
         List<String> hiddenSectionTags = HomeUtil.getHiddenSectionTags(context);
 
         List<SettingsDialogItem> settingsDialogItemList = new ArrayList<>();
-        settingsDialogItemList.add(new SettingsDialogItem(SettingsDialogItem.ViewType.Header, "Enabled")); //TODO
         for (String sectionTag: sectionTags) {
             settingsDialogItemList.add(new SettingsDialogItem(SettingsDialogItem.ViewType.Section, sectionTag));
         }
-        settingsDialogItemList.add(new SettingsDialogItem(SettingsDialogItem.ViewType.Header, "Disabled")); //TODO
+        settingsDialogItemList.add(new SettingsDialogItem(SettingsDialogItem.ViewType.Header, context.getString(R.string.section_hidden)));
         for (String sectionTag: hiddenSectionTags) {
             settingsDialogItemList.add(new SettingsDialogItem(SettingsDialogItem.ViewType.Section, sectionTag));
         }
@@ -119,7 +118,6 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
-        if(toPosition == 0) return false;
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
                 Collections.swap(settingsDialogItems, i, i + 1);
