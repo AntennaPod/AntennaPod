@@ -25,8 +25,7 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
     private final List<SettingsDialogItem> settingsDialogItems;
     @Nullable private Consumer<ItemViewHolder> dragListener;
 
-    public HomeScreenSettingDialogAdapter(@NonNull Context context)
-    {
+    public HomeScreenSettingDialogAdapter(@NonNull Context context) {
         List<String> sectionTags = HomeUtil.getSortedSectionTags(context);
         List<String> hiddenSectionTags = HomeUtil.getHiddenSectionTags(context);
 
@@ -42,13 +41,12 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
         settingsDialogItems = settingsDialogItemList;
     }
 
-    public void setDragListener(@Nullable Consumer<ItemViewHolder> dragListener){
+    public void setDragListener(@Nullable Consumer<ItemViewHolder> dragListener) {
         this.dragListener = dragListener;
     }
 
     @NonNull
-    public List<String> getOrderedSectionTags()
-    {
+    public List<String> getOrderedSectionTags() {
         List<String> orderedSectionTags = new ArrayList<>();
         for (SettingsDialogItem item: settingsDialogItems) {
             if(item.getViewType() == SettingsDialogItem.ViewType.Header)
@@ -60,8 +58,7 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
         return orderedSectionTags;
     }
 
-    public List<String> getHiddenSectionTags()
-    {
+    public List<String> getHiddenSectionTags() {
         List<String> hiddenSections = new ArrayList<>();
         for (int i = settingsDialogItems.size() - 1; i >= 0; i--) {
             SettingsDialogItem item = settingsDialogItems.get(i);

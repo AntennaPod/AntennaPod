@@ -26,13 +26,7 @@ public class HomeSectionsSettingsDialog {
         RecyclerView recyclerView = content.findViewById(de.danoeh.antennapod.ui.preferences.R.id.recyclerView);
         HomeScreenSettingDialogAdapter adapter = new HomeScreenSettingDialogAdapter(context);
 
-        ItemTouchCallback itemMoveCallback = new ItemTouchCallback(adapter);
-        ItemTouchHelper itemTouchHelper;
-        itemTouchHelper = new ItemTouchHelper(itemMoveCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-        adapter.setDragListener(itemTouchHelper::startDrag);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(adapter);
+        configureRecyclerView(recyclerView, adapter, context);
 
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
             saveChanges(context, adapter);
@@ -40,6 +34,16 @@ public class HomeSectionsSettingsDialog {
         });
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
+    }
+
+    private static void configureRecyclerView(RecyclerView recyclerView, HomeScreenSettingDialogAdapter adapter, Context context) {
+        ItemTouchCallback itemMoveCallback = new ItemTouchCallback(adapter);
+        ItemTouchHelper itemTouchHelper;
+        itemTouchHelper = new ItemTouchHelper(itemMoveCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+        adapter.setDragListener(itemTouchHelper::startDrag);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(adapter);
     }
 
     private static void saveChanges(Context context, HomeScreenSettingDialogAdapter adapter) {
