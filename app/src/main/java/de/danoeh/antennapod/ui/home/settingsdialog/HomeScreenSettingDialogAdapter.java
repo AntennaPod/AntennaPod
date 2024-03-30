@@ -14,85 +14,144 @@ import androidx.core.util.Consumer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import de.danoeh.antennapod.R;
 
-class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<HomeScreenSettingDialogAdapter.ViewHolder> implements TouchCallbackHelperAdapter {
-    private final List<String> sectionLabels;
-    @Nullable private Consumer<ViewHolder> dragListener;
+class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements TouchCallbackHelperAdapter {
+    private static final int HEADER_VIEW = 0;
+    private static final int ITEM_VIEW = 1;
+    private final List<SettingsDialogItem> settingsDialogItems;
+    @Nullable private Consumer<ItemViewHolder> dragListener;
 
     public HomeScreenSettingDialogAdapter(@NonNull Context context)
     {
-        this.sectionLabels = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.home_section_titles)));
+        List<String> sectionTags = HomeUtil.getSortedSectionTags(context);
+        List<String> hiddenSectionTags = HomeUtil.getHiddenSectionTags(context);
+
+        List<SettingsDialogItem> settingsDialogItemList = new ArrayList<>();
+        settingsDialogItemList.add(new SettingsDialogItem(SettingsDialogItem.ViewType.Header, "Enabled")); //TODO
+        for (String sectionTag: sectionTags) {
+            settingsDialogItemList.add(new SettingsDialogItem(SettingsDialogItem.ViewType.Section, sectionTag));
+        }
+        settingsDialogItemList.add(new SettingsDialogItem(SettingsDialogItem.ViewType.Header, "Disabled")); //TODO
+        for (String sectionTag: hiddenSectionTags) {
+            settingsDialogItemList.add(new SettingsDialogItem(SettingsDialogItem.ViewType.Section, sectionTag));
+        }
+
+        settingsDialogItems = settingsDialogItemList;
     }
 
-    public void setDragListener(@Nullable Consumer<ViewHolder> dragListener){
+    public void setDragListener(@Nullable Consumer<ItemViewHolder> dragListener){
         this.dragListener = dragListener;
     }
 
-    public String[] getOrderedSectionTags(Context context)
+    @NonNull
+    public List<String> getOrderedSectionTags()
     {
-        String[] sectionTags = new String[sectionLabels.size()];
-        for (int i = 0; i < sectionTags.length; i++) {
-            sectionTags[i] = HomeUtil.getSectionTagFromName(context, sectionLabels.get(i));
+        List<String> orderedSectionTags = new ArrayList<>();
+        for (SettingsDialogItem item: settingsDialogItems) {
+            if(item.getViewType() == SettingsDialogItem.ViewType.Header)
+                continue;
+
+            orderedSectionTags.add(item.getTitle());
         }
-        return sectionTags;
+
+        return orderedSectionTags;
+    }
+
+    public List<String> getHiddenSectionTags()
+    {
+        List<String> hiddenSections = new ArrayList<>();
+        for (int i = settingsDialogItems.size() - 1; i >= 0; i--) {
+            SettingsDialogItem item = settingsDialogItems.get(i);
+            if(item.getViewType() == SettingsDialogItem.ViewType.Header)
+                return hiddenSections;
+
+            hiddenSections.add(item.getTitle());
+        }
+
+        return hiddenSections;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        if(viewType == HEADER_VIEW){
+            View entryView = inflater.inflate(de.danoeh.antennapod.ui.preferences.R.layout.choose_home_screen_order_dialog_header, parent, false);
+            return new HeaderViewHolder(entryView);
+        }
+
         View entryView = inflater.inflate(de.danoeh.antennapod.ui.preferences.R.layout.choose_home_screen_order_dialog_entry, parent, false);
-        return new HomeScreenSettingDialogAdapter.ViewHolder(entryView);
+        return new ItemViewHolder(entryView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String label = sectionLabels.get(position);
-        holder.name.setText(label);
-        holder.dragger.setOnTouchListener((view, motionEvent) -> {
-            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                if(dragListener != null)
-                    dragListener.accept(holder);
-            }
-            return true;
-        });
+    public int getItemViewType(int position) {
+        return settingsDialogItems.get(position).getViewType() == SettingsDialogItem.ViewType.Header ? HEADER_VIEW : ITEM_VIEW;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        String title = settingsDialogItems.get(position).getTitle();
+        if(holder instanceof HeaderViewHolder headerViewHolder)
+        {
+            headerViewHolder.categoryName.setText(title);
+        }
+        else if(holder instanceof ItemViewHolder itemViewHolder) {
+            itemViewHolder.name.setText(HomeUtil.getNameFromTag(itemViewHolder.name.getContext(), title));
+            itemViewHolder.dragger.setOnTouchListener((view, motionEvent) -> {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (dragListener != null)
+                        dragListener.accept(itemViewHolder);
+                }
+                return true;
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
-        return sectionLabels.size();
+        return settingsDialogItems.size();
     }
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
+        if(toPosition == 0) return false;
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(sectionLabels, i, i + 1);
+                Collections.swap(settingsDialogItems, i, i + 1);
             }
         } else {
             for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(sectionLabels, i, i - 1);
+                Collections.swap(settingsDialogItems, i, i - 1);
             }
         }
 
         notifyItemMoved(fromPosition, toPosition);
-        return false;
+        return true;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ItemViewHolder extends RecyclerView.ViewHolder {
         private final TextView name;
         private final ImageView dragger;
 
-        ViewHolder(@NonNull View itemView) {
+        ItemViewHolder(@NonNull View itemView) {
             super(itemView);
-            name = itemView.findViewById(de.danoeh.antennapod.ui.preferences.R.id.home_screen_section_name);
-            dragger = itemView.findViewById(de.danoeh.antennapod.ui.preferences.R.id.home_screen_section_drag);
+            name = itemView.findViewById(R.id.home_screen_section_name);
+            dragger = itemView.findViewById(R.id.home_screen_section_drag);
+        }
+    }
+
+    static class HeaderViewHolder extends RecyclerView.ViewHolder {
+
+        private final TextView categoryName;
+
+        HeaderViewHolder(@NonNull View itemView) {
+            super(itemView);
+            categoryName = itemView.findViewById(R.id.header_title);
         }
     }
 }

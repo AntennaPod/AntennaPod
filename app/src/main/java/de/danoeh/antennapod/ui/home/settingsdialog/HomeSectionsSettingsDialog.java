@@ -34,7 +34,6 @@ public class HomeSectionsSettingsDialog {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
 
-
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
             saveChanges(context, adapter);
             onSettingsChanged.onClick(dialog, which);
@@ -45,8 +44,8 @@ public class HomeSectionsSettingsDialog {
 
     private static void saveChanges(Context context, HomeScreenSettingDialogAdapter adapter) {
         SharedPreferences prefs = context.getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
-        final String[] sectionOrder = adapter.getOrderedSectionTags(context);
-        final List<String> hiddenSections = HomeFragment.getHiddenSections(context);
+        final List<String> sectionOrder = adapter.getOrderedSectionTags();
+        final List<String> hiddenSections = adapter.getHiddenSectionTags();
 
         SharedPreferences.Editor edit = prefs.edit();
         edit.putString(HomeFragment.PREF_HIDDEN_SECTIONS, TextUtils.join(",", hiddenSections));

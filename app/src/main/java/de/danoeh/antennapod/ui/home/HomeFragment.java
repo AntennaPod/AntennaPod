@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,13 +18,10 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
-import de.danoeh.antennapod.ui.echo.EchoConfig;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -38,6 +34,7 @@ import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.fragment.SearchFragment;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.echo.EchoConfig;
 import de.danoeh.antennapod.ui.home.sections.AllowNotificationsSection;
 import de.danoeh.antennapod.ui.home.sections.DownloadsSection;
 import de.danoeh.antennapod.ui.home.sections.EchoSection;
@@ -46,6 +43,7 @@ import de.danoeh.antennapod.ui.home.sections.InboxSection;
 import de.danoeh.antennapod.ui.home.sections.QueueSection;
 import de.danoeh.antennapod.ui.home.sections.SubscriptionsSection;
 import de.danoeh.antennapod.ui.home.settingsdialog.HomeSectionsSettingsDialog;
+import de.danoeh.antennapod.ui.home.settingsdialog.HomeUtil;
 import de.danoeh.antennapod.view.LiftOnScrollListener;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -112,22 +110,10 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     }
 
     private void addSections(Context context) {
-        List<String> hiddenSections = getHiddenSections(context);
-        List<String> sectionOrder = getSortedSections(context);
-        String[] sectionTags = getResources().getStringArray(R.array.home_section_tags);
-        Arrays.sort(sectionTags, (String a, String b) -> Integer.signum(indexOfOrMaxValue(sectionOrder, a) - indexOfOrMaxValue(sectionOrder, b)) );
+        List<String> sectionTags = HomeUtil.getSortedSectionTags(context);
         for (String sectionTag : sectionTags) {
-            if (hiddenSections.contains(sectionTag)) {
-                continue;
-            }
             addSection(getSection(sectionTag));
         }
-    }
-
-    private int indexOfOrMaxValue(List<String> haystack, String needle)
-    {
-        int index = haystack.indexOf(needle);
-        return index == -1 ? Integer.MAX_VALUE : index;
     }
 
     private void addSection(Fragment section) {
@@ -152,20 +138,6 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             default:
                 return null;
         }
-    }
-
-    public static List<String> getHiddenSections(Context context) {
-        return getListPreference(context, HomeFragment.PREF_HIDDEN_SECTIONS);
-    }
-
-    public static List<String> getSortedSections(Context context) {
-        return getListPreference(context, HomeFragment.PREF_SECTION_ORDER);
-    }
-
-    private static List<String> getListPreference(Context context, String preferenceKey) {
-        SharedPreferences prefs = context.getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
-        String hiddenSectionsString = prefs.getString(preferenceKey, "");
-        return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenSectionsString, ",")));
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
