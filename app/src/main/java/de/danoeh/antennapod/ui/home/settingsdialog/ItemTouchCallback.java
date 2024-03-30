@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ItemTouchCallback extends ItemTouchHelper.Callback {
 
-    private final TouchCallbackHelperAdapter touchCallbackHelperAdapter;
+    private final ItemMoveHandler itemMoveHandler;
 
-    public ItemTouchCallback(TouchCallbackHelperAdapter touchCallbackHelperAdapter){
-        this.touchCallbackHelperAdapter = touchCallbackHelperAdapter;
+    public ItemTouchCallback(ItemMoveHandler itemMoveHandler){
+        this.itemMoveHandler = itemMoveHandler;
     }
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
@@ -20,7 +20,7 @@ public class ItemTouchCallback extends ItemTouchHelper.Callback {
 
     @Override
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-        return touchCallbackHelperAdapter.onItemMove(viewHolder.getBindingAdapterPosition(), target.getBindingAdapterPosition());
+        return itemMoveHandler.onItemMove(viewHolder.getBindingAdapterPosition(), target.getBindingAdapterPosition());
     }
 
     @Override
