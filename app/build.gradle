@@ -70,7 +70,6 @@ dependencies {
     implementation project(':net:download:service-interface')
     implementation project(':net:download:service')
     implementation project(':net:ssl')
-    implementation project(':net:sync:gpoddernet')
     implementation project(':net:sync:service')
     implementation project(':net:sync:model')
     implementation project(':parser:feed')
