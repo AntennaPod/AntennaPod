@@ -95,8 +95,7 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
         if(holder instanceof HeaderViewHolder headerViewHolder)
         {
             headerViewHolder.categoryLabel.setText(title);
-        }
-        else if(holder instanceof ItemViewHolder itemViewHolder) {
+        } else if(holder instanceof ItemViewHolder itemViewHolder) {
             itemViewHolder.nameLabel.setText(HomeUtil.getNameFromTag(itemViewHolder.nameLabel.getContext(), title));
             itemViewHolder.dragImage.setOnTouchListener((view, motionEvent) -> {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
