@@ -76,11 +76,11 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         if(viewType == HEADER_VIEW){
-            View entryView = inflater.inflate(de.danoeh.antennapod.ui.preferences.R.layout.choose_home_screen_order_dialog_header, parent, false);
+            View entryView = inflater.inflate(R.layout.choose_home_screen_order_dialog_header, parent, false);
             return new HeaderViewHolder(entryView);
         }
 
-        View entryView = inflater.inflate(de.danoeh.antennapod.ui.preferences.R.layout.choose_home_screen_order_dialog_entry, parent, false);
+        View entryView = inflater.inflate(R.layout.choose_home_screen_order_dialog_entry, parent, false);
         return new ItemViewHolder(entryView);
     }
 
