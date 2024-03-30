@@ -18,7 +18,7 @@ import java.util.List;
 
 public class HomeSectionsSettingsDialog {
     public static void open(Context context, DialogInterface.OnClickListener onSettingsChanged) {
-        View content = View.inflate(context, de.danoeh.antennapod.ui.preferences.R.layout.choose_home_screen_order_dialog, null);
+        View content = View.inflate(context, R.layout.choose_home_screen_order_dialog, null);
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setTitle(R.string.configure_home);
@@ -36,7 +36,10 @@ public class HomeSectionsSettingsDialog {
         builder.create().show();
     }
 
-    private static void configureRecyclerView(RecyclerView recyclerView, HomeScreenSettingDialogAdapter adapter, Context context) {
+    private static void configureRecyclerView(
+            RecyclerView recyclerView,
+            HomeScreenSettingDialogAdapter adapter,
+            Context context) {
         ItemTouchCallback itemMoveCallback = new ItemTouchCallback(adapter);
         ItemTouchHelper itemTouchHelper;
         itemTouchHelper = new ItemTouchHelper(itemMoveCallback);

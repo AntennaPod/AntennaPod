@@ -17,16 +17,15 @@ public class HomeUtil {
 
     private static HashMap<String, String> sectionTagToName;
 
-    public static String getNameFromTag(Context context, String sectionTag)
-    {
-        if(sectionTagToName == null)
+    public static String getNameFromTag(Context context, String sectionTag) {
+        if (sectionTagToName == null) {
             initializeMap(context);
+        }
 
         return sectionTagToName.get(sectionTag);
     }
 
-    private static void initializeMap(Context context)
-    {
+    private static void initializeMap(Context context) {
         Resources resources = context.getResources();
         String[] sectionLabels = resources.getStringArray(R.array.home_section_titles);
         String[] sectionTags = resources.getStringArray(R.array.home_section_tags);
@@ -68,8 +67,7 @@ public class HomeUtil {
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenSectionsString, ",")));
     }
 
-    private static int indexOfOrMaxValue(List<String> haystack, String needle)
-    {
+    private static int indexOfOrMaxValue(List<String> haystack, String needle) {
         int index = haystack.indexOf(needle);
         return index == -1 ? Integer.MAX_VALUE : index;
     }
