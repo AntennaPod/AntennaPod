@@ -94,11 +94,11 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
         String title = settingsDialogItems.get(position).getTitle();
         if(holder instanceof HeaderViewHolder headerViewHolder)
         {
-            headerViewHolder.categoryName.setText(title);
+            headerViewHolder.categoryLabel.setText(title);
         }
         else if(holder instanceof ItemViewHolder itemViewHolder) {
-            itemViewHolder.name.setText(HomeUtil.getNameFromTag(itemViewHolder.name.getContext(), title));
-            itemViewHolder.dragger.setOnTouchListener((view, motionEvent) -> {
+            itemViewHolder.nameLabel.setText(HomeUtil.getNameFromTag(itemViewHolder.nameLabel.getContext(), title));
+            itemViewHolder.dragImage.setOnTouchListener((view, motionEvent) -> {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     if (dragListener != null)
                         dragListener.accept(itemViewHolder);
@@ -130,23 +130,23 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     static class ItemViewHolder extends RecyclerView.ViewHolder {
-        private final TextView name;
-        private final ImageView dragger;
+        private final TextView nameLabel;
+        private final ImageView dragImage;
 
         ItemViewHolder(@NonNull View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.home_screen_section_name);
-            dragger = itemView.findViewById(R.id.home_screen_section_drag);
+            nameLabel = itemView.findViewById(R.id.home_screen_section_label);
+            dragImage = itemView.findViewById(R.id.home_screen_section_drag_image);
         }
     }
 
     static class HeaderViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView categoryName;
+        private final TextView categoryLabel;
 
         HeaderViewHolder(@NonNull View itemView) {
             super(itemView);
-            categoryName = itemView.findViewById(R.id.header_title);
+            categoryLabel = itemView.findViewById(R.id.header_label);
         }
     }
 }

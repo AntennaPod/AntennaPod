@@ -9,7 +9,7 @@
     >
 
     <ImageView
-        android:id="@+id/home_screen_section_drag"
+        android:id="@+id/home_screen_section_drag_image"
         android:layout_width="22dp"
         android:layout_height="22dp"
         android:layout_marginStart="4dp"
@@ -18,7 +18,7 @@
         android:contentDescription="@string/sort" />
 
     <TextView
-        android:id="@+id/home_screen_section_name"
+        android:id="@+id/home_screen_section_label"
         android:textSize="18sp"
         android:layout_marginStart="10dp"
         android:layout_width="wrap_content"
