@@ -1,11 +1,12 @@
 package de.danoeh.antennapod.core.storage;
 
-import android.app.Application;
 import android.content.Context;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import org.junit.After;
 import org.junit.Before;
@@ -18,8 +19,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import de.danoeh.antennapod.core.ApplicationCallbacks;
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -33,8 +32,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Test class for {@link FeedDatabaseWriter}.
@@ -48,10 +45,6 @@ public class DbTasksTest {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         UserPreferences.init(context);
         PlaybackPreferences.init(context);
-
-        Application app = (Application) context;
-        ClientConfig.applicationCallbacks = mock(ApplicationCallbacks.class);
-        when(ClientConfig.applicationCallbacks.getApplicationInstance()).thenReturn(app);
 
         // create new database
         PodDBAdapter.init(context);

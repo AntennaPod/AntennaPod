@@ -15,18 +15,6 @@ android {
         versionCode 3030095
         versionName "3.3.0"
 
-        def commit = ""
-        try {
-            def hashStdOut = new ByteArrayOutputStream()
-            exec {
-                commandLine "git", "rev-parse", "--short", "HEAD"
-                standardOutput = hashStdOut
-            }
-            commit = hashStdOut.toString().trim()
-        } catch (Exception ignore) {
-        }
-        buildConfigField "String", "COMMIT_HASH", ('"' + (commit.isEmpty() ? "Unknown commit" : commit) + '"')
-
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [eventBusIndex: 'de.danoeh.antennapod.ApEventBusIndex']
@@ -80,7 +68,10 @@ dependencies {
     implementation project(':net:common')
     implementation project(':net:discovery')
     implementation project(':net:download:service-interface')
+    implementation project(':net:download:service')
+    implementation project(':net:ssl')
     implementation project(':net:sync:gpoddernet')
+    implementation project(':net:sync:service')
     implementation project(':net:sync:model')
     implementation project(':parser:feed')
     implementation project(':playback:base')
@@ -90,13 +81,17 @@ dependencies {
     implementation project(':storage:preferences')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
+    implementation project(':ui:discovery')
     implementation project(':ui:echo')
     implementation project(':ui:episodes')
     implementation project(':ui:glide')
     implementation project(':ui:i18n')
+    implementation project(':ui:notifications')
     implementation project(':ui:widget')
     implementation project(':ui:preferences')
     implementation project(':ui:statistics')
+    implementation project(':net:sync:service-interface')
+    implementation project(':playback:service')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"

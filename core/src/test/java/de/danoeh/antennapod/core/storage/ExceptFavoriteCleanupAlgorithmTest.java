@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.storage;
 
+import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -25,6 +26,7 @@ public class ExceptFavoriteCleanupAlgorithmTest extends DbCleanupTests {
 
     public ExceptFavoriteCleanupAlgorithmTest() {
         setCleanupAlgorithm(UserPreferences.EPISODE_CLEANUP_EXCEPT_FAVORITE);
+        AutoDownloadManager.setInstance(new AutoDownloadManagerImpl());
     }
 
     @Test
@@ -35,7 +37,7 @@ public class ExceptFavoriteCleanupAlgorithmTest extends DbCleanupTests {
         List<File> files = new ArrayList<>();
         populateItems(numberOfItems, feed, items, files, FeedItem.UNPLAYED, false, false);
 
-        AutoDownloadManager.performAutoCleanup(context);
+        AutoDownloadManager.getInstance().performAutoCleanup(context);
         for (int i = 0; i < files.size(); i++) {
             if (i < EPISODE_CACHE_SIZE) {
                 assertTrue("Only enough items should be deleted", files.get(i).exists());
@@ -53,7 +55,7 @@ public class ExceptFavoriteCleanupAlgorithmTest extends DbCleanupTests {
         List<File> files = new ArrayList<>();
         populateItems(numberOfItems, feed, items, files, FeedItem.UNPLAYED, true, false);
 
-        AutoDownloadManager.performAutoCleanup(context);
+        AutoDownloadManager.getInstance().performAutoCleanup(context);
         for (int i = 0; i < files.size(); i++) {
             if (i < EPISODE_CACHE_SIZE) {
                 assertTrue("Only enough items should be deleted", files.get(i).exists());
@@ -71,7 +73,7 @@ public class ExceptFavoriteCleanupAlgorithmTest extends DbCleanupTests {
         List<File> files = new ArrayList<>();
         populateItems(numberOfItems, feed, items, files, FeedItem.UNPLAYED, false, true);
 
-        AutoDownloadManager.performAutoCleanup(context);
+        AutoDownloadManager.getInstance().performAutoCleanup(context);
         for (int i = 0; i < files.size(); i++) {
             assertTrue("Favorite episodes should should not be deleted", files.get(i).exists());
         }

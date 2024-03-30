@@ -8,11 +8,11 @@ import java.io.File;
 import java.io.IOException;
 
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.net.download.service.feed.remote.Downloader;
+import de.danoeh.antennapod.net.download.service.feed.remote.HttpDownloader;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.model.download.DownloadResult;
-import de.danoeh.antennapod.core.service.download.Downloader;
-import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.test.antennapod.util.service.download.HTTPBin;
 import org.junit.After;

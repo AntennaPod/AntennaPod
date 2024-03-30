@@ -9,7 +9,6 @@ import java.util.List;
 
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
-import de.danoeh.antennapod.core.util.PlaybackStatus;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
@@ -73,7 +72,6 @@ public class AutomaticDownloadAlgorithm {
                     if (!item.isAutoDownloadEnabled()
                             || item.isDownloaded()
                             || !item.hasMedia()
-                            || PlaybackStatus.isPlaying(item.getMedia())
                             || item.getFeed().isLocalFeed()) {
                         it.remove();
                     }

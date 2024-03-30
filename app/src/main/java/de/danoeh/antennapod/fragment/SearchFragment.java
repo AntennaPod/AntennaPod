@@ -2,7 +2,6 @@ package de.danoeh.antennapod.fragment;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -29,7 +28,6 @@ import com.leinardi.android.speeddial.SpeedDialView;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.adapter.HorizontalFeedListAdapter;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
@@ -46,6 +44,8 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.net.discovery.CombinedSearcher;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
+import de.danoeh.antennapod.ui.discovery.OnlineSearchFragment;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.LiftOnScrollListener;
@@ -425,9 +425,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         in.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
         String query = searchView.getQuery().toString();
         if (query.matches("http[s]?://.*")) {
-            Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
-            intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, query);
-            startActivity(intent);
+            startActivity(new OnlineFeedviewActivityStarter(getContext(), query).getIntent());
             return;
         }
         ((MainActivity) getActivity()).loadChildFragment(

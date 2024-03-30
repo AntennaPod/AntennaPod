@@ -14,6 +14,8 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import org.junit.After;
@@ -61,6 +63,7 @@ public class DbNullCleanupAlgorithmTest {
         prefEdit.commit();
 
         UserPreferences.init(context);
+        AutoDownloadManager.setInstance(new AutoDownloadManagerImpl());
     }
 
     @After
@@ -114,7 +117,7 @@ public class DbNullCleanupAlgorithmTest {
             //noinspection ConstantConditions
             assertTrue(item.getMedia().getId() != 0);
         }
-        AutoDownloadManager.performAutoCleanup(context);
+        AutoDownloadManager.getInstance().performAutoCleanup(context);
         for (int i = 0; i < files.size(); i++) {
             assertTrue(files.get(i).exists());
         }

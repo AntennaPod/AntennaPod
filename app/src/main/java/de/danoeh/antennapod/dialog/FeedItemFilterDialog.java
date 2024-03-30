@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.dialog;
 
 import android.os.Bundle;
-import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.model.feed.Feed;
 
 import java.util.Set;

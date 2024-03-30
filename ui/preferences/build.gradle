@@ -6,6 +6,20 @@ apply from: "../../playFlavor.gradle"
 
 android {
     namespace "de.danoeh.antennapod.ui.preferences"
+
+    defaultConfig {
+        def commit = ""
+        try {
+            def hashStdOut = new ByteArrayOutputStream()
+            exec {
+                commandLine "git", "rev-parse", "--short", "HEAD"
+                standardOutput = hashStdOut
+            }
+            commit = hashStdOut.toString().trim()
+        } catch (Exception ignore) {
+        }
+        buildConfigField "String", "COMMIT_HASH", ('"' + (commit.isEmpty() ? "Unknown commit" : commit) + '"')
+    }
 }
 
 dependencies {
@@ -20,9 +34,12 @@ dependencies {
     implementation project(":ui:common")
     implementation project(":ui:glide")
     implementation project(":ui:i18n")
+    implementation project(':net:sync:service-interface')
+    implementation project(':net:sync:service')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation "androidx.fragment:fragment:$fragmentVersion"
     implementation "com.google.android.material:material:$googleMaterialVersion"
     implementation "androidx.preference:preference:$preferenceVersion"
     implementation "androidx.work:work-runtime:$workManagerVersion"

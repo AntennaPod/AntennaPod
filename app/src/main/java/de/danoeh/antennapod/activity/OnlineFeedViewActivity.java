@@ -12,7 +12,6 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -23,18 +22,20 @@ import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
+import de.danoeh.antennapod.net.download.service.feed.remote.Downloader;
+import de.danoeh.antennapod.net.download.service.feed.remote.HttpDownloader;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
-import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
-import de.danoeh.antennapod.core.feed.FeedUrlNotFoundException;
-import de.danoeh.antennapod.core.storage.FeedDatabaseWriter;
-import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequestCreator;
+import de.danoeh.antennapod.net.discovery.FeedUrlNotFoundException;
+import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
+import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.core.util.DownloadErrorLabel;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
 import de.danoeh.antennapod.databinding.OnlinefeedviewHeaderBinding;
@@ -46,10 +47,8 @@ import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfa
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.model.download.DownloadResult;
-import de.danoeh.antennapod.core.service.download.Downloader;
-import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.net.discovery.CombinedSearcher;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 import de.danoeh.antennapod.net.discovery.PodcastSearcherRegistry;
@@ -85,6 +84,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter.ARG_FEEDURL;
+import static de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter.ARG_STARTED_FROM_SEARCH;
+import static de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter.ARG_WAS_MANUAL_URL;
+
 /**
  * Downloads a feed from a feed URL and parses it. Subclasses can display the
  * feed object that was parsed. This activity MUST be started with a given URL
@@ -95,8 +98,6 @@ import java.util.Map;
  */
 public class OnlineFeedViewActivity extends AppCompatActivity {
 
-    public static final String ARG_FEEDURL = "arg.feedurl";
-    public static final String ARG_WAS_MANUAL_URL = "manual_url";
     private static final int RESULT_ERROR = 2;
     private static final String TAG = "OnlineFeedViewActivity";
     private static final String PREFS = "OnlineFeedViewActivityPreferences";
@@ -234,20 +235,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            Intent destIntent = new Intent(this, MainActivity.class);
-            if (NavUtils.shouldUpRecreateTask(this, destIntent)) {
-                startActivity(destIntent);
-            } else {
-                NavUtils.navigateUpFromSameTask(this);
-            }
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void lookupUrlAndDownload(String url) {
@@ -521,13 +508,14 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     private void openFeed() {
-        // feed.getId() is always 0, we have to retrieve the id from the feed list from
-        // the database
-        Intent intent = MainActivity.getIntentToOpenFeed(this, getFeedId());
-        intent.putExtra(MainActivity.EXTRA_STARTED_FROM_SEARCH,
-                getIntent().getBooleanExtra(MainActivity.EXTRA_STARTED_FROM_SEARCH, false));
+        // feed.getId() is always 0, we have to retrieve the id from the feed list from the database
+        MainActivityStarter mainActivityStarter = new MainActivityStarter(this);
+        mainActivityStarter.withOpenFeed(getFeedId());
+        if (getIntent().getBooleanExtra(ARG_STARTED_FROM_SEARCH, false)) {
+            mainActivityStarter.withAddToBackStack();
+        }
         finish();
-        startActivity(intent);
+        startActivity(mainActivityStarter.getIntent());
     }
 
     private void handleUpdatedFeedStatus() {

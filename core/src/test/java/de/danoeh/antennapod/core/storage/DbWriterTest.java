@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.storage;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -13,6 +12,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfaceStub;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import org.awaitility.Awaitility;
 import org.junit.After;
@@ -29,8 +29,6 @@ import java.util.Locale;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.ApplicationCallbacks;
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -44,8 +42,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Test class for {@link DBWriter}.
@@ -64,10 +60,6 @@ public class DbWriterTest {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         UserPreferences.init(context);
         PlaybackPreferences.init(context);
-
-        Application app = (Application) context;
-        ClientConfig.applicationCallbacks = mock(ApplicationCallbacks.class);
-        when(ClientConfig.applicationCallbacks.getApplicationInstance()).thenReturn(app);
         DownloadServiceInterface.setImpl(new DownloadServiceInterfaceStub());
 
         // create new database

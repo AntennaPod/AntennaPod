@@ -10,7 +10,7 @@ import androidx.preference.TwoStatePreference;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
+import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.ui.preferences.screen.downloads.ChooseDataFolderDialog;
 import de.danoeh.antennapod.dialog.ProxyDialog;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -90,7 +90,7 @@ public class DownloadsPreferencesFragment extends PreferenceFragmentCompat
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (UserPreferences.PREF_UPDATE_INTERVAL.equals(key)) {
-            FeedUpdateManager.restartUpdateAlarm(getContext(), true);
+            FeedUpdateManager.getInstance().restartUpdateAlarm(getContext(), true);
         }
     }
 

@@ -18,6 +18,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
+import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
+import de.danoeh.antennapod.ui.echo.EchoConfig;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -28,6 +30,7 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.databinding.HomeFragmentBinding;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
@@ -83,7 +86,8 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         updateWelcomeScreenVisibility();
 
         viewBinding.swipeRefresh.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
-        viewBinding.swipeRefresh.setOnRefreshListener(() -> FeedUpdateManager.runOnceOrAsk(requireContext()));
+        viewBinding.swipeRefresh.setOnRefreshListener(() ->
+                FeedUpdateManager.getInstance().runOnceOrAsk(requireContext()));
 
         return viewBinding.getRoot();
     }
@@ -151,7 +155,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             HomeSectionsSettingsDialog.open(getContext(), (dialogInterface, i) -> populateSectionList());
             return true;
         } else if (item.getItemId() == R.id.refresh_item) {
-            FeedUpdateManager.runOnceOrAsk(requireContext());
+            FeedUpdateManager.getInstance().runOnceOrAsk(requireContext());
             return true;
         } else if (item.getItemId() == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());

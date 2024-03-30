@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import java.io.File;
 
+import de.danoeh.antennapod.net.download.serviceinterface.FileNameGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;

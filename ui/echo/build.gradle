@@ -13,7 +13,6 @@ android {
 }
 
 dependencies {
-    implementation project(":core")
     implementation project(":model")
     implementation project(':storage:database')
     implementation project(":storage:preferences")

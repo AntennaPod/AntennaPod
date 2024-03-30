@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment;
 import java.util.Collections;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.view.LocalDeleteModal;

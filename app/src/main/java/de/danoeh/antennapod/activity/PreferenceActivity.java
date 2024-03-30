@@ -21,7 +21,7 @@ import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
-import de.danoeh.antennapod.databinding.SettingsActivityBinding;
+
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.fragment.preferences.ImportExportPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.MainPreferencesFragment;
@@ -32,6 +32,7 @@ import de.danoeh.antennapod.fragment.preferences.UserInterfacePreferencesFragmen
 import de.danoeh.antennapod.ui.preferences.screen.AutoDownloadPreferencesFragment;
 import de.danoeh.antennapod.ui.preferences.screen.NotificationPreferencesFragment;
 import de.danoeh.antennapod.ui.preferences.screen.synchronization.SynchronizationPreferencesFragment;
+import de.danoeh.antennapod.ui.preferences.databinding.SettingsActivityBinding;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

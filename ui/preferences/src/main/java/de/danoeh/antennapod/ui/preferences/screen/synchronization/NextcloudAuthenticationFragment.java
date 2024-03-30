@@ -9,10 +9,11 @@ import androidx.annotation.Nullable;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
-import de.danoeh.antennapod.core.sync.SyncService;
-import de.danoeh.antennapod.core.sync.SynchronizationCredentials;
-import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
-import de.danoeh.antennapod.core.sync.SynchronizationSettings;
+import de.danoeh.antennapod.net.sync.service.SyncService;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationProviderViewData;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
+import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
+import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.net.sync.nextcloud.NextcloudLoginFlow;
 import de.danoeh.antennapod.ui.preferences.R;
 import de.danoeh.antennapod.ui.preferences.databinding.NextcloudAuthDialogBinding;
@@ -87,8 +88,10 @@ public class NextcloudAuthenticationFragment extends DialogFragment
 
     @Override
     public void onNextcloudAuthenticated(String server, String username, String password) {
-        SynchronizationSettings.setSelectedSyncProvider(SynchronizationProviderViewData.NEXTCLOUD_GPODDER);
-        SynchronizationCredentials.clear(getContext());
+        SynchronizationSettings.setSelectedSyncProvider(
+                SynchronizationProviderViewData.NEXTCLOUD_GPODDER.getIdentifier());
+        SynchronizationCredentials.clear();
+        SynchronizationQueueSink.clearQueue(getContext());
         SynchronizationCredentials.setPassword(password);
         SynchronizationCredentials.setHosturl(server);
         SynchronizationCredentials.setUsername(username);

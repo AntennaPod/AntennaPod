@@ -16,20 +16,21 @@ import java.util.Arrays;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.util.FeedUtil;
-import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.sync.SynchronizationSettings;
-import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
+import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
+import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.PlaybackStatus;
+import de.danoeh.antennapod.playback.service.PlaybackStatus;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.dialog.ShareDialog;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.view.LocalDeleteModal;
 
@@ -230,8 +231,14 @@ public class FeedItemMenuHandler {
         final Handler h = new Handler(fragment.requireContext().getMainLooper());
         final Runnable r = () -> {
             FeedMedia media = item.getMedia();
+            if (media == null) {
+                return;
+            }
             boolean shouldAutoDelete = FeedUtil.shouldAutoDeleteItemsOnThatFeed(item.getFeed());
-            if (media != null && FeedItemUtil.hasAlmostEnded(media) && shouldAutoDelete) {
+            int smartMarkAsPlayedSecs = UserPreferences.getSmartMarkAsPlayedSecs();
+            boolean almostEnded = media.getDuration() > 0
+                    && media.getPosition() >= media.getDuration() - smartMarkAsPlayedSecs * 1000;
+            if (almostEnded && shouldAutoDelete) {
                 DBWriter.deleteFeedMediaOfItem(fragment.requireContext(), media);
             }
         };

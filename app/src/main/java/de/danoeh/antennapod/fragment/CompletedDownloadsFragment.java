@@ -20,9 +20,9 @@ import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.adapter.actionbutton.DeleteActionButton;
 import de.danoeh.antennapod.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.dialog.ItemSortDialog;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
@@ -179,7 +179,7 @@ public class CompletedDownloadsFragment extends Fragment
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.refresh_item) {
-            FeedUpdateManager.runOnceOrAsk(requireContext());
+            FeedUpdateManager.getInstance().runOnceOrAsk(requireContext());
             return true;
         } else if (item.getItemId() == R.id.action_download_logs) {
             new DownloadLogFragment().show(getChildFragmentManager(), null);
