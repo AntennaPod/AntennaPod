@@ -33,7 +33,8 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
         for (String sectionTag: sectionTags) {
             settingsDialogItemList.add(new SettingsDialogItem(SettingsDialogItem.ViewType.Section, sectionTag));
         }
-        settingsDialogItemList.add(new SettingsDialogItem(SettingsDialogItem.ViewType.Header, context.getString(R.string.section_hidden)));
+        String hiddenText = context.getString(R.string.section_hidden);
+        settingsDialogItemList.add(new SettingsDialogItem(SettingsDialogItem.ViewType.Header, hiddenText));
         for (String sectionTag: hiddenSectionTags) {
             settingsDialogItemList.add(new SettingsDialogItem(SettingsDialogItem.ViewType.Section, sectionTag));
         }
@@ -49,8 +50,9 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
     public List<String> getOrderedSectionTags() {
         List<String> orderedSectionTags = new ArrayList<>();
         for (SettingsDialogItem item: settingsDialogItems) {
-            if(item.getViewType() == SettingsDialogItem.ViewType.Header)
+            if (item.getViewType() == SettingsDialogItem.ViewType.Header) {
                 continue;
+            }
 
             orderedSectionTags.add(item.getTitle());
         }
@@ -62,8 +64,9 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
         List<String> hiddenSections = new ArrayList<>();
         for (int i = settingsDialogItems.size() - 1; i >= 0; i--) {
             SettingsDialogItem item = settingsDialogItems.get(i);
-            if(item.getViewType() == SettingsDialogItem.ViewType.Header)
+            if (item.getViewType() == SettingsDialogItem.ViewType.Header) {
                 return hiddenSections;
+            }
 
             hiddenSections.add(item.getTitle());
         }
@@ -75,7 +78,7 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        if(viewType == HEADER_VIEW){
+        if (viewType == HEADER_VIEW) {
             View entryView = inflater.inflate(R.layout.choose_home_screen_order_dialog_header, parent, false);
             return new HeaderViewHolder(entryView);
         }
@@ -86,21 +89,24 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public int getItemViewType(int position) {
-        return settingsDialogItems.get(position).getViewType() == SettingsDialogItem.ViewType.Header ? HEADER_VIEW : ITEM_VIEW;
+        boolean isHeader = settingsDialogItems.get(position).getViewType() == SettingsDialogItem.ViewType.Header;
+        return isHeader ? HEADER_VIEW : ITEM_VIEW;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         String title = settingsDialogItems.get(position).getTitle();
-        if(holder instanceof HeaderViewHolder headerViewHolder)
-        {
+        if (holder instanceof HeaderViewHolder) {
+            HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
             headerViewHolder.categoryLabel.setText(title);
-        } else if(holder instanceof ItemViewHolder itemViewHolder) {
+        } else if (holder instanceof ItemViewHolder) {
+            ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             itemViewHolder.nameLabel.setText(HomeUtil.getNameFromTag(itemViewHolder.nameLabel.getContext(), title));
             itemViewHolder.dragImage.setOnTouchListener((view, motionEvent) -> {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    if (dragListener != null)
+                    if (dragListener != null) {
                         dragListener.accept(itemViewHolder);
+                    }
                 }
                 return true;
             });
