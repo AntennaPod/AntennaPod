@@ -7,6 +7,7 @@ import com.google.android.material.color.DynamicColors;
 
 import de.danoeh.antennapod.spa.SPAUtil;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.EventBusException;
 
 /** Main application class. */
 public class PodcastApp extends Application {
@@ -27,16 +28,20 @@ public class PodcastApp extends Application {
             StrictMode.setVmPolicy(builder.build());
         }
 
-        EventBus.builder()
-                .addIndex(new ApEventBusIndex())
-                .logNoSubscriberMessages(false)
-                .sendNoSubscriberEvent(false)
-                .installDefaultEventBus();
-        DynamicColors.applyToActivitiesIfAvailable(this);
+        try {
+            // Robolectric calls onCreate for every test, which causes problems with static members
+            EventBus.builder()
+                    .addIndex(new ApEventBusIndex())
+                    .logNoSubscriberMessages(false)
+                    .sendNoSubscriberEvent(false)
+                    .installDefaultEventBus();
+        } catch (EventBusException e) {
+            e.printStackTrace();
+        }
 
+        DynamicColors.applyToActivitiesIfAvailable(this);
         ClientConfigurator.initialize(this);
         PreferenceUpgrader.checkUpgrades(this);
-
         SPAUtil.sendSPAppsQueryFeedsIntent(this);
     }
 }
