@@ -20,7 +20,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <de.danoeh.antennapod.view.EpisodeItemListRecyclerView
+    <de.danoeh.antennapod.ui.episodeslist.EpisodeItemListRecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

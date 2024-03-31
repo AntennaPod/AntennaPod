@@ -8,7 +8,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.fragment.AllEpisodesFragment;
+import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
 import de.test.antennapod.EspressoTestUtils;
 import de.test.antennapod.ui.UITestUtils;
 import org.hamcrest.Matcher;

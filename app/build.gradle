@@ -122,6 +122,10 @@ dependencies {
     implementation 'com.github.skydoves:balloon:1.5.3'
     implementation 'com.github.xabaras:RecyclerViewSwipeDecorator:1.3'
 
+    testImplementation "androidx.test:core:$testCoreVersion"
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
+
     androidTestImplementation "org.awaitility:awaitility:$awaitilityVersion"
     androidTestImplementation 'com.nanohttpd:nanohttpd:2.1.1'
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"

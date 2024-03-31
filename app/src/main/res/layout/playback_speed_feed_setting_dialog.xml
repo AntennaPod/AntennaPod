@@ -19,7 +19,7 @@
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
-        <de.danoeh.antennapod.view.PlaybackSpeedSeekBar
+        <de.danoeh.antennapod.ui.screen.playback.PlaybackSpeedSeekBar
             android:id="@+id/seekBar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
