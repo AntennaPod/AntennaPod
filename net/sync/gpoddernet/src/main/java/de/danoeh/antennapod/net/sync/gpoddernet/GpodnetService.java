@@ -79,36 +79,6 @@ public class GpodnetService implements ISyncService {
     }
 
     /**
-     * Searches the podcast directory for a given string.
-     *
-     * @param query          The search query
-     * @param scaledLogoSize The size of the logos that are returned by the search query.
-     *                       Must be in range 1..256. If the value is out of range, the
-     *                       default value defined by the gpodder.net API will be used.
-     */
-    public List<GpodnetPodcast> searchPodcasts(String query, int scaledLogoSize) throws GpodnetServiceException {
-        String parameters = (scaledLogoSize > 0 && scaledLogoSize <= 256) ? String
-                .format(Locale.US, "q=%s&scale_logo=%d", query, scaledLogoSize) : String
-                .format("q=%s", query);
-        try {
-            URL url = new URI(baseScheme, null, baseHost, basePort, "/search.json",
-                    parameters, null).toURL();
-            Request.Builder request = new Request.Builder().url(url);
-            String response = executeRequest(request);
-
-            JSONArray jsonArray = new JSONArray(response);
-            return readPodcastListFromJsonArray(jsonArray);
-
-        } catch (JSONException | MalformedURLException e) {
-            e.printStackTrace();
-            throw new GpodnetServiceException(e);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            throw new IllegalStateException(e);
-        }
-    }
-
-    /**
      * Returns all devices of a given user.
      * <p/>
      * This method requires authentication.

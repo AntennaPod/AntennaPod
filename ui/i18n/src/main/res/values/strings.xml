@@ -761,7 +761,6 @@
     <string name="search_itunes_label">Search Apple Podcasts</string>
     <string name="search_podcastindex_label">Search Podcast Index</string>
     <string name="search_fyyd_label">Search fyyd</string>
-    <string name="gpodnet_search_hint">Search gpodder.net</string>
     <string name="advanced">Advanced</string>
     <string name="add_podcast_by_url">Add podcast by RSS address</string>
     <string name="add_podcast_by_url_hint" translatable="false">www.example.com/feed</string>

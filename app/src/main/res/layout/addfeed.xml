@@ -134,15 +134,6 @@
                 style="@style/AddPodcastTextView" />
 
             <TextView
-                android:id="@+id/searchGPodderButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/gpodnet_search_hint"
-                app:drawableStartCompat="@drawable/ic_search"
-                app:drawableLeftCompat="@drawable/ic_search"
-                style="@style/AddPodcastTextView" />
-
-            <TextView
                 android:id="@+id/searchPodcastIndexButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
