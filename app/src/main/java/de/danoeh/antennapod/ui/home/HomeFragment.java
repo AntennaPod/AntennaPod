@@ -57,8 +57,6 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
     public static final String TAG = "HomeFragment";
     public static final String PREF_NAME = "PrefHomeFragment";
-    public static final String PREF_HIDDEN_SECTIONS = "PrefHomeSectionsString";
-    public static final String PREF_SECTION_ORDER = "PrefHomeSectionOrder";
     public static final String PREF_DISABLE_NOTIFICATION_PERMISSION_NAG = "DisableNotificationPermissionNag";
     public static final String PREF_HIDE_ECHO = "HideEcho";
 

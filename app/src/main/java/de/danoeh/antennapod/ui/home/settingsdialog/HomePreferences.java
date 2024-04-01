@@ -14,7 +14,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.ui.home.HomeFragment;
 
 public class HomePreferences {
-
+    private static final String PREF_HIDDEN_SECTIONS = "PrefHomeSectionsString";
+    private static final String PREF_SECTION_ORDER = "PrefHomeSectionOrder";
     private static HashMap<String, String> sectionTagToName;
 
     public static String getNameFromTag(Context context, String sectionTag) {
@@ -41,11 +42,11 @@ public class HomePreferences {
     }
 
     public static List<String> getHiddenSectionTags(Context context) {
-        return getListPreference(context, HomeFragment.PREF_HIDDEN_SECTIONS);
+        return getListPreference(context, PREF_HIDDEN_SECTIONS);
     }
 
     public static List<String> getSortedSectionTags(Context context) {
-        List<String> sectionTagOrder = getListPreference(context, HomeFragment.PREF_SECTION_ORDER);
+        List<String> sectionTagOrder = getListPreference(context, PREF_SECTION_ORDER);
         List<String> hiddenSectionTags = getHiddenSectionTags(context);
         String[] sectionTags = context.getResources().getStringArray(R.array.home_section_tags);
         Arrays.sort(sectionTags, (String a, String b) -> Integer.signum(
@@ -73,5 +74,13 @@ public class HomePreferences {
     private static int indexOfOrMaxValue(List<String> haystack, String needle) {
         int index = haystack.indexOf(needle);
         return index == -1 ? Integer.MAX_VALUE : index;
+    }
+
+    public static void saveChanges(Context context, List<String> hiddenSections, List<String> sectionOrder) {
+        SharedPreferences prefs = context.getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putString(PREF_HIDDEN_SECTIONS, TextUtils.join(",", hiddenSections));
+        edit.putString(PREF_SECTION_ORDER, TextUtils.join(",", sectionOrder));
+        edit.apply();
     }
 }

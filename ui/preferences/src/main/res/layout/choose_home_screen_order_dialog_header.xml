@@ -9,7 +9,7 @@
     android:paddingVertical="16dp">
 
     <TextView
-        android:id="@+id/header_label"
+        android:id="@+id/headerLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
