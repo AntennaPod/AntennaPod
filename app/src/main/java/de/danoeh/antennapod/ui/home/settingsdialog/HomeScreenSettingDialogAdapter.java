@@ -19,7 +19,7 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 
-class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  implements ItemMoveHandler {
     private static final int HEADER_VIEW = 0;
     private static final int ITEM_VIEW = 1;
     private final List<SettingsDialogItem> settingsDialogItems;
@@ -118,6 +118,7 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
         return settingsDialogItems.size();
     }
 
+    @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
