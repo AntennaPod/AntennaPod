@@ -53,7 +53,7 @@ public class NavDrawerData {
     }
 
     public static class TagDrawerItem extends DrawerItem {
-        public final List<DrawerItem> children = new ArrayList<>();
+        private final List<DrawerItem> children = new ArrayList<>();
         private final String name;
         private boolean isOpen;
 
@@ -73,6 +73,10 @@ public class NavDrawerData {
 
         public void setOpen(final boolean open) {
             isOpen = open;
+        }
+
+        public List<DrawerItem> getChildren() {
+            return children;
         }
 
         public int getCounter() {

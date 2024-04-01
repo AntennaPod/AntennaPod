@@ -360,14 +360,30 @@ public abstract class PlaybackServiceMediaPlayer {
      * Holds information about a PSMP object.
      */
     public static class PSMPInfo {
-        public final PlayerStatus oldPlayerStatus;
-        public PlayerStatus playerStatus;
-        public Playable playable;
+        private final PlayerStatus oldPlayerStatus;
+        private final PlayerStatus playerStatus;
+        private Playable playable;
 
         public PSMPInfo(PlayerStatus oldPlayerStatus, PlayerStatus playerStatus, Playable playable) {
             this.oldPlayerStatus = oldPlayerStatus;
             this.playerStatus = playerStatus;
             this.playable = playable;
+        }
+
+        public PlayerStatus getOldPlayerStatus() {
+            return oldPlayerStatus;
+        }
+
+        public PlayerStatus getPlayerStatus() {
+            return playerStatus;
+        }
+
+        public Playable getPlayable() {
+            return playable;
+        }
+
+        public void setPlayable(final Playable newPlayable) {
+            playable = newPlayable;
         }
     }
 }

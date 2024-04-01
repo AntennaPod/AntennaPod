@@ -68,14 +68,6 @@
         <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
         <Class name="de.danoeh.antennapod.ui.home.sections.EpisodesSurpriseSection"/>
     </Match>
-    <Match>
-        <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"/>
-        <Class name="de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer"/>
-    </Match>
-    <Match>
-        <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"/>
-        <Class name="de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer$PSMPInfo"/>
-    </Match>
 
     <Match><Class name="de.danoeh.antennapod.core.ClientConfig"/></Match>
 
