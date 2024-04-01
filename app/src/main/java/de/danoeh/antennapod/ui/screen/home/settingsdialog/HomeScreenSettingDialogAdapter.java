@@ -89,7 +89,8 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public int getItemViewType(int position) {
-        boolean isHeader = settingsDialogItems.get(position).getViewType() == HomeScreenSettingsDialogItem.ViewType.Header;
+        HomeScreenSettingsDialogItem.ViewType viewType = settingsDialogItems.get(position).getViewType();
+        boolean isHeader = viewType == HomeScreenSettingsDialogItem.ViewType.Header;
         return isHeader ? HEADER_VIEW : ITEM_VIEW;
     }
 
@@ -101,7 +102,8 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
             headerViewHolder.categoryLabel.setText(title);
         } else if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            itemViewHolder.nameLabel.setText(HomePreferences.getNameFromTag(itemViewHolder.nameLabel.getContext(), title));
+            String sectionName = HomePreferences.getNameFromTag(itemViewHolder.nameLabel.getContext(), title);
+            itemViewHolder.nameLabel.setText(sectionName);
             itemViewHolder.dragImage.setOnTouchListener((view, motionEvent) -> {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     if (dragListener != null) {

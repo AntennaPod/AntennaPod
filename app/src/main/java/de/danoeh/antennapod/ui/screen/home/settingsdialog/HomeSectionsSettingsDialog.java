@@ -59,12 +59,21 @@ public class HomeSectionsSettingsDialog {
 
         ArrayList<HomeScreenSettingsDialogItem> settingsDialogItems = new ArrayList<>();
         for (String sectionTag: sectionTags) {
-            settingsDialogItems.add(new HomeScreenSettingsDialogItem(HomeScreenSettingsDialogItem.ViewType.Section, sectionTag));
+            settingsDialogItems.add(new HomeScreenSettingsDialogItem(
+                    HomeScreenSettingsDialogItem.ViewType.Section,
+                    sectionTag
+            ));
         }
         String hiddenText = context.getString(R.string.section_hidden);
-        settingsDialogItems.add(new HomeScreenSettingsDialogItem(HomeScreenSettingsDialogItem.ViewType.Header, hiddenText));
+        settingsDialogItems.add(new HomeScreenSettingsDialogItem(
+                HomeScreenSettingsDialogItem.ViewType.Header,
+                hiddenText
+        ));
         for (String sectionTag: hiddenSectionTags) {
-            settingsDialogItems.add(new HomeScreenSettingsDialogItem(HomeScreenSettingsDialogItem.ViewType.Section, sectionTag));
+            settingsDialogItems.add(new HomeScreenSettingsDialogItem(
+                    HomeScreenSettingsDialogItem.ViewType.Section,
+                    sectionTag
+            ));
         }
 
         return settingsDialogItems;
