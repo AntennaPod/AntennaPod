@@ -29,17 +29,15 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
         List<String> sectionTags = HomePreferences.getSortedSectionTags(context);
         List<String> hiddenSectionTags = HomePreferences.getHiddenSectionTags(context);
 
-        List<SettingsDialogItem> settingsDialogItemList = new ArrayList<>();
+        settingsDialogItems = new ArrayList<>();
         for (String sectionTag: sectionTags) {
-            settingsDialogItemList.add(new SettingsDialogItem(SettingsDialogItem.ViewType.Section, sectionTag));
+            settingsDialogItems.add(new SettingsDialogItem(SettingsDialogItem.ViewType.Section, sectionTag));
         }
         String hiddenText = context.getString(R.string.section_hidden);
-        settingsDialogItemList.add(new SettingsDialogItem(SettingsDialogItem.ViewType.Header, hiddenText));
+        settingsDialogItems.add(new SettingsDialogItem(SettingsDialogItem.ViewType.Header, hiddenText));
         for (String sectionTag: hiddenSectionTags) {
-            settingsDialogItemList.add(new SettingsDialogItem(SettingsDialogItem.ViewType.Section, sectionTag));
+            settingsDialogItems.add(new SettingsDialogItem(SettingsDialogItem.ViewType.Section, sectionTag));
         }
-
-        settingsDialogItems = settingsDialogItemList;
     }
 
     public void setDragListener(@Nullable Consumer<ItemViewHolder> dragListener) {
