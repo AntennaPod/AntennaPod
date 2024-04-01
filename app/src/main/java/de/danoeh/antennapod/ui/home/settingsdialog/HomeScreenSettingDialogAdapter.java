@@ -58,6 +58,7 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
             hiddenSections.add(item.getTitle());
         }
 
+        Collections.reverse(hiddenSections);
         return hiddenSections;
     }
 
