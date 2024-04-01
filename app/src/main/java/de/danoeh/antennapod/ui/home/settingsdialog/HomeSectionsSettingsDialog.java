@@ -2,11 +2,9 @@ package de.danoeh.antennapod.ui.home.settingsdialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +13,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.ChooseHomeScreenOrderDialogBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeSectionsSettingsDialog {
@@ -26,7 +25,8 @@ public class HomeSectionsSettingsDialog {
         builder.setTitle(R.string.configure_home);
         builder.setView(viewBinding.getRoot());
         RecyclerView recyclerView = viewBinding.recyclerView;
-        HomeScreenSettingDialogAdapter adapter = new HomeScreenSettingDialogAdapter(context);
+        List<HomeScreenSettingsDialogItem> dialogItems = initialItemsSettingsDialog(context);
+        HomeScreenSettingDialogAdapter adapter = new HomeScreenSettingDialogAdapter(dialogItems);
 
         configureRecyclerView(recyclerView, adapter, context);
 
@@ -50,5 +50,23 @@ public class HomeSectionsSettingsDialog {
         adapter.setDragListener(itemTouchHelper::startDrag);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
+    }
+
+    @NonNull
+    private static List<HomeScreenSettingsDialogItem> initialItemsSettingsDialog(@NonNull Context context) {
+        final List<String> sectionTags = HomePreferences.getSortedSectionTags(context);
+        final List<String> hiddenSectionTags = HomePreferences.getHiddenSectionTags(context);
+
+        ArrayList<HomeScreenSettingsDialogItem> settingsDialogItems = new ArrayList<>();
+        for (String sectionTag: sectionTags) {
+            settingsDialogItems.add(new HomeScreenSettingsDialogItem(HomeScreenSettingsDialogItem.ViewType.Section, sectionTag));
+        }
+        String hiddenText = context.getString(R.string.section_hidden);
+        settingsDialogItems.add(new HomeScreenSettingsDialogItem(HomeScreenSettingsDialogItem.ViewType.Header, hiddenText));
+        for (String sectionTag: hiddenSectionTags) {
+            settingsDialogItems.add(new HomeScreenSettingsDialogItem(HomeScreenSettingsDialogItem.ViewType.Section, sectionTag));
+        }
+
+        return settingsDialogItems;
     }
 }

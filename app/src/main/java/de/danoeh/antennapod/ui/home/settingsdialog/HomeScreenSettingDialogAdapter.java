@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.ui.home.settingsdialog;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.ChooseHomeScreenOrderDialogEntryBinding;
 import de.danoeh.antennapod.databinding.ChooseHomeScreenOrderDialogHeaderBinding;
 
@@ -27,19 +25,8 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
     private final List<HomeScreenSettingsDialogItem> settingsDialogItems;
     @Nullable private Consumer<ItemViewHolder> dragListener;
 
-    public HomeScreenSettingDialogAdapter(@NonNull Context context) {
-        final List<String> sectionTags = HomePreferences.getSortedSectionTags(context);
-        final List<String> hiddenSectionTags = HomePreferences.getHiddenSectionTags(context);
-
-        settingsDialogItems = new ArrayList<>();
-        for (String sectionTag: sectionTags) {
-            settingsDialogItems.add(new HomeScreenSettingsDialogItem(HomeScreenSettingsDialogItem.ViewType.Section, sectionTag));
-        }
-        String hiddenText = context.getString(R.string.section_hidden);
-        settingsDialogItems.add(new HomeScreenSettingsDialogItem(HomeScreenSettingsDialogItem.ViewType.Header, hiddenText));
-        for (String sectionTag: hiddenSectionTags) {
-            settingsDialogItems.add(new HomeScreenSettingsDialogItem(HomeScreenSettingsDialogItem.ViewType.Section, sectionTag));
-        }
+    public HomeScreenSettingDialogAdapter(@NonNull List<HomeScreenSettingsDialogItem> dialogItems) {
+        settingsDialogItems = dialogItems;
     }
 
     public void setDragListener(@Nullable Consumer<ItemViewHolder> dragListener) {
