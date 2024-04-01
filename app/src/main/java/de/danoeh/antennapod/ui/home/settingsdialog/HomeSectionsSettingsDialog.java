@@ -40,7 +40,7 @@ public class HomeSectionsSettingsDialog {
             RecyclerView recyclerView,
             HomeScreenSettingDialogAdapter adapter,
             Context context) {
-        ItemTouchCallback itemMoveCallback = new ItemTouchCallback(adapter);
+        ItemTouchCallback itemMoveCallback = new ItemTouchCallback(adapter::onItemMove);
         ItemTouchHelper itemTouchHelper;
         itemTouchHelper = new ItemTouchHelper(itemMoveCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
