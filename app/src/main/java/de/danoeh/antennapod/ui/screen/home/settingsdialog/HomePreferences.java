@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.ui.home.settingsdialog;
+package de.danoeh.antennapod.ui.screen.home.settingsdialog;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.ui.home.HomeFragment;
+import de.danoeh.antennapod.ui.screen.home.HomeFragment;
 
 public class HomePreferences {
     private static final String PREF_HIDDEN_SECTIONS = "PrefHomeSectionsString";

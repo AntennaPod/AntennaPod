@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.ui.home.settingsdialog;
+package de.danoeh.antennapod.ui.screen.home.settingsdialog;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
