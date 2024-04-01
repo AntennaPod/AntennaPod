@@ -6,7 +6,7 @@
     android:layout_height="60dp"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingHorizontal="15dp">
+    android:paddingHorizontal="16dp">
 
     <ImageView
         android:id="@+id/home_screen_section_drag_image"
@@ -14,8 +14,7 @@
         android:layout_height="22dp"
         android:layout_marginStart="4dp"
         android:contentDescription="@string/sort"
-        android:src="@drawable/ic_drag_darktheme"
-        app:tint="#a7a7a7" />
+        android:src="@drawable/ic_drag_darktheme" />
 
     <TextView
         android:id="@+id/home_screen_section_label"
