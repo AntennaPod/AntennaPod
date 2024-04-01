@@ -77,7 +77,6 @@
     <Match><Bug pattern="EI_EXPOSE_REP"/></Match>
     <Match><Bug pattern="EI_EXPOSE_REP2"/></Match>
     <Match><Bug pattern="HE_EQUALS_USE_HASHCODE"/></Match>
-    <Match><Bug pattern="ICAST_INTEGER_MULTIPLY_CAST_TO_LONG"/></Match>
     <Match><Bug pattern="IS2_INCONSISTENT_SYNC"/></Match>
     <Match><Bug pattern="NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION"/></Match>
     <Match><Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/></Match>
