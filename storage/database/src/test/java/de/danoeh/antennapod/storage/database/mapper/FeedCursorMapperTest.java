@@ -2,7 +2,6 @@ package de.danoeh.antennapod.storage.database.mapper;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -40,9 +39,9 @@ public class FeedCursorMapperTest {
     @SuppressWarnings("ConstantConditions")
     @Test
     public void testFromCursor() {
-        try (Cursor cursor = adapter.getAllFeedsCursor()) {
+        try (FeedCursor cursor = new FeedCursor(adapter.getAllFeedsCursor())) {
             cursor.moveToNext();
-            Feed feed = FeedCursorMapper.convert(cursor);
+            Feed feed = cursor.getFeed();
             assertTrue(feed.getId() >= 0);
             assertEquals("feed custom title", feed.getTitle());
             assertEquals("feed custom title", feed.getCustomTitle());
