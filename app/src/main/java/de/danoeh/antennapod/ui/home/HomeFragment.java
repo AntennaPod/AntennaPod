@@ -43,7 +43,7 @@ import de.danoeh.antennapod.ui.home.sections.InboxSection;
 import de.danoeh.antennapod.ui.home.sections.QueueSection;
 import de.danoeh.antennapod.ui.home.sections.SubscriptionsSection;
 import de.danoeh.antennapod.ui.home.settingsdialog.HomeSectionsSettingsDialog;
-import de.danoeh.antennapod.ui.home.settingsdialog.HomeUtil;
+import de.danoeh.antennapod.ui.home.settingsdialog.HomePreferences;
 import de.danoeh.antennapod.view.LiftOnScrollListener;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -107,11 +107,11 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             addSection(new EchoSection());
         }
 
-        addSections(context);
+        addSections();
     }
 
-    private void addSections(Context context) {
-        List<String> sectionTags = HomeUtil.getSortedSectionTags(context);
+    private void addSections() {
+        List<String> sectionTags = HomePreferences.getSortedSectionTags(getContext());
         for (String sectionTag : sectionTags) {
             addSection(getSection(sectionTag));
         }

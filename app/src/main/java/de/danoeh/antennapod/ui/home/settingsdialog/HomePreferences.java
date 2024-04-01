@@ -13,7 +13,7 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.ui.home.HomeFragment;
 
-public class HomeUtil {
+public class HomePreferences {
 
     private static HashMap<String, String> sectionTagToName;
 

@@ -19,15 +19,15 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 
-class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemMoveHandler {
+class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int HEADER_VIEW = 0;
     private static final int ITEM_VIEW = 1;
     private final List<SettingsDialogItem> settingsDialogItems;
     @Nullable private Consumer<ItemViewHolder> dragListener;
 
     public HomeScreenSettingDialogAdapter(@NonNull Context context) {
-        List<String> sectionTags = HomeUtil.getSortedSectionTags(context);
-        List<String> hiddenSectionTags = HomeUtil.getHiddenSectionTags(context);
+        List<String> sectionTags = HomePreferences.getSortedSectionTags(context);
+        List<String> hiddenSectionTags = HomePreferences.getHiddenSectionTags(context);
 
         List<SettingsDialogItem> settingsDialogItemList = new ArrayList<>();
         for (String sectionTag: sectionTags) {
@@ -101,7 +101,7 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
             headerViewHolder.categoryLabel.setText(title);
         } else if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            itemViewHolder.nameLabel.setText(HomeUtil.getNameFromTag(itemViewHolder.nameLabel.getContext(), title));
+            itemViewHolder.nameLabel.setText(HomePreferences.getNameFromTag(itemViewHolder.nameLabel.getContext(), title));
             itemViewHolder.dragImage.setOnTouchListener((view, motionEvent) -> {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     if (dragListener != null) {
@@ -118,7 +118,6 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
         return settingsDialogItems.size();
     }
 
-    @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
