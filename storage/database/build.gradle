@@ -28,6 +28,9 @@ dependencies {
     implementation "commons-io:commons-io:$commonsioVersion"
     implementation "org.greenrobot:eventbus:$eventbusVersion"
     implementation "com.google.guava:guava:31.0.1-android"
+    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
 
     testImplementation "junit:junit:$junitVersion"
+    testImplementation "androidx.test:core:$testCoreVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
 }

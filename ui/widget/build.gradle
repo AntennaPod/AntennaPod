@@ -25,7 +25,6 @@ dependencies {
     implementation project(":ui:app-start-intent")
     implementation project(":ui:common")
     implementation project(":ui:episodes")
-    implementation project(':ui:glide')
     implementation project(':ui:i18n')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"

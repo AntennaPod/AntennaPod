@@ -831,6 +831,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     break;
                 case PAUSED:
                     updateNotificationAndMediaSession(newInfo.playable);
+                    PlaybackPreferences.setCurrentPlayerStatus(PlaybackPreferences.PLAYER_STATUS_PAUSED);
                     if (!isCasting) {
                         stateManager.stopForeground(!UserPreferences.isPersistNotify());
                     }
@@ -841,6 +842,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     //stopService();
                     break;
                 case PLAYING:
+                    PlaybackPreferences.setCurrentPlayerStatus(PlaybackPreferences.PLAYER_STATUS_PLAYING);
                     saveCurrentPosition(true, null, Playable.INVALID_TIME);
                     recreateMediaSessionIfNeeded();
                     updateNotificationAndMediaSession(newInfo.playable);

@@ -55,7 +55,7 @@
 
         </LinearLayout>
 
-        <de.danoeh.antennapod.view.PlayButton
+        <de.danoeh.antennapod.ui.screen.playback.PlayButton
             android:id="@+id/butPlay"
             android:layout_width="52dp"
             android:layout_height="match_parent"

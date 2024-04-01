@@ -21,8 +21,6 @@ android {
 dependencies {
     implementation project(':model')
     implementation project(':net:common')
-    implementation project(':net:sync:gpoddernet')
-    implementation project(':net:sync:model')
     implementation project(':storage:preferences')
     implementation project(':ui:i18n')
 

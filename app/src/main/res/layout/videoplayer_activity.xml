@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/videoPlayerContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/black"
-    android:orientation="vertical"
-    android:id="@+id/videoPlayerContainer">
+    android:orientation="vertical">
 
-    <de.danoeh.antennapod.view.AspectRatioVideoView
+    <de.danoeh.antennapod.ui.screen.playback.video.AspectRatioVideoView
         android:id="@+id/videoView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,7 +42,7 @@
             android:contentDescription="@string/rewind_label"
             app:srcCompat="@drawable/ic_fast_rewind_video_white" />
 
-        <de.danoeh.antennapod.view.PlayButton
+        <de.danoeh.antennapod.ui.screen.playback.PlayButton
             android:id="@+id/playButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -67,7 +68,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:padding="64dp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 
     <LinearLayout
         android:id="@+id/bottomControlsContainer"
@@ -78,9 +79,9 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/seekCardView"
-            android:alpha="0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:alpha="0"
             android:layout_marginBottom="12dp"
             android:layout_gravity="center"
             app:cardCornerRadius="8dp"
@@ -90,9 +91,9 @@
 
             <TextView
                 android:id="@+id/seekPositionLabel"
-                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:paddingLeft="24dp"
                 android:paddingTop="4dp"
                 android:paddingRight="24dp"

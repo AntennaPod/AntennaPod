@@ -1,6 +1,9 @@
 package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.BatteryManager;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -15,7 +18,6 @@ import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfa
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.net.common.NetworkUtils;
-import de.danoeh.antennapod.core.util.PowerUtils;
 
 /**
  * Implements the automatic download algorithm used by AntennaPod. This class assumes that
@@ -42,8 +44,7 @@ public class AutomaticDownloadAlgorithm {
                     && UserPreferences.isEnableAutodownload();
 
             // true if we should auto download based on power status
-            boolean powerShouldAutoDl = PowerUtils.deviceCharging(context)
-                    || UserPreferences.isEnableAutodownloadOnBattery();
+            boolean powerShouldAutoDl = deviceCharging(context) || UserPreferences.isEnableAutodownloadOnBattery();
 
             // we should only auto download if both network AND power are happy
             if (networkShouldAutoDl && powerShouldAutoDl) {
@@ -102,5 +103,19 @@ public class AutomaticDownloadAlgorithm {
                 }
             }
         };
+    }
+
+    /**
+     * @return true if the device is charging
+     */
+    public static boolean deviceCharging(Context context) {
+        // from http://developer.android.com/training/monitoring-device-state/battery-monitoring.html
+        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = context.registerReceiver(null, intentFilter);
+
+        int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+        return (status == BatteryManager.BATTERY_STATUS_CHARGING
+                || status == BatteryManager.BATTERY_STATUS_FULL);
+
     }
 }

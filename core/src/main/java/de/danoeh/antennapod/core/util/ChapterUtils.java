@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.model.feed.Chapter;
-import de.danoeh.antennapod.core.feed.ChapterMerger;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.danoeh.antennapod.storage.database.DBReader;

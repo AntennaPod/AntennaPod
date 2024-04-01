@@ -1,12 +1,11 @@
 package de.danoeh.antennapod.model.feed;
 
-import android.text.TextUtils;
-
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Data Object for a whole feed.
@@ -205,9 +204,9 @@ public class Feed {
     }
 
     public String getHumanReadableIdentifier() {
-        if (!TextUtils.isEmpty(customTitle)) {
+        if (!StringUtils.isEmpty(customTitle)) {
             return customTitle;
-        } else if (!TextUtils.isEmpty(feedTitle)) {
+        } else if (!StringUtils.isEmpty(feedTitle)) {
             return feedTitle;
         } else {
             return downloadUrl;
@@ -266,7 +265,7 @@ public class Feed {
     }
 
     public String getTitle() {
-        return !TextUtils.isEmpty(customTitle) ? customTitle : feedTitle;
+        return !StringUtils.isEmpty(customTitle) ? customTitle : feedTitle;
     }
 
     public void setTitle(String title) {

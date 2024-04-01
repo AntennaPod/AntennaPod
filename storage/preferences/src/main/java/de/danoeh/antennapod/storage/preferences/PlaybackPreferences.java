@@ -109,6 +109,10 @@ public abstract class PlaybackPreferences {
         return prefs.getInt(PREF_CURRENT_PLAYER_STATUS, PLAYER_STATUS_OTHER);
     }
 
+    public static void setCurrentPlayerStatus(int playerStatus) {
+        prefs.edit().putInt(PREF_CURRENT_PLAYER_STATUS, playerStatus).apply();
+    }
+
     public static float getCurrentlyPlayingTemporaryPlaybackSpeed() {
         return prefs.getFloat(PREF_CURRENTLY_PLAYING_TEMPORARY_PLAYBACK_SPEED, FeedPreferences.SPEED_USE_GLOBAL);
     }

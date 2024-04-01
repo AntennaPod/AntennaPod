@@ -9,7 +9,7 @@ import androidx.preference.PreferenceManager;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
 import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;

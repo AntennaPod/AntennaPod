@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.net.discovery;
 
 import androidx.annotation.Nullable;
-import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetPodcast;
 import de.mfietz.fyydlin.SearchHit;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -90,13 +89,6 @@ public class PodcastSearchResult {
         return new PodcastSearchResult(searchHit.getTitle(),
                                        searchHit.getThumbImageURL(),
                                        searchHit.getXmlUrl(),
-                                       searchHit.getAuthor());
-    }
-
-    public static PodcastSearchResult fromGpodder(GpodnetPodcast searchHit) {
-        return new PodcastSearchResult(searchHit.getTitle(),
-                                       searchHit.getLogoUrl(),
-                                       searchHit.getUrl(),
                                        searchHit.getAuthor());
     }
 

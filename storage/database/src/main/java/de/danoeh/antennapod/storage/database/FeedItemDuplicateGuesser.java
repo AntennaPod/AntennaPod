@@ -1,11 +1,11 @@
 package de.danoeh.antennapod.storage.database;
 
-import android.text.TextUtils;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 
 import java.text.DateFormat;
 import java.util.Locale;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Publishers sometimes mess up their feed by adding episodes twice or by changing the ID of existing episodes.
@@ -32,7 +32,7 @@ public class FeedItemDuplicateGuesser {
     }
 
     public static boolean sameAndNotEmpty(String string1, String string2) {
-        if (TextUtils.isEmpty(string1) || TextUtils.isEmpty(string2)) {
+        if (StringUtils.isEmpty(string1) || StringUtils.isEmpty(string2)) {
             return false;
         }
         return string1.equals(string2);
@@ -45,7 +45,7 @@ public class FeedItemDuplicateGuesser {
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US); // MM/DD/YY
         String dateOriginal = dateFormat.format(item2.getPubDate());
         String dateNew = dateFormat.format(item1.getPubDate());
-        return TextUtils.equals(dateOriginal, dateNew); // Same date; time is ignored.
+        return StringUtils.equals(dateOriginal, dateNew); // Same date; time is ignored.
     }
 
     private static boolean durationsLookSimilar(FeedMedia media1, FeedMedia media2) {
@@ -62,7 +62,7 @@ public class FeedItemDuplicateGuesser {
             mimeType1 = mimeType1.substring(0, mimeType1.indexOf("/"));
             mimeType2 = mimeType2.substring(0, mimeType2.indexOf("/"));
         }
-        return TextUtils.equals(mimeType1, mimeType2);
+        return StringUtils.equals(mimeType1, mimeType2);
     }
 
     private static boolean titlesLookSimilar(FeedItem item1, FeedItem item2) {
