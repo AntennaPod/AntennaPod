@@ -18,13 +18,13 @@ import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.ui.preferences.databinding.ChooseHomeScreenOrderDialogEntryBinding;
-import de.danoeh.antennapod.ui.preferences.databinding.ChooseHomeScreenOrderDialogHeaderBinding;
+import de.danoeh.antennapod.databinding.ChooseHomeScreenOrderDialogEntryBinding;
+import de.danoeh.antennapod.databinding.ChooseHomeScreenOrderDialogHeaderBinding;
 
 class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
     private static final int HEADER_VIEW = 0;
     private static final int ITEM_VIEW = 1;
-    private final List<ReorderHomeScreenDialogItem> settingsDialogItems;
+    private final List<HomeScreenSettingsDialogItem> settingsDialogItems;
     @Nullable private Consumer<ItemViewHolder> dragListener;
 
     public HomeScreenSettingDialogAdapter(@NonNull Context context) {
@@ -33,12 +33,12 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         settingsDialogItems = new ArrayList<>();
         for (String sectionTag: sectionTags) {
-            settingsDialogItems.add(new ReorderHomeScreenDialogItem(ReorderHomeScreenDialogItem.ViewType.Section, sectionTag));
+            settingsDialogItems.add(new HomeScreenSettingsDialogItem(HomeScreenSettingsDialogItem.ViewType.Section, sectionTag));
         }
         String hiddenText = context.getString(R.string.section_hidden);
-        settingsDialogItems.add(new ReorderHomeScreenDialogItem(ReorderHomeScreenDialogItem.ViewType.Header, hiddenText));
+        settingsDialogItems.add(new HomeScreenSettingsDialogItem(HomeScreenSettingsDialogItem.ViewType.Header, hiddenText));
         for (String sectionTag: hiddenSectionTags) {
-            settingsDialogItems.add(new ReorderHomeScreenDialogItem(ReorderHomeScreenDialogItem.ViewType.Section, sectionTag));
+            settingsDialogItems.add(new HomeScreenSettingsDialogItem(HomeScreenSettingsDialogItem.ViewType.Section, sectionTag));
         }
     }
 
@@ -49,8 +49,8 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
     @NonNull
     public List<String> getOrderedSectionTags() {
         List<String> orderedSectionTags = new ArrayList<>();
-        for (ReorderHomeScreenDialogItem item: settingsDialogItems) {
-            if (item.getViewType() == ReorderHomeScreenDialogItem.ViewType.Header) {
+        for (HomeScreenSettingsDialogItem item: settingsDialogItems) {
+            if (item.getViewType() == HomeScreenSettingsDialogItem.ViewType.Header) {
                 continue;
             }
 
@@ -63,8 +63,8 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
     public List<String> getHiddenSectionTags() {
         List<String> hiddenSections = new ArrayList<>();
         for (int i = settingsDialogItems.size() - 1; i >= 0; i--) {
-            ReorderHomeScreenDialogItem item = settingsDialogItems.get(i);
-            if (item.getViewType() == ReorderHomeScreenDialogItem.ViewType.Header) {
+            HomeScreenSettingsDialogItem item = settingsDialogItems.get(i);
+            if (item.getViewType() == HomeScreenSettingsDialogItem.ViewType.Header) {
                 return hiddenSections;
             }
 
@@ -94,14 +94,14 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
         );
         return new ItemViewHolder(
                 binding.getRoot(),
-                binding.homeScreenSectionLabel,
-                binding.homeScreenSectionDragImage
+                binding.sectionLabel,
+                binding.dragHandle
         );
     }
 
     @Override
     public int getItemViewType(int position) {
-        boolean isHeader = settingsDialogItems.get(position).getViewType() == ReorderHomeScreenDialogItem.ViewType.Header;
+        boolean isHeader = settingsDialogItems.get(position).getViewType() == HomeScreenSettingsDialogItem.ViewType.Header;
         return isHeader ? HEADER_VIEW : ITEM_VIEW;
     }
 

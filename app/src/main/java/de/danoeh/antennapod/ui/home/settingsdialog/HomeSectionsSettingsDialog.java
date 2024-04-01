@@ -13,8 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.ui.home.HomeFragment;
-import de.danoeh.antennapod.ui.preferences.databinding.ChooseHomeScreenOrderDialogBinding;
+import de.danoeh.antennapod.databinding.ChooseHomeScreenOrderDialogBinding;
 
 import java.util.List;
 

@@ -9,7 +9,7 @@
     android:paddingVertical="16dp">
 
     <ImageView
-        android:id="@+id/homeScreenSectionDragImage"
+        android:id="@+id/dragHandle"
         android:layout_width="22dp"
         android:layout_height="22dp"
         android:layout_marginStart="4dp"
@@ -17,7 +17,7 @@
         android:src="@drawable/ic_drag_darktheme" />
 
     <TextView
-        android:id="@+id/homeScreenSectionLabel"
+        android:id="@+id/sectionLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
