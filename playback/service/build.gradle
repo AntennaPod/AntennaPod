@@ -26,6 +26,11 @@ dependencies {
     implementation project(':ui:widget')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    // Note: the androidx.car.app library has not seen a full release since 1.2.0.
+    // We opted to use a release candidate here, which has a downgraded minSdk
+    // requirement, compatible with the current minSdk of AntennaPod at the time
+    // this dependency is introduced.
+    implementation "androidx.car.app:app:1.4.0-rc02"
     implementation "androidx.core:core:$coreVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation "androidx.media:media:$mediaVersion"

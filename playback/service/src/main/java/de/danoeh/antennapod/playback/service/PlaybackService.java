@@ -45,9 +45,12 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.car.app.connection.CarConnection;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.media.MediaBrowserServiceCompat;
 
 import de.danoeh.antennapod.event.PlayerStatusEvent;
@@ -172,6 +175,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private MediaSessionCompat mediaSession;
 
     private static volatile MediaType currentMediaType = MediaType.UNKNOWN;
+    /** Android Auto connection state, used to disable the automatic sleep timer. */
+    private LiveData<Integer> androidAutoConnectionState;
+    private boolean androidAutoConnected = false;
+    private Observer<Integer> androidAutoConnectionObserver;
 
     private final IBinder mBinder = new LocalBinder();
 
@@ -228,6 +235,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         stateManager = new PlaybackServiceStateManager(this);
         notificationBuilder = new PlaybackServiceNotificationBuilder(this);
+        androidAutoConnectionState = new CarConnection(this).getType();
+        androidAutoConnectionObserver = connectionState -> {
+            // See https://developer.android.com/reference/androidx/car/app/connection/CarConnection#CONNECTION_TYPE_PROJECTION()
+            androidAutoConnected = connectionState == CarConnection.CONNECTION_TYPE_PROJECTION;
+        };
+        androidAutoConnectionState.observeForever(androidAutoConnectionObserver);
 
         registerReceiver(autoStateUpdated, new IntentFilter("com.google.android.gms.car.media.STATUS"));
         registerReceiver(headsetDisconnected, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
@@ -317,6 +330,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         currentMediaType = MediaType.UNKNOWN;
         castStateListener.destroy();
 
+        androidAutoConnectionState.removeObserver(androidAutoConnectionObserver);
         cancelPositionObserver();
         if (mediaSession != null) {
             mediaSession.release();
@@ -858,6 +872,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         now.setTimeInMillis(System.currentTimeMillis());
                         int currentHour = now.get(Calendar.HOUR_OF_DAY);
                         autoEnableByTime = SleepTimerPreferences.isInTimeRange(fromSetting, toSetting, currentHour);
+                    }
+                    if (androidAutoConnected) {
+                        Log.i(TAG, "Android Auto is connected, sleep timer will not be auto-enabled");
+                        autoEnableByTime = false;
                     }
 
                     if (newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING
