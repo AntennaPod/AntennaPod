@@ -153,7 +153,8 @@ public class DbReaderTest {
             Feed feed = saveFeedlist(numFeeds, numItems, false).get(0);
             List<FeedItem> items = feed.getItems();
             feed.setItems(null);
-            List<FeedItem> savedItems = DBReader.getFeedItemList(feed);
+            List<FeedItem> savedItems = DBReader.getFeedItemList(feed,
+                    FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD);
             assertNotNull(savedItems);
             assertEquals(items.size(), savedItems.size());
             for (int i = 0; i < savedItems.size(); i++) {

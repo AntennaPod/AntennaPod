@@ -9,6 +9,8 @@ import androidx.core.util.Consumer;
 import androidx.preference.PreferenceManager;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfaceStub;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -774,7 +776,8 @@ public class DbWriterTest {
         }
 
         DBWriter.removeAllNewFlags().get();
-        List<FeedItem> loadedItems = DBReader.getFeedItemList(feed);
+        List<FeedItem> loadedItems = DBReader.getFeedItemList(feed,
+                FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD);
         for (FeedItem item : loadedItems) {
             assertFalse(item.isNew());
         }
