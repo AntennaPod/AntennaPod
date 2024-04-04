@@ -5,9 +5,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.internal.StringUtil;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
 
+//
 public class JsonTranscriptParser {
     public static Transcript parse(String jsonStr) {
         try {
@@ -15,14 +19,28 @@ public class JsonTranscriptParser {
             long startTime = -1L;
             long endTime = -1L;
             long segmentStartTime = -1L;
+            long segmentEndTime = -1L;
             long duration = 0L;
             String speaker = "";
+            String prevSpeaker = "";
             String segmentBody = "";
-            JSONObject obj = new JSONObject(jsonStr);
-            JSONArray objSegments = obj.getJSONArray("segments");
+            JSONArray objSegments = null;
+            Set<String> speakers = new HashSet<String>();
+
+            try {
+                JSONObject obj = new JSONObject(jsonStr);
+                objSegments = obj.getJSONArray("segments");
+            } catch (org.json.JSONException e) {
+                e.printStackTrace();
+            }
+
+            if (objSegments == null) {
+                objSegments = new JSONArray(jsonStr);
+            }
 
             for (int i = 0; i < objSegments.length(); i++) {
                 JSONObject jsonObject = objSegments.getJSONObject(i);
+                segmentEndTime = endTime;
                 startTime = Double.valueOf(jsonObject.optDouble("startTime", -1) * 1000L).longValue();
                 endTime = Double.valueOf(jsonObject.optDouble("endTime", -1) * 1000L).longValue();
                 if (startTime < 0 || endTime < 0) {
@@ -33,13 +51,36 @@ public class JsonTranscriptParser {
                 }
                 duration += endTime - startTime;
 
+                prevSpeaker = speaker;
                 speaker = jsonObject.optString("speaker");
+                speakers.add(speaker);
+                if (StringUtils.isEmpty(speaker) && StringUtils.isNotEmpty(prevSpeaker)) {
+                    speaker = prevSpeaker;
+                }
                 String body = jsonObject.optString("body");
-                segmentBody += body + " ";
+                if (!prevSpeaker.equals(speaker)) {
+                    // New speaker starting with previous text
+                    if (StringUtils.isNotEmpty(segmentBody)) {
+                        segmentBody = StringUtils.trim(segmentBody);
+                        transcript.addSegment(new TranscriptSegment(segmentStartTime,
+                                segmentEndTime,
+                                segmentBody,
+                                prevSpeaker));
+                        segmentStartTime = startTime;
+                        segmentBody = body.toString();
+                        duration = 0L;
+                        continue;
+                    }
+                }
+
+                segmentBody += body;
 
                 if (duration >= TranscriptParser.MIN_SPAN) {
                     segmentBody = StringUtils.trim(segmentBody);
-                    transcript.addSegment(new TranscriptSegment(segmentStartTime, endTime, segmentBody, speaker));
+                    transcript.addSegment(new TranscriptSegment(segmentStartTime,
+                            endTime,
+                            segmentBody,
+                            speaker));
                     duration = 0L;
                     segmentBody = "";
                     segmentStartTime = -1L;
@@ -52,6 +93,7 @@ public class JsonTranscriptParser {
             }
 
             if (transcript.getSegmentCount() > 0) {
+                transcript.setSpeakers(speakers);
                 return transcript;
             } else {
                 return null;

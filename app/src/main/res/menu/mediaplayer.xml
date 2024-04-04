@@ -3,6 +3,12 @@
       xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/transcript_item"
+        android:icon="@drawable/subtitles_24px"
+        android:title="@string/show_transcript"
+        custom:showAsAction="always">
+    </item>
+    <item
         android:id="@+id/add_to_favorites_item"
         android:icon="@drawable/ic_star_border"
         android:title="@string/add_to_favorite_label"

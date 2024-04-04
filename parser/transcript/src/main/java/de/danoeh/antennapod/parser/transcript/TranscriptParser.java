@@ -1,11 +1,12 @@
 package de.danoeh.antennapod.parser.transcript;
 
 import org.apache.commons.lang3.StringUtils;
+import java.util.Locale;
 
 import de.danoeh.antennapod.model.feed.Transcript;
 
 public class TranscriptParser {
-    static final long MIN_SPAN = 1000L; // merge short segments together to form a span of 1 second
+    static final long MIN_SPAN = 5000L; // merge short segments together to form a span of 1 second
 
     public static Transcript parse(String str, String type) {
         if (str == null || StringUtils.isBlank(str)) {
@@ -20,5 +21,13 @@ public class TranscriptParser {
             return SrtTranscriptParser.parse(str);
         }
         return null;
+    }
+
+    public static String secondsToTime(long msecs) {
+        int duration = Math.toIntExact(msecs / 1000L);
+        return String.format(Locale.getDefault(), "%d:%02d:%02d",
+                duration / 3600,
+                (duration % 3600) / 60,
+                (duration % 60));
     }
 }

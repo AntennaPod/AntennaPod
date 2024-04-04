@@ -60,6 +60,7 @@ public class FeedItemMenuHandler {
         final boolean fileDownloaded = hasMedia && selectedItem.getMedia().fileExists();
         final boolean isLocalFile = hasMedia && selectedItem.getFeed().isLocalFeed();
         final boolean isFavorite = selectedItem.isTagged(FeedItem.TAG_FAVORITE);
+        final boolean hasTranscript = selectedItem.hasTranscript();
 
         setItemVisibility(menu, R.id.skip_episode_item, isPlaying);
         setItemVisibility(menu, R.id.remove_from_queue_item, isInQueue);
@@ -84,6 +85,7 @@ public class FeedItemMenuHandler {
         setItemVisibility(menu, R.id.add_to_favorites_item, !isFavorite);
         setItemVisibility(menu, R.id.remove_from_favorites_item, isFavorite);
         setItemVisibility(menu, R.id.remove_item, fileDownloaded || isLocalFile);
+        setItemVisibility(menu, R.id.transcript_item, hasTranscript);
         return true;
     }
 

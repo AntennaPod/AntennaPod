@@ -69,6 +69,7 @@ dependencies {
     implementation project(':net:ssl')
     implementation project(':net:sync:service')
     implementation project(':parser:feed')
+    implementation project(':parser:transcript')
     implementation project(':playback:base')
     implementation project(':playback:cast')
     implementation project(':storage:database')

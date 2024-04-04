@@ -459,7 +459,6 @@ public class FeedItem implements Serializable {
                 }
                 break;
             default:
-                System.out.println("Invalid format for transcript " + type);
                 break;
         }
     }
@@ -478,6 +477,10 @@ public class FeedItem implements Serializable {
 
     public String setPodcastIndexTranscriptText(String str) {
         return podcastIndexTranscriptText = str;
+    }
+
+    public boolean hasTranscript() {
+        return (podcastIndexTranscriptUrl != null);
     }
 
     @NonNull

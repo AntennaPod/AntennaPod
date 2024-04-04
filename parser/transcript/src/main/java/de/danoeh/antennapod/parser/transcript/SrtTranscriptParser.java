@@ -4,8 +4,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.jsoup.internal.StringUtil;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,21 +27,26 @@ public class SrtTranscriptParser {
         List<String> lines = Arrays.asList(str.split("\n"));
         Iterator<String> iter = lines.iterator();
         String speaker = "";
+        String prevSpeaker = "";
         StringBuilder body = new StringBuilder();
         String line;
         String segmentBody = "";
         long startTimecode = -1L;
         long spanStartTimecode = -1L;
+        long spanEndTimecode = -1L;
         long endTimecode = -1L;
         long duration = 0L;
+        Set<String> speakers = new HashSet<String>();
 
         while (iter.hasNext()) {
+            body = new StringBuilder();
             line = iter.next();
 
             if (line.isEmpty()) {
                 continue;
             }
 
+            spanEndTimecode = endTimecode;
             if (line.contains("-->")) {
                 String[] timecodes = line.split("-->");
                 if (timecodes.length < 2) {
@@ -65,27 +72,43 @@ public class SrtTranscriptParser {
                 } while (iter.hasNext());
             }
 
-            if (body.indexOf(":") != -1) {
-                String [] parts = body.toString().trim().split(":");
+            if (body.indexOf(": ") != -1) {
+                String[] parts = body.toString().trim().split(":");
                 if (parts.length < 2) {
                     continue;
                 }
+                prevSpeaker = speaker;
                 speaker = parts[0];
+                speakers.add(speaker);
                 body = new StringBuilder(parts[1].strip());
-            }
-            if (!StringUtil.isBlank(body.toString())) {
-                segmentBody += " " + body;
-                segmentBody = StringUtils.trim(segmentBody);
-                if (duration >= TranscriptParser.MIN_SPAN && endTimecode > spanStartTimecode) {
-                    transcript.addSegment(new TranscriptSegment(spanStartTimecode,
-                            endTimecode,
-                            segmentBody,
-                            speaker));
-                    duration = 0L;
-                    spanStartTimecode = -1L;
-                    segmentBody = "";
+                if (StringUtils.isNotEmpty(prevSpeaker) && !StringUtils.equals(speaker, prevSpeaker)) {
+                    if (StringUtils.isNotEmpty(segmentBody)) {
+                        transcript.addSegment(new TranscriptSegment(spanStartTimecode,
+                                spanEndTimecode,
+                                segmentBody,
+                                prevSpeaker));
+                        duration = 0L;
+                        spanStartTimecode = startTimecode;
+                        segmentBody = body.toString();
+                        continue;
+                    }
                 }
-                body = new StringBuilder();
+            } else {
+                if (StringUtils.isNotEmpty(prevSpeaker) && StringUtils.isEmpty(speaker)) {
+                    speaker = prevSpeaker;
+                }
+            }
+
+            segmentBody += " " + body;
+            segmentBody = StringUtils.trim(segmentBody);
+            if (duration >= TranscriptParser.MIN_SPAN && endTimecode > spanStartTimecode) {
+                transcript.addSegment(new TranscriptSegment(spanStartTimecode,
+                        endTimecode,
+                        segmentBody,
+                        speaker));
+                duration = 0L;
+                spanStartTimecode = -1L;
+                segmentBody = "";
             }
         }
 
@@ -97,13 +120,13 @@ public class SrtTranscriptParser {
                     speaker));
         }
         if (transcript.getSegmentCount() > 0) {
+            transcript.setSpeakers(speakers);
             return transcript;
         } else {
             return null;
         }
     }
 
-    // Time format 00:00:00,000
     static long parseTimecode(String timecode) {
         Matcher matcher = TIMECODE_PATTERN.matcher(timecode);
         if (!matcher.matches()) {

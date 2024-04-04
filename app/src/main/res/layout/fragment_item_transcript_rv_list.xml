@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/transcript_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="de.danoeh.antennapod.ItemTranscriptRVFragment"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        tools:context="de.danoeh.antennapod.fragment.ItemTranscriptRVFragment"
+        tools:listitem="@layout/fragment_item_transcript_rv" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
