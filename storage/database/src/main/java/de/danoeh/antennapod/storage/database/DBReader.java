@@ -29,7 +29,6 @@ import de.danoeh.antennapod.storage.database.mapper.ChapterCursor;
 import de.danoeh.antennapod.storage.database.mapper.DownloadResultCursor;
 import de.danoeh.antennapod.storage.database.mapper.FeedCursor;
 import de.danoeh.antennapod.storage.database.mapper.FeedItemCursor;
-import de.danoeh.antennapod.storage.database.mapper.FeedMediaCursor;
 
 /**
  * Provides methods for reading data from the AntennaPod database.
@@ -254,7 +253,7 @@ public final class DBReader {
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        try (Cursor cursor = adapter.getFavoritesIdsCursor(0, Integer.MAX_VALUE)) {
+        try (Cursor cursor = adapter.getFavoritesIdsCursor()) {
             LongList favoriteIDs = new LongList(cursor.getCount());
             while (cursor.moveToNext()) {
                 favoriteIDs.add(cursor.getLong(0));
@@ -576,20 +575,13 @@ public final class DBReader {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
-        try (FeedMediaCursor mediaCursor = new FeedMediaCursor(adapter.getSingleFeedMediaCursor(mediaId))) {
-            if (!mediaCursor.moveToFirst()) {
+        try (FeedItemCursor itemCursor = new FeedItemCursor(adapter.getFeedItemFromMediaIdCursor(mediaId))) {
+            if (!itemCursor.moveToFirst()) {
                 return null;
             }
-
-            int indexFeedItem = mediaCursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM);
-            long itemId = mediaCursor.getLong(indexFeedItem);
-            FeedMedia media = mediaCursor.getFeedMedia();
-            FeedItem item = getFeedItem(itemId);
-            if (item != null) {
-                media.setItem(item);
-                item.setMedia(media);
-            }
-            return media;
+            FeedItem item = itemCursor.getFeedItem();
+            loadAdditionalFeedItemListData(Collections.singletonList(item));
+            return item.getMedia();
         } finally {
             adapter.close();
         }
@@ -688,13 +680,13 @@ public final class DBReader {
             while (cursor.moveToNext()) {
                 Feed feed = cursor.getFeed();
 
-                long feedPlayedTime = Long.parseLong(cursor.getString(indexPlayedTime)) / 1000;
-                long feedTotalTime = Long.parseLong(cursor.getString(indexTotalTime)) / 1000;
-                long episodes = Long.parseLong(cursor.getString(indexNumEpisodes));
-                long episodesStarted = Long.parseLong(cursor.getString(indexEpisodesStarted));
-                long totalDownloadSize = Long.parseLong(cursor.getString(indexDownloadSize));
-                long episodesDownloadCount = Long.parseLong(cursor.getString(indexNumDownloaded));
-                long oldestDate = Long.parseLong(cursor.getString(indexOldestDate));
+                long feedPlayedTime = cursor.getLong(indexPlayedTime) / 1000;
+                long feedTotalTime = cursor.getLong(indexTotalTime) / 1000;
+                long episodes = cursor.getLong(indexNumEpisodes);
+                long episodesStarted = cursor.getLong(indexEpisodesStarted);
+                long totalDownloadSize = cursor.getLong(indexDownloadSize);
+                long episodesDownloadCount = cursor.getLong(indexNumDownloaded);
+                long oldestDate = cursor.getLong(indexOldestDate);
 
                 if (episodes > 0 && oldestDate < Long.MAX_VALUE) {
                     result.oldestDate = Math.min(result.oldestDate, oldestDate);
@@ -713,7 +705,7 @@ public final class DBReader {
         adapter.open();
         try (Cursor cursor = adapter.getTimeBetweenReleaseAndPlayback(timeFilterFrom, timeFilterTo)) {
             cursor.moveToFirst();
-            long result = Long.parseLong(cursor.getString(0));
+            long result = cursor.getLong(0);
             adapter.close();
             return result;
         }

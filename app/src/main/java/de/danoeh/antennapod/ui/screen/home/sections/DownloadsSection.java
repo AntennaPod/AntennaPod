@@ -124,14 +124,11 @@ public class DownloadsSection extends HomeSection {
             disposable.dispose();
         }
         SortOrder sortOrder = UserPreferences.getDownloadsSortedOrder();
-        disposable = Observable.fromCallable(() -> DBReader.getEpisodes(0, Integer.MAX_VALUE,
+        disposable = Observable.fromCallable(() -> DBReader.getEpisodes(0, NUM_EPISODES,
                         new FeedItemFilter(FeedItemFilter.DOWNLOADED), sortOrder))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(downloads -> {
-                    if (downloads.size() > NUM_EPISODES) {
-                        downloads = downloads.subList(0, NUM_EPISODES);
-                    }
                     items = downloads;
                     adapter.setDummyViews(0);
                     adapter.updateItems(items);

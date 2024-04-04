@@ -1041,14 +1041,9 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getFavoritesIdsCursor(int offset, int limit) {
-        // Way faster than selecting all columns
-        final String query = "SELECT " + TABLE_NAME_FEED_ITEMS + "." + KEY_ID
-                + " FROM " + TABLE_NAME_FEED_ITEMS
-                + " INNER JOIN " + TABLE_NAME_FAVORITES
-                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + " = " + TABLE_NAME_FAVORITES + "." + KEY_FEEDITEM
-                + " ORDER BY " + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + " DESC"
-                + " LIMIT " + offset + ", " + limit;
+    public final Cursor getFavoritesIdsCursor() {
+        final String query = "SELECT " + TABLE_NAME_FAVORITES + "." + KEY_FEEDITEM
+                + " FROM " + TABLE_NAME_FAVORITES;
         return db.rawQuery(query, null);
     }
 
@@ -1107,9 +1102,9 @@ public class PodDBAdapter {
         return "((" + SELECT_KEY_ITEM_ID + " * " + seed + ") % 46471)";
     }
 
-    public final Cursor getSingleFeedMediaCursor(long id) {
-        final String query = "SELECT " + KEYS_FEED_MEDIA + " FROM " + TABLE_NAME_FEED_MEDIA
-                + " WHERE " + KEY_ID + "=" + id;
+    public final Cursor getFeedItemFromMediaIdCursor(long mediaId) {
+        final String query = SELECT_FEED_ITEMS_AND_MEDIA
+                + " WHERE " + SELECT_KEY_MEDIA_ID + " = " + mediaId;
         return db.rawQuery(query, null);
     }
 
