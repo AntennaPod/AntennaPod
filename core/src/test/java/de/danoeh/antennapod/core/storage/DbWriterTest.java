@@ -246,7 +246,7 @@ public class DbWriterTest {
             c = adapter.getFeedItemCursor(String.valueOf(item.getId()));
             assertEquals(0, c.getCount());
             c.close();
-            c = adapter.getSingleFeedMediaCursor(item.getMedia().getId());
+            c = adapter.getFeedItemFromMediaIdCursor(item.getMedia().getId());
             assertEquals(0, c.getCount());
             c.close();
         }
@@ -370,7 +370,7 @@ public class DbWriterTest {
             c = adapter.getFeedItemCursor(String.valueOf(item.getId()));
             assertEquals(0, c.getCount());
             c.close();
-            c = adapter.getSingleFeedMediaCursor(item.getMedia().getId());
+            c = adapter.getFeedItemFromMediaIdCursor(item.getMedia().getId());
             assertEquals(0, c.getCount());
             c.close();
         }
@@ -422,7 +422,7 @@ public class DbWriterTest {
             c = adapter.getFeedItemCursor(String.valueOf(item.getId()));
             assertEquals(0, c.getCount());
             c.close();
-            c = adapter.getSingleFeedMediaCursor(item.getMedia().getId());
+            c = adapter.getFeedItemFromMediaIdCursor(item.getMedia().getId());
             assertEquals(0, c.getCount());
             c.close();
         }
