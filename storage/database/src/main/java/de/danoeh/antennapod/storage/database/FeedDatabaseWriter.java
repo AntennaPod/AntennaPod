@@ -8,7 +8,9 @@ import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -34,7 +36,7 @@ public abstract class FeedDatabaseWriter {
             List<Feed> feeds = DBReader.getFeedList();
             for (Feed f : feeds) {
                 if (f.getIdentifyingValue().equals(feed.getIdentifyingValue())) {
-                    f.setItems(DBReader.getFeedItemList(f));
+                    f.setItems(DBReader.getFeedItemList(f, FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD));
                     return f;
                 }
             }

@@ -8,6 +8,8 @@ import android.webkit.MimeTypeMap;
 import androidx.annotation.NonNull;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfaceStub;
@@ -167,7 +169,7 @@ public class LocalFeedUpdaterTest {
         callUpdateFeed(LOCAL_FEED_DIR1);
 
         Feed feed = verifySingleFeedInDatabase();
-        List<FeedItem> feedItems = DBReader.getFeedItemList(feed);
+        List<FeedItem> feedItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD);
         assertEquals("track1.mp3", feedItems.get(0).getTitle());
     }
 
@@ -281,7 +283,7 @@ public class LocalFeedUpdaterTest {
      */
     private static void verifySingleFeedInDatabaseAndItemCount(int expectedItemCount) {
         Feed feed = verifySingleFeedInDatabase();
-        List<FeedItem> feedItems = DBReader.getFeedItemList(feed);
+        List<FeedItem> feedItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD);
         assertEquals(expectedItemCount, feedItems.size());
     }
 
