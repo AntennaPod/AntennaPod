@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.ui.screen.subscriptions;
 
-import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.R;
 
 public enum SubscriptionsFilterGroup {
     COUNTER_GREATER_ZERO(new ItemProperties(R.string.subscriptions_counter_greater_zero, "counter_greater_zero")),

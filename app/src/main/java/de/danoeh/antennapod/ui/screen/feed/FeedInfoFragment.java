@@ -37,7 +37,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
-import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.share.ShareUtils;
 import de.danoeh.antennapod.ui.cleaner.HtmlToPlainText;
 import de.danoeh.antennapod.model.feed.Feed;

@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util;
+package de.danoeh.antennapod.storage.database;
 
 import de.danoeh.antennapod.parser.feed.util.DateUtils;
 import org.apache.commons.io.IOUtils;
@@ -73,9 +73,12 @@ public class ReleaseScheduleGuesserRealWorldTest {
 
             final boolean is3hoursClose = Math.abs(dateActual.getTime() - guess.nextExpectedDate.getTime())
                     < 3 * ReleaseScheduleGuesser.ONE_HOUR;
-            System.out.println(lineNr + " guessed: " + DATE_FORMAT.format(guess.nextExpectedDate)
-                    + ", actual: " + DATE_FORMAT.format(dateActual)
-                    + " " + guess.schedule.name() + (is3hoursClose ? " ✔" : ""));
+            //noinspection ConstantValue
+            if (false) {
+                System.out.println(lineNr + " guessed: " + DATE_FORMAT.format(guess.nextExpectedDate)
+                        + ", actual: " + DATE_FORMAT.format(dateActual)
+                        + " " + guess.schedule.name() + (is3hoursClose ? " ✔" : ""));
+            }
             long deltaTime = dateActual.getTime() - guess.nextExpectedDate.getTime();
             int histogramClass = (int) Math.max(0, Math.min(100, deltaTime / ReleaseScheduleGuesser.ONE_HOUR + 50));
             histogram[histogramClass]++;

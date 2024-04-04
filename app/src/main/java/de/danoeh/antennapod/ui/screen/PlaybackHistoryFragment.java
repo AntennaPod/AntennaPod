@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.util.ConfirmationDialog;
+import de.danoeh.antennapod.ui.common.ConfirmationDialog;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.event.playback.PlaybackHistoryEvent;

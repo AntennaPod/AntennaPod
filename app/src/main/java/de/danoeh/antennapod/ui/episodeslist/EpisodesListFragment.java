@@ -36,9 +36,8 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.util.ConfirmationDialog;
+import de.danoeh.antennapod.ui.common.ConfirmationDialog;
 import de.danoeh.antennapod.ui.MenuItemUtils;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
@@ -334,7 +333,7 @@ public abstract class EpisodesListFragment extends Fragment
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         for (FeedItem item : event.items) {
-            int pos = FeedItemUtil.indexOfItemWithId(episodes, item.getId());
+            int pos = FeedItemEvent.indexOfItemWithId(episodes, item.getId());
             if (pos >= 0) {
                 episodes.remove(pos);
                 if (getFilter().matches(item)) {
@@ -378,7 +377,7 @@ public abstract class EpisodesListFragment extends Fragment
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EpisodeDownloadEvent event) {
         for (String downloadUrl : event.getUrls()) {
-            int pos = FeedItemUtil.indexOfItemWithDownloadUrl(episodes, downloadUrl);
+            int pos = EpisodeDownloadEvent.indexOfItemWithDownloadUrl(episodes, downloadUrl);
             if (pos >= 0) {
                 listAdapter.notifyItemChangedCompat(pos);
             }

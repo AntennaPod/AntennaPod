@@ -40,7 +40,6 @@ import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.ui.episodeslist.FeedItemMenuHandler;
 import de.danoeh.antennapod.net.discovery.CombinedSearcher;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -327,7 +326,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         }
         for (int i = 0, size = event.items.size(); i < size; i++) {
             FeedItem item = event.items.get(i);
-            int pos = FeedItemUtil.indexOfItemWithId(results, item.getId());
+            int pos = FeedItemEvent.indexOfItemWithId(results, item.getId());
             if (pos >= 0) {
                 results.remove(pos);
                 results.add(pos, item);
@@ -342,7 +341,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
             return;
         }
         for (String downloadUrl : event.getUrls()) {
-            int pos = FeedItemUtil.indexOfItemWithDownloadUrl(results, downloadUrl);
+            int pos = EpisodeDownloadEvent.indexOfItemWithDownloadUrl(results, downloadUrl);
             if (pos >= 0) {
                 adapter.notifyItemChangedCompat(pos);
             }

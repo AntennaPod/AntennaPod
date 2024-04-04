@@ -9,7 +9,6 @@ android {
 }
 
 dependencies {
-    implementation project(':core')
     implementation project(':event')
     implementation project(':model')
     implementation project(':net:common')
@@ -24,6 +23,7 @@ dependencies {
     implementation project(':ui:i18n')
     implementation project(':ui:notifications')
     implementation project(':ui:widget')
+    implementation project(':ui:chapters')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.core:core:$coreVersion"

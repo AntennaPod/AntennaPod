@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util;
+package de.danoeh.antennapod.ui.chapters;
 
 import android.text.TextUtils;
 import android.util.Log;

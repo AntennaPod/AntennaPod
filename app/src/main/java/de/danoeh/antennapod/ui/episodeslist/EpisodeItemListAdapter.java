@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import de.danoeh.antennapod.ui.SelectableAdapter;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -25,7 +24,6 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.ui.screen.episode.ItemPagerFragment;
 
 /**
@@ -90,9 +88,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         holder.itemView.setOnClickListener(v -> {
             MainActivity activity = mainActivityRef.get();
             if (activity != null && !inActionMode()) {
-                long[] ids = FeedItemUtil.getIds(episodes);
-                int position = ArrayUtils.indexOf(ids, item.getId());
-                activity.loadChildFragment(ItemPagerFragment.newInstance(ids, position));
+                activity.loadChildFragment(ItemPagerFragment.newInstance(episodes, item));
             } else {
                 toggleSelection(holder.getBindingAdapterPosition());
             }

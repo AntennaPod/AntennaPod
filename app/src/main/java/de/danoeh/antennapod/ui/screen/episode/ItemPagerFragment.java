@@ -29,6 +29,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import java.util.List;
+
 /**
  * Displays information about a list of FeedItems.
  */
@@ -41,15 +43,21 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
     /**
      * Creates a new instance of an ItemPagerFragment.
      *
-     * @param feeditems   The IDs of the FeedItems that belong to the same list
-     * @param feedItemPos The position of the FeedItem that is currently shown
      * @return The ItemFragment instance
      */
-    public static ItemPagerFragment newInstance(long[] feeditems, int feedItemPos) {
+    public static ItemPagerFragment newInstance(List<FeedItem> allItems, FeedItem currentItem) {
+        int position = 0;
+        long[] ids = new long[allItems.size()];
+        for (int i = 0; i < allItems.size(); i++) {
+            ids[i] = allItems.get(i).getId();
+            if (ids[i] == currentItem.getId()) {
+                position = i;
+            }
+        }
         ItemPagerFragment fragment = new ItemPagerFragment();
         Bundle args = new Bundle();
-        args.putLongArray(ARG_FEEDITEMS, feeditems);
-        args.putInt(ARG_FEEDITEM_POS, Math.max(0, feedItemPos));
+        args.putLongArray(ARG_FEEDITEMS, ids);
+        args.putInt(ARG_FEEDITEM_POS, position);
         fragment.setArguments(args);
         return fragment;
     }

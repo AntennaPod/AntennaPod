@@ -19,7 +19,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
-import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
 

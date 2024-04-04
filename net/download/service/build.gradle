@@ -10,7 +10,6 @@ android {
 }
 
 dependencies {
-    implementation project(":core")
     implementation project(':event')
     implementation project(':model')
     implementation project(':net:common')
@@ -23,6 +22,7 @@ dependencies {
     implementation project(':ui:notifications')
     implementation project(':storage:preferences')
     implementation project(':ui:app-start-intent')
+    implementation project(':ui:chapters')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.core:core:$coreVersion"

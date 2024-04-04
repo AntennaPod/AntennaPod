@@ -23,7 +23,6 @@ android {
 }
 
 dependencies {
-    implementation project(":core")
     implementation project(":event")
     implementation project(":net:common")
     implementation project(":net:sync:model")

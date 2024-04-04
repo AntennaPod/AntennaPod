@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.ui.preferences.screen.downloads;
 
 import android.content.Context;
+import android.os.StatFs;
 import android.text.format.Formatter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.core.util.Consumer;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.ui.preferences.R;
 
 import java.io.File;
@@ -125,11 +125,17 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
         }
 
         long getAvailableSpace() {
-            return StorageUtils.getFreeSpaceAvailable(path);
+            StatFs stat = new StatFs(path);
+            long availableBlocks = stat.getAvailableBlocksLong();
+            long blockSize = stat.getBlockSizeLong();
+            return availableBlocks * blockSize;
         }
 
         long getTotalSpace() {
-            return StorageUtils.getTotalSpaceAvailable(path);
+            StatFs stat = new StatFs(path);
+            long blockCount = stat.getBlockCountLong();
+            long blockSize = stat.getBlockSizeLong();
+            return blockCount * blockSize;
         }
 
         int getUsagePercentage() {

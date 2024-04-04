@@ -9,10 +9,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.ui.screen.episode.ItemPagerFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -68,9 +66,7 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
         holder.card.setOnClickListener(v -> {
             MainActivity activity = mainActivityRef.get();
             if (activity != null) {
-                long[] ids = FeedItemUtil.getIds(data);
-                int clickPosition = ArrayUtils.indexOf(ids, item.getId());
-                activity.loadChildFragment(ItemPagerFragment.newInstance(ids, clickPosition));
+                activity.loadChildFragment(ItemPagerFragment.newInstance(data, item));
             }
         });
     }

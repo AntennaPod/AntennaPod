@@ -16,7 +16,6 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
 import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
@@ -99,7 +98,7 @@ public class InboxSection extends HomeSection {
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EpisodeDownloadEvent event) {
         for (String downloadUrl : event.getUrls()) {
-            int pos = FeedItemUtil.indexOfItemWithDownloadUrl(items, downloadUrl);
+            int pos = EpisodeDownloadEvent.indexOfItemWithDownloadUrl(items, downloadUrl);
             if (pos >= 0) {
                 adapter.notifyItemChangedCompat(pos);
             }

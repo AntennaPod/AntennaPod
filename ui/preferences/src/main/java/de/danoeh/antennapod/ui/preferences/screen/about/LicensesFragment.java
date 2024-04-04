@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.ListFragment;
-import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.preferences.R;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;

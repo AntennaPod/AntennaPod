@@ -54,7 +54,7 @@ import de.danoeh.antennapod.net.discovery.PodcastSearcherRegistry;
 import de.danoeh.antennapod.parser.feed.FeedHandler;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 import de.danoeh.antennapod.model.download.DownloadError;
-import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.net.common.UrlChecker;
 import de.danoeh.antennapod.ui.cleaner.HtmlToPlainText;
 import de.danoeh.antennapod.databinding.OnlinefeedviewActivityBinding;
