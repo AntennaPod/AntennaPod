@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.storage;
+package de.danoeh.antennapod.net.download.service.episode.autodownload;
 
 import java.util.ArrayList;
 import java.util.Date;

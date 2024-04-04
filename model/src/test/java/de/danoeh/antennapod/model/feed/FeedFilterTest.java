@@ -1,11 +1,8 @@
-package de.danoeh.antennapod.core.feed;
-
-import de.danoeh.antennapod.ui.common.Converter;
-import de.danoeh.antennapod.model.feed.FeedFilter;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
+package de.danoeh.antennapod.model.feed;
 
 import org.junit.Test;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -133,7 +130,7 @@ public class FeedFilterTest {
         FeedItem download = new FeedItem();
         download.setTitle("Hello friend!");
         FeedMedia downloadMedia = FeedMediaMother.anyFeedMedia();
-        downloadMedia.setDuration(Converter.durationStringShortToMs("05:00", false));
+        downloadMedia.setDuration((int) TimeUnit.MILLISECONDS.convert(5, TimeUnit.MINUTES));
         download.setMedia(downloadMedia);
         // because duration of the media in unknown
         FeedItem download2 = new FeedItem();
@@ -144,7 +141,7 @@ public class FeedFilterTest {
         FeedItem doNotDownload = new FeedItem();
         doNotDownload.setTitle("Hello friend!");
         FeedMedia doNotDownloadMedia = FeedMediaMother.anyFeedMedia();
-        doNotDownloadMedia.setDuration(Converter.durationStringShortToMs("02:00", false));
+        doNotDownloadMedia.setDuration((int) TimeUnit.MILLISECONDS.convert(2, TimeUnit.MINUTES));
         doNotDownload.setMedia(doNotDownloadMedia);
 
         int minimalDurationFilter = 3 * 60;

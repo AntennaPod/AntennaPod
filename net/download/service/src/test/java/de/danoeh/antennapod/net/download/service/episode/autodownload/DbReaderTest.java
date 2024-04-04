@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.storage;
+package de.danoeh.antennapod.net.download.service.episode.autodownload;
 
 import android.content.Context;
 
@@ -33,7 +33,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.ParameterizedRobolectricTestRunner;
 import org.robolectric.RobolectricTestRunner;
 
-import static de.danoeh.antennapod.core.storage.DbTestUtils.saveFeedlist;
+import static de.danoeh.antennapod.net.download.service.episode.autodownload.DbTestUtils.saveFeedlist;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;

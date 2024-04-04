@@ -1,9 +1,9 @@
-package de.danoeh.antennapod.core.storage;
+package de.danoeh.antennapod.storage.database;
 
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfaceStub;
-import de.danoeh.antennapod.storage.database.ItemEnqueuePositionCalculator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -19,16 +19,14 @@ import java.util.stream.Collectors;
 
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.FeedMother;
 import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.model.playback.Playable;
 
 import static de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation.AFTER_CURRENTLY_PLAYING;
 import static de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation.BACK;
 import static de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation.FRONT;
-import static de.danoeh.antennapod.core.util.CollectionTestUtil.concat;
-import static de.danoeh.antennapod.core.util.CollectionTestUtil.list;
-import static de.danoeh.antennapod.core.util.FeedItemUtil.getIdList;
+import static de.danoeh.antennapod.storage.database.CollectionTestUtil.concat;
+import static de.danoeh.antennapod.storage.database.CollectionTestUtil.list;
 import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 
@@ -136,7 +134,10 @@ public class ItemEnqueuePositionCalculatorTest {
                                             List<Long> idsExpected) {
         int posActual = calculator.calcPosition(queue, currentlyPlaying);
         queue.add(posActual, itemToAdd);
-        assertEquals(message, idsExpected, getIdList(queue));
+        assertEquals(message, idsExpected.size(), queue.size());
+        for (int i = 0; i < idsExpected.size(); i++) {
+            assertEquals(message, (long) idsExpected.get(i), queue.get(i).getId());
+        }
     }
 
     static final List<FeedItem> QUEUE_EMPTY = Collections.unmodifiableList(emptyList());
@@ -167,8 +168,11 @@ public class ItemEnqueuePositionCalculatorTest {
 
 
     static FeedItem createFeedItem(long id) {
+        Feed feed = new Feed(0, null, "title", "http://example.com", "This is the description",
+                "http://example.com/payment", "Daniel", "en", null, "http://example.com/feed",
+                "http://example.com/image", null, "http://example.com/feed", System.currentTimeMillis());
         FeedItem item = new FeedItem(id, "Item" + id, "ItemId" + id, "url",
-                new Date(), FeedItem.PLAYED, FeedMother.anyFeed());
+                new Date(), FeedItem.PLAYED, feed);
         FeedMedia media = new FeedMedia(item, "http://download.url.net/" + id, 1234567, "audio/mpeg");
         media.setId(item.getId());
         item.setMedia(media);

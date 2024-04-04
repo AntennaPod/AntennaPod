@@ -43,5 +43,6 @@ dependencies {
     testImplementation "junit:junit:$junitVersion"
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
     testImplementation "org.awaitility:awaitility:$awaitilityVersion"
-    testImplementation 'org.mockito:mockito-core:5.11.0'
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "androidx.preference:preference:$preferenceVersion"
 }
