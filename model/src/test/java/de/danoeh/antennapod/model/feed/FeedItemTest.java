@@ -1,13 +1,12 @@
-package de.danoeh.antennapod.core.feed;
+package de.danoeh.antennapod.model.feed;
 
-import de.danoeh.antennapod.model.feed.FeedItem;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static de.danoeh.antennapod.core.feed.FeedItemMother.anyFeedItemWithImage;
+import static de.danoeh.antennapod.model.feed.FeedItemMother.anyFeedItemWithImage;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 

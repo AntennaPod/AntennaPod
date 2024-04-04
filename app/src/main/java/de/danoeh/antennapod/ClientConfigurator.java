@@ -3,7 +3,7 @@ package de.danoeh.antennapod;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import de.danoeh.antennapod.core.storage.AutoDownloadManagerImpl;
+import de.danoeh.antennapod.net.download.service.episode.autodownload.AutoDownloadManagerImpl;
 import de.danoeh.antennapod.net.download.service.feed.FeedUpdateManagerImpl;
 import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;

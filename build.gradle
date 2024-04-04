@@ -41,6 +41,7 @@ project.ext {
     runnerVersion = "1.5.0"
     rulesVersion = "1.5.0"
     testCoreVersion = "1.5.0"
+    mockitoVersion = "5.11.0"
 }
 
 checkstyle {

@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.storage;
+package de.danoeh.antennapod.net.download.service.episode.autodownload;
 
 import java.io.File;
 import java.io.IOException;

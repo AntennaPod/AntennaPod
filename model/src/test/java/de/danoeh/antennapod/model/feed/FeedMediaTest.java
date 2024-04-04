@@ -1,11 +1,9 @@
-package de.danoeh.antennapod.core.feed;
+package de.danoeh.antennapod.model.feed;
 
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
 import org.junit.Before;
 import org.junit.Test;
 
-import static de.danoeh.antennapod.core.feed.FeedMediaMother.anyFeedMedia;
+import static de.danoeh.antennapod.model.feed.FeedMediaMother.anyFeedMedia;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;

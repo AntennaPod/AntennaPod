@@ -1,6 +1,4 @@
-package de.danoeh.antennapod.core.feed;
-
-import de.danoeh.antennapod.model.feed.FeedMedia;
+package de.danoeh.antennapod.model.feed;
 
 class FeedMediaMother {
 
