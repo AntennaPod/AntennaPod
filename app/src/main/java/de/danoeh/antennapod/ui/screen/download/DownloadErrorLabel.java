@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.ui.screen.download;
 
 import androidx.annotation.StringRes;
-import de.danoeh.antennapod.core.BuildConfig;
-import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.download.DownloadError;
 
 /**

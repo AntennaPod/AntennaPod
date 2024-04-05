@@ -16,7 +16,6 @@ dependencyResolutionManagement {
 }
 
 include ':app'
-include ':core'
 include ':event'
 include ':model'
 
@@ -42,6 +41,7 @@ include ':storage:importexport'
 include ':storage:preferences'
 
 include ':ui:app-start-intent'
+include ':ui:chapters'
 include ':ui:common'
 include ':ui:discovery'
 include ':ui:echo'

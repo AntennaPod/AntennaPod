@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.model.feed;
 
+import java.util.List;
+
 public class Chapter {
     private long id;
     /** Defines starting point in milliseconds. */
@@ -73,5 +75,17 @@ public class Chapter {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public static int getAfterPosition(List<Chapter> chapters, int playbackPosition) {
+        if (chapters == null || chapters.isEmpty()) {
+            return -1;
+        }
+        for (int i = 0; i < chapters.size(); i++) {
+            if (chapters.get(i).getStart() > playbackPosition) {
+                return i - 1;
+            }
+        }
+        return chapters.size() - 1;
     }
 }

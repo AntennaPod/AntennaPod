@@ -18,12 +18,10 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.util.FeedUtil;
 import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.playback.service.PlaybackStatus;
 import de.danoeh.antennapod.ui.share.ShareUtils;
 import de.danoeh.antennapod.ui.share.ShareDialog;
@@ -198,7 +196,7 @@ public class FeedItemMenuHandler {
             }
             DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, true);
         } else if (menuItemId == R.id.visit_website_item) {
-            IntentUtils.openInBrowser(context, FeedItemUtil.getLinkWithFallback(selectedItem));
+            IntentUtils.openInBrowser(context, selectedItem.getLinkWithFallback());
         } else if (menuItemId == R.id.share_item) {
             ShareDialog shareDialog = ShareDialog.newInstance(selectedItem);
             shareDialog.show((fragment.getActivity().getSupportFragmentManager()), "ShareEpisodeDialog");
@@ -234,7 +232,8 @@ public class FeedItemMenuHandler {
             if (media == null) {
                 return;
             }
-            boolean shouldAutoDelete = FeedUtil.shouldAutoDeleteItemsOnThatFeed(item.getFeed());
+            boolean shouldAutoDelete = UserPreferences.isAutoDelete()
+                    && (!item.getFeed().isLocalFeed() || UserPreferences.isAutoDeleteLocal());
             int smartMarkAsPlayedSecs = UserPreferences.getSmartMarkAsPlayedSecs();
             boolean almostEnded = media.getDuration() > 0
                     && media.getPosition() >= media.getDuration() - smartMarkAsPlayedSecs * 1000;

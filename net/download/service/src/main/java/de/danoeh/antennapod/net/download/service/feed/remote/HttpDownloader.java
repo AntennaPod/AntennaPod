@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.net.download.service.feed.remote;
 
+import android.os.StatFs;
 import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,6 +10,7 @@ import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.danoeh.antennapod.net.download.service.R;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import okhttp3.CacheControl;
 import okhttp3.internal.http.StatusLine;
 import org.apache.commons.io.IOUtils;
@@ -30,7 +32,6 @@ import java.util.Locale;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.parser.feed.util.DateUtils;
 import de.danoeh.antennapod.model.download.DownloadError;
-import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.net.common.UriUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
@@ -148,7 +149,7 @@ public class HttpDownloader extends Downloader {
                 request.setSize(DownloadResult.SIZE_UNKNOWN);
             }
 
-            long freeSpace = StorageUtils.getFreeSpaceAvailable();
+            long freeSpace = getFreeSpaceAvailable();
             Log.d(TAG, "Free space is " + freeSpace);
             if (request.getSize() != DownloadResult.SIZE_UNKNOWN && request.getSize() > freeSpace) {
                 onFail(DownloadError.ERROR_NOT_ENOUGH_SPACE, null);
@@ -294,6 +295,18 @@ public class HttpDownloader extends Downloader {
         } else if (secondUrl.equals(firstUrl.replace("http://", "https://"))) {
             Log.d(TAG, "Treating http->https non-permanent redirect as permanent: " + firstUrl);
             permanentRedirectUrl = secondUrl;
+        }
+    }
+
+    private static long getFreeSpaceAvailable() {
+        File dataFolder = UserPreferences.getDataFolder(null);
+        if (dataFolder != null) {
+            StatFs stat = new StatFs(dataFolder.getAbsolutePath());
+            long availableBlocks = stat.getAvailableBlocksLong();
+            long blockSize = stat.getBlockSizeLong();
+            return availableBlocks * blockSize;
+        } else {
+            return 0;
         }
     }
 

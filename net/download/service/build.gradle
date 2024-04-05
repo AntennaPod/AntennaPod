@@ -10,7 +10,6 @@ android {
 }
 
 dependencies {
-    implementation project(":core")
     implementation project(':event')
     implementation project(':model')
     implementation project(':net:common')
@@ -23,6 +22,7 @@ dependencies {
     implementation project(':ui:notifications')
     implementation project(':storage:preferences')
     implementation project(':ui:app-start-intent')
+    implementation project(':ui:chapters')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.core:core:$coreVersion"
@@ -43,5 +43,6 @@ dependencies {
     testImplementation "junit:junit:$junitVersion"
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
     testImplementation "org.awaitility:awaitility:$awaitilityVersion"
-    testImplementation 'org.mockito:mockito-core:5.11.0'
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "androidx.preference:preference:$preferenceVersion"
 }

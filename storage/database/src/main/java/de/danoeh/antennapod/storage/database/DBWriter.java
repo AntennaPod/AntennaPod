@@ -337,7 +337,7 @@ public class DBWriter {
         return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            final List<FeedItem> queue = DBReader.getQueue(adapter);
+            final List<FeedItem> queue = DBReader.getQueue();
             FeedItem item;
 
             if (queue != null) {
@@ -412,7 +412,7 @@ public class DBWriter {
 
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            final List<FeedItem> queue = DBReader.getQueue(adapter);
+            final List<FeedItem> queue = DBReader.getQueue();
 
             boolean queueModified = false;
             LongList markAsUnplayedIds = new LongList();
@@ -523,7 +523,7 @@ public class DBWriter {
         }
         final PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        final List<FeedItem> queue = DBReader.getQueue(adapter);
+        final List<FeedItem> queue = DBReader.getQueue();
 
         if (queue != null) {
             boolean queueModified = false;
@@ -662,7 +662,7 @@ public class DBWriter {
                                             final int to, final boolean broadcastUpdate) {
         final PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        final List<FeedItem> queue = DBReader.getQueue(adapter);
+        final List<FeedItem> queue = DBReader.getQueue();
 
         if (queue != null) {
             if (from >= 0 && from < queue.size() && to >= 0 && to < queue.size()) {
@@ -948,7 +948,7 @@ public class DBWriter {
         return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            final List<FeedItem> queue = DBReader.getQueue(adapter);
+            final List<FeedItem> queue = DBReader.getQueue();
 
             if (queue != null) {
                 permutor.reorder(queue);

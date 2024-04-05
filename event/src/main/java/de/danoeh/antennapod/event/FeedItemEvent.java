@@ -22,4 +22,14 @@ public class FeedItemEvent {
     public static FeedItemEvent updated(FeedItem... items) {
         return new FeedItemEvent(Arrays.asList(items));
     }
+
+    public static int indexOfItemWithId(List<FeedItem> items, long id) {
+        for (int i = 0; i < items.size(); i++) {
+            FeedItem item = items.get(i);
+            if (item != null && item.getId() == id) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }

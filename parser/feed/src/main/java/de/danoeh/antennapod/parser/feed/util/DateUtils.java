@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.parser.feed.util;
 
-import android.util.Log;
-
 import androidx.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,7 +14,6 @@ import java.util.TimeZone;
  * Parses several date formats.
  */
 public abstract class DateUtils {
-    private static final String TAG = "DateUtils";
     private static final TimeZone TIME_ZONE_GMT = TimeZone.getTimeZone("GMT");
     private static final ThreadLocal<SimpleDateFormat> RFC822_DATE_FORMAT = new ThreadLocal<>() {
         @Override
@@ -117,8 +114,8 @@ public abstract class DateUtils {
                 if (result != null && pos.getIndex() == date.length()) {
                     return result;
                 }
-            } catch (Exception e) {
-                Log.e(TAG, Log.getStackTraceString(e));
+            } catch (Exception ignored) {
+                // Ignore
             }
         }
 
@@ -127,7 +124,7 @@ public abstract class DateUtils {
             return parse(date.substring(date.indexOf(',') + 1));
         }
 
-        Log.d(TAG, "Could not parse date string \"" + input + "\" [" + date + "]");
+        System.out.println("Could not parse date string \"" + input + "\" [" + date + "]");
         return null;
     }
 

@@ -27,6 +27,7 @@ import com.google.android.material.elevation.SurfaceColors;
 
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
+import de.danoeh.antennapod.ui.chapters.ChapterUtils;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
 import de.danoeh.antennapod.ui.episodes.TimeSpeedConverter;
 import de.danoeh.antennapod.ui.screen.playback.MediaPlayerErrorDialog;
@@ -43,7 +44,6 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.screen.feed.preferences.SkipPreferenceDialog;
 import de.danoeh.antennapod.event.FavoritesEvent;
@@ -360,7 +360,7 @@ public class AudioPlayerFragment extends Fragment implements
         int currentPosition = converter.convert(event.getPosition());
         int duration = converter.convert(event.getDuration());
         int remainingTime = converter.convert(Math.max(event.getDuration() - event.getPosition(), 0));
-        currentChapterIndex = ChapterUtils.getCurrentChapterIndex(controller.getMedia(), currentPosition);
+        currentChapterIndex = Chapter.getAfterPosition(controller.getMedia().getChapters(), currentPosition);
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
         if (currentPosition == Playable.INVALID_TIME || duration == Playable.INVALID_TIME) {
             Log.w(TAG, "Could not react to position observer update because of invalid time");
@@ -406,7 +406,7 @@ public class AudioPlayerFragment extends Fragment implements
             float prog = progress / ((float) seekBar.getMax());
             TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
             int position = converter.convert((int) (prog * controller.getDuration()));
-            int newChapterIndex = ChapterUtils.getCurrentChapterIndex(controller.getMedia(), position);
+            int newChapterIndex = Chapter.getAfterPosition(controller.getMedia().getChapters(), position);
             if (newChapterIndex > -1) {
                 if (!sbPosition.isPressed() && currentChapterIndex != newChapterIndex) {
                     currentChapterIndex = newChapterIndex;

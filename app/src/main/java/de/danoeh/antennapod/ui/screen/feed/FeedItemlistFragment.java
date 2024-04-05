@@ -50,8 +50,7 @@ import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.FeedItemPermutors;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.share.ShareUtils;
 import de.danoeh.antennapod.ui.episodeslist.MoreContentListFooterUtil;
 import de.danoeh.antennapod.databinding.FeedItemListFragmentBinding;
@@ -321,8 +320,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         MainActivity activity = (MainActivity) getActivity();
-        long[] ids = FeedItemUtil.getIds(feed.getItems());
-        activity.loadChildFragment(ItemPagerFragment.newInstance(ids, position));
+        activity.loadChildFragment(ItemPagerFragment.newInstance(feed.getItems(), feed.getItems().get(position)));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -341,7 +339,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
         for (int i = 0, size = event.items.size(); i < size; i++) {
             FeedItem item = event.items.get(i);
-            int pos = FeedItemUtil.indexOfItemWithId(feed.getItems(), item.getId());
+            int pos = FeedItemEvent.indexOfItemWithId(feed.getItems(), item.getId());
             if (pos >= 0) {
                 feed.getItems().remove(pos);
                 feed.getItems().add(pos, item);
@@ -356,7 +354,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             return;
         }
         for (String downloadUrl : event.getUrls()) {
-            int pos = FeedItemUtil.indexOfItemWithDownloadUrl(feed.getItems(), downloadUrl);
+            int pos = EpisodeDownloadEvent.indexOfItemWithDownloadUrl(feed.getItems(), downloadUrl);
             if (pos >= 0) {
                 adapter.notifyItemChangedCompat(pos);
             }
