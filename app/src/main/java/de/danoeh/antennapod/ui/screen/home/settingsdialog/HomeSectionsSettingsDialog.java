@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.ui.screen.home.settingsdialog;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 
 import androidx.annotation.NonNull;
@@ -14,10 +13,11 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.ChooseHomeScreenOrderDialogBinding;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HomeSectionsSettingsDialog {
-    public static void open(Context context, DialogInterface.OnClickListener onSettingsChanged) {
+    public static void open(Context context, Runnable onSettingsChanged) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         ChooseHomeScreenOrderDialogBinding viewBinding = ChooseHomeScreenOrderDialogBinding.inflate(layoutInflater);
 
@@ -34,17 +34,24 @@ public class HomeSectionsSettingsDialog {
             final List<String> sectionOrder = adapter.getOrderedSectionTags();
             final List<String> hiddenSections = adapter.getHiddenSectionTags();
             HomePreferences.saveChanges(context, hiddenSections, sectionOrder);
-            onSettingsChanged.onClick(dialog, which);
+            onSettingsChanged.run();
         });
         builder.setNegativeButton(R.string.cancel_label, null);
-        builder.create().show();
+        builder.setNeutralButton(R.string.reset, (dialog, which) -> {
+            HomePreferences.saveChanges(context, Collections.emptyList(), Collections.emptyList());
+            onSettingsChanged.run();
+        });
+        builder.show();
     }
 
-    private static void configureRecyclerView(
-            RecyclerView recyclerView,
-            HomeScreenSettingDialogAdapter adapter,
-            Context context) {
-        ItemTouchCallback itemMoveCallback = new ItemTouchCallback(adapter::onItemMove);
+    private static void configureRecyclerView(RecyclerView recyclerView,
+                                              HomeScreenSettingDialogAdapter adapter, Context context) {
+        ItemTouchCallback itemMoveCallback = new ItemTouchCallback() {
+            @Override
+            protected boolean onItemMove(int fromPosition, int toPosition) {
+                return adapter.onItemMove(fromPosition, toPosition);
+            }
+        };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemMoveCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
         adapter.setDragListener(itemTouchHelper::startDrag);
@@ -60,20 +67,14 @@ public class HomeSectionsSettingsDialog {
         ArrayList<HomeScreenSettingsDialogItem> settingsDialogItems = new ArrayList<>();
         for (String sectionTag: sectionTags) {
             settingsDialogItems.add(new HomeScreenSettingsDialogItem(
-                    HomeScreenSettingsDialogItem.ViewType.Section,
-                    sectionTag
-            ));
+                    HomeScreenSettingsDialogItem.ViewType.Section, sectionTag));
         }
         String hiddenText = context.getString(R.string.section_hidden);
         settingsDialogItems.add(new HomeScreenSettingsDialogItem(
-                HomeScreenSettingsDialogItem.ViewType.Header,
-                hiddenText
-        ));
+                HomeScreenSettingsDialogItem.ViewType.Header, hiddenText));
         for (String sectionTag: hiddenSectionTags) {
             settingsDialogItems.add(new HomeScreenSettingsDialogItem(
-                    HomeScreenSettingsDialogItem.ViewType.Section,
-                    sectionTag
-            ));
+                    HomeScreenSettingsDialogItem.ViewType.Section, sectionTag));
         }
 
         return settingsDialogItems;

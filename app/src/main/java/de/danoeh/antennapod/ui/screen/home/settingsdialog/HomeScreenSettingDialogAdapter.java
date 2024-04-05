@@ -68,23 +68,13 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         if (viewType == HEADER_VIEW) {
             ChooseHomeScreenOrderDialogHeaderBinding binding = ChooseHomeScreenOrderDialogHeaderBinding.inflate(
-                    inflater,
-                    parent,
-                    false
-            );
+                    inflater, parent, false);
             return new HeaderViewHolder(binding.getRoot(), binding.headerLabel);
         }
 
         ChooseHomeScreenOrderDialogEntryBinding binding = ChooseHomeScreenOrderDialogEntryBinding.inflate(
-                inflater,
-                parent,
-                false
-        );
-        return new ItemViewHolder(
-                binding.getRoot(),
-                binding.sectionLabel,
-                binding.dragHandle
-        );
+                inflater, parent, false);
+        return new ItemViewHolder(binding.getRoot(), binding.sectionLabel, binding.dragHandle);
     }
 
     @Override

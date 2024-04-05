@@ -50,8 +50,7 @@ public class HomePreferences {
         List<String> hiddenSectionTags = getHiddenSectionTags(context);
         String[] sectionTags = context.getResources().getStringArray(R.array.home_section_tags);
         Arrays.sort(sectionTags, (String a, String b) -> Integer.signum(
-                indexOfOrMaxValue(sectionTagOrder, a) - indexOfOrMaxValue(sectionTagOrder, b)
-        ));
+                indexOfOrMaxValue(sectionTagOrder, a) - indexOfOrMaxValue(sectionTagOrder, b)));
 
         List<String> finalSectionTags = new ArrayList<>();
         for (String sectionTag: sectionTags) {

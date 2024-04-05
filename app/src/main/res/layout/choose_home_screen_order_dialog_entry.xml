@@ -4,23 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingHorizontal="16dp"
-    android:paddingVertical="10dp">
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/dragHandle"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="4dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="0dp"
+        android:paddingVertical="8dp"
+        android:layout_gravity="center_vertical"
         android:contentDescription="@string/sort"
-        android:src="@drawable/ic_drag_darktheme" />
+        android:src="?attr/dragview_background" />
 
     <TextView
         android:id="@+id/sectionLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_margin="8dp"
+        android:layout_gravity="center_vertical"
+        android:textColor="?android:attr/textColorPrimary"
         android:textSize="18sp" />
 
 </LinearLayout>

@@ -12,7 +12,8 @@
         android:id="@+id/headerLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_margin="8dp"
+        android:textColor="?android:attr/textColorPrimary"
         android:textSize="18sp" />
 
 </LinearLayout>

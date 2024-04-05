@@ -4,14 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ItemTouchCallback extends ItemTouchHelper.Callback {
-
-    private final ItemMoveHandler itemMoveHandler;
-
-    public ItemTouchCallback(ItemMoveHandler itemMoveHandler) {
-        this.itemMoveHandler = itemMoveHandler;
-    }
-
+public abstract class ItemTouchCallback extends ItemTouchHelper.Callback {
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
@@ -20,12 +13,12 @@ public class ItemTouchCallback extends ItemTouchHelper.Callback {
     }
 
     @Override
-    public boolean onMove(
-            @NonNull RecyclerView recyclerView,
-            @NonNull RecyclerView.ViewHolder viewHolder,
-            @NonNull RecyclerView.ViewHolder target) {
-        return itemMoveHandler.onItemMove(viewHolder.getBindingAdapterPosition(), target.getBindingAdapterPosition());
+    public boolean onMove(@NonNull RecyclerView recyclerView,
+            @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+        return onItemMove(viewHolder.getBindingAdapterPosition(), target.getBindingAdapterPosition());
     }
+
+    protected abstract boolean onItemMove(int fromPosition, int toPosition);
 
     @Override
     public boolean isItemViewSwipeEnabled() {
