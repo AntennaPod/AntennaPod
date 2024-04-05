@@ -10,7 +10,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 import com.google.android.material.snackbar.Snackbar;
-import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.preferences.BuildConfig;
 import de.danoeh.antennapod.ui.preferences.R;
 

@@ -19,13 +19,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.service.PlaybackController;
+import de.danoeh.antennapod.ui.chapters.ChapterUtils;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -130,7 +130,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
         if (controller == null) {
             return -1;
         }
-        return ChapterUtils.getCurrentChapterIndex(media, controller.getPosition());
+        return Chapter.getAfterPosition(media.getChapters(), controller.getPosition());
     }
 
     private void loadMediaInfo(boolean forceRefresh) {

@@ -36,7 +36,6 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -610,17 +609,12 @@ public class DbWriterTest {
         Cursor cursor = adapter.getQueueIDCursor();
         assertTrue(cursor.moveToFirst());
         assertEquals(numItems, cursor.getCount());
-        List<Long> expectedIds;
-        expectedIds = FeedItemUtil.getIdList(feed.getItems());
-        List<Long> actualIds = new ArrayList<>();
         for (int i = 0; i < numItems; i++) {
             assertTrue(cursor.moveToPosition(i));
-            actualIds.add(cursor.getLong(0));
+            assertEquals(feed.getItems().get(i).getId(), cursor.getLong(0));
         }
         cursor.close();
         adapter.close();
-        assertEquals("Bulk add to queue: result order should be the same as the order given",
-                expectedIds, actualIds);
     }
 
     @Test

@@ -9,12 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 
-import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.ui.common.Converter;
 import java.io.File;
 import java.net.URLEncoder;
 
-import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -46,7 +45,7 @@ public class ShareUtils {
     }
 
     public static boolean hasLinkToShare(FeedItem item) {
-        return FeedItemUtil.getLinkWithFallback(item) != null;
+        return item.getLinkWithFallback() != null;
     }
 
     public static void shareMediaDownloadLink(Context context, FeedMedia media) {
@@ -64,7 +63,7 @@ public class ShareUtils {
 
         if (hasLinkToShare(item)) {
             text +=  "\n\n" + context.getResources().getString(R.string.share_dialog_episode_website_label) + ": ";
-            text += FeedItemUtil.getLinkWithFallback(item);
+            text += item.getLinkWithFallback();
         }
 
         if (item.getMedia() != null && item.getMedia().getDownloadUrl() != null) {

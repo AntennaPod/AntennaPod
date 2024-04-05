@@ -62,7 +62,6 @@ android {
 }
 
 dependencies {
-    implementation project(":core")
     implementation project(":event")
     implementation project(':model')
     implementation project(':net:common')
@@ -91,6 +90,7 @@ dependencies {
     implementation project(':ui:statistics')
     implementation project(':net:sync:service-interface')
     implementation project(':playback:service')
+    implementation project(':ui:chapters')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"

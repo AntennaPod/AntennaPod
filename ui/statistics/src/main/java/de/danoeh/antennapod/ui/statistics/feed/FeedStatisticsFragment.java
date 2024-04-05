@@ -13,7 +13,7 @@ import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.StatisticsItem;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.common.DateFormatter;
-import de.danoeh.antennapod.core.util.ReleaseScheduleGuesser;
+import de.danoeh.antennapod.storage.database.ReleaseScheduleGuesser;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;

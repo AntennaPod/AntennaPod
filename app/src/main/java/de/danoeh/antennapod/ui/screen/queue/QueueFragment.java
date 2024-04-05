@@ -40,12 +40,11 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
-import de.danoeh.antennapod.core.util.ConfirmationDialog;
+import de.danoeh.antennapod.ui.common.ConfirmationDialog;
 import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.ui.common.Converter;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.ui.screen.feed.ItemSortDialog;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
@@ -150,7 +149,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 break;
             case REMOVED:
             case IRREVERSIBLE_REMOVED:
-                int position = FeedItemUtil.indexOfItemWithId(queue, event.item.getId());
+                int position = FeedItemEvent.indexOfItemWithId(queue, event.item.getId());
                 queue.remove(position);
                 recyclerAdapter.notifyItemRemoved(position);
                 break;
@@ -178,7 +177,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
         for (int i = 0, size = event.items.size(); i < size; i++) {
             FeedItem item = event.items.get(i);
-            int pos = FeedItemUtil.indexOfItemWithId(queue, item.getId());
+            int pos = FeedItemEvent.indexOfItemWithId(queue, item.getId());
             if (pos >= 0) {
                 queue.remove(pos);
                 queue.add(pos, item);
@@ -194,7 +193,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             return;
         }
         for (String downloadUrl : event.getUrls()) {
-            int pos = FeedItemUtil.indexOfItemWithDownloadUrl(queue, downloadUrl);
+            int pos = EpisodeDownloadEvent.indexOfItemWithDownloadUrl(queue, downloadUrl);
             if (pos >= 0) {
                 recyclerAdapter.notifyItemChangedCompat(pos);
             }
@@ -357,7 +356,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             return super.onContextItemSelected(item);
         }
 
-        int position = FeedItemUtil.indexOfItemWithId(queue, selectedItem.getId());
+        int position = FeedItemEvent.indexOfItemWithId(queue, selectedItem.getId());
         if (position < 0) {
             Log.i(TAG, "Selected item no longer exist, ignoring selection");
             return super.onContextItemSelected(item);

@@ -23,7 +23,6 @@ import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.ui.screen.feed.ItemSortDialog;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
@@ -209,7 +208,7 @@ public class CompletedDownloadsFragment extends Fragment
             return; // Refreshed anyway
         }
         for (String downloadUrl : event.getUrls()) {
-            int pos = FeedItemUtil.indexOfItemWithDownloadUrl(items, downloadUrl);
+            int pos = EpisodeDownloadEvent.indexOfItemWithDownloadUrl(items, downloadUrl);
             if (pos >= 0) {
                 adapter.notifyItemChangedCompat(pos);
             }
@@ -249,7 +248,7 @@ public class CompletedDownloadsFragment extends Fragment
         }
         for (int i = 0, size = event.items.size(); i < size; i++) {
             FeedItem item = event.items.get(i);
-            int pos = FeedItemUtil.indexOfItemWithId(items, item.getId());
+            int pos = FeedItemEvent.indexOfItemWithId(items, item.getId());
             if (pos >= 0) {
                 items.remove(pos);
                 if (item.getMedia().isDownloaded()) {
@@ -305,7 +304,7 @@ public class CompletedDownloadsFragment extends Fragment
                 return downloadedItems;
             }
             for (String url : runningDownloads) {
-                if (FeedItemUtil.indexOfItemWithDownloadUrl(downloadedItems, url) != -1) {
+                if (EpisodeDownloadEvent.indexOfItemWithDownloadUrl(downloadedItems, url) != -1) {
                     continue; // Already in list
                 }
                 mediaUrls.add(url);

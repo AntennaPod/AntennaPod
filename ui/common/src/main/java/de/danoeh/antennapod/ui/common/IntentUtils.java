@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util;
+package de.danoeh.antennapod.ui.common;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -8,7 +8,6 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
-import de.danoeh.antennapod.core.R;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -51,7 +50,6 @@ public class IntentUtils {
             Log.e(TAG, Log.getStackTraceString(e));
         }
     }
-
 
     public static String getLocalizedWebsiteLink(Context context) {
         try (InputStream is = context.getAssets().open("website-languages.txt")) {

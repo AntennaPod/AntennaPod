@@ -48,8 +48,7 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.ui.common.Converter;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.share.ShareUtils;
 import de.danoeh.antennapod.databinding.VideoplayerActivityBinding;
 import de.danoeh.antennapod.ui.share.ShareDialog;
@@ -636,7 +635,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         } else if (StringUtils.isNotBlank(media.getWebsiteLink())) {
             return media.getWebsiteLink();
         } else if (media instanceof FeedMedia) {
-            return FeedItemUtil.getLinkWithFallback(((FeedMedia) media).getItem());
+            return (((FeedMedia) media).getItem()).getLinkWithFallback();
         }
         return null;
     }

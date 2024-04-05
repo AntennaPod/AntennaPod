@@ -13,7 +13,7 @@ import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.preferences.screen.about.AboutFragment;
 
 public class MainPreferencesFragment extends PreferenceFragmentCompat {

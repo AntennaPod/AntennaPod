@@ -25,7 +25,7 @@ import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.CrashReportWriter;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.ui.common.IntentUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;

@@ -54,8 +54,8 @@ public class RenameFeedDialog {
                         renameTag(newTitle);
                     }
                 })
-                .setNeutralButton(de.danoeh.antennapod.core.R.string.reset, null)
-                .setNegativeButton(de.danoeh.antennapod.core.R.string.cancel_label, null)
+                .setNeutralButton(R.string.reset, null)
+                .setNegativeButton(R.string.cancel_label, null)
                 .show();
 
         // To prevent cancelling the dialog on button click

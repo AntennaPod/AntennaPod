@@ -15,7 +15,6 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.ui.episodeslist.HorizontalItemListAdapter;
 import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
@@ -92,7 +91,7 @@ public class QueueSection extends HomeSection {
         }
         for (int i = 0, size = event.items.size(); i < size; i++) {
             FeedItem item = event.items.get(i);
-            int pos = FeedItemUtil.indexOfItemWithId(queue, item.getId());
+            int pos = FeedItemEvent.indexOfItemWithId(queue, item.getId());
             if (pos >= 0) {
                 queue.remove(pos);
                 queue.add(pos, item);
@@ -104,7 +103,7 @@ public class QueueSection extends HomeSection {
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EpisodeDownloadEvent event) {
         for (String downloadUrl : event.getUrls()) {
-            int pos = FeedItemUtil.indexOfItemWithDownloadUrl(queue, downloadUrl);
+            int pos = EpisodeDownloadEvent.indexOfItemWithDownloadUrl(queue, downloadUrl);
             if (pos >= 0) {
                 listAdapter.notifyItemChangedCompat(pos);
             }

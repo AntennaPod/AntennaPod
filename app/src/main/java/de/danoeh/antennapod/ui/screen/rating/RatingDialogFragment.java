@@ -12,7 +12,7 @@ import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.databinding.RatingDialogBinding;
 import de.danoeh.antennapod.ui.common.DateFormatter;
 

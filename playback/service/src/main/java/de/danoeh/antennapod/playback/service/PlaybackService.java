@@ -77,9 +77,7 @@ import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.playback.service.internal.PlaybackServiceTaskManager.SleepTimer;
-import de.danoeh.antennapod.core.util.ChapterUtils;
-import de.danoeh.antennapod.core.util.FeedUtil;
-import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
@@ -1147,9 +1145,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 // Delete episode if enabled
                 FeedPreferences.AutoDeleteAction action =
                         item.getFeed().getPreferences().getCurrentAutoDelete();
+                boolean autoDeleteEnabledGlobally = UserPreferences.isAutoDelete()
+                        && (!item.getFeed().isLocalFeed() || UserPreferences.isAutoDeleteLocal());
                 boolean shouldAutoDelete = action == FeedPreferences.AutoDeleteAction.ALWAYS
-                        || (action == FeedPreferences.AutoDeleteAction.GLOBAL
-                                && FeedUtil.shouldAutoDeleteItemsOnThatFeed(item.getFeed()));
+                        || (action == FeedPreferences.AutoDeleteAction.GLOBAL && autoDeleteEnabledGlobally);
                 if (shouldAutoDelete && (!item.isTagged(FeedItem.TAG_FAVORITE)
                         || !UserPreferences.shouldFavoriteKeepEpisode())) {
                     DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media);
@@ -1889,8 +1888,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 return;
             }
 
-            int nextChapter = ChapterUtils.getCurrentChapterIndex(
-                    mediaPlayer.getPlayable(), mediaPlayer.getPosition()) + 1;
+            int nextChapter = Chapter.getAfterPosition(chapters, mediaPlayer.getPosition()) + 1;
 
             if (chapters.size() < nextChapter + 1) {
                 // We are on the last chapter, just fallback to the next episode

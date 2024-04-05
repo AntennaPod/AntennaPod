@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util;
+package de.danoeh.antennapod.ui.chapters;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -39,19 +39,6 @@ public class ChapterUtils {
     private static final String TAG = "ChapterUtils";
 
     private ChapterUtils() {
-    }
-
-    public static int getCurrentChapterIndex(Playable media, int position) {
-        if (media == null || media.getChapters() == null || media.getChapters().size() == 0) {
-            return -1;
-        }
-        List<Chapter> chapters = media.getChapters();
-        for (int i = 0; i < chapters.size(); i++) {
-            if (chapters.get(i).getStart() > position) {
-                return i - 1;
-            }
-        }
-        return chapters.size() - 1;
     }
 
     public static void loadChapters(Playable playable, Context context, boolean forceRefresh) {

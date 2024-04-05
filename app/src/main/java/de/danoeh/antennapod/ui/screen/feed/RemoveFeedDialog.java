@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.util.ConfirmationDialog;
+import de.danoeh.antennapod.ui.common.ConfirmationDialog;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import io.reactivex.Completable;

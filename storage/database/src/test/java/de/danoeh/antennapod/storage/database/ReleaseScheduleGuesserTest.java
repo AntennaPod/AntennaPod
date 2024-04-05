@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util;
+package de.danoeh.antennapod.storage.database;
 
 import org.junit.Test;
 
@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import static de.danoeh.antennapod.core.util.ReleaseScheduleGuesser.ONE_DAY;
-import static de.danoeh.antennapod.core.util.ReleaseScheduleGuesser.ONE_HOUR;
-import static de.danoeh.antennapod.core.util.ReleaseScheduleGuesser.ONE_MINUTE;
-import static de.danoeh.antennapod.core.util.ReleaseScheduleGuesser.performGuess;
+import static de.danoeh.antennapod.storage.database.ReleaseScheduleGuesser.ONE_DAY;
+import static de.danoeh.antennapod.storage.database.ReleaseScheduleGuesser.ONE_HOUR;
+import static de.danoeh.antennapod.storage.database.ReleaseScheduleGuesser.ONE_MINUTE;
+import static de.danoeh.antennapod.storage.database.ReleaseScheduleGuesser.performGuess;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

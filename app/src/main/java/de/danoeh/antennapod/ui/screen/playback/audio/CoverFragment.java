@@ -32,7 +32,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.util.ChapterUtils;
+import de.danoeh.antennapod.ui.chapters.ChapterUtils;
 import de.danoeh.antennapod.ui.screen.chapter.ChaptersFragment;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.ui.common.DateFormatter;
@@ -160,7 +160,7 @@ public class CoverFragment extends Fragment {
         });
         
         displayedChapterIndex = -1;
-        refreshChapterData(ChapterUtils.getCurrentChapterIndex(media, media.getPosition())); //calls displayCoverImage
+        refreshChapterData(Chapter.getAfterPosition(media.getChapters(), media.getPosition()));
         updateChapterControlVisibility();
     }
 
@@ -261,7 +261,7 @@ public class CoverFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
-        int newChapterIndex = ChapterUtils.getCurrentChapterIndex(media, event.getPosition());
+        int newChapterIndex = Chapter.getAfterPosition(media.getChapters(), event.getPosition());
         if (newChapterIndex > -1 && newChapterIndex != displayedChapterIndex) {
             refreshChapterData(newChapterIndex);
         }

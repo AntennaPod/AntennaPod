@@ -9,7 +9,6 @@ android {
 }
 
 dependencies {
-    implementation project(":core")
     implementation project(":event")
     implementation project(":model")
     implementation project(':storage:database')

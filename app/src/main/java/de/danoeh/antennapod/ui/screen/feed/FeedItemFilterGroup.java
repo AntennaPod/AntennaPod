@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.ui.screen.feed;
 
-import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
 public enum FeedItemFilterGroup {
