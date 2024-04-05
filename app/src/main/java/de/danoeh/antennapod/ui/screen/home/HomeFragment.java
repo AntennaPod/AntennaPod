@@ -6,22 +6,26 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
-
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.databinding.HomeFragmentBinding;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.ui.echo.EchoConfig;
+import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.ui.screen.home.sections.AllowNotificationsSection;
 import de.danoeh.antennapod.ui.screen.home.sections.DownloadsSection;
 import de.danoeh.antennapod.ui.screen.home.sections.EchoSection;
@@ -29,27 +33,19 @@ import de.danoeh.antennapod.ui.screen.home.sections.EpisodesSurpriseSection;
 import de.danoeh.antennapod.ui.screen.home.sections.InboxSection;
 import de.danoeh.antennapod.ui.screen.home.sections.QueueSection;
 import de.danoeh.antennapod.ui.screen.home.sections.SubscriptionsSection;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
-
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.databinding.HomeFragmentBinding;
-import de.danoeh.antennapod.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
-import de.danoeh.antennapod.ui.screen.SearchFragment;
+import de.danoeh.antennapod.ui.screen.home.settingsdialog.HomePreferences;
+import de.danoeh.antennapod.ui.screen.home.settingsdialog.HomeSectionsSettingsDialog;
 import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * Shows unread or recently published episodes
@@ -58,7 +54,6 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
     public static final String TAG = "HomeFragment";
     public static final String PREF_NAME = "PrefHomeFragment";
-    public static final String PREF_HIDDEN_SECTIONS = "PrefHomeSectionsString";
     public static final String PREF_DISABLE_NOTIFICATION_PERMISSION_NAG = "DisableNotificationPermissionNag";
     public static final String PREF_HIDE_ECHO = "HideEcho";
 
@@ -106,12 +101,8 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             addSection(new EchoSection());
         }
 
-        List<String> hiddenSections = getHiddenSections(getContext());
-        String[] sectionTags = getResources().getStringArray(R.array.home_section_tags);
+        List<String> sectionTags = HomePreferences.getSortedSectionTags(getContext());
         for (String sectionTag : sectionTags) {
-            if (hiddenSections.contains(sectionTag)) {
-                continue;
-            }
             addSection(getSection(sectionTag));
         }
     }
@@ -140,12 +131,6 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         }
     }
 
-    public static List<String> getHiddenSections(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
-        String hiddenSectionsString = prefs.getString(HomeFragment.PREF_HIDDEN_SECTIONS, "");
-        return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenSectionsString, ",")));
-    }
-
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedUpdateRunningEvent event) {
         viewBinding.swipeRefresh.setRefreshing(event.isFeedUpdateRunning);
@@ -154,7 +139,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.homesettings_items) {
-            HomeSectionsSettingsDialog.open(getContext(), (dialogInterface, i) -> populateSectionList());
+            HomeSectionsSettingsDialog.open(getContext(), this::populateSectionList);
             return true;
         } else if (item.getItemId() == R.id.refresh_item) {
             FeedUpdateManager.getInstance().runOnceOrAsk(requireContext());
