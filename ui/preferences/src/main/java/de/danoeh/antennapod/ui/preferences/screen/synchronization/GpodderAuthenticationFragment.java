@@ -20,7 +20,7 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.button.MaterialButton;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.danoeh.antennapod.net.sync.service.SyncService;
-import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationProviderViewData;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationProvider;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
 import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
@@ -257,7 +257,7 @@ public class GpodderAuthenticationFragment extends DialogFragment {
                     throw new IllegalStateException("Device must not be null here");
                 } else {
                     SynchronizationSettings.setSelectedSyncProvider(
-                            SynchronizationProviderViewData.GPODDER_NET.getIdentifier());
+                            SynchronizationProvider.GPODDER_NET.getIdentifier());
                     SynchronizationCredentials.setUsername(username);
                     SynchronizationCredentials.setPassword(password);
                     SynchronizationCredentials.setDeviceId(selectedDevice.getId());

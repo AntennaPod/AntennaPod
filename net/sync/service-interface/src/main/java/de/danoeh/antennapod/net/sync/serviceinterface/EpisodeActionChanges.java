@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.net.sync.model;
+package de.danoeh.antennapod.net.sync.serviceinterface;
 
 
 import androidx.annotation.NonNull;

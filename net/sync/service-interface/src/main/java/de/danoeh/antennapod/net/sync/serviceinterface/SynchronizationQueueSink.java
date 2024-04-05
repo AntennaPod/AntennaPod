@@ -4,7 +4,6 @@ import android.content.Context;
 
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 
 public class SynchronizationQueueSink {
     // To avoid a dependency loop of every class to SyncService, and from SyncService back to every class.

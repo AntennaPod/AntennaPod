@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import de.danoeh.antennapod.net.sync.model.EpisodeAction;
+import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
 
 
 public class EpisodeActionFilterTest extends TestCase {
