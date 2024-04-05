@@ -29,7 +29,7 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.net.sync.serviceinterface.LockingAsyncExecutor;
-import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationProviderViewData;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationProvider;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueStorage;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
@@ -55,12 +55,12 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
-import de.danoeh.antennapod.net.sync.model.EpisodeAction;
-import de.danoeh.antennapod.net.sync.model.EpisodeActionChanges;
-import de.danoeh.antennapod.net.sync.model.ISyncService;
-import de.danoeh.antennapod.net.sync.model.SubscriptionChanges;
-import de.danoeh.antennapod.net.sync.model.SyncServiceException;
-import de.danoeh.antennapod.net.sync.model.UploadChangesResponse;
+import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
+import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeActionChanges;
+import de.danoeh.antennapod.net.sync.serviceinterface.ISyncService;
+import de.danoeh.antennapod.net.sync.serviceinterface.SubscriptionChanges;
+import de.danoeh.antennapod.net.sync.serviceinterface.SyncServiceException;
+import de.danoeh.antennapod.net.sync.serviceinterface.UploadChangesResponse;
 import de.danoeh.antennapod.net.sync.nextcloud.NextcloudSyncService;
 
 public class SyncService extends Worker {
@@ -369,7 +369,7 @@ public class SyncService extends Worker {
 
     private ISyncService getActiveSyncProvider() {
         String selectedSyncProviderKey = SynchronizationSettings.getSelectedSyncProviderKey();
-        SynchronizationProviderViewData selectedService = SynchronizationProviderViewData
+        SynchronizationProvider selectedService = SynchronizationProvider
                 .fromIdentifier(selectedSyncProviderKey);
         if (selectedService == null) {
             return null;

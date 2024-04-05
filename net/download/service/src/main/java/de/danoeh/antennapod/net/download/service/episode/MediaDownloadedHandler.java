@@ -23,7 +23,7 @@ import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.net.sync.model.EpisodeAction;
+import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
 
 /**
  * Handles a completed media download.

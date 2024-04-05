@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.net.sync.model;
+package de.danoeh.antennapod.net.sync.serviceinterface;
 
 public class SyncServiceException extends Exception {
     private static final long serialVersionUID = 1L;

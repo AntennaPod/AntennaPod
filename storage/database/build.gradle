@@ -16,7 +16,6 @@ dependencies {
     implementation project(':event')
     implementation project(':model')
     implementation project(':net:download:service-interface')
-    implementation project(':net:sync:model')
     implementation project(':net:sync:service-interface')
     implementation project(':storage:preferences')
     implementation project(':ui:app-start-intent')

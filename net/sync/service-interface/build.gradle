@@ -9,9 +9,7 @@ android {
 
 dependencies {
     implementation project(':model')
-    implementation project(':net:sync:model')
     implementation project(':storage:preferences')
-    implementation project(':ui:i18n')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"

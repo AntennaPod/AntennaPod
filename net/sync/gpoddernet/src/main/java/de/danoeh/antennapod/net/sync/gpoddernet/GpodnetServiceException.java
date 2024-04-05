@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.net.sync.gpoddernet;
 
-import de.danoeh.antennapod.net.sync.model.SyncServiceException;
+import de.danoeh.antennapod.net.sync.serviceinterface.SyncServiceException;
 
 public class GpodnetServiceException extends SyncServiceException {
     private static final long serialVersionUID = 1L;

@@ -13,7 +13,6 @@ dependencies {
     implementation project(':model')
     implementation project(':net:common')
     implementation project(':net:sync:gpoddernet')
-    implementation project(':net:sync:model')
     implementation project(':net:sync:service-interface')
     implementation project(':storage:database')
     implementation project(':storage:preferences')

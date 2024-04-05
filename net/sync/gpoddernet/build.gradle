@@ -8,7 +8,7 @@ android {
 }
 
 dependencies {
-    implementation project(':net:sync:model')
+    implementation project(':net:sync:service-interface')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"

@@ -25,7 +25,6 @@ include ':net:download:service-interface'
 include ':net:download:service'
 include ':net:ssl'
 include ':net:sync:gpoddernet'
-include ':net:sync:model'
 include ':net:sync:service-interface'
 include ':net:sync:service'
 

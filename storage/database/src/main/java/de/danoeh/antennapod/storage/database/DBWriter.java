@@ -36,7 +36,6 @@ import java.util.concurrent.TimeUnit;
 import de.danoeh.antennapod.event.FavoritesEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.playback.PlaybackHistoryEvent;
 import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -50,7 +49,7 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.model.playback.Playable;
-import de.danoeh.antennapod.net.sync.model.EpisodeAction;
+import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
 
 /**
  * Provides methods for writing data to AntennaPod's database.
@@ -114,8 +113,7 @@ public class DBWriter {
             // Local feed
             DocumentFile documentFile = DocumentFile.fromSingleUri(context, Uri.parse(media.getLocalFileUrl()));
             if (documentFile == null || !documentFile.exists() || !documentFile.delete()) {
-                EventBus.getDefault().post(new MessageEvent(context.getString(R.string.delete_local_failed)));
-                return false;
+                Log.d(TAG, "Deletion of local file failed.");
             }
             media.setLocalFileUrl(null);
             localDelete = true;
@@ -123,9 +121,7 @@ public class DBWriter {
             // delete downloaded media file
             File mediaFile = new File(media.getLocalFileUrl());
             if (mediaFile.exists() && !mediaFile.delete()) {
-                MessageEvent evt = new MessageEvent(context.getString(R.string.delete_failed));
-                EventBus.getDefault().post(evt);
-                return false;
+                Log.d(TAG, "Deletion of downloaded file failed.");
             }
             media.setDownloaded(false);
             media.setLocalFileUrl(null);

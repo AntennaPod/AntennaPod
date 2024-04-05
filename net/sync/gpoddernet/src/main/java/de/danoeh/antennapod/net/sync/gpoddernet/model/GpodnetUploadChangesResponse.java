@@ -3,7 +3,7 @@ package de.danoeh.antennapod.net.sync.gpoddernet.model;
 import androidx.collection.ArrayMap;
 
 import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
-import de.danoeh.antennapod.net.sync.model.UploadChangesResponse;
+import de.danoeh.antennapod.net.sync.serviceinterface.UploadChangesResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
