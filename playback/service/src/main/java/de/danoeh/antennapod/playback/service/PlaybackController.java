@@ -182,8 +182,8 @@ public abstract class PlaybackController {
             Log.d(TAG, "Received statusUpdate Intent.");
             if (playbackService != null) {
                 PlaybackServiceMediaPlayer.PSMPInfo info = playbackService.getPSMPInfo();
-                status = info.playerStatus;
-                media = info.playable;
+                status = info.getPlayerStatus();
+                media = info.getPlayable();
                 handleStatus();
             } else {
                 Log.w(TAG, "Couldn't receive status update: playbackService was null");
@@ -275,8 +275,8 @@ public abstract class PlaybackController {
         Log.d(TAG, "Querying service info");
         if (playbackService != null) {
             PlaybackServiceMediaPlayer.PSMPInfo info = playbackService.getPSMPInfo();
-            status = info.playerStatus;
-            media = info.playable;
+            status = info.getPlayerStatus();
+            media = info.getPlayable();
 
             // make sure that new media is loaded if it's available
             mediaInfoLoaded = false;

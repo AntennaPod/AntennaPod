@@ -98,7 +98,7 @@ public class PlaybackServiceMediaPlayerTest {
 
     private void checkPSMPInfo(LocalPSMP.PSMPInfo info) {
         try {
-            switch (info.playerStatus) {
+            switch (info.getPlayerStatus()) {
                 case PLAYING:
                 case PAUSED:
                 case PREPARED:
@@ -106,11 +106,13 @@ public class PlaybackServiceMediaPlayerTest {
                 case INITIALIZED:
                 case INITIALIZING:
                 case SEEKING:
-                    assertNotNull(info.playable);
+                    assertNotNull(info.getPlayable());
                     break;
                 case STOPPED:
                 case ERROR:
-                    assertNull(info.playable);
+                    assertNull(info.getPlayable());
+                    break;
+                default:
                     break;
             }
         } catch (AssertionFailedError e) {
@@ -156,15 +158,16 @@ public class PlaybackServiceMediaPlayerTest {
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
-                    if (newInfo.playerStatus == PlayerStatus.ERROR)
+                    if (newInfo.getPlayerStatus() == PlayerStatus.ERROR) {
                         throw new IllegalStateException("MediaPlayer error");
+                    }
                     if (countDownLatch.getCount() == 0) {
                         fail();
                     } else if (countDownLatch.getCount() == 2) {
-                        assertEquals(PlayerStatus.INITIALIZING, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.INITIALIZING, newInfo.getPlayerStatus());
                         countDownLatch.countDown();
                     } else {
-                        assertEquals(PlayerStatus.INITIALIZED, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.INITIALIZED, newInfo.getPlayerStatus());
                         countDownLatch.countDown();
                     }
                 } catch (AssertionFailedError e) {
@@ -181,7 +184,7 @@ public class PlaybackServiceMediaPlayerTest {
             throw assertionError;
         assertTrue(res);
 
-        assertSame(PlayerStatus.INITIALIZED, psmp.getPSMPInfo().playerStatus);
+        assertSame(PlayerStatus.INITIALIZED, psmp.getPSMPInfo().getPlayerStatus());
         assertFalse(psmp.isStartWhenPrepared());
         callback.cancel();
         psmp.shutdown();
@@ -197,15 +200,16 @@ public class PlaybackServiceMediaPlayerTest {
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
-                    if (newInfo.playerStatus == PlayerStatus.ERROR)
+                    if (newInfo.getPlayerStatus() == PlayerStatus.ERROR) {
                         throw new IllegalStateException("MediaPlayer error");
+                    }
                     if (countDownLatch.getCount() == 0) {
                         fail();
                     } else if (countDownLatch.getCount() == 2) {
-                        assertEquals(PlayerStatus.INITIALIZING, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.INITIALIZING, newInfo.getPlayerStatus());
                         countDownLatch.countDown();
                     } else {
-                        assertEquals(PlayerStatus.INITIALIZED, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.INITIALIZED, newInfo.getPlayerStatus());
                         countDownLatch.countDown();
                     }
                 } catch (AssertionFailedError e) {
@@ -223,7 +227,7 @@ public class PlaybackServiceMediaPlayerTest {
             throw assertionError;
         assertTrue(res);
 
-        assertSame(PlayerStatus.INITIALIZED, psmp.getPSMPInfo().playerStatus);
+        assertSame(PlayerStatus.INITIALIZED, psmp.getPSMPInfo().getPlayerStatus());
         assertTrue(psmp.isStartWhenPrepared());
         callback.cancel();
         psmp.shutdown();
@@ -239,18 +243,19 @@ public class PlaybackServiceMediaPlayerTest {
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
-                    if (newInfo.playerStatus == PlayerStatus.ERROR)
+                    if (newInfo.getPlayerStatus() == PlayerStatus.ERROR) {
                         throw new IllegalStateException("MediaPlayer error");
+                    }
                     if (countDownLatch.getCount() == 0) {
                         fail();
                     } else if (countDownLatch.getCount() == 4) {
-                        assertEquals(PlayerStatus.INITIALIZING, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.INITIALIZING, newInfo.getPlayerStatus());
                     } else if (countDownLatch.getCount() == 3) {
-                        assertEquals(PlayerStatus.INITIALIZED, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.INITIALIZED, newInfo.getPlayerStatus());
                     } else if (countDownLatch.getCount() == 2) {
-                        assertEquals(PlayerStatus.PREPARING, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.PREPARING, newInfo.getPlayerStatus());
                     } else if (countDownLatch.getCount() == 1) {
-                        assertEquals(PlayerStatus.PREPARED, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.PREPARED, newInfo.getPlayerStatus());
                     }
                     countDownLatch.countDown();
                 } catch (AssertionFailedError e) {
@@ -266,7 +271,7 @@ public class PlaybackServiceMediaPlayerTest {
         if (assertionError != null)
             throw assertionError;
         assertTrue(res);
-        assertSame(PlayerStatus.PREPARED, psmp.getPSMPInfo().playerStatus);
+        assertSame(PlayerStatus.PREPARED, psmp.getPSMPInfo().getPlayerStatus());
         callback.cancel();
 
         psmp.shutdown();
@@ -282,21 +287,21 @@ public class PlaybackServiceMediaPlayerTest {
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
-                    if (newInfo.playerStatus == PlayerStatus.ERROR)
+                    if (newInfo.getPlayerStatus() == PlayerStatus.ERROR) {
                         throw new IllegalStateException("MediaPlayer error");
+                    }
                     if (countDownLatch.getCount() == 0) {
                         fail();
-
                     } else if (countDownLatch.getCount() == 5) {
-                        assertEquals(PlayerStatus.INITIALIZING, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.INITIALIZING, newInfo.getPlayerStatus());
                     } else if (countDownLatch.getCount() == 4) {
-                        assertEquals(PlayerStatus.INITIALIZED, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.INITIALIZED, newInfo.getPlayerStatus());
                     } else if (countDownLatch.getCount() == 3) {
-                        assertEquals(PlayerStatus.PREPARING, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.PREPARING, newInfo.getPlayerStatus());
                     } else if (countDownLatch.getCount() == 2) {
-                        assertEquals(PlayerStatus.PREPARED, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.PREPARED, newInfo.getPlayerStatus());
                     } else if (countDownLatch.getCount() == 1) {
-                        assertEquals(PlayerStatus.PLAYING, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.PLAYING, newInfo.getPlayerStatus());
                     }
                     countDownLatch.countDown();
                 } catch (AssertionFailedError e) {
@@ -312,7 +317,7 @@ public class PlaybackServiceMediaPlayerTest {
         if (assertionError != null)
             throw assertionError;
         assertTrue(res);
-        assertSame(PlayerStatus.PLAYING, psmp.getPSMPInfo().playerStatus);
+        assertSame(PlayerStatus.PLAYING, psmp.getPSMPInfo().getPlayerStatus());
         callback.cancel();
         psmp.shutdown();
     }
@@ -327,15 +332,16 @@ public class PlaybackServiceMediaPlayerTest {
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
-                    if (newInfo.playerStatus == PlayerStatus.ERROR)
+                    if (newInfo.getPlayerStatus() == PlayerStatus.ERROR) {
                         throw new IllegalStateException("MediaPlayer error");
+                    }
                     if (countDownLatch.getCount() == 0) {
                         fail();
                     } else if (countDownLatch.getCount() == 2) {
-                        assertEquals(PlayerStatus.INITIALIZING, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.INITIALIZING, newInfo.getPlayerStatus());
                         countDownLatch.countDown();
                     } else {
-                        assertEquals(PlayerStatus.INITIALIZED, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.INITIALIZED, newInfo.getPlayerStatus());
                         countDownLatch.countDown();
                     }
                 } catch (AssertionFailedError e) {
@@ -351,7 +357,7 @@ public class PlaybackServiceMediaPlayerTest {
         if (assertionError != null)
             throw assertionError;
         assertTrue(res);
-        assertSame(PlayerStatus.INITIALIZED, psmp.getPSMPInfo().playerStatus);
+        assertSame(PlayerStatus.INITIALIZED, psmp.getPSMPInfo().getPlayerStatus());
         assertFalse(psmp.isStartWhenPrepared());
         callback.cancel();
         psmp.shutdown();
@@ -367,15 +373,16 @@ public class PlaybackServiceMediaPlayerTest {
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
-                    if (newInfo.playerStatus == PlayerStatus.ERROR)
+                    if (newInfo.getPlayerStatus() == PlayerStatus.ERROR) {
                         throw new IllegalStateException("MediaPlayer error");
+                    }
                     if (countDownLatch.getCount() == 0) {
                         fail();
                     } else if (countDownLatch.getCount() == 2) {
-                        assertEquals(PlayerStatus.INITIALIZING, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.INITIALIZING, newInfo.getPlayerStatus());
                         countDownLatch.countDown();
                     } else {
-                        assertEquals(PlayerStatus.INITIALIZED, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.INITIALIZED, newInfo.getPlayerStatus());
                         countDownLatch.countDown();
                     }
                 } catch (AssertionFailedError e) {
@@ -391,7 +398,7 @@ public class PlaybackServiceMediaPlayerTest {
         if (assertionError != null)
             throw assertionError;
         assertTrue(res);
-        assertSame(PlayerStatus.INITIALIZED, psmp.getPSMPInfo().playerStatus);
+        assertSame(PlayerStatus.INITIALIZED, psmp.getPSMPInfo().getPlayerStatus());
         assertTrue(psmp.isStartWhenPrepared());
         callback.cancel();
         psmp.shutdown();
@@ -407,18 +414,19 @@ public class PlaybackServiceMediaPlayerTest {
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
-                    if (newInfo.playerStatus == PlayerStatus.ERROR)
+                    if (newInfo.getPlayerStatus() == PlayerStatus.ERROR) {
                         throw new IllegalStateException("MediaPlayer error");
+                    }
                     if (countDownLatch.getCount() == 0) {
                         fail();
                     } else if (countDownLatch.getCount() == 4) {
-                        assertEquals(PlayerStatus.INITIALIZING, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.INITIALIZING, newInfo.getPlayerStatus());
                     } else if (countDownLatch.getCount() == 3) {
-                        assertEquals(PlayerStatus.INITIALIZED, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.INITIALIZED, newInfo.getPlayerStatus());
                     } else if (countDownLatch.getCount() == 2) {
-                        assertEquals(PlayerStatus.PREPARING, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.PREPARING, newInfo.getPlayerStatus());
                     } else if (countDownLatch.getCount() == 1) {
-                        assertEquals(PlayerStatus.PREPARED, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.PREPARED, newInfo.getPlayerStatus());
                     }
                     countDownLatch.countDown();
                 } catch (AssertionFailedError e) {
@@ -434,7 +442,7 @@ public class PlaybackServiceMediaPlayerTest {
         if (assertionError != null)
             throw assertionError;
         assertTrue(res);
-        assertSame(PlayerStatus.PREPARED, psmp.getPSMPInfo().playerStatus);
+        assertSame(PlayerStatus.PREPARED, psmp.getPSMPInfo().getPlayerStatus());
         callback.cancel();
         psmp.shutdown();
     }
@@ -449,20 +457,21 @@ public class PlaybackServiceMediaPlayerTest {
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
-                    if (newInfo.playerStatus == PlayerStatus.ERROR)
+                    if (newInfo.getPlayerStatus() == PlayerStatus.ERROR) {
                         throw new IllegalStateException("MediaPlayer error");
+                    }
                     if (countDownLatch.getCount() == 0) {
                         fail();
                     } else if (countDownLatch.getCount() == 5) {
-                        assertEquals(PlayerStatus.INITIALIZING, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.INITIALIZING, newInfo.getPlayerStatus());
                     } else if (countDownLatch.getCount() == 4) {
-                        assertEquals(PlayerStatus.INITIALIZED, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.INITIALIZED, newInfo.getPlayerStatus());
                     } else if (countDownLatch.getCount() == 3) {
-                        assertEquals(PlayerStatus.PREPARING, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.PREPARING, newInfo.getPlayerStatus());
                     } else if (countDownLatch.getCount() == 2) {
-                        assertEquals(PlayerStatus.PREPARED, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.PREPARED, newInfo.getPlayerStatus());
                     } else if (countDownLatch.getCount() == 1) {
-                        assertEquals(PlayerStatus.PLAYING, newInfo.playerStatus);
+                        assertEquals(PlayerStatus.PLAYING, newInfo.getPlayerStatus());
                     }
 
                 } catch (AssertionFailedError e) {
@@ -480,7 +489,7 @@ public class PlaybackServiceMediaPlayerTest {
         if (assertionError != null)
             throw assertionError;
         assertTrue(res);
-        assertSame(PlayerStatus.PLAYING, psmp.getPSMPInfo().playerStatus);
+        assertSame(PlayerStatus.PLAYING, psmp.getPSMPInfo().getPlayerStatus());
         callback.cancel();
         psmp.shutdown();
     }
@@ -494,20 +503,23 @@ public class PlaybackServiceMediaPlayerTest {
             @Override
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 checkPSMPInfo(newInfo);
-                if (newInfo.playerStatus == PlayerStatus.ERROR) {
-                    if (assertionError == null)
-                        assertionError = new UnexpectedStateChange(newInfo.playerStatus);
+                if (newInfo.getPlayerStatus() == PlayerStatus.ERROR) {
+                    if (assertionError == null) {
+                        assertionError = new UnexpectedStateChange(newInfo.getPlayerStatus());
+                    }
                 } else if (initialState != PlayerStatus.PLAYING) {
-                    if (assertionError == null)
-                        assertionError = new UnexpectedStateChange(newInfo.playerStatus);
+                    if (assertionError == null) {
+                        assertionError = new UnexpectedStateChange(newInfo.getPlayerStatus());
+                    }
                 } else {
-                    switch (newInfo.playerStatus) {
+                    switch (newInfo.getPlayerStatus()) {
                         case PAUSED:
                             if (latchCount == countDownLatch.getCount())
                                 countDownLatch.countDown();
                             else {
-                                if (assertionError == null)
-                                    assertionError = new UnexpectedStateChange(newInfo.playerStatus);
+                                if (assertionError == null) {
+                                    assertionError = new UnexpectedStateChange(newInfo.getPlayerStatus());
+                                }
                             }
                             break;
                         case INITIALIZED:
@@ -515,8 +527,10 @@ public class PlaybackServiceMediaPlayerTest {
                                 countDownLatch.countDown();
                             } else if (countDownLatch.getCount() < latchCount) {
                                 if (assertionError == null)
-                                    assertionError = new UnexpectedStateChange(newInfo.playerStatus);
+                                    assertionError = new UnexpectedStateChange(newInfo.getPlayerStatus());
                             }
+                            break;
+                        default:
                             break;
                     }
                 }
@@ -607,13 +621,15 @@ public class PlaybackServiceMediaPlayerTest {
             @Override
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 checkPSMPInfo(newInfo);
-                if (newInfo.playerStatus == PlayerStatus.ERROR) {
-                    if (assertionError == null)
-                        assertionError = new UnexpectedStateChange(newInfo.playerStatus);
-                } else if (newInfo.playerStatus == PlayerStatus.PLAYING) {
+                if (newInfo.getPlayerStatus() == PlayerStatus.ERROR) {
+                    if (assertionError == null) {
+                        assertionError = new UnexpectedStateChange(newInfo.getPlayerStatus());
+                    }
+                } else if (newInfo.getPlayerStatus() == PlayerStatus.PLAYING) {
                     if (countDownLatch.getCount() == 0) {
-                        if (assertionError == null)
-                            assertionError = new UnexpectedStateChange(newInfo.playerStatus);
+                        if (assertionError == null) {
+                            assertionError = new UnexpectedStateChange(newInfo.getPlayerStatus());
+                        }
                     } else {
                         countDownLatch.countDown();
                     }
@@ -664,13 +680,15 @@ public class PlaybackServiceMediaPlayerTest {
             @Override
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 checkPSMPInfo(newInfo);
-                if (newInfo.playerStatus == PlayerStatus.ERROR) {
-                    if (assertionError == null)
-                        assertionError = new UnexpectedStateChange(newInfo.playerStatus);
+                if (newInfo.getPlayerStatus() == PlayerStatus.ERROR) {
+                    if (assertionError == null) {
+                        assertionError = new UnexpectedStateChange(newInfo.getPlayerStatus());
+                    }
                 } else {
-                    if (initialState == PlayerStatus.INITIALIZED && newInfo.playerStatus == PlayerStatus.PREPARED) {
+                    if (initialState == PlayerStatus.INITIALIZED && newInfo.getPlayerStatus()
+                            == PlayerStatus.PREPARED) {
                         countDownLatch.countDown();
-                    } else if (initialState != PlayerStatus.INITIALIZED && initialState == newInfo.playerStatus) {
+                    } else if (initialState != PlayerStatus.INITIALIZED && initialState == newInfo.getPlayerStatus()) {
                         countDownLatch.countDown();
                     }
                 }
@@ -693,7 +711,7 @@ public class PlaybackServiceMediaPlayerTest {
 
         boolean res = countDownLatch.await(timeoutSeconds, TimeUnit.SECONDS);
         if (initialState != PlayerStatus.INITIALIZED) {
-            assertEquals(initialState, psmp.getPSMPInfo().playerStatus);
+            assertEquals(initialState, psmp.getPSMPInfo().getPlayerStatus());
         }
 
         if (assertionError != null)
@@ -735,13 +753,15 @@ public class PlaybackServiceMediaPlayerTest {
             @Override
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 checkPSMPInfo(newInfo);
-                if (newInfo.playerStatus == PlayerStatus.ERROR) {
-                    if (assertionError == null)
-                        assertionError = new UnexpectedStateChange(newInfo.playerStatus);
+                if (newInfo.getPlayerStatus() == PlayerStatus.ERROR) {
+                    if (assertionError == null) {
+                        assertionError = new UnexpectedStateChange(newInfo.getPlayerStatus());
+                    }
                 } else {
-                    if (newInfo.playerStatus == initialState) {
+                    if (newInfo.getPlayerStatus() == initialState) {
                         countDownLatch.countDown();
-                    } else if (countDownLatch.getCount() < latchCount && newInfo.playerStatus == PlayerStatus.INITIALIZED) {
+                    } else if (countDownLatch.getCount() < latchCount && newInfo.getPlayerStatus()
+                            == PlayerStatus.INITIALIZED) {
                         countDownLatch.countDown();
                     }
                 }
