@@ -261,6 +261,9 @@ public class CoverFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
+        if (media == null) {
+            return;
+        }
         int newChapterIndex = Chapter.getAfterPosition(media.getChapters(), event.getPosition());
         if (newChapterIndex > -1 && newChapterIndex != displayedChapterIndex) {
             refreshChapterData(newChapterIndex);

@@ -127,7 +127,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
     }
 
     private int getCurrentChapter(Playable media) {
-        if (controller == null) {
+        if (controller == null || media == null) {
             return -1;
         }
         return Chapter.getAfterPosition(media.getChapters(), controller.getPosition());
