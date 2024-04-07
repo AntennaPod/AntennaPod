@@ -17,10 +17,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Locale;
 
-public class IntentUtils {
+public abstract class IntentUtils {
     private static final String TAG = "IntentUtils";
-
-    private IntentUtils(){}
 
     /*
      *  Checks if there is at least one exported activity that can be performed for the intent

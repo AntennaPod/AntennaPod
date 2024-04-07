@@ -41,9 +41,7 @@ import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
  * init() or otherwise every public method will throw an Exception
  * when called.
  */
-public class UserPreferences {
-    private UserPreferences(){}
-
+public abstract class UserPreferences {
     private static final String TAG = "UserPreferences";
 
     // User Interface

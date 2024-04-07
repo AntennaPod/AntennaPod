@@ -121,7 +121,9 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
     }
 
     @VisibleForTesting
-    public int getNumberOfHoursAfterPlayback() { return numberOfHoursAfterPlayback; }
+    public int getNumberOfHoursAfterPlayback() {
+        return numberOfHoursAfterPlayback;
+    }
 
     private static Date minusHours(Date baseDate, int numberOfHours) {
         Calendar cal = Calendar.getInstance();

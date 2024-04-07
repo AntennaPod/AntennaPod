@@ -8,9 +8,7 @@ import java.net.URL;
 /**
  * Utility methods for dealing with URL encoding.
  */
-public class UriUtil {
-    private UriUtil() {}
-
+public abstract class UriUtil {
     public static URI getURIFromRequestUrl(String source) {
         // try without encoding the URI
         try {
