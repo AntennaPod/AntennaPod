@@ -94,6 +94,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
@@ -449,7 +450,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         } else if (parentId.startsWith("FeedId:")) {
             long feedId = Long.parseLong(parentId.split(":")[1]);
             Feed feed = DBReader.getFeed(feedId);
-            feedItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(), feed.getSortOrder());
+            SortOrder sortOrder = feed.getSortOrder();
+            if (sortOrder == null) {
+                sortOrder = SortOrder.DATE_NEW_OLD;
+            }
+            feedItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(), sortOrder);
         } else if (parentId.equals(getString(R.string.current_playing_episode))) {
             FeedMedia playable = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
             if (playable != null) {
@@ -876,8 +881,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                TileService.requestListeningState(getApplicationContext(),
-                        new ComponentName(getApplicationContext(), QuickSettingsTileService.class));
+                try {
+                    TileService.requestListeningState(getApplicationContext(),
+                            new ComponentName(getApplicationContext(), QuickSettingsTileService.class));
+                } catch (IllegalArgumentException e) {
+                    Log.d(TAG, "Skipping quick settings tile setup");
+                }
             }
 
             IntentUtils.sendLocalBroadcast(getApplicationContext(), ACTION_PLAYER_STATUS_CHANGED);
