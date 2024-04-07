@@ -47,13 +47,11 @@ android {
     }
 
     lint {
-        disable 'ObsoleteLintCustomCheck', 'CheckResult', 'UnusedAttribute', 'BatteryLife', 'InflateParams',
-                'RestrictedApi', 'TrustAllX509TrustManager', 'ExportedReceiver', 'AllowBackup', 'VectorDrawableCompat',
-                'StaticFieldLeak', 'UseCompoundDrawables', 'NestedWeights', 'Overdraw', 'UselessParent', 'TextFields',
-                'AlwaysShowAction', 'Autofill', 'ClickableViewAccessibility', 'ContentDescription',
+        disable 'CheckResult', 'MissingMediaBrowserServiceIntentFilter', 'UnusedAttribute', 'InflateParams',
+                'RestrictedApi', 'ExportedReceiver', 'NotifyDataSetChanged', 'UseCompoundDrawables', 'NestedWeights',
+                'Overdraw', 'UselessParent', 'TextFields', 'AlwaysShowAction', 'Autofill', 'ClickableViewAccessibility',
                 'KeyboardInaccessibleWidget', 'LabelFor', 'SetTextI18n', 'HardcodedText', 'RelativeOverlap',
-                'RtlCompat', 'RtlHardcoded', 'MissingMediaBrowserServiceIntentFilter', 'VectorPath',
-                'InvalidPeriodicWorkRequestInterval', 'NotifyDataSetChanged', 'RtlEnabled'
+                'RtlHardcoded', 'RtlEnabled', 'ContentDescription'
     }
 
     androidResources {

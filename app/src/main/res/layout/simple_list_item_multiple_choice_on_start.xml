@@ -17,8 +17,8 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-
-<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+<CheckedTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text1"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeightSmall"
@@ -31,5 +31,4 @@
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
     android:paddingRight="?android:attr/listPreferredItemPaddingRight"
     android:maxLines="2"
-    android:ellipsize="end"
-    />
+    android:ellipsize="end" />

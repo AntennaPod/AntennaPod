@@ -48,13 +48,3 @@ dependencies {
     implementation "org.greenrobot:eventbus:$eventbusVersion"
     implementation 'com.github.ByteHamster:SearchPreference:v2.5.0'
 }
-
-tasks.register('copyLicense', Copy) {
-    from "../../LICENSE"
-    into "src/main/assets/"
-    rename { String fileName ->
-        fileName + ".txt"
-    }
-}
-
-preBuild.dependsOn copyLicense

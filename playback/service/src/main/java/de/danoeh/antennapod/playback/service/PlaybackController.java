@@ -224,7 +224,8 @@ public abstract class PlaybackController {
 
     };
 
-    public void onPlaybackEnd() {}
+    public void onPlaybackEnd() {
+    }
 
     /**
      * Is called whenever the PlaybackService changes its status. This method

@@ -14,10 +14,8 @@ import java.util.regex.Pattern;
 
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
-public class NetworkUtils {
+public abstract class NetworkUtils {
     private static final String REGEX_PATTERN_IP_ADDRESS = "([0-9]{1,3}[\\.]){3}[0-9]{1,3}";
-
-    private NetworkUtils(){}
 
     private static Context context;
 

@@ -24,6 +24,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@string/gpodnetauth_finish_butsyncnow"/>
+        android:text="@string/gpodnetauth_finish_butsyncnow" />
 
 </LinearLayout>

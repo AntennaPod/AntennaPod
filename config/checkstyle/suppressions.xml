@@ -3,11 +3,28 @@
         "-//Puppy Crawl//DTD Suppressions 1.1//EN"
         "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 <suppressions>
-    <suppress checks="MethodName" files="core/src/test/java/android/util/Log.java" />
     <suppress checks="LineLength" files="strings.xml"/>
     
     <suppress checks="." files="[\\/]generated-sources[\\/]"/>
     <suppress checks="." files="[\\/]build[\\/]"/>
     <suppress checks="." files="[\\/]gen[\\/]"/>
     <suppress checks="." files="[\\/].idea[\\/]"/>
+    
+    <!-- Legacy code, should be gradually updated when touching these lines anyway -->
+    <suppress checks="LineLength" files="(VolumeAdaptionSettingTest.java|MediaMetadataRetrieverCompat.java|FeedItem.java|FeedMedia.java|FeedPreferences.java|Feed.java|DBUpgrader.java|PodDBAdapter.java|PlaybackServiceMediaPlayer.java|PlaybackService.java|LocalPSMP.java|PlaybackServiceTaskManager.java|DBWriter.java|PodcastSearchResult.java|PlaybackServiceTaskManagerTest.java|HTTPBin.java|SPAReceiver.java|UriUtil.java|FeedDiscovererTest.java|PlaybackServiceMediaPlayerTest.java|TextOnlyFeedsTest.java|ItemFragment.java|FeedSettingsFragment.java|UITestUtils.java)"/>
+    <suppress checks="VariableDeclarationUsageDistance" files="(FeedFilterTest.java|ChapterReader.java|FastBlurTransformation.java|GpodnetService.java|PreferencesTest.java|ItemFilterDialog.java|ItemFragment.java|PlaybackServiceMediaPlayerTest.java)"/>
+    <suppress checks="ParameterName" files="(FeedMedia.java)"/>
+    <suppress checks="WhitespaceAround" files="(FeedMedia.java|UserPreferences.java|LongList.java|IntentUtils.java|PlaybackServiceMediaPlayer.java|ShakeListener.java|LocalPSMP.java|PodcastSearchResult.java|NetworkUtils.java|UITestUtils.java|PlaybackPreferencesFragment.java|OnlineFeedViewActivity.java|QueueFragment.java|SPAReceiver.java|SkipIntroEndingChangedEvent.java|GeneratorUtil.java|RewindAfterPauseUtils.java|PlaybackController.java|AutoDownloadPreferencesFragment.java)"/>
+    <suppress checks="WhitespaceAfter" files="(FeedMedia.java|LongList.java|IntentUtils.java|TimeSpeedConverter.java|LocalPSMP.java|PlaybackController.java|PodcastSearchResult.java|PlaybackPreferencesFragment.java|OnlineFeedViewActivity.java|QueueFragment.java)"/>
+    <suppress checks="AbbreviationAsWordInName" files="(FeedItemPermutorsTest.java|DBUpgrader.java|PodDBAdapter.java|DBWriter.java|DBReader.java|RewindAfterPauseUtilTest.java|PlaybackServiceMediaPlayer.java|PlaybackService.java|LocalPSMP.java|PlaybackServiceTaskManager.java|GpodnetUploadChangesResponse.java|GpodnetEpisodeActionPostResponse.java|UrlCheckerTest.java|UriUtilTest.java|UriUtil.java|PlaybackServiceTaskManagerTest.java|SPAUtil.java|FeedDiscovererTest.java|PlaybackServiceMediaPlayerTest.java|DefaultPSMPCallback.java|UITestUtils.java|APCleanupAlgorithmTest.java|APNullCleanupAlgorithm.java|APCleanupAlgorithm.java|HTTPBin.java|UITestUtilsTest.java|FeedDiscoverer.java|SPAReceiver.java|APQueueCleanupAlgorithm.java|CancelablePSMPCallback.java)"/>
+    <suppress checks="NeedBraces" files="(PlaybackServiceMediaPlayerTest.java|FeedPreferences.java|DownloadRequest.java|HTTPBin.java|UITestUtils.java|SPAUtil.java)"/>
+    <suppress checks="NonEmptyAtclauseDescription" files="(FeedFilter.java|AspectRatioVideoView.java|Playable.java|PlaybackServiceTaskManager.java|PodcastSearchResult.java|OpmlBackupAgent.java)"/>
+    <suppress checks="OperatorWrapCheck" files="(Atom.java|DBUpgrader.java|PodDBAdapter.java|PlaybackController.java|GpodnetUploadChangesResponse.java|HtmlToPlainText.java|PodcastSearchResult.java|PowerConnectionReceiver.java|FeedDiscoverer.java|DBWriter.java|PlaybackService.java)"/>
+    <suppress checks="RightCurlyAlone" files="(UserPreferences.java|LockableBottomSheetBehavior.java|NetworkUtils.java|ProxyDialog.java|IntentUtils.java|RewindAfterPauseUtils.java|GpodnetPodcast.java|GeneratorUtil.java|PlaybackController.java|AntennapodHttpClient.java|UriUtil.java|APCleanupAlgorithm.java)"/>
+    <suppress checks="JavadocParagraph" files="(FeedItemPermutors.java|HtmlToPlainText.java|FeedItemMenuHandler.java|RewindAfterPauseUtils.java|PlaybackServiceMediaPlayer.java|UITestUtils.java|NestedScrollableHost.java|PlaybackService.java)"/>
+    <suppress checks="JavadocTagContinuationIndentation" files="(ItemEnqueuePositionCalculator.java|LongList.java|DBReader.java|LocalPSMP.java|GpodnetService.java|FeedDiscoverer.java|SPAUtil.java|PlaybackServiceMediaPlayer.java)"/>
+    <suppress checks="MemberName" files="(OpmlBackupAgent.java|ShakeListener.java|PlaybackController.java|AspectRatioVideoView.java|PlaybackService.java|PlaybackServiceMediaPlayerTest.java)"/>
+    <suppress checks="LocalVariableName" files="(ShakeListener.java|ItemEnqueuePositionCalculatorTest.java)"/>
+    <suppress checks="LeftCurly" files="(GpodnetPodcast.java|APCleanupAlgorithm.java|APQueueCleanupAlgorithm.java)"/>
+    <suppress checks="MissingSwitchDefaultCheck" files="(MainActivity.java|FeedSettingsFragment.java|QueueFragment.java|VideoplayerActivity.java|PlaybackController.java|PreferenceUpgrader.java)"/>
 </suppressions>

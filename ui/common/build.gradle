@@ -5,6 +5,10 @@ apply from: "../../common.gradle"
 
 android {
     namespace "de.danoeh.antennapod.ui.common"
+
+    lint {
+        disable 'VectorPath'
+    }
 }
 
 dependencies {

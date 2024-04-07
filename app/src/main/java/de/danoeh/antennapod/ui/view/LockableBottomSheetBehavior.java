@@ -13,7 +13,8 @@ import com.google.android.material.bottomsheet.ViewPagerBottomSheetBehavior;
 public class LockableBottomSheetBehavior<V extends View> extends ViewPagerBottomSheetBehavior<V> {
     private boolean isLocked = false;
 
-    public LockableBottomSheetBehavior() {}
+    public LockableBottomSheetBehavior() {
+    }
 
     public LockableBottomSheetBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
