@@ -36,6 +36,9 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
     }
 
     public void download(Context context, FeedItem item) {
+        if (item.isDownloaded()) {
+            return;
+        }
         OneTimeWorkRequest.Builder workRequest = getRequest(context, item);
         workRequest.setConstraints(getConstraints());
         WorkManager.getInstance(context).enqueueUniqueWork(item.getMedia().getDownloadUrl(),
