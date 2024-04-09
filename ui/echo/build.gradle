@@ -8,7 +8,7 @@ android {
     namespace "de.danoeh.antennapod.ui.echo"
 
     lint {
-        disable "AppBundleLocaleChanges"
+        disable "AppBundleLocaleChanges", "MissingQuantity"
     }
 }
 

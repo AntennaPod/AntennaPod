@@ -228,9 +228,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         stateManager = new PlaybackServiceStateManager(this);
         notificationBuilder = new PlaybackServiceNotificationBuilder(this);
 
-        registerReceiver(autoStateUpdated, new IntentFilter("com.google.android.gms.car.media.STATUS"));
+        ContextCompat.registerReceiver(this, autoStateUpdated,
+                new IntentFilter("com.google.android.gms.car.media.STATUS"), ContextCompat.RECEIVER_EXPORTED);
+        ContextCompat.registerReceiver(this, shutdownReceiver,
+                new IntentFilter(PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE),
+                ContextCompat.RECEIVER_NOT_EXPORTED);
         registerReceiver(headsetDisconnected, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
-        registerReceiver(shutdownReceiver, new IntentFilter(PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
         registerReceiver(bluetoothStateUpdated, new IntentFilter(BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED));
         registerReceiver(audioBecomingNoisy, new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY));
         EventBus.getDefault().register(this);
@@ -1609,8 +1612,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (TextUtils.equals(intent.getAction(), PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
-                EventBus.getDefault().post(new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
                 stateManager.stopService();
+                PlaybackPreferences.writeNoMediaPlaying();
+                EventBus.getDefault().post(new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
+                EventBus.getDefault().post(new PlayerStatusEvent());
             }
         }
 

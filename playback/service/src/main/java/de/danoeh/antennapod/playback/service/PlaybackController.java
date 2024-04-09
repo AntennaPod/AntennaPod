@@ -12,6 +12,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
@@ -83,10 +84,10 @@ public abstract class PlaybackController {
         }
         initialized = true;
 
-        activity.registerReceiver(statusUpdate, new IntentFilter(
-                PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
-        activity.registerReceiver(notificationReceiver, new IntentFilter(
-                PlaybackServiceInterface.ACTION_PLAYER_NOTIFICATION));
+        ContextCompat.registerReceiver(activity, statusUpdate, new IntentFilter(
+                PlaybackService.ACTION_PLAYER_STATUS_CHANGED), ContextCompat.RECEIVER_NOT_EXPORTED);
+        ContextCompat.registerReceiver(activity, notificationReceiver, new IntentFilter(
+                PlaybackServiceInterface.ACTION_PLAYER_NOTIFICATION), ContextCompat.RECEIVER_NOT_EXPORTED);
 
         if (!released) {
             bindToService();
