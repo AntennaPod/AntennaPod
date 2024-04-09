@@ -91,12 +91,14 @@ public class EpisodeMultiSelectActionHandler {
 
     private void downloadChecked(List<FeedItem> items) {
         // download the check episodes in the same order as they are currently displayed
+        int downloaded = 0;
         for (FeedItem episode : items) {
-            if (episode.hasMedia() && !episode.getFeed().isLocalFeed()) {
+            if (episode.hasMedia() && !episode.isDownloaded() && !episode.getFeed().isLocalFeed()) {
                 DownloadServiceInterface.get().download(activity, episode);
+                downloaded++;
             }
         }
-        showMessage(R.plurals.downloading_batch_label, items.size());
+        showMessage(R.plurals.downloading_batch_label, downloaded);
     }
 
     private void deleteChecked(List<FeedItem> items) {
