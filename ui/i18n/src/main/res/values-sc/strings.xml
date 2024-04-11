@@ -176,7 +176,6 @@
   <string name="select_all_above">Seletziona de inoghe in artu</string>
   <string name="select_all_below">Seletziona de inoghe in bàsciu</string>
   <string name="filtered_label">Filtradu</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Errore in s\'ùrtima atualizatzione. Toca pro bìdere is detàllios.</string>
   <string name="open_podcast">Aberi su podcast</string>
   <string name="please_wait_for_data">Abeta chi bèngiant carrigados totu is datos</string>
   <string name="updates_disabled_label">Atualizatziones disativadas</string>
@@ -199,8 +198,6 @@
   <string name="pause_label">Pone in pàusa</string>
   <string name="stream_label">Riprodui sena iscarrigare</string>
   <string name="delete_label">Cantzella</string>
-  <string name="delete_failed">Impossìbile cantzellare s\'archìviu. Proa a torrare a aviare su dispositivu.</string>
-  <string name="delete_local_failed">Impossìbile cantzellare s\'archìviu. Proa a torrare a connètere sa cartella locale dae s\'ischermu de informatzione de su podcast.</string>
   <string name="delete_episode_label">Cantzella s\'episòdiu</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 episòdiu iscarrigadu cantzelladu.</item>
@@ -299,11 +296,6 @@
   <string name="confirm_mobile_streaming_button_once">Una borta</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic">Impossìbile riproduire s\'archìviu multimediale.\n\n— Proa a cantzellare e torrare a iscarrigare s\'episòdiu.\n— Controlla sa connessione a internet, e assegura·ti chi s\'atzessu non siat blocadu dae unu VPN o dae una pàgina de identificatzione.\n— Toca e mantene \"Media address\" e aberi s\'indiritzu cun unu navigadore web pro bìdere si s\'episòdiu potzat èssere riproduidu in cue. Si non funtzionat, iscrie a chie apat creadu su podcast.</string>
-  <string name="playback_error_server_died">Su serbidore non rispondet</string>
-  <string name="playback_error_unsupported">Tipu de archìviu multimediale non suportadu</string>
-  <string name="playback_error_timeout">Operatzione iscadida</string>
-  <string name="playback_error_source">Impossìbile atzèdere a s\'archìviu multimediale</string>
-  <string name="playback_error_unknown">Errore disconnotu</string>
   <string name="no_media_playing_label">Nissunu elementu multimediale in riprodutzione</string>
   <string name="unknown_media_key">AntennaPod - Crae de elementu multimediale disconnota: %1$d</string>
   <string name="error_file_not_found">Archìviu no agatadu</string>
@@ -463,8 +455,7 @@
   <string name="pref_expandNotify_sum">Custu ismànniat sa notìfica pro chi ammustret is butones de riprodutzione.</string>
   <string name="pref_persistNotify_title">Controllos de riprodutzione permanentes</string>
   <string name="pref_persistNotify_sum">Mantene is controllos de notìfica e de blocu cando sa riprodutzione est in pàusa</string>
-    <string name="pref_full_notification_buttons_title">Cunfigura is butones de notìfica</string>
-  <string name="pref_full_notification_buttons_sum">Modìfica is butones de riprodutzione dae sa notìfica de riprodutzione.</string>
+  <string name="pref_full_notification_buttons_title">Cunfigura is butones de notìfica</string>
   <string name="pref_enqueue_location_title">Agiunghe a sa lista in una positzione ispetzìfica</string>
   <string name="pref_enqueue_location_sum">Agiunghe episòdios a: %1$s</string>
   <string name="enqueue_location_back">A sa fine</string>
@@ -593,7 +584,6 @@
     <item quantity="other">%d dies</item>
   </plurals>
   <string name="auto_enable_label">Ativatzione automàtica de su temporizadore</string>
-  <string name="auto_enable_label_with_times">Ativatzione automàtica de su temporizadore intre custas oras: %s-%s</string>
   <string name="auto_enable_change_times">Modìfica su perìodu temporale</string>
   <string name="sleep_timer_enabled_label">Temporizadore ativu</string>
   <!--Synchronisation-->
@@ -639,6 +629,7 @@
   <string name="choose_data_directory_available_space">%1$s de %2$s liberos</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Pone sa riprodutzione in pàusa cando un\'àtera aplicatzione bògiat riproduire sonos, imbetzes de abbassare su volùmene</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pàusa pro interrutziones</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Sutascrie·mi</string>
   <string name="subscribing_label">Sutiscritzione in cursu...</string>
@@ -671,7 +662,6 @@
   <string name="feed_tags_label">Etichetas</string>
   <string name="feed_tags_summary">Modìfica is etichetas de custu podcast pro organizare mègius is sutiscritziones tuas</string>
   <string name="feed_folders_include_root">Ammustra custu podcast in sa lista printzipale</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Sunt ammustradas isceti is etichetas prus abituales intre is sutiscritziones seletzionadas. No ant a èssere modificadas àteras etichetas.</string>
   <string name="auto_download_settings_label">Cunfiguratzione de s\'iscarrigamentu in automàticu</string>
   <string name="episode_filters_label">Filtru episòdios</string>
   <string name="episode_filters_description">Elencu de faeddos impreados pro detzìdere si un\'episòdiu depat èssere incluidu o escluidu in is iscarrigamentos in automàticu</string>
@@ -690,6 +680,7 @@
   <string name="statistics_view_all">Ammustra pro totu is podcasts »</string>
   <string name="edit_url_menu">Modìfica s\'indiritzu de su canale</string>
   <string name="edit_url_confirmation_msg">Sa modìfica de s\'indiritzu RSS podet causare dannos a s\'istadu de riprodutzione e a is listas de episòdios de su podcast. Ti cussigiamus de NO ddu modificare e NO amus a frunire agiudu si calicuna cosa andat male. Custa atzione no dda podes iscontzare. Sa sutiscritzione faddida NON PODET èssere acontzada isceti modifichende torra s\'indiritzu a cussu originale. Ti cussigiamus de creare una còpia de seguresa prima de sighire in antis.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importende iscritziones dae aplicatziones de iscopu ùnicu...</string>
   <!--Add podcast fragment-->
@@ -697,9 +688,7 @@
   <string name="search_itunes_label">Chirca in Apple Podcasts</string>
   <string name="search_podcastindex_label">Chirca in Podcast Index</string>
   <string name="search_fyyd_label">Chirca in fyyd</string>
-  <string name="gpodnet_search_hint">Chirca in gpodder.net</string>
   <string name="advanced">Avantzadas</string>
-  <string name="add_podcast_by_url">Agiunghe unu podcast dae s\'indiritzu RSS</string>
   <string name="discover">Iscoberi</string>
   <string name="discover_hide">Cua</string>
   <string name="discover_is_hidden">As seberadu de cuare is cussìgios</string>

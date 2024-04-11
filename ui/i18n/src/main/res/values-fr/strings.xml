@@ -182,7 +182,6 @@
   <string name="select_all_above">Sélectionner avec ceux au-dessus</string>
   <string name="select_all_below">Sélectionner avec ceux en-dessous</string>
   <string name="filtered_label">Filtré</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} La dernière mise à jour a échoué. Taper pour plus de détails.</string>
   <string name="open_podcast">Ouvrir le podcast</string>
   <string name="please_wait_for_data">Merci d\'attendre la fin du téléchargement des données</string>
   <string name="updates_disabled_label">Mises à jour désactivées</string>
@@ -207,8 +206,6 @@
   <string name="pause_label">Pause</string>
   <string name="stream_label">Streaming</string>
   <string name="delete_label">Supprimer</string>
-  <string name="delete_failed">Suppression du fichier impossible. Redémarrer pourrait aider.</string>
-  <string name="delete_local_failed">Impossible de supprimer le fichier. Essayer de reconnecter le dossier local à partir de l\'écran des infos du podcast.</string>
   <string name="delete_episode_label">Suppression de l\'épisode</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1  épisode téléchargé supprimé.</item>
@@ -314,11 +311,6 @@
   <string name="confirm_mobile_streaming_button_once">Une seule fois</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[Le fichier de média n\'a pas pu être lu.\n\n- Essayez de le supprimer et de télécharger l\'épisode à nouveau.\n- Vérifier votre connexion, et assurez-vous que l\'accès n\'est pas bloqué par un VPN ou une page de connexion.\n- Essayez de faire un appui long et partager le lien du fichier à votre navigateur pour contrôler si l\'épisode peut être lu. Si ce n\'est pas le cas, contactez le créateur du podcast.]]></string>
-  <string name="playback_error_server_died">Le serveur ne répond pas</string>
-  <string name="playback_error_unsupported">Format de média non géré</string>
-  <string name="playback_error_timeout">L\'opération a expiré</string>
-  <string name="playback_error_source">Impossible d\'accéder au fichier</string>
-  <string name="playback_error_unknown">Erreur inconnue</string>
   <string name="no_media_playing_label">Aucune lecture</string>
   <string name="unknown_media_key">AntennaPod - Touche média inconnue : %1$d</string>
   <string name="error_file_not_found">Fichier non trouvé</string>
@@ -478,8 +470,7 @@
   <string name="pref_expandNotify_sum">Permet, généralement, d\'étendre la notification pour montrer les boutons de lecture</string>
   <string name="pref_persistNotify_title">Boutons de lecture permanents</string>
   <string name="pref_persistNotify_sum">Garder les notifications et les boutons de lecture sur l\'écran de verrouillage quand la lecture est en pause</string>
-    <string name="pref_full_notification_buttons_title">Boutons pour les notifications</string>
-  <string name="pref_full_notification_buttons_sum">Changer les boutons du lecteur pour la notification de lecture.</string>
+  <string name="pref_full_notification_buttons_title">Boutons pour les notifications</string>
   <string name="pref_enqueue_location_title">Emplacement des épisodes téléchargés</string>
   <string name="pref_enqueue_location_sum">Ajouter les épisodes : %1$s</string>
   <string name="enqueue_location_back">en fin de liste</string>
@@ -612,7 +603,6 @@
     <item quantity="other">%d jours</item>
   </plurals>
   <string name="auto_enable_label">Activation automatique lorsque la lecture commence</string>
-  <string name="auto_enable_label_with_times">Activer automatiquement lorsque la lecture commence entre %s et %s</string>
   <string name="auto_enable_change_times">Changer la plage horaire</string>
   <string name="sleep_timer_enabled_label">Arrêt automatique activé</string>
   <!--Synchronisation-->
@@ -658,6 +648,7 @@
   <string name="choose_data_directory_available_space">%1$s sur %2$s d\'espace libre</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Mettre en pause la lecture au lieu de baisser le volume quand une autre application joue un son</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Mettre en pause lors d\'interruptions</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">S\'abonner</string>
   <string name="subscribing_label">Abonnement en cours...</string>
@@ -690,7 +681,6 @@
   <string name="feed_tags_label">Tags</string>
   <string name="feed_tags_summary">Modifier les tags de ce podcast pour classer vos abonnements</string>
   <string name="feed_folders_include_root">Montrer dans la liste principale</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Seul les tags communs à tous les abonnements sélectionnés sont montrés. Les autres tags ne seront pas modifiés.</string>
   <string name="auto_download_settings_label">Préférence de téléchargement automatique</string>
   <string name="episode_filters_label">Filtre d\'épisode</string>
   <string name="episode_filters_description">Liste de mots permettant de décider si un épisode est à inclure ou à exclure des téléchargements automatiques</string>
@@ -709,6 +699,7 @@
   <string name="statistics_view_all">Voir les statistiques pour tous les podcasts »</string>
   <string name="edit_url_menu">Modifier le lien</string>
   <string name="edit_url_confirmation_msg">Modifier le lien RSS peut facilement corrompre l\'état de lecture et la liste des épisodes du podcast. Il est recommandé de NE PAS LE CHANGER et AUCUNE AIDE ne pourra être fournie si quelque chose se passe mal. Cette action ne peut pas être annulée. L\'abonnement NE POURRA PAS ÊTRE RÉPARÉ en remettant juste l\'ancien lien. Il est recommandé de CRÉER UNE SAUVEGARDE avant de continuer.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importation des abonnements à partir d\'applications à usage unique...</string>
   <!--Add podcast fragment-->
@@ -716,9 +707,7 @@
   <string name="search_itunes_label">Chercher sur Apple Podcasts</string>
   <string name="search_podcastindex_label">Chercher sur Podcast Index</string>
   <string name="search_fyyd_label">Chercher sur fyyd</string>
-  <string name="gpodnet_search_hint">Chercher sur gpodder.net</string>
   <string name="advanced">Avancé</string>
-  <string name="add_podcast_by_url">Ajouter un lien RSS</string>
   <string name="discover">Découvrir</string>
   <string name="discover_hide">Ne pas montrer</string>
   <string name="discover_is_hidden">Vous avez choisi de cacher les suggestions.</string>

@@ -176,7 +176,6 @@
   <string name="select_all_above">Üsttekilerin tümünü seç</string>
   <string name="select_all_below">Alttakilerin tümünü seç</string>
   <string name="filtered_label">Filtrelendi</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Son yenileme işlemi başarısız oldu. Ayrıntıları görüntülemek için dokunun.</string>
   <string name="open_podcast">Podcasti aç</string>
   <string name="please_wait_for_data">Please wait until the data is loaded</string>
   <string name="updates_disabled_label">Güncellemeler devre dışı</string>
@@ -199,8 +198,6 @@
   <string name="pause_label">Duraklat</string>
   <string name="stream_label">Akış</string>
   <string name="delete_label">Sil</string>
-  <string name="delete_failed">Dosya silinemiyor. Cihazı yeniden başlatmak yardımcı olabilir.</string>
-  <string name="delete_local_failed">Dosya silinemiyor. Podcast bilgisi ekranından yerel klasöre yeniden bağlanmayı deneyin.</string>
   <string name="delete_episode_label">Bölümü sil</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 indirilmiş bölüm silindi.</item>
@@ -299,11 +296,6 @@
   <string name="confirm_mobile_streaming_button_once">Bir kere</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[Medya dosyası oynatılamadı.\n\n- Bölümü silip yeniden indirmeyi deneyin.\n- Ağ bağlantınızı kontrol edin ve VPN veya giriş sayfasının erişimi engellemediğinden emin olun.\n- \"Medya adresi \"ne uzun basıp web tarayıcınızda paylaşmayı deneyin ve orada oynatılıp oynatılamayacağını görün. Değilse, podcast yapımcısı ile iletişime geçin]]></string>
-  <string name="playback_error_server_died">Sunucu geberdi</string>
-  <string name="playback_error_unsupported">Desteklenmeyen medya türü</string>
-  <string name="playback_error_timeout">Zaman aşımına uğradı</string>
-  <string name="playback_error_source">Medya dosyasına ulaşılamıyor</string>
-  <string name="playback_error_unknown">Bilinmeyen hata</string>
   <string name="no_media_playing_label">Çalınan medya yok</string>
   <string name="unknown_media_key">AntennaPod - Bilinmeyen medya anahtarı: %1$d</string>
   <string name="error_file_not_found">Dosya bulunamadı</string>
@@ -463,8 +455,7 @@
   <string name="pref_expandNotify_sum">Bu genellikle bildirimi oynatma düğmelerini gösterecek şekilde genişletir.</string>
   <string name="pref_persistNotify_title">Kalıcı oynatma kontrolleri</string>
   <string name="pref_persistNotify_sum">Oynatma duraklatılsa bile bildirim ve kilit ekranı kontrollerini göster</string>
-    <string name="pref_full_notification_buttons_title">Bildirim butonlarını ayarla</string>
-  <string name="pref_full_notification_buttons_sum">Oynatma bildirimindeki oynatma butonlarını değiştir.</string>
+  <string name="pref_full_notification_buttons_title">Bildirim butonlarını ayarla</string>
   <string name="pref_enqueue_location_title">Kuyruğa alma konumu</string>
   <string name="pref_enqueue_location_sum">Bölümleri şuraya ekle: %1$s</string>
   <string name="enqueue_location_back">Geri</string>
@@ -593,7 +584,6 @@
     <item quantity="other">%d gün</item>
   </plurals>
   <string name="auto_enable_label">Oynata basıldığında, uyku zamanlayıcısı otomatik olarak etkinleştirilsin</string>
-  <string name="auto_enable_label_with_times">%s ile %s arasında oynata basıldığında, uyku zamanlayıcısı otomatik olarak etkinleştirilsin</string>
   <string name="auto_enable_change_times">Zaman aralığını değiştir</string>
   <string name="sleep_timer_enabled_label">Uyku zamanlayıcısı açıldı</string>
   <!--Synchronisation-->
@@ -639,6 +629,7 @@
   <string name="choose_data_directory_available_space">%1$s of %2$s free</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Başka bir uygulama ses çalmak istediğinde sesi kısmak yerine yürütmeyi duraklat</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Kesintiler için duraklat</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Üye ol</string>
   <string name="subscribing_label">Abone olunuyor…</string>
@@ -668,7 +659,6 @@
   <string name="feed_tags_label">Etiketler</string>
   <string name="feed_tags_summary">Aboneliklerinizi düzenlemek için bu Podcast\'in etiketlerini değiştirin</string>
   <string name="feed_folders_include_root">Bu podcast ana listede gösterilsin</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Yalnızca seçilen aboneliklerdeki ortak etiketler gösterilir. Diğer etiketler etkilenmez.</string>
   <string name="auto_download_settings_label">Otomatik indirme seçenekleri</string>
   <string name="episode_filters_label">Bölüm filtresi</string>
   <string name="episode_filters_description">List of terms used to decide if an episode should be included or excluded when auto downloading</string>
@@ -687,6 +677,7 @@
   <string name="statistics_view_all">Tüm Podcastler için görüntüle»</string>
   <string name="edit_url_menu">URL düzenle</string>
   <string name="edit_url_confirmation_msg">RSS adresini değiştirmek podcast\'in çalma durumunu ve bölüm listelemesini kolayca bozabilir. Değiştirmeyi önermiyoruz ve herhangi bir aksilikte destek SAĞLANMAYACAK. Bu geri alınamaz. Bozuk abonelik adresi yeniden değiştirmekle DÜZELMEZ. Devam etmeden önce yedek oluşturmanı öneriyoruz.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Üyelikler tek-amaçlı uygulamalardan içe aktarılıyor...</string>
   <!--Add podcast fragment-->
@@ -694,9 +685,7 @@
   <string name="search_itunes_label">Apple Podcasts\'de ara</string>
   <string name="search_podcastindex_label">Podcastindex.org\'da ara</string>
   <string name="search_fyyd_label">fyyd\'de arama yap</string>
-  <string name="gpodnet_search_hint">gpodder.net\'te ara</string>
   <string name="advanced">Gelişmiş</string>
-  <string name="add_podcast_by_url">RSS adresi ile cepyayını ekle</string>
   <string name="discover">Keşfet</string>
   <string name="discover_hide">Gizle</string>
   <string name="discover_is_hidden">Tavsiyleri gizlediniz.</string>

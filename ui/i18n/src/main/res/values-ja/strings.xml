@@ -51,7 +51,7 @@
   <string name="home_new_title">新着の確認</string>
   <string name="home_downloads_title">ダウンロードの管理</string>
   <string name="home_welcome_title">ようこそ、AntennaPodへ！</string>
-  <string name="home_welcome_text">現在、ポッドキャストを何も購読していません。サイドメニューを開いてポッドキャストを追加してください。</string>
+  <string name="home_welcome_text">現在、購読しているポッドキャストがありません。サイドメニューを開いてポッドキャストを追加してください。</string>
   <string name="notification_permission_text">AntennaPod が通知を表示するには権限が必要です。デフォルトでは、何かがダウンロードされている時、または何か問題が起こった時にだけ通知が表示されます。</string>
   <string name="notification_permission_denied">権限を拒否しました。</string>
   <string name="notification_permission_deny_warning">通知を無効にしている状態で何か問題が発生した場合、問題が発生した理由を特定できない可能性があります。</string>
@@ -169,7 +169,6 @@
   <string name="select_all_above">上のすべてを選択</string>
   <string name="select_all_below">下のすべてを選択</string>
   <string name="filtered_label">フィルター処理されています</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} 最後の更新に失敗しました。タップすると詳細が表示されます。</string>
   <string name="open_podcast">ポッドキャストを開く</string>
   <string name="please_wait_for_data">データが読み込まれるまでしばらくお待ちください</string>
   <string name="updates_disabled_label">更新不可</string>
@@ -190,8 +189,6 @@
   <string name="pause_label">一時停止</string>
   <string name="stream_label">ストリーム</string>
   <string name="delete_label">削除</string>
-  <string name="delete_failed">ファイルを削除できません。デバイスを再起動してみてください。</string>
-  <string name="delete_local_failed">ファイルを削除できません。ポッドキャストの情報ページからローカルのフォルダーにアクセスしてみてください。</string>
   <string name="delete_episode_label">エピソードを削除</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="other">ダウンロードした %d 項目のエピソードが削除されました。</item>
@@ -229,6 +226,7 @@
   <string name="skip_episode_label">エピソードをスキップ</string>
   <string name="reset_position">再生位置をリセット</string>
   <string name="no_items_selected">項目が選択されていません</string>
+  <string name="delete_local_feed_warning_body">削除すると、AntennaPod からエピソード消去され、デバイスのストレージからメディアファイルが削除されます。AntennaPod 経由では再びダウンロードすることはできません。</string>
   <!--Download messages and labels-->
   <string name="download_successful">成功</string>
   <string name="download_pending">ダウンロード保留中</string>
@@ -282,11 +280,6 @@
   <string name="confirm_mobile_streaming_button_once">一度だけ</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[メディアファイルが再生できませんでした。\n\n- エピソードを削除して再度ダウンロードしてみてください。\n- ネットワーク接続を確認して、VPN やログインページによりアクセスがブロックされていないことを確認してください。\n- 長押ししてメディアアドレスをウェブブラウザーに共有して、そこで再生できるか確認してください。できなければポッドキャストの製作者にお問い合わせください。]]></string>
-  <string name="playback_error_server_died">サーバーがダウンしています</string>
-  <string name="playback_error_unsupported">サポートされていないメディアタイプ</string>
-  <string name="playback_error_timeout">操作がタイムアウトしました</string>
-  <string name="playback_error_source">メディアファイルにアクセスできません</string>
-  <string name="playback_error_unknown">不明なエラー</string>
   <string name="no_media_playing_label">再生するメディアがありません</string>
   <string name="unknown_media_key">AntennaPod - 不明なメディアキー: %1$d</string>
   <string name="error_file_not_found">ファイルが見つかりません</string>
@@ -445,6 +438,7 @@
   <string name="pref_expandNotify_sum">これは通常再生ボタンを表示するように通知を展開します。</string>
   <string name="pref_persistNotify_title">再生コントロールの保持</string>
   <string name="pref_persistNotify_sum">再生が一時停止された時に、通知およびロック画面のコントロールを保持する</string>
+  <string name="pref_full_notification_buttons_title">通知ボタンを設定</string>
   <string name="pref_enqueue_location_title">キューに追加する箇所</string>
   <string name="pref_enqueue_location_sum">エピソードを追加: %1$s</string>
   <string name="enqueue_location_back">末尾</string>
@@ -526,6 +520,7 @@
   <string name="database_import_summary">AntennaPodデータベースを別のデバイスからインポートする</string>
   <string name="opml_import_label">OPML インポート</string>
   <string name="opml_add_podcast_label">ポッドキャストリストのインポート (OPML)</string>
+  <string name="opml_reader_error">ファイルの読み込み中にエラーが発生しました。実際に OPML ファイルを選択し、ファイルが有効なことを確認してください。</string>
   <string name="opml_import_error_no_file">ファイルが選択されていません！</string>
   <string name="select_all_label">すべてを選択</string>
   <string name="deselect_all_label">選択解除</string>
@@ -568,7 +563,6 @@
     <item quantity="other">%d日</item>
   </plurals>
   <string name="auto_enable_label">再生をタップした時に自動的にスリープタイマーを有効化</string>
-  <string name="auto_enable_label_with_times">%s から %s の間で再生をタップした時に自動的にスリープタイマーを有効化</string>
   <string name="auto_enable_change_times">時間の間隔を変更</string>
   <string name="sleep_timer_enabled_label">スリープタイマーを有効にしました</string>
   <!--Synchronisation-->
@@ -614,6 +608,7 @@
   <string name="choose_data_directory_available_space">%1$s / %2$s 空き</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">他のアプリがサウンドを再生したい時に、音量を下げる代わりに再生を一時停止します</string>
   <string name="pref_pausePlaybackForFocusLoss_title">割り込み時に一時停止</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">購読</string>
   <string name="subscribing_label">購読中…</string>
@@ -646,7 +641,6 @@
   <string name="feed_tags_label">タグ</string>
   <string name="feed_tags_summary">このPodcastのタグを変更すると、購読の整理がしやすくなります</string>
   <string name="feed_folders_include_root">このポッドキャストをメインリストに表示</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} 選択したすべての購読に共通のタグのみが表示されます。その他のタグは影響を受けません。</string>
   <string name="auto_download_settings_label">自動ダウンロード設定</string>
   <string name="episode_filters_label">エピソードフィルター</string>
   <string name="episode_filters_description">自動ダウンロードのときに、エピソードを含めるか除外する必要があるかを決定するために使用される条件のリスト</string>
@@ -665,6 +659,7 @@
   <string name="statistics_view_all">すべてのポッドキャストを表示 »</string>
   <string name="edit_url_menu">フィードのURLを編集</string>
   <string name="edit_url_confirmation_msg">RSSのアドレスを変更すると、ポッドキャストの再生状態とエピソードのリストが壊れてしまう可能性があります。RSSのアドレスを変更することはおすすめしません。何か問題が起きたとしてもサポートは提供されません。この変更は元に戻せません。アドレスを元に戻すだけでは壊れた購読を修復することはできません。続行する前にバックアップを作成することをおすすめします。</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">単一目的のアプリから購読をインポート中…</string>
   <!--Add podcast fragment-->
@@ -672,9 +667,7 @@
   <string name="search_itunes_label">Apple Podcast を検索</string>
   <string name="search_podcastindex_label">Podcast Index を検索</string>
   <string name="search_fyyd_label">fyyd を検索</string>
-  <string name="gpodnet_search_hint">gpodder.net を検索</string>
   <string name="advanced">詳細</string>
-  <string name="add_podcast_by_url">RSSアドレスでポッドキャストを追加</string>
   <string name="discover">発見</string>
   <string name="discover_hide">隠す</string>
   <string name="discover_is_hidden">提案を隠すことを選択しました</string>
@@ -703,6 +696,7 @@
   <string name="not_paused">未停止</string>
   <string name="hide_played_episodes_label">再生済み</string>
   <string name="not_played">未再生</string>
+  <string name="filename">ファイル名</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">再生位置を含める</string>
   <string name="share_dialog_episode_website_label">エピソードのWebページ</string>

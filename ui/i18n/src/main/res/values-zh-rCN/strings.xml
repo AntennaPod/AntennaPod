@@ -170,7 +170,6 @@
   <string name="select_all_above">选中上面所有</string>
   <string name="select_all_below">选中下面所有</string>
   <string name="filtered_label">已过滤的</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} 上次刷新失败。轻按查看详情。</string>
   <string name="open_podcast">打开播客</string>
   <string name="please_wait_for_data">请等待数据加载完成</string>
   <string name="updates_disabled_label">更新已禁用</string>
@@ -191,8 +190,6 @@
   <string name="pause_label">暂停</string>
   <string name="stream_label">流媒体</string>
   <string name="delete_label">删除</string>
-  <string name="delete_failed">无法删除文件。重启可能解决该问题。</string>
-  <string name="delete_local_failed">无法删除文件。尝试从播客信息屏重新连接本地文件夹</string>
   <string name="delete_episode_label">删除节目</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="other">删除了 %d 个已下载的节目。</item>
@@ -284,11 +281,6 @@
   <string name="confirm_mobile_streaming_button_once">仅此一次</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[无法播放该媒体文件。\n\n- 尝试删除并重新下载该节目。\n- 检查你的网络连接，并确保没有 VPN 或登录页在阻止访问。\n- 尝试长按并分享“媒体地址”到网络浏览器来弄清该资源是否可以在浏览器中播放。如果仍无法播放请联系播客创作者。]]></string>
-  <string name="playback_error_server_died">服务器宕机</string>
-  <string name="playback_error_unsupported">不受支持的媒体类型</string>
-  <string name="playback_error_timeout">操作超时</string>
-  <string name="playback_error_source">无法访问媒体文件</string>
-  <string name="playback_error_unknown">未知错误</string>
   <string name="no_media_playing_label">没有可播放的媒体</string>
   <string name="unknown_media_key">AntennaPod - 未知媒体密钥: %1$d</string>
   <string name="error_file_not_found">文件未找到</string>
@@ -449,8 +441,7 @@
   <string name="pref_expandNotify_sum">这通常会拓展通知以显示播放按钮。</string>
   <string name="pref_persistNotify_title">持久性播放控制</string>
   <string name="pref_persistNotify_sum">播放暂停时保留通知和锁屏控制</string>
-    <string name="pref_full_notification_buttons_title">设置播放通知</string>
-  <string name="pref_full_notification_buttons_sum">更改播放通知的播放按钮</string>
+  <string name="pref_full_notification_buttons_title">设置播放通知</string>
   <string name="pref_enqueue_location_title">新节目在队列中的位置</string>
   <string name="pref_enqueue_location_sum">添加音频节目至：%1$s</string>
   <string name="enqueue_location_back">后退</string>
@@ -575,7 +566,6 @@
     <item quantity="other">%d 天</item>
   </plurals>
   <string name="auto_enable_label">按下播放时自动激活睡眠定时器</string>
-  <string name="auto_enable_label_with_times">在 %s 和 %s间按下播放时自动激活睡眠定时器</string>
   <string name="auto_enable_change_times">更改时间范围</string>
   <string name="sleep_timer_enabled_label">睡眠计时器已启用</string>
   <!--Synchronisation-->
@@ -621,6 +611,7 @@
   <string name="choose_data_directory_available_space">%2$s中%1$s可用</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">当另一个应用程序要播放声音时暂停播放, 而不是降低音量</string>
   <string name="pref_pausePlaybackForFocusLoss_title">中断暂停</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">订阅</string>
   <string name="subscribing_label">订阅中...</string>
@@ -653,7 +644,6 @@
   <string name="feed_tags_label">标签</string>
   <string name="feed_tags_summary">更改此播客的标签，以帮助组织您的订阅</string>
   <string name="feed_folders_include_root">在主列表中显示此播客</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} 只显示来自所有选定订阅的常见标记。其他标记不受影响。</string>
   <string name="auto_download_settings_label">“自动下载”设置</string>
   <string name="episode_filters_label">节目筛选器</string>
   <string name="episode_filters_description">用于确定是否应自动下载一期节目的术语列表</string>
@@ -672,6 +662,7 @@
   <string name="statistics_view_all">所有播客视图 »</string>
   <string name="edit_url_menu">编辑订阅源 URL</string>
   <string name="edit_url_confirmation_msg">更改 RSS 地址很容易破坏播客的播放状态和节目列表。我们不建议更改它，如果出现任何错误我们不会提供支持。这是无法挽回的。无法通过简单地将地址更改回来修复损坏的订阅。我们建议在继续之前创建备份。</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">正在从选定的应用中导入订阅...</string>
   <!--Add podcast fragment-->
@@ -679,9 +670,7 @@
   <string name="search_itunes_label">搜索 Apple Podcasts</string>
   <string name="search_podcastindex_label">搜索播客索引</string>
   <string name="search_fyyd_label">搜索 fyyd</string>
-  <string name="gpodnet_search_hint">搜索 gpodder.net</string>
   <string name="advanced">高级</string>
-  <string name="add_podcast_by_url">通过 RSS 地址添加播客</string>
   <string name="discover">发现</string>
   <string name="discover_hide">隐藏</string>
   <string name="discover_is_hidden">您选择了隐藏建议</string>

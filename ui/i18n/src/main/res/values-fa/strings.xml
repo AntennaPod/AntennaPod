@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activity and fragment titles-->
-  <string name="feed_update_receiver_name">به‌روز رسانی اشتراک‌ها</string>
+  <string name="feed_update_receiver_name">به‌روزرسانی اشتراک‌ها</string>
   <string name="feeds_label">پادکست‌ها</string>
   <string name="statistics_label">آمار</string>
   <string name="add_feed_label">افزودن پادکست</string>
@@ -22,6 +22,7 @@
   <string name="episode_cache_full_message">تجاوز از کران انبارهٔ قسمت. می‌توانید اندازهٔ انباره را در تنظیمات افزایش دهید.</string>
   <string name="years_statistics_label">سال</string>
   <string name="notification_pref_fragment">آگاهی‌ها</string>
+  <string name="current_playing_episode">فعلی</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">«%1$s» یافت نشد</string>
   <!--SwipeActions-->
@@ -175,7 +176,6 @@
   <string name="select_all_above">انتخاب همهٔ بالایی‌ها</string>
   <string name="select_all_below">انتخاب همهٔ پایینی‌ها</string>
   <string name="filtered_label">فیلتر شده</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} آخرین تازه‌سازی شکست خورد. برای دیدن جزییات بزنید.</string>
   <string name="open_podcast">گشودن پادکست</string>
   <string name="please_wait_for_data">لطفا تا زمان دریافت اطلاعات منتظر بمانید</string>
   <string name="updates_disabled_label">به‌روزرسانی‌ها غیر فعال شده است</string>
@@ -198,8 +198,6 @@
   <string name="pause_label">درنگ</string>
   <string name="stream_label">جریان</string>
   <string name="delete_label">حذف</string>
-  <string name="delete_failed">ناتوان در حذف پرونده. شاید راه‌اندازی دوبارهٔ افزاره کمک کند.</string>
-  <string name="delete_local_failed">امکان حذف فایل وجود ندارد. سعی کنید مجددا پوشه محلی را از صفحه اطلاعات پادکست وصل کنید.</string>
   <string name="delete_episode_label">حذف قسمت</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">۱ قسمت بارگرفته حذف شد.</item>
@@ -298,11 +296,6 @@
   <string name="confirm_mobile_streaming_button_once">یکبار</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[پروندهٔ رسانه نتوانست پخش شود.\n\n- حذف و بارگیری دوبارهٔ قسمت را بیازمایید.\n- اتّصال شبکه‌تان را بررس کرد و مطمئن شوید صفحهٔ ورود وی‌پی‌ان دسترسیتان را مسدود نکرده باشد.\n- فشار طولانی و هم‌رسانی «نشانی رسانه» با مرورگر وبتان را برای بررسی توانایی پخش در آن‌جا بیازمایید. در صورت پخش نشدن با سازندگان پادمست تماس بگیرید.]]></string>
-  <string name="playback_error_server_died">کارساز مرده است.</string>
-  <string name="playback_error_unsupported">نوع رسانه‌ای حمایت نشده</string>
-  <string name="playback_error_timeout">عملیات منقضی شد</string>
-  <string name="playback_error_source">ناتوان در دسترسی به پروندهٔ رسانه</string>
-  <string name="playback_error_unknown">خطای ناشناخته</string>
   <string name="no_media_playing_label">رسانه‌ای در حال پخش نیست</string>
   <string name="unknown_media_key">آنتناپاد - کلید رسانه‌ای ناشناخته: %1$d</string>
   <string name="error_file_not_found">پرونده یافت نشد</string>
@@ -462,6 +455,7 @@
   <string name="pref_expandNotify_sum">معمولاً آگاهی را برای نمایش دکمه های پخش می‌گستراند.</string>
   <string name="pref_persistNotify_title">واپایشگرهای پخش ثابت</string>
   <string name="pref_persistNotify_sum">نگه داشتن آگاهی و واپایش‌های صفحهٔ قفل هنگام مکث پخش.</string>
+  <string name="pref_full_notification_buttons_title">تنظیم دکمه های اعلان</string>
   <string name="pref_enqueue_location_title">مکان صف‌بندی</string>
   <string name="pref_enqueue_location_sum">افزودن قسمت‌ها به : %1$s</string>
   <string name="enqueue_location_back">عقب</string>
@@ -543,6 +537,7 @@
   <string name="database_import_summary">پایگاه داده آنتن پاد را از دستگاه دیگری وارد کنید</string>
   <string name="opml_import_label">وارد کردن OPML</string>
   <string name="opml_add_podcast_label">وارد کردن لیست پادکست (OPML)</string>
+  <string name="opml_reader_error">هنگام خواندن فایل خطایی رخ داده است. مطمئن شوید که واقعاً یک فایل OPML را انتخاب کرده اید و آن فایل معتبر است.</string>
   <string name="opml_import_error_no_file">پرونده‌ای گزیده نشده!</string>
   <string name="select_all_label">انتخاب همه</string>
   <string name="deselect_all_label">انتخاب هیچ</string>
@@ -584,8 +579,11 @@
     <item quantity="one">۱ ساعت</item>
     <item quantity="other">%d ساعت</item>
   </plurals>
+  <plurals name="time_days_quantified">
+    <item quantity="one">1 روز</item>
+    <item quantity="other">%d روز</item>
+  </plurals>
   <string name="auto_enable_label">فعّال سازی خودکار شمارشگر معکوس خواب هنگام زدن پخش</string>
-  <string name="auto_enable_label_with_times">فعّال سازی خودکار شمارشگر معکوس خواب هنگام زدن پخش بین %s و %s</string>
   <string name="auto_enable_change_times">زمان‌های تعویض</string>
   <string name="sleep_timer_enabled_label">زمان‌سنج خواب به کار افتاد</string>
   <!--Synchronisation-->
@@ -631,6 +629,7 @@
   <string name="choose_data_directory_available_space">%1$s از %2$s آزاد</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">وقتی برنامه دیگری می خواهد صداها را پخش کند ، به جای کاهش میزان صدا ، پخش را متوقف کن</string>
   <string name="pref_pausePlaybackForFocusLoss_title">مکث برای وقفه‌ها</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">اشتراک</string>
   <string name="subscribing_label">مشترک شدن ...</string>
@@ -663,7 +662,6 @@
   <string name="feed_tags_label">برچسب‌ها</string>
   <string name="feed_tags_summary">برای کمک به سازماندهی اشتراک های خود، برچسب های این پادکست را تغییر دهید</string>
   <string name="feed_folders_include_root">نمایش این قسمت در سیاههٔ اصلی</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} تنها برجسب‌های مهمول از تمامی اشتراک‌های گزیده نشان داده می‌شوند. دیگر برچسب‌ها تأثیر نمی‌پذیرند.</string>
   <string name="auto_download_settings_label">تنظیمات بارگیری خودکار</string>
   <string name="episode_filters_label">پالایهٔ قسمت</string>
   <string name="episode_filters_description">لیست اصطلاحاتی که برای تصمیم گیری در مورد درج یا حذف یک قسمت هنگام بارگیری خودکار استفاده می شود</string>
@@ -682,6 +680,7 @@
   <string name="statistics_view_all">مشاهده همه پادکست ها »</string>
   <string name="edit_url_menu">URL فید را ویرایش کنید</string>
   <string name="edit_url_confirmation_msg">تغییر نشانی RSS می تواند به سادگی  وضعیت پخش و سیاهه کردن قسمت‌های پادکست را خراب کند. تغییرش را توصیه نکرده و در صورت بروز مشکل، پشتیبانی فراهم نمی‌کنیم. این عمل بازگشت‌پذیر نیست. اشتراک خراب را نمی توان به سادگی با بازگرداندن نشانی درست کرد. پیشنهاد می‌کنیم پیش از ادامه، پشتیبان بگیرید.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">وارد کردن اشتراک از برنامه های تک منظوره</string>
   <!--Add podcast fragment-->
@@ -689,9 +688,7 @@
   <string name="search_itunes_label">جست‌وجوی پادکست‌های اپل</string>
   <string name="search_podcastindex_label">جست‌وجوی پادکست ایندکس</string>
   <string name="search_fyyd_label">در fyyd جستجو کن</string>
-  <string name="gpodnet_search_hint">جست‌وجوی gpodder.net</string>
   <string name="advanced">پیشرفته</string>
-  <string name="add_podcast_by_url">اضافه کردن پادکست توسط آدرس RSS</string>
   <string name="discover">کشف کردن</string>
   <string name="discover_hide">پنهان کردن</string>
   <string name="discover_is_hidden">شما مخفی کردن پیشنهادات را انتخاب کرده اید.</string>
@@ -720,6 +717,7 @@
   <string name="not_paused">مکث نشده</string>
   <string name="hide_played_episodes_label">پخش شد</string>
   <string name="not_played">اجرا نشده</string>
+  <string name="filename">نام پرونده</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">موقعیت پخش را لحاظ کنید</string>
   <string name="share_dialog_episode_website_label">پایگاه وب قسمت</string>

@@ -188,7 +188,6 @@
   <string name="select_all_above">Вибрати все вище</string>
   <string name="select_all_below">Вибрати все нижче</string>
   <string name="filtered_label">Фільтровані</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Останнє оновлення було невдалим. Натисніть, щоб переглянути деталі.</string>
   <string name="open_podcast">Відкрити подкаст</string>
   <string name="please_wait_for_data">Зачекайте, поки завантажаться дані</string>
   <string name="updates_disabled_label">Оновлення вимкнено</string>
@@ -215,8 +214,6 @@
   <string name="pause_label">Пауза</string>
   <string name="stream_label">Прослухати без завантаження</string>
   <string name="delete_label">Видалити</string>
-  <string name="delete_failed">Не вдається видалити файл. Перезавантаження пристрою може допомогти.</string>
-  <string name="delete_local_failed">Не вдалося видалити файл. Спробуйте перепід\'єднати локальну теку з екрана інформації про подкаст.</string>
   <string name="delete_episode_label">Видалити епізод</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 завантажений епізод видалено.</item>
@@ -329,11 +326,6 @@
   <string name="confirm_mobile_streaming_button_once">Один раз</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[Медіафайл не вдалося відтворити.\n\n- Спробуйте видалити та повторно завантажити епізод.\n- Перевірте мережеве з\'єднання та переконайтеся, що доступ не заблоковано VPN або запитом авторизації.\n- Спробуйте довго натиснути на \"Адресу медіафайлу\" та відправити її у ваш веб-браузер, щоб перевірити, чи можна її відтворити там. Якщо ні, зверніться до авторів подкасту.]]></string>
-  <string name="playback_error_server_died">Сервер помер</string>
-  <string name="playback_error_unsupported">Тип медіа не підтримується</string>
-  <string name="playback_error_timeout">Операція минула</string>
-  <string name="playback_error_source">Не вдається отримати доступ до медіафайлу</string>
-  <string name="playback_error_unknown">Невідома помилка</string>
   <string name="no_media_playing_label">Немає що грати</string>
   <string name="unknown_media_key">AntennaPod - Невідомий медіа ключ: %1$d</string>
   <string name="error_file_not_found">Файл не знайдено</string>
@@ -493,8 +485,7 @@
   <string name="pref_expandNotify_sum">Зазвичай це розширює сповіщення, щоб показати кнопки відтворення.</string>
   <string name="pref_persistNotify_title">Завжди показувати елементи керування відтворенням</string>
   <string name="pref_persistNotify_sum">Не ховайте сповіщення та елементи керування на екрані блокування, коли відтворення призупинено</string>
-    <string name="pref_full_notification_buttons_title">Оберіть кнопки на сповіщенні</string>
-  <string name="pref_full_notification_buttons_sum">Змініть функції кнопок на сповіщенні про відтворення.</string>
+  <string name="pref_full_notification_buttons_title">Оберіть кнопки на сповіщенні</string>
   <string name="pref_enqueue_location_title">Позиція в черзі при додаванні</string>
   <string name="pref_enqueue_location_sum">Додати епізоди до: %1$s</string>
   <string name="enqueue_location_back">В кінець</string>
@@ -631,7 +622,6 @@
     <item quantity="other">%d днів</item>
   </plurals>
   <string name="auto_enable_label">Автоматично активувати таймер сну при натисканні кнопки відтворення</string>
-  <string name="auto_enable_label_with_times">Автоматично активувати таймер сну при натисканні на кнопку відтворення в проміжок часу між %s та %s</string>
   <string name="auto_enable_change_times">Змінити проміжок часу</string>
   <string name="sleep_timer_enabled_label">Таймер сну увімкнено</string>
   <!--Synchronisation-->
@@ -677,6 +667,7 @@
   <string name="choose_data_directory_available_space">%1$s з %2$s вільно</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Призупиняти програвання замість зниження гучності коли інша програма хоче програти звук</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Пауза в разі переривання</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Підписатися</string>
   <string name="subscribing_label">Підписка...</string>
@@ -709,7 +700,6 @@
   <string name="feed_tags_label">Мітки</string>
   <string name="feed_tags_summary">Змініть теги цього подкасту, щоб упорядкувати ваші підписки</string>
   <string name="feed_folders_include_root">Відображати цей подкаст в основному списку підписок</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Показані лише спільні теги з усіх вибраних підписок. Інші теги залишаються без змін.</string>
   <string name="auto_download_settings_label">Налаштування автозавантаження</string>
   <string name="episode_filters_label">Фільтр епізодів</string>
   <string name="episode_filters_description">Перелік термінів, що використовуються для вирішення чи слід завантажувати епізод автоматично</string>
@@ -728,6 +718,7 @@
   <string name="statistics_view_all">Переглянути всі подкасти »</string>
   <string name="edit_url_menu">Редагувати URL-адресу каналу</string>
   <string name="edit_url_confirmation_msg">Зміна RSS-адреси може легко зламати стан відтворення та списки епізодів подкасту. Ми НЕ рекомендуємо змінювати її і НЕ надаватимемо підтримку, якщо щось піде не так. Це не можна скасувати. Порушену підписку НЕ МОЖНА відновити, просто змінивши адресу назад. Ми рекомендуємо створити резервну копію, перш ніж продовжувати.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Імпорт подкастів з інших програм...</string>
   <!--Add podcast fragment-->
@@ -735,9 +726,7 @@
   <string name="search_itunes_label">Шукати на Apple Podcasts</string>
   <string name="search_podcastindex_label">Шукати на Podcast Index</string>
   <string name="search_fyyd_label">Шукати на Fyyd</string>
-  <string name="gpodnet_search_hint">Пошук на gpodder.net</string>
   <string name="advanced">Розширені можливості</string>
-  <string name="add_podcast_by_url">Додати подкаст за адресою RSS-стрічки</string>
   <string name="discover">Знайдіть канали</string>
   <string name="discover_hide">Сховати</string>
   <string name="discover_is_hidden">Ви вибрали, щоб приховати пропозиції.</string>

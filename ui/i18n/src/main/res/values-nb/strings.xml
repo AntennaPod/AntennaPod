@@ -160,7 +160,6 @@
   <string name="select_all_above">Velg alle over</string>
   <string name="select_all_below">Velg alle under</string>
   <string name="filtered_label">Filtrert</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Siste oppdatering mislyktes. Trykk for å se detaljer.</string>
   <string name="open_podcast">Åpne podkast</string>
   <string name="please_wait_for_data">Vent til dataene er lastet inn</string>
   <string name="updates_disabled_label">Oppdateringer slått av.</string>
@@ -182,7 +181,6 @@
   <string name="pause_label">Pause</string>
   <string name="stream_label">Strøm</string>
   <string name="delete_label">Slett</string>
-  <string name="delete_failed">Kan ikke slette filen. Omstart av enheten kan hjelpe.</string>
   <string name="delete_episode_label">Slett episode</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 nedlasted episode slettet.</item>
@@ -273,11 +271,6 @@
   <string name="confirm_mobile_streaming_button_always">Alltid</string>
   <string name="confirm_mobile_streaming_button_once">Én gang</string>
   <!--Mediaplayer messages-->
-  <string name="playback_error_server_died">Tjeneren døde</string>
-  <string name="playback_error_unsupported">Ikke støttet media-type</string>
-  <string name="playback_error_timeout">Operasjon tidsavbrutt</string>
-  <string name="playback_error_source">Kunne ikke hente media-fil</string>
-  <string name="playback_error_unknown">Ukjent feil</string>
   <string name="no_media_playing_label">Ingen media spillende for øyeblikket.</string>
   <string name="unknown_media_key">AntennaPod - Ukjent medienøkkel: %1$d</string>
   <string name="error_file_not_found">Fil ikke funnet</string>
@@ -547,7 +540,6 @@
     <item quantity="other">%d timer</item>
   </plurals>
   <string name="auto_enable_label">Aktivere sove-timer automatisk når det presses play</string>
-  <string name="auto_enable_label_with_times">Aktivere sove-timer automatisk når det presses play mellom %s og %s</string>
   <string name="sleep_timer_enabled_label">Søvnnedtelling skrudd på</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">Velg synkroniserings-provider</string>
@@ -592,6 +584,7 @@
   <string name="choose_data_directory_available_space">%1$s av %2$s ledig</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Sett avspilling på pause istedenfor å skru ned volumet når en annen app vil spille av lyder</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pause for forstyrrelser</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Abonner</string>
   <string name="subscribing_label">Abonnerer...</string>
@@ -617,7 +610,6 @@
   <string name="feed_tags_label">Tagger</string>
   <string name="feed_tags_summary">Endre tagger av podcasten for å organisere abonnementene dine bedre</string>
   <string name="feed_folders_include_root">Vis pokasten i hoved lista</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Bare standard tagger fra alle valgte abonnementer er synlig.  Andre tagger blir ikke påvirket.</string>
   <string name="auto_download_settings_label">Innstillinger for automatisk nedlastning</string>
   <string name="episode_filters_label">Episodefiltrering</string>
   <string name="episode_filters_description">Nøkkelord som skal brukes for å avgjøre om en episode skal nedlastes automatisk eller ikke</string>
@@ -636,6 +628,7 @@
   <string name="statistics_view_all">Vis for alle podkaster »</string>
   <string name="edit_url_menu">Endre feed URL</string>
   <string name="edit_url_confirmation_msg">Å endre RSS adressen kan lett ødelegge avspillingsstatuset og episode køen av podcastene. We anbefaler IKKE å endre den og vil ikke tilby noen som helst støtte hvis noe slutte å virke. Dette kan ikke angres. En ødelagt abonnement kan ikke fikses med å endre adressen tilbake. Vi anbefaler å lage en sikkerhetskopi før du forsetter.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importerer abonnementer fra enkeltstående applikasjoner...</string>
   <!--Add podcast fragment-->
@@ -643,9 +636,7 @@
   <string name="search_itunes_label">Leter i Apple Podcasts</string>
   <string name="search_podcastindex_label">Søk i podkast indeks</string>
   <string name="search_fyyd_label">Søk med fyyd</string>
-  <string name="gpodnet_search_hint">Søk på gpodder.net</string>
   <string name="advanced">Avansert</string>
-  <string name="add_podcast_by_url">Legg til podkast via RSS adressen</string>
   <string name="discover">Oppdage</string>
   <string name="discover_hide">Skjul</string>
   <string name="discover_is_hidden">Du valgte å skjule forslag</string>

@@ -181,7 +181,6 @@
   <string name="select_all_above">Selectează toate deasupra</string>
   <string name="select_all_below">Selectează toate dedesubt</string>
   <string name="filtered_label">Filtrate</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Ultimul refresh a esuat. Apasă pentru detalii.</string>
   <string name="open_podcast">Deschide podcast</string>
   <string name="please_wait_for_data">Vă rugăm așteptați până când datele sunt încărcate</string>
   <string name="updates_disabled_label">Actualizările sunt oprite</string>
@@ -206,8 +205,6 @@
   <string name="pause_label">Pauză</string>
   <string name="stream_label">Stream</string>
   <string name="delete_label">Șterge</string>
-  <string name="delete_failed">Imposibil de șters. Restartarea dispozitivului ar putea ajuta.</string>
-  <string name="delete_local_failed">Nu s-a putut șterge fisierul. Incearcă să reconectezi dosarul local din ecranul cu informații a podcastului.</string>
   <string name="delete_episode_label">Șterge episod</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 episod descărcat a fost șters.</item>
@@ -313,11 +310,6 @@
   <string name="confirm_mobile_streaming_button_once">O dată</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[Fișierul media nu a putut fi redat.\n\n- Încearcă să ștergi și să redescraci episodul.\n- Verifică conexiunea ta la internet, și asigurăte că nu există un VPN sau o pagină de autentificare ce blochează accesul.\n- Încearcă să ții apăsat și să partajezi \"adresa media\" către browserul web, pentru a vedea dacă fisierul poate fi redat acolo. În cazul în care nu se poate contactează creatorul podacstului.]]></string>
-  <string name="playback_error_server_died">Server mort</string>
-  <string name="playback_error_unsupported">Format media neacceptat</string>
-  <string name="playback_error_timeout">Operațiunea ține prea mult</string>
-  <string name="playback_error_source">Nu se pot accesa fișierele media</string>
-  <string name="playback_error_unknown">Eroare necuonscută</string>
   <string name="no_media_playing_label">Nu se ascultă nimic</string>
   <string name="unknown_media_key">AntennaPod - tastă media necunoscută: %1$d</string>
   <string name="error_file_not_found">Fișierul nu a fost găsit</string>
@@ -603,7 +595,6 @@
     <item quantity="other">%d de ore</item>
   </plurals>
   <string name="auto_enable_label">Activează automat cronometrul de somn în momenul redării</string>
-  <string name="auto_enable_label_with_times">Activează automat cronometrul de somn în momenul redării între %s și %s</string>
   <string name="auto_enable_change_times">Schimbă intervalul de timp</string>
   <string name="sleep_timer_enabled_label">Cronometru pentru somn pornit</string>
   <!--Synchronisation-->
@@ -649,6 +640,7 @@
   <string name="choose_data_directory_available_space">%1$s din %2$s libere</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Oprește redarea în locul micșorării volumului când o altă aplicație dorește sa redea sunete</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pauză pentru întreruperi</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Abonează-te</string>
   <string name="subscribing_label">În curs de abonare...</string>
@@ -681,7 +673,6 @@
   <string name="feed_tags_label">Etichete</string>
   <string name="feed_tags_summary">Schimbă etichetele acestui podcast pentru a putea organiza abonamentele dumneavoastră</string>
   <string name="feed_folders_include_root">Arată acest podcast în lista principală</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Doar etichetele comune din toate abonamentele selectate sunt arătate. Alte etichete rămân neafectate.</string>
   <string name="auto_download_settings_label">Descarcă automat setările</string>
   <string name="episode_filters_label">Filtru setări</string>
   <string name="episode_filters_description">Listă de termeni folosită pentru a decide dacă un episod va fi sau nu inclus când descărcarea automată este pornită</string>
@@ -700,6 +691,7 @@
   <string name="statistics_view_all">Vizualizare a tuturor podcasturilor »</string>
   <string name="edit_url_menu">Editează fluxurile URL</string>
   <string name="edit_url_confirmation_msg">Schimbarea adresei RSS poate distruge cu ușurință starea de redare și listele de episoade ale podcastului. NU recomandăm schimbarea acestuia și NU vă vom oferi asistență dacă ceva nu merge bine. Acest lucru nu poate fi anulat. Abonamentul defect NU POATE fi reparat prin simpla schimbare a adresei înapoi. Vă sugerăm să creați o copie de rezervă înainte de a continua.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importare abonamente din aplicații cu un singur scop...</string>
   <!--Add podcast fragment-->
@@ -707,9 +699,7 @@
   <string name="search_itunes_label">Caută în Apple Podcasts</string>
   <string name="search_podcastindex_label">Caută în Podcast Index</string>
   <string name="search_fyyd_label">Caută în fyyd</string>
-  <string name="gpodnet_search_hint">Caută pe gpodder.net</string>
   <string name="advanced">Avansat</string>
-  <string name="add_podcast_by_url">Adaugă podcast folosind o adresă RSS</string>
   <string name="discover">Descoperă</string>
   <string name="discover_hide">Ascunde</string>
   <string name="discover_is_hidden">Ai selectat să ascunzi sugestiile.</string>

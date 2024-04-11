@@ -122,7 +122,6 @@
   <string name="pause_label">暫停</string>
   <string name="stream_label">串流播放</string>
   <string name="delete_label">刪除</string>
-  <string name="delete_failed">刪除文件失敗。重啟設備試試看。</string>
   <string name="mark_read_label">標記為已播放</string>
   <string name="mark_read_no_media_label">標示為已讀</string>
   <string name="play_this_to_seek_position">若想指定播放位置，請先播放該單集</string>
@@ -168,10 +167,6 @@
   <string name="confirm_mobile_streaming_button_always">永遠允許</string>
   <string name="confirm_mobile_streaming_button_once">允許一次</string>
   <!--Mediaplayer messages-->
-  <string name="playback_error_server_died">主機未回應</string>
-  <string name="playback_error_unsupported">不支援的媒體格式</string>
-  <string name="playback_error_timeout">操作逾時</string>
-  <string name="playback_error_source">無法取得該媒體檔案</string>
   <string name="no_media_playing_label">播放完畢</string>
   <string name="unknown_media_key">AntennaPod - 媒體按鍵無法辨識：%1$d</string>
   <string name="error_file_not_found">找不到檔案</string>
@@ -387,6 +382,7 @@
   <string name="choose_data_directory_message">請選擇您儲存檔案用的資料夾，AntennaPod 會自動建立相應的子資料夾。</string>
   <string name="choose_data_directory_available_space">可用空間 %1$s/%2$s</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">有其他 App 也要播放聲音時，停止播放 Podcast（而非降低音量）</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">訂閱</string>
   <string name="subscribing_label">訂閱中</string>
@@ -412,14 +408,13 @@
   <string name="statistics_episodes_on_device">裝置上的單集：</string>
   <string name="statistics_space_used">佔用空間：</string>
   <string name="statistics_view_all">檢視所有 Podcast »</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">從 AntennaPodSP 匯入訂閱清單</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">搜尋 Podcast…</string>
   <string name="search_fyyd_label">搜尋 fyyd</string>
-  <string name="gpodnet_search_hint">搜尋 gpodder.net</string>
   <string name="advanced">進階</string>
-  <string name="add_podcast_by_url">以 RSS 網址新增 Podcast</string>
   <string name="discover">探索</string>
   <string name="discover_hide">隱藏</string>
   <string name="discover_is_hidden">您已隱藏推薦項目。</string>

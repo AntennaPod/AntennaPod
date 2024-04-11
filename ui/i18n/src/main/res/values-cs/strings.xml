@@ -188,7 +188,6 @@
   <string name="select_all_above">Vybrat všechny výše</string>
   <string name="select_all_below">Vybrat všechny níže</string>
   <string name="filtered_label">Filtrované</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Poslední aktualizace selhala. Klikněte pro více informací.</string>
   <string name="open_podcast">Otevřít podcast</string>
   <string name="please_wait_for_data">Počkejte prosím na dokončení načítání</string>
   <string name="updates_disabled_label">Aktualizování vypnuto</string>
@@ -215,8 +214,6 @@
   <string name="pause_label">Pozastavit</string>
   <string name="stream_label">Streamovat</string>
   <string name="delete_label">Smazat</string>
-  <string name="delete_failed">Nelze smazat soubor. Restart přístroje může pomoci.</string>
-  <string name="delete_local_failed">Nelze odstranit soubor. Zkuste znovu připojit místní složku z obrazovky s informacemi o podcastu.</string>
   <string name="delete_episode_label">Smazat epizodu</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 stažená epizoda smazána.</item>
@@ -329,11 +326,6 @@
   <string name="confirm_mobile_streaming_button_once">Jednou</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[Mediální soubor se nepodařilo přehrát.\n\n- Zkuste epizodu smazat a znovu stáhnout.\n- Zkontrolujte síťové připojení a ujistěte se, že přístup neblokuje žádná VPN nebo přihlašovací stránka.\n- Zkuste dlouze stisknout a sdílet \"Mediální adresu\" ve webovém prohlížeči a zjistit, zda ji lze přehrát tam. Pokud ne, kontaktujte tvůrce podcastu.]]></string>
-  <string name="playback_error_server_died">Server nereaguje</string>
-  <string name="playback_error_unsupported">Nepodporovaný typ média</string>
-  <string name="playback_error_timeout">Vypršel časový limit operace</string>
-  <string name="playback_error_source">Není přístup k mediálnímu souboru</string>
-  <string name="playback_error_unknown">Neznámá chyba</string>
   <string name="no_media_playing_label">Žádné probíhající přehrávání</string>
   <string name="unknown_media_key">AntennaPod - Neznámý klíč médií: %1$d</string>
   <string name="error_file_not_found">Soubor nebyl nalezen</string>
@@ -493,8 +485,7 @@
   <string name="pref_expandNotify_sum">Toto obvykle přidá tlačítka ovládání přehrávání do zpráv upozornění</string>
   <string name="pref_persistNotify_title">Trvalé ovládací prvky přehrávání</string>
   <string name="pref_persistNotify_sum">Zachovat oznámení a ovládání na obrazovce uzamčení i při pozastaveném přehrávání.</string>
-    <string name="pref_full_notification_buttons_title">Nastavit tlačítka v oznámení</string>
-  <string name="pref_full_notification_buttons_sum">Změňte tlačítka přehrávače v oznámení.</string>
+  <string name="pref_full_notification_buttons_title">Nastavit tlačítka v oznámení</string>
   <string name="pref_enqueue_location_title">Pozice přidávání do fronty</string>
   <string name="pref_enqueue_location_sum">Přidávat epizody na: %1$s</string>
   <string name="enqueue_location_back">konec</string>
@@ -631,7 +622,6 @@
     <item quantity="other">%ddní</item>
   </plurals>
   <string name="auto_enable_label">Automatická aktivace časovače spánku při stisknutí tlačítka přehrávání</string>
-  <string name="auto_enable_label_with_times">Automatická aktivace časovače spánku při stisknutí tlačítka přehrávání mezi %s a %s</string>
   <string name="auto_enable_change_times">Změna časového rozmezí</string>
   <string name="sleep_timer_enabled_label">Časovač vypnutí povolen</string>
   <!--Synchronisation-->
@@ -677,6 +667,7 @@
   <string name="choose_data_directory_available_space">%1$s z %2$s volných</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Místo snížení hlasitosti pozastavit přehrávání v případě, že jiná aplikace přehrává zvuk.</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Automatické pozastavení přehrávání</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Odebírat</string>
   <string name="subscribing_label">Přidává se do odběrů…</string>
@@ -709,7 +700,6 @@
   <string name="feed_tags_label">Klíčová slova</string>
   <string name="feed_tags_summary">Pro lepší organizaci vašich odběrů můžete upravit klíčová slova tohoto podcastu.</string>
   <string name="feed_folders_include_root">Zobrazit tento podcast v hlavním seznamu</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Jsou zobrazeny pouze společná klíčová slova ze všech vybraných odběrů. Ostatní klíčová slova zůstanou nedotčena.</string>
   <string name="auto_download_settings_label">Nastavení automatického stahování</string>
   <string name="episode_filters_label">Filtr epizod</string>
   <string name="episode_filters_description">Seznam pravidel použitých při rozhodování, jestli má být epizoda zahrnuta nebo vyřazena při automatickém stahování</string>
@@ -728,6 +718,7 @@
   <string name="statistics_view_all">Náhled všech podcastů »</string>
   <string name="edit_url_menu">Upravit adresu URL kanálu</string>
   <string name="edit_url_confirmation_msg">Změna adresy RSS může snadno narušit stav přehrávání a výpis epizod podcastu. Její změnu NEDOPORUČUJEME a v případě, že se něco pokazí, NEBUDE poskytnuta podpora. Tuto změnu nelze vrátit zpět. Poškozený odběr NELZE opravit pouhou změnou adresy zpět. Před pokračováním doporučujeme vytvořit zálohu.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importuji odběry z jednoúčelových aplikací...</string>
   <!--Add podcast fragment-->
@@ -735,9 +726,7 @@
   <string name="search_itunes_label">Vyhledávání v Apple Podcastech</string>
   <string name="search_podcastindex_label">Vyhledávání v Podcast Indexu</string>
   <string name="search_fyyd_label">Prohledat fyyd</string>
-  <string name="gpodnet_search_hint">Prohledat gpodder.net</string>
   <string name="advanced">Pokročilé</string>
-  <string name="add_podcast_by_url">Přidat podcast pomocí RSS</string>
   <string name="discover">Objevit</string>
   <string name="discover_hide">Skrýt</string>
   <string name="discover_is_hidden">Zvolili jste skrýt doporučení.</string>

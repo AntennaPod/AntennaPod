@@ -188,7 +188,6 @@
   <string name="select_all_above">Vybrať všetky nad</string>
   <string name="select_all_below">Vybrať všetky pod</string>
   <string name="filtered_label">Filtrované</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Posledná aktualizácia zlyhala. Kliknite pre viac informácií.</string>
   <string name="open_podcast">Otvoriť podcast</string>
   <string name="please_wait_for_data">Počkajte, kým sa dáta načítajú</string>
   <string name="updates_disabled_label">Obnovovanie vypnuté</string>
@@ -215,8 +214,6 @@
   <string name="pause_label">Pozastaviť</string>
   <string name="stream_label">Streamovať</string>
   <string name="delete_label">Zmazať</string>
-  <string name="delete_failed">Súbor sa nedá zmazať . Skúste reštartovať zariadenie.</string>
-  <string name="delete_local_failed">Súbor sa nepodarilo zmazať. Skúste znova pripojiť lokálny priečinok z obrazovky s informáciami o podcaste.</string>
   <string name="delete_episode_label">Zmazať epizódu</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 stiahnutá epizóda zmazaná.</item>
@@ -329,11 +326,6 @@
   <string name="confirm_mobile_streaming_button_once">Teraz</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[Mediálny súbor sa nepodarilo prehrať.\n\n- Skúste epizódu zmazať a znova stiahnuť.\n- Skontrolujte svoje sieťové pripojenie a uistite sa, že prístup neblokuje žiadna VPN ani prihlasovacia stránka.\n- Skúste dlho stlačiť a zdieľať „Adresu médií“ vo svojom webovom prehliadači, aby ste zistili, či sa tam dá prehrať. Ak nie, kontaktujte tvorcov podcastov.]]></string>
-  <string name="playback_error_server_died">Server zomrel</string>
-  <string name="playback_error_unsupported">Nepodporovaný typ média</string>
-  <string name="playback_error_timeout">Časový limit pre operáciu vypršal</string>
-  <string name="playback_error_source">Nie je prístup k mediálnemu súboru</string>
-  <string name="playback_error_unknown">Neznáma chyba</string>
   <string name="no_media_playing_label">Neprebieha žiadne prehrávanie</string>
   <string name="unknown_media_key">AntennaPod - Neznámy kľúč médií: %1$d</string>
   <string name="error_file_not_found">Súbor nenájdený</string>
@@ -493,8 +485,7 @@
   <string name="pref_expandNotify_sum">Toto obvykle pridá tlačidlá ovládania prehrávania do správ upozornení</string>
   <string name="pref_persistNotify_title">Stále ovládače prehrávania</string>
   <string name="pref_persistNotify_sum">Zachovať oznámenia a ovládanie na uzamknutej obrazovke aj pri pozastavenom prehrávaní</string>
-    <string name="pref_full_notification_buttons_title">Nastaviť tlačidlá upozornení</string>
-  <string name="pref_full_notification_buttons_sum">Zmeniť tlačidlá prehrávania v upozornení na prehrávanie.</string>
+  <string name="pref_full_notification_buttons_title">Nastaviť tlačidlá upozornení</string>
   <string name="pref_enqueue_location_title">Pozícia pridávania do poradia</string>
   <string name="pref_enqueue_location_sum">Pridávať epizódy na: %1$s</string>
   <string name="enqueue_location_back">Späť</string>
@@ -631,7 +622,6 @@
     <item quantity="other">%d dní</item>
   </plurals>
   <string name="auto_enable_label">Po stlačení tlačidla prehrávania automaticky aktivovať časovač vypnutia</string>
-  <string name="auto_enable_label_with_times">Po stlačení tlačidla prehrávania medzi %s a %s automaticky aktivovať časovač vypnutia</string>
   <string name="auto_enable_change_times">Zmeniť časový rozsah</string>
   <string name="sleep_timer_enabled_label">Časovač vypnutia povolený</string>
   <!--Synchronisation-->
@@ -677,6 +667,7 @@
   <string name="choose_data_directory_available_space">%1$s z %2$s voľných</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Keď chce iná aplikácia prehrávať zvuky, namiesto zníženia hlasitosti pozastavte prehrávanie</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pozastaviť kvôli prerušeniam</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Prihlásiť sa na odber</string>
   <string name="subscribing_label">Prihlasovanie na odber…</string>
@@ -709,7 +700,6 @@
   <string name="feed_tags_label">Štítky</string>
   <string name="feed_tags_summary">Zmeňte si štítky tohto podcastu aby sa pomohlo usporiadaniu Vašich odberov</string>
   <string name="feed_folders_include_root">Zobraziť tento podcast v hlavnom zozname</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Len všeobecné štítky zo všetkých označených odberov sú zobrazené. Ostatné štítky ostávajú nezmenené.</string>
   <string name="auto_download_settings_label">Nastavenia automatického sťahovania</string>
   <string name="episode_filters_label">Filter epizód</string>
   <string name="episode_filters_description">Zoznam výrazov použitých na rozhodnutie, či má byť epizóda zahrnutá alebo vylúčená pri automatickom sťahovaní</string>
@@ -728,6 +718,7 @@
   <string name="statistics_view_all">Zobraziť všetky podcasty »</string>
   <string name="edit_url_menu">Upraviť URL adresu informačného kanála</string>
   <string name="edit_url_confirmation_msg">Zmena RSS adresy môže ľahko pokaziť štádium prehrávania a zoznam epizód podcastu. NEdoporučujeme ju meniť a ani NEbudeme poskytovať podporu v prípade, že sa niečo pokazí. Zmeny sa nedajú vrátiť. Pokazený odber sa NEDÁ opraviť jednoduchým prepísaním adresy späť. Doporučujeme vytvorenie zálohy pred pokračovaním.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Imporovať odbery z jednoúčelových aplikácií…</string>
   <!--Add podcast fragment-->
@@ -735,9 +726,7 @@
   <string name="search_itunes_label">Hľadať v Apple Podcasts</string>
   <string name="search_podcastindex_label">Hľadať na Podcast index</string>
   <string name="search_fyyd_label">Hľadať na fyyd</string>
-  <string name="gpodnet_search_hint">Prehľadať gpodder.net</string>
   <string name="advanced">Pokročilé</string>
-  <string name="add_podcast_by_url">Pridať podcast pomocou RSS adresy</string>
   <string name="discover">Prehľadávať</string>
   <string name="discover_hide">Skryť</string>
   <string name="discover_is_hidden">Vybrali ste skryť návrhy.</string>

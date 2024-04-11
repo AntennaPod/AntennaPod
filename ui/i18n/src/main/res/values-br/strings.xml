@@ -193,7 +193,6 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="select_all_above">Diuzañ gant ar re a-us</string>
   <string name="select_all_below">Diuzañ gant ar re dindan</string>
   <string name="filtered_label">Silet</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} C\'hwitet war an azgrenaat diwezhañ. Stokit evit sellout ouzh ar munudoù.</string>
   <string name="open_podcast">Digeriñ ar podskignad</string>
   <string name="please_wait_for_data">Gortozit dibenn pellgargadur ar roadennoù</string>
   <string name="updates_disabled_label">Diweredekaet eo bet an hizivadennoù</string>
@@ -221,7 +220,6 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="pause_label">Ehan</string>
   <string name="stream_label">Streaming</string>
   <string name="delete_label">Dilemel</string>
-  <string name="delete_failed">N\'haller ket dilemel ar restr. Gallout a rit klask adloc\'hañ.</string>
   <string name="delete_episode_label">Dilemel ar rann</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">Dilamet ez eus bet 1 rann bellgarget.</item>
@@ -333,11 +331,6 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="confirm_mobile_streaming_button_always">Atav</string>
   <string name="confirm_mobile_streaming_button_once">Ur wech</string>
   <!--Mediaplayer messages-->
-  <string name="playback_error_server_died">Marv eo ar servijer</string>
-  <string name="playback_error_unsupported">Rizh media anskor</string>
-  <string name="playback_error_timeout">Gwezhiadur diamzeret</string>
-  <string name="playback_error_source">N\'haller ket haeziñ ar restr</string>
-  <string name="playback_error_unknown">Fazi dianav</string>
   <string name="no_media_playing_label">N\'eus netra o vezañ lennet</string>
   <string name="unknown_media_key">AntennaPod - stokell vedia dianav: %1$d</string>
   <string name="error_file_not_found">N\'eo ket bet kavet ar restr</string>
@@ -492,7 +485,7 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="pref_expandNotify_sum">Sañset e brasa ar rebuzadur evit diskouez an afelloù lenn.</string>
   <string name="pref_persistNotify_title">Afelloù lenn peurzalc\'hus</string>
   <string name="pref_persistNotify_sum">Mirout ar rebuzadur ha reoliadurioù ar skramm prennañ p\'eo ehanet al lenn</string>
-    <string name="pref_full_notification_buttons_title">Afelloù ar rebuzadurioù</string>
+  <string name="pref_full_notification_buttons_title">Afelloù ar rebuzadurioù</string>
   <string name="pref_enqueue_location_sum">Ouzhpennañ ar rannoù da: %1$s</string>
   <string name="enqueue_location_back">E dibenn ar roll</string>
   <string name="enqueue_location_front">E penn ar roll</string>
@@ -632,7 +625,6 @@ Digorit al lañser evit ouzhpennañ unan.</string>
     <item quantity="other">%d devezh</item>
   </plurals>
   <string name="auto_enable_label">Gweredekaat ent emgefreek ar munuter pa vez kroget gant al lenn</string>
-  <string name="auto_enable_label_with_times">Gweredekaat ent emgefreek ar munuter pa vez kroget al lenn etre %s ha %s</string>
   <string name="auto_enable_change_times">Kemmañ an tachad eurioù</string>
   <string name="sleep_timer_enabled_label">Harzh emgefreek gweredekaet</string>
   <!--Synchronisation-->
@@ -675,6 +667,7 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="choose_data_directory_available_space">%1$s war %2$s dieub</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Ehaniñ al lenn kentoc\'h eget izelaat ar son pa fell d\'un arload all ober sonioù</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Ehaniñ pa vez arsavet</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Koumanantiñ</string>
   <string name="subscribing_label">O koumanantiñ...</string>
@@ -707,7 +700,6 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="feed_tags_label">Tikedennoù</string>
   <string name="feed_tags_summary">Kemmañ tikedennoù ar podskignad-mañ evit sikour urzhiañ ho koumanantoù.</string>
   <string name="feed_folders_include_root">Diskouez ar podkast-mañ er roll pennañ</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} N\'eus nemet an tikedennoù rannet etre an holl goumanantoù diuzet a zo diskouezet. An tikedennoù all ne vint ket kemmet.</string>
   <string name="auto_download_settings_label">Arventennoù ar pellgargañ emgefreek</string>
   <string name="episode_filters_label">Sil ar rannoù</string>
   <string name="episode_filters_description">Roll an termenoù implijet evit dibab ma rank ur rann bezañ ebarzhet pe laosket a-gostez pa vez pellgarget ent emgefreek</string>
@@ -726,6 +718,7 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="statistics_view_all">Diskouez an holl bodskignadoù »</string>
   <string name="edit_url_menu">Kemm URL ar wazh</string>
   <string name="edit_url_confirmation_msg">Pa vez kemmet ar chomlec\'h RSS a c\'hell bezañ kollet stad al lenn ha roll rannoù ar podkast. Erbediñ a reomp CHOM HEP KEMMAÑ anezhañ ha NE SIKOURIMP KET ma vefe un dra bennak a-dreuz. Ur wech graet ne c\'hall ket bezañ cheñchet. Ar c\'houmanantoù torret NE C\'HALLONT KET bezañ dreset en ur lakaat ar chomlec\'h kozh en-dro. Erbediñ a reomp deoc\'h sevel ur saveteadenn a-raok kenderc\'hel. </string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Oc\'h enporzhiañ ar c\'houmanantoù diwar arloadoù gant un arver unel...</string>
   <!--Add podcast fragment-->
@@ -733,9 +726,7 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="search_itunes_label">Klask war Apple Podcasts</string>
   <string name="search_podcastindex_label">Klask war Podcast Index</string>
   <string name="search_fyyd_label">Klask war fydd</string>
-  <string name="gpodnet_search_hint">Klask war gpodder.ner</string>
   <string name="advanced">Araokaet</string>
-  <string name="add_podcast_by_url">Ouzhpennañ ur podskignad gant e chomlec\'h RSS</string>
   <string name="discover">Dizoloeiñ</string>
   <string name="discover_hide">Kuzhat</string>
   <string name="discover_is_hidden">Dibabed ho peus kuzhat an alioù.</string>

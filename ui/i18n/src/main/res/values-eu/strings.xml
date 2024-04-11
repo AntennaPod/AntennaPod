@@ -193,7 +193,6 @@
   <string name="pause_label">Pausatu</string>
   <string name="stream_label">Entzun zuzenean</string>
   <string name="delete_label">Ezabatu</string>
-  <string name="delete_failed">Ezin da fitxategia ezabatu. Gailua berrabiarazteak lagun dezake.</string>
   <string name="delete_episode_label">Ezabatu saioa</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">deskargatutako kapitulu 1 ezabatu egin da</item>
@@ -287,11 +286,6 @@
   <string name="confirm_mobile_streaming_button_always">Beti</string>
   <string name="confirm_mobile_streaming_button_once">Behin</string>
   <!--Mediaplayer messages-->
-  <string name="playback_error_server_died">Zerbitzaria hil da</string>
-  <string name="playback_error_unsupported">Media mota hori ez da onartzen</string>
-  <string name="playback_error_timeout">Ekintzak denbora muga gainditu du</string>
-  <string name="playback_error_source">Ezinezkoa da fitxategia atzematea</string>
-  <string name="playback_error_unknown">Errore ezezaguna</string>
   <string name="no_media_playing_label">Ez dago ezer erreproduzitzen</string>
   <string name="unknown_media_key">AntennaPod - Media tekla ezezaguna: %1$d</string>
   <string name="error_file_not_found">Ez da fitxategirik aurkitu</string>
@@ -583,6 +577,7 @@
   <string name="choose_data_directory_message">Aukeratu datuen karpetaren erroa. AntennaPod-ek azpidirektorio egokiak sortuko ditu.</string>
   <string name="choose_data_directory_available_space">%1$s  %2$s -tik libre</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Bolumena jaitsi beharrean erreprodukzioa geldiarazi beste aplikazio batek soinuak erreproduzitzen dituenean</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Harpidetu</string>
   <string name="subscribing_label">Harpidetzen...</string>
@@ -613,7 +608,6 @@
   <string name="authentication_descr">Aldatu podcast honen eta bere saioen erabiltzaile izena eta pasahitza.</string>
   <string name="feed_tags_label">Etiketak</string>
   <string name="feed_tags_summary">Aldatu podcast honen etiketak zure harpidetzak antolatzen laguntzeko</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Hautatutako harpidetza guztien ohiko etiketak baino ez dira erakusten. Gainerako etiketek ez dute eraginik izango.</string>
   <string name="episode_filters_description">Saio bat deskarga automatikotik kanpo utzi behar den edo ez erabakitzeko erabilitako terminoen zerrenda</string>
   <string name="keep_updated">Mantendu eguneratuta</string>
   <string name="keep_updated_summary">Eguneratu podcast hau ere podcast guztiak (auto-)eguneratzean</string>
@@ -625,6 +619,7 @@
   <string name="statistics_episodes_started_total">Hasitako kapituluak/guztira:</string>
   <string name="statistics_view_all">Podcast guztietarako ikusi »</string>
   <string name="edit_url_menu">Editatu jarioaren URLa</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Berariazko erabilerako aplikazioen harpidetzak inportatuz …</string>
   <!--Add podcast fragment-->
@@ -632,9 +627,7 @@
   <string name="search_itunes_label">Bilatu Apple Podcasts-en</string>
   <string name="search_podcastindex_label">Bilatu Podcast Index-en</string>
   <string name="search_fyyd_label">Bilatu fyyd-en</string>
-  <string name="gpodnet_search_hint">Bilatu gpodder.net-en</string>
   <string name="advanced">Aurreratua</string>
-  <string name="add_podcast_by_url">Gehitu Podcasta RSS helbide bidez</string>
   <string name="discover">Aurkitu</string>
   <string name="discover_hide">Ezkutatu</string>
   <string name="discover_is_hidden">Iradokizunak ezkutatzea erabaki duzu.</string>

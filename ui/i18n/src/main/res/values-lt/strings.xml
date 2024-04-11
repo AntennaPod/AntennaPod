@@ -144,7 +144,6 @@
   <string name="pause_label">Pristabdyti</string>
   <string name="stream_label">Klausytis tiesiogiai</string>
   <string name="delete_label">Ištrinti</string>
-  <string name="delete_failed">Nepavyksta ištrinti failo. Įrenginio paleidimas iš naujo gali padėti.</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 atsiųstas epizodas ištrintas.</item>
     <item quantity="few">%d atsiųsti epizodai ištrinti.</item>
@@ -219,10 +218,6 @@
   <string name="confirm_mobile_streaming_button_always">Visada</string>
   <string name="confirm_mobile_streaming_button_once">Vienąkart</string>
   <!--Mediaplayer messages-->
-  <string name="playback_error_server_died">Serveris nepasiekiamas</string>
-  <string name="playback_error_unsupported">Nepalaikomas medijos tipas</string>
-  <string name="playback_error_timeout">Baigėsi operacijai skirtas laikas</string>
-  <string name="playback_error_source">Prieiga prie medijos failo negalima</string>
   <string name="no_media_playing_label">Atkūrimas nevyksta</string>
   <string name="unknown_media_key">„AntennaPod“ – nežinomas medijos klavišas: %1$d</string>
   <string name="error_file_not_found">Failas nerastas</string>
@@ -464,6 +459,7 @@
   <string name="choose_data_directory_message">Prašome pasirinkti pamatinį duomenų aplanką. „AntennaPod“ sukurs reikiamus poaplankius.</string>
   <string name="choose_data_directory_available_space">%1$s iš %2$s laisva</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Kai kita programėlė nori atkurti garsus, pristabdyti atkūrimą vietoje garsio sumažinimo</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Prenumeruoti</string>
   <string name="subscribing_label">Prenumeruojama...</string>
@@ -488,7 +484,6 @@
   <string name="authentication_descr">Keisti vartotojo vardą ir slaptažodį šiai tinklalaidei ir jos epizodams.</string>
   <string name="feed_tags_label">Žymės</string>
   <string name="feed_tags_summary">Keisti tinklalaidės žymes, kad palengvinti prenumeratų tvarkymą</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Rodomos tik žymės, bendros visoms pažymėtoms prenumeratoms. Kitos žymės liks nepaveiktos.</string>
   <string name="episode_filters_description">Žodžių ar frazių sąrašas, kuriuo remiantis sprendžiama, ar epizodas turėtų būti įtrauktas ar išbrauktas iš automatiškai atsiunčiamų epizodų</string>
   <string name="keep_updated_summary">Įtraukti šią tinklalaidę į (automatinį) visų tinklalaidžių atnaujinimą</string>
   <string name="auto_download_disabled_globally">Automatinis atsiuntimas išjungtas pagrindiniuose „AntennaPod“ nustatymuose</string>
@@ -498,14 +493,13 @@
   <string name="statistics_space_used">Naudojama disko vieta:</string>
   <string name="statistics_episodes_started_total">Pradėti epizodai/iš viso:</string>
   <string name="statistics_view_all">Žiūrėti visoms tinklalaidėms »</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Įkeliamos prenumeratos iš specializuotų programėlių...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Ieškoti tinklalaidės...</string>
   <string name="search_fyyd_label">Ieškoti „fyyd“</string>
-  <string name="gpodnet_search_hint">Ieškoti „gpodder.net“ svetainėje</string>
   <string name="advanced">Išplėstinis</string>
-  <string name="add_podcast_by_url">Pridėti tinklalaidės RSS srauto adresą</string>
   <string name="discover">Atraskite</string>
   <string name="discover_hide">Slėpti</string>
   <string name="discover_is_hidden">Pasirinkote slėpti pasiūlymus.</string>

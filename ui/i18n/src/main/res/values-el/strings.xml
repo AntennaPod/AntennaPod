@@ -164,7 +164,6 @@
   <string name="select_all_above">Επιλογή όλων των παραπάνω</string>
   <string name="select_all_below">Επιλογή όλων των παρακάτω</string>
   <string name="filtered_label">Φιλτραρισμένα</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Η τελευταία ανανέωση απέτυχε. Πατήστε για λεπτομέρειες</string>
   <string name="open_podcast">Άνοιγμα Podcast</string>
   <string name="please_wait_for_data">Παρακαλώ περιμένετε τα δεδομένα να φορτώσουν</string>
   <string name="updates_disabled_label">Οι ενημερώσεις απενεργοποιήθηκαν</string>
@@ -186,7 +185,6 @@
   <string name="pause_label">Παύση</string>
   <string name="stream_label">Ροή</string>
   <string name="delete_label">Διαγραφή</string>
-  <string name="delete_failed">Δεν ήταν δυνατή η διαγραφή του αρχείου. Η επανεκκίνηση της συσκευής μπορεί να βοηθήσει</string>
   <string name="delete_episode_label">Διαγραφή επεισοδίου</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 κατεβασμένο επεισόδιο διαγράφηκε.</item>
@@ -282,11 +280,6 @@
   <string name="confirm_mobile_streaming_button_once">Μία φορά</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[Δεν κατέστη δυνατή η αναπαραγωγή του αρχείου πολυμέσων.\n\n- Δοκιμάστε να κατεβάσετε εκ νέου το επεισόδιο\n- Ελέγξτε τη σύνδεση στο διαδίκτυο και σιγουρευτείτε ότι δεν χρησιμοποιείτε VPN ή οτι η σελίδα εισόδου χρήστη δεν μπλοκάρει την πρόσβαση.\n- Δοκιμάστε να πατήσετε παρατεταμένα και να μοιραστείτε τη \"Διεύθυνση Αρχείου Πολυμέσων\" στον περιηγητή σας για να δείτε εάν μπορεί να αναπαραχθεί εκεί. Εάν όχι, επικοινωνήστε με τους παραγωγούς του podcast.]]></string>
-  <string name="playback_error_server_died">Ο διακομιστής πέθανε</string>
-  <string name="playback_error_unsupported">Ο τύπος αρχείου δεν υποστηρίζεται</string>
-  <string name="playback_error_timeout">Η δραστηριότητα έληξε</string>
-  <string name="playback_error_source">Δεν κατέστη εφικτή η πρόσβαση στο αρχείο πολυμέσων</string>
-  <string name="playback_error_unknown">Άγνωστο σφάλμα</string>
   <string name="no_media_playing_label">Δεν απαραγωνται πολυμεσα</string>
   <string name="unknown_media_key">AntennaPod - Άγνωστα πλήκτρα πολυμέσων: %1$d</string>
   <string name="error_file_not_found">Αρχείο δε βρέθηκε</string>
@@ -556,7 +549,6 @@
     <item quantity="other">%d ώρες</item>
   </plurals>
   <string name="auto_enable_label">Αυτόματη ενεργοποίηση του χρονοδιακόπτη ύπνου με το πάτημα αναπαραγωγής</string>
-  <string name="auto_enable_label_with_times">Αυτόματη ενεργοποίηση χρονοδιακόπτη ύπνου όταν πατίεται το κουμπί αναπαραγωγής μεταξύ %s και %s</string>
   <string name="sleep_timer_enabled_label">Ενεργοποίηση χρονοδιακόπτη ύπνου</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">Επιλέξτε πάροχο συγχρονισμού</string>
@@ -626,7 +618,6 @@
   <string name="feed_tags_label">Ετικέτες</string>
   <string name="feed_tags_summary">Αλλάξτε τις ετικέτες του podcast για να βοηθηθείτε να οργανώσετε τις συνδορμές σας </string>
   <string name="feed_folders_include_root">Εμφάνιση του podcast στην κύρια λίστα</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Εμφανίζονται μονάχα διαδεδομένες ετικέτες για όλες τις επιλεγμένες συνδρομές Οι άλλες ετικέτες παραμένουν ανεπηρέαστες.</string>
   <string name="auto_download_settings_label">Ρυθμίσεις Αυτόματης Λήψης</string>
   <string name="episode_filters_label">Φίλτρο επεισοδίων</string>
   <string name="episode_filters_description">Λίστα όρων που χρησιμοποιούνται για να αποφασιστεί εάν ένα επεισόδιο θα πρέπει να συμπεριληφθεί ή να αποκλειστεί όταν πραγματοποιείται αυτόματη λήψη</string>
@@ -652,9 +643,7 @@
   <string name="search_itunes_label">Αναζήτηση σε Apple Podcasts</string>
   <string name="search_podcastindex_label">Αναζήτηση σε Podcast Index</string>
   <string name="search_fyyd_label">Αναζήτηση σε fyyd</string>
-  <string name="gpodnet_search_hint">Αναζήτηση στο gpodder.net</string>
   <string name="advanced">Προχωρημένα</string>
-  <string name="add_podcast_by_url">Προσθήκη Podcast μέσω διεύθυνσης RSS</string>
   <string name="discover">Ανακαλύψτε</string>
   <string name="discover_hide">Απόκρυψη</string>
   <string name="discover_is_hidden">Επιλέξατε να αποκρύψετε τις προτάσεις</string>

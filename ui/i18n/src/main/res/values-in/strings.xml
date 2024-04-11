@@ -150,7 +150,6 @@
   <string name="pause_label">Jeda</string>
   <string name="stream_label">Streaming</string>
   <string name="delete_label">Hapus</string>
-  <string name="delete_failed">Tidak dapat menghapus berkas. Mem-boot ulang perangkat mungkin membantu.</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="other">%depisode terunduh dihapus.</item>
   </plurals>
@@ -220,10 +219,6 @@
   <string name="confirm_mobile_streaming_button_always">Selalu</string>
   <string name="confirm_mobile_streaming_button_once">Sekali</string>
   <!--Mediaplayer messages-->
-  <string name="playback_error_server_died">Server mati</string>
-  <string name="playback_error_unsupported">Tipe media tidak didukung</string>
-  <string name="playback_error_timeout">Masa operasi habis</string>
-  <string name="playback_error_source">Tidak dapat mengakses berkas media</string>
   <string name="no_media_playing_label">Tidak ada media yang dimainkan</string>
   <string name="unknown_media_key">AntennaPod - Kunci media tidak diketahui: %1$d</string>
   <string name="error_file_not_found">Berkas tidak ditemukan</string>
@@ -458,7 +453,6 @@
     <item quantity="other">%d jam</item>
   </plurals>
   <string name="auto_enable_label">Aktifkan timer tidur secara otomatis saat menekan \'putar\'</string>
-  <string name="auto_enable_label_with_times">Aktifkan timer tidur secara otomatis saat menekan \'putar\' antara waktu %s dan %s</string>
   <string name="auto_enable_change_times">Ubah jangka waktu</string>
   <string name="sleep_timer_enabled_label">Timer tidur diaktifkan</string>
   <!--Synchronisation-->
@@ -504,6 +498,7 @@
   <string name="choose_data_directory_available_space">%1$s dari %2$s kosong</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Saat aplikasi lain memutar suara, jeda pemutaran alih-alih menurunkan volume suara.</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Jeda untuk interupsi</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Langganan</string>
   <string name="subscribing_label">Berlangganan...</string>
@@ -529,7 +524,6 @@
   <string name="authentication_descr">Ubah nama pengguna dan kata sandi untuk podcast ini dan episodenya.</string>
   <string name="feed_tags_label">Label</string>
   <string name="feed_tags_summary">Ganti label podcast ini untuk membantu mengelola langganan Anda</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Hanya label biasa dari langganan yang sudah dipilih yang ditampilkan. Label yang lain tidak terpengaruh.</string>
   <string name="episode_filters_description">Daftar ketentuan yang digunakan untuk memutuskan jika episode sebuah episode harus disertakan atau dikecualikan ketika mengunduh otomatis</string>
   <string name="exclude_terms">Kecualikan episode yang berisikan istilah yang ditentukan di bawah</string>
   <string name="include_terms">Masukkan hanya jika episode berisikan istilah yang ditentukan di bawah</string>
@@ -544,14 +538,13 @@
   <string name="statistics_view_all">Lihat untuk semua podcast »</string>
   <string name="edit_url_menu">Sunting URL umpan</string>
   <string name="edit_url_confirmation_msg">Mengganti alamat RSS dapat merusak status pemutaran dan daftar episode podcast. Kami menyarankan untuk TIDAK mengubahnya dan kami tidak dapat memberikan bantuan jika ada yang salah. Aksi ini tidak dapat dikembalikan. Langganan yang rusak tidak dapat diperbaiki hanya dengan mengganti alamatnya kembali. Sebaiknya buat cadangan jika tetap ingin melanjutkan.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Impor langganan dari aplikasi bertujuan tunggal...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Cari podcast...</string>
   <string name="search_fyyd_label">Cari fyyd</string>
-  <string name="gpodnet_search_hint">Telusur gpodder.net</string>
   <string name="advanced">Lanjutan</string>
-  <string name="add_podcast_by_url">Tambah podcast dari alamat RSS</string>
   <string name="discover">Temukan</string>
   <string name="discover_hide">Sembunyikan</string>
   <string name="discover_is_hidden">Anda memilih untuk menyembunyikan saran.</string>

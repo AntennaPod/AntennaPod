@@ -182,7 +182,6 @@
   <string name="select_all_above">Selecionar tudo acima</string>
   <string name="select_all_below">Selecionar tudo abaixo</string>
   <string name="filtered_label">Filtrado</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Falha na última atualização. Clique para ver mais detalhes.</string>
   <string name="open_podcast">Abrir podcast</string>
   <string name="please_wait_for_data">Por favor, aguarde até que os dados sejam carregados</string>
   <string name="updates_disabled_label">Atualizações desabilitadas</string>
@@ -207,8 +206,6 @@
   <string name="pause_label">Pausar</string>
   <string name="stream_label">Stream</string>
   <string name="delete_label">Excluir</string>
-  <string name="delete_failed">Não foi possível excluir o arquivo. Experimente reiniciar o dispositivo.</string>
-  <string name="delete_local_failed">Não foi possível excluir o arquivo. Tente reconectar a pasta local na tela de informações do podcast.</string>
   <string name="delete_episode_label">Excluir o episódio</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 episódio baixado deletado.</item>
@@ -314,11 +311,6 @@
   <string name="confirm_mobile_streaming_button_once">Uma vez</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[Não foi possível reproduzir o arquivo de mídia.\n\n- Tente excluir e baixar novamente o episódio.\n- Verifique sua conexão de rede e certifique-se de que nenhuma VPN ou página de login esteja bloqueando o acesso.\n- Tente pressionar e compartilhar o \"Endereço de mídia\" com seu navegador para ver se ele pode ser reproduzido lá. Caso contrário, entre em contato com os criadores do podcast.]]></string>
-  <string name="playback_error_server_died">O servidor morreu</string>
-  <string name="playback_error_unsupported">Tipo de mídia não suportado</string>
-  <string name="playback_error_timeout">Tempo da operação expirou</string>
-  <string name="playback_error_source">Não foi possível acessar o arquivo de mídia</string>
-  <string name="playback_error_unknown">Erro desconhecido</string>
   <string name="no_media_playing_label">Nenhuma mídia em reprodução</string>
   <string name="unknown_media_key">AntennaPod - Chave de mídia desconhecida: %1$d</string>
   <string name="error_file_not_found">Arquivo não encontrado</string>
@@ -478,8 +470,7 @@
   <string name="pref_expandNotify_sum">Isso normalmente expande a notificação para exibir os botões de reprodução.</string>
   <string name="pref_persistNotify_title">Controles de reprodução persistentes</string>
   <string name="pref_persistNotify_sum">Mantenha os controles de notificação e tela de bloqueio quando a reprodução estiver pausada</string>
-    <string name="pref_full_notification_buttons_title">Definir botões na notificação</string>
-  <string name="pref_full_notification_buttons_sum">Alterar botões de reprodução mostrados na notificação</string>
+  <string name="pref_full_notification_buttons_title">Definir botões na notificação</string>
   <string name="pref_enqueue_location_title">Localização na fila</string>
   <string name="pref_enqueue_location_sum">Adicionar episódios para: %1$s</string>
   <string name="enqueue_location_back">Final</string>
@@ -607,7 +598,6 @@
     <item quantity="other">%d horas</item>
   </plurals>
   <string name="auto_enable_label">Ativar temporizador automaticamente ao tocar no botão Reproduzir</string>
-  <string name="auto_enable_label_with_times">Ativar automaticamente o temporizador se apertar Reproduzir entre %s e %s</string>
   <string name="auto_enable_change_times">Alterar intervalo</string>
   <string name="sleep_timer_enabled_label">Temporizador habilitado</string>
   <!--Synchronisation-->
@@ -653,6 +643,7 @@
   <string name="choose_data_directory_available_space">%1$s de %2$s livre(s)</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Pause a reprodução em vez de abaixar o volume quando outro aplicativo reproduzir sons</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pausa nas interrupções</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Assinar</string>
   <string name="subscribing_label">Assinando...</string>
@@ -685,7 +676,6 @@
   <string name="feed_tags_label">Etiquetas</string>
   <string name="feed_tags_summary">Altere as etiquetas desse podcast para ajudar a organizar suas assinaturas</string>
   <string name="feed_folders_include_root">Mostrar este podcast na lista principal</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} São mostradas apenas as etiquetas comuns às assinaturas selecionadas. As outras etiquetas não são afetadas.</string>
   <string name="auto_download_settings_label">Configurações do download automático</string>
   <string name="episode_filters_label">Filtro de episódios</string>
   <string name="episode_filters_description">Lista de termos utilizados para decidir se um episódio deve ser incluído ou excluído no download automático</string>
@@ -704,6 +694,7 @@
   <string name="statistics_view_all">Visualização para todos os podcasts »</string>
   <string name="edit_url_menu">Editar URL da fonte</string>
   <string name="edit_url_confirmation_msg">Alterar o endereço RSS pode facilmente desfazer a lista e o estado atual de reprodução do podcast. Nós NÃO recomendamos a mudança e NÃO forneceremos suporte caso algo dê errado. Este processo não pode ser desfeito. A inscrição danificada NÃO pode ser reparada com a alteração para o endereço anterior. É recomendável fazer um backup antes de prosseguir.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importando assinaturas de aplicativos de finalidade única...</string>
   <!--Add podcast fragment-->
@@ -711,9 +702,7 @@
   <string name="search_itunes_label">Pesquisar em Apple Podcasts</string>
   <string name="search_podcastindex_label">Pesquisar índice de podcast</string>
   <string name="search_fyyd_label">Pesquisar em fyyd</string>
-  <string name="gpodnet_search_hint">Buscar no gpodder.net</string>
   <string name="advanced">Avançado</string>
-  <string name="add_podcast_by_url">Adicionar podcast usando um endereço RSS</string>
   <string name="discover">Descobrir</string>
   <string name="discover_hide">Esconder</string>
   <string name="discover_is_hidden">Você selecionou esconder sugestões.</string>

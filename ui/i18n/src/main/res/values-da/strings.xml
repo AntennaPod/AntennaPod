@@ -176,7 +176,6 @@
   <string name="select_all_above">Vælg alt ovenfor</string>
   <string name="select_all_below">Vælg alt nedenfor</string>
   <string name="filtered_label">Filtrerede</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Sidste opdatering mislykkedes. Tryk for at se detaljer.</string>
   <string name="open_podcast">Åbn podcast</string>
   <string name="please_wait_for_data">Vær venlig og vent til data\'et er indlæst</string>
   <string name="updates_disabled_label">Opdateringer deaktiveret</string>
@@ -199,8 +198,6 @@
   <string name="pause_label">Sæt på pause</string>
   <string name="stream_label">Stream</string>
   <string name="delete_label">Slet</string>
-  <string name="delete_failed">Kan ikke slette fil. En genstart af enheden vil sandsynligvis hjælpe.</string>
-  <string name="delete_local_failed">Kan ikke slette filen. Prøv at forbinde den lokale mappe igen fra podcast-infoskærmen.</string>
   <string name="delete_episode_label">Slet afsnit</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 overført afsnit slettet.</item>
@@ -299,11 +296,6 @@
   <string name="confirm_mobile_streaming_button_once">Én gang</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[Mediefilen kunne ikke afspilles.\n\n- Prøv at slette afsnittet og hente den igen.\n- Tjek din netværksforbindelse, og sørg for, at ingen VPN eller login-side blokerer for adgangen.\n- Prøv at trykke længe på og dele \"Medieadressen\" med din webbrowser for at se, om den kan afspilles der. Hvis ikke, så kontakt podcastens producenter.]]></string>
-  <string name="playback_error_server_died">Serveren døde</string>
-  <string name="playback_error_unsupported">Kan ikke afspille denne medietype</string>
-  <string name="playback_error_timeout">Handlingen annulleret fordi den tog for lang tid</string>
-  <string name="playback_error_source">Kunne ikke tilgå mediefil</string>
-  <string name="playback_error_unknown">Ukendt fejl</string>
   <string name="no_media_playing_label">Ingen medier afspiller</string>
   <string name="unknown_media_key">AntennaPod - Ukendt medienøgle: %1$d</string>
   <string name="error_file_not_found">Fil ikke fundet</string>
@@ -463,8 +455,7 @@
   <string name="pref_expandNotify_sum">Dette udvider normalt notifikationen til at vise afspilningsknapper.</string>
   <string name="pref_persistNotify_title">Vedholdende afspilningsknapper</string>
   <string name="pref_persistNotify_sum">Bevar notifikations- og låseskærmskontrol, når afspilningen er sat på pause</string>
-    <string name="pref_full_notification_buttons_title">Indstil notifikationsknapper</string>
-  <string name="pref_full_notification_buttons_sum">Skift afspilningsknapperne på afspilningsnotifikationen.</string>
+  <string name="pref_full_notification_buttons_title">Indstil notifikationsknapper</string>
   <string name="pref_enqueue_location_title">Køplacering</string>
   <string name="pref_enqueue_location_sum">Føj afsnit til: %1$s</string>
   <string name="enqueue_location_back">Slutningen</string>
@@ -593,7 +584,6 @@
     <item quantity="other">%d dage</item>
   </plurals>
   <string name="auto_enable_label">Aktivér automatisk slukkefunktion ved at tryk på afspil</string>
-  <string name="auto_enable_label_with_times">Aktivér automatisk slukkefunktion ved tryk på afspil mellem %s og %s</string>
   <string name="auto_enable_change_times">Skift tidsinterval</string>
   <string name="sleep_timer_enabled_label">Søvntimer slået til</string>
   <!--Synchronisation-->
@@ -639,6 +629,7 @@
   <string name="choose_data_directory_available_space">%1$s af %2$s ledig</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Sæt afspilning på pause i stedet for at sænke lydniveauet, når en anden app vil afspille lyde</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Sæt på pause ved afbrydelser</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Abonner</string>
   <string name="subscribing_label">Abonnerer ...</string>
@@ -671,7 +662,6 @@
   <string name="feed_tags_label">Etiketter</string>
   <string name="feed_tags_summary">Ændr etiketterne for denne podcast for at hjælpe med organiseringen af dine abonnementer</string>
   <string name="feed_folders_include_root">Vis denne podcast i hovedlisten</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Kun fælles etiketter fra alle valgte abonnementer vises. Andre etiketter forbliver upåvirkede.</string>
   <string name="auto_download_settings_label">Indstillinger for automatisk overførsel</string>
   <string name="episode_filters_label">Afsnitsfilter</string>
   <string name="episode_filters_description">Liste af ord, der bliver brugt til at beslutte, om et afsnit skal medtages eller udelades ved automatisk overførsel</string>
@@ -690,6 +680,7 @@
   <string name="statistics_view_all">Vis for alle podcasts »</string>
   <string name="edit_url_menu">Rediger feed-URL</string>
   <string name="edit_url_confirmation_msg">Hvis du ændrer RSS-adressen, kan du nemt ødelægge podcastens afspilningstilstand og afsnitslisterne for podcasten. Vi anbefaler IKKE at ændre den og vil IKKE yde support, hvis noget går galt. Dette kan ikke gøres om. Det ødelagte abonnement KAN IKKE repareres ved blot at ændre adressen tilbage. Vi foreslår, at du opretter en sikkerhedskopi, før du fortsætter.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importerer abonnementer fra enkeltformålsapps…</string>
   <!--Add podcast fragment-->
@@ -697,9 +688,7 @@
   <string name="search_itunes_label">Søg i Apple Podcasts</string>
   <string name="search_podcastindex_label">Søg i Podcast Index</string>
   <string name="search_fyyd_label">Søg i fyyd</string>
-  <string name="gpodnet_search_hint">Søg på gpodder.net</string>
   <string name="advanced">Avanceret</string>
-  <string name="add_podcast_by_url">Tilføj podcast via RSS-adresse</string>
   <string name="discover">Opdag</string>
   <string name="discover_hide">Skjul</string>
   <string name="discover_is_hidden">Du valgte at skjule forslag.</string>

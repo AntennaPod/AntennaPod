@@ -176,7 +176,6 @@
   <string name="select_all_above">Alles oberhalb auswählen</string>
   <string name="select_all_below">Alles unterhalb auswählen</string>
   <string name="filtered_label">Gefiltert</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Letzte Aktualisierung fehlgeschlagen. Tippen, um Details anzuzeigen.</string>
   <string name="open_podcast">Podcast öffnen</string>
   <string name="please_wait_for_data">Bitte warte, bis die Daten geladen sind</string>
   <string name="updates_disabled_label">Updates deaktiviert</string>
@@ -199,8 +198,6 @@
   <string name="pause_label">Pausieren</string>
   <string name="stream_label">Streamen</string>
   <string name="delete_label">Löschen</string>
-  <string name="delete_failed">Die Datei kann nicht gelöscht werden. Eventuell hilft es, das Gerät neu zu starten.</string>
-  <string name="delete_local_failed">Die Datei kann nicht gelöscht werden. Versuche, den lokalen Ordner über den Podcast-Infobildschirm erneut zu verbinden.</string>
   <string name="delete_episode_label">Episode löschen</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 heruntergeladene Episode gelöscht.</item>
@@ -299,11 +296,6 @@
   <string name="confirm_mobile_streaming_button_once">Einmalig</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[Die Mediendatei konnte nicht abgespielt werden.\n\n- Versuche die Episode zu löschen und erneut herunterzuladen.\n- Überprüfe die Netzwerkverbindung und stelle sicher, dass kein VPN oder eine Anmeldeseite den Zugriff blockiert.\n- Tippe lange auf die Episode und teile die \"Medienadresse\" mit deinem Webbrowser, um zu sehen, ob sie dort abgespielt werden kann. Wenn nicht, wende dich an die Ersteller des Podcasts.]]></string>
-  <string name="playback_error_server_died">Server ist offline</string>
-  <string name="playback_error_unsupported">Dateityp nicht unterstützt</string>
-  <string name="playback_error_timeout">Zeitüberschreitung</string>
-  <string name="playback_error_source">Auf Mediendatei kann nicht zugegriffen werden</string>
-  <string name="playback_error_unknown">Unbekannter Fehler</string>
   <string name="no_media_playing_label">Keine Medienwiedergabe</string>
   <string name="unknown_media_key">AntennaPod - Unbekannte Medientaste: %1$d</string>
   <string name="error_file_not_found">Datei nicht gefunden</string>
@@ -463,7 +455,7 @@
   <string name="pref_expandNotify_sum">Dies erweitert normalerweise die Benachrichtigung und zeigt so die Wiedergabe-Buttons an</string>
   <string name="pref_persistNotify_title">Persistente Wiedergabesteuerung</string>
   <string name="pref_persistNotify_sum">Bedienelemente in der Benachrichtigungsleiste und auf dem Sperrbildschirm anzeigen, während die Wiedergabe pausiert ist</string>
-    <string name="pref_full_notification_buttons_title">Benachrichtigungs-Buttons einstellen</string>
+  <string name="pref_full_notification_buttons_title">Benachrichtigungs-Buttons einstellen</string>
   <string name="pref_enqueue_location_title">Position beim Einreihen</string>
   <string name="pref_enqueue_location_sum">Episoden hinzufügen: %1$s </string>
   <string name="enqueue_location_back">Hinten</string>
@@ -592,7 +584,6 @@
     <item quantity="other">%d Tage</item>
   </plurals>
   <string name="auto_enable_label">Schlummerfunktion automatisch aktivieren, wenn auf Play gedrückt wird</string>
-  <string name="auto_enable_label_with_times">Schlummerfunktion automatisch aktivieren, wenn zwischen %s und %s auf Play gedrückt wird</string>
   <string name="auto_enable_change_times">Zeitbereich ändern</string>
   <string name="sleep_timer_enabled_label">Schlummerfunktion aktiviert</string>
   <!--Synchronisation-->
@@ -638,6 +629,7 @@
   <string name="choose_data_directory_available_space">%1$s von %2$s frei</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Wiedergabe pausieren, anstatt die Lautstärke zu reduzieren, wenn eine andere Anwendung Töne abspielt</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Bei Unterbrechungen pausieren</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Abonnieren</string>
   <string name="subscribing_label">Abonniere…</string>
@@ -670,7 +662,6 @@
   <string name="feed_tags_label">Tags</string>
   <string name="feed_tags_summary">Ändere die Schlagworte (Tags) dieses Podcasts, um deine Abonnements zu organisieren</string>
   <string name="feed_folders_include_root">Diesen Podcast in der Haupliste anzeigen</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Es werden nur gemeinsame Tags aus allen ausgewählten Abonnements angezeigt. Andere Tags bleiben davon unberührt.</string>
   <string name="auto_download_settings_label">Einstellungen für Automatischen Download</string>
   <string name="episode_filters_label">Episoden-Filter</string>
   <string name="episode_filters_description">Liste von Begriffen, die dazu verwendet wird, Episoden beim automatischen Download einzubeziehen oder auszuschließen</string>
@@ -689,6 +680,7 @@
   <string name="statistics_view_all">Für alle Podcasts ansehen »</string>
   <string name="edit_url_menu">Feed-URL bearbeiten</string>
   <string name="edit_url_confirmation_msg">Das Ändern der RSS-Adresse kann leicht den Abgespielt-Zustand und die Episoden des Podcasts beeinträchtigen. Wir empfehlen NICHT, die Adresse zu ändern und bieten KEINEN Support an, wenn etwas schief geht. Dies kann nicht rückgängig gemacht werden. Das defekte Abonnement kann NICHT repariert werden, indem die Adresse einfach wieder geändert wird. Wir empfehlen, eine Sicherungskopie zu erstellen, bevor du fortfährst.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importiere Abonnements aus Single-Purpose Apps</string>
   <!--Add podcast fragment-->
@@ -696,9 +688,7 @@
   <string name="search_itunes_label">Apple Podcasts durchsuchen</string>
   <string name="search_podcastindex_label">Podcast Index durchsuchen</string>
   <string name="search_fyyd_label">fyyd durchsuchen</string>
-  <string name="gpodnet_search_hint">gpodder.net durchsuchen</string>
   <string name="advanced">Fortgeschritten</string>
-  <string name="add_podcast_by_url">Podcast über RSS-Adresse hinzufügen</string>
   <string name="discover">Entdecken</string>
   <string name="discover_hide">Ausblenden</string>
   <string name="discover_is_hidden">Du hast ausgewählt, Vorschläge auszublenden.</string>

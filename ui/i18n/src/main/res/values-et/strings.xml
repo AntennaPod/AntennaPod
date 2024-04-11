@@ -160,7 +160,6 @@
   <string name="pause_label">Peata</string>
   <string name="stream_label">Voogedastusena</string>
   <string name="delete_label">Kustuta</string>
-  <string name="delete_failed">Faili ei saa kustutada. Aidata võib seadme taaskäivitamine.</string>
   <string name="delete_episode_label">Kustuta saade</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 allalaaditud saade kustutatud.</item>
@@ -237,10 +236,6 @@
   <string name="confirm_mobile_streaming_button_always">Alati</string>
   <string name="confirm_mobile_streaming_button_once">Üks kord</string>
   <!--Mediaplayer messages-->
-  <string name="playback_error_server_died">Server suri ära</string>
-  <string name="playback_error_unsupported">Toetamata meedia liik</string>
-  <string name="playback_error_timeout">Tegevus aegus</string>
-  <string name="playback_error_source">Puudub ligipääs meediafailile</string>
   <string name="no_media_playing_label">Mingit faili ei esitata</string>
   <string name="unknown_media_key">AntennaPod - Tundmatu meedia võti: %1$d</string>
   <string name="error_file_not_found">Faili ei leitud</string>
@@ -460,6 +455,7 @@
   <string name="choose_data_directory_message">Palun vali oma andmete kaust. AntennaPod loob vajalikud alamkaustad.</string>
   <string name="choose_data_directory_available_space">vaba on %1$s %2$s-st</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Kui teine äpp tahab helisid mängida, pausi esitus, selle asemel et vähendada helitugevust</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Telli</string>
   <string name="subscribing_label">Tellimine...</string>
@@ -487,14 +483,13 @@
   <string name="statistics_episodes_on_device">Saated seadmes:</string>
   <string name="statistics_space_used">Kasutatud kettaruum:</string>
   <string name="statistics_view_all">Vaata kõiki taskuhäälinguid »</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Tellimuste importimine teistest äppidest...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Otsi taskuhäälingut...</string>
   <string name="search_fyyd_label">Search fyyd-ist</string>
-  <string name="gpodnet_search_hint">Otsi gpodder.net-ist</string>
   <string name="advanced">Täpsem</string>
-  <string name="add_podcast_by_url">Lisa taskuhääling RSS aadressiga</string>
   <string name="discover">Avasta</string>
   <string name="discover_hide">Peida</string>
   <string name="discover_is_hidden">Valisid soovituste peitmise.</string>

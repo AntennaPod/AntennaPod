@@ -176,7 +176,6 @@
   <string name="select_all_above">Seleccionar tots cap amunt</string>
   <string name="select_all_below">Seleccionar cap a baix</string>
   <string name="filtered_label">Filtrat</string>
-  <string name="refresh_failed_msg">Error en l\'actualització</string>
   <string name="open_podcast">Obre el pòdcast</string>
   <string name="please_wait_for_data">Espereu fins a que les dades estiguen carregades</string>
   <string name="updates_disabled_label">Actualitzacions desactivades</string>
@@ -199,8 +198,6 @@
   <string name="pause_label">Pausa</string>
   <string name="stream_label">Reprodueix sense baixar</string>
   <string name="delete_label">Esborra</string>
-  <string name="delete_failed">No s\'ha pogut esborrar el fitxer. Reiniciar el dispositiu pot ajudar.</string>
-  <string name="delete_local_failed">No es pot suprimir el fitxer. Proveu de tornar a connectar la carpeta local des de la pantalla d\'informació del pòdcast.</string>
   <string name="delete_episode_label">Esborrar episodi</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 episodi descarregat, suprimit.</item>
@@ -299,11 +296,6 @@
   <string name="confirm_mobile_streaming_button_once">Una vegada</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[El fitxer multimèdia no es pot reproduir.\n\n- Proveu d\'esborrar i tornar a baixar l\'episodi.\n- Comproveu la vostra connexió a internet i assegureu-vos que cap VPN o pàgina d\'inici de sessió bloca l\'accés.\n- Proveu de mantenir premut i compartint l\'«Adreça del mitjà» al vostre navegador web per veure si el podeu reproduir allà. Si no, contacteu amb el creador del pòdcast.]]></string>
-  <string name="playback_error_server_died">El servidor no està operatiu</string>
-  <string name="playback_error_unsupported">Tipus de medi no suportat.</string>
-  <string name="playback_error_timeout">La operació ha tardat massa.</string>
-  <string name="playback_error_source">No s\'ha pogut accedir al arxiu de media.</string>
-  <string name="playback_error_unknown">Error desconegut</string>
   <string name="no_media_playing_label">No s\'està reproduint res</string>
   <string name="unknown_media_key">AntennaPod - Control desconegut: %1$d</string>
   <string name="error_file_not_found">Arxiu no trobat</string>
@@ -463,8 +455,7 @@
   <string name="pref_expandNotify_sum">Això normalment expandeix la notificació per a mostrar botons de reproducció</string>
   <string name="pref_persistNotify_title">Contorls de reproducció persistents</string>
   <string name="pref_persistNotify_sum">Conserveu les notificacions i els controls de la pantalla de bloqueig quan la reproducció estigui en pausa</string>
-    <string name="pref_full_notification_buttons_title">Configura els botons de notificació</string>
-  <string name="pref_full_notification_buttons_sum">Canvia els botons de reproducció des de la notificació de reproducció.</string>
+  <string name="pref_full_notification_buttons_title">Configura els botons de notificació</string>
   <string name="pref_enqueue_location_title">Afegir a la cua en determinada posició</string>
   <string name="pref_enqueue_location_sum">Afegir episodis a: %1$s</string>
   <string name="enqueue_location_back">Enrere</string>
@@ -593,7 +584,6 @@
     <item quantity="other">%ddies</item>
   </plurals>
   <string name="auto_enable_label">Activació automàtica del temporitzador en reproduir</string>
-  <string name="auto_enable_label_with_times">Activació automàtica del temporitzador en reproduir entre les hores següents: %s-%s</string>
   <string name="auto_enable_change_times">Canvia el rang de temps</string>
   <string name="sleep_timer_enabled_label">Temporitzador habilitat</string>
   <!--Synchronisation-->
@@ -639,6 +629,7 @@
   <string name="choose_data_directory_available_space">%1$s de %2$s lliures</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Pausa la reproducció en lloc de baixar el volum quan una altra app necessiti reproduir sons</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pausa per interrupcions</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Subscriu</string>
   <string name="subscribing_label">Subscrivint...</string>
@@ -671,7 +662,6 @@
   <string name="feed_tags_label">Etiquetes</string>
   <string name="feed_tags_summary">Canvia les etiquetes d\'aquest pòdcast per ajudar-vos a organitzar les subscripcions</string>
   <string name="feed_folders_include_root">Mostra aquest pòdcast a la llista principal</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Només es mostren les etiquetes comunes a diverses subscripcions. No afecta a altres etiquetes.</string>
   <string name="auto_download_settings_label">Descarregar les confguracions automàticament</string>
   <string name="episode_filters_label">Filtra els termes</string>
   <string name="episode_filters_description">Llistat de termes usats per decidir si un episodi s\'ha d\'incloure o excloure en descarregar automàticament</string>
@@ -690,6 +680,7 @@
   <string name="statistics_view_all">Veure per tots els podcasts »</string>
   <string name="edit_url_menu">Edita l\'enllaç del canal</string>
   <string name="edit_url_confirmation_msg">Canviar l\'adreça RSS pot trencar fàcilment l\'estat de reproducció i les llistes d\'episodis del pòdcast. NO recomanem canviar-lo i NO oferirem suport si alguna cosa va malament. Això no es pot desfer. La subscripció trencada NO es pot reparar simplement canviant l\'adreça. Us suggerim que creeu una còpia de seguretat abans de continuar.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">S\'estan important les subscripcions des de les apps de propòsit únic...</string>
   <!--Add podcast fragment-->
@@ -697,9 +688,7 @@
   <string name="search_itunes_label">Cerca a Apple Podcasts</string>
   <string name="search_podcastindex_label">Cerca a Podcast Index</string>
   <string name="search_fyyd_label">Cerca a fyyd</string>
-  <string name="gpodnet_search_hint">Cerca a gpodder.net</string>
   <string name="advanced">Avançat</string>
-  <string name="add_podcast_by_url">Afegir Podcast per adreça RSS</string>
   <string name="discover">Descobreix</string>
   <string name="discover_hide">Amaga</string>
   <string name="discover_is_hidden">Has seleccionat amagar els suggeriments.</string>

@@ -176,7 +176,6 @@
   <string name="select_all_above">Alles hierboven selecteren</string>
   <string name="select_all_below">Alles hieronder selecteren</string>
   <string name="filtered_label">Gefilterd</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Vernieuwen mislukt. Tik voor meer informatie.</string>
   <string name="open_podcast">Podcast openen</string>
   <string name="please_wait_for_data">Wacht tot de gegevens geladen zijn</string>
   <string name="updates_disabled_label">Updates zijn uitgeschakeld</string>
@@ -199,8 +198,6 @@
   <string name="pause_label">Pauzeren</string>
   <string name="stream_label">Streamen</string>
   <string name="delete_label">Verwijderen</string>
-  <string name="delete_failed">Kan het bestand niet verwijderen. Toestel herstarten helpt wellicht.</string>
-  <string name="delete_local_failed">Kan het bestand niet verwijderen. Probeer opnieuw te verbinden met de lokale map van het podcast-infoscherm.</string>
   <string name="delete_episode_label">Aflevering verwijderen</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 gedownloade aflevering verwijderd.</item>
@@ -299,11 +296,6 @@
   <string name="confirm_mobile_streaming_button_once">Eenmalig</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[Het mediabestand kon niet worden afgespeeld.\n\n- Probeer de aflevering te verwijderen en opnieuw te downloaden.\n- Controleer je netwerkverbinding en zorg dat geen VPN of inlogpagina je toegang blokkeert.\n- Probeer lang te drukken en het \"Media-adres\" naar je webbrowser te delen om te zien of het daar afgespeeld kan worden. Zo niet, neem contact op met de podcastmakers.]]></string>
-  <string name="playback_error_server_died">Serververbinding verbroken</string>
-  <string name="playback_error_unsupported">Niet-ondersteund bestandstype</string>
-  <string name="playback_error_timeout">Operatie over tijd</string>
-  <string name="playback_error_source">Geen toegang tot mediabestand</string>
-  <string name="playback_error_unknown">Onbekende fout</string>
   <string name="no_media_playing_label">Er wordt geen media afgespeeld</string>
   <string name="unknown_media_key">AntennaPod - onbekende mediasleutel: %1$d</string>
   <string name="error_file_not_found">Bestand niet aangetroffen</string>
@@ -463,8 +455,7 @@
   <string name="pref_expandNotify_sum">Dit breidt de melding meestal uit om afspeelknoppen te tonen.</string>
   <string name="pref_persistNotify_title">Permanente afspeelknoppen</string>
   <string name="pref_persistNotify_sum">Melding en bediening op vergrendelscherm houden indien gepauzeerd</string>
-    <string name="pref_full_notification_buttons_title">Meldingsknoppen instellen</string>
-  <string name="pref_full_notification_buttons_sum">Pas de bedieningsknoppen op de melding aan.</string>
+  <string name="pref_full_notification_buttons_title">Meldingsknoppen instellen</string>
   <string name="pref_enqueue_location_title">Plaatsing in wachtrij</string>
   <string name="pref_enqueue_location_sum">Afleveringen toevoegen: %1$s</string>
   <string name="enqueue_location_back">als laatste</string>
@@ -593,7 +584,6 @@
     <item quantity="other">%d dagen</item>
   </plurals>
   <string name="auto_enable_label">Automatisch de slaaptimer activeren door op afspelen te klikken</string>
-  <string name="auto_enable_label_with_times">Automatisch de slaaptimer activeren door tussen %s en %s op afspelen te klikken</string>
   <string name="auto_enable_change_times">Verander tijdsduur</string>
   <string name="sleep_timer_enabled_label">Slaaptimer ingeschakeld</string>
   <!--Synchronisation-->
@@ -639,6 +629,7 @@
   <string name="choose_data_directory_available_space">%1$s van %2$s beschikbaar</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Onderbreek het afspelen in plaats van het volume te verlagen wanneer een andere app geluiden wil afspelen</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pauzeren bij onderbrekingen</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Abonneren</string>
   <string name="subscribing_label">Bezig met abonneren...</string>
@@ -671,7 +662,6 @@
   <string name="feed_tags_label">Labels</string>
   <string name="feed_tags_summary">Wijzig de labels van deze podcast om abonnementen te organiseren</string>
   <string name="feed_folders_include_root">Podcast in de hoofdlijst tonen</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Er worden alleen algemene labels getoond. Andere labels worden niet aangepast.</string>
   <string name="auto_download_settings_label">Instellingen voor automatisch downloaden</string>
   <string name="episode_filters_label">Afleveringsfilter</string>
   <string name="episode_filters_description">Lijst van zoektermen om te beslissen of een aflevering al of niet automatisch wordt gedownload</string>
@@ -690,6 +680,7 @@
   <string name="statistics_view_all">Alle podcasts tonen »</string>
   <string name="edit_url_menu">Feed-url bewerken</string>
   <string name="edit_url_confirmation_msg">Let op: door het aanpassen van het rss-adres kan de afspeelstatus en afleveringenlijst worden vergeten. We raden NIET aan om dit te doen en bieden GEEN ondersteuning als er iets misgaat. Deze actie is tevens onomkeerbaar, dus het oorspronkelijke adres kan niet worden hersteld. Maak van tevoren een reservekopie.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Bezig met importeren van abonnementen uit eenmalige apps...</string>
   <!--Add podcast fragment-->
@@ -697,9 +688,7 @@
   <string name="search_itunes_label">Zoek in Apple Podcasts</string>
   <string name="search_podcastindex_label">Zoek in Podcast Index</string>
   <string name="search_fyyd_label">Fyyd doorzoeken</string>
-  <string name="gpodnet_search_hint">gpodder.net doorzoeken</string>
   <string name="advanced">Geavanceerd</string>
-  <string name="add_podcast_by_url">Podcast toevoegen middels RSS link</string>
   <string name="discover">Ontdekken</string>
   <string name="discover_hide">Verbergen</string>
   <string name="discover_is_hidden">Je kiest er voor aanbevelingen te verbergen.</string>

@@ -176,7 +176,6 @@
   <string name="select_all_above">Välj alla ovanför</string>
   <string name="select_all_below">Välj alla nedanför</string>
   <string name="filtered_label">Filtrerad</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Senaste uppdateringen misslyckades. Tryck för att visa detaljer.</string>
   <string name="open_podcast">Öppna podcast</string>
   <string name="please_wait_for_data">Vänta tills datan laddats</string>
   <string name="updates_disabled_label">Uppdateringar avstängt</string>
@@ -199,8 +198,6 @@
   <string name="pause_label">Pausa</string>
   <string name="stream_label">Strömma</string>
   <string name="delete_label">Ta bort</string>
-  <string name="delete_failed">Kunde inte ta bort filen. Testa att starta om enheten.</string>
-  <string name="delete_local_failed">Kunde inte radera filen. Försök att återansluta den lokala katalogen från podcastens infoskärm.</string>
   <string name="delete_episode_label">Radera episod</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 nedladdad episod borttagen.</item>
@@ -300,11 +297,6 @@
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[Mediefilen kunde inte spelas upp.\n\n- Försök att ta bort och ladda ner avsnittet igen.\n- Kontrollera din nätverksanslutning och se till att ingen VPN- eller inloggningssida blockerar åtkomst.\n- Försök att trycka länge och dela \"Mediaadressen\" till din webbläsare för att se om den kan spelas där. Om inte, kontakta podcastskaparna.]]>
  </string>
-  <string name="playback_error_server_died">Servern dog</string>
-  <string name="playback_error_unsupported">Mediatypen stöds inte</string>
-  <string name="playback_error_timeout">Åtgärden tog för lång tid</string>
-  <string name="playback_error_source">Kan inte komma åt mediafilen</string>
-  <string name="playback_error_unknown">Okänt fel</string>
   <string name="no_media_playing_label">Inget media spelar</string>
   <string name="unknown_media_key">AntennaPod - Okänd mediaknapp: %1$d</string>
   <string name="error_file_not_found">Filen hittades inte</string>
@@ -464,8 +456,7 @@
   <string name="pref_expandNotify_sum">Detta utvidgar vanligen aviseringen och visar uppspelningskontroller.</string>
   <string name="pref_persistNotify_title">Bestående uppspelningskontroller</string>
   <string name="pref_persistNotify_sum">Behåll notiser och låsskärmskontroller när uppspelning pausats</string>
-    <string name="pref_full_notification_buttons_title">Välj notifieringsknappar</string>
-  <string name="pref_full_notification_buttons_sum">Ändra uppspelningsknappar på uppspelningsnotisen.</string>
+  <string name="pref_full_notification_buttons_title">Välj notifieringsknappar</string>
   <string name="pref_enqueue_location_title">Köplats</string>
   <string name="pref_enqueue_location_sum">Lägg till episoder i: %1$s</string>
   <string name="enqueue_location_back">Slutet</string>
@@ -594,7 +585,6 @@
     <item quantity="other">%d dagar</item>
   </plurals>
   <string name="auto_enable_label">Aktivera insomningstimern automatiskt när du trycker på play</string>
-  <string name="auto_enable_label_with_times">Aktivera automatiskt insomningstimern när du trycker på spela mellan %s och %s</string>
   <string name="auto_enable_change_times">Ändra tidsspann</string>
   <string name="sleep_timer_enabled_label">Insomningstimer aktiverad</string>
   <!--Synchronisation-->
@@ -640,6 +630,7 @@
   <string name="choose_data_directory_available_space">%1$s av %2$s ledigt</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Pausa uppspelning istället för att sänka volymen när en annan app vill spela ljud</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pausa vid avbrott</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Prenumerera</string>
   <string name="subscribing_label">Prenumererar...</string>
@@ -672,7 +663,6 @@
   <string name="feed_tags_label">Etiketter</string>
   <string name="feed_tags_summary">Ändra etiketterna för denna podcast för att organisera prenumerationerna</string>
   <string name="feed_folders_include_root">Visa denna podcast i huvudlistan</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Bara etiketter gemensamma med alla valda prenumerationer visas. Andra etiketter påverkas inte.</string>
   <string name="auto_download_settings_label">Inställningar för automatisk nedladdning</string>
   <string name="episode_filters_label">Episodfilter</string>
   <string name="episode_filters_description">Lista av termer som används för att avgöra om en episod ingår eller ej vid automatisk nedladdning</string>
@@ -691,6 +681,7 @@
   <string name="statistics_view_all">Visa för alla podcasts »</string>
   <string name="edit_url_menu">Redigera flödes-URL</string>
   <string name="edit_url_confirmation_msg">Att ändra RSS-adressen kan förstöra uppspelningsstatus och episodlistor för podcasten. Det är INTE rekommenderat att ändra den och du kommer INTE att få någon support om något går fel. Ändringen kan inte göras ogjord. Den trasiga prenumerationen KAN INTE repareras genom att helt enkelt byta tillbaka adressen. Vi föreslår att du skapar en säkerhetskopia innan du fortsätter.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importerar prenumerationer från appar gjorda för ett enda syfte…</string>
   <!--Add podcast fragment-->
@@ -698,9 +689,7 @@
   <string name="search_itunes_label">Sök i Apple Podcasts</string>
   <string name="search_podcastindex_label">Sök i Podcast Index</string>
   <string name="search_fyyd_label">Sök i fyyd</string>
-  <string name="gpodnet_search_hint">Sök på gpodder.net</string>
   <string name="advanced">Avancerad</string>
-  <string name="add_podcast_by_url">Lägg till podcast med RSS-adress</string>
   <string name="discover">Upptäck</string>
   <string name="discover_hide">Dölj</string>
   <string name="discover_is_hidden">Du valde att dölja förslag.</string>

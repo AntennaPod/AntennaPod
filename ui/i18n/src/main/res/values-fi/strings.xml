@@ -164,7 +164,6 @@
   <string name="select_all_above">Valitse kaikki yllä</string>
   <string name="select_all_below">Valitse kaikki alla</string>
   <string name="filtered_label">Suodatettu</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Viimeisin päivitys epäonnistui. Paina tästä saadaksesi lisätietoja.</string>
   <string name="open_podcast">Avaa podcast</string>
   <string name="please_wait_for_data">Odota kunnes tiedot ovat ladattu</string>
   <string name="updates_disabled_label">Päivitykset poistettu käytöstä</string>
@@ -186,7 +185,6 @@
   <string name="pause_label">Tauko</string>
   <string name="stream_label">Suoratoista</string>
   <string name="delete_label">Poista</string>
-  <string name="delete_failed">Ei voida poistaa tiedostoa. Laitteen uudelleenkäynnistys saattaa auttaa.</string>
   <string name="delete_episode_label">Poista jakso</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 ladattu jakso poistettu.</item>
@@ -280,11 +278,6 @@
   <string name="confirm_mobile_streaming_button_always">Aina</string>
   <string name="confirm_mobile_streaming_button_once">Kerran</string>
   <!--Mediaplayer messages-->
-  <string name="playback_error_server_died">Palvelin lakkasi toimimasta</string>
-  <string name="playback_error_unsupported">Ei tuettu mediatyyppi</string>
-  <string name="playback_error_timeout">Toiminto aikakatkaistiin</string>
-  <string name="playback_error_source">Mediatiedostoa ei voida käyttää</string>
-  <string name="playback_error_unknown">Tuntematon virhe</string>
   <string name="no_media_playing_label">Mediaa ei toisteta</string>
   <string name="unknown_media_key">AntennaPod - Tuntematon media-avain: %1$d</string>
   <string name="error_file_not_found">Tiedostoa ei löytynyt</string>
@@ -588,6 +581,7 @@
   <string name="choose_data_directory_available_space">%1$s / %2$s vapaana</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Pysäytä toisto äänenvoimakkuuden hiljentämisen sijasta, kun toinen sovellus haluaa soittaa ääniä.</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pysäytä keskeytyksiin</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Tilaa</string>
   <string name="subscribing_label">Tilataan...</string>
@@ -613,7 +607,6 @@
   <string name="feed_tags_label">Tunnisteet</string>
   <string name="feed_tags_summary">Muokkaa tämän podcastin tunnisteita tilaustesi järjestelemisen avuksi.</string>
   <string name="feed_folders_include_root">Näytä tämä podcast päälistassa</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Vain kaikissa valituissa tilauksissa esiintyvät tunnisteet näytetään. Muita tunnisteita ei muuteta.</string>
   <string name="auto_download_settings_label">Automaattisen latauksen asetukset</string>
   <string name="episode_filters_label">Jaksosuodin</string>
   <string name="episode_filters_description">Lista termeistä joilla valitaan jakso automaattiseen lataukseen</string>
@@ -632,14 +625,13 @@
   <string name="statistics_view_all">Kaikki podcastit »</string>
   <string name="edit_url_menu">Muokkaa syötteen URLia</string>
   <string name="edit_url_confirmation_msg">Syötteen osoitteen muokkaaminen voi helposti sotkea podcastin toistotilan ja jaksolistaukset. Sen muokkaamista EI suositella, EIKÄ tukea tarjota mikäli jokin menee vikaan. Tätä ei saa tekemättömäksi. Sotkeutunutta tilausta EI voi korjata yksinkertaisesti vaihtamalla osoite takaisin. Varmuuskopion ottaminen ennen jatkamista on suositeltavaa.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Tuodaan tilauksia sovelluksista</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Etsi podcastia...</string>
   <string name="search_fyyd_label">Etsi fyyd:sta</string>
-  <string name="gpodnet_search_hint">Etsi gpodder.net</string>
   <string name="advanced">Edistyneet</string>
-  <string name="add_podcast_by_url">Lisää Podcast RSS-osoitteesta</string>
   <string name="discover">Löydä</string>
   <string name="discover_hide">Piilota</string>
   <string name="discover_is_hidden">Valitsit piilottaa ehdotukset.</string>

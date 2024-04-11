@@ -187,7 +187,6 @@
   <string name="select_all_above">Выбрать все выше</string>
   <string name="select_all_below">Выбрать все ниже</string>
   <string name="filtered_label">Отфильтровано</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Последнее обновление не удалось. Подробнее...</string>
   <string name="open_podcast">Открыть подкаст</string>
   <string name="please_wait_for_data">Подождите, пока загружаются данные</string>
   <string name="updates_disabled_label">Обновления отключены</string>
@@ -216,8 +215,6 @@
   <string name="pause_label">Пауза</string>
   <string name="stream_label">Воспроизвести из сети</string>
   <string name="delete_label">Удалить</string>
-  <string name="delete_failed">Невозможно удалить файл. Попробуйте перезагрузить устройство.</string>
-  <string name="delete_local_failed">Невозможно удалить файл. Попробуйте переподключить локальную папку на экране сведений о подкасте.</string>
   <string name="delete_episode_label">Удалить выпуск</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 загруженный выпуск удалён.</item>
@@ -330,11 +327,6 @@
   <string name="confirm_mobile_streaming_button_once">В этот раз</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[Не удаётся воспроизвести медиафайл.\n\n- Попробуйте удалить и загрузить выпуск заново.\n- Проверьте соединение и блокировку со стороны VPN или страницы авторизации.\n- Попробуйте долгим нажатием поделиться \"ссылкой на медиафайл\" и попытайтесь открыть её в браузере. Если это не помогло, обратитесь к авторам подкаста.]]></string>
-  <string name="playback_error_server_died">Сервер недоступен</string>
-  <string name="playback_error_unsupported">Не поддерживаемый формат</string>
-  <string name="playback_error_timeout">Время ожидания истекло</string>
-  <string name="playback_error_source">Не удалось получить доступ к медиафайлу</string>
-  <string name="playback_error_unknown">Неизвестная ошибка</string>
   <string name="no_media_playing_label">Ничего не воспроизводится</string>
   <string name="unknown_media_key">AntennaPod - неизвестный ключ носителя: %1$d</string>
   <string name="error_file_not_found">Файл не найден</string>
@@ -629,7 +621,6 @@
     <item quantity="other">%dдней</item>
   </plurals>
   <string name="auto_enable_label">Запускать таймер сна вместе с началом воспроизведения</string>
-  <string name="auto_enable_label_with_times">Автоматически запускать таймер сна при запуске воспроизведения в интервале с %s до %s</string>
   <string name="auto_enable_change_times">Сменить интервал</string>
   <string name="sleep_timer_enabled_label">Таймер сна включён</string>
   <!--Synchronisation-->
@@ -675,6 +666,7 @@
   <string name="choose_data_directory_available_space">свободно: %1$s из %2$s</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Пауза вместо уменьшения громкости, когда другое приложение проигрывает звуки</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Пауза при прерывании</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Подписаться</string>
   <string name="subscribing_label">Подписка оформляется…</string>
@@ -707,7 +699,6 @@
   <string name="feed_tags_label">Метки</string>
   <string name="feed_tags_summary">Используйте метки, чтобы организовать ваши подписки.</string>
   <string name="feed_folders_include_root">Показывать подкаст в основном списке</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Отображаются только общие метки для всех выбранных подписок. Другие не затрагиваются.</string>
   <string name="auto_download_settings_label">Настройки автозагрузки</string>
   <string name="episode_filters_label">Фильтр выпусков</string>
   <string name="episode_filters_description">Перечень условий по включению или исключению выпуска из списков автоматической загрузки</string>
@@ -726,6 +717,7 @@
   <string name="statistics_view_all">По всем подкастам »</string>
   <string name="edit_url_menu">Изменить адрес канала</string>
   <string name="edit_url_confirmation_msg">Изменение адреса ссылки может запросто испортить состояние воспроизведения и список выпусков подкаста. Мы крайне НЕ рекомендуем его менять и НЕ сможем Вам помочь, если что-то пойдёт не так. Действие необратимо. Простым возвратом старого адреса поломку HE исправить. Советуем сперва создать резервную копию. </string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Импорт подписок из моноприложений…</string>
   <!--Add podcast fragment-->
@@ -733,9 +725,7 @@
   <string name="search_itunes_label">Поиск в Apple Podcasts</string>
   <string name="search_podcastindex_label">Поиск на Podcast Index</string>
   <string name="search_fyyd_label">Поиск в fyyd</string>
-  <string name="gpodnet_search_hint">Искать на gpodder.net</string>
   <string name="advanced">Дополнительные</string>
-  <string name="add_podcast_by_url">Добавить подкаст по адресу RSS</string>
   <string name="discover">Ознакомиться</string>
   <string name="discover_hide">Скрыть</string>
   <string name="discover_is_hidden">Вы предпочли скрыть рекомендации.</string>
