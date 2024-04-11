@@ -2,6 +2,7 @@ package de.danoeh.antennapod;
 
 import android.app.Application;
 import android.os.StrictMode;
+import android.util.Log;
 
 import com.google.android.material.color.DynamicColors;
 
@@ -11,6 +12,8 @@ import org.greenrobot.eventbus.EventBusException;
 
 /** Main application class. */
 public class PodcastApp extends Application {
+    private static final String TAG = "PodcastApp";
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -36,7 +39,7 @@ public class PodcastApp extends Application {
                     .sendNoSubscriberEvent(false)
                     .installDefaultEventBus();
         } catch (EventBusException e) {
-            e.printStackTrace();
+            Log.d(TAG, e.getMessage());
         }
 
         DynamicColors.applyToActivitiesIfAvailable(this);
