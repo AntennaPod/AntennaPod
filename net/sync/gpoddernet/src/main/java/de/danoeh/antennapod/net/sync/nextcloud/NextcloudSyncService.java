@@ -47,7 +47,7 @@ public class NextcloudSyncService implements ISyncService {
     @Override
     public SubscriptionChanges getSubscriptionChanges(long lastSync) throws SyncServiceException {
         try {
-            HttpUrl.Builder url = makeUrl("/index.php/apps/gpoddersync/subscriptions");
+            HttpUrl.Builder url = makeUrl("index.php/apps/gpoddersync/subscriptions");
             url.addQueryParameter("since", "" + lastSync);
             String responseString = performRequest(url, "GET", null);
             JSONObject json = new JSONObject(responseString);
@@ -66,7 +66,7 @@ public class NextcloudSyncService implements ISyncService {
                                                            List<String> removedFeeds)
             throws NextcloudSynchronizationServiceException {
         try {
-            HttpUrl.Builder url = makeUrl("/index.php/apps/gpoddersync/subscription_change/create");
+            HttpUrl.Builder url = makeUrl("index.php/apps/gpoddersync/subscription_change/create");
             final JSONObject requestObject = new JSONObject();
             requestObject.put("add", new JSONArray(addedFeeds));
             requestObject.put("remove", new JSONArray(removedFeeds));
@@ -84,7 +84,7 @@ public class NextcloudSyncService implements ISyncService {
     @Override
     public EpisodeActionChanges getEpisodeActionChanges(long timestamp) throws SyncServiceException {
         try {
-            HttpUrl.Builder uri = makeUrl("/index.php/apps/gpoddersync/episode_action");
+            HttpUrl.Builder uri = makeUrl("index.php/apps/gpoddersync/episode_action");
             uri.addQueryParameter("since", "" + timestamp);
             String responseString = performRequest(uri, "GET", null);
             JSONObject json = new JSONObject(responseString);
@@ -119,7 +119,7 @@ public class NextcloudSyncService implements ISyncService {
                     list.put(obj);
                 }
             }
-            HttpUrl.Builder url = makeUrl("/index.php/apps/gpoddersync/episode_action/create");
+            HttpUrl.Builder url = makeUrl("index.php/apps/gpoddersync/episode_action/create");
             RequestBody requestBody = RequestBody.create(
                     list.toString(), MediaType.get("application/json"));
             performRequest(url, "POST", requestBody);
