@@ -24,14 +24,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
-import com.leinardi.android.speeddial.SpeedDialView;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
 import de.danoeh.antennapod.ui.screen.subscriptions.HorizontalFeedListAdapter;
 import de.danoeh.antennapod.ui.MenuItemUtils;
-import de.danoeh.antennapod.databinding.MultiSelectSpeedDialBinding;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
@@ -47,6 +45,7 @@ import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import de.danoeh.antennapod.ui.discovery.OnlineSearchFragment;
 import de.danoeh.antennapod.ui.view.EmptyViewHandler;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListRecyclerView;
+import de.danoeh.antennapod.ui.view.FloatingSelectMenu;
 import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
 import io.reactivex.Observable;
@@ -82,9 +81,9 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     private List<FeedItem> results;
     private Chip chip;
     private SearchView searchView;
+    private FloatingSelectMenu floatingSelectMenu;
     private Handler automaticSearchDebouncer;
     private long lastQueryChange = 0;
-    private MultiSelectSpeedDialBinding speedDialBinding;
     private boolean isOtherViewInFoucus = false;
 
 
@@ -138,9 +137,9 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.search_fragment, container, false);
         setupToolbar(layout.findViewById(R.id.toolbar));
-        speedDialBinding = MultiSelectSpeedDialBinding.bind(layout);
         progressBar = layout.findViewById(R.id.progressBar);
         recyclerView = layout.findViewById(R.id.recyclerView);
+        floatingSelectMenu = layout.findViewById(R.id.floatingSelectMenu);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         registerForContextMenu(recyclerView);
         adapter = new EpisodeItemListAdapter((MainActivity) getActivity()) {
@@ -204,25 +203,14 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
                 }
             }
         });
-        speedDialBinding.fabSD.setOverlayLayout(speedDialBinding.fabSDOverlay);
-        speedDialBinding.fabSD.inflate(R.menu.episodes_apply_action_speeddial);
-        speedDialBinding.fabSD.setOnChangeListener(new SpeedDialView.OnChangeListener() {
-            @Override
-            public boolean onMainActionSelected() {
+        floatingSelectMenu.inflate(R.menu.episodes_apply_action_speeddial);
+        floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
+            if (adapter.getSelectedCount() == 0) {
+                ((MainActivity) getActivity())
+                        .showSnackbarAbovePlayer(R.string.no_items_selected, Snackbar.LENGTH_SHORT);
                 return false;
             }
-
-            @Override
-            public void onToggleChanged(boolean open) {
-                if (open && adapter.getSelectedCount() == 0) {
-                    ((MainActivity) getActivity())
-                            .showSnackbarAbovePlayer(R.string.no_items_selected, Snackbar.LENGTH_SHORT);
-                    speedDialBinding.fabSD.close();
-                }
-            }
-        });
-        speedDialBinding.fabSD.setOnActionSelectedListener(actionItem -> {
-            new EpisodeMultiSelectActionHandler((MainActivity) getActivity(), actionItem.getId())
+            new EpisodeMultiSelectActionHandler((MainActivity) getActivity(), menuItem.getItemId())
                     .handleAction(adapter.getSelectedItems());
             adapter.endSelectMode();
             return true;
@@ -434,16 +422,14 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     @Override
     public void onStartSelectMode() {
         searchViewFocusOff();
-        speedDialBinding.fabSD.removeActionItemById(R.id.remove_from_inbox_batch);
-        speedDialBinding.fabSD.removeActionItemById(R.id.remove_from_queue_batch);
-        speedDialBinding.fabSD.removeActionItemById(R.id.delete_batch);
-        speedDialBinding.fabSD.setVisibility(View.VISIBLE);
+        floatingSelectMenu.removeItemsById(R.id.remove_from_inbox_batch,
+                R.id.remove_from_queue_batch, R.id.delete_batch);
+        floatingSelectMenu.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onEndSelectMode() {
-        speedDialBinding.fabSD.close();
-        speedDialBinding.fabSD.setVisibility(View.GONE);
+        floatingSelectMenu.setVisibility(View.GONE);
         searchViewFocusOn();
     }
 

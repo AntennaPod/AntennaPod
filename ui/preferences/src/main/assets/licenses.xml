@@ -43,12 +43,6 @@
         license="Apache 2.0"
         licenseText="LICENSE_APACHE-2.0.txt" />
     <library
-        name="Floating Action Button Speed Dial"
-        author="Roberto Leinardi"
-        website="https://github.com/leinardi/FloatingActionButtonSpeedDial"
-        license="Apache 2.0"
-        licenseText="LICENSE_APACHE-2.0.txt" />
-    <library
         name="fyydlin"
         author="Martin Fietz"
         website="https://github.com/mfietz/fyydlin"

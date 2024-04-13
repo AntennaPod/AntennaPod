@@ -24,7 +24,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
-import com.leinardi.android.speeddial.SpeedDialView;
 
 import de.danoeh.antennapod.ui.screen.episode.ItemPagerFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
@@ -54,7 +53,6 @@ import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.share.ShareUtils;
 import de.danoeh.antennapod.ui.episodeslist.MoreContentListFooterUtil;
 import de.danoeh.antennapod.databinding.FeedItemListFragmentBinding;
-import de.danoeh.antennapod.databinding.MultiSelectSpeedDialBinding;
 import de.danoeh.antennapod.ui.screen.download.DownloadLogDetailsDialog;
 import de.danoeh.antennapod.ui.FeedItemFilterDialog;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
@@ -101,7 +99,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private boolean headerCreated = false;
     private Disposable disposable;
     private FeedItemListFragmentBinding viewBinding;
-    private MultiSelectSpeedDialBinding speedDialBinding;
 
     /**
      * Creates new ItemlistFragment which shows the Feeditems of a specific
@@ -132,7 +129,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         viewBinding = FeedItemListFragmentBinding.inflate(inflater);
-        speedDialBinding = MultiSelectSpeedDialBinding.bind(viewBinding.getRoot());
         viewBinding.toolbar.inflateMenu(R.menu.feedlist);
         viewBinding.toolbar.setOnMenuItemClickListener(this);
         viewBinding.toolbar.setOnLongClickListener(v -> {
@@ -195,26 +191,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
         loadItems();
 
-        // Init action UI (via a FAB Speed Dial)
-        speedDialBinding.fabSD.setOverlayLayout(speedDialBinding.fabSDOverlay);
-        speedDialBinding.fabSD.inflate(R.menu.episodes_apply_action_speeddial);
-        speedDialBinding.fabSD.setOnChangeListener(new SpeedDialView.OnChangeListener() {
-            @Override
-            public boolean onMainActionSelected() {
+        viewBinding.floatingSelectMenu.inflate(R.menu.episodes_apply_action_speeddial);
+        viewBinding.floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
+            if (adapter.getSelectedCount() == 0) {
+                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
+                        Snackbar.LENGTH_SHORT);
                 return false;
             }
-
-            @Override
-            public void onToggleChanged(boolean open) {
-                if (open && adapter.getSelectedCount() == 0) {
-                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
-                            Snackbar.LENGTH_SHORT);
-                    speedDialBinding.fabSD.close();
-                }
-            }
-        });
-        speedDialBinding.fabSD.setOnActionSelectedListener(actionItem -> {
-            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), actionItem.getId())
+            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), menuItem.getItemId())
                     .handleAction(adapter.getSelectedItems());
             adapter.endSelectMode();
             return true;
@@ -387,17 +371,16 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     public void onStartSelectMode() {
         swipeActions.detach();
         if (feed.isLocalFeed()) {
-            speedDialBinding.fabSD.removeActionItemById(R.id.download_batch);
+            viewBinding.floatingSelectMenu.removeItemsById(R.id.download_batch);
         }
-        speedDialBinding.fabSD.removeActionItemById(R.id.remove_all_inbox_item);
-        speedDialBinding.fabSD.setVisibility(View.VISIBLE);
+        viewBinding.floatingSelectMenu.removeItemsById(R.id.remove_all_inbox_item);
+        viewBinding.floatingSelectMenu.setVisibility(View.VISIBLE);
         updateToolbar();
     }
 
     @Override
     public void onEndSelectMode() {
-        speedDialBinding.fabSD.close();
-        speedDialBinding.fabSD.setVisibility(View.GONE);
+        viewBinding.floatingSelectMenu.setVisibility(View.GONE);
         swipeActions.attachTo(viewBinding.recyclerView);
     }
 
