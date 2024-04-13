@@ -149,12 +149,14 @@ public final class DBReader {
      * @param feed The Feed whose items should be loaded
      * @return A list with the FeedItems of the Feed. The Feed-attribute of the FeedItems will already be set correctly.
      */
-    public static List<FeedItem> getFeedItemList(final Feed feed, final FeedItemFilter filter, SortOrder sortOrder) {
+    public static List<FeedItem> getFeedItemList(final Feed feed, final FeedItemFilter filter, SortOrder sortOrder,
+                                                 int offset, int limit) {
         Log.d(TAG, "getFeedItemList() called with: " + "feed = [" + feed + "]");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        try (FeedItemCursor cursor = new FeedItemCursor(adapter.getItemsOfFeedCursor(feed, filter, sortOrder))) {
+        try (FeedItemCursor cursor = new FeedItemCursor(adapter.getItemsOfFeedCursor(
+                feed, filter, sortOrder, offset, limit))) {
             List<FeedItem> items = extractItemlistFromCursor(cursor);
             feed.setItems(items);
             for (FeedItem item : items) {
@@ -266,6 +268,19 @@ public final class DBReader {
         }
     }
 
+    public static int getFeedEpisodeCount(long feedId, FeedItemFilter filter) {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try (Cursor cursor = adapter.getFeedEpisodeCountCursor(feedId, filter)) {
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0);
+            }
+            return -1;
+        } finally {
+            adapter.close();
+        }
+    }
+
     public static List<FeedItem> getRandomEpisodes(int limit, int seed) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -328,24 +343,12 @@ public final class DBReader {
      * Loads a specific Feed from the database.
      *
      * @param feedId The ID of the Feed
-     * @return The Feed or null if the Feed could not be found. The Feeds FeedItems will also be loaded from the
-     *         database and the items-attribute will be set correctly.
-     */
-    @Nullable
-    public static Feed getFeed(final long feedId) {
-        return getFeed(feedId, false);
-    }
-
-    /**
-     * Loads a specific Feed from the database.
-     *
-     * @param feedId The ID of the Feed
      * @param filtered <code>true</code> if only the visible items should be loaded according to the feed filter.
      * @return The Feed or null if the Feed could not be found. The Feeds FeedItems will also be loaded from the
      *         database and the items-attribute will be set correctly.
      */
     @Nullable
-    public static Feed getFeed(final long feedId, boolean filtered) {
+    public static Feed getFeed(final long feedId, boolean filtered, int offset, int limit) {
         Log.d(TAG, "getFeed() called with: " + "feedId = [" + feedId + "]");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -354,7 +357,12 @@ public final class DBReader {
             if (cursor.moveToNext()) {
                 feed = cursor.getFeed();
                 FeedItemFilter filter = filtered ? feed.getItemFilter() : FeedItemFilter.unfiltered();
-                feed.setItems(getFeedItemList(feed, filter, feed.getSortOrder()));
+                List<FeedItem> items = getFeedItemList(feed, filter, feed.getSortOrder(), offset, limit);
+                for (FeedItem item : items) {
+                    item.setFeed(feed);
+                }
+                loadTagsOfFeedItemList(items);
+                feed.setItems(items);
             } else {
                 Log.e(TAG, "getFeed could not find feed with id " + feedId);
             }

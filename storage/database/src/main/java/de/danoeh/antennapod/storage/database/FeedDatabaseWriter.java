@@ -31,12 +31,13 @@ public abstract class FeedDatabaseWriter {
 
     private static Feed searchFeedByIdentifyingValueOrID(Feed feed) {
         if (feed.getId() != 0) {
-            return DBReader.getFeed(feed.getId());
+            return DBReader.getFeed(feed.getId(), false, 0, Integer.MAX_VALUE);
         } else {
             List<Feed> feeds = DBReader.getFeedList();
             for (Feed f : feeds) {
                 if (f.getIdentifyingValue().equals(feed.getIdentifyingValue())) {
-                    f.setItems(DBReader.getFeedItemList(f, FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD));
+                    f.setItems(DBReader.getFeedItemList(f, FeedItemFilter.unfiltered(),
+                            SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE));
                     return f;
                 }
             }

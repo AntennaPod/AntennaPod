@@ -133,7 +133,7 @@ public class DbTasksTest {
 
         updatedFeedTest(newFeed, feedID, itemIDs, numItemsOld, numItemsNew);
 
-        final Feed feedFromDB = DBReader.getFeed(newFeed.getId());
+        final Feed feedFromDB = DBReader.getFeed(newFeed.getId(), false, 0, Integer.MAX_VALUE);
         assertNotNull(feedFromDB);
         assertEquals(newFeed.getId(), feedFromDB.getId());
         updatedFeedTest(feedFromDB, feedID, itemIDs, numItemsOld, numItemsNew);
@@ -163,7 +163,7 @@ public class DbTasksTest {
         final Feed newFeed = FeedDatabaseWriter.updateFeed(context, feed, false);
         assertNotSame(newFeed, feed);
 
-        final Feed feedFromDB = DBReader.getFeed(newFeed.getId());
+        final Feed feedFromDB = DBReader.getFeed(newFeed.getId(), false, 0, Integer.MAX_VALUE);
         final FeedItem feedItemFromDB = feedFromDB.getItems().get(0);
         assertTrue(feedItemFromDB.isNew());
     }
@@ -186,7 +186,7 @@ public class DbTasksTest {
         Feed newFeed = FeedDatabaseWriter.updateFeed(context, feed, true);
         assertEquals(8, newFeed.getItems().size()); // 10 - 2 = 8 items
 
-        Feed feedFromDB = DBReader.getFeed(newFeed.getId());
+        Feed feedFromDB = DBReader.getFeed(newFeed.getId(), false, 0, Integer.MAX_VALUE);
         assertEquals(8, feedFromDB.getItems().size()); // 10 - 2 = 8 items
     }
 
@@ -213,7 +213,7 @@ public class DbTasksTest {
         Feed newFeed = FeedDatabaseWriter.updateFeed(context, feed, false);
         assertEquals(10, newFeed.getItems().size()); // id 1-duplicate replaces because the stream url is the same
 
-        Feed feedFromDB = DBReader.getFeed(newFeed.getId());
+        Feed feedFromDB = DBReader.getFeed(newFeed.getId(), false, 0, Integer.MAX_VALUE);
         assertEquals(10, feedFromDB.getItems().size()); // id1-duplicate should override id 1
 
         FeedItem updatedItem = feedFromDB.getItemAtIndex(9);

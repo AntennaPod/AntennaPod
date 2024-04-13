@@ -954,14 +954,16 @@ public class PodDBAdapter {
      * @param feed The feed you want to get the FeedItems from.
      * @return The cursor of the query
      */
-    public final Cursor getItemsOfFeedCursor(final Feed feed, FeedItemFilter filter, SortOrder sortOrder) {
+    public final Cursor getItemsOfFeedCursor(final Feed feed, FeedItemFilter filter, SortOrder sortOrder,
+                                             int offset, int limit) {
         String orderByQuery = FeedItemSortQuery.generateFrom(sortOrder);
         String filterQuery = FeedItemFilterQuery.generateFrom(filter);
         String whereClauseAnd = "".equals(filterQuery) ? "" : " AND " + filterQuery;
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
                 + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + feed.getId()
                 + whereClauseAnd
-                + " ORDER BY " + orderByQuery;
+                + " ORDER BY " + orderByQuery
+                + " LIMIT " + offset + ", " + limit;
         return db.rawQuery(query, null);
     }
 
@@ -1079,6 +1081,15 @@ public class PodDBAdapter {
         String whereClause = "".equals(filterQuery) ? "" : " WHERE " + filterQuery;
         final String query = "SELECT count(" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + ") FROM " + TABLE_NAME_FEED_ITEMS
                 + JOIN_FEED_ITEM_AND_MEDIA + whereClause;
+        return db.rawQuery(query, null);
+    }
+
+    public final Cursor getFeedEpisodeCountCursor(long feedId, FeedItemFilter filter) {
+        String filterQuery = FeedItemFilterQuery.generateFrom(filter);
+        String whereAndClause = "".equals(filterQuery) ? "" : " AND " + filterQuery;
+        final String query = "SELECT count(" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + ") FROM " + TABLE_NAME_FEED_ITEMS
+                + JOIN_FEED_ITEM_AND_MEDIA
+                + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + feedId + whereAndClause;
         return db.rawQuery(query, null);
     }
 
