@@ -50,23 +50,6 @@
                 android:textColor="#fff"
                 tools:text="@sample/episodes.json/data/title" />
 
-            <FrameLayout
-                android:id="@+id/selectContainer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="false">
-
-                <CheckBox
-                    android:id="@+id/selectCheckBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:layout_margin="8dp" />
-
-            </FrameLayout>
-
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
@@ -75,8 +58,7 @@
         android:id="@+id/titleLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginHorizontal="8dp"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:ellipsize="end"
@@ -91,7 +73,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="8dp"
         android:text="3"
         android:textColor="?android:attr/textColorTertiary"
         android:textSize="14sp" />
@@ -106,5 +87,12 @@
         android:contentDescription="@string/refresh_failed_msg"
         app:srcCompat="@drawable/ic_error"
         tools:visibility="visible" />
+
+    <CheckBox
+        android:id="@+id/selectCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center_vertical" />
 
 </LinearLayout>

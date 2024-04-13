@@ -14,7 +14,6 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -237,21 +236,20 @@ public class SubscriptionFragment extends Fragment
     private void setColumnNumber(int columns) {
         if (itemDecoration != null) {
             subscriptionRecycler.removeItemDecoration(itemDecoration);
+            itemDecoration = null;
         }
         RecyclerView.LayoutManager layoutManager;
         if (columns == 1 && getDefaultNumOfColumns() == 5) { // Tablet
             layoutManager = new GridLayoutManager(getContext(), 2, RecyclerView.VERTICAL, false);
-            itemDecoration = new DividerItemDecoration(getContext(), RecyclerView.VERTICAL);
         } else if (columns == 1) {
             layoutManager = new GridLayoutManager(getContext(), 1, RecyclerView.VERTICAL, false);
-            itemDecoration = new DividerItemDecoration(getContext(), RecyclerView.VERTICAL);
         } else {
             layoutManager = new GridLayoutManager(getContext(), columns, RecyclerView.VERTICAL, false);
             itemDecoration = new SubscriptionsRecyclerAdapter.GridDividerItemDecorator();
+            subscriptionRecycler.addItemDecoration(itemDecoration);
         }
         subscriptionAdapter.setColumnCount(columns);
         subscriptionRecycler.setLayoutManager(layoutManager);
-        subscriptionRecycler.addItemDecoration(itemDecoration);
         prefs.edit().putInt(PREF_NUM_COLUMNS, columns).apply();
         refreshToolbarState();
     }

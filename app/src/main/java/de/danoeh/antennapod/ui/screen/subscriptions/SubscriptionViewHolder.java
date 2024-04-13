@@ -46,9 +46,7 @@ public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(NavDrawerData.DrawerItem drawerItem, int columnCount) {
-        if (columnCount == 1) {
-            selectView.setBackgroundColor(0xBBFFFFFF);
-        } else {
+        if (selectView != null) {
             Drawable drawable = AppCompatResources.getDrawable(selectView.getContext(),
                     R.drawable.ic_checkbox_background);
             selectView.setBackground(drawable); // Setting this in XML crashes API <= 21

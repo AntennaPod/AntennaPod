@@ -81,16 +81,21 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         if (inActionMode()) {
             if (isFeed) {
                 holder.selectCheckbox.setVisibility(View.VISIBLE);
-                holder.selectView.setVisibility(View.VISIBLE);
+            }
+            if (holder.selectView != null) {
+                holder.selectView.setVisibility(isFeed ? View.VISIBLE : View.GONE);
+                holder.coverImage.setAlpha(0.6f);
             }
             holder.selectCheckbox.setChecked((isSelected(position)));
             holder.selectCheckbox.setOnCheckedChangeListener((buttonView, isChecked)
                     -> setSelected(holder.getBindingAdapterPosition(), isChecked));
-            holder.coverImage.setAlpha(0.6f);
             holder.count.setVisibility(View.GONE);
         } else {
-            holder.selectView.setVisibility(View.GONE);
-            holder.coverImage.setAlpha(1.0f);
+            holder.selectCheckbox.setVisibility(View.GONE);
+            if (holder.selectView != null) {
+                holder.selectView.setVisibility(View.GONE);
+                holder.coverImage.setAlpha(1.0f);
+            }
         }
 
         holder.itemView.setOnLongClickListener(v -> {
