@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -64,8 +65,9 @@ public class SubscriptionFragment extends Fragment
     private static final String KEY_UP_ARROW = "up_arrow";
     private static final String ARGUMENT_FOLDER = "folder";
 
-    private static final int MIN_NUM_COLUMNS = 2;
+    private static final int MIN_NUM_COLUMNS = 1;
     private static final int[] COLUMN_CHECKBOX_IDS = {
+            R.id.subscription_display_list,
             R.id.subscription_num_columns_2,
             R.id.subscription_num_columns_3,
             R.id.subscription_num_columns_4,
@@ -85,9 +87,8 @@ public class SubscriptionFragment extends Fragment
     private SharedPreferences prefs;
 
     private FloatingActionButton subscriptionAddButton;
-
     private SpeedDialView speedDialView;
-
+    private RecyclerView.ItemDecoration itemDecoration;
     private List<NavDrawerData.DrawerItem> listItems;
 
     public static SubscriptionFragment newInstance(String folderTitle) {
@@ -121,7 +122,7 @@ public class SubscriptionFragment extends Fragment
         }
         ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
         toolbar.inflateMenu(R.menu.subscriptions);
-        for (int i = 0; i < COLUMN_CHECKBOX_IDS.length; i++) {
+        for (int i = 1; i < COLUMN_CHECKBOX_IDS.length; i++) {
             // Do this in Java to localize numbers
             toolbar.getMenu().findItem(COLUMN_CHECKBOX_IDS[i])
                     .setTitle(String.format(Locale.getDefault(), "%d", i + MIN_NUM_COLUMNS));
@@ -136,7 +137,6 @@ public class SubscriptionFragment extends Fragment
         }
 
         subscriptionRecycler = root.findViewById(R.id.subscriptions_grid);
-        subscriptionRecycler.addItemDecoration(new SubscriptionsRecyclerAdapter.GridDividerItemDecorator());
         registerForContextMenu(subscriptionRecycler);
         subscriptionRecycler.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
         subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity()) {
@@ -209,6 +209,9 @@ public class SubscriptionFragment extends Fragment
         } else if (itemId == R.id.subscriptions_sort) {
             FeedSortDialog.showDialog(requireContext());
             return true;
+        } else if (itemId == R.id.subscription_display_list) {
+            setColumnNumber(1);
+            return true;
         } else if (itemId == R.id.subscription_num_columns_2) {
             setColumnNumber(2);
             return true;
@@ -232,10 +235,23 @@ public class SubscriptionFragment extends Fragment
     }
 
     private void setColumnNumber(int columns) {
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),
-                columns, RecyclerView.VERTICAL, false);
+        if (itemDecoration != null) {
+            subscriptionRecycler.removeItemDecoration(itemDecoration);
+        }
+        RecyclerView.LayoutManager layoutManager;
+        if (columns == 1 && getDefaultNumOfColumns() == 5) { // Tablet
+            layoutManager = new GridLayoutManager(getContext(), 2, RecyclerView.VERTICAL, false);
+            itemDecoration = new DividerItemDecoration(getContext(), RecyclerView.VERTICAL);
+        } else if (columns == 1) {
+            layoutManager = new GridLayoutManager(getContext(), 1, RecyclerView.VERTICAL, false);
+            itemDecoration = new DividerItemDecoration(getContext(), RecyclerView.VERTICAL);
+        } else {
+            layoutManager = new GridLayoutManager(getContext(), columns, RecyclerView.VERTICAL, false);
+            itemDecoration = new SubscriptionsRecyclerAdapter.GridDividerItemDecorator();
+        }
         subscriptionAdapter.setColumnCount(columns);
-        subscriptionRecycler.setLayoutManager(gridLayoutManager);
+        subscriptionRecycler.setLayoutManager(layoutManager);
+        subscriptionRecycler.addItemDecoration(itemDecoration);
         prefs.edit().putInt(PREF_NUM_COLUMNS, columns).apply();
         refreshToolbarState();
     }

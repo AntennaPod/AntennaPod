@@ -14,4 +14,7 @@
 
     <!-- View types -->
     <item name="view_type_episode_item" type="id"/>
+    <item name="view_type_subscription_grid_with_title" type="id"/>
+    <item name="view_type_subscription_grid_without_title" type="id"/>
+    <item name="view_type_subscription_list" type="id"/>
 </resources>

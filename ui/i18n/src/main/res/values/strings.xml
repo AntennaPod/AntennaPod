@@ -823,6 +823,7 @@
 
     <!-- Subscriptions fragment -->
     <string name="subscription_num_columns">Number of columns</string>
+    <string name="subscription_display_list">List</string>
 
     <!-- Notification channels -->
     <string name="notification_group_errors">Errors</string>
