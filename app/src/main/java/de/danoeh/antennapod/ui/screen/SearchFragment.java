@@ -422,8 +422,6 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     @Override
     public void onStartSelectMode() {
         searchViewFocusOff();
-        floatingSelectMenu.removeItemsById(R.id.remove_from_inbox_batch,
-                R.id.remove_from_queue_batch, R.id.delete_batch);
         floatingSelectMenu.setVisibility(View.VISIBLE);
     }
 

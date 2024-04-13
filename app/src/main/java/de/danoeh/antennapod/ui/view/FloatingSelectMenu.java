@@ -6,11 +6,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import androidx.annotation.IdRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
+import com.google.android.material.elevation.SurfaceColors;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.FloatingSelectMenuBinding;
 import de.danoeh.antennapod.databinding.FloatingSelectMenuItemBinding;
@@ -38,6 +38,8 @@ public class FloatingSelectMenu extends FrameLayout {
     private void setup() {
         viewBinding = FloatingSelectMenuBinding.bind(
                 View.inflate(getContext(), R.layout.floating_select_menu, null));
+        viewBinding.card.setBackgroundColor(
+                SurfaceColors.getColorForElevation(getContext(), 8 * getResources().getDisplayMetrics().density));
         addView(viewBinding.getRoot());
         setVisibility(View.GONE);
     }
@@ -46,13 +48,19 @@ public class FloatingSelectMenu extends FrameLayout {
         PopupMenu popupMenu = new PopupMenu(getContext(), new View(getContext()));
         popupMenu.inflate(menuRes);
         menu = popupMenu.getMenu();
-        show();
+        updateItemVisibility();
     }
 
-    public void show() {
+    public void updateItemVisibility() {
         viewBinding.selectContainer.removeAllViews();
+        if (menu == null) {
+            return;
+        }
         for (int i = 0; i < menu.size(); i++) {
             MenuItem item = menu.getItem(i);
+            if (!item.isVisible()) {
+                continue;
+            }
             FloatingSelectMenuItemBinding itemBinding = FloatingSelectMenuItemBinding.bind(
                     View.inflate(getContext(), R.layout.floating_select_menu_item, null));
             itemBinding.titleLabel.setText(item.getTitle());
@@ -62,30 +70,18 @@ public class FloatingSelectMenu extends FrameLayout {
         }
     }
 
+    public Menu getMenu() {
+        return menu;
+    }
+
     public void setOnMenuItemClickListener(MenuItem.OnMenuItemClickListener listener) {
         this.menuItemClickListener = listener;
-    }
-
-    private void removeItemById(@IdRes int itemId) {
-        for (int i = 0; i < menu.size(); i++) {
-            MenuItem item = menu.getItem(i);
-            if (item.getItemId() == itemId) {
-                menu.removeItem(i);
-                return;
-            }
-        }
-    }
-
-    public void removeItemsById(@IdRes int... itemIds) {
-        for (int itemId : itemIds) {
-            removeItemById(itemId);
-        }
-        show();
     }
 
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         viewBinding.scrollView.scrollTo(0, 0);
+        updateItemVisibility();
     }
 }

@@ -370,10 +370,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onStartSelectMode() {
         swipeActions.detach();
-        if (feed.isLocalFeed()) {
-            viewBinding.floatingSelectMenu.removeItemsById(R.id.download_batch);
-        }
-        viewBinding.floatingSelectMenu.removeItemsById(R.id.remove_all_inbox_item);
+        viewBinding.floatingSelectMenu.getMenu().findItem(R.id.download_batch).setVisible(!feed.isLocalFeed());
         viewBinding.floatingSelectMenu.setVisibility(View.VISIBLE);
         updateToolbar();
     }

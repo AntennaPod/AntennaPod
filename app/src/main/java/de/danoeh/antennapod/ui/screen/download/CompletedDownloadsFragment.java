@@ -109,8 +109,10 @@ public class CompletedDownloadsFragment extends Fragment
 
         floatingSelectMenu = root.findViewById(R.id.floatingSelectMenu);
         floatingSelectMenu.inflate(R.menu.episodes_apply_action_speeddial);
-        floatingSelectMenu.removeItemsById(R.id.download_batch, R.id.mark_read_batch, R.id.mark_unread_batch,
-                R.id.remove_from_queue_batch, R.id.remove_all_inbox_item);
+        floatingSelectMenu.getMenu().findItem(R.id.download_batch).setVisible(false);
+        floatingSelectMenu.getMenu().findItem(R.id.mark_read_batch).setVisible(false);
+        floatingSelectMenu.getMenu().findItem(R.id.mark_unread_batch).setVisible(false);
+        floatingSelectMenu.getMenu().findItem(R.id.remove_from_inbox_batch).setVisible(false);
         floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
             if (adapter.getSelectedCount() == 0) {
                 ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,

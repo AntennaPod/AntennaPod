@@ -438,8 +438,8 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
 
         floatingSelectMenu = root.findViewById(R.id.floatingSelectMenu);
         floatingSelectMenu.inflate(R.menu.episodes_apply_action_speeddial);
-        floatingSelectMenu.removeItemsById(R.id.mark_read_batch, R.id.mark_unread_batch,
-                R.id.add_to_queue_batch, R.id.remove_all_inbox_item);
+        floatingSelectMenu.getMenu().findItem(R.id.add_to_queue_batch).setVisible(false);
+        floatingSelectMenu.getMenu().findItem(R.id.remove_from_inbox_batch).setVisible(false);
         floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
             if (recyclerAdapter.getSelectedCount() == 0) {
                 ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
