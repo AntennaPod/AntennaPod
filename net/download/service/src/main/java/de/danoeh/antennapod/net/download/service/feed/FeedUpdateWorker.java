@@ -68,6 +68,7 @@ public class FeedUpdateWorker extends Worker {
                 Feed feed = itr.next();
                 if (!feed.getPreferences().getKeepUpdated()) {
                     itr.remove();
+                    continue;
                 }
                 if (!feed.isLocalFeed()) {
                     allAreLocal = false;
