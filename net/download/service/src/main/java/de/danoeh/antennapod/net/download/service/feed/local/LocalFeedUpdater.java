@@ -172,7 +172,7 @@ public class LocalFeedUpdater {
 
         long size = file.getLength();
         FeedMedia media = new FeedMedia(0, item, 0, 0, size, file.getType(),
-                file.getUri().toString(), file.getUri().toString(), false, null, 0, 0);
+                file.getUri().toString(), file.getUri().toString(), 0, null, 0, 0);
         item.setMedia(media);
 
         for (FeedItem existingItem : feed.getItems()) {

@@ -101,7 +101,7 @@ public class DbWriterTest {
         FeedItem item = new FeedItem(0, "Item", "Item", "url", new Date(), FeedItem.PLAYED, feed);
         items.add(item);
         FeedMedia media = new FeedMedia(0, item, duration, 1, 1, "mime_type",
-                "dummy path", "download_url", true, null, 0, 0);
+                "dummy path", "download_url", System.currentTimeMillis(), null, 0, 0);
         item.setMedia(media);
 
         DBWriter.setFeedItem(item).get(TIMEOUT, TimeUnit.SECONDS);
@@ -133,7 +133,7 @@ public class DbWriterTest {
         FeedItem item = new FeedItem(0, "Item", "Item", "url", new Date(), FeedItem.PLAYED, feed);
 
         FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type",
-                dest.getAbsolutePath(), "download_url", true, null, 0, 0);
+                dest.getAbsolutePath(), "download_url", System.currentTimeMillis(), null, 0, 0);
         item.setMedia(media);
 
         items.add(item);
@@ -168,7 +168,7 @@ public class DbWriterTest {
         FeedItem item = new FeedItem(0, "Item", "Item", "url", new Date(), FeedItem.UNPLAYED, feed);
 
         FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type",
-                dest.getAbsolutePath(), "download_url", true, null, 0, 0);
+                dest.getAbsolutePath(), "download_url", System.currentTimeMillis(), null, 0, 0);
         item.setMedia(media);
 
         items.add(item);
@@ -214,7 +214,7 @@ public class DbWriterTest {
 
             itemFiles.add(enc);
             FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type",
-                    enc.getAbsolutePath(), "download_url", true, null, 0, 0);
+                    enc.getAbsolutePath(), "download_url", System.currentTimeMillis(), null, 0, 0);
             item.setMedia(media);
         }
 
@@ -335,7 +335,7 @@ public class DbWriterTest {
             feed.getItems().add(item);
             File enc = new File(destFolder, "file " + i);
             FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type",
-                    enc.getAbsolutePath(), "download_url", false, null, 0, 0);
+                    enc.getAbsolutePath(), "download_url", 0, null, 0, 0);
             item.setMedia(media);
         }
 
@@ -395,7 +395,7 @@ public class DbWriterTest {
             feed.getItems().add(item);
             File enc = new File(destFolder, "file " + i);
             FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type",
-                    enc.getAbsolutePath(), "download_url", false, null, 0, 0);
+                    enc.getAbsolutePath(), "download_url", 0, null, 0, 0);
             item.setMedia(media);
         }
 
@@ -469,7 +469,7 @@ public class DbWriterTest {
         feed.setItems(new ArrayList<>());
         FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), FeedItem.PLAYED, feed);
         FeedMedia media = new FeedMedia(0, item, 10, 0, 1, "mime", null,
-                "url", false, playbackCompletionDate, 0, 0);
+                "url", 0, playbackCompletionDate, 0, 0);
         feed.getItems().add(item);
         item.setMedia(media);
         PodDBAdapter adapter = PodDBAdapter.getInstance();

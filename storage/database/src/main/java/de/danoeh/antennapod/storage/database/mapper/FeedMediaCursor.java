@@ -20,7 +20,7 @@ public class FeedMediaCursor extends CursorWrapper {
     private final int indexMimeType;
     private final int indexFileUrl;
     private final int indexDownloadUrl;
-    private final int indexDownloaded;
+    private final int indexDownloadDate;
     private final int indexPlayedDuration;
     private final int indexLastPlayedTime;
     private final int indexHasEmbeddedPicture;
@@ -35,7 +35,7 @@ public class FeedMediaCursor extends CursorWrapper {
         indexMimeType = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_MIME_TYPE);
         indexFileUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FILE_URL);
         indexDownloadUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DOWNLOAD_URL);
-        indexDownloaded = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DOWNLOADED);
+        indexDownloadDate = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DOWNLOAD_DATE);
         indexPlayedDuration = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PLAYED_DURATION);
         indexLastPlayedTime = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_LAST_PLAYED_TIME);
         indexHasEmbeddedPicture = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_HAS_EMBEDDED_PICTURE);
@@ -71,7 +71,7 @@ public class FeedMediaCursor extends CursorWrapper {
                 getString(indexMimeType),
                 getString(indexFileUrl),
                 getString(indexDownloadUrl),
-                getInt(indexDownloaded) > 0,
+                getLong(indexDownloadDate),
                 playbackCompletionDate,
                 getInt(indexPlayedDuration),
                 hasEmbeddedPicture,

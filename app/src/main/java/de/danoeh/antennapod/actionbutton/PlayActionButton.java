@@ -42,7 +42,7 @@ public class PlayActionButton extends ItemActionButton {
         }
         if (!media.fileExists()) {
             Log.i(TAG, "Missing episode. Will update the database now.");
-            media.setDownloaded(false);
+            media.setDownloaded(false, 0);
             media.setLocalFileUrl(null);
             DBWriter.setFeedMedia(media);
             EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));

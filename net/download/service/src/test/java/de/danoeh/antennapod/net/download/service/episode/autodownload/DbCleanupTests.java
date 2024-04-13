@@ -137,7 +137,7 @@ public class DbCleanupTests {
             assertTrue(f.createNewFile());
             files.add(f);
             item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m",
-                    f.getAbsolutePath(), "url", true, playbackCompletionDate, 0, 0));
+                    f.getAbsolutePath(), "url", System.currentTimeMillis(), playbackCompletionDate, 0, 0));
             items.add(item);
         }
 
@@ -206,7 +206,7 @@ public class DbCleanupTests {
         List<Feed> feeds = saveFeedlist(1, 1, true);
         FeedMedia m = feeds.get(0).getItems().get(0).getMedia();
         //noinspection ConstantConditions
-        m.setDownloaded(true);
+        m.setDownloaded(true, System.currentTimeMillis());
         m.setLocalFileUrl("file");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
