@@ -28,7 +28,7 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
                 url = media.getDownloadUrl();
             }
         } else if (status.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
-            Feed feed = DBReader.getFeed(status.getFeedfileId());
+            Feed feed = DBReader.getFeed(status.getFeedfileId(), false, 0, 0);
             if (feed != null) {
                 url = feed.getDownloadUrl();
             }

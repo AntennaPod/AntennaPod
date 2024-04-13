@@ -98,7 +98,7 @@ public class DownloadLogAdapter extends BaseAdapter {
                 if (status.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
                     holder.secondaryActionButton.setOnClickListener(v -> {
                         holder.secondaryActionButton.setVisibility(View.INVISIBLE);
-                        Feed feed = DBReader.getFeed(status.getFeedfileId());
+                        Feed feed = DBReader.getFeed(status.getFeedfileId(), false, 0, 0);
                         if (feed == null) {
                             Log.e(TAG, "Could not find feed for feed id: " + status.getFeedfileId());
                             return;

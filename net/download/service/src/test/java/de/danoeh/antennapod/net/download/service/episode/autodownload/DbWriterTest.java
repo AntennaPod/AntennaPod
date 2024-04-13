@@ -771,7 +771,7 @@ public class DbWriterTest {
 
         DBWriter.removeAllNewFlags().get();
         List<FeedItem> loadedItems = DBReader.getFeedItemList(feed,
-                FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD);
+                FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
         for (FeedItem item : loadedItems) {
             assertFalse(item.isNew());
         }

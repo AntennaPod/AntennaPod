@@ -168,7 +168,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         long feedId = getArguments().getLong(EXTRA_FEED_ID);
         disposable = Maybe.create((MaybeOnSubscribe<Feed>) emitter -> {
-            Feed feed = DBReader.getFeed(feedId);
+            Feed feed = DBReader.getFeed(feedId, false, 0, 0);
             if (feed != null) {
                 emitter.onSuccess(feed);
             } else {

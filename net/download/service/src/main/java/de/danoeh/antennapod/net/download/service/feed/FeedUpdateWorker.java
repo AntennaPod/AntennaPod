@@ -75,7 +75,7 @@ public class FeedUpdateWorker extends Worker {
             }
             Collections.shuffle(toUpdate); // If the worker gets cancelled early, every feed has a chance to be updated
         } else {
-            Feed feed = DBReader.getFeed(feedId);
+            Feed feed = DBReader.getFeed(feedId, false, 0, Integer.MAX_VALUE);
             if (feed == null) {
                 return Result.success();
             }

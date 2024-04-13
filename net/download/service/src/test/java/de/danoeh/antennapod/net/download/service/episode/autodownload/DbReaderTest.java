@@ -154,7 +154,7 @@ public class DbReaderTest {
             List<FeedItem> items = feed.getItems();
             feed.setItems(null);
             List<FeedItem> savedItems = DBReader.getFeedItemList(feed,
-                    FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD);
+                    FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
             assertNotNull(savedItems);
             assertEquals(items.size(), savedItems.size());
             for (int i = 0; i < savedItems.size(); i++) {
