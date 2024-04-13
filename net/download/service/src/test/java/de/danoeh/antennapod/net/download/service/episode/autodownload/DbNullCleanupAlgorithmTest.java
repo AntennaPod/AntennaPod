@@ -101,7 +101,7 @@ public class DbNullCleanupAlgorithmTest {
             File f = new File(destFolder, "file " + i);
             assertTrue(f.createNewFile());
             files.add(f);
-            item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m", f.getAbsolutePath(), "url", true,
+            item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m", f.getAbsolutePath(), "url", System.currentTimeMillis(),
                     new Date(numItems - i), 0, 0));
             items.add(item);
         }

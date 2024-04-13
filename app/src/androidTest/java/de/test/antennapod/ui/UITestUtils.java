@@ -134,7 +134,8 @@ public class UITestUtils {
 
                 if (!hostTextOnlyFeeds) {
                     File mediaFile = newMediaFile("feed-" + i + "-episode-" + j + ".mp3");
-                    item.setMedia(new FeedMedia(j, item, 0, 0, mediaFile.length(), "audio/mp3", null, hostFile(mediaFile), false, null, 0, 0));
+                    item.setMedia(new FeedMedia(j, item, 0, 0, mediaFile.length(), "audio/mp3",
+                            null, hostFile(mediaFile), 0, null, 0, 0));
                 }
             }
             feed.setItems(items);
@@ -175,7 +176,7 @@ public class UITestUtils {
                         FeedMedia media = item.getMedia();
                         int fileId = Integer.parseInt(StringUtils.substringAfter(media.getDownloadUrl(), "files/"));
                         media.setLocalFileUrl(server.accessFile(fileId).getAbsolutePath());
-                        media.setDownloaded(true);
+                        media.setDownloaded(true, System.currentTimeMillis());
                     }
                 }
             }

@@ -138,7 +138,8 @@ public class PlaybackServiceMediaPlayerTest {
         f.setItems(new ArrayList<>());
         FeedItem i = new FeedItem(0, "t", "i", "l", new Date(), FeedItem.UNPLAYED, f);
         f.getItems().add(i);
-        FeedMedia media = new FeedMedia(0, i, 0, 0, 0, "audio/wav", fileUrl, downloadUrl, fileUrl != null, null, 0, 0);
+        FeedMedia media = new FeedMedia(0, i, 0, 0, 0, "audio/wav", fileUrl, downloadUrl,
+                fileUrl == null ? 0 : System.currentTimeMillis(), null, 0, 0);
         i.setMedia(media);
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();

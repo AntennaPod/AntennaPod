@@ -123,7 +123,7 @@ public class DBWriter {
             if (mediaFile.exists() && !mediaFile.delete()) {
                 Log.d(TAG, "Deletion of downloaded file failed.");
             }
-            media.setDownloaded(false);
+            media.setDownloaded(false, 0);
             media.setLocalFileUrl(null);
             media.setHasEmbeddedPicture(false);
             PodDBAdapter adapter = PodDBAdapter.getInstance();

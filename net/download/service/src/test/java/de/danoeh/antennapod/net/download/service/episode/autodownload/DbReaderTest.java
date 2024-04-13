@@ -231,7 +231,7 @@ public class DbReaderTest {
                 int i = random.nextInt(numItems);
                 if (!downloaded.contains(items.get(i))) {
                     FeedItem item = items.get(i);
-                    item.getMedia().setDownloaded(true);
+                    item.getMedia().setDownloaded(true, System.currentTimeMillis());
                     item.getMedia().setLocalFileUrl("file" + i);
                     downloaded.add(item);
                 }

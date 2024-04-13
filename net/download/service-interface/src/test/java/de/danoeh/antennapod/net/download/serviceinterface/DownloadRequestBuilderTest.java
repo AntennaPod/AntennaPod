@@ -117,6 +117,6 @@ public class DownloadRequestBuilderTest {
 
     private FeedMedia createFeedItem(final int id) {
         // Use mockito would be less verbose, but it'll take extra 1 second for this tiny test
-        return new FeedMedia(id, null, 0, 0, 0, "", "", "http://example.com/episode" + id, false, null, 0, 0);
+        return new FeedMedia(id, null, 0, 0, 0, "", "", "http://example.com/episode" + id, 0, null, 0, 0);
     }
 }
