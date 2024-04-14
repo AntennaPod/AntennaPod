@@ -320,12 +320,17 @@ public class CompletedDownloadsFragment extends Fragment
     public void onStartSelectMode() {
         swipeActions.detach();
         floatingSelectMenu.setVisibility(View.VISIBLE);
+        recyclerView.setPadding(recyclerView.getPaddingLeft(), recyclerView.getPaddingTop(),
+                recyclerView.getPaddingRight(),
+                (int) getResources().getDimension(R.dimen.floating_select_menu_height));
     }
 
     @Override
     public void onEndSelectMode() {
         floatingSelectMenu.setVisibility(View.GONE);
         swipeActions.attachTo(recyclerView);
+        recyclerView.setPadding(recyclerView.getPaddingLeft(), recyclerView.getPaddingTop(),
+                recyclerView.getPaddingRight(), 0);
     }
 
     private class CompletedDownloadsListAdapter extends EpisodeItemListAdapter {

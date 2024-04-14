@@ -38,7 +38,7 @@ public class FloatingSelectMenu extends FrameLayout {
     private void setup() {
         viewBinding = FloatingSelectMenuBinding.bind(
                 View.inflate(getContext(), R.layout.floating_select_menu, null));
-        viewBinding.card.setBackgroundColor(
+        viewBinding.card.setCardBackgroundColor(
                 SurfaceColors.getColorForElevation(getContext(), 8 * getResources().getDisplayMetrics().density));
         addView(viewBinding.getRoot());
         setVisibility(View.GONE);

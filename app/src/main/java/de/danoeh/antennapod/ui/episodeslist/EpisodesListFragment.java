@@ -310,11 +310,16 @@ public abstract class EpisodesListFragment extends Fragment
     @Override
     public void onStartSelectMode() {
         floatingSelectMenu.setVisibility(View.VISIBLE);
+        recyclerView.setPadding(recyclerView.getPaddingLeft(), recyclerView.getPaddingTop(),
+                recyclerView.getPaddingRight(),
+                (int) getResources().getDimension(R.dimen.floating_select_menu_height));
     }
 
     @Override
     public void onEndSelectMode() {
         floatingSelectMenu.setVisibility(View.GONE);
+        recyclerView.setPadding(recyclerView.getPaddingLeft(), recyclerView.getPaddingTop(),
+                recyclerView.getPaddingRight(), 0);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

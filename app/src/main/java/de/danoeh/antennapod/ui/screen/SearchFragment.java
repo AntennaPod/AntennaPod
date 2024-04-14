@@ -423,11 +423,16 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     public void onStartSelectMode() {
         searchViewFocusOff();
         floatingSelectMenu.setVisibility(View.VISIBLE);
+        recyclerView.setPadding(recyclerView.getPaddingLeft(), recyclerView.getPaddingTop(),
+                recyclerView.getPaddingRight(),
+                (int) getResources().getDimension(R.dimen.floating_select_menu_height));
     }
 
     @Override
     public void onEndSelectMode() {
         floatingSelectMenu.setVisibility(View.GONE);
+        recyclerView.setPadding(recyclerView.getPaddingLeft(), recyclerView.getPaddingTop(),
+                recyclerView.getPaddingRight(), 0);
         searchViewFocusOn();
     }
 

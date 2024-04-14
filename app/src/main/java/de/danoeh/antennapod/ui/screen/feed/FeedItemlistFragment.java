@@ -174,12 +174,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             @Override
             public void onScrolled(@NonNull RecyclerView view, int deltaX, int deltaY) {
                 super.onScrolled(view, deltaX, deltaY);
-                boolean hasMorePages = feed != null && feed.isPaged() && feed.getNextPageLink() != null;
-                boolean pageLoaderVisible = viewBinding.recyclerView.isScrolledToBottom() && hasMorePages;
-                nextPageLoader.getRoot().setVisibility(pageLoaderVisible ? View.VISIBLE : View.GONE);
-                viewBinding.recyclerView.setPadding(
-                        viewBinding.recyclerView.getPaddingLeft(), 0, viewBinding.recyclerView.getPaddingRight(),
-                        pageLoaderVisible ? nextPageLoader.getRoot().getMeasuredHeight() : 0);
+                updateRecyclerPadding();
             }
         });
 
@@ -204,6 +199,20 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             return true;
         });
         return viewBinding.getRoot();
+    }
+
+    private void updateRecyclerPadding() {
+        boolean hasMorePages = feed != null && feed.isPaged() && feed.getNextPageLink() != null;
+        boolean pageLoaderVisible = viewBinding.recyclerView.isScrolledToBottom() && hasMorePages;
+        nextPageLoader.getRoot().setVisibility(pageLoaderVisible ? View.VISIBLE : View.GONE);
+        int paddingBottom = 0;
+        if (adapter.inActionMode()) {
+            paddingBottom = (int) getResources().getDimension(R.dimen.floating_select_menu_height);
+        } else if (pageLoaderVisible) {
+            paddingBottom = nextPageLoader.getRoot().getMeasuredHeight();
+        }
+        viewBinding.recyclerView.setPadding(viewBinding.recyclerView.getPaddingLeft(), 0,
+                viewBinding.recyclerView.getPaddingRight(), paddingBottom);
     }
 
     @Override
@@ -372,12 +381,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         swipeActions.detach();
         viewBinding.floatingSelectMenu.getMenu().findItem(R.id.download_batch).setVisible(!feed.isLocalFeed());
         viewBinding.floatingSelectMenu.setVisibility(View.VISIBLE);
+        updateRecyclerPadding();
         updateToolbar();
     }
 
     @Override
     public void onEndSelectMode() {
         viewBinding.floatingSelectMenu.setVisibility(View.GONE);
+        updateRecyclerPadding();
         swipeActions.attachTo(viewBinding.recyclerView);
     }
 

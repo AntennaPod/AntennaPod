@@ -508,6 +508,9 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     public void onStartSelectMode() {
         swipeActions.detach();
         floatingSelectMenu.setVisibility(View.VISIBLE);
+        recyclerView.setPadding(recyclerView.getPaddingLeft(), recyclerView.getPaddingTop(),
+                recyclerView.getPaddingRight(),
+                (int) getResources().getDimension(R.dimen.floating_select_menu_height));
         refreshToolbarState();
         infoBar.setVisibility(View.GONE);
     }
@@ -515,6 +518,8 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     @Override
     public void onEndSelectMode() {
         floatingSelectMenu.setVisibility(View.GONE);
+        recyclerView.setPadding(recyclerView.getPaddingLeft(), recyclerView.getPaddingTop(),
+                recyclerView.getPaddingRight(), 0);
         infoBar.setVisibility(View.VISIBLE);
         swipeActions.attachTo(recyclerView);
     }
