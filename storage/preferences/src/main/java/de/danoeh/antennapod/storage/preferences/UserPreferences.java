@@ -80,8 +80,8 @@ public abstract class UserPreferences {
     public static final String PREF_HARDWARE_PREVIOUS_BUTTON = "prefHardwarePreviousButton";
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
     public static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
-    private static final String PREF_FAVORITE_KEEPS_EPISODE = "prefFavoriteKeepsEpisode";
-    private static final String PREF_AUTO_DELETE = "prefAutoDelete";
+    public static final String PREF_FAVORITE_KEEPS_EPISODE = "prefFavoriteKeepsEpisode";
+    public static final String PREF_AUTO_DELETE = "prefAutoDelete";
     private static final String PREF_AUTO_DELETE_LOCAL = "prefAutoDeleteLocal";
     public static final String PREF_SMART_MARK_AS_PLAYED_SECS = "prefSmartMarkAsPlayedSecs";
     private static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";

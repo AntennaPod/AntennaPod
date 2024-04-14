@@ -83,6 +83,8 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             prefFragment = new NotificationPreferencesFragment();
         } else if (screen == R.xml.preferences_swipe) {
             prefFragment = new SwipePreferencesFragment();
+        } else if (screen == R.xml.preferences_auto_deletion) {
+            prefFragment = new AutomaticDeletionPreferencesFragment();
         }
         return prefFragment;
     }
@@ -106,6 +108,8 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             return R.string.feed_settings_label;
         } else if (preferences == R.xml.preferences_swipe) {
             return R.string.swipeactions_label;
+        } else if (preferences == R.xml.preferences_auto_deletion) {
+            return R.string.auto_delete_label;
         }
         return R.string.settings_label;
     }
