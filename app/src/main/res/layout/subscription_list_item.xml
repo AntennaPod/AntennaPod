@@ -88,11 +88,4 @@
         app:srcCompat="@drawable/ic_error"
         tools:visibility="visible" />
 
-    <CheckBox
-        android:id="@+id/selectCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_gravity="center_vertical" />
-
 </LinearLayout>

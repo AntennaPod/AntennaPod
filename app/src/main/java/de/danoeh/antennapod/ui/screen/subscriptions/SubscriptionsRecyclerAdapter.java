@@ -21,6 +21,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.SelectableAdapter;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 
 import java.lang.ref.WeakReference;
@@ -79,20 +80,27 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         holder.bind(drawerItem, columnCount);
         holder.itemView.setOnCreateContextMenuListener(this);
         if (inActionMode()) {
-            if (isFeed) {
-                holder.selectCheckbox.setVisibility(View.VISIBLE);
-            }
             if (holder.selectView != null) {
+                if (isFeed) {
+                    holder.selectCheckbox.setVisibility(View.VISIBLE);
+                }
                 holder.selectView.setVisibility(isFeed ? View.VISIBLE : View.GONE);
                 holder.coverImage.setAlpha(0.6f);
+                holder.selectCheckbox.setChecked((isSelected(position)));
+                holder.selectCheckbox.setOnCheckedChangeListener((buttonView, isChecked)
+                        -> setSelected(holder.getBindingAdapterPosition(), isChecked));
+                holder.count.setVisibility(View.GONE);
+            } else {
+                holder.itemView.setBackgroundResource(android.R.color.transparent);
+                if (isSelected(position)) {
+                    holder.itemView.setBackgroundColor(0x88000000
+                            + (0xffffff & ThemeUtils.getColorFromAttr(mainActivityRef.get(), R.attr.colorAccent)));
+                }
             }
-            holder.selectCheckbox.setChecked((isSelected(position)));
-            holder.selectCheckbox.setOnCheckedChangeListener((buttonView, isChecked)
-                    -> setSelected(holder.getBindingAdapterPosition(), isChecked));
-            holder.count.setVisibility(View.GONE);
         } else {
-            holder.selectCheckbox.setVisibility(View.GONE);
+            holder.itemView.setBackgroundResource(android.R.color.transparent);
             if (holder.selectView != null) {
+                holder.selectCheckbox.setVisibility(View.GONE);
                 holder.selectView.setVisibility(View.GONE);
                 holder.coverImage.setAlpha(1.0f);
             }
@@ -125,7 +133,8 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         holder.itemView.setOnClickListener(v -> {
             if (isFeed) {
                 if (inActionMode()) {
-                    holder.selectCheckbox.setChecked(!isSelected(holder.getBindingAdapterPosition()));
+                    setSelected(holder.getBindingAdapterPosition(), !isSelected(holder.getBindingAdapterPosition()));
+                    notifyItemChanged(holder.getBindingAdapterPosition());
                 } else {
                     Fragment fragment = FeedItemlistFragment
                             .newInstance(((NavDrawerData.FeedDrawerItem) drawerItem).feed.getId());
