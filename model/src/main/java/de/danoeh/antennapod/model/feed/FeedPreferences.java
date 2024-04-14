@@ -249,6 +249,9 @@ public class FeedPreferences implements Serializable {
     }
 
     public SkipSilence getFeedSkipSilence() {
+        if (feedPlaybackSpeed == SPEED_USE_GLOBAL) {
+            return SkipSilence.GLOBAL;
+        }
         return feedSkipSilence;
     }
 
