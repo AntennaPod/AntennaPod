@@ -49,4 +49,10 @@
             </group>
         </menu>
     </item>
+
+    <item
+        android:id="@+id/pref_show_subscription_title"
+        android:title="@string/pref_show_subscription_title"
+        android:checkable="true"
+        custom:showAsAction="never" />
 </menu>

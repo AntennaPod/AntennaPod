@@ -189,6 +189,9 @@ public class SubscriptionFragment extends Fragment
     private void refreshToolbarState() {
         int columns = prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns());
         toolbar.getMenu().findItem(COLUMN_CHECKBOX_IDS[columns - MIN_NUM_COLUMNS]).setChecked(true);
+        toolbar.getMenu().findItem(R.id.pref_show_subscription_title).setVisible(columns > 1);
+        toolbar.getMenu().findItem(R.id.pref_show_subscription_title)
+                .setChecked(UserPreferences.shouldShowSubscriptionTitle());
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
@@ -229,6 +232,10 @@ public class SubscriptionFragment extends Fragment
         } else if (itemId == R.id.action_statistics) {
             ((MainActivity) getActivity()).loadChildFragment(new StatisticsFragment());
             return true;
+        } else if (itemId == R.id.pref_show_subscription_title) {
+            item.setChecked(!item.isChecked());
+            UserPreferences.setShouldShowSubscriptionTitle(item.isChecked());
+            subscriptionAdapter.notifyDataSetChanged();
         }
         return false;
     }
