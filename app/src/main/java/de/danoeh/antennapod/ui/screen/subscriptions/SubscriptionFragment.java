@@ -301,7 +301,13 @@ public class SubscriptionFragment extends Fragment
                         Log.e(TAG, Log.getStackTraceString(error));
                     });
 
-        if (UserPreferences.getSubscriptionsFilter().isEnabled()) {
+        updateFilterVisibility();
+    }
+
+    private void updateFilterVisibility() {
+        if (subscriptionAdapter.inActionMode()) {
+            feedsFilteredMsg.setVisibility(View.INVISIBLE);
+        } else if (UserPreferences.getSubscriptionsFilter().isEnabled()) {
             feedsFilteredMsg.setVisibility(View.VISIBLE);
         } else {
             feedsFilteredMsg.setVisibility(View.GONE);
@@ -347,6 +353,7 @@ public class SubscriptionFragment extends Fragment
         speedDialView.setVisibility(View.GONE);
         subscriptionAddButton.setVisibility(View.VISIBLE);
         subscriptionAdapter.setItems(listItems);
+        updateFilterVisibility();
     }
 
     @Override
@@ -360,5 +367,6 @@ public class SubscriptionFragment extends Fragment
         subscriptionAdapter.setItems(feedsOnly);
         speedDialView.setVisibility(View.VISIBLE);
         subscriptionAddButton.setVisibility(View.GONE);
+        updateFilterVisibility();
     }
 }
