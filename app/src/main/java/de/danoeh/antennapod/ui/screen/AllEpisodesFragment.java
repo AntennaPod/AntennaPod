@@ -113,7 +113,9 @@ public class AllEpisodesFragment extends EpisodesListFragment {
 
     private void updateFilterUi() {
         swipeActions.setFilter(getFilter());
-        if (getFilter().getValues().length > 0) {
+        if (listAdapter.inActionMode()) {
+            txtvInformation.setVisibility(View.INVISIBLE);
+        } else if (getFilter().getValues().length > 0) {
             txtvInformation.setVisibility(View.VISIBLE);
             emptyView.setMessage(R.string.no_all_episodes_filtered_label);
         } else {
@@ -122,6 +124,18 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         }
         toolbar.getMenu().findItem(R.id.action_favorites).setIcon(
                 getFilter().showIsFavorite ? R.drawable.ic_star : R.drawable.ic_star_border);
+    }
+
+    @Override
+    public void onStartSelectMode() {
+        super.onStartSelectMode();
+        updateFilterUi();
+    }
+
+    @Override
+    public void onEndSelectMode() {
+        super.onEndSelectMode();
+        updateFilterUi();
     }
 
     public static class AllEpisodesSortDialog extends ItemSortDialog {
