@@ -26,6 +26,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 import com.leinardi.android.speeddial.SpeedDialView;
 
+import de.danoeh.antennapod.ui.CoverLoader;
 import de.danoeh.antennapod.ui.screen.episode.ItemPagerFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.ui.TransitionEffect;
@@ -596,7 +597,18 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
         @Override
         protected void beforeBindViewHolder(EpisodeItemViewHolder holder, int pos) {
-            holder.coverHolder.setVisibility(View.GONE);
+            holder.coverHolder.setVisibility(View.GONE); // Load it ourselves
+        }
+
+        @Override
+        protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
+            holder.coverHolder.setVisibility(View.VISIBLE);
+            new CoverLoader()
+                    .withUri(holder.getFeedItem().getImageLocation()) // Ignore "Show episode cover" setting
+                    .withFallbackUri(holder.getFeedItem().getFeed().getImageUrl())
+                    .withPlaceholderView(holder.placeholder)
+                    .withCoverView(holder.cover)
+                    .load();
         }
 
         @Override
