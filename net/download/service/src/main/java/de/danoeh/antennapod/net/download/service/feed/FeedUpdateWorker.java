@@ -66,7 +66,7 @@ public class FeedUpdateWorker extends Worker {
             Iterator<Feed> itr = toUpdate.iterator();
             while (itr.hasNext()) {
                 Feed feed = itr.next();
-                if (!feed.getPreferences().getKeepUpdated()) {
+                if (!feed.getPreferences().getKeepUpdated() || feed.getState() != Feed.STATE_SUBSCRIBED) {
                     itr.remove();
                     continue;
                 }

@@ -141,12 +141,13 @@ public class DBWriter {
             // Do full update of this feed to get rid of the item
             FeedUpdateManager.getInstance().runOnce(context, media.getItem().getFeed());
         } else {
-            // Gpodder: queue delete action for synchronization
-            FeedItem item = media.getItem();
-            EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DELETE)
-                    .currentTimestamp()
-                    .build();
-            SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
+            if (media.getItem().getFeed().getState() == Feed.STATE_SUBSCRIBED) {
+                FeedItem item = media.getItem();
+                EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DELETE)
+                        .currentTimestamp()
+                        .build();
+                SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
+            }
 
             EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
         }
@@ -174,7 +175,7 @@ public class DBWriter {
             adapter.removeFeed(feed);
             adapter.close();
 
-            if (!feed.isLocalFeed()) {
+            if (!feed.isLocalFeed() && feed.getState() == Feed.STATE_SUBSCRIBED) {
                 SynchronizationQueueSink.enqueueFeedRemovedIfSynchronizationIsActive(context, feed.getDownloadUrl());
             }
             EventBus.getDefault().post(new FeedListUpdateEvent(feed));
@@ -786,7 +787,7 @@ public class DBWriter {
             adapter.close();
 
             for (Feed feed : feeds) {
-                if (!feed.isLocalFeed()) {
+                if (!feed.isLocalFeed() && feed.getState() == Feed.STATE_SUBSCRIBED) {
                     SynchronizationQueueSink.enqueueFeedAddedIfSynchronizationIsActive(context, feed.getDownloadUrl());
                 }
             }
@@ -923,6 +924,16 @@ public class DBWriter {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setFeedCustomTitle(feed.getId(), feed.getCustomTitle());
+            adapter.close();
+            EventBus.getDefault().post(new FeedListUpdateEvent(feed));
+        });
+    }
+
+    public static Future<?> setFeedState(Feed feed) {
+        return runOnDbThread(() -> {
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.setFeedState(feed.getId(), feed.getState());
             adapter.close();
             EventBus.getDefault().post(new FeedListUpdateEvent(feed));
         });

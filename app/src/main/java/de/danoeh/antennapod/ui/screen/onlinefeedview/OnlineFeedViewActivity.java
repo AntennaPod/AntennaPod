@@ -29,20 +29,14 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.net.download.service.feed.remote.Downloader;
 import de.danoeh.antennapod.net.download.service.feed.remote.HttpDownloader;
+import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequestCreator;
 import de.danoeh.antennapod.net.discovery.FeedUrlNotFoundException;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
-import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.ui.screen.download.DownloadErrorLabel;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
-import de.danoeh.antennapod.databinding.OnlinefeedviewHeaderBinding;
-import de.danoeh.antennapod.event.EpisodeDownloadEvent;
-import de.danoeh.antennapod.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.model.download.DownloadResult;
@@ -54,13 +48,11 @@ import de.danoeh.antennapod.net.discovery.PodcastSearcherRegistry;
 import de.danoeh.antennapod.parser.feed.FeedHandler;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 import de.danoeh.antennapod.model.download.DownloadError;
-import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.net.common.UrlChecker;
 import de.danoeh.antennapod.ui.cleaner.HtmlToPlainText;
 import de.danoeh.antennapod.databinding.OnlinefeedviewActivityBinding;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.model.playback.RemoteMedia;
 import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
@@ -72,9 +64,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableMaybeObserver;
 import io.reactivex.schedulers.Schedulers;
 import org.apache.commons.lang3.StringUtils;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.IOException;
@@ -100,7 +89,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private static final String TAG = "OnlineFeedViewActivity";
     private static final String PREFS = "OnlineFeedViewActivityPreferences";
     private static final String PREF_LAST_AUTO_DOWNLOAD = "lastAutoDownload";
-    private static final int DESCRIPTION_MAX_LINES_COLLAPSED = 4;
 
     private volatile List<Feed> feeds;
     private String selectedDownloadUrl;
@@ -109,16 +97,13 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private String password = null;
 
     private boolean isPaused;
-    private boolean didPressSubscribe = false;
     private boolean isFeedFoundBySearch = false;
 
     private Dialog dialog;
 
     private Disposable download;
     private Disposable parser;
-    private Disposable updater;
 
-    private OnlinefeedviewHeaderBinding headerBinding;
     private OnlinefeedviewActivityBinding viewBinding;
 
     @Override
@@ -133,7 +118,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         viewBinding.closeButton.setOnClickListener(view -> finish());
         viewBinding.card.setOnClickListener(null);
         viewBinding.card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(this, R.attr.colorSurface));
-        headerBinding = OnlinefeedviewHeaderBinding.inflate(getLayoutInflater());
 
         String feedUrl = null;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
@@ -186,14 +170,12 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         isPaused = false;
-        EventBus.getDefault().register(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         isPaused = true;
-        EventBus.getDefault().unregister(this);
         if (downloader != null && !downloader.isFinished()) {
             downloader.cancel();
         }
@@ -205,9 +187,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(updater != null) {
-            updater.dispose();
-        }
         if(download != null) {
             download.dispose();
         }
@@ -315,24 +294,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
     }
 
-    @Subscribe
-    public void onFeedListChanged(FeedListUpdateEvent event) {
-        updater = Observable.fromCallable(DBReader::getFeedList)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        feeds -> {
-                            OnlineFeedViewActivity.this.feeds = feeds;
-                            handleUpdatedFeedStatus();
-                        }, error -> Log.e(TAG, Log.getStackTraceString(error))
-                );
-    }
-
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(EpisodeDownloadEvent event) {
-        handleUpdatedFeedStatus();
-    }
-
     private void parseFeed(String destination) {
         Log.d(TAG, "Parsing feed");
         parser = Maybe.fromCallable(() -> doParseFeed(destination))
@@ -406,10 +367,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         viewBinding.backgroundImage.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
 
-        viewBinding.listView.addHeaderView(headerBinding.getRoot());
-        viewBinding.listView.setSelector(android.R.color.transparent);
-        viewBinding.listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
-
         if (StringUtils.isNotBlank(feed.getImageUrl())) {
             Glide.with(this)
                     .load(feed.getImageUrl())
@@ -431,36 +388,59 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         viewBinding.titleLabel.setText(feed.getTitle());
         viewBinding.authorLabel.setText(feed.getAuthor());
-        headerBinding.txtvDescription.setText(HtmlToPlainText.getPlainText(feed.getDescription()));
+        viewBinding.txtvDescription.setText(HtmlToPlainText.getPlainText(feed.getDescription()));
 
-        viewBinding.subscribeButton.setOnClickListener(v -> {
-            if (feedInFeedlist()) {
-                openFeed();
+        Feed feedInSubscriptions = findFeedInSubscriptions();
+        if (feedInSubscriptions != null) {
+            if (feedInSubscriptions.getState() == Feed.STATE_SUBSCRIBED) {
+                viewBinding.subscribeButton.setVisibility(View.GONE);
+                viewBinding.viewEpisodesButton.setVisibility(View.GONE);
+                viewBinding.openPodcastButton.setVisibility(View.VISIBLE);
+                viewBinding.openPodcastButton.setOnClickListener(view -> openFeed(feedInSubscriptions.getId()));
             } else {
-                FeedDatabaseWriter.updateFeed(this, feed, false);
-                didPressSubscribe = true;
-                handleUpdatedFeedStatus();
+                viewBinding.openPodcastButton.setVisibility(View.GONE);
+                viewBinding.subscribeButton.setVisibility(View.VISIBLE);
+                viewBinding.subscribeButton.setOnClickListener(view -> {
+                    feedInSubscriptions.getPreferences().setKeepUpdated(true);
+                    DBWriter.setFeedPreferences(feedInSubscriptions.getPreferences());
+                    feedInSubscriptions.setState(Feed.STATE_SUBSCRIBED);
+                    DBWriter.setFeedState(feedInSubscriptions);
+                    FeedUpdateManager.getInstance().runOnceOrAsk(this, feedInSubscriptions);
+                    openFeed(feedInSubscriptions.getId());
+                });
+                viewBinding.viewEpisodesButton.setVisibility(View.VISIBLE);
+                viewBinding.viewEpisodesButton.setOnClickListener(view -> {
+                    feed.setId(feedInSubscriptions.getId());
+                    FeedDatabaseWriter.updateFeed(this, feed, false);
+                    openFeed(feedInSubscriptions.getId());
+                });
             }
-        });
+        } else {
+            viewBinding.openPodcastButton.setVisibility(View.GONE);
+            viewBinding.subscribeButton.setVisibility(View.VISIBLE);
+            viewBinding.viewEpisodesButton.setVisibility(View.VISIBLE);
 
-        viewBinding.stopPreviewButton.setOnClickListener(v -> {
-            PlaybackPreferences.writeNoMediaPlaying();
-            IntentUtils.sendLocalBroadcast(this, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
-        });
+            viewBinding.viewEpisodesButton.setOnClickListener(v -> {
+                feed.setState(Feed.STATE_NOT_SUBSCRIBED);
+                FeedDatabaseWriter.updateFeed(this, feed, false);
+                Feed feedFromDb = DBReader.getFeed(feed.getId(), false, 0, Integer.MAX_VALUE);
+                feedFromDb.getPreferences().setKeepUpdated(false);
+                DBWriter.setFeedPreferences(feedFromDb.getPreferences());
+                setAutodownloadPreferenceAndOpen(feedFromDb);
+            });
+            viewBinding.subscribeButton.setOnClickListener(v -> {
+                Feed feedFromDb = FeedDatabaseWriter.updateFeed(this, feed, false);
+                setAutodownloadPreferenceAndOpen(feedFromDb);
+            });
+            if (UserPreferences.isEnableAutodownload()) {
+                viewBinding.autoDownloadCheckBox.setVisibility(View.VISIBLE);
+            }
+        }
 
         if (UserPreferences.isEnableAutodownload()) {
             SharedPreferences preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
             viewBinding.autoDownloadCheckBox.setChecked(preferences.getBoolean(PREF_LAST_AUTO_DOWNLOAD, true));
         }
-
-        headerBinding.txtvDescription.setMaxLines(DESCRIPTION_MAX_LINES_COLLAPSED);
-        headerBinding.txtvDescription.setOnClickListener(v -> {
-            if (headerBinding.txtvDescription.getMaxLines() > DESCRIPTION_MAX_LINES_COLLAPSED) {
-                headerBinding.txtvDescription.setMaxLines(DESCRIPTION_MAX_LINES_COLLAPSED);
-            } else {
-                headerBinding.txtvDescription.setMaxLines(2000);
-            }
-        });
 
         if (alternateFeedUrls.isEmpty()) {
             viewBinding.alternateUrlsSpinner.setVisibility(View.GONE);
@@ -502,13 +482,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 }
             });
         }
-        handleUpdatedFeedStatus();
     }
 
-    private void openFeed() {
-        // feed.getId() is always 0, we have to retrieve the id from the feed list from the database
+    private void openFeed(long id) {
         MainActivityStarter mainActivityStarter = new MainActivityStarter(this);
-        mainActivityStarter.withOpenFeed(getFeedId());
+        mainActivityStarter.withOpenFeed(id);
         if (getIntent().getBooleanExtra(ARG_STARTED_FROM_SEARCH, false)) {
             mainActivityStarter.withAddToBackStack();
         }
@@ -516,58 +494,35 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         startActivity(mainActivityStarter.getIntent());
     }
 
-    private void handleUpdatedFeedStatus() {
-        if (DownloadServiceInterface.get().isDownloadingEpisode(selectedDownloadUrl)) {
-            viewBinding.subscribeButton.setEnabled(false);
-            viewBinding.subscribeButton.setText(R.string.subscribing_label);
-        } else if (feedInFeedlist()) {
-            viewBinding.subscribeButton.setEnabled(true);
-            viewBinding.subscribeButton.setText(R.string.open_podcast);
-            if (didPressSubscribe) {
-                didPressSubscribe = false;
+    private void setAutodownloadPreferenceAndOpen(Feed feed) {
+        FeedPreferences feedPreferences = feed.getPreferences();
+        if (UserPreferences.isEnableAutodownload()) {
+            boolean autoDownload = viewBinding.autoDownloadCheckBox.isChecked();
+            feedPreferences.setAutoDownload(autoDownload);
 
-                Feed feed1 = DBReader.getFeed(getFeedId(), false, 0, 0);
-                FeedPreferences feedPreferences = feed1.getPreferences();
-                if (UserPreferences.isEnableAutodownload()) {
-                    boolean autoDownload = viewBinding.autoDownloadCheckBox.isChecked();
-                    feedPreferences.setAutoDownload(autoDownload);
-
-                    SharedPreferences preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putBoolean(PREF_LAST_AUTO_DOWNLOAD, autoDownload);
-                    editor.apply();
-                }
-                if (username != null) {
-                    feedPreferences.setUsername(username);
-                    feedPreferences.setPassword(password);
-                }
-                DBWriter.setFeedPreferences(feedPreferences);
-
-                openFeed();
-            }
-        } else {
-            viewBinding.subscribeButton.setEnabled(true);
-            viewBinding.subscribeButton.setText(R.string.subscribe_label);
-            if (UserPreferences.isEnableAutodownload()) {
-                viewBinding.autoDownloadCheckBox.setVisibility(View.VISIBLE);
-            }
+            SharedPreferences preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(PREF_LAST_AUTO_DOWNLOAD, autoDownload);
+            editor.apply();
         }
+        if (username != null) {
+            feedPreferences.setUsername(username);
+            feedPreferences.setPassword(password);
+        }
+        DBWriter.setFeedPreferences(feedPreferences);
+        openFeed(feed.getId());
     }
 
-    private boolean feedInFeedlist() {
-        return getFeedId() != 0;
-    }
-
-    private long getFeedId() {
+    private Feed findFeedInSubscriptions() {
         if (feeds == null) {
-            return 0;
+            return null;
         }
         for (Feed f : feeds) {
             if (f.getDownloadUrl().equals(selectedDownloadUrl)) {
-                return f.getId();
+                return f;
             }
         }
-        return 0;
+        return null;
     }
 
     @UiThread
@@ -617,13 +572,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             finish();
         });
         builder.show();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void playbackStateChanged(PlayerStatusEvent event) {
-        boolean isPlayingPreview =
-                PlaybackPreferences.getCurrentlyPlayingMediaType() == RemoteMedia.PLAYABLE_TYPE_REMOTE_MEDIA;
-        viewBinding.stopPreviewButton.setVisibility(isPlayingPreview ? View.VISIBLE : View.GONE);
     }
 
     /**

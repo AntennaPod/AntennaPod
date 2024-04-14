@@ -28,6 +28,9 @@ public class HtmlWriter {
 
         writer.append(templateParts[0]);
         for (Feed feed : feeds) {
+            if (feed.getState() != Feed.STATE_SUBSCRIBED) {
+                continue;
+            }
             writer.append("<li><div><img src=\"");
             writer.append(feed.getImageUrl());
             writer.append("\" /><p>");

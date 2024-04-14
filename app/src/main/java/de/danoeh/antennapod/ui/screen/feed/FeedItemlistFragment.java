@@ -462,7 +462,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         } else {
             viewBinding.header.txtvFailure.setVisibility(View.GONE);
         }
-        if (!feed.getPreferences().getKeepUpdated()) {
+        if (!feed.getPreferences().getKeepUpdated() && feed.getState() == Feed.STATE_SUBSCRIBED) {
             viewBinding.header.txtvUpdatesDisabled.setText(R.string.updates_disabled_label);
             viewBinding.header.txtvUpdatesDisabled.setVisibility(View.VISIBLE);
         } else {
@@ -483,6 +483,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         } else {
             viewBinding.header.txtvInformation.setVisibility(View.GONE);
         }
+        boolean isSubscribed = feed.getState() == Feed.STATE_SUBSCRIBED;
+        viewBinding.header.butShowInfo.setVisibility(isSubscribed ? View.VISIBLE : View.GONE);
+        viewBinding.header.butFilter.setVisibility(isSubscribed ? View.VISIBLE : View.GONE);
+        viewBinding.header.butShowSettings.setVisibility(isSubscribed ? View.VISIBLE : View.GONE);
+        viewBinding.header.butSubscribe.setVisibility(isSubscribed ? View.GONE : View.VISIBLE);
     }
 
     private void setupHeaderView() {
@@ -494,6 +499,13 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         viewBinding.imgvBackground.setColorFilter(new LightingColorFilter(0xff666666, 0x000000));
         viewBinding.header.butShowInfo.setOnClickListener(v -> showFeedInfo());
         viewBinding.header.imgvCover.setOnClickListener(v -> showFeedInfo());
+        viewBinding.header.butSubscribe.setOnClickListener(view -> {
+            feed.getPreferences().setKeepUpdated(true);
+            DBWriter.setFeedPreferences(feed.getPreferences());
+            feed.setState(Feed.STATE_SUBSCRIBED);
+            DBWriter.setFeedState(feed);
+            FeedUpdateManager.getInstance().runOnceOrAsk(requireContext(), feed);
+        });
         viewBinding.header.butShowSettings.setOnClickListener(v -> {
             if (feed != null) {
                 FeedSettingsFragment fragment = FeedSettingsFragment.newInstance(feed);

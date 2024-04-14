@@ -11,7 +11,8 @@
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="24dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginVertical="56dp"
         android:elevation="16dp"
         app:cardCornerRadius="8dp">
 
@@ -142,6 +143,21 @@
                         android:layout_marginTop="4dp"
                         android:text="@string/subscribe_label" />
 
+                    <Button
+                        android:id="@+id/openPodcastButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/open_podcast" />
+
+                    <Button
+                        android:id="@+id/viewEpisodesButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/view_episodes"
+                        style="@style/Widget.Material3.Button.OutlinedButton" />
+
                     <CheckBox
                         android:id="@+id/autoDownloadCheckBox"
                         android:layout_width="match_parent"
@@ -153,23 +169,38 @@
                         android:visibility="gone"
                         tools:visibility="visible" />
 
-                    <Button
-                        android:id="@+id/stopPreviewButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/stop_preview"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-
                 </LinearLayout>
 
-                <ListView
-                    android:id="@+id/listView"
+                <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingTop="16dp"
-                    android:clipToPadding="false" />
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:paddingHorizontal="24dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="@string/description_label"
+                            style="@style/TextAppearance.Material3.TitleMedium" />
+
+                        <TextView
+                            android:id="@+id/txtvDescription"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:lineHeight="20dp"
+                            style="@style/AntennaPod.TextView.ListItemBody"
+                            tools:text="@string/design_time_lorem_ipsum" />
+
+                    </LinearLayout>
+
+                </ScrollView>
 
             </LinearLayout>
 

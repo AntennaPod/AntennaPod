@@ -63,6 +63,14 @@
                 app:srcCompat="@drawable/ic_settings_white"
                 tools:visibility="visible" />
 
+            <Button
+                android:id="@+id/butSubscribe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/subscribe_label"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
         </LinearLayout>
 
         <ImageView

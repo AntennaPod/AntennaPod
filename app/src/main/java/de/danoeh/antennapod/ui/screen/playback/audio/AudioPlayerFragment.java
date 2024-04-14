@@ -25,8 +25,10 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.elevation.SurfaceColors;
 
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
+import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import de.danoeh.antennapod.ui.chapters.ChapterUtils;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
 import de.danoeh.antennapod.ui.episodes.TimeSpeedConverter;
@@ -497,12 +499,23 @@ public class AudioPlayerFragment extends Fragment implements
             return true;
         } else if (itemId == R.id.open_feed_item) {
             if (feedItem != null) {
-                Intent intent = MainActivity.getIntentToOpenFeed(getContext(), feedItem.getFeedId());
-                startActivity(intent);
+                openFeed(feedItem.getFeed());
             }
             return true;
         }
         return false;
+    }
+
+    private void openFeed(Feed feed) {
+        if (feed == null) {
+            return;
+        }
+        if (feed.getState() == Feed.STATE_SUBSCRIBED) {
+            Intent intent = MainActivity.getIntentToOpenFeed(getContext(), feed.getId());
+            startActivity(intent);
+        } else {
+            startActivity(new OnlineFeedviewActivityStarter(getContext(), feed.getDownloadUrl()).getIntent());
+        }
     }
 
     public void fadePlayerToToolbar(float slideOffset) {

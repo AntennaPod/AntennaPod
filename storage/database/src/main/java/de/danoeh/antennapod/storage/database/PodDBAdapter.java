@@ -52,7 +52,7 @@ public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
-    public static final int VERSION = 3040000;
+    public static final int VERSION = 3050000;
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -121,6 +121,7 @@ public class PodDBAdapter {
     public static final String KEY_EPISODE_NOTIFICATION = "episode_notification";
     public static final String KEY_NEW_EPISODES_ACTION = "new_episodes_action";
     public static final String KEY_PODCASTINDEX_CHAPTER_URL = "podcastindex_chapter_url";
+    public static final String KEY_STATE = "state";
 
     // Table names
     public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -171,6 +172,7 @@ public class PodDBAdapter {
             + KEY_FEED_SKIP_INTRO + " INTEGER DEFAULT 0,"
             + KEY_FEED_SKIP_ENDING + " INTEGER DEFAULT 0,"
             + KEY_EPISODE_NOTIFICATION + " INTEGER DEFAULT 0,"
+            + KEY_STATE + " INTEGER DEFAULT " + Feed.STATE_SUBSCRIBED + ","
             + KEY_NEW_EPISODES_ACTION + " INTEGER DEFAULT 0)";
 
     private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
@@ -323,6 +325,7 @@ public class PodDBAdapter {
             + TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_INTRO + ", "
             + TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_ENDING + ", "
             + TABLE_NAME_FEEDS + "." + KEY_EPISODE_NOTIFICATION + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_STATE + ", "
             + TABLE_NAME_FEEDS + "." + KEY_NEW_EPISODES_ACTION;
 
     private static final String JOIN_FEED_ITEM_AND_MEDIA = " LEFT JOIN " + TABLE_NAME_FEED_MEDIA
@@ -337,6 +340,9 @@ public class PodDBAdapter {
             "SELECT " + KEYS_FEED_ITEM_WITHOUT_DESCRIPTION + ", " + KEYS_FEED_MEDIA
             + " FROM " + TABLE_NAME_FEED_ITEMS
             + JOIN_FEED_ITEM_AND_MEDIA;
+    public static final String SELECT_WHERE_FEED_IS_SUBSCRIBED = TABLE_NAME_FEED_ITEMS + "." + KEY_FEED
+            + " IN (SELECT " + KEY_ID + " FROM " + TABLE_NAME_FEEDS
+            + " WHERE " + KEY_STATE + "=" + Feed.STATE_SUBSCRIBED + ")";
 
     private static Context context;
     private static PodDBAdapter instance;
@@ -431,6 +437,7 @@ public class PodDBAdapter {
         values.put(KEY_LASTUPDATE, feed.getLastModified());
         values.put(KEY_TYPE, feed.getType());
         values.put(KEY_FEED_IDENTIFIER, feed.getFeedIdentifier());
+        values.put(KEY_STATE, feed.getState());
 
         values.put(KEY_IS_PAGED, feed.isPaged());
         values.put(KEY_NEXT_PAGE_LINK, feed.getNextPageLink());
@@ -768,6 +775,12 @@ public class PodDBAdapter {
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedId)});
     }
 
+    public void setFeedState(long feedId, int state) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_STATE, state);
+        db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedId)});
+    }
+
     /**
      * Inserts or updates a download status.
      */
@@ -1101,6 +1114,7 @@ public class PodDBAdapter {
                     // Hide episodes that have been played but not completed
                     + " AND (" + KEY_LAST_PLAYED_TIME + " == 0"
                         + " OR " + KEY_LAST_PLAYED_TIME + " > " + (System.currentTimeMillis() - 1000L * 3600L) + ")"
+                    + " AND " + SELECT_WHERE_FEED_IS_SUBSCRIBED
                 + " ORDER BY " + randomEpisodeNumber(seed);
         final String query = "SELECT * FROM (" + allItemsRandomOrder + ")"
                 + " GROUP BY " + KEY_FEED
@@ -1221,6 +1235,7 @@ public class PodDBAdapter {
                 + JOIN_FEED_ITEM_AND_MEDIA
                 + " INNER JOIN " + TABLE_NAME_FEEDS
                 + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
+                + " WHERE " + TABLE_NAME_FEEDS + "." + KEY_STATE + "=" + Feed.STATE_SUBSCRIBED
                 + " GROUP BY " + TABLE_NAME_FEEDS + "." + KEY_ID;
         return db.rawQuery(query, null);
     }
@@ -1372,7 +1387,7 @@ public class PodDBAdapter {
         }
 
         String queryStart = SELECT_FEED_ITEMS_AND_MEDIA_WITH_DESCRIPTION
-                + " WHERE " + queryFeedId + " AND (";
+                + " WHERE " + queryFeedId + " AND " + SELECT_WHERE_FEED_IS_SUBSCRIBED + " AND (";
         StringBuilder sb = new StringBuilder(queryStart);
 
         for (int i = 0; i < queryWords.length; i++) {
@@ -1401,12 +1416,13 @@ public class PodDBAdapter {
     public Cursor searchFeeds(String searchQuery) {
         String[] queryWords = prepareSearchQuery(searchQuery);
 
-        String queryStart = "SELECT " + KEYS_FEED + " FROM " + TABLE_NAME_FEEDS + " WHERE ";
+        String queryStart = "SELECT " + KEYS_FEED + " FROM " + TABLE_NAME_FEEDS
+                + " WHERE " + KEY_STATE + " = " + Feed.STATE_SUBSCRIBED;
         StringBuilder sb = new StringBuilder(queryStart);
 
         for (int i = 0; i < queryWords.length; i++) {
             sb
-                    .append("(")
+                    .append(" AND (")
                     .append(KEY_TITLE).append(" LIKE '%").append(queryWords[i])
                     .append("%' OR ")
                     .append(KEY_CUSTOM_TITLE).append(" LIKE '%").append(queryWords[i])
@@ -1415,13 +1431,9 @@ public class PodDBAdapter {
                     .append("%' OR ")
                     .append(KEY_DESCRIPTION).append(" LIKE '%").append(queryWords[i])
                     .append("%') ");
-
-            if (i != queryWords.length - 1) {
-                sb.append("AND ");
-            }
         }
 
-        sb.append("ORDER BY " + KEY_TITLE + " ASC LIMIT 300");
+        sb.append(" ORDER BY " + KEY_TITLE + " ASC LIMIT 300");
 
         return db.rawQuery(sb.toString(), null);
     }
