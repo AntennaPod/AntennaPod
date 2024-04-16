@@ -175,7 +175,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private MediaSessionCompat mediaSession;
 
     private static volatile MediaType currentMediaType = MediaType.UNKNOWN;
-    /** Android Auto connection state, used to disable the automatic sleep timer. */
     private LiveData<Integer> androidAutoConnectionState;
     private boolean androidAutoConnected = false;
     private Observer<Integer> androidAutoConnectionObserver;
@@ -237,7 +236,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         notificationBuilder = new PlaybackServiceNotificationBuilder(this);
         androidAutoConnectionState = new CarConnection(this).getType();
         androidAutoConnectionObserver = connectionState -> {
-            // See https://developer.android.com/reference/androidx/car/app/connection/CarConnection#CONNECTION_TYPE_PROJECTION()
             androidAutoConnected = connectionState == CarConnection.CONNECTION_TYPE_PROJECTION;
         };
         androidAutoConnectionState.observeForever(androidAutoConnectionObserver);
