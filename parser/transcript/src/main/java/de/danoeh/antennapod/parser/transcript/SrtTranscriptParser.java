@@ -28,7 +28,7 @@ public class SrtTranscriptParser {
         Iterator<String> iter = lines.iterator();
         String speaker = "";
         String prevSpeaker = "";
-        StringBuilder body = new StringBuilder();
+        StringBuilder body;
         String line;
         String segmentBody = "";
         long startTimecode = -1L;
