@@ -29,12 +29,13 @@ import java.util.TreeMap;
  */
 public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder> {
 
-    public String tag = "ItemTranscriptRVAdapter";
-
+    public String tag = "TranscriptAdapter";
+    private Callback callback;
     private Transcript transcript;
 
-    public TranscriptAdapter(Transcript t) {
+    public TranscriptAdapter(Transcript t, Callback callback) {
         setTranscript(t);
+        this.callback = callback;
     }
 
     @NonNull
@@ -43,7 +44,6 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
         return new TranscriptViewholder(TranscriptItemBinding.inflate(LayoutInflater.from(viewGroup.getContext()),
                 viewGroup,
                 false));
-
     }
 
     public void setTranscript(Transcript t) {
@@ -56,9 +56,13 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
         SortedMap<Long, TranscriptSegment> map;
 
         segmentsMap = transcript.getSegmentsMap();
-        // TODO: fix this performance problem with getting a new Array
         TranscriptSegment seg = transcript.getSegmentAt(position);
         int k = Math.toIntExact((Long) transcript.getTimeCode(position));
+        holder.viewContent.setOnClickListener(v -> {
+            if (callback != null)  {
+                callback.onTranscriptClicked(position, seg);
+            }
+        });
 
         holder.transcriptSegment = seg;
         holder.viewTimecode.setText(Converter.getDurationStringLong(k));
@@ -104,5 +108,9 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
             return 0;
         }
         return transcript.getSegmentsMap().size();
+    }
+
+    public interface Callback {
+        void onTranscriptClicked (int position, TranscriptSegment seg);
     }
 }

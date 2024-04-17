@@ -16,24 +16,6 @@ public class TranscriptViewholder extends RecyclerView.ViewHolder {
         super(binding.getRoot());
         viewTimecode = binding.speaker;
         viewContent = binding.content;
-
-        viewContent.setOnClickListener(v -> {
-            long startTime = transcriptSegment.getStartTime();
-            long endTime = transcriptSegment.getEndTime();
-            /*
-            if (! (controller.getPosition() >= startTime
-                    && controller.getPosition() <= endTime)) {
-                controller.seekTo((int) startTime);
-
-                if (controller.getStatus() == PlayerStatus.PAUSED
-                        || controller.getStatus() == PlayerStatus.STOPPED) {
-                    controller.playPause();
-                }
-            } else {
-                controller.playPause();
-            }
-             */
-        });
     }
 
     @Override

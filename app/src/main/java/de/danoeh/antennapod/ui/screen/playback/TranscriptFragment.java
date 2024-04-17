@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +26,9 @@ import android.widget.TextView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import de.danoeh.antennapod.databinding.TranscriptDialogBinding;
+import de.danoeh.antennapod.databinding.TranscriptItemBinding;
+import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.ui.chapters.PodcastIndexTranscriptUtils;
@@ -43,17 +47,19 @@ import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
+import de.danoeh.antennapod.ui.transcript.TranscriptViewholder;
+import okhttp3.Call;
+import okhttp3.Callback;
 
-public class TranscriptFragment extends AppCompatDialogFragment  {
+public class TranscriptFragment extends DialogFragment {
     public static final String TAG = "TranscriptFragment";
-    RecyclerView rv;
+    private TranscriptDialogBinding viewBinding;
     private PlaybackController controller;
     Transcript transcript;
-    SortedMap<Long, TranscriptSegment> map;
     TreeMap<Long, TranscriptSegment> segmentsMap;
     TranscriptAdapter adapter = null;
-    View currentView = null;
-    View prevView = null;
+    TranscriptViewholder currentView = null;
+    TranscriptViewholder prevView = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,6 +82,7 @@ public class TranscriptFragment extends AppCompatDialogFragment  {
         AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setView(onCreateView(getLayoutInflater()))
                 .setPositiveButton(getString(R.string.close_label), null) //dismisses
+                .setTitle(R.string.transcript)
                 .create();
         dialog.show();
 
@@ -83,20 +90,12 @@ public class TranscriptFragment extends AppCompatDialogFragment  {
     }
 
     public View onCreateView(LayoutInflater inflater) {
-        Log.d(TAG, "Creating view");
-        View root = inflater.inflate(R.layout.transcript_dialog, null, false);
-        rv = root.findViewById(R.id.transcript_list);
-        rv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Clicked");
-
-            }
-        });
+        viewBinding = TranscriptDialogBinding.inflate(inflater);
+        RecyclerView viewTranscript = viewBinding.transcriptList;
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setRecycleChildrenOnDetach(true);
-        rv.setLayoutManager(layoutManager);
+        viewTranscript.setLayoutManager(layoutManager);
 
         controller = new PlaybackController(getActivity()) {
             @Override
@@ -105,10 +104,6 @@ public class TranscriptFragment extends AppCompatDialogFragment  {
             }
         };
         controller.init();
-        // Set the adapter
-        Context context = rv.getContext();
-        RecyclerView recyclerView = (RecyclerView) rv;
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         Playable media = controller.getMedia();
         if (media != null && media instanceof FeedMedia) {
@@ -120,12 +115,33 @@ public class TranscriptFragment extends AppCompatDialogFragment  {
             transcript = PodcastIndexTranscriptUtils.loadTranscript(feedMedia);
             if (transcript != null) {
                 segmentsMap = transcript.getSegmentsMap();
-                adapter = new TranscriptAdapter(transcript);
-                recyclerView.setAdapter(adapter);
+                adapter = new TranscriptAdapter(transcript, (pos, segment) -> {
+                    transcriptClicked(pos, segment);
+                });
+                viewTranscript.setAdapter(adapter);
             }
         }
-        return root;
+        return viewBinding.getRoot();
     }
+
+    private void transcriptClicked(int pos, TranscriptSegment segment) {
+        long startTime = segment.getStartTime();
+        long endTime = segment.getEndTime();
+
+        // scrollToPosition(startTime);
+        if (! (controller.getPosition() >= startTime
+                && controller.getPosition() <= endTime)) {
+            controller.seekTo((int) startTime);
+
+            if (controller.getStatus() == PlayerStatus.PAUSED
+                    || controller.getStatus() == PlayerStatus.STOPPED) {
+                controller.playPause();
+            }
+        } else {
+            controller.playPause();
+        }
+    }
+
 
     @Override
     public void onStart() {
@@ -144,15 +160,10 @@ public class TranscriptFragment extends AppCompatDialogFragment  {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "Fragment destroyed");
-        if (rv != null) {
-            rv.removeAllViews();
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
-        Log.d(TAG, "onEventMainThread TranscriptFragment " + event.getPosition());
         scrollToPosition(event.getPosition());
     }
 
@@ -170,52 +181,44 @@ public class TranscriptFragment extends AppCompatDialogFragment  {
         super.onPause();
     }
 
-    @SuppressLint("ResourceAsColor")
-    public void scrollToPosition(long position) {
+    public void scrollToPosition(long playPosition) {
         if (segmentsMap == null) {
             return;
         }
-        Map.Entry<Long, TranscriptSegment> entry = segmentsMap.floorEntry(position);
+        Map.Entry<Long, TranscriptSegment> entry = segmentsMap.floorEntry(playPosition);
         if (entry != null) {
             Integer pos = transcript.getIndex(entry);
+            RecyclerView rv = viewBinding.transcriptList;
             if (pos != null) {
-                Log.d(TAG, "Scrolling to position" + pos + " jump " + Long.toString(entry.getKey()));
                 final LinearSmoothScroller smoothScroller = new LinearSmoothScroller(getActivity()) {
                     @Override
                     protected int getVerticalSnapPreference() {
                         return LinearSmoothScroller.SNAP_TO_START;
                     }
                 };
-
-                rv.scrollToPosition(0);
-                rv.getLayoutManager().scrollToPosition(pos);
-                rv.setTop(pos - 1);
+                //rv.setTop(pos - 1);
                 smoothScroller.setTargetPosition(pos - 1);  // pos on which item you want to scroll recycler view
                 rv.getLayoutManager().startSmoothScroll(smoothScroller);
 
-                View nextView = rv.getLayoutManager().findViewByPosition(pos);
+                TranscriptViewholder nextView = (TranscriptViewholder) rv.getChildViewHolder(rv.getLayoutManager().findViewByPosition(pos));
                 if (nextView != null && nextView != currentView) {
                     prevView = currentView;
                     currentView = nextView;
                 }
                 if (currentView != null) {
-                    ((TextView) currentView.findViewById(R.id.content)).setTypeface(null, Typeface.BOLD);
-                    ((TextView) currentView.findViewById(R.id.content)).setTextColor(
+                    currentView.viewContent.setTypeface(null, Typeface.BOLD);
+                    currentView.viewContent.setTextColor(
                             ThemeUtils.getColorFromAttr(getContext(), android.R.attr.textColorPrimary)
                     );
                 }
 
                 if (prevView != null && prevView != currentView && currentView != null) {
-                    ((TextView) prevView.findViewById(R.id.content)).setTypeface(null, Typeface.NORMAL);
-                    ((TextView) prevView.findViewById(R.id.content)).setTextColor(
+                    prevView.viewContent.setTypeface(null, Typeface.NORMAL);
+                    prevView.viewContent.setTextColor(
                             ThemeUtils.getColorFromAttr(getContext(), android.R.attr.textColorSecondary));
                 }
             }
         }
-    }
-
-    public void scrollToTop() {
-        rv.getLayoutManager().scrollToPosition(0);
     }
 
     @Override
