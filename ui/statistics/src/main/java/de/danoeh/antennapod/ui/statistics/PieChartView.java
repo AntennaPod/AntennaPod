@@ -59,6 +59,7 @@ public class PieChartView extends AppCompatImageView {
 
         private final float valueSum;
         private final float[] values;
+        private static final float MIN_DISPLAY_PERCENTAGE = 0.04f;
 
         public PieChartData(float[] values) {
             this.values = values;
@@ -81,7 +82,7 @@ public class PieChartView extends AppCompatImageView {
         }
 
         public boolean isLargeEnoughToDisplay(int index) {
-            return getPercentageOfItem(index) > 0.04;
+            return getPercentageOfItem(index) > MIN_DISPLAY_PERCENTAGE;
         }
 
         public int getColorOfItem(int index) {

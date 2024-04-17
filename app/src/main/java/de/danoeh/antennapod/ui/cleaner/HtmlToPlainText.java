@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 
 /**
  * This class is based on <code>HtmlToPlainText</code> from jsoup's examples package.
- *
  * HTML to plain-text. This example program demonstrates the use of jsoup to convert HTML input to lightly-formatted
  * plain-text. That is divergent from the general goal of jsoup's .text() methods, which is to get clean data from a
  * scrape.

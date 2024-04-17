@@ -25,6 +25,7 @@ public class PlayerWidget extends AppWidgetProvider {
     public static final String KEY_WIDGET_REWIND = "widget_rewind";
     public static final int DEFAULT_COLOR = 0xff262C31;
     private static final String WORKAROUND_WORK_NAME = "WidgetUpdaterWorkaround";
+    private static final long DELAY_DAYS = 100 * 365;
 
     @Override
     public void onEnabled(Context context) {
@@ -80,7 +81,7 @@ public class PlayerWidget extends AppWidgetProvider {
         // This creates an endless loop with a flickering widget.
         // Workaround: When there is a widget, schedule a dummy task in the far future, so that the receiver stays.
         final OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(WidgetUpdaterWorker.class)
-                .setInitialDelay(100 * 356, TimeUnit.DAYS)
+                .setInitialDelay(DELAY_DAYS, TimeUnit.DAYS)
                 .build();
         WorkManager.getInstance(context)
                 .enqueueUniqueWork(WORKAROUND_WORK_NAME, ExistingWorkPolicy.REPLACE, workRequest);

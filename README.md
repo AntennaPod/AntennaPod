@@ -24,7 +24,7 @@ AntennaPod has many users and we don't want them to run into trouble when we add
 
 ## License
 
-AntennaPod is licensed under the GNU General Public License (GPL-3.0). You can find the license text in the LICENSE file.
+AntennaPod is licensed under the GNU General Public License (GPL-3.0). You can find the license text in the [LICENSE](https://github.com/AntennaPod/AntennaPod/blob/develop/LICENSE) file.
 
 ## Translating AntennaPod
 

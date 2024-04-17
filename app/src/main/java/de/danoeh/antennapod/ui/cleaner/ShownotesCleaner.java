@@ -133,7 +133,7 @@ public class ShownotesCleaner {
         Elements elementsWithTimeCodes = document.body().getElementsMatchingOwnText(TIMECODE_REGEX);
         Log.d(TAG, "Recognized " + elementsWithTimeCodes.size() + " timecodes");
 
-        if (elementsWithTimeCodes.size() == 0) {
+        if (elementsWithTimeCodes.isEmpty()) {
             // No elements with timecodes
             return;
         }
