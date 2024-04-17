@@ -27,7 +27,6 @@ public class PodcastIndexTranscriptUtils {
 
     private static final String TAG = "PodcastIndexTranscript";
 
-
     public static String loadTranscriptFromUrl(String type, String url, boolean forceRefresh) {
         StringBuilder str = new StringBuilder();
         Response response = null;

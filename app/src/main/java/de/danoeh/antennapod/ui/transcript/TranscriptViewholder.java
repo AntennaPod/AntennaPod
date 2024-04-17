@@ -4,7 +4,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import de.danoeh.antennapod.databinding.FragmentItemTranscriptRvBinding;
+import de.danoeh.antennapod.databinding.TranscriptItemBinding;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
 
 public class TranscriptViewholder extends RecyclerView.ViewHolder {
@@ -12,7 +12,7 @@ public class TranscriptViewholder extends RecyclerView.ViewHolder {
     public final TextView viewContent;
     public TranscriptSegment transcriptSegment;
 
-    public TranscriptViewholder(FragmentItemTranscriptRvBinding binding) {
+    public TranscriptViewholder(TranscriptItemBinding binding) {
         super(binding.getRoot());
         viewTimecode = binding.speaker;
         viewContent = binding.content;

@@ -11,7 +11,6 @@ import java.util.Set;
 import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
 
-//
 public class JsonTranscriptParser {
     public static Transcript parse(String jsonStr) {
         try {

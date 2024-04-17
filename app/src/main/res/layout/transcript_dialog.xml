@@ -13,6 +13,6 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         tools:context="de.danoeh.antennapod.fragment.ItemTranscriptRVFragment"
-        tools:listitem="@layout/fragment_item_transcript_rv" />
+        tools:listitem="@layout/transcript_item" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

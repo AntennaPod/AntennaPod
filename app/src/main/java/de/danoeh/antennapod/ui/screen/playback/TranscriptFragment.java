@@ -21,7 +21,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -48,22 +47,17 @@ import de.danoeh.antennapod.ui.common.ThemeUtils;
 public class TranscriptFragment extends AppCompatDialogFragment  {
     public static final String TAG = "TranscriptFragment";
     RecyclerView rv;
-    private ProgressBar progressBar;
-
     private PlaybackController controller;
-
     Transcript transcript;
     SortedMap<Long, TranscriptSegment> map;
     TreeMap<Long, TranscriptSegment> segmentsMap;
     TranscriptAdapter adapter = null;
     View currentView = null;
     View prevView = null;
-    Color prevColor;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setStyle(STYLE_NO_TITLE, 0);
     }
 
     @Override
@@ -90,7 +84,7 @@ public class TranscriptFragment extends AppCompatDialogFragment  {
 
     public View onCreateView(LayoutInflater inflater) {
         Log.d(TAG, "Creating view");
-        View root = inflater.inflate(R.layout.fragment_item_transcript_rv_list, null, false);
+        View root = inflater.inflate(R.layout.transcript_dialog, null, false);
         rv = root.findViewById(R.id.transcript_list);
         rv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,7 +177,7 @@ public class TranscriptFragment extends AppCompatDialogFragment  {
         }
         Map.Entry<Long, TranscriptSegment> entry = segmentsMap.floorEntry(position);
         if (entry != null) {
-            Integer pos = adapter.positions.get(entry.getKey());
+            Integer pos = transcript.getIndex(entry);
             if (pos != null) {
                 Log.d(TAG, "Scrolling to position" + pos + " jump " + Long.toString(entry.getKey()));
                 final LinearSmoothScroller smoothScroller = new LinearSmoothScroller(getActivity()) {

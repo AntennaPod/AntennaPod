@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.ui.screen.playback;
 
-import static java.security.AccessController.getContext;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,11 +12,12 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.jsoup.internal.StringUtil;
 
-import de.danoeh.antennapod.databinding.FragmentItemTranscriptRvBinding;
+import de.danoeh.antennapod.databinding.TranscriptItemBinding;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
 import de.danoeh.antennapod.parser.transcript.TranscriptParser;
+import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.transcript.TranscriptViewholder;
 
 import java.util.Hashtable;
@@ -34,21 +33,17 @@ import java.util.TreeMap;
 public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder> {
 
     public String tag = "ItemTranscriptRVAdapter";
-    public Hashtable<Long, Integer> positions;
-    public Hashtable<Integer, TranscriptSegment> snippets;
 
     private Transcript transcript;
 
     public TranscriptAdapter(Transcript t) {
-        positions = new Hashtable<Long, Integer>();
-        snippets = new Hashtable<Integer, TranscriptSegment>();
         setTranscript(t);
     }
 
     @NonNull
     @Override
     public TranscriptViewholder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        return new TranscriptViewholder(FragmentItemTranscriptRvBinding.inflate(LayoutInflater.from(viewGroup.getContext()),
+        return new TranscriptViewholder(TranscriptItemBinding.inflate(LayoutInflater.from(viewGroup.getContext()),
                 viewGroup,
                 false));
 
@@ -56,19 +51,7 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
 
     public void setTranscript(Transcript t) {
         transcript = t;
-        if (transcript == null) {
-            return;
-        }
-        TreeMap<Long, TranscriptSegment> segmentsMap = transcript.getSegmentsMap();
-        Object[] objs = segmentsMap.entrySet().toArray();
-        for (int i = 0; i < objs.length; i++) {
-            Map.Entry<Long, TranscriptSegment> seg;
-            seg = (Map.Entry<Long, TranscriptSegment>) objs[i];
-            positions.put((Long) seg.getKey(), i);
-            snippets.put(i, seg.getValue());
-        }
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull TranscriptViewholder holder, int position) {
@@ -77,13 +60,12 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
 
         segmentsMap = transcript.getSegmentsMap();
         // TODO: fix this performance problem with getting a new Array
-        TreeMap.Entry entry = (TreeMap.Entry) segmentsMap.entrySet().toArray()[position];
-        TranscriptSegment seg = (TranscriptSegment) entry.getValue();
-        Long k = (Long) entry.getKey();
+        TranscriptSegment seg = transcript.getSegmentAt(position);
+        int k = Math.toIntExact((Long) transcript.getTimeCode(position));
 
         Log.d(tag, "onBindTranscriptViewholder position " + position + " RV pos " + k);
         holder.transcriptSegment = seg;
-        holder.viewTimecode.setText(TranscriptParser.secondsToTime(k));
+        holder.viewTimecode.setText(Converter.getDurationStringLong(k));
         holder.viewTimecode.setVisibility(View.GONE);
         Set<String> speakers = transcript.getSpeakers();
 
@@ -103,13 +85,13 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
                 holder.viewContent.setText(seg.getWords());
             } else {
                 holder.viewTimecode.setVisibility(View.VISIBLE);
-                holder.viewTimecode.setText(TranscriptParser.secondsToTime(k) + " " + seg.getSpeaker());
+                holder.viewTimecode.setText(Converter.getDurationStringLong(k) + " " + seg.getSpeaker());
                 holder.viewContent.setText(seg.getWords());
             }
         } else {
             if (speakers.size() <= 0 && (position % 5 == 0)) {
                 holder.viewTimecode.setVisibility(View.VISIBLE);
-                holder.viewTimecode.setText(TranscriptParser.secondsToTime(k));
+                holder.viewTimecode.setText(Converter.getDurationStringLong(k));
             }
             holder.viewContent.setText(seg.getWords());
         }

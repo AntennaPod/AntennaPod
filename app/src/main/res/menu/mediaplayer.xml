@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/transcript_item"
-        android:icon="@drawable/subtitles_24px"
+        android:icon="@drawable/transcript"
         android:title="@string/show_transcript"
         custom:showAsAction="always">
     </item>

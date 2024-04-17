@@ -6,7 +6,7 @@ import java.util.Locale;
 import de.danoeh.antennapod.model.feed.Transcript;
 
 public class TranscriptParser {
-    static final long MIN_SPAN = 5000L; // merge short segments together to form a span of 1 second
+    static final long MIN_SPAN = 5000L; // merge short segments together to form a span of 5 seconds
 
     public static Transcript parse(String str, String type) {
         if (str == null || StringUtils.isBlank(str)) {
