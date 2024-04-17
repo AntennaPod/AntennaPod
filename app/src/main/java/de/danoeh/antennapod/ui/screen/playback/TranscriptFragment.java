@@ -112,29 +112,25 @@ public class TranscriptFragment extends AppCompatDialogFragment  {
         };
         controller.init();
         // Set the adapter
-        if (rv instanceof RecyclerView) {
-            Context context = rv.getContext();
-            RecyclerView recyclerView = (RecyclerView) rv;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        Context context = rv.getContext();
+        RecyclerView recyclerView = (RecyclerView) rv;
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            Playable media = controller.getMedia();
-            if (media != null && media instanceof FeedMedia) {
-                FeedMedia feedMedia = ((FeedMedia) media);
-                if (feedMedia.getItem() == null) {
-                    feedMedia.setItem(DBReader.getFeedItem(feedMedia.getItemId()));
-                }
+        Playable media = controller.getMedia();
+        if (media != null && media instanceof FeedMedia) {
+            FeedMedia feedMedia = ((FeedMedia) media);
+            if (feedMedia.getItem() == null) {
+                feedMedia.setItem(DBReader.getFeedItem(feedMedia.getItemId()));
+            }
 
-                transcript = PodcastIndexTranscriptUtils.loadTranscript(feedMedia);
-                if (transcript != null) {
-                    segmentsMap = transcript.getSegmentsMap();
-                    adapter = new ItemTranscriptRvAdapter(transcript);
-                    adapter.setController(controller);
-                    recyclerView.setAdapter(adapter);
-                }
-
+            transcript = PodcastIndexTranscriptUtils.loadTranscript(feedMedia);
+            if (transcript != null) {
+                segmentsMap = transcript.getSegmentsMap();
+                adapter = new ItemTranscriptRvAdapter(transcript);
+                adapter.setController(controller);
+                recyclerView.setAdapter(adapter);
             }
         }
-
         return root;
     }
 
