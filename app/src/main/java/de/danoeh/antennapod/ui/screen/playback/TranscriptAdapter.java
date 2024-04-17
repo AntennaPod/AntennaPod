@@ -64,7 +64,6 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
             }
         });
 
-        holder.transcriptSegment = seg;
         holder.viewTimecode.setText(Converter.getDurationStringLong(k));
         holder.viewTimecode.setVisibility(View.GONE);
         Set<String> speakers = transcript.getSpeakers();

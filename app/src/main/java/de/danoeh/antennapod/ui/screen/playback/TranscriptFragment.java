@@ -121,7 +121,7 @@ public class TranscriptFragment extends DialogFragment {
         long startTime = segment.getStartTime();
         long endTime = segment.getEndTime();
 
-        // scrollToPosition(startTime);
+        scrollToPosition(pos);
         if (! (controller.getPosition() >= startTime
                 && controller.getPosition() <= endTime)) {
             controller.seekTo((int) startTime);
@@ -157,7 +157,7 @@ public class TranscriptFragment extends DialogFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
-        scrollToPosition(event.getPosition());
+        scrollToPlayPosition(event.getPosition());
     }
 
 
@@ -174,43 +174,47 @@ public class TranscriptFragment extends DialogFragment {
         super.onPause();
     }
 
-    public void scrollToPosition(long playPosition) {
+    public void scrollToPlayPosition(long playPosition) {
         if (segmentsMap == null) {
             return;
         }
         Map.Entry<Long, TranscriptSegment> entry = segmentsMap.floorEntry(playPosition);
         if (entry != null) {
             Integer pos = transcript.getIndex(entry);
-            RecyclerView rv = viewBinding.transcriptList;
-            if (pos != null) {
-                final LinearSmoothScroller smoothScroller = new LinearSmoothScroller(getActivity()) {
-                    @Override
-                    protected int getVerticalSnapPreference() {
-                        return LinearSmoothScroller.SNAP_TO_START;
-                    }
-                };
-                //rv.setTop(pos - 1);
-                smoothScroller.setTargetPosition(pos - 1);  // pos on which item you want to scroll recycler view
-                rv.getLayoutManager().startSmoothScroll(smoothScroller);
+            scrollToPosition(pos);
+        }
+    }
 
-                TranscriptViewholder nextView =
-                        (TranscriptViewholder) rv.getChildViewHolder(rv.getLayoutManager().findViewByPosition(pos));
-                if (nextView != null && nextView != currentView) {
-                    prevView = currentView;
-                    currentView = nextView;
+    public void scrollToPosition(Integer pos) {
+        RecyclerView rv = viewBinding.transcriptList;
+        if (pos != null) {
+            final LinearSmoothScroller smoothScroller = new LinearSmoothScroller(getActivity()) {
+                @Override
+                protected int getVerticalSnapPreference() {
+                    return LinearSmoothScroller.SNAP_TO_START;
                 }
-                if (currentView != null) {
-                    currentView.viewContent.setTypeface(null, Typeface.BOLD);
-                    currentView.viewContent.setTextColor(
-                            ThemeUtils.getColorFromAttr(getContext(), android.R.attr.textColorPrimary)
-                    );
-                }
+            };
+            //rv.setTop(pos - 1);
+            smoothScroller.setTargetPosition(pos - 1);  // pos on which item you want to scroll recycler view
+            rv.getLayoutManager().startSmoothScroll(smoothScroller);
 
-                if (prevView != null && prevView != currentView && currentView != null) {
-                    prevView.viewContent.setTypeface(null, Typeface.NORMAL);
-                    prevView.viewContent.setTextColor(
-                            ThemeUtils.getColorFromAttr(getContext(), android.R.attr.textColorSecondary));
-                }
+            TranscriptViewholder nextView =
+                    (TranscriptViewholder) rv.getChildViewHolder(rv.getLayoutManager().findViewByPosition(pos));
+            if (nextView != null && nextView != currentView) {
+                prevView = currentView;
+                currentView = nextView;
+            }
+            if (currentView != null) {
+                currentView.viewContent.setTypeface(null, Typeface.BOLD);
+                currentView.viewContent.setTextColor(
+                        ThemeUtils.getColorFromAttr(getContext(), android.R.attr.textColorPrimary)
+                );
+            }
+
+            if (prevView != null && prevView != currentView && currentView != null) {
+                prevView.viewContent.setTypeface(null, Typeface.NORMAL);
+                prevView.viewContent.setTextColor(
+                        ThemeUtils.getColorFromAttr(getContext(), android.R.attr.textColorSecondary));
             }
         }
     }

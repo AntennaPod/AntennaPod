@@ -10,7 +10,6 @@ import de.danoeh.antennapod.model.feed.TranscriptSegment;
 public class TranscriptViewholder extends RecyclerView.ViewHolder {
     public final TextView viewTimecode;
     public final TextView viewContent;
-    public TranscriptSegment transcriptSegment;
 
     public TranscriptViewholder(TranscriptItemBinding binding) {
         super(binding.getRoot());
