@@ -193,7 +193,8 @@ public class TranscriptFragment extends DialogFragment {
                 smoothScroller.setTargetPosition(pos - 1);  // pos on which item you want to scroll recycler view
                 rv.getLayoutManager().startSmoothScroll(smoothScroller);
 
-                TranscriptViewholder nextView = (TranscriptViewholder) rv.getChildViewHolder(rv.getLayoutManager().findViewByPosition(pos));
+                TranscriptViewholder nextView =
+                        (TranscriptViewholder) rv.getChildViewHolder(rv.getLayoutManager().findViewByPosition(pos));
                 if (nextView != null && nextView != currentView) {
                     prevView = currentView;
                     currentView = nextView;
