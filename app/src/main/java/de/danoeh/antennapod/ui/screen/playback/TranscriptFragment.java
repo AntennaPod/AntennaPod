@@ -55,7 +55,7 @@ public class TranscriptFragment extends AppCompatDialogFragment  {
     Transcript transcript;
     SortedMap<Long, TranscriptSegment> map;
     TreeMap<Long, TranscriptSegment> segmentsMap;
-    ItemTranscriptRvAdapter adapter = null;
+    TranscriptAdapter adapter = null;
     View currentView = null;
     View prevView = null;
     Color prevColor;
@@ -126,7 +126,7 @@ public class TranscriptFragment extends AppCompatDialogFragment  {
             transcript = PodcastIndexTranscriptUtils.loadTranscript(feedMedia);
             if (transcript != null) {
                 segmentsMap = transcript.getSegmentsMap();
-                adapter = new ItemTranscriptRvAdapter(transcript);
+                adapter = new TranscriptAdapter(transcript);
                 adapter.setController(controller);
                 recyclerView.setAdapter(adapter);
             }

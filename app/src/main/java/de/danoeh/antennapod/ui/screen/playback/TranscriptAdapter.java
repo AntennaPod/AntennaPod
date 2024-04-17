@@ -29,7 +29,7 @@ import java.util.TreeMap;
  * {@link RecyclerView.Adapter} that can display a {@link PlaceholderItem}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class ItemTranscriptRvAdapter extends RecyclerView.Adapter<ItemTranscriptRvAdapter.ViewHolder> {
+public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.ViewHolder> {
 
     public String tag = "ItemTranscriptRVAdapter";
     public Hashtable<Long, Integer> positions;
@@ -38,7 +38,7 @@ public class ItemTranscriptRvAdapter extends RecyclerView.Adapter<ItemTranscript
 
     private Transcript transcript;
 
-    public ItemTranscriptRvAdapter(Transcript t) {
+    public TranscriptAdapter(Transcript t) {
         positions = new Hashtable<Long, Integer>();
         snippets = new Hashtable<Integer, TranscriptSegment>();
         setTranscript(t);
