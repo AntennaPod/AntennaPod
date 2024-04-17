@@ -111,6 +111,6 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
     }
 
     public interface Callback {
-        void onTranscriptClicked (int position, TranscriptSegment seg);
+        void onTranscriptClicked(int position, TranscriptSegment seg);
     }
 }

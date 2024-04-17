@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.ui.screen.playback;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -11,7 +10,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
@@ -22,12 +20,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.danoeh.antennapod.databinding.TranscriptDialogBinding;
-import de.danoeh.antennapod.databinding.TranscriptItemBinding;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -37,7 +33,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Map;
-import java.util.SortedMap;
 import java.util.TreeMap;
 
 import de.danoeh.antennapod.R;
@@ -48,8 +43,6 @@ import de.danoeh.antennapod.model.feed.TranscriptSegment;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.transcript.TranscriptViewholder;
-import okhttp3.Call;
-import okhttp3.Callback;
 
 public class TranscriptFragment extends DialogFragment {
     public static final String TAG = "TranscriptFragment";
