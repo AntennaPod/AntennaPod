@@ -127,7 +127,6 @@ public class TranscriptFragment extends AppCompatDialogFragment  {
             if (transcript != null) {
                 segmentsMap = transcript.getSegmentsMap();
                 adapter = new TranscriptAdapter(transcript);
-                adapter.setController(controller);
                 recyclerView.setAdapter(adapter);
             }
         }

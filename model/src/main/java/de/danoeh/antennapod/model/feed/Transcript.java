@@ -26,6 +26,10 @@ public class Transcript {
 
     private Set<String> speakers;
 
+    public Set<String> getSpeakers() {
+       return speakers;
+    }
+
     public void setSpeakers(Set<String> speakers) {
         this.speakers = speakers;
     }
