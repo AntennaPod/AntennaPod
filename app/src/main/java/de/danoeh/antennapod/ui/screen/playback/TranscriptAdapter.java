@@ -16,12 +16,9 @@ import de.danoeh.antennapod.databinding.TranscriptItemBinding;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
-import de.danoeh.antennapod.parser.transcript.TranscriptParser;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.transcript.TranscriptViewholder;
 
-import java.util.Hashtable;
-import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -63,7 +60,6 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
         TranscriptSegment seg = transcript.getSegmentAt(position);
         int k = Math.toIntExact((Long) transcript.getTimeCode(position));
 
-        Log.d(tag, "onBindTranscriptViewholder position " + position + " RV pos " + k);
         holder.transcriptSegment = seg;
         holder.viewTimecode.setText(Converter.getDurationStringLong(k));
         holder.viewTimecode.setVisibility(View.GONE);
@@ -80,7 +76,7 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
             if (prevEntry != null) {
                 prevSeg = (TranscriptSegment) prevEntry.getValue();
             }
-            if (prevEntry != null && prevSeg.getSpeaker().equals(seg.getSpeaker()) ) {
+            if (prevEntry != null && prevSeg.getSpeaker().equals(seg.getSpeaker())) {
                 holder.viewTimecode.setVisibility(View.GONE);
                 holder.viewContent.setText(seg.getWords());
             } else {

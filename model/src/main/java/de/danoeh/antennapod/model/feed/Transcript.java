@@ -9,8 +9,8 @@ public class Transcript {
 
     private final TreeMap<Long, TranscriptSegment> segmentsMap = new TreeMap<>();
     private Set<String> speakers;
-    public Hashtable<Long, Integer> positions;
-    Object[] objs;
+    private Hashtable<Long, Integer> positions;
+    private Object[] objs; // array of TreeMap<Long, TranscriptSegment>
 
     public void addSegment(TranscriptSegment segment) {
         segmentsMap.put(segment.getStartTime(), segment);
@@ -49,7 +49,7 @@ public class Transcript {
 
         objs = segmentsMap.entrySet().toArray();
         positions = new Hashtable<Long, Integer>();
-        for ( int i = 0; i < objs.length; i++) {
+        for (int i = 0; i < objs.length; i++) {
             Map.Entry<Long, TranscriptSegment> seg;
             seg = (Map.Entry<Long, TranscriptSegment>) objs[i];
             positions.put((Long) seg.getKey(), i);
