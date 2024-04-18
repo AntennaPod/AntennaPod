@@ -12,27 +12,63 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.snackbar.Snackbar;
 import com.leinardi.android.speeddial.SpeedDialView;
-
-import de.danoeh.antennapod.ui.screen.episode.ItemPagerFragment;
-import de.danoeh.antennapod.ui.screen.SearchFragment;
-import de.danoeh.antennapod.ui.TransitionEffect;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.databinding.FeedItemListFragmentBinding;
+import de.danoeh.antennapod.databinding.MultiSelectSpeedDialBinding;
+import de.danoeh.antennapod.event.EpisodeDownloadEvent;
+import de.danoeh.antennapod.event.FavoritesEvent;
+import de.danoeh.antennapod.event.FeedEvent;
+import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
+import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
+import de.danoeh.antennapod.event.QueueEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.model.download.DownloadResult;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.FeedItemFilterDialog;
+import de.danoeh.antennapod.ui.MenuItemUtils;
+import de.danoeh.antennapod.ui.TransitionEffect;
+import de.danoeh.antennapod.ui.common.IntentUtils;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
+import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
+import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
+import de.danoeh.antennapod.ui.episodeslist.EpisodeMultiSelectActionHandler;
+import de.danoeh.antennapod.ui.episodeslist.FeedItemMenuHandler;
+import de.danoeh.antennapod.ui.episodeslist.MoreContentListFooterUtil;
+import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
+import de.danoeh.antennapod.ui.screen.SearchFragment;
+import de.danoeh.antennapod.ui.screen.download.DownloadLogDetailsDialog;
 import de.danoeh.antennapod.ui.screen.download.DownloadLogFragment;
+import de.danoeh.antennapod.ui.screen.episode.ItemPagerFragment;
 import de.danoeh.antennapod.ui.screen.feed.preferences.FeedSettingsFragment;
+import de.danoeh.antennapod.ui.share.ShareUtils;
+import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
+import io.reactivex.Maybe;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
@@ -42,45 +78,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
-import de.danoeh.antennapod.event.FeedEvent;
-import de.danoeh.antennapod.ui.MenuItemUtils;
-import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.storage.database.DBWriter;
-import de.danoeh.antennapod.ui.common.IntentUtils;
-import de.danoeh.antennapod.ui.share.ShareUtils;
-import de.danoeh.antennapod.ui.episodeslist.MoreContentListFooterUtil;
-import de.danoeh.antennapod.databinding.FeedItemListFragmentBinding;
-import de.danoeh.antennapod.databinding.MultiSelectSpeedDialBinding;
-import de.danoeh.antennapod.ui.screen.download.DownloadLogDetailsDialog;
-import de.danoeh.antennapod.ui.FeedItemFilterDialog;
-import de.danoeh.antennapod.event.EpisodeDownloadEvent;
-import de.danoeh.antennapod.event.FavoritesEvent;
-import de.danoeh.antennapod.event.FeedItemEvent;
-import de.danoeh.antennapod.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
-import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.event.QueueEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
-import de.danoeh.antennapod.ui.episodeslist.EpisodeMultiSelectActionHandler;
-import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
-import de.danoeh.antennapod.ui.episodeslist.FeedItemMenuHandler;
-import de.danoeh.antennapod.model.download.DownloadResult;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedItemFilter;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
-import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
-import io.reactivex.Maybe;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Displays a list of FeedItems.
@@ -148,12 +145,18 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (savedInstanceState != null) {
             displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
         }
-        ((MainActivity) getActivity()).setupToolbarToggle(viewBinding.toolbar, displayUpArrow);
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).setupToolbarToggle(viewBinding.toolbar, displayUpArrow);
+            viewBinding.recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
+        } else {
+            viewBinding.toolbar.setNavigationIcon(
+                    ThemeUtils.getDrawableFromAttr(getContext(), R.attr.homeAsUpIndicator));
+            viewBinding.toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
+        }
         updateToolbar();
         setupLoadMoreScrollListener();
 
-        viewBinding.recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
-        adapter = new FeedItemListAdapter((MainActivity) getActivity());
+        adapter = new FeedItemListAdapter(getActivity());
         adapter.setOnSelectModeListener(this);
         viewBinding.recyclerView.setAdapter(adapter);
         swipeActions = new SwipeActions(this, TAG).attachTo(viewBinding.recyclerView);
@@ -211,14 +214,13 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             @Override
             public void onToggleChanged(boolean open) {
                 if (open && adapter.getSelectedCount() == 0) {
-                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
-                            Snackbar.LENGTH_SHORT);
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.no_items_selected)));
                     speedDialBinding.fabSD.close();
                 }
             }
         });
         speedDialBinding.fabSD.setOnActionSelectedListener(actionItem -> {
-            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), actionItem.getId())
+            new EpisodeMultiSelectActionHandler(getActivity(), actionItem.getId())
                     .handleAction(adapter.getSelectedItems());
             adapter.endSelectMode();
             return true;
@@ -255,6 +257,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (feed.isLocalFeed()) {
             viewBinding.toolbar.getMenu().findItem(R.id.share_item).setVisible(false);
         }
+        if (feed.getState() == Feed.STATE_NOT_SUBSCRIBED) {
+            viewBinding.toolbar.getMenu().findItem(R.id.sort_items).setVisible(false);
+            viewBinding.toolbar.getMenu().findItem(R.id.refresh_item).setVisible(false);
+            viewBinding.toolbar.getMenu().findItem(R.id.rename_item).setVisible(false);
+            viewBinding.toolbar.getMenu().findItem(R.id.remove_feed).setVisible(false);
+        }
     }
 
     @Override
@@ -269,8 +277,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (feed == null) {
-            ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                    R.string.please_wait_for_data, Toast.LENGTH_LONG);
+            EventBus.getDefault().post(getString(R.string.please_wait_for_data));
             return true;
         }
         if (item.getItemId() == R.id.visit_website_item) {
@@ -641,7 +648,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     private class FeedItemListAdapter extends EpisodeItemListAdapter {
-        public FeedItemListAdapter(MainActivity mainActivity) {
+        public FeedItemListAdapter(FragmentActivity mainActivity) {
             super(mainActivity);
         }
 

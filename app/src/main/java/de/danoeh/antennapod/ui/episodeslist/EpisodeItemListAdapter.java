@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.danoeh.antennapod.ui.SelectableAdapter;
@@ -32,13 +33,13 @@ import de.danoeh.antennapod.ui.screen.episode.ItemPagerFragment;
 public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHolder>
         implements View.OnCreateContextMenuListener {
 
-    private final WeakReference<MainActivity> mainActivityRef;
+    private final WeakReference<FragmentActivity> mainActivityRef;
     private List<FeedItem> episodes = new ArrayList<>();
     private FeedItem longPressedItem;
     int longPressedPosition = 0; // used to init actionMode
     private int dummyViews = 0;
 
-    public EpisodeItemListAdapter(MainActivity mainActivity) {
+    public EpisodeItemListAdapter(FragmentActivity mainActivity) {
         super(mainActivity);
         this.mainActivityRef = new WeakReference<>(mainActivity);
         setHasStableIds(true);
@@ -86,9 +87,18 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         holder.bind(item);
 
         holder.itemView.setOnClickListener(v -> {
-            MainActivity activity = mainActivityRef.get();
-            if (activity != null && !inActionMode()) {
-                activity.loadChildFragment(ItemPagerFragment.newInstance(episodes, item));
+            if (!inActionMode()) {
+                if (mainActivityRef.get() instanceof MainActivity) {
+                    ((MainActivity) mainActivityRef.get())
+                            .loadChildFragment(ItemPagerFragment.newInstance(episodes, item));
+                } else {
+                    ItemPagerFragment fragment = ItemPagerFragment.newInstance(episodes, item);
+                    mainActivityRef.get().getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragmentContainer, fragment, "Items")
+                            .addToBackStack("Items")
+                            .commitAllowingStateLoss();
+                }
             } else {
                 toggleSelection(holder.getBindingAdapterPosition());
             }
