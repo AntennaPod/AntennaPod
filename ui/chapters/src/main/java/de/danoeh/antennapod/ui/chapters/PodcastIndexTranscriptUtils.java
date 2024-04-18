@@ -51,7 +51,6 @@ public class PodcastIndexTranscriptUtils {
     public static Transcript loadTranscript(FeedMedia media) {
         String transcriptType = media.getItem().getPodcastIndexTranscriptType();
 
-        // TT do we have to set the text?
         if (media.getItem().getTranscript() != null) {
             return media.getTranscript();
         }

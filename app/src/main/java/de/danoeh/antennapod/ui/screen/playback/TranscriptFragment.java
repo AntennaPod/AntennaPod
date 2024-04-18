@@ -93,6 +93,7 @@ public class TranscriptFragment extends DialogFragment {
             progressBar.setVisibility(View.VISIBLE);
             loadMediaInfo(true);
         });
+        progressBar.setVisibility(View.VISIBLE);
 
         return dialog;
     }
@@ -106,7 +107,10 @@ public class TranscriptFragment extends DialogFragment {
         layoutManager.setRecycleChildrenOnDetach(true);
         viewTranscript.setLayoutManager(layoutManager);
 
-
+        adapter = new TranscriptAdapter((pos, segment) -> {
+            transcriptClicked(pos, segment);
+        });
+        viewTranscript.setAdapter(adapter);
         return viewBinding.getRoot();
     }
 
@@ -139,7 +143,7 @@ public class TranscriptFragment extends DialogFragment {
         };
         controller.init();
         EventBus.getDefault().register(this);
-        loadMediaInfo(true);
+        // loadMediaInfo(true);
     }
 
     @Override
@@ -182,12 +186,6 @@ public class TranscriptFragment extends DialogFragment {
         if (media == null || ! (media instanceof FeedMedia)) {
             return;
         }
-        if (adapter == null) {
-            adapter = new TranscriptAdapter((pos, segment) -> {
-                transcriptClicked(pos, segment);
-            });
-            viewTranscript.setAdapter(adapter);
-        }
         this.media = media;
 
         FeedMedia feedMedia = (FeedMedia) media;
@@ -215,6 +213,7 @@ public class TranscriptFragment extends DialogFragment {
         Map.Entry<Long, TranscriptSegment> entry = segmentsMap.floorEntry(playPosition);
         if (entry != null) {
             Integer pos = transcript.getIndex(entry);
+            Log.d(TAG, "scrollToPlayPosition " + playPosition + " RV pos" + pos);
             scrollToPosition(pos);
         }
     }
@@ -224,36 +223,46 @@ public class TranscriptFragment extends DialogFragment {
         if (rv == null) {
             return;
         }
-        if (pos != null) {
-            final LinearSmoothScroller smoothScroller = new LinearSmoothScroller(getActivity()) {
-                @Override
-                protected int getVerticalSnapPreference() {
-                    return LinearSmoothScroller.SNAP_TO_START;
-                }
-            };
-            if (pos > 0) {
-                smoothScroller.setTargetPosition(pos - 1);  // pos on which item you want to scroll recycler view
-                rv.getLayoutManager().startSmoothScroll(smoothScroller);
-            }
+        if (pos == null) {
+            return;
+        }
 
-            TranscriptViewholder nextView =
-                    (TranscriptViewholder) rv.getChildViewHolder(rv.getLayoutManager().findViewByPosition(pos));
-            if (nextView != null && nextView != currentView) {
-                prevView = currentView;
-                currentView = nextView;
+        final LinearSmoothScroller smoothScroller = new LinearSmoothScroller(getActivity()) {
+            @Override
+            protected int getVerticalSnapPreference() {
+                return LinearSmoothScroller.SNAP_TO_START;
             }
-            if (currentView != null) {
-                currentView.viewContent.setTypeface(null, Typeface.BOLD);
-                currentView.viewContent.setTextColor(
-                        ThemeUtils.getColorFromAttr(getContext(), android.R.attr.textColorPrimary)
-                );
-            }
+        };
+        if (pos > 0) {
+            smoothScroller.setTargetPosition(pos - 1);  // pos on which item you want to scroll recycler view
+            rv.getLayoutManager().startSmoothScroll(smoothScroller);
+        }
 
-            if (prevView != null && prevView != currentView && currentView != null) {
-                prevView.viewContent.setTypeface(null, Typeface.NORMAL);
-                prevView.viewContent.setTextColor(
-                        ThemeUtils.getColorFromAttr(getContext(), android.R.attr.textColorSecondary));
-            }
+        RecyclerView.LayoutManager lm = rv.getLayoutManager();
+        if (lm == null) {
+            return;
+        }
+        View v = lm.findViewByPosition(pos);
+        if (v == null) {
+            return;
+        }
+        TranscriptViewholder nextView =
+                (TranscriptViewholder) rv.getChildViewHolder(v);
+        if (nextView != null && nextView != currentView) {
+            prevView = currentView;
+            currentView = nextView;
+        }
+        if (currentView != null) {
+            currentView.viewContent.setTypeface(null, Typeface.BOLD);
+            currentView.viewContent.setTextColor(
+                    ThemeUtils.getColorFromAttr(getContext(), android.R.attr.textColorPrimary)
+            );
+        }
+
+        if (prevView != null && prevView != currentView && currentView != null) {
+            prevView.viewContent.setTypeface(null, Typeface.NORMAL);
+            prevView.viewContent.setTextColor(
+                    ThemeUtils.getColorFromAttr(getContext(), android.R.attr.textColorSecondary));
         }
     }
 
