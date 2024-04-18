@@ -9,10 +9,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
@@ -27,16 +24,28 @@ public class PodcastIndexTranscriptUtils {
 
     private static final String TAG = "PodcastIndexTranscript";
 
-    public static String loadTranscriptFromUrl(String type, String url, boolean forceRefresh) {
+    public static String loadTranscriptFromUrl(String url, boolean forceRefresh) {
         StringBuilder str = new StringBuilder();
         Response response = null;
 
+        CacheControl cache = CacheControl.FORCE_NETWORK;
+
         try {
             Log.d(TAG, "Downloading transcript URL " + url.toString());
-            Request request = new Request.Builder().url(url).cacheControl(CacheControl.FORCE_NETWORK).build();
+            Request request;
+            if (forceRefresh) {
+                request = new Request.Builder().url(url).cacheControl(cache).build();
+            } else {
+                request = new Request.Builder().url(url)
+                        .cacheControl(cache)
+                        .build();
+            }
             response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
             if (response.isSuccessful() && response.body() != null) {
+                Log.d(TAG, "Done Downloading transcript URL " + url.toString());
                 str.append(response.body().string());
+            } else {
+                Log.d(TAG, "Error Downloading transcript URL " + url.toString() + response.message());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,21 +80,9 @@ public class PodcastIndexTranscriptUtils {
         }
 
         String transcriptUrl = media.getItem().getPodcastIndexTranscriptUrl();
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<Transcript> future = executor.submit(() -> {
-            String t = PodcastIndexTranscriptUtils.loadTranscriptFromUrl(transcriptType, transcriptUrl, false);
-            if (StringUtils.isNotEmpty(t)) {
-                return TranscriptParser.parse(t, transcriptType);
-            }
-            return null;
-        });
-
-        try {
-            Transcript result = future.get();  // This will block until the Callable completes
-            executor.shutdown();  // Remember to shutdown the executor
-            return result;
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+        String t = PodcastIndexTranscriptUtils.loadTranscriptFromUrl(transcriptUrl, true);
+        if (StringUtils.isNotEmpty(t)) {
+            return TranscriptParser.parse(t, transcriptType);
         }
         return null;
     }

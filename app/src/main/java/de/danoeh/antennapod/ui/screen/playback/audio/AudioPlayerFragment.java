@@ -497,7 +497,9 @@ public class AudioPlayerFragment extends Fragment implements
             new SleepTimerDialog().show(getChildFragmentManager(), "SleepTimerDialog");
             return true;
         } else if (itemId == R.id.transcript_item) {
-            new TranscriptFragment().show(getActivity().getSupportFragmentManager(), TranscriptFragment.TAG);
+            new TranscriptFragment()
+                    .initMedia(media)
+                    .show(getActivity().getSupportFragmentManager(), TranscriptFragment.TAG);
             return true;
         } else if (itemId == R.id.open_feed_item) {
             if (feedItem != null) {

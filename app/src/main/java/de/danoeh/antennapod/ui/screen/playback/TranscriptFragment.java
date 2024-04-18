@@ -69,6 +69,11 @@ public class TranscriptFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
     }
 
+    public TranscriptFragment initMedia(Playable m) {
+        media = m;
+        return this;
+    }
+
     @Override
     public void onResume() {
         ViewGroup.LayoutParams params;
@@ -143,7 +148,7 @@ public class TranscriptFragment extends DialogFragment {
         };
         controller.init();
         EventBus.getDefault().register(this);
-        // loadMediaInfo(true);
+        loadMediaInfo(true);
     }
 
     @Override
@@ -192,7 +197,9 @@ public class TranscriptFragment extends DialogFragment {
         if (!feedMedia.hasTranscript()) {
             dismiss();
             Toast.makeText(getContext(), R.string.no_transcript_label, Toast.LENGTH_LONG).show();
+            return;
         }
+
         progressBar.setVisibility(View.GONE);
         adapter.setMedia(media);
         ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
@@ -212,6 +219,9 @@ public class TranscriptFragment extends DialogFragment {
         }
         Map.Entry<Long, TranscriptSegment> entry = segmentsMap.floorEntry(playPosition);
         if (entry != null) {
+            if (transcript == null) {
+                return;
+            }
             Integer pos = transcript.getIndex(entry);
             Log.d(TAG, "scrollToPlayPosition " + playPosition + " RV pos" + pos);
             scrollToPosition(pos);
