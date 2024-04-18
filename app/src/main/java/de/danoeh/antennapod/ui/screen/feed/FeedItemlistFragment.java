@@ -49,6 +49,7 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.FeedItemFilterDialog;
 import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.ui.TransitionEffect;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
@@ -262,6 +263,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             viewBinding.toolbar.getMenu().findItem(R.id.refresh_item).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.rename_item).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.remove_feed).setVisible(false);
+            viewBinding.toolbar.getMenu().findItem(R.id.action_search).setVisible(false);
         }
     }
 
@@ -508,6 +510,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         viewBinding.header.imgvCover.setOnClickListener(v -> showFeedInfo());
         viewBinding.header.butSubscribe.setOnClickListener(view -> {
             DBWriter.setFeedState(getContext(), feed, Feed.STATE_SUBSCRIBED);
+            MainActivityStarter mainActivityStarter = new MainActivityStarter(getContext());
+            mainActivityStarter.withOpenFeed(feed.getId());
+            getActivity().finish();
+            startActivity(mainActivityStarter.getIntent());
         });
         viewBinding.header.butShowSettings.setOnClickListener(v -> {
             if (feed != null) {
@@ -539,7 +545,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void showFeedInfo() {
-        if (feed != null) {
+        if (feed != null && getActivity() instanceof MainActivity) {
             FeedInfoFragment fragment = FeedInfoFragment.newInstance(feed);
             ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
         }
@@ -662,6 +668,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             super.onCreateContextMenu(menu, v, menuInfo);
             if (!inActionMode()) {
                 menu.findItem(R.id.multi_select).setVisible(true);
+            }
+            if (feed.getState() != Feed.STATE_SUBSCRIBED) {
+                menu.findItem(R.id.multi_select).setVisible(false);
+                menu.findItem(R.id.mark_read_item).setVisible(false);
             }
             MenuItemUtils.setOnClickListeners(menu, FeedItemlistFragment.this::onContextItemSelected);
         }

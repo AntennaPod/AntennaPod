@@ -311,10 +311,10 @@ public class OnlineFeedViewFragment extends Fragment {
             Glide.with(this)
                     .load(feed.getImageUrl())
                     .apply(new RequestOptions()
-                        .placeholder(R.color.light_gray)
-                        .error(R.color.light_gray)
-                        .fitCenter()
-                        .dontAnimate())
+                            .placeholder(R.color.light_gray)
+                            .error(R.color.light_gray)
+                            .fitCenter()
+                            .dontAnimate())
                     .into(viewBinding.coverImage);
             Glide.with(this)
                     .load(feed.getImageUrl())
@@ -341,11 +341,13 @@ public class OnlineFeedViewFragment extends Fragment {
                 viewBinding.openPodcastButton.setVisibility(View.GONE);
                 viewBinding.subscribeButton.setVisibility(View.VISIBLE);
                 viewBinding.subscribeButton.setOnClickListener(view -> {
+                    setLoadingLayout();
                     DBWriter.setFeedState(getContext(), feedInSubscriptions, Feed.STATE_SUBSCRIBED);
                     openFeed(feedInSubscriptions.getId());
                 });
                 viewBinding.previewEpisodesButton.setVisibility(View.VISIBLE);
                 viewBinding.previewEpisodesButton.setOnClickListener(view -> {
+                    setLoadingLayout();
                     feed.setId(feedInSubscriptions.getId());
                     FeedDatabaseWriter.updateFeed(getContext(), feed, false);
                     previewFeed(feedInSubscriptions.getId());
@@ -357,6 +359,7 @@ public class OnlineFeedViewFragment extends Fragment {
             viewBinding.previewEpisodesButton.setVisibility(View.VISIBLE);
 
             viewBinding.previewEpisodesButton.setOnClickListener(v -> {
+                setLoadingLayout();
                 feed.setState(Feed.STATE_NOT_SUBSCRIBED);
                 FeedDatabaseWriter.updateFeed(getContext(), feed, false);
                 Feed feedFromDb = DBReader.getFeed(feed.getId(), false, 0, Integer.MAX_VALUE);
@@ -365,6 +368,7 @@ public class OnlineFeedViewFragment extends Fragment {
                 previewFeed(feedFromDb.getId());
             });
             viewBinding.subscribeButton.setOnClickListener(v -> {
+                setLoadingLayout();
                 Feed feedFromDb = FeedDatabaseWriter.updateFeed(getContext(), feed, false);
                 setAutodownloadPreferenceAndOpen(feedFromDb);
             });
@@ -377,47 +381,49 @@ public class OnlineFeedViewFragment extends Fragment {
             SharedPreferences preferences = getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
             viewBinding.autoDownloadCheckBox.setChecked(preferences.getBoolean(PREF_LAST_AUTO_DOWNLOAD, true));
         }
+        setupAlternateUrls(feed, alternateFeedUrls);
+    }
 
+    void setupAlternateUrls(Feed feed, Map<String, String> alternateFeedUrls) {
         if (alternateFeedUrls.isEmpty()) {
             viewBinding.alternateUrlsSpinner.setVisibility(View.GONE);
-        } else {
-            viewBinding.alternateUrlsSpinner.setVisibility(View.VISIBLE);
+            return;
+        }
+        viewBinding.alternateUrlsSpinner.setVisibility(View.VISIBLE);
 
-            final List<String> alternateUrlsList = new ArrayList<>();
-            final List<String> alternateUrlsTitleList = new ArrayList<>();
+        final List<String> alternateUrlsList = new ArrayList<>();
+        final List<String> alternateUrlsTitleList = new ArrayList<>();
 
-            alternateUrlsList.add(feed.getDownloadUrl());
-            alternateUrlsTitleList.add(feed.getTitle());
+        alternateUrlsList.add(feed.getDownloadUrl());
+        alternateUrlsTitleList.add(feed.getTitle());
 
+        alternateUrlsList.addAll(alternateFeedUrls.keySet());
+        for (String url : alternateFeedUrls.keySet()) {
+            alternateUrlsTitleList.add(alternateFeedUrls.get(url));
+        }
 
-            alternateUrlsList.addAll(alternateFeedUrls.keySet());
-            for (String url : alternateFeedUrls.keySet()) {
-                alternateUrlsTitleList.add(alternateFeedUrls.get(url));
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                R.layout.alternate_urls_item, alternateUrlsTitleList) {
+            @Override
+            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                // reusing the old view causes a visual bug on Android <= 10
+                return super.getDropDownView(position, null, parent);
+            }
+        };
+
+        adapter.setDropDownViewResource(R.layout.alternate_urls_dropdown_item);
+        viewBinding.alternateUrlsSpinner.setAdapter(adapter);
+        viewBinding.alternateUrlsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedDownloadUrl = alternateUrlsList.get(position);
             }
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-                    R.layout.alternate_urls_item, alternateUrlsTitleList) {
-                @Override
-                public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                    // reusing the old view causes a visual bug on Android <= 10
-                    return super.getDropDownView(position, null, parent);
-                }
-            };
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
-            adapter.setDropDownViewResource(R.layout.alternate_urls_dropdown_item);
-            viewBinding.alternateUrlsSpinner.setAdapter(adapter);
-            viewBinding.alternateUrlsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    selectedDownloadUrl = alternateUrlsList.get(position);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-        }
+            }
+        });
     }
 
     private void previewFeed(long id) {
@@ -560,7 +566,7 @@ public class OnlineFeedViewFragment extends Fragment {
                 .setAdapter(adapter, onClickListener);
 
         getActivity().runOnUiThread(() -> {
-            if(dialog != null && dialog.isShowing()) {
+            if (dialog != null && dialog.isShowing()) {
                 dialog.dismiss();
             }
             dialog = ab.show();

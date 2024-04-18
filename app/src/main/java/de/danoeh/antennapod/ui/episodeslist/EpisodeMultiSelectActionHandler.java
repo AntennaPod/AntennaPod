@@ -5,8 +5,6 @@ import android.util.Log;
 
 import androidx.annotation.PluralsRes;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -23,7 +21,6 @@ public class EpisodeMultiSelectActionHandler {
     private final Activity activity;
     private final int actionId;
     private int totalNumItems = 0;
-    private Snackbar snackbar = null;
 
     public EpisodeMultiSelectActionHandler(Activity activity, int actionId) {
         this.activity = activity;
@@ -118,12 +115,7 @@ public class EpisodeMultiSelectActionHandler {
         totalNumItems += numItems;
         activity.runOnUiThread(() -> {
             String text = activity.getResources().getQuantityString(msgId, totalNumItems, totalNumItems);
-            if (snackbar != null) {
-                snackbar.setText(text);
-                snackbar.show(); // Resets the timeout
-            } else {
-                EventBus.getDefault().post(new MessageEvent(text));
-            }
+            EventBus.getDefault().post(new MessageEvent(text));
         });
     }
 
