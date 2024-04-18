@@ -10,13 +10,13 @@ import de.danoeh.antennapod.model.feed.Transcript;
 @RunWith(RobolectricTestRunner.class)
 public class SrtTranscriptParserTest {
     private static String srtStr = "1\n"
-            + "00:00:00,000 --> 00:00:02,730\n"
+            + "00:00:00,000 --> 00:00:05,730\n"
             + "John Doe: Promoting your podcast in a new\n\n"
             + "2\n"
-            + "00:00:02,730 --> 00:00:04,600\n"
+            + "00:00:05,730 --> 00:00:09,600\n"
             + "way. The latest from PogNews.\n\n"
-            + "00:00:04,730 --> 00:00:05,600\n"
-            + "way. The latest from PogNews.";
+            + "00:00:09,730 --> 00:00:10,600\n"
+            + "We bring your favorite podcast.";
 
     @Test
     public void testParseSrt() {
@@ -25,9 +25,10 @@ public class SrtTranscriptParserTest {
         assertEquals(result.getSegmentAtTime(0L).getWords(), "Promoting your podcast in a new");
         assertEquals(result.getSegmentAtTime(0L).getSpeaker(), "John Doe");
         assertEquals(result.getSegmentAtTime(0L).getStartTime(), 0L);
-        assertEquals(result.getSegmentAtTime(0L).getEndTime(), 2730L);
-        assertEquals((long) result.getEntryAfterTime(1000L).getKey(), 2730L);
-        assertEquals(result.getEntryAfterTime(1000L).getValue().getWords(), "way. The latest from PogNews.");
+        assertEquals(result.getSegmentAtTime(0L).getEndTime(), 5730L);
+        assertEquals((long) result.getEntryAfterTime(1000L).getKey(), 5730L);
+        assertEquals("way. The latest from PogNews. We bring your favorite podcast.",
+                result.getEntryAfterTime(1000L).getValue().getWords());
     }
 
     @Test

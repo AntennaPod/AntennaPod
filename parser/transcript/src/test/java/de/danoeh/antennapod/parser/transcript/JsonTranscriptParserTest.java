@@ -14,8 +14,8 @@ public class JsonTranscriptParserTest {
             + "'segments': [ "
             + "{ 'speaker' : 'John Doe', 'startTime': 0.8, 'endTime': 1.9, 'body': 'And' },"
             + "{ 'speaker' : 'Sally Green', 'startTime': 1.91, 'endTime': 2.8, 'body': 'this merges' },"
-            + "{ 'startTime': 2.9, 'endTime': 3.4, 'body': 'the' },"
-            + "{ 'startTime': 3.5, 'endTime': 3.6, 'body': 'person' }]}";
+            + "{ 'startTime': 2.9, 'endTime': 3.4, 'body': ' the' },"
+            + "{ 'startTime': 3.5, 'endTime': 3.6, 'body': ' person' }]}";
 
     @Test
     public void testParseJson() {
@@ -26,8 +26,8 @@ public class JsonTranscriptParserTest {
         assertEquals(result.getSegmentAtTime(800L).getStartTime(), 800L);
         assertEquals(result.getSegmentAtTime(800L).getEndTime(), 1900L);
         assertEquals(1910L, (long) result.getEntryAfterTime(1800L).getKey());
-        // 2 segments get merged into at least 1 second
-        assertEquals("this merges the", result.getEntryAfterTime(1800L).getValue().getWords());
+        // 2 segments get merged into at least 5 second
+        assertEquals("this merges the person", result.getEntryAfterTime(1800L).getValue().getWords());
     }
 
     @Test
