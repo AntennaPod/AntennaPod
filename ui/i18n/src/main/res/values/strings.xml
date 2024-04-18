@@ -681,7 +681,7 @@
 
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
-    <string name="view_episodes">View episodes</string>
+    <string name="preview_episodes">Preview episodes</string>
 
     <!-- Content descriptions for image buttons -->
     <string name="toolbar_back_button_content_description">Back</string>

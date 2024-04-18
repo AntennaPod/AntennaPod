@@ -151,11 +151,11 @@
                         android:text="@string/open_podcast" />
 
                     <Button
-                        android:id="@+id/viewEpisodesButton"
+                        android:id="@+id/previewEpisodesButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="@string/view_episodes"
+                        android:text="@string/preview_episodes"
                         style="@style/Widget.Material3.Button.OutlinedButton" />
 
                     <CheckBox

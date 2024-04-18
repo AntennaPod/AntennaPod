@@ -500,11 +500,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         viewBinding.header.butShowInfo.setOnClickListener(v -> showFeedInfo());
         viewBinding.header.imgvCover.setOnClickListener(v -> showFeedInfo());
         viewBinding.header.butSubscribe.setOnClickListener(view -> {
-            feed.getPreferences().setKeepUpdated(true);
-            DBWriter.setFeedPreferences(feed.getPreferences());
-            feed.setState(Feed.STATE_SUBSCRIBED);
-            DBWriter.setFeedState(feed);
-            FeedUpdateManager.getInstance().runOnceOrAsk(requireContext(), feed);
+            DBWriter.setFeedState(getContext(), feed, Feed.STATE_SUBSCRIBED);
         });
         viewBinding.header.butShowSettings.setOnClickListener(v -> {
             if (feed != null) {

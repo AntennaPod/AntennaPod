@@ -29,7 +29,6 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.net.download.service.feed.remote.Downloader;
 import de.danoeh.antennapod.net.download.service.feed.remote.HttpDownloader;
-import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequestCreator;
@@ -394,22 +393,18 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         if (feedInSubscriptions != null) {
             if (feedInSubscriptions.getState() == Feed.STATE_SUBSCRIBED) {
                 viewBinding.subscribeButton.setVisibility(View.GONE);
-                viewBinding.viewEpisodesButton.setVisibility(View.GONE);
+                viewBinding.previewEpisodesButton.setVisibility(View.GONE);
                 viewBinding.openPodcastButton.setVisibility(View.VISIBLE);
                 viewBinding.openPodcastButton.setOnClickListener(view -> openFeed(feedInSubscriptions.getId()));
             } else {
                 viewBinding.openPodcastButton.setVisibility(View.GONE);
                 viewBinding.subscribeButton.setVisibility(View.VISIBLE);
                 viewBinding.subscribeButton.setOnClickListener(view -> {
-                    feedInSubscriptions.getPreferences().setKeepUpdated(true);
-                    DBWriter.setFeedPreferences(feedInSubscriptions.getPreferences());
-                    feedInSubscriptions.setState(Feed.STATE_SUBSCRIBED);
-                    DBWriter.setFeedState(feedInSubscriptions);
-                    FeedUpdateManager.getInstance().runOnceOrAsk(this, feedInSubscriptions);
+                    DBWriter.setFeedState(this, feedInSubscriptions, Feed.STATE_SUBSCRIBED);
                     openFeed(feedInSubscriptions.getId());
                 });
-                viewBinding.viewEpisodesButton.setVisibility(View.VISIBLE);
-                viewBinding.viewEpisodesButton.setOnClickListener(view -> {
+                viewBinding.previewEpisodesButton.setVisibility(View.VISIBLE);
+                viewBinding.previewEpisodesButton.setOnClickListener(view -> {
                     feed.setId(feedInSubscriptions.getId());
                     FeedDatabaseWriter.updateFeed(this, feed, false);
                     openFeed(feedInSubscriptions.getId());
@@ -418,9 +413,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         } else {
             viewBinding.openPodcastButton.setVisibility(View.GONE);
             viewBinding.subscribeButton.setVisibility(View.VISIBLE);
-            viewBinding.viewEpisodesButton.setVisibility(View.VISIBLE);
+            viewBinding.previewEpisodesButton.setVisibility(View.VISIBLE);
 
-            viewBinding.viewEpisodesButton.setOnClickListener(v -> {
+            viewBinding.previewEpisodesButton.setOnClickListener(v -> {
                 feed.setState(Feed.STATE_NOT_SUBSCRIBED);
                 FeedDatabaseWriter.updateFeed(this, feed, false);
                 Feed feedFromDb = DBReader.getFeed(feed.getId(), false, 0, Integer.MAX_VALUE);

@@ -14,6 +14,7 @@ import androidx.documentfile.provider.DocumentFile;
 import com.google.common.util.concurrent.Futures;
 import de.danoeh.antennapod.event.DownloadLogEvent;
 
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
@@ -929,11 +930,27 @@ public class DBWriter {
         });
     }
 
-    public static Future<?> setFeedState(Feed feed) {
+    public static Future<?> setFeedState(Context context, Feed feed, int newState) {
+        int oldState = feed.getState();
         return runOnDbThread(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            adapter.setFeedState(feed.getId(), feed.getState());
+            adapter.setFeedState(feed.getId(), newState);
+            feed.setState(newState);
+            if (oldState == Feed.STATE_NOT_SUBSCRIBED && newState == Feed.STATE_SUBSCRIBED) {
+                feed.getPreferences().setKeepUpdated(true);
+                DBWriter.setFeedPreferences(feed.getPreferences());
+                FeedUpdateManager.getInstance().runOnceOrAsk(context, feed);
+                SynchronizationQueueSink.enqueueFeedAddedIfSynchronizationIsActive(context, feed.getDownloadUrl());
+                DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(),
+                        SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
+                for (FeedItem item : feed.getItems()) {
+                    if (item.isPlayed()) {
+                        SynchronizationQueueSink.enqueueEpisodePlayedIfSynchronizationIsActive(
+                                context, item.getMedia(), true);
+                    }
+                }
+            }
             adapter.close();
             EventBus.getDefault().post(new FeedListUpdateEvent(feed));
         });
