@@ -69,7 +69,7 @@ Testing and Verifying
 As a developer contributing to AntennaPod, we ask that you test the feature yourself manually and better yet, add unit and functional tests to any feature of bug you fix.
 
 ### Running Unit Tests
-* `./gradlew :core:testPlayDebugUnitTest`
+* `./gradlew :core:testPlayDebugUnitTest testDebugUnitTest`
 
 ### Running Integration Tests
 
@@ -82,3 +82,9 @@ src="https://user-images.githubusercontent.com/149837/105122859-e1317180-5a8b-11
 #### Using the command line
 * Start an AVD or plug in your phone
 * `sh .github/workflows/runTests.sh`
+
+
+FAQ As a Contributor
+--------------------------
+Q: What do I set the `$JAVA_HOME` variable on the command line to match Android Studio?
+A: Take a look at the 'Settings' -> 'Gradle' -> 'Gradle SDK' -> 'GRADLE_LOCAL_JAVA_HOME' and set your `$JAVA_HOME` to that value.  An example `$JAVA_HOME` is `export JAVA_HOME=/Applications/Android\ Studio.app/Contents/jbr/Contents/Home`
