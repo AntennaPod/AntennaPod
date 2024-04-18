@@ -31,14 +31,7 @@ public class PodcastIndexTranscriptUtils {
 
         try {
             Log.d(TAG, "Downloading transcript URL " + url.toString());
-            Request request;
-            if (forceRefresh) {
-                request = new Request.Builder().url(url).cacheControl(cache).build();
-            } else {
-                request = new Request.Builder().url(url)
-                        .cacheControl(cache)
-                        .build();
-            }
+            Request request = new Request.Builder().url(url).cacheControl(cache).build();
             response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
             if (response.isSuccessful() && response.body() != null) {
                 Log.d(TAG, "Done Downloading transcript URL " + url.toString());
