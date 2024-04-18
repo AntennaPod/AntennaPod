@@ -120,6 +120,7 @@
     <string name="refresh_label">Refresh</string>
     <string name="chapters_label">Chapters</string>
     <string name="no_chapters_label">No chapters</string>
+    <string name="no_transcript_label">No transcript</string>
     <string name="chapter_duration">Duration: %1$s</string>
     <string name="description_label">Description</string>
     <string name="shownotes_label">Shownotes</string>

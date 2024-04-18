@@ -94,7 +94,6 @@ public class AudioPlayerFragment extends Fragment implements
     private ProgressBar progressIndicator;
     private CardView cardViewSeek;
     private TextView txtvSeek;
-    private TranscriptFragment transcriptFragment;
 
     private PlaybackController controller;
     private Disposable disposable;
@@ -163,7 +162,6 @@ public class AudioPlayerFragment extends Fragment implements
     }
 
     private void setChapterDividers(Playable media) {
-
         if (media == null) {
             return;
         }
@@ -273,6 +271,7 @@ public class AudioPlayerFragment extends Fragment implements
             if (media.getChapters() == null && !includingChapters) {
                 loadMediaInfo(true);
             }
+            // TODO should we load transcripts here?
         }, error -> Log.e(TAG, Log.getStackTraceString(error)),
             () -> updateUi(null));
     }
@@ -498,8 +497,7 @@ public class AudioPlayerFragment extends Fragment implements
             new SleepTimerDialog().show(getChildFragmentManager(), "SleepTimerDialog");
             return true;
         } else if (itemId == R.id.transcript_item) {
-            transcriptFragment =  new TranscriptFragment();
-            transcriptFragment.show(getActivity().getSupportFragmentManager(), TranscriptFragment.TAG);
+            new TranscriptFragment().show(getActivity().getSupportFragmentManager(), TranscriptFragment.TAG);
             return true;
         } else if (itemId == R.id.open_feed_item) {
             if (feedItem != null) {

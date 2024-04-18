@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.ui.screen.playback;
 
 import android.app.Dialog;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -15,18 +15,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.danoeh.antennapod.databinding.TranscriptDialogBinding;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.service.PlaybackController;
-import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.ui.chapters.PodcastIndexTranscriptUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -43,16 +45,24 @@ import de.danoeh.antennapod.model.feed.TranscriptSegment;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.transcript.TranscriptViewholder;
+import io.reactivex.Maybe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class TranscriptFragment extends DialogFragment {
     public static final String TAG = "TranscriptFragment";
     private TranscriptDialogBinding viewBinding;
     private PlaybackController controller;
+    private Disposable disposable;
+    Playable media;
     Transcript transcript;
     TreeMap<Long, TranscriptSegment> segmentsMap;
+    private ProgressBar progressBar;
     TranscriptAdapter adapter = null;
     TranscriptViewholder currentView = null;
     TranscriptViewholder prevView = null;
+    RecyclerView viewTranscript;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,42 +88,25 @@ public class TranscriptFragment extends DialogFragment {
                 .setTitle(R.string.transcript)
                 .create();
         dialog.show();
+        dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
+        dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener(v -> {
+            progressBar.setVisibility(View.VISIBLE);
+            loadMediaInfo(true);
+        });
 
         return dialog;
     }
 
     public View onCreateView(LayoutInflater inflater) {
         viewBinding = TranscriptDialogBinding.inflate(inflater);
-        RecyclerView viewTranscript = viewBinding.transcriptList;
+        viewTranscript = viewBinding.transcriptList;
+        progressBar = viewBinding.progLoading;
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setRecycleChildrenOnDetach(true);
         viewTranscript.setLayoutManager(layoutManager);
 
-        controller = new PlaybackController(getActivity()) {
-            @Override
-            public void loadMediaInfo() {
-                load();
-            }
-        };
-        controller.init();
 
-        Playable media = controller.getMedia();
-        if (media != null && media instanceof FeedMedia) {
-            FeedMedia feedMedia = ((FeedMedia) media);
-            if (feedMedia.getItem() == null) {
-                feedMedia.setItem(DBReader.getFeedItem(feedMedia.getItemId()));
-            }
-
-            transcript = PodcastIndexTranscriptUtils.loadTranscript(feedMedia);
-            if (transcript != null) {
-                segmentsMap = transcript.getSegmentsMap();
-                adapter = new TranscriptAdapter(transcript, (pos, segment) -> {
-                    transcriptClicked(pos, segment);
-                });
-                viewTranscript.setAdapter(adapter);
-            }
-        }
         return viewBinding.getRoot();
     }
 
@@ -135,20 +128,19 @@ public class TranscriptFragment extends DialogFragment {
         }
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
         controller = new PlaybackController(getActivity()) {
             @Override
             public void loadMediaInfo() {
-                // TODO
+                TranscriptFragment.this.loadMediaInfo(true);
             }
         };
         controller.init();
         EventBus.getDefault().register(this);
+        loadMediaInfo(true);
     }
-
 
     @Override
     public void onDestroy() {
@@ -160,12 +152,54 @@ public class TranscriptFragment extends DialogFragment {
         scrollToPlayPosition(event.getPosition());
     }
 
+    private void loadMediaInfo(boolean forceRefresh) {
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        disposable = Maybe.create(emitter -> {
+            Playable feedMedia = controller.getMedia();
+            if (feedMedia != null && feedMedia instanceof FeedMedia) {
+                this.media = feedMedia;
 
-    private void load() {
-        Log.d(TAG, "load()");
-        Context context = getContext();
-        if (context == null) {
+                transcript = PodcastIndexTranscriptUtils.loadTranscript((FeedMedia) this.media);
+                ((FeedMedia) this.media).setTranscript(transcript);
+
+                if (transcript != null) {
+                    segmentsMap = transcript.getSegmentsMap();
+                }
+                emitter.onSuccess(media);
+            } else {
+                emitter.onComplete();
+            }
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(media -> onMediaChanged((Playable) media),
+                error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
+    private void onMediaChanged(Playable media) {
+        if (media == null || ! (media instanceof FeedMedia)) {
             return;
+        }
+        if (adapter == null) {
+            adapter = new TranscriptAdapter((pos, segment) -> {
+                transcriptClicked(pos, segment);
+            });
+            viewTranscript.setAdapter(adapter);
+        }
+        this.media = media;
+
+        FeedMedia feedMedia = (FeedMedia) media;
+        if (!feedMedia.hasTranscript()) {
+            dismiss();
+            Toast.makeText(getContext(), R.string.no_transcript_label, Toast.LENGTH_LONG).show();
+        }
+        progressBar.setVisibility(View.GONE);
+        adapter.setMedia(media);
+        ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
+        if (!TextUtils.isEmpty(((FeedMedia) media).getItem().getPodcastIndexTranscriptUrl())) {
+            ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
         }
     }
 
@@ -187,6 +221,9 @@ public class TranscriptFragment extends DialogFragment {
 
     public void scrollToPosition(Integer pos) {
         RecyclerView rv = viewBinding.transcriptList;
+        if (rv == null) {
+            return;
+        }
         if (pos != null) {
             final LinearSmoothScroller smoothScroller = new LinearSmoothScroller(getActivity()) {
                 @Override
@@ -194,9 +231,10 @@ public class TranscriptFragment extends DialogFragment {
                     return LinearSmoothScroller.SNAP_TO_START;
                 }
             };
-            //rv.setTop(pos - 1);
-            smoothScroller.setTargetPosition(pos - 1);  // pos on which item you want to scroll recycler view
-            rv.getLayoutManager().startSmoothScroll(smoothScroller);
+            if (pos > 0) {
+                smoothScroller.setTargetPosition(pos - 1);  // pos on which item you want to scroll recycler view
+                rv.getLayoutManager().startSmoothScroll(smoothScroller);
+            }
 
             TranscriptViewholder nextView =
                     (TranscriptViewholder) rv.getChildViewHolder(rv.getLayoutManager().findViewByPosition(pos));
@@ -222,6 +260,9 @@ public class TranscriptFragment extends DialogFragment {
     @Override
     public void onStop() {
         super.onStop();
+        if (disposable != null) {
+            disposable.dispose();
+        }
         controller.release();
         controller = null;
         EventBus.getDefault().unregister(this);

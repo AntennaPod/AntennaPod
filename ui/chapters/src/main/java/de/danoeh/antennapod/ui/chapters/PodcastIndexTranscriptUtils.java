@@ -51,18 +51,19 @@ public class PodcastIndexTranscriptUtils {
     public static Transcript loadTranscript(FeedMedia media) {
         String transcriptType = media.getItem().getPodcastIndexTranscriptType();
 
-        if (media.getItem().getPodcastIndexTranscriptText() != null) {
-            return TranscriptParser.parse(media.getItem().getPodcastIndexTranscriptText(), transcriptType);
+        // TT do we have to set the text?
+        if (media.getItem().getTranscript() != null) {
+            return media.getTranscript();
         }
 
         if (media.getTranscriptFileUrl() != null) {
             File transcriptFile = new File(media.getTranscriptFileUrl());
-
             try {
                 if (transcriptFile != null && transcriptFile.exists()) {
                     String t = FileUtils.readFileToString(transcriptFile, (String) null);
                     if (StringUtils.isNotEmpty(t)) {
-                        return TranscriptParser.parse(t, transcriptType);
+                        media.setTranscript(TranscriptParser.parse(t, transcriptType));
+                        return media.getTranscript();
                     }
                 }
             } catch (IOException e) {

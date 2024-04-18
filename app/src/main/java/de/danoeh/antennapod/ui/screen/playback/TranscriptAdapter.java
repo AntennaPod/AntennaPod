@@ -14,8 +14,9 @@ import org.jsoup.internal.StringUtil;
 
 import de.danoeh.antennapod.databinding.TranscriptItemBinding;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
-import de.danoeh.antennapod.model.feed.Transcript;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
+import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.transcript.TranscriptViewholder;
 
@@ -28,13 +29,11 @@ import java.util.TreeMap;
  * TODO: Replace the implementation with code for your data type.
  */
 public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder> {
-
     public String tag = "TranscriptAdapter";
     private Callback callback;
-    private Transcript transcript;
+    private FeedMedia media;
 
-    public TranscriptAdapter(Transcript t, Callback callback) {
-        setTranscript(t);
+    public TranscriptAdapter(Callback callback) {
         this.callback = callback;
     }
 
@@ -46,18 +45,26 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
                 false));
     }
 
-    public void setTranscript(Transcript t) {
-        transcript = t;
+    public void setMedia(Playable media) {
+        if (! (media instanceof FeedMedia)) {
+            return;
+        }
+        this.media = (FeedMedia) media;
+        notifyDataSetChanged();
     }
 
     @Override
     public void onBindViewHolder(@NonNull TranscriptViewholder holder, int position) {
+        if (media == null || media.getTranscript() == null) {
+            return;
+        }
+
         TreeMap<Long, TranscriptSegment> segmentsMap;
         SortedMap<Long, TranscriptSegment> map;
 
-        segmentsMap = transcript.getSegmentsMap();
-        TranscriptSegment seg = transcript.getSegmentAt(position);
-        int k = Math.toIntExact((Long) transcript.getTimeCode(position));
+        segmentsMap = media.getTranscript().getSegmentsMap();
+        TranscriptSegment seg = media.getTranscript().getSegmentAt(position);
+        int k = Math.toIntExact((Long) media.getTranscript().getTimeCode(position));
         holder.viewContent.setOnClickListener(v -> {
             if (callback != null)  {
                 callback.onTranscriptClicked(position, seg);
@@ -66,7 +73,7 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
 
         holder.viewTimecode.setText(Converter.getDurationStringLong(k));
         holder.viewTimecode.setVisibility(View.GONE);
-        Set<String> speakers = transcript.getSpeakers();
+        Set<String> speakers = media.getTranscript().getSpeakers();
 
         if (! StringUtil.isBlank(seg.getSpeaker())) {
             TreeMap.Entry prevEntry = null;
@@ -103,10 +110,14 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
 
     @Override
     public int getItemCount() {
-        if (transcript == null) {
+        if (media == null) {
             return 0;
         }
-        return transcript.getSegmentsMap().size();
+
+        if (media.getTranscript() == null) {
+            return 0;
+        }
+        return media.getTranscript().getSegmentsMap().size();
     }
 
     public interface Callback {
