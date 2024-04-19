@@ -80,7 +80,7 @@ public class TranscriptFragment extends DialogFragment {
         params = getDialog().getWindow().getAttributes();
         params.width = WindowManager.LayoutParams.MATCH_PARENT;
         getDialog().getWindow().setAttributes((WindowManager.LayoutParams) params);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+
         super.onResume();
     }
 
