@@ -4,7 +4,6 @@ import android.content.Context;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 
-import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
 import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
