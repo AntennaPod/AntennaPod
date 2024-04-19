@@ -9,10 +9,11 @@
         android:id="@+id/transcript_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="de.danoeh.antennapod.ItemTranscriptRVFragment"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        tools:context="de.danoeh.antennapod.fragment.ItemTranscriptRVFragment"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:scrollIndicators="right"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbars="vertical"
         tools:listitem="@layout/transcript_item" />
 
     <ProgressBar

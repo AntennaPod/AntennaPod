@@ -3,11 +3,13 @@ package de.danoeh.antennapod.ui.screen.playback;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
+import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.jsoup.internal.StringUtil;
@@ -18,31 +20,34 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.common.Converter;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.transcript.TranscriptViewholder;
 
+import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
 import java.util.TreeMap;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link PlaceholderItem}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder> {
     public String tag = "TranscriptAdapter";
-    private Callback callback;
+    private SegmentClickListener segmentClickListener;
+    private final Context context;
     private FeedMedia media;
+    int prevHighlightPosition = -1;
+    int highlightPosition = -1;
 
-    public TranscriptAdapter(Callback callback) {
-        this.callback = callback;
+    public TranscriptAdapter(Context context, SegmentClickListener segmentClickListener) {
+        this.context = context;
+        this.segmentClickListener = segmentClickListener;
     }
 
     @NonNull
     @Override
     public TranscriptViewholder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        return new TranscriptViewholder(TranscriptItemBinding.inflate(LayoutInflater.from(viewGroup.getContext()),
+        TranscriptViewholder v = new TranscriptViewholder(
+                TranscriptItemBinding.inflate(LayoutInflater.from(viewGroup.getContext()),
                 viewGroup,
                 false));
+        return v;
     }
 
     public void setMedia(Playable media) {
@@ -60,14 +65,12 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
         }
 
         TreeMap<Long, TranscriptSegment> segmentsMap;
-        SortedMap<Long, TranscriptSegment> map;
-
         segmentsMap = media.getTranscript().getSegmentsMap();
         TranscriptSegment seg = media.getTranscript().getSegmentAt(position);
-        int k = Math.toIntExact((Long) media.getTranscript().getTimeCode(position));
+        int k = Math.toIntExact(media.getTranscript().getTimeCode(position));
         holder.viewContent.setOnClickListener(v -> {
-            if (callback != null)  {
-                callback.onTranscriptClicked(position, seg);
+            if (segmentClickListener != null)  {
+                segmentClickListener.onTranscriptClicked(position, seg);
             }
         });
 
@@ -76,11 +79,11 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
         Set<String> speakers = media.getTranscript().getSpeakers();
 
         if (! StringUtil.isBlank(seg.getSpeaker())) {
-            TreeMap.Entry prevEntry = null;
-            try {
+            TreeMap.Entry prevEntry;
+            if (position == 0) {
+                prevEntry = null;
+            } else {
                 prevEntry = (TreeMap.Entry) segmentsMap.entrySet().toArray()[position - 1];
-            } catch (ArrayIndexOutOfBoundsException e) {
-                Log.d(tag, "ArrayIndexOutOfBoundsException");
             }
             TranscriptSegment prevSeg = null;
             if (prevEntry != null) {
@@ -95,17 +98,40 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
                 holder.viewContent.setText(seg.getWords());
             }
         } else {
-            if (speakers.size() <= 0 && (position % 5 == 0)) {
+            if (speakers.size() == 0 && (position % 5 == 0)) {
                 holder.viewTimecode.setVisibility(View.VISIBLE);
                 holder.viewTimecode.setText(Converter.getDurationStringLong(k));
             }
             holder.viewContent.setText(seg.getWords());
         }
+
+        if (position == highlightPosition) {
+            holder.viewContent.setTypeface(null, Typeface.BOLD);
+            holder.viewContent.setTextColor(
+                    ThemeUtils.getColorFromAttr(context, android.R.attr.textColorPrimary)
+            );
+        } else {
+            holder.viewContent.setTypeface(null, Typeface.NORMAL);
+            holder.viewContent.setTextColor(
+                    ThemeUtils.getColorFromAttr(context, android.R.attr.textColorSecondary));
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
-        Log.d(tag, "onEventMainThread ItemTranscriptRVAdapter");
+        TreeMap<Long, TranscriptSegment> segmentsMap;
+        segmentsMap = media.getTranscript().getSegmentsMap();
+        Map.Entry<Long, TranscriptSegment> entry = segmentsMap.floorEntry((long) event.getPosition());
+        if (entry != null) {
+            if (prevHighlightPosition != highlightPosition) {
+                prevHighlightPosition = highlightPosition;
+            }
+            if (media.getTranscript().getIndex(entry) != highlightPosition) {
+                highlightPosition = media.getTranscript().getIndex(entry);
+                notifyItemChanged(prevHighlightPosition);
+                notifyItemChanged(highlightPosition);
+            }
+        }
     }
 
     @Override
@@ -120,7 +146,20 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
         return media.getTranscript().getSegmentsMap().size();
     }
 
-    public interface Callback {
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        EventBus.getDefault().unregister(this);
+    }
+
+
+    public interface SegmentClickListener {
         void onTranscriptClicked(int position, TranscriptSegment seg);
     }
 }

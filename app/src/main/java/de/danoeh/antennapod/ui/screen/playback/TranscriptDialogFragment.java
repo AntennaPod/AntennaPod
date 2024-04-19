@@ -2,7 +2,6 @@ package de.danoeh.antennapod.ui.screen.playback;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -41,14 +39,13 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
 import de.danoeh.antennapod.model.playback.Playable;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.transcript.TranscriptViewholder;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class TranscriptFragment extends DialogFragment {
+public class TranscriptDialogFragment extends DialogFragment {
     public static final String TAG = "TranscriptFragment";
     private TranscriptDialogBinding viewBinding;
     private PlaybackController controller;
@@ -56,21 +53,7 @@ public class TranscriptFragment extends DialogFragment {
     Playable media;
     Transcript transcript;
     TreeMap<Long, TranscriptSegment> segmentsMap;
-    private ProgressBar progressBar;
     TranscriptAdapter adapter = null;
-    TranscriptViewholder currentView = null;
-    TranscriptViewholder prevView = null;
-    RecyclerView viewTranscript;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    public TranscriptFragment initMedia(Playable m) {
-        media = m;
-        return this;
-    }
 
     @Override
     public void onResume() {
@@ -87,33 +70,32 @@ public class TranscriptFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setView(onCreateView(getLayoutInflater()))
-                .setPositiveButton(getString(R.string.close_label), null) //dismisses
+                .setPositiveButton(getString(R.string.close_label), null)
+                .setNeutralButton(getString(R.string.refresh_label), null)
                 .setTitle(R.string.transcript)
                 .create();
         dialog.show();
         dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
         dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener(v -> {
-            progressBar.setVisibility(View.VISIBLE);
+            viewBinding.progLoading.setVisibility(View.VISIBLE);
             loadMediaInfo(true);
         });
-        progressBar.setVisibility(View.VISIBLE);
+        viewBinding.progLoading.setVisibility(View.VISIBLE);
 
         return dialog;
     }
 
     public View onCreateView(LayoutInflater inflater) {
         viewBinding = TranscriptDialogBinding.inflate(inflater);
-        viewTranscript = viewBinding.transcriptList;
-        progressBar = viewBinding.progLoading;
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setRecycleChildrenOnDetach(true);
-        viewTranscript.setLayoutManager(layoutManager);
+        viewBinding.transcriptList.setLayoutManager(layoutManager);
 
-        adapter = new TranscriptAdapter((pos, segment) -> {
+        adapter = new TranscriptAdapter(getActivity(), (pos, segment) -> {
             transcriptClicked(pos, segment);
         });
-        viewTranscript.setAdapter(adapter);
+        viewBinding.transcriptList.setAdapter(adapter);
         return viewBinding.getRoot();
     }
 
@@ -133,6 +115,7 @@ public class TranscriptFragment extends DialogFragment {
         } else {
             controller.playPause();
         }
+        adapter.notifyItemChanged(pos);
     }
 
     @Override
@@ -141,17 +124,12 @@ public class TranscriptFragment extends DialogFragment {
         controller = new PlaybackController(getActivity()) {
             @Override
             public void loadMediaInfo() {
-                TranscriptFragment.this.loadMediaInfo(true);
+                TranscriptDialogFragment.this.loadMediaInfo(true);
             }
         };
         controller.init();
         EventBus.getDefault().register(this);
         loadMediaInfo(true);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -198,17 +176,12 @@ public class TranscriptFragment extends DialogFragment {
             return;
         }
 
-        progressBar.setVisibility(View.GONE);
+        viewBinding.progLoading.setVisibility(View.GONE);
         adapter.setMedia(media);
         ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
         if (!TextUtils.isEmpty(((FeedMedia) media).getItem().getPodcastIndexTranscriptUrl())) {
             ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 
     public void scrollToPlayPosition(long playPosition) {
@@ -221,16 +194,12 @@ public class TranscriptFragment extends DialogFragment {
                 return;
             }
             Integer pos = transcript.getIndex(entry);
-            Log.d(TAG, "scrollToPlayPosition " + playPosition + " RV pos" + pos);
             scrollToPosition(pos);
         }
     }
 
     public void scrollToPosition(Integer pos) {
         RecyclerView rv = viewBinding.transcriptList;
-        if (rv == null) {
-            return;
-        }
         if (pos == null) {
             return;
         }
@@ -247,31 +216,9 @@ public class TranscriptFragment extends DialogFragment {
         }
 
         RecyclerView.LayoutManager lm = rv.getLayoutManager();
-        if (lm == null) {
-            return;
-        }
         View v = lm.findViewByPosition(pos);
-        if (v == null) {
-            return;
-        }
         TranscriptViewholder nextView =
                 (TranscriptViewholder) rv.getChildViewHolder(v);
-        if (nextView != null && nextView != currentView) {
-            prevView = currentView;
-            currentView = nextView;
-        }
-        if (currentView != null) {
-            currentView.viewContent.setTypeface(null, Typeface.BOLD);
-            currentView.viewContent.setTextColor(
-                    ThemeUtils.getColorFromAttr(getContext(), android.R.attr.textColorPrimary)
-            );
-        }
-
-        if (prevView != null && prevView != currentView && currentView != null) {
-            prevView.viewContent.setTypeface(null, Typeface.NORMAL);
-            prevView.viewContent.setTextColor(
-                    ThemeUtils.getColorFromAttr(getContext(), android.R.attr.textColorSecondary));
-        }
     }
 
     @Override

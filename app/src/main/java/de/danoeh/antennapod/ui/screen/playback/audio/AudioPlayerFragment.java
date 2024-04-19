@@ -33,7 +33,7 @@ import de.danoeh.antennapod.ui.episodes.TimeSpeedConverter;
 import de.danoeh.antennapod.ui.screen.playback.MediaPlayerErrorDialog;
 import de.danoeh.antennapod.ui.screen.playback.PlayButton;
 import de.danoeh.antennapod.ui.screen.playback.SleepTimerDialog;
-import de.danoeh.antennapod.ui.screen.playback.TranscriptFragment;
+import de.danoeh.antennapod.ui.screen.playback.TranscriptDialogFragment;
 import de.danoeh.antennapod.ui.screen.playback.VariableSpeedDialog;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -271,7 +271,6 @@ public class AudioPlayerFragment extends Fragment implements
             if (media.getChapters() == null && !includingChapters) {
                 loadMediaInfo(true);
             }
-            // TODO should we load transcripts here?
         }, error -> Log.e(TAG, Log.getStackTraceString(error)),
             () -> updateUi(null));
     }
@@ -497,9 +496,9 @@ public class AudioPlayerFragment extends Fragment implements
             new SleepTimerDialog().show(getChildFragmentManager(), "SleepTimerDialog");
             return true;
         } else if (itemId == R.id.transcript_item) {
-            new TranscriptFragment()
-                    .initMedia(media)
-                    .show(getActivity().getSupportFragmentManager(), TranscriptFragment.TAG);
+            new TranscriptDialogFragment().show(
+                    getActivity().getSupportFragmentManager(),
+                    TranscriptDialogFragment.TAG);
             return true;
         } else if (itemId == R.id.open_feed_item) {
             if (feedItem != null) {
