@@ -26,6 +26,7 @@ dependencies {
     implementation project(':ui:chapters')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "androidx.car.app:app:1.4.0-rc02"
     implementation "androidx.core:core:$coreVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation "androidx.media:media:$mediaVersion"

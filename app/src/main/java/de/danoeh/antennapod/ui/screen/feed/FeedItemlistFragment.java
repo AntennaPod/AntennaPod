@@ -46,6 +46,7 @@ import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.CoverLoader;
 import de.danoeh.antennapod.ui.FeedItemFilterDialog;
 import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.ui.TransitionEffect;
@@ -70,15 +71,14 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Displays a list of FeedItems.
@@ -660,7 +660,18 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
         @Override
         protected void beforeBindViewHolder(EpisodeItemViewHolder holder, int pos) {
-            holder.coverHolder.setVisibility(View.GONE);
+            holder.coverHolder.setVisibility(View.GONE); // Load it ourselves
+        }
+
+        @Override
+        protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
+            holder.coverHolder.setVisibility(View.VISIBLE);
+            new CoverLoader()
+                    .withUri(holder.getFeedItem().getImageLocation()) // Ignore "Show episode cover" setting
+                    .withFallbackUri(holder.getFeedItem().getFeed().getImageUrl())
+                    .withPlaceholderView(holder.placeholder)
+                    .withCoverView(holder.cover)
+                    .load();
         }
 
         @Override

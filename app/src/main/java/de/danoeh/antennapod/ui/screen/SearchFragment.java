@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -75,7 +74,8 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
 
     private EpisodeItemListAdapter adapter;
     private HorizontalFeedListAdapter adapterFeeds;
-    private Disposable disposable;
+    private Disposable disposableFeeds;
+    private Disposable disposableEpisodes;
     private ProgressBar progressBar;
     private EmptyViewHandler emptyViewHandler;
     private EpisodeItemListRecyclerView recyclerView;
@@ -127,8 +127,11 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     @Override
     public void onStop() {
         super.onStop();
-        if (disposable != null) {
-            disposable.dispose();
+        if (disposableFeeds != null) {
+            disposableFeeds.dispose();
+        }
+        if (disposableEpisodes != null) {
+            disposableEpisodes.dispose();
         }
     }
 
@@ -373,44 +376,45 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     }
 
     private void search() {
-        if (disposable != null) {
-            disposable.dispose();
+        if (disposableFeeds != null) {
+            disposableFeeds.dispose();
+        }
+        if (disposableEpisodes != null) {
+            disposableEpisodes.dispose();
         }
         adapterFeeds.setEndButton(R.string.search_online, this::searchOnline);
-        chip.setVisibility((getArguments().getLong(ARG_FEED, 0) == 0) ? View.GONE : View.VISIBLE);
-        disposable = Observable.fromCallable(this::performSearch)
+        long feed = getArguments().getLong(ARG_FEED, 0);
+        chip.setVisibility((feed == 0) ? View.GONE : View.VISIBLE);
+
+        String query = searchView.getQuery().toString();
+        if (query.isEmpty()) {
+            emptyViewHandler.setMessage(R.string.type_to_search);
+            return;
+        }
+        if (feed != 0) {
+            // Search within a feed
+            adapterFeeds.updateData(Collections.emptyList());
+        } else {
+            disposableFeeds = Observable.fromCallable(() -> DBReader.searchFeeds(query))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(results -> {
+                        progressBar.setVisibility(View.GONE);
+                        adapterFeeds.updateData(results);
+                        emptyViewHandler.setMessage(getString(R.string.no_results_for_query, query));
+                    }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+        }
+        disposableEpisodes = Observable.fromCallable(() -> DBReader.searchFeedItems(feed, query))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(results -> {
                     progressBar.setVisibility(View.GONE);
-                    this.results = results.first;
-                    adapter.updateItems(results.first);
-                    if (getArguments().getLong(ARG_FEED, 0) == 0) {
-                        adapterFeeds.updateData(results.second);
-                    } else {
-                        adapterFeeds.updateData(Collections.emptyList());
-                    }
-
-                    if (searchView.getQuery().toString().isEmpty()) {
-                        emptyViewHandler.setMessage(R.string.type_to_search);
-                    } else {
-                        emptyViewHandler.setMessage(getString(R.string.no_results_for_query, searchView.getQuery()));
-                    }
+                    this.results = results;
+                    adapter.updateItems(results);
+                    emptyViewHandler.setMessage(getString(R.string.no_results_for_query, searchView.getQuery()));
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    @NonNull
-    private Pair<List<FeedItem>, List<Feed>> performSearch() {
-        String query = searchView.getQuery().toString();
-        if (query.isEmpty()) {
-            return new Pair<>(Collections.emptyList(), Collections.emptyList());
-        }
-        long feed = getArguments().getLong(ARG_FEED);
-        List<FeedItem> items = DBReader.searchFeedItems(feed, query);
-        List<Feed> feeds = DBReader.searchFeeds(query);
-        return new Pair<>(items, feeds);
-    }
-    
     private void showInputMethod(View view) {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
