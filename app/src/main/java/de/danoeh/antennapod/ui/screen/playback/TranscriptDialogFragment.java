@@ -3,7 +3,14 @@ package de.danoeh.antennapod.ui.screen.playback;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -11,38 +18,26 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Toast;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import de.danoeh.antennapod.databinding.TranscriptDialogBinding;
-import de.danoeh.antennapod.playback.base.PlayerStatus;
-import de.danoeh.antennapod.playback.service.PlaybackController;
-import de.danoeh.antennapod.ui.chapters.PodcastIndexTranscriptUtils;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.Map;
-import java.util.TreeMap;
-
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.databinding.TranscriptDialogBinding;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.playback.base.PlayerStatus;
+import de.danoeh.antennapod.playback.service.PlaybackController;
+import de.danoeh.antennapod.ui.chapters.PodcastIndexTranscriptUtils;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import java.util.Map;
+import java.util.TreeMap;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class TranscriptDialogFragment extends DialogFragment {
     public static final String TAG = "TranscriptFragment";
@@ -198,21 +193,28 @@ public class TranscriptDialogFragment extends DialogFragment {
     }
 
     public void scrollToPosition(Integer pos) {
-        RecyclerView rv = viewBinding.transcriptList;
-        if (pos == null) {
+        if (pos == null || pos <= 0) {
             return;
         }
-
-        final LinearSmoothScroller smoothScroller = new LinearSmoothScroller(getActivity()) {
+        int scrollPosition = ((LinearLayoutManager) viewBinding.transcriptList.getLayoutManager())
+                .findFirstVisibleItemPosition();
+        if (Math.abs(scrollPosition - pos) > 5) {
+            // Too far, no smooth scroll
+            viewBinding.transcriptList.scrollToPosition(pos - 1);
+            return;
+        }
+        final LinearSmoothScroller smoothScroller = new LinearSmoothScroller(getContext()) {
             @Override
             protected int getVerticalSnapPreference() {
                 return LinearSmoothScroller.SNAP_TO_START;
             }
+
+            protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+                return 1000.0F / (float)displayMetrics.densityDpi;
+            }
         };
-        if (pos > 0) {
-            smoothScroller.setTargetPosition(pos - 1);  // pos on which item you want to scroll recycler view
-            rv.getLayoutManager().startSmoothScroll(smoothScroller);
-        }
+        smoothScroller.setTargetPosition(pos - 1);  // pos on which item you want to scroll recycler view
+        viewBinding.transcriptList.getLayoutManager().startSmoothScroll(smoothScroller);
     }
 
     @Override

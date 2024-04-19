@@ -1,14 +1,16 @@
 package de.danoeh.antennapod.ui.screen.playback;
 
+import android.graphics.Typeface;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.elevation.SurfaceColors;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -20,7 +22,6 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.common.Converter;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.transcript.TranscriptViewholder;
 
 import java.util.Map;
@@ -29,7 +30,7 @@ import java.util.TreeMap;
 
 public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder> {
     public String tag = "TranscriptAdapter";
-    private SegmentClickListener segmentClickListener;
+    private final SegmentClickListener segmentClickListener;
     private final Context context;
     private FeedMedia media;
     int prevHighlightPosition = -1;
@@ -43,11 +44,8 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
     @NonNull
     @Override
     public TranscriptViewholder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        TranscriptViewholder v = new TranscriptViewholder(
-                TranscriptItemBinding.inflate(LayoutInflater.from(viewGroup.getContext()),
-                viewGroup,
-                false));
-        return v;
+        return new TranscriptViewholder(
+                TranscriptItemBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false));
     }
 
     public void setMedia(Playable media) {
@@ -68,7 +66,7 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
         segmentsMap = media.getTranscript().getSegmentsMap();
         TranscriptSegment seg = media.getTranscript().getSegmentAt(position);
         int k = Math.toIntExact(media.getTranscript().getTimeCode(position));
-        holder.viewContent.setOnClickListener(v -> {
+        holder.itemView.setOnClickListener(v -> {
             if (segmentClickListener != null)  {
                 segmentClickListener.onTranscriptClicked(position, seg);
             }
@@ -98,7 +96,7 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
                 holder.viewContent.setText(seg.getWords());
             }
         } else {
-            if (speakers.size() == 0 && (position % 5 == 0)) {
+            if (speakers.isEmpty() && (position % 5 == 0)) {
                 holder.viewTimecode.setVisibility(View.VISIBLE);
                 holder.viewTimecode.setText(Converter.getDurationStringLong(k));
             }
@@ -106,14 +104,14 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
         }
 
         if (position == highlightPosition) {
-            holder.viewContent.setTypeface(null, Typeface.BOLD);
-            holder.viewContent.setTextColor(
-                    ThemeUtils.getColorFromAttr(context, android.R.attr.textColorPrimary)
-            );
+            float density = context.getResources().getDisplayMetrics().density;
+            holder.itemView.setBackgroundColor(SurfaceColors.getColorForElevation(context, 32 * density));
+            holder.viewContent.setAlpha(1.0f);
+            holder.viewTimecode.setAlpha(1.0f);
         } else {
-            holder.viewContent.setTypeface(null, Typeface.NORMAL);
-            holder.viewContent.setTextColor(
-                    ThemeUtils.getColorFromAttr(context, android.R.attr.textColorSecondary));
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
+            holder.viewContent.setAlpha(0.5f);
+            holder.viewTimecode.setAlpha(0.5f);
         }
     }
 

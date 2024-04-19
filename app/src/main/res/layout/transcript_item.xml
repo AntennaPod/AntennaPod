@@ -3,29 +3,29 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingHorizontal="24dp"
+    android:background="?attr/selectableItemBackground"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/speaker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="1dp"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textStyle="bold|italic" />
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:textStyle="bold"
+        android:textColor="?android:attr/textColorPrimary" />
 
     <TextView
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="1dp"
         android:minLines="1"
         android:maxLines="100"
         android:nestedScrollingEnabled="false"
         android:selectAllOnFocus="false"
         android:singleLine="false"
-        android:textColor="?android:attr/textColorSecondary"
+        android:textColor="?android:attr/textColorPrimary"
         android:textIsSelectable="false" />
 
 </LinearLayout>

@@ -9,10 +9,9 @@
         android:id="@+id/transcript_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
         android:scrollIndicators="right"
         android:scrollbarStyle="outsideInset"
+        android:layout_marginTop="16dp"
         android:scrollbars="vertical"
         tools:listitem="@layout/transcript_item" />
 
