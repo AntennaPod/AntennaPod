@@ -85,6 +85,12 @@ public class FeedItemMenuHandler {
         setItemVisibility(menu, R.id.add_to_favorites_item, !isFavorite);
         setItemVisibility(menu, R.id.remove_from_favorites_item, isFavorite);
         setItemVisibility(menu, R.id.remove_item, fileDownloaded || isLocalFile);
+
+        setItemVisibility(menu, R.id.open_podcast, true);
+        if (selectedItem.getFeed().getState() != Feed.STATE_SUBSCRIBED) {
+            setItemVisibility(menu, R.id.mark_read_item, false);
+            setItemVisibility(menu, R.id.open_podcast, false);
+        }
         return true;
     }
 
