@@ -35,13 +35,18 @@ public class SimpleIconListAdapter<T extends SimpleIconListAdapter.ListItem> ext
         ListItem item = listItems.get(position);
         ((TextView) view.findViewById(R.id.title)).setText(item.title);
         ((TextView) view.findViewById(R.id.subtitle)).setText(item.subtitle);
-        Glide.with(context)
-                .load(item.imageUrl)
-                .apply(new RequestOptions()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .fitCenter()
-                        .dontAnimate())
-                .into(((ImageView) view.findViewById(R.id.icon)));
+
+        if (item.imageUrl == null) {
+            view.findViewById(R.id.icon).setVisibility(View.GONE);
+        } else {
+            Glide.with(context)
+                    .load(item.imageUrl)
+                    .apply(new RequestOptions()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .fitCenter()
+                            .dontAnimate())
+                    .into(((ImageView) view.findViewById(R.id.icon)));
+        }
         return view;
     }
 
