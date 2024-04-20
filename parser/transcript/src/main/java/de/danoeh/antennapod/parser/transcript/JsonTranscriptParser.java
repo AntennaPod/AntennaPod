@@ -74,8 +74,10 @@ public class JsonTranscriptParser {
                 }
 
                 segmentBody += body;
-                if (duration >= TranscriptParser.MIN_SPAN &&
-                        StringUtils.isAlphanumeric(objSegments.getJSONObject(i+1).optString("body"))) {
+                if (duration >= TranscriptParser.MIN_SPAN
+                        && ((i + 1) <= objSegments.length()
+                        && StringUtils.isAlphanumeric(
+                                objSegments.getJSONObject(i + 1).optString("body")))) {
                     segmentBody = StringUtils.trim(segmentBody);
                     transcript.addSegment(new TranscriptSegment(segmentStartTime,
                             endTime,
