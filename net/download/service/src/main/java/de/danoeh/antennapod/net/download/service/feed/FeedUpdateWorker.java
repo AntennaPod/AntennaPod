@@ -165,7 +165,9 @@ public class FeedUpdateWorker extends Worker {
         executor.shutdown();
         try {
             executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-        } catch (InterruptedException e) {}
+        } catch (InterruptedException e) {
+            //~300 years has elapsed
+        }
     }
 
     void refreshFeed(Feed feed, boolean force) throws Exception {
