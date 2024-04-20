@@ -495,7 +495,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         boolean isSubscribed = feed.getState() == Feed.STATE_SUBSCRIBED;
         viewBinding.header.butShowInfo.setVisibility(isSubscribed ? View.VISIBLE : View.GONE);
         viewBinding.header.butFilter.setVisibility(isSubscribed ? View.VISIBLE : View.GONE);
-        viewBinding.header.butShowSettings.setVisibility(isSubscribed ? View.VISIBLE : View.GONE);
         viewBinding.header.butSubscribe.setVisibility(isSubscribed ? View.GONE : View.VISIBLE);
     }
 
@@ -517,6 +516,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         });
         viewBinding.header.butShowSettings.setOnClickListener(v -> {
             if (feed != null) {
+                if (feed.getState() != Feed.STATE_SUBSCRIBED) {
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.subscribe_for_settings)));
+                    return;
+                }
                 FeedSettingsFragment fragment = FeedSettingsFragment.newInstance(feed);
                 ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
             }

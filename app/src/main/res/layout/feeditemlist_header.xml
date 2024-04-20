@@ -28,6 +28,14 @@
                 android:layout_width="148dp"
                 android:layout_height="match_parent" />
 
+            <Button
+                android:id="@+id/butSubscribe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/subscribe_label"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
             <ImageButton
                 android:id="@+id/butShowInfo"
                 android:layout_width="40dp"
@@ -38,6 +46,7 @@
                 android:layout_marginStart="-8dp"
                 android:scaleType="fitXY"
                 android:padding="8dp"
+                android:layout_gravity="center_vertical"
                 app:srcCompat="@drawable/ic_info_white"
                 tools:visibility="visible" />
 
@@ -49,6 +58,7 @@
                 android:contentDescription="@string/filter"
                 android:scaleType="fitXY"
                 android:padding="8dp"
+                android:layout_gravity="center_vertical"
                 app:srcCompat="@drawable/ic_filter_white"
                 tools:visibility="visible" />
 
@@ -60,15 +70,8 @@
                 android:contentDescription="@string/show_feed_settings_label"
                 android:scaleType="fitXY"
                 android:padding="8dp"
+                android:layout_gravity="center_vertical"
                 app:srcCompat="@drawable/ic_settings_white"
-                tools:visibility="visible" />
-
-            <Button
-                android:id="@+id/butSubscribe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/subscribe_label"
-                android:visibility="gone"
                 tools:visibility="visible" />
 
         </LinearLayout>
