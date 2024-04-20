@@ -13,6 +13,16 @@
         android:layout_gravity="center"
         style="?android:attr/progressBarStyle" />
 
+    <TextView
+        android:id="@+id/stateDeleteNotSubscribedLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:padding="32dp"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:text="@string/state_deleted_not_subscribed" />
+
     <LinearLayout
         android:id="@+id/feed_display_container"
         android:layout_width="match_parent"

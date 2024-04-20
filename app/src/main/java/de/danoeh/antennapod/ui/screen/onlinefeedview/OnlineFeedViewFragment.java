@@ -207,9 +207,19 @@ public class OnlineFeedViewFragment extends Fragment {
                 .build();
 
         download = Observable.fromCallable(() -> {
+            long start = System.currentTimeMillis();
             feeds = DBReader.getFeedList();
+            boolean isInDatabase = findFeedInSubscriptions() != null;
+            if (isInDatabase) {
+                viewBinding.stateDeleteNotSubscribedLabel.post(() ->
+                        viewBinding.stateDeleteNotSubscribedLabel.setVisibility(View.VISIBLE));
+            }
             downloader = new HttpDownloader(request);
             downloader.call();
+            long end = System.currentTimeMillis();
+            if (isInDatabase && end < start + 4000) {
+                Thread.sleep(4000 - (end - start)); // To nudge people into subscribing
+            }
             return downloader.getResult();
         })
         .subscribeOn(Schedulers.io())
@@ -299,6 +309,7 @@ public class OnlineFeedViewFragment extends Fragment {
      */
     private void showFeedInformation(final Feed feed, Map<String, String> alternateFeedUrls) {
         viewBinding.progressBar.setVisibility(View.GONE);
+        viewBinding.stateDeleteNotSubscribedLabel.setVisibility(View.GONE);
         viewBinding.feedDisplayContainer.setVisibility(View.VISIBLE);
         if (isFeedFoundBySearch) {
             int resId = R.string.no_feed_url_podcast_found_by_search;
