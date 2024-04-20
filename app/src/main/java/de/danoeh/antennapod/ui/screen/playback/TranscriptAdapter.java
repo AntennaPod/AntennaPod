@@ -117,6 +117,9 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
+        if (media == null || media.getTranscript() == null) {
+            return;
+        }
         TreeMap<Long, TranscriptSegment> segmentsMap;
         segmentsMap = media.getTranscript().getSegmentsMap();
         Map.Entry<Long, TranscriptSegment> entry = segmentsMap.floorEntry((long) event.getPosition());

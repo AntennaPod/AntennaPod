@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.parser.transcript;
 
+import android.util.Log;
+
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -58,7 +60,6 @@ public class JsonTranscriptParser {
                 }
                 String body = jsonObject.optString("body");
                 if (!prevSpeaker.equals(speaker)) {
-                    // New speaker starting with previous text
                     if (StringUtils.isNotEmpty(segmentBody)) {
                         segmentBody = StringUtils.trim(segmentBody);
                         transcript.addSegment(new TranscriptSegment(segmentStartTime,
@@ -73,8 +74,8 @@ public class JsonTranscriptParser {
                 }
 
                 segmentBody += body;
-
-                if (duration >= TranscriptParser.MIN_SPAN) {
+                if (duration >= TranscriptParser.MIN_SPAN &&
+                        StringUtils.isAlphanumeric(objSegments.getJSONObject(i+1).optString("body"))) {
                     segmentBody = StringUtils.trim(segmentBody);
                     transcript.addSegment(new TranscriptSegment(segmentStartTime,
                             endTime,
