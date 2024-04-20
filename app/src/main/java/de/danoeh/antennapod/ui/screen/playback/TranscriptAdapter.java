@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.ui.screen.playback;
 
-import android.graphics.Typeface;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,8 +26,8 @@ import de.danoeh.antennapod.ui.transcript.TranscriptViewholder;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-
 public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder> {
+
     public String tag = "TranscriptAdapter";
     private final SegmentClickListener segmentClickListener;
     private final Context context;

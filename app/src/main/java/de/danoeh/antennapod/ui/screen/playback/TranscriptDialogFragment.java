@@ -17,7 +17,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
-import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.TranscriptDialogBinding;
@@ -210,7 +209,7 @@ public class TranscriptDialogFragment extends DialogFragment {
             }
 
             protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
-                return 1000.0F / (float)displayMetrics.densityDpi;
+                return 1000.0F / (float) displayMetrics.densityDpi;
             }
         };
         smoothScroller.setTargetPosition(pos - 1);  // pos on which item you want to scroll recycler view
