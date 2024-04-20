@@ -1,59 +1,39 @@
 package de.danoeh.antennapod.model.feed;
 
-import java.util.Hashtable;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.Set;
-import java.util.TreeMap;
 
 public class Transcript {
-
-    private final TreeMap<Long, TranscriptSegment> segmentsMap = new TreeMap<>();
     private Set<String> speakers;
-    private Hashtable<Long, Integer> positions;
-    private Object[] objs; // array of TreeMap<Long, TranscriptSegment>
+    private final ArrayList<TranscriptSegment> segments = new ArrayList<>();
 
     public void addSegment(TranscriptSegment segment) {
-        segmentsMap.put(segment.getStartTime(), segment);
-    }
-
-    public TreeMap<Long, TranscriptSegment> getSegmentsMap() {
-        return segmentsMap;
-    }
-
-    public TranscriptSegment getSegmentAtTime(long time) {
-        if (segmentsMap.floorEntry(time) == null) {
-            return null;
+        if ((!segments.isEmpty() && segments.get(segments.size() - 1).getStartTime() >= segment.getStartTime())) {
+            throw new IllegalArgumentException("Segments must be added in sorted order");
         }
-        return segmentsMap.floorEntry(time).getValue();
+        segments.add(segment);
     }
 
-    public Integer getIndex(Map.Entry<Long, TranscriptSegment> entry) {
-        buildSequentialAccess();
-        return positions.get(entry.getKey());
-    }
-
-    public Long getTimeCode(int index) {
-        buildSequentialAccess();
-        return (Long) ((TreeMap.Entry) objs[index]).getKey();
+    public int findSegmentIndexBefore(long time) {
+        int a = 0;
+        int b = segments.size() - 1;
+        while (a < b) {
+            int pivot = (a + b + 1) / 2;
+            if (segments.get(pivot).getStartTime() > time) {
+                b = pivot - 1;
+            } else {
+                a = pivot;
+            }
+        }
+        return a;
     }
 
     public TranscriptSegment getSegmentAt(int index) {
-        buildSequentialAccess();
-        return (TranscriptSegment) ((TreeMap.Entry) objs[index]).getValue();
+        return segments.get(index);
     }
 
-    private void buildSequentialAccess() {
-        if (positions != null) {
-            return;
-        }
-
-        objs = segmentsMap.entrySet().toArray();
-        positions = new Hashtable<Long, Integer>();
-        for (int i = 0; i < objs.length; i++) {
-            Map.Entry<Long, TranscriptSegment> seg;
-            seg = (Map.Entry<Long, TranscriptSegment>) objs[i];
-            positions.put((Long) seg.getKey(), i);
-        }
+    public TranscriptSegment getSegmentAtTime(long time) {
+        return getSegmentAt(findSegmentIndexBefore(time));
     }
 
     public Set<String> getSpeakers() {
@@ -65,10 +45,6 @@ public class Transcript {
     }
 
     public int getSegmentCount() {
-        return segmentsMap.size();
-    }
-
-    public Map.Entry<Long, TranscriptSegment> getEntryAfterTime(long time) {
-        return segmentsMap.ceilingEntry(time);
+        return segments.size();
     }
 }

@@ -32,8 +32,6 @@ import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import java.util.Map;
-import java.util.TreeMap;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -43,10 +41,9 @@ public class TranscriptDialogFragment extends DialogFragment {
     private TranscriptDialogBinding viewBinding;
     private PlaybackController controller;
     private Disposable disposable;
-    Playable media;
-    Transcript transcript;
-    TreeMap<Long, TranscriptSegment> segmentsMap;
-    TranscriptAdapter adapter = null;
+    private Playable media;
+    private Transcript transcript;
+    private TranscriptAdapter adapter = null;
 
     @Override
     public void onResume() {
@@ -127,7 +124,8 @@ public class TranscriptDialogFragment extends DialogFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
-        scrollToPlayPosition(event.getPosition());
+        int pos = transcript.findSegmentIndexBefore(event.getPosition());
+        scrollToPosition(pos);
     }
 
     private void loadMediaInfo(boolean forceRefresh) {
@@ -135,17 +133,13 @@ public class TranscriptDialogFragment extends DialogFragment {
             disposable.dispose();
         }
         disposable = Maybe.create(emitter -> {
-            Playable feedMedia = controller.getMedia();
-            if (feedMedia != null && feedMedia instanceof FeedMedia) {
-                this.media = feedMedia;
+            Playable media = controller.getMedia();
+            if (media instanceof FeedMedia) {
+                this.media = media;
 
                 transcript = PodcastIndexTranscriptUtils.loadTranscript((FeedMedia) this.media);
                 ((FeedMedia) this.media).setTranscript(transcript);
-
-                if (transcript != null) {
-                    segmentsMap = transcript.getSegmentsMap();
-                }
-                emitter.onSuccess(media);
+                emitter.onSuccess(this.media);
             } else {
                 emitter.onComplete();
             }
@@ -157,7 +151,7 @@ public class TranscriptDialogFragment extends DialogFragment {
     }
 
     private void onMediaChanged(Playable media) {
-        if (media == null || ! (media instanceof FeedMedia)) {
+        if (!(media instanceof FeedMedia)) {
             return;
         }
         this.media = media;
@@ -174,20 +168,6 @@ public class TranscriptDialogFragment extends DialogFragment {
         ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
         if (!TextUtils.isEmpty(((FeedMedia) media).getItem().getPodcastIndexTranscriptUrl())) {
             ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
-        }
-    }
-
-    public void scrollToPlayPosition(long playPosition) {
-        if (segmentsMap == null) {
-            return;
-        }
-        Map.Entry<Long, TranscriptSegment> entry = segmentsMap.floorEntry(playPosition);
-        if (entry != null) {
-            if (transcript == null) {
-                return;
-            }
-            Integer pos = transcript.getIndex(entry);
-            scrollToPosition(pos);
         }
     }
 
