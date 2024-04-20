@@ -26,6 +26,7 @@ import de.danoeh.antennapod.ui.transcript.TranscriptViewholder;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
 public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder> {
 
     public String tag = "TranscriptAdapter";
