@@ -12,6 +12,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.work.ForegroundInfo;
 import androidx.work.WorkManager;
+import java.util.concurrent.TimeUnit;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 import com.google.common.util.concurrent.Futures;
@@ -39,6 +40,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class FeedUpdateWorker extends Worker {
     private static final String TAG = "FeedUpdateWorker";
@@ -134,30 +137,35 @@ public class FeedUpdateWorker extends Worker {
     }
 
     private void refreshFeeds(List<Feed> toUpdate, boolean force) {
-        while (!toUpdate.isEmpty()) {
-            if (isStopped()) {
-                return;
-            }
-            if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS)
-                    == PackageManager.PERMISSION_GRANTED) {
-                notificationManager.notify(R.id.notification_updating_feeds, createNotification(toUpdate));
-            }
-            Feed feed = toUpdate.get(0);
-            try {
-                if (feed.isLocalFeed()) {
-                    LocalFeedUpdater.updateFeed(feed, getApplicationContext(), null);
-                } else {
-                    refreshFeed(feed, force);
+        ExecutorService executor = Executors.newFixedThreadPool(5);
+        for (Feed feed : toUpdate) {
+            executor.submit(() -> {
+                if (isStopped()) {
+                    return;
                 }
-            } catch (Exception e) {
-                DBWriter.setFeedLastUpdateFailed(feed.getId(), true);
-                DownloadResult status = new DownloadResult(feed.getTitle(),
-                        feed.getId(), Feed.FEEDFILETYPE_FEED, false,
-                        DownloadError.ERROR_IO_ERROR, e.getMessage());
-                DBWriter.addDownloadStatus(status);
-            }
-            toUpdate.remove(0);
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    notificationManager.notify(R.id.notification_updating_feeds, createNotification(toUpdate));
+                }
+                try {
+                    if (feed.isLocalFeed()) {
+                        LocalFeedUpdater.updateFeed(feed, getApplicationContext(), null);
+                    } else {
+                        refreshFeed(feed, force);
+                    }
+                } catch (Exception e) {
+                    DBWriter.setFeedLastUpdateFailed(feed.getId(), true);
+                    DownloadResult status = new DownloadResult(feed.getTitle(),
+                            feed.getId(), Feed.FEEDFILETYPE_FEED, false,
+                            DownloadError.ERROR_IO_ERROR, e.getMessage());
+                    DBWriter.addDownloadStatus(status);
+                }
+            });
         }
+        executor.shutdown();
+        try {
+            executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+        } catch (InterruptedException e) {}
     }
 
     void refreshFeed(Feed feed, boolean force) throws Exception {
