@@ -683,7 +683,7 @@
     <string name="subscribe_label">Subscribe</string>
     <string name="preview_episodes">Preview episodes</string>
     <string name="subscribe_for_settings">Subscribe to change settings</string>
-    <string name="state_deleted_not_subscribed">Playback state of non-subscribed podcasts is deleted after a while. Subscribe to the podcast to enjoy all features.</string>
+    <string name="state_deleted_not_subscribed">Data like playback state of non-subscribed podcasts is deleted after a while. Subscribe to keep it.</string>
 
     <!-- Content descriptions for image buttons -->
     <string name="toolbar_back_button_content_description">Back</string>
