@@ -71,6 +71,7 @@ public class FeedItemMenuHandler {
         setItemVisibility(menu, R.id.mark_read_item, !selectedItem.isPlayed());
         setItemVisibility(menu, R.id.mark_unread_item, selectedItem.isPlayed());
         setItemVisibility(menu, R.id.reset_position, hasMedia && selectedItem.getMedia().getPosition() != 0);
+        setItemVisibility(menu, R.id.visit_social_interest_website, selectedItem.getPodcastIndexSocialUrl() != null);
 
         // Display proper strings when item has no media
         if (hasMedia) {
@@ -197,6 +198,8 @@ public class FeedItemMenuHandler {
             DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, true);
         } else if (menuItemId == R.id.visit_website_item) {
             IntentUtils.openInBrowser(context, selectedItem.getLinkWithFallback());
+        } else if (menuItemId == R.id.visit_social_interest_website) {
+            IntentUtils.openInBrowser(context, selectedItem.getPodcastIndexSocialUrl());
         } else if (menuItemId == R.id.share_item) {
             ShareDialog shareDialog = ShareDialog.newInstance(selectedItem);
             shareDialog.show((fragment.getActivity().getSupportFragmentManager()), "ShareEpisodeDialog");

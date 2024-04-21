@@ -56,6 +56,15 @@
         custom:showAsAction="ifRoom|collapseActionView"
         android:title="@string/visit_website_label">
     </item>
+
+    <item
+        android:id="@+id/visit_social_interest_website"
+        android:icon="@drawable/ic_chat"
+        custom:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/visit_social_interest_label"
+        android:visible="true">
+    </item>
+
     <item
         android:id="@+id/share_item"
         android:menuCategory="container"
