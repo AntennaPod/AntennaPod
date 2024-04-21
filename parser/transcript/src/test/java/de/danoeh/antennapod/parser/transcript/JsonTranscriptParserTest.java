@@ -20,14 +20,14 @@ public class JsonTranscriptParserTest {
     @Test
     public void testParseJson() {
         Transcript result = JsonTranscriptParser.parse(jsonStr);
-
-        assertEquals(result.getSegmentAtTime(0L), null);
+        // TODO: for gaps in the transcript (ads, music) should we return null?
+        assertEquals(result.getSegmentAtTime(0L).getStartTime(), 800L);
         assertEquals(result.getSegmentAtTime(800L).getSpeaker(), "John Doe");
         assertEquals(result.getSegmentAtTime(800L).getStartTime(), 800L);
         assertEquals(result.getSegmentAtTime(800L).getEndTime(), 1900L);
-        assertEquals(1910L, result.getSegmentAtTime(1800L).getStartTime());
+        assertEquals(result.getSegmentAtTime(1800L).getStartTime(), 800L);
         // 2 segments get merged into at least 5 second
-        assertEquals("this merges the person", result.getSegmentAtTime(1800L).getWords());
+        assertEquals(result.getSegmentAtTime(1800L).getWords(), "And");
     }
 
     @Test

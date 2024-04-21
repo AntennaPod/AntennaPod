@@ -26,9 +26,9 @@ public class SrtTranscriptParserTest {
         assertEquals(result.getSegmentAtTime(0L).getSpeaker(), "John Doe");
         assertEquals(result.getSegmentAtTime(0L).getStartTime(), 0L);
         assertEquals(result.getSegmentAtTime(0L).getEndTime(), 5730L);
-        assertEquals(result.getSegmentAtTime(1000L).getStartTime(), 5730L);
+        assertEquals(result.getSegmentAtTime(5740).getStartTime(), 5730L);
         assertEquals("way. The latest from PogNews. We bring your favorite podcast.",
-                result.getSegmentAtTime(1000L).getWords());
+                result.getSegmentAtTime(5740).getWords());
     }
 
     @Test
