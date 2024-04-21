@@ -8,8 +8,7 @@
     android:padding="16dp"
     android:clickable="false"
     android:focusable="true"
-    android:background="?attr/selectableItemBackground"
-    >
+    android:background="?attr/selectableItemBackground">
 
     <ImageView
         android:id="@+id/icon"
