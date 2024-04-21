@@ -68,7 +68,7 @@ public class LicensesFragment extends ListFragment {
         final String licenseTextFile;
 
         LicenseItem(String title, String subtitle, String imageUrl, String licenseUrl, String licenseTextFile) {
-            super(title, subtitle, imageUrl);
+            super(title, subtitle, imageUrl, licenseUrl);
             this.licenseUrl = licenseUrl;
             this.licenseTextFile = licenseTextFile;
         }

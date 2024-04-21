@@ -32,7 +32,7 @@ public class TranslatorsFragment extends ListFragment {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] info = line.split(";");
-                translators.add(new SimpleIconListAdapter.ListItem(info[0], info[1], null));
+                translators.add(new SimpleIconListAdapter.ListItem(info[0], info[1], null, null));
             }
             emitter.onSuccess(translators);
         })

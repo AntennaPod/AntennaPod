@@ -32,7 +32,7 @@ public class SpecialThanksFragment extends ListFragment {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] info = line.split(";");
-                translators.add(new SimpleIconListAdapter.ListItem(info[0], info[1], info[2]));
+                translators.add(new SimpleIconListAdapter.ListItem(info[0], info[1], info[2], "https://github.com/" + info[3]));
             }
             emitter.onSuccess(translators);
         })

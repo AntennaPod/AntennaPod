@@ -33,7 +33,7 @@ public class DevelopersFragment extends ListFragment {
             while ((line = reader.readLine()) != null) {
                 String[] info = line.split(";");
                 developers.add(new SimpleIconListAdapter.ListItem(info[0], info[2],
-                        "https://avatars2.githubusercontent.com/u/" + info[1] + "?s=60&v=4"));
+                        "https://avatars2.githubusercontent.com/u/" + info[1] + "?s=60&v=4", "https://github.com/" + info[0]));
             }
             emitter.onSuccess(developers);
         })
