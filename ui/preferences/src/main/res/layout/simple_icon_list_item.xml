@@ -5,10 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="16dp"
-    android:clickable="false"
-    android:focusable="true"
-    android:background="?attr/selectableItemBackground">
+    android:padding="16dp">
 
     <ImageView
         android:id="@+id/icon"

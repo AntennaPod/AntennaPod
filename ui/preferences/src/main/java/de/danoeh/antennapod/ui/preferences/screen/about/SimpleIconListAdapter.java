@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.ui.preferences.screen.about;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -54,14 +52,6 @@ public class SimpleIconListAdapter<T extends SimpleIconListAdapter.ListItem> ext
                             .dontAnimate())
                     .into(((ImageView) view.findViewById(R.id.icon)));
         }
-
-        if (item.openUrl != null) {
-            view.setClickable(true);
-            view.setOnClickListener(v -> {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.openUrl));
-                context.startActivity(browserIntent);
-            });
-        }
         return view;
     }
 
@@ -69,13 +59,11 @@ public class SimpleIconListAdapter<T extends SimpleIconListAdapter.ListItem> ext
         public final String title;
         public final String subtitle;
         public final String imageUrl;
-        public final String openUrl;
 
-        public ListItem(String title, String subtitle, String imageUrl, String openUrl) {
+        public ListItem(String title, String subtitle, String imageUrl) {
             this.title = title;
             this.subtitle = subtitle;
             this.imageUrl = imageUrl;
-            this.openUrl = openUrl;
         }
     }
 }
