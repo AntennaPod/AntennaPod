@@ -31,6 +31,7 @@
             android:text="@string/transcript_follow"
             constraints:layout_constraintBottom_toBottomOf="parent"
             constraints:layout_constraintLeft_toLeftOf="@+id/transcript_list" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ProgressBar
