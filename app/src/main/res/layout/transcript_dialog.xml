@@ -27,10 +27,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:checked="true"
-            constraints:layout_constraintBottom_toBottomOf="parent"
-            constraints:layout_constraintLeft_toLeftOf="@+id/transcript_list"
             android:visibility="gone"
-            android:text="@string/transcript_follow"/>
+            android:text="@string/transcript_follow"
+            constraints:layout_constraintBottom_toBottomOf="parent"
+            constraints:layout_constraintLeft_toLeftOf="@+id/transcript_list" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ProgressBar
