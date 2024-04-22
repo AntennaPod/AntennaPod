@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:constraints="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/transcript_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:scrollIndicators="right"
         android:scrollbarStyle="outsideInset"
         android:layout_marginTop="16dp"
         android:scrollbars="vertical"
+        constraints:layout_constraintBottom_toTopOf="@+id/follow_audio"
         tools:listitem="@layout/transcript_item" />
+
+    <CheckBox
+        android:id="@+id/follow_audio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:checked="true"
+        constraints:layout_constraintBottom_toBottomOf="parent"
+        constraints:layout_constraintLeft_toLeftOf="@+id/transcript_list"
+        android:visibility="gone"
+        android:text="@string/transcript_follow"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ProgressBar
         android:id="@+id/progLoading"
@@ -22,5 +40,6 @@
         android:layout_gravity="center"
         android:indeterminateOnly="true"
         android:visibility="gone" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
