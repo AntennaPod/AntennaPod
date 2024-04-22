@@ -82,7 +82,7 @@ public class JsonTranscriptParser {
                             nextSegmentFirstChar = objSegments.getJSONObject(i + 1)
                                     .optString("body")
                                     .substring(0, 1);
-                            if (StringUtils.isAlphanumeric(nextSegmentFirstChar)
+                            if (!StringUtils.isAlphanumeric(nextSegmentFirstChar)
                                     && (duration < TranscriptParser.MAX_SPAN)) {
                                 continue;
                             }
