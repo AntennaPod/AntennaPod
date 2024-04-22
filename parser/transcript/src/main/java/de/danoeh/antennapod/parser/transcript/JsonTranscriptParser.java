@@ -72,10 +72,24 @@ public class JsonTranscriptParser {
                 }
 
                 segmentBody += body;
-                if (duration >= TranscriptParser.MIN_SPAN
-                        && ((i + 1) <= objSegments.length()
-                        && StringUtils.isAlphanumeric(
-                                objSegments.getJSONObject(i + 1).optString("body")))) {
+
+
+                if (duration >= TranscriptParser.MIN_SPAN) {
+                    // Look ahead and make sure the next segment does not start with an alphanumeric character
+                    if ((i + 1) <= objSegments.length()) {
+                        String nextSegmentFirstChar = "";
+                        try {
+                            nextSegmentFirstChar = objSegments.getJSONObject(i + 1)
+                                    .optString("body")
+                                    .substring(0, 1);
+                            if (StringUtils.isAlphanumeric(nextSegmentFirstChar)
+                                    && (duration < TranscriptParser.MAX_SPAN)) {
+                                continue;
+                            }
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     segmentBody = StringUtils.trim(segmentBody);
                     transcript.addSegment(new TranscriptSegment(segmentStartTime,
                             endTime,
