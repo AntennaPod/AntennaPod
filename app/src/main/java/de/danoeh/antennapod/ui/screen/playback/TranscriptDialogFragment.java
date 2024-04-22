@@ -124,6 +124,9 @@ public class TranscriptDialogFragment extends DialogFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
+        if (transcript == null) {
+            return;
+        }
         int pos = transcript.findSegmentIndexBefore(event.getPosition());
         scrollToPosition(pos);
     }
@@ -179,10 +182,13 @@ public class TranscriptDialogFragment extends DialogFragment {
                 .findFirstVisibleItemPosition();
         if (Math.abs(scrollPosition - pos) > 5) {
             // if we never manually scroll, we don't show the follow audio checkbox
-            viewBinding.followAudio.setVisibility(View.VISIBLE);
-            if (viewBinding.followAudio.isChecked()) {
-                // Too far, no smooth scroll
-                viewBinding.transcriptList.scrollToPosition(pos - 1);
+            if (viewBinding.followAudio.getVisibility() == View.GONE) {
+                viewBinding.followAudio.setVisibility(View.VISIBLE);
+            } else {
+                if (viewBinding.followAudio.isChecked()) {
+                    // Too far, no smooth scroll
+                    viewBinding.transcriptList.scrollToPosition(pos - 1);
+                }
             }
             return;
         }
@@ -199,6 +205,9 @@ public class TranscriptDialogFragment extends DialogFragment {
         if (viewBinding.followAudio.isChecked()) {
             smoothScroller.setTargetPosition(pos - 1);  // pos on which item you want to scroll recycler view
             viewBinding.transcriptList.getLayoutManager().startSmoothScroll(smoothScroller);
+        }
+        if (! viewBinding.followAudio.isChecked()) {
+            viewBinding.followAudio.setVisibility(View.GONE);
         }
     }
 
