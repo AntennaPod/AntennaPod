@@ -42,5 +42,4 @@
         android:indeterminateOnly="true"
         android:visibility="gone" />
 
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
