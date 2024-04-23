@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -417,5 +418,22 @@ public class FeedItem implements Serializable {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        FeedItem feedItem = (FeedItem) o;
+        return id == feedItem.id && feedId == feedItem.feedId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, feedId);
     }
 }
