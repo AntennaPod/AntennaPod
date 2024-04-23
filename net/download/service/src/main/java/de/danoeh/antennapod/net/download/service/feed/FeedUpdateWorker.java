@@ -130,6 +130,13 @@ public class FeedUpdateWorker extends Worker {
                 .build();
     }
 
+    private void updateNotification(List<Feed> toUpdate) {
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS)
+                == PackageManager.PERMISSION_GRANTED) {
+            notificationManager.notify(R.id.notification_updating_feeds, createNotification(toUpdate));
+        }
+    }
+
     @NonNull
     @Override
     public ListenableFuture getForegroundInfoAsync() {
@@ -137,15 +144,15 @@ public class FeedUpdateWorker extends Worker {
     }
 
     private void refreshFeeds(List<Feed> toUpdate, boolean force) {
+        //Unchecked is used to prevent a race condition where a feed finishes downloading before
+        // we're done submitting all of the jobs
+        List<Feed> unchecked = new ArrayList<Feed>(toUpdate);
+        updateNotification(unchecked);
         ExecutorService executor = Executors.newFixedThreadPool(5);
         for (Feed feed : toUpdate) {
             executor.submit(() -> {
                 if (isStopped()) {
                     return;
-                }
-                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS)
-                        == PackageManager.PERMISSION_GRANTED) {
-                    notificationManager.notify(R.id.notification_updating_feeds, createNotification(toUpdate));
                 }
                 try {
                     if (feed.isLocalFeed()) {
@@ -159,6 +166,12 @@ public class FeedUpdateWorker extends Worker {
                             feed.getId(), Feed.FEEDFILETYPE_FEED, false,
                             DownloadError.ERROR_IO_ERROR, e.getMessage());
                     DBWriter.addDownloadStatus(status);
+                }
+                synchronized (unchecked) {
+                    unchecked.remove(feed);
+                }
+                if (!unchecked.isEmpty()) {
+                    updateNotification(unchecked);
                 }
             });
         }
