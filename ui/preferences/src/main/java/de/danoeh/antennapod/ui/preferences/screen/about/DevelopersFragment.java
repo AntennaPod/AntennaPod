@@ -2,10 +2,13 @@ package de.danoeh.antennapod.ui.preferences.screen.about;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.ListFragment;
+
+import de.danoeh.antennapod.ui.common.IntentUtils;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -18,15 +21,15 @@ import java.util.ArrayList;
 
 public class DevelopersFragment extends ListFragment {
     private Disposable developersLoader;
+    private ArrayList<SimpleIconListAdapter.ListItem> developers = new ArrayList<>();
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getListView().setDivider(null);
-        getListView().setSelector(android.R.color.transparent);
 
         developersLoader = Single.create((SingleOnSubscribe<ArrayList<SimpleIconListAdapter.ListItem>>) emitter -> {
-            ArrayList<SimpleIconListAdapter.ListItem> developers = new ArrayList<>();
+            developers.clear();
             BufferedReader reader = new BufferedReader(new InputStreamReader(
                     getContext().getAssets().open("developers.csv"), "UTF-8"));
             String line;
@@ -43,7 +46,12 @@ public class DevelopersFragment extends ListFragment {
                 developers -> setListAdapter(new SimpleIconListAdapter<>(getContext(), developers)),
                 error -> Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show()
         );
+    }
 
+    @Override
+    public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        IntentUtils.openInBrowser(getContext(), "https://github.com/" + developers.get(position).title);
     }
 
     @Override
