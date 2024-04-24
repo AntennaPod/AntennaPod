@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -467,5 +469,23 @@ public class Feed {
 
     public boolean isLocalFeed() {
         return downloadUrl.startsWith(PREFIX_LOCAL_FOLDER);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Feed feed = (Feed) o;
+        return id == feed.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

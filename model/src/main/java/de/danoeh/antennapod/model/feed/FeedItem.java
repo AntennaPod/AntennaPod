@@ -428,12 +428,13 @@ public class FeedItem implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
+
         FeedItem feedItem = (FeedItem) o;
-        return id == feedItem.id && feedId == feedItem.feedId;
+        return id == feedItem.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, feedId);
+        return Objects.hash(id);
     }
 }
