@@ -145,10 +145,10 @@ public class FeedUpdateWorker extends Worker {
 
     private void refreshFeeds(List<Feed> toUpdate, boolean force) {
         //Unchecked is used to prevent a race condition where a feed finishes downloading before
-        // we're done submitting all of the jobs
+        // we're done iterating to submit jobs
         List<Feed> unchecked = new ArrayList<Feed>(toUpdate);
         updateNotification(unchecked);
-        ExecutorService executor = Executors.newFixedThreadPool(5);
+        ExecutorService executor = Executors.newFixedThreadPool(4);
         for (Feed feed : toUpdate) {
             executor.submit(() -> {
                 if (isStopped()) {
