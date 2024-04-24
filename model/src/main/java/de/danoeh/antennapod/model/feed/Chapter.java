@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.model.feed;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Chapter {
     private long id;
@@ -87,5 +88,23 @@ public class Chapter {
             }
         }
         return chapters.size() - 1;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Chapter chapter = (Chapter) o;
+        return id == chapter.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

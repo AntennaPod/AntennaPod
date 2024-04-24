@@ -501,12 +501,21 @@ public class FeedMedia implements Playable {
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
         if (o == null) {
             return false;
         }
         if (o instanceof RemoteMedia) {
             return o.equals(this);
         }
-        return super.equals(o);
+
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+
+        FeedMedia feedMedia = (FeedMedia) o;
+        return id == feedMedia.id;
     }
 }
