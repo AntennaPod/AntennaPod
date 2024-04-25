@@ -144,10 +144,8 @@ public class FeedUpdateWorker extends Worker {
     }
 
     private void refreshFeeds(List<Feed> toUpdate, boolean force) {
-        //Unchecked is used to prevent a race condition where a feed finishes downloading before
-        // we're done iterating to submit jobs
-        List<Feed> unchecked = new ArrayList<Feed>(toUpdate);
-        updateNotification(unchecked);
+        List<Feed> notificationRemainingFeeds = new ArrayList<>(toUpdate);
+        updateNotification(notificationRemainingFeeds);
         ExecutorService executor = Executors.newFixedThreadPool(4);
         for (Feed feed : toUpdate) {
             executor.submit(() -> {
@@ -167,11 +165,11 @@ public class FeedUpdateWorker extends Worker {
                             DownloadError.ERROR_IO_ERROR, e.getMessage());
                     DBWriter.addDownloadStatus(status);
                 }
-                synchronized (unchecked) {
-                    unchecked.remove(feed);
-                }
-                if (!unchecked.isEmpty()) {
-                    updateNotification(unchecked);
+                synchronized (notificationRemainingFeeds) {
+                    notificationRemainingFeeds.remove(feed);
+                    if (!notificationRemainingFeeds.isEmpty()) {
+                        updateNotification(notificationRemainingFeeds);
+                    }
                 }
             });
         }
@@ -179,7 +177,7 @@ public class FeedUpdateWorker extends Worker {
         try {
             executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
         } catch (InterruptedException e) {
-            //~300 years has elapsed
+            //~300 years have elapsed
         }
     }
 
