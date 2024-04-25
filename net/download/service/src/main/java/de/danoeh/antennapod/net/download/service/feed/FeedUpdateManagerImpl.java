@@ -14,6 +14,7 @@ import androidx.work.OutOfQuotaPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -90,6 +91,7 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
             runOnce(context, feed);
         } else if (!NetworkUtils.networkAvailable()) {
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.download_error_no_connection)));
+            EventBus.getDefault().postSticky(new FeedUpdateRunningEvent(false));
         } else if (NetworkUtils.isFeedRefreshAllowed()) {
             runOnce(context, feed);
         } else {
@@ -106,7 +108,9 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
                     UserPreferences.setAllowMobileFeedRefresh(true);
                     runOnce(context, feed);
                 })
-                .setNegativeButton(R.string.no, null);
+                .setNegativeButton(R.string.no, (dialog, which) -> {
+                    EventBus.getDefault().postSticky(new FeedUpdateRunningEvent(false));
+                });
         if (NetworkUtils.isNetworkRestricted() && NetworkUtils.isVpnOverWifi()) {
             builder.setMessage(R.string.confirm_mobile_feed_refresh_dialog_message_vpn);
         } else {
