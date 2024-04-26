@@ -52,6 +52,7 @@ import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.common.DateFormatter;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
+import de.danoeh.antennapod.ui.common.ImagePlaceholder;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.cleaner.ShownotesCleaner;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
@@ -286,10 +287,11 @@ public class ItemFragment extends Fragment {
             txtvPublished.setContentDescription(DateFormatter.formatForAccessibility(item.getPubDate()));
         }
 
+        float radius = 8 * getResources().getDisplayMetrics().density;
         RequestOptions options = new RequestOptions()
-                .error(R.color.light_gray)
+                .error(ImagePlaceholder.getDrawable(getContext(), radius))
                 .transform(new FitCenter(),
-                        new RoundedCorners((int) (8 * getResources().getDisplayMetrics().density)))
+                        new RoundedCorners((int) radius))
                 .dontAnimate();
 
         Glide.with(this)

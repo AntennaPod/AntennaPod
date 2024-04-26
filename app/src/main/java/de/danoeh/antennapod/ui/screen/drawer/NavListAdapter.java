@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.common.ImagePlaceholder;
 import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
 import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
 import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
@@ -314,13 +315,14 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             return;
         }
 
+        float radius = 4 * context.getResources().getDisplayMetrics().density;
         Glide.with(context)
                 .load(feed.getImageUrl())
                 .apply(new RequestOptions()
-                    .placeholder(R.color.light_gray)
-                    .error(R.color.light_gray)
+                    .placeholder(ImagePlaceholder.getDrawable(context, radius))
+                    .error(ImagePlaceholder.getDrawable(context, radius))
                     .transform(new FitCenter(),
-                            new RoundedCorners((int) (4 * context.getResources().getDisplayMetrics().density)))
+                            new RoundedCorners((int) radius))
                     .dontAnimate())
                 .into(holder.image);
 
