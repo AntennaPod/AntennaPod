@@ -124,6 +124,8 @@ jobs:
         run: echo "org.gradle.parallel=true" >> local.properties
       - name: Build with Gradle
         run: ./gradlew assemblePlayDebugAndroidTest
+      - name: Configure Emulator
+        run: echo -e "Vulkan = off\nGLDirectMem = on" > ~/.android/advancedFeatures.ini
       - name: Android Emulator test
         uses: reactivecircus/android-emulator-runner@v2
         with:
