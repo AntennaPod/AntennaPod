@@ -305,6 +305,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (mediaPlayer == null) {
             mediaPlayer = new LocalPSMP(this, mediaPlayerCallback); // Cast not supported or not connected
         }
+        if (media == null) { // Media is null here if app is restarted from ACTION_MEDIA_BUTTON
+            media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+        }
         if (media != null) {
             mediaPlayer.playMediaObject(media, !media.localFileAvailable(), wasPlaying, true);
         }
