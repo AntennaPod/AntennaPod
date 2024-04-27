@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 set -o pipefail
 
