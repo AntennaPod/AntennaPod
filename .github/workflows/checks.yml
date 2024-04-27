@@ -138,7 +138,7 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: zsh .github/workflows/runEmulatorTests.sh
+          script: bash .github/workflows/runEmulatorTests.sh
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
