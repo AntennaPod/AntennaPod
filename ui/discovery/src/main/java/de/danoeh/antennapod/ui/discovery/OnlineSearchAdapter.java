@@ -18,6 +18,7 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.List;
 
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
+import de.danoeh.antennapod.ui.common.ImagePlaceholder;
 
 public class OnlineSearchAdapter extends ArrayAdapter<PodcastSearchResult> {
     /**
@@ -76,14 +77,14 @@ public class OnlineSearchAdapter extends ArrayAdapter<PodcastSearchResult> {
             viewHolder.authorView.setVisibility(View.GONE);
         }
 
-        //Update the empty imageView with the image from the feed
+        float radius = 4 * context.getResources().getDisplayMetrics().density;
         Glide.with(context)
                 .load(podcast.imageUrl)
                 .apply(new RequestOptions()
-                    .placeholder(R.color.light_gray)
+                    .placeholder(ImagePlaceholder.getDrawable(context, radius))
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .transform(new FitCenter(),
-                            new RoundedCorners((int) (4 * context.getResources().getDisplayMetrics().density)))
+                            new RoundedCorners((int) radius))
                     .dontAnimate())
                 .into(viewHolder.coverView);
 

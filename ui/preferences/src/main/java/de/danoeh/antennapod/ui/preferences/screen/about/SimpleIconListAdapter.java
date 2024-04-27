@@ -13,6 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 
+import de.danoeh.antennapod.ui.common.ImagePlaceholder;
 import de.danoeh.antennapod.ui.preferences.R;
 
 import java.util.List;
@@ -43,12 +44,13 @@ public class SimpleIconListAdapter<T extends SimpleIconListAdapter.ListItem> ext
         if (item.imageUrl == null) {
             view.findViewById(R.id.icon).setVisibility(View.GONE);
         } else {
+            float radius = 4 * context.getResources().getDisplayMetrics().density;
             Glide.with(context)
                     .load(item.imageUrl)
                     .apply(new RequestOptions()
+                            .placeholder(ImagePlaceholder.getDrawable(context, radius))
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .transform(new FitCenter(), new RoundedCorners((int)
-                                    (4 * context.getResources().getDisplayMetrics().density)))
+                            .transform(new FitCenter(), new RoundedCorners((int) radius))
                             .dontAnimate())
                     .into(((ImageView) view.findViewById(R.id.icon)));
         }
