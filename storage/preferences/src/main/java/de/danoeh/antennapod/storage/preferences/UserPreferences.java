@@ -831,6 +831,10 @@ public abstract class UserPreferences {
         return prefs.getBoolean(PREF_SUBSCRIPTION_TITLE, false);
     }
 
+    public static void setShouldShowSubscriptionTitle(boolean show) {
+        prefs.edit().putBoolean(PREF_SUBSCRIPTION_TITLE, show).apply();
+    }
+
     public static void setAllEpisodesSortOrder(SortOrder s) {
         prefs.edit().putString(PREF_SORT_ALL_EPISODES, "" + s.code).apply();
     }
