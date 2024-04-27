@@ -59,6 +59,7 @@
   <string name="deny_label">Nega</string>
   <string name="open_settings">Apri le impostazioni</string>
   <string name="configure_home">Configura la schermata Home</string>
+  <string name="section_hidden">Nascosto</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Dimensione totale degli episodi sul dispositivo</string>
   <!--Main activity-->
@@ -122,6 +123,7 @@
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Mai</string>
   <string name="feed_new_episodes_action_add_to_inbox">Aggiungi alla inbox</string>
+  <string name="feed_new_episodes_action_add_to_queue">Aggiungi alla coda</string>
   <string name="feed_new_episodes_action_nothing">Nessuna</string>
   <string name="episode_cleanup_never">Mai</string>
   <string name="episode_cleanup_except_favorite_removal">Quando non preferito</string>
@@ -182,6 +184,7 @@
   <string name="select_all_above">Seleziona tutti in su</string>
   <string name="select_all_below">Seleziona tutti in giù</string>
   <string name="filtered_label">Filtrati</string>
+  <string name="refresh_failed_msg">Aggiornamento fallito. Tocca per i dettagli.</string>
   <string name="open_podcast">Apri podcast</string>
   <string name="please_wait_for_data">Attendi il caricamento dei dati</string>
   <string name="updates_disabled_label">Aggiornamenti disabilitati</string>
@@ -470,7 +473,9 @@
   <string name="pref_expandNotify_sum">Di solito espande la notifica per mostrare i tasti di riproduzione.</string>
   <string name="pref_persistNotify_title">Controlli di riproduzione persistenti</string>
   <string name="pref_persistNotify_sum">Mantieni la notifica e i controlli sulla schermata di blocco anche quando la riproduzione è in pausa</string>
+  <string name="pref_compact_notification_buttons_dialog_error_exact">Seleziona esattamente due elementi</string>
   <string name="pref_full_notification_buttons_title">Imposta pulsanti notifica</string>
+  <string name="pref_full_notification_buttons_sum">Modifica i pulsanti sulla notifica di riproduzione.</string>
   <string name="pref_enqueue_location_title">Posizione in coda</string>
   <string name="pref_enqueue_location_sum">Posizione nuovi episodi: %1$s</string>
   <string name="enqueue_location_back">Alla fine</string>
@@ -559,6 +564,9 @@
   <string name="opml_export_label">Esporta in OPML</string>
   <string name="html_export_label">Esporta in HTML</string>
   <string name="database_export_label">Esporta database</string>
+  <string name="automatic_database_export_label">Esportazione automatica database</string>
+  <string name="automatic_database_export_summary">Crea un backup del database di AntennaPod ogni 3 giorni. Vengono mantenuti solo gli ultimi 5 backup.</string>
+  <string name="automatic_database_export_error">Errore durante il backup automatico del database</string>
   <string name="database_import_label">Importa database</string>
   <string name="database_import_warning">L\'importazione di un database sostituirà tutte le iscrizioni attuali e la cronologia di riproduzione. Dovresti eseguire un backup del tuo database attuale. Vuoi proseguire?</string>
   <string name="please_wait">Attendi...</string>
@@ -603,6 +611,7 @@
     <item quantity="other">%d giorni</item>
   </plurals>
   <string name="auto_enable_label">Attivazione automatica timer di spegnimento</string>
+  <string name="auto_enable_label_with_times">Attiva automaticamente il timer premendo Riproduci tra le %1$s e le %2$s</string>
   <string name="auto_enable_change_times">Modifica fascia oraria</string>
   <string name="sleep_timer_enabled_label">Timer spegnimento abilitato</string>
   <!--Synchronisation-->
@@ -649,6 +658,12 @@
   <string name="pref_pausePlaybackForFocusLoss_sum">Quando un\'altra app emette un suono, sospendi la riproduzione invece di abbassare il volume</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pausa su interruzione</string>
   <!--Rating dialog-->
+  <string name="rating_tagline">Dal %1$s, hai riprodotto %2$s%3$d%4$s ore di podcast.</string>
+  <string name="rating_contribute_label">Vuoi partecipare? Saremmo felici di averti con noi per tradurre, supportare, sviluppare o occuparti di design!</string>
+  <string name="rating_contribute_button">Scopri come contribuire</string>
+  <string name="rating_volunteers_label">AntennaPod è sviluppato da volontari nel tempo libero. Saremmo felici se ci lasciassi una valutazione positiva.</string>
+  <string name="rating_rate">Valuta AntennaPod</string>
+  <string name="rating_later">Dopo</string>
   <!--Online feed view-->
   <string name="subscribe_label">Iscriviti</string>
   <string name="subscribing_label">Iscrizione...</string>
@@ -681,6 +696,7 @@
   <string name="feed_tags_label">Tag</string>
   <string name="feed_tags_summary">Cambia i tag di questo podcast per agevolare l\'organizzazione delle tue iscrizioni</string>
   <string name="feed_folders_include_root">Mostra il podcast nella lista principale</string>
+  <string name="multi_feed_common_tags_info">Vengono mostrati solo tag i comuni alle iscrizioni selezionate. Gli altri tag non vengono toccati.</string>
   <string name="auto_download_settings_label">Impostazioni download automatico</string>
   <string name="episode_filters_label">Filtro degli episodi</string>
   <string name="episode_filters_description">Elenco di termini per filtrare gli episodi da includere o escludere dai download automatici.</string>
@@ -696,10 +712,25 @@
   <string name="statistics_episodes_on_device">Episodi sul dispositivo:</string>
   <string name="statistics_space_used">Spazio utilizzato:</string>
   <string name="statistics_episodes_started_total">Episodi iniziati/totali:</string>
+  <string name="statistics_expected_next_episode">Prossimo episodio atteso:</string>
+  <string name="statistics_expected_next_episode_any_day">In questi giorni</string>
+  <string name="statistics_expected_next_episode_unknown">Sconosciuto</string>
   <string name="statistics_view_all">Vedi per tutti i podcast »</string>
   <string name="edit_url_menu">Modifica URL del feed</string>
   <string name="edit_url_confirmation_msg">Cambiare l\'indirizzo RSS può compromettere lo stato della riproduzione e l\'ascolto degli episodi di un podcast. Consigliamo di NON cambiarlo e NON forniamo supporto se qualcosa non dovesse funzionare. L\'operazione NON è reversibile e l\'iscrizione NON può essere ripristinata tornando all\'indirizzo precedente. Ti consigliamo di effettuare un backup prima di continuare.</string>
   <!--Podcast release schedules-->
+  <string name="release_schedule_daily">giornaliero</string>
+  <string name="release_schedule_weekdays">giorni feriali</string>
+  <string name="release_schedule_weekly">settimanale</string>
+  <string name="release_schedule_biweekly">ogni due settimane</string>
+  <string name="release_schedule_monthly">mensile</string>
+  <string name="release_schedule_monday">Lun</string>
+  <string name="release_schedule_tuesday">Mar</string>
+  <string name="release_schedule_wednesday">Mer</string>
+  <string name="release_schedule_thursday">Gio</string>
+  <string name="release_schedule_friday">Ven</string>
+  <string name="release_schedule_saturday">Sab</string>
+  <string name="release_schedule_sunday">Dom</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importazione delle iscrizioni da applicazioni specifiche in corso...</string>
   <!--Add podcast fragment-->
@@ -708,6 +739,7 @@
   <string name="search_podcastindex_label">Cerca su Podcast Index</string>
   <string name="search_fyyd_label">Cerca su fyyd</string>
   <string name="advanced">Avanzate</string>
+  <string name="add_podcast_by_url">Aggiungi podcast da indirizzo RSS</string>
   <string name="discover">Scopri</string>
   <string name="discover_hide">Nascondi</string>
   <string name="discover_is_hidden">Hai scelto di nascondere i suggerimenti</string>

@@ -59,6 +59,7 @@
   <string name="deny_label">Weiger</string>
   <string name="open_settings">Instellingen openen</string>
   <string name="configure_home">Startscherm instellen</string>
+  <string name="section_hidden">Verborgen</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Totaalgrootte van lokale afleveringen</string>
   <!--Main activity-->
@@ -122,6 +123,7 @@
   <string name="feed_auto_download_always">Altijd</string>
   <string name="feed_auto_download_never">Nooit</string>
   <string name="feed_new_episodes_action_add_to_inbox">Aan inbox toevoegen</string>
+  <string name="feed_new_episodes_action_add_to_queue">Toevoegen aan wachtrij</string>
   <string name="feed_new_episodes_action_nothing">Niets</string>
   <string name="episode_cleanup_never">Nooit</string>
   <string name="episode_cleanup_except_favorite_removal">Indien niet favoriet</string>
@@ -176,6 +178,7 @@
   <string name="select_all_above">Alles hierboven selecteren</string>
   <string name="select_all_below">Alles hieronder selecteren</string>
   <string name="filtered_label">Gefilterd</string>
+  <string name="refresh_failed_msg">Vernieuwen mislukt. Tik voor meer informatie.</string>
   <string name="open_podcast">Podcast openen</string>
   <string name="please_wait_for_data">Wacht tot de gegevens geladen zijn</string>
   <string name="updates_disabled_label">Updates zijn uitgeschakeld</string>
@@ -455,7 +458,9 @@
   <string name="pref_expandNotify_sum">Dit breidt de melding meestal uit om afspeelknoppen te tonen.</string>
   <string name="pref_persistNotify_title">Permanente afspeelknoppen</string>
   <string name="pref_persistNotify_sum">Melding en bediening op vergrendelscherm houden indien gepauzeerd</string>
+  <string name="pref_compact_notification_buttons_dialog_error_exact">Kies precies twee items</string>
   <string name="pref_full_notification_buttons_title">Meldingsknoppen instellen</string>
+  <string name="pref_full_notification_buttons_sum">Pas de bedieningsknoppen op de melding aan</string>
   <string name="pref_enqueue_location_title">Plaatsing in wachtrij</string>
   <string name="pref_enqueue_location_sum">Afleveringen toevoegen: %1$s</string>
   <string name="enqueue_location_back">als laatste</string>
@@ -544,6 +549,9 @@
   <string name="opml_export_label">OPML exporteren</string>
   <string name="html_export_label">HTML exporteren</string>
   <string name="database_export_label">Database exporteren</string>
+  <string name="automatic_database_export_label">Databank automatisch exporteren</string>
+  <string name="automatic_database_export_summary">Maak elke 3 dagen automatisch een reservekopie van de AntennaPod-databank. Let op: alleen de recentste 5 worden bewaard.</string>
+  <string name="automatic_database_export_error">De databank kan niet worden geëxporteerd</string>
   <string name="database_import_label">Database importeren</string>
   <string name="database_import_warning">Bij het importeren van een database worden alle huidige abonnementen en de afspeelgeschiedenis vervangen. Exporteer ter back-up de huidige database. Doorgaan?</string>
   <string name="please_wait">Even geduld...</string>

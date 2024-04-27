@@ -59,6 +59,7 @@
   <string name="deny_label">Refuser</string>
   <string name="open_settings">Ouvrir les préférences</string>
   <string name="configure_home">Paramétrer l\'accueil</string>
+  <string name="section_hidden">Non affiché</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Utilisé sur l\'appareil par les épisodes</string>
   <!--Main activity-->
@@ -122,6 +123,7 @@
   <string name="feed_auto_download_always">Toujours</string>
   <string name="feed_auto_download_never">Jamais</string>
   <string name="feed_new_episodes_action_add_to_inbox">Ajouter à la boîte de réception</string>
+  <string name="feed_new_episodes_action_add_to_queue">Ajouter à la liste de lecture</string>
   <string name="feed_new_episodes_action_nothing">Ne rien faire</string>
   <string name="episode_cleanup_never">Jamais</string>
   <string name="episode_cleanup_except_favorite_removal">Quand pas un favori</string>
@@ -182,6 +184,7 @@
   <string name="select_all_above">Sélectionner avec ceux au-dessus</string>
   <string name="select_all_below">Sélectionner avec ceux en-dessous</string>
   <string name="filtered_label">Filtré</string>
+  <string name="refresh_failed_msg">La dernière mise à jour a échoué. Taper pour plus de détails.</string>
   <string name="open_podcast">Ouvrir le podcast</string>
   <string name="please_wait_for_data">Merci d\'attendre la fin du téléchargement des données</string>
   <string name="updates_disabled_label">Mises à jour désactivées</string>
@@ -470,7 +473,9 @@
   <string name="pref_expandNotify_sum">Permet, généralement, d\'étendre la notification pour montrer les boutons de lecture</string>
   <string name="pref_persistNotify_title">Boutons de lecture permanents</string>
   <string name="pref_persistNotify_sum">Garder les notifications et les boutons de lecture sur l\'écran de verrouillage quand la lecture est en pause</string>
+  <string name="pref_compact_notification_buttons_dialog_error_exact">Vous devez choisir exactement 2 options</string>
   <string name="pref_full_notification_buttons_title">Boutons pour les notifications</string>
+  <string name="pref_full_notification_buttons_sum">Changer les boutons pour la notification de lecture</string>
   <string name="pref_enqueue_location_title">Emplacement des épisodes téléchargés</string>
   <string name="pref_enqueue_location_sum">Ajouter les épisodes : %1$s</string>
   <string name="enqueue_location_back">en fin de liste</string>
@@ -559,6 +564,9 @@
   <string name="opml_export_label">Exporter un fichier OPML</string>
   <string name="html_export_label">Exporter un fichier HTML</string>
   <string name="database_export_label">Exporter la base de données</string>
+  <string name="automatic_database_export_label">Export automatique de la base de données</string>
+  <string name="automatic_database_export_summary">Créer une sauvegarde de la base de données tous les 3 jours. Seul les 5 dernières sont conservées.</string>
+  <string name="automatic_database_export_error">Erreur lors de la sauvegarde automatique de la base de données</string>
   <string name="database_import_label">Importer la base de données</string>
   <string name="database_import_warning">Importer une base de données remplacera tout vos abonnements et votre historique de lecture. Il est conseillé d\'exporter votre base de données actuelle pour avoir une sauvegarde. Confirmez-vous l\'import ?</string>
   <string name="please_wait">Merci de patienter...</string>
@@ -603,6 +611,7 @@
     <item quantity="other">%d jours</item>
   </plurals>
   <string name="auto_enable_label">Activation automatique lorsque la lecture commence</string>
+  <string name="auto_enable_label_with_times">Activer automatiquement lorsque la lecture commence entre %1$s et %2$s</string>
   <string name="auto_enable_change_times">Changer la plage horaire</string>
   <string name="sleep_timer_enabled_label">Arrêt automatique activé</string>
   <!--Synchronisation-->
@@ -649,6 +658,12 @@
   <string name="pref_pausePlaybackForFocusLoss_sum">Mettre en pause la lecture au lieu de baisser le volume quand une autre application joue un son</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Mettre en pause lors d\'interruptions</string>
   <!--Rating dialog-->
+  <string name="rating_tagline">Depuis le %1$s, vous avez écouté %2$s%3$d%4$s heures de podcasts.</string>
+  <string name="rating_contribute_label">Vous voulez nous rejoindre ? Vous le pouvez par de la traduction, du support, du design ou du code et nous en serions heureux !</string>
+  <string name="rating_contribute_button">Découvrir comment aider</string>
+  <string name="rating_volunteers_label">AntennaPod est développé par des volontaires durant leurs temps libre. Si vous aimez ce que nous faisons, nous serions ravi si vous nous laisser une bonne note.</string>
+  <string name="rating_rate">Noter AntennaPod</string>
+  <string name="rating_later">Plus tard</string>
   <!--Online feed view-->
   <string name="subscribe_label">S\'abonner</string>
   <string name="subscribing_label">Abonnement en cours...</string>
@@ -681,6 +696,7 @@
   <string name="feed_tags_label">Tags</string>
   <string name="feed_tags_summary">Modifier les tags de ce podcast pour classer vos abonnements</string>
   <string name="feed_folders_include_root">Montrer dans la liste principale</string>
+  <string name="multi_feed_common_tags_info">Seul les tags communs à tous les abonnements sélectionnés sont montrés. Les autres tags ne seront pas modifiés.</string>
   <string name="auto_download_settings_label">Préférence de téléchargement automatique</string>
   <string name="episode_filters_label">Filtre d\'épisode</string>
   <string name="episode_filters_description">Liste de mots permettant de décider si un épisode est à inclure ou à exclure des téléchargements automatiques</string>
@@ -696,10 +712,25 @@
   <string name="statistics_episodes_on_device">Épisode(s) sur l\'appareil :</string>
   <string name="statistics_space_used">Espace utilisé :</string>
   <string name="statistics_episodes_started_total">Épisodes démarrés / total :</string>
+  <string name="statistics_expected_next_episode">Estimation sortie prochain épisode :</string>
+  <string name="statistics_expected_next_episode_any_day">Imminente</string>
+  <string name="statistics_expected_next_episode_unknown">Inconnu</string>
   <string name="statistics_view_all">Voir les statistiques pour tous les podcasts »</string>
   <string name="edit_url_menu">Modifier le lien</string>
   <string name="edit_url_confirmation_msg">Modifier le lien RSS peut facilement corrompre l\'état de lecture et la liste des épisodes du podcast. Il est recommandé de NE PAS LE CHANGER et AUCUNE AIDE ne pourra être fournie si quelque chose se passe mal. Cette action ne peut pas être annulée. L\'abonnement NE POURRA PAS ÊTRE RÉPARÉ en remettant juste l\'ancien lien. Il est recommandé de CRÉER UNE SAUVEGARDE avant de continuer.</string>
   <!--Podcast release schedules-->
+  <string name="release_schedule_daily">tous les jours</string>
+  <string name="release_schedule_weekdays">les weekends</string>
+  <string name="release_schedule_weekly">toutes les semaines</string>
+  <string name="release_schedule_biweekly">toutes les deux semaines</string>
+  <string name="release_schedule_monthly">tous les mois</string>
+  <string name="release_schedule_monday">Lundi</string>
+  <string name="release_schedule_tuesday">Mardi</string>
+  <string name="release_schedule_wednesday">Mercredi</string>
+  <string name="release_schedule_thursday">Jeudi</string>
+  <string name="release_schedule_friday">Vendredi</string>
+  <string name="release_schedule_saturday">Samedi</string>
+  <string name="release_schedule_sunday">Dimanche</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importation des abonnements à partir d\'applications à usage unique...</string>
   <!--Add podcast fragment-->
@@ -708,6 +739,7 @@
   <string name="search_podcastindex_label">Chercher sur Podcast Index</string>
   <string name="search_fyyd_label">Chercher sur fyyd</string>
   <string name="advanced">Avancé</string>
+  <string name="add_podcast_by_url">Ajouter un podcast à partir de son lien RSS</string>
   <string name="discover">Découvrir</string>
   <string name="discover_hide">Ne pas montrer</string>
   <string name="discover_is_hidden">Vous avez choisi de cacher les suggestions.</string>

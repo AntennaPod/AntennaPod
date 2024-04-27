@@ -122,6 +122,7 @@
   <string name="feed_auto_download_always">Vždy</string>
   <string name="feed_auto_download_never">Nikdy</string>
   <string name="feed_new_episodes_action_add_to_inbox">Pridať do schránky</string>
+  <string name="feed_new_episodes_action_add_to_queue">Pridať do poradia</string>
   <string name="feed_new_episodes_action_nothing">Nič</string>
   <string name="episode_cleanup_never">Nikdy</string>
   <string name="episode_cleanup_except_favorite_removal">Ak nie je medzi obľúbenými</string>
@@ -188,6 +189,7 @@
   <string name="select_all_above">Vybrať všetky nad</string>
   <string name="select_all_below">Vybrať všetky pod</string>
   <string name="filtered_label">Filtrované</string>
+  <string name="refresh_failed_msg">Posledné obnovenie zlyhalo. Klepnutím zobrazíte podrobnosti.</string>
   <string name="open_podcast">Otvoriť podcast</string>
   <string name="please_wait_for_data">Počkajte, kým sa dáta načítajú</string>
   <string name="updates_disabled_label">Obnovovanie vypnuté</string>
@@ -416,7 +418,7 @@
   <string name="playback_pref_sum">Ovládanie tlačidlami slúchadiel, preskakovanie, poradie</string>
   <string name="downloads_pref">Sťahovanie</string>
   <string name="downloads_pref_sum">Interval aktualizácie, Mobilné dáta, Automatické sťahovanie, Automatické mazanie</string>
-  <string name="feed_refresh_title">Aktualizovať podcasty</string>
+  <string name="feed_refresh_title">Obnoviť podcasty</string>
   <string name="feed_refresh_sum">Zvoliť interval alebo čas v ktorom AntennaPod automaticky hľadá nové epizódy</string>
   <string name="feed_refresh_never">Nikdy</string>
   <string name="feed_every_hour">Každú hodinu</string>
@@ -485,7 +487,9 @@
   <string name="pref_expandNotify_sum">Toto obvykle pridá tlačidlá ovládania prehrávania do správ upozornení</string>
   <string name="pref_persistNotify_title">Stále ovládače prehrávania</string>
   <string name="pref_persistNotify_sum">Zachovať oznámenia a ovládanie na uzamknutej obrazovke aj pri pozastavenom prehrávaní</string>
+  <string name="pref_compact_notification_buttons_dialog_error_exact">Musíte vybrať presne dve položky</string>
   <string name="pref_full_notification_buttons_title">Nastaviť tlačidlá upozornení</string>
+  <string name="pref_full_notification_buttons_sum">Zmeniť tlačidlá v upozornení na prehrávanie.</string>
   <string name="pref_enqueue_location_title">Pozícia pridávania do poradia</string>
   <string name="pref_enqueue_location_sum">Pridávať epizódy na: %1$s</string>
   <string name="enqueue_location_back">Späť</string>
@@ -574,6 +578,9 @@
   <string name="opml_export_label">Exportovať ako OPML</string>
   <string name="html_export_label">Exportovať ako HTML</string>
   <string name="database_export_label">Export databázy</string>
+  <string name="automatic_database_export_label">Automatický export databázy</string>
+  <string name="automatic_database_export_summary">Raz za 3 dni vytvoriť zálohu databázy AntennaPod. Ponechať iba 5 najnovších záloh.</string>
+  <string name="automatic_database_export_error">Chyba pri automatickom zálohovaní databázy</string>
   <string name="database_import_label">Import databázy</string>
   <string name="database_import_warning">Import databázy prepíše všetky vaše aktuálne odbery a históriu prehrávania. Aktuálnu databázu by ste mali exportovať ako zálohu. Chcete ju prepísať?</string>
   <string name="please_wait">Prosím čakajte…</string>
@@ -622,6 +629,7 @@
     <item quantity="other">%d dní</item>
   </plurals>
   <string name="auto_enable_label">Po stlačení tlačidla prehrávania automaticky aktivovať časovač vypnutia</string>
+  <string name="auto_enable_label_with_times">Po stlačení tlačidla prehrávania medzi %1$s a %2$s automaticky aktivovať časovač vypnutia</string>
   <string name="auto_enable_change_times">Zmeniť časový rozsah</string>
   <string name="sleep_timer_enabled_label">Časovač vypnutia povolený</string>
   <!--Synchronisation-->
@@ -668,6 +676,12 @@
   <string name="pref_pausePlaybackForFocusLoss_sum">Keď chce iná aplikácia prehrávať zvuky, namiesto zníženia hlasitosti pozastavte prehrávanie</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pozastaviť kvôli prerušeniam</string>
   <!--Rating dialog-->
+  <string name="rating_tagline">Od %1$s ste si prehrali %2$s%3$d%4$s hodín podcastov.</string>
+  <string name="rating_contribute_label">Chcieť sa pridať? Či už chcete prekladať, podporovať, navrhovať alebo kódovať, radi vás privítame!</string>
+  <string name="rating_contribute_button">Objavte spôsoby, ako prispieť</string>
+  <string name="rating_volunteers_label">AntennaPod vyvíjajú dobrovoľníci vo svojom voľnom čase. Budeme radi, ak našu prácu oceníte pekným hodnotením.</string>
+  <string name="rating_rate">Ohodnoťte AntennaPod</string>
+  <string name="rating_later">Neskôr</string>
   <!--Online feed view-->
   <string name="subscribe_label">Prihlásiť sa na odber</string>
   <string name="subscribing_label">Prihlasovanie na odber…</string>
@@ -700,6 +714,7 @@
   <string name="feed_tags_label">Štítky</string>
   <string name="feed_tags_summary">Zmeňte si štítky tohto podcastu aby sa pomohlo usporiadaniu Vašich odberov</string>
   <string name="feed_folders_include_root">Zobraziť tento podcast v hlavnom zozname</string>
+  <string name="multi_feed_common_tags_info">Zobrazia sa iba bežné štítky zo všetkých vybraných odberov. Ostatné štítky zostanú nedotknuté.</string>
   <string name="auto_download_settings_label">Nastavenia automatického sťahovania</string>
   <string name="episode_filters_label">Filter epizód</string>
   <string name="episode_filters_description">Zoznam výrazov použitých na rozhodnutie, či má byť epizóda zahrnutá alebo vylúčená pri automatickom sťahovaní</string>
@@ -715,10 +730,25 @@
   <string name="statistics_episodes_on_device">Epizód v zariadení:</string>
   <string name="statistics_space_used">Použitý priestor:</string>
   <string name="statistics_episodes_started_total">Epizódy začaté/celkovo:</string>
+  <string name="statistics_expected_next_episode">Očakávaná ďalšia epizóda:</string>
+  <string name="statistics_expected_next_episode_any_day">Teraz ktorýkoľvek deň</string>
+  <string name="statistics_expected_next_episode_unknown">Neznáma</string>
   <string name="statistics_view_all">Zobraziť všetky podcasty »</string>
   <string name="edit_url_menu">Upraviť URL adresu informačného kanála</string>
   <string name="edit_url_confirmation_msg">Zmena RSS adresy môže ľahko pokaziť štádium prehrávania a zoznam epizód podcastu. NEdoporučujeme ju meniť a ani NEbudeme poskytovať podporu v prípade, že sa niečo pokazí. Zmeny sa nedajú vrátiť. Pokazený odber sa NEDÁ opraviť jednoduchým prepísaním adresy späť. Doporučujeme vytvorenie zálohy pred pokračovaním.</string>
   <!--Podcast release schedules-->
+  <string name="release_schedule_daily">denne</string>
+  <string name="release_schedule_weekdays">vo všedné dni</string>
+  <string name="release_schedule_weekly">týždenne</string>
+  <string name="release_schedule_biweekly">každé dva týždne</string>
+  <string name="release_schedule_monthly">mesačne</string>
+  <string name="release_schedule_monday">Pon</string>
+  <string name="release_schedule_tuesday">Ut</string>
+  <string name="release_schedule_wednesday">Str</string>
+  <string name="release_schedule_thursday">Štv</string>
+  <string name="release_schedule_friday">Pia</string>
+  <string name="release_schedule_saturday">So</string>
+  <string name="release_schedule_sunday">Ne</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Imporovať odbery z jednoúčelových aplikácií…</string>
   <!--Add podcast fragment-->
@@ -727,6 +757,7 @@
   <string name="search_podcastindex_label">Hľadať na Podcast index</string>
   <string name="search_fyyd_label">Hľadať na fyyd</string>
   <string name="advanced">Pokročilé</string>
+  <string name="add_podcast_by_url">Pridať podcast cez RSS adresu</string>
   <string name="discover">Prehľadávať</string>
   <string name="discover_hide">Skryť</string>
   <string name="discover_is_hidden">Vybrali ste skryť návrhy.</string>

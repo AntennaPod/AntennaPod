@@ -301,7 +301,7 @@
   <string name="error_file_not_found">Arxiu no trobat</string>
   <string name="no_media_label">L\'element no conté cap fitxer multimèdia</string>
   <!--Queue operations-->
-  <string name="lock_queue">Bloquejar cua</string>
+  <string name="lock_queue">Bloqueja la cua</string>
   <string name="queue_locked">Cua bloquejada</string>
   <string name="queue_unlocked">Cua no bloquejada</string>
   <string name="queue_lock_warning">Si bloqueges la cua no podràs arrastrar o reordenar episodis.</string>
@@ -311,7 +311,7 @@
   <string name="move_to_top_label">Mou al principi</string>
   <string name="move_to_bottom_label">Mou al final</string>
   <string name="sort">Ordena</string>
-  <string name="keep_sorted">Manté ordenats.</string>
+  <string name="keep_sorted">Mantingues ordenats</string>
   <string name="date">Data</string>
   <string name="duration">Durada</string>
   <string name="episode_title">Títol de l\'episodi</string>
@@ -681,6 +681,13 @@
   <string name="edit_url_menu">Edita l\'enllaç del canal</string>
   <string name="edit_url_confirmation_msg">Canviar l\'adreça RSS pot trencar fàcilment l\'estat de reproducció i les llistes d\'episodis del pòdcast. NO recomanem canviar-lo i NO oferirem suport si alguna cosa va malament. Això no es pot desfer. La subscripció trencada NO es pot reparar simplement canviant l\'adreça. Us suggerim que creeu una còpia de seguretat abans de continuar.</string>
   <!--Podcast release schedules-->
+  <string name="release_schedule_monday">dl.</string>
+  <string name="release_schedule_tuesday">dt.</string>
+  <string name="release_schedule_wednesday">dc.</string>
+  <string name="release_schedule_thursday">dj.</string>
+  <string name="release_schedule_friday">dv.</string>
+  <string name="release_schedule_saturday">ds.</string>
+  <string name="release_schedule_sunday">dg.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">S\'estan important les subscripcions des de les apps de propòsit únic...</string>
   <!--Add podcast fragment-->

@@ -59,6 +59,7 @@
   <string name="deny_label">Nægt</string>
   <string name="open_settings">Åbn indstillinger</string>
   <string name="configure_home">Konfigurer hjemmeskærm</string>
+  <string name="section_hidden">Skjult</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Samlet størrelse af afsnit på enheden</string>
   <!--Main activity-->
@@ -122,6 +123,7 @@
   <string name="feed_auto_download_always">Altid</string>
   <string name="feed_auto_download_never">Aldrig</string>
   <string name="feed_new_episodes_action_add_to_inbox">Tilføj til indbakke</string>
+  <string name="feed_new_episodes_action_add_to_queue">Føj til kø</string>
   <string name="feed_new_episodes_action_nothing">Ingenting</string>
   <string name="episode_cleanup_never">Aldrig</string>
   <string name="episode_cleanup_except_favorite_removal">Hvis ikke en favorit</string>
@@ -176,6 +178,7 @@
   <string name="select_all_above">Vælg alt ovenfor</string>
   <string name="select_all_below">Vælg alt nedenfor</string>
   <string name="filtered_label">Filtrerede</string>
+  <string name="refresh_failed_msg">Sidste opdatering mislykkedes. Tryk for at se detaljer.</string>
   <string name="open_podcast">Åbn podcast</string>
   <string name="please_wait_for_data">Vær venlig og vent til data\'et er indlæst</string>
   <string name="updates_disabled_label">Opdateringer deaktiveret</string>
@@ -455,7 +458,9 @@
   <string name="pref_expandNotify_sum">Dette udvider normalt notifikationen til at vise afspilningsknapper.</string>
   <string name="pref_persistNotify_title">Vedholdende afspilningsknapper</string>
   <string name="pref_persistNotify_sum">Bevar notifikations- og låseskærmskontrol, når afspilningen er sat på pause</string>
+  <string name="pref_compact_notification_buttons_dialog_error_exact">Du skal vælge nøjagtig to elementer</string>
   <string name="pref_full_notification_buttons_title">Indstil notifikationsknapper</string>
+  <string name="pref_full_notification_buttons_sum">Skift knapperne på afspilningsnotifikationen</string>
   <string name="pref_enqueue_location_title">Køplacering</string>
   <string name="pref_enqueue_location_sum">Føj afsnit til: %1$s</string>
   <string name="enqueue_location_back">Slutningen</string>
@@ -544,6 +549,9 @@
   <string name="opml_export_label">OPML-eksport</string>
   <string name="html_export_label">HTML-eksport</string>
   <string name="database_export_label">Eksport af database</string>
+  <string name="automatic_database_export_label">Automatisk databaseeksport</string>
+  <string name="automatic_database_export_summary">Lav en sikkerhedskopi af AntennaPod-databasen hver 3. dag. Gem kun de 5 seneste sikkerhedskopier.</string>
+  <string name="automatic_database_export_error">Fejl under automatisk sikkerhedskopiering af database</string>
   <string name="database_import_label">Importér database</string>
   <string name="database_import_warning">Import af database vil overskrive alle dine nuværende abonnementer og din afspilningshistorik. Du bør eksportere din nuværende database som en sikkerhedskopi først. Vil du overskrive?</string>
   <string name="please_wait">Vent...</string>
@@ -584,6 +592,7 @@
     <item quantity="other">%d dage</item>
   </plurals>
   <string name="auto_enable_label">Aktivér automatisk slukkefunktion ved at tryk på afspil</string>
+  <string name="auto_enable_label_with_times">Aktivér automatisk slukkefunktion ved tryk på afspil mellem %1$s og %2$s</string>
   <string name="auto_enable_change_times">Skift tidsinterval</string>
   <string name="sleep_timer_enabled_label">Søvntimer slået til</string>
   <!--Synchronisation-->
@@ -630,6 +639,12 @@
   <string name="pref_pausePlaybackForFocusLoss_sum">Sæt afspilning på pause i stedet for at sænke lydniveauet, når en anden app vil afspille lyde</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Sæt på pause ved afbrydelser</string>
   <!--Rating dialog-->
+  <string name="rating_tagline">Siden %1$s har du afspillet %2$s%3$d%4$s timers podcasts.</string>
+  <string name="rating_contribute_label">Har du lyst til at være med? Uanset om du vil oversætte, supportere, designe eller kode, vil vi være glade for at have dig med!</string>
+  <string name="rating_contribute_button">Find ud af, hvordan du kan bidrage</string>
+  <string name="rating_volunteers_label">AntennaPod er udviklet af frivillige i vores fritid. Vi ville blive glade, hvis du værdsatte vores arbejde ved at give os en god bedømmelse.</string>
+  <string name="rating_rate">Bedøm AntennaPod</string>
+  <string name="rating_later">Senere</string>
   <!--Online feed view-->
   <string name="subscribe_label">Abonner</string>
   <string name="subscribing_label">Abonnerer ...</string>
@@ -662,6 +677,7 @@
   <string name="feed_tags_label">Etiketter</string>
   <string name="feed_tags_summary">Ændr etiketterne for denne podcast for at hjælpe med organiseringen af dine abonnementer</string>
   <string name="feed_folders_include_root">Vis denne podcast i hovedlisten</string>
+  <string name="multi_feed_common_tags_info">Kun fælles etiketter fra alle valgte abonnementer vises. Andre etiketter forbliver upåvirkede.</string>
   <string name="auto_download_settings_label">Indstillinger for automatisk overførsel</string>
   <string name="episode_filters_label">Afsnitsfilter</string>
   <string name="episode_filters_description">Liste af ord, der bliver brugt til at beslutte, om et afsnit skal medtages eller udelades ved automatisk overførsel</string>
@@ -677,10 +693,25 @@
   <string name="statistics_episodes_on_device">Afsnit på enheden:</string>
   <string name="statistics_space_used">Plads brugt:</string>
   <string name="statistics_episodes_started_total">Påbegyndte afsnit/total:</string>
+  <string name="statistics_expected_next_episode">Næste episode forventes:</string>
+  <string name="statistics_expected_next_episode_any_day">En af de nærmeste dage</string>
+  <string name="statistics_expected_next_episode_unknown">Ukendt</string>
   <string name="statistics_view_all">Vis for alle podcasts »</string>
   <string name="edit_url_menu">Rediger feed-URL</string>
   <string name="edit_url_confirmation_msg">Hvis du ændrer RSS-adressen, kan du nemt ødelægge podcastens afspilningstilstand og afsnitslisterne for podcasten. Vi anbefaler IKKE at ændre den og vil IKKE yde support, hvis noget går galt. Dette kan ikke gøres om. Det ødelagte abonnement KAN IKKE repareres ved blot at ændre adressen tilbage. Vi foreslår, at du opretter en sikkerhedskopi, før du fortsætter.</string>
   <!--Podcast release schedules-->
+  <string name="release_schedule_daily">dagligt</string>
+  <string name="release_schedule_weekdays">på hverdage</string>
+  <string name="release_schedule_weekly">ugentligt</string>
+  <string name="release_schedule_biweekly">hver anden uge</string>
+  <string name="release_schedule_monthly">månedligt</string>
+  <string name="release_schedule_monday">Man</string>
+  <string name="release_schedule_tuesday">Tir</string>
+  <string name="release_schedule_wednesday">Ons</string>
+  <string name="release_schedule_thursday">Tors</string>
+  <string name="release_schedule_friday">Fre</string>
+  <string name="release_schedule_saturday">Lør</string>
+  <string name="release_schedule_sunday">Søn</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importerer abonnementer fra enkeltformålsapps…</string>
   <!--Add podcast fragment-->
@@ -689,6 +720,7 @@
   <string name="search_podcastindex_label">Søg i Podcast Index</string>
   <string name="search_fyyd_label">Søg i fyyd</string>
   <string name="advanced">Avanceret</string>
+  <string name="add_podcast_by_url">Tilføj podcast via RSS-adresse</string>
   <string name="discover">Opdag</string>
   <string name="discover_hide">Skjul</string>
   <string name="discover_is_hidden">Du valgte at skjule forslag.</string>

@@ -335,8 +335,8 @@
   <string name="pref_rewind_sum">Määra, mitu sekundit tagasi hüpatakse, kui vajutatakse tagasi kerimise nuppu</string>
   <string name="pref_expandNotify_sum">See tavaliselt kuvab teadet laiemana ning näha on esitusnupud.</string>
   <string name="pref_enqueue_location_sum">Saated lisatakse: %1$s</string>
-  <string name="enqueue_location_back">Algusesse</string>
-  <string name="enqueue_location_front">Lõppu</string>
+  <string name="enqueue_location_back">Lõppu</string>
+  <string name="enqueue_location_front">Algusesse</string>
   <string name="enqueue_location_after_current">Pärast praegust saadet</string>
   <string name="pref_smart_mark_as_played_disabled">Välja lülitatud</string>
   <string name="visit_user_forum">Kasutajate foorum</string>

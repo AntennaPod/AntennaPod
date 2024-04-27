@@ -59,6 +59,7 @@
   <string name="deny_label">Блокувати</string>
   <string name="open_settings">Відкрити налаштування</string>
   <string name="configure_home">Налаштувати домашній екран</string>
+  <string name="section_hidden">Приховано</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Загальний розмір епізодів на цьому пристрої</string>
   <!--Main activity-->
@@ -122,6 +123,7 @@
   <string name="feed_auto_download_always">Завжди</string>
   <string name="feed_auto_download_never">Ніколи</string>
   <string name="feed_new_episodes_action_add_to_inbox">Додати у вхідні</string>
+  <string name="feed_new_episodes_action_add_to_queue">Додати до черги</string>
   <string name="feed_new_episodes_action_nothing">Нічого</string>
   <string name="episode_cleanup_never">Ніколи</string>
   <string name="episode_cleanup_except_favorite_removal">Коли не вибрано</string>
@@ -188,6 +190,7 @@
   <string name="select_all_above">Вибрати все вище</string>
   <string name="select_all_below">Вибрати все нижче</string>
   <string name="filtered_label">Фільтровані</string>
+  <string name="refresh_failed_msg">Останнє оновлення було невдалим. Натисніть, щоб переглянути деталі.</string>
   <string name="open_podcast">Відкрити подкаст</string>
   <string name="please_wait_for_data">Зачекайте, поки завантажаться дані</string>
   <string name="updates_disabled_label">Оновлення вимкнено</string>
@@ -485,7 +488,9 @@
   <string name="pref_expandNotify_sum">Зазвичай це розширює сповіщення, щоб показати кнопки відтворення.</string>
   <string name="pref_persistNotify_title">Завжди показувати елементи керування відтворенням</string>
   <string name="pref_persistNotify_sum">Не ховайте сповіщення та елементи керування на екрані блокування, коли відтворення призупинено</string>
+  <string name="pref_compact_notification_buttons_dialog_error_exact">Ви маєте обрати рівно два варіанти</string>
   <string name="pref_full_notification_buttons_title">Оберіть кнопки на сповіщенні</string>
+  <string name="pref_full_notification_buttons_sum">Змініть кнопки на сповіщенні про відтворення.</string>
   <string name="pref_enqueue_location_title">Позиція в черзі при додаванні</string>
   <string name="pref_enqueue_location_sum">Додати епізоди до: %1$s</string>
   <string name="enqueue_location_back">В кінець</string>
@@ -574,6 +579,9 @@
   <string name="opml_export_label">OPML експорт</string>
   <string name="html_export_label">Експорт до HTML</string>
   <string name="database_export_label">Експортувати базу даних</string>
+  <string name="automatic_database_export_label">Автоматичний експорт бази даних</string>
+  <string name="automatic_database_export_summary">Створювати резервну копію бази даних AntennaPod кожні 3 дні. Зберігати лише 5 останніх резервних копій.</string>
+  <string name="automatic_database_export_error">Помилка під час автоматичного резервного копіювання бази даних</string>
   <string name="database_import_label">Імпортувати базу даних</string>
   <string name="database_import_warning">Імпорт бази даних замінить усі ваші поточні підписки та історію відтворення. Ви повинні експортувати свою поточну базу даних як резервну копію. Бажаєте замінити?</string>
   <string name="please_wait">Будь ласка, зачекайте…</string>
@@ -622,6 +630,7 @@
     <item quantity="other">%d днів</item>
   </plurals>
   <string name="auto_enable_label">Автоматично активувати таймер сну при натисканні кнопки відтворення</string>
+  <string name="auto_enable_label_with_times">Автоматично активувати таймер сну при натисканні на кнопку відтворення в проміжок часу між %1$s та %2$s</string>
   <string name="auto_enable_change_times">Змінити проміжок часу</string>
   <string name="sleep_timer_enabled_label">Таймер сну увімкнено</string>
   <!--Synchronisation-->
@@ -668,6 +677,12 @@
   <string name="pref_pausePlaybackForFocusLoss_sum">Призупиняти програвання замість зниження гучності коли інша програма хоче програти звук</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Пауза в разі переривання</string>
   <!--Rating dialog-->
+  <string name="rating_tagline">З %1$s ви прослухали %2$s%3$d%4$s годин подкастів.</string>
+  <string name="rating_contribute_label">Бажаєте приєднатися? Якщо ви хочете перекладати, підтримувати, створювати дизайн або писати код, ми будемо раді бачити вас!</string>
+  <string name="rating_contribute_button">Дізнайтеся, як зробити свій внесок</string>
+  <string name="rating_volunteers_label">AntennaPod розробляється волонтерами у вільний від роботи час (перекладаю це сидячи в офісі посеред робочого дня, але тсс!). Ми будемо раді, якщо ви оціните нашу роботу, залишивши приємну оцінку :)</string>
+  <string name="rating_rate">Оцініть AntennaPod</string>
+  <string name="rating_later">Пізніше якось</string>
   <!--Online feed view-->
   <string name="subscribe_label">Підписатися</string>
   <string name="subscribing_label">Підписка...</string>
@@ -700,6 +715,7 @@
   <string name="feed_tags_label">Мітки</string>
   <string name="feed_tags_summary">Змініть теги цього подкасту, щоб упорядкувати ваші підписки</string>
   <string name="feed_folders_include_root">Відображати цей подкаст в основному списку підписок</string>
+  <string name="multi_feed_common_tags_info">Показані лише спільні теги з усіх вибраних підписок. Інші теги залишаються без змін.</string>
   <string name="auto_download_settings_label">Налаштування автозавантаження</string>
   <string name="episode_filters_label">Фільтр епізодів</string>
   <string name="episode_filters_description">Перелік термінів, що використовуються для вирішення чи слід завантажувати епізод автоматично</string>
@@ -715,10 +731,25 @@
   <string name="statistics_episodes_on_device">Епізоди на пристрої:</string>
   <string name="statistics_space_used">Використано простору:</string>
   <string name="statistics_episodes_started_total">Розпочато епізодів/всього:</string>
+  <string name="statistics_expected_next_episode">Наступний епізод очікується:</string>
+  <string name="statistics_expected_next_episode_any_day">З дня на день</string>
+  <string name="statistics_expected_next_episode_unknown">Невідомо</string>
   <string name="statistics_view_all">Переглянути всі подкасти »</string>
   <string name="edit_url_menu">Редагувати URL-адресу каналу</string>
   <string name="edit_url_confirmation_msg">Зміна RSS-адреси може легко зламати стан відтворення та списки епізодів подкасту. Ми НЕ рекомендуємо змінювати її і НЕ надаватимемо підтримку, якщо щось піде не так. Це не можна скасувати. Порушену підписку НЕ МОЖНА відновити, просто змінивши адресу назад. Ми рекомендуємо створити резервну копію, перш ніж продовжувати.</string>
   <!--Podcast release schedules-->
+  <string name="release_schedule_daily">щодня</string>
+  <string name="release_schedule_weekdays">по буднях</string>
+  <string name="release_schedule_weekly">щотижня</string>
+  <string name="release_schedule_biweekly">раз на два тижні</string>
+  <string name="release_schedule_monthly">щомісяця</string>
+  <string name="release_schedule_monday">Пн</string>
+  <string name="release_schedule_tuesday">Вт</string>
+  <string name="release_schedule_wednesday">Ср</string>
+  <string name="release_schedule_thursday">Чт</string>
+  <string name="release_schedule_friday">Пт</string>
+  <string name="release_schedule_saturday">Сб</string>
+  <string name="release_schedule_sunday">Нд</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Імпорт подкастів з інших програм...</string>
   <!--Add podcast fragment-->
@@ -727,6 +758,7 @@
   <string name="search_podcastindex_label">Шукати на Podcast Index</string>
   <string name="search_fyyd_label">Шукати на Fyyd</string>
   <string name="advanced">Розширені можливості</string>
+  <string name="add_podcast_by_url">Додати подкаст за RSS-адресою</string>
   <string name="discover">Знайдіть канали</string>
   <string name="discover_hide">Сховати</string>
   <string name="discover_is_hidden">Ви вибрали, щоб приховати пропозиції.</string>

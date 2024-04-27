@@ -59,6 +59,7 @@
   <string name="deny_label">Zakázat</string>
   <string name="open_settings">Otevřít nastavení</string>
   <string name="configure_home">Nastavení domovské obrazovky</string>
+  <string name="section_hidden">Skryté</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Celková velikost epizod na zařízení</string>
   <!--Main activity-->
@@ -122,6 +123,7 @@
   <string name="feed_auto_download_always">Vždy</string>
   <string name="feed_auto_download_never">Nikdy</string>
   <string name="feed_new_episodes_action_add_to_inbox">Přidat do nových</string>
+  <string name="feed_new_episodes_action_add_to_queue">Přidat do fronty</string>
   <string name="feed_new_episodes_action_nothing">Nic</string>
   <string name="episode_cleanup_never">Nikdy</string>
   <string name="episode_cleanup_except_favorite_removal">Pokud není mezi oblíbenými</string>
@@ -188,6 +190,7 @@
   <string name="select_all_above">Vybrat všechny výše</string>
   <string name="select_all_below">Vybrat všechny níže</string>
   <string name="filtered_label">Filtrované</string>
+  <string name="refresh_failed_msg">Poslední aktualizace selhala. Klikněte pro více informací.</string>
   <string name="open_podcast">Otevřít podcast</string>
   <string name="please_wait_for_data">Počkejte prosím na dokončení načítání</string>
   <string name="updates_disabled_label">Aktualizování vypnuto</string>
@@ -485,7 +488,9 @@
   <string name="pref_expandNotify_sum">Toto obvykle přidá tlačítka ovládání přehrávání do zpráv upozornění</string>
   <string name="pref_persistNotify_title">Trvalé ovládací prvky přehrávání</string>
   <string name="pref_persistNotify_sum">Zachovat oznámení a ovládání na obrazovce uzamčení i při pozastaveném přehrávání.</string>
+  <string name="pref_compact_notification_buttons_dialog_error_exact">Musíte zvolil přesně 2 položky.</string>
   <string name="pref_full_notification_buttons_title">Nastavit tlačítka v oznámení</string>
+  <string name="pref_full_notification_buttons_sum">Změňte tlačítka v oznámení přehrávání.</string>
   <string name="pref_enqueue_location_title">Pozice přidávání do fronty</string>
   <string name="pref_enqueue_location_sum">Přidávat epizody na: %1$s</string>
   <string name="enqueue_location_back">konec</string>
@@ -574,6 +579,9 @@
   <string name="opml_export_label">OPML export</string>
   <string name="html_export_label">HTML export</string>
   <string name="database_export_label">Export databáze</string>
+  <string name="automatic_database_export_label">Automatický export databáze</string>
+  <string name="automatic_database_export_summary">Vytvářet zálohu AntennaPod databáze každé 3 dny. Ponechává pouze 5 nejnovějších záloh.</string>
+  <string name="automatic_database_export_error">Chyba při automatické záloze databáze</string>
   <string name="database_import_label">Import databáze</string>
   <string name="database_import_warning">Importem databáze nahradíte všechny své odběry a historii poslechu. Doporučujeme nejdříve exportovat současnou databázi pro případnou obnovu. Opravdu chcete databázi nahradit?</string>
   <string name="please_wait">Čekejte prosím…</string>
@@ -622,6 +630,7 @@
     <item quantity="other">%ddní</item>
   </plurals>
   <string name="auto_enable_label">Automatická aktivace časovače spánku při stisknutí tlačítka přehrávání</string>
+  <string name="auto_enable_label_with_times">Automaticky aktivovat časovač spánku stisknutím tlačítka přehrávání mezi %1$s a %2$s</string>
   <string name="auto_enable_change_times">Změna časového rozmezí</string>
   <string name="sleep_timer_enabled_label">Časovač vypnutí povolen</string>
   <!--Synchronisation-->
@@ -668,6 +677,8 @@
   <string name="pref_pausePlaybackForFocusLoss_sum">Místo snížení hlasitosti pozastavit přehrávání v případě, že jiná aplikace přehrává zvuk.</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Automatické pozastavení přehrávání</string>
   <!--Rating dialog-->
+  <string name="rating_rate">Ohodnoťte AntennaPod</string>
+  <string name="rating_later">Později</string>
   <!--Online feed view-->
   <string name="subscribe_label">Odebírat</string>
   <string name="subscribing_label">Přidává se do odběrů…</string>
@@ -719,6 +730,13 @@
   <string name="edit_url_menu">Upravit adresu URL kanálu</string>
   <string name="edit_url_confirmation_msg">Změna adresy RSS může snadno narušit stav přehrávání a výpis epizod podcastu. Její změnu NEDOPORUČUJEME a v případě, že se něco pokazí, NEBUDE poskytnuta podpora. Tuto změnu nelze vrátit zpět. Poškozený odběr NELZE opravit pouhou změnou adresy zpět. Před pokračováním doporučujeme vytvořit zálohu.</string>
   <!--Podcast release schedules-->
+  <string name="release_schedule_monday">Po</string>
+  <string name="release_schedule_tuesday">Út</string>
+  <string name="release_schedule_wednesday">St</string>
+  <string name="release_schedule_thursday">Čt</string>
+  <string name="release_schedule_friday">Pá</string>
+  <string name="release_schedule_saturday">So</string>
+  <string name="release_schedule_sunday">Ne</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importuji odběry z jednoúčelových aplikací...</string>
   <!--Add podcast fragment-->
@@ -727,6 +745,7 @@
   <string name="search_podcastindex_label">Vyhledávání v Podcast Indexu</string>
   <string name="search_fyyd_label">Prohledat fyyd</string>
   <string name="advanced">Pokročilé</string>
+  <string name="add_podcast_by_url">Přidat podcast pomocí RSS adresy</string>
   <string name="discover">Objevit</string>
   <string name="discover_hide">Skrýt</string>
   <string name="discover_is_hidden">Zvolili jste skrýt doporučení.</string>

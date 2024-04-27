@@ -59,6 +59,7 @@
   <string name="deny_label">Rexeitar</string>
   <string name="open_settings">Ir aos axustes</string>
   <string name="configure_home">Configura a pantalla de Inicio</string>
+  <string name="section_hidden">Oculto</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Tamaño total dos episodios no dispositivo</string>
   <!--Main activity-->
@@ -122,6 +123,7 @@
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Nunca</string>
   <string name="feed_new_episodes_action_add_to_inbox">Engadir a novidades</string>
+  <string name="feed_new_episodes_action_add_to_queue">Engadir á cola</string>
   <string name="feed_new_episodes_action_nothing">Nada</string>
   <string name="episode_cleanup_never">Nunca</string>
   <string name="episode_cleanup_except_favorite_removal">Cando non favorito</string>
@@ -176,6 +178,7 @@
   <string name="select_all_above">Seleccionar todo arriba</string>
   <string name="select_all_below">Seleccionar todo debaixo</string>
   <string name="filtered_label">Filtrado</string>
+  <string name="refresh_failed_msg">A última actualización fallou, toca para ver detalle.</string>
   <string name="open_podcast">Abrir podcast</string>
   <string name="please_wait_for_data">Agarda ata que se carguen os datos</string>
   <string name="updates_disabled_label">Actualizacións desactivadas</string>
@@ -417,10 +420,10 @@
   <string name="pref_tinted_theme_message">As cores da app varían en función do fondo de pantalla</string>
   <string name="pref_nav_drawer_items_title">Establecer elementos do panel</string>
   <string name="pref_nav_drawer_items_sum">Cambiar os elementos que aparecen no panel de navegación</string>
-  <string name="pref_nav_drawer_feed_order_title">Establecer orde das subscricións</string>
-  <string name="pref_nav_drawer_feed_order_sum">Cambiar a orde das subscricións</string>
-  <string name="pref_nav_drawer_feed_counter_title">Establecer o contador de subscricións</string>
-  <string name="pref_nav_drawer_feed_counter_sum">Cambiar a información mostrada polo contador de subscricións. Tamén afecta á orde das subscricións se \"Orde das subscricións\" está establecida a \"Contador\".</string>
+  <string name="pref_nav_drawer_feed_order_title">Arranxar as subscricións</string>
+  <string name="pref_nav_drawer_feed_order_sum">Arranxa as subscricións</string>
+  <string name="pref_nav_drawer_feed_counter_title">Establecer a conta de subscricións</string>
+  <string name="pref_nav_drawer_feed_counter_sum">Cambia a información mostrada polo contador de subscricións. Tamén afecta á orde das subscricións se \'Orde das subscricións\' está establecida a \'Contador\'.</string>
   <string name="pref_automatic_download_title">Descarga automática</string>
   <string name="pref_automatic_download_sum">Configurar a descarga automática de episodios</string>
   <string name="pref_autodl_wifi_filter_title">Habilitar o filtro WiFi</string>
@@ -455,7 +458,9 @@
   <string name="pref_expandNotify_sum">Isto expande as notificacións para mostrar os botóns de reprodución</string>
   <string name="pref_persistNotify_title">Controis persistentes de reprodución</string>
   <string name="pref_persistNotify_sum">Manter a notificación e os controis de reprodución na pantalla de bloqueo cando está detida a reprodución</string>
+  <string name="pref_compact_notification_buttons_dialog_error_exact">Tes que escoller exactamente dous elementos</string>
   <string name="pref_full_notification_buttons_title">Configurar botóns de notificación</string>
+  <string name="pref_full_notification_buttons_sum">Cambiar os botóns na notificación de reprodución</string>
   <string name="pref_enqueue_location_title">Situación na cola</string>
   <string name="pref_enqueue_location_sum">Engadir episodios a: %1$s</string>
   <string name="enqueue_location_back">Atrás</string>
@@ -486,7 +491,7 @@
   <string name="pref_filter_feed_title">Filtro da subscrición</string>
   <string name="pref_filter_feed_sum">Filtra as subscricións no panel de navegación e pantalla de subscricións</string>
   <string name="subscriptions_are_filtered">As subscricións están filtradas.</string>
-  <string name="subscriptions_counter_greater_zero">Contador maior a cero</string>
+  <string name="subscriptions_counter_greater_zero">Conta maior que cero</string>
   <string name="auto_downloaded">Descargado automáticamente</string>
   <string name="not_auto_downloaded">Non descargado automáticamente</string>
   <string name="kept_updated">Manter actualizado</string>
@@ -544,6 +549,9 @@
   <string name="opml_export_label">Exportar OPML</string>
   <string name="html_export_label">Exportar HTML</string>
   <string name="database_export_label">Exportar base de datos</string>
+  <string name="automatic_database_export_label">Exportación automática da base de datos</string>
+  <string name="automatic_database_export_summary">Crear unha copia de apoio da base de datos de AntennaPod cada 3 días. Manter só as últimas 5 copias.</string>
+  <string name="automatic_database_export_error">Erro ao realizar a copia de apoio automática</string>
   <string name="database_import_label">Importar base de datos</string>
   <string name="database_import_warning">Ao importar a base de datos substituirás todas as subscricións actuais e historial de reprodución. Deberías exportar a base de datos actual como copia de apoio. Desexas substituíla?</string>
   <string name="please_wait">Agarda...</string>
@@ -584,6 +592,7 @@
     <item quantity="other">%d días</item>
   </plurals>
   <string name="auto_enable_label">Activar automáticamente o temporizador ao iniciar a reprodución</string>
+  <string name="auto_enable_label_with_times">Activar o temporizador automáticamente ao reproducir entre as %1$s e as %2$s</string>
   <string name="auto_enable_change_times">Cambiar horas</string>
   <string name="sleep_timer_enabled_label">Apagado automático habilitado</string>
   <!--Synchronisation-->
@@ -630,6 +639,12 @@
   <string name="pref_pausePlaybackForFocusLoss_sum">Pausar a reprodución en lugar de baixar o volume cando outra aplicación quere reproducir un son.</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pausa para interrupcións</string>
   <!--Rating dialog-->
+  <string name="rating_tagline">Desde %1$s, reproduciches %2$s%3$d%4$s horas de podcasts.</string>
+  <string name="rating_contribute_label">Queres unirte? Tanto para traducir, axudar, deseñar ou escribir código, agradecemos a túa colaboración!</string>
+  <string name="rating_contribute_button">Mira como podes colaborar</string>
+  <string name="rating_volunteers_label">AntennaPod desenvólvena persoas voluntarias no seu tempo libre. Agrádanos que aprecies o noso traballo deixando unha boa valoración.</string>
+  <string name="rating_rate">Valora AntennaPod</string>
+  <string name="rating_later">Máis tarde</string>
   <!--Online feed view-->
   <string name="subscribe_label">Subscribir</string>
   <string name="subscribing_label">Subscribindo...</string>
@@ -662,6 +677,7 @@
   <string name="feed_tags_label">Etiquetas</string>
   <string name="feed_tags_summary">Cambia as etiquetas deste podcast para axudarche a organizar as subscricións</string>
   <string name="feed_folders_include_root">Mostrar este podcast na lista principal</string>
+  <string name="multi_feed_common_tags_info">Só se mostran as etiquetas común das subscricións seleccionadas. As outras etiquetas non se ven afectadas.</string>
   <string name="auto_download_settings_label">Axustes da descarga automática</string>
   <string name="episode_filters_label">Filtro para episodios</string>
   <string name="episode_filters_description">Lista dos termos utilizados para decidir se un episodio debe ser incluído ou excluído das descargas automáticas</string>
@@ -677,10 +693,25 @@
   <string name="statistics_episodes_on_device">Episodios no dispositivo:</string>
   <string name="statistics_space_used">Espazo utilizado:</string>
   <string name="statistics_episodes_started_total">Episodios iniciados/total:</string>
+  <string name="statistics_expected_next_episode">Previsión do seguinte episodio:</string>
+  <string name="statistics_expected_next_episode_any_day">Calquera destes días</string>
+  <string name="statistics_expected_next_episode_unknown">Descoñecido</string>
   <string name="statistics_view_all">Ver estatísticas globais »</string>
   <string name="edit_url_menu">Editar URL da fonte</string>
   <string name="edit_url_confirmation_msg">Ao mudar o enderezo RSS podes quebrar o estado da reprodución e as listas de episodios do podcast. Non recomendamos cambialo e NON proporcionamos axuda se algo vai mal. Non ten volta atrás. Unha subscrición mal configurada NON PODE ser reparada simplemente volvendo ao enderezo anterior. Suxerimos crear unha copia de apoio antes de continuar.</string>
   <!--Podcast release schedules-->
+  <string name="release_schedule_daily">a diario</string>
+  <string name="release_schedule_weekdays">durante a semana laboral</string>
+  <string name="release_schedule_weekly">semanal</string>
+  <string name="release_schedule_biweekly">cada dúas semanas</string>
+  <string name="release_schedule_monthly">mensual</string>
+  <string name="release_schedule_monday">Lun</string>
+  <string name="release_schedule_tuesday">Mar</string>
+  <string name="release_schedule_wednesday">Mér</string>
+  <string name="release_schedule_thursday">Xov</string>
+  <string name="release_schedule_friday">Ven</string>
+  <string name="release_schedule_saturday">Sáb</string>
+  <string name="release_schedule_sunday">Dom</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importando as subscricións desde aplicacións de propósito único...</string>
   <!--Add podcast fragment-->
@@ -689,6 +720,7 @@
   <string name="search_podcastindex_label">Buscar en Podcast Index</string>
   <string name="search_fyyd_label">Buscar en fyyd</string>
   <string name="advanced">Avanzado</string>
+  <string name="add_podcast_by_url">Engadir podcast co enderezo RSS</string>
   <string name="discover">Descubrir</string>
   <string name="discover_hide">Agochar</string>
   <string name="discover_is_hidden">Elexiches agochar as suxestións.</string>
