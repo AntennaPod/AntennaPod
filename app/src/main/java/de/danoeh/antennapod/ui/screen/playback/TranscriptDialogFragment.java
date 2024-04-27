@@ -205,8 +205,7 @@ public class TranscriptDialogFragment extends DialogFragment {
         if (viewBinding.followAudio.isChecked()) {
             smoothScroller.setTargetPosition(pos - 1);  // pos on which item you want to scroll recycler view
             viewBinding.transcriptList.getLayoutManager().startSmoothScroll(smoothScroller);
-        }
-        if (! viewBinding.followAudio.isChecked()) {
+        } else {
             viewBinding.followAudio.setVisibility(View.GONE);
         }
     }
