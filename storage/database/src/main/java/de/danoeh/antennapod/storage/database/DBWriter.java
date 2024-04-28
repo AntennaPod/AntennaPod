@@ -728,20 +728,10 @@ public class DBWriter {
      */
     @NonNull
     public static Future<?> markItemPlayed(FeedItem item, int played, boolean resetMediaPosition) {
-        long mediaId = (item.hasMedia()) ? item.getMedia().getId() : 0;
-        return markItemPlayed(item.getId(), played, mediaId, resetMediaPosition);
-    }
-
-    @NonNull
-    private static Future<?> markItemPlayed(final long itemId,
-                                            final int played,
-                                            final long mediaId,
-                                            final boolean resetMediaPosition) {
         return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            adapter.setFeedItemRead(played, itemId, mediaId,
-                    resetMediaPosition);
+            adapter.setFeedItemRead(item, played, resetMediaPosition);
             adapter.close();
 
             EventBus.getDefault().post(new UnreadItemsUpdateEvent());

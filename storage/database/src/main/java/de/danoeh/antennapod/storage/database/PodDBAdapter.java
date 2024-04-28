@@ -684,19 +684,21 @@ public class PodDBAdapter {
         return item.getId();
     }
 
-    public void setFeedItemRead(int played, long itemId, long mediaId,
-                                boolean resetMediaPosition) {
+    public void setFeedItemRead(FeedItem item, int played, boolean resetMediaPosition) {
         try {
             db.beginTransactionNonExclusive();
             ContentValues values = new ContentValues();
 
             values.put(KEY_READ, played);
-            db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(itemId)});
+            db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(item.getId())});
+            item.setPlayed(played == FeedItem.PLAYED);
 
             if (resetMediaPosition) {
                 values.clear();
                 values.put(KEY_POSITION, 0);
-                db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?", new String[]{String.valueOf(mediaId)});
+                db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
+                        new String[]{String.valueOf(item.getMedia().getId())});
+                item.getMedia().setPosition(0);
             }
 
             db.setTransactionSuccessful();
