@@ -43,8 +43,8 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
 
     private final View container;
     public final ImageView dragHandle;
-    private final TextView placeholder;
-    private final ImageView cover;
+    public final TextView placeholder;
+    public final ImageView cover;
     private final TextView title;
     private final TextView pubDate;
     private final TextView position;

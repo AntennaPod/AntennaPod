@@ -61,7 +61,7 @@
             android:layout_gravity="center_horizontal"
             android:paddingBottom="88dp"
             tools:itemCount="2"
-            tools:listitem="@layout/subscription_item" />
+            tools:listitem="@layout/subscription_grid_item" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

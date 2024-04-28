@@ -34,7 +34,7 @@ public class FeedMedia implements Playable {
     private long id;
     private String localFileUrl;
     private String downloadUrl;
-    private boolean downloaded;
+    private long downloadDate;
     private int duration;
     private int position; // Current position in file
     private long lastPlayedTime; // Last time this media was played (in ms)
@@ -56,7 +56,7 @@ public class FeedMedia implements Playable {
                      String mimeType) {
         this.localFileUrl = null;
         this.downloadUrl = downloadUrl;
-        this.downloaded = false;
+        this.downloadDate = 0;
         this.item = i;
         this.size = size;
         this.mimeType = mimeType;
@@ -64,11 +64,11 @@ public class FeedMedia implements Playable {
 
     public FeedMedia(long id, FeedItem item, int duration, int position,
                      long size, String mimeType, String localFileUrl, String downloadUrl,
-                     boolean downloaded, Date playbackCompletionDate, int playedDuration,
+                     long downloadDate, Date playbackCompletionDate, int playedDuration,
                      long lastPlayedTime) {
         this.localFileUrl = localFileUrl;
         this.downloadUrl = downloadUrl;
-        this.downloaded = downloaded;
+        this.downloadDate = downloadDate;
         this.id = id;
         this.item = item;
         this.duration = duration;
@@ -84,9 +84,9 @@ public class FeedMedia implements Playable {
 
     public FeedMedia(long id, FeedItem item, int duration, int position,
                      long size, String mimeType, String localFileUrl, String downloadUrl,
-                     boolean downloaded, Date playbackCompletionDate, int playedDuration,
+                     long downloadDate, Date playbackCompletionDate, int playedDuration,
                      Boolean hasEmbeddedPicture, long lastPlayedTime) {
-        this(id, item, duration, position, size, mimeType, localFileUrl, downloadUrl, downloaded,
+        this(id, item, duration, position, size, mimeType, localFileUrl, downloadUrl, downloadDate,
                 playbackCompletionDate, playedDuration, lastPlayedTime);
         this.hasEmbeddedPicture = hasEmbeddedPicture;
     }
@@ -293,7 +293,7 @@ public class FeedMedia implements Playable {
         dest.writeString(mimeType);
         dest.writeString(localFileUrl);
         dest.writeString(downloadUrl);
-        dest.writeByte((byte) ((downloaded) ? 1 : 0));
+        dest.writeLong(downloadDate);
         dest.writeLong((playbackCompletionDate != null) ? playbackCompletionDate.getTime() : 0);
         dest.writeInt(playedDuration);
         dest.writeLong(lastPlayedTime);
@@ -393,7 +393,7 @@ public class FeedMedia implements Playable {
     }
 
     public boolean isDownloaded() {
-        return downloaded;
+        return downloadDate > 0;
     }
 
     public long getItemId() {
@@ -441,7 +441,7 @@ public class FeedMedia implements Playable {
             final long id = in.readLong();
             final long itemID = in.readLong();
             FeedMedia result = new FeedMedia(id, null, in.readInt(), in.readInt(), in.readLong(), in.readString(), in.readString(),
-                    in.readString(), in.readByte() != 0, new Date(in.readLong()), in.readInt(), in.readLong());
+                    in.readString(), in.readLong(), new Date(in.readLong()), in.readInt(), in.readLong());
             result.itemID = itemID;
             return result;
         }
@@ -466,17 +466,21 @@ public class FeedMedia implements Playable {
         this.hasEmbeddedPicture = hasEmbeddedPicture;
     }
 
-    public void setDownloaded(boolean downloaded) {
-        this.downloaded = downloaded;
+    public void setDownloaded(boolean downloaded, long when) {
+        this.downloadDate = downloaded ? when : 0;
         if (item != null && downloaded && item.isNew()) {
             item.setPlayed(false);
         }
     }
 
+    public long getDownloadDate() {
+        return downloadDate;
+    }
+
     public void setLocalFileUrl(String fileUrl) {
         this.localFileUrl = fileUrl;
         if (fileUrl == null) {
-            downloaded = false;
+            downloadDate = 0;
         }
     }
 

@@ -50,7 +50,7 @@ public class MediaDownloadedHandler implements Runnable {
         }
         // media.setDownloaded modifies played state
         boolean broadcastUnreadStateUpdate = media.getItem() != null && media.getItem().isNew();
-        media.setDownloaded(true);
+        media.setDownloaded(true, System.currentTimeMillis());
         media.setLocalFileUrl(request.getDestination());
         media.setSize(new File(request.getDestination()).length());
         media.checkEmbeddedPicture(); // enforce check

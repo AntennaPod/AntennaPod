@@ -526,8 +526,7 @@
     <string name="new_episode_notification_disabled">Notification disabled</string>
     <string name="pref_feed_settings_dialog_msg">This setting is unique to each podcast. You can change it by opening the podcast page.</string>
     <string name="pref_contribute">Contribute</string>
-    <string name="pref_show_subscription_title">Show subscription title</string>
-    <string name="pref_show_subscription_title_summary">Display the subscription title below the cover image</string>
+    <string name="pref_show_subscription_title">Show titles</string>
     <string name="pref_new_episodes_action_title">New episodes action</string>
     <string name="pref_new_episodes_action_sum">Action to take for new episodes</string>
 
@@ -823,6 +822,7 @@
 
     <!-- Subscriptions fragment -->
     <string name="subscription_num_columns">Number of columns</string>
+    <string name="subscription_display_list">List</string>
 
     <!-- Notification channels -->
     <string name="notification_group_errors">Errors</string>

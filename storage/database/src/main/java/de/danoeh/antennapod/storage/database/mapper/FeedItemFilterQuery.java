@@ -23,7 +23,7 @@ public class FeedItemFilterQuery {
         String keyRead = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_READ;
         String keyPosition = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_POSITION;
         String keyCompletionDate = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_PLAYBACK_COMPLETION_DATE;
-        String keyDownloaded = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_DOWNLOADED;
+        String keyDownloaded = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_DOWNLOAD_DATE;
         String keyMediaId = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_ID;
         String keyItemId = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_ID;
         String keyFeedItem = PodDBAdapter.KEY_FEEDITEM;
@@ -49,7 +49,7 @@ public class FeedItemFilterQuery {
             statements.add(keyItemId + " NOT IN (SELECT " + keyFeedItem + " FROM " + tableQueue + ") ");
         }
         if (filter.showDownloaded) {
-            statements.add(keyDownloaded + " = 1 ");
+            statements.add(keyDownloaded + " > 0 ");
         } else if (filter.showNotDownloaded) {
             statements.add(keyDownloaded + " = 0 ");
         }

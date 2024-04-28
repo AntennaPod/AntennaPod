@@ -479,6 +479,14 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             info += Converter.getDurationStringLocalized(getResources(), timeLeft, false);
         }
         infoBar.setText(info);
+
+        if (recyclerAdapter.inActionMode()) {
+            infoBar.setVisibility(View.INVISIBLE);
+        } else if (UserPreferences.getSubscriptionsFilter().isEnabled()) {
+            infoBar.setVisibility(View.VISIBLE);
+        } else {
+            infoBar.setVisibility(View.GONE);
+        }
     }
 
     private void loadItems(final boolean restoreScrollPosition) {
@@ -512,7 +520,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 recyclerView.getPaddingRight(),
                 (int) getResources().getDimension(R.dimen.floating_select_menu_height));
         refreshToolbarState();
-        infoBar.setVisibility(View.GONE);
+        refreshInfoBar();
     }
 
     @Override
@@ -522,6 +530,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 recyclerView.getPaddingRight(), 0);
         infoBar.setVisibility(View.VISIBLE);
         swipeActions.attachTo(recyclerView);
+        refreshInfoBar();
     }
 
     public static class QueueSortDialog extends ItemSortDialog {

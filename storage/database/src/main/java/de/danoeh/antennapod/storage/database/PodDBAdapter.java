@@ -76,7 +76,7 @@ public class PodDBAdapter {
     public static final String KEY_IMAGE_URL = "image_url";
     public static final String KEY_FEED = "feed";
     public static final String KEY_MEDIA = "media";
-    public static final String KEY_DOWNLOADED = "downloaded";
+    public static final String KEY_DOWNLOAD_DATE = "downloaded";
     public static final String KEY_LAST_REFRESH_ATTEMPT = "downloaded";
     public static final String KEY_LASTUPDATE = "last_update";
     public static final String KEY_FEEDFILE = "feedfile";
@@ -187,7 +187,7 @@ public class PodDBAdapter {
     private static final String CREATE_TABLE_FEED_MEDIA = "CREATE TABLE "
             + TABLE_NAME_FEED_MEDIA + " (" + TABLE_PRIMARY_KEY + KEY_DURATION
             + " INTEGER," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL
-            + " TEXT," + KEY_DOWNLOADED + " INTEGER," + KEY_POSITION
+            + " TEXT," + KEY_DOWNLOAD_DATE + " INTEGER," + KEY_POSITION
             + " INTEGER," + KEY_SIZE + " INTEGER," + KEY_MIME_TYPE + " TEXT,"
             + KEY_PLAYBACK_COMPLETION_DATE + " INTEGER,"
             + KEY_FEEDITEM + " INTEGER,"
@@ -277,7 +277,7 @@ public class PodDBAdapter {
             + TABLE_NAME_FEED_MEDIA + "." + KEY_DURATION + ", "
             + TABLE_NAME_FEED_MEDIA + "." + KEY_FILE_URL + ", "
             + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOAD_URL + ", "
-            + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + ", "
+            + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOAD_DATE + ", "
             + TABLE_NAME_FEED_MEDIA + "." + KEY_POSITION + ", "
             + TABLE_NAME_FEED_MEDIA + "." + KEY_SIZE + ", "
             + TABLE_NAME_FEED_MEDIA + "." + KEY_MIME_TYPE + ", "
@@ -504,7 +504,7 @@ public class PodDBAdapter {
         values.put(KEY_SIZE, media.getSize());
         values.put(KEY_MIME_TYPE, media.getMimeType());
         values.put(KEY_DOWNLOAD_URL, media.getDownloadUrl());
-        values.put(KEY_DOWNLOADED, media.isDownloaded());
+        values.put(KEY_DOWNLOAD_DATE, media.getDownloadDate());
         values.put(KEY_FILE_URL, media.getLocalFileUrl());
         values.put(KEY_HAS_EMBEDDED_PICTURE, media.hasEmbeddedPicture());
         values.put(KEY_LAST_PLAYED_TIME, media.getLastPlayedTime());
@@ -954,14 +954,16 @@ public class PodDBAdapter {
      * @param feed The feed you want to get the FeedItems from.
      * @return The cursor of the query
      */
-    public final Cursor getItemsOfFeedCursor(final Feed feed, FeedItemFilter filter, SortOrder sortOrder) {
+    public final Cursor getItemsOfFeedCursor(final Feed feed, FeedItemFilter filter, SortOrder sortOrder,
+                                             int offset, int limit) {
         String orderByQuery = FeedItemSortQuery.generateFrom(sortOrder);
         String filterQuery = FeedItemFilterQuery.generateFrom(filter);
         String whereClauseAnd = "".equals(filterQuery) ? "" : " AND " + filterQuery;
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
                 + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + feed.getId()
                 + whereClauseAnd
-                + " ORDER BY " + orderByQuery;
+                + " ORDER BY " + orderByQuery
+                + " LIMIT " + offset + ", " + limit;
         return db.rawQuery(query, null);
     }
 
@@ -1079,6 +1081,15 @@ public class PodDBAdapter {
         String whereClause = "".equals(filterQuery) ? "" : " WHERE " + filterQuery;
         final String query = "SELECT count(" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + ") FROM " + TABLE_NAME_FEED_ITEMS
                 + JOIN_FEED_ITEM_AND_MEDIA + whereClause;
+        return db.rawQuery(query, null);
+    }
+
+    public final Cursor getFeedEpisodeCountCursor(long feedId, FeedItemFilter filter) {
+        String filterQuery = FeedItemFilterQuery.generateFrom(filter);
+        String whereAndClause = "".equals(filterQuery) ? "" : " AND " + filterQuery;
+        final String query = "SELECT count(" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + ") FROM " + TABLE_NAME_FEED_ITEMS
+                + JOIN_FEED_ITEM_AND_MEDIA
+                + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + feedId + whereAndClause;
         return db.rawQuery(query, null);
     }
 
@@ -1202,9 +1213,9 @@ public class PodDBAdapter {
                         + "IFNULL(SUM(CASE WHEN (" + timeFilter + ")"
                                 + " THEN (" + playedTime + ") ELSE 0 END), 0) AS played_time, "
                         + "IFNULL(SUM(" + TABLE_NAME_FEED_MEDIA + "." + KEY_DURATION + "), 0) AS total_time, "
-                        + "SUM(CASE WHEN " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + " > 0"
+                        + "SUM(CASE WHEN " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOAD_DATE + " > 0"
                                 + " THEN 1 ELSE 0 END) AS num_downloaded, "
-                        + "SUM(CASE WHEN " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + " > 0"
+                        + "SUM(CASE WHEN " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOAD_DATE + " > 0"
                                 + " THEN " + TABLE_NAME_FEED_MEDIA + "." + KEY_SIZE + " ELSE 0 END) AS download_size"
                 + " FROM " + TABLE_NAME_FEED_ITEMS
                 + JOIN_FEED_ITEM_AND_MEDIA
@@ -1251,12 +1262,12 @@ public class PodDBAdapter {
                         + " OR " + KEY_READ + "=" + FeedItem.UNPLAYED + ")";
                 break;
             case SHOW_DOWNLOADED:
-                whereRead = KEY_DOWNLOADED + "=1";
+                whereRead = KEY_DOWNLOAD_DATE + ">0";
                 break;
             case SHOW_DOWNLOADED_UNPLAYED:
                 whereRead = "(" + KEY_READ + "=" + FeedItem.NEW
                         + " OR " + KEY_READ + "=" + FeedItem.UNPLAYED + ")"
-                        + " AND " + KEY_DOWNLOADED + "=1";
+                        + " AND " + KEY_DOWNLOAD_DATE + ">0";
                 break;
             case SHOW_NONE:
                 // deliberate fall-through

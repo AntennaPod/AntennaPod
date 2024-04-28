@@ -28,7 +28,7 @@ public class FeedMediaTest {
         when(item.isPlayed()).thenReturn(false);
 
         media.setItem(item);
-        media.setDownloaded(true);
+        media.setDownloaded(true, System.currentTimeMillis());
 
         verify(item, never()).setNew();
         verify(item, never()).setPlayed(true);
@@ -45,7 +45,7 @@ public class FeedMediaTest {
         when(item.isPlayed()).thenReturn(true);
 
         media.setItem(item);
-        media.setDownloaded(true);
+        media.setDownloaded(true, System.currentTimeMillis());
 
         verify(item, never()).setNew();
         verify(item, never()).setPlayed(true);
@@ -62,7 +62,7 @@ public class FeedMediaTest {
         when(item.isPlayed()).thenReturn(false);
 
         media.setItem(item);
-        media.setDownloaded(true);
+        media.setDownloaded(true, System.currentTimeMillis());
 
         verify(item).setPlayed(false);
         verify(item, never()).setNew();

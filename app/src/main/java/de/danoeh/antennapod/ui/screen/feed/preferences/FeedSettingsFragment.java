@@ -81,7 +81,7 @@ public class FeedSettingsFragment extends Fragment {
                 .commitAllowingStateLoss();
 
         disposable = Maybe.create((MaybeOnSubscribe<Feed>) emitter -> {
-            Feed feed = DBReader.getFeed(feedId);
+            Feed feed = DBReader.getFeed(feedId, false, 0, 0);
             if (feed != null) {
                 emitter.onSuccess(feed);
             } else {
@@ -163,7 +163,7 @@ public class FeedSettingsFragment extends Fragment {
 
             long feedId = getArguments().getLong(EXTRA_FEED_ID);
             disposable = Maybe.create((MaybeOnSubscribe<Feed>) emitter -> {
-                Feed feed = DBReader.getFeed(feedId);
+                Feed feed = DBReader.getFeed(feedId, false, 0, 0);
                 if (feed != null) {
                     emitter.onSuccess(feed);
                 } else {

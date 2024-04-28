@@ -78,7 +78,7 @@ public class FeedStatisticsFragment extends Fragment {
                     for (StatisticsItem statisticsItem : statisticsData.feedTime) {
                         if (statisticsItem.feed.getId() == feedId) {
                             List<FeedItem> items = DBReader.getFeedItemList(statisticsItem.feed,
-                                    FeedItemFilter.unfiltered(), SortOrder.DATE_OLD_NEW);
+                                    FeedItemFilter.unfiltered(), SortOrder.DATE_OLD_NEW, 0, Integer.MAX_VALUE);
                             List<Date> dates = new ArrayList<>();
                             for (FeedItem item : items) {
                                 dates.add(item.getPubDate());

@@ -33,14 +33,9 @@ public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> exten
             endSelectMode();
         }
 
-        if (onSelectModeListener != null) {
-            onSelectModeListener.onStartSelectMode();
-        }
-
         shouldSelectLazyLoadedItems = false;
         selectedIds.clear();
         selectedIds.add(getItemId(pos));
-        notifyDataSetChanged();
 
         actionMode = activity.startActionMode(new ActionMode.Callback() {
             @Override
@@ -72,14 +67,19 @@ public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> exten
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-                callOnEndSelectMode();
                 actionMode = null;
                 shouldSelectLazyLoadedItems = false;
                 selectedIds.clear();
+                callOnEndSelectMode();
                 notifyDataSetChanged();
             }
         });
         updateTitle();
+
+        if (onSelectModeListener != null) {
+            onSelectModeListener.onStartSelectMode();
+        }
+        notifyDataSetChanged();
     }
 
     /**
@@ -87,8 +87,9 @@ public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> exten
      */
     public void endSelectMode() {
         if (inActionMode()) {
-            callOnEndSelectMode();
             actionMode.finish();
+            actionMode = null;
+            callOnEndSelectMode();
         }
     }
 
@@ -130,7 +131,7 @@ public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> exten
         setSelected(pos, !isSelected(pos));
         notifyItemChanged(pos);
 
-        if (selectedIds.size() == 0) {
+        if (selectedIds.isEmpty()) {
             endSelectMode();
         }
     }

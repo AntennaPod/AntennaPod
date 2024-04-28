@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +26,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 
+import de.danoeh.antennapod.ui.CoverLoader;
 import de.danoeh.antennapod.ui.screen.episode.ItemPagerFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.ui.TransitionEffect;
@@ -48,7 +50,6 @@ import de.danoeh.antennapod.event.FeedEvent;
 import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
-import de.danoeh.antennapod.storage.database.FeedItemPermutors;
 import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.share.ShareUtils;
 import de.danoeh.antennapod.ui.episodeslist.MoreContentListFooterUtil;
@@ -71,7 +72,6 @@ import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
-import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
@@ -89,6 +89,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     public static final String TAG = "ItemlistFragment";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
     private static final String KEY_UP_ARROW = "up_arrow";
+    protected static final int EPISODES_PER_PAGE = 150;
+    protected int page = 1;
+    protected boolean isLoadingMore = false;
+    protected boolean hasMoreItems = false;
 
     private FeedItemListAdapter adapter;
     private SwipeActions swipeActions;
@@ -143,6 +147,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
         ((MainActivity) getActivity()).setupToolbarToggle(viewBinding.toolbar, displayUpArrow);
         updateToolbar();
+        setupLoadMoreScrollListener();
 
         viewBinding.recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         adapter = new FeedItemListAdapter((MainActivity) getActivity());
@@ -308,6 +313,21 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             return true;
         }
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
+    }
+
+    private void setupLoadMoreScrollListener() {
+        viewBinding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView view, int deltaX, int deltaY) {
+                super.onScrolled(view, deltaX, deltaY);
+                if (!isLoadingMore && hasMoreItems && viewBinding.recyclerView.isScrolledToBottom()) {
+                    /* The end of the list has been reached. Load more data. */
+                    page++;
+                    loadMoreItems();
+                    isLoadingMore = true;
+                }
+            }
+        });
     }
 
     @Override
@@ -526,17 +546,23 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (disposable != null) {
             disposable.dispose();
         }
-        disposable = Observable.fromCallable(this::loadData)
+        disposable = Observable.fromCallable(
+                () -> {
+                    feed = DBReader.getFeed(feedID, true, 0, page * EPISODES_PER_PAGE);
+                    int count = DBReader.getFeedEpisodeCount(feed.getId(), feed.getItemFilter());
+                    return new Pair<>(feed, count);
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     result -> {
-                        feed = result;
+                        hasMoreItems = !(page == 1 && feed.getItems().size() < EPISODES_PER_PAGE);
                         swipeActions.setFilter(feed.getItemFilter());
                         refreshHeaderView();
                         viewBinding.progressBar.setVisibility(View.GONE);
                         adapter.setDummyViews(0);
                         adapter.updateItems(feed.getItems());
+                        adapter.setTotalNumberOfItems(result.second);
                         updateToolbar();
                     }, error -> {
                         feed = null;
@@ -548,19 +574,37 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     });
     }
 
-    @Nullable
-    private Feed loadData() {
-        Feed feed = DBReader.getFeed(feedID, true);
-        if (feed == null) {
-            return null;
+    private void loadMoreItems() {
+        if (disposable != null) {
+            disposable.dispose();
         }
-        DBReader.loadAdditionalFeedItemListData(feed.getItems());
-        if (feed.getSortOrder() != null) {
-            List<FeedItem> feedItems = feed.getItems();
-            FeedItemPermutors.getPermutor(feed.getSortOrder()).reorder(feedItems);
-            feed.setItems(feedItems);
-        }
-        return feed;
+        isLoadingMore = true;
+        adapter.setDummyViews(1);
+        adapter.notifyItemInserted(adapter.getItemCount() - 1);
+        disposable = Observable.fromCallable(() -> DBReader.getFeed(feedID, true,
+                        (page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        data -> {
+                            if (data.getItems().size() < EPISODES_PER_PAGE) {
+                                hasMoreItems = false;
+                            }
+                            feed.getItems().addAll(data.getItems());
+                            adapter.setDummyViews(0);
+                            adapter.updateItems(feed.getItems());
+                            if (adapter.shouldSelectLazyLoadedItems()) {
+                                adapter.setSelected(feed.getItems().size() - data.getItems().size(),
+                                        feed.getItems().size(), true);
+                            }
+                        }, error -> {
+                            adapter.setDummyViews(0);
+                            adapter.updateItems(Collections.emptyList());
+                            Log.e(TAG, Log.getStackTraceString(error));
+                        }, () -> {
+                            // Make sure to not always load 2 pages at once
+                            viewBinding.recyclerView.post(() -> isLoadingMore = false);
+                        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -587,7 +631,18 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
         @Override
         protected void beforeBindViewHolder(EpisodeItemViewHolder holder, int pos) {
-            holder.coverHolder.setVisibility(View.GONE);
+            holder.coverHolder.setVisibility(View.GONE); // Load it ourselves
+        }
+
+        @Override
+        protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
+            holder.coverHolder.setVisibility(View.VISIBLE);
+            new CoverLoader()
+                    .withUri(holder.getFeedItem().getImageLocation()) // Ignore "Show episode cover" setting
+                    .withFallbackUri(holder.getFeedItem().getFeed().getImageUrl())
+                    .withPlaceholderView(holder.placeholder)
+                    .withCoverView(holder.cover)
+                    .load();
         }
 
         @Override
@@ -597,47 +652,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 menu.findItem(R.id.multi_select).setVisible(true);
             }
             MenuItemUtils.setOnClickListeners(menu, FeedItemlistFragment.this::onContextItemSelected);
-        }
-    }
-
-    public static class SingleFeedSortDialog extends ItemSortDialog {
-        private static final String ARG_FEED_ID = "feedId";
-        private static final String ARG_FEED_IS_LOCAL = "isLocal";
-        private static final String ARG_SORT_ORDER = "sortOrder";
-
-        private static SingleFeedSortDialog newInstance(Feed feed) {
-            Bundle bundle = new Bundle();
-            bundle.putLong(ARG_FEED_ID, feed.getId());
-            bundle.putBoolean(ARG_FEED_IS_LOCAL, feed.isLocalFeed());
-            if (feed.getSortOrder() == null) {
-                bundle.putString(ARG_SORT_ORDER, String.valueOf(SortOrder.DATE_NEW_OLD.code));
-            } else {
-                bundle.putString(ARG_SORT_ORDER, String.valueOf(feed.getSortOrder().code));
-            }
-            SingleFeedSortDialog dialog = new SingleFeedSortDialog();
-            dialog.setArguments(bundle);
-            return dialog;
-        }
-
-        @Override
-        public void onCreate(@Nullable Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            sortOrder = SortOrder.fromCodeString(getArguments().getString(ARG_SORT_ORDER));
-        }
-
-        @Override
-        protected void onAddItem(int title, SortOrder ascending, SortOrder descending, boolean ascendingIsDefault) {
-            if (ascending == SortOrder.DATE_OLD_NEW || ascending == SortOrder.DURATION_SHORT_LONG
-                    || ascending == SortOrder.EPISODE_TITLE_A_Z
-                    || (getArguments().getBoolean(ARG_FEED_IS_LOCAL) && ascending == SortOrder.EPISODE_FILENAME_A_Z)) {
-                super.onAddItem(title, ascending, descending, ascendingIsDefault);
-            }
-        }
-
-        @Override
-        protected void onSelectionChanged() {
-            super.onSelectionChanged();
-            DBWriter.setFeedItemSortOrder(getArguments().getLong(ARG_FEED_ID), sortOrder);
         }
     }
 }

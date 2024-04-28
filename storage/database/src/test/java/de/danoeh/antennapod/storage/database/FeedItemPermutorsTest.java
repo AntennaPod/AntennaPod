@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.storage.database;
 
 import de.danoeh.antennapod.model.feed.SortOrder;
-import de.danoeh.antennapod.storage.database.FeedItemPermutors;
-import de.danoeh.antennapod.storage.database.Permutor;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -188,21 +186,24 @@ public class FeedItemPermutorsTest {
         calendar.set(2019, 0, 1);  // January 1st
         Feed feed1 = new Feed(null, null, "Feed title 1");
         FeedItem feedItem1 = new FeedItem(1, "Title 1", null, null, calendar.getTime(), 0, feed1);
-        FeedMedia feedMedia1 = new FeedMedia(0, feedItem1, 1000, 0, 100, null, null, null, true, null, 0, 0);
+        FeedMedia feedMedia1 = new FeedMedia(0, feedItem1, 1000, 0, 100, null, null, null,
+                System.currentTimeMillis(), null, 0, 0);
         feedItem1.setMedia(feedMedia1);
         itemList.add(feedItem1);
 
         calendar.set(2019, 2, 1);  // March 1st
         Feed feed2 = new Feed(null, null, "Feed title 3");
         FeedItem feedItem2 = new FeedItem(3, "Title 3", null, null, calendar.getTime(), 0, feed2);
-        FeedMedia feedMedia2 = new FeedMedia(0, feedItem2, 3000, 0, 300, null, null, null, true, null, 0, 0);
+        FeedMedia feedMedia2 = new FeedMedia(0, feedItem2, 3000, 0, 300, null, null, null,
+                System.currentTimeMillis(), null, 0, 0);
         feedItem2.setMedia(feedMedia2);
         itemList.add(feedItem2);
 
         calendar.set(2019, 1, 1);  // February 1st
         Feed feed3 = new Feed(null, null, "Feed title 2");
         FeedItem feedItem3 = new FeedItem(2, "Title 2", null, null, calendar.getTime(), 0, feed3);
-        FeedMedia feedMedia3 = new FeedMedia(0, feedItem3, 2000, 0, 200, null, null, null, true, null, 0, 0);
+        FeedMedia feedMedia3 = new FeedMedia(0, feedItem3, 2000, 0, 200, null, null, null,
+                System.currentTimeMillis(), null, 0, 0);
         feedItem3.setMedia(feedMedia3);
         itemList.add(feedItem3);
 
