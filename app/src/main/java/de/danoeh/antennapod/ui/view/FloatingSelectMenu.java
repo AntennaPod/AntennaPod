@@ -80,6 +80,9 @@ public class FloatingSelectMenu extends FrameLayout {
 
     @Override
     public void setVisibility(int visibility) {
+        if (getVisibility() != View.VISIBLE && visibility == View.VISIBLE) {
+            announceForAccessibility(getContext().getString(R.string.multi_select_started_talkback));
+        }
         super.setVisibility(visibility);
         viewBinding.scrollView.scrollTo(0, 0);
         updateItemVisibility();
