@@ -1,8 +1,6 @@
 package de.danoeh.antennapod;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import de.danoeh.antennapod.net.download.service.episode.autodownload.AutoDownloadManagerImpl;
 import de.danoeh.antennapod.net.download.service.feed.FeedUpdateManagerImpl;
 import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
@@ -33,12 +31,7 @@ public class ClientConfigurator {
         if (initialized) {
             return;
         }
-        try {
-            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            UserAgentInterceptor.USER_AGENT = "AntennaPod/" + packageInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        UserAgentInterceptor.USER_AGENT = "AntennaPod/" + BuildConfig.VERSION_NAME;
         PodDBAdapter.init(context);
         UserPreferences.init(context);
         SynchronizationCredentials.init(context);
