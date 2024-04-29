@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
-import com.leinardi.android.speeddial.SpeedDialView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
@@ -39,6 +38,7 @@ import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfa
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.view.EmptyViewHandler;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListRecyclerView;
+import de.danoeh.antennapod.ui.view.FloatingSelectMenu;
 import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
 import io.reactivex.Observable;
@@ -71,7 +71,7 @@ public class CompletedDownloadsFragment extends Fragment
     private Disposable disposable;
     private EmptyViewHandler emptyView;
     private boolean displayUpArrow;
-    private SpeedDialView speedDialView;
+    private FloatingSelectMenu floatingSelectMenu;
     private SwipeActions swipeActions;
     private ProgressBar progressBar;
     private MaterialToolbar toolbar;
@@ -107,31 +107,19 @@ public class CompletedDownloadsFragment extends Fragment
         progressBar = root.findViewById(R.id.progLoading);
         progressBar.setVisibility(View.VISIBLE);
 
-        speedDialView = root.findViewById(R.id.fabSD);
-        speedDialView.setOverlayLayout(root.findViewById(R.id.fabSDOverlay));
-        speedDialView.inflate(R.menu.episodes_apply_action_speeddial);
-        speedDialView.removeActionItemById(R.id.download_batch);
-        speedDialView.removeActionItemById(R.id.mark_read_batch);
-        speedDialView.removeActionItemById(R.id.mark_unread_batch);
-        speedDialView.removeActionItemById(R.id.remove_from_queue_batch);
-        speedDialView.removeActionItemById(R.id.remove_all_inbox_item);
-        speedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
-            @Override
-            public boolean onMainActionSelected() {
+        floatingSelectMenu = root.findViewById(R.id.floatingSelectMenu);
+        floatingSelectMenu.inflate(R.menu.episodes_apply_action_speeddial);
+        floatingSelectMenu.getMenu().findItem(R.id.download_batch).setVisible(false);
+        floatingSelectMenu.getMenu().findItem(R.id.mark_read_batch).setVisible(false);
+        floatingSelectMenu.getMenu().findItem(R.id.mark_unread_batch).setVisible(false);
+        floatingSelectMenu.getMenu().findItem(R.id.remove_from_inbox_batch).setVisible(false);
+        floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
+            if (adapter.getSelectedCount() == 0) {
+                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
+                        Snackbar.LENGTH_SHORT);
                 return false;
             }
-
-            @Override
-            public void onToggleChanged(boolean open) {
-                if (open && adapter.getSelectedCount() == 0) {
-                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
-                            Snackbar.LENGTH_SHORT);
-                    speedDialView.close();
-                }
-            }
-        });
-        speedDialView.setOnActionSelectedListener(actionItem -> {
-            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), actionItem.getId())
+            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), menuItem.getItemId())
                     .handleAction(adapter.getSelectedItems());
             adapter.endSelectMode();
             return true;
@@ -331,14 +319,18 @@ public class CompletedDownloadsFragment extends Fragment
     @Override
     public void onStartSelectMode() {
         swipeActions.detach();
-        speedDialView.setVisibility(View.VISIBLE);
+        floatingSelectMenu.setVisibility(View.VISIBLE);
+        recyclerView.setPadding(recyclerView.getPaddingLeft(), recyclerView.getPaddingTop(),
+                recyclerView.getPaddingRight(),
+                (int) getResources().getDimension(R.dimen.floating_select_menu_height));
     }
 
     @Override
     public void onEndSelectMode() {
-        speedDialView.close();
-        speedDialView.setVisibility(View.GONE);
+        floatingSelectMenu.setVisibility(View.GONE);
         swipeActions.attachTo(recyclerView);
+        recyclerView.setPadding(recyclerView.getPaddingLeft(), recyclerView.getPaddingTop(),
+                recyclerView.getPaddingRight(), 0);
     }
 
     private class CompletedDownloadsListAdapter extends EpisodeItemListAdapter {

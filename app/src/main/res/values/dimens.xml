@@ -3,4 +3,5 @@
     <dimen name="additional_horizontal_spacing">0dp</dimen>
     <!-- Should match with @dimen/m3_navigation_drawer_layout_corner_size -->
     <dimen name="drawer_corner_size">16dp</dimen>
+    <dimen name="floating_select_menu_height">112dp</dimen>
 </resources>

@@ -194,6 +194,7 @@
     <string name="multi_select">Multi select</string>
     <string name="select_all_above">Select all above</string>
     <string name="select_all_below">Select all below</string>
+    <string name="multi_select_started_talkback">Multi select actions shown at the bottom</string>
     <string name="filtered_label">Filtered</string>
     <string name="refresh_failed_msg">Last refresh failed. Tap to view details.</string>
     <string name="open_podcast">Open podcast</string>
@@ -699,7 +700,6 @@
     <string name="load_next_page_label">Load next page</string>
     <string name="position">Position: %1$s</string>
     <string name="remaining_time">Remaining time: %1$s</string>
-    <string name="apply_action">Apply action</string>
     <string name="play_chapter">Play chapter</string>
     <string name="prev_chapter">Previous chapter</string>
     <string name="next_chapter">Next chapter</string>
