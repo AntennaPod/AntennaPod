@@ -171,6 +171,9 @@ public class FeedItem implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+        if (this.media != null) {
+            media.setItemId(id);
+        }
     }
 
     /**
