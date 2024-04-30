@@ -272,11 +272,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 31 ? PendingIntent.FLAG_MUTABLE : 0));
 
         mediaSession = new MediaSessionCompat(getApplicationContext(), TAG, eventReceiver, buttonReceiverIntent);
-        setSessionToken(mediaSession.getSessionToken());
         mediaSession.setCallback(sessionCallback);
         mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
         recreateMediaPlayer();
         mediaSession.setActive(true);
+        setSessionToken(mediaSession.getSessionToken());
     }
 
     void recreateMediaPlayer() {
@@ -296,6 +296,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             mediaPlayer.playMediaObject(media, !media.localFileAvailable(), wasPlaying, true);
         }
         isCasting = mediaPlayer.isCasting();
+        updateMediaSession(mediaPlayer.getPlayerStatus());
     }
 
     @Override
