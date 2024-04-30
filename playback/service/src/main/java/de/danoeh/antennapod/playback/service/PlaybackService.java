@@ -238,8 +238,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         };
         androidAutoConnectionState.observeForever(androidAutoConnectionObserver);
 
-        ContextCompat.registerReceiver(this, autoStateUpdated,
-                new IntentFilter("com.google.android.gms.car.media.STATUS"), ContextCompat.RECEIVER_EXPORTED);
         ContextCompat.registerReceiver(this, shutdownReceiver,
                 new IntentFilter(PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE),
                 ContextCompat.RECEIVER_NOT_EXPORTED);
@@ -324,7 +322,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             mediaSession.release();
             mediaSession = null;
         }
-        unregisterReceiver(autoStateUpdated);
         unregisterReceiver(headsetDisconnected);
         unregisterReceiver(shutdownReceiver);
         unregisterReceiver(bluetoothStateUpdated);
@@ -1488,28 +1485,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             sendBroadcast(i);
         }
     }
-
-    private final BroadcastReceiver autoStateUpdated = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String status = intent.getStringExtra("media_connection_status");
-            boolean isConnectedToCar = "media_connected".equals(status);
-            Log.d(TAG, "Received Auto Connection update: " + status);
-            if (!isConnectedToCar) {
-                Log.d(TAG, "Car was unplugged during playback.");
-            } else {
-                PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
-                if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
-                    mediaPlayer.resume();
-                } else if (playerStatus == PlayerStatus.PREPARING) {
-                    mediaPlayer.setStartWhenPrepared(!mediaPlayer.isStartWhenPrepared());
-                } else if (playerStatus == PlayerStatus.INITIALIZED) {
-                    mediaPlayer.setStartWhenPrepared(true);
-                    mediaPlayer.prepare();
-                }
-            }
-        }
-    };
 
     /**
      * Pauses playback when the headset is disconnected and the preference is
