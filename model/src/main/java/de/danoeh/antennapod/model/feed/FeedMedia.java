@@ -58,6 +58,7 @@ public class FeedMedia implements Playable {
         this.downloadUrl = downloadUrl;
         this.downloaded = false;
         this.item = i;
+        this.itemID = i != null ? i.getId() : 0;
         this.size = size;
         this.mimeType = mimeType;
     }
@@ -71,6 +72,7 @@ public class FeedMedia implements Playable {
         this.downloaded = downloaded;
         this.id = id;
         this.item = item;
+        this.itemID = item != null ? item.getId() : 0;
         this.duration = duration;
         this.position = position;
         this.playedDuration = playedDuration;
@@ -251,6 +253,7 @@ public class FeedMedia implements Playable {
      */
     public void setItem(FeedItem item) {
         this.item = item;
+        this.itemID = item != null ? item.getId() : 0;
         if (item != null && item.getMedia() != this) {
             item.setMedia(this);
         }
