@@ -305,7 +305,6 @@
     <string name="download_type_feed">Feed</string>
     <string name="download_type_media">Media file</string>
     <string name="null_value_podcast_error">No podcast was provided that could be shown.</string>
-    <string name="no_feed_url_podcast_found_by_search">The suggested podcast did not have an RSS link, AntennaPod found a podcast that could match</string>
     <string name="authentication_notification_title">Authentication required</string>
     <string name="confirm_mobile_download_dialog_title">Confirm mobile download</string>
     <string name="confirm_mobile_download_dialog_message">Downloading over mobile data connection is disabled in the settings. AntennaPod can download the episode later automatically when Wi-Fi is available.</string>
@@ -681,8 +680,7 @@
 
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
-    <string name="preview_episodes">Preview episodes</string>
-    <string name="subscribe_for_settings">Subscribe to change settings</string>
+    <string name="preview_episodes">Episodes preview</string>
     <string name="state_deleted_not_subscribed">Data like playback state of non-subscribed podcasts is deleted after a while. Subscribe to keep it.</string>
 
     <!-- Content descriptions for image buttons -->

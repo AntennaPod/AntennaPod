@@ -51,8 +51,8 @@ import de.danoeh.antennapod.ui.FeedItemFilterDialog;
 import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.cleaner.HtmlToPlainText;
 import de.danoeh.antennapod.ui.common.IntentUtils;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeMultiSelectActionHandler;
@@ -150,9 +150,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             ((MainActivity) getActivity()).setupToolbarToggle(viewBinding.toolbar, displayUpArrow);
             viewBinding.recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         } else {
-            viewBinding.toolbar.setNavigationIcon(
-                    ThemeUtils.getDrawableFromAttr(getContext(), R.attr.homeAsUpIndicator));
-            viewBinding.toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
+            viewBinding.toolbar.setNavigationIcon(null);
         }
         updateToolbar();
         setupLoadMoreScrollListener();
@@ -479,7 +477,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
         viewBinding.header.txtvTitle.setText(feed.getTitle());
         viewBinding.header.txtvAuthor.setText(feed.getAuthor());
-        if (feed.getItemFilter() != null) {
+        viewBinding.header.descriptionContainer.setVisibility(View.GONE);
+        if (feed.getState() != Feed.STATE_SUBSCRIBED) {
+            viewBinding.header.descriptionContainer.setVisibility(View.VISIBLE);
+            viewBinding.header.descriptionLabel.setText(HtmlToPlainText.getPlainText(feed.getDescription()));
+        } else if (feed.getItemFilter() != null) {
             FeedItemFilter filter = feed.getItemFilter();
             if (filter.getValues().length > 0) {
                 viewBinding.header.txtvInformation.setText(R.string.filtered_label);
@@ -495,6 +497,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         boolean isSubscribed = feed.getState() == Feed.STATE_SUBSCRIBED;
         viewBinding.header.butShowInfo.setVisibility(isSubscribed ? View.VISIBLE : View.GONE);
         viewBinding.header.butFilter.setVisibility(isSubscribed ? View.VISIBLE : View.GONE);
+        viewBinding.header.butShowSettings.setVisibility(isSubscribed ? View.VISIBLE : View.GONE);
         viewBinding.header.butSubscribe.setVisibility(isSubscribed ? View.GONE : View.VISIBLE);
     }
 
@@ -507,6 +510,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         viewBinding.imgvBackground.setColorFilter(new LightingColorFilter(0xff666666, 0x000000));
         viewBinding.header.butShowInfo.setOnClickListener(v -> showFeedInfo());
         viewBinding.header.imgvCover.setOnClickListener(v -> showFeedInfo());
+        viewBinding.header.descriptionLabel.setOnClickListener(v -> showFeedInfo());
         viewBinding.header.butSubscribe.setOnClickListener(view -> {
             DBWriter.setFeedState(getContext(), feed, Feed.STATE_SUBSCRIBED);
             MainActivityStarter mainActivityStarter = new MainActivityStarter(getContext());
@@ -516,10 +520,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         });
         viewBinding.header.butShowSettings.setOnClickListener(v -> {
             if (feed != null) {
-                if (feed.getState() != Feed.STATE_SUBSCRIBED) {
-                    EventBus.getDefault().post(new MessageEvent(getString(R.string.subscribe_for_settings)));
-                    return;
-                }
                 FeedSettingsFragment fragment = FeedSettingsFragment.newInstance(feed);
                 ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
             }
@@ -548,9 +548,18 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void showFeedInfo() {
-        if (feed != null && getActivity() instanceof MainActivity) {
-            FeedInfoFragment fragment = FeedInfoFragment.newInstance(feed);
+        if (feed == null) {
+            return;
+        }
+        FeedInfoFragment fragment = FeedInfoFragment.newInstance(feed);
+        if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
+        } else {
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, fragment, "Info")
+                    .addToBackStack("Info")
+                    .commitAllowingStateLoss();
         }
     }
 
