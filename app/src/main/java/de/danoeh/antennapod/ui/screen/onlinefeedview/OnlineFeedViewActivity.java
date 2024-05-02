@@ -82,7 +82,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private Dialog dialog;
     private Disposable download;
     private Disposable parser;
-    OnlinefeedviewActivityBinding viewBinding;
+    private OnlinefeedviewActivityBinding viewBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,10 +122,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     private void showNoPodcastFoundError() {
-        runOnUiThread(() -> new MaterialAlertDialogBuilder(this)
+        runOnUiThread(() -> new MaterialAlertDialogBuilder(OnlineFeedViewActivity.this)
                 .setNeutralButton(android.R.string.ok, (dialog, which) -> finish())
                 .setTitle(R.string.error_label)
                 .setMessage(R.string.null_value_podcast_error)
+                .setOnDismissListener(dialog1 -> finish())
                 .show());
     }
 
@@ -266,13 +267,15 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         if (status.isSuccessful()) {
             parseFeed(destination);
         } else if (status.getReason() == DownloadError.ERROR_UNAUTHORIZED) {
-            if (username != null && password != null) {
-                Toast.makeText(this, R.string.download_error_unauthorized, Toast.LENGTH_LONG).show();
+            if (!isFinishing() && !isPaused) {
+                if (username != null && password != null) {
+                    Toast.makeText(this, R.string.download_error_unauthorized, Toast.LENGTH_LONG).show();
+                }
+                dialog = new FeedViewAuthenticationDialog(this,
+                        R.string.authentication_notification_title,
+                        downloader.getDownloadRequest().getSource()).create();
+                dialog.show();
             }
-            dialog = new FeedViewAuthenticationDialog(this,
-                    R.string.authentication_notification_title,
-                    downloader.getDownloadRequest().getSource()).create();
-            dialog.show();
         } else {
             showErrorDialog(getString(DownloadErrorLabel.from(status.getReason())), status.getReasonDetailed());
         }
@@ -334,6 +337,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     private void showFeedFragment(long id) {
+        if (isFeedFoundBySearch) {
+            Toast.makeText(this, R.string.no_feed_url_podcast_found_by_search, Toast.LENGTH_LONG).show();
+        }
+
         viewBinding.progressBar.setVisibility(View.GONE);
         FeedItemlistFragment fragment = FeedItemlistFragment.newInstance(id);
         getSupportFragmentManager()
@@ -439,7 +446,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 .setAdapter(adapter, onClickListener);
 
         runOnUiThread(() -> {
-            if (dialog != null && dialog.isShowing()) {
+            if(dialog != null && dialog.isShowing()) {
                 dialog.dismiss();
             }
             dialog = ab.show();
@@ -469,4 +476,5 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             downloadIfNotAlreadySubscribed(feedUrl);
         }
     }
+
 }

@@ -151,15 +151,19 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
 
         txtvUrl.setOnClickListener(copyUrlToClipboard);
 
-        long feedId = getArguments().getLong(EXTRA_FEED_ID);
-        getParentFragmentManager().beginTransaction().replace(R.id.statisticsFragmentContainer,
-                        FeedStatisticsFragment.newInstance(feedId, false), "feed_statistics_fragment")
-                .commitAllowingStateLoss();
+        if (feed.getState() == Feed.STATE_SUBSCRIBED) {
+            long feedId = getArguments().getLong(EXTRA_FEED_ID);
+            getParentFragmentManager().beginTransaction().replace(R.id.statisticsFragmentContainer,
+                            FeedStatisticsFragment.newInstance(feedId, false), "feed_statistics_fragment")
+                    .commitAllowingStateLoss();
 
-        root.findViewById(R.id.btnvOpenStatistics).setOnClickListener(view -> {
-            StatisticsFragment fragment = new StatisticsFragment();
-            ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
-        });
+            root.findViewById(R.id.btnvOpenStatistics).setOnClickListener(view -> {
+                StatisticsFragment fragment = new StatisticsFragment();
+                ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
+            });
+        } else {
+            root.findViewById(R.id.btnvOpenStatistics).setVisibility(View.GONE);
+        }
 
         return root;
     }
@@ -275,11 +279,12 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
     }
 
     private void refreshToolbarState() {
-        toolbar.getMenu().findItem(R.id.reconnect_local_folder).setVisible(feed != null && feed.isLocalFeed());
-        toolbar.getMenu().findItem(R.id.share_item).setVisible(feed != null && !feed.isLocalFeed());
-        toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(feed != null && feed.getLink() != null
+        boolean isSubscribed = feed != null && feed.getState() == Feed.STATE_SUBSCRIBED;
+        toolbar.getMenu().findItem(R.id.reconnect_local_folder).setVisible(isSubscribed && feed.isLocalFeed());
+        toolbar.getMenu().findItem(R.id.share_item).setVisible(isSubscribed && !feed.isLocalFeed());
+        toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(isSubscribed && feed.getLink() != null
                 && IntentUtils.isCallable(getContext(), new Intent(Intent.ACTION_VIEW, Uri.parse(feed.getLink()))));
-        toolbar.getMenu().findItem(R.id.edit_feed_url_item).setVisible(feed != null && !feed.isLocalFeed());
+        toolbar.getMenu().findItem(R.id.edit_feed_url_item).setVisible(isSubscribed && !feed.isLocalFeed());
     }
 
     @Override
