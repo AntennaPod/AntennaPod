@@ -77,6 +77,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private Downloader downloader;
     private String username = null;
     private String password = null;
+    private boolean isPaused;
     private boolean isFeedFoundBySearch = false;
     private Dialog dialog;
     private Disposable download;
@@ -105,58 +106,19 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         if (feedUrl == null) {
             Log.e(TAG, "feedUrl is null.");
-            Toast.makeText(this, R.string.null_value_podcast_error, Toast.LENGTH_LONG).show();
-            finish();
+            showNoPodcastFoundError();
         } else {
             Log.d(TAG, "Activity was started with url " + feedUrl);
             // Remove subscribeonandroid.com from feed URL in order to subscribe to the actual feed URL
             if (feedUrl.contains("subscribeonandroid.com")) {
                 feedUrl = feedUrl.replaceFirst("((www.)?(subscribeonandroid.com/))", "");
             }
+            if (savedInstanceState != null) {
+                username = savedInstanceState.getString("username");
+                password = savedInstanceState.getString("password");
+            }
             lookupUrlAndDownload(feedUrl);
         }
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (downloader != null && !downloader.isFinished()) {
-            downloader.cancel();
-        }
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (download != null) {
-            download.dispose();
-        }
-        if (parser != null) {
-            parser.dispose();
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(MessageEvent event) {
-        Log.d(TAG, "onEvent(" + event + ")");
-        Snackbar snackbar = Snackbar.make(findViewById(R.id.fragmentContainer), event.message, Snackbar.LENGTH_LONG);
-        if (event.action != null) {
-            snackbar.setAction(event.actionText, v -> event.action.accept(this));
-        }
-        snackbar.show();
     }
 
     private void showNoPodcastFoundError() {
@@ -165,6 +127,56 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 .setTitle(R.string.error_label)
                 .setMessage(R.string.null_value_podcast_error)
                 .show());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isPaused = false;
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isPaused = true;
+        EventBus.getDefault().unregister(this);
+        if (downloader != null && !downloader.isFinished()) {
+            downloader.cancel();
+        }
+        if(dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(download != null) {
+            download.dispose();
+        }
+        if(parser != null) {
+            parser.dispose();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("username", username);
+        outState.putString("password", password);
+    }
+
+    private void resetIntent(String url) {
+        Intent intent = new Intent();
+        intent.putExtra(ARG_FEEDURL, url);
+        setIntent(intent);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     private void lookupUrlAndDownload(String url) {
@@ -332,26 +344,30 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
     @UiThread
     private void showErrorDialog(String errorMsg, String details) {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle(R.string.error_label);
-        if (errorMsg != null) {
-            String total = errorMsg + "\n\n" + details;
-            SpannableString errorMessage = new SpannableString(total);
-            errorMessage.setSpan(new ForegroundColorSpan(0x88888888),
-                    errorMsg.length(), total.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            builder.setMessage(errorMessage);
-        } else {
-            builder.setMessage(R.string.download_error_error_unknown);
+        if (!isFinishing() && !isPaused) {
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+            builder.setTitle(R.string.error_label);
+            if (errorMsg != null) {
+                String total = errorMsg + "\n\n" + details;
+                SpannableString errorMessage = new SpannableString(total);
+                errorMessage.setSpan(new ForegroundColorSpan(0x88888888),
+                        errorMsg.length(), total.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                builder.setMessage(errorMessage);
+            } else {
+                builder.setMessage(R.string.download_error_error_unknown);
+            }
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
+            if (getIntent().getBooleanExtra(ARG_WAS_MANUAL_URL, false)) {
+                builder.setNeutralButton(R.string.edit_url_menu, (dialog, which) -> editUrl());
+            }
+            builder.setOnCancelListener(dialog -> {
+                finish();
+            });
+            if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            dialog = builder.show();
         }
-        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
-        if (getIntent().getBooleanExtra(ARG_WAS_MANUAL_URL, false)) {
-            builder.setNeutralButton(R.string.edit_url_menu, (dialog, which) -> editUrl());
-        }
-        builder.setOnCancelListener(dialog -> finish());
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
-        }
-        dialog = builder.show();
     }
 
     private void editUrl() {
@@ -389,6 +405,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             return false;
         }
 
+        if (isPaused || isFinishing()) {
+            return false;
+        }
+
         final List<String> titles = new ArrayList<>();
 
         final List<String> urls = new ArrayList<>(urlsMap.keySet());
@@ -398,21 +418,21 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         if (urls.size() == 1) {
             // Skip dialog and display the item directly
-            getIntent().getExtras().putString(ARG_FEEDURL, urls.get(0));
+            resetIntent(urls.get(0));
             downloadIfNotAlreadySubscribed(urls.get(0));
             return true;
         }
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(OnlineFeedViewActivity.this,
                 R.layout.ellipsize_start_listitem, R.id.txtvTitle, titles);
         DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
             String selectedUrl = urls.get(which);
             dialog.dismiss();
-            getIntent().getExtras().putString(ARG_FEEDURL, selectedUrl);
+            resetIntent(selectedUrl);
             downloadIfNotAlreadySubscribed(selectedUrl);
         };
 
-        MaterialAlertDialogBuilder ab = new MaterialAlertDialogBuilder(this)
+        MaterialAlertDialogBuilder ab = new MaterialAlertDialogBuilder(OnlineFeedViewActivity.this)
                 .setTitle(R.string.feeds_label)
                 .setCancelable(true)
                 .setOnCancelListener(dialog -> finish())
