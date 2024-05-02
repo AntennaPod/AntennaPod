@@ -17,6 +17,7 @@ public class M4AChapterReader {
     private static final String TAG = "M4AChapterReader";
     private final List<Chapter> chapters = new ArrayList<>();
     private final InputStream inputStream;
+
     public M4AChapterReader(InputStream input) {
         inputStream = input;
     }
@@ -28,9 +29,9 @@ public class M4AChapterReader {
         try {
             int chunkSize = this.findAtom("moov.udta.chpl");
             if (chunkSize == -1) {
-                Log.d(TAG,"Nero Chapter Box not found");
+                Log.d(TAG, "Nero Chapter Box not found");
             } else {
-                Log.d(TAG,"Nero Chapter Box found. Chunk Size: " + chunkSize);
+                Log.d(TAG, "Nero Chapter Box found. Chunk Size: " + chunkSize);
                 this.parseNeroChapterBox(chunkSize);
             }
         } catch (Exception e) {
@@ -41,8 +42,8 @@ public class M4AChapterReader {
     /**
      * Find the atom with the given name in the M4A file
      * @param name the name of the atom to find, separated by dots
-     * @throws IOException if an I/O error occurs
      * @return the size of the atom if found, -1 otherwise
+     * @throws IOException if an I/O error occurs
      */
     public int findAtom(String name) throws IOException {
         // Split the name into parts
@@ -67,9 +68,9 @@ public class M4AChapterReader {
                 // Skip the rest of the box
                 chunkSize -= 8;
                 if (chunkSize > 0) {
-                    long nSkipped = 0;
-                    while (nSkipped < chunkSize) {
-                        nSkipped += inputStream.skip(chunkSize - nSkipped);
+                    long numSkipped = 0;
+                    while (numSkipped < chunkSize) {
+                        numSkipped += inputStream.skip(chunkSize - numSkipped);
                     }
                 }
             }
@@ -118,7 +119,7 @@ public class M4AChapterReader {
             chapter.setChapterId(String.valueOf(i + 1));
             chapters.add(chapter);
 
-            Log.d(TAG, "Nero Chapter " + i+1 + ": " + chapter);
+            Log.d(TAG, "Nero Chapter " + i + 1 + ": " + chapter);
         }
     }
 
