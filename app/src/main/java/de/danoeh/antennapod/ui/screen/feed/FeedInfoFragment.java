@@ -150,21 +150,6 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         txtvFundingUrl = root.findViewById(R.id.txtvFundingUrl);
 
         txtvUrl.setOnClickListener(copyUrlToClipboard);
-
-        if (feed.getState() == Feed.STATE_SUBSCRIBED) {
-            long feedId = getArguments().getLong(EXTRA_FEED_ID);
-            getParentFragmentManager().beginTransaction().replace(R.id.statisticsFragmentContainer,
-                            FeedStatisticsFragment.newInstance(feedId, false), "feed_statistics_fragment")
-                    .commitAllowingStateLoss();
-
-            root.findViewById(R.id.btnvOpenStatistics).setOnClickListener(view -> {
-                StatisticsFragment fragment = new StatisticsFragment();
-                ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
-            });
-        } else {
-            root.findViewById(R.id.btnvOpenStatistics).setVisibility(View.GONE);
-        }
-
         return root;
     }
 
@@ -265,6 +250,20 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
             }
             str = new StringBuilder(StringUtils.trim(str.toString()));
             txtvFundingUrl.setText(str.toString());
+        }
+
+        if (feed.getState() == Feed.STATE_SUBSCRIBED) {
+            long feedId = getArguments().getLong(EXTRA_FEED_ID);
+            getParentFragmentManager().beginTransaction().replace(R.id.statisticsFragmentContainer,
+                            FeedStatisticsFragment.newInstance(feedId, false), "feed_statistics_fragment")
+                    .commitAllowingStateLoss();
+
+            getView().findViewById(R.id.btnvOpenStatistics).setOnClickListener(view -> {
+                StatisticsFragment fragment = new StatisticsFragment();
+                ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
+            });
+        } else {
+            getView().findViewById(R.id.btnvOpenStatistics).setVisibility(View.GONE);
         }
 
         refreshToolbarState();

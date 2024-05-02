@@ -39,16 +39,17 @@ import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.preferences.screen.synchronization.AuthenticationDialog;
 import de.danoeh.antennapod.ui.screen.download.DownloadErrorLabel;
 import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,6 +58,7 @@ import java.util.List;
 import java.util.Map;
 
 import static de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter.ARG_FEEDURL;
+import static de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter.ARG_STARTED_FROM_SEARCH;
 import static de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter.ARG_WAS_MANUAL_URL;
 
 /**
@@ -130,14 +132,12 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         isPaused = false;
-        EventBus.getDefault().register(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         isPaused = true;
-        EventBus.getDefault().unregister(this);
         if (downloader != null && !downloader.isFinished()) {
             downloader.cancel();
         }
@@ -219,24 +219,24 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     private Feed downloadIfNotAlreadySubscribed(String url) {
-        download = Observable.fromCallable(() -> {
+        download = Maybe.fromCallable(() -> {
             List<Feed> feeds = DBReader.getFeedList();
             for (Feed f : feeds) {
                 if (f.getDownloadUrl().equals(url)) {
-                    return f.getId();
+                    return f;
                 }
             }
-            return 0;
+            return null;
         })
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(subscribedFeedId -> {
-            if (!subscribedFeedId.equals(0)) {
-                showFeedFragment(subscribedFeedId.longValue());
+        .subscribe(subscribedFeed -> {
+            if (subscribedFeed.getState() == Feed.STATE_SUBSCRIBED) {
+                openFeed(subscribedFeed.getId());
             } else {
-                startFeedDownload(url);
+                showFeedFragment(subscribedFeed.getId());
             }
-        }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+        }, error -> Log.e(TAG, Log.getStackTraceString(error)), () -> startFeedDownload(url));
         return null;
     }
 
@@ -343,6 +343,17 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.fragmentContainer, fragment, FeedItemlistFragment.TAG)
                 .commitAllowingStateLoss();
+    }
+
+    private void openFeed(long feedId) {
+        // feed.getId() is always 0, we have to retrieve the id from the feed list from the database
+        MainActivityStarter mainActivityStarter = new MainActivityStarter(this);
+        mainActivityStarter.withOpenFeed(feedId);
+        if (getIntent().getBooleanExtra(ARG_STARTED_FROM_SEARCH, false)) {
+            mainActivityStarter.withAddToBackStack();
+        }
+        finish();
+        startActivity(mainActivityStarter.getIntent());
     }
 
     @UiThread
