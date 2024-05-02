@@ -53,7 +53,9 @@ public class M4AChapterReader {
         byte[] buffer = new byte[4];
         while (inputStream.read(buffer) == 4) {
             int chunkSize = ByteBuffer.wrap(buffer).order(ByteOrder.BIG_ENDIAN).getInt();
-            inputStream.read(buffer);
+            if (inputStream.read(buffer) != 4) {
+                return -1;
+            }
             String boxType = new String(buffer, StandardCharsets.UTF_8);
             // Check if the current box matches the current part of the name
             if (boxType.equals(parts[partIndex])) {
