@@ -20,11 +20,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.leinardi.android.speeddial.SpeedDialView;
 
 import de.danoeh.antennapod.ui.screen.AddFeedFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
+import de.danoeh.antennapod.ui.view.FloatingSelectMenu;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -86,7 +86,7 @@ public class SubscriptionFragment extends Fragment
     private SharedPreferences prefs;
 
     private FloatingActionButton subscriptionAddButton;
-    private SpeedDialView speedDialView;
+    private FloatingSelectMenu floatingSelectMenu;
     private RecyclerView.ItemDecoration itemDecoration;
     private List<NavDrawerData.DrawerItem> listItems;
 
@@ -168,12 +168,11 @@ public class SubscriptionFragment extends Fragment
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
         swipeRefreshLayout.setOnRefreshListener(() -> FeedUpdateManager.getInstance().runOnceOrAsk(requireContext()));
 
-        speedDialView = root.findViewById(R.id.fabSD);
-        speedDialView.setOverlayLayout(root.findViewById(R.id.fabSDOverlay));
-        speedDialView.inflate(R.menu.nav_feed_action_speeddial);
-        speedDialView.setOnActionSelectedListener(actionItem -> {
+        floatingSelectMenu = root.findViewById(R.id.floatingSelectMenu);
+        floatingSelectMenu.inflate(R.menu.nav_feed_action_speeddial);
+        floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
             new FeedMultiSelectActionHandler((MainActivity) getActivity(), subscriptionAdapter.getSelectedItems())
-                    .handleAction(actionItem.getId());
+                    .handleAction(menuItem.getItemId());
             return true;
         });
 
@@ -189,6 +188,9 @@ public class SubscriptionFragment extends Fragment
     private void refreshToolbarState() {
         int columns = prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns());
         toolbar.getMenu().findItem(COLUMN_CHECKBOX_IDS[columns - MIN_NUM_COLUMNS]).setChecked(true);
+        toolbar.getMenu().findItem(R.id.pref_show_subscription_title).setVisible(columns > 1);
+        toolbar.getMenu().findItem(R.id.pref_show_subscription_title)
+                .setChecked(UserPreferences.shouldShowSubscriptionTitle());
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
@@ -229,6 +231,10 @@ public class SubscriptionFragment extends Fragment
         } else if (itemId == R.id.action_statistics) {
             ((MainActivity) getActivity()).loadChildFragment(new StatisticsFragment());
             return true;
+        } else if (itemId == R.id.pref_show_subscription_title) {
+            item.setChecked(!item.isChecked());
+            UserPreferences.setShouldShowSubscriptionTitle(item.isChecked());
+            subscriptionAdapter.notifyDataSetChanged();
         }
         return false;
     }
@@ -363,8 +369,7 @@ public class SubscriptionFragment extends Fragment
 
     @Override
     public void onEndSelectMode() {
-        speedDialView.close();
-        speedDialView.setVisibility(View.GONE);
+        floatingSelectMenu.setVisibility(View.GONE);
         subscriptionAddButton.setVisibility(View.VISIBLE);
         subscriptionAdapter.setItems(listItems);
         updateFilterVisibility();
@@ -379,7 +384,7 @@ public class SubscriptionFragment extends Fragment
             }
         }
         subscriptionAdapter.setItems(feedsOnly);
-        speedDialView.setVisibility(View.VISIBLE);
+        floatingSelectMenu.setVisibility(View.VISIBLE);
         subscriptionAddButton.setVisibility(View.GONE);
         updateFilterVisibility();
     }

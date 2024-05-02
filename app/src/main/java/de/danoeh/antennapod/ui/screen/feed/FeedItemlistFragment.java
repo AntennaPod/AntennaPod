@@ -22,18 +22,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.leinardi.android.speeddial.SpeedDialView;
+import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.FeedItemListFragmentBinding;
-import de.danoeh.antennapod.databinding.MultiSelectSpeedDialBinding;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FavoritesEvent;
 import de.danoeh.antennapod.event.FeedEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
-import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -71,14 +69,15 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Displays a list of FeedItems.
@@ -102,7 +101,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private boolean headerCreated = false;
     private Disposable disposable;
     private FeedItemListFragmentBinding viewBinding;
-    private MultiSelectSpeedDialBinding speedDialBinding;
 
     /**
      * Creates new ItemlistFragment which shows the Feeditems of a specific
@@ -133,7 +131,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         viewBinding = FeedItemListFragmentBinding.inflate(inflater);
-        speedDialBinding = MultiSelectSpeedDialBinding.bind(viewBinding.getRoot());
         viewBinding.toolbar.inflateMenu(R.menu.feedlist);
         viewBinding.toolbar.setOnMenuItemClickListener(this);
         viewBinding.toolbar.setOnLongClickListener(v -> {
@@ -184,12 +181,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             @Override
             public void onScrolled(@NonNull RecyclerView view, int deltaX, int deltaY) {
                 super.onScrolled(view, deltaX, deltaY);
-                boolean hasMorePages = feed != null && feed.isPaged() && feed.getNextPageLink() != null;
-                boolean pageLoaderVisible = viewBinding.recyclerView.isScrolledToBottom() && hasMorePages;
-                nextPageLoader.getRoot().setVisibility(pageLoaderVisible ? View.VISIBLE : View.GONE);
-                viewBinding.recyclerView.setPadding(
-                        viewBinding.recyclerView.getPaddingLeft(), 0, viewBinding.recyclerView.getPaddingRight(),
-                        pageLoaderVisible ? nextPageLoader.getRoot().getMeasuredHeight() : 0);
+                updateRecyclerPadding();
             }
         });
 
@@ -201,30 +193,33 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
         loadItems();
 
-        // Init action UI (via a FAB Speed Dial)
-        speedDialBinding.fabSD.setOverlayLayout(speedDialBinding.fabSDOverlay);
-        speedDialBinding.fabSD.inflate(R.menu.episodes_apply_action_speeddial);
-        speedDialBinding.fabSD.setOnChangeListener(new SpeedDialView.OnChangeListener() {
-            @Override
-            public boolean onMainActionSelected() {
+        viewBinding.floatingSelectMenu.inflate(R.menu.episodes_apply_action_speeddial);
+        viewBinding.floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
+            if (adapter.getSelectedCount() == 0) {
+                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
+                        Snackbar.LENGTH_SHORT);
                 return false;
             }
-
-            @Override
-            public void onToggleChanged(boolean open) {
-                if (open && adapter.getSelectedCount() == 0) {
-                    EventBus.getDefault().post(new MessageEvent(getString(R.string.no_items_selected)));
-                    speedDialBinding.fabSD.close();
-                }
-            }
-        });
-        speedDialBinding.fabSD.setOnActionSelectedListener(actionItem -> {
-            new EpisodeMultiSelectActionHandler(getActivity(), actionItem.getId())
+            new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId())
                     .handleAction(adapter.getSelectedItems());
             adapter.endSelectMode();
             return true;
         });
         return viewBinding.getRoot();
+    }
+
+    private void updateRecyclerPadding() {
+        boolean hasMorePages = feed != null && feed.isPaged() && feed.getNextPageLink() != null;
+        boolean pageLoaderVisible = viewBinding.recyclerView.isScrolledToBottom() && hasMorePages;
+        nextPageLoader.getRoot().setVisibility(pageLoaderVisible ? View.VISIBLE : View.GONE);
+        int paddingBottom = 0;
+        if (adapter.inActionMode()) {
+            paddingBottom = (int) getResources().getDimension(R.dimen.floating_select_menu_height);
+        } else if (pageLoaderVisible) {
+            paddingBottom = nextPageLoader.getRoot().getMeasuredHeight();
+        }
+        viewBinding.recyclerView.setPadding(viewBinding.recyclerView.getPaddingLeft(), 0,
+                viewBinding.recyclerView.getPaddingRight(), paddingBottom);
     }
 
     @Override
@@ -412,18 +407,16 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onStartSelectMode() {
         swipeActions.detach();
-        if (feed.isLocalFeed()) {
-            speedDialBinding.fabSD.removeActionItemById(R.id.download_batch);
-        }
-        speedDialBinding.fabSD.removeActionItemById(R.id.remove_all_inbox_item);
-        speedDialBinding.fabSD.setVisibility(View.VISIBLE);
+        viewBinding.floatingSelectMenu.getMenu().findItem(R.id.download_batch).setVisible(!feed.isLocalFeed());
+        viewBinding.floatingSelectMenu.setVisibility(View.VISIBLE);
+        updateRecyclerPadding();
         updateToolbar();
     }
 
     @Override
     public void onEndSelectMode() {
-        speedDialBinding.fabSD.close();
-        speedDialBinding.fabSD.setVisibility(View.GONE);
+        viewBinding.floatingSelectMenu.setVisibility(View.GONE);
+        updateRecyclerPadding();
         swipeActions.attachTo(viewBinding.recyclerView);
     }
 

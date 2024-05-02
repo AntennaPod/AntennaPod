@@ -121,9 +121,11 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
             return false;
         });
 
+        holder.itemView.setSelected(false);
         if (inActionMode()) {
             holder.secondaryActionButton.setOnClickListener(null);
             if (isSelected(pos)) {
+                holder.itemView.setSelected(true);
                 holder.itemView.setBackgroundColor(0x88000000
                         + (0xffffff & ThemeUtils.getColorFromAttr(mainActivityRef.get(), R.attr.colorAccent)));
             } else {

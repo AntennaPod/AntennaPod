@@ -114,7 +114,6 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
 
-    implementation 'com.leinardi.android:speed-dial:3.2.0'
     implementation 'com.github.ByteHamster:SearchPreference:v2.5.0'
     implementation 'com.github.skydoves:balloon:1.5.3'
     implementation 'com.github.xabaras:RecyclerViewSwipeDecorator:1.3'

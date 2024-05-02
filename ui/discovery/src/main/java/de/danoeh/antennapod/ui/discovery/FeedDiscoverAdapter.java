@@ -10,6 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
+import de.danoeh.antennapod.ui.common.ImagePlaceholder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,12 +62,12 @@ public class FeedDiscoverAdapter extends BaseAdapter {
         final PodcastSearchResult podcast = getItem(position);
         holder.imageView.setContentDescription(podcast.title);
 
+        float radius = 8 * context.getResources().getDisplayMetrics().density;
         Glide.with(context)
                 .load(podcast.imageUrl)
                 .apply(new RequestOptions()
-                        .placeholder(R.color.light_gray)
-                        .transform(new FitCenter(), new RoundedCorners((int)
-                                (8 * context.getResources().getDisplayMetrics().density)))
+                        .placeholder(ImagePlaceholder.getDrawable(context, radius))
+                        .transform(new FitCenter(), new RoundedCorners((int) radius))
                         .dontAnimate())
                 .into(holder.imageView);
 
