@@ -46,7 +46,6 @@
                 android:layout_marginStart="-8dp"
                 android:scaleType="fitXY"
                 android:padding="8dp"
-                android:layout_gravity="center_vertical"
                 app:srcCompat="@drawable/ic_info_white"
                 tools:visibility="visible" />
 
@@ -58,7 +57,6 @@
                 android:contentDescription="@string/filter"
                 android:scaleType="fitXY"
                 android:padding="8dp"
-                android:layout_gravity="center_vertical"
                 app:srcCompat="@drawable/ic_filter_white"
                 tools:visibility="visible" />
 
@@ -70,7 +68,6 @@
                 android:contentDescription="@string/show_feed_settings_label"
                 android:scaleType="fitXY"
                 android:padding="8dp"
-                android:layout_gravity="center_vertical"
                 app:srcCompat="@drawable/ic_settings_white"
                 tools:visibility="visible" />
 

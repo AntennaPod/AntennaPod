@@ -18,11 +18,9 @@ import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
 import de.danoeh.antennapod.databinding.OnlinefeedviewActivityBinding;
-import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.model.download.DownloadResult;
@@ -51,8 +49,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.IOException;
@@ -271,7 +267,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 if (username != null && password != null) {
                     Toast.makeText(this, R.string.download_error_unauthorized, Toast.LENGTH_LONG).show();
                 }
-                dialog = new FeedViewAuthenticationDialog(this,
+                dialog = new FeedViewAuthenticationDialog(OnlineFeedViewActivity.this,
                         R.string.authentication_notification_title,
                         downloader.getDownloadRequest().getSource()).create();
                 dialog.show();
