@@ -44,8 +44,8 @@ public class M4AChapterReader {
     /**
      * Find the atom with the given name in the M4A file
      * @param name the name of the atom to find, separated by dots
-     * @return the size of the atom if found, -1 otherwise
-     * @throws IOException if an I/O error occurs
+     * @return the size of the atom if found
+     * @throws IOException if an I/O error occurs or the atom is not found
      */
     public int findAtom(String name) throws IOException {
         // Split the name into parts
@@ -56,14 +56,15 @@ public class M4AChapterReader {
 
         // Read the M4A file in chunks of 4 bytes
         byte[] buffer = new byte[4];
-        while (inputStream.read(buffer) == 4) {
+        while (true) {
+            // Read the size of the current box
+            IOUtils.readFully(inputStream, buffer);
             // Get the size of the current box
             int chunkSize = ByteBuffer.wrap(buffer).order(ByteOrder.BIG_ENDIAN).getInt();
             int dataSize = chunkSize - 8;
 
-            if (inputStream.read(buffer) != 4) {
-                return -1;
-            }
+            // Read the type of the current box
+            IOUtils.readFully(inputStream, buffer);
             String boxType = new String(buffer, StandardCharsets.UTF_8);
 
             // Check if the current box matches the current part of the name
@@ -82,10 +83,9 @@ public class M4AChapterReader {
                 if (partIndex > 0) {
                     // Update the remaining size
                     remainingSize -= dataSize;
-                    // If the remaining size is exhausted, return -1 to indicate that the part size was exceeded
+                    // If the remaining size is exhausted, throw an exception
                     if (remainingSize <= 0) {
-                        Log.d(TAG, "Part size exceeded for part \"" + parts[partIndex-1] + "\" while searching atom. Remaining Size: " + remainingSize);
-                        return -1;
+                        throw new IOException("Part size exceeded for part \"" + parts[partIndex-1] + "\" while searching atom. Remaining Size: " + remainingSize);
                     }
                 }
                 // Skip the rest of the box
@@ -93,8 +93,6 @@ public class M4AChapterReader {
 
             }
         }
-
-        return -1;
     }
 
     /**
@@ -107,9 +105,7 @@ public class M4AChapterReader {
     private void parseNeroChapterBox(long chunkSize) throws IOException {
         // Read the Nero Chapter Box data into a buffer
         byte[] buffer = new byte[(int) chunkSize];
-        if (inputStream.read(buffer) != chunkSize) {
-            return;
-        }
+        IOUtils.readFully(inputStream, buffer);
         ByteBuffer byteBuffer = ByteBuffer.wrap(buffer).order(ByteOrder.BIG_ENDIAN);
         // Nero Chapter Box consists of a 5-byte header followed by chapter data
         // The first 4 bytes are the version and flags, the 5th byte is reserved
