@@ -283,6 +283,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             FeedHandlerResult handlerResult = doParseFeed(destination);
             Feed feed = handlerResult.feed;
             feed.setState(Feed.STATE_NOT_SUBSCRIBED);
+            feed.setLastRefreshAttempt(System.currentTimeMillis());
             FeedDatabaseWriter.updateFeed(this, feed, false);
             Feed feedFromDb = DBReader.getFeed(feed.getId(), false, 0, Integer.MAX_VALUE);
             feedFromDb.getPreferences().setKeepUpdated(false);

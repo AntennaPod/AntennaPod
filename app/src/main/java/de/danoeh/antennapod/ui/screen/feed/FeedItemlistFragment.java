@@ -492,6 +492,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         viewBinding.header.butFilter.setVisibility(isSubscribed ? View.VISIBLE : View.GONE);
         viewBinding.header.butShowSettings.setVisibility(isSubscribed ? View.VISIBLE : View.GONE);
         viewBinding.header.butSubscribe.setVisibility(isSubscribed ? View.GONE : View.VISIBLE);
+
+        if (!isSubscribed && feed.getLastRefreshAttempt() < System.currentTimeMillis() - 1000L * 3600 * 24) {
+            FeedUpdateManager.getInstance().runOnce(getContext(), feed, true);
+        }
     }
 
     private void setupHeaderView() {
