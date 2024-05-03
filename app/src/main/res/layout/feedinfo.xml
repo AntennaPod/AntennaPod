@@ -130,7 +130,6 @@
                 android:id="@+id/descriptionLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/design_time_lorem_ipsum"
                 android:textIsSelectable="true"
                 tools:background="@android:color/holo_green_dark" />
 

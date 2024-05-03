@@ -473,7 +473,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         viewBinding.header.descriptionContainer.setVisibility(View.GONE);
         if (feed.getState() != Feed.STATE_SUBSCRIBED) {
             viewBinding.header.descriptionContainer.setVisibility(View.VISIBLE);
-            viewBinding.header.descriptionLabel.setText(HtmlToPlainText.getPlainText(feed.getDescription()));
+            viewBinding.header.headerDescriptionLabel.setText(HtmlToPlainText.getPlainText(feed.getDescription()));
         } else if (feed.getItemFilter() != null) {
             FeedItemFilter filter = feed.getItemFilter();
             if (filter.getValues().length > 0) {
@@ -503,7 +503,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         viewBinding.imgvBackground.setColorFilter(new LightingColorFilter(0xff666666, 0x000000));
         viewBinding.header.butShowInfo.setOnClickListener(v -> showFeedInfo());
         viewBinding.header.imgvCover.setOnClickListener(v -> showFeedInfo());
-        viewBinding.header.descriptionLabel.setOnClickListener(v -> showFeedInfo());
+        viewBinding.header.headerDescriptionLabel.setOnClickListener(v -> showFeedInfo());
         viewBinding.header.butSubscribe.setOnClickListener(view -> {
             DBWriter.setFeedState(getContext(), feed, Feed.STATE_SUBSCRIBED);
             MainActivityStarter mainActivityStarter = new MainActivityStarter(getContext());
