@@ -116,6 +116,7 @@ public class ItemFragment extends Fragment {
     private ItemActionButton actionButton1;
     private ItemActionButton actionButton2;
     private View noMediaLabel;
+    private View nonSubscribedWarningLabel;
 
     private Disposable disposable;
     private PlaybackController controller;
@@ -166,6 +167,7 @@ public class ItemFragment extends Fragment {
         butAction1Text = layout.findViewById(R.id.butAction1Text);
         butAction2Text = layout.findViewById(R.id.butAction2Text);
         noMediaLabel = layout.findViewById(R.id.noMediaLabel);
+        nonSubscribedWarningLabel = layout.findViewById(R.id.nonSubscribedWarningLabel);
 
         butAction1.setOnClickListener(v -> {
             if (actionButton1 instanceof StreamActionButton && !UserPreferences.isStreamOverDownload()
@@ -287,6 +289,11 @@ public class ItemFragment extends Fragment {
             String pubDateStr = DateFormatter.formatAbbrev(getActivity(), item.getPubDate());
             txtvPublished.setText(pubDateStr);
             txtvPublished.setContentDescription(DateFormatter.formatForAccessibility(item.getPubDate()));
+        }
+
+        if (item.getFeed().getState() != Feed.STATE_SUBSCRIBED) {
+            nonSubscribedWarningLabel.setVisibility(View.VISIBLE);
+            nonSubscribedWarningLabel.setOnClickListener(v -> openPodcast());
         }
 
         float radius = 8 * getResources().getDisplayMetrics().density;

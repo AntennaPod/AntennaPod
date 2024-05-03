@@ -88,6 +88,7 @@ public class FeedItemMenuHandler {
 
         if (selectedItem.getFeed().getState() != Feed.STATE_SUBSCRIBED) {
             setItemVisibility(menu, R.id.mark_read_item, false);
+            setItemVisibility(menu, R.id.add_to_favorites_item, false);
         }
         return true;
     }
