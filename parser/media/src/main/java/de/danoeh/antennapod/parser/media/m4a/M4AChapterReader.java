@@ -51,26 +51,46 @@ public class M4AChapterReader {
         // Split the name into parts
         String[] parts = name.split("\\.");
         int partIndex = 0;
+        // Initialize remaining size to track the current part's size and check if it is exceeded
+        int remainingSize = -1;
+
         // Read the M4A file in chunks of 4 bytes
         byte[] buffer = new byte[4];
         while (inputStream.read(buffer) == 4) {
+            // Get the size of the current box
             int chunkSize = ByteBuffer.wrap(buffer).order(ByteOrder.BIG_ENDIAN).getInt();
+            int dataSize = chunkSize - 8;
+
             if (inputStream.read(buffer) != 4) {
                 return -1;
             }
             String boxType = new String(buffer, StandardCharsets.UTF_8);
+
             // Check if the current box matches the current part of the name
             if (boxType.equals(parts[partIndex])) {
                 if (partIndex == parts.length - 1) {
-                    // If the current box is the last part of the name, return the size
+                    // If the current box is the last part of the name return its size
                     return chunkSize;
                 } else {
                     // Else move to the next part of the name
                     partIndex++;
+                    // Update the remaining size
+                    remainingSize = dataSize;
                 }
             } else {
+                // Do not check the remaining size of top-level boxes
+                if (partIndex > 0) {
+                    // Update the remaining size
+                    remainingSize -= dataSize;
+                    // If the remaining size is exhausted, return -1 to indicate that the part size was exceeded
+                    if (remainingSize <= 0) {
+                        Log.d(TAG, "Part size exceeded for part \"" + parts[partIndex-1] + "\" while searching atom. Remaining Size: " + remainingSize);
+                        return -1;
+                    }
+                }
                 // Skip the rest of the box
-                IOUtils.skipFully(inputStream, chunkSize - 8);
+                IOUtils.skipFully(inputStream, dataSize);
+
             }
         }
 
