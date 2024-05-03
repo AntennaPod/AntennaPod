@@ -190,7 +190,7 @@
         android:id="@+id/descriptionContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="24dp"
+        android:paddingHorizontal="16dp"
         android:background="?android:attr/colorBackground"
         android:orientation="vertical"
         android:visibility="gone">
@@ -199,6 +199,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:background="@drawable/bg_message_info"
             android:textColor="?attr/colorAccent"
             android:text="@string/state_deleted_not_subscribed" />
 
@@ -225,6 +229,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/preview_episodes"
+            android:layout_marginBottom="8dp"
             style="@style/TextAppearance.Material3.TitleMedium" />
 
     </LinearLayout>
