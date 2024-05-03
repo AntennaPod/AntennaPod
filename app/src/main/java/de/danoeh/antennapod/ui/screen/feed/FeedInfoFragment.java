@@ -242,12 +242,16 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                             FeedStatisticsFragment.newInstance(feedId, false), "feed_statistics_fragment")
                     .commitAllowingStateLoss();
 
-            getView().findViewById(R.id.btnvOpenStatistics).setOnClickListener(view -> {
+            viewBinding.statisticsButton.setOnClickListener(view -> {
                 StatisticsFragment fragment = new StatisticsFragment();
                 ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
             });
         } else {
-            getView().findViewById(R.id.btnvOpenStatistics).setVisibility(View.GONE);
+            viewBinding.statisticsButton.setVisibility(View.GONE);
+            viewBinding.statisticsFragmentContainer.setVisibility(View.GONE);
+            viewBinding.statisticsHeadingLabel.setVisibility(View.GONE);
+            viewBinding.supportHeadingLabel.setVisibility(View.GONE);
+            viewBinding.supportUrl.setVisibility(View.GONE);
         }
 
         refreshToolbarState();
