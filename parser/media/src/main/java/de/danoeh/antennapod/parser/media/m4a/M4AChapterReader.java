@@ -97,34 +97,29 @@ public class M4AChapterReader {
 
     /**
      * Parse the Nero Chapter Box in the M4A file
-     * Assumes the current position is at the start of the Nero Chapter Box
+     * Assumes that the current position is at the start of the Nero Chapter Box
      * @param chunkSize the size of the Nero Chapter Box
      * @throws IOException if an I/O error occurs
      * @see <a href="https://github.com/Zeugma440/atldotnet/wiki/Focus-on-Chapter-metadata#nero-chapters">Nero Chapter</a>
      */
     private void parseNeroChapterBox(long chunkSize) throws IOException {
         // Read the Nero Chapter Box data into a buffer
-        byte[] buffer = new byte[(int) chunkSize];
-        IOUtils.readFully(inputStream, buffer);
-        ByteBuffer byteBuffer = ByteBuffer.wrap(buffer).order(ByteOrder.BIG_ENDIAN);
+        ByteBuffer byteBuffer = ByteBuffer.allocate((int) chunkSize).order(ByteOrder.BIG_ENDIAN);
+        IOUtils.readFully(inputStream, byteBuffer.array());
+        // Skip the 5-byte header
         // Nero Chapter Box consists of a 5-byte header followed by chapter data
         // The first 4 bytes are the version and flags, the 5th byte is reserved
         byteBuffer.position(5);
         // Get the chapter count
-        byte[] chapterCountBytes = new byte[4];
-        byteBuffer.get(chapterCountBytes, 0, 4);
-        int chapterCount = ByteBuffer.wrap(chapterCountBytes).getInt();
+        int chapterCount = byteBuffer.getInt();
         Log.d(TAG, "Nero Chapter Count: " + chapterCount);
 
         // Parse each chapter
         for (int i = 0; i < chapterCount; i++) {
-            byte[] startTimeBytes = new byte[8];
-            byteBuffer.get(startTimeBytes, 0, 8);
-            long startTime = ByteBuffer.wrap(startTimeBytes).getLong();
-            byte[] chapterNameSize = new byte[1];
-            byteBuffer.get(chapterNameSize, 0, 1);
-            byte[] chapterNameBytes = new byte[chapterNameSize[0]];
-            byteBuffer.get(chapterNameBytes, 0, chapterNameSize[0]);
+            long startTime = byteBuffer.getLong();
+            int chapterNameSize = byteBuffer.get();
+            byte[] chapterNameBytes = new byte[chapterNameSize];
+            byteBuffer.get(chapterNameBytes, 0, chapterNameSize);
             String chapterName = new String(chapterNameBytes, StandardCharsets.UTF_8);
 
             Chapter chapter = new Chapter();
@@ -133,7 +128,7 @@ public class M4AChapterReader {
             chapter.setChapterId(String.valueOf(i + 1));
             chapters.add(chapter);
 
-            Log.d(TAG, "Nero Chapter " + i + 1 + ": " + chapter);
+            Log.d(TAG, "Nero Chapter " + (i + 1) + ": " + chapter);
         }
     }
 
