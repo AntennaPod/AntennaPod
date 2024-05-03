@@ -275,19 +275,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         mediaSession = new MediaSessionCompat(getApplicationContext(), TAG, eventReceiver, buttonReceiverIntent);
         setSessionToken(mediaSession.getSessionToken());
-
-        try {
-            mediaSession.setCallback(sessionCallback);
-            mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
-        } catch (NullPointerException npe) {
-            // on some devices (Huawei) setting active can cause a NullPointerException
-            // even with correct use of the api.
-            // See http://stackoverflow.com/questions/31556679/android-huawei-mediassessioncompat
-            // and https://plus.google.com/+IanLake/posts/YgdTkKFxz7d
-            Log.e(TAG, "NullPointerException while setting up MediaSession");
-            npe.printStackTrace();
-        }
-
+        mediaSession.setCallback(sessionCallback);
+        mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
         recreateMediaPlayer();
         mediaSession.setActive(true);
     }

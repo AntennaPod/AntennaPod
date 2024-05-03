@@ -15,8 +15,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -27,13 +25,12 @@ import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.databinding.FeedinfoBinding;
 import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
@@ -69,17 +66,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
 
     private Feed feed;
     private Disposable disposable;
-    private ImageView imgvCover;
-    private TextView txtvTitle;
-    private TextView txtvDescription;
-    private TextView txtvFundingUrl;
-    private TextView lblSupport;
-    private TextView txtvUrl;
-    private TextView txtvAuthorHeader;
-    private ImageView imgvBackground;
-    private View infoContainer;
-    private View header;
-    private MaterialToolbar toolbar;
+    private FeedinfoBinding viewBinding;
 
     public static FeedInfoFragment newInstance(Feed feed) {
         FeedInfoFragment fragment = new FeedInfoFragment();
@@ -110,47 +97,44 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.feedinfo, null);
-        toolbar = root.findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-        toolbar.inflateMenu(R.menu.feedinfo);
-        toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
-        toolbar.setOnMenuItemClickListener(this);
+        viewBinding = FeedinfoBinding.inflate(inflater);
+        viewBinding.toolbar.setTitle("");
+        viewBinding.toolbar.inflateMenu(R.menu.feedinfo);
+        viewBinding.toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
+        viewBinding.toolbar.setOnMenuItemClickListener(this);
         refreshToolbarState();
 
-        AppBarLayout appBar = root.findViewById(R.id.appBar);
-        CollapsingToolbarLayout collapsingToolbar = root.findViewById(R.id.collapsing_toolbar);
-        ToolbarIconTintManager iconTintManager = new ToolbarIconTintManager(getContext(), toolbar, collapsingToolbar) {
+        ToolbarIconTintManager iconTintManager = new ToolbarIconTintManager(getContext(),
+                viewBinding.toolbar, viewBinding.collapsingToolbar) {
             @Override
             protected void doTint(Context themedContext) {
-                toolbar.getMenu().findItem(R.id.visit_website_item)
+                viewBinding.toolbar.getMenu().findItem(R.id.visit_website_item)
                         .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_web));
-                toolbar.getMenu().findItem(R.id.share_item)
+                viewBinding.toolbar.getMenu().findItem(R.id.share_item)
                         .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_share));
             }
         };
         iconTintManager.updateTint();
-        appBar.addOnOffsetChangedListener(iconTintManager);
+        viewBinding.appBar.addOnOffsetChangedListener(iconTintManager);
 
-        imgvCover = root.findViewById(R.id.imgvCover);
-        txtvTitle = root.findViewById(R.id.txtvTitle);
-        txtvAuthorHeader = root.findViewById(R.id.txtvAuthor);
-        imgvBackground = root.findViewById(R.id.imgvBackground);
-        header = root.findViewById(R.id.headerContainer);
-        infoContainer = root.findViewById(R.id.infoContainer);
-        root.findViewById(R.id.butShowInfo).setVisibility(View.INVISIBLE);
-        root.findViewById(R.id.butShowSettings).setVisibility(View.INVISIBLE);
-        root.findViewById(R.id.butFilter).setVisibility(View.INVISIBLE);
+        viewBinding.header.butShowInfo.setVisibility(View.INVISIBLE);
+        viewBinding.header.butShowSettings.setVisibility(View.INVISIBLE);
+        viewBinding.header.butFilter.setVisibility(View.INVISIBLE);
         // https://github.com/bumptech/glide/issues/529
-        imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
+        viewBinding.imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
+        viewBinding.urlLabel.setOnClickListener(copyUrlToClipboard);
 
-        txtvDescription = root.findViewById(R.id.txtvDescription);
-        txtvUrl = root.findViewById(R.id.txtvUrl);
-        lblSupport = root.findViewById(R.id.lblSupport);
-        txtvFundingUrl = root.findViewById(R.id.txtvFundingUrl);
+        long feedId = getArguments().getLong(EXTRA_FEED_ID);
+        getParentFragmentManager().beginTransaction().replace(R.id.statisticsFragmentContainer,
+                        FeedStatisticsFragment.newInstance(feedId, false), "feed_statistics_fragment")
+                .commitAllowingStateLoss();
 
-        txtvUrl.setOnClickListener(copyUrlToClipboard);
-        return root;
+        viewBinding.statisticsButton.setOnClickListener(view -> {
+            StatisticsFragment fragment = new StatisticsFragment();
+            ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
+        });
+
+        return viewBinding.getRoot();
     }
 
     @Override
@@ -175,13 +159,14 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (header == null || infoContainer == null) {
+        if (viewBinding == null) {
             return;
         }
         int horizontalSpacing = (int) getResources().getDimension(R.dimen.additional_horizontal_spacing);
-        header.setPadding(horizontalSpacing, header.getPaddingTop(), horizontalSpacing, header.getPaddingBottom());
-        infoContainer.setPadding(horizontalSpacing, infoContainer.getPaddingTop(),
-                horizontalSpacing, infoContainer.getPaddingBottom());
+        viewBinding.header.getRoot().setPadding(horizontalSpacing, viewBinding.header.getRoot().getPaddingTop(),
+                horizontalSpacing, viewBinding.header.getRoot().getPaddingBottom());
+        viewBinding.infoContainer.setPadding(horizontalSpacing, viewBinding.infoContainer.getPaddingTop(),
+                horizontalSpacing, viewBinding.infoContainer.getPaddingBottom());
     }
 
     private void showFeed() {
@@ -195,7 +180,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                         .error(R.color.light_gray)
                         .fitCenter()
                         .dontAnimate())
-                .into(imgvCover);
+                .into(viewBinding.header.imgvCover);
         Glide.with(this)
                 .load(feed.getImageUrl())
                 .apply(new RequestOptions()
@@ -203,27 +188,26 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                         .error(R.color.image_readability_tint)
                         .transform(new FastBlurTransformation())
                         .dontAnimate())
-                .into(imgvBackground);
+                .into(viewBinding.imgvBackground);
 
-        txtvTitle.setText(feed.getTitle());
-        txtvTitle.setMaxLines(6);
+        viewBinding.header.txtvTitle.setText(feed.getTitle());
+        viewBinding.header.txtvTitle.setMaxLines(6);
 
         String description = HtmlToPlainText.getPlainText(feed.getDescription());
 
-        txtvDescription.setText(description);
+        viewBinding.descriptionLabel.setText(description);
 
         if (!TextUtils.isEmpty(feed.getAuthor())) {
-            txtvAuthorHeader.setText(feed.getAuthor());
+            viewBinding.header.txtvAuthor.setText(feed.getAuthor());
         }
 
-        txtvUrl.setText(feed.getDownloadUrl());
-        txtvUrl.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_paperclip, 0);
+        viewBinding.urlLabel.setText(feed.getDownloadUrl());
+        viewBinding.urlLabel.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_paperclip, 0);
 
         if (feed.getPaymentLinks() == null || feed.getPaymentLinks().size() == 0) {
-            lblSupport.setVisibility(View.GONE);
-            txtvFundingUrl.setVisibility(View.GONE);
+            viewBinding.supportHeadingLabel.setVisibility(View.GONE);
+            viewBinding.supportUrl.setVisibility(View.GONE);
         } else {
-            lblSupport.setVisibility(View.VISIBLE);
             ArrayList<FeedFunding> fundingList = feed.getPaymentLinks();
 
             // Filter for duplicates, but keep items in the order that they have in the feed.
@@ -249,7 +233,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 str.append("\n");
             }
             str = new StringBuilder(StringUtils.trim(str.toString()));
-            txtvFundingUrl.setText(str.toString());
+            viewBinding.supportUrl.setText(str.toString());
         }
 
         if (feed.getState() == Feed.STATE_SUBSCRIBED) {
@@ -279,11 +263,13 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
 
     private void refreshToolbarState() {
         boolean isSubscribed = feed != null && feed.getState() == Feed.STATE_SUBSCRIBED;
-        toolbar.getMenu().findItem(R.id.reconnect_local_folder).setVisible(isSubscribed && feed.isLocalFeed());
-        toolbar.getMenu().findItem(R.id.share_item).setVisible(isSubscribed && !feed.isLocalFeed());
-        toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(isSubscribed && feed.getLink() != null
+        viewBinding.toolbar.getMenu().findItem(R.id.reconnect_local_folder).setVisible(
+                isSubscribed && feed.isLocalFeed());
+        viewBinding.toolbar.getMenu().findItem(R.id.share_item).setVisible(isSubscribed && !feed.isLocalFeed());
+        viewBinding.toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(isSubscribed
+                && feed.getLink() != null
                 && IntentUtils.isCallable(getContext(), new Intent(Intent.ACTION_VIEW, Uri.parse(feed.getLink()))));
-        toolbar.getMenu().findItem(R.id.edit_feed_url_item).setVisible(isSubscribed && !feed.isLocalFeed());
+        viewBinding.toolbar.getMenu().findItem(R.id.edit_feed_url_item).setVisible(isSubscribed && !feed.isLocalFeed());
     }
 
     @Override
@@ -314,8 +300,9 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 @Override
                 protected void setUrl(String url) {
                     feed.setDownloadUrl(url);
-                    txtvUrl.setText(feed.getDownloadUrl());
-                    txtvUrl.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_paperclip, 0);
+                    viewBinding.urlLabel.setText(feed.getDownloadUrl());
+                    viewBinding.urlLabel.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                            0, 0, R.drawable.ic_paperclip, 0);
                 }
             }.show();
         } else {
