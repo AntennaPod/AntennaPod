@@ -2,6 +2,8 @@ package de.danoeh.antennapod.parser.media.m4a;
 
 import android.util.Log;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -68,13 +70,7 @@ public class M4AChapterReader {
                 }
             } else {
                 // Skip the rest of the box
-                chunkSize -= 8;
-                if (chunkSize > 0) {
-                    long numSkipped = 0;
-                    while (numSkipped < chunkSize) {
-                        numSkipped += inputStream.skip(chunkSize - numSkipped);
-                    }
-                }
+                IOUtils.skipFully(inputStream, chunkSize - 8);
             }
         }
 
