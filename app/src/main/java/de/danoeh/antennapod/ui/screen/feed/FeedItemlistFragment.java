@@ -98,7 +98,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private boolean displayUpArrow;
     private long feedID;
     private Feed feed;
-    private boolean headerCreated = false;
     private Disposable disposable;
     private FeedItemListFragmentBinding viewBinding;
 
@@ -152,6 +151,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
         updateToolbar();
         setupLoadMoreScrollListener();
+        setupHeaderView();
 
         adapter = new FeedItemListAdapter(getActivity());
         adapter.setOnSelectModeListener(this);
@@ -452,7 +452,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void refreshHeaderView() {
-        setupHeaderView();
         if (viewBinding == null || feed == null) {
             Log.e(TAG, "Unable to refresh header view");
             return;
@@ -496,10 +495,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void setupHeaderView() {
-        if (feed == null || headerCreated) {
-            return;
-        }
-
         // https://github.com/bumptech/glide/issues/529
         viewBinding.imgvBackground.setColorFilter(new LightingColorFilter(0xff666666, 0x000000));
         viewBinding.header.butShowInfo.setOnClickListener(v -> showFeedInfo());
@@ -521,7 +516,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         viewBinding.header.butFilter.setOnClickListener(v ->
                 FeedItemFilterDialog.newInstance(feed).show(getChildFragmentManager(), null));
         viewBinding.header.txtvFailure.setOnClickListener(v -> showErrorDetails());
-        headerCreated = true;
     }
 
     private void showErrorDetails() {
