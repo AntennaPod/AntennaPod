@@ -31,12 +31,12 @@ public class M4AChapterReader {
     public void readInputStream() {
         try {
             isM4A(inputStream);
-            int chunkSize = this.findAtom("moov.udta.chpl");
-            if (chunkSize == -1) {
+            int dataSize = this.findAtom("moov.udta.chpl");
+            if (dataSize == -1) {
                 Log.d(TAG, "Nero Chapter Atom not found");
             } else {
-                Log.d(TAG, "Nero Chapter Atom found. Chunk Size: " + chunkSize);
-                this.parseNeroChapterAtom(chunkSize);
+                Log.d(TAG, "Nero Chapter Atom found. Data Size: " + dataSize);
+                this.parseNeroChapterAtom(dataSize);
             }
         } catch (Exception e) {
             Log.d(TAG, "ERROR: " + e.getMessage());
@@ -46,7 +46,7 @@ public class M4AChapterReader {
     /**
      * Find the atom with the given name in the M4A file
      * @param name the name of the atom to find, separated by dots
-     * @return the size of the atom if found
+     * @return the size of the atom (minus the 8-byte header) if found
      * @throws IOException if an I/O error occurs or the atom is not found
      */
     public int findAtom(String name) throws IOException {
@@ -75,7 +75,7 @@ public class M4AChapterReader {
             if (atomType.equals(parts[partIndex])) {
                 if (partIndex == parts.length - 1) {
                     // If the current atom is the last part of the name return its size
-                    return chunkSize;
+                    return dataSize;
                 } else {
                     // Else move to the next part of the name
                     partIndex++;

@@ -15,25 +15,27 @@ import static org.junit.Assert.assertEquals;
 public class M4AChapterReaderTest {
 
     @Test
-    public void testRealFilesAuphonic() throws IOException {
-        testRealFileAuphonic("nero-chapters.m4a");
+    public void testFiles() throws IOException {
+        testFile();
     }
 
-    public void testRealFileAuphonic(String filename) throws IOException {
+    public void testFile() throws IOException {
         InputStream inputStream = getClass().getClassLoader()
-                .getResource(filename).openStream();
+                .getResource("nero-chapters.m4a").openStream();
         M4AChapterReader reader = new M4AChapterReader(inputStream);
         reader.readInputStream();
         List<Chapter> chapters = reader.getChapters();
 
-        assertEquals(3, chapters.size());
+        assertEquals(4, chapters.size());
 
         assertEquals(0, chapters.get(0).getStart());
-        assertEquals(23000, chapters.get(1).getStart());
-        assertEquals(67000, chapters.get(2).getStart());
+        assertEquals(3000, chapters.get(1).getStart());
+        assertEquals(6000, chapters.get(2).getStart());
+        assertEquals(9000, chapters.get(3).getStart());
 
-        assertEquals("An intro to video chapters", chapters.get(0).getTitle());
-        assertEquals("How to set up video chapters", chapters.get(1).getTitle());
-        assertEquals("See video chapters in action", chapters.get(2).getTitle());
+        assertEquals("Chapter 1 - ❤️😊", chapters.get(0).getTitle());
+        assertEquals("Chapter 2 - ßöÄ", chapters.get(1).getTitle());
+        assertEquals("Chapter 3 - 爱", chapters.get(2).getTitle());
+        assertEquals("Chapter 4", chapters.get(3).getTitle());
     }
 }
