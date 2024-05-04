@@ -90,8 +90,8 @@ public class M4AChapterReader {
                     remainingSize -= dataSize;
                     // If the remaining size is exhausted, throw an exception
                     if (remainingSize <= 0) {
-                        throw new IOException("Part size exceeded for part \"" + parts[partIndex - 1] +
-                                "\" while searching atom. Remaining Size: " + remainingSize);
+                        throw new IOException("Part size exceeded for part \"" + parts[partIndex - 1]
+                                + "\" while searching atom. Remaining Size: " + remainingSize);
                     }
                 }
                 // Skip the rest of the atom
