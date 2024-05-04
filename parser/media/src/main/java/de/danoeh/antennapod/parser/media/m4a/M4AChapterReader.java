@@ -45,6 +45,7 @@ public class M4AChapterReader {
 
     /**
      * Find the atom with the given name in the M4A file
+     *
      * @param name the name of the atom to find, separated by dots
      * @return the size of the atom (minus the 8-byte header) if found
      * @throws IOException if an I/O error occurs or the atom is not found
@@ -89,7 +90,8 @@ public class M4AChapterReader {
                     remainingSize -= dataSize;
                     // If the remaining size is exhausted, throw an exception
                     if (remainingSize <= 0) {
-                        throw new IOException("Part size exceeded for part \"" + parts[partIndex-1] + "\" while searching atom. Remaining Size: " + remainingSize);
+                        throw new IOException("Part size exceeded for part \"" + parts[partIndex - 1] +
+                                "\" while searching atom. Remaining Size: " + remainingSize);
                     }
                 }
                 // Skip the rest of the atom
@@ -101,6 +103,7 @@ public class M4AChapterReader {
     /**
      * Parse the Nero Chapter Atom in the M4A file
      * Assumes that the current position is at the start of the Nero Chapter Atom
+     *
      * @param chunkSize the size of the Nero Chapter Atom
      * @throws IOException if an I/O error occurs
      * @see <a href="https://github.com/Zeugma440/atldotnet/wiki/Focus-on-Chapter-metadata#nero-chapters">Nero Chapter</a>
@@ -141,6 +144,7 @@ public class M4AChapterReader {
 
     /**
      * Assert that the input stream is an M4A file by checking the signature
+     *
      * @param inputStream the input stream to check
      * @throws IOException if an I/O error occurs
      */
