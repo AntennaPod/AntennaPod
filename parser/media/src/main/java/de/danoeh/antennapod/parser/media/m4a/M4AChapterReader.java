@@ -33,10 +33,10 @@ public class M4AChapterReader {
             isM4A(inputStream);
             int chunkSize = this.findAtom("moov.udta.chpl");
             if (chunkSize == -1) {
-                Log.d(TAG, "Nero Chapter Box not found");
+                Log.d(TAG, "Nero Chapter Atom not found");
             } else {
-                Log.d(TAG, "Nero Chapter Box found. Chunk Size: " + chunkSize);
-                this.parseNeroChapterBox(chunkSize);
+                Log.d(TAG, "Nero Chapter Atom found. Chunk Size: " + chunkSize);
+                this.parseNeroChapterAtom(chunkSize);
             }
         } catch (Exception e) {
             Log.d(TAG, "ERROR: " + e.getMessage());
@@ -50,29 +50,31 @@ public class M4AChapterReader {
      * @throws IOException if an I/O error occurs or the atom is not found
      */
     public int findAtom(String name) throws IOException {
-        // Split the name into parts
+        // Split the name into parts encoded as UTF-8
         String[] parts = name.split("\\.");
         int partIndex = 0;
         // Initialize remaining size to track the current part's size and check if it is exceeded
         int remainingSize = -1;
 
-        // Read the M4A file in chunks of 4 bytes
-        byte[] buffer = new byte[4];
+        // Read the M4A file atom by atom
+        ByteBuffer buffer = ByteBuffer.allocate(8).order(ByteOrder.BIG_ENDIAN);
         while (true) {
-            // Read the size of the current box
-            IOUtils.readFully(inputStream, buffer);
-            // Get the size of the current box
-            int chunkSize = ByteBuffer.wrap(buffer).order(ByteOrder.BIG_ENDIAN).getInt();
+            // Read the atom header
+            IOUtils.readFully(inputStream, buffer.array());
+            // Get the size of the current atom
+            int chunkSize = buffer.getInt();
             int dataSize = chunkSize - 8;
 
-            // Read the type of the current box
-            IOUtils.readFully(inputStream, buffer);
-            String boxType = new String(buffer, StandardCharsets.UTF_8);
+            // Get the atom type
+            String atomType = StandardCharsets.UTF_8.decode(buffer).toString();
 
-            // Check if the current box matches the current part of the name
-            if (boxType.equals(parts[partIndex])) {
+            // Reset the buffer for reading the atom data
+            buffer.clear();
+
+            // Check if the current atom matches the current part of the name
+            if (atomType.equals(parts[partIndex])) {
                 if (partIndex == parts.length - 1) {
-                    // If the current box is the last part of the name return its size
+                    // If the current atom is the last part of the name return its size
                     return chunkSize;
                 } else {
                     // Else move to the next part of the name
@@ -81,7 +83,7 @@ public class M4AChapterReader {
                     remainingSize = dataSize;
                 }
             } else {
-                // Do not check the remaining size of top-level boxes
+                // Do not check the remaining size of top-level atoms
                 if (partIndex > 0) {
                     // Update the remaining size
                     remainingSize -= dataSize;
@@ -90,26 +92,25 @@ public class M4AChapterReader {
                         throw new IOException("Part size exceeded for part \"" + parts[partIndex-1] + "\" while searching atom. Remaining Size: " + remainingSize);
                     }
                 }
-                // Skip the rest of the box
+                // Skip the rest of the atom
                 IOUtils.skipFully(inputStream, dataSize);
-
             }
         }
     }
 
     /**
-     * Parse the Nero Chapter Box in the M4A file
-     * Assumes that the current position is at the start of the Nero Chapter Box
-     * @param chunkSize the size of the Nero Chapter Box
+     * Parse the Nero Chapter Atom in the M4A file
+     * Assumes that the current position is at the start of the Nero Chapter Atom
+     * @param chunkSize the size of the Nero Chapter Atom
      * @throws IOException if an I/O error occurs
      * @see <a href="https://github.com/Zeugma440/atldotnet/wiki/Focus-on-Chapter-metadata#nero-chapters">Nero Chapter</a>
      */
-    private void parseNeroChapterBox(long chunkSize) throws IOException {
-        // Read the Nero Chapter Box data into a buffer
+    private void parseNeroChapterAtom(long chunkSize) throws IOException {
+        // Read the Nero Chapter Atom data into a buffer
         ByteBuffer byteBuffer = ByteBuffer.allocate((int) chunkSize).order(ByteOrder.BIG_ENDIAN);
         IOUtils.readFully(inputStream, byteBuffer.array());
         // Skip the 5-byte header
-        // Nero Chapter Box consists of a 5-byte header followed by chapter data
+        // Nero Chapter Atom consists of a 5-byte header followed by chapter data
         // The first 4 bytes are the version and flags, the 5th byte is reserved
         byteBuffer.position(5);
         // Get the chapter count
