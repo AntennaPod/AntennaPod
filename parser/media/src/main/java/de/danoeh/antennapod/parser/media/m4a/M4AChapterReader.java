@@ -19,6 +19,7 @@ public class M4AChapterReader {
     private static final String TAG = "M4AChapterReader";
     private final List<Chapter> chapters = new ArrayList<>();
     private final InputStream inputStream;
+    private static final int FTYP_CODE = 0x66747970; // "ftyp"
 
     public M4AChapterReader(InputStream input) {
         inputStream = input;
@@ -29,6 +30,7 @@ public class M4AChapterReader {
      */
     public void readInputStream() {
         try {
+            isM4A(inputStream);
             int chunkSize = this.findAtom("moov.udta.chpl");
             if (chunkSize == -1) {
                 Log.d(TAG, "Nero Chapter Box not found");
@@ -134,5 +136,21 @@ public class M4AChapterReader {
 
     public List<Chapter> getChapters() {
         return chapters;
+    }
+
+    /**
+     * Assert that the input stream is an M4A file by checking the signature
+     * @param inputStream the input stream to check
+     * @throws IOException if an I/O error occurs
+     */
+    public static void isM4A(InputStream inputStream) throws IOException {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(8).order(ByteOrder.BIG_ENDIAN);
+        IOUtils.readFully(inputStream, byteBuffer.array());
+
+        int ftypSize = byteBuffer.getInt();
+        if (byteBuffer.getInt() != FTYP_CODE) {
+            throw new IOException("Not an M4A file");
+        }
+        IOUtils.skipFully(inputStream, ftypSize - 8);
     }
 }
