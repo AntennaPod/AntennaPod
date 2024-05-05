@@ -234,7 +234,8 @@
     </style>
 
     <style name="Theme.AntennaPod.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Surface">
-        <item name="action_icon_color">@color/material_on_surface_emphasis_medium</item>
+         <item name="action_icon_color">?attr/colorOnSurface</item>
+        <item name="colorControlNormal">?attr/colorOnSurface</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">
