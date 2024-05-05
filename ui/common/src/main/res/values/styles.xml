@@ -27,6 +27,7 @@
         <item name="android:splitMotionEvents">false</item>
         <item name="android:fitsSystemWindows">false</item>
         <item name="android:windowContentTransitions">true</item>
+        <item name="toolbarStyle">@style/Style.AntennaPod.Toolbar</item>
         <item name="preferenceTheme">@style/AppPreferenceThemeOverlay</item>
     </style>
 
@@ -70,6 +71,7 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:navigationBarColor">@color/background_darktheme</item>
+        <item name="toolbarStyle">@style/Style.AntennaPod.Toolbar</item>
         <item name="preferenceTheme">@style/AppPreferenceThemeOverlay</item>
     </style>
 
@@ -225,6 +227,14 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/launcher_animate</item>
+    </style>
+
+    <style name="Style.AntennaPod.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="materialThemeOverlay">@style/Theme.AntennaPod.Toolbar</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Surface">
+        <item name="action_icon_color">@color/material_on_surface_emphasis_medium</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">
