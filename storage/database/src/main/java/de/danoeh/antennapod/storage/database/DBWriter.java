@@ -693,28 +693,12 @@ public class DBWriter {
      * @param itemIds IDs of the FeedItems.
      */
     public static Future<?> markItemPlayed(final int played, final long... itemIds) {
-        return markItemPlayed(played, true, itemIds);
-    }
-
-    /*
-     * Sets the 'read'-attribute of all specified FeedItems
-     *
-     * @param played  New value of the 'read'-attribute, one of FeedItem.PLAYED, FeedItem.NEW,
-     *                FeedItem.UNPLAYED
-     * @param broadcastUpdate true if this operation should trigger a UnreadItemsUpdate broadcast.
-     *        This option is usually set to true
-     * @param itemIds IDs of the FeedItems.
-     */
-    public static Future<?> markItemPlayed(final int played, final boolean broadcastUpdate,
-                                           final long... itemIds) {
         return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setFeedItemRead(played, itemIds);
             adapter.close();
-            if (broadcastUpdate) {
-                EventBus.getDefault().post(new UnreadItemsUpdateEvent());
-            }
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
