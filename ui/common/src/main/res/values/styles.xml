@@ -12,7 +12,6 @@
     <style name="Theme.Base.AntennaPod.Dynamic.Light" parent="Theme.Material3.DynamicColors.Light">
         <item name="progressBarTheme">@style/ProgressBarLight</item>
         <item name="background_color">@color/background_light</item>
-        <item name="actionBarStyle">@style/Widget.AntennaPod.ActionBar</item>
         <item name="background_elevated">@color/background_elevated_light</item>
         <item name="action_icon_color">@color/black</item>
         <item name="android:textAllCaps">false</item>
@@ -27,6 +26,7 @@
         <item name="android:splitMotionEvents">false</item>
         <item name="android:fitsSystemWindows">false</item>
         <item name="android:windowContentTransitions">true</item>
+        <item name="toolbarStyle">@style/Style.AntennaPod.Toolbar</item>
         <item name="preferenceTheme">@style/AppPreferenceThemeOverlay</item>
     </style>
 
@@ -52,7 +52,6 @@
     <style name="Theme.Base.AntennaPod.Dynamic.Dark" parent="Theme.Material3.DynamicColors.Dark">
         <item name="progressBarTheme">@style/ProgressBarDark</item>
         <item name="background_color">@color/background_darktheme</item>
-        <item name="actionBarStyle">@style/Widget.AntennaPod.ActionBar</item>
         <item name="background_elevated">@color/background_elevated_darktheme</item>
         <item name="action_icon_color">@color/white</item>
         <item name="android:textAllCaps">false</item>
@@ -70,6 +69,7 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:navigationBarColor">@color/background_darktheme</item>
+        <item name="toolbarStyle">@style/Style.AntennaPod.Toolbar</item>
         <item name="preferenceTheme">@style/AppPreferenceThemeOverlay</item>
     </style>
 
@@ -227,6 +227,15 @@
         <item name="windowSplashScreenAnimatedIcon">@drawable/launcher_animate</item>
     </style>
 
+    <style name="Style.AntennaPod.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="materialThemeOverlay">@style/Theme.AntennaPod.Toolbar</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Surface">
+        <item name="action_icon_color">?attr/colorOnSurface</item>
+        <item name="colorControlNormal">?attr/colorOnSurface</item>
+    </style>
+
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">
         <item name="windowActionBarOverlay">true</item>
     </style>
@@ -278,11 +287,6 @@
         <item name="fastScrollHorizontalTrackDrawable">@drawable/scrollbar_track</item>
         <item name="fastScrollVerticalThumbDrawable">?attr/scrollbar_thumb</item>
         <item name="fastScrollVerticalTrackDrawable">@drawable/scrollbar_track</item>
-    </style>
-
-    <style name="Widget.AntennaPod.ActionBar" parent="Widget.Material3.Light.ActionBar.Solid">
-        <item name="background">?android:attr/colorBackground</item>
-        <item name="elevation">0dp</item>
     </style>
 
     <style name="AddPodcastTextView">

@@ -157,7 +157,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         viewBinding.progressBar.setVisibility(View.VISIBLE);
 
         ToolbarIconTintManager iconTintManager = new ToolbarIconTintManager(
-                getContext(), viewBinding.toolbar, viewBinding.collapsingToolbar) {
+                viewBinding.toolbar.getContext(), viewBinding.toolbar, viewBinding.collapsingToolbar) {
             @Override
             protected void doTint(Context themedContext) {
                 viewBinding.toolbar.getMenu().findItem(R.id.refresh_item)

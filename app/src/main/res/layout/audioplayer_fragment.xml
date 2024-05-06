@@ -26,7 +26,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
             app:navigationContentDescription="@string/toolbar_back_button_content_description"
             app:navigationIcon="@drawable/ic_arrow_down" />
 
