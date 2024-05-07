@@ -157,7 +157,7 @@ public class FeedItemMenuHandler {
             removeNewFlagWithUndo(fragment, selectedItem);
         } else if (menuItemId == R.id.mark_read_item) {
             selectedItem.setPlayed(true);
-            DBWriter.markItemPlayed(selectedItem, FeedItem.PLAYED, true);
+            DBWriter.markItemPlayed(FeedItem.PLAYED, selectedItem);
             if (!selectedItem.getFeed().isLocalFeed() && SynchronizationSettings.isProviderConnected()) {
                 FeedMedia media = selectedItem.getMedia();
                 // not all items have media, Gpodder only cares about those that do
@@ -173,7 +173,7 @@ public class FeedItemMenuHandler {
             }
         } else if (menuItemId == R.id.mark_unread_item) {
             selectedItem.setPlayed(false);
-            DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, false);
+            DBWriter.markItemPlayed(FeedItem.UNPLAYED, selectedItem);
             if (!selectedItem.getFeed().isLocalFeed() && selectedItem.getMedia() != null) {
                 EpisodeAction actionNew = new EpisodeAction.Builder(selectedItem, EpisodeAction.NEW)
                         .currentTimestamp()
@@ -194,7 +194,7 @@ public class FeedItemMenuHandler {
                 PlaybackPreferences.writeNoMediaPlaying();
                 IntentUtils.sendLocalBroadcast(context, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
             }
-            DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, true);
+            DBWriter.markItemPlayed(FeedItem.UNPLAYED, selectedItem);
         } else if (menuItemId == R.id.visit_website_item) {
             IntentUtils.openInBrowser(context, selectedItem.getLinkWithFallback());
         } else if (menuItemId == R.id.share_item) {
@@ -224,7 +224,7 @@ public class FeedItemMenuHandler {
         Log.d(TAG, "markReadWithUndo(" + item.getId() + ")");
         // we're marking it as unplayed since the user didn't actually play it
         // but they don't want it considered 'NEW' anymore
-        DBWriter.markItemPlayed(playState, item.getId());
+        DBWriter.markItemPlayed(playState, item);
 
         final Handler h = new Handler(fragment.requireContext().getMainLooper());
         final Runnable r = () -> {
@@ -265,7 +265,7 @@ public class FeedItemMenuHandler {
             ((MainActivity) fragment.getActivity()).showSnackbarAbovePlayer(
                     playStateStringRes, duration)
                     .setAction(fragment.getString(R.string.undo), v -> {
-                        DBWriter.markItemPlayed(item.getPlayState(), item.getId());
+                        DBWriter.markItemPlayed(item.getPlayState(), item);
                         // don't forget to cancel the thing that's going to remove the media
                         h.removeCallbacks(r);
                     });

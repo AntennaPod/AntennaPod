@@ -23,7 +23,7 @@ public abstract class PlayableUtils {
             FeedMedia media = (FeedMedia) playable;
             FeedItem item = media.getItem();
             if (item != null && item.isNew()) {
-                DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
+                DBWriter.markItemPlayed(FeedItem.UNPLAYED, item);
             }
             if (media.getStartPosition() >= 0 && playable.getPosition() > media.getStartPosition()) {
                 media.setPlayedDuration(media.getPlayedDurationWhenStarted()

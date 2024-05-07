@@ -346,7 +346,7 @@ public class DBWriter {
                         EventBus.getDefault().post(QueueEvent.added(item, index));
                         EventBus.getDefault().post(FeedItemEvent.updated(item));
                         if (item.isNew()) {
-                            DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
+                            DBWriter.markItemPlayed(FeedItem.UNPLAYED, item);
                         }
                     }
                 }
@@ -411,7 +411,7 @@ public class DBWriter {
             final List<FeedItem> queue = DBReader.getQueue();
 
             boolean queueModified = false;
-            LongList markAsUnplayedIds = new LongList();
+            List<FeedItem> markAsUnplayedItems = new ArrayList<>();
             List<QueueEvent> events = new ArrayList<>();
             List<FeedItem> updatedItems = new ArrayList<>();
             ItemEnqueuePositionCalculator positionCalculator =
@@ -429,7 +429,7 @@ public class DBWriter {
                         updatedItems.add(item);
                         queueModified = true;
                         if (item.isNew()) {
-                            markAsUnplayedIds.add(item.getId());
+                            markAsUnplayedItems.add(item);
                         }
                         insertPosition++;
                     }
@@ -442,8 +442,8 @@ public class DBWriter {
                     EventBus.getDefault().post(event);
                 }
                 EventBus.getDefault().post(FeedItemEvent.updated(updatedItems));
-                if (markAsUnplayed && markAsUnplayedIds.size() > 0) {
-                    DBWriter.markItemPlayed(FeedItem.UNPLAYED, markAsUnplayedIds.toArray());
+                if (markAsUnplayed && !markAsUnplayedItems.isEmpty()) {
+                    DBWriter.markItemPlayed(FeedItem.UNPLAYED, markAsUnplayedItems);
                 }
             }
             adapter.close();
@@ -685,49 +685,28 @@ public class DBWriter {
         });
     }
 
-    /*
+    /**
      * Sets the 'read'-attribute of all specified FeedItems
      *
-     * @param played  New value of the 'read'-attribute, one of FeedItem.PLAYED, FeedItem.NEW,
-     *                FeedItem.UNPLAYED
-     * @param itemIds IDs of the FeedItems.
+     * @param played  New value of the 'read'-attribute, one of FeedItem.PLAYED, FeedItem.NEW, FeedItem.UNPLAYED
+     * @param items   to be marked.
      */
-    public static Future<?> markItemPlayed(final int played, final long... itemIds) {
-        return runOnDbThread(() -> {
-            final PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            adapter.setFeedItemRead(played, itemIds);
-            adapter.close();
-            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
-        });
+    public static Future<?> markItemPlayed(final int played, final List<FeedItem> items) {
+        return markItemPlayed(played, items.toArray(new FeedItem[0]));
     }
 
     /**
-     * Sets the 'read'-attribute of a FeedItem to the specified value.
+     * Sets the 'read'-attribute of all specified FeedItems
      *
-     * @param item               The FeedItem object
-     * @param played             New value of the 'read'-attribute one of FeedItem.PLAYED,
-     *                           FeedItem.NEW, FeedItem.UNPLAYED
-     * @param resetMediaPosition true if this method should also reset the position of the FeedItem's FeedMedia object.
+     * @param played  New value of the 'read'-attribute, one of FeedItem.PLAYED, FeedItem.NEW, FeedItem.UNPLAYED
+     * @param items   to be marked.
      */
-    @NonNull
-    public static Future<?> markItemPlayed(FeedItem item, int played, boolean resetMediaPosition) {
-        long mediaId = (item.hasMedia()) ? item.getMedia().getId() : 0;
-        return markItemPlayed(item.getId(), played, mediaId, resetMediaPosition);
-    }
-
-    @NonNull
-    private static Future<?> markItemPlayed(final long itemId,
-                                            final int played,
-                                            final long mediaId,
-                                            final boolean resetMediaPosition) {
+    public static Future<?> markItemPlayed(final int played, final FeedItem... items) {
         return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            adapter.setFeedItemRead(played, itemId, mediaId,
-                    resetMediaPosition);
+            adapter.setFeedItemRead(played, items);
             adapter.close();
-
             EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
