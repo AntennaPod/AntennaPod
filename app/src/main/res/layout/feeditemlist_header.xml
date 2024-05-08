@@ -140,42 +140,51 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/txtvFailure"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:background="?attr/icon_red"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:visibility="gone"
-        android:text="@string/refresh_failed_msg"
-        tools:visibility="visible"
-        tools:text="(!) Last refresh failed" />
+        android:orientation="vertical"
+        android:background="?android:attr/colorBackground">
 
-    <TextView
-        android:id="@+id/txtvInformation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:background="?android:attr/colorBackground"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:visibility="gone"
-        android:gravity="center"
-        android:textColor="?attr/colorAccent"
-        tools:visibility="visible"
-        tools:text="(i) Information" />
+        <TextView
+            android:id="@+id/txtvFailure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/icon_red"
+            android:visibility="gone"
+            android:text="@string/refresh_failed_msg"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:background="@drawable/bg_message_error"
+            android:foreground="?android:attr/selectableItemBackground"
+            tools:visibility="visible"
+            tools:text="(!) Last refresh failed" />
 
-    <TextView
-        android:id="@+id/txtvUpdatesDisabled"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:background="?android:attr/colorBackground"
-        android:visibility="gone"
-        android:gravity="center"
-        android:textColor="?attr/colorAccent"
-        tools:visibility="visible"
-        tools:text="Updates disabled" />
+        <TextView
+            android:id="@+id/txtvInformation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:visibility="gone"
+            android:gravity="center"
+            android:textColor="?attr/colorAccent"
+            tools:visibility="visible"
+            tools:text="(i) Information" />
+
+        <TextView
+            android:id="@+id/txtvUpdatesDisabled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:visibility="gone"
+            android:gravity="center"
+            android:textColor="?attr/colorAccent"
+            tools:visibility="visible"
+            tools:text="Updates disabled" />
+
+    </LinearLayout>
 
 </LinearLayout>
