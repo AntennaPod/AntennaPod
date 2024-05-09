@@ -682,7 +682,7 @@
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
     <string name="preview_episodes">Episodes preview</string>
-    <string name="state_deleted_not_subscribed">Data like playback state of non-subscribed podcasts is deleted after a while. Subscribe to keep it.</string>
+    <string name="state_deleted_not_subscribed">Playback state and history of non-subscribed podcasts are deleted after a while. Subscribe to keep them.</string>
 
     <!-- Content descriptions for image buttons -->
     <string name="toolbar_back_button_content_description">Back</string>

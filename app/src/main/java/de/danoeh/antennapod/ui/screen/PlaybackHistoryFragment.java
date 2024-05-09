@@ -23,7 +23,8 @@ import java.util.List;
 
 public class PlaybackHistoryFragment extends EpisodesListFragment {
     public static final String TAG = "PlaybackHistoryFragment";
-    private static final FeedItemFilter FILTER_HISTORY = new FeedItemFilter(FeedItemFilter.IS_IN_HISTORY);
+    private static final FeedItemFilter FILTER_HISTORY = new FeedItemFilter(
+            FeedItemFilter.IS_IN_HISTORY, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
 
     @NonNull
     @Override

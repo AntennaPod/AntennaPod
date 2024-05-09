@@ -285,8 +285,7 @@ public class CompletedDownloadsFragment extends Fragment
         disposable = Observable.fromCallable(() -> {
             SortOrder sortOrder = UserPreferences.getDownloadsSortedOrder();
             List<FeedItem> downloadedItems = DBReader.getEpisodes(0, Integer.MAX_VALUE,
-                    new FeedItemFilter(FeedItemFilter.DOWNLOADED, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED),
-                    sortOrder);
+                    new FeedItemFilter(FeedItemFilter.DOWNLOADED, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED), sortOrder);
 
             List<String> mediaUrls = new ArrayList<>();
             if (runningDownloads == null) {

@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.storage.database;
 
 import android.database.Cursor;
-import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -357,9 +356,9 @@ public final class DBReader {
         try (FeedCursor cursor = new FeedCursor(adapter.getFeedCursor(feedId))) {
             if (cursor.moveToNext()) {
                 feed = cursor.getFeed();
-                FeedItemFilter filter = filtered ? feed.getItemFilter() : FeedItemFilter.unfiltered();
-                filter = new FeedItemFilter(
-                        TextUtils.join(",", filter.getValues()) + "," + FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
+                FeedItemFilter filter = (filtered && feed.getItemFilter() != null)
+                        ? feed.getItemFilter() : FeedItemFilter.unfiltered();
+                filter = new FeedItemFilter(filter, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
                 List<FeedItem> items = getFeedItemList(feed, filter, feed.getSortOrder(), offset, limit);
                 for (FeedItem item : items) {
                     item.setFeed(feed);

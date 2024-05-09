@@ -50,6 +50,10 @@ public class FeedItemFilter implements Serializable {
         this(TextUtils.split(properties, ","));
     }
 
+    public FeedItemFilter(FeedItemFilter filter, String... additionalProperties) {
+        this(TextUtils.join(",", filter.getValues()) + "," + TextUtils.join(",", additionalProperties));
+    }
+
     public FeedItemFilter(String... properties) {
         this.properties = properties;
 

@@ -252,6 +252,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
             viewBinding.statisticsHeadingLabel.setVisibility(View.GONE);
             viewBinding.supportHeadingLabel.setVisibility(View.GONE);
             viewBinding.supportUrl.setVisibility(View.GONE);
+            viewBinding.descriptionHeadingLabel.setVisibility(View.GONE);
         }
 
         refreshToolbarState();

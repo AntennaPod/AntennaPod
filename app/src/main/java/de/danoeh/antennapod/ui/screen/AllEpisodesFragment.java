@@ -66,7 +66,12 @@ public class AllEpisodesFragment extends EpisodesListFragment {
 
     @Override
     protected FeedItemFilter getFilter() {
-        return new FeedItemFilter(UserPreferences.getPrefFilterAllEpisodes());
+        FeedItemFilter filter = new FeedItemFilter(UserPreferences.getPrefFilterAllEpisodes());
+        if (filter.showIsFavorite) {
+            return new FeedItemFilter(filter, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
+        } else {
+            return filter;
+        }
     }
 
     @Override
@@ -91,6 +96,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
             ArrayList<String> filter = new ArrayList<>(getFilter().getValuesList());
             if (filter.contains(FeedItemFilter.IS_FAVORITE)) {
                 filter.remove(FeedItemFilter.IS_FAVORITE);
+                filter.remove(FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
             } else {
                 filter.add(FeedItemFilter.IS_FAVORITE);
             }

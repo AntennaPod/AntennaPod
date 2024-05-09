@@ -39,6 +39,8 @@ import java.util.List;
 public class DownloadsSection extends HomeSection {
     public static final String TAG = "DownloadsSection";
     private static final int NUM_EPISODES = 2;
+    private static final FeedItemFilter FILTER_DOWNLOADED = new FeedItemFilter(
+            FeedItemFilter.DOWNLOADED, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
     private EpisodeItemListAdapter adapter;
     private List<FeedItem> items;
     private Disposable disposable;
@@ -52,7 +54,7 @@ public class DownloadsSection extends HomeSection {
         viewBinding.recyclerView.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         viewBinding.recyclerView.setRecycledViewPool(((MainActivity) requireActivity()).getRecycledViewPool());
-        adapter = new EpisodeItemListAdapter((MainActivity) requireActivity()) {
+        adapter = new EpisodeItemListAdapter(requireActivity()) {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
                 super.onCreateContextMenu(menu, v, menuInfo);
@@ -124,8 +126,7 @@ public class DownloadsSection extends HomeSection {
             disposable.dispose();
         }
         SortOrder sortOrder = UserPreferences.getDownloadsSortedOrder();
-        disposable = Observable.fromCallable(() -> DBReader.getEpisodes(0, NUM_EPISODES,
-                        new FeedItemFilter(FeedItemFilter.DOWNLOADED), sortOrder))
+        disposable = Observable.fromCallable(() -> DBReader.getEpisodes(0, NUM_EPISODES, FILTER_DOWNLOADED, sortOrder))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(downloads -> {
