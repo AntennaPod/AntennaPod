@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.net.download.service.feed.FeedUpdateManagerImpl;
@@ -42,6 +44,7 @@ import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
+import de.danoeh.antennapod.ui.screen.drawer.NavigationNames;
 import de.danoeh.antennapod.ui.screen.rating.RatingDialogManager;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
@@ -77,6 +80,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * The activity that is shown when the user launches the app.
@@ -123,6 +127,8 @@ public class MainActivity extends CastEnabledActivity {
         setContentView(R.layout.main);
         recycledViewPool.setMaxRecycledViews(R.id.view_type_episode_item, 25);
 
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        buildBottomNavigationMenu();
         drawerLayout = findViewById(R.id.drawer_layout);
         navDrawer = findViewById(R.id.navDrawerFragment);
         setNavDrawerSize();
@@ -173,14 +179,6 @@ public class MainActivity extends CastEnabledActivity {
         FeedUpdateManager.getInstance().restartUpdateAlarm(this, false);
         SynchronizationQueueSink.syncNowIfNotSyncedRecently();
         AutomaticDatabaseExportWorker.enqueueIfNeeded(this, false);
-
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.getMenu().add(R.string.home_label).setIcon(R.drawable.ic_home);
-        bottomNavigationView.getMenu().add(R.string.queue_label).setIcon(R.drawable.ic_playlist_play);
-        bottomNavigationView.getMenu().add(R.string.inbox_label).setIcon(R.drawable.ic_inbox);
-        bottomNavigationView.getMenu().add(R.string.subscriptions_label).setIcon(R.drawable.ic_subscriptions);
-        bottomNavigationView.getMenu().add(R.string.searchpreference_more).setIcon(R.drawable.ic_arrow_down);
-        bottomNavigationView.setOnItemSelectedListener(item -> true);
 
         WorkManager.getInstance(this)
                 .getWorkInfosByTagLiveData(FeedUpdateManagerImpl.WORK_TAG_FEED_UPDATE)
@@ -406,6 +404,13 @@ public class MainActivity extends CastEnabledActivity {
 
     public void loadFragment(String tag, Bundle args) {
         NavDrawerFragment.saveLastNavFragment(this, tag);
+        int bottomSelectedItem = getBottomNavigationItemId(tag);
+        MenuItem item = bottomNavigationView.getMenu().findItem(bottomSelectedItem);
+        if (item != null) {
+            bottomNavigationView.setOnItemSelectedListener(null);
+            bottomNavigationView.setSelectedItemId(bottomSelectedItem);
+            bottomNavigationView.setOnItemSelectedListener(bottomItemSelectedListener);
+        }
         loadFragment(createFragmentInstance(tag, args));
     }
 
@@ -466,6 +471,63 @@ public class MainActivity extends CastEnabledActivity {
 
     public void loadChildFragment(Fragment fragment) {
         loadChildFragment(fragment, TransitionEffect.NONE);
+    }
+
+    private void buildBottomNavigationMenu() {
+        String[] tags = new String[] {HomeFragment.TAG, QueueFragment.TAG, InboxFragment.TAG, SubscriptionFragment.TAG};
+        Menu menu = bottomNavigationView.getMenu();
+        menu.clear();
+        for (String tag : tags) {
+            MenuItem item = menu.add(0, getBottomNavigationItemId(tag), 0, getString(NavigationNames.getLabel(tag)));
+            item.setIcon(NavigationNames.getDrawable(tag));
+        }
+        MenuItem moreItem = menu.add(0, R.id.bottom_navigation_more, 0, getString(R.string.searchpreference_more));
+        moreItem.setIcon(R.drawable.ic_arrow_down);
+        bottomNavigationView.setOnItemSelectedListener(bottomItemSelectedListener);
+    }
+
+    private final NavigationBarView.OnItemSelectedListener bottomItemSelectedListener = item -> {
+        if (item.getItemId() == R.id.bottom_navigation_queue) {
+            loadFragment(QueueFragment.TAG, null);
+        } else if (item.getItemId() == R.id.bottom_navigation_inbox) {
+            loadFragment(InboxFragment.TAG, null);
+        } else if (item.getItemId() == R.id.bottom_navigation_episodes) {
+            loadFragment(AllEpisodesFragment.TAG, null);
+        } else if (item.getItemId() == R.id.bottom_navigation_downloads) {
+            loadFragment(CompletedDownloadsFragment.TAG, null);
+        } else if (item.getItemId() == R.id.bottom_navigation_history) {
+            loadFragment(PlaybackHistoryFragment.TAG, null);
+        } else if (item.getItemId() == R.id.bottom_navigation_addfeed) {
+            loadFragment(AddFeedFragment.TAG, null);
+        } else if (item.getItemId() == R.id.bottom_navigation_subscriptions) {
+            loadFragment(SubscriptionFragment.TAG, null);
+        } else if (item.getItemId() == R.id.bottom_navigation_home) {
+            loadFragment(HomeFragment.TAG, null);
+        }
+        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        return true;
+    };
+
+    private int getBottomNavigationItemId(String tag) {
+        switch (tag) {
+            case QueueFragment.TAG:
+                return R.id.bottom_navigation_queue;
+            case InboxFragment.TAG:
+                return R.id.bottom_navigation_inbox;
+            case AllEpisodesFragment.TAG:
+                return R.id.bottom_navigation_episodes;
+            case CompletedDownloadsFragment.TAG:
+                return R.id.bottom_navigation_downloads;
+            case PlaybackHistoryFragment.TAG:
+                return R.id.bottom_navigation_history;
+            case AddFeedFragment.TAG:
+                return R.id.bottom_navigation_addfeed;
+            case SubscriptionFragment.TAG:
+                return R.id.bottom_navigation_subscriptions;
+            case HomeFragment.TAG: // fall-through
+            default:
+                return R.id.bottom_navigation_home;
+        }
     }
 
     @Override
