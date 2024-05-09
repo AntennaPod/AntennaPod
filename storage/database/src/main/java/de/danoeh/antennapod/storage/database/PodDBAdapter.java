@@ -684,43 +684,26 @@ public class PodDBAdapter {
         return item.getId();
     }
 
-    public void setFeedItemRead(int played, long itemId, long mediaId,
-                                boolean resetMediaPosition) {
-        try {
-            db.beginTransactionNonExclusive();
-            ContentValues values = new ContentValues();
-
-            values.put(KEY_READ, played);
-            db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(itemId)});
-
-            if (resetMediaPosition) {
-                values.clear();
-                values.put(KEY_POSITION, 0);
-                db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?", new String[]{String.valueOf(mediaId)});
-            }
-
-            db.setTransactionSuccessful();
-        } catch (SQLException e) {
-            Log.e(TAG, Log.getStackTraceString(e));
-        } finally {
-            db.endTransaction();
-        }
-    }
-
     /**
      * Sets the 'read' attribute of the item.
      *
      * @param read    must be one of FeedItem.PLAYED, FeedItem.NEW, FeedItem.UNPLAYED
-     * @param itemIds items to change the value of
+     * @param items   to change the value of
      */
-    public void setFeedItemRead(int read, long... itemIds) {
+    public void setFeedItemRead(int read, FeedItem... items) {
         try {
             db.beginTransactionNonExclusive();
             ContentValues values = new ContentValues();
-            for (long id : itemIds) {
+            for (FeedItem item : items) {
                 values.clear();
                 values.put(KEY_READ, read);
-                db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(id)});
+                db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(item.getId())});
+
+                if (read == FeedItem.PLAYED && !item.isInProgress() && !item.isPlayed()) {
+                    values.clear();
+                    values.put(KEY_POSITION, 0);
+                    db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?", new String[]{String.valueOf(item.getMedia().getId())});
+                }
             }
             db.setTransactionSuccessful();
         } catch (SQLException e) {

@@ -6,6 +6,7 @@ import androidx.annotation.PluralsRes;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -67,26 +68,24 @@ public class EpisodeMultiSelectActionHandler {
     }
 
     private void removeFromInboxChecked(List<FeedItem> items) {
-        LongList markUnplayed = new LongList();
+        List<FeedItem> markUnplayed = new ArrayList<>();
         for (FeedItem episode : items) {
             if (episode.isNew()) {
-                markUnplayed.add(episode.getId());
+                markUnplayed.add(episode);
             }
         }
-        DBWriter.markItemPlayed(FeedItem.UNPLAYED, markUnplayed.toArray());
+        DBWriter.markItemPlayed(FeedItem.UNPLAYED, markUnplayed);
         showMessage(R.plurals.removed_from_inbox_batch_label, markUnplayed.size());
     }
 
     private void markedCheckedPlayed(List<FeedItem> items) {
-        long[] checkedIds = getSelectedIds(items);
-        DBWriter.markItemPlayed(FeedItem.PLAYED, checkedIds);
-        showMessage(R.plurals.marked_read_batch_label, checkedIds.length);
+        DBWriter.markItemPlayed(FeedItem.PLAYED, items);
+        showMessage(R.plurals.marked_read_batch_label, items.size());
     }
 
     private void markedCheckedUnplayed(List<FeedItem> items) {
-        long[] checkedIds = getSelectedIds(items);
-        DBWriter.markItemPlayed(FeedItem.UNPLAYED, checkedIds);
-        showMessage(R.plurals.marked_unread_batch_label, checkedIds.length);
+        DBWriter.markItemPlayed(FeedItem.UNPLAYED, items);
+        showMessage(R.plurals.marked_unread_batch_label, items.size());
     }
 
     private void downloadChecked(List<FeedItem> items) {
