@@ -66,13 +66,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingTop="16dp"
             android:paddingHorizontal="@dimen/additional_horizontal_spacing">
 
             <TextView
                 android:id="@+id/statisticsHeadingLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
                 android:text="@string/statistics_label"
@@ -90,6 +90,7 @@
                 android:layout_height="wrap_content"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
+                android:layout_marginBottom="16dp"
                 android:text="@string/statistics_view_all"
                 style="@style/Widget.MaterialComponents.Button.TextButton" />
 
@@ -97,7 +98,6 @@
                 android:id="@+id/supportHeadingLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_marginBottom="4dp"
                 android:text="@string/support_funding_label"
                 android:textColor="?android:attr/textColorPrimary"
@@ -120,7 +120,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:layout_marginTop="16dp"
                 android:layout_marginBottom="4dp"
                 android:text="@string/description_label"
                 android:textColor="?android:attr/textColorPrimary"
