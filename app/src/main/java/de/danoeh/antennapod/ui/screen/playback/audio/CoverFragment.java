@@ -32,6 +32,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import de.danoeh.antennapod.ui.chapters.ChapterUtils;
 import de.danoeh.antennapod.ui.screen.chapter.ChaptersFragment;
 import de.danoeh.antennapod.playback.service.PlaybackController;
@@ -122,9 +124,7 @@ public class CoverFragment extends Fragment {
                 + "\u00A0"
                 + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
         if (media instanceof FeedMedia) {
-            Intent openFeed = MainActivity.getIntentToOpenFeed(requireContext(),
-                    ((FeedMedia) media).getItem().getFeedId());
-            viewBinding.txtvPodcastTitle.setOnClickListener(v -> startActivity(openFeed));
+            viewBinding.txtvPodcastTitle.setOnClickListener(v -> openFeed(((FeedMedia) media).getItem().getFeed()));
         } else {
             viewBinding.txtvPodcastTitle.setOnClickListener(null);
         }
@@ -162,6 +162,18 @@ public class CoverFragment extends Fragment {
         displayedChapterIndex = -1;
         refreshChapterData(Chapter.getAfterPosition(media.getChapters(), media.getPosition()));
         updateChapterControlVisibility();
+    }
+
+    private void openFeed(Feed feed) {
+        if (feed == null) {
+            return;
+        }
+        if (feed.getState() == Feed.STATE_SUBSCRIBED) {
+            Intent intent = MainActivity.getIntentToOpenFeed(getContext(), feed.getId());
+            startActivity(intent);
+        } else {
+            startActivity(new OnlineFeedviewActivityStarter(getContext(), feed.getDownloadUrl()).getIntent());
+        }
     }
 
     private void updateChapterControlVisibility() {

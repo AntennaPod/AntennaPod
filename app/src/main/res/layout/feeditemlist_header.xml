@@ -28,6 +28,14 @@
                 android:layout_width="148dp"
                 android:layout_height="match_parent" />
 
+            <Button
+                android:id="@+id/butSubscribe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/subscribe_label"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
             <ImageButton
                 android:id="@+id/butShowInfo"
                 android:layout_width="40dp"
@@ -184,6 +192,54 @@
             android:textColor="?attr/colorAccent"
             tools:visibility="visible"
             tools:text="Updates disabled" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/descriptionContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:background="?android:attr/colorBackground"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:background="@drawable/bg_message_info"
+            android:textColor="?attr/colorAccent"
+            android:text="@string/state_deleted_not_subscribed" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/description_label"
+            style="@style/TextAppearance.Material3.TitleMedium" />
+
+        <TextView
+            android:id="@+id/headerDescriptionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lineHeight="20dp"
+            android:maxLines="3"
+            android:layout_marginBottom="16dp"
+            android:background="?android:attr/selectableItemBackground"
+            style="@style/AntennaPod.TextView.ListItemBody"
+            tools:text="@string/design_time_lorem_ipsum" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/preview_episodes"
+            android:layout_marginBottom="8dp"
+            style="@style/TextAppearance.Material3.TitleMedium" />
 
     </LinearLayout>
 

@@ -66,6 +66,9 @@ public class FeedItemFilterQuery {
         if (filter.showInHistory) {
             statements.add(keyCompletionDate + " > 0 ");
         }
+        if (!filter.includeNotSubscribed) {
+            statements.add(PodDBAdapter.SELECT_WHERE_FEED_IS_SUBSCRIBED);
+        }
 
         if (statements.isEmpty()) {
             return "";

@@ -436,7 +436,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.UNPLAYED))));
             List<Feed> feeds = DBReader.getFeedList();
             for (Feed feed : feeds) {
-                mediaItems.add(createBrowsableMediaItemForFeed(feed));
+                if (feed.getState() == Feed.STATE_SUBSCRIBED) {
+                    mediaItems.add(createBrowsableMediaItemForFeed(feed));
+                }
             }
             return mediaItems;
         }

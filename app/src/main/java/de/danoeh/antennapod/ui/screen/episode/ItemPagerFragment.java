@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.episode;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -13,7 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -173,8 +175,12 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
         if (item == null) {
             return;
         }
-        Fragment fragment = FeedItemlistFragment.newInstance(item.getFeedId());
-        ((MainActivity) getActivity()).loadChildFragment(fragment);
+        if (item.getFeed().getState() == Feed.STATE_SUBSCRIBED) {
+            Intent intent = MainActivity.getIntentToOpenFeed(getContext(), item.getFeedId());
+            startActivity(intent);
+        } else {
+            startActivity(new OnlineFeedviewActivityStarter(getContext(), item.getFeed().getDownloadUrl()).getIntent());
+        }
     }
 
     private class ItemPagerAdapter extends FragmentStateAdapter {

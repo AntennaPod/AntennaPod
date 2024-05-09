@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import android.view.View;
 
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.playback.service.PlaybackStatus;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -48,6 +49,8 @@ public abstract class ItemActionButton {
             return new PlayActionButton(item);
         } else if (isDownloadingMedia) {
             return new CancelDownloadActionButton(item);
+        } else if (item.getFeed().getState() != Feed.STATE_SUBSCRIBED) {
+            return new StreamActionButton(item);
         } else if (UserPreferences.isStreamOverDownload()) {
             return new StreamActionButton(item);
         } else {

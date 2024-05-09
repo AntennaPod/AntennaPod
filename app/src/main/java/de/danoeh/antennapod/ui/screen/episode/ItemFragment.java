@@ -38,6 +38,7 @@ import de.danoeh.antennapod.actionbutton.PlayLocalActionButton;
 import de.danoeh.antennapod.actionbutton.StreamActionButton;
 import de.danoeh.antennapod.actionbutton.VisitWebsiteActionButton;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.playback.service.PlaybackStatus;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
@@ -49,6 +50,7 @@ import de.danoeh.antennapod.storage.preferences.UsageStatistics;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.common.DateFormatter;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
@@ -114,6 +116,7 @@ public class ItemFragment extends Fragment {
     private ItemActionButton actionButton1;
     private ItemActionButton actionButton2;
     private View noMediaLabel;
+    private View nonSubscribedWarningLabel;
 
     private Disposable disposable;
     private PlaybackController controller;
@@ -164,6 +167,7 @@ public class ItemFragment extends Fragment {
         butAction1Text = layout.findViewById(R.id.butAction1Text);
         butAction2Text = layout.findViewById(R.id.butAction2Text);
         noMediaLabel = layout.findViewById(R.id.noMediaLabel);
+        nonSubscribedWarningLabel = layout.findViewById(R.id.nonSubscribedWarningLabel);
 
         butAction1.setOnClickListener(v -> {
             if (actionButton1 instanceof StreamActionButton && !UserPreferences.isStreamOverDownload()
@@ -287,6 +291,11 @@ public class ItemFragment extends Fragment {
             txtvPublished.setContentDescription(DateFormatter.formatForAccessibility(item.getPubDate()));
         }
 
+        if (item.getFeed().getState() != Feed.STATE_SUBSCRIBED) {
+            nonSubscribedWarningLabel.setVisibility(View.VISIBLE);
+            nonSubscribedWarningLabel.setOnClickListener(v -> openPodcast());
+        }
+
         float radius = 8 * getResources().getDisplayMetrics().density;
         RequestOptions options = new RequestOptions()
                 .error(ImagePlaceholder.getDrawable(getContext(), radius))
@@ -366,8 +375,13 @@ public class ItemFragment extends Fragment {
         if (item == null) {
             return;
         }
-        Fragment fragment = FeedItemlistFragment.newInstance(item.getFeedId());
-        ((MainActivity) getActivity()).loadChildFragment(fragment);
+        if (item.getFeed().getState() == Feed.STATE_SUBSCRIBED) {
+            Fragment fragment = FeedItemlistFragment.newInstance(item.getFeedId());
+            ((MainActivity) getActivity()).loadChildFragment(fragment);
+        } else {
+            startActivity(new OnlineFeedviewActivityStarter(getContext(), item.getFeed().getDownloadUrl())
+                    .getIntent());
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

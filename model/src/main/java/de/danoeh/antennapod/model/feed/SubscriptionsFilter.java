@@ -12,6 +12,7 @@ public class SubscriptionsFilter {
     private final String[] properties;
 
     private boolean showIfCounterGreaterZero = false;
+    private boolean hideNonSubscribedFeeds = true;
 
     private boolean showAutoDownloadEnabled = false;
     private boolean showAutoDownloadDisabled = false;
@@ -67,10 +68,6 @@ public class SubscriptionsFilter {
      * Run a list of feed items through the filter.
      */
     public List<Feed> filter(List<Feed> items, Map<Long, Integer> feedCounters) {
-        if (properties.length == 0) {
-            return items;
-        }
-
         List<Feed> result = new ArrayList<>();
 
         for (Feed item : items) {
@@ -92,6 +89,10 @@ public class SubscriptionsFilter {
             if (showEpisodeNotificationEnabled && !itemPreferences.getShowEpisodeNotification()) {
                 continue;
             } else if (showEpisodeNotificationDisabled && itemPreferences.getShowEpisodeNotification()) {
+                continue;
+            }
+
+            if (hideNonSubscribedFeeds && item.getState() != Feed.STATE_SUBSCRIBED) {
                 continue;
             }
 

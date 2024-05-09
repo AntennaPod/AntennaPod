@@ -16,6 +16,7 @@ import java.util.Arrays;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
@@ -84,6 +85,10 @@ public class FeedItemMenuHandler {
         setItemVisibility(menu, R.id.add_to_favorites_item, !isFavorite);
         setItemVisibility(menu, R.id.remove_from_favorites_item, isFavorite);
         setItemVisibility(menu, R.id.remove_item, fileDownloaded || isLocalFile);
+
+        if (selectedItem.getFeed().getState() != Feed.STATE_SUBSCRIBED) {
+            setItemVisibility(menu, R.id.mark_read_item, false);
+        }
         return true;
     }
 
@@ -158,7 +163,8 @@ public class FeedItemMenuHandler {
         } else if (menuItemId == R.id.mark_read_item) {
             selectedItem.setPlayed(true);
             DBWriter.markItemPlayed(selectedItem, FeedItem.PLAYED, true);
-            if (!selectedItem.getFeed().isLocalFeed() && SynchronizationSettings.isProviderConnected()) {
+            if (!selectedItem.getFeed().isLocalFeed() && selectedItem.getFeed().getState() == Feed.STATE_SUBSCRIBED
+                    && SynchronizationSettings.isProviderConnected()) {
                 FeedMedia media = selectedItem.getMedia();
                 // not all items have media, Gpodder only cares about those that do
                 if (media != null) {
@@ -174,7 +180,8 @@ public class FeedItemMenuHandler {
         } else if (menuItemId == R.id.mark_unread_item) {
             selectedItem.setPlayed(false);
             DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, false);
-            if (!selectedItem.getFeed().isLocalFeed() && selectedItem.getMedia() != null) {
+            if (!selectedItem.getFeed().isLocalFeed() && selectedItem.getMedia() != null
+                    && selectedItem.getFeed().getState() == Feed.STATE_SUBSCRIBED) {
                 EpisodeAction actionNew = new EpisodeAction.Builder(selectedItem, EpisodeAction.NEW)
                         .currentTimestamp()
                         .build();

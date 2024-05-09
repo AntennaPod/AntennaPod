@@ -2,6 +2,7 @@ package de.danoeh.antennapod.net.sync.serviceinterface;
 
 import android.content.Context;
 
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 
@@ -62,7 +63,8 @@ public class SynchronizationQueueSink {
         if (!SynchronizationSettings.isProviderConnected()) {
             return;
         }
-        if (media.getItem() == null || media.getItem().getFeed().isLocalFeed()) {
+        if (media.getItem() == null || media.getItem().getFeed().isLocalFeed()
+                || media.getItem().getFeed().getState() != Feed.STATE_SUBSCRIBED) {
             return;
         }
         if (media.getStartPosition() < 0 || (!completed && media.getStartPosition() >= media.getPosition())) {

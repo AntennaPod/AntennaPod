@@ -122,7 +122,6 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         viewBinding.header.butFilter.setVisibility(View.INVISIBLE);
         // https://github.com/bumptech/glide/issues/529
         viewBinding.imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
-
         viewBinding.urlLabel.setOnClickListener(copyUrlToClipboard);
 
         long feedId = getArguments().getLong(EXTRA_FEED_ID);
@@ -237,6 +236,25 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
             viewBinding.supportUrl.setText(str.toString());
         }
 
+        if (feed.getState() == Feed.STATE_SUBSCRIBED) {
+            long feedId = getArguments().getLong(EXTRA_FEED_ID);
+            getParentFragmentManager().beginTransaction().replace(R.id.statisticsFragmentContainer,
+                            FeedStatisticsFragment.newInstance(feedId, false), "feed_statistics_fragment")
+                    .commitAllowingStateLoss();
+
+            viewBinding.statisticsButton.setOnClickListener(view -> {
+                StatisticsFragment fragment = new StatisticsFragment();
+                ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
+            });
+        } else {
+            viewBinding.statisticsButton.setVisibility(View.GONE);
+            viewBinding.statisticsFragmentContainer.setVisibility(View.GONE);
+            viewBinding.statisticsHeadingLabel.setVisibility(View.GONE);
+            viewBinding.supportHeadingLabel.setVisibility(View.GONE);
+            viewBinding.supportUrl.setVisibility(View.GONE);
+            viewBinding.descriptionHeadingLabel.setVisibility(View.GONE);
+        }
+
         refreshToolbarState();
     }
 
@@ -249,13 +267,14 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
     }
 
     private void refreshToolbarState() {
+        boolean isSubscribed = feed != null && feed.getState() == Feed.STATE_SUBSCRIBED;
         viewBinding.toolbar.getMenu().findItem(R.id.reconnect_local_folder).setVisible(
-                feed != null && feed.isLocalFeed());
-        viewBinding.toolbar.getMenu().findItem(R.id.share_item).setVisible(feed != null && !feed.isLocalFeed());
-        viewBinding.toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(feed != null
+                isSubscribed && feed.isLocalFeed());
+        viewBinding.toolbar.getMenu().findItem(R.id.share_item).setVisible(isSubscribed && !feed.isLocalFeed());
+        viewBinding.toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(isSubscribed
                 && feed.getLink() != null
                 && IntentUtils.isCallable(getContext(), new Intent(Intent.ACTION_VIEW, Uri.parse(feed.getLink()))));
-        viewBinding.toolbar.getMenu().findItem(R.id.edit_feed_url_item).setVisible(feed != null && !feed.isLocalFeed());
+        viewBinding.toolbar.getMenu().findItem(R.id.edit_feed_url_item).setVisible(isSubscribed && !feed.isLocalFeed());
     }
 
     @Override

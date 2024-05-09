@@ -35,6 +35,7 @@ import de.danoeh.antennapod.model.download.DownloadRequest;
 
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequestBuilder;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
+import de.danoeh.antennapod.storage.database.NonSubscribedFeedsCleaner;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,7 +70,7 @@ public class FeedUpdateWorker extends Worker {
             Iterator<Feed> itr = toUpdate.iterator();
             while (itr.hasNext()) {
                 Feed feed = itr.next();
-                if (!feed.getPreferences().getKeepUpdated()) {
+                if (!feed.getPreferences().getKeepUpdated() || feed.getState() != Feed.STATE_SUBSCRIBED) {
                     itr.remove();
                     continue;
                 }
@@ -99,8 +100,9 @@ public class FeedUpdateWorker extends Worker {
         }
         refreshFeeds(toUpdate,  force);
 
-        notificationManager.cancel(R.id.notification_updating_feeds);
+        NonSubscribedFeedsCleaner.deleteOldNonSubscribedFeeds(getApplicationContext());
         AutoDownloadManager.getInstance().autodownloadUndownloadedItems(getApplicationContext());
+        notificationManager.cancel(R.id.notification_updating_feeds);
         return Result.success();
     }
 

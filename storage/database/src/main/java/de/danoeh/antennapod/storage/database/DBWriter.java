@@ -14,6 +14,7 @@ import androidx.documentfile.provider.DocumentFile;
 import com.google.common.util.concurrent.Futures;
 import de.danoeh.antennapod.event.DownloadLogEvent;
 
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
@@ -141,12 +142,13 @@ public class DBWriter {
             // Do full update of this feed to get rid of the item
             FeedUpdateManager.getInstance().runOnce(context, media.getItem().getFeed());
         } else {
-            // Gpodder: queue delete action for synchronization
-            FeedItem item = media.getItem();
-            EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DELETE)
-                    .currentTimestamp()
-                    .build();
-            SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
+            if (media.getItem().getFeed().getState() == Feed.STATE_SUBSCRIBED) {
+                FeedItem item = media.getItem();
+                EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DELETE)
+                        .currentTimestamp()
+                        .build();
+                SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
+            }
 
             EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
         }
@@ -174,7 +176,7 @@ public class DBWriter {
             adapter.removeFeed(feed);
             adapter.close();
 
-            if (!feed.isLocalFeed()) {
+            if (!feed.isLocalFeed() && feed.getState() == Feed.STATE_SUBSCRIBED) {
                 SynchronizationQueueSink.enqueueFeedRemovedIfSynchronizationIsActive(context, feed.getDownloadUrl());
             }
             EventBus.getDefault().post(new FeedListUpdateEvent(feed));
@@ -786,7 +788,7 @@ public class DBWriter {
             adapter.close();
 
             for (Feed feed : feeds) {
-                if (!feed.isLocalFeed()) {
+                if (!feed.isLocalFeed() && feed.getState() == Feed.STATE_SUBSCRIBED) {
                     SynchronizationQueueSink.enqueueFeedAddedIfSynchronizationIsActive(context, feed.getDownloadUrl());
                 }
             }
@@ -923,6 +925,32 @@ public class DBWriter {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setFeedCustomTitle(feed.getId(), feed.getCustomTitle());
+            adapter.close();
+            EventBus.getDefault().post(new FeedListUpdateEvent(feed));
+        });
+    }
+
+    public static Future<?> setFeedState(Context context, Feed feed, int newState) {
+        int oldState = feed.getState();
+        return runOnDbThread(() -> {
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.setFeedState(feed.getId(), newState);
+            feed.setState(newState);
+            if (oldState == Feed.STATE_NOT_SUBSCRIBED && newState == Feed.STATE_SUBSCRIBED) {
+                feed.getPreferences().setKeepUpdated(true);
+                DBWriter.setFeedPreferences(feed.getPreferences());
+                FeedUpdateManager.getInstance().runOnceOrAsk(context, feed);
+                SynchronizationQueueSink.enqueueFeedAddedIfSynchronizationIsActive(context, feed.getDownloadUrl());
+                DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(),
+                        SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
+                for (FeedItem item : feed.getItems()) {
+                    if (item.isPlayed()) {
+                        SynchronizationQueueSink.enqueueEpisodePlayedIfSynchronizationIsActive(
+                                context, item.getMedia(), true);
+                    }
+                }
+            }
             adapter.close();
             EventBus.getDefault().post(new FeedListUpdateEvent(feed));
         });

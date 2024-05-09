@@ -157,7 +157,8 @@ public abstract class FeedDatabaseWriter {
                                         + "\n\nNow the feed contains:\n" + duplicateEpisodeDetails(item)));
                         oldItem.setItemIdentifier(item.getItemIdentifier());
 
-                        if (oldItem.isPlayed() && oldItem.getMedia() != null) {
+                        if (oldItem.isPlayed() && oldItem.getMedia() != null
+                                && savedFeed.getState() == Feed.STATE_SUBSCRIBED) {
                             EpisodeAction action = new EpisodeAction.Builder(oldItem, EpisodeAction.PLAY)
                                     .currentTimestamp()
                                     .started(oldItem.getMedia().getDuration() / 1000)

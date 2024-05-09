@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.episodeslist;
 
+import android.app.Activity;
 import android.os.Build;
 import android.text.Layout;
 import android.text.format.Formatter;
@@ -17,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.elevation.SurfaceColors;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.ui.CoverLoader;
 import de.danoeh.antennapod.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.playback.service.PlaybackStatus;
@@ -62,10 +62,10 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
     private final View leftPadding;
     public final CardView coverHolder;
 
-    private final MainActivity activity;
+    private final Activity activity;
     private FeedItem item;
 
-    public EpisodeItemViewHolder(MainActivity activity, ViewGroup parent) {
+    public EpisodeItemViewHolder(Activity activity, ViewGroup parent) {
         super(LayoutInflater.from(activity).inflate(R.layout.feeditemlist_item, parent, false));
         this.activity = activity;
         container = itemView.findViewById(R.id.container);
