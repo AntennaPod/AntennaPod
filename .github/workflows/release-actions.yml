@@ -1,0 +1,35 @@
+name: Release actions
+
+on:
+  release:
+    types: released
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Tag review replyers in closed issues with 'Needs: Review reply' label"
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue_number = context.issue.number;
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'closed',
+              labels: ['Needs: Review reply']
+            });
+
+            if (issues.length > 0) {
+              for (const issue of issues) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: 'This feature or fix is now released! @AntennaPod/review-replyers, time to inform relevant reviews in Google Play console (please see links in one or more of the comments above).'
+                });
+              }
+            } else {
+              console.log('No closed issues with label "Needs: Review reply" found.');
+            }
+            
