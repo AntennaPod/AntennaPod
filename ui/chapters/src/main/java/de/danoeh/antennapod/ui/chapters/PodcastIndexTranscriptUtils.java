@@ -7,6 +7,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.nio.charset.Charset;
 
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -51,8 +52,8 @@ public class PodcastIndexTranscriptUtils {
             } else {
                 Log.d(TAG, "Error Downloading transcript URL " + url.toString() + response.message());
             }
-        } catch (IOException e) {
-            // ignore
+        } catch (InterruptedIOException e) {
+            Log.d(TAG, "InterruptedIOException while downloading transcript URL " + url.toString());
             return null;
         } catch (Exception e) {
             e.printStackTrace();

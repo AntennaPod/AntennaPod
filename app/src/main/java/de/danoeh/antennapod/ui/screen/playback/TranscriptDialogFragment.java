@@ -94,7 +94,7 @@ public class TranscriptDialogFragment extends DialogFragment {
             viewBinding.progLoading.setVisibility(View.VISIBLE);
             loadMediaInfo(true);
         });
-
+        viewBinding.progLoading.setVisibility(View.VISIBLE);
         return dialog;
     }
 
