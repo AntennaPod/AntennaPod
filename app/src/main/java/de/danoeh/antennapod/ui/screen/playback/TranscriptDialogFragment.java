@@ -2,6 +2,7 @@ package de.danoeh.antennapod.ui.screen.playback;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -10,6 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -61,12 +65,38 @@ public class TranscriptDialogFragment extends DialogFragment {
         AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setView(onCreateView(getLayoutInflater()))
                 .setPositiveButton(getString(R.string.close_label), null)
-                .setNeutralButton(getString(R.string.refresh_label), null)
+                .setNegativeButton(getString(R.string.refresh_label), null)
                 .setTitle(R.string.transcript)
                 .create();
+
+        CheckBox checkBox = new CheckBox(getContext());
+        checkBox.setText(R.string.transcript_follow);
+        checkBox.setChecked(true);
+
+        // Set the CheckBox as a custom button
+        dialog.setButton(DialogInterface.BUTTON_NEUTRAL, "", (dialogInterface, i) -> {});
+        dialog.setOnShowListener(dialogInterface -> {
+            Button buttonNeutral = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEUTRAL);
+            LinearLayout ll = (LinearLayout) buttonNeutral.getParent();
+
+            LinearLayout.LayoutParams neutralButtonLL = (LinearLayout.LayoutParams) buttonNeutral.getLayoutParams();
+
+            ViewGroup viewGroup = (ViewGroup) buttonNeutral.getParent();
+            viewGroup.addView(checkBox, neutralButtonLL);
+            neutralButtonLL.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+            Button buttonPositive = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+            Button buttonNegative = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+            ll.removeView(buttonPositive);
+            ll.removeView(buttonNegative);
+            ll.removeView(buttonNeutral); // we are replacing this with a checkbox
+            ll.addView(buttonNegative);
+            ll.addView(buttonPositive);
+        });
         dialog.show();
-        dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
-        dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener(v -> {
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setVisibility(View.VISIBLE);
+        dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(v -> {
             viewBinding.progLoading.setVisibility(View.VISIBLE);
             loadMediaInfo(true);
         });
@@ -86,6 +116,12 @@ public class TranscriptDialogFragment extends DialogFragment {
             transcriptClicked(pos, segment);
         });
         viewBinding.transcriptList.setAdapter(adapter);
+
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            Drawable dialogFragmentBackground = getDialog().getWindow().getDecorView().getBackground();
+            viewBinding.followAudio.setBackground(dialogFragmentBackground);
+        }
+
         return viewBinding.getRoot();
     }
 
@@ -178,20 +214,6 @@ public class TranscriptDialogFragment extends DialogFragment {
         if (pos == null || pos <= 0) {
             return;
         }
-        int scrollPosition = ((LinearLayoutManager) viewBinding.transcriptList.getLayoutManager())
-                .findFirstVisibleItemPosition();
-        if (Math.abs(scrollPosition - pos) > 5) {
-            // if we never manually scroll, we don't show the follow audio checkbox
-            if (viewBinding.followAudio.getVisibility() == View.GONE) {
-                viewBinding.followAudio.setVisibility(View.VISIBLE);
-            } else {
-                if (viewBinding.followAudio.isChecked()) {
-                    // Too far, no smooth scroll
-                    viewBinding.transcriptList.scrollToPosition(pos - 1);
-                }
-            }
-            return;
-        }
         final LinearSmoothScroller smoothScroller = new LinearSmoothScroller(getContext()) {
             @Override
             protected int getVerticalSnapPreference() {
@@ -202,11 +224,18 @@ public class TranscriptDialogFragment extends DialogFragment {
                 return 1000.0F / (float) displayMetrics.densityDpi;
             }
         };
+        int scrollPosition = ((LinearLayoutManager) viewBinding.transcriptList.getLayoutManager())
+                .findFirstVisibleItemPosition();
+        Log.d(TAG, "scrollToPosition: " + scrollPosition + " pos: " + pos );
+        if (Math.abs(scrollPosition - pos) > 5) {
+            // if we never manually scroll, we don't show the follow audio checkbox
+            if (viewBinding.followAudio.isChecked()) {
+                viewBinding.transcriptList.scrollToPosition(pos - 1);
+            }
+        }
         if (viewBinding.followAudio.isChecked()) {
             smoothScroller.setTargetPosition(pos - 1);  // pos on which item you want to scroll recycler view
             viewBinding.transcriptList.getLayoutManager().startSmoothScroll(smoothScroller);
-        } else {
-            viewBinding.followAudio.setVisibility(View.GONE);
         }
     }
 

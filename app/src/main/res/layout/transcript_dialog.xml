@@ -18,6 +18,7 @@
             android:scrollbarStyle="outsideInset"
             android:layout_marginTop="16dp"
             android:scrollbars="vertical"
+            constraints:layout_constraintTop_toTopOf="parent"
             constraints:layout_constraintBottom_toTopOf="@+id/follow_audio"
             tools:listitem="@layout/transcript_item" />
 
@@ -26,11 +27,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
+            android:background="?attr/background_elevated"
+            android:backgroundTint="?attr/colorBackgroundFloating"
+            android:backgroundTintMode="screen"
             android:checked="true"
-            android:visibility="gone"
             android:text="@string/transcript_follow"
             constraints:layout_constraintBottom_toBottomOf="parent"
-            constraints:layout_constraintLeft_toLeftOf="@+id/transcript_list" />
+            constraints:layout_constraintLeft_toLeftOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
