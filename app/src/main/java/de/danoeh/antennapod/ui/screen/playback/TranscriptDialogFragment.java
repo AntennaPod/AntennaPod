@@ -2,7 +2,6 @@ package de.danoeh.antennapod.ui.screen.playback;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -14,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.Space;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,6 +48,7 @@ public class TranscriptDialogFragment extends DialogFragment {
     private Playable media;
     private Transcript transcript;
     private TranscriptAdapter adapter = null;
+    private CheckBox followAudioCheckbox;
 
     @Override
     public void onResume() {
@@ -62,45 +63,37 @@ public class TranscriptDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        followAudioCheckbox = new CheckBox(getContext());
+        followAudioCheckbox.setText(R.string.transcript_follow);
+        followAudioCheckbox.setChecked(true);
+
         AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setView(onCreateView(getLayoutInflater()))
                 .setPositiveButton(getString(R.string.close_label), null)
                 .setNegativeButton(getString(R.string.refresh_label), null)
                 .setTitle(R.string.transcript)
                 .create();
-
-        CheckBox checkBox = new CheckBox(getContext());
-        checkBox.setText(R.string.transcript_follow);
-        checkBox.setChecked(true);
-
-        // Set the CheckBox as a custom button
-        dialog.setButton(DialogInterface.BUTTON_NEUTRAL, "", (dialogInterface, i) -> {});
+        // Replace the neutral button with a checkbox for following audio
         dialog.setOnShowListener(dialogInterface -> {
             Button buttonNeutral = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEUTRAL);
-            LinearLayout ll = (LinearLayout) buttonNeutral.getParent();
-
-            LinearLayout.LayoutParams neutralButtonLL = (LinearLayout.LayoutParams) buttonNeutral.getLayoutParams();
-
             ViewGroup viewGroup = (ViewGroup) buttonNeutral.getParent();
-            viewGroup.addView(checkBox, neutralButtonLL);
-            neutralButtonLL.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+            Space space = new Space(getContext());
+            viewGroup.removeAllViews();
+            viewGroup.addView(followAudioCheckbox);
+            viewGroup.addView(space);
+            space.setLayoutParams(new LinearLayout.LayoutParams(100, LinearLayout.LayoutParams.MATCH_PARENT));
 
             Button buttonPositive = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
             Button buttonNegative = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
-            ll.removeView(buttonPositive);
-            ll.removeView(buttonNegative);
-            ll.removeView(buttonNeutral); // we are replacing this with a checkbox
-            ll.addView(buttonNegative);
-            ll.addView(buttonPositive);
+            viewGroup.addView(buttonNegative);
+            viewGroup.addView(buttonPositive);
         });
         dialog.show();
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setVisibility(View.VISIBLE);
-        dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
         dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(v -> {
             viewBinding.progLoading.setVisibility(View.VISIBLE);
             loadMediaInfo(true);
         });
-        viewBinding.progLoading.setVisibility(View.VISIBLE);
 
         return dialog;
     }
@@ -116,11 +109,6 @@ public class TranscriptDialogFragment extends DialogFragment {
             transcriptClicked(pos, segment);
         });
         viewBinding.transcriptList.setAdapter(adapter);
-
-        if (getDialog() != null && getDialog().getWindow() != null) {
-            Drawable dialogFragmentBackground = getDialog().getWindow().getDecorView().getBackground();
-            viewBinding.followAudio.setBackground(dialogFragmentBackground);
-        }
 
         return viewBinding.getRoot();
     }
@@ -150,12 +138,12 @@ public class TranscriptDialogFragment extends DialogFragment {
         controller = new PlaybackController(getActivity()) {
             @Override
             public void loadMediaInfo() {
-                TranscriptDialogFragment.this.loadMediaInfo(true);
+                TranscriptDialogFragment.this.loadMediaInfo(false);
             }
         };
         controller.init();
         EventBus.getDefault().register(this);
-        loadMediaInfo(true);
+        loadMediaInfo(false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -176,7 +164,7 @@ public class TranscriptDialogFragment extends DialogFragment {
             if (media instanceof FeedMedia) {
                 this.media = media;
 
-                transcript = PodcastIndexTranscriptUtils.loadTranscript((FeedMedia) this.media);
+                transcript = PodcastIndexTranscriptUtils.loadTranscript((FeedMedia) this.media, forceRefresh);
                 ((FeedMedia) this.media).setTranscript(transcript);
                 emitter.onSuccess(this.media);
             } else {
@@ -204,9 +192,9 @@ public class TranscriptDialogFragment extends DialogFragment {
 
         viewBinding.progLoading.setVisibility(View.GONE);
         adapter.setMedia(media);
-        ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
+        ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.INVISIBLE);
         if (!TextUtils.isEmpty(((FeedMedia) media).getItem().getPodcastIndexTranscriptUrl())) {
-            ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
+            ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.VISIBLE);
         }
     }
 
@@ -226,15 +214,13 @@ public class TranscriptDialogFragment extends DialogFragment {
         };
         int scrollPosition = ((LinearLayoutManager) viewBinding.transcriptList.getLayoutManager())
                 .findFirstVisibleItemPosition();
-        Log.d(TAG, "scrollToPosition: " + scrollPosition + " pos: " + pos );
         if (Math.abs(scrollPosition - pos) > 5) {
-            // if we never manually scroll, we don't show the follow audio checkbox
-            if (viewBinding.followAudio.isChecked()) {
+            if (followAudioCheckbox.isChecked()) {
                 viewBinding.transcriptList.scrollToPosition(pos - 1);
             }
         }
-        if (viewBinding.followAudio.isChecked()) {
-            smoothScroller.setTargetPosition(pos - 1);  // pos on which item you want to scroll recycler view
+        if (followAudioCheckbox.isChecked()) {
+            smoothScroller.setTargetPosition(pos - 1);
             viewBinding.transcriptList.getLayoutManager().startSmoothScroll(smoothScroller);
         }
     }

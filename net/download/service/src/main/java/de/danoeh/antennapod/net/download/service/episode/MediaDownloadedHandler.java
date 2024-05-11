@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
 import de.danoeh.antennapod.ui.chapters.ChapterUtils;
-import de.danoeh.antennapod.ui.chapters.PodcastIndexTranscriptUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
@@ -26,6 +25,7 @@ import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
+import de.danoeh.antennapod.ui.chapters.PodcastIndexTranscriptUtils;
 
 /**
  * Handles a completed media download.

@@ -85,11 +85,11 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
 
         if (position == highlightPosition) {
             float density = context.getResources().getDisplayMetrics().density;
-            holder.itemView.setBackgroundColor(SurfaceColors.getColorForElevation(context, 32 * density));
+            holder.viewContent.setBackgroundColor(SurfaceColors.getColorForElevation(context, 32 * density));
             holder.viewContent.setAlpha(1.0f);
             holder.viewTimecode.setAlpha(1.0f);
         } else {
-            holder.itemView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
+            holder.viewContent.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
             holder.viewContent.setAlpha(0.5f);
             holder.viewTimecode.setAlpha(0.5f);
         }
