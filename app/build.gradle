@@ -89,6 +89,7 @@ dependencies {
     implementation project(':net:sync:service-interface')
     implementation project(':playback:service')
     implementation project(':ui:chapters')
+    implementation project(':ui:transcript')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"

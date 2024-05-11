@@ -675,8 +675,8 @@ public class PodDBAdapter {
         values.put(KEY_PODCASTINDEX_CHAPTER_URL, item.getPodcastIndexChapterUrl());
 
         // We only store one transcript url, we prefer JSON if it exists
-        String type = item.getPodcastIndexTranscriptType();
-        String url = item.getPodcastIndexTranscriptUrl();
+        String type = item.getTranscriptType();
+        String url = item.getTranscriptUrl();
         if (url != null) {
             values.put(KEY_PODCASTINDEX_TRANSCRIPT_TYPE, type);
             values.put(KEY_PODCASTINDEX_TRANSCRIPT_URL, url);

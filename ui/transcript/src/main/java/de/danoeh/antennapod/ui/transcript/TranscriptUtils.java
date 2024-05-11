@@ -1,15 +1,12 @@
-package de.danoeh.antennapod.ui.chapters;
+package de.danoeh.antennapod.ui.transcript;
 
 import android.util.Log;
-
 import org.apache.commons.io.FileUtils;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.nio.charset.Charset;
-
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.danoeh.antennapod.model.feed.Transcript;
@@ -17,14 +14,11 @@ import de.danoeh.antennapod.parser.transcript.TranscriptParser;
 import okhttp3.CacheControl;
 import okhttp3.Request;
 import okhttp3.Response;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
-public class PodcastIndexTranscriptUtils {
-
-    private static final String TAG = "PodcastIndexTranscript";
-
+public class TranscriptUtils {
+    private static final String TAG = "Transcript";
 
     public static String loadTranscriptFromUrl(String url, boolean forceRefresh) {
         if (forceRefresh) {
@@ -67,7 +61,7 @@ public class PodcastIndexTranscriptUtils {
     }
 
     public static Transcript loadTranscript(FeedMedia media, Boolean forceRefresh) {
-        String transcriptType = media.getItem().getPodcastIndexTranscriptType();
+        String transcriptType = media.getItem().getTranscriptType();
 
         if (!forceRefresh && media.getItem().getTranscript() != null) {
             return media.getTranscript();
@@ -88,8 +82,8 @@ public class PodcastIndexTranscriptUtils {
             }
         }
 
-        String transcriptUrl = media.getItem().getPodcastIndexTranscriptUrl();
-        String t = PodcastIndexTranscriptUtils.loadTranscriptFromUrl(transcriptUrl, forceRefresh);
+        String transcriptUrl = media.getItem().getTranscriptUrl();
+        String t = TranscriptUtils.loadTranscriptFromUrl(transcriptUrl, forceRefresh);
         if (StringUtils.isNotEmpty(t)) {
             return TranscriptParser.parse(t, transcriptType);
         }

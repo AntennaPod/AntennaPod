@@ -31,7 +31,7 @@ import de.danoeh.antennapod.model.feed.TranscriptSegment;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.service.PlaybackController;
-import de.danoeh.antennapod.ui.chapters.PodcastIndexTranscriptUtils;
+import de.danoeh.antennapod.ui.transcript.TranscriptUtils;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -164,7 +164,7 @@ public class TranscriptDialogFragment extends DialogFragment {
             if (media instanceof FeedMedia) {
                 this.media = media;
 
-                transcript = PodcastIndexTranscriptUtils.loadTranscript((FeedMedia) this.media, forceRefresh);
+                transcript = TranscriptUtils.loadTranscript((FeedMedia) this.media, forceRefresh);
                 ((FeedMedia) this.media).setTranscript(transcript);
                 emitter.onSuccess(this.media);
             } else {
@@ -193,7 +193,7 @@ public class TranscriptDialogFragment extends DialogFragment {
         viewBinding.progLoading.setVisibility(View.GONE);
         adapter.setMedia(media);
         ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.INVISIBLE);
-        if (!TextUtils.isEmpty(((FeedMedia) media).getItem().getPodcastIndexTranscriptUrl())) {
+        if (!TextUtils.isEmpty(((FeedMedia) media).getItem().getTranscriptUrl())) {
             ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.VISIBLE);
         }
     }

@@ -34,7 +34,7 @@ public class PodcastIndex extends Namespace {
             String href = attributes.getValue(URL);
             String type = attributes.getValue(TYPE);
             if (!TextUtils.isEmpty(href) && !TextUtils.isEmpty(type)) {
-                state.getCurrentItem().setPodcastIndexTranscriptUrl(type, href);
+                state.getCurrentItem().setTranscriptUrl(type, href);
             }
         }
         return new SyndElement(localName, this);
