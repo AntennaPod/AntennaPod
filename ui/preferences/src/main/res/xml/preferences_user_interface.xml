@@ -16,6 +16,10 @@
                 android:key="prefTintedColors"
                 android:summary="@string/pref_tinted_theme_message"
                 android:defaultValue="false" />
+        <SwitchPreferenceCompat
+                android:title="@string/bottom_navigation"
+                android:summary="@string/bottom_navigation_summary"
+                android:key="prefBottomNavigation" />
         <Preference
                 android:key="prefHiddenDrawerItems"
                 android:summary="@string/pref_nav_drawer_items_sum"

@@ -127,11 +127,17 @@ public class MainActivity extends CastEnabledActivity {
         setContentView(R.layout.main);
         recycledViewPool.setMaxRecycledViews(R.id.view_type_episode_item, 25);
 
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        buildBottomNavigationMenu();
         drawerLayout = findViewById(R.id.drawer_layout);
         navDrawer = findViewById(R.id.navDrawerFragment);
-        setNavDrawerSize();
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        buildBottomNavigationMenu();
+        if (UserPreferences.isBottomNavigationEnabled()) {
+            drawerLayout = null;
+        } else {
+            bottomNavigationView.setVisibility(View.GONE);
+            bottomNavigationView = null;
+            setNavDrawerSize();
+        }
 
         // Consume navigation bar insets - we apply them in setPlayerVisible()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_view), (v, insets) -> {
@@ -330,10 +336,15 @@ public class MainActivity extends CastEnabledActivity {
     private void updateInsets() {
         setPlayerVisible(findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE);
         int playerHeight = (int) getResources().getDimension(R.dimen.external_player_height);
-        sheetBehavior.setPeekHeight(playerHeight);
-        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) bottomNavigationView.getLayoutParams();
-        layoutParams.bottomMargin = navigationBarInsets.bottom;
-        bottomNavigationView.setLayoutParams(layoutParams);
+
+        if (bottomNavigationView != null) {
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+            layoutParams.bottomMargin = navigationBarInsets.bottom;
+            bottomNavigationView.setLayoutParams(layoutParams);
+            sheetBehavior.setPeekHeight(playerHeight);
+        } else {
+            sheetBehavior.setPeekHeight(playerHeight + navigationBarInsets.bottom);
+        }
     }
 
     public void setPlayerVisible(boolean visible) {
@@ -346,7 +357,9 @@ public class MainActivity extends CastEnabledActivity {
         FragmentContainerView mainView = findViewById(R.id.main_content_view);
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mainView.getLayoutParams();
         int externalPlayerHeight = (int) getResources().getDimension(R.dimen.external_player_height);
-        params.setMargins(navigationBarInsets.left, 0, navigationBarInsets.right, (visible ? externalPlayerHeight : 0));
+        int bottomInset = bottomNavigationView == null ? navigationBarInsets.bottom : 0;
+        params.setMargins(navigationBarInsets.left, 0,
+                navigationBarInsets.right, bottomInset + (visible ? externalPlayerHeight : 0));
         mainView.setLayoutParams(params);
         FragmentContainerView playerView = findViewById(R.id.playerFragment);
         ViewGroup.MarginLayoutParams playerParams = (ViewGroup.MarginLayoutParams) playerView.getLayoutParams();
@@ -404,12 +417,14 @@ public class MainActivity extends CastEnabledActivity {
 
     public void loadFragment(String tag, Bundle args) {
         NavDrawerFragment.saveLastNavFragment(this, tag);
-        int bottomSelectedItem = getBottomNavigationItemId(tag);
-        MenuItem item = bottomNavigationView.getMenu().findItem(bottomSelectedItem);
-        if (item != null) {
-            bottomNavigationView.setOnItemSelectedListener(null);
-            bottomNavigationView.setSelectedItemId(bottomSelectedItem);
-            bottomNavigationView.setOnItemSelectedListener(bottomItemSelectedListener);
+        if (bottomNavigationView != null) {
+            int bottomSelectedItem = getBottomNavigationItemId(tag);
+            MenuItem item = bottomNavigationView.getMenu().findItem(bottomSelectedItem);
+            if (item != null) {
+                bottomNavigationView.setOnItemSelectedListener(null);
+                bottomNavigationView.setSelectedItemId(bottomSelectedItem);
+                bottomNavigationView.setOnItemSelectedListener(bottomItemSelectedListener);
+            }
         }
         loadFragment(createFragmentInstance(tag, args));
     }
