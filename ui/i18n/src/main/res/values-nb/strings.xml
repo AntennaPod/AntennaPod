@@ -351,7 +351,7 @@
   <string name="automation">Automatisering</string>
   <string name="download_pref_details">Detaljer</string>
   <string name="import_export_pref">Importer/Eksporter</string>
-  <string name="import_export_search_keywords">backup, gjenopprett</string>
+  <string name="import_export_search_keywords">sikkerhetskopier, gjenopprett</string>
   <string name="appearance">Utseende</string>
   <string name="external_elements">Eksterne elementer</string>
   <string name="interruptions">Forstyrrelser</string>
@@ -474,8 +474,8 @@
   <string name="open_bug_tracker">Åpne bug-tracker</string>
   <string name="copy_to_clipboard">Kopier til utklippstavle</string>
   <string name="copied_to_clipboard">Kopiert til utklippstavlen</string>
-  <string name="pref_proxy_title">Proxy</string>
-  <string name="pref_proxy_sum">Velg en nettverk-proxy</string>
+  <string name="pref_proxy_title">Mellomtjener</string>
+  <string name="pref_proxy_sum">Velg en mellomtjener</string>
   <string name="pref_no_browser_found">Ingen nettleser funnet.</string>
   <string name="pref_enqueue_downloaded_title">Legg til nedlastede i køen</string>
   <string name="pref_enqueue_downloaded_summary">Legg til nedlastede episoder i køen</string>
@@ -548,12 +548,12 @@
   <string name="deselect_all_label">Opphev alle markeringene</string>
   <string name="opml_export_label">OPML-eksportering</string>
   <string name="html_export_label">HTML eksport</string>
-  <string name="database_export_label">Database-eksportering</string>
+  <string name="database_export_label">Database-eksport</string>
   <string name="automatic_database_export_label">Automatisk eksport av database</string>
-  <string name="automatic_database_export_summary">Opprett en backup av AntennaPod sin database hver 3.dag. Kun behold de 5 siste backupene.</string>
-  <string name="automatic_database_export_error">Feil under automatisk backup</string>
-  <string name="database_import_label">Database-importering</string>
-  <string name="database_import_warning">Å importere en database vil erstatte all dine abonnementer og avspillingshistorie. Det er anbefalt  å eksportere din eksisterende database som backup. Vil du importere nå?</string>
+  <string name="automatic_database_export_summary">Opprett en sikkerhetskopi av AntennaPod sin database hver 3.dag. Kun behold de 5 siste backupene.</string>
+  <string name="automatic_database_export_error">Feil under automatisk sikkerhetskopiering</string>
+  <string name="database_import_label">Database-import</string>
+  <string name="database_import_warning">Å importere en database vil erstatte all dine abonnementer og avspillingshistorie. Det er anbefalt å eksportere din eksisterende database som sikkerhetskopo. Vil du importere nå?</string>
   <string name="please_wait">Vennligst vent…</string>
   <string name="export_error_label">Feil ved eksportering</string>
   <string name="export_success_title">Eksportering vellykket!</string>
@@ -596,9 +596,9 @@
   <string name="auto_enable_change_times">Endre tidsrom</string>
   <string name="sleep_timer_enabled_label">Søvnnedtelling skrudd på</string>
   <!--Synchronisation-->
-  <string name="synchronization_choose_title">Velg synkroniserings-provider</string>
+  <string name="synchronization_choose_title">Velg synkroniseringstilbyder</string>
   <string name="synchronization_summary_unchoosen">Du kan velge mellom forskjellige provider til å synkronisere abonnementene dine og avspillings-status av episoden</string>
-  <string name="dialog_choose_sync_service_title">Velg synkroniserings-provider</string>
+  <string name="dialog_choose_sync_service_title">Velg synkroniseringstilbyder</string>
   <string name="gpodnet_description">Gpodder.net er an open-kildekodet podkast synkroniserings tjeneste som du kan installere på en egen server. Gpodder.net er uavhengig av AntennaPod prosjektet.</string>
   <string name="synchronization_summary_nextcloud">Gpoddersync er en åpen-kildekode app i Nextcloud som du enkelt kan installere på din egen tjener. Appen er uavhengig av AntennaPod prosjektet.</string>
   <string name="synchronization_host_explanation">Du kan velge din egen server for å synkronisere med. Når du har valgt ditt favoritt server, legg til adressen her.</string>
@@ -674,8 +674,8 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">Autentisering</string>
   <string name="authentication_descr">Endre brukernavnet og passordet for denne podkasten og dens episoder</string>
-  <string name="feed_tags_label">Tagger</string>
-  <string name="feed_tags_summary">Endre tagger av podcasten for å organisere abonnementene dine bedre</string>
+  <string name="feed_tags_label">Emneknagger</string>
+  <string name="feed_tags_summary">Endre emneknagger på podkasten for å organisere abonnementene dine bedre</string>
   <string name="feed_folders_include_root">Vis pokasten i hoved lista</string>
   <string name="multi_feed_common_tags_info">Bare vanlige emneknagger fra alle valgte abonnement er synlig. Andre emneknagger blir ikke påvirket.</string>
   <string name="auto_download_settings_label">Innstillinger for automatisk nedlastning</string>

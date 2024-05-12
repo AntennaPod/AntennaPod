@@ -59,6 +59,7 @@
   <string name="deny_label">Άρνηση πρόσβασης</string>
   <string name="open_settings">Άνοιγμα Ρυθμίσεων</string>
   <string name="configure_home">Διαμόρφωση Κεντρικής Σελίδας</string>
+  <string name="section_hidden">Κρυμμένο</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Συνολικό μέγεθος επεισοδίων σε αυτήν τη συσκευή</string>
   <!--Main activity-->
@@ -177,6 +178,7 @@
   <string name="select_all_above">Επιλογή όλων των παραπάνω</string>
   <string name="select_all_below">Επιλογή όλων των παρακάτω</string>
   <string name="filtered_label">Φιλτραρισμένα</string>
+  <string name="refresh_failed_msg">Η τελευταία ανανέωση απέτυχε. Πατήστε για να δείτε λεπτομέρειες.</string>
   <string name="open_podcast">Άνοιγμα Podcast</string>
   <string name="please_wait_for_data">Παρακαλώ περιμένετε τα δεδομένα να φορτώσουν</string>
   <string name="updates_disabled_label">Οι ενημερώσεις απενεργοποιήθηκαν</string>
@@ -188,6 +190,7 @@
   <string name="add_tag">Προσθήκη ετικέτας</string>
   <string name="rename_tag_label">Μετονομασία ετικέτας</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">Η ανανέωση των Podcast μέσω δεδομένων κινητής τηλεφωνίας είναι απενεργοποιημένη στις Ρυθμίσεις.\n\nΕίστε βέβαιος/η ότι θέλετε να ανανεωθούν με τη χρήση δεδομένων κινητής τηλεφωνίας;</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Η εφαρμογή VPN σας προσποιείται ότι είναι ένα κινητό δίκτυο (μετρημένη σύνδεση). Η ανανέωση podcast μέσω σύνδεσης με δεδομένα κινητής τηλεφωνίας είναι απενεργοποιημένη στις ρυθμίσεις.\n\nΘέλετε να γίνει ανανέωση παρ\' όλα αυτά; Αν θέλετε αυτό το πρόβλημα να διορθωθεί, επικοινωνήστε με τους δημιουργούς της VPN εφαρμογής σας.</string>
   <!--actions on feeditems-->
   <string name="download_label">Λήψη</string>
   <plurals name="downloading_batch_label">
@@ -215,7 +218,7 @@
     <item quantity="one">%d επεισόδιο επισημάνθηκε ως αναπαραχθέν</item>
     <item quantity="other">%d επεισόδια επισημάνθηκαν ως αναπαραχθέντα</item>
   </plurals>
-  <string name="mark_unread_label">Επισήμανση ως αναπαραχθέν</string>
+  <string name="mark_unread_label">Επισήμανση ως μη-αναπαραχθέν</string>
   <string name="mark_unread_label_no_media">Επισήμανση ως μη-αναπαραχθέν</string>
   <plurals name="marked_unread_batch_label">
     <item quantity="one">%d επεισόδιο επισημάνθηκε ως μη-αναπαραχθέν</item>
@@ -287,6 +290,7 @@
   <string name="authentication_notification_title">Απαιτείται έλεγχος ταυτότητας</string>
   <string name="confirm_mobile_download_dialog_title">Επιβεβαίωση λήψης μέσω δεδομένων κινητής τηλεφωνίας</string>
   <string name="confirm_mobile_download_dialog_message">Η λήψη μέσω δεδομένων κινητής τηλεφωνίας είναι απενεργοποιημένη στις Ρυθμίσεις. Το AntennaPod θα κατεβάσει αυτόματα το επειδόσιο,αργότερα, όταν συνδεθείτε σε κάποιο δίκτυο Wi-Fi</string>
+  <string name="confirm_mobile_download_dialog_message_vpn">Η εφαρμογή VPN σας προσποιείται ότι είναι ένα κινητό δίκτυο (μετρημένη σύνδεση). Η λήψη μέσω κινητής σύνδεσης δεδομένων απενεργοποιήθηκε στις ρυθμίσεις. Εάν θέλετε να διορθωθεί αυτό το πρόβλημα, επικοινωνήστε με τους δημιουργούς της εφαρμογής VPN σας.</string>
   <string name="confirm_mobile_download_dialog_download_later">Λήψη αργότερα</string>
   <string name="confirm_mobile_download_dialog_allow_this_time">Λήψη τωρα</string>
   <string name="confirm_mobile_streaming_notification_title">Επιβεβαίωση αναπαραγωγής μέσω δεδομένων κινητής τηλεφωνίας</string>
@@ -373,6 +377,8 @@
   <string name="pref_auto_delete_sum">Διαγραφή επεισοδίων όταν η αναπαραγωγή ολοκληρωθεί</string>
   <string name="pref_auto_delete_title">Αυτόματη διαγραφή</string>
   <string name="pref_auto_local_delete_title">Αυτόματη διαγραφή από τοπικούς φάκελους</string>
+  <string name="pref_auto_local_delete_sum">Συμπερίλαβε τοπικούς φακέλους στη λειτουργία αυτόματης διαγραφής.</string>
+  <string name="pref_auto_local_delete_dialog_body">Λάβετε υπόψη ότι για τους τοπικούς φακέλους αυτό θα αφαιρέσει τα επεισόδια από το AntennaPod και θα διαγράψει τα αρχεία πολυμέσων από τον αποθηκευτικό χώρο της συσκευής σας. Δεν μπορούν να ληφθούν ξανά μέσω του AntennaPod. Ενεργοποίηση αυτόματης διαγραφής;</string>
   <string name="pref_smart_mark_as_played_sum">Επισήμανση επεισοδίων ενώ αναπαράγονται ακόμα και εάν απομένουν λιγότερα από συγκεκριμένα δευτερόλεπτα</string>
   <string name="pref_smart_mark_as_played_title">Έξυπνη επισήμανση ως αναπαραχθέν</string>
   <string name="pref_skip_keeps_episodes_sum">Διατήρηση επεισοδίων όταν παραλείπονται</string>
@@ -398,6 +404,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Επανασύνδεση ακουστικών</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Επανασύνδεση Bluetooth</string>
   <string name="pref_stream_over_download_title">Προτιμητέο streaming</string>
+  <string name="pref_stream_over_download_sum">Εμφάνιση κουμπιού ροής αντί για το κουμπί λήψης στις λίστες.</string>
   <string name="pref_mobileUpdate_title">Ενημερώσεις μέσω δεδομένων κινητής τηλεφωνίας</string>
   <string name="pref_mobileUpdate_sum">Επιλογή του τι να επιτρέπεται με σύνδεση δεδομένων κινητής τηλεφωνίας</string>
   <string name="pref_mobileUpdate_refresh">Ανανέωση podcast</string>
@@ -412,11 +419,13 @@
   <string name="pref_tinted_theme_title">Διάφορα χρώματα</string>
   <string name="pref_tinted_theme_message">Προσαρμογή των χρωμάτων εφαρμογής σύμφωνα με το φόντο</string>
   <string name="pref_nav_drawer_items_title">Ορισμός πλαισίων αντικειμένων πλοήγησης</string>
+  <string name="pref_nav_drawer_items_sum">Αλλαγή των στοιχείων που εμφανίζονται στο μενού πλοήγησης.</string>
   <string name="pref_nav_drawer_feed_order_title">Στοιχειοθέτηση σειράς συνδρομών</string>
   <string name="pref_nav_drawer_feed_order_sum">Αλλαγή σειράς συνδρομών</string>
   <string name="pref_nav_drawer_feed_counter_title">Θέστε καταμετρητή συνδορμών</string>
   <string name="pref_nav_drawer_feed_counter_sum">Αλλάξτε τις πληροφορίες που εμφανίζονται δίπλα από τον μετρηρή εγγραφών. Επίσης επηρεάζει την ταξινόμηση των εγγραφών εάν η \"Ταξινόμηση Εγγραφών\" είναι κατά \"Καταμέτρηση\".</string>
   <string name="pref_automatic_download_title">Αυτόματη λήψη</string>
+  <string name="pref_automatic_download_sum">Ρύθμιση της αυτόματης λήψης των επεισοδίων</string>
   <string name="pref_autodl_wifi_filter_title">Ενεργοποίηση Wi-Fi φίλτρου</string>
   <string name="pref_autodl_wifi_filter_sum">Να επιτρέπεται η αυτόματη λήψη μόνο στα επιλεγμένα δίκτυα Wi-Fi.</string>
   <string name="pref_automatic_download_on_battery_title">Λήψη όταν δεν φορτίζει</string>
@@ -448,7 +457,10 @@
   <string name="pref_expandNotify_title">Υψηλή προτεραιότητα ειδοποιήσεων</string>
   <string name="pref_expandNotify_sum">Συνήθως, αυτό διευρύνει την ειδοποίηση ώστε να φαίνονται τα πλήκτρα αναπαραγωγής.</string>
   <string name="pref_persistNotify_title">Πλήκτρα αναπαραγωγής που είναι πάντοτε εμφανίσημα</string>
+  <string name="pref_persistNotify_sum">Διατήρηση ελέγχων ειδοποίησης και ελέγχων κλειδώματος οθόνης κατά τη παύση της αναπαραγωγής</string>
   <string name="pref_compact_notification_buttons_dialog_error_exact">Πρέπει να επιλέξετε ακριβώς δύο αντικείμενα</string>
+  <string name="pref_full_notification_buttons_title">Ορισμός κουμπιών ειδοποίησης</string>
+  <string name="pref_full_notification_buttons_sum">Αλλαγή των κουμπιών στην ειδοποίηση αναπαραγωγής</string>
   <string name="pref_enqueue_location_title">Εισαγωγή τοποθεσίας στην λίστα αναπαραγωγής</string>
   <string name="pref_enqueue_location_sum">Προσθήκη επεισοδίων στο: %1$s</string>
   <string name="enqueue_location_back">Πίσω</string>
@@ -470,11 +482,14 @@
   <string name="pref_skip_silence_title">Παράλειψη σιωπών ήχου</string>
   <string name="behavior">Συμπεριφορά</string>
   <string name="pref_default_page">Προεπιλεγμένη Σελίδα</string>
+  <string name="pref_default_page_sum">Οθόνη που εμφανίζεται κατά την έναρξη του AntennaPod.</string>
   <string name="pref_back_button_opens_drawer">Το κουμπί \'Πίσω\' ανοίγει πλαίσιο</string>
   <string name="pref_back_button_opens_drawer_summary">Η επιλογή του κομπιού \'Πίσω\' στην προεπιλεγμένη σελίδα ανοίγει το πλαίσιο πλοήγησης</string>
   <string name="remember_last_page">Μνημόνευση της τελευταίας σελίδας</string>
   <string name="pref_delete_removes_from_queue_title">Διαγραφή αφαιρεθέντων από τη λίστα αναπαραγωγής</string>
+  <string name="pref_delete_removes_from_queue_sum">Αυτόματη αφαίρεση ενός επεισοδίου από τη λίστα αναπαραγωγής όταν διαγράφεται</string>
   <string name="pref_filter_feed_title">Φίλτρο Συνδρομών</string>
+  <string name="pref_filter_feed_sum">Φιλτράρετε τις συνδρομές σας στο μενού πλοήγησης και στην οθόνη συνδρομών</string>
   <string name="subscriptions_are_filtered">Οι συνδρομές είναι φιλτραρισμένες</string>
   <string name="subscriptions_counter_greater_zero">Μετρητής μεγαλύτερος του μηδενός</string>
   <string name="auto_downloaded">Αυτόματη λήψη</string>
@@ -486,6 +501,7 @@
   <string name="pref_feed_settings_dialog_msg">Αυτή η ρύθμιση είναι μοναδική για κάθε podcast. Μπορείτε να την αλλάξετε ανοίγωντας τη σελίδα του podcast.</string>
   <string name="pref_contribute">Συνείσφερε</string>
   <string name="pref_show_subscription_title">Εμφάνιση τίτλου συνδρομής</string>
+  <string name="pref_show_subscription_title_summary">Εμφάνιση του τίτλου της συνδρομής κάτω από την εικόνα εξωφύλλου</string>
   <string name="pref_new_episodes_action_title">Δράση νέων επεισοδίων</string>
   <string name="pref_new_episodes_action_sum">Τι δράση να πραγματοποιείται με τα νέα επεισόδια</string>
   <!--About screen-->
@@ -526,12 +542,16 @@
   <string name="database_import_summary">Εισαγωγή βάσης δεδομένων του AntennaPod από άλλη συσκευή</string>
   <string name="opml_import_label">Εισαγωγή OPML</string>
   <string name="opml_add_podcast_label">Εισαγωγή λίστας Podcast (OPML)</string>
+  <string name="opml_reader_error">Παρουσιάστηκε σφάλμα κατά την ανάγνωση του αρχείου. Βεβαιωθείτε ότι έχετε πράγματι επιλέξει ένα αρχείο OPML και ότι το αρχείο είναι έγκυρο.</string>
   <string name="opml_import_error_no_file">Δεν έχει επιλεχθεί φάκελος!</string>
   <string name="select_all_label">Επιλογή όλων</string>
   <string name="deselect_all_label">Αποεπιλογή όλων</string>
   <string name="opml_export_label">OPML εξαγωγή</string>
   <string name="html_export_label">Εξαγωγή HTML</string>
   <string name="database_export_label">Εισαγωγή βάσης δεδομένων</string>
+  <string name="automatic_database_export_label">Αυτόματη εξαγωγή βάσης δεδομένων</string>
+  <string name="automatic_database_export_summary">Δημιουργήστε αντίγραφο ασφαλείας της βάσης δεδομένων του AntennaPod κάθε 3 ημέρες. Κρατήστε μόνο τα 5 πιο πρόσφατα αντίγραφα ασφαλείας.</string>
+  <string name="automatic_database_export_error">Σφάλμα κατά την αυτόματη δημιουργία αντιγράφου ασφαλείας της βάσης δεδομένων</string>
   <string name="database_import_label">Εξαγωγή βάσης δεδομένων</string>
   <string name="database_import_warning">Η εισαγωγή βάσης δεδομένων θα αντικαταστήσει όλες τις τρέχουσες συνδρομές και το ιστορικό αναπαραγωγής. Συνίσταται η εξαγωγή της τρέχουσας βάσης δεδομένων ως backup. Επιθυμείτε την αντικατάσταση;</string>
   <string name="please_wait">Παρακαλώ περιμένετε…</string>
@@ -572,6 +592,8 @@
     <item quantity="other">%d μέρες</item>
   </plurals>
   <string name="auto_enable_label">Αυτόματη ενεργοποίηση του χρονοδιακόπτη ύπνου με το πάτημα αναπαραγωγής</string>
+  <string name="auto_enable_label_with_times">Αυτόματη ενεργοποίηση του χρονοδιακόπτη ύπνου κατά το πάτημα του πλήκτρου αναπαραγωγής μεταξύ %1$s και %2$s</string>
+  <string name="auto_enable_change_times">Αλλαγή του χρονικού διαστήματος</string>
   <string name="sleep_timer_enabled_label">Ενεργοποίηση χρονοδιακόπτη ύπνου</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">Επιλέξτε πάροχο συγχρονισμού</string>
@@ -617,7 +639,12 @@
   <string name="pref_pausePlaybackForFocusLoss_sum">Παύση της αναπαραγωγής, αντί της μείωσης έντασης όταν μια άλλη εφαρμογή θέλει να αναπαράξει ήχους</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Παύση για διακοπές</string>
   <!--Rating dialog-->
+  <string name="rating_tagline">Από %1$s, έχετε ακούσει %2$s%3$d%4$s ώρες podcasts.</string>
+  <string name="rating_contribute_label">Θέλετε να συμμετέχετε; Είτε θέλετε να μεταφράσετε, να υποστηρίξετε, να σχεδιάσετε ή να γράψετε κώδικα, θα χαρούμε να σας έχουμε μαζί μας!</string>
+  <string name="rating_contribute_button">Ανακαλύψετε τρόπους να συνεισφέρετε</string>
+  <string name="rating_volunteers_label">Το AntennaPod δημιουργήθηκε από εθελοντές στον ελεύθερο μας χρόνο. Θα χαρούμε αν εκτιμήσετε τη δουλειά μας αφήνοντας μια ωραία αξιολόγηση.</string>
   <string name="rating_rate">Βαθμολογήστε το AntennaPod</string>
+  <string name="rating_later">Αργότερα</string>
   <!--Online feed view-->
   <string name="subscribe_label">Εγγραφή</string>
   <string name="subscribing_label">Εγγραφή...</string>
@@ -632,6 +659,9 @@
   <string name="media_type_video_label">Βίντεο</string>
   <string name="status_downloading_label">Λήψη επεισοδίου</string>
   <string name="in_queue_label">Στην ουρά</string>
+  <string name="is_favorite_label">Επισημάνθηκε ως αγαπημένο</string>
+  <string name="is_inbox_label">Στα εισερχόμενα</string>
+  <string name="is_played">Έχει γίνει αναπαραγωγή</string>
   <string name="load_next_page_label">Τοποθέτηση επόμενης σελίδας</string>
   <string name="position">Θέση: %1$s</string>
   <string name="remaining_time">Χρόνος που απομένει%1$s</string>
@@ -640,12 +670,14 @@
   <string name="prev_chapter">Προηγούμενο κεφάλαιο</string>
   <string name="next_chapter">Επόμενο κεφάλαιο</string>
   <string name="shuffle_suggestions">Αναπαραγωγή προτάσεων</string>
+  <string name="add_preset">Προσθήκη προεπιλογής</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">Πιστοποίηση</string>
   <string name="authentication_descr">Αλλαγή του όνοματος χρήστη και του κωδικόυ πρόσβασής για αυτό το podcast και τα επεισόδια του.</string>
   <string name="feed_tags_label">Ετικέτες</string>
   <string name="feed_tags_summary">Αλλάξτε τις ετικέτες του podcast για να βοηθηθείτε να οργανώσετε τις συνδορμές σας </string>
   <string name="feed_folders_include_root">Εμφάνιση του podcast στην κύρια λίστα</string>
+  <string name="multi_feed_common_tags_info">Εμφανίζονται μόνο οι κοινές ετικέτες από όλες τις επιλεγμένες συνδρομές. Οι άλλες ετικέτες παραμένουν ανέπαφες.</string>
   <string name="auto_download_settings_label">Ρυθμίσεις Αυτόματης Λήψης</string>
   <string name="episode_filters_label">Φίλτρο επεισοδίων</string>
   <string name="episode_filters_description">Λίστα όρων που χρησιμοποιούνται για να αποφασιστεί εάν ένα επεισόδιο θα πρέπει να συμπεριληφθεί ή να αποκλειστεί όταν πραγματοποιείται αυτόματη λήψη</string>
@@ -661,12 +693,25 @@
   <string name="statistics_episodes_on_device">Επεισόδια στη συσκευή:</string>
   <string name="statistics_space_used">Χρησιμοποιηθέν χώρος:</string>
   <string name="statistics_episodes_started_total">Επεισόδια που εκκινήθηκαν/συνολικά:</string>
+  <string name="statistics_expected_next_episode">Αναμενόμενο επόμενο επεισόδιο:</string>
+  <string name="statistics_expected_next_episode_any_day">Οποιαδήποτε στιγμή τώρα</string>
+  <string name="statistics_expected_next_episode_unknown">Άγνωστο</string>
   <string name="statistics_view_all">Εμφάνιση για όλα τα podcast »</string>
   <string name="edit_url_menu">Επεξεργασία URL ροής</string>
   <string name="edit_url_confirmation_msg">Η αλλαγή της διεύθυνσης RSS μπορεί εύκολα να διαταράξει την αναπαραγωγή και τη λίστα επεισοδίων του podcast. ΔΕΝ συνιστούμε την αλλαγή και ΔΕΝ παρέχουμε βοήθεια εάν κάτι πάει στραβα. Η δράση αυτή είναι μη αναστρέψιμη. Μια χαλασμένη συνδρομή ΔΕΝ ΜΠΟΡΕΙ να επιδιορθωθεί απλώς αναιρώντας την προηγούμενη διεύθυνση. Προτείνουμε να δημιουργήσετε αντίγραφο ασφαλείας προτού συνεχίσετε. </string>
   <!--Podcast release schedules-->
   <string name="release_schedule_daily">Καθημερινά</string>
+  <string name="release_schedule_weekdays">κατά τις καθημερινές</string>
   <string name="release_schedule_weekly">Εβδομαδιαία</string>
+  <string name="release_schedule_biweekly">κάθε δύο εβδομάδες</string>
+  <string name="release_schedule_monthly">μηνιαία</string>
+  <string name="release_schedule_monday">Δευ</string>
+  <string name="release_schedule_tuesday">Τρι</string>
+  <string name="release_schedule_wednesday">Τετ</string>
+  <string name="release_schedule_thursday">Πεμ</string>
+  <string name="release_schedule_friday">Παρ</string>
+  <string name="release_schedule_saturday">Σαβ</string>
+  <string name="release_schedule_sunday">Κυρ</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Εισαγωγή συνδρομών από εφαρμογές και μονο...</string>
   <!--Add podcast fragment-->
@@ -675,6 +720,7 @@
   <string name="search_podcastindex_label">Αναζήτηση σε Podcast Index</string>
   <string name="search_fyyd_label">Αναζήτηση σε fyyd</string>
   <string name="advanced">Προχωρημένα</string>
+  <string name="add_podcast_by_url">Προσθήκη podcast με τη διεύθυνση RSS</string>
   <string name="discover">Ανακαλύψτε</string>
   <string name="discover_hide">Απόκρυψη</string>
   <string name="discover_is_hidden">Επιλέξατε να αποκρύψετε τις προτάσεις</string>
@@ -703,6 +749,7 @@
   <string name="not_paused">Χωρίς να βρίσκονται σε παύση αναπαραγωγής</string>
   <string name="hide_played_episodes_label">Αναπαραχθέντα</string>
   <string name="not_played">Μη-αναπαραχθέντα</string>
+  <string name="filename">Όνομα αρχείου</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Συμπερίληψη θέσης αναπαραγωγής</string>
   <string name="share_dialog_episode_website_label">Ιστοσελίδα επεισοδίου</string>

@@ -58,10 +58,10 @@
   <string name="notification_permission_deny_warning">Se disabiliti le notifiche e qualcosa va storto, potresti non essere in grado di individuare la causa del problema.</string>
   <string name="deny_label">Nega</string>
   <string name="open_settings">Apri le impostazioni</string>
-  <string name="configure_home">Configura la schermata Home</string>
-  <string name="section_hidden">Nascosto</string>
+  <string name="configure_home">Configura schermata Home</string>
+  <string name="section_hidden">Nascosti</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Dimensione totale degli episodi sul dispositivo</string>
+  <string name="total_size_downloaded_podcasts">Dimensione totale episodi sul dispositivo</string>
   <!--Main activity-->
   <string name="drawer_open">Apri il menù</string>
   <string name="drawer_close">Chiudi il menù</string>
@@ -278,7 +278,7 @@
   <string name="download_error_not_found">L\'host del server non riesce a trovare il file. Potrebbe essere stato cancellato.</string>
   <string name="download_error_connection_error">Errore di connessione</string>
   <string name="download_error_no_connection">Nessuna connessione di rete</string>
-  <string name="download_error_unknown_host">Impossibile trovare il server. Verifica che l\'indirizzo sia digitato correttamente e la connessione sia funzionante.</string>
+  <string name="download_error_unknown_host">Impossibile trovare il server. Verifica che l\'indirizzo sia digitato correttamente e la connessione funzionante.</string>
   <string name="download_error_unauthorized">Errore di autenticazione. Assicurati che username e password siano corretti.</string>
   <string name="download_error_file_type_type">Errore del tipo di file</string>
   <string name="download_error_forbidden">L\'host del podcast ha rifiutato di rispondere.</string>
@@ -387,13 +387,13 @@
   <string name="button_action_fast_forward">Avanti veloce</string>
   <string name="button_action_rewind">Riavvolgi</string>
   <string name="button_action_skip_episode">Salta l\'episodio</string>
-  <string name="button_action_restart_episode">Riavvia episodio</string>
+  <string name="button_action_restart_episode">Riavvia l\'episodio</string>
   <string name="pref_followQueue_sum">Passa al prossimo episodio in coda al termine della riproduzione</string>
   <string name="pref_auto_delete_sum">Elimina l\'episodio al termine della riproduzione</string>
   <string name="pref_auto_delete_title">Elimina automaticamente</string>
-  <string name="pref_auto_local_delete_title">Eliminazione automatica da cartelle locali</string>
+  <string name="pref_auto_local_delete_title">Auto-eliminazione da cartelle locali</string>
   <string name="pref_auto_local_delete_sum">Includi le cartelle locali nella funzione di eliminazione automatica</string>
-  <string name="pref_auto_local_delete_dialog_body">Nota che per le cartelle locali questa funzione rimuoverà gli episodi da AntennaPod ed eliminerà i file multimediali dallo spazio di archiviazione del tuo dispositivo. Non potranno essere scaricati di nuovo attraverso AntennaPod. Sei sicuro di voler abilitare l\'eliminazione automatica?</string>
+  <string name="pref_auto_local_delete_dialog_body">Ricorda che questa funzione rimuoverà gli episodi da AntennaPod ed eliminerà i file multimediali dallo spazio di archiviazione del tuo dispositivo. Non potranno essere scaricati di nuovo attraverso AntennaPod. Sei sicuro di voler abilitare l\'eliminazione automatica?</string>
   <string name="pref_smart_mark_as_played_sum">Contrassegna gli episodi come riprodotti anche se rimangono alcuni secondi da riprodurre</string>
   <string name="pref_smart_mark_as_played_title">Marcatura intelligente</string>
   <string name="pref_skip_keeps_episodes_sum">Mantiene gli episodi nella coda quando vengono saltati</string>
@@ -701,13 +701,13 @@
   <string name="episode_filters_label">Filtro degli episodi</string>
   <string name="episode_filters_description">Elenco di termini per filtrare gli episodi da includere o escludere dai download automatici.</string>
   <string name="add_term">Aggiungi termine</string>
-  <string name="exclude_terms">Escludi gli episodi che contengono qualsiasi termine qui sotto</string>
-  <string name="include_terms">Includi solo gli episodi che contengono uno dei termini qui sotto</string>
+  <string name="exclude_terms">Escludi episodi che contengono uno dei termini qui sotto</string>
+  <string name="include_terms">Includi solo episodi che contengono uno dei termini qui sotto</string>
   <string name="exclude_episodes_shorter_than">Escludi episodi più brevi di</string>
   <string name="keep_updated">Mantieni aggiornato</string>
   <string name="keep_updated_summary">Includi questo podcast nell\'(auto-)aggiornamento generale</string>
   <string name="auto_download_disabled_globally">Il download automatico è disabilitato nelle impostazioni generali.</string>
-  <string name="statistics_time_played">Tempo di riproduzione:</string>
+  <string name="statistics_time_played">Riprodotto:</string>
   <string name="statistics_total_duration">Durata totale (stimata):</string>
   <string name="statistics_episodes_on_device">Episodi sul dispositivo:</string>
   <string name="statistics_space_used">Spazio utilizzato:</string>

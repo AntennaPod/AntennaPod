@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activity and fragment titles-->
-  <string name="feed_update_receiver_name">به‌روزرسانی اشتراک‌ها</string>
-  <string name="feeds_label">پادکست‌ها</string>
+  <string name="feed_update_receiver_name">به‌روز رسانی اشتراک‌ها</string>
+  <string name="feeds_label">پادپخش‌ها</string>
   <string name="statistics_label">آمار</string>
-  <string name="add_feed_label">افزودن پادکست</string>
+  <string name="add_feed_label">افزودن پادپخش</string>
   <string name="episodes_label">قسمت‌ها</string>
   <string name="home_label">خانه</string>
   <string name="queue_label">صف</string>
@@ -52,13 +52,14 @@
   <string name="home_new_title">ببینید چه مواردی جدید است</string>
   <string name="home_downloads_title">مدیریت موارد بارگیری‌شده</string>
   <string name="home_welcome_title">به آنتناپاد خوش‌آمدید!</string>
-  <string name="home_welcome_text">شما هنوز عضو پادکستی نشده اید. منو برای اضافه کردن پادکست باز نمایید.</string>
+  <string name="home_welcome_text">هنوز مشترک پادپخشی نشده‌اید. گشودن فهرست کناری برای افزودن پادپخش.</string>
   <string name="notification_permission_text">AntennaPod برای نمایش اعلان‌ها به اجازه شما نیاز دارد. به‌طور پیش‌فرض، AntennaPod فقط زمانی که چیزی دانلود شده باشد و یا زمانی که مشکلی پیش می‌آید، اعلان‌ها را نشان می‌دهد.</string>
   <string name="notification_permission_denied">اجازه را رد کردید.</string>
   <string name="notification_permission_deny_warning">اگر اعلان‌ها را غیرفعال کنید و مشکلی پیش بیاید، ممکن است نتوانید علت اشتباه را پیدا کنید.</string>
   <string name="deny_label">رد کردن</string>
   <string name="open_settings">گشودن تنظمیات</string>
   <string name="configure_home">پیکربندی صفحه اصلی</string>
+  <string name="section_hidden">نهفته</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">مجموع اندازهٔ قسمت‌ها روی افزاره</string>
   <!--Main activity-->
@@ -97,7 +98,7 @@
   <string name="global_default">پیش‌گزیدهٔ سرتاسری</string>
   <string name="url_label">URL</string>
   <string name="support_funding_label">حمایت</string>
-  <string name="support_podcast">پشتیبانی از این پادکست</string>
+  <string name="support_podcast">حمایت از این پادپخش</string>
   <string name="error_label">خطا</string>
   <string name="error_msg_prefix">یک خطا رخ داد:</string>
   <string name="refresh_label">تازه کردن</string>
@@ -112,7 +113,7 @@
   <string name="auto_download_label">شامل بارگیری خودکار شود</string>
   <string name="auto_delete_label">حذف خودکار قسمت</string>
   <string name="feed_volume_adapdation">سازگارسازی صدا</string>
-  <string name="feed_volume_adaptation_summary">تغییر حجم صدا برای اپیزودهای این پادکست: %1$s</string>
+  <string name="feed_volume_adaptation_summary">کم و زیاد کردن حجم صدا برای قسمت‌های این پادپخش: %1$s</string>
   <string name="feed_volume_reduction_off">ناسازگاری:</string>
   <string name="feed_volume_reduction_light">کاهش اندازه‌ی روشنایی</string>
   <string name="feed_volume_reduction_heavy">کاهش زیاد</string>
@@ -122,6 +123,7 @@
   <string name="feed_auto_download_always">همیشه</string>
   <string name="feed_auto_download_never">هیچگاه</string>
   <string name="feed_new_episodes_action_add_to_inbox">افزودن به صندوق ورودی</string>
+  <string name="feed_new_episodes_action_add_to_queue">افزودن به صف</string>
   <string name="feed_new_episodes_action_nothing">هیچ</string>
   <string name="episode_cleanup_never">هرگز</string>
   <string name="episode_cleanup_except_favorite_removal">وقتی که جزو علاقه‌مندی‌ها نباشد</string>
@@ -161,22 +163,23 @@
   <string name="multi_select_mark_played_confirmation">لطفاً تأیید کنید که می‌خواهید همه موارد انتخابی را به‌عنوان پخش شده علامت‌گذاری کنید.</string>
   <string name="multi_select_mark_unplayed_confirmation">لطفاً تأیید کنید که می‌خواهید همه موارد انتخابی را به‌عنوان پخش‌نشده علامت‌گذاری کنید.</string>
   <string name="show_info_label">نمایش اطلاعات</string>
-  <string name="show_feed_settings_label">نمایش تنظیمات پادکست</string>
-  <string name="feed_settings_label">تنظیمات پادکست</string>
-  <string name="rename_feed_label">تغییر نام پادکست</string>
-  <string name="remove_feed_label">پاک کردن پادکست</string>
+  <string name="show_feed_settings_label">نمایش تنظیمات پادپخش</string>
+  <string name="feed_settings_label">تنظیمات پادپخش</string>
+  <string name="rename_feed_label">تغییر نام پادپخش</string>
+  <string name="remove_feed_label">برداشتن پادپخش</string>
   <string name="share_label">هم‌رسانی</string>
   <string name="share_file_label">هم‌رسانی پرونده</string>
-  <string name="feed_delete_confirmation_msg">لطفا تأیید کنید که می‌خواهید پادکست «%1$s» و تمامی قسمت‌ها (از جمله قسمت‌های بار گرفته)  و آمارهایش را حذف کنید.</string>
-  <string name="feed_delete_confirmation_msg_batch">لطفا تأیید کنید که می‌خواهید پادکست‌های گزیده و تمامی قسمت‌ها (از جمله قسمت‌های بار گرفته) و آمارهایشان را بردارید.</string>
-  <string name="feed_delete_confirmation_local_msg">لطفا تأیید کنید که می‌خواهید پادکست «%1$s» و آمارهایش را بردارید. پرونده‌ها در شاخهٔ منبع محلّی حذف نخواهند شد.</string>
-  <string name="feed_remover_msg">در حال پاک کردن پادکست</string>
-  <string name="load_complete_feed">تازه‌سازی تمام پادکست</string>
+  <string name="feed_delete_confirmation_msg">لطفا تأیید کنید که می‌خواهید پادپخش «%1$s» و تمامی قسمت‌ها (از جمله قسمت‌های بار گرفته)  و آمارهایش را حذف کنید.</string>
+  <string name="feed_delete_confirmation_msg_batch">لطفا تأیید کنید که می‌خواهید پادپخش‌های گزیده و تمامی قسمت‌ها (از جمله قسمت‌های بار گرفته) و آمارهایشان را بردارید.</string>
+  <string name="feed_delete_confirmation_local_msg">لطفا تأیید کنید که می‌خواهید پادپخش «%1$s» و آمارهایش را بردارید. پرونده‌ها در شاخهٔ منبع محلّی حذف نخواهند شد.</string>
+  <string name="feed_remover_msg">رداشتن پادپخشب</string>
+  <string name="load_complete_feed">نوسازی پادپخش کامل</string>
   <string name="multi_select">چندانتخابی</string>
   <string name="select_all_above">انتخاب همهٔ بالایی‌ها</string>
   <string name="select_all_below">انتخاب همهٔ پایینی‌ها</string>
   <string name="filtered_label">فیلتر شده</string>
-  <string name="open_podcast">گشودن پادکست</string>
+  <string name="refresh_failed_msg">آخرین تازه‌سازی شکست خورد. برای دیدن جزییات بزنید.</string>
+  <string name="open_podcast">گشودن پادپخش</string>
   <string name="please_wait_for_data">لطفا تا زمان دریافت اطلاعات منتظر بمانید</string>
   <string name="updates_disabled_label">به‌روزرسانی‌ها غیر فعال شده است</string>
   <plurals name="updated_feeds_batch_label">
@@ -186,8 +189,8 @@
   <string name="edit_tags">ویرایش برچسب‌ها</string>
   <string name="add_tag">افزودن برچسب</string>
   <string name="rename_tag_label">تغییر نام برچسب</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">بازخوانی پادکست‌ها از طریق اتصال داده تلفن همراه در تنظیمات غیرفعال است.\n\n همچنان می‌خواهید بازخوانی کنید؟</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message_vpn">برنامه VPN شما وانمود می کند که یک شبکه تلفن همراه است (اتصال اندازه گیری شده). بازخوانی پادکست‌ها از طریق اتصال داده تلفن همراه در تنظیمات غیرفعال است.\n\nبه این وجود می‌خواهید ریفرش کنید؟ اگر می خواهید این مشکل برطرف شود، با سازندگان برنامه VPN خود تماس بگیرید.</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">بازخوانی پادپخش‌ها از طریق اتصال داده تلفن همراه در تنظیمات غیرفعال است.\n\n همچنان می‌خواهید بازخوانی کنید؟</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message_vpn">کارهٔ وی‌پی‌انتان وانمود می‌کند شبکه‌ای همراه است (اتّصال اندازه گیری شده). بازخوانی پادپخش‌ها روی دادهٔ همراه در تنظیمات از کار افتاده.\n\nمی‌خواهید به هر حال نوسازی کنید؟ اگر می‌خواهید این مشکل حل شود با سازندگان کارهٔ وی‌پی‌انتان تماس بگیرید.</string>
   <!--actions on feeditems-->
   <string name="download_label">بارگیری</string>
   <plurals name="downloading_batch_label">
@@ -255,20 +258,20 @@
   <string name="download_error_insufficient_space">حجم کافی بر روی دستگاه شما باقی نمانده است.</string>
   <string name="download_error_http_data_error">خطای دادهٔ HTTP</string>
   <string name="download_error_error_unknown">خطای ناشناخته</string>
-  <string name="download_error_parser_exception">سرور پادکست فید پادکست خراب ارسال کرده است.</string>
+  <string name="download_error_parser_exception">کارساز میزبان پادپخش خوراکی خراب فرستاده.</string>
   <string name="download_error_unsupported_type">گونهٔ خوراک پشتیبانی نشده</string>
-  <string name="download_error_unsupported_type_html">سرور میزبان پادکست یک وب سایت ارسال کرده است و نه یک پادکست.</string>
-  <string name="download_error_not_found">کارساز میزبان پادکست نمی‌داند پرونده را کجا بیابد. شاید حذف شده باشد.</string>
+  <string name="download_error_unsupported_type_html">کارساز میزبان پادپخش پایگاه وب فرستاده ،نه پادپخش.</string>
+  <string name="download_error_not_found">کارساز میزبان پادپخش نمی‌داند پرونده را کجا بیابد. شاید حذف شده باشد.</string>
   <string name="download_error_connection_error">خطای اتّصال</string>
   <string name="download_error_no_connection">اتصال برقرار نیست</string>
-  <string name="download_error_unknown_host">سرور پیدا نمی شود. بررسی کنید که آیا آدرس به درستی تایپ شده است و آیا اتصال شبکه به درستی کار میکند.</string>
+  <string name="download_error_unknown_host">نمی‌توان کارساز را یافت. نوشتنه شدن درست نشانی و داشتن اتّصال شبکه‌ای درست را بررسی کنید.</string>
   <string name="download_error_unauthorized">خطای هویت‌سنجی. مطمين شوید نام کاربری و گذرواژه درستند.</string>
   <string name="download_error_file_type_type">خطای گونهٔ پرونده</string>
-  <string name="download_error_forbidden">سرور میزبان پادکست از پاسخ دادن خودداری می کند.</string>
+  <string name="download_error_forbidden">کارساز میزبان پادپخش از پاسخ طفره می‌رود.</string>
   <string name="download_canceled_msg">بارگیری لغو شد</string>
-  <string name="download_error_wrong_size">اتصال به سرور قبل از اتمام بارگیری قطع شده است. </string>
+  <string name="download_error_wrong_size">اتّصال کارساز پیش از کامل شدن بارگیری از دست رفت</string>
   <string name="download_error_blocked">دانلود توسط برنامه دیگری در دستگاه شما مسدود شده است (مانند یک VPN یا مسدودکننده تبلیغات).</string>
-  <string name="download_error_certificate">امکان برقراری یک اتصال امن وجود ندارد. این می تواند به این معنی باشد که برنامه دیگری در دستگاه شما (مانند VPN یا مسدود کننده تبلیغات) بارگیری را مسدود کرده است یا مشکلی در گواهی های سرور وجود دارد.</string>
+  <string name="download_error_certificate">ناتوان در برقراری اتّصالی امن. می‌تواند بدین معنی باشد که کاره‌ای دیگر روی افزاره‌تان (چون وی‌پی‌‌ان یا تبلیغ‌شکن) بارگیری را مسدود کرده یا چیزی در گواهی‌های کارساز اشتباه شده.</string>
   <string name="download_report_title">بارگیری‌ها با خطا(ها) کامل شد</string>
   <string name="download_error_io_error">خطای ورودی و خروجی</string>
   <string name="download_error_request_error">خطای درخواست</string>
@@ -277,13 +280,13 @@
     <item quantity="one">%d بارگیری باقی مانده است</item>
     <item quantity="other">%d بارگیری باقی مانده است</item>
   </plurals>
-  <string name="download_notification_title_feeds">بروز رسانی پادکست ها</string>
+  <string name="download_notification_title_feeds">نو ساختن پادپخش‌ها</string>
   <string name="download_notification_title_episodes">بارگیری قسمت‌ها</string>
   <string name="download_log_title_unknown">عنوان نامعلوم</string>
   <string name="download_type_feed">خوراک</string>
   <string name="download_type_media">پروندهٔ رسانه</string>
-  <string name="null_value_podcast_error">پادکستی که بتواند نمایش داده شود فراهم نشده است.</string>
-  <string name="no_feed_url_podcast_found_by_search">پادکست پیشنهادی پیوند RSS نداشت، AntennaPod پادکستی پیدا کرد که می تواند مطابقت داشته باشد</string>
+  <string name="null_value_podcast_error">پادپخشی که بتواند نمایش داده شود فراهم نشده است.</string>
+  <string name="no_feed_url_podcast_found_by_search">پادپخش پیشنهادی پیوند خوراک نداشت. آنتناپاد پادپخشی یافته که شاید مطابق باشد</string>
   <string name="authentication_notification_title">هویت‌سنجی مورد نیاز است</string>
   <string name="confirm_mobile_download_dialog_title">تأیید بارگیری همراه</string>
   <string name="confirm_mobile_download_dialog_message">بارگیری روی دادهٔ همراه در تنظیمات از کار افتاده. آنتناپاد می‌تواند قسمت را بعداً که وای‌فای موجود بود به صورت خودکار بار بگیرد.</string>
@@ -315,7 +318,7 @@
   <string name="date">تاریخ</string>
   <string name="duration">مدت</string>
   <string name="episode_title">عنوان قسمت</string>
-  <string name="feed_title">عنوان پادکست</string>
+  <string name="feed_title">عنوان پادپخش</string>
   <string name="random">تصادفی</string>
   <string name="smart_shuffle">بر زدن هوشمند</string>
   <string name="size">اندازه</string>
@@ -329,18 +332,18 @@
   <string name="no_items_label">قسمت‌ها را با بارگیری یا فشردن طولانی و گزینش «افزودن به صف» بیفرایید</string>
   <string name="no_shownotes_label">این قسمت هیچ توضیحی ندارد.</string>
   <string name="no_comp_downloads_head_label">قسمت بار گرفته‌ای وجود ندارد</string>
-  <string name="no_comp_downloads_label">می‌توانید قسمت‌ها را در صفحهٔ جزییات پادکست بار بگیرید.</string>
+  <string name="no_comp_downloads_label">می‌توانید قسمت‌ها را در صفحهٔ جزییات پادپخش بار بگیرید.</string>
   <string name="no_log_downloads_head_label">بدون سیاههٔ بارگیری</string>
   <string name="no_log_downloads_label">سیاههٔ بارگیری وقتی که موجود باشد ایجا قرار می‌گیرد.</string>
   <string name="no_history_head_label">بدون تاریخچه</string>
   <string name="no_history_label">پس از گوش دادن به یک قسمت این‌جا ظاهر می‌شود.</string>
   <string name="no_all_episodes_head_label">بدون قسمت</string>
-  <string name="no_all_episodes_label">هنگامی که پادکستی می‌افزایید، قسمت‌ها اینجا نمایش داده می‌شود.</string>
+  <string name="no_all_episodes_label">هنگامی که پادپخشی می‌افزایید، قسمت‌ها این‌جا نمایش داده می‌شوند.</string>
   <string name="no_all_episodes_filtered_label">برای دیدن قسمت‌های بیش‌تر، پالایه را بردارید.</string>
   <string name="no_inbox_head_label">هیچ قسمتی در صندوق ورودی نیست</string>
   <string name="no_inbox_label">هنگام رسیدن قسمت‌های جدید  این‌جا نشان داده خواهند شد. سپس می‌توانید تصمیم بگیرید که به آن‌ها علاقه‌مندید یا نه.</string>
   <string name="no_subscriptions_head_label">بدون اشتراک</string>
-  <string name="no_subscriptions_label">برای اشتراک در یک پادکست، آیکون بعلاوه را زیر را فشار دهید.</string>
+  <string name="no_subscriptions_label">برای اشتراک در یک پادپخش، نقشک مثبت را در زیر بزنید.</string>
   <!--Preferences-->
   <string name="project_pref">پروژه</string>
   <string name="synchronization_pref">هم‌گام‌سازی</string>
@@ -386,7 +389,7 @@
   <string name="playback_pref_sum">کنترل هدفون ، رد کردن فواصل ، صف</string>
   <string name="downloads_pref">بارگیری‌ها</string>
   <string name="downloads_pref_sum">دورهٔ بارگیری، دادهٔ همراه، بارگیری خودکار، حذف خودکار</string>
-  <string name="feed_refresh_title">پادکست ها را بازخوانی کنید</string>
+  <string name="feed_refresh_title">نوسازی پادپخش‌ها</string>
   <string name="feed_refresh_sum">مشخّص کردن دوره‌ای برای گشتن خودکار آنتناپاد به دنبال قسمت‌های جدید</string>
   <string name="feed_refresh_never">هرگز</string>
   <string name="feed_every_hour">هر ساعت</string>
@@ -404,7 +407,7 @@
   <string name="pref_stream_over_download_sum">دکمه پخش جریان را به جای دکمه بارگیری در لیست ها نمایش بده.</string>
   <string name="pref_mobileUpdate_title">به‌روز رسانی‌های همراه</string>
   <string name="pref_mobileUpdate_sum">آنچه که باید از طریق اتصال داده تلفن همراه مجاز است را انتخاب کنید</string>
-  <string name="pref_mobileUpdate_refresh">تازه سازی پادکست</string>
+  <string name="pref_mobileUpdate_refresh">نوسازی پادپخش</string>
   <string name="pref_mobileUpdate_images">تصویر جلد</string>
   <string name="pref_mobileUpdate_auto_download">بارگیری‌های خودکار</string>
   <string name="pref_mobileUpdate_episode_download">بارگیری قسمت</string>
@@ -430,7 +433,7 @@
   <string name="pref_episode_cache_title">انبارهٔ قسمت</string>
   <string name="pref_episode_cache_summary">تعداد کل قسمت‌های بار گرفته‌ٔ انبار شده روی افزاره. بارگیری خودکار در صورت رسیدن به این عدد معلّق خواهد شد.</string>
   <string name="pref_episode_cover_title">استفاده از جلد قسمت</string>
-  <string name="pref_episode_cover_summary">هر زمان که جلد مخصوص قسمت در دسترس بود از آن استفاده کن. در صورت لغو انتخاب ، برنامه همیشه از تصویر جلد پادکست استفاده می کند.</string>
+  <string name="pref_episode_cover_summary">استفاده از طرح جلد مخصوص قسمت در سیاهه‌ها در صورت موجود بودن. اگر تیک نخورد کاره همواره از تصویر جلد پادپخش استفاده خواهد کرد.</string>
   <string name="pref_show_remain_time_title">نمایش زمان مانده</string>
   <string name="pref_show_remain_time_summary">در صورت انتخاب زمان  باقی مانده قسمت ها نمایش داده شود. در صورت عدم انتخاب، مدت کل قسمت ها نمایش داده میشود..</string>
   <string name="pref_theme_title_automatic">خودکار</string>
@@ -438,7 +441,7 @@
   <string name="pref_theme_title_dark">تاریک</string>
   <string name="pref_episode_cache_unlimited">نامحدود</string>
   <string name="pref_playback_speed_sum">سرعتهای موجود برای بازپخش با سرعت متغیر را سفارشی کنید</string>
-  <string name="pref_feed_playback_speed_sum">سرعت شروع  بازپخش صدا برای قسمت‌های این پادکست</string>
+  <string name="pref_feed_playback_speed_sum">سرعت استفاده شده هنگام آغاز پخش صدا برای قسمت‌های این پادپخش</string>
   <string name="pref_feed_skip">پرش خودکار</string>
   <string name="pref_feed_skip_sum">از اجرای قسمت معرفی و پایانی صرف نظر کن.</string>
   <string name="pref_feed_skip_ending">پرش به آخر</string>
@@ -455,7 +458,9 @@
   <string name="pref_expandNotify_sum">معمولاً آگاهی را برای نمایش دکمه های پخش می‌گستراند.</string>
   <string name="pref_persistNotify_title">واپایشگرهای پخش ثابت</string>
   <string name="pref_persistNotify_sum">نگه داشتن آگاهی و واپایش‌های صفحهٔ قفل هنگام مکث پخش.</string>
+  <string name="pref_compact_notification_buttons_dialog_error_exact">باید دقیقاً دو مورد را برگزینید</string>
   <string name="pref_full_notification_buttons_title">تنظیم دکمه های اعلان</string>
+  <string name="pref_full_notification_buttons_sum">تغییر دکمه‌های روی آگاهی پخش</string>
   <string name="pref_enqueue_location_title">مکان صف‌بندی</string>
   <string name="pref_enqueue_location_sum">افزودن قسمت‌ها به : %1$s</string>
   <string name="enqueue_location_back">عقب</string>
@@ -493,7 +498,7 @@
   <string name="not_kept_updated">بروز نگهداری نشد</string>
   <string name="new_episode_notification_enabled">آگاهی به کار افتاده</string>
   <string name="new_episode_notification_disabled">آگاهی از کار افتاده</string>
-  <string name="pref_feed_settings_dialog_msg">این تنظیم برای هر پادکست منحصر به فرد است. با باز کردن صفحه پادکست می توانید آن را تغییر دهید.</string>
+  <string name="pref_feed_settings_dialog_msg">این تنظیمات مختص هر پادپخش است. می‌توان با گشودن صفحهٔ پادپخش تغییرش داد.</string>
   <string name="pref_contribute">مشارکت</string>
   <string name="pref_show_subscription_title">نمایش عنوان اشتراک</string>
   <string name="pref_show_subscription_title_summary">عنوان اشتراک را در زیر تصویر جلد نمایش دهید.</string>
@@ -531,12 +536,12 @@
   <string name="opml">OPML</string>
   <string name="html">HTML</string>
   <string name="html_export_summary">اشتراک های خود را به یک دوست نشان دهید</string>
-  <string name="opml_export_summary">اشتراک های خود را به یک برنامه پادکست دیگر منتقل کنید</string>
-  <string name="opml_import_summary">اشتراک های خود را از برنامه پادکست دیگری وارد کنید</string>
+  <string name="opml_export_summary">جابه‌جایی اشتراک‌هایتان به کارهٔ پادپخشی دیگر</string>
+  <string name="opml_import_summary">درون‌ریزی اشتراک‌هایتان از کارهٔ پادپخشی دیگر</string>
   <string name="database_export_summary">اشتراک ها ، قسمت های گوش داده شده و صف را به آنتن پاد در یک دستگاه دیگر منتقل کنید</string>
   <string name="database_import_summary">پایگاه داده آنتن پاد را از دستگاه دیگری وارد کنید</string>
   <string name="opml_import_label">وارد کردن OPML</string>
-  <string name="opml_add_podcast_label">وارد کردن لیست پادکست (OPML)</string>
+  <string name="opml_add_podcast_label">درون‌ریزی سیاههٔ پادپخس (OPML)</string>
   <string name="opml_reader_error">هنگام خواندن فایل خطایی رخ داده است. مطمئن شوید که واقعاً یک فایل OPML را انتخاب کرده اید و آن فایل معتبر است.</string>
   <string name="opml_import_error_no_file">پرونده‌ای گزیده نشده!</string>
   <string name="select_all_label">انتخاب همه</string>
@@ -544,6 +549,9 @@
   <string name="opml_export_label">خارج کردن OPML</string>
   <string name="html_export_label">خارج کردن HTML</string>
   <string name="database_export_label">خارج کردن پایگاه داده</string>
+  <string name="automatic_database_export_label">برون‌ریزی پایگاه دادهٔ خودکار</string>
+  <string name="automatic_database_export_summary">ایجاد پشتیبانی از آنتناپاد هر ۳ روز یک بار. تنها نگه داشتن ۵ پشتیبان اخیر.</string>
+  <string name="automatic_database_export_error">خطا هنگام پشتیبان گیری خودکار پایگاه داده</string>
   <string name="database_import_label">وارد کردن پایگاه داده</string>
   <string name="database_import_warning">وارد کردن یک پایگاه داده باعث جایگزین تمام اشتراکهای فعلی و سابقه پخش شما خواهد شد. شما باید پایگاه داده فعلی خود را به عنوان پشتیبان خارج کنید. آیا شما میخواهید جایگزین کنید؟</string>
   <string name="please_wait">صبر کنید لطفا ...</string>
@@ -584,25 +592,26 @@
     <item quantity="other">%d روز</item>
   </plurals>
   <string name="auto_enable_label">فعّال سازی خودکار شمارشگر معکوس خواب هنگام زدن پخش</string>
+  <string name="auto_enable_label_with_times">فعّال کردن خودکار شمارشگر خواب هنگام زدن پخش بین %1$s و %2$s</string>
   <string name="auto_enable_change_times">زمان‌های تعویض</string>
   <string name="sleep_timer_enabled_label">زمان‌سنج خواب به کار افتاد</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">گزینش فراهمگر همگام سازی</string>
   <string name="synchronization_summary_unchoosen">می‌توانید فراهمگری را برای همگام سازی اشتراک‌ها و وضعیت پخش قسمت‌هایتان برگزینید</string>
   <string name="dialog_choose_sync_service_title">گزینش فراهمگر همگام سازی</string>
-  <string name="gpodnet_description">Gpodder.net یک سرویس همگام سازی پادکست منبع باز است که می توانید آن را روی سرور خود نصب کنید. Gpodder.net مستقل از پروژه AntennaPod است.</string>
-  <string name="synchronization_summary_nextcloud">Gpoddersync یک اپ متن باز مرتبط با  Nextcloud است که می توانید به راحتی آن را روی سرور خود نصب کنید. این  اپ مستقل از پروژه AntennaPod است.</string>
-  <string name="synchronization_host_explanation">شما می توانید سرور خود را برای همگام سازی با آن انتخاب کنید. هنگامی که سرور همگام سازی ترجیحی خود را شناسایی کردید، لطفاً آدرس آن را در اینجا وارد کنید.</string>
+  <string name="gpodnet_description">جی‌پادر دات نت خدمت همگام‌سازی پادپخش آزادیست که می‌توانید روی کارساز خوتان نصبش کنید. جی‌پادر دات نت مستقل از پروژهٔ آنتناپاد است.</string>
+  <string name="synchronization_summary_nextcloud">جی‌پادرسینک کارهٔ نکست‌کلودی آزاد است که می‌توانید به سادگی روی کارساز خودتان نصبش کنید. این کاره مستقل از پروژهٔ آنتناپاد است.</string>
+  <string name="synchronization_host_explanation">می‌توانید کارساز خودتان را برای همگام‌سازی برگزینید. لطفاً پس از مشخّص کردن کارساز همگام‌سازی ترجیحیتان نشانیش را این‌جا وارد کنید.</string>
   <string name="synchronization_host_label">نشانی کارساز</string>
   <string name="proceed_to_login_butLabel">برای ورود به سیستم اقدام کنید</string>
   <string name="synchronization_nextcloud_authenticate_browser">با استفاده از مرورگر وب باز شده اجازه دسترسی بدهید و به AntennaPod بازگردید.</string>
   <string name="gpodnetauth_login_butLabel">ورود</string>
-  <string name="synchronization_credentials_explanation">لطفا شناسه ورودی حساب خود را در سرور همگام سازی ارائه دهید.</string>
+  <string name="synchronization_credentials_explanation">لطفاً گواهی‌های حسابتان روی کارساز همگام‌سازی را فراهم کنید.</string>
   <string name="gpodnetauth_encryption_warning">رمز عبور و داده ها رمزگذاری نمی شوند!</string>
   <string name="username_label">نام کاربری</string>
   <string name="password_label">گذرواژه</string>
   <string name="synchronization_login_butLabel">وارد شدن</string>
-  <string name="synchronization_selectDevice_explanation">لطفاً دستگاهی را که در سرور همگام سازی ایجاد کرده اید انتخاب کنید یا یک دستگاه جدید ایجاد کنید.</string>
+  <string name="synchronization_selectDevice_explanation">لطفاً افزاره‌ای که روی کارساز همگام‌سازی ایجاد کردید را گزیده یا افزاره‌ای جدید بسازید.</string>
   <string name="gpodnetauth_device_name">نام دستگاه</string>
   <string name="gpodnetauth_device_name_default">AntennaPod برروی %1$s</string>
   <string name="gpodnetauth_existing_devices">دستگاههای موجود</string>
@@ -630,6 +639,12 @@
   <string name="pref_pausePlaybackForFocusLoss_sum">وقتی برنامه دیگری می خواهد صداها را پخش کند ، به جای کاهش میزان صدا ، پخش را متوقف کن</string>
   <string name="pref_pausePlaybackForFocusLoss_title">مکث برای وقفه‌ها</string>
   <!--Rating dialog-->
+  <string name="rating_tagline">از %1$s، %2$s%3$d%4$s ساعت پادپخش پخش کرده‌اید.</string>
+  <string name="rating_contribute_label">می‌خواهید بپیوندید؟ چه بخواهید ترجمه، پشتیبانی، طرّاحی یا کدزنی کنیید از داشتنتان خوشحال خواهیم بود!</string>
+  <string name="rating_contribute_button">کشف راه‌هایی برای مشارکت</string>
+  <string name="rating_volunteers_label">آنتناپاد به دست داوطلبانی در زمان آزادمان توسعه داده شده. خوشحال خواهیم شد اگر با داده رتبه‌بندی خوبی تلاشمان را قدر بدانید.</string>
+  <string name="rating_rate">رتبه‌دهی به آنتناپاد</string>
+  <string name="rating_later">بعداً</string>
   <!--Online feed view-->
   <string name="subscribe_label">اشتراک</string>
   <string name="subscribing_label">مشترک شدن ...</string>
@@ -658,10 +673,11 @@
   <string name="add_preset">اضافه کردن پیش تنظیم</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">احراز هویت</string>
-  <string name="authentication_descr">تغییر نام کاربری و گذرواژه‌تان برای این پادکست و قسمت‌هایش</string>
+  <string name="authentication_descr">تغییر نام کاربری و گذرواژه‌تان برای این پادپخش و قسمت‌هایش</string>
   <string name="feed_tags_label">برچسب‌ها</string>
-  <string name="feed_tags_summary">برای کمک به سازماندهی اشتراک های خود، برچسب های این پادکست را تغییر دهید</string>
+  <string name="feed_tags_summary">تغییر برچسب‌های این پادپخش برای کمک به سازمان‌دهی اشتراک‌هایتان</string>
   <string name="feed_folders_include_root">نمایش این قسمت در سیاههٔ اصلی</string>
+  <string name="multi_feed_common_tags_info">تنها برجسب‌های معمول از تمامی اشتراک‌های گزیده نشان داده می‌شوند. دیگر برچسب‌ها تأثیر نمی‌پذیرند.</string>
   <string name="auto_download_settings_label">تنظیمات بارگیری خودکار</string>
   <string name="episode_filters_label">پالایهٔ قسمت</string>
   <string name="episode_filters_description">لیست اصطلاحاتی که برای تصمیم گیری در مورد درج یا حذف یک قسمت هنگام بارگیری خودکار استفاده می شود</string>
@@ -670,30 +686,46 @@
   <string name="include_terms">فقط قسمت هایی را شامل هر یک از عبارات زیر را نگه دار</string>
   <string name="exclude_episodes_shorter_than">حذف قسمت‌های کوتاه‌تر از</string>
   <string name="keep_updated">به‌روز ماندن</string>
-  <string name="keep_updated_summary">هنگام بازخوانی (خودکار) همه پادکست ها ، این پادکست را وارد کنید</string>
+  <string name="keep_updated_summary">شامل شدن این پادپخش هنگام نوسازی (خودکار) همهٔ پادپخش‌ها</string>
   <string name="auto_download_disabled_globally">بارگیری خودکار در تنظیمات اصلی  آنتن پاد غیرفعال است</string>
   <string name="statistics_time_played">مدت زمان اجرا</string>
   <string name="statistics_total_duration">مدت زمان کل (تخمین):</string>
   <string name="statistics_episodes_on_device">قسمت‌های روی افزاره:</string>
   <string name="statistics_space_used">فضای مورد استفاده:</string>
   <string name="statistics_episodes_started_total">قسمت‌های آغاز شده و مجموع:</string>
-  <string name="statistics_view_all">مشاهده همه پادکست ها »</string>
+  <string name="statistics_expected_next_episode">قسمت بعدی مورد انتظار:</string>
+  <string name="statistics_expected_next_episode_any_day">همین روزها</string>
+  <string name="statistics_expected_next_episode_unknown">نانعلوم</string>
+  <string name="statistics_view_all">مشاهده برای همهٔ پادپخش‌ها »</string>
   <string name="edit_url_menu">URL فید را ویرایش کنید</string>
-  <string name="edit_url_confirmation_msg">تغییر نشانی RSS می تواند به سادگی  وضعیت پخش و سیاهه کردن قسمت‌های پادکست را خراب کند. تغییرش را توصیه نکرده و در صورت بروز مشکل، پشتیبانی فراهم نمی‌کنیم. این عمل بازگشت‌پذیر نیست. اشتراک خراب را نمی توان به سادگی با بازگرداندن نشانی درست کرد. پیشنهاد می‌کنیم پیش از ادامه، پشتیبان بگیرید.</string>
+  <string name="edit_url_confirmation_msg">تغییر نشانی خوراک می‌تواند وضعیت پخش و سیاهه کردن قسمت‌های پادپخش را به سادگی خراب کند. تغییرش را توصیه نکرده و در صورت بروز مشکل، پشتیبانی فراهم نمی‌کنیم. این عمل بازگشت‌پذیر نیست. اشتراک خراب را نمی توان به سادگی با بازگرداندن نشانی درست کرد. پیشنهاد می‌کنیم پیش از ادامه، پشتیبان بگیرید.</string>
   <!--Podcast release schedules-->
+  <string name="release_schedule_daily">ویانه</string>
+  <string name="release_schedule_weekdays">آخر هفته‌ها</string>
+  <string name="release_schedule_weekly">هفتگی</string>
+  <string name="release_schedule_biweekly">دو هفته یک بار</string>
+  <string name="release_schedule_monthly">ماهانه</string>
+  <string name="release_schedule_monday">دو</string>
+  <string name="release_schedule_tuesday">سه</string>
+  <string name="release_schedule_wednesday">چه</string>
+  <string name="release_schedule_thursday">پن</string>
+  <string name="release_schedule_friday">آد</string>
+  <string name="release_schedule_saturday">شن</string>
+  <string name="release_schedule_sunday">یک</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">وارد کردن اشتراک از برنامه های تک منظوره</string>
   <!--Add podcast fragment-->
-  <string name="search_podcast_hint">جستجوی پادکست ...</string>
-  <string name="search_itunes_label">جست‌وجوی پادکست‌های اپل</string>
+  <string name="search_podcast_hint">جست‌.جوی پادپخش…</string>
+  <string name="search_itunes_label">جست‌وجوی پادپخش‌های اپل</string>
   <string name="search_podcastindex_label">جست‌وجوی پادکست ایندکس</string>
   <string name="search_fyyd_label">در fyyd جستجو کن</string>
   <string name="advanced">پیشرفته</string>
+  <string name="add_podcast_by_url">افزودن پادپخش با نشانی خوراک</string>
   <string name="discover">کشف کردن</string>
   <string name="discover_hide">پنهان کردن</string>
   <string name="discover_is_hidden">شما مخفی کردن پیشنهادات را انتخاب کرده اید.</string>
   <string name="discover_more">بیشتر </string>
-  <string name="discover_powered_by_itunes">پیشنهادها از سوی پادکست‌های اپل</string>
+  <string name="discover_powered_by_itunes">پیشنهادها از سوی پادپخش‌های اپل</string>
   <string name="discover_confirm">نمایش پیشنهادات</string>
   <string name="search_powered_by">نتایج توسط %1$s</string>
   <string name="select_country">کشور را انتخاب کنید</string>
@@ -702,7 +734,7 @@
   <string name="local_folder">پوشه محلی</string>
   <string name="reconnect_local_folder">اتصال دوباره پوشه محلی</string>
   <string name="reconnect_local_folder_warning">در صورت عدم پذیرش اجازه ، می توانید این را برای اتصال مجدد  به همان پوشه قبلی استفاده کنید. پوشه دیگری را انتخاب نکنید.</string>
-  <string name="local_feed_description">این پادکست مجازی با افزودن پوشه ای به  آنتن پاد ایجاد شده است.</string>
+  <string name="local_feed_description">این پادپخش مجازی با افزودن شاخه‌ای به آنتنتاپاد ایجاد شده.</string>
   <string name="unable_to_start_system_file_manager">ناتوان در آغاز مدیر پروندهٔ سامانه</string>
   <string name="filter">فیلتر</string>
   <string name="hide_is_favorite_label">مورد علاقه</string>
@@ -751,13 +783,13 @@
   <string name="notification_channel_downloading">درحال بارگیری</string>
   <string name="notification_channel_downloading_description">هنگام بارگیری نشان داده می شود.</string>
   <string name="notification_channel_playing">در حال اجرا</string>
-  <string name="notification_channel_playing_description">دادن اجازهٔ واپایش پخش. این آگاهی اصلی‌ایست که هنگام پخش یک پادکست می‌بینید.</string>
+  <string name="notification_channel_playing_description">دادن اجازهٔ واپایش پخش. این آگاهی اصلی‌ایست که هنگام پخش یک پادپخش می‌بینید.</string>
   <string name="notification_channel_download_error">دانلود ناموفق</string>
   <string name="notification_channel_download_error_description">نمایش به هنگامی که بارگیری یا بروزرسانی فید با شکست مواجه می شود.</string>
   <string name="notification_channel_sync_error">همگام سازی ناموفقیت آمیز</string>
   <string name="notification_channel_sync_error_description">هنگامی که همگام سازی gpodder انجام نشد نشان داده می شود.</string>
   <string name="notification_channel_new_episode">قسمت جدید</string>
-  <string name="notification_channel_new_episode_description">نمایش داده شده هنگام یافتن قسمت جدیدی از یک پادکست، هنگامی که آگاهی ها به کار افتاده اند</string>
+  <string name="notification_channel_new_episode_description">نمایانده هنگام یافتن قسمت جدیدی از یک پادپخش هنگام به کار افتاده بودن آگاهی‌ها</string>
   <!--Widget settings-->
   <string name="widget_settings">تنظیمات ویجت</string>
   <string name="widget_create_button">ایجاد ویجت</string>

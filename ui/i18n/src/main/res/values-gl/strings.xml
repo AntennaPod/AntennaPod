@@ -328,10 +328,10 @@
   <string name="speed_presets">Axustes establecidos</string>
   <string name="preset_already_exists">%1$.2fx xa está gardado como un axuste previo.</string>
   <!--Empty list labels-->
-  <string name="no_items_header_label">Sen episodios na cola</string>
+  <string name="no_items_header_label">Non hai episodios na cola</string>
   <string name="no_items_label">Engade un episodio descargándoo, ou mantén premido un episodio e escolle \"Engadir a cola\".</string>
   <string name="no_shownotes_label">Este episodio non ten notas de episodio.</string>
-  <string name="no_comp_downloads_head_label">Sen episodios descargados</string>
+  <string name="no_comp_downloads_head_label">Non hai episodios descargados</string>
   <string name="no_comp_downloads_label">Podes descargar episodios na pantalla de detalles do podcast.</string>
   <string name="no_log_downloads_head_label">Sen rexistro da descarga</string>
   <string name="no_log_downloads_label">Os rexistros de descarga aparecerán aquí se están dispoñibles.</string>
@@ -340,8 +340,8 @@
   <string name="no_all_episodes_head_label">Sen episodios</string>
   <string name="no_all_episodes_label">Cando engade un podcast, os episodios mostraranse aquí.</string>
   <string name="no_all_episodes_filtered_label">Proba a eliminar o filtro para ver máis episodios.</string>
-  <string name="no_inbox_head_label">Sen episodios novos</string>
-  <string name="no_inbox_label">Cando haxa novos episodios, apareceraán aquí. Entón poderás decidir se son do teu interese ou non.</string>
+  <string name="no_inbox_head_label">Non hai novos episodios</string>
+  <string name="no_inbox_label">Aquí verás os novos episodios que vaian publicándose. Poderás decidir se son do teu interese ou non.</string>
   <string name="no_subscriptions_head_label">Sen subscricións</string>
   <string name="no_subscriptions_label">Para subscribirte a un podcast, preme o botón máis, abaixo.</string>
   <!--Preferences-->
@@ -433,7 +433,7 @@
   <string name="pref_episode_cache_title">Caché de episodios</string>
   <string name="pref_episode_cache_summary">O número total de episodios descargados na caché do dispositivo. A descarga automática suspenderase se se alcanza este número.</string>
   <string name="pref_episode_cover_title">Usar portada do episodio</string>
-  <string name="pref_episode_cover_summary">Usar a capa específica do episodio nas listas cando estivese dispoñible. Sen marcar, a app sempre usará a imaxe de cuberta do podcast.</string>
+  <string name="pref_episode_cover_summary">Usar a cuberta específica do episodio nas listas cando estivese dispoñible. Sen marcar, a app sempre usará a imaxe de cuberta do podcast.</string>
   <string name="pref_show_remain_time_title">Mostrar tempo restante</string>
   <string name="pref_show_remain_time_summary">Se o seleccionas mostrará o tempo restante dos episodios. Se non, mostrará a duración total dos episodios.</string>
   <string name="pref_theme_title_automatic">Automático</string>

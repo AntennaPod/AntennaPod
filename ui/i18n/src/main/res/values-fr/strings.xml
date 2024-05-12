@@ -301,7 +301,7 @@
   <string name="download_type_feed">Flux</string>
   <string name="download_type_media">Fichier média</string>
   <string name="null_value_podcast_error">Aucun podcast correspondant.</string>
-  <string name="no_feed_url_podcast_found_by_search">Le podcast suggéré ne donne pas de lien RSS mais AntennaPod a trouvé un lien qui pourrait correspondre</string>
+  <string name="no_feed_url_podcast_found_by_search">Le podcast suggéré n\'a pas de flux RSS mais AntennaPod a trouvé un lien qui pourrait correspondre</string>
   <string name="authentication_notification_title">Authentification requise</string>
   <string name="confirm_mobile_download_dialog_title">Confirmer le téléchargement avec la connexion mobile</string>
   <string name="confirm_mobile_download_dialog_message">Le téléchargement avec la connexion mobile est désactivé dans les options. AntennaPod peut télécharger l\'épisode automatiquement plus tard quand le Wifi sera disponible.</string>
@@ -565,7 +565,7 @@
   <string name="html_export_label">Exporter un fichier HTML</string>
   <string name="database_export_label">Exporter la base de données</string>
   <string name="automatic_database_export_label">Export automatique de la base de données</string>
-  <string name="automatic_database_export_summary">Créer une sauvegarde de la base de données tous les 3 jours. Seul les 5 dernières sont conservées.</string>
+  <string name="automatic_database_export_summary">Créer une sauvegarde de la base de données tous les 3 jours. Uniquement les 5 dernières sauvegardes seront conservées.</string>
   <string name="automatic_database_export_error">Erreur lors de la sauvegarde automatique de la base de données</string>
   <string name="database_import_label">Importer la base de données</string>
   <string name="database_import_warning">Importer une base de données remplacera tout vos abonnements et votre historique de lecture. Il est conseillé d\'exporter votre base de données actuelle pour avoir une sauvegarde. Confirmez-vous l\'import ?</string>
@@ -712,25 +712,25 @@
   <string name="statistics_episodes_on_device">Épisode(s) sur l\'appareil :</string>
   <string name="statistics_space_used">Espace utilisé :</string>
   <string name="statistics_episodes_started_total">Épisodes démarrés / total :</string>
-  <string name="statistics_expected_next_episode">Estimation sortie prochain épisode :</string>
-  <string name="statistics_expected_next_episode_any_day">Imminente</string>
-  <string name="statistics_expected_next_episode_unknown">Inconnu</string>
+  <string name="statistics_expected_next_episode">Prochain épisode attendu au :</string>
+  <string name="statistics_expected_next_episode_any_day">Imminent, à tout moment</string>
+  <string name="statistics_expected_next_episode_unknown">Inconnu, pas d\'estimation</string>
   <string name="statistics_view_all">Voir les statistiques pour tous les podcasts »</string>
   <string name="edit_url_menu">Modifier le lien</string>
   <string name="edit_url_confirmation_msg">Modifier le lien RSS peut facilement corrompre l\'état de lecture et la liste des épisodes du podcast. Il est recommandé de NE PAS LE CHANGER et AUCUNE AIDE ne pourra être fournie si quelque chose se passe mal. Cette action ne peut pas être annulée. L\'abonnement NE POURRA PAS ÊTRE RÉPARÉ en remettant juste l\'ancien lien. Il est recommandé de CRÉER UNE SAUVEGARDE avant de continuer.</string>
   <!--Podcast release schedules-->
   <string name="release_schedule_daily">tous les jours</string>
-  <string name="release_schedule_weekdays">les weekends</string>
+  <string name="release_schedule_weekdays">tous les weekends</string>
   <string name="release_schedule_weekly">toutes les semaines</string>
   <string name="release_schedule_biweekly">toutes les deux semaines</string>
   <string name="release_schedule_monthly">tous les mois</string>
-  <string name="release_schedule_monday">Lundi</string>
-  <string name="release_schedule_tuesday">Mardi</string>
-  <string name="release_schedule_wednesday">Mercredi</string>
-  <string name="release_schedule_thursday">Jeudi</string>
-  <string name="release_schedule_friday">Vendredi</string>
-  <string name="release_schedule_saturday">Samedi</string>
-  <string name="release_schedule_sunday">Dimanche</string>
+  <string name="release_schedule_monday">lundi</string>
+  <string name="release_schedule_tuesday">mardi</string>
+  <string name="release_schedule_wednesday">mercredi</string>
+  <string name="release_schedule_thursday">jeudi</string>
+  <string name="release_schedule_friday">vendredi</string>
+  <string name="release_schedule_saturday">samedi</string>
+  <string name="release_schedule_sunday">dimanche</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importation des abonnements à partir d\'applications à usage unique...</string>
   <!--Add podcast fragment-->

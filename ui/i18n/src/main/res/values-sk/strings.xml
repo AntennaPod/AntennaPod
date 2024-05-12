@@ -59,6 +59,7 @@
   <string name="deny_label">Odmietnuť</string>
   <string name="open_settings">Otvoriť nastavenia</string>
   <string name="configure_home">Nastaviť domácu obrazovku</string>
+  <string name="section_hidden">Skrytá</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Celková veľkosť epizód na zariadení</string>
   <!--Main activity-->
@@ -443,8 +444,8 @@
   <string name="pref_mobileUpdate_streaming">Streamovanie</string>
   <string name="user_interface_label">Používateľské rozhranie</string>
   <string name="user_interface_sum">Vzhľad, odbery, zamknutá obrazovka</string>
-  <string name="pref_black_theme_title">Úplne čierna</string>
-  <string name="pref_black_theme_message">Pre tmavý motív použiť úplne čiernu</string>
+  <string name="pref_black_theme_title">Úplne čierny</string>
+  <string name="pref_black_theme_message">Pre tmavý vzhľad použiť úplne čiernu</string>
   <string name="pref_tinted_theme_title">Dynamické farby</string>
   <string name="pref_tinted_theme_message">Prispôsobiť farby aplikácie podľa tapety</string>
   <string name="pref_nav_drawer_items_title">Zmeniť navigačný panel</string>
@@ -465,8 +466,8 @@
   <string name="pref_episode_cover_summary">Ak je k dispozícií, použiť v zozname obrázok priamo z epizódy. Ak táto možnost nie je zaškrtnutá, tak sa vždy použije obrázok podcastu.</string>
   <string name="pref_show_remain_time_title">Zobraziť zostávajúci čas</string>
   <string name="pref_show_remain_time_summary">Ak je vybrané, zobrazí sa zostávajúci čas epizódy. Inak sa zobrazí celková dĺžka epizódy.</string>
-  <string name="pref_theme_title_automatic">Automaticky</string>
-  <string name="pref_theme_title_light">Svetlá</string>
+  <string name="pref_theme_title_automatic">Automatický</string>
+  <string name="pref_theme_title_light">Svetlý</string>
   <string name="pref_theme_title_dark">Tmavá</string>
   <string name="pref_episode_cache_unlimited">Bez obmedzenia</string>
   <string name="pref_playback_speed_sum">Upraviť predvybrané možnosti pre prehrávanie zvuku rôznymi rýchlosťami</string>
@@ -492,8 +493,8 @@
   <string name="pref_full_notification_buttons_sum">Zmeniť tlačidlá v upozornení na prehrávanie.</string>
   <string name="pref_enqueue_location_title">Pozícia pridávania do poradia</string>
   <string name="pref_enqueue_location_sum">Pridávať epizódy na: %1$s</string>
-  <string name="enqueue_location_back">Späť</string>
-  <string name="enqueue_location_front">Začiatok</string>
+  <string name="enqueue_location_back">Dozadu</string>
+  <string name="enqueue_location_front">Dopredu</string>
   <string name="enqueue_location_after_current">Za prehrávanú epizódu</string>
   <string name="enqueue_location_random">Náhodne</string>
   <string name="pref_smart_mark_as_played_disabled">Vypnuté</string>

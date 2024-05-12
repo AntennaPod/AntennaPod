@@ -19,7 +19,7 @@
   <string name="cancel_download_label">Annullér overførsel</string>
   <string name="playback_history_label">Afspilningshistorik</string>
   <string name="episode_cache_full_title">Mellemlageret for afsnit er fuldt</string>
-  <string name="episode_cache_full_message">Der er ikke mere plads i mellemlageret for afsnit. Du kan øge størrelsen på mellemlageret i Indstillinger.</string>
+  <string name="episode_cache_full_message">Der er ikke mere plads i mellemlageret. Du kan øge størrelsen på mellemlageret i indstillinger.</string>
   <string name="years_statistics_label">År</string>
   <string name="notification_pref_fragment">Notifikationer </string>
   <string name="current_playing_episode">Nuværende</string>
@@ -42,7 +42,7 @@
   <string name="statistics_filter_all_time">Al tid</string>
   <string name="statistics_filter_past_year">Det seneste år</string>
   <string name="statistics_reset_data">Nulstil statistik</string>
-  <string name="statistics_reset_data_msg">Dette vil slette historikken over hvor meget der er afspillet for alle afsnit. Er du sikker på, at du vil fortsætte?</string>
+  <string name="statistics_reset_data_msg">Dette vil slette historikken over hvor meget, der er afspillet for alle afsnit. Er du sikker på, at du vil fortsætte?</string>
   <string name="statistics_counting_range">Afspillet mellem %1$s og %2$s</string>
   <string name="statistics_counting_total">Afspillet i alt</string>
   <!--Home fragment-->
@@ -52,11 +52,11 @@
   <string name="home_new_title">Se nyheder</string>
   <string name="home_downloads_title">Administrer overførsler</string>
   <string name="home_welcome_title">Velkommen til AntennaPod!</string>
-  <string name="home_welcome_text">Du har endnu ikke abonneret på nogen podcasts. Åbn sidemenuen for at tilføje en podcast.</string>
+  <string name="home_welcome_text">Du abonnerer endnu ikke på nogen podcasts. Åbn sidemenuen for at tilføje en podcast.</string>
   <string name="notification_permission_text">AntennaPod har brug for din tilladelse til at vise notifikationer. Som udgangspunkt viser AntennaPod kun notifikationer, mens noget hentes, eller når noget går galt.</string>
   <string name="notification_permission_denied">Du afviste tilladelsen.</string>
   <string name="notification_permission_deny_warning">Hvis du deaktiverer notifikationer, og noget går galt, kan du måske ikke finde ud af, hvorfor det gik galt.</string>
-  <string name="deny_label">Nægt</string>
+  <string name="deny_label">Afvis</string>
   <string name="open_settings">Åbn indstillinger</string>
   <string name="configure_home">Konfigurer hjemmeskærm</string>
   <string name="section_hidden">Skjult</string>
@@ -789,7 +789,7 @@
   <string name="notification_channel_sync_error">Synkronisering mislykkedes</string>
   <string name="notification_channel_sync_error_description">Vises når gpodder-synkronisering fejler.</string>
   <string name="notification_channel_new_episode">Nyt afsnit</string>
-  <string name="notification_channel_new_episode_description">Vis når et ny afsnit af en podcast blev fundet, hvor notifikationer er aktiveret.</string>
+  <string name="notification_channel_new_episode_description">Vis hvornår et ny afsnit af en podcast blev fundet, hvor notifikationer er aktiveret.</string>
   <!--Widget settings-->
   <string name="widget_settings">Kontrol opsætning</string>
   <string name="widget_create_button">Opret kontrol</string>

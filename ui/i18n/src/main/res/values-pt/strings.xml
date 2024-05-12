@@ -59,6 +59,7 @@
   <string name="deny_label">Recusar</string>
   <string name="open_settings">Abrir definições</string>
   <string name="configure_home">Configurar ecrã inicial</string>
+  <string name="section_hidden">Oculta</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Tamanho total dos episódios no dispositivo</string>
   <!--Main activity-->
@@ -711,6 +712,8 @@
   <string name="statistics_episodes_on_device">Episódios no dispositivo:</string>
   <string name="statistics_space_used">Espaço utilizado:</string>
   <string name="statistics_episodes_started_total">Episódios iniciados/total:</string>
+  <string name="statistics_expected_next_episode">Próximo episódio esperado a:</string>
+  <string name="statistics_expected_next_episode_any_day">Qualquer dia</string>
   <string name="statistics_expected_next_episode_unknown">Desconhecido</string>
   <string name="statistics_view_all">Ver para todos os podcasts »</string>
   <string name="edit_url_menu">Editar URL</string>

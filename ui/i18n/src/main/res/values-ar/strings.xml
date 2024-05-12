@@ -59,6 +59,7 @@
   <string name="deny_label">أرفض</string>
   <string name="open_settings">افتح الإعدادات</string>
   <string name="configure_home">أضبط شاشة المنزل</string>
+  <string name="section_hidden">مخفي</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">الحجم الإجمالي للحلقات على هذا الجهاز</string>
   <!--Main activity-->
@@ -122,6 +123,7 @@
   <string name="feed_auto_download_always">دائما</string>
   <string name="feed_auto_download_never">ابدا</string>
   <string name="feed_new_episodes_action_add_to_inbox">اضف إلى صندوق الوارد</string>
+  <string name="feed_new_episodes_action_add_to_queue">أضف للائحة الاستماع</string>
   <string name="feed_new_episodes_action_nothing">فارغ</string>
   <string name="episode_cleanup_never">ابدا</string>
   <string name="episode_cleanup_except_favorite_removal">عند عدم التفضيل</string>
@@ -200,6 +202,7 @@
   <string name="select_all_above">حدد الكل أعلاه</string>
   <string name="select_all_below">حدد الكل أدناه</string>
   <string name="filtered_label">مصفى</string>
+  <string name="refresh_failed_msg">فشلت آخر عملية تحديث. اضغط لرؤية التفاصيل.</string>
   <string name="open_podcast">افتح البودكاست</string>
   <string name="please_wait_for_data">نرجو الانتظار حتى يتم تحميل البيانات</string>
   <string name="updates_disabled_label">التحديثات موقوفة</string>
