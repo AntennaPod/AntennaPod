@@ -80,7 +80,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * The activity that is shown when the user launches the app.
