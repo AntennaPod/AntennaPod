@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.ListPopupWindow;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
@@ -39,38 +41,40 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.net.download.service.feed.FeedUpdateManagerImpl;
-import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
-import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
-import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
-import de.danoeh.antennapod.ui.common.ThemeSwitcher;
-import de.danoeh.antennapod.ui.screen.drawer.NavigationNames;
-import de.danoeh.antennapod.ui.screen.rating.RatingDialogManager;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.MessageEvent;
-import de.danoeh.antennapod.ui.screen.AddFeedFragment;
-import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
-import de.danoeh.antennapod.ui.screen.playback.audio.AudioPlayerFragment;
-import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
-import de.danoeh.antennapod.ui.screen.download.DownloadLogFragment;
-import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
-import de.danoeh.antennapod.ui.screen.InboxFragment;
-import de.danoeh.antennapod.ui.screen.drawer.NavDrawerFragment;
-import de.danoeh.antennapod.ui.screen.PlaybackHistoryFragment;
-import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
-import de.danoeh.antennapod.ui.screen.SearchFragment;
-import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
-import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.net.download.service.feed.FeedUpdateManagerImpl;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
+import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
+import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.discovery.DiscoveryFragment;
+import de.danoeh.antennapod.ui.preferences.screen.about.SimpleIconListAdapter;
+import de.danoeh.antennapod.ui.screen.AddFeedFragment;
+import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
+import de.danoeh.antennapod.ui.screen.InboxFragment;
+import de.danoeh.antennapod.ui.screen.PlaybackHistoryFragment;
+import de.danoeh.antennapod.ui.screen.SearchFragment;
+import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
+import de.danoeh.antennapod.ui.screen.download.DownloadLogFragment;
+import de.danoeh.antennapod.ui.screen.drawer.NavDrawerFragment;
+import de.danoeh.antennapod.ui.screen.drawer.NavigationNames;
+import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 import de.danoeh.antennapod.ui.screen.home.HomeFragment;
+import de.danoeh.antennapod.ui.screen.playback.audio.AudioPlayerFragment;
+import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
+import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
+import de.danoeh.antennapod.ui.screen.rating.RatingDialogManager;
+import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
 import de.danoeh.antennapod.ui.view.LockableBottomSheetBehavior;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
@@ -78,7 +82,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -496,11 +502,12 @@ public class MainActivity extends CastEnabledActivity {
             item.setIcon(NavigationNames.getDrawable(tag));
         }
         MenuItem moreItem = menu.add(0, R.id.bottom_navigation_more, 0, getString(R.string.searchpreference_more));
-        moreItem.setIcon(R.drawable.ic_arrow_down);
+        moreItem.setIcon(R.drawable.dots_vertical);
         bottomNavigationView.setOnItemSelectedListener(bottomItemSelectedListener);
     }
 
     private final NavigationBarView.OnItemSelectedListener bottomItemSelectedListener = item -> {
+        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         if (item.getItemId() == R.id.bottom_navigation_queue) {
             loadFragment(QueueFragment.TAG, null);
         } else if (item.getItemId() == R.id.bottom_navigation_inbox) {
@@ -517,8 +524,26 @@ public class MainActivity extends CastEnabledActivity {
             loadFragment(SubscriptionFragment.TAG, null);
         } else if (item.getItemId() == R.id.bottom_navigation_home) {
             loadFragment(HomeFragment.TAG, null);
+        } else if (item.getItemId() == R.id.bottom_navigation_more) {
+            final ListPopupWindow listPopupWindow = new ListPopupWindow(this);
+            listPopupWindow.setWidth(600);
+            List<SimpleIconListAdapter.ListItem> sampleData = new ArrayList<>();
+            sampleData.add(new SimpleIconListAdapter.ListItem("etc", null, null));
+            sampleData.add(new SimpleIconListAdapter.ListItem("---", null, null));
+            sampleData.add(new SimpleIconListAdapter.ListItem("Settings", null, null));
+            listPopupWindow.setAnchorView(bottomNavigationView);
+            listPopupWindow.setAdapter(new SimpleIconListAdapter<>(this, sampleData));
+            listPopupWindow.setOnItemClickListener((parent, view, position, id) -> {
+                if (position == 2) {
+                    startActivity(new Intent(this, PreferenceActivity.class));
+                }
+                listPopupWindow.dismiss();
+            });
+            listPopupWindow.setDropDownGravity(Gravity.END | Gravity.BOTTOM);
+            listPopupWindow.setModal(true);
+            listPopupWindow.show();
+            return false;
         }
-        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         return true;
     };
 
