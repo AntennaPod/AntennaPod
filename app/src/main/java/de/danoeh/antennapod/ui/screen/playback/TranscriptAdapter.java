@@ -57,7 +57,7 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
         }
 
         TranscriptSegment seg = media.getTranscript().getSegmentAt(position);
-        holder.itemView.setOnClickListener(v -> {
+        holder.viewContent.setOnClickListener(v -> {
             if (segmentClickListener != null)  {
                 segmentClickListener.onTranscriptClicked(position, seg);
             }
@@ -88,10 +88,19 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
             holder.viewContent.setBackgroundColor(SurfaceColors.getColorForElevation(context, 32 * density));
             holder.viewContent.setAlpha(1.0f);
             holder.viewTimecode.setAlpha(1.0f);
+            holder.viewContent.setAlpha(1.0f);
+            holder.spaceLeft.setBackgroundColor(SurfaceColors.getColorForElevation(context, 32 * density));
+            holder.spaceLeft.setAlpha(1.0f);
+            holder.spaceRight.setBackgroundColor(SurfaceColors.getColorForElevation(context, 32 * density));
+            holder.spaceRight.setAlpha(1.0f);
         } else {
             holder.viewContent.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
             holder.viewContent.setAlpha(0.5f);
             holder.viewTimecode.setAlpha(0.5f);
+            holder.spaceLeft.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
+            holder.spaceRight.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
+            holder.spaceLeft.setAlpha(0.5f);
+            holder.spaceRight.setAlpha(0.5f);
         }
     }
 

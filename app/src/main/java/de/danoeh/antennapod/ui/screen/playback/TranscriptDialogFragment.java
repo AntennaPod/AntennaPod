@@ -21,6 +21,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.TranscriptDialogBinding;
@@ -75,7 +77,7 @@ public class TranscriptDialogFragment extends DialogFragment {
                 .create();
         // Replace the neutral button with a checkbox for following audio
         dialog.setOnShowListener(dialogInterface -> {
-            Button buttonNeutral = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEUTRAL);
+            Button buttonNeutral = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
             ViewGroup viewGroup = (ViewGroup) buttonNeutral.getParent();
             Space space = new Space(getContext());
             viewGroup.removeAllViews();
@@ -83,8 +85,8 @@ public class TranscriptDialogFragment extends DialogFragment {
             viewGroup.addView(space);
             space.setLayoutParams(new LinearLayout.LayoutParams(100, LinearLayout.LayoutParams.MATCH_PARENT));
 
-            Button buttonPositive = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-            Button buttonNegative = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+            Button buttonPositive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            Button buttonNegative = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
             viewGroup.addView(buttonNegative);
             viewGroup.addView(buttonPositive);
         });
@@ -109,6 +111,16 @@ public class TranscriptDialogFragment extends DialogFragment {
             transcriptClicked(pos, segment);
         });
         viewBinding.transcriptList.setAdapter(adapter);
+        viewBinding.transcriptList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    followAudioCheckbox.setChecked(false);
+                }
+            }
+        });
+
 
         return viewBinding.getRoot();
     }
@@ -121,11 +133,8 @@ public class TranscriptDialogFragment extends DialogFragment {
         if (! (controller.getPosition() >= startTime
                 && controller.getPosition() <= endTime)) {
             controller.seekTo((int) startTime);
-
-            if (controller.getStatus() == PlayerStatus.PAUSED
-                    || controller.getStatus() == PlayerStatus.STOPPED) {
-                controller.playPause();
-            }
+            // TODO TT
+            Toast.makeText(getContext(), "Seeking to " + startTime, Toast.LENGTH_SHORT).show();
         } else {
             controller.playPause();
         }

@@ -13,19 +13,35 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:clickable="false"
+        android:defaultFocusHighlightEnabled="false"
+        android:longClickable="false"
         android:textStyle="bold"
         android:textColor="?android:attr/textColorPrimary" />
 
-    <TextView
-        android:id="@+id/content"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minLines="1"
-        android:maxLines="100"
-        android:nestedScrollingEnabled="false"
-        android:selectAllOnFocus="false"
-        android:singleLine="false"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textIsSelectable="false" />
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/spacerLeft"
+            android:layout_width="8dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="1"
+            android:maxLines="100"
+            android:nestedScrollingEnabled="false"
+            android:selectAllOnFocus="false"
+            android:singleLine="false"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textIsSelectable="false" />
+        <TextView
+            android:id="@+id/spacerRight"
+            android:layout_width="8dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
 </LinearLayout>

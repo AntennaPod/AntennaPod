@@ -6,8 +6,8 @@ import java.util.Locale;
 import de.danoeh.antennapod.model.feed.Transcript;
 
 public class TranscriptParser {
-    static final long MIN_SPAN = 50000L; // merge short segments together to form a span of 5 seconds
-    static final long MAX_SPAN = 80000L; // Do go beyond 8 seconds when merging
+    static final long MIN_SPAN = 50000L; // Merge short segments together to form a span of 50 seconds
+    static final long MAX_SPAN = 80000L; // Don't go beyond 80 seconds when merging
 
     public static Transcript parse(String str, String type) {
         if (str == null || StringUtils.isBlank(str)) {
@@ -22,13 +22,5 @@ public class TranscriptParser {
             return SrtTranscriptParser.parse(str);
         }
         return null;
-    }
-
-    public static String secondsToTime(long msecs) {
-        int duration = Math.toIntExact(msecs / 1000L);
-        return String.format(Locale.getDefault(), "%d:%02d:%02d",
-                duration / 3600,
-                (duration % 3600) / 60,
-                (duration % 60));
     }
 }
