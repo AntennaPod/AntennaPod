@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.parser.transcript;
 
 import org.apache.commons.lang3.StringUtils;
-import java.util.Locale;
 
 import de.danoeh.antennapod.model.feed.Transcript;
 

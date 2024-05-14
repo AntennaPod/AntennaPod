@@ -31,7 +31,6 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
 import de.danoeh.antennapod.model.playback.Playable;
-import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.ui.transcript.TranscriptUtils;
 import io.reactivex.Maybe;
@@ -133,7 +132,6 @@ public class TranscriptDialogFragment extends DialogFragment {
         if (! (controller.getPosition() >= startTime
                 && controller.getPosition() <= endTime)) {
             controller.seekTo((int) startTime);
-            // TODO TT
             Toast.makeText(getContext(), "Seeking to " + startTime, Toast.LENGTH_SHORT).show();
         } else {
             controller.playPause();

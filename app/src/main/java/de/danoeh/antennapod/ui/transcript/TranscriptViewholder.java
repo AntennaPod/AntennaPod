@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.ui.transcript;
 
-import android.widget.Space;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
