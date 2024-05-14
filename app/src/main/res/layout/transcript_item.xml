@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingHorizontal="24dp"
-    android:background="?attr/selectableItemBackground"
     android:orientation="vertical">
 
     <TextView
@@ -23,10 +22,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/spacerLeft"
             android:layout_width="8dp"
             android:layout_height="match_parent" />
+
         <TextView
             android:id="@+id/content"
             android:layout_width="match_parent"
@@ -38,10 +39,12 @@
             android:singleLine="false"
             android:textColor="?android:attr/textColorPrimary"
             android:textIsSelectable="false" />
+
         <TextView
             android:id="@+id/spacerRight"
             android:layout_width="8dp"
             android:layout_height="match_parent" />
+
     </LinearLayout>
 
 </LinearLayout>
