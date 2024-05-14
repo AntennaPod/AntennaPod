@@ -67,9 +67,7 @@ public class MediaDownloadedHandler implements Runnable {
             }
             FeedItem item = media.getItem();
             if (item != null && item.getTranscriptUrl() != null) {
-                String transcript = TranscriptUtils.loadTranscriptFromUrl(
-                        item.getTranscriptUrl(),
-                        true);
+                String transcript = TranscriptUtils.loadTranscriptFromUrl(item.getTranscriptUrl(), true);
                 if (!StringUtils.isEmpty(transcript)) {
                     item.setPodcastIndexTranscriptText(transcript);
                     TranscriptUtils.storeTranscript(media, transcript);

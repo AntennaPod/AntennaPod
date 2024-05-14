@@ -27,8 +27,8 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
     private final SegmentClickListener segmentClickListener;
     private final Context context;
     private FeedMedia media;
-    int prevHighlightPosition = -1;
-    int highlightPosition = -1;
+    private int prevHighlightPosition = -1;
+    private int highlightPosition = -1;
 
     public TranscriptAdapter(Context context, SegmentClickListener segmentClickListener) {
         this.context = context;
@@ -38,12 +38,11 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
     @NonNull
     @Override
     public TranscriptViewholder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        return new TranscriptViewholder(
-                TranscriptItemBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false));
+        return new TranscriptViewholder(TranscriptItemBinding.inflate(LayoutInflater.from(context), viewGroup, false));
     }
 
     public void setMedia(Playable media) {
-        if (! (media instanceof FeedMedia)) {
+        if (!(media instanceof FeedMedia)) {
             return;
         }
         this.media = (FeedMedia) media;
@@ -89,18 +88,10 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
             holder.viewContent.setAlpha(1.0f);
             holder.viewTimecode.setAlpha(1.0f);
             holder.viewContent.setAlpha(1.0f);
-            holder.spaceLeft.setBackgroundColor(SurfaceColors.getColorForElevation(context, 32 * density));
-            holder.spaceLeft.setAlpha(1.0f);
-            holder.spaceRight.setBackgroundColor(SurfaceColors.getColorForElevation(context, 32 * density));
-            holder.spaceRight.setAlpha(1.0f);
         } else {
             holder.viewContent.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
             holder.viewContent.setAlpha(0.5f);
             holder.viewTimecode.setAlpha(0.5f);
-            holder.spaceLeft.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
-            holder.spaceRight.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
-            holder.spaceLeft.setAlpha(0.5f);
-            holder.spaceRight.setAlpha(0.5f);
         }
     }
 

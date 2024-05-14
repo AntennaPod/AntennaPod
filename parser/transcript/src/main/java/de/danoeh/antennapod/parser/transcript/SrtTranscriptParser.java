@@ -36,7 +36,7 @@ public class SrtTranscriptParser {
         long spanEndTimecode = -1L;
         long endTimecode = -1L;
         long duration = 0L;
-        Set<String> speakers = new HashSet<String>();
+        Set<String> speakers = new HashSet<>();
 
         while (iter.hasNext()) {
             body = new StringBuilder();
@@ -84,9 +84,7 @@ public class SrtTranscriptParser {
                 if (StringUtils.isNotEmpty(prevSpeaker) && !StringUtils.equals(speaker, prevSpeaker)) {
                     if (StringUtils.isNotEmpty(segmentBody)) {
                         transcript.addSegment(new TranscriptSegment(spanStartTimecode,
-                                spanEndTimecode,
-                                segmentBody,
-                                prevSpeaker));
+                                spanEndTimecode, segmentBody, prevSpeaker));
                         duration = 0L;
                         spanStartTimecode = startTimecode;
                         segmentBody = body.toString();
@@ -102,10 +100,7 @@ public class SrtTranscriptParser {
             segmentBody += " " + body;
             segmentBody = StringUtils.trim(segmentBody);
             if (duration >= TranscriptParser.MIN_SPAN && endTimecode > spanStartTimecode) {
-                transcript.addSegment(new TranscriptSegment(spanStartTimecode,
-                        endTimecode,
-                        segmentBody,
-                        speaker));
+                transcript.addSegment(new TranscriptSegment(spanStartTimecode, endTimecode, segmentBody, speaker));
                 duration = 0L;
                 spanStartTimecode = -1L;
                 segmentBody = "";
@@ -114,10 +109,7 @@ public class SrtTranscriptParser {
 
         if (!StringUtil.isBlank(segmentBody) && endTimecode > spanStartTimecode) {
             segmentBody = StringUtils.trim(segmentBody);
-            transcript.addSegment(new TranscriptSegment(spanStartTimecode,
-                    endTimecode,
-                    segmentBody,
-                    speaker));
+            transcript.addSegment(new TranscriptSegment(spanStartTimecode, endTimecode, segmentBody, speaker));
         }
         if (transcript.getSegmentCount() > 0) {
             transcript.setSpeakers(speakers);

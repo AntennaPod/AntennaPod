@@ -497,8 +497,7 @@ public class AudioPlayerFragment extends Fragment implements
             return true;
         } else if (itemId == R.id.transcript_item) {
             new TranscriptDialogFragment().show(
-                    getActivity().getSupportFragmentManager(),
-                    TranscriptDialogFragment.TAG);
+                    getActivity().getSupportFragmentManager(), TranscriptDialogFragment.TAG);
             return true;
         } else if (itemId == R.id.open_feed_item) {
             if (feedItem != null) {

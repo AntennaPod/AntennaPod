@@ -2,6 +2,7 @@ package de.danoeh.antennapod.parser.transcript;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.internal.StringUtil;
 
@@ -23,18 +24,15 @@ public class JsonTranscriptParser {
             String speaker = "";
             String prevSpeaker = "";
             String segmentBody = "";
-            JSONArray objSegments = null;
-            Set<String> speakers = new HashSet<String>();
+            JSONArray objSegments;
+            Set<String> speakers = new HashSet<>();
 
             try {
                 JSONObject obj = new JSONObject(jsonStr);
                 objSegments = obj.getJSONArray("segments");
-            } catch (org.json.JSONException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
-            }
-
-            if (objSegments == null) {
-                objSegments = new JSONArray(jsonStr);
+                return null;
             }
 
             for (int i = 0; i < objSegments.length(); i++) {
@@ -71,30 +69,21 @@ public class JsonTranscriptParser {
                     }
                 }
 
-                segmentBody += body;
-
+                segmentBody += " " + body;
 
                 if (duration >= TranscriptParser.MIN_SPAN) {
                     // Look ahead and make sure the next segment does not start with an alphanumeric character
-                    if ((i + 1) <= objSegments.length()) {
-                        String nextSegmentFirstChar = "";
-                        try {
-                            nextSegmentFirstChar = objSegments.getJSONObject(i + 1)
-                                    .optString("body")
-                                    .substring(0, 1);
-                            if (!StringUtils.isAlphanumeric(nextSegmentFirstChar)
-                                    && (duration < TranscriptParser.MAX_SPAN)) {
-                                continue;
-                            }
-                        } catch (ArrayIndexOutOfBoundsException e) {
-                            e.printStackTrace();
+                    if ((i + 1) < objSegments.length()) {
+                        String nextSegmentFirstChar = objSegments.getJSONObject(i + 1)
+                                .optString("body")
+                                .substring(0, 1);
+                        if (!StringUtils.isAlphanumeric(nextSegmentFirstChar)
+                                && (duration < TranscriptParser.MAX_SPAN)) {
+                            continue;
                         }
                     }
                     segmentBody = StringUtils.trim(segmentBody);
-                    transcript.addSegment(new TranscriptSegment(segmentStartTime,
-                            endTime,
-                            segmentBody,
-                            speaker));
+                    transcript.addSegment(new TranscriptSegment(segmentStartTime, endTime, segmentBody, speaker));
                     duration = 0L;
                     segmentBody = "";
                     segmentStartTime = -1L;
@@ -113,7 +102,7 @@ public class JsonTranscriptParser {
                 return null;
             }
 
-        } catch (org.json.JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return null;

@@ -3,7 +3,6 @@ package de.danoeh.antennapod.ui.common;
 import android.content.Context;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
-
 import android.util.TypedValue;
 import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;

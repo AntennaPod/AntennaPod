@@ -6,7 +6,7 @@
         android:id="@+id/transcript_item"
         android:icon="@drawable/transcript"
         android:title="@string/show_transcript"
-        custom:showAsAction="always">
+        custom:showAsAction="ifRoom">
     </item>
     <item
         android:id="@+id/add_to_favorites_item"

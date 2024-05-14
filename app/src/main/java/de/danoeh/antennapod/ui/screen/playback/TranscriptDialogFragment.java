@@ -6,14 +6,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
-import android.widget.Space;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,7 +17,6 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.TranscriptDialogBinding;
@@ -49,7 +43,9 @@ public class TranscriptDialogFragment extends DialogFragment {
     private Playable media;
     private Transcript transcript;
     private TranscriptAdapter adapter = null;
-    private CheckBox followAudioCheckbox;
+    private boolean doInitialScroll = true;
+    private LinearSmoothScroller smoothScroller;
+    private LinearLayoutManager layoutManager;
 
     @Override
     public void onResume() {
@@ -57,71 +53,55 @@ public class TranscriptDialogFragment extends DialogFragment {
         params = getDialog().getWindow().getAttributes();
         params.width = WindowManager.LayoutParams.MATCH_PARENT;
         getDialog().getWindow().setAttributes((WindowManager.LayoutParams) params);
-
         super.onResume();
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        followAudioCheckbox = new CheckBox(getContext());
-        followAudioCheckbox.setText(R.string.transcript_follow);
-        followAudioCheckbox.setChecked(true);
-
-        AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
-                .setView(onCreateView(getLayoutInflater()))
-                .setPositiveButton(getString(R.string.close_label), null)
-                .setNegativeButton(getString(R.string.refresh_label), null)
-                .setTitle(R.string.transcript)
-                .create();
-        // Replace the neutral button with a checkbox for following audio
-        dialog.setOnShowListener(dialogInterface -> {
-            Button buttonNeutral = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-            ViewGroup viewGroup = (ViewGroup) buttonNeutral.getParent();
-            Space space = new Space(getContext());
-            viewGroup.removeAllViews();
-            viewGroup.addView(followAudioCheckbox);
-            viewGroup.addView(space);
-            space.setLayoutParams(new LinearLayout.LayoutParams(100, LinearLayout.LayoutParams.MATCH_PARENT));
-
-            Button buttonPositive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            Button buttonNegative = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-            viewGroup.addView(buttonNegative);
-            viewGroup.addView(buttonPositive);
-        });
-        dialog.show();
-        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setVisibility(View.VISIBLE);
-        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(v -> {
-            viewBinding.progLoading.setVisibility(View.VISIBLE);
-            loadMediaInfo(true);
-        });
-        viewBinding.progLoading.setVisibility(View.VISIBLE);
-        return dialog;
-    }
-
-    public View onCreateView(LayoutInflater inflater) {
-        viewBinding = TranscriptDialogBinding.inflate(inflater);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setRecycleChildrenOnDetach(true);
+        viewBinding = TranscriptDialogBinding.inflate(getLayoutInflater());
+        layoutManager = new LinearLayoutManager(getContext());
         viewBinding.transcriptList.setLayoutManager(layoutManager);
 
-        adapter = new TranscriptAdapter(getActivity(), (pos, segment) -> {
-            transcriptClicked(pos, segment);
-        });
+        adapter = new TranscriptAdapter(getContext(), this::transcriptClicked);
         viewBinding.transcriptList.setAdapter(adapter);
         viewBinding.transcriptList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                    followAudioCheckbox.setChecked(false);
+                    viewBinding.followAudioCheckbox.setChecked(false);
                 }
             }
         });
 
+        AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
+                .setView(viewBinding.getRoot())
+                .setPositiveButton(getString(R.string.close_label), null)
+                .setNegativeButton(getString(R.string.refresh_label), null)
+                .setTitle(R.string.transcript)
+                .create();
+        viewBinding.followAudioCheckbox.setChecked(true);
+        dialog.setOnShowListener(dialog1 -> {
+            dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(v -> {
+                viewBinding.progLoading.setVisibility(View.VISIBLE);
+                loadMediaInfo(true);
+            });
+        });
+        viewBinding.progLoading.setVisibility(View.VISIBLE);
+        doInitialScroll = true;
 
-        return viewBinding.getRoot();
+        smoothScroller = new LinearSmoothScroller(getContext()) {
+            @Override
+            protected int getVerticalSnapPreference() {
+                return LinearSmoothScroller.SNAP_TO_START;
+            }
+
+            protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+                return 1000.0F / (float) displayMetrics.densityDpi;
+            }
+        };
+        return dialog;
     }
 
     private void transcriptClicked(int pos, TranscriptSegment segment) {
@@ -129,8 +109,7 @@ public class TranscriptDialogFragment extends DialogFragment {
         long endTime = segment.getEndTime();
 
         scrollToPosition(pos);
-        if (! (controller.getPosition() >= startTime
-                && controller.getPosition() <= endTime)) {
+        if (!(controller.getPosition() >= startTime && controller.getPosition() <= endTime)) {
             controller.seekTo((int) startTime);
             Toast.makeText(getContext(), "Seeking to " + startTime, Toast.LENGTH_SHORT).show();
         } else {
@@ -172,6 +151,7 @@ public class TranscriptDialogFragment extends DialogFragment {
                 this.media = media;
 
                 transcript = TranscriptUtils.loadTranscript((FeedMedia) this.media, forceRefresh);
+                doInitialScroll = true;
                 ((FeedMedia) this.media).setTranscript(transcript);
                 emitter.onSuccess(this.media);
             } else {
@@ -190,8 +170,7 @@ public class TranscriptDialogFragment extends DialogFragment {
         }
         this.media = media;
 
-        FeedMedia feedMedia = (FeedMedia) media;
-        if (!feedMedia.hasTranscript()) {
+        if (!((FeedMedia) media).hasTranscript()) {
             dismiss();
             Toast.makeText(getContext(), R.string.no_transcript_label, Toast.LENGTH_LONG).show();
             return;
@@ -205,31 +184,20 @@ public class TranscriptDialogFragment extends DialogFragment {
         }
     }
 
-    public void scrollToPosition(Integer pos) {
-        if (pos == null || pos <= 0) {
+    public void scrollToPosition(int pos) {
+        if (pos <= 0) {
             return;
         }
-        final LinearSmoothScroller smoothScroller = new LinearSmoothScroller(getContext()) {
-            @Override
-            protected int getVerticalSnapPreference() {
-                return LinearSmoothScroller.SNAP_TO_START;
-            }
+        if (!viewBinding.followAudioCheckbox.isChecked() && !doInitialScroll) {
+            return;
+        }
+        doInitialScroll = false;
 
-            protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
-                return 1000.0F / (float) displayMetrics.densityDpi;
-            }
-        };
-        int scrollPosition = ((LinearLayoutManager) viewBinding.transcriptList.getLayoutManager())
-                .findFirstVisibleItemPosition();
-        if (Math.abs(scrollPosition - pos) > 5) {
-            if (followAudioCheckbox.isChecked()) {
-                viewBinding.transcriptList.scrollToPosition(pos - 1);
-            }
+        if (Math.abs(layoutManager.findFirstVisibleItemPosition() - pos) > 5) { // Quick scroll
+            viewBinding.transcriptList.scrollToPosition(pos - 1);
         }
-        if (followAudioCheckbox.isChecked()) {
-            smoothScroller.setTargetPosition(pos - 1);
-            viewBinding.transcriptList.getLayoutManager().startSmoothScroll(smoothScroller);
-        }
+        smoothScroller.setTargetPosition(pos - 1);
+        viewBinding.transcriptList.getLayoutManager().startSmoothScroll(smoothScroller);
     }
 
     @Override

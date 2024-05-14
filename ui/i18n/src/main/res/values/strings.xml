@@ -120,7 +120,6 @@
     <string name="refresh_label">Refresh</string>
     <string name="chapters_label">Chapters</string>
     <string name="no_chapters_label">No chapters</string>
-    <string name="no_transcript_label">No transcript</string>
     <string name="chapter_duration">Duration: %1$s</string>
     <string name="description_label">Description</string>
     <string name="shownotes_label">Shownotes</string>
@@ -259,6 +258,9 @@
     </plurals>
     <string name="add_to_favorite_label">Add to favorites</string>
     <string name="show_transcript">Show transcript</string>
+    <string name="transcript">Transcript</string>
+    <string name="transcript_follow">Follow audio</string>
+    <string name="no_transcript_label">No transcript</string>
     <string name="remove_from_favorite_label">Remove from favorites</string>
     <string name="visit_website_label">Visit website</string>
     <string name="skip_episode_label">Skip episode</string>
@@ -856,5 +858,4 @@
     <string name="shortcut_subscription_label">Subscription shortcut</string>
     <string name="shortcut_select_subscription">Select subscription</string>
     <string name="add_shortcut">Add shortcut</string>
-    <string name="transcript">Transcript</string>
 </resources>
