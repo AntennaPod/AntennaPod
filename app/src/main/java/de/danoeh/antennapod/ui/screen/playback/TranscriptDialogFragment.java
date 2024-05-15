@@ -111,7 +111,6 @@ public class TranscriptDialogFragment extends DialogFragment {
         scrollToPosition(pos);
         if (!(controller.getPosition() >= startTime && controller.getPosition() <= endTime)) {
             controller.seekTo((int) startTime);
-            Toast.makeText(getContext(), "Seeking to " + startTime, Toast.LENGTH_SHORT).show();
         } else {
             controller.playPause();
         }

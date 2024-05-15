@@ -20,7 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 public class TranscriptUtils {
     private static final String TAG = "Transcript";
 
-    public static String loadTranscriptFromUrl(String url, boolean forceRefresh) {
+    public static String loadTranscriptFromUrl(String url, boolean forceRefresh) throws InterruptedIOException {
         if (forceRefresh) {
             return loadTranscriptFromUrl(url, CacheControl.FORCE_NETWORK);
         }
@@ -32,7 +32,7 @@ public class TranscriptUtils {
         return str;
     }
 
-    private static String loadTranscriptFromUrl(String url, CacheControl cacheControl) {
+    private static String loadTranscriptFromUrl(String url, CacheControl cacheControl) throws InterruptedIOException {
         StringBuilder str = new StringBuilder();
         Response response = null;
 
@@ -48,7 +48,7 @@ public class TranscriptUtils {
             }
         } catch (InterruptedIOException e) {
             Log.d(TAG, "InterruptedIOException while downloading transcript URL " + url.toString());
-            return null;
+            throw e;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -60,7 +60,7 @@ public class TranscriptUtils {
         return str.toString();
     }
 
-    public static Transcript loadTranscript(FeedMedia media, Boolean forceRefresh) {
+    public static Transcript loadTranscript(FeedMedia media, Boolean forceRefresh) throws InterruptedIOException {
         String transcriptType = media.getItem().getTranscriptType();
 
         if (!forceRefresh && media.getItem().getTranscript() != null) {
@@ -70,7 +70,7 @@ public class TranscriptUtils {
         if (!forceRefresh && media.getTranscriptFileUrl() != null) {
             File transcriptFile = new File(media.getTranscriptFileUrl());
             try {
-                if (transcriptFile != null && transcriptFile.exists()) {
+                if (transcriptFile.exists()) {
                     String t = FileUtils.readFileToString(transcriptFile, (String) null);
                     if (StringUtils.isNotEmpty(t)) {
                         media.setTranscript(TranscriptParser.parse(t, transcriptType));
@@ -94,11 +94,8 @@ public class TranscriptUtils {
         File transcriptFile = new File(media.getTranscriptFileUrl());
         FileOutputStream ostream = null;
         try {
-            if (transcriptFile.exists()) {
-                Boolean status = transcriptFile.delete();
-                if (! status) {
-                    Log.e(TAG, "Failed to delete existing transcript file " + transcriptFile.getAbsolutePath());
-                }
+            if (transcriptFile.exists() && !transcriptFile.delete()) {
+                Log.e(TAG, "Failed to delete existing transcript file " + transcriptFile.getAbsolutePath());
             }
             if (transcriptFile.createNewFile()) {
                 ostream = new FileOutputStream(transcriptFile);
