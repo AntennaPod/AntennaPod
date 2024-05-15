@@ -84,6 +84,8 @@ public class TranscriptDialogFragment extends DialogFragment {
         dialog.setOnShowListener(dialog1 -> {
             dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(v -> {
                 viewBinding.progLoading.setVisibility(View.VISIBLE);
+                v.setClickable(false);
+                v.setEnabled(false);
                 loadMediaInfo(true);
             });
         });
@@ -171,6 +173,8 @@ public class TranscriptDialogFragment extends DialogFragment {
         ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.INVISIBLE);
         if (!TextUtils.isEmpty(((FeedMedia) media).getItem().getTranscriptUrl())) {
             ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.VISIBLE);
+            ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE).setEnabled(true);
+            ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE).setClickable(true);
         }
     }
 
