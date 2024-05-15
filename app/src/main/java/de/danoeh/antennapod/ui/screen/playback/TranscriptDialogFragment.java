@@ -44,7 +44,6 @@ public class TranscriptDialogFragment extends DialogFragment {
     private Transcript transcript;
     private TranscriptAdapter adapter = null;
     private boolean doInitialScroll = true;
-    private LinearSmoothScroller smoothScroller;
     private LinearLayoutManager layoutManager;
 
     @Override
@@ -91,16 +90,7 @@ public class TranscriptDialogFragment extends DialogFragment {
         viewBinding.progLoading.setVisibility(View.VISIBLE);
         doInitialScroll = true;
 
-        smoothScroller = new LinearSmoothScroller(getContext()) {
-            @Override
-            protected int getVerticalSnapPreference() {
-                return LinearSmoothScroller.SNAP_TO_START;
-            }
 
-            protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
-                return 1000.0F / (float) displayMetrics.densityDpi;
-            }
-        };
         return dialog;
     }
 
@@ -115,6 +105,7 @@ public class TranscriptDialogFragment extends DialogFragment {
             controller.playPause();
         }
         adapter.notifyItemChanged(pos);
+        viewBinding.followAudioCheckbox.setChecked(true);
     }
 
     @Override
@@ -192,11 +183,23 @@ public class TranscriptDialogFragment extends DialogFragment {
         }
         doInitialScroll = false;
 
-        if (Math.abs(layoutManager.findFirstVisibleItemPosition() - pos) > 5) { // Quick scroll
+        boolean quickScroll = Math.abs(layoutManager.findFirstVisibleItemPosition() - pos) > 5;
+        if (quickScroll) {
             viewBinding.transcriptList.scrollToPosition(pos - 1);
+            // Additionally, smooth scroll, so that currently active segment is on top of screen
         }
+        LinearSmoothScroller smoothScroller = new LinearSmoothScroller(getContext()) {
+            @Override
+            protected int getVerticalSnapPreference() {
+                return LinearSmoothScroller.SNAP_TO_START;
+            }
+
+            protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+                return (quickScroll ? 200 : 1000) / (float) displayMetrics.densityDpi;
+            }
+        };
         smoothScroller.setTargetPosition(pos - 1);
-        viewBinding.transcriptList.getLayoutManager().startSmoothScroll(smoothScroller);
+        layoutManager.startSmoothScroll(smoothScroller);
     }
 
     @Override
