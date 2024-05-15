@@ -37,17 +37,17 @@ public class TranscriptUtils {
         Response response = null;
 
         try {
-            Log.d(TAG, "Downloading transcript URL " + url.toString());
+            Log.d(TAG, "Downloading transcript URL " + url);
             Request request = new Request.Builder().url(url).cacheControl(cacheControl).build();
             response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
             if (response.isSuccessful() && response.body() != null) {
-                Log.d(TAG, "Done Downloading transcript URL " + url.toString());
+                Log.d(TAG, "Done Downloading transcript URL " + url);
                 str.append(response.body().string());
             } else {
-                Log.d(TAG, "Error Downloading transcript URL " + url.toString() + response.message());
+                Log.d(TAG, "Error Downloading transcript URL " + url + ": " + response.message());
             }
         } catch (InterruptedIOException e) {
-            Log.d(TAG, "InterruptedIOException while downloading transcript URL " + url.toString());
+            Log.d(TAG, "InterruptedIOException while downloading transcript URL " + url);
             throw e;
         } catch (Exception e) {
             e.printStackTrace();
