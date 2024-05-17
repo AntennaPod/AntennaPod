@@ -497,6 +497,7 @@ public class MainActivity extends CastEnabledActivity {
         MenuItem moreItem = menu.add(0, R.id.bottom_navigation_more, 0, getString(R.string.searchpreference_more));
         moreItem.setIcon(R.drawable.dots_vertical);
         bottomNavigationView.setOnItemSelectedListener(bottomItemSelectedListener);
+        bottomNavigationView.getOrCreateBadge(R.id.bottom_navigation_inbox).setNumber(42);
     }
 
     private final NavigationBarView.OnItemSelectedListener bottomItemSelectedListener = item -> {
