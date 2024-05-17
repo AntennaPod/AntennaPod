@@ -63,6 +63,7 @@ public class NavigationDrawerTest {
 
         EspressoTestUtils.clearPreferences();
         EspressoTestUtils.clearDatabase();
+        UserPreferences.setBottomNavigationEnabled(false);
     }
 
     @After
@@ -144,7 +145,7 @@ public class NavigationDrawerTest {
     public void testGoToPreferences() {
         activityRule.launchActivity(new Intent());
         openNavDrawer();
-        onView(withText(R.string.settings_label)).perform(click());
+        onDrawerItem(withText(R.string.settings_label)).perform(click());
         intended(hasComponent(PreferenceActivity.class.getName()));
     }
 
@@ -171,7 +172,7 @@ public class NavigationDrawerTest {
         UserPreferences.setHiddenDrawerItems(hidden);
         activityRule.launchActivity(new Intent());
         openNavDrawer();
-        onView(first(withText(R.string.queue_label))).perform(longClick());
+        onDrawerItem(withText(R.string.queue_label)).perform(longClick());
 
         onView(withText(R.string.queue_label)).perform(click());
         onView(withId(R.id.contentPanel)).perform(swipeUp());
@@ -192,7 +193,7 @@ public class NavigationDrawerTest {
         String[] titles = activityRule.getActivity().getResources().getStringArray(R.array.nav_drawer_titles);
 
         openNavDrawer();
-        onView(first(withText(R.string.queue_label))).perform(longClick());
+        onDrawerItem(withText(R.string.queue_label)).perform(longClick());
         for (int i = 0; i < titles.length; i++) {
             String title = titles[i];
             onView(allOf(withText(title), isDisplayed())).perform(click());
@@ -219,7 +220,7 @@ public class NavigationDrawerTest {
         onView(withText(R.string.downloads_label)).perform(click());
         openNavDrawer();
 
-        onView(first(withText(R.string.queue_label))).perform(longClick());
+        onDrawerItem(withText(R.string.queue_label)).perform(longClick());
         onView(withId(R.id.contentPanel)).perform(swipeUp());
         onView(first(withText(R.string.downloads_label))).perform(click());
         onView(withText(R.string.confirm_label)).perform(click());

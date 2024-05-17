@@ -740,6 +740,10 @@ public abstract class UserPreferences {
         return prefs.getBoolean(PREF_BOTTOM_NAVIGATION, BuildConfig.DEBUG); // Enabled by default in debug version
     }
 
+    public static void setBottomNavigationEnabled(boolean enabled) {
+        prefs.edit().putBoolean(PREF_BOTTOM_NAVIGATION, enabled).apply();
+    }
+
     public static boolean timeRespectsSpeed() {
         return prefs.getBoolean(PREF_TIME_RESPECTS_SPEED, false);
     }
