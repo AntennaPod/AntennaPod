@@ -39,7 +39,6 @@
                 android:background="?android:attr/colorBackground"
                 android:elevation="8dp"
                 android:visibility="gone"
-                app:paddingBottomSystemWindowInsets="true"
                 app:layout_behavior="de.danoeh.antennapod.ui.view.LockableBottomSheetBehavior" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -342,15 +341,8 @@ public class MainActivity extends CastEnabledActivity {
     private void updateInsets() {
         setPlayerVisible(findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE);
         int playerHeight = (int) getResources().getDimension(R.dimen.external_player_height);
-
-        if (bottomNavigationView != null) {
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) bottomNavigationView.getLayoutParams();
-            layoutParams.bottomMargin = navigationBarInsets.bottom;
-            bottomNavigationView.setLayoutParams(layoutParams);
-            sheetBehavior.setPeekHeight(playerHeight);
-        } else {
-            sheetBehavior.setPeekHeight(playerHeight + navigationBarInsets.bottom);
-        }
+        findViewById(R.id.main_view).setPadding(0, 0, 0, navigationBarInsets.bottom);
+        sheetBehavior.setPeekHeight(playerHeight);
     }
 
     public void setPlayerVisible(boolean visible) {
