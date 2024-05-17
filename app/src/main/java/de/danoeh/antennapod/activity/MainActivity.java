@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.ListPopupWindow;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -58,7 +59,6 @@ import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.discovery.DiscoveryFragment;
-import de.danoeh.antennapod.ui.preferences.screen.about.SimpleIconListAdapter;
 import de.danoeh.antennapod.ui.screen.AddFeedFragment;
 import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
 import de.danoeh.antennapod.ui.screen.InboxFragment;
@@ -66,6 +66,7 @@ import de.danoeh.antennapod.ui.screen.PlaybackHistoryFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
 import de.danoeh.antennapod.ui.screen.download.DownloadLogFragment;
+import de.danoeh.antennapod.ui.screen.drawer.BottomNavigationMoreAdapter;
 import de.danoeh.antennapod.ui.screen.drawer.NavDrawerFragment;
 import de.danoeh.antennapod.ui.screen.drawer.NavigationNames;
 import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
@@ -424,12 +425,12 @@ public class MainActivity extends CastEnabledActivity {
         NavDrawerFragment.saveLastNavFragment(this, tag);
         if (bottomNavigationView != null) {
             int bottomSelectedItem = getBottomNavigationItemId(tag);
-            MenuItem item = bottomNavigationView.getMenu().findItem(bottomSelectedItem);
-            if (item != null) {
-                bottomNavigationView.setOnItemSelectedListener(null);
-                bottomNavigationView.setSelectedItemId(bottomSelectedItem);
-                bottomNavigationView.setOnItemSelectedListener(bottomItemSelectedListener);
+            if (bottomNavigationView.getMenu().findItem(bottomSelectedItem) == null) {
+                bottomSelectedItem = R.id.bottom_navigation_more;
             }
+            bottomNavigationView.setOnItemSelectedListener(null);
+            bottomNavigationView.setSelectedItemId(bottomSelectedItem);
+            bottomNavigationView.setOnItemSelectedListener(bottomItemSelectedListener);
         }
         loadFragment(createFragmentInstance(tag, args));
     }
@@ -508,44 +509,46 @@ public class MainActivity extends CastEnabledActivity {
 
     private final NavigationBarView.OnItemSelectedListener bottomItemSelectedListener = item -> {
         sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        if (item.getItemId() == R.id.bottom_navigation_queue) {
-            loadFragment(QueueFragment.TAG, null);
-        } else if (item.getItemId() == R.id.bottom_navigation_inbox) {
-            loadFragment(InboxFragment.TAG, null);
-        } else if (item.getItemId() == R.id.bottom_navigation_episodes) {
-            loadFragment(AllEpisodesFragment.TAG, null);
-        } else if (item.getItemId() == R.id.bottom_navigation_downloads) {
-            loadFragment(CompletedDownloadsFragment.TAG, null);
-        } else if (item.getItemId() == R.id.bottom_navigation_history) {
-            loadFragment(PlaybackHistoryFragment.TAG, null);
-        } else if (item.getItemId() == R.id.bottom_navigation_addfeed) {
-            loadFragment(AddFeedFragment.TAG, null);
-        } else if (item.getItemId() == R.id.bottom_navigation_subscriptions) {
-            loadFragment(SubscriptionFragment.TAG, null);
-        } else if (item.getItemId() == R.id.bottom_navigation_home) {
-            loadFragment(HomeFragment.TAG, null);
-        } else if (item.getItemId() == R.id.bottom_navigation_more) {
-            final ListPopupWindow listPopupWindow = new ListPopupWindow(this);
-            listPopupWindow.setWidth(600);
-            List<SimpleIconListAdapter.ListItem> sampleData = new ArrayList<>();
-            sampleData.add(new SimpleIconListAdapter.ListItem("etc", null, null));
-            sampleData.add(new SimpleIconListAdapter.ListItem("---", null, null));
-            sampleData.add(new SimpleIconListAdapter.ListItem("Settings", null, null));
-            listPopupWindow.setAnchorView(bottomNavigationView);
-            listPopupWindow.setAdapter(new SimpleIconListAdapter<>(this, sampleData));
-            listPopupWindow.setOnItemClickListener((parent, view, position, id) -> {
-                if (position == 2) {
-                    startActivity(new Intent(this, PreferenceActivity.class));
-                }
-                listPopupWindow.dismiss();
-            });
-            listPopupWindow.setDropDownGravity(Gravity.END | Gravity.BOTTOM);
-            listPopupWindow.setModal(true);
-            listPopupWindow.show();
+        if (item.getItemId() == R.id.bottom_navigation_more) {
+            showBottomNavigationMorePopup();
             return false;
+        } else {
+            loadFragment(getBottomNavigationFragmentTag(item.getItemId()), null);
+            return true;
         }
-        return true;
     };
+
+    private void showBottomNavigationMorePopup() {
+        String[] tags = new String[] {AllEpisodesFragment.TAG, CompletedDownloadsFragment.TAG,
+                PlaybackHistoryFragment.TAG, AddFeedFragment.TAG};
+        final List<MenuItem> popupMenuItems = new ArrayList<>();
+        for (String tag : tags) {
+            MenuItem item = new MenuBuilder(this).add(0, getBottomNavigationItemId(tag),
+                    0, getString(NavigationNames.getLabel(tag)));
+            item.setIcon(NavigationNames.getDrawable(tag));
+            popupMenuItems.add(item);
+        }
+        MenuItem item = new MenuBuilder(this).add(0, R.id.bottom_navigation_settings,
+                0, getString(R.string.settings_label));
+        item.setIcon(R.drawable.ic_settings);
+        popupMenuItems.add(item);
+
+        final ListPopupWindow listPopupWindow = new ListPopupWindow(this);
+        listPopupWindow.setWidth(600);
+        listPopupWindow.setAnchorView(bottomNavigationView);
+        listPopupWindow.setAdapter(new BottomNavigationMoreAdapter(this, popupMenuItems));
+        listPopupWindow.setOnItemClickListener((parent, view, position, id) -> {
+            if (position == tags.length) {
+                startActivity(new Intent(this, PreferenceActivity.class));
+            } else {
+                loadFragment(getBottomNavigationFragmentTag(popupMenuItems.get(position).getItemId()), null);
+            }
+            listPopupWindow.dismiss();
+        });
+        listPopupWindow.setDropDownGravity(Gravity.END | Gravity.BOTTOM);
+        listPopupWindow.setModal(true);
+        listPopupWindow.show();
+    }
 
     private int getBottomNavigationItemId(String tag) {
         switch (tag) {
@@ -567,6 +570,27 @@ public class MainActivity extends CastEnabledActivity {
             default:
                 return R.id.bottom_navigation_home;
         }
+    }
+
+    private String getBottomNavigationFragmentTag(int id) {
+        if (id == R.id.bottom_navigation_queue) {
+            return QueueFragment.TAG;
+        } else if (id == R.id.bottom_navigation_inbox) {
+            return InboxFragment.TAG;
+        } else if (id == R.id.bottom_navigation_episodes) {
+            return AllEpisodesFragment.TAG;
+        } else if (id == R.id.bottom_navigation_downloads) {
+            return CompletedDownloadsFragment.TAG;
+        } else if (id == R.id.bottom_navigation_history) {
+            return PlaybackHistoryFragment.TAG;
+        } else if (id == R.id.bottom_navigation_addfeed) {
+            return AddFeedFragment.TAG;
+        } else if (id == R.id.bottom_navigation_subscriptions) {
+            return SubscriptionFragment.TAG;
+        } else if (id == R.id.bottom_navigation_home) {
+            return HomeFragment.TAG;
+        }
+        return null;
     }
 
     @Override
