@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -341,8 +342,19 @@ public class MainActivity extends CastEnabledActivity {
     private void updateInsets() {
         setPlayerVisible(findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE);
         int playerHeight = (int) getResources().getDimension(R.dimen.external_player_height);
-        findViewById(R.id.main_view).setPadding(0, 0, 0, navigationBarInsets.bottom);
-        sheetBehavior.setPeekHeight(playerHeight);
+
+        if (bottomNavigationView != null) {
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+            layoutParams.bottomMargin = navigationBarInsets.bottom;
+            bottomNavigationView.setLayoutParams(layoutParams);
+            sheetBehavior.setPeekHeight(playerHeight);
+        } else {
+            sheetBehavior.setPeekHeight(playerHeight + navigationBarInsets.bottom);
+            FragmentContainerView mainView = findViewById(R.id.navDrawerFragment);
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mainView.getLayoutParams();
+            int bottomInset = navigationBarInsets.bottom;
+            params.setMargins(navigationBarInsets.left, 0, navigationBarInsets.right, bottomInset);
+        }
     }
 
     public void setPlayerVisible(boolean visible) {
@@ -364,6 +376,7 @@ public class MainActivity extends CastEnabledActivity {
         playerParams.setMargins(navigationBarInsets.left, 0, navigationBarInsets.right, 0);
         playerView.setLayoutParams(playerParams);
         findViewById(R.id.audioplayerFragment).setVisibility(visible ? View.VISIBLE : View.GONE);
+        findViewById(R.id.audioplayerFragment).setPadding(0, 0, 0, bottomInset);
     }
 
     public RecyclerView.RecycledViewPool getRecycledViewPool() {
