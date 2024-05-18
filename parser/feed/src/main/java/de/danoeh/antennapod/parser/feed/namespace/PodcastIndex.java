@@ -14,6 +14,8 @@ public class PodcastIndex extends Namespace {
     private static final String URL = "url";
     private static final String FUNDING = "funding";
     private static final String CHAPTERS = "chapters";
+    private static final String TRANSCRIPT = "transcript";
+    private static final String TYPE = "type";
 
     @Override
     public SyndElement handleElementStart(String localName, HandlerState state,
@@ -27,6 +29,12 @@ public class PodcastIndex extends Namespace {
             String href = attributes.getValue(URL);
             if (!TextUtils.isEmpty(href)) {
                 state.getCurrentItem().setPodcastIndexChapterUrl(href);
+            }
+        } else if (TRANSCRIPT.equals(localName)) {
+            String href = attributes.getValue(URL);
+            String type = attributes.getValue(TYPE);
+            if (!TextUtils.isEmpty(href) && !TextUtils.isEmpty(type)) {
+                state.getCurrentItem().setTranscriptUrl(type, href);
             }
         }
         return new SyndElement(localName, this);

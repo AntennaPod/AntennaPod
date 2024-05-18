@@ -119,6 +119,14 @@ public class DBWriter {
             media.setLocalFileUrl(null);
             localDelete = true;
         } else if (media.getLocalFileUrl() != null) {
+            // delete transcript file before the media file because the fileurl is needed
+            if (media.getTranscriptFileUrl() != null) {
+                File transcriptFile = new File(media.getTranscriptFileUrl());
+                if (transcriptFile.exists() && !transcriptFile.delete()) {
+                    Log.d(TAG, "Deletion of transcript file failed.");
+                }
+            }
+
             // delete downloaded media file
             File mediaFile = new File(media.getLocalFileUrl());
             if (mediaFile.exists() && !mediaFile.delete()) {
