@@ -57,6 +57,6 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:labelVisibilityMode="unlabeled" />
+        app:labelVisibilityMode="selected" />
 
 </LinearLayout>
