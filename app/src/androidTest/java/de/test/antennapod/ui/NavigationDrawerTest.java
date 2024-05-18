@@ -145,7 +145,7 @@ public class NavigationDrawerTest {
     public void testGoToPreferences() {
         activityRule.launchActivity(new Intent());
         openNavDrawer();
-        onDrawerItem(withText(R.string.settings_label)).perform(click());
+        onView(withText(R.string.settings_label)).perform(click());
         intended(hasComponent(PreferenceActivity.class.getName()));
     }
 
