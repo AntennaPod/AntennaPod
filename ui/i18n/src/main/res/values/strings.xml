@@ -445,7 +445,7 @@
     <string name="pref_tinted_theme_title">Dynamic colors</string>
     <string name="pref_tinted_theme_message">Adapt app colors based on the wallpaper</string>
     <string name="bottom_navigation">Bottom navigation</string>
-    <string name="bottom_navigation_summary">Access the most important screens from everywhere, in a single tap. Needs app restart.</string>
+    <string name="bottom_navigation_summary">Access the most important screens from everywhere, in a single tap</string>
     <string name="pref_nav_drawer_items_title">Set navigation drawer items</string>
     <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer</string>
     <string name="pref_nav_drawer_feed_order_title">Set subscription order</string>

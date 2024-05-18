@@ -654,7 +654,9 @@ public class MainActivity extends CastEnabledActivity {
         super.onResume();
         handleNavIntent();
 
-        if (lastTheme != ThemeSwitcher.getNoTitleTheme(this)) {
+        boolean hasBottomNavigation = bottomNavigationView != null;
+        if (lastTheme != ThemeSwitcher.getNoTitleTheme(this)
+                || hasBottomNavigation != UserPreferences.isBottomNavigationEnabled()) {
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
