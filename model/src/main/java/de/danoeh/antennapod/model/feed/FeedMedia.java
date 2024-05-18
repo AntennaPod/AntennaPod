@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.Nullable;
+
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
 import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
@@ -519,5 +520,26 @@ public class FeedMedia implements Playable {
             return null;
         }
         return getLocalFileUrl() + ".transcript";
+    }
+
+    public void setTranscript(Transcript t) {
+        if (item == null)  {
+            return;
+        }
+        item.setTranscript(t);
+    }
+
+    public Transcript getTranscript() {
+        if (item == null)  {
+            return null;
+        }
+        return item.getTranscript();
+    }
+
+    public Boolean hasTranscript() {
+        if (item == null)  {
+            return false;
+        }
+        return item.hasTranscript();
     }
 }

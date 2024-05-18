@@ -171,7 +171,7 @@ public class FeedItem implements Serializable {
         if (other.podcastIndexChapterUrl != null) {
             podcastIndexChapterUrl = other.podcastIndexChapterUrl;
         }
-        if (other.getPodcastIndexTranscriptUrl() != null) {
+        if (other.getTranscriptUrl() != null) {
             podcastIndexTranscriptUrl = other.podcastIndexTranscriptUrl;
         }
     }
@@ -425,15 +425,15 @@ public class FeedItem implements Serializable {
         podcastIndexChapterUrl = url;
     }
 
-    public void setPodcastIndexTranscriptUrl(String type, String url) {
+    public void setTranscriptUrl(String type, String url) {
         updateTranscriptPreferredFormat(type, url);
     }
 
-    public String getPodcastIndexTranscriptUrl() {
+    public String getTranscriptUrl() {
         return podcastIndexTranscriptUrl;
     }
 
-    public String getPodcastIndexTranscriptType() {
+    public String getTranscriptType() {
         return podcastIndexTranscriptType;
     }
 
@@ -459,7 +459,6 @@ public class FeedItem implements Serializable {
                 }
                 break;
             default:
-                System.out.println("Invalid format for transcript " + type);
                 break;
         }
     }
@@ -478,6 +477,10 @@ public class FeedItem implements Serializable {
 
     public String setPodcastIndexTranscriptText(String str) {
         return podcastIndexTranscriptText = str;
+    }
+
+    public boolean hasTranscript() {
+        return (podcastIndexTranscriptUrl != null);
     }
 
     @NonNull

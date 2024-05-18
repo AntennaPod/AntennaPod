@@ -101,8 +101,8 @@ public class RssParserTest {
     public void testPodcastIndexTranscript() throws Exception {
         File feedFile = FeedParserTestHelper.getFeedFile("feed-rss-testPodcastIndexTranscript.xml");
         Feed feed = FeedParserTestHelper.runFeedParser(feedFile);
-        assertEquals("https://podnews.net/audio/podnews231011.mp3.json", feed.getItems().get(0).getPodcastIndexTranscriptUrl());
-        assertEquals("application/json", feed.getItems().get(0).getPodcastIndexTranscriptType());
+        assertEquals("https://podnews.net/audio/podnews231011.mp3.json", feed.getItems().get(0).getTranscriptUrl());
+        assertEquals("application/json", feed.getItems().get(0).getTranscriptType());
     }
 
     @Test
