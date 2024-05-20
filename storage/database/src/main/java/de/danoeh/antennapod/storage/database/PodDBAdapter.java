@@ -693,7 +693,7 @@ public class PodDBAdapter {
             db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(item.getId())});
             item.setPlayed(played == FeedItem.PLAYED);
 
-            if (resetMediaPosition) {
+            if (resetMediaPosition && item.hasMedia()) {
                 values.clear();
                 values.put(KEY_POSITION, 0);
                 db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
