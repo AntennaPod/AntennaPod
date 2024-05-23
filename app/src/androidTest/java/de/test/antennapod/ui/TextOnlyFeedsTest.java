@@ -27,7 +27,6 @@ import static de.test.antennapod.EspressoTestUtils.onDrawerItem;
 import static de.test.antennapod.EspressoTestUtils.openNavDrawer;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
 import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.not;
 
 /**
  * Test UI for feeds that do not have media files
