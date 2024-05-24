@@ -127,7 +127,6 @@
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto downloads</string>
-    <string name="auto_delete_label">Auto delete episode</string>
     <string name="feed_volume_adapdation">Volume adaptation</string>
     <string name="feed_volume_adaptation_summary">Turn volume for episodes of this podcast up or down: %1$s</string>
     <string name="feed_volume_reduction_off">No adaption</string>
@@ -399,8 +398,10 @@
     <string name="button_action_skip_episode">Skip episode</string>
     <string name="button_action_restart_episode">Restart episode</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
-    <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
-    <string name="pref_auto_delete_title">Auto delete</string>
+    <string name="pref_auto_delete_playback_sum">Delete episode when playback completes</string>
+    <string name="pref_auto_delete_playback_title">Delete after playing</string>
+    <string name="pref_auto_delete_title">Automatic deletion</string>
+    <string name="pref_auto_delete_sum">Delete episodes after playing or when automatic download needs space</string>
     <string name="pref_auto_local_delete_title">Auto delete from local folders</string>
     <string name="pref_auto_local_delete_sum">Include local folders in Auto delete functionality</string>
     <string name="pref_auto_local_delete_dialog_body">Note that for local folders this will remove episodes from AntennaPod and delete their media files from your device storage. They cannot be downloaded again through AntennaPod. Enable auto delete?</string>

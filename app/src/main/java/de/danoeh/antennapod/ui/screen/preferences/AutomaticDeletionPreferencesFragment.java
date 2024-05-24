@@ -25,7 +25,7 @@ public class AutomaticDeletionPreferencesFragment extends PreferenceFragmentComp
     @Override
     public void onStart() {
         super.onStart();
-        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.auto_delete_label);
+        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.pref_auto_delete_title);
     }
 
     private void checkItemVisibility(boolean autoDeleteEnabled) {

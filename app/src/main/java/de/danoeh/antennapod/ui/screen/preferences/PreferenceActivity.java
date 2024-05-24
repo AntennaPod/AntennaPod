@@ -109,7 +109,7 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
         } else if (preferences == R.xml.preferences_swipe) {
             return R.string.swipeactions_label;
         } else if (preferences == R.xml.preferences_auto_deletion) {
-            return R.string.auto_delete_label;
+            return R.string.pref_auto_delete_title;
         }
         return R.string.settings_label;
     }

@@ -46,7 +46,7 @@
         android:icon="@drawable/ic_delete"
         android:key="autoDelete"
         android:summary="@string/global_default"
-        android:title="@string/auto_delete_label" />
+        android:title="@string/pref_auto_delete_playback_title" />
 
     <de.danoeh.antennapod.ui.screen.feed.preferences.VolumeAdaptationPreference
         android:defaultValue="off"
