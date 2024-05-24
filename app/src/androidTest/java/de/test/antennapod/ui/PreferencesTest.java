@@ -175,10 +175,10 @@ public class PreferencesTest {
         clickPreference(R.string.downloads_pref);
         onView(withText(R.string.pref_auto_delete_title)).perform(click());
         final boolean autoDelete = UserPreferences.isAutoDelete();
-        onView(withText(R.string.pref_auto_delete_title)).perform(click());
+        onView(withText(R.string.pref_auto_delete_playback_title)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> autoDelete != UserPreferences.isAutoDelete());
-        onView(withText(R.string.pref_auto_delete_title)).perform(click());
+        onView(withText(R.string.pref_auto_delete_playback_title)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> autoDelete == UserPreferences.isAutoDelete());
     }
@@ -187,7 +187,7 @@ public class PreferencesTest {
     public void testAutoDeleteLocal() {
         clickPreference(R.string.downloads_pref);
         onView(withText(R.string.pref_auto_delete_title)).perform(click());
-        onView(withText(R.string.pref_auto_delete_title)).perform(click());
+        onView(withText(R.string.pref_auto_delete_playback_title)).perform(click());
         assertTrue(UserPreferences.isAutoDelete());
         assertFalse(UserPreferences.isAutoDeleteLocal());
 
