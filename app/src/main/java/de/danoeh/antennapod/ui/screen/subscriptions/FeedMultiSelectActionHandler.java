@@ -96,7 +96,7 @@ public class FeedMultiSelectActionHandler {
 
     private void autoDeleteEpisodesPrefHandler() {
         PreferenceListDialog preferenceListDialog = new PreferenceListDialog(activity,
-                activity.getString(R.string.auto_delete_label));
+                activity.getString(R.string.pref_auto_delete_playback_title));
         String[] items = activity.getResources().getStringArray(R.array.spnAutoDeleteItems);
         preferenceListDialog.openDialog(items);
         preferenceListDialog.setOnPreferenceChangedListener(which -> {

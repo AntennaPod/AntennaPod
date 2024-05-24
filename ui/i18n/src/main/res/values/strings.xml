@@ -127,7 +127,6 @@
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto downloads</string>
-    <string name="auto_delete_label">Auto delete episode</string>
     <string name="feed_volume_adapdation">Volume adaptation</string>
     <string name="feed_volume_adaptation_summary">Turn volume for episodes of this podcast up or down: %1$s</string>
     <string name="feed_volume_reduction_off">No adaption</string>
@@ -390,7 +389,7 @@
     <string name="preference_search_hint">Search…</string>
     <string name="preference_search_no_results">No results</string>
     <string name="preference_search_clear_history">Clear history</string>
-    <string name="pref_episode_cleanup_title">Episode cleanup</string>
+    <string name="pref_episode_cleanup_title">Delete before auto download</string>
     <string name="pref_episode_cleanup_summary">Episodes that should be eligible for removal if Auto Download needs space for new episodes</string>
     <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth are disconnected</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Resume playback when the headphones are reconnected</string>
@@ -404,8 +403,10 @@
     <string name="button_action_skip_episode">Skip episode</string>
     <string name="button_action_restart_episode">Restart episode</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
-    <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
-    <string name="pref_auto_delete_title">Auto delete</string>
+    <string name="pref_auto_delete_playback_sum">Delete episode when playback completes</string>
+    <string name="pref_auto_delete_playback_title">Delete after playing</string>
+    <string name="pref_auto_delete_title">Automatic deletion</string>
+    <string name="pref_auto_delete_sum">Delete episodes after playing or when automatic download needs space</string>
     <string name="pref_auto_local_delete_title">Auto delete from local folders</string>
     <string name="pref_auto_local_delete_sum">Include local folders in Auto delete functionality</string>
     <string name="pref_auto_local_delete_dialog_body">Note that for local folders this will remove episodes from AntennaPod and delete their media files from your device storage. They cannot be downloaded again through AntennaPod. Enable auto delete?</string>
@@ -460,8 +461,8 @@
     <string name="pref_autodl_wifi_filter_sum">Allow automatic download only for selected Wi-Fi networks.</string>
     <string name="pref_automatic_download_on_battery_title">Download when not charging</string>
     <string name="pref_automatic_download_on_battery_sum">Allow automatic download when the battery is not charging</string>
-    <string name="pref_episode_cache_title">Episode cache</string>
-    <string name="pref_episode_cache_summary">Total number of downloaded episodes cached on the device. Automatic download will be suspended if this number is reached.</string>
+    <string name="pref_episode_cache_title">Episode limit</string>
+    <string name="pref_episode_cache_summary">Automatic download is stopped if this number is reached</string>
     <string name="pref_episode_cover_title">Use episode cover</string>
     <string name="pref_episode_cover_summary">Use the episode specific cover in lists whenever available. If unchecked, the app will always use the podcast cover image.</string>
     <string name="pref_show_remain_time_title">Show remaining time</string>
