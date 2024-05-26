@@ -1,0 +1,26 @@
+plugins {
+    id("com.android.library")
+}
+apply from: "../../common.gradle"
+apply from: "../../playFlavor.gradle"
+
+android {
+    namespace "de.danoeh.antennapod.ui.discovery"
+}
+
+dependencies {
+    implementation project(":event")
+    implementation project(":model")
+    implementation project(':net:discovery')
+    implementation project(':storage:database')
+    implementation project(':ui:app-start-intent')
+    implementation project(':ui:common')
+
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation "com.google.android.material:material:$googleMaterialVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    implementation "org.greenrobot:eventbus:$eventbusVersion"
+}

@@ -1,0 +1,35 @@
+plugins {
+    id("com.android.library")
+}
+apply from: "../../../common.gradle"
+apply from: "../../../playFlavor.gradle"
+
+android {
+    namespace "de.danoeh.antennapod.net.sync.service"
+}
+
+dependencies {
+    implementation project(':event')
+    implementation project(':model')
+    implementation project(':net:common')
+    implementation project(':net:sync:gpoddernet')
+    implementation project(':net:sync:service-interface')
+    implementation project(':storage:database')
+    implementation project(':storage:preferences')
+    implementation project(':ui:notifications')
+    implementation project(':ui:i18n')
+    implementation project(':net:download:service-interface')
+
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "androidx.core:core:$coreVersion"
+    implementation "androidx.work:work-runtime:$workManagerVersion"
+
+    implementation "org.greenrobot:eventbus:$eventbusVersion"
+    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation "com.google.guava:guava:31.0.1-android"
+
+    testImplementation "junit:junit:$junitVersion"
+}

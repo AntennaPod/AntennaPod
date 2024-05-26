@@ -22,7 +22,8 @@ public class FeedItemFilterQuery {
         // The keys used within this method, but explicitly combined with their table
         String keyRead = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_READ;
         String keyPosition = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_POSITION;
-        String keyDownloaded = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_DOWNLOADED;
+        String keyCompletionDate = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_PLAYBACK_COMPLETION_DATE;
+        String keyDownloaded = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_DOWNLOAD_DATE;
         String keyMediaId = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_ID;
         String keyItemId = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_ID;
         String keyFeedItem = PodDBAdapter.KEY_FEEDITEM;
@@ -48,7 +49,7 @@ public class FeedItemFilterQuery {
             statements.add(keyItemId + " NOT IN (SELECT " + keyFeedItem + " FROM " + tableQueue + ") ");
         }
         if (filter.showDownloaded) {
-            statements.add(keyDownloaded + " = 1 ");
+            statements.add(keyDownloaded + " > 0 ");
         } else if (filter.showNotDownloaded) {
             statements.add(keyDownloaded + " = 0 ");
         }
@@ -61,6 +62,12 @@ public class FeedItemFilterQuery {
             statements.add(keyItemId + " IN (SELECT " + keyFeedItem + " FROM " + tableFavorites + ") ");
         } else if (filter.showNotFavorite) {
             statements.add(keyItemId + " NOT IN (SELECT " + keyFeedItem + " FROM " + tableFavorites + ") ");
+        }
+        if (filter.showInHistory) {
+            statements.add(keyCompletionDate + " > 0 ");
+        }
+        if (!filter.includeNotSubscribed) {
+            statements.add(PodDBAdapter.SELECT_WHERE_FEED_IS_SUBSCRIBED);
         }
 
         if (statements.isEmpty()) {

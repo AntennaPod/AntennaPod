@@ -69,6 +69,7 @@
     <string name="deny_label">Deny</string>
     <string name="open_settings">Open settings</string>
     <string name="configure_home">Configure Home Screen</string>
+    <string name="section_hidden">Hidden</string>
 
     <!-- Download Statistics fragment -->
     <string name="total_size_downloaded_podcasts">Total size of episodes on the device</string>
@@ -126,7 +127,6 @@
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto downloads</string>
-    <string name="auto_delete_label">Auto delete episode</string>
     <string name="feed_volume_adapdation">Volume adaptation</string>
     <string name="feed_volume_adaptation_summary">Turn volume for episodes of this podcast up or down: %1$s</string>
     <string name="feed_volume_reduction_off">No adaption</string>
@@ -193,6 +193,7 @@
     <string name="multi_select">Multi select</string>
     <string name="select_all_above">Select all above</string>
     <string name="select_all_below">Select all below</string>
+    <string name="multi_select_started_talkback">Multi select actions shown at the bottom</string>
     <string name="filtered_label">Filtered</string>
     <string name="refresh_failed_msg">Last refresh failed. Tap to view details.</string>
     <string name="open_podcast">Open podcast</string>
@@ -218,8 +219,6 @@
     <string name="pause_label">Pause</string>
     <string name="stream_label">Stream</string>
     <string name="delete_label">Delete</string>
-    <string name="delete_failed">Unable to delete file. Rebooting the device could help.</string>
-    <string name="delete_local_failed">Unable to delete file. Try re-connecting the local folder from the podcast info screen.</string>
     <string name="delete_episode_label">Delete episode</string>
     <plurals name="deleted_multi_episode_batch_label">
         <item quantity="one">1 downloaded episode deleted.</item>
@@ -258,6 +257,10 @@
         <item quantity="other">%d episodes removed from inbox.</item>
     </plurals>
     <string name="add_to_favorite_label">Add to favorites</string>
+    <string name="show_transcript">Show transcript</string>
+    <string name="transcript">Transcript</string>
+    <string name="transcript_follow">Follow audio</string>
+    <string name="no_transcript_label">No transcript</string>
     <string name="remove_from_favorite_label">Remove from favorites</string>
     <string name="visit_website_label">Visit website</string>
     <string name="skip_episode_label">Skip episode</string>
@@ -386,7 +389,7 @@
     <string name="preference_search_hint">Search…</string>
     <string name="preference_search_no_results">No results</string>
     <string name="preference_search_clear_history">Clear history</string>
-    <string name="pref_episode_cleanup_title">Episode cleanup</string>
+    <string name="pref_episode_cleanup_title">Delete before auto download</string>
     <string name="pref_episode_cleanup_summary">Episodes that should be eligible for removal if Auto Download needs space for new episodes</string>
     <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth are disconnected</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Resume playback when the headphones are reconnected</string>
@@ -400,8 +403,10 @@
     <string name="button_action_skip_episode">Skip episode</string>
     <string name="button_action_restart_episode">Restart episode</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
-    <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
-    <string name="pref_auto_delete_title">Auto delete</string>
+    <string name="pref_auto_delete_playback_sum">Delete episode when playback completes</string>
+    <string name="pref_auto_delete_playback_title">Delete after playing</string>
+    <string name="pref_auto_delete_title">Automatic deletion</string>
+    <string name="pref_auto_delete_sum">Delete episodes after playing or when automatic download needs space</string>
     <string name="pref_auto_local_delete_title">Auto delete from local folders</string>
     <string name="pref_auto_local_delete_sum">Include local folders in Auto delete functionality</string>
     <string name="pref_auto_local_delete_dialog_body">Note that for local folders this will remove episodes from AntennaPod and delete their media files from your device storage. They cannot be downloaded again through AntennaPod. Enable auto delete?</string>
@@ -456,8 +461,8 @@
     <string name="pref_autodl_wifi_filter_sum">Allow automatic download only for selected Wi-Fi networks.</string>
     <string name="pref_automatic_download_on_battery_title">Download when not charging</string>
     <string name="pref_automatic_download_on_battery_sum">Allow automatic download when the battery is not charging</string>
-    <string name="pref_episode_cache_title">Episode cache</string>
-    <string name="pref_episode_cache_summary">Total number of downloaded episodes cached on the device. Automatic download will be suspended if this number is reached.</string>
+    <string name="pref_episode_cache_title">Episode limit</string>
+    <string name="pref_episode_cache_summary">Automatic download is stopped if this number is reached</string>
     <string name="pref_episode_cover_title">Use episode cover</string>
     <string name="pref_episode_cover_summary">Use the episode specific cover in lists whenever available. If unchecked, the app will always use the podcast cover image.</string>
     <string name="pref_show_remain_time_title">Show remaining time</string>
@@ -526,8 +531,7 @@
     <string name="new_episode_notification_disabled">Notification disabled</string>
     <string name="pref_feed_settings_dialog_msg">This setting is unique to each podcast. You can change it by opening the podcast page.</string>
     <string name="pref_contribute">Contribute</string>
-    <string name="pref_show_subscription_title">Show subscription title</string>
-    <string name="pref_show_subscription_title_summary">Display the subscription title below the cover image</string>
+    <string name="pref_show_subscription_title">Show titles</string>
     <string name="pref_new_episodes_action_title">New episodes action</string>
     <string name="pref_new_episodes_action_sum">Action to take for new episodes</string>
 
@@ -684,9 +688,8 @@
 
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
-    <string name="subscribing_label">Subscribing&#8230;</string>
-    <string name="preview_episode">Preview</string>
-    <string name="stop_preview">Stop preview</string>
+    <string name="preview_episodes">Episodes preview</string>
+    <string name="state_deleted_not_subscribed">Playback state and history of non-subscribed podcasts are deleted after a while. Subscribe to keep them.</string>
 
     <!-- Content descriptions for image buttons -->
     <string name="toolbar_back_button_content_description">Back</string>
@@ -703,7 +706,6 @@
     <string name="load_next_page_label">Load next page</string>
     <string name="position">Position: %1$s</string>
     <string name="remaining_time">Remaining time: %1$s</string>
-    <string name="apply_action">Apply action</string>
     <string name="play_chapter">Play chapter</string>
     <string name="prev_chapter">Previous chapter</string>
     <string name="next_chapter">Next chapter</string>
@@ -763,9 +765,8 @@
     <string name="search_itunes_label">Search Apple Podcasts</string>
     <string name="search_podcastindex_label">Search Podcast Index</string>
     <string name="search_fyyd_label">Search fyyd</string>
-    <string name="gpodnet_search_hint">Search gpodder.net</string>
     <string name="advanced">Advanced</string>
-    <string name="add_podcast_by_url">Add Podcast by RSS address</string>
+    <string name="add_podcast_by_url">Add podcast by RSS address</string>
     <string name="add_podcast_by_url_hint" translatable="false">www.example.com/feed</string>
     <string name="discover">Discover</string>
     <string name="discover_hide">Hide</string>
@@ -827,6 +828,7 @@
 
     <!-- Subscriptions fragment -->
     <string name="subscription_num_columns">Number of columns</string>
+    <string name="subscription_display_list">List</string>
 
     <!-- Notification channels -->
     <string name="notification_group_errors">Errors</string>

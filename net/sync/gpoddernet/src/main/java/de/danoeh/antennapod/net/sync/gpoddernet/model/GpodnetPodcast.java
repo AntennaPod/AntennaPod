@@ -12,15 +12,8 @@ public class GpodnetPodcast {
     private final String mygpoLink;
     private final String author;
 
-    public GpodnetPodcast(@NonNull String url,
-                          @NonNull String title,
-                          @NonNull String description,
-                          int subscribers,
-                          String logoUrl,
-                          String website,
-                          String mygpoLink,
-                          String author
-                          ) {
+    public GpodnetPodcast(@NonNull String url, @NonNull String title, @NonNull String description, int subscribers,
+                          String logoUrl, String website, String mygpoLink, String author) {
         this.url = url;
         this.title = title;
         this.description = description;
@@ -63,7 +56,9 @@ public class GpodnetPodcast {
         return website;
     }
 
-    public String getAuthor() { return author; }
+    public String getAuthor() {
+        return author;
+    }
 
     public String getMygpoLink() {
         return mygpoLink;

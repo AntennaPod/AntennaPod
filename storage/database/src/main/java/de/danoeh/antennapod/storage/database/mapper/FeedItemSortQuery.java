@@ -5,36 +5,30 @@ import de.danoeh.antennapod.storage.database.PodDBAdapter;
 
 public class FeedItemSortQuery {
     public static String generateFrom(SortOrder sortOrder) {
-        String sortQuery = "";
+        if (sortOrder == null) {
+            sortOrder = SortOrder.DATE_NEW_OLD;
+        }
         switch (sortOrder) {
             case EPISODE_TITLE_A_Z:
-                sortQuery = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_TITLE + " " + "ASC";
-                break;
+                return PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_TITLE + " " + "ASC";
             case EPISODE_TITLE_Z_A:
-                sortQuery = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_TITLE + " " + "DESC";
-                break;
-            case DATE_OLD_NEW:
-                sortQuery = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_PUBDATE + " " + "ASC";
-                break;
-            case DATE_NEW_OLD:
-                sortQuery = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_PUBDATE + " " + "DESC";
-                break;
+                return PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_TITLE + " " + "DESC";
             case DURATION_SHORT_LONG:
-                sortQuery = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_DURATION + " " + "ASC";
-                break;
+                return PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_DURATION + " " + "ASC";
             case DURATION_LONG_SHORT:
-                sortQuery = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_DURATION + " " + "DESC";
-                break;
+                return PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_DURATION + " " + "DESC";
             case SIZE_SMALL_LARGE:
-                sortQuery = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_SIZE + " " + "ASC";
-                break;
+                return PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_SIZE + " " + "ASC";
             case SIZE_LARGE_SMALL:
-                sortQuery = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_SIZE + " " + "DESC";
-                break;
+                return PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_SIZE + " " + "DESC";
+            case COMPLETION_DATE_NEW_OLD:
+                return PodDBAdapter.TABLE_NAME_FEED_MEDIA + "."
+                        + PodDBAdapter.KEY_PLAYBACK_COMPLETION_DATE + " " + "DESC";
+            case DATE_OLD_NEW:
+                return PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_PUBDATE + " " + "ASC";
+            case DATE_NEW_OLD:
             default:
-                sortQuery = "";
-                break;
+                return PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_PUBDATE + " " + "DESC";
         }
-        return sortQuery;
     }
 }

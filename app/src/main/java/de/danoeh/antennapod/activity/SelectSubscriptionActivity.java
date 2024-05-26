@@ -27,8 +27,8 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.NavDrawerData;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.databinding.SubscriptionSelectionActivityBinding;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -78,7 +78,7 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
     public List<Feed> getFeedItems(List<NavDrawerData.DrawerItem> items, List<Feed> result) {
         for (NavDrawerData.DrawerItem item : items) {
             if (item.type == NavDrawerData.DrawerItem.Type.TAG) {
-                getFeedItems(((NavDrawerData.TagDrawerItem) item).children, result);
+                getFeedItems(((NavDrawerData.TagDrawerItem) item).getChildren(), result);
             } else {
                 Feed feed = ((NavDrawerData.FeedDrawerItem) item).feed;
                 if (!result.contains(feed)) {
@@ -100,7 +100,7 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
         if (bitmap != null) {
             icon = IconCompat.createWithAdaptiveBitmap(bitmap);
         } else {
-            icon = IconCompat.createWithResource(this, R.drawable.ic_subscriptions_shortcut);
+            icon = IconCompat.createWithResource(this, R.drawable.ic_shortcut_subscriptions);
         }
 
         ShortcutInfoCompat shortcut = new ShortcutInfoCompat.Builder(this, id)
@@ -143,7 +143,8 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
         }
         disposable = Observable.fromCallable(
                 () -> {
-                    NavDrawerData data = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter());
+                    NavDrawerData data = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter(),
+                            UserPreferences.getFeedOrder(), UserPreferences.getFeedCounterSetting());
                     return getFeedItems(data.items, new ArrayList<>());
                 })
                 .subscribeOn(Schedulers.io())

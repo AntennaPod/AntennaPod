@@ -1,8 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activity and fragment titles-->
+  <string name="feed_update_receiver_name">更新訂閱</string>
   <string name="feeds_label">Podcast</string>
   <string name="statistics_label">統計</string>
+  <string name="add_feed_label">新增 Podcast</string>
   <string name="episodes_label">單集</string>
   <string name="home_label">首頁</string>
   <string name="queue_label">待播清單</string>
@@ -10,23 +12,41 @@
   <string name="favorite_episodes_label">最愛</string>
   <string name="settings_label">設定</string>
   <string name="downloads_label">下載</string>
+  <string name="open_autodownload_settings">開啟設定</string>
+  <string name="downloads_log_label">下載記錄</string>
   <string name="subscriptions_label">訂閱</string>
+  <string name="subscriptions_list_label">訂閱清單</string>
+  <string name="cancel_download_label">取消下載</string>
+  <string name="playback_history_label">播放歷程</string>
   <string name="episode_cache_full_title">暫存集數已達上限</string>
   <string name="episode_cache_full_message">暫存集數已達上限，您可以在設定中調整限制。</string>
   <string name="years_statistics_label">年</string>
   <string name="notification_pref_fragment">通知</string>
+  <string name="current_playing_episode">目前</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">找不到 \"%1$s\"</string>
   <!--SwipeActions-->
+  <string name="swipeactions_label">撥動動作</string>
+  <string name="swipeactions_summary">選取在清單中撥動單集時將發生何事</string>
+  <string name="swipe_right">向右撥動</string>
+  <string name="swipe_left">向左撥動</string>
+  <string name="enable_swipeactions">啟用此螢幕的撥動動作</string>
   <string name="change_setting">變更</string>
+  <string name="individual_subscription">個別訂閱</string>
   <!--Statistics fragment-->
   <string name="statistics_speed_not_counted">注意：此統計不考慮播放速度影響</string>
   <string name="statistics_from">自</string>
   <string name="statistics_to">至</string>
   <string name="statistics_today">今日</string>
+  <string name="statistics_filter_all_time">所有時間</string>
+  <string name="statistics_filter_past_year">過去一年</string>
   <string name="statistics_reset_data">重設統計數據</string>
   <string name="statistics_reset_data_msg">這會清除過去的播放紀錄，您確定要進行嗎？</string>
   <!--Home fragment-->
+  <string name="home_new_title">查看最新變化</string>
+  <string name="home_downloads_title">管理下載</string>
+  <string name="home_welcome_title">歡迎來到 AntennaPod！</string>
+  <string name="open_settings">開啟設定</string>
   <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">打開選單</string>
@@ -131,8 +151,11 @@
   <string name="download_error_device_not_found">沒找到儲存空間</string>
   <string name="download_error_insufficient_space">您設備的儲存空間不夠了。</string>
   <string name="download_error_parser_exception">Podcast 主機傳了錯誤的資料過來。</string>
+  <string name="download_error_no_connection">沒有網路連線</string>
+  <string name="download_error_file_type_type">檔案類型錯誤</string>
   <string name="download_canceled_msg">下載已取消</string>
   <string name="download_report_title">下載已完成，但可能有錯誤</string>
+  <string name="download_error_request_error">要求錯誤</string>
   <plurals name="downloads_left">
     <item quantity="other">剩餘%d 個下載</item>
   </plurals>
@@ -211,6 +234,7 @@
   <string name="pref_skip_keeps_episodes_sum">當跳過某集不播放時，仍於清單中保留該集</string>
   <string name="playback_pref">播放</string>
   <string name="playback_pref_sum">耳機線控、快轉時間、待播清單</string>
+  <string name="downloads_pref">下載</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">耳機或藍牙裝置拔除時</string>
   <string name="pref_mobileUpdate_sum">選擇以行動網路連線時可以做的事</string>
   <string name="pref_mobileUpdate_refresh">更新 Podcast</string>
@@ -218,6 +242,7 @@
   <string name="pref_mobileUpdate_auto_download">自動下載</string>
   <string name="pref_mobileUpdate_episode_download">下載單集</string>
   <string name="pref_mobileUpdate_streaming">串流播放</string>
+  <string name="user_interface_label">使用者介面</string>
   <string name="pref_nav_drawer_feed_order_sum">更改您訂閱頻道的排序方式</string>
   <string name="pref_nav_drawer_feed_counter_sum">調整訂閱計數器中要顯示的東西，同時也會在排序方式設定為「計數」時影響排序</string>
   <string name="pref_autodl_wifi_filter_title">限定 Wi-Fi</string>
@@ -232,6 +257,7 @@
   <string name="pref_episode_cache_unlimited">無限</string>
   <string name="pref_playback_speed_sum">自訂可選用的播放速度</string>
   <string name="pref_feed_playback_speed_sum">播放此 Podcast 中各單集時的播放速度</string>
+  <string name="pref_feed_skip">自動略過</string>
   <string name="pref_feed_skip_sum">跳過開場和結尾鳴謝</string>
   <string name="pref_feed_skip_ending">跳過最後幾秒</string>
   <string name="pref_feed_skip_intro">跳過最初幾秒</string>
@@ -246,6 +272,7 @@
   <string name="enqueue_location_back">放到清單最後</string>
   <string name="enqueue_location_front">放到清單最前</string>
   <string name="enqueue_location_after_current">當前這集以後</string>
+  <string name="enqueue_location_random">隨機</string>
   <string name="pref_smart_mark_as_played_disabled">停用</string>
   <string name="visit_user_forum">使用者論壇</string>
   <string name="bug_report_title">回報錯誤</string>
@@ -263,6 +290,7 @@
   <string name="not_auto_downloaded">未自動下載</string>
   <string name="kept_updated">已設定維持更新</string>
   <string name="not_kept_updated">未設定維持更新</string>
+  <string name="pref_contribute">貢獻</string>
   <!--About screen-->
   <string name="about_pref">關於</string>
   <string name="antennapod_version">AntennaPod 版本</string>

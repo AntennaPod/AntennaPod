@@ -2,6 +2,7 @@ package de.danoeh.antennapod.ui.statistics;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,10 +18,11 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
-import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.ui.common.ConfirmationDialog;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.event.StatisticsEvent;
 import de.danoeh.antennapod.ui.common.PagedToolbarFragment;
+import de.danoeh.antennapod.ui.echo.EchoActivity;
 import de.danoeh.antennapod.ui.statistics.downloads.DownloadStatisticsFragment;
 import de.danoeh.antennapod.ui.statistics.subscriptions.SubscriptionStatisticsFragment;
 import de.danoeh.antennapod.ui.statistics.years.YearsStatisticsFragment;
@@ -61,6 +63,9 @@ public class StatisticsFragment extends PagedToolbarFragment {
         toolbar = rootView.findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.statistics_label));
         toolbar.inflateMenu(R.menu.statistics);
+        if (BuildConfig.DEBUG) {
+            toolbar.getMenu().findItem(R.id.debug_echo).setVisible(true);
+        }
         toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
         viewPager.setAdapter(new StatisticsPagerAdapter(this));
         // Give the TabLayout the ViewPager
@@ -89,6 +94,8 @@ public class StatisticsFragment extends PagedToolbarFragment {
         if (item.getItemId() == R.id.statistics_reset) {
             confirmResetStatistics();
             return true;
+        } else if (item.getItemId() == R.id.debug_echo) {
+            startActivity(new Intent(getContext(), EchoActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

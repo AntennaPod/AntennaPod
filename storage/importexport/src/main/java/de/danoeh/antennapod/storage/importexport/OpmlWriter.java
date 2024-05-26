@@ -48,13 +48,16 @@ public class OpmlWriter {
 
         xs.startTag(null, OpmlSymbols.BODY);
         for (Feed feed : feeds) {
+            if (feed.getState() != Feed.STATE_SUBSCRIBED) {
+                continue;
+            }
             xs.startTag(null, OpmlSymbols.OUTLINE);
             xs.attribute(null, OpmlSymbols.TEXT, feed.getTitle());
             xs.attribute(null, OpmlSymbols.TITLE, feed.getTitle());
             if (feed.getType() != null) {
                 xs.attribute(null, OpmlSymbols.TYPE, feed.getType());
             }
-            xs.attribute(null, OpmlSymbols.XMLURL, feed.getDownload_url());
+            xs.attribute(null, OpmlSymbols.XMLURL, feed.getDownloadUrl());
             if (feed.getLink() != null) {
                 xs.attribute(null, OpmlSymbols.HTMLURL, feed.getLink());
             }

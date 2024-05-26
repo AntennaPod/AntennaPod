@@ -8,16 +8,16 @@ android {
     namespace "de.danoeh.antennapod.ui.echo"
 
     lint {
-        disable "AppBundleLocaleChanges"
+        disable "AppBundleLocaleChanges", "MissingQuantity"
     }
 }
 
 dependencies {
-    implementation project(":core")
     implementation project(":model")
+    implementation project(':storage:database')
     implementation project(":storage:preferences")
     implementation project(':ui:common')
-    implementation project(':ui:glide')
+    implementation project(':ui:episodes')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"

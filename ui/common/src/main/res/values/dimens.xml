@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="widget_margin">0dp</dimen>
-    <dimen name="widget_inner_radius">4dp</dimen>
     <dimen name="external_player_height">64dp</dimen>
     <dimen name="text_size_micro">12sp</dimen>
     <dimen name="text_size_small">14sp</dimen>
@@ -9,8 +7,6 @@
     <dimen name="text_size_large">22sp</dimen>
     <dimen name="thumbnail_length_itemlist">56dp</dimen>
     <dimen name="thumbnail_length_queue_item">56dp</dimen>
-    <dimen name="thumbnail_length_onlinefeedview">92dp</dimen>
-    <dimen name="feeditemlist_header_height">132dp</dimen>
     <dimen name="thumbnail_length_navlist">40dp</dimen>
     <dimen name="listitem_iconwithtext_height">48dp</dimen>
     <dimen name="listitem_iconwithtext_textleftpadding">16dp</dimen>

@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.model.playback;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Parcelable;
 
 import androidx.annotation.Nullable;
@@ -16,14 +15,6 @@ import java.util.List;
  */
 public interface Playable extends Parcelable, Serializable {
     int INVALID_TIME = -1;
-
-    /**
-     * Save information about the playable in a preference so that it can be
-     * restored later via PlaybackPreferences.createInstanceFromPreferences.
-     * Implementations must NOT call commit() after they have written the values
-     * to the preferences file.
-     */
-    void writeToPreferences(SharedPreferences.Editor prefEditor);
 
     /**
      * Returns the title of the episode that this playable represents
@@ -88,7 +79,7 @@ public interface Playable extends Parcelable, Serializable {
      * Returns an url to a local file that can be played or null if this file
      * does not exist.
      */
-    String getLocalMediaUrl();
+    String getLocalFileUrl();
 
     /**
      * Returns an url to a file that can be streamed by the player or null if

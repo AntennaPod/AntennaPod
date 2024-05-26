@@ -9,11 +9,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.StatisticsItem;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.StatisticsItem;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.common.DateFormatter;
-import de.danoeh.antennapod.core.util.ReleaseScheduleGuesser;
+import de.danoeh.antennapod.storage.database.ReleaseScheduleGuesser;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
@@ -78,7 +78,7 @@ public class FeedStatisticsFragment extends Fragment {
                     for (StatisticsItem statisticsItem : statisticsData.feedTime) {
                         if (statisticsItem.feed.getId() == feedId) {
                             List<FeedItem> items = DBReader.getFeedItemList(statisticsItem.feed,
-                                    FeedItemFilter.unfiltered(), SortOrder.DATE_OLD_NEW);
+                                    FeedItemFilter.unfiltered(), SortOrder.DATE_OLD_NEW, 0, Integer.MAX_VALUE);
                             List<Date> dates = new ArrayList<>();
                             for (FeedItem item : items) {
                                 dates.add(item.getPubDate());

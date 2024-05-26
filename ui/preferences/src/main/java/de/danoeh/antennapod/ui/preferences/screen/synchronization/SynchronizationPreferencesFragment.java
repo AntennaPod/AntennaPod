@@ -12,7 +12,9 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.text.HtmlCompat;
@@ -21,16 +23,17 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import de.danoeh.antennapod.net.sync.service.SyncService;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationProvider;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
 import de.danoeh.antennapod.ui.preferences.R;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import de.danoeh.antennapod.event.SyncServiceEvent;
-import de.danoeh.antennapod.core.sync.SynchronizationCredentials;
-import de.danoeh.antennapod.core.sync.SyncService;
-import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
-import de.danoeh.antennapod.core.sync.SynchronizationSettings;
+import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
+import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 
 public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREFERENCE_SYNCHRONIZATION_DESCRIPTION = "preference_synchronization_description";
@@ -100,7 +103,8 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             return true;
         });
         findPreference(PREFERENCE_LOGOUT).setOnPreferenceClickListener(preference -> {
-            SynchronizationCredentials.clear(getContext());
+            SynchronizationCredentials.clear();
+            SynchronizationQueueSink.clearQueue(getContext());
             Snackbar.make(getView(), R.string.pref_synchronization_logout_toast, Snackbar.LENGTH_LONG).show();
             SynchronizationSettings.setSelectedSyncProvider(null);
             updateScreen();
@@ -112,11 +116,11 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         final boolean loggedIn = SynchronizationSettings.isProviderConnected();
         Preference preferenceHeader = findPreference(PREFERENCE_SYNCHRONIZATION_DESCRIPTION);
         if (loggedIn) {
-            SynchronizationProviderViewData selectedProvider =
-                    SynchronizationProviderViewData.fromIdentifier(getSelectedSyncProviderKey());
+            SynchronizationProvider selectedProvider =
+                    SynchronizationProvider.fromIdentifier(getSelectedSyncProviderKey());
             preferenceHeader.setTitle("");
-            preferenceHeader.setSummary(selectedProvider.getSummaryResource());
-            preferenceHeader.setIcon(selectedProvider.getIconResource());
+            preferenceHeader.setSummary(getProviderSummary(selectedProvider));
+            preferenceHeader.setIcon(getProviderIcon(selectedProvider));
             preferenceHeader.setOnPreferenceClickListener(null);
         } else {
             preferenceHeader.setTitle(R.string.synchronization_choose_title);
@@ -129,7 +133,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         }
 
         Preference gpodnetSetLoginPreference = findPreference(PREFERENCE_GPODNET_SETLOGIN_INFORMATION);
-        gpodnetSetLoginPreference.setVisible(isProviderSelected(SynchronizationProviderViewData.GPODDER_NET));
+        gpodnetSetLoginPreference.setVisible(isProviderSelected(SynchronizationProvider.GPODDER_NET));
         gpodnetSetLoginPreference.setEnabled(loggedIn);
         findPreference(PREFERENCE_SYNC).setEnabled(loggedIn);
         findPreference(PREFERENCE_FORCE_FULL_SYNC).setEnabled(loggedIn);
@@ -151,9 +155,8 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle(R.string.dialog_choose_sync_service_title);
 
-        SynchronizationProviderViewData[] providers = SynchronizationProviderViewData.values();
-        ListAdapter adapter = new ArrayAdapter<SynchronizationProviderViewData>(
-                getContext(), R.layout.alertdialog_sync_provider_chooser, providers) {
+        SynchronizationProvider[] providers = SynchronizationProvider.values();
+        ListAdapter adapter = new ArrayAdapter<>(getContext(), R.layout.alertdialog_sync_provider_chooser, providers) {
 
             ViewHolder holder;
 
@@ -175,9 +178,9 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                 } else {
                     holder = (ViewHolder) convertView.getTag();
                 }
-                SynchronizationProviderViewData synchronizationProviderViewData = getItem(position);
-                holder.title.setText(synchronizationProviderViewData.getSummaryResource());
-                holder.icon.setImageResource(synchronizationProviderViewData.getIconResource());
+                SynchronizationProvider synchronizationProvider = getItem(position);
+                holder.title.setText(getProviderSummary(synchronizationProvider));
+                holder.icon.setImageResource(getProviderIcon(synchronizationProvider));
                 return convertView;
             }
         };
@@ -201,7 +204,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         builder.show();
     }
 
-    private boolean isProviderSelected(@NonNull SynchronizationProviderViewData provider) {
+    private boolean isProviderSelected(@NonNull SynchronizationProvider provider) {
         String selectedSyncProviderKey = getSelectedSyncProviderKey();
         return provider.getIdentifier().equals(selectedSyncProviderKey);
     }
@@ -216,5 +219,27 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                 DateUtils.getRelativeDateTimeString(getContext(),
                         lastTime, DateUtils.MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, DateUtils.FORMAT_SHOW_TIME));
         ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(status);
+    }
+
+    private @StringRes int getProviderSummary(SynchronizationProvider provider) {
+        switch (provider) {
+            case GPODDER_NET:
+                return R.string.gpodnet_description;
+            case NEXTCLOUD_GPODDER:
+                return R.string.synchronization_summary_nextcloud;
+            default:
+                return R.string.sync_status_error;
+        }
+    }
+
+    private @DrawableRes int getProviderIcon(SynchronizationProvider provider) {
+        switch (provider) {
+            case GPODDER_NET:
+                return R.drawable.gpodder_icon;
+            case NEXTCLOUD_GPODDER:
+                return R.drawable.nextcloud_logo;
+            default:
+                return R.drawable.ic_error;
+        }
     }
 }

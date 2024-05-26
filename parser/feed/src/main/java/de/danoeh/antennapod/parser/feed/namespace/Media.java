@@ -73,10 +73,12 @@ public class Media extends Namespace {
                     && url != null && validTypeMedia) {
                 long size = 0;
                 String sizeStr = attributes.getValue(SIZE);
-                try {
-                    size = Long.parseLong(sizeStr);
-                } catch (NumberFormatException e) {
-                    Log.e(TAG, "Size \"" + sizeStr + "\" could not be parsed.");
+                if (!TextUtils.isEmpty(sizeStr)) {
+                    try {
+                        size = Long.parseLong(sizeStr);
+                    } catch (NumberFormatException e) {
+                        Log.e(TAG, "Size \"" + sizeStr + "\" could not be parsed.");
+                    }
                 }
 
                 int durationMs = 0;

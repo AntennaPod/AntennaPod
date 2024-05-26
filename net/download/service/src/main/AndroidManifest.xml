@@ -1,0 +1,36 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:allowBackup="true"
+        android:supportsRtl="true">
+
+        <receiver android:name=".feed.FeedUpdateReceiver"
+                  android:label="@string/feed_update_receiver_name"
+                  android:exported="true"
+                  tools:ignore="ExportedReceiver" /> <!-- allow feeds update to be triggered by external apps -->
+
+        <receiver
+            android:name=".ConnectivityActionReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" tools:ignore="BatteryLife"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".PowerConnectionReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>

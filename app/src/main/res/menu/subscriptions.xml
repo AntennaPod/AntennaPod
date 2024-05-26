@@ -32,6 +32,9 @@
             <group
                     android:checkableBehavior="single">
                 <item
+                        android:id="@+id/subscription_display_list"
+                        android:title="@string/subscription_display_list"/>
+                <item
                         android:id="@+id/subscription_num_columns_2"
                         android:title="2"/>
                 <item
@@ -46,4 +49,10 @@
             </group>
         </menu>
     </item>
+
+    <item
+        android:id="@+id/pref_show_subscription_title"
+        android:title="@string/pref_show_subscription_title"
+        android:checkable="true"
+        custom:showAsAction="never" />
 </menu>

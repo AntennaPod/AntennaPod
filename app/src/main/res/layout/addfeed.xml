@@ -18,7 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
             app:title="@string/add_feed_label"
             app:navigationContentDescription="@string/toolbar_back_button_content_description"
             app:navigationIcon="?homeAsUpIndicator" />
@@ -85,7 +84,7 @@
                 android:id="@+id/quickFeedDiscovery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="de.danoeh.antennapod.fragment.QuickFeedDiscoveryFragment" />
+                android:name="de.danoeh.antennapod.ui.discovery.QuickFeedDiscoveryFragment" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -129,15 +128,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/search_fyyd_label"
-                app:drawableStartCompat="@drawable/ic_search"
-                app:drawableLeftCompat="@drawable/ic_search"
-                style="@style/AddPodcastTextView" />
-
-            <TextView
-                android:id="@+id/searchGPodderButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/gpodnet_search_hint"
                 app:drawableStartCompat="@drawable/ic_search"
                 app:drawableLeftCompat="@drawable/ic_search"
                 style="@style/AddPodcastTextView" />

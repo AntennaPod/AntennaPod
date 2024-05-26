@@ -34,6 +34,15 @@ public class DateUtilsTest {
     }
 
     @Test
+    public void testParseDateWithZuluTimezone() {
+        GregorianCalendar exp = new GregorianCalendar(2024, 4, 8, 22, 18, 52);
+        exp.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date expected = new Date(exp.getTimeInMillis() + 485);
+        Date actual = DateUtils.parse("2024-05-08T22:18:52.485Z");
+        assertEquals(expected, actual);
+    }
+
+    @Test
     public void testParseDateWithDeciseconds() {
         GregorianCalendar exp = new GregorianCalendar(2015, 2, 28, 13, 31, 4);
         exp.setTimeZone(TimeZone.getTimeZone("UTC"));

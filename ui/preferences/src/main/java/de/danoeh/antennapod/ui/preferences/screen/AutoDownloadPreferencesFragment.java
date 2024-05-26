@@ -3,7 +3,6 @@ package de.danoeh.antennapod.ui.preferences.screen;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -11,7 +10,6 @@ import android.os.Bundle;
 import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.CheckBoxPreference;
-import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
@@ -35,7 +33,6 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
         setupAutoDownloadScreen();
         buildAutodownloadSelectedNetworksPreference();
         setSelectedNetworksEnabled(UserPreferences.isEnableAutodownloadWifiFilter());
-        buildEpisodeCleanupPreference();
     }
 
     @Override
@@ -78,7 +75,6 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
         findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE).setEnabled(autoDownload);
         findPreference(UserPreferences.PREF_ENABLE_AUTODL_ON_BATTERY).setEnabled(autoDownload);
         findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER).setEnabled(autoDownload);
-        findPreference(UserPreferences.PREF_EPISODE_CLEANUP).setEnabled(autoDownload);
         setSelectedNetworksEnabled(autoDownload && UserPreferences.isEnableAutodownloadWifiFilter());
     }
 
@@ -163,33 +159,6 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
                 }
             }
         }
-    }
-
-    private void buildEpisodeCleanupPreference() {
-        final Resources res = getActivity().getResources();
-
-        ListPreference pref = findPreference(UserPreferences.PREF_EPISODE_CLEANUP);
-        String[] values = res.getStringArray(
-                R.array.episode_cleanup_values);
-        String[] entries = new String[values.length];
-        for (int x = 0; x < values.length; x++) {
-            int v = Integer.parseInt(values[x]);
-            if (v == UserPreferences.EPISODE_CLEANUP_EXCEPT_FAVORITE) {
-                entries[x] =  res.getString(R.string.episode_cleanup_except_favorite_removal);
-            } else if (v == UserPreferences.EPISODE_CLEANUP_QUEUE) {
-                entries[x] = res.getString(R.string.episode_cleanup_queue_removal);
-            } else if (v == UserPreferences.EPISODE_CLEANUP_NULL){
-                entries[x] = res.getString(R.string.episode_cleanup_never);
-            } else if (v == 0) {
-                entries[x] = res.getString(R.string.episode_cleanup_after_listening);
-            } else if (v > 0 && v < 24) {
-                entries[x] = res.getQuantityString(R.plurals.episode_cleanup_hours_after_listening, v, v);
-            } else {
-                int numDays = v / 24; // assume underlying value will be NOT fraction of days, e.g., 36 (hours)
-                entries[x] = res.getQuantityString(R.plurals.episode_cleanup_days_after_listening, numDays, numDays);
-            }
-        }
-        pref.setEntries(entries);
     }
 
     private void setSelectedNetworksEnabled(boolean b) {

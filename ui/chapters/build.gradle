@@ -1,0 +1,23 @@
+plugins {
+    id("com.android.library")
+}
+apply from: "../../common.gradle"
+apply from: "../../playFlavor.gradle"
+
+android {
+    namespace "de.danoeh.antennapod.ui.chapters"
+}
+
+dependencies {
+    implementation project(':model')
+    implementation project(':net:common')
+    implementation project(':parser:media')
+    implementation project(':parser:feed')
+    implementation project(':parser:transcript')
+    implementation project(':storage:database')
+
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "commons-io:commons-io:$commonsioVersion"
+    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+}

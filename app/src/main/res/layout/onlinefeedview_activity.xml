@@ -2,7 +2,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/transparentBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -11,169 +10,22 @@
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="24dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="56dp"
         android:elevation="16dp"
         app:cardCornerRadius="8dp">
 
-        <FrameLayout
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent" />
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                style="?android:attr/progressBarStyle" />
-
-            <LinearLayout
-                android:id="@+id/feed_display_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/feeditemlist_header_height"
-                    android:layout_marginBottom="12dp"
-                    android:background="@color/feed_image_bg">
-
-                    <ImageView
-                        android:id="@+id/backgroundImage"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop" />
-
-                    <ImageView
-                        android:id="@+id/coverImage"
-                        android:layout_width="@dimen/thumbnail_length_onlinefeedview"
-                        android:layout_height="@dimen/thumbnail_length_onlinefeedview"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginBottom="12dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="24dp"
-                        android:background="@drawable/bg_rounded_corners"
-                        android:clipToOutline="true"
-                        android:importantForAccessibility="no"
-                        tools:src="@tools:sample/avatars" />
-
-                    <TextView
-                        android:id="@+id/titleLabel"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginRight="24dp"
-                        android:layout_marginEnd="24dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_toRightOf="@id/coverImage"
-                        android:layout_toEndOf="@id/coverImage"
-                        android:ellipsize="end"
-                        android:maxLines="2"
-                        android:shadowColor="@color/black"
-                        android:shadowRadius="3"
-                        android:textColor="@color/white"
-                        android:textSize="20sp"
-                        android:textFontWeight="800"
-                        tools:text="Podcast title" />
-
-                    <TextView
-                        android:id="@+id/author_label"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/titleLabel"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_toRightOf="@id/coverImage"
-                        android:layout_toEndOf="@id/coverImage"
-                        android:ellipsize="end"
-                        android:lines="1"
-                        android:shadowColor="@color/black"
-                        android:shadowRadius="3"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_small"
-                        tools:text="Podcast author" />
-
-                    <ImageButton
-                        android:id="@+id/closeButton"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginRight="12dp"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/ic_close_white" />
-
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="16dp"
-                    android:orientation="vertical">
-
-                    <Spinner
-                        android:id="@+id/alternate_urls_spinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:dropDownWidth="match_parent"
-                        android:padding="8dp"
-                        android:textColor="?android:attr/textColorPrimary"
-                        android:textSize="@dimen/text_size_micro" />
-
-                    <Button
-                        android:id="@+id/subscribeButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/subscribe_label" />
-
-                    <CheckBox
-                        android:id="@+id/autoDownloadCheckBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:checked="true"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/auto_download_label"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-
-                    <Button
-                        android:id="@+id/stopPreviewButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/stop_preview"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-
-                </LinearLayout>
-
-                <ListView
-                    android:id="@+id/listView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingTop="16dp"
-                    android:clipToPadding="false" />
-
-            </LinearLayout>
-
-        </FrameLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            style="?android:attr/progressBarStyle" />
 
     </androidx.cardview.widget.CardView>
 

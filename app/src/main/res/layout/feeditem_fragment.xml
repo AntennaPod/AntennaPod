@@ -175,6 +175,20 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/nonSubscribedWarningLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:layout_marginBottom="8dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:background="@drawable/bg_message_info"
+            android:textColor="?attr/colorAccent"
+            android:visibility="gone"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="@string/state_deleted_not_subscribed" />
+
+        <TextView
             android:id="@+id/noMediaLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -190,19 +204,19 @@
 
     </LinearLayout>
 
-    <de.danoeh.antennapod.view.NestedScrollableHost
+    <de.danoeh.antennapod.ui.view.NestedScrollableHost
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/header"
         app:preferVertical="3">
 
-        <de.danoeh.antennapod.view.ShownotesWebView
+        <de.danoeh.antennapod.ui.view.ShownotesWebView
             android:id="@+id/webvDescription"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:foreground="?android:windowContentOverlay" />
 
-    </de.danoeh.antennapod.view.NestedScrollableHost>
+    </de.danoeh.antennapod.ui.view.NestedScrollableHost>
 
     <FrameLayout
         android:layout_width="match_parent"

@@ -6,6 +6,10 @@ apply from: "../../playFlavor.gradle"
 
 android {
     namespace "de.danoeh.antennapod.net.common"
+
+    lint {
+        disable 'StaticFieldLeak'
+    }
 }
 
 dependencies {

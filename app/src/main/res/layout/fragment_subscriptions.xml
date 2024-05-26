@@ -61,7 +61,7 @@
             android:layout_gravity="center_horizontal"
             android:paddingBottom="88dp"
             tools:itemCount="2"
-            tools:listitem="@layout/subscription_item" />
+            tools:listitem="@layout/subscription_grid_item" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -84,7 +84,10 @@
         android:contentDescription="@string/add_feed_label"
         app:srcCompat="@drawable/ic_add" />
 
-    <include
-        layout="@layout/multi_select_speed_dial" />
+    <de.danoeh.antennapod.ui.view.FloatingSelectMenu
+        android:id="@+id/floatingSelectMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

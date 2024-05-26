@@ -26,7 +26,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
             app:navigationContentDescription="@string/toolbar_back_button_content_description"
             app:navigationIcon="@drawable/ic_arrow_down" />
 
@@ -86,7 +85,7 @@
             android:layoutDirection="ltr"
             android:orientation="vertical">
 
-            <de.danoeh.antennapod.view.ChapterSeekBar
+            <de.danoeh.antennapod.ui.screen.playback.audio.ChapterSeekBar
                 android:id="@+id/sbPosition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -104,7 +103,7 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp">
 
-                <de.danoeh.antennapod.view.NoRelayoutTextView
+                <de.danoeh.antennapod.ui.screen.playback.audio.NoRelayoutTextView
                     android:id="@+id/txtvPosition"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -116,7 +115,7 @@
                     android:textColor="?android:attr/textColorSecondary"
                     android:textSize="@dimen/text_size_micro" />
 
-                <de.danoeh.antennapod.view.NoRelayoutTextView
+                <de.danoeh.antennapod.ui.screen.playback.audio.NoRelayoutTextView
                     android:id="@+id/txtvLength"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -138,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp">
 
-                <de.danoeh.antennapod.view.PlayButton
+                <de.danoeh.antennapod.ui.screen.playback.PlayButton
                     android:id="@+id/butPlay"
                     android:layout_width="@dimen/audioplayer_playercontrols_length_big"
                     android:layout_height="@dimen/audioplayer_playercontrols_length_big"

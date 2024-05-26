@@ -19,11 +19,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.button.MaterialButton;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
-import de.danoeh.antennapod.core.sync.SyncService;
-import de.danoeh.antennapod.core.sync.SynchronizationCredentials;
-import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
-import de.danoeh.antennapod.core.sync.SynchronizationSettings;
-import de.danoeh.antennapod.core.util.FileNameGenerator;
+import de.danoeh.antennapod.net.sync.service.SyncService;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationProvider;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
+import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
+import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetDevice;
 import de.danoeh.antennapod.ui.preferences.R;
@@ -83,10 +83,11 @@ public class GpodderAuthenticationFragment extends DialogFragment {
             if (serverUrlText.getText().length() == 0) {
                 return;
             }
-            SynchronizationCredentials.clear(getContext());
+            SynchronizationCredentials.clear();
+            SynchronizationQueueSink.clearQueue(getContext());
             SynchronizationCredentials.setHosturl(serverUrlText.getText().toString());
             service = new GpodnetService(AntennapodHttpClient.getHttpClient(),
-                    SynchronizationCredentials.getHosturl(), SynchronizationCredentials.getDeviceID(),
+                    SynchronizationCredentials.getHosturl(), SynchronizationCredentials.getDeviceId(),
                     SynchronizationCredentials.getUsername(), SynchronizationCredentials.getPassword());
             getDialog().setTitle(SynchronizationCredentials.getHosturl());
             advance();
@@ -213,7 +214,7 @@ public class GpodderAuthenticationFragment extends DialogFragment {
     private String generateDeviceId(String name) {
         // devices names must be of a certain form:
         // https://gpoddernet.readthedocs.org/en/latest/api/reference/general.html#devices
-        return FileNameGenerator.generateFileName(name).replaceAll("\\W", "_").toLowerCase(Locale.US);
+        return name.replaceAll("[^a-zA-Z0-9]", "_").toLowerCase(Locale.US);
     }
 
     private boolean isDeviceInList(String name) {
@@ -255,10 +256,11 @@ public class GpodderAuthenticationFragment extends DialogFragment {
                 if (selectedDevice == null) {
                     throw new IllegalStateException("Device must not be null here");
                 } else {
-                    SynchronizationSettings.setSelectedSyncProvider(SynchronizationProviderViewData.GPODDER_NET);
+                    SynchronizationSettings.setSelectedSyncProvider(
+                            SynchronizationProvider.GPODDER_NET.getIdentifier());
                     SynchronizationCredentials.setUsername(username);
                     SynchronizationCredentials.setPassword(password);
-                    SynchronizationCredentials.setDeviceID(selectedDevice.getId());
+                    SynchronizationCredentials.setDeviceId(selectedDevice.getId());
                     setupFinishView(view);
                 }
             }

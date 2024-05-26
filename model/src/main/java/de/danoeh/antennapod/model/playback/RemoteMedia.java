@@ -1,10 +1,8 @@
 package de.danoeh.antennapod.model.playback;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.TextUtils;
 import androidx.annotation.Nullable;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -14,6 +12,7 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
@@ -62,20 +61,20 @@ public class RemoteMedia implements Playable {
     }
 
     public RemoteMedia(FeedItem item) {
-        this.downloadUrl = item.getMedia().getDownload_url();
+        this.downloadUrl = item.getMedia().getDownloadUrl();
         this.itemIdentifier = item.getItemIdentifier();
-        this.feedUrl = item.getFeed().getDownload_url();
+        this.feedUrl = item.getFeed().getDownloadUrl();
         this.feedTitle = item.getFeed().getTitle();
         this.episodeTitle = item.getTitle();
         this.episodeLink = item.getLink();
         this.feedAuthor = item.getFeed().getAuthor();
-        if (!TextUtils.isEmpty(item.getImageUrl())) {
+        if (!StringUtils.isEmpty(item.getImageUrl())) {
             this.imageUrl = item.getImageUrl();
         } else {
             this.imageUrl = item.getFeed().getImageUrl();
         }
         this.feedLink = item.getFeed().getLink();
-        this.mimeType = item.getMedia().getMime_type();
+        this.mimeType = item.getMedia().getMimeType();
         this.pubDate = item.getPubDate();
         this.notes = item.getDescription();
     }
@@ -118,11 +117,6 @@ public class RemoteMedia implements Playable {
 
     public String getNotes() {
         return notes;
-    }
-
-    @Override
-    public void writeToPreferences(SharedPreferences.Editor prefEditor) {
-        //it seems pointless to do it, since the session should be kept by the remote device.
     }
 
     @Override
@@ -175,7 +169,7 @@ public class RemoteMedia implements Playable {
     }
 
     @Override
-    public String getLocalMediaUrl() {
+    public String getLocalFileUrl() {
         return null;
     }
 
@@ -286,21 +280,21 @@ public class RemoteMedia implements Playable {
     public boolean equals(Object other) {
         if (other instanceof RemoteMedia) {
             RemoteMedia rm = (RemoteMedia) other;
-            return TextUtils.equals(downloadUrl, rm.downloadUrl)
-                    && TextUtils.equals(feedUrl, rm.feedUrl)
-                    && TextUtils.equals(itemIdentifier, rm.itemIdentifier);
+            return StringUtils.equals(downloadUrl, rm.downloadUrl)
+                    && StringUtils.equals(feedUrl, rm.feedUrl)
+                    && StringUtils.equals(itemIdentifier, rm.itemIdentifier);
         }
         if (other instanceof FeedMedia) {
             FeedMedia fm = (FeedMedia) other;
-            if (!TextUtils.equals(downloadUrl, fm.getStreamUrl())) {
+            if (!StringUtils.equals(downloadUrl, fm.getStreamUrl())) {
                 return false;
             }
             FeedItem fi = fm.getItem();
-            if (fi == null || !TextUtils.equals(itemIdentifier, fi.getItemIdentifier())) {
+            if (fi == null || !StringUtils.equals(itemIdentifier, fi.getItemIdentifier())) {
                 return false;
             }
             Feed feed = fi.getFeed();
-            return feed != null && TextUtils.equals(feedUrl, feed.getDownload_url());
+            return feed != null && StringUtils.equals(feedUrl, feed.getDownloadUrl());
         }
         return false;
     }

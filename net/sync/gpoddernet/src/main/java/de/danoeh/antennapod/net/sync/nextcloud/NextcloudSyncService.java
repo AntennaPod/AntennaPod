@@ -3,12 +3,12 @@ package de.danoeh.antennapod.net.sync.nextcloud;
 import de.danoeh.antennapod.net.sync.HostnameParser;
 import de.danoeh.antennapod.net.sync.gpoddernet.mapper.ResponseMapper;
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetUploadChangesResponse;
-import de.danoeh.antennapod.net.sync.model.EpisodeAction;
-import de.danoeh.antennapod.net.sync.model.EpisodeActionChanges;
-import de.danoeh.antennapod.net.sync.model.ISyncService;
-import de.danoeh.antennapod.net.sync.model.SubscriptionChanges;
-import de.danoeh.antennapod.net.sync.model.SyncServiceException;
-import de.danoeh.antennapod.net.sync.model.UploadChangesResponse;
+import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
+import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeActionChanges;
+import de.danoeh.antennapod.net.sync.serviceinterface.ISyncService;
+import de.danoeh.antennapod.net.sync.serviceinterface.SubscriptionChanges;
+import de.danoeh.antennapod.net.sync.serviceinterface.SyncServiceException;
+import de.danoeh.antennapod.net.sync.serviceinterface.UploadChangesResponse;
 import okhttp3.Credentials;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
@@ -16,6 +16,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -148,7 +150,7 @@ public class NextcloudSyncService implements ISyncService {
                 .scheme(hostname.scheme)
                 .host(hostname.host)
                 .port(hostname.port)
-                .addPathSegments(hostname.subfolder + path);
+                .addPathSegments(StringUtils.stripStart(hostname.subfolder + path, "/"));
     }
 
     @Override

@@ -41,7 +41,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/appbar">
 
-        <de.danoeh.antennapod.view.EpisodeItemListRecyclerView
+        <de.danoeh.antennapod.ui.episodeslist.EpisodeItemListRecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -57,7 +57,10 @@
         android:indeterminateOnly="true"
         android:visibility="gone" />
 
-    <include
-        layout="@layout/multi_select_speed_dial" />
+    <de.danoeh.antennapod.ui.view.FloatingSelectMenu
+        android:id="@+id/floatingSelectMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

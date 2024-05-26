@@ -17,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
             app:title="@string/search_label"
             app:navigationContentDescription="@string/toolbar_back_button_content_description"
             app:navigationIcon="?homeAsUpIndicator" />
@@ -52,7 +51,7 @@
         android:paddingRight="12dp"
         android:clipToPadding="false" />
 
-    <de.danoeh.antennapod.view.EpisodeItemListRecyclerView
+    <de.danoeh.antennapod.ui.episodeslist.EpisodeItemListRecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -61,7 +60,10 @@
         android:paddingTop="12dp"
         android:paddingHorizontal="@dimen/additional_horizontal_spacing" />
 
-    <include
-        layout="@layout/multi_select_speed_dial" />
+    <de.danoeh.antennapod.ui.view.FloatingSelectMenu
+        android:id="@+id/floatingSelectMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

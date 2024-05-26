@@ -13,6 +13,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
+import de.danoeh.antennapod.model.feed.FeedOrder;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -40,9 +41,7 @@ import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
  * init() or otherwise every public method will throw an Exception
  * when called.
  */
-public class UserPreferences {
-    private UserPreferences(){}
-
+public abstract class UserPreferences {
     private static final String TAG = "UserPreferences";
 
     // User Interface
@@ -81,8 +80,8 @@ public class UserPreferences {
     public static final String PREF_HARDWARE_PREVIOUS_BUTTON = "prefHardwarePreviousButton";
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
     public static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
-    private static final String PREF_FAVORITE_KEEPS_EPISODE = "prefFavoriteKeepsEpisode";
-    private static final String PREF_AUTO_DELETE = "prefAutoDelete";
+    public static final String PREF_FAVORITE_KEEPS_EPISODE = "prefFavoriteKeepsEpisode";
+    public static final String PREF_AUTO_DELETE = "prefAutoDelete";
     private static final String PREF_AUTO_DELETE_LOCAL = "prefAutoDeleteLocal";
     public static final String PREF_SMART_MARK_AS_PLAYED_SECS = "prefSmartMarkAsPlayedSecs";
     private static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
@@ -134,9 +133,6 @@ public class UserPreferences {
     public static final int NOTIFICATION_BUTTON_PLAYBACK_SPEED = 4;
     public static final int NOTIFICATION_BUTTON_SLEEP_TIMER = 5;
     public static final int EPISODE_CACHE_SIZE_UNLIMITED = -1;
-    public static final int FEED_ORDER_COUNTER = 0;
-    public static final int FEED_ORDER_ALPHABETICAL = 1;
-    public static final int FEED_ORDER_MOST_PLAYED = 3;
     public static final String DEFAULT_PAGE_REMEMBER = "remember";
 
     private static Context context;
@@ -239,15 +235,13 @@ public class UserPreferences {
         return showButtonOnFullNotification(NOTIFICATION_BUTTON_SLEEP_TIMER);
     }
 
-    public static int getFeedOrder() {
-        String value = prefs.getString(PREF_DRAWER_FEED_ORDER, "" + FEED_ORDER_COUNTER);
-        return Integer.parseInt(value);
+    public static FeedOrder getFeedOrder() {
+        String value = prefs.getString(PREF_DRAWER_FEED_ORDER, "" + FeedOrder.COUNTER.id);
+        return FeedOrder.fromOrdinal(Integer.parseInt(value));
     }
 
-    public static void setFeedOrder(String selected) {
-        prefs.edit()
-                .putString(PREF_DRAWER_FEED_ORDER, selected)
-                .apply();
+    public static void setFeedOrder(FeedOrder feedOrder) {
+        prefs.edit().putString(PREF_DRAWER_FEED_ORDER, "" + feedOrder.id).apply();
     }
 
     public static FeedCounter getFeedCounterSetting() {
@@ -835,6 +829,10 @@ public class UserPreferences {
 
     public static boolean shouldShowSubscriptionTitle() {
         return prefs.getBoolean(PREF_SUBSCRIPTION_TITLE, false);
+    }
+
+    public static void setShouldShowSubscriptionTitle(boolean show) {
+        prefs.edit().putBoolean(PREF_SUBSCRIPTION_TITLE, show).apply();
     }
 
     public static void setAllEpisodesSortOrder(SortOrder s) {

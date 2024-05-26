@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
+import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 
 public class SleepTimerPreferencesTest {
     @Test

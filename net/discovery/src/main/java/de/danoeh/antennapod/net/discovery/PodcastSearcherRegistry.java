@@ -15,7 +15,6 @@ public class PodcastSearcherRegistry {
         if (searchProviders == null) {
             searchProviders = new ArrayList<>();
             searchProviders.add(new SearcherInfo(new CombinedSearcher(), 1.0f));
-            searchProviders.add(new SearcherInfo(new GpodnetPodcastSearcher(), 0.0f));
             searchProviders.add(new SearcherInfo(new FyydPodcastSearcher(), 1.0f));
             searchProviders.add(new SearcherInfo(new ItunesPodcastSearcher(), 1.0f));
             searchProviders.add(new SearcherInfo(new PodcastIndexPodcastSearcher(), 1.0f));

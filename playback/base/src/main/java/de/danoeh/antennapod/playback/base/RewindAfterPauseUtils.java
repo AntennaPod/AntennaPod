@@ -8,9 +8,7 @@ import java.util.concurrent.TimeUnit;
  * User might loose context if he/she pauses and resumes the media after longer time.
  * Media file should be "rewinded" x seconds after user resumes the playback.
  */
-public class RewindAfterPauseUtils {
-    private RewindAfterPauseUtils(){}
-
+public abstract class RewindAfterPauseUtils {
     public static final long ELAPSED_TIME_FOR_SHORT_REWIND = TimeUnit.MINUTES.toMillis(1);
     public static final long ELAPSED_TIME_FOR_MEDIUM_REWIND = TimeUnit.HOURS.toMillis(1);
     public static final long ELAPSED_TIME_FOR_LONG_REWIND = TimeUnit.DAYS.toMillis(1);

@@ -92,7 +92,6 @@ public class Rss20 extends Namespace {
         } else if (state.getTagstack().size() >= 2 && state.getContentBuf() != null) {
             String contentRaw = state.getContentBuf().toString();
             String content = SyndStringUtils.trimAllWhitespace(contentRaw);
-            String contentFromHtml = HtmlCompat.fromHtml(content, HtmlCompat.FROM_HTML_MODE_COMPACT).toString();
             SyndElement topElement = state.getTagstack().peek();
             String top = topElement.getName();
             SyndElement secondElement = state.getSecondTag();
@@ -108,6 +107,8 @@ public class Rss20 extends Namespace {
                     state.getCurrentItem().setItemIdentifier(contentRaw);
                 }
             } else if (TITLE.equals(top)) {
+                // Calling fromHtml only if needed because it is slow for huge feeds
+                String contentFromHtml = HtmlCompat.fromHtml(content, HtmlCompat.FROM_HTML_MODE_COMPACT).toString();
                 if (ITEM.equals(second) && state.getCurrentItem() != null) {
                     state.getCurrentItem().setTitle(contentFromHtml);
                 } else if (CHANNEL.equals(second) && state.getFeed() != null) {
@@ -128,6 +129,8 @@ public class Rss20 extends Namespace {
                 }
             } else if (DESCR.equals(localName)) {
                 if (CHANNEL.equals(second) && state.getFeed() != null) {
+                    // Calling fromHtml only if needed because it is slow for huge feeds
+                    String contentFromHtml = HtmlCompat.fromHtml(content, HtmlCompat.FROM_HTML_MODE_COMPACT).toString();
                     state.getFeed().setDescription(contentFromHtml);
                 } else if (ITEM.equals(second) && state.getCurrentItem() != null) {
                     state.getCurrentItem().setDescriptionIfLonger(content); // fromHtml here breaks \n when not html

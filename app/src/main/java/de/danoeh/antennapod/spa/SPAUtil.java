@@ -7,7 +7,6 @@ import androidx.preference.PreferenceManager;
 import android.util.Log;
 
 import de.danoeh.antennapod.BuildConfig;
-import de.danoeh.antennapod.receiver.SPAReceiver;
 
 /**
  * Provides methods related to AntennaPodSP (https://github.com/danieloeh/AntennaPodSP)

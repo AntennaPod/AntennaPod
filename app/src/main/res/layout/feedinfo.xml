@@ -41,7 +41,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:minHeight="?attr/actionBarSize"
-                android:theme="?attr/actionBarTheme"
                 app:layout_collapseMode="pin"
                 app:navigationContentDescription="@string/toolbar_back_button_content_description"
                 app:navigationIcon="?homeAsUpIndicator" />
@@ -66,76 +65,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingTop="16dp"
             android:paddingHorizontal="@dimen/additional_horizontal_spacing">
 
             <TextView
-                android:id="@+id/lblUrl"
+                android:id="@+id/statisticsHeadingLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="4dp"
-                android:text="@string/url_label"
-                android:textColor="?android:attr/textColorPrimary"
-                tools:background="@android:color/holo_red_light" />
-
-            <TextView
-                android:id="@+id/txtvUrl"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:maxLines="4"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:drawablePadding="4dp"
-                tools:background="@android:color/holo_green_dark"
-                tools:text="http://www.example.com/feed" />
-
-            <TextView
-                android:id="@+id/lblSupport"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="4dp"
-                android:text="@string/support_funding_label"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="18sp"
-                tools:background="@android:color/holo_red_light" />
-
-            <TextView
-                android:id="@+id/txtvFundingUrl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="8"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:linksClickable="true"
-                android:autoLink="web"
-                tools:background="@android:color/holo_green_dark" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="4dp"
-                android:text="@string/description_label"
-                android:textColor="?android:attr/textColorPrimary"
-                tools:background="@android:color/holo_red_light" />
-
-            <TextView
-                android:id="@+id/txtvDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/design_time_lorem_ipsum"
-                android:textIsSelectable="true"
-                tools:background="@android:color/holo_green_dark" />
-
-            <TextView
-                android:id="@+id/lblStatistics"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
                 android:text="@string/statistics_label"
@@ -148,13 +84,75 @@
                 android:layout_height="wrap_content" />
 
             <Button
-                android:id="@+id/btnvOpenStatistics"
+                android:id="@+id/statisticsButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
+                android:layout_marginBottom="16dp"
                 android:text="@string/statistics_view_all"
                 style="@style/Widget.MaterialComponents.Button.TextButton" />
+
+            <TextView
+                android:id="@+id/supportHeadingLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="@string/support_funding_label"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="18sp"
+                tools:background="@android:color/holo_red_light" />
+
+            <TextView
+                android:id="@+id/supportUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="8"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:linksClickable="true"
+                android:autoLink="web"
+                tools:background="@android:color/holo_green_dark" />
+
+            <TextView
+                android:id="@+id/descriptionHeadingLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginBottom="4dp"
+                android:text="@string/description_label"
+                android:textColor="?android:attr/textColorPrimary"
+                tools:background="@android:color/holo_red_light" />
+
+            <TextView
+                android:id="@+id/descriptionLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textIsSelectable="true"
+                tools:background="@android:color/holo_green_dark" />
+
+            <TextView
+                android:id="@+id/urlHeadingLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="4dp"
+                android:text="@string/url_label"
+                android:textColor="?android:attr/textColorPrimary"
+                tools:background="@android:color/holo_red_light" />
+
+            <TextView
+                android:id="@+id/urlLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:maxLines="4"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:drawablePadding="4dp"
+                tools:background="@android:color/holo_green_dark"
+                tools:text="http://www.example.com/feed" />
 
         </LinearLayout>
 

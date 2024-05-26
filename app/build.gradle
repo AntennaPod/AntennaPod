@@ -12,20 +12,8 @@ android {
         // Version code schema:
         // "1.2.3-beta4"    -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 3030095
-        versionName "3.3.0"
-
-        def commit = ""
-        try {
-            def hashStdOut = new ByteArrayOutputStream()
-            exec {
-                commandLine "git", "rev-parse", "--short", "HEAD"
-                standardOutput = hashStdOut
-            }
-            commit = hashStdOut.toString().trim()
-        } catch (Exception ignore) {
-        }
-        buildConfigField "String", "COMMIT_HASH", ('"' + (commit.isEmpty() ? "Unknown commit" : commit) + '"')
+        versionCode 3030295
+        versionName "3.3.2"
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -59,13 +47,11 @@ android {
     }
 
     lint {
-        disable 'ObsoleteLintCustomCheck', 'CheckResult', 'UnusedAttribute', 'BatteryLife', 'InflateParams',
-                'RestrictedApi', 'TrustAllX509TrustManager', 'ExportedReceiver', 'AllowBackup', 'VectorDrawableCompat',
-                'StaticFieldLeak', 'UseCompoundDrawables', 'NestedWeights', 'Overdraw', 'UselessParent', 'TextFields',
-                'AlwaysShowAction', 'Autofill', 'ClickableViewAccessibility', 'ContentDescription',
+        disable 'CheckResult', 'MissingMediaBrowserServiceIntentFilter', 'UnusedAttribute', 'InflateParams',
+                'RestrictedApi', 'ExportedReceiver', 'NotifyDataSetChanged', 'UseCompoundDrawables', 'NestedWeights',
+                'Overdraw', 'UselessParent', 'TextFields', 'AlwaysShowAction', 'Autofill', 'ClickableViewAccessibility',
                 'KeyboardInaccessibleWidget', 'LabelFor', 'SetTextI18n', 'HardcodedText', 'RelativeOverlap',
-                'RtlCompat', 'RtlHardcoded', 'MissingMediaBrowserServiceIntentFilter', 'VectorPath',
-                'InvalidPeriodicWorkRequestInterval', 'NotifyDataSetChanged', 'RtlEnabled'
+                'RtlHardcoded', 'RtlEnabled', 'ContentDescription'
     }
 
     androidResources {
@@ -74,15 +60,16 @@ android {
 }
 
 dependencies {
-    implementation project(":core")
     implementation project(":event")
     implementation project(':model')
     implementation project(':net:common')
     implementation project(':net:discovery')
     implementation project(':net:download:service-interface')
-    implementation project(':net:sync:gpoddernet')
-    implementation project(':net:sync:model')
+    implementation project(':net:download:service')
+    implementation project(':net:ssl')
+    implementation project(':net:sync:service')
     implementation project(':parser:feed')
+    implementation project(':parser:transcript')
     implementation project(':playback:base')
     implementation project(':playback:cast')
     implementation project(':storage:database')
@@ -90,11 +77,19 @@ dependencies {
     implementation project(':storage:preferences')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
+    implementation project(':ui:discovery')
     implementation project(':ui:echo')
+    implementation project(':ui:episodes')
     implementation project(':ui:glide')
     implementation project(':ui:i18n')
+    implementation project(':ui:notifications')
+    implementation project(':ui:widget')
     implementation project(':ui:preferences')
     implementation project(':ui:statistics')
+    implementation project(':net:sync:service-interface')
+    implementation project(':playback:service')
+    implementation project(':ui:chapters')
+    implementation project(':ui:transcript')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
@@ -121,10 +116,13 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
 
-    implementation 'com.leinardi.android:speed-dial:3.2.0'
     implementation 'com.github.ByteHamster:SearchPreference:v2.5.0'
     implementation 'com.github.skydoves:balloon:1.5.3'
     implementation 'com.github.xabaras:RecyclerViewSwipeDecorator:1.3'
+
+    testImplementation "androidx.test:core:$testCoreVersion"
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
 
     androidTestImplementation "org.awaitility:awaitility:$awaitilityVersion"
     androidTestImplementation 'com.nanohttpd:nanohttpd:2.1.1'

@@ -2,6 +2,9 @@ package de.danoeh.antennapod.net.sync.gpoddernet.mapper;
 
 import androidx.annotation.NonNull;
 
+import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
+import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeActionChanges;
+import de.danoeh.antennapod.net.sync.serviceinterface.SubscriptionChanges;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,10 +12,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import de.danoeh.antennapod.net.sync.model.EpisodeAction;
-import de.danoeh.antennapod.net.sync.model.EpisodeActionChanges;
-import de.danoeh.antennapod.net.sync.model.SubscriptionChanges;
 
 public class ResponseMapper {
 

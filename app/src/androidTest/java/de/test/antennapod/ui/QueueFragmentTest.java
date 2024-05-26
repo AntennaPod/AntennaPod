@@ -5,7 +5,7 @@ import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
 import de.test.antennapod.EspressoTestUtils;
 import org.junit.Before;
 import org.junit.Rule;

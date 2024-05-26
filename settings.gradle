@@ -16,33 +16,40 @@ dependencyResolutionManagement {
 }
 
 include ':app'
-include ':core'
 include ':event'
 include ':model'
 
 include ':net:common'
 include ':net:discovery'
 include ':net:download:service-interface'
+include ':net:download:service'
 include ':net:ssl'
 include ':net:sync:gpoddernet'
-include ':net:sync:model'
+include ':net:sync:service-interface'
+include ':net:sync:service'
 
 include ':parser:feed'
 include ':parser:media'
+include ':parser:transcript'
 
 include ':playback:base'
 include ':playback:cast'
+include ':playback:service'
 
 include ':storage:database'
 include ':storage:importexport'
 include ':storage:preferences'
 
 include ':ui:app-start-intent'
+include ':ui:chapters'
 include ':ui:common'
+include ':ui:discovery'
 include ':ui:echo'
+include ':ui:episodes'
 include ':ui:glide'
 include ':ui:i18n'
 include ':ui:notifications'
 include ':ui:preferences'
 include ':ui:statistics'
 include ':ui:widget'
+include ':ui:transcript'

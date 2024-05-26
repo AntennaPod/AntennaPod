@@ -5,6 +5,12 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import de.danoeh.antennapod.net.sync.HostnameParser;
+import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
+import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeActionChanges;
+import de.danoeh.antennapod.net.sync.serviceinterface.ISyncService;
+import de.danoeh.antennapod.net.sync.serviceinterface.SubscriptionChanges;
+import de.danoeh.antennapod.net.sync.serviceinterface.SyncServiceException;
+import de.danoeh.antennapod.net.sync.serviceinterface.UploadChangesResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,12 +33,6 @@ import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetDevice;
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetEpisodeActionPostResponse;
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetPodcast;
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetUploadChangesResponse;
-import de.danoeh.antennapod.net.sync.model.EpisodeAction;
-import de.danoeh.antennapod.net.sync.model.EpisodeActionChanges;
-import de.danoeh.antennapod.net.sync.model.ISyncService;
-import de.danoeh.antennapod.net.sync.model.SubscriptionChanges;
-import de.danoeh.antennapod.net.sync.model.SyncServiceException;
-import de.danoeh.antennapod.net.sync.model.UploadChangesResponse;
 import okhttp3.Credentials;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -75,36 +75,6 @@ public class GpodnetService implements ISyncService {
     private void requireLoggedIn() {
         if (!loggedIn) {
             throw new IllegalStateException("Not logged in");
-        }
-    }
-
-    /**
-     * Searches the podcast directory for a given string.
-     *
-     * @param query          The search query
-     * @param scaledLogoSize The size of the logos that are returned by the search query.
-     *                       Must be in range 1..256. If the value is out of range, the
-     *                       default value defined by the gpodder.net API will be used.
-     */
-    public List<GpodnetPodcast> searchPodcasts(String query, int scaledLogoSize) throws GpodnetServiceException {
-        String parameters = (scaledLogoSize > 0 && scaledLogoSize <= 256) ? String
-                .format(Locale.US, "q=%s&scale_logo=%d", query, scaledLogoSize) : String
-                .format("q=%s", query);
-        try {
-            URL url = new URI(baseScheme, null, baseHost, basePort, "/search.json",
-                    parameters, null).toURL();
-            Request.Builder request = new Request.Builder().url(url);
-            String response = executeRequest(request);
-
-            JSONArray jsonArray = new JSONArray(response);
-            return readPodcastListFromJsonArray(jsonArray);
-
-        } catch (JSONException | MalformedURLException e) {
-            e.printStackTrace();
-            throw new GpodnetServiceException(e);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            throw new IllegalStateException(e);
         }
     }
 
