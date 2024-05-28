@@ -450,7 +450,7 @@ public class FeedSettingsFragment extends Fragment {
 
             pref.setChecked(feedPreferences.getKeepUpdated());
             pref.setOnPreferenceChangeListener((preference, newValue) -> {
-                boolean checked = newValue == Boolean.TRUE;
+                boolean checked = newValue.equals(Boolean.TRUE);
                 feedPreferences.setKeepUpdated(checked);
                 DBWriter.setFeedPreferences(feedPreferences);
                 pref.setChecked(checked);
@@ -480,7 +480,7 @@ public class FeedSettingsFragment extends Fragment {
             }
 
             pref.setOnPreferenceChangeListener((preference, newValue) -> {
-                boolean checked = newValue == Boolean.TRUE;
+                boolean checked = newValue.equals(Boolean.TRUE);
 
                 feedPreferences.setAutoDownload(checked);
                 DBWriter.setFeedPreferences(feedPreferences);
@@ -515,7 +515,7 @@ public class FeedSettingsFragment extends Fragment {
                     requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
                     return false;
                 }
-                boolean checked = newValue == Boolean.TRUE;
+                boolean checked = newValue.equals(Boolean.TRUE);
                 feedPreferences.setShowEpisodeNotification(checked);
                 DBWriter.setFeedPreferences(feedPreferences);
                 pref.setChecked(checked);

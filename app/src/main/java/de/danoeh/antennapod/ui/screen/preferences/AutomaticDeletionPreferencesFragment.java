@@ -39,7 +39,7 @@ public class AutomaticDeletionPreferencesFragment extends PreferenceFragmentComp
             findPreference(UserPreferences.PREF_EPISODE_CLEANUP).setSummary(R.string.auto_download_disabled_globally);
         }
         findPreference(PREF_AUTO_DELETE_LOCAL).setOnPreferenceChangeListener((preference, newValue) -> {
-            if (blockAutoDeleteLocal && newValue == Boolean.TRUE) {
+            if (blockAutoDeleteLocal && newValue.equals(Boolean.TRUE)) {
                 showAutoDeleteEnableDialog();
                 return false;
             } else {
