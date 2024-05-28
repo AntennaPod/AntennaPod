@@ -80,7 +80,6 @@
     <Match><Bug pattern="IS2_INCONSISTENT_SYNC"/></Match>
     <Match><Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/></Match>
     <Match><Bug pattern="OS_OPEN_STREAM"/></Match>
-    <Match><Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/></Match>
     <Match><Bug pattern="RV_RETURN_VALUE_IGNORED"/></Match>
     <Match><Bug pattern="SE_COMPARATOR_SHOULD_BE_SERIALIZABLE"/></Match>
     <Match><Bug pattern="SE_NO_SERIALVERSIONID"/></Match>
