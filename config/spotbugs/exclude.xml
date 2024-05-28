@@ -84,7 +84,6 @@
     <Match><Bug pattern="SE_COMPARATOR_SHOULD_BE_SERIALIZABLE"/></Match>
     <Match><Bug pattern="SE_NO_SERIALVERSIONID"/></Match>
     <Match><Bug pattern="SE_TRANSIENT_FIELD_NOT_RESTORED"/></Match>
-    <Match><Bug pattern="SF_SWITCH_NO_DEFAULT"/></Match>
     <Match><Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/></Match>
     <Match><Bug pattern="VA_FORMAT_STRING_USES_NEWLINE"/></Match>
     <Match><Bug pattern="WMI_WRONG_MAP_ITERATOR"/></Match>
