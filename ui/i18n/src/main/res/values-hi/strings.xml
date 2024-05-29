@@ -175,7 +175,6 @@
   <string name="select_all_above">ऊपर के सब चुनें</string>
   <string name="select_all_below">नीचे के सब चुनें</string>
   <string name="filtered_label">फिल्टर किया गया</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} आखिरी रीफ्रेश नहीं हो पाया। जानकारी के लिए टैप करें।</string>
   <string name="open_podcast">पॉडकास्ट खोलें</string>
   <string name="please_wait_for_data">डाटा लोड होने का इंतज़ार करें</string>
   <string name="updates_disabled_label">अपडेट बंद</string>
@@ -198,8 +197,6 @@
   <string name="pause_label">रोकें</string>
   <string name="stream_label">स्ट्रीम करें</string>
   <string name="delete_label">हटाएं</string>
-  <string name="delete_failed">फाइल नहीं हटा पाए। डिवाइस वापस बूट करने से कुछ मदद हो सकती है।</string>
-  <string name="delete_local_failed">फाइल नहीं हटा पाए। पॉडकास्ट के जानकारी स्क्रीन से लोकल फोल्डर वापस जोड़ने की कोशिश करें।</string>
   <string name="delete_episode_label">एपिसोड हटाएं</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 डाउनलोड किया गया एपिसोड हटाया गया।</item>
@@ -298,11 +295,6 @@
   <string name="confirm_mobile_streaming_button_once">एक दफा</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[मीडिया फ़ाइल प्ले नहीं की जा सकी।\n\n- कोशिश करें एपिसोड को हटा दें और फिर से डाउनलोड करें।\n- अपने नेटवर्क कनेक्शन की जाँच करें, और सुनिश्चित करें कि कोई VPN या लॉगिन पेज एक्सेस को ब्लॉक नहीं कर रहा है।\n- \"मीडिया पता\" को लंबे समय तक दबाकर और अपने वेब ब्राउज़र के साथ साझा करने का प्रयास करें, देखें कि क्या यहाँ चलाया जा सकता है। यदि नहीं, पॉडकास्ट निर्माताओं से संपर्क करें।]]></string>
-  <string name="playback_error_server_died">सर्वर खत्म</string>
-  <string name="playback_error_unsupported">मीडिया प्रकार समर्थित नहीं</string>
-  <string name="playback_error_timeout">काम दिए गए समय में नहीं हुआ</string>
-  <string name="playback_error_source">मीडिया फाइल एक्सेस करने में असफल</string>
-  <string name="playback_error_unknown">अज्ञात गड़बड़</string>
   <string name="no_media_playing_label">कोई मीडिया नहीं चल रहा</string>
   <string name="unknown_media_key">एंटीनापॉड - अनजान मीडिया चाबी: %1$d</string>
   <string name="error_file_not_found">फाइल नहीं मिला</string>
@@ -589,7 +581,6 @@
     <item quantity="other">%d दिन</item>
   </plurals>
   <string name="auto_enable_label">प्ले बटन दबाने पर स्लीप टाइमर स्वचालित रूप से सक्रिय करें</string>
-  <string name="auto_enable_label_with_times">%s और %s के बीच प्ले बटन दबाने पर स्लीप टाइमर स्वचालित रूप से सक्रिय करें</string>
   <string name="auto_enable_change_times">समय सीमा बदलें</string>
   <string name="sleep_timer_enabled_label">नींद घड़ी चालू</string>
   <!--Synchronisation-->
@@ -635,6 +626,7 @@
   <string name="choose_data_directory_available_space">%2$s में से %1$s खाली</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">जब कोई दूसरा ऐप ऑडियो चलाना चाहता है तो आवाज़ कम करने के जगह प्लेबैक पॉज़ करें।</string>
   <string name="pref_pausePlaybackForFocusLoss_title">रोकटोक पे पॉज़ करें</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">सदस्यता लें</string>
   <string name="subscribing_label">सदस्यता लिया जा रहा है...</string>
@@ -667,7 +659,6 @@
   <string name="feed_tags_label">लेबल</string>
   <string name="feed_tags_summary">इस पॉडकास्ट के टैग बदलें ताकि आपकी सदस्यताओं को संगठित करने में मदद मिले।</string>
   <string name="feed_folders_include_root">ये पॉडकास्ट मेन लिस्ट में दिखाएं</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} केवल चयनित सदस्यताओं से सामान्य टैग दिखाए जाते हैं। अन्य टैग प्रभावित नहीं होते।</string>
   <string name="auto_download_settings_label">ऑटो डाउनलोड सेटिंग</string>
   <string name="episode_filters_label">एपिसोड फिल्टर</string>
   <string name="episode_filters_description">शब्दों की लिस्ट जिसका इस्तेमाल ऑटो डाउनलोड में एपिसोड शामिल करने या ना करने के लिए किया जाएगा</string>
@@ -686,6 +677,7 @@
   <string name="statistics_view_all">सारे पॉडकास्ट »</string>
   <string name="edit_url_menu">फीड यूआरएल बदलें</string>
   <string name="edit_url_confirmation_msg">आरएसएस पता बदलने से पॉडकास्ट का प्लेबैक पोज़िशन और एपिसोड लिस्ट आसानी से टूट सकता है। हम ये नहीं करने की सलाह देते है और कोई भी गड़बड़ होने पे हम मदद नहीं करेंगे। इस बदलाव को कैंसिल नहीं किया जा सकता। टूटी हुई सदस्यता सिर्फ पता पहले जैसा करने से ठीक नहीं होगा। हम आगे बढ़ने से पहले बैकअप बनाने की सलाह देंगे।</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">एकल उद्देश्य वाले ऐप्स से सदस्यताओं का आयात किया जा रहा है...</string>
   <!--Add podcast fragment-->
@@ -693,9 +685,7 @@
   <string name="search_itunes_label">एप्पल पॉडकास्ट में सर्च करें</string>
   <string name="search_podcastindex_label">पॉडकास्ट इंडेक्स में सर्च करें</string>
   <string name="search_fyyd_label">fyyd में सर्च करें</string>
-  <string name="gpodnet_search_hint">gpodder.net में सर्च करें</string>
   <string name="advanced">एडवांस</string>
-  <string name="add_podcast_by_url">आरएसएस पते से पॉडकास्ट जोड़ें</string>
   <string name="discover">ट्रेंडिंग</string>
   <string name="discover_hide">छुपाएं</string>
   <string name="discover_is_hidden">आपने ट्रेंडिंग छुपाना चुना है।</string>

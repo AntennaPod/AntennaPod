@@ -59,6 +59,7 @@
   <string name="deny_label">Recusar</string>
   <string name="open_settings">Abrir definições</string>
   <string name="configure_home">Configurar ecrã inicial</string>
+  <string name="section_hidden">Oculta</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Tamanho total dos episódios no dispositivo</string>
   <!--Main activity-->
@@ -122,6 +123,7 @@
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Nunca</string>
   <string name="feed_new_episodes_action_add_to_inbox">Adicionar à caixa de entrada</string>
+  <string name="feed_new_episodes_action_add_to_queue">Adicionar à fila</string>
   <string name="feed_new_episodes_action_nothing">Nada</string>
   <string name="episode_cleanup_never">Nunca</string>
   <string name="episode_cleanup_except_favorite_removal">Se não for favorito</string>
@@ -182,7 +184,7 @@
   <string name="select_all_above">Marcar tudo acima</string>
   <string name="select_all_below">Marcar tudo abaixo</string>
   <string name="filtered_label">Filtrados</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} A última atualização falhou. Toque para ver os detalhes.</string>
+  <string name="refresh_failed_msg">A última atualização falhou. Toque para ver os detalhes.</string>
   <string name="open_podcast">Abrir podcast</string>
   <string name="please_wait_for_data">Aguarde, os dados estão a ser carregados</string>
   <string name="updates_disabled_label">Atualizações desativadas</string>
@@ -207,8 +209,6 @@
   <string name="pause_label">Pausa</string>
   <string name="stream_label">Emitir</string>
   <string name="delete_label">Eliminar</string>
-  <string name="delete_failed">Episódio não eliminado. Tente reiniciar o dispositivo.</string>
-  <string name="delete_local_failed">Não foi possível eliminar o episódio. Experimente conectar novamente a pasta local no ecrã de informação do podcast.</string>
   <string name="delete_episode_label">Eliminar episódio</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 episódio eliminado</item>
@@ -314,11 +314,6 @@
   <string name="confirm_mobile_streaming_button_once">Uma vez</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[Não foi possível reproduzir o ficheiro.\n\n- Experimente eliminar o episódio e descarregue-o novamente.\n- Verifique a sua ligação de rede e certifique-se se existe uma VPN ou página de acesso que está a impedir a transmissão.\n- Toque longo no episódio e aceda ao \"Endereço multimédia\" no navegador web, para se certificar de que o episódio pode ser reproduzido. Se nada disto funcionar, contacte os criadores do podcast.]]></string>
-  <string name="playback_error_server_died">Erro de servidor</string>
-  <string name="playback_error_unsupported">Tipo de ficheiro não suportado</string>
-  <string name="playback_error_timeout">Operação expirada</string>
-  <string name="playback_error_source">Não foi possível aceder ao ficheiro</string>
-  <string name="playback_error_unknown">Erro desconhecido</string>
   <string name="no_media_playing_label">Nada em reprodução</string>
   <string name="unknown_media_key">Tecla multimédia desconhecida: %1$d</string>
   <string name="error_file_not_found">Ficheiro não encontrado</string>
@@ -478,8 +473,9 @@
   <string name="pref_expandNotify_sum">Normalmente, esta opção é utilizada para expandir a notificação e mostrar os botões de reprodução</string>
   <string name="pref_persistNotify_title">Controlos de reprodução persistentes</string>
   <string name="pref_persistNotify_sum">Manter notificação e controlos no ecrã de bloqueio ao colocar em pausa</string>
-    <string name="pref_full_notification_buttons_title">Definir botões na notificação</string>
-  <string name="pref_full_notification_buttons_sum">Alterar botões de reprodução mostrados na notificação</string>
+  <string name="pref_compact_notification_buttons_dialog_error_exact">Tem que selecionar, exatamente, dois itens</string>
+  <string name="pref_full_notification_buttons_title">Definir botões na notificação</string>
+  <string name="pref_full_notification_buttons_sum">Alterar botões mostrados na notificação de reprodução</string>
   <string name="pref_enqueue_location_title">Localização na fila</string>
   <string name="pref_enqueue_location_sum">Adicionar episódios: %1$s</string>
   <string name="enqueue_location_back">Antes</string>
@@ -568,6 +564,9 @@
   <string name="opml_export_label">Exportação OPML</string>
   <string name="html_export_label">Exportação HTML</string>
   <string name="database_export_label">Exportar base de dados</string>
+  <string name="automatic_database_export_label">Backup automático da base de dados</string>
+  <string name="automatic_database_export_summary">Criar um backup da base de dados a cada 3 dias. Manter apenas os 5 backups mais recentes.</string>
+  <string name="automatic_database_export_error">Erro ao criar o backup automático</string>
   <string name="database_import_label">Importar base de dados</string>
   <string name="database_import_warning">A importação de uma base de dados substitui as subscrições atuais e o histórico de reprodução. Deve efetuar um backup da base de dados atual. Substituir?</string>
   <string name="please_wait">Aguarde...</string>
@@ -612,7 +611,7 @@
     <item quantity="other">%d dias</item>
   </plurals>
   <string name="auto_enable_label">Ativar temporizador automaticamente ao tocar no botão Reproduzir</string>
-  <string name="auto_enable_label_with_times">Ativa automaticamente o temporizador se premir Reproduzir entre %s e %s</string>
+  <string name="auto_enable_label_with_times">Ativar automaticamente o temporizador ao tocar em \"Reproduzir\" entre %1$s e %2$s</string>
   <string name="auto_enable_change_times">Alterar intervalo</string>
   <string name="sleep_timer_enabled_label">Temporizador ativado</string>
   <!--Synchronisation-->
@@ -658,6 +657,13 @@
   <string name="choose_data_directory_available_space">%1$s de %2$s disponível</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Pausa na reprodução em vez de baixar o volume se outra aplicação quiser reproduzir sons</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pausa nas interrupções</string>
+  <!--Rating dialog-->
+  <string name="rating_tagline">Desde %1$s, você reproduziu %2$s%3$d%4$s horas de podcasts.</string>
+  <string name="rating_contribute_label">Gostaria de ajudar? Pode ajudar na tradução, no fórum, no código-fonte e mais!</string>
+  <string name="rating_contribute_button">Descobrir formas de participar</string>
+  <string name="rating_volunteers_label">AntennaPod é desenvolvido por voluntários, durante o seu tempo livre. Se gosta da nossa aplicação, uma avaliação seria muito bem vinda.</string>
+  <string name="rating_rate">Avaliar AntennaPod</string>
+  <string name="rating_later">Mais tarde</string>
   <!--Online feed view-->
   <string name="subscribe_label">Subscrever</string>
   <string name="subscribing_label">Subscrição em curso...</string>
@@ -690,7 +696,7 @@
   <string name="feed_tags_label">Etiquetas</string>
   <string name="feed_tags_summary">Escolha as etiquetas a usar neste podcast para organizar melhor as suas subscrições</string>
   <string name="feed_folders_include_root">Mostrar este podcast na lista de subscrições</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Apenas são mostradas as etiquetas comuns às subscrições selecionadas. As outras etiquetas não são afetadas.</string>
+  <string name="multi_feed_common_tags_info">Apenas as etiquetas comuns a todas as subscrições selecionadas serão mostradas. As outras não serão afetadas.</string>
   <string name="auto_download_settings_label">Definições de descarga automática</string>
   <string name="episode_filters_label">Filtro de episódios</string>
   <string name="episode_filters_description">Lista de termos utilizados para determinar se um episódio deve ser incluído ou excluído das descargas automáticas</string>
@@ -706,9 +712,25 @@
   <string name="statistics_episodes_on_device">Episódios no dispositivo:</string>
   <string name="statistics_space_used">Espaço utilizado:</string>
   <string name="statistics_episodes_started_total">Episódios iniciados/total:</string>
+  <string name="statistics_expected_next_episode">Próximo episódio esperado a:</string>
+  <string name="statistics_expected_next_episode_any_day">Qualquer dia</string>
+  <string name="statistics_expected_next_episode_unknown">Desconhecido</string>
   <string name="statistics_view_all">Ver para todos os podcasts »</string>
   <string name="edit_url_menu">Editar URL</string>
   <string name="edit_url_confirmation_msg">A alteração do endereço RSS pode destruir o estado de reprodução e os episódios do podcast. NÃO recomendamos esta alteração e NÃO podemos ajudar caso algo corra mal. Esta ação não pode ser revertida. A subscrição danificada NÃO pode ser reparada com uma simples alteração do endereço. Deve criar um backup antes de continuar.</string>
+  <!--Podcast release schedules-->
+  <string name="release_schedule_daily">diariamente</string>
+  <string name="release_schedule_weekdays">durante a semana</string>
+  <string name="release_schedule_weekly">semanalmente</string>
+  <string name="release_schedule_biweekly">a cada 2 semanas</string>
+  <string name="release_schedule_monthly">mensalmente</string>
+  <string name="release_schedule_monday">seg</string>
+  <string name="release_schedule_tuesday">ter</string>
+  <string name="release_schedule_wednesday">qua</string>
+  <string name="release_schedule_thursday">qui</string>
+  <string name="release_schedule_friday">sex</string>
+  <string name="release_schedule_saturday">sáb</string>
+  <string name="release_schedule_sunday">dom</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importar subscrições de aplicações single-purpose...</string>
   <!--Add podcast fragment-->
@@ -716,7 +738,6 @@
   <string name="search_itunes_label">Pesquisar em Apple Podcasts</string>
   <string name="search_podcastindex_label">Pesquisar em Podcast Index</string>
   <string name="search_fyyd_label">Pesquisar em fyyd</string>
-  <string name="gpodnet_search_hint">Pesquisar em gpodder.net</string>
   <string name="advanced">Avançado</string>
   <string name="add_podcast_by_url">Adicionar podcast via endereço RSS</string>
   <string name="discover">Descobrir</string>

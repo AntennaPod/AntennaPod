@@ -22,6 +22,7 @@
   <string name="episode_cache_full_message">에피소드 캐시 한계값에 도달했습니다. 설정에서 캐시 크기를 늘릴 수 있습니다.</string>
   <string name="years_statistics_label">연</string>
   <string name="notification_pref_fragment">알림</string>
+  <string name="current_playing_episode">현재</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" 없음</string>
   <!--SwipeActions-->
@@ -58,6 +59,7 @@
   <string name="deny_label">거절</string>
   <string name="open_settings">설정 열기</string>
   <string name="configure_home">홈 화면 구성</string>
+  <string name="section_hidden">감춤</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">장치의 에피소드 전체 크기</string>
   <!--Main activity-->
@@ -121,6 +123,7 @@
   <string name="feed_auto_download_always">항상</string>
   <string name="feed_auto_download_never">안 함</string>
   <string name="feed_new_episodes_action_add_to_inbox">새로 받음 목록에 추가</string>
+  <string name="feed_new_episodes_action_add_to_queue">대기열에 추가</string>
   <string name="feed_new_episodes_action_nothing">없음</string>
   <string name="episode_cleanup_never">안 함</string>
   <string name="episode_cleanup_except_favorite_removal">즐겨찾기 아닐 때</string>
@@ -169,7 +172,7 @@
   <string name="select_all_above">위 모두 선택</string>
   <string name="select_all_below">아래 모두 선택</string>
   <string name="filtered_label">필터링함</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} 최근 새로 고침 실패. 자세히 보려면 누르십시오.</string>
+  <string name="refresh_failed_msg">최근 새로고침이 실패했습니다. 자세히 보려면 터치하십시오.</string>
   <string name="open_podcast">팟캐스트 열기</string>
   <string name="please_wait_for_data">데이터를 읽어 들일 때까지 기다리십시오</string>
   <string name="updates_disabled_label">업데이트 사용하지 않음</string>
@@ -190,8 +193,6 @@
   <string name="pause_label">일시 중지</string>
   <string name="stream_label">스트리밍</string>
   <string name="delete_label">삭제</string>
-  <string name="delete_failed">파일을 삭제할 수 없습니다. 장치를 재부팅하면 동작할 수도 있습니다.</string>
-  <string name="delete_local_failed">파일을 삭제할 수 없습니다. 팟캐스트 정보 화면에서 로컬 폴더에 다시 연결해 보십시오.</string>
   <string name="delete_episode_label">에피소드 삭제</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="other">다운로드한 %d개 에피소드 삭제함.</item>
@@ -283,11 +284,6 @@
   <string name="confirm_mobile_streaming_button_once">한번만</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[미디어 파일을 재생할 수 없습니다.\n\n- 해당 에피소드를 삭제하고 다시 다운로드해 보십시오.\n- 네트워크 연결이 올바른지 확인하고, VPN이나 로그인 페이지가 접근을 막고 있는 것은 아닌지 확인해 보십시오.\n- 길게 눌러 \"미디어 주소\"를 웹브라우저에 공유해 브라우저에서는 재생되는지 보십시오. 재생되지 않으면, 팟캐스트 제작자에게 연락하십시오.]]></string>
-  <string name="playback_error_server_died">서버가 죽었습니다</string>
-  <string name="playback_error_unsupported">지원하지 않는 미디어 종류</string>
-  <string name="playback_error_timeout">작업 시간 초과</string>
-  <string name="playback_error_source">미디어 파일에 접근할 수 없습니다</string>
-  <string name="playback_error_unknown">알 수 없는 오류</string>
   <string name="no_media_playing_label">재생 중인 미디어 없음</string>
   <string name="unknown_media_key">안테나팟 - 알 수 없는 미디어 키: %1$d</string>
   <string name="error_file_not_found">파일이 없습니다</string>
@@ -447,6 +443,9 @@
   <string name="pref_expandNotify_sum">알림에서 재생 버튼이 표시되도록 확장합니다.</string>
   <string name="pref_persistNotify_title">재생 조작 항상 표시</string>
   <string name="pref_persistNotify_sum">재생을 일시 정지했을 때 알림 및 잠금 화면 컨트롤 유지</string>
+  <string name="pref_compact_notification_buttons_dialog_error_exact">정확히 두 개 항목을 선택해야 합니다</string>
+  <string name="pref_full_notification_buttons_title">알림 버튼 설정</string>
+  <string name="pref_full_notification_buttons_sum">재생 알림에 대한 버튼을 바꾸기</string>
   <string name="pref_enqueue_location_title">대기열 추가 위치</string>
   <string name="pref_enqueue_location_sum">에피소드 추가 위치: %1$s</string>
   <string name="enqueue_location_back">뒤</string>
@@ -528,12 +527,16 @@
   <string name="database_import_summary">안테나팟 데이터베이스를 다른 장치에서 가져오기</string>
   <string name="opml_import_label">OPML 가져오기</string>
   <string name="opml_add_podcast_label">팟캐스트 목록 가져오기 (OPML)</string>
+  <string name="opml_reader_error">파일을 읽는 중 오류가 발생했습니다. 정말로 OPML 파일을 선택했는지, 그리고 그 파일이 올바른지 확인하십시오.</string>
   <string name="opml_import_error_no_file">파일을 선택하지 않았습니다!</string>
   <string name="select_all_label">모두 선택</string>
   <string name="deselect_all_label">모두 선택 해제</string>
   <string name="opml_export_label">OPML 내보내기</string>
   <string name="html_export_label">HTML 내보내기</string>
   <string name="database_export_label">데이터베이스 내보내기</string>
+  <string name="automatic_database_export_label">자동 데이터베이스 내보내기</string>
+  <string name="automatic_database_export_summary">안테나팟 데이터베이스의 백업을 3일마다 만듭니다. 최근 5개 백업만 유지합니다.</string>
+  <string name="automatic_database_export_error">자동 데이터베이스 백업 중 오류</string>
   <string name="database_import_label">데이터베이스 가져오기</string>
   <string name="database_import_warning">데이터베이스 가져오기를 하면 모든 구독과 재생 히스토리가 가져온 내용으로 바뀝니다. 백업을 하려면 현재 데이터베이스를 내보내기 해야 합니다. 정말로 데이터베이스를 바꾸시겠습니까?</string>
   <string name="please_wait">기다리십시오…</string>
@@ -570,7 +573,7 @@
     <item quantity="other">%d일</item>
   </plurals>
   <string name="auto_enable_label">재생을 누를 때 자동으로 취침 타이머를 활성화</string>
-  <string name="auto_enable_label_with_times">%s와 %s 사이에 재생을 누를 때 자동으로 취침 타이머를 활성화</string>
+  <string name="auto_enable_label_with_times">%1$s 및 %2$s 사이에 재생을 누르면 자동으로 잠자기 타이머 활성화</string>
   <string name="auto_enable_change_times">시간 범위 바꾸기</string>
   <string name="sleep_timer_enabled_label">취침 타이머 사용함</string>
   <!--Synchronisation-->
@@ -616,6 +619,13 @@
   <string name="choose_data_directory_available_space">%1$s 비어 있음 (전체 %2$s)</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">다른 앱이 소리를 낼 때 볼륨을 줄이지 않고 재생을 일시 중지</string>
   <string name="pref_pausePlaybackForFocusLoss_title">끼어들면 일시 중지</string>
+  <!--Rating dialog-->
+  <string name="rating_tagline">%1$s 이후, %2$s%3$d%4$s 시간의 팟캐스트를 재생했습니다.</string>
+  <string name="rating_contribute_label">참여하고 싶으십니까? 번역, 지원, 디자인, 코딩 중 하나를 하고 싶다면, 얼마든지 환영합니다!</string>
+  <string name="rating_contribute_button">기여할 방법 발견하기</string>
+  <string name="rating_volunteers_label">안테나팟은 자원봉사자들이 여가 시간에 개발하는 앱입니다. 저희 작업을 좋아하신다면 훌륭한 평가를 남겨 주시면 감사하겠습니다.</string>
+  <string name="rating_rate">안테나팟 평가</string>
+  <string name="rating_later">나중에</string>
   <!--Online feed view-->
   <string name="subscribe_label">구독</string>
   <string name="subscribing_label">구독하는 중…</string>
@@ -648,7 +658,7 @@
   <string name="feed_tags_label">태그</string>
   <string name="feed_tags_summary">구독 정리에 도움이 되도록 이 팟캐스트의 태그 바꾸기</string>
   <string name="feed_folders_include_root">주 목록에 이 팟캐스트 표시</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} 선택한 구독에 들어 있는 공통 태그만 표시됩니다. 다른 태그는 변하지 않고 그대로 있습니다.</string>
+  <string name="multi_feed_common_tags_info">선택한 구독 중에 일반적인 태그만 표시됩니다. 기타 태그는 영향을 받지 않습니다.</string>
   <string name="auto_download_settings_label">자동 다운로드 설정</string>
   <string name="episode_filters_label">에피소드 필터</string>
   <string name="episode_filters_description">자동 다운로드를 할 때 에피소드가 포함되어야할지 제외되어야할지 결정하는 규칙의 목록</string>
@@ -664,9 +674,25 @@
   <string name="statistics_episodes_on_device">장치에 들어 있는 에피소드:</string>
   <string name="statistics_space_used">사용한 용량:</string>
   <string name="statistics_episodes_started_total">에피소드 시작/전체:</string>
+  <string name="statistics_expected_next_episode">다음 에피소드 예상:</string>
+  <string name="statistics_expected_next_episode_any_day">지금 언제든지</string>
+  <string name="statistics_expected_next_episode_unknown">알 수 없음</string>
   <string name="statistics_view_all">모든 팟캐스트에 대한 뷰 »</string>
   <string name="edit_url_menu">피드 URL 편집</string>
   <string name="edit_url_confirmation_msg">RSS 주소를 바꾸면 재생 상태와 팟캐스트 에피소드 목록을 쉽게 망가뜨립니다. RSS 주소를 바꾸지 않기를 권하고, 잘못된 경우 어떤 지원도 하지 않을 것입니다. RSS 주소를 한번 바꾸면 되돌릴 수 없습니다. 구독이 한번 망가지면 주소를 되돌린다고 해도 바로잡을 수 없습니다. 계속 하기 전에 백업을 만드시길 권장합니다.</string>
+  <!--Podcast release schedules-->
+  <string name="release_schedule_daily">매일</string>
+  <string name="release_schedule_weekdays">매 평일</string>
+  <string name="release_schedule_weekly">매주</string>
+  <string name="release_schedule_biweekly">격주</string>
+  <string name="release_schedule_monthly">매달</string>
+  <string name="release_schedule_monday">월</string>
+  <string name="release_schedule_tuesday">화</string>
+  <string name="release_schedule_wednesday">수</string>
+  <string name="release_schedule_thursday">목</string>
+  <string name="release_schedule_friday">금</string>
+  <string name="release_schedule_saturday">토</string>
+  <string name="release_schedule_sunday">일</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">단일 용도 앱에서 구독 정보를 가져옵니다...</string>
   <!--Add podcast fragment-->
@@ -674,7 +700,6 @@
   <string name="search_itunes_label">애플 팟캐스트 검색</string>
   <string name="search_podcastindex_label">팟캐스트 인덱스 검색</string>
   <string name="search_fyyd_label">fyyd 검색</string>
-  <string name="gpodnet_search_hint">gpodder.net 검색</string>
   <string name="advanced">고급</string>
   <string name="add_podcast_by_url">RSS 주소로 팟캐스트 추가</string>
   <string name="discover">발견</string>
@@ -705,6 +730,7 @@
   <string name="not_paused">일시 중지 아님</string>
   <string name="hide_played_episodes_label">재생함</string>
   <string name="not_played">재생함 아님</string>
+  <string name="filename">파일 이름</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">재생 위치 포함</string>
   <string name="share_dialog_episode_website_label">에피소드 웹페이지</string>

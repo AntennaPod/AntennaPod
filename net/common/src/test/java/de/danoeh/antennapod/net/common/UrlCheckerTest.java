@@ -162,6 +162,7 @@ public class UrlCheckerTest {
         assertTrue(UrlChecker.urlEquals("https://example.com/?", "https://example.com"));
         assertTrue(UrlChecker.urlEquals("https://Example.com", "https://example.com"));
         assertTrue(UrlChecker.urlEquals("https://example.com/test", "https://example.com/Test"));
+        assertTrue(UrlChecker.urlEquals("antennapod_local:abc", "antennapod_local:abc"));
     }
 
     @Test
@@ -171,5 +172,6 @@ public class UrlCheckerTest {
         assertFalse(UrlChecker.urlEquals("https://example.com/", "https://otherpodcast.example.com/"));
         assertFalse(UrlChecker.urlEquals("https://www.example.com/?id=42&a=b", "https://www.example.com/?id=43&a=b"));
         assertFalse(UrlChecker.urlEquals("https://example.com/podcast%25test", "https://example.com/podcast test"));
+        assertFalse(UrlChecker.urlEquals("antennapod_local:abc", "https://example.com/"));
     }
 }

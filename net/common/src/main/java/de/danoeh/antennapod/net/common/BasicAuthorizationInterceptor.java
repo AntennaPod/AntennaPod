@@ -67,6 +67,7 @@ public class BasicAuthorizationInterceptor implements Interceptor {
 
         Log.d(TAG, "Authorization failed, re-trying with ISO-8859-1 encoded credentials");
         newRequest.header(HEADER_AUTHORIZATION, HttpCredentialEncoder.encode(username, password, "ISO-8859-1"));
+        response.close();
         response = chain.proceed(newRequest.build());
 
         if (response.code() != HttpURLConnection.HTTP_UNAUTHORIZED) {
@@ -75,6 +76,7 @@ public class BasicAuthorizationInterceptor implements Interceptor {
 
         Log.d(TAG, "Authorization failed, re-trying with UTF-8 encoded credentials");
         newRequest.header(HEADER_AUTHORIZATION, HttpCredentialEncoder.encode(username, password, "UTF-8"));
+        response.close();
         return chain.proceed(newRequest.build());
     }
 }

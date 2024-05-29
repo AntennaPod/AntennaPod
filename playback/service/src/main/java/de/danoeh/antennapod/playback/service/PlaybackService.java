@@ -164,6 +164,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private CastStateListener castStateListener;
 
     private String autoSkippedFeedMediaId = null;
+    private String positionJustResetAfterPlayback = null;
     private int clickCount = 0;
     private final Handler clickHandler = new Handler(Looper.getMainLooper());
 
@@ -873,6 +874,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                                 (ctx) -> disableSleepTimer(), getString(R.string.undo)));
                     }
                     loadQueueForMediaSession();
+                    positionJustResetAfterPlayback = null;
                     break;
                 case ERROR:
                     PlaybackPreferences.writeNoMediaPlaying();
@@ -934,15 +936,17 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onPlaybackPause(Playable playable, int position) {
             taskManager.cancelPositionSaver();
             cancelPositionObserver();
-            saveCurrentPosition(position == Playable.INVALID_TIME || playable == null, playable, position);
             taskManager.cancelWidgetUpdater();
-            if (playable != null) {
-                if (playable instanceof FeedMedia) {
-                    SynchronizationQueueSink.enqueueEpisodePlayedIfSynchronizationIsActive(getApplicationContext(),
-                            (FeedMedia) playable, false);
+            if (playable instanceof FeedMedia) {
+                FeedMedia media = (FeedMedia) playable;
+                if (!media.getItem().getIdentifyingValue().equals(positionJustResetAfterPlayback)) {
+                    // Don't store position after position is already reset
+                    saveCurrentPosition(position == Playable.INVALID_TIME, playable, position);
                 }
-                playable.onPlaybackPause(getApplicationContext());
+                SynchronizationQueueSink.enqueueEpisodePlayedIfSynchronizationIsActive(getApplicationContext(),
+                        media, false);
             }
+            playable.onPlaybackPause(getApplicationContext());
         }
 
         @Override
@@ -1151,6 +1155,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     || autoSkipped
                     || (skipped && !UserPreferences.shouldSkipKeepEpisode())) {
                 // only mark the item as played if we're not keeping it anyways
+                positionJustResetAfterPlayback = item.getIdentifyingValue();
                 DBWriter.markItemPlayed(item, FeedItem.PLAYED, ended || (skipped && almostEnded));
                 // don't know if it actually matters to not autodownload when smart mark as played is triggered
                 DBWriter.removeQueueItem(PlaybackService.this, ended, item);

@@ -59,6 +59,7 @@
   <string name="deny_label">Denega</string>
   <string name="open_settings">Obre la configuració</string>
   <string name="configure_home">Configureu l\'Inici</string>
+  <string name="section_hidden">Amagades</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Mida total d\'episodis al dispositiu</string>
   <!--Main activity-->
@@ -122,6 +123,7 @@
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Mai</string>
   <string name="feed_new_episodes_action_add_to_inbox">Afegeix a la safata d\'entrada</string>
+  <string name="feed_new_episodes_action_add_to_queue">Afegeix a la cua</string>
   <string name="feed_new_episodes_action_nothing">No facis res</string>
   <string name="episode_cleanup_never">Mai</string>
   <string name="episode_cleanup_except_favorite_removal">Quan no és favorit</string>
@@ -176,7 +178,7 @@
   <string name="select_all_above">Seleccionar tots cap amunt</string>
   <string name="select_all_below">Seleccionar cap a baix</string>
   <string name="filtered_label">Filtrat</string>
-  <string name="refresh_failed_msg">Error en l\'actualització</string>
+  <string name="refresh_failed_msg">No s\'ha pogut actualitzar. Premeu per veure\'n els detalls.</string>
   <string name="open_podcast">Obre el pòdcast</string>
   <string name="please_wait_for_data">Espereu fins a que les dades estiguen carregades</string>
   <string name="updates_disabled_label">Actualitzacions desactivades</string>
@@ -199,8 +201,6 @@
   <string name="pause_label">Pausa</string>
   <string name="stream_label">Reprodueix sense baixar</string>
   <string name="delete_label">Esborra</string>
-  <string name="delete_failed">No s\'ha pogut esborrar el fitxer. Reiniciar el dispositiu pot ajudar.</string>
-  <string name="delete_local_failed">No es pot suprimir el fitxer. Proveu de tornar a connectar la carpeta local des de la pantalla d\'informació del pòdcast.</string>
   <string name="delete_episode_label">Esborrar episodi</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 episodi descarregat, suprimit.</item>
@@ -299,17 +299,12 @@
   <string name="confirm_mobile_streaming_button_once">Una vegada</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[El fitxer multimèdia no es pot reproduir.\n\n- Proveu d\'esborrar i tornar a baixar l\'episodi.\n- Comproveu la vostra connexió a internet i assegureu-vos que cap VPN o pàgina d\'inici de sessió bloca l\'accés.\n- Proveu de mantenir premut i compartint l\'«Adreça del mitjà» al vostre navegador web per veure si el podeu reproduir allà. Si no, contacteu amb el creador del pòdcast.]]></string>
-  <string name="playback_error_server_died">El servidor no està operatiu</string>
-  <string name="playback_error_unsupported">Tipus de medi no suportat.</string>
-  <string name="playback_error_timeout">La operació ha tardat massa.</string>
-  <string name="playback_error_source">No s\'ha pogut accedir al arxiu de media.</string>
-  <string name="playback_error_unknown">Error desconegut</string>
   <string name="no_media_playing_label">No s\'està reproduint res</string>
   <string name="unknown_media_key">AntennaPod - Control desconegut: %1$d</string>
   <string name="error_file_not_found">Arxiu no trobat</string>
   <string name="no_media_label">L\'element no conté cap fitxer multimèdia</string>
   <!--Queue operations-->
-  <string name="lock_queue">Bloquejar cua</string>
+  <string name="lock_queue">Bloqueja la cua</string>
   <string name="queue_locked">Cua bloquejada</string>
   <string name="queue_unlocked">Cua no bloquejada</string>
   <string name="queue_lock_warning">Si bloqueges la cua no podràs arrastrar o reordenar episodis.</string>
@@ -319,7 +314,7 @@
   <string name="move_to_top_label">Mou al principi</string>
   <string name="move_to_bottom_label">Mou al final</string>
   <string name="sort">Ordena</string>
-  <string name="keep_sorted">Manté ordenats.</string>
+  <string name="keep_sorted">Mantingues ordenats</string>
   <string name="date">Data</string>
   <string name="duration">Durada</string>
   <string name="episode_title">Títol de l\'episodi</string>
@@ -412,7 +407,7 @@
   <string name="pref_stream_over_download_sum">Mostra el botó d\'streaming en comptes del de baixada a les llistes</string>
   <string name="pref_mobileUpdate_title">Actualitza fent servir dades mòbils</string>
   <string name="pref_mobileUpdate_sum">Selecciona què és permès a la connexió de la xarxa mòbil</string>
-  <string name="pref_mobileUpdate_refresh">Refrescar pòdcast</string>
+  <string name="pref_mobileUpdate_refresh">Actualitzar pòdcast</string>
   <string name="pref_mobileUpdate_images">Cobre images</string>
   <string name="pref_mobileUpdate_auto_download">Baixada automática</string>
   <string name="pref_mobileUpdate_episode_download">Baixada d\'episodis</string>
@@ -461,10 +456,11 @@
   <string name="pref_rewind_sum">Personalitza el nombre de segons del salt endarrere quan es prem el botó de Rebobinat</string>
   <string name="pref_expandNotify_title">Alta prioritat a les notificacions</string>
   <string name="pref_expandNotify_sum">Això normalment expandeix la notificació per a mostrar botons de reproducció</string>
-  <string name="pref_persistNotify_title">Contorls de reproducció persistents</string>
+  <string name="pref_persistNotify_title">Controls de reproducció persistents</string>
   <string name="pref_persistNotify_sum">Conserveu les notificacions i els controls de la pantalla de bloqueig quan la reproducció estigui en pausa</string>
-    <string name="pref_full_notification_buttons_title">Configura els botons de notificació</string>
-  <string name="pref_full_notification_buttons_sum">Canvia els botons de reproducció des de la notificació de reproducció.</string>
+  <string name="pref_compact_notification_buttons_dialog_error_exact">Heu de seleccionar exactament dos elements</string>
+  <string name="pref_full_notification_buttons_title">Configura els botons de notificació</string>
+  <string name="pref_full_notification_buttons_sum">Canvieu els botons de la notificació de reproducció</string>
   <string name="pref_enqueue_location_title">Afegir a la cua en determinada posició</string>
   <string name="pref_enqueue_location_sum">Afegir episodis a: %1$s</string>
   <string name="enqueue_location_back">Enrere</string>
@@ -553,6 +549,9 @@
   <string name="opml_export_label">Exportació OPML</string>
   <string name="html_export_label">Exporta HTML</string>
   <string name="database_export_label">Exporta base de dades</string>
+  <string name="automatic_database_export_label">Exportació automàtica de la base de dades</string>
+  <string name="automatic_database_export_summary">Crea una còpia de seguretat de la base de dades d\'AntennaPod cada 3 dies. Només es desen les 5 còpies més recents.</string>
+  <string name="automatic_database_export_error">Hi ha hagut un error durant l\'exportació de la base de dades</string>
   <string name="database_import_label">Importa base de dades</string>
   <string name="database_import_warning">Importar una base de dades reemplaçarà totes les teues subscripcions i històric de reproducció. Deuries exportar la teua base de dades com a còpia de seguretat. Vols reemplaçar?</string>
   <string name="please_wait">Per favor, espera...</string>
@@ -593,7 +592,7 @@
     <item quantity="other">%ddies</item>
   </plurals>
   <string name="auto_enable_label">Activació automàtica del temporitzador en reproduir</string>
-  <string name="auto_enable_label_with_times">Activació automàtica del temporitzador en reproduir entre les hores següents: %s-%s</string>
+  <string name="auto_enable_label_with_times">Activa el temporitzador de son automàticament en reproduir entre les %1$si les %2$s</string>
   <string name="auto_enable_change_times">Canvia el rang de temps</string>
   <string name="sleep_timer_enabled_label">Temporitzador habilitat</string>
   <!--Synchronisation-->
@@ -639,6 +638,13 @@
   <string name="choose_data_directory_available_space">%1$s de %2$s lliures</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Pausa la reproducció en lloc de baixar el volum quan una altra app necessiti reproduir sons</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pausa per interrupcions</string>
+  <!--Rating dialog-->
+  <string name="rating_tagline">Des del %1$sheu reproduït %2$s%3$d%4$shores de pòdcasts.</string>
+  <string name="rating_contribute_label">Us voleu unir? Tant si voleu traduir, ajudar, dissenyar o programar, serem molt feliços de tenir-vos amb nosaltres!</string>
+  <string name="rating_contribute_button">Descobriu maneres de contribuir</string>
+  <string name="rating_volunteers_label">Un grup de voluntaris desenvolupem AntennaPod en el nostre temps lliure. Ens faria molt feliços que apreciessis la nostra feina deixant una bona puntuació.</string>
+  <string name="rating_rate">Valoreu AntennaPod</string>
+  <string name="rating_later">Més tard</string>
   <!--Online feed view-->
   <string name="subscribe_label">Subscriu</string>
   <string name="subscribing_label">Subscrivint...</string>
@@ -671,7 +677,7 @@
   <string name="feed_tags_label">Etiquetes</string>
   <string name="feed_tags_summary">Canvia les etiquetes d\'aquest pòdcast per ajudar-vos a organitzar les subscripcions</string>
   <string name="feed_folders_include_root">Mostra aquest pòdcast a la llista principal</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Només es mostren les etiquetes comunes a diverses subscripcions. No afecta a altres etiquetes.</string>
+  <string name="multi_feed_common_tags_info">Només es mostren les etiquetes comunes a les subscripcions seleccionades. No afecta les altres etiquetes.</string>
   <string name="auto_download_settings_label">Descarregar les confguracions automàticament</string>
   <string name="episode_filters_label">Filtra els termes</string>
   <string name="episode_filters_description">Llistat de termes usats per decidir si un episodi s\'ha d\'incloure o excloure en descarregar automàticament</string>
@@ -687,9 +693,25 @@
   <string name="statistics_episodes_on_device">Episodis al dispositiu:</string>
   <string name="statistics_space_used">Espai utilitzat:</string>
   <string name="statistics_episodes_started_total">Episodis iniciats/total:</string>
+  <string name="statistics_expected_next_episode">S\'espera un nou episodi:</string>
+  <string name="statistics_expected_next_episode_any_day">Aviat</string>
+  <string name="statistics_expected_next_episode_unknown">Desconegut</string>
   <string name="statistics_view_all">Veure per tots els podcasts »</string>
   <string name="edit_url_menu">Edita l\'enllaç del canal</string>
   <string name="edit_url_confirmation_msg">Canviar l\'adreça RSS pot trencar fàcilment l\'estat de reproducció i les llistes d\'episodis del pòdcast. NO recomanem canviar-lo i NO oferirem suport si alguna cosa va malament. Això no es pot desfer. La subscripció trencada NO es pot reparar simplement canviant l\'adreça. Us suggerim que creeu una còpia de seguretat abans de continuar.</string>
+  <!--Podcast release schedules-->
+  <string name="release_schedule_daily">cada dia</string>
+  <string name="release_schedule_weekdays">els caps de setmana</string>
+  <string name="release_schedule_weekly">setmanalment</string>
+  <string name="release_schedule_biweekly">cada dues setmanes</string>
+  <string name="release_schedule_monthly">mensualment</string>
+  <string name="release_schedule_monday">dl.</string>
+  <string name="release_schedule_tuesday">dt.</string>
+  <string name="release_schedule_wednesday">dc.</string>
+  <string name="release_schedule_thursday">dj.</string>
+  <string name="release_schedule_friday">dv.</string>
+  <string name="release_schedule_saturday">ds.</string>
+  <string name="release_schedule_sunday">dg.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">S\'estan important les subscripcions des de les apps de propòsit únic...</string>
   <!--Add podcast fragment-->
@@ -697,9 +719,8 @@
   <string name="search_itunes_label">Cerca a Apple Podcasts</string>
   <string name="search_podcastindex_label">Cerca a Podcast Index</string>
   <string name="search_fyyd_label">Cerca a fyyd</string>
-  <string name="gpodnet_search_hint">Cerca a gpodder.net</string>
   <string name="advanced">Avançat</string>
-  <string name="add_podcast_by_url">Afegir Podcast per adreça RSS</string>
+  <string name="add_podcast_by_url">Afegeix pòdcast per adreça RSS</string>
   <string name="discover">Descobreix</string>
   <string name="discover_hide">Amaga</string>
   <string name="discover_is_hidden">Has seleccionat amagar els suggeriments.</string>
@@ -709,7 +730,7 @@
   <string name="search_powered_by">Resultats per %1$s</string>
   <string name="select_country">Selecciona país</string>
   <!--Local feeds-->
-  <string name="add_local_folder">Afegir carpeta local</string>
+  <string name="add_local_folder">Afegeix carpeta local</string>
   <string name="local_folder">Carpeta local</string>
   <string name="reconnect_local_folder">Torna a connectar la carpeta local</string>
   <string name="reconnect_local_folder_warning">En cas de denegació de permisos, pots utilitzar-ho per tornar a connectar a la mateixa carpeta. No seleccionis cap altra carpeta.</string>

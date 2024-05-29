@@ -187,7 +187,6 @@
   <string name="select_all_above">Zaznacz wszystkie powyżej</string>
   <string name="select_all_below">Zaznacz wszystkie poniżej</string>
   <string name="filtered_label">Przefiltrowany</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Ostatnie odświeżanie nie powiodło się. Naciśnij, aby zobaczyć szczegóły</string>
   <string name="open_podcast">Otwórz podcast</string>
   <string name="please_wait_for_data">Proszę czekać aż dane zostaną załadowane</string>
   <string name="updates_disabled_label">Aktualizacje wyłączone</string>
@@ -214,8 +213,6 @@
   <string name="pause_label">Pauza</string>
   <string name="stream_label">Streamuj</string>
   <string name="delete_label">Usuń</string>
-  <string name="delete_failed">Nie można usunąć pliku. Restart urządzenia może w tym pomóc.</string>
-  <string name="delete_local_failed">Nie można usunąć pliku. Spróbuj połączyć ponownie lokalny folder z ekranu informacji o kanale.</string>
   <string name="delete_episode_label">Usuń odcinek</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">Usunięto 1 pobrany odcinek.</item>
@@ -328,11 +325,6 @@
   <string name="confirm_mobile_streaming_button_once">Tylko tym razem</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[Nie można odtworzyć pliku.\n\n- Spróbuj usunąć i pobrać ponownie odcinek.\n- Sprawdź połączenie sieciowe i upewnij się, że VPN lub strona logowania nie blokują dostępu.\n- Spróbuj przytrzymać dłużej i udostępnić \"Adres URL\" przeglądarce internetowej, aby sprawdzić, czy może być tam odtworzony. Jeśli nie, skontaktuj się z twórcami podcastu.]]></string>
-  <string name="playback_error_server_died">Serwer zdechł</string>
-  <string name="playback_error_unsupported">Nieobsługiwany typ danych</string>
-  <string name="playback_error_timeout">Upłynął czas łączenia</string>
-  <string name="playback_error_source">Nie można odtworzyć pliku</string>
-  <string name="playback_error_unknown">Nieznany błąd</string>
   <string name="no_media_playing_label">Żadne media nie odtwarzane </string>
   <string name="unknown_media_key">AntennaPod - Nieznany klawisz: %1$d</string>
   <string name="error_file_not_found">Nie znaleziono pliku</string>
@@ -627,7 +619,6 @@
     <item quantity="other">%d dni</item>
   </plurals>
   <string name="auto_enable_label">Automatycznie aktywuj wyłącznik czasowy po naciśnięciu odtwarzania</string>
-  <string name="auto_enable_label_with_times">Automatycznie aktywuj wyłącznik czasowy po naciśnięciu odtwarzania pomiędzy%s a %s</string>
   <string name="auto_enable_change_times">Zmień zakres czasowy</string>
   <string name="sleep_timer_enabled_label">Wyłącznik czasowy włączony</string>
   <!--Synchronisation-->
@@ -673,6 +664,7 @@
   <string name="choose_data_directory_available_space">%1$s z %2$s wolnych </string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Wstrzymaj odtwarzanie zamiast wyciszenia jeśli inna aplikacja chce odtworzyć dźwięk.</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Wstrzymaj przy przerwaniu</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Subskrybuj</string>
   <string name="subscribing_label">Subskrybuję...</string>
@@ -705,7 +697,6 @@
   <string name="feed_tags_label">Tagi</string>
   <string name="feed_tags_summary">Zmień tagi tego podcastu, żeby lepiej zorganizować swoje subskrypcje</string>
   <string name="feed_folders_include_root">Pokaż ten kanał na liście głównej</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Tylko wspólne tagi wybranych subskrypcji są pokazane. Pozostałe tagi zostaną bez zmian.</string>
   <string name="auto_download_settings_label">Ustawienia automatycznego pobierania</string>
   <string name="episode_filters_label">Filtr odcinków</string>
   <string name="episode_filters_description">Wykaz terminów używanych aby zdecydować, czy odcinek powinien być włączony lub wyłączony podczas automatycznego pobierania.</string>
@@ -724,6 +715,7 @@
   <string name="statistics_view_all">Zobacz wszystkie podcasty »</string>
   <string name="edit_url_menu">Edytuj adres kanału</string>
   <string name="edit_url_confirmation_msg">Zmiana adresu RSS może łatwo zepsuć stan odtwarzania i listę odcinków podcastu. NIE zalecamy zmiany i NIE zapewniamy wsparcia, jeśli coś pójdzie nie tak. Tego nie da się cofnąć. Uszkodzonej subskrypcji NIE MOŻNA naprawić poprzez zwykłą zmianę adresu z powrotem. Sugerujemy utworzenie kopii zapasowej przed kontynuowaniem.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importowanie subskrybcji z jednozadaniowych aplikacji</string>
   <!--Add podcast fragment-->
@@ -731,9 +723,7 @@
   <string name="search_itunes_label">Wyszukaj w Apple Podcasts</string>
   <string name="search_podcastindex_label">Wyszukaj w Podcast Index</string>
   <string name="search_fyyd_label">Szukaj w fyyd</string>
-  <string name="gpodnet_search_hint">Szukaj na gpodder.net</string>
   <string name="advanced">Zaawansowane</string>
-  <string name="add_podcast_by_url">Dodaj podcast za pomocą adresu URL</string>
   <string name="discover">Odkryj</string>
   <string name="discover_hide">Ukryj</string>
   <string name="discover_is_hidden">Wybrano ukrywanie sugestii</string>

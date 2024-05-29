@@ -59,6 +59,7 @@
   <string name="deny_label">أرفض</string>
   <string name="open_settings">افتح الإعدادات</string>
   <string name="configure_home">أضبط شاشة المنزل</string>
+  <string name="section_hidden">مخفي</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">الحجم الإجمالي للحلقات على هذا الجهاز</string>
   <!--Main activity-->
@@ -122,6 +123,7 @@
   <string name="feed_auto_download_always">دائما</string>
   <string name="feed_auto_download_never">ابدا</string>
   <string name="feed_new_episodes_action_add_to_inbox">اضف إلى صندوق الوارد</string>
+  <string name="feed_new_episodes_action_add_to_queue">أضف للائحة الاستماع</string>
   <string name="feed_new_episodes_action_nothing">فارغ</string>
   <string name="episode_cleanup_never">ابدا</string>
   <string name="episode_cleanup_except_favorite_removal">عند عدم التفضيل</string>
@@ -200,7 +202,7 @@
   <string name="select_all_above">حدد الكل أعلاه</string>
   <string name="select_all_below">حدد الكل أدناه</string>
   <string name="filtered_label">مصفى</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle}  فشلت آخر عملية تحديث. اضغط لرؤية التفاصيل.</string>
+  <string name="refresh_failed_msg">فشلت آخر عملية تحديث. اضغط لرؤية التفاصيل.</string>
   <string name="open_podcast">افتح البودكاست</string>
   <string name="please_wait_for_data">نرجو الانتظار حتى يتم تحميل البيانات</string>
   <string name="updates_disabled_label">التحديثات موقوفة</string>
@@ -231,8 +233,6 @@
   <string name="pause_label">ايقاف مؤقت</string>
   <string name="stream_label">البث التدفقي</string>
   <string name="delete_label">احذف</string>
-  <string name="delete_failed">تعذر حذف الملف. جرب إعادة تشغيل الجهاز.</string>
-  <string name="delete_local_failed">تعذر حذف الملف. حاول إعادة وصل المجلد المحلي من شاشة معلومات البودكاست.</string>
   <string name="delete_episode_label">حذف الحلقة</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="zero">%d لم تحذف أي حلقة منزلة.</item>
@@ -359,11 +359,6 @@
   <string name="confirm_mobile_streaming_button_once">مرة</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[تعذر تشغيل ملف الوسائط.\n\n- حاول مسح وإعادة تنزيل الحلقة.\n- تحقق من اتصالك بالشبكة، وتأكد من عدم وجود شبكة خصوصية افتراضية VPN أو صفحة ولوج تمنعك من الوصول.\n- قم بالضغط المطول ثم مشاركة \"عنوان الوسائط\" إلى متصفح الإنترنت لرؤية ما إذا كانت تعمل هناك. إذا لم تعمل، قم بالتواصل مع منتجي البودكاست.]]></string>
-  <string name="playback_error_server_died">تعطل الخادم</string>
-  <string name="playback_error_unsupported">نمط وسائط غير مدعوم</string>
-  <string name="playback_error_timeout">أنتهى وقت العملية</string>
-  <string name="playback_error_source">لا يمكن الوصول لملف الوسائط</string>
-  <string name="playback_error_unknown">خطأ غير معروف</string>
   <string name="no_media_playing_label">لا يوجد وسائط قيد التشغيل</string>
   <string name="unknown_media_key">AntennaPod - مفتاح وسائط غير معروف: %1$d</string>
   <string name="error_file_not_found">ملف غير موجود</string>
@@ -524,7 +519,6 @@
   <string name="pref_persistNotify_title">تحكم التشغيل ظاهر دائما</string>
   <string name="pref_persistNotify_sum">أبقي تحكم التشغيل في الإشعارات وشاشة القفل عند التوقف</string>
   <string name="pref_full_notification_buttons_title">عيّن أزرار الإشعارات</string>
-  <string name="pref_full_notification_buttons_sum">غير أزرار التحكم المتواجدة في إشعار التشغيل.</string>
   <string name="pref_enqueue_location_title">مكان الإضافة في لائحة الاستماع</string>
   <string name="pref_enqueue_location_sum">أضف حلقات إلى: %1$s</string>
   <string name="enqueue_location_back">خلف</string>
@@ -669,7 +663,6 @@
     <item quantity="other">%d يوما</item>
   </plurals>
   <string name="auto_enable_label">قم بتشغيل مؤقت النوم آليا عند تشغيل الحلقة</string>
-  <string name="auto_enable_label_with_times">قم بتشغيل مؤقت النوم آليا عند تشغيل الحلقة بين %s و %s</string>
   <string name="auto_enable_change_times">غير النطاق الزمني</string>
   <string name="sleep_timer_enabled_label">مؤقت النوم مفعل</string>
   <!--Synchronisation-->
@@ -715,6 +708,7 @@
   <string name="choose_data_directory_available_space">%1$sمن %2$sفاضي  </string>
   <string name="pref_pausePlaybackForFocusLoss_sum">توقف التشغيل بدل اخفات الصوت عندما برنامج يشغل صوت</string>
   <string name="pref_pausePlaybackForFocusLoss_title">توقف للمقاطعات</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">أشترك</string>
   <string name="subscribing_label">جاري الاشتراك...</string>
@@ -747,7 +741,6 @@
   <string name="feed_tags_label">العلامات</string>
   <string name="feed_tags_summary">قم بتغيير العلامات الخاصة بهذا البودكاست للمساعدة في تنظيم اشتراكاتك</string>
   <string name="feed_folders_include_root">اعرض هذا البودكاست في القائمة الرئيسية</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} سيتم عرض العلامات المشتركة بين الاشتراكات المختارة فقط. لن يتم تعديل العلامات الأخرى</string>
   <string name="auto_download_settings_label">إعدادات التنزيل التلقائي</string>
   <string name="episode_filters_label">مصفاة الحلقات</string>
   <string name="episode_filters_description">قائمة الكلمات المستخدمة لتحديد ما إذا كان يجب تضمين حلقة أو استبعادها عند التنزيل التلقائي</string>
@@ -766,6 +759,7 @@
   <string name="statistics_view_all">عرض لجميع البودكاستات »</string>
   <string name="edit_url_menu">عدل على الرابط </string>
   <string name="edit_url_confirmation_msg">تغيير رابط الـ RSS قد يؤدي إلى كسر حالة التشغيل و قائمة الحلقات للبودكاست. نحن لا ننصح بتغيرها ولن نقوم بتوفير أي دعم في حالة حصول أي خطأ. لا يمكن التراجع عن هذا التغيير. الاشتراك المكسور لن يمكن أن يتم استرجاعه بإعادة إرجاع الرابط القديم. ننصح بإنشاء نسخة احتياطية قبل المتابعة.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">استيراد الاشتراكات من التطبيقات ذات الغرض الواحد ...</string>
   <!--Add podcast fragment-->
@@ -773,9 +767,7 @@
   <string name="search_itunes_label">ابحث Apple Podcasts</string>
   <string name="search_podcastindex_label">إبحث في Podcast Index</string>
   <string name="search_fyyd_label">ابحث fyyd</string>
-  <string name="gpodnet_search_hint">ابحث gpodder.net</string>
   <string name="advanced">متقدم</string>
-  <string name="add_podcast_by_url">أضف بودكاست برابط الـ RSS</string>
   <string name="discover">اكتشف</string>
   <string name="discover_hide">اخفاء</string>
   <string name="discover_is_hidden">لقد اخترت اخفاء الاقتراحات.</string>

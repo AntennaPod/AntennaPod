@@ -22,6 +22,7 @@
   <string name="episode_cache_full_message">エピソードのキャッシュが制限に達しました。キャッシュサイズは設定にて増やすことができます。</string>
   <string name="years_statistics_label">年間</string>
   <string name="notification_pref_fragment">通知</string>
+  <string name="current_playing_episode">現在のエピソード</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">%1$sが見つかりません</string>
   <!--SwipeActions-->
@@ -33,7 +34,7 @@
   <string name="change_setting">変更</string>
   <string name="individual_subscription">個々の購読</string>
   <!--Statistics fragment-->
-  <string name="statistics_include_marked">再生済としてマークされたエピソードの再生時間を含める</string>
+  <string name="statistics_include_marked">再生済みとしてマークされたエピソードの再生時間を含める</string>
   <string name="statistics_speed_not_counted">注意: 再生速度は考慮されません。</string>
   <string name="statistics_from">統計情報フィルタリング開始日</string>
   <string name="statistics_to">統計情報フィルタリング終了日</string>
@@ -50,14 +51,15 @@
   <string name="home_continue_title">続きを聴く</string>
   <string name="home_new_title">新着の確認</string>
   <string name="home_downloads_title">ダウンロードの管理</string>
-  <string name="home_welcome_title">ようこそ、AntennaPodへ！</string>
-  <string name="home_welcome_text">現在、ポッドキャストを何も購読していません。サイドメニューを開いてポッドキャストを追加してください。</string>
+  <string name="home_welcome_title">ようこそ、AntennaPod へ！</string>
+  <string name="home_welcome_text">現在、購読しているポッドキャストがありません。サイドメニューを開いてポッドキャストを追加してください。</string>
   <string name="notification_permission_text">AntennaPod が通知を表示するには権限が必要です。デフォルトでは、何かがダウンロードされている時、または何か問題が起こった時にだけ通知が表示されます。</string>
   <string name="notification_permission_denied">権限を拒否しました。</string>
   <string name="notification_permission_deny_warning">通知を無効にしている状態で何か問題が発生した場合、問題が発生した理由を特定できない可能性があります。</string>
   <string name="deny_label">拒否</string>
   <string name="open_settings">設定を開く</string>
   <string name="configure_home">ホーム画面の設定</string>
+  <string name="section_hidden">非表示</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">デバイス上のエピソードの合計サイズ</string>
   <!--Main activity-->
@@ -70,8 +72,8 @@
   <string name="drawer_feed_order_most_played">再生したエピソードの数で並べ替え</string>
   <string name="drawer_feed_counter_inbox">受信トレイ内のエピソード数</string>
   <string name="drawer_feed_counter_unplayed">未再生のエピソードの数</string>
-  <string name="drawer_feed_counter_downloaded">ダウンロード済のエピソードの数</string>
-  <string name="drawer_feed_counter_downloaded_unplayed">ダウンロード済と未再生のエピソードの数</string>
+  <string name="drawer_feed_counter_downloaded">ダウンロード済みのエピソードの数</string>
+  <string name="drawer_feed_counter_downloaded_unplayed">ダウンロード済みと未再生のエピソードの数</string>
   <string name="drawer_feed_counter_none">なし</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">互換性のあるアプリが見つかりません</string>
@@ -79,8 +81,8 @@
   <string name="confirm_export_log_dialog_message">詳細ログには購読リストなどの機密情報が含まれる可能性があります</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">ブラウザーで開く</string>
-  <string name="copy_url_label">URLをコピー</string>
-  <string name="share_url_label">URLを共有</string>
+  <string name="copy_url_label">URL をコピー</string>
+  <string name="share_url_label">URL を共有</string>
   <string name="go_to_position_label">この位置に移動</string>
   <!--Playback history-->
   <string name="clear_history_label">履歴をクリア</string>
@@ -121,6 +123,7 @@
   <string name="feed_auto_download_always">常に</string>
   <string name="feed_auto_download_never">しない</string>
   <string name="feed_new_episodes_action_add_to_inbox">受信トレイに追加</string>
+  <string name="feed_new_episodes_action_add_to_queue">キューに追加</string>
   <string name="feed_new_episodes_action_nothing">何もしない</string>
   <string name="episode_cleanup_never">しない</string>
   <string name="episode_cleanup_except_favorite_removal">お気に入りされていない</string>
@@ -151,7 +154,7 @@
   <string name="remove_all_inbox_label">受信トレイからすべて取り除く</string>
   <string name="removed_all_inbox_msg">受信トレイからすべて取り除きました</string>
   <string name="remove_all_inbox_confirmation_msg">受信トレイからすべて取り除くことを確認してください。</string>
-  <string name="multi_select_mark_played_confirmation">選択したすべての項目を再生済としてマークすることを確認してください</string>
+  <string name="multi_select_mark_played_confirmation">選択したすべての項目を再生済みとしてマークすることを確認してください</string>
   <string name="multi_select_mark_unplayed_confirmation">選択したすべての項目を未再生としてマークすることを確認してください。</string>
   <string name="show_info_label">情報を表示</string>
   <string name="show_feed_settings_label">ポッドキャスト設定を表示</string>
@@ -169,7 +172,7 @@
   <string name="select_all_above">上のすべてを選択</string>
   <string name="select_all_below">下のすべてを選択</string>
   <string name="filtered_label">フィルター処理されています</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} 最後の更新に失敗しました。タップすると詳細が表示されます。</string>
+  <string name="refresh_failed_msg">最後の更新に失敗しました。タップすると詳細が表示されます。</string>
   <string name="open_podcast">ポッドキャストを開く</string>
   <string name="please_wait_for_data">データが読み込まれるまでしばらくお待ちください</string>
   <string name="updates_disabled_label">更新不可</string>
@@ -190,22 +193,20 @@
   <string name="pause_label">一時停止</string>
   <string name="stream_label">ストリーム</string>
   <string name="delete_label">削除</string>
-  <string name="delete_failed">ファイルを削除できません。デバイスを再起動してみてください。</string>
-  <string name="delete_local_failed">ファイルを削除できません。ポッドキャストの情報ページからローカルのフォルダーにアクセスしてみてください。</string>
   <string name="delete_episode_label">エピソードを削除</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="other">ダウンロードした %d 項目のエピソードが削除されました。</item>
   </plurals>
   <string name="remove_inbox_label">受信トレイから取り除く</string>
   <string name="removed_inbox_label">受信トレイから取り除きました</string>
-  <string name="mark_read_label">再生済としてマーク</string>
+  <string name="mark_read_label">再生済みとしてマーク</string>
   <string name="toggle_played_label">再生状態の切り替え</string>
   <string name="marked_as_played_label">再生済みとマーク済み</string>
   <string name="marked_as_unplayed_label">未再生としてマーク</string>
   <string name="mark_read_no_media_label">既読としてマーク</string>
   <string name="play_this_to_seek_position">位置にジャンプするには、エピソードを再生する必要があります</string>
   <plurals name="marked_read_batch_label">
-    <item quantity="other">%d エピソードを再生済にしました。</item>
+    <item quantity="other">%d エピソードを再生済みにしました。</item>
   </plurals>
   <string name="mark_unread_label">未再生としてマーク</string>
   <string name="mark_unread_label_no_media">未読としてマーク</string>
@@ -229,6 +230,7 @@
   <string name="skip_episode_label">エピソードをスキップ</string>
   <string name="reset_position">再生位置をリセット</string>
   <string name="no_items_selected">項目が選択されていません</string>
+  <string name="delete_local_feed_warning_body">削除すると、AntennaPod からエピソード消去され、デバイスのストレージからメディアファイルが削除されます。AntennaPod 経由では再びダウンロードすることはできません。</string>
   <!--Download messages and labels-->
   <string name="download_successful">成功</string>
   <string name="download_pending">ダウンロード保留中</string>
@@ -282,11 +284,6 @@
   <string name="confirm_mobile_streaming_button_once">一度だけ</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[メディアファイルが再生できませんでした。\n\n- エピソードを削除して再度ダウンロードしてみてください。\n- ネットワーク接続を確認して、VPN やログインページによりアクセスがブロックされていないことを確認してください。\n- 長押ししてメディアアドレスをウェブブラウザーに共有して、そこで再生できるか確認してください。できなければポッドキャストの製作者にお問い合わせください。]]></string>
-  <string name="playback_error_server_died">サーバーがダウンしています</string>
-  <string name="playback_error_unsupported">サポートされていないメディアタイプ</string>
-  <string name="playback_error_timeout">操作がタイムアウトしました</string>
-  <string name="playback_error_source">メディアファイルにアクセスできません</string>
-  <string name="playback_error_unknown">不明なエラー</string>
   <string name="no_media_playing_label">再生するメディアがありません</string>
   <string name="unknown_media_key">AntennaPod - 不明なメディアキー: %1$d</string>
   <string name="error_file_not_found">ファイルが見つかりません</string>
@@ -319,7 +316,7 @@
   <string name="no_items_header_label">キューにエピソードがありません</string>
   <string name="no_items_label">エピソードをダウンロードして追加するか、エピソードを長押しして \\"キューに追加\\" を選択してください。</string>
   <string name="no_shownotes_label">このエピソードにショーノートはありません。</string>
-  <string name="no_comp_downloads_head_label">ダウンロード済のエピソードはありません</string>
+  <string name="no_comp_downloads_head_label">ダウンロード済みのエピソードはありません</string>
   <string name="no_comp_downloads_label">ポッドキャスト詳細画面でエピソードをダウンロードできます。</string>
   <string name="no_log_downloads_head_label">ダウンロードログはありません</string>
   <string name="no_log_downloads_label">利用可能な場合、ダウンロードログがここに表示されます。</string>
@@ -366,8 +363,9 @@
   <string name="pref_auto_delete_title">自動削除</string>
   <string name="pref_auto_local_delete_title">ローカルフォルダーから自動削除</string>
   <string name="pref_auto_local_delete_sum">ローカルフォルダーに自動削除機能を適用</string>
-  <string name="pref_smart_mark_as_played_sum">一定の秒数未満の再生時間がまだ残っている場合でも、エピソードを再生済としてマークします</string>
-  <string name="pref_smart_mark_as_played_title">再生済としてスマートマーク</string>
+  <string name="pref_auto_local_delete_dialog_body">これにより AntennaPod のエピソードがローカルフォルダーから削除され、デバイスのストレージからメディアファイルが削除されます。AntennaPod により再度ダウンロードされることはありません。自動削除を有効にしますか?</string>
+  <string name="pref_smart_mark_as_played_sum">一定の秒数未満の再生時間がまだ残っている場合でも、エピソードを再生済みとしてマークします</string>
+  <string name="pref_smart_mark_as_played_title">再生済みとしてスマートマーク</string>
   <string name="pref_skip_keeps_episodes_sum">スキップしたエピソードを残しておきます</string>
   <string name="pref_skip_keeps_episodes_title">スキップしたエピソードを残す</string>
   <string name="pref_favorite_keeps_episodes_sum">お気に入りに追加されたエピソードを残す</string>
@@ -418,7 +416,7 @@
   <string name="pref_automatic_download_on_battery_title">充電時以外にダウンロード</string>
   <string name="pref_automatic_download_on_battery_sum">バッテリーを充電していない時に自動ダウンロードを許可します</string>
   <string name="pref_episode_cache_title">エピソードキャッシュ</string>
-  <string name="pref_episode_cache_summary">デバイスにキャッシュされるダウンロード済エピソードの合計数。この数に達すると自動ダウンロードが中断されます。</string>
+  <string name="pref_episode_cache_summary">デバイスにキャッシュされるダウンロード済みエピソードの合計数。この数に達すると自動ダウンロードが中断されます。</string>
   <string name="pref_episode_cover_title">エピソードカバーを使用する</string>
   <string name="pref_episode_cover_summary">エピソード固有のカバー画像が利用可能な場合は常にリストで使います。チェックを外すと、アプリは常にポッドキャストのカバー画像を使います。</string>
   <string name="pref_show_remain_time_title">残り時間を表示</string>
@@ -445,6 +443,9 @@
   <string name="pref_expandNotify_sum">これは通常再生ボタンを表示するように通知を展開します。</string>
   <string name="pref_persistNotify_title">再生コントロールの保持</string>
   <string name="pref_persistNotify_sum">再生が一時停止された時に、通知およびロック画面のコントロールを保持する</string>
+  <string name="pref_compact_notification_buttons_dialog_error_exact">ちょうど 2 つのアイテム選択する必要があります。</string>
+  <string name="pref_full_notification_buttons_title">通知ボタンを設定</string>
+  <string name="pref_full_notification_buttons_sum">再生通知上のボタンを変更</string>
   <string name="pref_enqueue_location_title">キューに追加する箇所</string>
   <string name="pref_enqueue_location_sum">エピソードを追加: %1$s</string>
   <string name="enqueue_location_back">末尾</string>
@@ -470,12 +471,12 @@
   <string name="pref_back_button_opens_drawer">戻るボタンによりドロワーを開く</string>
   <string name="pref_back_button_opens_drawer_summary">デフォルトページで戻るボタンを押し続けることでナビゲーションドロワーを開く</string>
   <string name="remember_last_page">最後のページを記憶</string>
-  <string name="pref_delete_removes_from_queue_title">キューから削除済を削除</string>
+  <string name="pref_delete_removes_from_queue_title">キューから削除済みを削除</string>
   <string name="pref_delete_removes_from_queue_sum">削除した時に、自動的にキューからエピソードを削除します</string>
   <string name="pref_filter_feed_title">購読フィルター</string>
   <string name="pref_filter_feed_sum">ナビゲーションドロワーと購読画面で表示される購読をフィルター処理</string>
   <string name="subscriptions_are_filtered">購読はフィルター処理されています。</string>
-  <string name="subscriptions_counter_greater_zero">count &gt; 0</string>
+  <string name="subscriptions_counter_greater_zero">カウンターが 1 以上</string>
   <string name="auto_downloaded">自動DL</string>
   <string name="not_auto_downloaded">Not自動DL</string>
   <string name="kept_updated">更新あり</string>
@@ -526,12 +527,16 @@
   <string name="database_import_summary">AntennaPodデータベースを別のデバイスからインポートする</string>
   <string name="opml_import_label">OPML インポート</string>
   <string name="opml_add_podcast_label">ポッドキャストリストのインポート (OPML)</string>
+  <string name="opml_reader_error">ファイルの読み込み中にエラーが発生しました。実際に OPML ファイルを選択し、ファイルが有効なことを確認してください。</string>
   <string name="opml_import_error_no_file">ファイルが選択されていません！</string>
   <string name="select_all_label">すべてを選択</string>
   <string name="deselect_all_label">選択解除</string>
   <string name="opml_export_label">OPML エクスポート</string>
   <string name="html_export_label">HTML エクスポート</string>
   <string name="database_export_label">データベースのエクスポート</string>
+  <string name="automatic_database_export_label">自動データベースエクスポート</string>
+  <string name="automatic_database_export_summary">AntennaPod データベースのバックアップを 3 日毎に行います。最新 5 つのバックアップが保持されます。</string>
+  <string name="automatic_database_export_error">自動データベースバックアップ中のエラー</string>
   <string name="database_import_label">データベースのインポート</string>
   <string name="database_import_warning">データベースをインポートすると、現在の購読と再生履歴がすべて置き換えられます。現在のデータベースをバックアップとしてエクスポートする必要があります。それでも置き換えしますか？</string>
   <string name="please_wait">しばらくお待ちください…</string>
@@ -568,7 +573,7 @@
     <item quantity="other">%d日</item>
   </plurals>
   <string name="auto_enable_label">再生をタップした時に自動的にスリープタイマーを有効化</string>
-  <string name="auto_enable_label_with_times">%s から %s の間で再生をタップした時に自動的にスリープタイマーを有効化</string>
+  <string name="auto_enable_label_with_times">%1$s 〜 %2$s の間で再生を押下した時に自動的にスリープタイマーを有効化</string>
   <string name="auto_enable_change_times">時間の間隔を変更</string>
   <string name="sleep_timer_enabled_label">スリープタイマーを有効にしました</string>
   <!--Synchronisation-->
@@ -614,6 +619,13 @@
   <string name="choose_data_directory_available_space">%1$s / %2$s 空き</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">他のアプリがサウンドを再生したい時に、音量を下げる代わりに再生を一時停止します</string>
   <string name="pref_pausePlaybackForFocusLoss_title">割り込み時に一時停止</string>
+  <!--Rating dialog-->
+  <string name="rating_tagline">%1$s から、%2$s%3$d%4$s 時間のポッドキャストを再生しました。</string>
+  <string name="rating_contribute_label">翻訳、サポート、デザイン、またはコーディングといった形で貢献してくれると嬉しいです!</string>
+  <string name="rating_contribute_button">貢献する方法</string>
+  <string name="rating_volunteers_label">AantennaPod はボランティアにより開発されています。高評価いただけると幸いです。</string>
+  <string name="rating_rate">AntennaPod を評価</string>
+  <string name="rating_later">後で</string>
   <!--Online feed view-->
   <string name="subscribe_label">購読</string>
   <string name="subscribing_label">購読中…</string>
@@ -646,7 +658,7 @@
   <string name="feed_tags_label">タグ</string>
   <string name="feed_tags_summary">このPodcastのタグを変更すると、購読の整理がしやすくなります</string>
   <string name="feed_folders_include_root">このポッドキャストをメインリストに表示</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} 選択したすべての購読に共通のタグのみが表示されます。その他のタグは影響を受けません。</string>
+  <string name="multi_feed_common_tags_info">選択されたすべての購読に共通するタグだけが表示されます。その他のタグは影響を受けません。</string>
   <string name="auto_download_settings_label">自動ダウンロード設定</string>
   <string name="episode_filters_label">エピソードフィルター</string>
   <string name="episode_filters_description">自動ダウンロードのときに、エピソードを含めるか除外する必要があるかを決定するために使用される条件のリスト</string>
@@ -662,9 +674,25 @@
   <string name="statistics_episodes_on_device">デバイス上のエピソード:</string>
   <string name="statistics_space_used">使用スペース:</string>
   <string name="statistics_episodes_started_total">再生エピソード数/合計:</string>
+  <string name="statistics_expected_next_episode">期待される次のエピソード :</string>
+  <string name="statistics_expected_next_episode_any_day">今にでも</string>
+  <string name="statistics_expected_next_episode_unknown">不明</string>
   <string name="statistics_view_all">すべてのポッドキャストを表示 »</string>
   <string name="edit_url_menu">フィードのURLを編集</string>
   <string name="edit_url_confirmation_msg">RSSのアドレスを変更すると、ポッドキャストの再生状態とエピソードのリストが壊れてしまう可能性があります。RSSのアドレスを変更することはおすすめしません。何か問題が起きたとしてもサポートは提供されません。この変更は元に戻せません。アドレスを元に戻すだけでは壊れた購読を修復することはできません。続行する前にバックアップを作成することをおすすめします。</string>
+  <!--Podcast release schedules-->
+  <string name="release_schedule_daily">毎日</string>
+  <string name="release_schedule_weekdays">週末</string>
+  <string name="release_schedule_weekly">毎週</string>
+  <string name="release_schedule_biweekly">2 週間毎</string>
+  <string name="release_schedule_monthly">毎月</string>
+  <string name="release_schedule_monday">月</string>
+  <string name="release_schedule_tuesday">火</string>
+  <string name="release_schedule_wednesday">水</string>
+  <string name="release_schedule_thursday">木</string>
+  <string name="release_schedule_friday">金</string>
+  <string name="release_schedule_saturday">土</string>
+  <string name="release_schedule_sunday">日</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">単一目的のアプリから購読をインポート中…</string>
   <!--Add podcast fragment-->
@@ -672,9 +700,8 @@
   <string name="search_itunes_label">Apple Podcast を検索</string>
   <string name="search_podcastindex_label">Podcast Index を検索</string>
   <string name="search_fyyd_label">fyyd を検索</string>
-  <string name="gpodnet_search_hint">gpodder.net を検索</string>
   <string name="advanced">詳細</string>
-  <string name="add_podcast_by_url">RSSアドレスでポッドキャストを追加</string>
+  <string name="add_podcast_by_url">RSS アドレスでポッドキャストを追加</string>
   <string name="discover">発見</string>
   <string name="discover_hide">隠す</string>
   <string name="discover_is_hidden">提案を隠すことを選択しました</string>
@@ -693,9 +720,9 @@
   <string name="filter">フィルター</string>
   <string name="hide_is_favorite_label">お気に入り</string>
   <string name="not_favorite">お気に入り外</string>
-  <string name="hide_downloaded_episodes_label">ダウンロード済</string>
+  <string name="hide_downloaded_episodes_label">ダウンロード済み</string>
   <string name="hide_not_downloaded_episodes_label">未ダウンロード</string>
-  <string name="queued_label">キューに追加済</string>
+  <string name="queued_label">キューに追加済み</string>
   <string name="not_queued_label">キューに未追加</string>
   <string name="has_media">メディア有り</string>
   <string name="no_media">メディア無し</string>
@@ -703,6 +730,7 @@
   <string name="not_paused">未停止</string>
   <string name="hide_played_episodes_label">再生済み</string>
   <string name="not_played">未再生</string>
+  <string name="filename">ファイル名</string>
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">再生位置を含める</string>
   <string name="share_dialog_episode_website_label">エピソードのWebページ</string>

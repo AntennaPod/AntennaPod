@@ -59,6 +59,7 @@
   <string name="deny_label">Ablehnen</string>
   <string name="open_settings">Einstellungen öffnen</string>
   <string name="configure_home">Startbildschirm einrichten</string>
+  <string name="section_hidden">Versteckt</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Gesamtgröße der Episoden auf dem Gerät</string>
   <!--Main activity-->
@@ -122,18 +123,19 @@
   <string name="feed_auto_download_always">Immer</string>
   <string name="feed_auto_download_never">Nie</string>
   <string name="feed_new_episodes_action_add_to_inbox">Zum Posteingang hinzufügen</string>
+  <string name="feed_new_episodes_action_add_to_queue">Zur Warteschlange hinzufügen</string>
   <string name="feed_new_episodes_action_nothing">Nichts</string>
   <string name="episode_cleanup_never">Nie</string>
   <string name="episode_cleanup_except_favorite_removal">Wenn nicht favorisiert</string>
   <string name="episode_cleanup_queue_removal">Wenn nicht in der Warteschlange</string>
-  <string name="episode_cleanup_after_listening">Wenn fertig gespielt</string>
+  <string name="episode_cleanup_after_listening">Wenn fertig abgespielt</string>
   <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 Stunde nachdem fertig gespielt</item>
-    <item quantity="other">%d Stunden nachdem fertig gespielt</item>
+    <item quantity="one">1 Stunde nachdem fertig abgespielt</item>
+    <item quantity="other">%d Stunden nachdem fertig abgespielt</item>
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 Tag nachdem fertig gespielt</item>
-    <item quantity="other">%d Tage nachdem fertig gespielt</item>
+    <item quantity="one">1 Tag nachdem fertig abgespielt</item>
+    <item quantity="other">%d Tage nachdem fertig abgespielt</item>
   </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d ausgewählt</item>
@@ -176,7 +178,7 @@
   <string name="select_all_above">Alles oberhalb auswählen</string>
   <string name="select_all_below">Alles unterhalb auswählen</string>
   <string name="filtered_label">Gefiltert</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Letzte Aktualisierung fehlgeschlagen. Tippen, um Details anzuzeigen.</string>
+  <string name="refresh_failed_msg">Letzte Aktualisierung fehlgeschlagen. Tippen, um Details anzuzeigen.</string>
   <string name="open_podcast">Podcast öffnen</string>
   <string name="please_wait_for_data">Bitte warte, bis die Daten geladen sind</string>
   <string name="updates_disabled_label">Updates deaktiviert</string>
@@ -199,8 +201,6 @@
   <string name="pause_label">Pausieren</string>
   <string name="stream_label">Streamen</string>
   <string name="delete_label">Löschen</string>
-  <string name="delete_failed">Die Datei kann nicht gelöscht werden. Eventuell hilft es, das Gerät neu zu starten.</string>
-  <string name="delete_local_failed">Die Datei kann nicht gelöscht werden. Versuche, den lokalen Ordner über den Podcast-Infobildschirm erneut zu verbinden.</string>
   <string name="delete_episode_label">Episode löschen</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 heruntergeladene Episode gelöscht.</item>
@@ -210,7 +210,7 @@
   <string name="removed_inbox_label">Aus dem Posteingang entfernt</string>
   <string name="mark_read_label">Als abgespielt markieren</string>
   <string name="toggle_played_label">Abgespielt-Zustand umschalten</string>
-  <string name="marked_as_played_label">Als gespielt markieren</string>
+  <string name="marked_as_played_label">Als abgespielt markieren</string>
   <string name="marked_as_unplayed_label">Als ungespielt markieren</string>
   <string name="mark_read_no_media_label">Als gelesen markieren</string>
   <string name="play_this_to_seek_position">Um auf eine Position zu springen, musst du die Episode abspielen</string>
@@ -275,7 +275,7 @@
   <string name="download_report_title">Downloads endeten mit Fehler(n)</string>
   <string name="download_error_io_error">E/A Error</string>
   <string name="download_error_request_error">Anfragefehler</string>
-  <string name="download_error_db_access">Datenbankzugriffsfehler</string>
+  <string name="download_error_db_access">Datenbank-Zugriffsfehler</string>
   <plurals name="downloads_left">
     <item quantity="one">%d Download übrig</item>
     <item quantity="other">%d Downloads übrig</item>
@@ -299,11 +299,6 @@
   <string name="confirm_mobile_streaming_button_once">Einmalig</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[Die Mediendatei konnte nicht abgespielt werden.\n\n- Versuche die Episode zu löschen und erneut herunterzuladen.\n- Überprüfe die Netzwerkverbindung und stelle sicher, dass kein VPN oder eine Anmeldeseite den Zugriff blockiert.\n- Tippe lange auf die Episode und teile die \"Medienadresse\" mit deinem Webbrowser, um zu sehen, ob sie dort abgespielt werden kann. Wenn nicht, wende dich an die Ersteller des Podcasts.]]></string>
-  <string name="playback_error_server_died">Server ist offline</string>
-  <string name="playback_error_unsupported">Dateityp nicht unterstützt</string>
-  <string name="playback_error_timeout">Zeitüberschreitung</string>
-  <string name="playback_error_source">Auf Mediendatei kann nicht zugegriffen werden</string>
-  <string name="playback_error_unknown">Unbekannter Fehler</string>
   <string name="no_media_playing_label">Keine Medienwiedergabe</string>
   <string name="unknown_media_key">AntennaPod - Unbekannte Medientaste: %1$d</string>
   <string name="error_file_not_found">Datei nicht gefunden</string>
@@ -463,12 +458,14 @@
   <string name="pref_expandNotify_sum">Dies erweitert normalerweise die Benachrichtigung und zeigt so die Wiedergabe-Buttons an</string>
   <string name="pref_persistNotify_title">Persistente Wiedergabesteuerung</string>
   <string name="pref_persistNotify_sum">Bedienelemente in der Benachrichtigungsleiste und auf dem Sperrbildschirm anzeigen, während die Wiedergabe pausiert ist</string>
-    <string name="pref_full_notification_buttons_title">Benachrichtigungs-Buttons einstellen</string>
+  <string name="pref_compact_notification_buttons_dialog_error_exact">Du musst genau zwei Einträge auswählen</string>
+  <string name="pref_full_notification_buttons_title">Benachrichtigungs-Buttons einstellen</string>
+  <string name="pref_full_notification_buttons_sum">Ändere die Buttons von der Wiedergabe-Benachrichtigung</string>
   <string name="pref_enqueue_location_title">Position beim Einreihen</string>
   <string name="pref_enqueue_location_sum">Episoden hinzufügen: %1$s </string>
   <string name="enqueue_location_back">Hinten</string>
   <string name="enqueue_location_front">Vorne</string>
-  <string name="enqueue_location_after_current">Hinter der aktuell gespielten Episode</string>
+  <string name="enqueue_location_after_current">Hinter der aktuell abgespielten Episode</string>
   <string name="enqueue_location_random">Zufällig</string>
   <string name="pref_smart_mark_as_played_disabled">Deaktiviert</string>
   <string name="documentation_support">Dokumentation + Support</string>
@@ -552,6 +549,9 @@
   <string name="opml_export_label">OPML exportieren</string>
   <string name="html_export_label">HTML exportieren</string>
   <string name="database_export_label">Datenbank exportieren</string>
+  <string name="automatic_database_export_label">Automatischer Datenbank-Export</string>
+  <string name="automatic_database_export_summary">Erstellt alle 3 Tage eine Sicherungskopie der AntennaPod-Datenbank. Es werden nur die 5 aktuellsten Sicherungen aufbewahrt.</string>
+  <string name="automatic_database_export_error">Fehler bei der automatischen Datenbanksicherung</string>
   <string name="database_import_label">Datenbank importieren</string>
   <string name="database_import_warning">Das Importieren einer Datenbank ersetzt alle Abonnements und abgespielte Episoden. Ein Export als Backup wird empfohlen. Möchtest du die Datenbank wirklich ersetzen?</string>
   <string name="please_wait">Bitte warten...</string>
@@ -592,7 +592,7 @@
     <item quantity="other">%d Tage</item>
   </plurals>
   <string name="auto_enable_label">Schlummerfunktion automatisch aktivieren, wenn auf Play gedrückt wird</string>
-  <string name="auto_enable_label_with_times">Schlummerfunktion automatisch aktivieren, wenn zwischen %s und %s auf Play gedrückt wird</string>
+  <string name="auto_enable_label_with_times">Schlummerfunktion automatisch aktivieren, wenn zwischen %1$s und %2$s auf Play gedrückt wird</string>
   <string name="auto_enable_change_times">Zeitbereich ändern</string>
   <string name="sleep_timer_enabled_label">Schlummerfunktion aktiviert</string>
   <!--Synchronisation-->
@@ -638,6 +638,13 @@
   <string name="choose_data_directory_available_space">%1$s von %2$s frei</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Wiedergabe pausieren, anstatt die Lautstärke zu reduzieren, wenn eine andere Anwendung Töne abspielt</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Bei Unterbrechungen pausieren</string>
+  <!--Rating dialog-->
+  <string name="rating_tagline">Seit %1$s, hast du %2$s%3$d%4$s Stunden Podcasts gehört.</string>
+  <string name="rating_contribute_label">Willst du mitmachen? Egal, ob du übersetzen, unterstützen, entwerfen oder programmieren willst, wir würden uns freuen, wenn du dabei bist!</string>
+  <string name="rating_contribute_button">Entdecke, wie du beitragen kannst</string>
+  <string name="rating_volunteers_label">AntennaPod wird von Freiwilligen in ihrer Freizeit entwickelt. Wir würden uns freuen, wenn du unsere Arbeit schätzt und eine nette Bewertung hinterlässt.</string>
+  <string name="rating_rate">Bewerte AntennaPod</string>
+  <string name="rating_later">Später</string>
   <!--Online feed view-->
   <string name="subscribe_label">Abonnieren</string>
   <string name="subscribing_label">Abonniere…</string>
@@ -670,7 +677,7 @@
   <string name="feed_tags_label">Tags</string>
   <string name="feed_tags_summary">Ändere die Schlagworte (Tags) dieses Podcasts, um deine Abonnements zu organisieren</string>
   <string name="feed_folders_include_root">Diesen Podcast in der Haupliste anzeigen</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Es werden nur gemeinsame Tags aus allen ausgewählten Abonnements angezeigt. Andere Tags bleiben davon unberührt.</string>
+  <string name="multi_feed_common_tags_info">Es werden nur gemeinsame Tags aus allen ausgewählten Abonnements angezeigt. Andere Tags bleiben davon unberührt.</string>
   <string name="auto_download_settings_label">Einstellungen für Automatischen Download</string>
   <string name="episode_filters_label">Episoden-Filter</string>
   <string name="episode_filters_description">Liste von Begriffen, die dazu verwendet wird, Episoden beim automatischen Download einzubeziehen oder auszuschließen</string>
@@ -686,9 +693,25 @@
   <string name="statistics_episodes_on_device">Episoden auf dem Gerät:</string>
   <string name="statistics_space_used">Verwendeter Speicherplatz:</string>
   <string name="statistics_episodes_started_total">Episoden gestartet/gesamt:</string>
+  <string name="statistics_expected_next_episode">Erwartete nächste Episode:</string>
+  <string name="statistics_expected_next_episode_any_day">In Kürze</string>
+  <string name="statistics_expected_next_episode_unknown">Unbekannt</string>
   <string name="statistics_view_all">Für alle Podcasts ansehen »</string>
   <string name="edit_url_menu">Feed-URL bearbeiten</string>
   <string name="edit_url_confirmation_msg">Das Ändern der RSS-Adresse kann leicht den Abgespielt-Zustand und die Episoden des Podcasts beeinträchtigen. Wir empfehlen NICHT, die Adresse zu ändern und bieten KEINEN Support an, wenn etwas schief geht. Dies kann nicht rückgängig gemacht werden. Das defekte Abonnement kann NICHT repariert werden, indem die Adresse einfach wieder geändert wird. Wir empfehlen, eine Sicherungskopie zu erstellen, bevor du fortfährst.</string>
+  <!--Podcast release schedules-->
+  <string name="release_schedule_daily">täglich</string>
+  <string name="release_schedule_weekdays">an Wochentagen</string>
+  <string name="release_schedule_weekly">wöchentlich</string>
+  <string name="release_schedule_biweekly">alle zwei Wochen</string>
+  <string name="release_schedule_monthly">monatlich</string>
+  <string name="release_schedule_monday">Mo</string>
+  <string name="release_schedule_tuesday">Di</string>
+  <string name="release_schedule_wednesday">Mi</string>
+  <string name="release_schedule_thursday">Do</string>
+  <string name="release_schedule_friday">Fr</string>
+  <string name="release_schedule_saturday">Sa</string>
+  <string name="release_schedule_sunday">So</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importiere Abonnements aus Single-Purpose Apps</string>
   <!--Add podcast fragment-->
@@ -696,9 +719,8 @@
   <string name="search_itunes_label">Apple Podcasts durchsuchen</string>
   <string name="search_podcastindex_label">Podcast Index durchsuchen</string>
   <string name="search_fyyd_label">fyyd durchsuchen</string>
-  <string name="gpodnet_search_hint">gpodder.net durchsuchen</string>
   <string name="advanced">Fortgeschritten</string>
-  <string name="add_podcast_by_url">Podcast über RSS-Adresse hinzufügen</string>
+  <string name="add_podcast_by_url">Podcast per RSS-Adresse hinzufügen</string>
   <string name="discover">Entdecken</string>
   <string name="discover_hide">Ausblenden</string>
   <string name="discover_is_hidden">Du hast ausgewählt, Vorschläge auszublenden.</string>
@@ -725,7 +747,7 @@
   <string name="no_media">Keine Medien</string>
   <string name="hide_paused_episodes_label">Pausiert</string>
   <string name="not_paused">Nicht pausiert</string>
-  <string name="hide_played_episodes_label">Gespielt</string>
+  <string name="hide_played_episodes_label">Abgespielt</string>
   <string name="not_played">Nicht abgespielt</string>
   <string name="filename">Dateiname</string>
   <!--Share episode dialog-->

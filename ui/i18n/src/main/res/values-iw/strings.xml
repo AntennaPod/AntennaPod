@@ -59,6 +59,7 @@
   <string name="deny_label">דחייה</string>
   <string name="open_settings">פתיחת הגדרות</string>
   <string name="configure_home">הגדרת מסך הבית</string>
+  <string name="section_hidden">מוסתר</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">גודל הפרקים הכולל במכשיר</string>
   <!--Main activity-->
@@ -122,6 +123,7 @@
   <string name="feed_auto_download_always">תמיד</string>
   <string name="feed_auto_download_never">אף פעם</string>
   <string name="feed_new_episodes_action_add_to_inbox">הוספה לדואר נכנס</string>
+  <string name="feed_new_episodes_action_add_to_queue">הוספה לתור</string>
   <string name="feed_new_episodes_action_nothing">כלום</string>
   <string name="episode_cleanup_never">אף פעם</string>
   <string name="episode_cleanup_except_favorite_removal">כאשר לא במועדפים</string>
@@ -182,7 +184,7 @@
   <string name="select_all_above">בחירת כל אלו שלעיל</string>
   <string name="select_all_below">בחירת כל אלו שלהלן</string>
   <string name="filtered_label">מסונן</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} הרענון האחרון נכשל. יופיעו פרטים בנגיעה.</string>
+  <string name="refresh_failed_msg">הרענון האחרון נכשל. נגיעה תציג פרטים נוספים.</string>
   <string name="open_podcast">פתיחת פודקאסט</string>
   <string name="please_wait_for_data">נא להמתין לסיום טעינת הנתונים</string>
   <string name="updates_disabled_label">העדכונים מושבתים</string>
@@ -207,8 +209,6 @@
   <string name="pause_label">השהיה</string>
   <string name="stream_label">הזרמה</string>
   <string name="delete_label">מחיקה</string>
-  <string name="delete_failed">לא ניתן למחוק קובץ. הפעלת המכשיר מחדש עשויה לסייע.</string>
-  <string name="delete_local_failed">לא ניתן למחוק קובץ. יש לנסות לחבר את התיקייה המקומית מחדש ממסך פרטי הפודקאסט.</string>
   <string name="delete_episode_label">מחיקת פרק</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">פרק שהורד נמחק.</item>
@@ -314,11 +314,6 @@
   <string name="confirm_mobile_streaming_button_once">פעם אחת</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[לא ניתן לנגן את המדיה.\n\n- כדאי לנסות למחוק ולהוריד מחדש את הפרק.\n- לבדוק את החיבור שלך לרשת ולוודא שאין VPN או עמוד כניסה שחוסמים את הגישה.\n- לנסות ללחוץ ארוכות ולשתף את „כתובת מדיה” עם הדפדפן שלך כדי לראות אם אפשר לנגן את זה שם. אם לא, נא ליצור קשר עם יוצרי הפודקאסט.]]></string>
-  <string name="playback_error_server_died">השרת לא מגיב</string>
-  <string name="playback_error_unsupported">אין תמיכה בסוג המדיה הזה</string>
-  <string name="playback_error_timeout">הזמן שהוקצב לפעולה תם</string>
-  <string name="playback_error_source">לא ניתן לגשת לקובץ המדיה</string>
-  <string name="playback_error_unknown">שגיאה לא ידועה</string>
   <string name="no_media_playing_label">אין מדיה מתנגנת</string>
   <string name="unknown_media_key">אנטנה־פּוֹד - מפתח מדיה לא ידוע: %1$d</string>
   <string name="error_file_not_found">הקובץ לא נמצא</string>
@@ -478,8 +473,9 @@
   <string name="pref_expandNotify_sum">הגדרה זו מרחיבה את ההתראה כדי שתציג גם כפתורי נגינה.</string>
   <string name="pref_persistNotify_title">פקדי נגינה קבועים</string>
   <string name="pref_persistNotify_sum">להשאיר את פקדי ההתרעות ומסך הנעילה גם כשהנגינה מושהית</string>
-    <string name="pref_full_notification_buttons_title">הגדרת כפתורי התראה</string>
-  <string name="pref_full_notification_buttons_sum">החלפת כפתורי הנגינה בהתראות הנגינה.</string>
+  <string name="pref_compact_notification_buttons_dialog_error_exact">חובה לבחור בדיוק שני פריטים</string>
+  <string name="pref_full_notification_buttons_title">הגדרת כפתורי התראה</string>
+  <string name="pref_full_notification_buttons_sum">החלפת הכפתורים על התראת הנגינה</string>
   <string name="pref_enqueue_location_title">מיקום הוספה לתור</string>
   <string name="pref_enqueue_location_sum">הוספת פרקים אל: %1$s</string>
   <string name="enqueue_location_back">גב</string>
@@ -568,6 +564,9 @@
   <string name="opml_export_label">ייצוא OPML</string>
   <string name="html_export_label">ייצוא HTML</string>
   <string name="database_export_label">ייצוא מסד הנתונים</string>
+  <string name="automatic_database_export_label">ייצוא אוטומטי של מסד הנתונים</string>
+  <string name="automatic_database_export_summary">יצירת גיבוי של מסד הנתונים של אנטנה־פּוֹד כל שלושה ימים. לשמור רק את חמשת הגיבויים העדכניים ביותר.</string>
+  <string name="automatic_database_export_error">שגיאה במהלך גיבוי אוטומטי של מסד נתונים</string>
   <string name="database_import_label">ייבוא מסד נתונים</string>
   <string name="database_import_warning">ייבוא מסד נתונים יחליף את כל המינויים הנוכחיים שלך לרבות היסטוריית הנגינה. עליך תחילה לייצא את מסד הנתונים הנוכחי שלך כגיבוי. להמשיך בהחלפה?</string>
   <string name="please_wait">נא להמתין…</string>
@@ -612,7 +611,7 @@
     <item quantity="other">%d ימים</item>
   </plurals>
   <string name="auto_enable_label">להפעיל את מתזמן השינה עם לחיצה על נגינה</string>
-  <string name="auto_enable_label_with_times">להפעיל את מתזמן השינה עם לחיצה על נגינה בין %s ל־%s</string>
+  <string name="auto_enable_label_with_times">להפעיל את מתזמן השינה אוטומטית בלחיצה על נגינה בין %1$s לבין %2$s</string>
   <string name="auto_enable_change_times">שינוי טווח הזמן</string>
   <string name="sleep_timer_enabled_label">מתזמן השינה פעיל</string>
   <!--Synchronisation-->
@@ -658,6 +657,13 @@
   <string name="choose_data_directory_available_space">%1$s מתוך %2$s פנויים</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">השהיית הניגון במקום הנמכת עצמת השמע כאשר יישומון אחר מעוניין לנגן צלילים</string>
   <string name="pref_pausePlaybackForFocusLoss_title">השהיה במהלך הפרעות</string>
+  <!--Rating dialog-->
+  <string name="rating_tagline">מאז %1$s, ניגנת %2$s%3$d%4$s שעות של פודקאסטים.</string>
+  <string name="rating_contribute_label">מעניין אותך להצטרף? בין אם למטרות תרגום, תמיכה, עיצוב או פיתוח, נשמח לקבל את עזרתך!</string>
+  <string name="rating_contribute_button">חשיפת הדרכים להתנדבות</string>
+  <string name="rating_volunteers_label">היישומון אנטנה־פּוֹד מפותח על ידי מתנדבים בזמנם הפנוי. נשמח לקבל את הערכתך לעבודתנו על ידי מתן דירוג מחמיא.</string>
+  <string name="rating_rate">דירוג אנטנה־פּוֹד</string>
+  <string name="rating_later">אחר כך</string>
   <!--Online feed view-->
   <string name="subscribe_label">הרשמה</string>
   <string name="subscribing_label">מתבצע רישום…</string>
@@ -690,7 +696,7 @@
   <string name="feed_tags_label">תגיות</string>
   <string name="feed_tags_summary">ניתן לערוך את תגיות הפודקאסט הזה כדי לסייע בארגון המינויים שלך</string>
   <string name="feed_folders_include_root">הצגת הפודקאסט הזה ברשימה הראשית</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} רק תגיות שמשותפות לכל המינויים הנבחרים מוצגות. תגיות אחרות לא משתתפות.</string>
+  <string name="multi_feed_common_tags_info">רק תגיות שמשותפות לכל המינויים הנבחרים מוצגות. תגיות אחרות לא משתתפות.</string>
   <string name="auto_download_settings_label">הגדרות הורדה אוטומטית</string>
   <string name="episode_filters_label">מסנן פרקים</string>
   <string name="episode_filters_description">רשימת המונחים בהם יעשה שימוש כדי להחליט אם להכליל או להחריג פרק כלשהו במהלך הורדה אוטומטית</string>
@@ -706,9 +712,25 @@
   <string name="statistics_episodes_on_device">פרקים על המכשיר הזה:</string>
   <string name="statistics_space_used">מקום תפוס:</string>
   <string name="statistics_episodes_started_total">פרקים שהותחלו/סך הכול:</string>
+  <string name="statistics_expected_next_episode">מתי צפוי הפרק הבא:</string>
+  <string name="statistics_expected_next_episode_any_day">בימים הקרובים</string>
+  <string name="statistics_expected_next_episode_unknown">לא ידוע</string>
   <string name="statistics_view_all">להציג לכל הפודקאסטים »</string>
   <string name="edit_url_menu">עריכת כתובת ערוץ</string>
   <string name="edit_url_confirmation_msg">החלפת כתובת ה־RSS יכולה בקלות לפגוע במצב הנגינה והצגת הפרקים של הפודקאסט. אנו לא ממליצים להחליף אותה ולא נספק תמיכה אם משהו ישתבש. זאת פעולה בלתי הפיעה. לא ניתן לשקם מינויים פגומים על ידי החזרת הכתובת הקודמת. אנו מציעים לגבות באופן יסודי בטרם בחירה להמשיך בתהליך.</string>
+  <!--Podcast release schedules-->
+  <string name="release_schedule_daily">יומית</string>
+  <string name="release_schedule_weekdays">בימי חול</string>
+  <string name="release_schedule_weekly">שבועית</string>
+  <string name="release_schedule_biweekly">כל שבועיים</string>
+  <string name="release_schedule_monthly">חודשית</string>
+  <string name="release_schedule_monday">שני</string>
+  <string name="release_schedule_tuesday">שלישי</string>
+  <string name="release_schedule_wednesday">רביעי</string>
+  <string name="release_schedule_thursday">חמישי</string>
+  <string name="release_schedule_friday">שישי</string>
+  <string name="release_schedule_saturday">שבת</string>
+  <string name="release_schedule_sunday">ראשון</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">מתבצע ייבוא מינויים מיישומונים ממוקדי מטרה…</string>
   <!--Add podcast fragment-->
@@ -716,7 +738,6 @@
   <string name="search_itunes_label">חיפוש ב־Apple Podcasts</string>
   <string name="search_podcastindex_label">חיפוש ב־Podcast Index</string>
   <string name="search_fyyd_label">בחיפוש ב־fyyd</string>
-  <string name="gpodnet_search_hint">חיפוש ב־gpodder.net</string>
   <string name="advanced">מתקדם</string>
   <string name="add_podcast_by_url">הוספת פודקאסט לפי כתובת RSS</string>
   <string name="discover">עיון</string>

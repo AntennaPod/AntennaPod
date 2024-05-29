@@ -5,8 +5,6 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import android.util.Log;
 
-import okhttp3.HttpUrl;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -106,20 +104,23 @@ public final class UrlChecker {
     }
 
     public static boolean urlEquals(String string1, String string2) {
-        HttpUrl url1 = HttpUrl.parse(string1);
-        HttpUrl url2 = HttpUrl.parse(string2);
-        if (!url1.host().equals(url2.host())) {
+        Uri url1 = Uri.parse(string1);
+        Uri url2 = Uri.parse(string2);
+        if (url1 == null || url2 == null || url1.getHost() == null || url2.getHost() == null) {
+            return string1.equals(string2); // Unable to parse url properly
+        }
+        if (!url1.getHost().toLowerCase(Locale.ROOT).equals(url2.getHost().toLowerCase(Locale.ROOT))) {
             return false;
         }
-        List<String> pathSegments1 = normalizePathSegments(url1.pathSegments());
-        List<String> pathSegments2 = normalizePathSegments(url2.pathSegments());
+        List<String> pathSegments1 = normalizePathSegments(url1.getPathSegments());
+        List<String> pathSegments2 = normalizePathSegments(url2.getPathSegments());
         if (!pathSegments1.equals(pathSegments2)) {
             return false;
         }
-        if (TextUtils.isEmpty(url1.query())) {
-            return TextUtils.isEmpty(url2.query());
+        if (TextUtils.isEmpty(url1.getQuery())) {
+            return TextUtils.isEmpty(url2.getQuery());
         }
-        return url1.query().equals(url2.query());
+        return url1.getQuery().equals(url2.getQuery());
     }
 
     /**
