@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch">
 
-    <PreferenceCategory android:title="@string/appearance">
+    <PreferenceCategory android:title="@string/theming">
         <de.danoeh.antennapod.ui.preferences.preference.ThemePreference
                 android:key="prefTheme" />
         <SwitchPreferenceCompat
