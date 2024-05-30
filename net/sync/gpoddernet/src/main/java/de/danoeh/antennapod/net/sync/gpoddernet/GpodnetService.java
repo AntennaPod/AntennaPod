@@ -372,10 +372,10 @@ public class GpodnetService implements ISyncService {
                     }
                 }
                 if (responseCode >= 500) {
-                    throw new GpodnetServiceBadStatusCodeException("Gpodder.net is currently unavailable (code "
+                    throw new GpodnetServiceBadStatusCodeException(this.baseHost + " is currently unavailable (code "
                             + responseCode + ")", responseCode);
                 } else {
-                    throw new GpodnetServiceBadStatusCodeException("Unable to connect to Gpodder.net (code "
+                    throw new GpodnetServiceBadStatusCodeException("Unable to connect to " + this.baseHost + " (code "
                             + responseCode + ": " + response.message() + ")", responseCode);
                 }
             }
