@@ -29,6 +29,7 @@
         <item name="android:windowContentTransitions">true</item>
         <item name="toolbarStyle">@style/Style.AntennaPod.Toolbar</item>
         <item name="preferenceTheme">@style/AppPreferenceThemeOverlay</item>
+        <item name="badgeStyle">@style/Style.AntennaPod.Badge</item>
     </style>
 
     <style name="Theme.AntennaPod.Light" parent="Theme.AntennaPod.Dynamic.Light">
@@ -73,6 +74,7 @@
         <item name="android:navigationBarColor">@color/background_darktheme</item>
         <item name="toolbarStyle">@style/Style.AntennaPod.Toolbar</item>
         <item name="preferenceTheme">@style/AppPreferenceThemeOverlay</item>
+        <item name="badgeStyle">@style/Style.AntennaPod.Badge</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.AntennaPod.Dynamic.Dark">
@@ -236,6 +238,10 @@
     <style name="Theme.AntennaPod.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Surface">
         <item name="action_icon_color">?attr/colorOnSurface</item>
         <item name="colorControlNormal">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="Style.AntennaPod.Badge" parent="Widget.MaterialComponents.Badge">
+        <item name="backgroundColor">?attr/colorPrimary</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">

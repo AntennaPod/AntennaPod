@@ -7,7 +7,6 @@ import android.os.Build;
 import android.view.ContextMenu;
 import android.view.InputDevice;
 import android.view.LayoutInflater;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 import android.view.MotionEvent;
@@ -26,18 +25,13 @@ import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.ui.common.ImagePlaceholder;
 import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
-import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
 import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
 import de.danoeh.antennapod.ui.screen.InboxFragment;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
-import de.danoeh.antennapod.ui.screen.AddFeedFragment;
-import de.danoeh.antennapod.ui.screen.PlaybackHistoryFragment;
 import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
 import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
-import de.danoeh.antennapod.ui.screen.home.HomeFragment;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
 import java.text.NumberFormat;
@@ -63,7 +57,6 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
     public static final String SUBSCRIPTION_LIST_TAG = "SubscriptionList";
 
     private final List<String> fragmentTags = new ArrayList<>();
-    private final String[] titles;
     private final ItemAccess itemAccess;
     private final WeakReference<Activity> activity;
     public boolean showSubscriptionList = true;
@@ -71,10 +64,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
     public NavListAdapter(ItemAccess itemAccess, Activity context) {
         this.itemAccess = itemAccess;
         this.activity = new WeakReference<>(context);
-
-        titles = context.getResources().getStringArray(R.array.nav_drawer_titles);
         loadItems();
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.registerOnSharedPreferenceChangeListener(this);
     }
@@ -104,34 +94,6 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         fragmentTags.clear();
         fragmentTags.addAll(newTags);
         notifyDataSetChanged();
-    }
-
-    public String getLabel(String tag) {
-        int index = ArrayUtils.indexOf(NavDrawerFragment.NAV_DRAWER_TAGS, tag);
-        return titles[index];
-    }
-
-    private @DrawableRes int getDrawable(String tag) {
-        switch (tag) {
-            case HomeFragment.TAG:
-                return R.drawable.ic_home;
-            case QueueFragment.TAG:
-                return R.drawable.ic_playlist_play;
-            case InboxFragment.TAG:
-                return R.drawable.ic_inbox;
-            case AllEpisodesFragment.TAG:
-                return R.drawable.ic_feed;
-            case CompletedDownloadsFragment.TAG:
-                return R.drawable.ic_download;
-            case PlaybackHistoryFragment.TAG:
-                return R.drawable.ic_history;
-            case SubscriptionFragment.TAG:
-                return R.drawable.ic_subscriptions;
-            case AddFeedFragment.TAG:
-                return R.drawable.ic_add;
-            default:
-                return 0;
-        }
     }
 
     public List<String> getFragmentTags() {
@@ -193,7 +155,8 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
 
         holder.itemView.setOnCreateContextMenuListener(null);
         if (viewType == VIEW_TYPE_NAV) {
-            bindNavView(getLabel(fragmentTags.get(position)), position, (NavHolder) holder);
+            String title = holder.itemView.getContext().getString(NavigationNames.getLabel(fragmentTags.get(position)));
+            bindNavView(title, position, (NavHolder) holder);
         } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {
             bindSectionDivider((DividerHolder) holder);
         } else {
@@ -278,7 +241,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             }
         }
 
-        holder.image.setImageResource(getDrawable(fragmentTags.get(position)));
+        holder.image.setImageResource(NavigationNames.getDrawable(fragmentTags.get(position)));
     }
 
     private void bindSectionDivider(DividerHolder holder) {
