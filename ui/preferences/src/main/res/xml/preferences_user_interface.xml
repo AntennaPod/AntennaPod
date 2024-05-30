@@ -80,6 +80,10 @@
                 android:title="@string/pref_default_page"
                 android:summary="@string/pref_default_page_sum"
                 android:defaultValue="HomeFragment"/>
+        <Preference
+            android:key="prefHiddenDrawerItems"
+            android:summary="@string/pref_nav_drawer_items_sum"
+            android:title="@string/pref_nav_drawer_items_title"/>
         <SwitchPreferenceCompat
                 android:key="prefBackButtonOpensDrawer"
                 android:title="@string/pref_back_button_opens_drawer"
@@ -89,9 +93,5 @@
                 android:key="prefSwipe"
                 android:summary="@string/swipeactions_summary"
                 android:title="@string/swipeactions_label"/>
-        <Preference
-            android:key="prefHiddenDrawerItems"
-            android:summary="@string/pref_nav_drawer_items_sum"
-            android:title="@string/pref_nav_drawer_items_title"/>
     </PreferenceCategory>
 </PreferenceScreen>
