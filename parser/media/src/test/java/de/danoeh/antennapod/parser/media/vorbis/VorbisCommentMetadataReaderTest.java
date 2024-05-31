@@ -16,6 +16,7 @@ public class VorbisCommentMetadataReaderTest {
     public void testRealFilesAuphonic() throws IOException, VorbisCommentReaderException {
         testRealFileAuphonic("auphonic.ogg");
         testRealFileAuphonic("auphonic.opus");
+        testRealFileAuphonic("opus-comment.opus");
     }
 
     public void testRealFileAuphonic(String filename) throws IOException, VorbisCommentReaderException {

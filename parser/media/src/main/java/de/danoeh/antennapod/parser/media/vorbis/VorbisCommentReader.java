@@ -23,13 +23,11 @@ public abstract class VorbisCommentReader {
     private final InputStream input;
 
     VorbisCommentReader(InputStream input) {
-        this.input = input;
+        this.input = new VorbisInputStream(input);
     }
 
     public void readInputStream() throws VorbisCommentReaderException {
         try {
-            findIdentificationHeader();
-            findOggPage();
             findCommentHeader();
             VorbisCommentHeader commentHeader = readCommentHeader();
             Log.d(TAG, commentHeader.toString());
