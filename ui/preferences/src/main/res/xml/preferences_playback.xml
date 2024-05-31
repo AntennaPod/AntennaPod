@@ -45,11 +45,6 @@
                 android:title="@string/playback_speed"/>
         <SwitchPreferenceCompat
                 android:defaultValue="false"
-                android:key="prefPlaybackTimeRespectsSpeed"
-                android:summary="@string/pref_playback_time_respects_speed_sum"
-                android:title="@string/pref_playback_time_respects_speed_title"/>
-        <SwitchPreferenceCompat
-                android:defaultValue="false"
                 android:key="prefStreamOverDownload"
                 android:summary="@string/pref_stream_over_download_sum"
                 android:title="@string/pref_stream_over_download_title"/>

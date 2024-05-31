@@ -381,7 +381,7 @@
     <string name="download_pref_details">Details</string>
     <string name="import_export_pref">Import/Export</string>
     <string name="import_export_search_keywords">backup, restore</string>
-    <string name="appearance">Appearance</string>
+    <string name="theming">Theming</string>
     <string name="external_elements">External elements</string>
     <string name="interruptions">Interruptions</string>
     <string name="playback_control">Playback control</string>
@@ -534,6 +534,7 @@
     <string name="pref_show_subscription_title">Show titles</string>
     <string name="pref_new_episodes_action_title">New episodes action</string>
     <string name="pref_new_episodes_action_sum">Action to take for new episodes</string>
+    <string name="episode_information">Episode information</string>
 
     <!-- About screen -->
     <string name="about_pref">About</string>
