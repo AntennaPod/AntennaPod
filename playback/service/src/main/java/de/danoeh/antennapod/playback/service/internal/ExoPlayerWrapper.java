@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.OptIn;
@@ -57,7 +56,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import okhttp3.Call;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -80,7 +78,7 @@ public class ExoPlayerWrapper {
     private Consumer<Integer> bufferingUpdateListener;
     private PlaybackParameters playbackParameters;
     private DefaultTrackSelector trackSelector;
-    private SimpleCache simpleCache;
+
     @Nullable
     private LoudnessEnhancer loudnessEnhancer = null;
 
@@ -155,8 +153,7 @@ public class ExoPlayerWrapper {
                 initLoudnessEnhancer(audioSessionId);
             }
         });
-        simpleCache = new SimpleCache(new File(context.getCacheDir(), "streaming"),
-                new LeastRecentlyUsedCacheEvictor(50 * 1024 * 1024), new StandaloneDatabaseProvider(context));
+
         initLoudnessEnhancer(exoPlayer.getAudioSessionId());
     }
 
@@ -197,10 +194,6 @@ public class ExoPlayerWrapper {
         if (exoPlayer != null) {
             exoPlayer.release();
         }
-        if (simpleCache != null) {
-            simpleCache.release();
-            simpleCache = null;
-        }
         audioSeekCompleteListener = null;
         audioCompletionListener = null;
         audioErrorListener = null;
@@ -209,10 +202,6 @@ public class ExoPlayerWrapper {
 
     public void reset() {
         exoPlayer.release();
-        if (simpleCache != null) {
-            simpleCache.release();
-            simpleCache = null;
-        }
         createPlayer();
     }
 
@@ -247,12 +236,7 @@ public class ExoPlayerWrapper {
             );
             httpDataSourceFactory.setDefaultRequestProperties(requestProperties);
         }
-        DataSource.Factory dataSourceFactory = new DefaultDataSource.Factory(context, httpDataSourceFactory);
-        if (s.startsWith("http")) {
-            dataSourceFactory = new CacheDataSource.Factory()
-                    .setCache(simpleCache)
-                    .setUpstreamDataSourceFactory(httpDataSourceFactory);
-        }
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, null, httpDataSourceFactory);
         DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         extractorsFactory.setConstantBitrateSeekingEnabled(true);
         extractorsFactory.setMp3ExtractorFlags(Mp3Extractor.FLAG_DISABLE_ID3_METADATA);
