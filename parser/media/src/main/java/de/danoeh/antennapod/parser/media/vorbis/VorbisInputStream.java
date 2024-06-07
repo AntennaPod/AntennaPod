@@ -13,15 +13,13 @@ public class VorbisInputStream extends FilterInputStream {
     private static final byte[] CAPTURE_PATTERN = {'O', 'g', 'g', 'S'};
     private static final int HEADER_SKIP_LENGTH = 1 + 1 + 8 + 4 + 4 + 4;
 
-    private final BufferedInputStream bis;
+    private final BufferedInputStream inputStream;
     private int pageRemainBytes = 0;
-
 
     protected VorbisInputStream(InputStream in) {
         super(in);
-        this.bis = new BufferedInputStream(in);
+        inputStream = new BufferedInputStream(in);
     }
-
 
     private int parsePageHeader(InputStream in) throws IOException {
         byte[] capturePattern = new byte[4];
@@ -44,37 +42,28 @@ public class VorbisInputStream extends FilterInputStream {
         return pageLength;
     }
 
-
-    // check and uptate remain bytes
+    /** check and update remaining bytes **/
     private void updateRemainBytes() throws IOException {
-        if (this.pageRemainBytes == 0) {
-            this.pageRemainBytes = this.parsePageHeader(this.bis);
-        } else if (this.pageRemainBytes < 0) {
+        if (pageRemainBytes == 0) {
+            pageRemainBytes = parsePageHeader(inputStream);
+        } else if (pageRemainBytes < 0) {
             throw new IOException("Page remain bytes less than 0");
         }
     }
 
-
-
     @Override
     public int read() throws IOException {
         updateRemainBytes();
-
-        this.pageRemainBytes -= 1;
-        return this.bis.read();
+        pageRemainBytes--;
+        return inputStream.read();
     }
 
-
-    // called by IOUtils.skipFully
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
         updateRemainBytes();
-
-        int bytesToRead = Math.min(len, this.pageRemainBytes);
-        IOUtils.readFully(this.bis, b, off, bytesToRead);
-
-        this.pageRemainBytes -=  bytesToRead;
-
+        int bytesToRead = Math.min(len, pageRemainBytes);
+        IOUtils.readFully(inputStream, b, off, bytesToRead);
+        this.pageRemainBytes -= bytesToRead;
         return bytesToRead;
     }
 }
