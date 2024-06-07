@@ -176,8 +176,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         emptyViewHandler = new EmptyViewHandler(getContext());
         emptyViewHandler.attachToRecyclerView(recyclerView);
         emptyViewHandler.setIcon(R.drawable.ic_search);
-        emptyViewHandler.setTitle(R.string.search_status_no_results);
-        emptyViewHandler.setMessage(R.string.type_to_search);
+        emptyViewHandler.setTitle(R.string.type_to_search);
         EventBus.getDefault().register(this);
 
         chip = layout.findViewById(R.id.feed_title_chip);
@@ -376,7 +375,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
 
         String query = searchView.getQuery().toString();
         if (query.isEmpty()) {
-            emptyViewHandler.setMessage(R.string.type_to_search);
+            emptyViewHandler.setTitle(R.string.type_to_search);
             return;
         }
         if (feed != 0) {
@@ -389,7 +388,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
                     .subscribe(results -> {
                         progressBar.setVisibility(View.GONE);
                         adapterFeeds.updateData(results);
-                        emptyViewHandler.setMessage(getString(R.string.no_results_for_query, query));
+                        emptyViewHandler.setTitle(getString(R.string.no_results_for_query, query));
                     }, error -> Log.e(TAG, Log.getStackTraceString(error)));
         }
         disposableEpisodes = Observable.fromCallable(() -> DBReader.searchFeedItems(feed, query))
@@ -399,7 +398,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
                     progressBar.setVisibility(View.GONE);
                     this.results = results;
                     adapter.updateItems(results);
-                    emptyViewHandler.setMessage(getString(R.string.no_results_for_query, searchView.getQuery()));
+                    emptyViewHandler.setTitle(getString(R.string.no_results_for_query, searchView.getQuery()));
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
