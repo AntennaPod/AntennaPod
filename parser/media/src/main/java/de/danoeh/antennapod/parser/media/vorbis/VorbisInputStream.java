@@ -6,18 +6,15 @@ import java.io.BufferedInputStream;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Deque;
 
 
 public class VorbisInputStream extends FilterInputStream {
-    // capture_pattern + stream_structure_version
-    private static final int[] REST_PATTERN = {'g', 'g', 'S', 0};
-    private static final int HEADER_SKIP_LENGTH = 1 + 8 + 4 + 4 + 4;
+    private static final byte[] CAPTURE_PATTERN = {'O', 'g', 'g', 'S'};
+    private static final int HEADER_SKIP_LENGTH = 1 + 1 + 8 + 4 + 4 + 4;
 
-    private final Deque<Integer> buffer = new ArrayDeque<>();
     private final BufferedInputStream bis;
+    private int pageRemainBytes = 0;
 
 
     protected VorbisInputStream(InputStream in) {
@@ -26,60 +23,58 @@ public class VorbisInputStream extends FilterInputStream {
     }
 
 
-    private int readWithBuffer() throws IOException {
-        if (!buffer.isEmpty()) {
-            return buffer.removeFirst();
-        } else {
-            return this.bis.read();
+    private int parsePageHeader(InputStream in) throws IOException {
+        byte[] capturePattern = new byte[4];
+
+        IOUtils.readFully(in, capturePattern, 0, 4);
+        if (!Arrays.equals(CAPTURE_PATTERN, capturePattern)) {
+            throw new IOException("Invalid page header");
+        }
+
+        IOUtils.skipFully(in, HEADER_SKIP_LENGTH);
+
+        int pageSegments = in.read();
+        byte[] segmentTable = new byte[pageSegments];
+        int pageLength = 0;
+        IOUtils.readFully(in, segmentTable);
+        for (byte segment:segmentTable) {
+            pageLength += (segment & 0xff);
+        }
+
+        return pageLength;
+    }
+
+
+    // check and uptate remain bytes
+    private void updateRemainBytes() throws IOException {
+        if (this.pageRemainBytes == 0) {
+            this.pageRemainBytes = this.parsePageHeader(this.bis);
+        } else if (this.pageRemainBytes < 0) {
+            throw new IOException("Page remain bytes less than 0");
         }
     }
 
 
+
     @Override
     public int read() throws IOException {
-        int readByte = readWithBuffer();
+        updateRemainBytes();
 
-        if (readByte == 'O') {
-            int[] nextBytes = {
-                    readWithBuffer(),
-                    readWithBuffer(),
-                    readWithBuffer(),
-                    readWithBuffer(),
-            };
-
-            if (Arrays.equals(nextBytes, REST_PATTERN)) {
-                IOUtils.skipFully(this, HEADER_SKIP_LENGTH);
-
-                // skip segment_table
-                int pageSegments = this.bis.read();
-                IOUtils.skipFully(this, pageSegments);
-
-                readByte = this.bis.read(); // read new byte
-            } else {
-                // false positive, put read bytes back into buffer
-                for (int b : nextBytes) {
-                    this.buffer.add(b);
-                }
-            }
-        }
-
-        return readByte;
+        this.pageRemainBytes -= 1;
+        return this.bis.read();
     }
 
 
     // called by IOUtils.skipFully
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
-        int i;
-        for (i = 0; i < len; i++) {
-            int val = this.read();
-            if (val == -1) {
-                break;
-            }
+        updateRemainBytes();
 
-            b[i] = (byte) (val & 0xff);
-        }
+        int bytesToRead = Math.min(len, this.pageRemainBytes);
+        IOUtils.readFully(this.bis, b, off, bytesToRead);
 
-        return i;
+        this.pageRemainBytes -=  bytesToRead;
+
+        return bytesToRead;
     }
 }
