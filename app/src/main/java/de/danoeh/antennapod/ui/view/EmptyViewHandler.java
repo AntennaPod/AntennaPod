@@ -38,6 +38,10 @@ public class EmptyViewHandler {
         tvTitle.setText(title);
     }
 
+    public void setTitle(String title) {
+        tvTitle.setText(title);
+    }
+
     public void setMessage(int message) {
         tvMessage.setText(message);
     }
