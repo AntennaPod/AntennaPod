@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.ui.screen.download;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -11,6 +13,8 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
@@ -94,6 +98,15 @@ public class CompletedDownloadsFragment extends Fragment
             displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
         }
         ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
+        
+        SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                FeedUpdateManager.getInstance().runOnceOrAsk(requireContext());
+                swipeRefreshLayout.setRefreshing(false);
+            }, 1000); // Adding a delay to simulate refresh action and avoid UI lag
+        });
 
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
