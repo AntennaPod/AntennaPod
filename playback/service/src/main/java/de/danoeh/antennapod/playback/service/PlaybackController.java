@@ -208,18 +208,15 @@ public abstract class PlaybackController {
                 Log.d(TAG, "Bad arguments. Won't handle intent");
                 return;
             }
-            switch (type) {
-                case PlaybackServiceInterface.NOTIFICATION_TYPE_RELOAD:
-                    if (playbackService == null && PlaybackService.isRunning) {
-                        bindToService();
-                        return;
-                    }
-                    mediaInfoLoaded = false;
-                    queryService();
-                    break;
-                case PlaybackServiceInterface.NOTIFICATION_TYPE_PLAYBACK_END:
-                    onPlaybackEnd();
-                    break;
+            if (type == PlaybackServiceInterface.NOTIFICATION_TYPE_RELOAD) {
+                if (playbackService == null && PlaybackService.isRunning) {
+                    bindToService();
+                    return;
+                }
+                mediaInfoLoaded = false;
+                queryService();
+            } else if (type == PlaybackServiceInterface.NOTIFICATION_TYPE_PLAYBACK_END) {
+                onPlaybackEnd();
             }
         }
 
