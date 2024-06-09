@@ -27,6 +27,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
+import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
@@ -268,6 +269,11 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         swipeRefreshLayout.setRefreshing(event.isFeedUpdateRunning);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateSpeed(SpeedChangedEvent event) {
+        refreshInfoBar();
+    }
+
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         final int itemId = item.getItemId();
@@ -482,10 +488,8 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
 
         if (recyclerAdapter.inActionMode()) {
             infoBar.setVisibility(View.INVISIBLE);
-        } else if (UserPreferences.getSubscriptionsFilter().isEnabled()) {
-            infoBar.setVisibility(View.VISIBLE);
         } else {
-            infoBar.setVisibility(View.GONE);
+            infoBar.setVisibility(View.VISIBLE);
         }
     }
 
