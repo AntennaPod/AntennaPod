@@ -20,7 +20,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
@@ -104,16 +103,8 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         viewBinding.toolbar.setOnMenuItemClickListener(this);
         refreshToolbarState();
 
-        ToolbarIconTintManager iconTintManager = new ToolbarIconTintManager(getContext(),
-                viewBinding.toolbar, viewBinding.collapsingToolbar) {
-            @Override
-            protected void doTint(Context themedContext) {
-                viewBinding.toolbar.getMenu().findItem(R.id.visit_website_item)
-                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_web));
-                viewBinding.toolbar.getMenu().findItem(R.id.share_item)
-                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_share));
-            }
-        };
+        ToolbarIconTintManager iconTintManager =
+                new ToolbarIconTintManager(viewBinding.toolbar, viewBinding.collapsingToolbar);
         iconTintManager.updateTint();
         viewBinding.appBar.addOnOffsetChangedListener(iconTintManager);
 
