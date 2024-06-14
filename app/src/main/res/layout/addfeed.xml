@@ -26,16 +26,20 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp">
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="28dp"
+        app:cardElevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="?attr/colorSurfaceVariant"
+            android:backgroundTint="?attr/colorPrimary"
+            android:backgroundTintMode="screen">
 
             <ImageView
                 android:id="@+id/searchButton"
@@ -78,7 +82,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="16dp">
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/quickFeedDiscovery"
