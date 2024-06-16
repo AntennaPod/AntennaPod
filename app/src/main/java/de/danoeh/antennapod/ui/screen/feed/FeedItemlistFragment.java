@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -257,6 +259,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             viewBinding.toolbar.getMenu().findItem(R.id.refresh_item).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.rename_item).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.remove_feed).setVisible(false);
+            viewBinding.toolbar.getMenu().findItem(R.id.remove_all_inbox_item).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.action_search).setVisible(false);
         }
     }
@@ -303,7 +306,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 // Make sure fragment is hidden before actually starting to delete
                 getActivity().getSupportFragmentManager().executePendingTransactions();
             });
-        } else if (item.getItemId() == R.id.action_search) {
+        } else if (item.getItemId() == R.id.remove_all_inbox_item) {
+            showRemoveAllDialog();
+        }
+        else if (item.getItemId() == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(feed.getId(), feed.getTitle()));
         } else {
             return false;
@@ -553,6 +559,20 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     .addToBackStack("Info")
                     .commitAllowingStateLoss();
         }
+    }
+
+    private void showRemoveAllDialog() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+        builder.setTitle(R.string.remove_all_inbox_label);
+        builder.setMessage(R.string.remove_all_inbox_confirmation_msg);
+
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+            dialog.dismiss();
+            DBWriter.removeFeedNewFlag(feedID);
+            ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.removed_all_inbox_msg, Toast.LENGTH_SHORT);
+        });
+        builder.setNegativeButton(R.string.cancel_label, null);
+        builder.show();
     }
 
     private void loadFeedImage() {
