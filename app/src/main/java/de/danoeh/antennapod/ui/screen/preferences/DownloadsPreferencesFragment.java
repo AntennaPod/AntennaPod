@@ -2,17 +2,24 @@ package de.danoeh.antennapod.ui.screen.preferences;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.preference.PreferenceFragmentCompat;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import de.danoeh.antennapod.ui.preferences.screen.downloads.ChooseDataFolderDialog;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 
-public class DownloadsPreferencesFragment extends PreferenceFragmentCompat
+public class DownloadsPreferencesFragment extends AnimatedPreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String PREF_SCREEN_AUTODL = "prefAutoDownloadSettings";
     private static final String PREF_SCREEN_AUTO_DELETE = "prefAutoDeleteScreen";
@@ -66,6 +73,7 @@ public class DownloadsPreferencesFragment extends PreferenceFragmentCompat
             });
             return true;
         });
+        setDataFolderText();
     }
 
     private void setDataFolderText() {

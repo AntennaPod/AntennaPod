@@ -11,7 +11,6 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.preferences.R;
@@ -21,7 +20,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
+public class AutoDownloadPreferencesFragment extends AnimatedPreferenceFragment {
     private static final String TAG = "AutoDnldPrefFragment";
 
     private CheckBoxPreference[] selectedNetworks;
@@ -32,7 +31,7 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
 
         setupAutoDownloadScreen();
         buildAutodownloadSelectedNetworksPreference();
-        setSelectedNetworksEnabled(UserPreferences.isEnableAutodownloadWifiFilter());
+        checkAutodownloadItemVisibility(UserPreferences.isEnableAutodownload());
     }
 
     @Override

@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.ui.screen.preferences;
 
 import android.os.Bundle;
-import androidx.preference.PreferenceFragmentCompat;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import de.danoeh.antennapod.ui.swipeactions.SwipeActionsDialog;
 import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
 import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
@@ -11,7 +11,7 @@ import de.danoeh.antennapod.ui.screen.InboxFragment;
 import de.danoeh.antennapod.ui.screen.PlaybackHistoryFragment;
 import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
 
-public class SwipePreferencesFragment extends PreferenceFragmentCompat {
+public class SwipePreferencesFragment extends AnimatedPreferenceFragment {
     private static final String PREF_SWIPE_QUEUE = "prefSwipeQueue";
     private static final String PREF_SWIPE_INBOX = "prefSwipeInbox";
     private static final String PREF_SWIPE_EPISODES = "prefSwipeEpisodes";

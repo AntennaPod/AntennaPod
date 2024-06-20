@@ -41,6 +41,7 @@
         android:logo="@mipmap/ic_launcher"
         android:resizeableActivity="true"
         android:allowAudioPlaybackCapture="true"
+        android:enableOnBackInvokedCallback="true"
         android:networkSecurityConfig="@xml/network_security_config">
 
         <activity
