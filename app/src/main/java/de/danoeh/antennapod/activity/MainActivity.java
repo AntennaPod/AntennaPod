@@ -550,11 +550,7 @@ public class MainActivity extends CastEnabledActivity {
 
     @Override
     public void onBackPressed() {
-        if (isDrawerOpen() && drawerLayout != null) {
-            drawerLayout.closeDrawer(navDrawer);
-        } else if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        } else if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
+        if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
             super.onBackPressed();
         } else {
             String toPage = UserPreferences.getDefaultPage();
