@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:transitionGroup="true"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar

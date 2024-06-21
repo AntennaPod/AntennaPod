@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.util.Pair;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -22,7 +23,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 
-import de.danoeh.antennapod.ui.screen.AnimatedFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.ui.view.FloatingSelectMenu;
@@ -59,7 +59,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Shows unread or recently published episodes
  */
-public abstract class EpisodesListFragment extends AnimatedFragment
+public abstract class EpisodesListFragment extends Fragment
         implements EpisodeItemListAdapter.OnSelectModeListener, Toolbar.OnMenuItemClickListener {
     public static final String TAG = "EpisodesListFragment";
     private static final String KEY_UP_ARROW = "up_arrow";

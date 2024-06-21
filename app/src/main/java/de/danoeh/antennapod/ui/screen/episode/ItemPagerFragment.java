@@ -16,7 +16,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
-import de.danoeh.antennapod.ui.screen.AnimatedFragment;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -37,7 +36,7 @@ import java.util.List;
 /**
  * Displays information about a list of FeedItems.
  */
-public class ItemPagerFragment extends AnimatedFragment implements MaterialToolbar.OnMenuItemClickListener {
+public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMenuItemClickListener {
     private static final String ARG_FEEDITEMS = "feeditems";
     private static final String ARG_FEEDITEM_POS = "feeditem_pos";
     private static final String KEY_PAGER_ID = "pager_id";

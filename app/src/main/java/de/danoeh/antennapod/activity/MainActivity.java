@@ -57,6 +57,7 @@ import de.danoeh.antennapod.ui.screen.PlaybackHistoryFragment;
 import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
+import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
@@ -437,13 +438,29 @@ public class MainActivity extends CastEnabledActivity {
         }
     }
 
-    public void loadChildFragment(Fragment fragment) {
+    public void loadChildFragment(Fragment fragment, TransitionEffect transition) {
         Validate.notNull(fragment);
-        getSupportFragmentManager().beginTransaction()
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        if (transition == TransitionEffect.FADE) {
+            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        } else if (transition == TransitionEffect.SLIDE) {
+            transaction.setCustomAnimations(
+                    R.anim.slide_right_in,
+                    R.anim.slide_left_out,
+                    R.anim.slide_left_in,
+                    R.anim.slide_right_out);
+        }
+
+        transaction
                 .hide(getSupportFragmentManager().findFragmentByTag(MAIN_FRAGMENT_TAG))
                 .add(R.id.main_view, fragment, MAIN_FRAGMENT_TAG)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public void loadChildFragment(Fragment fragment) {
+        loadChildFragment(fragment, TransitionEffect.NONE);
     }
 
     @Override

@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -19,7 +18,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.android.material.transition.MaterialSharedAxis;
 import de.danoeh.antennapod.ui.common.ConfirmationDialog;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.event.StatisticsEvent;
@@ -53,13 +51,6 @@ public class StatisticsFragment extends PagedToolbarFragment {
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
     private MaterialToolbar toolbar;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setEnterTransition(new MaterialSharedAxis(MaterialSharedAxis.X, true));
-        setReturnTransition(new MaterialSharedAxis(MaterialSharedAxis.X, false));
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,

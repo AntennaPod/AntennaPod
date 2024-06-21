@@ -25,7 +25,6 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.ui.echo.EchoConfig;
-import de.danoeh.antennapod.ui.screen.AnimatedFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.ui.screen.home.sections.AllowNotificationsSection;
 import de.danoeh.antennapod.ui.screen.home.sections.DownloadsSection;
@@ -51,7 +50,7 @@ import java.util.List;
 /**
  * Shows unread or recently published episodes
  */
-public class HomeFragment extends AnimatedFragment implements Toolbar.OnMenuItemClickListener {
+public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
 
     public static final String TAG = "HomeFragment";
     public static final String PREF_NAME = "PrefHomeFragment";
