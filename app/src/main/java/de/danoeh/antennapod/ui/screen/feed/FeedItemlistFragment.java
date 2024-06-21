@@ -17,7 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.util.Pair;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
@@ -49,7 +48,6 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.CoverLoader;
 import de.danoeh.antennapod.ui.FeedItemFilterDialog;
 import de.danoeh.antennapod.ui.MenuItemUtils;
-import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.cleaner.HtmlToPlainText;
 import de.danoeh.antennapod.ui.common.IntentUtils;
@@ -59,6 +57,7 @@ import de.danoeh.antennapod.ui.episodeslist.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.ui.episodeslist.FeedItemMenuHandler;
 import de.danoeh.antennapod.ui.episodeslist.MoreContentListFooterUtil;
 import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
+import de.danoeh.antennapod.ui.screen.AnimatedFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.ui.screen.download.DownloadLogDetailsDialog;
 import de.danoeh.antennapod.ui.screen.download.DownloadLogFragment;
@@ -84,7 +83,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * Displays a list of FeedItems.
  */
-public class FeedItemlistFragment extends Fragment implements AdapterView.OnItemClickListener,
+public class FeedItemlistFragment extends AnimatedFragment implements AdapterView.OnItemClickListener,
         MaterialToolbar.OnMenuItemClickListener, EpisodeItemListAdapter.OnSelectModeListener {
     public static final String TAG = "ItemlistFragment";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
@@ -518,8 +517,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         });
         viewBinding.header.butShowSettings.setOnClickListener(v -> {
             if (feed != null) {
-                FeedSettingsFragment fragment = FeedSettingsFragment.newInstance(feed);
-                ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
+                ((MainActivity) getActivity()).loadChildFragment(FeedSettingsFragment.newInstance(feed));
             }
         });
         viewBinding.header.butFilter.setOnClickListener(v ->
@@ -550,7 +548,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
         FeedInfoFragment fragment = FeedInfoFragment.newInstance(feed);
         if (getActivity() instanceof MainActivity) {
-            ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
+            ((MainActivity) getActivity()).loadChildFragment(fragment);
         } else {
             getActivity().getSupportFragmentManager()
                     .beginTransaction()

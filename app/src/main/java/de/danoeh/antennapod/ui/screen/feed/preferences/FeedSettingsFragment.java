@@ -39,6 +39,7 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.ui.preferences.screen.synchronization.AuthenticationDialog;
+import de.danoeh.antennapod.ui.screen.AnimatedFragment;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -52,7 +53,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class FeedSettingsFragment extends Fragment {
+public class FeedSettingsFragment extends AnimatedFragment {
     private static final String TAG = "FeedSettingsFragment";
     private static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
 

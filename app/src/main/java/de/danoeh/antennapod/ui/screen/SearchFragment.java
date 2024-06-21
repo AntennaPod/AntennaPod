@@ -17,7 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import com.google.android.material.appbar.MaterialToolbar;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -64,7 +63,7 @@ import de.danoeh.antennapod.event.FeedListUpdateEvent;
 /**
  * Performs a search operation on all feeds or one specific feed and displays the search result.
  */
-public class SearchFragment extends Fragment implements EpisodeItemListAdapter.OnSelectModeListener {
+public class SearchFragment extends AnimatedFragment implements EpisodeItemListAdapter.OnSelectModeListener {
     private static final String TAG = "SearchFragment";
     private static final String ARG_QUERY = "query";
     private static final String ARG_FEED = "feed";
