@@ -123,7 +123,6 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             startActivity(intent);
         } else {
             getSupportFragmentManager().beginTransaction()
-                //.setReorderingAllowed(true)
                     .replace(binding.settingsContainer.getId(), fragment)
                     .addToBackStack(getString(getTitleOfPage(screen))).commit();
         }
