@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+
+# TODO:
+# Make it possible to run the script through workflow file, completely headless, with only base_ref and head_ref as input
+# Make it possible to run the part of the script that creates a list of PRs that need review replies in a workflow file (which posts a comment for each of the relevant PRs/issues when creating a release)
+# i.e. define two headless states: "get_changelog_CSV" and "get_PRs_that_need_review_replies"
+# However, the former should already be possibe by running the script with only base_ref and head_ref as input
+
 try:
   from graphqlclient import GraphQLClient
   import json
@@ -19,15 +26,11 @@ except ModuleNotFoundError as e:
 # Define variables
 owner = os.getenv('OWNER', "AntennaPod") # The owner (organisation or user) of the repository
 repo = os.getenv('REPO', "AntennaPod") # The repository name
-token = os.getenv('GITHUB_API_TOKEN') # The GitHub API token [evnironment variable, otherwise user input]
-base_ref = os.getenv('BASE') # The base reference (release code or branch); point of reference [user input]
-head_ref = os.getenv('HEAD') # The head reference (release code or branch); environment containing the changes [user input]
-max_associatedPRs = 5 # The maximum number of pull requests that the script will fetch per commit
+token = os.getenv('GITHUB_API_TOKEN') # The GitHub API token
+base_ref = os.getenv('BASE') # The base reference (release code or branch); point of reference
+head_ref = os.getenv('HEAD') # The head reference (release code or branch); environment containing the changes
+needs_review_reply_label = os.getenv('NEED_REVIEW_REPLY_LABEL', "Needs: Review reply") # The name or ID of the label that indicates that we should reply to a (Google Play) review when the issue or PR that has this label iss addressed or released
 client = GraphQLClient('https://api.github.com/graphql')
-filename = None
-def set_filename(base_ref, head_ref):
-  global filename
-  filename = f'{base_ref} - {head_ref} changelog.csv'
 
 # Function: Handle exceptions
 def handle_exception(error_message: str, data: dict, error_introduction="Error"):
@@ -92,7 +95,7 @@ def get_associated_prs(commitid):
     return pr_numbers
 
 try: # Catch KeyboardInterrupt
-    # Define animation thread to avoid errors
+  # Define animation thread to avoid errors
   animation_thread = None
 
   # Define token
@@ -265,9 +268,6 @@ try: # Catch KeyboardInterrupt
   animation_thread = threading.Thread(target=display_processing_animation, args=(animation_state,))
   animation_thread.start()
 
-  # Set filename
-  set_filename(base_ref, head_ref)
-
   # Get list of commits & associated PRs, comparing base & head
   animation_state['text'] = "Get list of commits & PRs"
   query = '''
@@ -301,6 +301,7 @@ try: # Catch KeyboardInterrupt
   has_next_page = True
   cursor = None
   commits = []  # Create commit list
+  max_associatedPRs = 5 # The maximum number of pull requests that the script will fetch per commit
   while has_next_page:
       variables = {"cursor": cursor, "owner": owner, "repo": repo, "baseRef": base_ref, "headRef": head_ref, "maxPRs": max_associatedPRs}
       result = client.execute(query, variables)
@@ -419,24 +420,25 @@ try: # Catch KeyboardInterrupt
         unique_labels_string += " and more (probably)"
       
       # Create string with issue & PR number(s) that need review replies
-      numbers = []
-      maximum_hit = False
-      if any(label['id'] == 'LA_kwDOAFAGHc8AAAABoGK6aw' for label in prdata['labels']['nodes']):
-        numbers.append(pr_number)
-      if prdata['closingIssuesReferences']['totalCount'] > 10 or prdata['labels']['totalCount'] > 10:
-        maximum_hit = True
-      for relatedIssue in prdata['closingIssuesReferences']['nodes']:
-        if any(label['id'] == 'LA_kwDOAFAGHc8AAAABoGK6aw' for label in relatedIssue['labels']['nodes']):
-          numbers.append(relatedIssue['number'])
-        if relatedIssue['labels']['totalCount'] > 10:
+      if needs_review_reply_label:
+        numbers = []
+        maximum_hit = False
+        if any(label['id'] == 'needs_review_reply_label' or label['name'] == 'needs_review_reply_label' for label in prdata['labels']['nodes']): # TODO: move this to a variable
+          numbers.append(pr_number)
+        if prdata['closingIssuesReferences']['totalCount'] > 10 or prdata['labels']['totalCount'] > 10:
           maximum_hit = True
-      numbers_str = ', '.join(map(str, numbers))
-      if maximum_hit:
-        numbers_str += " and more, possibly"
-      if numbers_str:
-        needs_review_reply_string = f"Yes ({numbers_str})"
-      else:
-        needs_review_reply_string = "No"
+        for relatedIssue in prdata['closingIssuesReferences']['nodes']:
+          if any(label['id'] == 'needs_review_reply_label' for label in relatedIssue['labels']['nodes']):
+            numbers.append(relatedIssue['number'])
+          if relatedIssue['labels']['totalCount'] > 10:
+            maximum_hit = True
+        numbers_str = ', '.join(map(str, numbers))
+        if maximum_hit:
+          numbers_str += " and more, possibly"
+        if numbers_str:
+          needs_review_reply_string = f"Yes ({numbers_str})"
+        else:
+          needs_review_reply_string = "No"
       
       # Store pr information in list
       prs_for_csv.append({
@@ -446,19 +448,20 @@ try: # Catch KeyboardInterrupt
         'author': prdata['author']['login'],
         'relatedIssues': related_issues_string,
         'labels': unique_labels_string,
-        'needsReviewReplies': needs_review_reply_string,
       })
+      if needs_review_reply_label:
+        prs_for_csv.append({
+          'needsReviewReplies': needs_review_reply_string,
+        })
 
-  # Create a list of dictionaries with commits for in CSV file
-      # /// NOTE maybe it's better to move this up to before the PR list generation (but after the list of unique PRs has been created) as it clears some of the memory used
+  # Create a list of dictionaries with commits for in the CSV file
   animation_state['text'] = "Clean up commit list"
   ## Filter list with commit dictionaries so only ones without any associated PRs are left
   commits = [commit for commit in commits if commit['pr_count'] == 0]
 
-  ## Expand list with commit dictionaries to contain commit metadata
   animation_state['text'] = "Get commit metadata"
-  ### Loop through commits to construct GraphQL query
 
+  ### Loop through commits to construct GraphQL query
   query = f'''
   query ($owner: String!, $repo: String!) {{
     repository (name: $repo, owner: $owner) {{
@@ -495,7 +498,7 @@ try: # Catch KeyboardInterrupt
   result = client.execute(query, variables)
   data = json.loads(result)
 
-  ## Parse response and expand commit data
+  ## Parse response and add commit metadata to the list of commit dictionaries
   animation_state['text'] = "Parse commit metadata"
   for n, commit in enumerate(commits):
     commit_data = data['data']['repository'][f'commit{n}']
@@ -538,12 +541,16 @@ try: # Catch KeyboardInterrupt
     ('empty2', 'Functionality group'),
     ('relatedIssues', 'Related issue(s)'),
     ('labels', 'Related label(s)'),
-    ('needsReviewReplies', 'Needs review replies?'),
     ]
+  if needs_review_reply_label:
+    fields.append(('needsReviewReplies', 'Needs review replies?'))
 
   # Create an OrderedDict from the fields
   fieldnames = OrderedDict(fields)
   header = dict(zip(fieldnames.keys(), fieldnames.values()))
+
+  # Set filename
+  filename = f'{base_ref} - {head_ref} changelog.csv'
 
   with open(f'{filename}', 'w', newline='') as outputFile:
       # Use the OrderedDict as the fieldnames argument
