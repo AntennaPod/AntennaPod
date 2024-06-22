@@ -348,7 +348,7 @@
     <string name="random">Random</string>
     <string name="smart_shuffle">Smart shuffle</string>
     <string name="size">Size</string>
-    <string name="clear_queue_confirmation_msg">Please confirm that you want to clear the queue of ALL of the episodes in it</string>
+    <string name="clear_queue_confirmation_msg">Please confirm that you want to remove ALL episodes from the queue.</string>
     <string name="time_left_label">Time left:\u0020</string>
 
     <!--  Variable Speed -->
@@ -398,7 +398,7 @@
     <string name="pref_hardware_forward_button_summary">Customize the forward button behavior</string>
     <string name="pref_hardware_previous_button_title">Previous button</string>
     <string name="pref_hardware_previous_button_summary">Customize the previous button behavior</string>
-    <string name="button_action_fast_forward">Fast forward</string>
+    <string name="button_action_fast_forward">Fast-forward</string>
     <string name="button_action_rewind">Rewind</string>
     <string name="button_action_skip_episode">Skip episode</string>
     <string name="button_action_restart_episode">Restart episode</string>
@@ -481,8 +481,8 @@
     <string name="pref_feed_skip_intro_toast">Skipped first %d seconds</string>
     <string name="pref_playback_time_respects_speed_title">Adjust media info to playback speed</string>
     <string name="pref_playback_time_respects_speed_sum">Displayed position and duration are adapted to playback speed</string>
-    <string name="pref_fast_forward">Fast forward skip time</string>
-    <string name="pref_fast_forward_sum">Customize the number of seconds to jump forward when the fast forward button is clicked</string>
+    <string name="pref_fast_forward">Fast-forward skip time</string>
+    <string name="pref_fast_forward_sum">Customize the number of seconds to jump forward when the fast-forward button is clicked</string>
     <string name="pref_rewind">Rewind skip time</string>
     <string name="pref_rewind_sum">Customize the number of seconds to jump backwards when the rewind button is clicked</string>
     <string name="pref_expandNotify_title">High notification priority</string>
@@ -672,7 +672,7 @@
 
     <!-- Directory chooser -->
     <string name="choose_data_directory">Choose data folder</string>
-    <string name="choose_data_directory_message">Please choose the base of your data folder. AntennaPod will create the appropriate sub-directories.</string>
+    <string name="choose_data_directory_message">Please choose the base of your data folder. AntennaPod will create the appropriate subdirectories.</string>
     <string name="choose_data_directory_available_space">%1$s of %2$s free</string>
     <string name="pref_pausePlaybackForFocusLoss_sum">Pause playback instead of lowering volume when another app wants to play sounds</string>
     <string name="pref_pausePlaybackForFocusLoss_title">Pause for interruptions</string>
@@ -681,19 +681,19 @@
     <string name="rating_tagline">Since %1$s, you played %2$s%3$d%4$s hours of podcasts.</string>
     <string name="rating_contribute_label">Want to join? Whether you want to translate, support, design or code, we would be happy to have you!</string>
     <string name="rating_contribute_button">Discover ways to contribute</string>
-    <string name="rating_volunteers_label">AntennaPod is developed by volunteers in our free time. We would be happy if you appreciated our work by leaving a nice rating.</string>
+    <string name="rating_volunteers_label">AntennaPod is developed by volunteers in their free time. Share your appreciation of their work by leaving a nice rating.</string>
     <string name="rating_rate">Rate AntennaPod</string>
     <string name="rating_later">Later</string>
 
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
     <string name="preview_episodes">Episodes preview</string>
-    <string name="state_deleted_not_subscribed">Playback state and history of non-subscribed podcasts are deleted after a while. Subscribe to keep them.</string>
+    <string name="state_deleted_not_subscribed">You are not subscribed to this podcast yet. Subscribe for free to access it more easily and keep its playback history.</string>
 
     <!-- Content descriptions for image buttons -->
     <string name="toolbar_back_button_content_description">Back</string>
     <string name="rewind_label">Rewind</string>
-    <string name="fast_forward_label">Fast forward</string>
+    <string name="fast_forward_label">Fast-forward</string>
     <string name="increase_speed">Increase speed</string>
     <string name="decrease_speed">Decrease speed</string>
     <string name="media_type_video_label">Video</string>
@@ -739,7 +739,7 @@
     <string name="statistics_view_all">View for all podcasts »</string>
     <string name="wait_icon" translatable="false">…</string>
     <string name="edit_url_menu">Edit feed URL</string>
-    <string name="edit_url_confirmation_msg">Changing the RSS address can easily break the playback state and episode listings of the podcast. We do NOT recommend changing it and will NOT provide support if anything goes wrong. This cannot be undone. The broken subscription CANNOT be repaired by simply changing the address back. We suggest creating a backup before continuing.</string>
+    <string name="edit_url_confirmation_msg">Changing the RSS address can easily break the playback state and episode listings of the podcast. We do NOT recommend changing it and will NOT provide support if anything goes wrong. This cannot be undone. The broken subscription CANNOT be repaired by simply changing the address back. We recommend creating a backup before continuing.</string>
 
     <!-- Podcast release schedules -->
     <string name="release_schedule_daily">daily</string>
