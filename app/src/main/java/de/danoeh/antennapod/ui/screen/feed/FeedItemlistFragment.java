@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.ui.screen.feed;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -161,16 +159,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         swipeActions = new SwipeActions(this, TAG).attachTo(viewBinding.recyclerView);
         viewBinding.progressBar.setVisibility(View.VISIBLE);
 
-        ToolbarIconTintManager iconTintManager = new ToolbarIconTintManager(
-                viewBinding.toolbar.getContext(), viewBinding.toolbar, viewBinding.collapsingToolbar) {
-            @Override
-            protected void doTint(Context themedContext) {
-                viewBinding.toolbar.getMenu().findItem(R.id.refresh_item)
-                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_refresh));
-                viewBinding.toolbar.getMenu().findItem(R.id.action_search)
-                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_search));
-            }
-        };
+        ToolbarIconTintManager iconTintManager =
+                new ToolbarIconTintManager(viewBinding.toolbar, viewBinding.collapsingToolbar);
         iconTintManager.updateTint();
         viewBinding.appBar.addOnOffsetChangedListener(iconTintManager);
 
