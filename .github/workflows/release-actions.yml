@@ -3,7 +3,7 @@ name: Release Actions
 on:
   release:
     types:
-      - published
+      - released
 
 jobs:
   comment_on_fixed_issues:
