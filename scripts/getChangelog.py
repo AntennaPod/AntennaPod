@@ -42,13 +42,13 @@ def handle_exception(error_message: str, data: dict, error_introduction="Error")
 # Function: Display processing animation
 animation_state = {"text": "Loading", "stop": False}
 def display_processing_animation(state):
-  print(f"⣿ {state['text']}...", end="")
-  characters = ["⣾", "⣷", "⣯", "⣟", "⡿", "⢿", "⣻", "⣽"]
+  print()
+  characters = ["⣷", "⣯", "⣟", "⡿", "⢿", "⣻", "⣽", "⣾"]
   while not state['stop']:
     for char in characters:
       print(f"\r{char} {state['text']}...                    ", end="", flush=True)
       time.sleep(0.5)
-  print("\r                                       ", flush=True)
+  print("\r                                       ", end="\r", flush=True)
 
 # Function: Get list of PRs for a given commit
 # Note: this might be unnecessary in case commits can only have one PR
@@ -390,6 +390,7 @@ try: # Catch KeyboardInterrupt
   ## Parse response and save PR data
   animation_state['text'] = "Parse PR metadata"
   prs_for_csv = []
+  issues_PRs_needing_review_replies = []
 
   for n, pr_number in enumerate(unique_pr_numbers):
       prdata = data['data']['repository'][f'pr{n}']
@@ -419,11 +420,12 @@ try: # Catch KeyboardInterrupt
       if maximum_hit:
         unique_labels_string += " and more (probably)"
       
-      # Create string with issue & PR number(s) that need review replies
+      # Create string with issue & PR number(s) that need review replies,
+      # and store total list of PRs that need review replies for processing in workflow
       if needs_review_reply_label:
         numbers = []
         maximum_hit = False
-        if any(label['id'] == 'needs_review_reply_label' or label['name'] == 'needs_review_reply_label' for label in prdata['labels']['nodes']): # TODO: move this to a variable
+        if any(label['id'] == 'needs_review_reply_label' or label['name'] == 'needs_review_reply_label' for label in prdata['labels']['nodes']):
           numbers.append(pr_number)
         if prdata['closingIssuesReferences']['totalCount'] > 10 or prdata['labels']['totalCount'] > 10:
           maximum_hit = True
@@ -433,8 +435,10 @@ try: # Catch KeyboardInterrupt
           if relatedIssue['labels']['totalCount'] > 10:
             maximum_hit = True
         numbers_str = ', '.join(map(str, numbers))
+        issues_PRs_needing_review_replies.extend(numbers)
         if maximum_hit:
           numbers_str += " and more, possibly"
+          # TODO: move this whole block (which checks the linked issues of a PR and if they have the relevant label) to a separate function, which deals with pagination
         if numbers_str:
           needs_review_reply_string = f"Yes ({numbers_str})"
         else:
@@ -450,9 +454,7 @@ try: # Catch KeyboardInterrupt
         'labels': unique_labels_string,
       })
       if needs_review_reply_label:
-        prs_for_csv.append({
-          'needsReviewReplies': needs_review_reply_string,
-        })
+        prs_for_csv[-1]['needsReviewReplies'] = needs_review_reply_string
 
   # Create a list of dictionaries with commits for in the CSV file
   animation_state['text'] = "Clean up commit list"
@@ -549,14 +551,22 @@ try: # Catch KeyboardInterrupt
   fieldnames = OrderedDict(fields)
   header = dict(zip(fieldnames.keys(), fieldnames.values()))
 
-  # Set filename
+  # Set filename & export to GH Actions environment
   filename = f'{base_ref} - {head_ref} changelog.csv'
+  env_file = os.getenv('GITHUB_ENV')
+  if env_file:
+    os.system(f'echo "::set-output name=filename::{filename}"')
 
   with open(f'{filename}', 'w', newline='') as outputFile:
       # Use the OrderedDict as the fieldnames argument
       writer = csv.DictWriter(outputFile, fieldnames=fieldnames)
       writer.writerow(header)
       writer.writerows(combined)  # Writes all the dictionaries in the list to the CSV
+
+  # Export list of PRs that need review replies to GH Actions environment
+  if env_file:
+    needing_review_replies_string = ' '.join(map(str, issues_PRs_needing_review_replies))
+    os.system(f'echo "::set-output name=issues::{needing_review_replies_string}"')
 
   # Stop the animation
   animation_state['stop'] = True
