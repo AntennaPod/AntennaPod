@@ -184,6 +184,10 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                 .subscribe(numEpisodes -> {
                     viewBinding.welcomeContainer.setVisibility(numEpisodes == 0 ? View.VISIBLE : View.GONE);
                     viewBinding.homeContainer.setVisibility(numEpisodes == 0 ? View.GONE : View.VISIBLE);
+                    viewBinding.swipeRefresh.setVisibility(numEpisodes == 0 ? View.GONE : View.VISIBLE);
+                    if (numEpisodes == 0) {
+                        viewBinding.homeScrollView.setScrollY(0);
+                    }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
