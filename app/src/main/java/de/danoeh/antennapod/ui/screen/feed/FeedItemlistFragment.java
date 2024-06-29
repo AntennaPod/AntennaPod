@@ -678,10 +678,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
         @Override
         protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
+            String fallbackImageUri = null;
+            if(holder.getFeedItem().getFeed() != null) {
+                fallbackImageUri = holder.getFeedItem().getFeed().getImageUrl();
+            }
             holder.coverHolder.setVisibility(View.VISIBLE);
             new CoverLoader()
                     .withUri(holder.getFeedItem().getImageLocation()) // Ignore "Show episode cover" setting
-                    .withFallbackUri(holder.getFeedItem().getFeed().getImageUrl())
+                    .withFallbackUri(fallbackImageUri)
                     .withPlaceholderView(holder.placeholder)
                     .withCoverView(holder.cover)
                     .load();
