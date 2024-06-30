@@ -24,7 +24,8 @@ public class DownloadAnnouncer {
     private void announceDownloadStatus(String message) {
         AccessibilityManager am = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
         if (am != null && am.isEnabled()) {
-            AccessibilityEvent event = AccessibilityEvent.obtain(AccessibilityEvent.TYPE_ANNOUNCEMENT);
+            AccessibilityEvent event = AccessibilityEvent.obtain();
+            event.setEventType(AccessibilityEvent.TYPE_ANNOUNCEMENT);
             event.getText().add(message);
             am.sendAccessibilityEvent(event);
         }
