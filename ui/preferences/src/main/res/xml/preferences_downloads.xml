@@ -27,6 +27,13 @@
             android:key="prefAutoDownloadSettings"
             android:title="@string/pref_automatic_download_title"
             search:ignore="true" />
+
+        <SwitchPreferenceCompat
+                android:defaultValue="false"
+                android:enabled="true"
+                android:key="prefKeepQueueDownloaded"
+                android:summary="@string/pref_autodownload_queue_items"
+                android:title="@string/pref_autodownload_queue_items_title"/>
         <Preference
             android:key="prefAutoDeleteScreen"
             android:summary="@string/pref_auto_delete_sum"

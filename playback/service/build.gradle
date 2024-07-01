@@ -24,6 +24,8 @@ dependencies {
     implementation project(':ui:notifications')
     implementation project(':ui:widget')
     implementation project(':ui:chapters')
+    implementation project(':net:download:service')
+    implementation project(':net:download:service-interface')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.car.app:app:1.4.0-rc02"
