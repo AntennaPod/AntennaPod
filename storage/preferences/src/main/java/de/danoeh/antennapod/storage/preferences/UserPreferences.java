@@ -96,6 +96,7 @@ public abstract class UserPreferences {
     private static final String PREF_MOBILE_UPDATE = "prefMobileUpdateTypes";
     public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
     public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
+    public static final String PREF_AUTODOWNLOAD_QUEUE = "prefKeepQueueDownloaded";
     public static final String PREF_ENABLE_AUTODL = "prefEnableAutoDl";
     public static final String PREF_ENABLE_AUTODL_ON_BATTERY = "prefEnableAutoDownloadOnBattery";
     public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
@@ -395,6 +396,11 @@ public abstract class UserPreferences {
     public static boolean shouldDeleteRemoveFromQueue() {
         return prefs.getBoolean(PREF_DELETE_REMOVES_FROM_QUEUE, false);
     }
+
+    public static boolean shouldAutodownloadQueue() {
+        return prefs.getBoolean(PREF_AUTODOWNLOAD_QUEUE, false);
+    }
+
 
     public static float getPlaybackSpeed() {
         try {
