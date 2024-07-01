@@ -165,7 +165,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         } else if (recyclerAdapter == null) {
             loadItems(true);
             return;
-            }
+        }
 
         updateQueueDownloads();
 
