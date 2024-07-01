@@ -129,6 +129,7 @@ public class InboxSection extends HomeSection {
                     items = data.first;
                     adapter.setDummyViews(0);
                     adapter.updateItems(items);
+                    viewBinding.getRoot().setVisibility(items.isEmpty() ? View.GONE : View.VISIBLE);
                     viewBinding.numNewItemsLabel.setVisibility(View.VISIBLE);
                     if (data.second >= 100) {
                         viewBinding.numNewItemsLabel.setText(String.format(Locale.getDefault(), "%d+", 99));
