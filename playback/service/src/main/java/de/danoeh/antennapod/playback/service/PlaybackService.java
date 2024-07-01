@@ -1173,21 +1173,21 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     Log.d(TAG, "Episode Deleted");
                 }
 
-                if(UserPreferences.shouldAutodownloadQueue()) {
+                if (UserPreferences.shouldAutodownloadQueue()) {
                     // First, get items and assign the maximum. Either 5, or the listsize, the smaller one.
                     List<FeedItem> items = DBReader.getQueue();
                     int maxItems = Math.min(items.size(), 5);
 
-                    for(int i = 0; i < items.size(); i++) {
+                    for (int i = 0; i < items.size(); i++) {
 
                         // Filter items when they are played.
                         FeedItem fitem = items.get(i);
-                        if(!fitem.isPlayed()) {
+                        if (!fitem.isPlayed()) {
                             (new DownloadServiceInterfaceImpl()).download(getApplicationContext(), fitem);
                             maxItems--;
                         }
 
-                        if(maxItems == 0) {
+                        if (maxItems == 0) {
                             break;
                         }
                     }

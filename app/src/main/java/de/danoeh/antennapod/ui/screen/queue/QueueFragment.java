@@ -131,7 +131,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     }
 
     private void updateQueueDownloads() {
-        if(!UserPreferences.shouldAutodownloadQueue()) {
+        if (!UserPreferences.shouldAutodownloadQueue()) {
             return;
         }
         Observable.fromCallable(DBReader::getQueue)
@@ -141,16 +141,16 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                     // this will fail with less than 5 items.
                     int maxItems = Math.min(items.size(), 5);
 
-                    for(int i = 0; i < items.size(); i++) {
+                    for (int i = 0; i < items.size(); i++) {
 
                         // Filter items when they are played.
                         FeedItem fitem = items.get(i);
-                        if(!fitem.isPlayed()) {
+                        if (!fitem.isPlayed()) {
                             (new DownloadServiceInterfaceImpl()).download(this.getContext(), fitem);
                             maxItems--;
                         }
 
-                        if(maxItems == 0) {
+                        if (maxItems == 0) {
                             break;
                         }
                     }
@@ -167,7 +167,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             return;
             }
 
-            updateQueueDownloads();
+        updateQueueDownloads();
 
         switch(event.action) {
             case ADDED:
