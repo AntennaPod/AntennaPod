@@ -3,6 +3,7 @@ package de.danoeh.antennapod.net.download.service.episode;
 import android.content.Context;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
+import de.danoeh.antennapod.net.download.service.R;
 
 public class DownloadAnnouncer {
     private final Context context;
@@ -12,12 +13,15 @@ public class DownloadAnnouncer {
     }
 
     public void announceDownloadStart(String episodeTitle) {
-        String message = episodeTitle + " download started.";
+        String message = context.getString(R.string.download_started_talkback, episodeTitle);
         announceDownloadStatus(message);
     }
 
     public void announceDownloadEnd(String episodeTitle, boolean success) {
-        String message = episodeTitle + (success ? " download completed." : " download failed.");
+        String message = context.getString(
+                success ? R.string.download_completed_talkback : R.string.download_failed_talkback,
+                episodeTitle
+        );
         announceDownloadStatus(message);
     }
 
