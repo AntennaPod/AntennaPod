@@ -320,6 +320,10 @@
     <string name="confirm_mobile_streaming_notification_message">Streaming over mobile data connection is disabled in the settings. Tap to stream anyway.</string>
     <string name="confirm_mobile_streaming_button_always">Always</string>
     <string name="confirm_mobile_streaming_button_once">Once</string>
+    <string name="download_started_talkback">%1$s download started</string>
+    <string name="download_completed_talkback">%1$s download completed</string>
+    <string name="download_failed_talkback">%1$s download failed</string>
+
 
     <!-- Mediaplayer messages -->
     <string name="playback_error_generic"><![CDATA[The media file could not be played.\n\n- Try deleting and re-downloading the episode.\n- Check your network connection, and make sure no VPN or login page is blocking access.\n- Try long-pressing and sharing the \"Media address\" to your web browser to see if it can be played there. If not, contact the podcast creators.]]></string>
