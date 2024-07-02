@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.ui.screen.playback.audio;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -23,6 +24,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.elevation.SurfaceColors;
 
 import de.danoeh.antennapod.model.feed.Feed;
@@ -37,6 +39,7 @@ import de.danoeh.antennapod.ui.screen.playback.PlayButton;
 import de.danoeh.antennapod.ui.screen.playback.SleepTimerDialog;
 import de.danoeh.antennapod.ui.screen.playback.TranscriptDialogFragment;
 import de.danoeh.antennapod.ui.screen.playback.VariableSpeedDialog;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -220,11 +223,11 @@ public class AudioPlayerFragment extends Fragment implements
         if (controller == null) {
             return;
         }
-        updatePosition(new PlaybackPositionEvent(controller.getPosition(),
-                controller.getDuration()));
+        updatePosition(new PlaybackPositionEvent(controller.getPosition(), controller.getDuration()));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
     public void onPlaybackServiceChanged(PlaybackServiceEvent event) {
         if (event.action == PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN) {
             ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -266,15 +269,15 @@ public class AudioPlayerFragment extends Fragment implements
                 emitter.onComplete();
             }
         })
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(media -> {
-            updateUi(media);
-            if (media.getChapters() == null && !includingChapters) {
-                loadMediaInfo(true);
-            }
-        }, error -> Log.e(TAG, Log.getStackTraceString(error)),
-            () -> updateUi(null));
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(media -> {
+                    updateUi(media);
+                    if (media.getChapters() == null && !includingChapters) {
+                        loadMediaInfo(true);
+                    }
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)),
+                        () -> updateUi(null));
     }
 
     private PlaybackController newPlaybackController() {
@@ -312,6 +315,9 @@ public class AudioPlayerFragment extends Fragment implements
     public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
         if (event.isCancelled() || event.wasJustEnabled()) {
             AudioPlayerFragment.this.loadMediaInfo(false);
+        } else if (event.isOver()) {
+            toolbar.getMenu().findItem(R.id.set_sleeptimer_item).setVisible(true);
+            toolbar.getMenu().findItem(R.id.disable_sleeptimer_item).setVisible(false);
         }
     }
 
@@ -371,8 +377,13 @@ public class AudioPlayerFragment extends Fragment implements
         txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
         txtvPosition.setContentDescription(getString(R.string.position,
                 Converter.getDurationStringLocalized(getContext(), currentPosition)));
-        showTimeLeft = UserPreferences.shouldShowRemainingTime();
+        showTimeLeft = UserPreferences.shouldShowRemainingTime() || controller.sleepTimerActive();
         if (showTimeLeft) {
+            int remainingSleepTime = Math.toIntExact(controller.getSleepTimerTimeLeft());
+            if (remainingSleepTime > 0) {
+                remainingTime = Math.min(remainingSleepTime, remainingTime);
+            }
+
             txtvLength.setContentDescription(getString(R.string.remaining_time,
                     Converter.getDurationStringLocalized(getContext(), remainingTime)));
             txtvLength.setText(((remainingTime > 0) ? "-" : "") + Converter.getDurationStringLong(remainingTime));
@@ -380,6 +391,16 @@ public class AudioPlayerFragment extends Fragment implements
             txtvLength.setContentDescription(getString(R.string.chapter_duration,
                     Converter.getDurationStringLocalized(getContext(), duration)));
             txtvLength.setText(Converter.getDurationStringLong(duration));
+        }
+
+        if (controller.sleepTimerActive()) {
+            txtvLength.setTextColor(
+                    MaterialColors.getColor(getContext(),
+                            android.R.attr.colorActivatedHighlight, Color.RED));
+        } else {
+            txtvLength.setTextColor(
+                    MaterialColors.getColor(getContext(),
+                            android.R.attr.textColorSecondary, Color.BLACK));
         }
 
         if (!sbPosition.isPressed()) {
@@ -419,7 +440,7 @@ public class AudioPlayerFragment extends Fragment implements
                     sbPosition.highlightCurrentChapter();
                 }
                 txtvSeek.setText(controller.getMedia().getChapters().get(newChapterIndex).getTitle()
-                                + "\n" + Converter.getDurationStringLong(position));
+                        + "\n" + Converter.getDurationStringLong(position));
             } else {
                 txtvSeek.setText(Converter.getDurationStringLong(position));
             }
