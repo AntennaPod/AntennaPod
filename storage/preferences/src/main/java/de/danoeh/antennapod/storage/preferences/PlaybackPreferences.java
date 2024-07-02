@@ -158,10 +158,9 @@ public abstract class PlaybackPreferences {
         editor.apply();
     }
 
-    public static void setCurrentlyPlayingTemporarySkipSilence(boolean skipSilence) {
+    public static void setCurrentlyPlayingTemporarySkipSilence(FeedPreferences.SkipSilence skipSilence) {
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE, skipSilence
-                ? FeedPreferences.SkipSilence.AGGRESSIVE.code : FeedPreferences.SkipSilence.OFF.code);
+        editor.putInt(PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE, skipSilence.code);
         editor.apply();
     }
 
