@@ -1,23 +1,24 @@
 package de.danoeh.antennapod.ui.screen.feed;
 
-import android.content.Context;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import android.view.ContextThemeWrapper;
+import android.view.Menu;
+
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import de.danoeh.antennapod.R;
 
-public abstract class ToolbarIconTintManager implements AppBarLayout.OnOffsetChangedListener {
-    private final Context context;
+/**
+ * A manager that automatically finds all icons in a collapsable toolbar and tints them according to the collapse state
+ * of the toolbar.
+ */
+public class ToolbarIconTintManager implements AppBarLayout.OnOffsetChangedListener {
     private final CollapsingToolbarLayout collapsingToolbar;
     private final MaterialToolbar toolbar;
     private boolean isTinted = false;
 
-    public ToolbarIconTintManager(Context context, MaterialToolbar toolbar, CollapsingToolbarLayout collapsingToolbar) {
-        this.context = context;
+    public ToolbarIconTintManager(MaterialToolbar toolbar, CollapsingToolbarLayout collapsingToolbar) {
         this.collapsingToolbar = collapsingToolbar;
         this.toolbar = toolbar;
     }
@@ -32,16 +33,20 @@ public abstract class ToolbarIconTintManager implements AppBarLayout.OnOffsetCha
     }
 
     public void updateTint() {
+        PorterDuffColorFilter filter = null;
         if (isTinted) {
-            doTint(new ContextThemeWrapper(context, R.style.Theme_AntennaPod_Dark));
-            safeSetColorFilter(toolbar.getNavigationIcon(), new PorterDuffColorFilter(0xffffffff, Mode.SRC_ATOP));
-            safeSetColorFilter(toolbar.getOverflowIcon(), new PorterDuffColorFilter(0xffffffff, Mode.SRC_ATOP));
-            safeSetColorFilter(toolbar.getCollapseIcon(), new PorterDuffColorFilter(0xffffffff, Mode.SRC_ATOP));
-        } else {
-            doTint(context);
-            safeSetColorFilter(toolbar.getNavigationIcon(), null);
-            safeSetColorFilter(toolbar.getOverflowIcon(), null);
-            safeSetColorFilter(toolbar.getCollapseIcon(), null);
+            filter = new PorterDuffColorFilter(0xffffffff, Mode.SRC_ATOP);
+        }
+
+        safeSetColorFilter(toolbar.getNavigationIcon(), filter);
+        safeSetColorFilter(toolbar.getOverflowIcon(), filter);
+        safeSetColorFilter(toolbar.getCollapseIcon(), filter);
+
+        Menu menu = toolbar.getMenu();
+        for (int i = 0; i < menu.size(); i++) {
+            Drawable icon = menu.getItem(i).getIcon();
+            safeSetColorFilter(icon, filter);
+            menu.getItem(i).setIcon(icon);
         }
     }
 
@@ -50,10 +55,4 @@ public abstract class ToolbarIconTintManager implements AppBarLayout.OnOffsetCha
             icon.setColorFilter(filter);
         }
     }
-
-    /**
-     * View expansion was changed. Icons need to be tinted
-     * @param themedContext ContextThemeWrapper with dark theme while expanded
-     */
-    protected abstract void doTint(Context themedContext);
 }
