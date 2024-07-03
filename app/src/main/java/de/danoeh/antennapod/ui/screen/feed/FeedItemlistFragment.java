@@ -51,6 +51,7 @@ import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.cleaner.HtmlToPlainText;
 import de.danoeh.antennapod.ui.common.IntentUtils;
+import de.danoeh.antennapod.ui.common.OnCollapseChangeListener;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeMultiSelectActionHandler;
@@ -161,8 +162,16 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
         ToolbarIconTintManager iconTintManager =
                 new ToolbarIconTintManager(viewBinding.toolbar, viewBinding.collapsingToolbar);
-        iconTintManager.updateTint();
         viewBinding.appBar.addOnOffsetChangedListener(iconTintManager);
+        viewBinding.appBar.addOnOffsetChangedListener(new OnCollapseChangeListener(viewBinding.collapsingToolbar) {
+            @Override
+            public void onCollapseChanged(boolean isCollapsed) {
+                if (feed == null) {
+                    return;
+                }
+                viewBinding.toolbar.setTitle(isCollapsed ? feed.getTitle() : "");
+            }
+        });
 
         nextPageLoader = new MoreContentListFooterUtil(viewBinding.moreContent.moreContentListFooter);
         nextPageLoader.setClickListener(() -> {
