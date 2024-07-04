@@ -75,4 +75,9 @@ public class ClockSleepTimer extends BaseSleepTimer implements SleepTimer, Runna
     public void reset(long waitingTimeOrEpisodes) {
         this.timeLeft = waitingTimeOrEpisodes;
     }
+
+    @Override
+    public boolean isEndingThisEpisode(long episodeRemainingMillis) {
+        return episodeRemainingMillis >= getTimeLeft();
+    }
 }

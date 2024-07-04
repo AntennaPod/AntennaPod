@@ -35,5 +35,12 @@ public interface SleepTimer {
      */
     boolean isActive();
 
+    /**
+     *
+     * @param episodeRemainingMillis The number of milliseconds left in this episode
+     * @return False if the sleep timer doesn't extend past this episode, true if it ends during (or at the end)
+     *         of the current episode.
+     */
+    boolean isEndingThisEpisode(long episodeRemainingMillis);
 }
 

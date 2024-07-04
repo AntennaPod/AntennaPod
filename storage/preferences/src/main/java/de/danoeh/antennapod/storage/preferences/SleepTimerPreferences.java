@@ -49,9 +49,16 @@ public class SleepTimerPreferences {
         return prefs.getString(PREF_VALUE, DEFAULT_LAST_TIMER);
     }
 
-    public static long timerMillis() {
+    protected static long timerMillis() {
         long value = Long.parseLong(lastTimerValue());
         return TimeUnit.MINUTES.toMillis(value);
+    }
+
+    public static long timerMillisOrEpisodes() {
+        return switch (getSleepTimerType()) {
+            case CLOCK -> timerMillis();
+            case EPISODES -> Long.parseLong(SleepTimerPreferences.lastTimerValue());
+        };
     }
 
     public static SleepTimerType getSleepTimerType() {

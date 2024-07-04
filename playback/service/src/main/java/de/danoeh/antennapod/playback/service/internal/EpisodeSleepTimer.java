@@ -101,6 +101,11 @@ public class EpisodeSleepTimer extends BaseSleepTimer implements SleepTimer {
         this.remainingEpisodes = waitingTimeOrEpisodes;
     }
 
+    @Override
+    public boolean isEndingThisEpisode(long episodeRemainingMillis) {
+        return remainingEpisodes == 1;
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
     public void onPlaybackEnded(PlaybackEndedEvent playbackEndedEvent) {

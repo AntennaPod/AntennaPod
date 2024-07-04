@@ -77,6 +77,7 @@ public abstract class BaseSleepTimer implements SleepTimer, Runnable {
         }
         sleepTimerFuture = null;
         shakeListener.pause();
+        shakeListener = null;
     }
 
     @Override

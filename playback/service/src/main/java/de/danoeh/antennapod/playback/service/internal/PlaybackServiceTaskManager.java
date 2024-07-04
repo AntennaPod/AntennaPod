@@ -158,6 +158,14 @@ public class PlaybackServiceTaskManager {
         return sleepTimer != null && sleepTimer.isActive();
     }
 
+    public synchronized boolean isSleepTimerPaused() {
+        return sleepTimer != null && sleepTimer.getTimeLeft() > 0;
+    }
+
+    public synchronized boolean isSleepTimerEndingThisEpisode(long episodeRemainingMillis) {
+        return sleepTimer != null && sleepTimer.isActive() && sleepTimer.isEndingThisEpisode(episodeRemainingMillis);
+    }
+
     /**
      * Disables the sleep timer. If the sleep timer is not active, nothing will happen.
      */

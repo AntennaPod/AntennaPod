@@ -869,8 +869,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     }
 
                     if (newInfo.getOldPlayerStatus() != null && newInfo.getOldPlayerStatus() != PlayerStatus.SEEKING
-                            && SleepTimerPreferences.autoEnable() && autoEnableByTime && !sleepTimerActive()) {
-                        setSleepTimer(SleepTimerPreferences.timerMillis());
+                            && SleepTimerPreferences.autoEnable() && autoEnableByTime
+                            && !taskManager.isSleepTimerPaused()) {
+                        setSleepTimer(SleepTimerPreferences.timerMillisOrEpisodes());
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label),
                                 (ctx) -> disableSleepTimer(), getString(R.string.undo)));
                     }
@@ -1475,6 +1476,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         return taskManager.isSleepTimerActive();
     }
 
+    public boolean isSleepTimerEndingThisEpisode(long episodeRemainingMillis) {
+        return taskManager.isSleepTimerEndingThisEpisode(episodeRemainingMillis);
+    }
+
     public long getSleepTimerTimeLeft() {
         return taskManager.getSleepTimerTimeLeft();
     }
@@ -1998,7 +2003,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (sleepTimerActive()) {
                     disableSleepTimer();
                 } else {
-                    setSleepTimer(SleepTimerPreferences.timerMillis());
+                    setSleepTimer(SleepTimerPreferences.timerMillisOrEpisodes());
                 }
             }
         }

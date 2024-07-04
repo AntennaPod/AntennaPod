@@ -3,6 +3,7 @@ package de.danoeh.antennapod.ui.screen.playback;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
@@ -102,10 +103,10 @@ public class SleepTimerDialog extends DialogFragment {
                     new SleepEntryConfig(30, 30 * 1000 * 60)
             )),
             Map.entry(SleepTimerType.EPISODES, new SleepTimeConfig(
-                    R.string.extend_sleep_timer_episodes_label, R.string.episodes_label,
+                    R.plurals.extend_sleep_timer_episodes_quantified, R.string.episodes_label,
                     new SleepEntryConfig(1, 1),
-                    new SleepEntryConfig(5, 5),
-                    new SleepEntryConfig(10, 10)
+                    new SleepEntryConfig(3, 3),
+                    new SleepEntryConfig(5, 5)
             ))
     ));
 
@@ -259,10 +260,7 @@ public class SleepTimerDialog extends DialogFragment {
                 }
                 SleepTimerPreferences.setLastTimer(etxtTime.getText().toString());
                 if (controller != null) {
-                    long value = switch (SleepTimerPreferences.getSleepTimerType()) {
-                        case CLOCK -> SleepTimerPreferences.timerMillis();
-                        case EPISODES -> Long.parseLong(SleepTimerPreferences.lastTimerValue());
-                    };
+                    long value = SleepTimerPreferences.timerMillisOrEpisodes();
                     controller.setSleepTimer(value);
                 }
                 closeKeyboard(content);
@@ -283,7 +281,17 @@ public class SleepTimerDialog extends DialogFragment {
                 extendSleepTenMinutesButton,
                 extendSleepTwentyMinutesButton)) {
             final SleepEntryConfig entryConfig = Objects.requireNonNull(selectedConfig).sleepEntries.get(counter++);
-            button.setText(getString(selectedConfig.buttonTextResourceId, entryConfig.displayValue));
+            // button text resource can be either string or plural string
+            try {
+                button.setText(getString(selectedConfig.buttonTextResourceId, entryConfig.displayValue));
+            } catch (Resources.NotFoundException ex) {
+                button.setText(getContext().getResources()
+                        .getQuantityString(
+                                selectedConfig.buttonTextResourceId,
+                                entryConfig.displayValue,
+                                entryConfig.displayValue));
+            }
+
             button.setOnClickListener(v -> {
                 if (controller != null) {
                     controller.extendSleepTimer(entryConfig.configuredValue);
