@@ -2,7 +2,6 @@ package de.danoeh.antennapod.ui.screen.playback.audio;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -390,7 +389,8 @@ public class AudioPlayerFragment extends Fragment implements
 
             txtvLength.setContentDescription(getString(R.string.remaining_time,
                     Converter.getDurationStringLocalized(getContext(), remainingTime)));
-            txtvLength.setText(((remainingTime > 0) ? endingSymbol : "") + Converter.getDurationStringLong(remainingTime));
+            txtvLength.setText(((remainingTime > 0) ? endingSymbol : "")
+                    + Converter.getDurationStringLong(remainingTime));
         } else {
             txtvLength.setContentDescription(getString(R.string.chapter_duration,
                     Converter.getDurationStringLocalized(getContext(), duration)));
