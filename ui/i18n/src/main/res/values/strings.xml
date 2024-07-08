@@ -320,9 +320,9 @@
     <string name="confirm_mobile_streaming_notification_message">Streaming over mobile data connection is disabled in the settings. Tap to stream anyway.</string>
     <string name="confirm_mobile_streaming_button_always">Always</string>
     <string name="confirm_mobile_streaming_button_once">Once</string>
-    <string name="download_started_talkback">%1$s download started</string>
-    <string name="download_completed_talkback">%1$s download completed</string>
-    <string name="download_failed_talkback">%1$s download failed</string>
+    <string name="download_started_talkback">Download started for %1$s</string>
+    <string name="download_completed_talkback">Download completed for %1$s</string>
+    <string name="download_failed_talkback">Download failed for %1$s</string>
 
 
     <!-- Mediaplayer messages -->
