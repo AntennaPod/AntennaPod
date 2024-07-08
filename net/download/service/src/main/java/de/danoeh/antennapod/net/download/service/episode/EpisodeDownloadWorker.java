@@ -175,6 +175,7 @@ public class EpisodeDownloadWorker extends Worker {
         } catch (Exception e) {
             DBWriter.addDownloadStatus(downloader.getResult());
             sendErrorNotification(request.getTitle());
+            downloadAnnouncer.announceDownloadEnd(request.getTitle(), false);
             return Result.failure();
         } finally {
             if (wifiLock != null) {
@@ -213,6 +214,7 @@ public class EpisodeDownloadWorker extends Worker {
                 || status.getReason() == DownloadError.ERROR_IO_BLOCKED) {
             // Fail fast, these are probably unrecoverable
             sendErrorNotification(request.getTitle());
+            downloadAnnouncer.announceDownloadEnd(request.getTitle(), false);
             return Result.failure();
         }
         sendMessage(request.getTitle(), false);
@@ -222,6 +224,7 @@ public class EpisodeDownloadWorker extends Worker {
     private Result retry3times() {
         if (isLastRunAttempt()) {
             sendErrorNotification(downloader.getDownloadRequest().getTitle());
+            downloadAnnouncer.announceDownloadEnd(downloader.getDownloadRequest().getTitle(), false);
             return Result.failure();
         } else {
             return Result.retry();
