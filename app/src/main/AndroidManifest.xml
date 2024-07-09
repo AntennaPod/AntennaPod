@@ -161,9 +161,6 @@
                 <data android:scheme="content"/>
                 <data android:scheme="http"/>
                 <data android:scheme="https"/>
-
-                <data android:host="*"/>
-                <data android:pathPattern="/.*.opml" />
             </intent-filter>
         </activity>
         <activity
@@ -199,36 +196,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>
 
-            <!-- URLs ending with '.xml' or '.rss' -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data android:scheme="http"/>
-                <data android:scheme="https"/>
-                <data android:host="*"/>
-                <data android:pathPattern="/.*\\.xml"/>
-                <data android:pathPattern="/.*\\.rss"/>
-                <data android:pathPattern="/.*\\.atom"/>
-            </intent-filter>
-
-            <!-- Feedburner URLs -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data android:scheme="http"/>
-                <data android:scheme="https"/>
-                <data android:host="feeds.feedburner.com"/>
-                <data android:host="feedproxy.google.com"/>
-                <data android:host="feeds2.feedburner.com"/>
-                <data android:host="feedsproxy.google.com"/>
-            </intent-filter>
-
             <!-- Files with mimeType rss/xml/atom -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -257,21 +224,6 @@
                 <data android:scheme="antennapod-subscribe"/>
             </intent-filter>
 
-            <!-- Support for subscribeonandroid.com URLS -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:pathPattern="/.*\\..*/.*" />
-                <data android:host="subscribeonandroid.com" />
-                <data android:host="www.subscribeonandroid.com" />
-                <data android:host="*subscribeonandroid.com" />
-                <data android:scheme="http" />
-                <data android:scheme="https" />
-            </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -279,20 +231,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:host="antennapod.org" />
-                <data android:host="www.antennapod.org" />
                 <data android:pathPrefix="/deeplink/subscribe" />
-                <data android:scheme="http" />
-                <data android:scheme="https" />
-            </intent-filter>
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:pathPattern="/.*/podcast/.*" />
-                <data android:host="podcasts.apple.com" />
                 <data android:scheme="http" />
                 <data android:scheme="https" />
             </intent-filter>
