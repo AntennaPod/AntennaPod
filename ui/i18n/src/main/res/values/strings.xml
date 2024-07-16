@@ -322,7 +322,6 @@
     <string name="confirm_mobile_streaming_button_once">Once</string>
     <string name="download_started_talkback">Download started for %1$s</string>
     <string name="download_completed_talkback">Download completed for %1$s</string>
-    <string name="download_failed_talkback">Download failed for %1$s</string>
 
 
     <!-- Mediaplayer messages -->

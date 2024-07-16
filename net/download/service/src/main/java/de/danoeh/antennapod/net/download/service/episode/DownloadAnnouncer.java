@@ -17,10 +17,8 @@ public class DownloadAnnouncer {
         announceDownloadStatus(message);
     }
 
-    public void announceDownloadEnd(String episodeTitle, boolean success) {
-        String downloadCompletedMessage = context.getString(R.string.download_completed_talkback, episodeTitle);
-        String downloadFailedMessage = context.getString(R.string.download_failed_talkback, episodeTitle);
-        String message = success ? downloadCompletedMessage : downloadFailedMessage;
+    public void announceDownloadCompleted(String episodeTitle) {
+        String message = context.getString(R.string.download_completed_talkback, episodeTitle);
         announceDownloadStatus(message);
     }
 

@@ -193,7 +193,7 @@ public class EpisodeDownloadWorker extends Worker {
                     getApplicationContext(), downloader.getResult(), request);
             handler.run();
             DBWriter.addDownloadStatus(handler.getUpdatedStatus());
-            downloadAnnouncer.announceDownloadEnd(request.getTitle(), true);
+            downloadAnnouncer.announceDownloadCompleted(request.getTitle());
             return Result.success();
         }
 
@@ -257,7 +257,6 @@ public class EpisodeDownloadWorker extends Worker {
     }
 
     private void sendErrorNotification(String title) {
-        downloadAnnouncer.announceDownloadEnd(title, false);
         if (EventBus.getDefault().hasSubscriberForEvent(MessageEvent.class)) {
             sendMessage(title, false);
             return;
