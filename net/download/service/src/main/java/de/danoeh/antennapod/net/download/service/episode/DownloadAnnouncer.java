@@ -5,24 +5,17 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import de.danoeh.antennapod.net.download.service.R;
 
-public class DownloadAnnouncer {
-    private final Context context;
-
-    public DownloadAnnouncer(Context context) {
-        this.context = context;
+public abstract class DownloadAnnouncer {
+    public static void announceStart(Context context, String episodeTitle) {
+        announce(context, R.string.download_started_talkback, episodeTitle);
     }
 
-    public void announceDownloadStart(String episodeTitle) {
-        String message = context.getString(R.string.download_started_talkback, episodeTitle);
-        announceDownloadStatus(message);
+    public static void announceCompleted(Context context, String episodeTitle) {
+        announce(context, R.string.download_completed_talkback, episodeTitle);
     }
 
-    public void announceDownloadCompleted(String episodeTitle) {
-        String message = context.getString(R.string.download_completed_talkback, episodeTitle);
-        announceDownloadStatus(message);
-    }
-
-    private void announceDownloadStatus(String message) {
+    private static void announce(Context context, int messageTemplate, String episodeTitle) {
+        String message = context.getString(messageTemplate, episodeTitle);
         AccessibilityManager am = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
         if (am != null && am.isEnabled()) {
             AccessibilityEvent event = AccessibilityEvent.obtain();
