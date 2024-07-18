@@ -710,6 +710,8 @@
     <string name="next_chapter">Next chapter</string>
     <string name="shuffle_suggestions">Shuffle suggestions</string>
     <string name="add_preset">Add preset</string>
+    <string name="download_started_talkback">Download started for %1$s</string>
+    <string name="download_completed_talkback">Download completed for %1$s</string>
 
     <!-- Feed settings/information screen -->
     <string name="authentication_label">Authentication</string>
