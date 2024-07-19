@@ -114,6 +114,9 @@ public class UrlCheckerTest {
                 + URLEncoder.encode(feed, "UTF-8")));
         assertEquals(feed, UrlChecker.prepareUrl("http://www.antennapod.org/deeplink/subscribe?url="
                 + "example.org/podcast.rss"));
+        assertEquals(feed, UrlChecker.prepareUrl("https://antennapod.org/deeplink/subscribe?url=" + feed + "&title=a"));
+        assertEquals(feed, UrlChecker.prepareUrl("https://antennapod.org/deeplink/subscribe?url="
+                + URLEncoder.encode(feed) + "&title=a"));
     }
 
     @Test

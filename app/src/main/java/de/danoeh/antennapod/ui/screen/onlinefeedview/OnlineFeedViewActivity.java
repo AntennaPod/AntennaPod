@@ -115,7 +115,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 username = savedInstanceState.getString("username");
                 password = savedInstanceState.getString("password");
             }
-            lookupUrlAndDownload(feedUrl);
+            lookupUrlAndDownload(UrlChecker.prepareUrl(feedUrl));
         }
     }
 
