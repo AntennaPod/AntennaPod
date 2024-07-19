@@ -56,11 +56,11 @@ public final class UrlChecker {
             return prepareUrl(url.substring(AP_SUBSCRIBE.length()));
         } else if (lowerCaseUrl.contains(AP_SUBSCRIBE_DEEPLINK)) {
             Log.d(TAG, "Removing " + AP_SUBSCRIBE_DEEPLINK);
-            String removedWebsite = url.substring(url.indexOf("?url=") + "?url=".length());
+            String query = Uri.parse(url).getQueryParameter("url");
             try {
-                return prepareUrl(URLDecoder.decode(removedWebsite, "UTF-8"));
+                return prepareUrl(URLDecoder.decode(query, "UTF-8"));
             } catch (UnsupportedEncodingException e) {
-                return prepareUrl(removedWebsite);
+                return prepareUrl(query);
             }
         } else if (!(lowerCaseUrl.startsWith("http://") || lowerCaseUrl.startsWith("https://"))) {
             Log.d(TAG, "Adding http:// at the beginning of the URL");
