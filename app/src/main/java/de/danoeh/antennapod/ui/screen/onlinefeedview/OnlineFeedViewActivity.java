@@ -234,7 +234,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             if (subscribedFeed.getState() == Feed.STATE_SUBSCRIBED) {
                 openFeed(subscribedFeed.getId());
             } else {
-                showFeedFragment(subscribedFeed.getId());
+                showFeedFragment(subscribedFeed.getId(), false);
             }
         }, error -> Log.e(TAG, Log.getStackTraceString(error)), () -> startFeedDownload(url));
         return null;
@@ -292,7 +292,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         })
         .subscribeOn(Schedulers.computation())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(this::showFeedFragment, error -> {
+        .subscribe(id -> showFeedFragment(id, true), error -> {
             error.printStackTrace();
             showErrorDialog(error.getMessage(), "");
         });
@@ -333,13 +333,13 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
     }
 
-    private void showFeedFragment(long id) {
+    private void showFeedFragment(long id, boolean isFirstTime) {
         if (isFeedFoundBySearch) {
             Toast.makeText(this, R.string.no_feed_url_podcast_found_by_search, Toast.LENGTH_LONG).show();
         }
 
         viewBinding.progressBar.setVisibility(View.GONE);
-        FeedItemlistFragment fragment = FeedItemlistFragment.newInstance(id);
+        FeedItemlistFragment fragment = FeedItemlistFragment.newInstance(id, isFirstTime);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragmentContainer, fragment, FeedItemlistFragment.TAG)
