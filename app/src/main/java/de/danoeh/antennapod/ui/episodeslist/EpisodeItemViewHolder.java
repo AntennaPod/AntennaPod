@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.elevation.SurfaceColors;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.ui.CoverLoader;
 import de.danoeh.antennapod.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.playback.service.PlaybackStatus;
@@ -204,6 +205,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
 
     public void bindDummy() {
         item = new FeedItem();
+        item.setFeed(new Feed("", ""));
         container.setAlpha(0.1f);
         secondaryActionIcon.setImageDrawable(null);
         isInbox.setVisibility(View.VISIBLE);
