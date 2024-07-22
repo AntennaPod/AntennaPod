@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.ui.screen.queue;
 
+import static de.danoeh.antennapod.storage.preferences.UserPreferences.CONST_AUTODL_QUEUE_ITEMS;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -138,7 +140,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> {
-                    int maxItems = Math.min(items.size(), 5);
+                    int maxItems = Math.min(items.size(), CONST_AUTODL_QUEUE_ITEMS);
 
                     for (int i = 0; i < items.size(); i++) {
                         // Filter items when they are played.

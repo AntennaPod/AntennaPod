@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.playback.service;
 
 import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
+import static de.danoeh.antennapod.storage.preferences.UserPreferences.CONST_AUTODL_QUEUE_ITEMS;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -1176,7 +1177,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (UserPreferences.shouldAutodownloadQueue()) {
                     // First, get items and assign the maximum. Either 5, or the listsize, the smaller one.
                     List<FeedItem> items = DBReader.getQueue();
-                    int maxItems = Math.min(items.size(), 5);
+                    int maxItems = Math.min(items.size(), CONST_AUTODL_QUEUE_ITEMS);
 
                     for (int i = 0; i < items.size(); i++) {
 
