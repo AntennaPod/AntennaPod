@@ -28,7 +28,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
-import de.danoeh.antennapod.net.download.service.feed.DownloadServiceInterfaceImpl;
+import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
@@ -138,15 +138,13 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> {
-                    // this will fail with less than 5 items.
                     int maxItems = Math.min(items.size(), 5);
 
                     for (int i = 0; i < items.size(); i++) {
-
                         // Filter items when they are played.
                         FeedItem fitem = items.get(i);
                         if (!fitem.isPlayed()) {
-                            (new DownloadServiceInterfaceImpl()).download(this.getContext(), fitem);
+                            DBWriter.markItemForAutodownload(fitem);
                             maxItems--;
                         }
 
@@ -154,6 +152,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                             break;
                         }
                     }
+                    AutoDownloadManager.getInstance().autodownloadUndownloadedItems(this.getContext());
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 

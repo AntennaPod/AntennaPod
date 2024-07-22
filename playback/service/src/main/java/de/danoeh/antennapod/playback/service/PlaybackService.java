@@ -54,7 +54,7 @@ import androidx.lifecycle.Observer;
 import androidx.media.MediaBrowserServiceCompat;
 
 import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.net.download.service.feed.DownloadServiceInterfaceImpl;
+import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
 import de.danoeh.antennapod.playback.service.internal.LocalPSMP;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
@@ -1183,7 +1183,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         // Filter items when they are played.
                         FeedItem fitem = items.get(i);
                         if (!fitem.isPlayed()) {
-                            (new DownloadServiceInterfaceImpl()).download(getApplicationContext(), fitem);
+                            DBWriter.markItemForAutodownload(fitem);
                             maxItems--;
                         }
 
@@ -1191,6 +1191,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                             break;
                         }
                     }
+                    AutoDownloadManager.getInstance().autodownloadUndownloadedItems(getApplicationContext());
                 }
                 notifyChildrenChanged(getString(R.string.queue_label));
             }
