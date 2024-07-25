@@ -115,8 +115,8 @@
   <string name="feed_volume_adapdation">Адаптація гучності</string>
   <string name="feed_volume_adaptation_summary">Збільшити або збільшити гучність епізодів цього подкасту: %1$s</string>
   <string name="feed_volume_reduction_off">Без змін</string>
-  <string name="feed_volume_reduction_light">Трошки зменьшити</string>
-  <string name="feed_volume_reduction_heavy">Сильно зменьшити</string>
+  <string name="feed_volume_reduction_light">Трошки зменшити</string>
+  <string name="feed_volume_reduction_heavy">Сильно зменшити</string>
   <string name="feed_volume_boost_light">Трошки збільшити</string>
   <string name="feed_volume_boost_medium">Помірно збільшити</string>
   <string name="feed_volume_boost_heavy">Сильно збільшити</string>
@@ -710,7 +710,7 @@
   <string name="shuffle_suggestions">Перетасувати пропозиції</string>
   <string name="add_preset">Додати типовий</string>
   <!--Feed settings/information screen-->
-  <string name="authentication_label">Автентикація</string>
+  <string name="authentication_label">Автентифікація</string>
   <string name="authentication_descr">Змінити ваші логін та пароль для подкаста та епізодів</string>
   <string name="feed_tags_label">Мітки</string>
   <string name="feed_tags_summary">Змініть теги цього подкасту, щоб упорядкувати ваші підписки</string>
