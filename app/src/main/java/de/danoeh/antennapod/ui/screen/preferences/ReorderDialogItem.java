@@ -1,7 +1,7 @@
-package de.danoeh.antennapod.ui.screen.home.settingsdialog;
+package de.danoeh.antennapod.ui.screen.preferences;
 
-final class HomeScreenSettingsDialogItem {
-    enum ViewType {
+public final class ReorderDialogItem {
+    public enum ViewType {
         Section,
         Header
     }
@@ -9,7 +9,7 @@ final class HomeScreenSettingsDialogItem {
     private final ViewType viewType;
     private final String title;
 
-    HomeScreenSettingsDialogItem(ViewType viewType, String title) {
+    public ReorderDialogItem(ViewType viewType, String title) {
         this.viewType = viewType;
         this.title = title;
     }

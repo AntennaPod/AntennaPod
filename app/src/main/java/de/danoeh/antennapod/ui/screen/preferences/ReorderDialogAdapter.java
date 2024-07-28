@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.ui.screen.home.settingsdialog;
+package de.danoeh.antennapod.ui.screen.preferences;
 
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -6,26 +6,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Consumer;
 import androidx.recyclerview.widget.RecyclerView;
+import de.danoeh.antennapod.databinding.ReorderDialogEntryBinding;
+import de.danoeh.antennapod.databinding.ReorderDialogHeaderBinding;
+import de.danoeh.antennapod.ui.screen.home.settingsdialog.HomePreferences;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import de.danoeh.antennapod.databinding.ChooseHomeScreenOrderDialogEntryBinding;
-import de.danoeh.antennapod.databinding.ChooseHomeScreenOrderDialogHeaderBinding;
-
-class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
+public class ReorderDialogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
     private static final int HEADER_VIEW = 0;
     private static final int ITEM_VIEW = 1;
-    private final List<HomeScreenSettingsDialogItem> settingsDialogItems;
+    private final List<ReorderDialogItem> settingsDialogItems;
     @Nullable private Consumer<ItemViewHolder> dragListener;
 
-    public HomeScreenSettingDialogAdapter(@NonNull List<HomeScreenSettingsDialogItem> dialogItems) {
+    public ReorderDialogAdapter(@NonNull List<ReorderDialogItem> dialogItems) {
         settingsDialogItems = dialogItems;
     }
 
@@ -34,53 +32,22 @@ class HomeScreenSettingDialogAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     @NonNull
-    public List<String> getOrderedSectionTags() {
-        List<String> orderedSectionTags = new ArrayList<>();
-        for (HomeScreenSettingsDialogItem item: settingsDialogItems) {
-            if (item.getViewType() == HomeScreenSettingsDialogItem.ViewType.Header) {
-                continue;
-            }
-
-            orderedSectionTags.add(item.getTitle());
-        }
-
-        return orderedSectionTags;
-    }
-
-    public List<String> getHiddenSectionTags() {
-        List<String> hiddenSections = new ArrayList<>();
-        for (int i = settingsDialogItems.size() - 1; i >= 0; i--) {
-            HomeScreenSettingsDialogItem item = settingsDialogItems.get(i);
-            if (item.getViewType() == HomeScreenSettingsDialogItem.ViewType.Header) {
-                return hiddenSections;
-            }
-
-            hiddenSections.add(item.getTitle());
-        }
-
-        Collections.reverse(hiddenSections);
-        return hiddenSections;
-    }
-
-    @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         if (viewType == HEADER_VIEW) {
-            ChooseHomeScreenOrderDialogHeaderBinding binding = ChooseHomeScreenOrderDialogHeaderBinding.inflate(
-                    inflater, parent, false);
+            ReorderDialogHeaderBinding binding = ReorderDialogHeaderBinding.inflate(inflater, parent, false);
             return new HeaderViewHolder(binding.getRoot(), binding.headerLabel);
         }
 
-        ChooseHomeScreenOrderDialogEntryBinding binding = ChooseHomeScreenOrderDialogEntryBinding.inflate(
-                inflater, parent, false);
+        ReorderDialogEntryBinding binding = ReorderDialogEntryBinding.inflate(inflater, parent, false);
         return new ItemViewHolder(binding.getRoot(), binding.sectionLabel, binding.dragHandle);
     }
 
     @Override
     public int getItemViewType(int position) {
-        HomeScreenSettingsDialogItem.ViewType viewType = settingsDialogItems.get(position).getViewType();
-        boolean isHeader = viewType == HomeScreenSettingsDialogItem.ViewType.Header;
+        ReorderDialogItem.ViewType viewType = settingsDialogItems.get(position).getViewType();
+        boolean isHeader = viewType == ReorderDialogItem.ViewType.Header;
         return isHeader ? HEADER_VIEW : ITEM_VIEW;
     }
 
