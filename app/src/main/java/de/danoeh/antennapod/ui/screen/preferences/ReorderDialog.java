@@ -58,15 +58,31 @@ public abstract class ReorderDialog {
     }
 
     @NonNull
-    public List<String> getItemsWithoutHeaders() {
+    public List<String> getTagsWithoutHeaders() {
         List<String> orderedSectionTags = new ArrayList<>();
         for (ReorderDialogItem item : dialogItems) {
             if (item.getViewType() == ReorderDialogItem.ViewType.Header) {
                 continue;
             }
-            orderedSectionTags.add(item.getTitle());
+            orderedSectionTags.add(item.getTag());
         }
         return orderedSectionTags;
+    }
+
+    @NonNull
+    public List<String> getTagsAfterHeader(String tag) {
+        List<String> itemsAfterHeader = new ArrayList<>();
+        int i = 0;
+        while (dialogItems.get(i).getViewType() != ReorderDialogItem.ViewType.Header
+                || !dialogItems.get(i).getTag().equals(tag)) {
+            i++;
+        }
+        i++;
+        while (i < dialogItems.size() && dialogItems.get(i).getViewType() != ReorderDialogItem.ViewType.Header) {
+            itemsAfterHeader.add(dialogItems.get(i).getTag());
+            i++;
+        }
+        return itemsAfterHeader;
     }
 
     protected abstract @StringRes int getTitle();

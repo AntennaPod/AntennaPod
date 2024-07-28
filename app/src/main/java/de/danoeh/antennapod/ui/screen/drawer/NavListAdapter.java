@@ -7,9 +7,6 @@ import android.os.Build;
 import android.view.ContextMenu;
 import android.view.InputDevice;
 import android.view.LayoutInflater;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
-import androidx.preference.PreferenceManager;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,27 +14,30 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.bumptech.glide.load.resource.bitmap.FitCenter;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.ui.common.ImagePlaceholder;
-import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
-import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
-import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
-import de.danoeh.antennapod.ui.screen.InboxFragment;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.common.ImagePlaceholder;
 import de.danoeh.antennapod.ui.screen.AddFeedFragment;
+import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
+import de.danoeh.antennapod.ui.screen.InboxFragment;
 import de.danoeh.antennapod.ui.screen.PlaybackHistoryFragment;
+import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
+import de.danoeh.antennapod.ui.screen.home.HomeFragment;
+import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
 import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
 import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
-import de.danoeh.antennapod.ui.screen.home.HomeFragment;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
 import java.text.NumberFormat;
@@ -63,7 +63,6 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
     public static final String SUBSCRIPTION_LIST_TAG = "SubscriptionList";
 
     private final List<String> fragmentTags = new ArrayList<>();
-    private final String[] titles;
     private final ItemAccess itemAccess;
     private final WeakReference<Activity> activity;
     public boolean showSubscriptionList = true;
@@ -71,10 +70,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
     public NavListAdapter(ItemAccess itemAccess, Activity context) {
         this.itemAccess = itemAccess;
         this.activity = new WeakReference<>(context);
-
-        titles = context.getResources().getStringArray(R.array.nav_drawer_titles);
         loadItems();
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.registerOnSharedPreferenceChangeListener(this);
     }
@@ -106,12 +102,32 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         notifyDataSetChanged();
     }
 
-    public String getLabel(String tag) {
-        int index = ArrayUtils.indexOf(NavDrawerFragment.NAV_DRAWER_TAGS, tag);
-        return titles[index];
+    public static @StringRes int getLabel(String tag) {
+        switch (tag) {
+            case HomeFragment.TAG:
+                return R.string.home_label;
+            case QueueFragment.TAG:
+                return R.string.queue_label;
+            case InboxFragment.TAG:
+                return R.string.inbox_label;
+            case AllEpisodesFragment.TAG:
+                return R.string.episodes_label;
+            case SubscriptionFragment.TAG:
+                return R.string.subscriptions_label;
+            case CompletedDownloadsFragment.TAG:
+                return R.string.downloads_label;
+            case PlaybackHistoryFragment.TAG:
+                return R.string.playback_history_label;
+            case AddFeedFragment.TAG:
+                return R.string.add_feed_label;
+            case NavListAdapter.SUBSCRIPTION_LIST_TAG:
+                return R.string.subscriptions_list_label;
+            default:
+                return 0;
+        }
     }
 
-    private @DrawableRes int getDrawable(String tag) {
+    private static @DrawableRes int getDrawable(String tag) {
         switch (tag) {
             case HomeFragment.TAG:
                 return R.drawable.ic_home;
@@ -224,7 +240,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         }
     }
 
-    private void bindNavView(String title, int position, NavHolder holder) {
+    private void bindNavView(@StringRes int title, int position, NavHolder holder) {
         Activity context = activity.get();
         if (context == null) {
             return;

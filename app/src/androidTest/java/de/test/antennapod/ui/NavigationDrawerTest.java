@@ -1,19 +1,19 @@
 package de.test.antennapod.ui;
 
 import android.content.Intent;
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
-import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
-import de.danoeh.antennapod.ui.screen.drawer.NavDrawerFragment;
 import de.danoeh.antennapod.ui.screen.PlaybackHistoryFragment;
+import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
+import de.danoeh.antennapod.ui.screen.drawer.NavDrawerFragment;
+import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
 import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
 import de.test.antennapod.EspressoTestUtils;
 import org.junit.After;
@@ -189,13 +189,12 @@ public class NavigationDrawerTest {
     public void testDrawerPreferencesHideAllElements() {
         UserPreferences.setHiddenDrawerItems(new ArrayList<>());
         activityRule.launchActivity(new Intent());
-        String[] titles = activityRule.getActivity().getResources().getStringArray(R.array.nav_drawer_titles);
+        String[] tags = NavDrawerFragment.NAV_DRAWER_TAGS;
 
         openNavDrawer();
         onView(first(withText(R.string.queue_label))).perform(longClick());
-        for (int i = 0; i < titles.length; i++) {
-            String title = titles[i];
-            onView(allOf(withText(title), isDisplayed())).perform(click());
+        for (int i = 0; i < tags.length; i++) {
+            onView(allOf(withText(tags[i]), isDisplayed())).perform(click());
 
             if (i == 3) {
                 onView(withId(R.id.contentPanel)).perform(swipeUp());
@@ -205,7 +204,7 @@ public class NavigationDrawerTest {
         onView(withText(R.string.confirm_label)).perform(click());
 
         List<String> hidden = UserPreferences.getHiddenDrawerItems();
-        assertEquals(titles.length, hidden.size());
+        assertEquals(tags.length, hidden.size());
         for (String tag : NavDrawerFragment.NAV_DRAWER_TAGS) {
             assertTrue(hidden.contains(tag));
         }

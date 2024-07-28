@@ -1,50 +1,77 @@
 package de.danoeh.antennapod.ui.screen.drawer;
 
 import android.content.Context;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import androidx.annotation.NonNull;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.screen.drawer.NavDrawerFragment;
+import de.danoeh.antennapod.ui.screen.preferences.ReorderDialog;
+import de.danoeh.antennapod.ui.screen.preferences.ReorderDialogItem;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class DrawerPreferencesDialog {
-    public static void show(Context context, Runnable callback) {
+public class DrawerPreferencesDialog extends ReorderDialog {
+    private static final String TAG_HIDDEN = "hidden";
+    private final Runnable onSettingsChanged;
+
+    public DrawerPreferencesDialog(Context context, Runnable onSettingsChanged) {
+        super(context);
+        this.onSettingsChanged = onSettingsChanged;
+    }
+
+    @Override
+    protected int getTitle() {
+        return R.string.drawer_preferences;
+    }
+
+    @NonNull
+    protected List<ReorderDialogItem> getInitialItems() {
+        ArrayList<ReorderDialogItem> settingsDialogItems = new ArrayList<>();
+
         final List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
-        final String[] navTitles = context.getResources().getStringArray(R.array.nav_drawer_titles);
-        boolean[] checked = new boolean[NavDrawerFragment.NAV_DRAWER_TAGS.length];
         for (int i = 0; i < NavDrawerFragment.NAV_DRAWER_TAGS.length; i++) {
             String tag = NavDrawerFragment.NAV_DRAWER_TAGS[i];
             if (!hiddenDrawerItems.contains(tag)) {
-                checked[i] = true;
+                settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Section,
+                        tag, context.getString(NavListAdapter.getLabel(tag))));
             }
         }
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
-        builder.setTitle(R.string.drawer_preferences);
-        builder.setMultiChoiceItems(navTitles, checked, (dialog, which, isChecked) -> {
-            if (isChecked) {
-                hiddenDrawerItems.remove(NavDrawerFragment.NAV_DRAWER_TAGS[which]);
-            } else {
-                hiddenDrawerItems.add(NavDrawerFragment.NAV_DRAWER_TAGS[which]);
-            }
-        });
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            UserPreferences.setHiddenDrawerItems(hiddenDrawerItems);
 
-            if (hiddenDrawerItems.contains(UserPreferences.getDefaultPage())) {
-                for (String tag : NavDrawerFragment.NAV_DRAWER_TAGS) {
-                    if (!hiddenDrawerItems.contains(tag)) {
-                        UserPreferences.setDefaultPage(tag);
-                        break;
-                    }
+        String hiddenText = context.getString(R.string.section_hidden);
+        settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Header, TAG_HIDDEN, hiddenText));
+
+        for (String sectionTag : hiddenDrawerItems) {
+            settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Section,
+                    sectionTag, context.getString(NavListAdapter.getLabel(sectionTag))));
+        }
+        return settingsDialogItems;
+    }
+
+    @Override
+    protected void onReset() {
+        UserPreferences.setHiddenDrawerItems(Collections.emptyList());
+        if (onSettingsChanged != null) {
+            onSettingsChanged.run();
+        }
+    }
+
+    @Override
+    protected void onConfirmed() {
+        final List<String> hiddenDrawerItems = getTagsAfterHeader(TAG_HIDDEN);
+        UserPreferences.setHiddenDrawerItems(hiddenDrawerItems);
+
+        if (hiddenDrawerItems.contains(UserPreferences.getDefaultPage())) {
+            for (String tag : NavDrawerFragment.NAV_DRAWER_TAGS) {
+                if (!hiddenDrawerItems.contains(tag)) {
+                    UserPreferences.setDefaultPage(tag);
+                    break;
                 }
             }
+        }
 
-            if (callback != null) {
-                callback.run();
-            }
-        });
-        builder.setNegativeButton(R.string.cancel_label, null);
-        builder.create().show();
+        if (onSettingsChanged != null) {
+            onSettingsChanged.run();
+        }
     }
 }

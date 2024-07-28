@@ -56,11 +56,10 @@ public class ReorderDialogAdapter extends RecyclerView.Adapter<RecyclerView.View
         String title = settingsDialogItems.get(position).getTitle();
         if (holder instanceof HeaderViewHolder) {
             HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
-            headerViewHolder.categoryLabel.setText(title);
+            headerViewHolder.categoryLabel.setText(settingsDialogItems.get(position).getTitle());
         } else if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            String sectionName = HomePreferences.getNameFromTag(itemViewHolder.nameLabel.getContext(), title);
-            itemViewHolder.nameLabel.setText(sectionName);
+            itemViewHolder.nameLabel.setText(settingsDialogItems.get(position).getTitle());
             itemViewHolder.dragImage.setOnTouchListener((view, motionEvent) -> {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     if (dragListener != null) {
@@ -92,7 +91,7 @@ public class ReorderDialogAdapter extends RecyclerView.Adapter<RecyclerView.View
         return true;
     }
 
-    static class ItemViewHolder extends RecyclerView.ViewHolder {
+    public static class ItemViewHolder extends RecyclerView.ViewHolder {
         private final TextView nameLabel;
         private final ImageView dragImage;
 
@@ -103,7 +102,7 @@ public class ReorderDialogAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
-    static class HeaderViewHolder extends RecyclerView.ViewHolder {
+    public static class HeaderViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView categoryLabel;
 

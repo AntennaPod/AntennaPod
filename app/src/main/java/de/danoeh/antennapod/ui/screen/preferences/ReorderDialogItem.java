@@ -7,10 +7,12 @@ public final class ReorderDialogItem {
     }
 
     private final ViewType viewType;
+    private final String tag;
     private final String title;
 
-    public ReorderDialogItem(ViewType viewType, String title) {
+    public ReorderDialogItem(ViewType viewType, String tag, String title) {
         this.viewType = viewType;
+        this.tag = tag;
         this.title = title;
     }
 
@@ -20,5 +22,9 @@ public final class ReorderDialogItem {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getTag() {
+        return tag;
     }
 }

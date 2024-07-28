@@ -12,6 +12,7 @@ import java.util.List;
 
 public class HomeSectionsSettingsDialog extends ReorderDialog {
     private final Runnable onSettingsChanged;
+    private static final String TAG_HIDDEN = "hidden";
 
     public HomeSectionsSettingsDialog(Context context, Runnable onSettingsChanged) {
         super(context);
@@ -30,12 +31,14 @@ public class HomeSectionsSettingsDialog extends ReorderDialog {
 
         ArrayList<ReorderDialogItem> settingsDialogItems = new ArrayList<>();
         for (String sectionTag: sectionTags) {
-            settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Section, sectionTag));
+            settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Section, sectionTag,
+                    HomePreferences.getNameFromTag(context, sectionTag)));
         }
         String hiddenText = context.getString(R.string.section_hidden);
-        settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Header, hiddenText));
+        settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Header, TAG_HIDDEN, hiddenText));
         for (String sectionTag: hiddenSectionTags) {
-            settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Section, sectionTag));
+            settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Section, sectionTag,
+                    HomePreferences.getNameFromTag(context, sectionTag)));
         }
         return settingsDialogItems;
     }
@@ -48,23 +51,9 @@ public class HomeSectionsSettingsDialog extends ReorderDialog {
 
     @Override
     protected void onConfirmed() {
-        final List<String> sectionOrder = getItemsWithoutHeaders();
-        final List<String> hiddenSections = getHiddenSectionTags();
+        final List<String> sectionOrder = getTagsWithoutHeaders();
+        final List<String> hiddenSections = getTagsAfterHeader(TAG_HIDDEN);
         HomePreferences.saveChanges(context, hiddenSections, sectionOrder);
         onSettingsChanged.run();
-    }
-
-    @NonNull
-    public List<String> getHiddenSectionTags() {
-        List<String> hiddenSections = new ArrayList<>();
-        for (int i = dialogItems.size() - 1; i >= 0; i--) {
-            ReorderDialogItem item = dialogItems.get(i);
-            if (item.getViewType() == ReorderDialogItem.ViewType.Header) {
-                return hiddenSections;
-            }
-            hiddenSections.add(item.getTitle());
-        }
-        Collections.reverse(hiddenSections);
-        return hiddenSections;
     }
 }
