@@ -10,6 +10,7 @@ import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
 import de.danoeh.antennapod.ui.chapters.ChapterUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -25,6 +26,7 @@ import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
+import de.danoeh.antennapod.ui.transcript.TranscriptUtils;
 
 /**
  * Handles a completed media download.
@@ -63,6 +65,14 @@ public class MediaDownloadedHandler implements Runnable {
             }
             if (media.getItem() != null && media.getItem().getPodcastIndexChapterUrl() != null) {
                 ChapterUtils.loadChaptersFromUrl(media.getItem().getPodcastIndexChapterUrl(), false);
+            }
+            FeedItem item = media.getItem();
+            if (item != null && item.getTranscriptUrl() != null) {
+                String transcript = TranscriptUtils.loadTranscriptFromUrl(item.getTranscriptUrl(), true);
+                if (!StringUtils.isEmpty(transcript)) {
+                    item.setPodcastIndexTranscriptText(transcript);
+                    TranscriptUtils.storeTranscript(media, transcript);
+                }
             }
         } catch (InterruptedIOException ignore) {
             // Ignore

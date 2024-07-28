@@ -104,7 +104,6 @@
   <string name="pause_label">Posar</string>
   <string name="stream_label">Sentir</string>
   <string name="delete_label">Desaniciar</string>
-  <string name="delete_failed">Nun ye posible desaniciar el ficheru. Reaniciar el preséu podría ayudar.</string>
   <string name="mark_read_label">Marcar como «Reprodúxose»</string>
   <string name="mark_unread_label">Marcar como «Ensin reproducir»</string>
   <string name="mark_unread_label_no_media">Marcar como «Ensin lleer»</string>
@@ -138,8 +137,6 @@
   <string name="confirm_mobile_streaming_button_always">Siempres</string>
   <string name="confirm_mobile_streaming_button_once">Una vegada</string>
   <!--Mediaplayer messages-->
-  <string name="playback_error_server_died">El sirvidor morrió</string>
-  <string name="playback_error_source">Nun ye posible acceder al ficheru multimedia</string>
   <string name="error_file_not_found">Nun s\'atopó\'l ficheru</string>
   <string name="no_media_label">L\'elementu nun contién nengún ficheru multimedia</string>
   <!--Queue operations-->
@@ -154,7 +151,6 @@
   <string name="date">Data</string>
   <string name="duration">Duración</string>
   <string name="random">Al debalu</string>
-  <string name="clear_queue_confirmation_msg">Confirma que quies quitar de la cola TOLOS episodios qu\'heba</string>
   <string name="time_left_label">Tiempu que queda:\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">Preaxustes</string>
@@ -175,7 +171,6 @@
   <string name="automation">Automatización</string>
   <string name="download_pref_details">Detalles</string>
   <string name="import_export_pref">Importación/Esportación</string>
-  <string name="appearance">Aspeutu</string>
   <string name="external_elements">Elementos esternos</string>
   <string name="playback_control">Control de la reproducción</string>
   <string name="preference_search_hint">Buscar…</string>
@@ -188,7 +183,6 @@
   <string name="pref_hardware_previous_button_summary">Personaliza\'l comportamientu del botón Atrás</string>
   <string name="button_action_rewind">Rebobinar</string>
   <string name="pref_followQueue_sum">Salta al elementu siguiente de la cola cuando se completa la reproducción</string>
-  <string name="pref_auto_delete_sum">Desanicia los episodios al reproducilos dafechu</string>
   <string name="pref_skip_keeps_episodes_sum">Caltién los episodios cuando se salten</string>
   <string name="playback_pref">Reproducción</string>
   <string name="feed_refresh_never">Enxamás</string>
@@ -203,7 +197,6 @@
   <string name="pref_autodl_wifi_filter_sum">Namás permite la descarga automática nes redes Wi-Fi esbillaes.</string>
   <string name="pref_automatic_download_on_battery_title">Baxar al nun tar cargando la batería</string>
   <string name="pref_automatic_download_on_battery_sum">Permite la descarga automática cuando la batería nun tea cargando.</string>
-  <string name="pref_episode_cache_summary">El númberu total d\'episodios baxaos y atroxaos na caché del preséu. La descarga automática va suspendese si s\'algama\'l númberu qu\'afites.</string>
   <string name="pref_episode_cover_summary">Nes llistes, úsase la portada de los episodios siempres que seya posible. Si nun se marca esta opción, l\'aplicación va usar siempres la portada de los podcasts.</string>
   <string name="pref_show_remain_time_summary">Al activar esta opción, amuesa\'l tiempu que falta de los episodios. Si se desactiva, amuesa la duración total de los episodios.</string>
   <string name="pref_theme_title_light">Claridá</string>
@@ -215,7 +208,6 @@
   <string name="pref_feed_skip_intro">Saltar los primeros</string>
   <string name="pref_feed_skip_ending_toast">Saltáronse los últimos %d segundos</string>
   <string name="pref_feed_skip_intro_toast">Saltáronse los primeros %d segundos</string>
-  <string name="pref_fast_forward_sum">Personaliza\'l númberu de segundos que s\'avancen al calcar el botón d\'avance rápidu</string>
   <string name="pref_enqueue_location_sum">Los episodios amiéstense: %1$s</string>
   <string name="enqueue_location_back">A lo cabero</string>
   <string name="enqueue_location_front">Al comienzu</string>
@@ -314,16 +306,12 @@
   <string name="gpodnetsync_pref_report_failed">Sincronización fallida</string>
   <string name="gpodnetsync_username_characters_error">Los nomes d\'usuariu namás puen contener lletres, díxitos, guiones y guiones baxos.</string>
   <!--Directory chooser-->
-  <string name="choose_data_directory_message">Escueyi la carpeta de datos. AntennaPod va crear los sodireutorios afayadizos.</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Posa la reproducción en cuentes de baxar el volume cuando otra aplicación quier reproducir soníos</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Soscribise</string>
-  <string name="subscribing_label">Soscribiéndote…</string>
-  <string name="preview_episode">Previsualizar</string>
-  <string name="stop_preview">Dexar de previsualizar</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Rebobinar</string>
-  <string name="fast_forward_label">Avance rápidu</string>
   <string name="increase_speed">Amuentar la velocidá</string>
   <string name="decrease_speed">Amenorgar la velocidá</string>
   <string name="media_type_video_label">Videu</string>
@@ -340,13 +328,12 @@
   <string name="statistics_episodes_on_device">Episodios nel preséu:</string>
   <string name="statistics_space_used">Espaciu n\'usu:</string>
   <string name="statistics_view_all">Ver lo de tolos podcasts »</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Buscar podcasts…</string>
   <string name="search_fyyd_label">Buscar en fyyd</string>
-  <string name="gpodnet_search_hint">Buscar en gpodder.net</string>
   <string name="advanced">Avanzao</string>
-  <string name="add_podcast_by_url">Amestar un podcast pola direición RSS</string>
   <string name="discover">Descubrición</string>
   <string name="discover_hide">Anubrir</string>
   <string name="discover_is_hidden">Escoyesti anubrir les suxerencies.</string>

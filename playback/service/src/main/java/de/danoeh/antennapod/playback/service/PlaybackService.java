@@ -164,6 +164,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private CastStateListener castStateListener;
 
     private String autoSkippedFeedMediaId = null;
+    private String positionJustResetAfterPlayback = null;
     private int clickCount = 0;
     private final Handler clickHandler = new Handler(Looper.getMainLooper());
 
@@ -238,8 +239,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         };
         androidAutoConnectionState.observeForever(androidAutoConnectionObserver);
 
-        ContextCompat.registerReceiver(this, autoStateUpdated,
-                new IntentFilter("com.google.android.gms.car.media.STATUS"), ContextCompat.RECEIVER_EXPORTED);
         ContextCompat.registerReceiver(this, shutdownReceiver,
                 new IntentFilter(PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE),
                 ContextCompat.RECEIVER_NOT_EXPORTED);
@@ -274,11 +273,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 31 ? PendingIntent.FLAG_MUTABLE : 0));
 
         mediaSession = new MediaSessionCompat(getApplicationContext(), TAG, eventReceiver, buttonReceiverIntent);
-        setSessionToken(mediaSession.getSessionToken());
         mediaSession.setCallback(sessionCallback);
         mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
         recreateMediaPlayer();
         mediaSession.setActive(true);
+        setSessionToken(mediaSession.getSessionToken());
     }
 
     void recreateMediaPlayer() {
@@ -298,6 +297,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             mediaPlayer.playMediaObject(media, !media.localFileAvailable(), wasPlaying, true);
         }
         isCasting = mediaPlayer.isCasting();
+        updateMediaSession(mediaPlayer.getPlayerStatus());
     }
 
     @Override
@@ -324,7 +324,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             mediaSession.release();
             mediaSession = null;
         }
-        unregisterReceiver(autoStateUpdated);
         unregisterReceiver(headsetDisconnected);
         unregisterReceiver(shutdownReceiver);
         unregisterReceiver(bluetoothStateUpdated);
@@ -875,6 +874,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                                 (ctx) -> disableSleepTimer(), getString(R.string.undo)));
                     }
                     loadQueueForMediaSession();
+                    positionJustResetAfterPlayback = null;
                     break;
                 case ERROR:
                     PlaybackPreferences.writeNoMediaPlaying();
@@ -936,15 +936,17 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onPlaybackPause(Playable playable, int position) {
             taskManager.cancelPositionSaver();
             cancelPositionObserver();
-            saveCurrentPosition(position == Playable.INVALID_TIME || playable == null, playable, position);
             taskManager.cancelWidgetUpdater();
-            if (playable != null) {
-                if (playable instanceof FeedMedia) {
-                    SynchronizationQueueSink.enqueueEpisodePlayedIfSynchronizationIsActive(getApplicationContext(),
-                            (FeedMedia) playable, false);
+            if (playable instanceof FeedMedia) {
+                FeedMedia media = (FeedMedia) playable;
+                if (!media.getItem().getIdentifyingValue().equals(positionJustResetAfterPlayback)) {
+                    // Don't store position after position is already reset
+                    saveCurrentPosition(position == Playable.INVALID_TIME, playable, position);
                 }
-                playable.onPlaybackPause(getApplicationContext());
+                SynchronizationQueueSink.enqueueEpisodePlayedIfSynchronizationIsActive(getApplicationContext(),
+                        media, false);
             }
+            playable.onPlaybackPause(getApplicationContext());
         }
 
         @Override
@@ -1153,6 +1155,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     || autoSkipped
                     || (skipped && !UserPreferences.shouldSkipKeepEpisode())) {
                 // only mark the item as played if we're not keeping it anyways
+                positionJustResetAfterPlayback = item.getIdentifyingValue();
                 DBWriter.markItemPlayed(item, FeedItem.PLAYED, ended || (skipped && almostEnded));
                 // don't know if it actually matters to not autodownload when smart mark as played is triggered
                 DBWriter.removeQueueItem(PlaybackService.this, ended, item);
@@ -1490,28 +1493,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             sendBroadcast(i);
         }
     }
-
-    private final BroadcastReceiver autoStateUpdated = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String status = intent.getStringExtra("media_connection_status");
-            boolean isConnectedToCar = "media_connected".equals(status);
-            Log.d(TAG, "Received Auto Connection update: " + status);
-            if (!isConnectedToCar) {
-                Log.d(TAG, "Car was unplugged during playback.");
-            } else {
-                PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
-                if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
-                    mediaPlayer.resume();
-                } else if (playerStatus == PlayerStatus.PREPARING) {
-                    mediaPlayer.setStartWhenPrepared(!mediaPlayer.isStartWhenPrepared());
-                } else if (playerStatus == PlayerStatus.INITIALIZED) {
-                    mediaPlayer.setStartWhenPrepared(true);
-                    mediaPlayer.prepare();
-                }
-            }
-        }
-    };
 
     /**
      * Pauses playback when the headset is disconnected and the preference is

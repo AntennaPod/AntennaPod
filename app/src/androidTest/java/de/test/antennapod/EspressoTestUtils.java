@@ -36,6 +36,7 @@ import java.util.concurrent.TimeoutException;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -44,6 +45,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.not;
 
 public class EspressoTestUtils {
     /**
@@ -143,6 +145,21 @@ public class EspressoTestUtils {
         };
     }
 
+    public static void waitForViewToDisappear(Matcher<? super View> matcher, long maxWaitingTimeMs) {
+        long endTime = System.currentTimeMillis() + maxWaitingTimeMs;
+        while (System.currentTimeMillis() <= endTime) {
+            try {
+                onView(allOf(matcher, isDisplayed())).check(matches(not(doesNotExist())));
+                Thread.sleep(100);
+            } catch (NoMatchingViewException ex) {
+                return; // view has disappeared
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        throw new RuntimeException("timeout exceeded"); // or whatever exception you want
+    }
+    
     /**
      * Clear all app databases.
      */

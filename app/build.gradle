@@ -12,8 +12,8 @@ android {
         // Version code schema:
         // "1.2.3-beta4"    -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 3030295
-        versionName "3.3.2"
+        versionCode 3050001
+        versionName "3.5.0-beta1"
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -56,6 +56,7 @@ android {
 
     androidResources {
         additionalParameters += ["--no-version-vectors"]
+        generateLocaleConfig true
     }
 }
 
@@ -69,6 +70,7 @@ dependencies {
     implementation project(':net:ssl')
     implementation project(':net:sync:service')
     implementation project(':parser:feed')
+    implementation project(':parser:transcript')
     implementation project(':playback:base')
     implementation project(':playback:cast')
     implementation project(':storage:database')
@@ -88,6 +90,7 @@ dependencies {
     implementation project(':net:sync:service-interface')
     implementation project(':playback:service')
     implementation project(':ui:chapters')
+    implementation project(':ui:transcript')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"

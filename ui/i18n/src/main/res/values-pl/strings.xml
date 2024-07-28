@@ -109,7 +109,6 @@
   <string name="close_label">Zamknij</string>
   <string name="retry_label">Spróbuj ponownie</string>
   <string name="auto_download_label">Dołącz do automatycznego pobierania</string>
-  <string name="auto_delete_label">Automatyczne usuwanie odcinków</string>
   <string name="feed_volume_adapdation">Przystosowanie głośności</string>
   <string name="feed_volume_adaptation_summary">Zwiększ lub zmniejsz głośność dla odcinków z tego kanału: %1$s</string>
   <string name="feed_volume_reduction_off">Bez przystosowania</string>
@@ -187,7 +186,6 @@
   <string name="select_all_above">Zaznacz wszystkie powyżej</string>
   <string name="select_all_below">Zaznacz wszystkie poniżej</string>
   <string name="filtered_label">Przefiltrowany</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Ostatnie odświeżanie nie powiodło się. Naciśnij, aby zobaczyć szczegóły</string>
   <string name="open_podcast">Otwórz podcast</string>
   <string name="please_wait_for_data">Proszę czekać aż dane zostaną załadowane</string>
   <string name="updates_disabled_label">Aktualizacje wyłączone</string>
@@ -214,8 +212,6 @@
   <string name="pause_label">Pauza</string>
   <string name="stream_label">Streamuj</string>
   <string name="delete_label">Usuń</string>
-  <string name="delete_failed">Nie można usunąć pliku. Restart urządzenia może w tym pomóc.</string>
-  <string name="delete_local_failed">Nie można usunąć pliku. Spróbuj połączyć ponownie lokalny folder z ekranu informacji o kanale.</string>
   <string name="delete_episode_label">Usuń odcinek</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">Usunięto 1 pobrany odcinek.</item>
@@ -328,11 +324,6 @@
   <string name="confirm_mobile_streaming_button_once">Tylko tym razem</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[Nie można odtworzyć pliku.\n\n- Spróbuj usunąć i pobrać ponownie odcinek.\n- Sprawdź połączenie sieciowe i upewnij się, że VPN lub strona logowania nie blokują dostępu.\n- Spróbuj przytrzymać dłużej i udostępnić \"Adres URL\" przeglądarce internetowej, aby sprawdzić, czy może być tam odtworzony. Jeśli nie, skontaktuj się z twórcami podcastu.]]></string>
-  <string name="playback_error_server_died">Serwer zdechł</string>
-  <string name="playback_error_unsupported">Nieobsługiwany typ danych</string>
-  <string name="playback_error_timeout">Upłynął czas łączenia</string>
-  <string name="playback_error_source">Nie można odtworzyć pliku</string>
-  <string name="playback_error_unknown">Nieznany błąd</string>
   <string name="no_media_playing_label">Żadne media nie odtwarzane </string>
   <string name="unknown_media_key">AntennaPod - Nieznany klawisz: %1$d</string>
   <string name="error_file_not_found">Nie znaleziono pliku</string>
@@ -356,7 +347,6 @@
   <string name="random">Losowo</string>
   <string name="smart_shuffle">Inteligentne tasowanie</string>
   <string name="size">Rozmiar</string>
-  <string name="clear_queue_confirmation_msg">Potwierdź usunięcie WSZYSTKICH pozycji z kolejki</string>
   <string name="time_left_label">Pozostały czas:\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">Nastawy</string>
@@ -386,7 +376,6 @@
   <string name="download_pref_details">Szczegóły</string>
   <string name="import_export_pref">Import/Eksport</string>
   <string name="import_export_search_keywords">backup, restore, kopia, kopia zapasowa, przywracanie, przywróć</string>
-  <string name="appearance">Wygląd</string>
   <string name="external_elements">Elementy zewnętrzne</string>
   <string name="interruptions">Przerwy</string>
   <string name="playback_control">Sterowanie odtwarzaniem</string>
@@ -394,7 +383,6 @@
   <string name="preference_search_hint">Szukaj…</string>
   <string name="preference_search_no_results">Brak wyników</string>
   <string name="preference_search_clear_history">Wyczyść historię</string>
-  <string name="pref_episode_cleanup_title">Usuwanie odcinków</string>
   <string name="pref_episode_cleanup_summary">Odcinki, spełniające warunki do usunięcia jeżeli Automatyczne Pobieranie potrzebuje miejsca na nowe odcinki</string>
   <string name="pref_pauseOnDisconnect_sum">Wstrzymaj odtwarzanie po rozłączeniu słuchawek lub Bluetooth</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Wznów odtwarzanie kiedy słuchawki zostaną podłączone ponownie</string>
@@ -403,13 +391,10 @@
   <string name="pref_hardware_forward_button_summary">Dostosuj przycisk \'do przodu\'</string>
   <string name="pref_hardware_previous_button_title">Przycisk \'wstecz\'</string>
   <string name="pref_hardware_previous_button_summary">Dostosuj przycisk \'wstecz\'</string>
-  <string name="button_action_fast_forward">Szybkie przewijanie</string>
   <string name="button_action_rewind">Przewijanie do tyłu</string>
   <string name="button_action_skip_episode">Pomiń odcinek</string>
   <string name="button_action_restart_episode">Otwórz ponownie odcinek</string>
   <string name="pref_followQueue_sum">Przeskocz do następnego elementu kolejki po zakończeniu odtwarzania</string>
-  <string name="pref_auto_delete_sum">Usuń odcinek kiedy jego odtwarzanie zostanie zakończone</string>
-  <string name="pref_auto_delete_title">Automatyczne usuwanie</string>
   <string name="pref_auto_local_delete_title">Automatyczne usuwanie z folderów lokalnych</string>
   <string name="pref_auto_local_delete_sum">Uwzględnij lokalne foldery w funkcji automatycznego usuwania</string>
   <string name="pref_auto_local_delete_dialog_body">Uwaga! W przypadku folderów lokalnych usunięcie spowoduje skasowanie odcinków z AntennaPod oraz plików z twojego urządzenia. Nie można będzie ich pobrać ponownie za pomocą AntennaPod. Aktywować automatyczne usuwanie?</string>
@@ -464,8 +449,6 @@
   <string name="pref_autodl_wifi_filter_sum">Zezwól na automatyczne pobieranie tylko dla określonych sieci Wi-Fi.</string>
   <string name="pref_automatic_download_on_battery_title">Pobieraj, gdy nie ładuje</string>
   <string name="pref_automatic_download_on_battery_sum">Zezwól na automatyczne pobieranie, gdy bateria nie jest ładowana.</string>
-  <string name="pref_episode_cache_title">Pamięć podręczna odcinków</string>
-  <string name="pref_episode_cache_summary">Całkowita liczba odcinków zapisanych na urządzeniu. Automatyczne pobieranie zostanie przerwane, jeśli zostanie ona osiągnięta.</string>
   <string name="pref_episode_cover_title">Użyj okładek odcinków</string>
   <string name="pref_episode_cover_summary">Użyj okładek konkretnych odcinków na listach, kiedy to możliwe. Odznaczenie spowoduje, że aplikacja zawsze będzie używała okładki kanału.</string>
   <string name="pref_show_remain_time_title">Pokaż pozostały czas</string>
@@ -484,8 +467,6 @@
   <string name="pref_feed_skip_intro_toast">Pominięto pierwsze %d sekund(y)</string>
   <string name="pref_playback_time_respects_speed_title">Dostosuj informacje do prędkości odtwarzania</string>
   <string name="pref_playback_time_respects_speed_sum">Wyświetlana pozycja i czas trwania są dostosowane do prędkości odtwarzania</string>
-  <string name="pref_fast_forward">Szybkie przewijanie do przodu</string>
-  <string name="pref_fast_forward_sum">Dostosuj liczbę sekund do przeskoczenia przy kliknięciu szybkiego przewijania do przodu</string>
   <string name="pref_rewind">Przewijanie do tyłu</string>
   <string name="pref_rewind_sum">Dostosuj liczbę sekund do przeskoczenia przy kliknięciu przewijania do tyłu</string>
   <string name="pref_expandNotify_title">Wysoki priorytet powiadomienia</string>
@@ -531,8 +512,6 @@
   <string name="new_episode_notification_disabled">Powiadomienie wyłączone</string>
   <string name="pref_feed_settings_dialog_msg">To ustawienie jest unikalne dla każdego podcastu. Możesz je zmienić otwierając info podcastu.</string>
   <string name="pref_contribute">Przyczyń się do rozwoju</string>
-  <string name="pref_show_subscription_title">Pokaż nazwę subskrypcji</string>
-  <string name="pref_show_subscription_title_summary">Pokazuj tytuł subskrypcji pod okładką</string>
   <string name="pref_new_episodes_action_title">Działania dot. nowych odcinków</string>
   <string name="pref_new_episodes_action_sum">Działanie dla nowych odcinków</string>
   <!--About screen-->
@@ -627,7 +606,6 @@
     <item quantity="other">%d dni</item>
   </plurals>
   <string name="auto_enable_label">Automatycznie aktywuj wyłącznik czasowy po naciśnięciu odtwarzania</string>
-  <string name="auto_enable_label_with_times">Automatycznie aktywuj wyłącznik czasowy po naciśnięciu odtwarzania pomiędzy%s a %s</string>
   <string name="auto_enable_change_times">Zmień zakres czasowy</string>
   <string name="sleep_timer_enabled_label">Wyłącznik czasowy włączony</string>
   <!--Synchronisation-->
@@ -669,19 +647,15 @@
   <string name="gpodnetsync_username_characters_error">Nazwa użytkownika może zawierać tylko litery, cyfry, myślniki i podkreślniki.</string>
   <!--Directory chooser-->
   <string name="choose_data_directory">Wybierz folder danych</string>
-  <string name="choose_data_directory_message">Wybierz główny folder dla danych. AntennaPod utworzy odpowiednie podkatalogi.</string>
   <string name="choose_data_directory_available_space">%1$s z %2$s wolnych </string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Wstrzymaj odtwarzanie zamiast wyciszenia jeśli inna aplikacja chce odtworzyć dźwięk.</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Wstrzymaj przy przerwaniu</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Subskrybuj</string>
-  <string name="subscribing_label">Subskrybuję...</string>
-  <string name="preview_episode">Podgląd</string>
-  <string name="stop_preview">Zakończ podgląd</string>
   <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">Powrót</string>
   <string name="rewind_label">Cofnij</string>
-  <string name="fast_forward_label">Przewiń</string>
   <string name="increase_speed">Zwiększ prędkość</string>
   <string name="decrease_speed">Zmniejsz prędkość</string>
   <string name="media_type_video_label">Wideo</string>
@@ -693,7 +667,6 @@
   <string name="load_next_page_label">Załaduj następną stronę</string>
   <string name="position">Pozycja: %1$s</string>
   <string name="remaining_time">Pozostały czas: %1$s</string>
-  <string name="apply_action">Zastosuj</string>
   <string name="play_chapter">Odtwarzaj rozdział</string>
   <string name="prev_chapter">Poprzedni rozdział</string>
   <string name="next_chapter">Następny rozdział</string>
@@ -705,7 +678,6 @@
   <string name="feed_tags_label">Tagi</string>
   <string name="feed_tags_summary">Zmień tagi tego podcastu, żeby lepiej zorganizować swoje subskrypcje</string>
   <string name="feed_folders_include_root">Pokaż ten kanał na liście głównej</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Tylko wspólne tagi wybranych subskrypcji są pokazane. Pozostałe tagi zostaną bez zmian.</string>
   <string name="auto_download_settings_label">Ustawienia automatycznego pobierania</string>
   <string name="episode_filters_label">Filtr odcinków</string>
   <string name="episode_filters_description">Wykaz terminów używanych aby zdecydować, czy odcinek powinien być włączony lub wyłączony podczas automatycznego pobierania.</string>
@@ -723,7 +695,7 @@
   <string name="statistics_episodes_started_total">Rozpoczęte/wszystkie odcinki:</string>
   <string name="statistics_view_all">Zobacz wszystkie podcasty »</string>
   <string name="edit_url_menu">Edytuj adres kanału</string>
-  <string name="edit_url_confirmation_msg">Zmiana adresu RSS może łatwo zepsuć stan odtwarzania i listę odcinków podcastu. NIE zalecamy zmiany i NIE zapewniamy wsparcia, jeśli coś pójdzie nie tak. Tego nie da się cofnąć. Uszkodzonej subskrypcji NIE MOŻNA naprawić poprzez zwykłą zmianę adresu z powrotem. Sugerujemy utworzenie kopii zapasowej przed kontynuowaniem.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importowanie subskrybcji z jednozadaniowych aplikacji</string>
   <!--Add podcast fragment-->
@@ -731,9 +703,7 @@
   <string name="search_itunes_label">Wyszukaj w Apple Podcasts</string>
   <string name="search_podcastindex_label">Wyszukaj w Podcast Index</string>
   <string name="search_fyyd_label">Szukaj w fyyd</string>
-  <string name="gpodnet_search_hint">Szukaj na gpodder.net</string>
   <string name="advanced">Zaawansowane</string>
-  <string name="add_podcast_by_url">Dodaj podcast za pomocą adresu URL</string>
   <string name="discover">Odkryj</string>
   <string name="discover_hide">Ukryj</string>
   <string name="discover_is_hidden">Wybrano ukrywanie sugestii</string>

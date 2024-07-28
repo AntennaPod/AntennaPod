@@ -40,8 +40,8 @@
         <item name="colorSecondary">@color/accent_light</item>
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorPrimaryDark">@color/accent_light</item>
-        <item name="colorPrimaryContainer">@color/accent_light</item>
-        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorPrimaryContainer">#D6E6F3</item>
+        <item name="colorOnPrimaryContainer">@color/black</item>
         <item name="android:colorBackground">@color/background_light</item>
         <item name="colorSurface">@color/background_light</item>
         <item name="colorSurfaceVariant">#D3DCE0</item>
@@ -85,8 +85,8 @@
         <item name="colorSecondary">@color/accent_dark</item>
         <item name="colorOnSecondary">@color/black</item>
         <item name="colorPrimaryDark">@color/accent_dark</item>
-        <item name="colorPrimaryContainer">@color/accent_dark</item>
-        <item name="colorOnPrimaryContainer">@color/black</item>
+        <item name="colorPrimaryContainer">#29374E</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
         <item name="android:colorBackground">@color/background_darktheme</item>
         <item name="colorSurface">@color/background_darktheme</item>
         <item name="colorSurfaceVariant">#2F3B4F</item>
@@ -110,6 +110,8 @@
         <item name="background_color">@color/black</item>
         <item name="background_elevated">@color/black</item>
         <item name="android:navigationBarColor">@color/black</item>
+        <item name="colorPrimaryContainer">#0D182B</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
     </style>
 
     <style name="Theme.AntennaPod.Dynamic.Light.NoTitle" parent="Theme.AntennaPod.Dynamic.Light">
@@ -229,6 +231,14 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/launcher_animate</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Splash.Translucent" parent="Theme.AntennaPod.Splash">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/AnimationFade</item>
     </style>
 
     <style name="Style.AntennaPod.Toolbar" parent="Widget.Material3.Toolbar">

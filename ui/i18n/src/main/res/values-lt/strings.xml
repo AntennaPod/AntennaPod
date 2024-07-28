@@ -144,7 +144,6 @@
   <string name="pause_label">Pristabdyti</string>
   <string name="stream_label">Klausytis tiesiogiai</string>
   <string name="delete_label">Ištrinti</string>
-  <string name="delete_failed">Nepavyksta ištrinti failo. Įrenginio paleidimas iš naujo gali padėti.</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 atsiųstas epizodas ištrintas.</item>
     <item quantity="few">%d atsiųsti epizodai ištrinti.</item>
@@ -219,10 +218,6 @@
   <string name="confirm_mobile_streaming_button_always">Visada</string>
   <string name="confirm_mobile_streaming_button_once">Vienąkart</string>
   <!--Mediaplayer messages-->
-  <string name="playback_error_server_died">Serveris nepasiekiamas</string>
-  <string name="playback_error_unsupported">Nepalaikomas medijos tipas</string>
-  <string name="playback_error_timeout">Baigėsi operacijai skirtas laikas</string>
-  <string name="playback_error_source">Prieiga prie medijos failo negalima</string>
   <string name="no_media_playing_label">Atkūrimas nevyksta</string>
   <string name="unknown_media_key">„AntennaPod“ – nežinomas medijos klavišas: %1$d</string>
   <string name="error_file_not_found">Failas nerastas</string>
@@ -242,7 +237,6 @@
   <string name="episode_title">Epizodo pavadinimas</string>
   <string name="feed_title">Tinklalaidės pavadinimas</string>
   <string name="random">Atsitiktinai</string>
-  <string name="clear_queue_confirmation_msg">Patvirtinkite, jog norite pašalinti VISUS epizodus iš perklausos eilės</string>
   <string name="time_left_label">Liko laiko:\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">Išsaugotos reikšmės</string>
@@ -267,7 +261,6 @@
   <string name="download_pref_details">Išsamiau</string>
   <string name="import_export_pref">Importas/Eksportas</string>
   <string name="import_export_search_keywords">atsarginės kopijos, atkūrimas</string>
-  <string name="appearance">Išvaizda</string>
   <string name="external_elements">Išoriniai elementai</string>
   <string name="interruptions">Pertraukimai</string>
   <string name="playback_control">Atkūrimo valdymas</string>
@@ -283,7 +276,6 @@
   <string name="pref_hardware_previous_button_summary">Derinkite mygtuko „ankstesnis“ elgseną</string>
   <string name="button_action_rewind">Atsukti</string>
   <string name="pref_followQueue_sum">Atkūrimui pasibaigus peršokti į kitą eilės elementą</string>
-  <string name="pref_auto_delete_sum">Ištrinti epizodą pasibaigus atkūrimui</string>
   <string name="pref_smart_mark_as_played_sum">Žymėti epizodus kaip perklausytus iki pilnos perklausos likus nurodytam sekundžių kiekiui.</string>
   <string name="pref_skip_keeps_episodes_sum">Palikti epizodus, kai šie praleidžiami</string>
   <string name="playback_pref">Atkūrimas</string>
@@ -303,7 +295,6 @@
   <string name="pref_autodl_wifi_filter_sum">Leisti automatinį atsiuntimą tik prisijungus prie nurodytų belaidžių tinklų.</string>
   <string name="pref_automatic_download_on_battery_title">Atsiuntimas ne įkrovimo metu</string>
   <string name="pref_automatic_download_on_battery_sum">Leisti automatinį atsiuntimą kai baterija nėra įkraunama</string>
-  <string name="pref_episode_cache_summary">Bendras podėlyje atsiųstų epizodų skaičius šiame įrenginyje. Pasiekus šį skaičių automatinis atsiuntimas bus pristabdytas.</string>
   <string name="pref_episode_cover_summary">Naudoti epizodo viršelį, kai prieinama. Nepažymėjus, programėlė visada naudos tinklalaidės viršelio paveikslėlį.</string>
   <string name="pref_show_remain_time_summary">Kai pažymėta, atvaizduojamas likęs epizodų laikas. Jei nepažymėta, atvaizduojama bendra epizodų trukmė.</string>
   <string name="pref_theme_title_light">Šviesi</string>
@@ -318,7 +309,6 @@
   <string name="pref_feed_skip_intro_toast">Praleistos pirmos %d sekundžių</string>
   <string name="pref_playback_time_respects_speed_title">Derinti medijos informaciją pagal atkūrimo spartą</string>
   <string name="pref_playback_time_respects_speed_sum">Atvaizduojama pozicija ir trukmė yra pritakyta prie atkūrimo spartos</string>
-  <string name="pref_fast_forward_sum">Derinkite, per kiek sekundžių šoktelėti į priekį kai paspaudžiamas persukimo į priekį mygtukas</string>
   <string name="pref_rewind_sum">Derinkite, per kiek sekundžių šoktelėti atgal kai paspaudžiamas atsukimo atgal mygtukas</string>
   <string name="pref_expandNotify_sum">Tai dažniausiai išskleidžia pranešimą, kad būtų rodomi atkūrimo valdymo mygtukai.</string>
   <string name="pref_enqueue_location_sum">Epizodus pridėti: %1$s</string>
@@ -461,25 +451,20 @@
   <string name="gpodnetsync_pref_report_failed">Nepavyko</string>
   <string name="gpodnetsync_username_characters_error">Naudotojo vardą sudaryti gali tik raidės, skaitmenys, brūkšniai ir pabraukimo brūkšniai.</string>
   <!--Directory chooser-->
-  <string name="choose_data_directory_message">Prašome pasirinkti pamatinį duomenų aplanką. „AntennaPod“ sukurs reikiamus poaplankius.</string>
   <string name="choose_data_directory_available_space">%1$s iš %2$s laisva</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Kai kita programėlė nori atkurti garsus, pristabdyti atkūrimą vietoje garsio sumažinimo</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Prenumeruoti</string>
-  <string name="subscribing_label">Prenumeruojama...</string>
-  <string name="preview_episode">Peržiūra</string>
-  <string name="stop_preview">Stabdyti peržiūrą</string>
   <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">Atgal</string>
   <string name="rewind_label">Atsukti</string>
-  <string name="fast_forward_label">Persukti į priekį</string>
   <string name="increase_speed">Padidinti spartą</string>
   <string name="decrease_speed">Sumažinti spartą</string>
   <string name="media_type_video_label">Vaizdas</string>
   <string name="status_downloading_label">Epizodas atsiunčiamas</string>
   <string name="load_next_page_label">Įkelti kitą puslapį</string>
   <string name="position">Pozicija: %1$s</string>
-  <string name="apply_action">Pritaikyti veiksmą</string>
   <string name="play_chapter">Atkurti skyrių</string>
   <string name="prev_chapter">Ankstesnis skyrius</string>
   <string name="next_chapter">Kitas skyrius</string>
@@ -488,7 +473,6 @@
   <string name="authentication_descr">Keisti vartotojo vardą ir slaptažodį šiai tinklalaidei ir jos epizodams.</string>
   <string name="feed_tags_label">Žymės</string>
   <string name="feed_tags_summary">Keisti tinklalaidės žymes, kad palengvinti prenumeratų tvarkymą</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Rodomos tik žymės, bendros visoms pažymėtoms prenumeratoms. Kitos žymės liks nepaveiktos.</string>
   <string name="episode_filters_description">Žodžių ar frazių sąrašas, kuriuo remiantis sprendžiama, ar epizodas turėtų būti įtrauktas ar išbrauktas iš automatiškai atsiunčiamų epizodų</string>
   <string name="keep_updated_summary">Įtraukti šią tinklalaidę į (automatinį) visų tinklalaidžių atnaujinimą</string>
   <string name="auto_download_disabled_globally">Automatinis atsiuntimas išjungtas pagrindiniuose „AntennaPod“ nustatymuose</string>
@@ -498,14 +482,13 @@
   <string name="statistics_space_used">Naudojama disko vieta:</string>
   <string name="statistics_episodes_started_total">Pradėti epizodai/iš viso:</string>
   <string name="statistics_view_all">Žiūrėti visoms tinklalaidėms »</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Įkeliamos prenumeratos iš specializuotų programėlių...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Ieškoti tinklalaidės...</string>
   <string name="search_fyyd_label">Ieškoti „fyyd“</string>
-  <string name="gpodnet_search_hint">Ieškoti „gpodder.net“ svetainėje</string>
   <string name="advanced">Išplėstinis</string>
-  <string name="add_podcast_by_url">Pridėti tinklalaidės RSS srauto adresą</string>
   <string name="discover">Atraskite</string>
   <string name="discover_hide">Slėpti</string>
   <string name="discover_is_hidden">Pasirinkote slėpti pasiūlymus.</string>

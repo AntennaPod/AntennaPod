@@ -150,7 +150,6 @@
   <string name="pause_label">Jeda</string>
   <string name="stream_label">Streaming</string>
   <string name="delete_label">Hapus</string>
-  <string name="delete_failed">Tidak dapat menghapus berkas. Mem-boot ulang perangkat mungkin membantu.</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="other">%depisode terunduh dihapus.</item>
   </plurals>
@@ -220,10 +219,6 @@
   <string name="confirm_mobile_streaming_button_always">Selalu</string>
   <string name="confirm_mobile_streaming_button_once">Sekali</string>
   <!--Mediaplayer messages-->
-  <string name="playback_error_server_died">Server mati</string>
-  <string name="playback_error_unsupported">Tipe media tidak didukung</string>
-  <string name="playback_error_timeout">Masa operasi habis</string>
-  <string name="playback_error_source">Tidak dapat mengakses berkas media</string>
   <string name="no_media_playing_label">Tidak ada media yang dimainkan</string>
   <string name="unknown_media_key">AntennaPod - Kunci media tidak diketahui: %1$d</string>
   <string name="error_file_not_found">Berkas tidak ditemukan</string>
@@ -243,7 +238,6 @@
   <string name="episode_title">Judul episode</string>
   <string name="feed_title">Judul podcast</string>
   <string name="random">Acak</string>
-  <string name="clear_queue_confirmation_msg">Tolong konfirmasi bahwa Anda ingin bersihkan antrean dari SEMUA episode dalamnya</string>
   <string name="time_left_label">Waktu tersisa:\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">Preset</string>
@@ -271,7 +265,6 @@
   <string name="download_pref_details">Detail</string>
   <string name="import_export_pref">Impor/Ekspor</string>
   <string name="import_export_search_keywords">cadangan, pemulihan</string>
-  <string name="appearance">Tampilan</string>
   <string name="external_elements">Elemen eksternal</string>
   <string name="interruptions">Gangguan</string>
   <string name="playback_control">Kontrol pemutaran</string>
@@ -286,10 +279,8 @@
   <string name="pref_hardware_forward_button_title">Tombol loncat</string>
   <string name="pref_hardware_forward_button_summary">Atur perilaku tombol majukan</string>
   <string name="pref_hardware_previous_button_summary">Atur perilaku tombol sebelum</string>
-  <string name="button_action_fast_forward">Loncat ke depan</string>
   <string name="button_action_rewind">Mundur</string>
   <string name="pref_followQueue_sum">Lompat ke antrean berikutnya ketika pemutaran selesai</string>
-  <string name="pref_auto_delete_sum">Hapus episode ketika pemutaran selesai</string>
   <string name="pref_smart_mark_as_played_sum">Tandai episode sebagai telah diputar jika kurang dari beberapa detik waktu masih tersisa</string>
   <string name="pref_skip_keeps_episodes_sum">Simpan episode ketika dilewatkan</string>
   <string name="pref_favorite_keeps_episodes_sum">Simpan episode saat difavoritkan</string>
@@ -331,7 +322,6 @@
   <string name="pref_autodl_wifi_filter_sum">Izinkan unduh otomatis hanya untuk jaringan Wi-Fi yang terpilih.</string>
   <string name="pref_automatic_download_on_battery_title">Unduh saat tidak mengisi daya</string>
   <string name="pref_automatic_download_on_battery_sum">Izinkan unduh otomatis saat baterai tidak mengisi daya</string>
-  <string name="pref_episode_cache_summary">Jumlah unduhan episode yang tercached pada perangkat. Unduhan otomatis akan ditangguhkan saat mencapai angka yang ditetapkan.</string>
   <string name="pref_episode_cover_title">Gunakan sampul episode</string>
   <string name="pref_episode_cover_summary">Gunakan sampul spesifik episode dalam daftar jika bisa. Jika tidak dicentang, aplikasi akan tetap menggunakan sampul podcast.</string>
   <string name="pref_show_remain_time_title">Tampilkan waktu yang tersisa</string>
@@ -348,8 +338,6 @@
   <string name="pref_feed_skip_intro_toast">%d detik pertama dilewati</string>
   <string name="pref_playback_time_respects_speed_title">Atur info media ke kecepatan pemutaran</string>
   <string name="pref_playback_time_respects_speed_sum">Posisi dan durasi yang ditampilkan disesuaikan dengan kecepatan pemutaran</string>
-  <string name="pref_fast_forward">Loncat ke depan</string>
-  <string name="pref_fast_forward_sum">Sesuaikan jumlah detik untuk loncat ke depan ketika tombol maju cepat diklik</string>
   <string name="pref_rewind">Undur ke belakang</string>
   <string name="pref_rewind_sum">Sesuaikan jumlah detik untuk loncat ke belakang ketika tombol putar ulang diklik</string>
   <string name="pref_expandNotify_sum">Ini biasanya memperluas notifikasi untuk menunjukkan tombol pemutaran.</string>
@@ -458,7 +446,6 @@
     <item quantity="other">%d jam</item>
   </plurals>
   <string name="auto_enable_label">Aktifkan timer tidur secara otomatis saat menekan \'putar\'</string>
-  <string name="auto_enable_label_with_times">Aktifkan timer tidur secara otomatis saat menekan \'putar\' antara waktu %s dan %s</string>
   <string name="auto_enable_change_times">Ubah jangka waktu</string>
   <string name="sleep_timer_enabled_label">Timer tidur diaktifkan</string>
   <!--Synchronisation-->
@@ -500,19 +487,15 @@
   <string name="gpodnetsync_username_characters_error">Nama pengguna hanya dapat mengandung huruf, angka, tanda penghubung, dan underscore.</string>
   <!--Directory chooser-->
   <string name="choose_data_directory">Pilih folder data</string>
-  <string name="choose_data_directory_message">Pilih dasar dari folder data Anda. AntennaPod akan menyesuaikan membuat sub-direktori yang diperlukan.</string>
   <string name="choose_data_directory_available_space">%1$s dari %2$s kosong</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Saat aplikasi lain memutar suara, jeda pemutaran alih-alih menurunkan volume suara.</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Jeda untuk interupsi</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Langganan</string>
-  <string name="subscribing_label">Berlangganan...</string>
-  <string name="preview_episode">Pratinjau</string>
-  <string name="stop_preview">Berhenti pratinjau</string>
   <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">Kembali</string>
   <string name="rewind_label">Putar ulang</string>
-  <string name="fast_forward_label">Loncat ke depan</string>
   <string name="increase_speed">Tingkatkan kecepatan</string>
   <string name="decrease_speed">Kurangi kecepatan</string>
   <string name="media_type_video_label">Video</string>
@@ -520,7 +503,6 @@
   <string name="load_next_page_label">Muat halaman berikut</string>
   <string name="position">Posisi: %1$s</string>
   <string name="remaining_time">Sisa waktu: %1$s</string>
-  <string name="apply_action">Terapkan</string>
   <string name="play_chapter">Putar bab</string>
   <string name="prev_chapter">Bab sebelumnya</string>
   <string name="next_chapter">Bab selanjutnya</string>
@@ -529,7 +511,6 @@
   <string name="authentication_descr">Ubah nama pengguna dan kata sandi untuk podcast ini dan episodenya.</string>
   <string name="feed_tags_label">Label</string>
   <string name="feed_tags_summary">Ganti label podcast ini untuk membantu mengelola langganan Anda</string>
-  <string name="multi_feed_common_tags_info">{fa-info-circle} Hanya label biasa dari langganan yang sudah dipilih yang ditampilkan. Label yang lain tidak terpengaruh.</string>
   <string name="episode_filters_description">Daftar ketentuan yang digunakan untuk memutuskan jika episode sebuah episode harus disertakan atau dikecualikan ketika mengunduh otomatis</string>
   <string name="exclude_terms">Kecualikan episode yang berisikan istilah yang ditentukan di bawah</string>
   <string name="include_terms">Masukkan hanya jika episode berisikan istilah yang ditentukan di bawah</string>
@@ -543,15 +524,13 @@
   <string name="statistics_episodes_started_total">Episode yang dimulai/total:</string>
   <string name="statistics_view_all">Lihat untuk semua podcast »</string>
   <string name="edit_url_menu">Sunting URL umpan</string>
-  <string name="edit_url_confirmation_msg">Mengganti alamat RSS dapat merusak status pemutaran dan daftar episode podcast. Kami menyarankan untuk TIDAK mengubahnya dan kami tidak dapat memberikan bantuan jika ada yang salah. Aksi ini tidak dapat dikembalikan. Langganan yang rusak tidak dapat diperbaiki hanya dengan mengganti alamatnya kembali. Sebaiknya buat cadangan jika tetap ingin melanjutkan.</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Impor langganan dari aplikasi bertujuan tunggal...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Cari podcast...</string>
   <string name="search_fyyd_label">Cari fyyd</string>
-  <string name="gpodnet_search_hint">Telusur gpodder.net</string>
   <string name="advanced">Lanjutan</string>
-  <string name="add_podcast_by_url">Tambah podcast dari alamat RSS</string>
   <string name="discover">Temukan</string>
   <string name="discover_hide">Sembunyikan</string>
   <string name="discover_is_hidden">Anda memilih untuk menyembunyikan saran.</string>

@@ -10,7 +10,7 @@ contributorsFile = open("CONTRIBUTORS.md", "w")
 MAINTAINERS = ['ByteHamster', 'keunes']
 FORMER_MAINTAINERS = ['mfietz', 'TomHennen']
 
-csvFile = open("app/src/main/assets/developers.csv", "w")
+csvFile = open("ui/preferences/src/main/assets/developers.csv", "w")
 contributorsFile.write('# Developers\n\n')
 page = 1
 hasMore = True
@@ -74,7 +74,7 @@ while nextPage is not None:
 languages = list(languages.values())
 languages.sort(key=lambda x : x['name'].lower())
 
-csvFile = open("app/src/main/assets/translators.csv", "w")
+csvFile = open("ui/preferences/src/main/assets/translators.csv", "w")
 contributorsFile.write('\n\n# Translators\n\n')
 contributorsFile.write('| Language | Translators |\n| :-- | :-- |\n')
 for language in languages:

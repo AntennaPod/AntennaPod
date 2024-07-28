@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.Nullable;
+
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
 import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
@@ -58,6 +59,7 @@ public class FeedMedia implements Playable {
         this.downloadUrl = downloadUrl;
         this.downloadDate = 0;
         this.item = i;
+        this.itemID = i != null ? i.getId() : 0;
         this.size = size;
         this.mimeType = mimeType;
     }
@@ -71,6 +73,7 @@ public class FeedMedia implements Playable {
         this.downloadDate = downloadDate;
         this.id = id;
         this.item = item;
+        this.itemID = item != null ? item.getId() : 0;
         this.duration = duration;
         this.position = position;
         this.playedDuration = playedDuration;
@@ -251,6 +254,7 @@ public class FeedMedia implements Playable {
      */
     public void setItem(FeedItem item) {
         this.item = item;
+        this.itemID = item != null ? item.getId() : 0;
         if (item != null && item.getMedia() != this) {
             item.setMedia(this);
         }
@@ -505,12 +509,49 @@ public class FeedMedia implements Playable {
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
         if (o == null) {
             return false;
         }
         if (o instanceof RemoteMedia) {
             return o.equals(this);
         }
-        return super.equals(o);
+
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+
+        FeedMedia feedMedia = (FeedMedia) o;
+        return id == feedMedia.id;
+    }
+
+    public String getTranscriptFileUrl() {
+        if (getLocalFileUrl() == null) {
+            return null;
+        }
+        return getLocalFileUrl() + ".transcript";
+    }
+
+    public void setTranscript(Transcript t) {
+        if (item == null)  {
+            return;
+        }
+        item.setTranscript(t);
+    }
+
+    public Transcript getTranscript() {
+        if (item == null)  {
+            return null;
+        }
+        return item.getTranscript();
+    }
+
+    public Boolean hasTranscript() {
+        if (item == null)  {
+            return false;
+        }
+        return item.hasTranscript();
     }
 }

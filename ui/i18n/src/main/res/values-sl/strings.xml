@@ -71,9 +71,9 @@
   <string name="drawer_feed_order_most_played">Razvrsti po številu predvajanih epizod</string>
   <string name="drawer_feed_counter_inbox">Število epizod v nabiralniku</string>
   <string name="drawer_feed_counter_unplayed">Število nepredvajanih epizod</string>
-  <string name="drawer_feed_counter_downloaded">Število prenesenih epizod</string>
-  <string name="drawer_feed_counter_downloaded_unplayed">Število prenešenih in nepredvajanih epizod</string>
-  <string name="drawer_feed_counter_none">Nič</string>
+  <string name="drawer_feed_counter_downloaded">Število prenešenih epizod</string>
+  <string name="drawer_feed_counter_downloaded_unplayed">Število nepredvajanih prenešenih epizod</string>
+  <string name="drawer_feed_counter_none">Brez števca</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">Ni bilo najdenih združljivih aplikacij</string>
   <string name="export_logs_menu_title">Izvozi podrobne dnevnike</string>
@@ -92,7 +92,7 @@
   <string name="cancel_label">Prekliči</string>
   <string name="yes">Da</string>
   <string name="no">Ne</string>
-  <string name="reset">Resetiraj</string>
+  <string name="reset">Ponastavi</string>
   <string name="global_default">Globalna privzeta nastavitev</string>
   <string name="url_label">URL naslov</string>
   <string name="support_funding_label">Podpora</string>
@@ -109,7 +109,6 @@
   <string name="close_label">Zapri</string>
   <string name="retry_label">Ponovno poizkusi</string>
   <string name="auto_download_label">Vključi v samodejne prenose</string>
-  <string name="auto_delete_label">Samodejno brisanje epizode</string>
   <string name="feed_volume_adapdation">Prilagajanje glasnosti</string>
   <string name="feed_volume_adaptation_summary">Zvišajte ali znižajte glasnost epizod te poddaje: %1$s</string>
   <string name="feed_volume_reduction_off">Brez prilagajanja</string>
@@ -187,7 +186,6 @@
   <string name="select_all_above">Izberi vse nad</string>
   <string name="select_all_below">Izberi vse pod</string>
   <string name="filtered_label">Filtrirano</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Zadnja posodobitev neuspešna. Tapnite za ogled podrobnosti.</string>
   <string name="open_podcast">Odpri poddajo</string>
   <string name="please_wait_for_data">Prosimo počakajte, dokler se podatki ne prenesejo.</string>
   <string name="updates_disabled_label">Posodobitve so onemogočene.</string>
@@ -214,7 +212,6 @@
   <string name="pause_label">Pavza</string>
   <string name="stream_label">Pretočno predvajanje</string>
   <string name="delete_label">Briši</string>
-  <string name="delete_failed">Ni bilo mogoče brisati datoteke. Ponovni zagon naprave bi lahko pomagal.</string>
   <string name="delete_episode_label">Izbriši epizodo</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 prenesena epizoda izbrisana.</item>
@@ -325,11 +322,6 @@
   <string name="confirm_mobile_streaming_button_always">Vedno</string>
   <string name="confirm_mobile_streaming_button_once">Enkrat</string>
   <!--Mediaplayer messages-->
-  <string name="playback_error_server_died">Kanal ne obstaja več.</string>
-  <string name="playback_error_unsupported">Nepodprta vrsta medija</string>
-  <string name="playback_error_timeout">Časovna omejitev delovanja je potekla </string>
-  <string name="playback_error_source">Dostop do predstavnostne datoteke ni mogoč</string>
-  <string name="playback_error_unknown">Neznana napaka</string>
   <string name="no_media_playing_label">Ni medijske vsebine za predvajati</string>
   <string name="unknown_media_key">AntennaPod - Neznan medijski ključ: %1$d</string>
   <string name="error_file_not_found">Datoteka ni najdena</string>
@@ -353,7 +345,6 @@
   <string name="random">Naključno</string>
   <string name="smart_shuffle">Pametno mešanje</string>
   <string name="size">Velikost</string>
-  <string name="clear_queue_confirmation_msg">Potrdite, da želite počistiti čakalno vrsto VSEH epizod v njej</string>
   <string name="time_left_label">Preostali čas:\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">Prednastavitve</string>
@@ -383,7 +374,6 @@
   <string name="download_pref_details">Podrobnosti</string>
   <string name="import_export_pref">Uvozi/Izvozi</string>
   <string name="import_export_search_keywords">varnostno kopiranje, varnostna obnovitev</string>
-  <string name="appearance">Videz</string>
   <string name="external_elements">Zunanji elementi</string>
   <string name="interruptions">Prekinitve</string>
   <string name="playback_control">Predvajalne kontrole</string>
@@ -391,7 +381,6 @@
   <string name="preference_search_hint">Iskanje...</string>
   <string name="preference_search_no_results">Ni rezultatov</string>
   <string name="preference_search_clear_history">Pobriši zgodovino</string>
-  <string name="pref_episode_cleanup_title">Čiščenje epizod</string>
   <string name="pref_episode_cleanup_summary">Epizode, ki bi morale biti primerne za odstranitev, če samodejni prenos potrebuje prostor za nove epizode</string>
   <string name="pref_pauseOnDisconnect_sum">Začasno ustavite predvajanje, ko se slušalke ali bluetooth odklopi</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Nadaljujte s predvajanjem, ko se slušalke znova priključijo</string>
@@ -400,16 +389,14 @@
   <string name="pref_hardware_forward_button_summary">Prilagodite obnašanje gumba za naprej</string>
   <string name="pref_hardware_previous_button_title">Gumb za nazaj</string>
   <string name="pref_hardware_previous_button_summary">Prilagodite obnašanje gumba za nazaj</string>
-  <string name="button_action_fast_forward">Hitro naprej</string>
   <string name="button_action_rewind">Previjanje nazaj</string>
   <string name="button_action_skip_episode">Preskoči epizodo</string>
   <string name="button_action_restart_episode">Znova zaženi predvajanje epizode</string>
   <string name="pref_followQueue_sum">Ko se predvajanje konča, skoči na naslednji element čakalne vrste</string>
-  <string name="pref_auto_delete_sum">Izbrišite epizodo, ko se predvajanje konča</string>
-  <string name="pref_auto_delete_title">Samodejno brisanje</string>
   <string name="pref_auto_local_delete_title">Samodejno izbriši iz lokalnih map</string>
   <string name="pref_auto_local_delete_sum">Vključi lokalne mape v funkcionalnost samodejnega brisanja</string>
-  <string name="pref_smart_mark_as_played_sum">Epizode označite kot predvajano, tudi če je ostalo manj kot določeno število sekund časa predvajanja</string>
+  <string name="pref_smart_mark_as_played_sum">Epizodo označite kot predvajano tudi, če je do konca predvajanja ostalo manj časa kot tukaj nastavljeno</string>
+  <string name="pref_smart_mark_as_played_title">Pametno dokončevanje</string>
   <string name="pref_skip_keeps_episodes_sum">Obdržite epizode, ki jih preskočite</string>
   <string name="pref_skip_keeps_episodes_title">Obdrži preskočene epizode</string>
   <string name="pref_favorite_keeps_episodes_sum">Ohrani epizode, ki so označene kot priljubljene</string>
@@ -432,6 +419,7 @@
   <string name="pref_pauseOnHeadsetDisconnect_title">Povezava s slušalkam ali Bluetoothom je prekinjena</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Ponovno povežite slušalke</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Ponovno povežite Bluetooth</string>
+  <string name="pref_stream_over_download_title">Preferiraj pretočno predvajanje</string>
   <string name="pref_stream_over_download_sum">Na seznamih prikaži gumb za pretočno predvajanje namesto gumba za prenos.</string>
   <string name="pref_mobileUpdate_title">Mobilno posodabljanje</string>
   <string name="pref_mobileUpdate_sum">Izberite, kaj naj bo dovoljeno prek mobilne podatkovne povezave</string>
@@ -458,8 +446,6 @@
   <string name="pref_autodl_wifi_filter_sum">Dovoli samodejni prenos samo za izbrana omrežja Wi-Fi.</string>
   <string name="pref_automatic_download_on_battery_title">Prenesite, ko se ne polni</string>
   <string name="pref_automatic_download_on_battery_sum">Dovoli samodejni prenos, ko se baterija ne polni</string>
-  <string name="pref_episode_cache_title">Predpomnilnik epizod</string>
-  <string name="pref_episode_cache_summary">Skupno število prenesenih epizod, shranjenih v predpomnilniku naprave. Samodejni prenos bo prekinjen, če bo dosežena ta številka.</string>
   <string name="pref_episode_cover_title">Uporabi naslovnico epizode</string>
   <string name="pref_episode_cover_summary">Uporabite naslovnico za posamezno epizodo na seznamih, kadar je na voljo. Če ta možnost ni izbrana, bo aplikacija vedno uporabljala naslovno sliko poddaje.</string>
   <string name="pref_show_remain_time_title">Prikaži preostali čas</string>
@@ -478,16 +464,17 @@
   <string name="pref_feed_skip_intro_toast">Preskočenih prvih %d sekund</string>
   <string name="pref_playback_time_respects_speed_title">Prilagodite informacije o hitrosti predvajanja medijev</string>
   <string name="pref_playback_time_respects_speed_sum">Prikazani položaj in trajanje sta prilagojena hitrosti predvajanja</string>
-  <string name="pref_fast_forward_sum">Prilagodite število sekund za skok naprej, ko kliknete gumb za hitro previjanje naprej</string>
+  <string name="pref_rewind">Skok nazaj</string>
   <string name="pref_rewind_sum">Prilagodite število sekund za skok nazaj, ko kliknete gumb za previjanje nazaj</string>
   <string name="pref_expandNotify_title">Visoka prioriteta obveščanja</string>
   <string name="pref_expandNotify_sum">To običajno razširi obvestilo, da prikaže gumbe za predvajanje.</string>
+  <string name="pref_persistNotify_title">Vztrajni nadzorni vmesnik</string>
   <string name="pref_persistNotify_sum">Med premorom obdrži sistemsko obvestilo in nadzorni vmesnik na zaklenjenem zaslonu</string>
-    <string name="pref_full_notification_buttons_title">Nastavite gumbe na obvestilu</string>
-  <string name="pref_full_notification_buttons_sum">Spremenite gumb za predvajanje na sistemskem obvestilu.</string>
-  <string name="pref_enqueue_location_sum">Dodaj epizode v: %1$s</string>
-  <string name="enqueue_location_back">Na koncu</string>
-  <string name="enqueue_location_front">Na začetku</string>
+  <string name="pref_full_notification_buttons_title">Nastavite gumbe na obvestilu</string>
+  <string name="pref_enqueue_location_title">Dodajanje na seznam predvajanja</string>
+  <string name="pref_enqueue_location_sum">Epizode dodaj: %1$s</string>
+  <string name="enqueue_location_back">Na konec</string>
+  <string name="enqueue_location_front">Na začetek</string>
   <string name="enqueue_location_after_current">Po trenutni epizodi</string>
   <string name="enqueue_location_random">Naključno</string>
   <string name="pref_smart_mark_as_played_disabled">Onemogočeno</string>
@@ -523,12 +510,10 @@
   <string name="new_episode_notification_disabled">Obvestila onemogočena</string>
   <string name="pref_feed_settings_dialog_msg">Ta nastavitev je unikatna za vsako poddajo. Spremenite jo lahko tako, da odprete stran poddaje.</string>
   <string name="pref_contribute">Prispevajte</string>
-  <string name="pref_show_subscription_title">Pokaži naslov naročnine</string>
-  <string name="pref_show_subscription_title_summary">Prikaži naslov naročnine pod sliko naslovnice</string>
   <string name="pref_new_episodes_action_title">Ob novi epizodi</string>
   <string name="pref_new_episodes_action_sum">Kaj storiti z novimi epizodami</string>
   <!--About screen-->
-  <string name="about_pref">O</string>
+  <string name="about_pref">Vizitka</string>
   <string name="antennapod_version">AntennaPod različica </string>
   <string name="contributors">Sodelujoči</string>
   <string name="contributors_summary">Vsakdo lahko pomaga izboljšati AntennaPod: s kodo, prevodi ali z nudenjem pomoči uporabnikom na našem forumu</string>
@@ -590,20 +575,20 @@
   <string name="sleep_timer_label">Časovnik spanja</string>
   <string name="time_dialog_invalid_input">Neveljaven vnos, čas mora biti celo število</string>
   <string name="shake_to_reset_label">Stresite za ponastavitev</string>
-  <string name="timer_vibration_label">Vibracije malo pred koncem</string>
-  <string name="time_seconds">sekunde</string>
+  <string name="timer_vibration_label">Vibriraj malo pred koncem</string>
+  <string name="time_seconds">sekund</string>
   <string name="time_minutes">minute</string>
   <string name="time_hours">ure</string>
   <plurals name="time_seconds_quantified">
     <item quantity="one">1 sekunda</item>
-    <item quantity="two">%d sekunde</item>
-    <item quantity="few">%d sekund</item>
+    <item quantity="two">%d sekundi</item>
+    <item quantity="few">%d sekunde</item>
     <item quantity="other">%d sekund</item>
   </plurals>
   <plurals name="time_minutes_quantified">
     <item quantity="one">1 minuta</item>
-    <item quantity="two">%d minute</item>
-    <item quantity="few">%dminut</item>
+    <item quantity="two">%d minuti</item>
+    <item quantity="few">%d minute</item>
     <item quantity="other">%d minut</item>
   </plurals>
   <plurals name="time_hours_quantified">
@@ -619,7 +604,6 @@
     <item quantity="other">%d dni</item>
   </plurals>
   <string name="auto_enable_label">Samodejno aktiviraj časovnik spanja ob začetku predvajanja.</string>
-  <string name="auto_enable_label_with_times">Samodejno aktiviraj časovnik spanja ob začetku predvajanjamed %s in %s</string>
   <string name="auto_enable_change_times">Spremeni časovno obdobje</string>
   <string name="sleep_timer_enabled_label">Časovnik za izklop je omogočen</string>
   <!--Synchronisation-->
@@ -656,19 +640,15 @@
   <string name="gpodnetsync_username_characters_error">Uporabniška imena lahko vsebujejo samo črke, številke, vezaje in podčrtaje.</string>
   <!--Directory chooser-->
   <string name="choose_data_directory">Izberite podatkovno mapo</string>
-  <string name="choose_data_directory_message">Izberite osnovo vaše podatkovne mape. AntennaPod bo ustvaril ustrezne podimenike.</string>
   <string name="choose_data_directory_available_space">%1$s od %2$s prostega</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Začasno ustavite predvajanje, namesto da zmanjšate glasnost, ko želi druga aplikacija predvajati zvoke</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Premor med prekinitvami</string>
+  <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Naročite se</string>
-  <string name="subscribing_label">Naročanje...</string>
-  <string name="preview_episode">Predogled</string>
-  <string name="stop_preview">Ustavi predogled</string>
   <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">Nazaj</string>
   <string name="rewind_label">Previjanje nazaj</string>
-  <string name="fast_forward_label">Hitro naprej</string>
   <string name="increase_speed">Povečaj hitrost</string>
   <string name="decrease_speed">Zmanjšaj hitrost</string>
   <string name="media_type_video_label">Video</string>
@@ -680,10 +660,11 @@
   <string name="load_next_page_label">Naloži naslednjo stran</string>
   <string name="position">Pozicija: %1$s</string>
   <string name="remaining_time">Preostali čas: %1$s</string>
-  <string name="apply_action">Uporabite dejanje</string>
   <string name="play_chapter">Predvajaj poglavje</string>
   <string name="prev_chapter">Prejšnje poglavje</string>
   <string name="next_chapter">Naslednje poglavje</string>
+  <string name="shuffle_suggestions">Premešaj predloge</string>
+  <string name="add_preset">Dodaj prednastavitev</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">Avtentikacija</string>
   <string name="authentication_descr">Spremenite svoje uporabniško ime in geslo za to poddajo in njene epizode.</string>
@@ -707,6 +688,7 @@
   <string name="statistics_episodes_started_total">Epizode začete/vse:</string>
   <string name="statistics_view_all">Poglej za vse poddaje »</string>
   <string name="edit_url_menu">Uredi URL vira</string>
+  <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Uvažanje naročnin iz enonamenskih aplikacij …</string>
   <!--Add podcast fragment-->
@@ -714,9 +696,7 @@
   <string name="search_itunes_label">Iskanje na Apple Podcasts</string>
   <string name="search_podcastindex_label">Iskanje na Podcast Index</string>
   <string name="search_fyyd_label">Iskanje na fyyd</string>
-  <string name="gpodnet_search_hint">Iskanje na gpodder.net</string>
   <string name="advanced">Napredno</string>
-  <string name="add_podcast_by_url">Dodaj poddajo z RSS naslovom</string>
   <string name="discover">Odkrij</string>
   <string name="discover_hide">Skrij</string>
   <string name="discover_is_hidden">Izbrali ste, da predloge skrijete.</string>
