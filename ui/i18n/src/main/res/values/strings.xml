@@ -145,11 +145,11 @@
     <string name="episode_cleanup_queue_removal">When not in queue</string>
     <string name="episode_cleanup_after_listening">After finishing</string>
     <plurals name="episode_cleanup_hours_after_listening">
-        <item quantity="one">1 hour after finishing</item>
+        <item quantity="one">%d hour after finishing</item>
         <item quantity="other">%d hours after finishing</item>
     </plurals>
     <plurals name="episode_cleanup_days_after_listening">
-        <item quantity="one">1 day after finishing</item>
+        <item quantity="one">%d day after finishing</item>
         <item quantity="other">%d days after finishing</item>
     </plurals>
     <plurals name="num_selected_label">
@@ -221,7 +221,7 @@
     <string name="delete_label">Delete</string>
     <string name="delete_episode_label">Delete episode</string>
     <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">1 downloaded episode deleted.</item>
+        <item quantity="one">%d downloaded episode deleted.</item>
         <item quantity="other">%d downloaded episodes deleted.</item>
     </plurals>
     <string name="remove_inbox_label">Remove from inbox</string>
@@ -612,19 +612,19 @@
     <string name="time_minutes">minutes</string>
     <string name="time_hours">hours</string>
     <plurals name="time_seconds_quantified">
-        <item quantity="one">1 second</item>
+        <item quantity="one">%d second</item>
         <item quantity="other">%d seconds</item>
     </plurals>
     <plurals name="time_minutes_quantified">
-        <item quantity="one">1 minute</item>
+        <item quantity="one">%d minute</item>
         <item quantity="other">%d minutes</item>
     </plurals>
     <plurals name="time_hours_quantified">
-        <item quantity="one">1 hour</item>
+        <item quantity="one">%d hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
     <plurals name="time_days_quantified">
-        <item quantity="one">1 day</item>
+        <item quantity="one">%d day</item>
         <item quantity="other">%d days</item>
     </plurals>
     <string name="auto_enable_label">Automatically activate the sleep timer when pressing play</string>
