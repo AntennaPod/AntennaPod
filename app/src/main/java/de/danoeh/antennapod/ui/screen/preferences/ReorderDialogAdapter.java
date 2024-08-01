@@ -52,7 +52,6 @@ public class ReorderDialogAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        String title = settingsDialogItems.get(position).getTitle();
         if (holder instanceof HeaderViewHolder) {
             HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
             headerViewHolder.categoryLabel.setText(settingsDialogItems.get(position).getTitle());
