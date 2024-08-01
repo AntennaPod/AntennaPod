@@ -274,14 +274,22 @@ public class ExoPlayerWrapper {
     public void setVolume(float v, float v1) {
         if (v > 1) {
             exoPlayer.setVolume(1f);
-            if (loudnessEnhancer != null) {
-                loudnessEnhancer.setEnabled(true);
-                loudnessEnhancer.setTargetGain((int) (1000 * (v - 1)));
+            try {
+                if (loudnessEnhancer != null) {
+                    loudnessEnhancer.setEnabled(true);
+                    loudnessEnhancer.setTargetGain((int) (1000 * (v - 1)));
+                }
+            } catch (Exception e) {
+                Log.d(TAG, e.toString());
             }
         } else {
             exoPlayer.setVolume(v);
-            if (loudnessEnhancer != null) {
-                loudnessEnhancer.setEnabled(false);
+            try {
+                if (loudnessEnhancer != null) {
+                    loudnessEnhancer.setEnabled(false);
+                }
+            } catch (Exception e) {
+                Log.d(TAG, e.toString());
             }
         }
     }
