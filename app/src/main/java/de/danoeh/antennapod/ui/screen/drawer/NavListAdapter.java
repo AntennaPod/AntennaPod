@@ -42,7 +42,6 @@ import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
 import java.lang.ref.WeakReference;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -76,15 +75,14 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
     }
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (UserPreferences.PREF_HIDDEN_DRAWER_ITEMS.equals(key)) {
+        if (UserPreferences.PREF_HIDDEN_DRAWER_ITEMS.equals(key)
+                || UserPreferences.PREF_DRAWER_ITEM_ORDER.equals(key)) {
             loadItems();
         }
     }
 
     private void loadItems() {
-        List<String> newTags = new ArrayList<>(Arrays.asList(NavDrawerFragment.NAV_DRAWER_TAGS));
-        List<String> hiddenFragments = UserPreferences.getHiddenDrawerItems();
-        newTags.removeAll(hiddenFragments);
+        List<String> newTags = UserPreferences.getVisibleDrawerItemOrder();
 
         if (newTags.contains(SUBSCRIPTION_LIST_TAG)) {
             // we never want SUBSCRIPTION_LIST_TAG to be in 'tags'

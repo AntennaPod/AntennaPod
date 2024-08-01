@@ -34,13 +34,6 @@ import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 
 import de.danoeh.antennapod.net.download.service.episode.autodownload.EpisodeCleanupAlgorithmFactory;
-import de.danoeh.antennapod.ui.screen.AddFeedFragment;
-import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
-import de.danoeh.antennapod.ui.screen.InboxFragment;
-import de.danoeh.antennapod.ui.screen.PlaybackHistoryFragment;
-import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
-import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
-import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -84,18 +77,6 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
     @VisibleForTesting
     public static final String PREF_NAME = "NavDrawerPrefs";
     public static final String TAG = "NavDrawerFragment";
-
-    public static final String[] NAV_DRAWER_TAGS = {
-            HomeFragment.TAG,
-            QueueFragment.TAG,
-            InboxFragment.TAG,
-            AllEpisodesFragment.TAG,
-            SubscriptionFragment.TAG,
-            CompletedDownloadsFragment.TAG,
-            PlaybackHistoryFragment.TAG,
-            AddFeedFragment.TAG,
-            NavListAdapter.SUBSCRIPTION_LIST_TAG
-    };
 
     private NavDrawerData navDrawerData;
     private int reclaimableSpace = 0;

@@ -12,7 +12,6 @@ import androidx.core.util.Consumer;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.databinding.ReorderDialogEntryBinding;
 import de.danoeh.antennapod.databinding.ReorderDialogHeaderBinding;
-import de.danoeh.antennapod.ui.screen.home.settingsdialog.HomePreferences;
 
 import java.util.Collections;
 import java.util.List;

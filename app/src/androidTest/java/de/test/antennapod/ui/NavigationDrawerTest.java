@@ -1,5 +1,6 @@
 package de.test.antennapod.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
@@ -25,6 +26,7 @@ import org.junit.runner.RunWith;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -78,7 +80,7 @@ public class NavigationDrawerTest {
     @Test
     public void testClickNavDrawer() throws Exception {
         uiTestUtils.addLocalFeedData(false);
-        UserPreferences.setHiddenDrawerItems(new ArrayList<>());
+        UserPreferences.setDrawerItemOrder(Collections.emptyList(), Collections.emptyList());
         activityRule.launchActivity(new Intent());
 
         // home
@@ -150,7 +152,7 @@ public class NavigationDrawerTest {
 
     @Test
     public void testDrawerPreferencesHideSomeElements() {
-        UserPreferences.setHiddenDrawerItems(new ArrayList<>());
+        UserPreferences.setDrawerItemOrder(Collections.emptyList(), Collections.emptyList());
         activityRule.launchActivity(new Intent());
         openNavDrawer();
         onDrawerItem(withText(R.string.queue_label)).perform(longClick());
@@ -168,7 +170,7 @@ public class NavigationDrawerTest {
     @Test
     public void testDrawerPreferencesUnhideSomeElements() {
         List<String> hidden = Arrays.asList(PlaybackHistoryFragment.TAG, CompletedDownloadsFragment.TAG);
-        UserPreferences.setHiddenDrawerItems(hidden);
+        UserPreferences.setDrawerItemOrder(hidden, Collections.emptyList());
         activityRule.launchActivity(new Intent());
         openNavDrawer();
         onView(first(withText(R.string.queue_label))).perform(longClick());
@@ -187,9 +189,10 @@ public class NavigationDrawerTest {
 
     @Test
     public void testDrawerPreferencesHideAllElements() {
-        UserPreferences.setHiddenDrawerItems(new ArrayList<>());
+        UserPreferences.setDrawerItemOrder(Collections.emptyList(), Collections.emptyList());
         activityRule.launchActivity(new Intent());
-        String[] tags = NavDrawerFragment.NAV_DRAWER_TAGS;
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        String[] tags = context.getResources().getStringArray(R.array.nav_drawer_section_tags);
 
         openNavDrawer();
         onView(first(withText(R.string.queue_label))).perform(longClick());
@@ -205,14 +208,14 @@ public class NavigationDrawerTest {
 
         List<String> hidden = UserPreferences.getHiddenDrawerItems();
         assertEquals(tags.length, hidden.size());
-        for (String tag : NavDrawerFragment.NAV_DRAWER_TAGS) {
+        for (String tag : tags) {
             assertTrue(hidden.contains(tag));
         }
     }
 
     @Test
     public void testDrawerPreferencesHideCurrentElement() {
-        UserPreferences.setHiddenDrawerItems(new ArrayList<>());
+        UserPreferences.setDrawerItemOrder(Collections.emptyList(), Collections.emptyList());
         activityRule.launchActivity(new Intent());
         openNavDrawer();
         onView(withText(R.string.downloads_label)).perform(click());

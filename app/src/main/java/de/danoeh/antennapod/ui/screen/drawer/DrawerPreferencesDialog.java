@@ -29,18 +29,16 @@ public class DrawerPreferencesDialog extends ReorderDialog {
     protected List<ReorderDialogItem> getInitialItems() {
         ArrayList<ReorderDialogItem> settingsDialogItems = new ArrayList<>();
 
-        final List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
-        for (int i = 0; i < NavDrawerFragment.NAV_DRAWER_TAGS.length; i++) {
-            String tag = NavDrawerFragment.NAV_DRAWER_TAGS[i];
-            if (!hiddenDrawerItems.contains(tag)) {
-                settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Section,
-                        tag, context.getString(NavListAdapter.getLabel(tag))));
-            }
+        final List<String> drawerItemOrder = UserPreferences.getVisibleDrawerItemOrder();
+        for (String tag : drawerItemOrder) {
+            settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Section,
+                    tag, context.getString(NavListAdapter.getLabel(tag))));
         }
 
         String hiddenText = context.getString(R.string.section_hidden);
         settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Header, TAG_HIDDEN, hiddenText));
 
+        final List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
         for (String sectionTag : hiddenDrawerItems) {
             settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Section,
                     sectionTag, context.getString(NavListAdapter.getLabel(sectionTag))));
@@ -50,7 +48,7 @@ public class DrawerPreferencesDialog extends ReorderDialog {
 
     @Override
     protected void onReset() {
-        UserPreferences.setHiddenDrawerItems(Collections.emptyList());
+        UserPreferences.setDrawerItemOrder(Collections.emptyList(), Collections.emptyList());
         if (onSettingsChanged != null) {
             onSettingsChanged.run();
         }
@@ -59,10 +57,10 @@ public class DrawerPreferencesDialog extends ReorderDialog {
     @Override
     protected void onConfirmed() {
         final List<String> hiddenDrawerItems = getTagsAfterHeader(TAG_HIDDEN);
-        UserPreferences.setHiddenDrawerItems(hiddenDrawerItems);
+        UserPreferences.setDrawerItemOrder(hiddenDrawerItems, getTagsWithoutHeaders());
 
         if (hiddenDrawerItems.contains(UserPreferences.getDefaultPage())) {
-            for (String tag : NavDrawerFragment.NAV_DRAWER_TAGS) {
+            for (String tag : context.getResources().getStringArray(R.array.nav_drawer_section_tags)) {
                 if (!hiddenDrawerItems.contains(tag)) {
                     UserPreferences.setDefaultPage(tag);
                     break;
