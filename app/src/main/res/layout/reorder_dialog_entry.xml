@@ -9,10 +9,10 @@
     <ImageView
         android:id="@+id/dragHandle"
         android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:paddingStart="16dp"
+        android:layout_height="40dp"
+        android:paddingStart="8dp"
         android:paddingEnd="0dp"
-        android:paddingVertical="8dp"
+        android:paddingVertical="12dp"
         android:layout_gravity="center_vertical"
         android:contentDescription="@string/sort"
         android:src="?attr/dragview_background" />
@@ -25,6 +25,6 @@
         android:layout_margin="8dp"
         android:layout_gravity="center_vertical"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
 </LinearLayout>

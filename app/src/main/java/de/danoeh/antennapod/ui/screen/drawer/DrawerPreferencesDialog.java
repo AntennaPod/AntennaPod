@@ -13,6 +13,7 @@ import java.util.List;
 
 public class DrawerPreferencesDialog extends ReorderDialog {
     private static final String TAG_HIDDEN = "hidden";
+    private static final String TAG_SHOWN = "shown";
     private final Runnable onSettingsChanged;
 
     public DrawerPreferencesDialog(Context context, Runnable onSettingsChanged) {
@@ -28,6 +29,8 @@ public class DrawerPreferencesDialog extends ReorderDialog {
     @NonNull
     protected List<ReorderDialogItem> getInitialItems() {
         ArrayList<ReorderDialogItem> settingsDialogItems = new ArrayList<>();
+        settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Header,
+                TAG_SHOWN, context.getString(R.string.section_shown)));
 
         final List<String> drawerItemOrder = UserPreferences.getVisibleDrawerItemOrder();
         for (String tag : drawerItemOrder) {
@@ -35,8 +38,8 @@ public class DrawerPreferencesDialog extends ReorderDialog {
                     tag, context.getString(NavListAdapter.getLabel(tag))));
         }
 
-        String hiddenText = context.getString(R.string.section_hidden);
-        settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Header, TAG_HIDDEN, hiddenText));
+        settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Header,
+                TAG_HIDDEN, context.getString(R.string.section_hidden)));
 
         final List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
         for (String sectionTag : hiddenDrawerItems) {
@@ -44,6 +47,14 @@ public class DrawerPreferencesDialog extends ReorderDialog {
                     sectionTag, context.getString(NavListAdapter.getLabel(sectionTag))));
         }
         return settingsDialogItems;
+    }
+
+    @Override
+    protected boolean onItemMove(int fromPosition, int toPosition) {
+        if (toPosition == 0 || fromPosition == 0) {
+            return false;
+        }
+        return super.onItemMove(fromPosition, toPosition);
     }
 
     @Override

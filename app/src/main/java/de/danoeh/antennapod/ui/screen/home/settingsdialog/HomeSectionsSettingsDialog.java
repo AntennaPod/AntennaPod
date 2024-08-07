@@ -13,6 +13,7 @@ import java.util.List;
 public class HomeSectionsSettingsDialog extends ReorderDialog {
     private final Runnable onSettingsChanged;
     private static final String TAG_HIDDEN = "hidden";
+    private static final String TAG_SHOWN = "shown";
 
     public HomeSectionsSettingsDialog(Context context, Runnable onSettingsChanged) {
         super(context);
@@ -30,17 +31,28 @@ public class HomeSectionsSettingsDialog extends ReorderDialog {
         final List<String> hiddenSectionTags = HomePreferences.getHiddenSectionTags(context);
 
         ArrayList<ReorderDialogItem> settingsDialogItems = new ArrayList<>();
+        settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Header,
+                TAG_SHOWN, context.getString(R.string.section_shown)));
         for (String sectionTag: sectionTags) {
             settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Section, sectionTag,
                     HomePreferences.getNameFromTag(context, sectionTag)));
         }
-        String hiddenText = context.getString(R.string.section_hidden);
-        settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Header, TAG_HIDDEN, hiddenText));
+
+        settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Header,
+                TAG_HIDDEN, context.getString(R.string.section_hidden)));
         for (String sectionTag: hiddenSectionTags) {
             settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Section, sectionTag,
                     HomePreferences.getNameFromTag(context, sectionTag)));
         }
         return settingsDialogItems;
+    }
+
+    @Override
+    protected boolean onItemMove(int fromPosition, int toPosition) {
+        if (toPosition == 0 || fromPosition == 0) {
+            return false;
+        }
+        return super.onItemMove(fromPosition, toPosition);
     }
 
     @Override

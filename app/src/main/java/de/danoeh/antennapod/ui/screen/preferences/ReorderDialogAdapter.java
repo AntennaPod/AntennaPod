@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.databinding.ReorderDialogEntryBinding;
 import de.danoeh.antennapod.databinding.ReorderDialogHeaderBinding;
 
-import java.util.Collections;
 import java.util.List;
 
 public class ReorderDialogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
@@ -72,21 +71,6 @@ public class ReorderDialogAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public int getItemCount() {
         return settingsDialogItems.size();
-    }
-
-    public boolean onItemMove(int fromPosition, int toPosition) {
-        if (fromPosition < toPosition) {
-            for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(settingsDialogItems, i, i + 1);
-            }
-        } else {
-            for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(settingsDialogItems, i, i - 1);
-            }
-        }
-
-        notifyItemMoved(fromPosition, toPosition);
-        return true;
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {

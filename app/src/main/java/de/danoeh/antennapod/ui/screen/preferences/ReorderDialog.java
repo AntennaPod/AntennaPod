@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +13,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.ReorderDialogBinding;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class ReorderDialog {
@@ -32,29 +34,42 @@ public abstract class ReorderDialog {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setTitle(getTitle());
         builder.setView(viewBinding.getRoot());
-        RecyclerView recyclerView = viewBinding.recyclerView;
+        configureRecyclerView(viewBinding.recyclerView);
 
-        configureRecyclerView(recyclerView, adapter, context);
-
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> onConfirmed());
+        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> onConfirmed());
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.setNeutralButton(R.string.reset, (dialog, which) -> onReset());
         builder.show();
     }
 
-    private static void configureRecyclerView(RecyclerView recyclerView,
-                                              ReorderDialogAdapter adapter, Context context) {
+    private void configureRecyclerView(RecyclerView recyclerView) {
         ReorderItemTouchCallback itemMoveCallback = new ReorderItemTouchCallback() {
             @Override
             protected boolean onItemMove(int fromPosition, int toPosition) {
-                return adapter.onItemMove(fromPosition, toPosition);
+                return ReorderDialog.this.onItemMove(fromPosition, toPosition);
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemMoveCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
         adapter.setDragListener(itemTouchHelper::startDrag);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(context, layoutManager.getOrientation()));
+    }
+
+    protected boolean onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(dialogItems, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(dialogItems, i, i - 1);
+            }
+        }
+        adapter.notifyItemMoved(fromPosition, toPosition);
+        return true;
     }
 
     @NonNull
