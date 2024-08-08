@@ -70,6 +70,7 @@
     <string name="open_settings">Open settings</string>
     <string name="configure_home">Configure Home Screen</string>
     <string name="section_hidden">Hidden</string>
+    <string name="section_shown">Shown</string>
 
     <!-- Download Statistics fragment -->
     <string name="total_size_downloaded_podcasts">Total size of episodes on the device</string>
