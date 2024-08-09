@@ -139,6 +139,9 @@ public class MainActivity extends CastEnabledActivity {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         buildBottomNavigationMenu();
         if (UserPreferences.isBottomNavigationEnabled()) {
+            if (drawerLayout != null) {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            }
             drawerLayout = null;
         } else {
             bottomNavigationView.setVisibility(View.GONE);
