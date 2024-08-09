@@ -68,6 +68,7 @@ import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
 import de.danoeh.antennapod.ui.screen.download.DownloadLogFragment;
 import de.danoeh.antennapod.ui.screen.drawer.BottomNavigationMoreAdapter;
 import de.danoeh.antennapod.ui.screen.drawer.NavDrawerFragment;
+import de.danoeh.antennapod.ui.screen.drawer.NavListAdapter;
 import de.danoeh.antennapod.ui.screen.drawer.NavigationNames;
 import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 import de.danoeh.antennapod.ui.screen.home.HomeFragment;
@@ -497,10 +498,13 @@ public class MainActivity extends CastEnabledActivity {
     }
 
     private void buildBottomNavigationMenu() {
-        String[] tags = new String[] {HomeFragment.TAG, QueueFragment.TAG, InboxFragment.TAG, SubscriptionFragment.TAG};
+        List<String> drawerItems = UserPreferences.getVisibleDrawerItemOrder();
+        drawerItems.remove(NavListAdapter.SUBSCRIPTION_LIST_TAG);
+
         Menu menu = bottomNavigationView.getMenu();
         menu.clear();
-        for (String tag : tags) {
+        for (int i = 0; i < drawerItems.size() && i < 4; i++) {
+            String tag = drawerItems.get(i);
             MenuItem item = menu.add(0, getBottomNavigationItemId(tag), 0, getString(NavigationNames.getLabel(tag)));
             item.setIcon(NavigationNames.getDrawable(tag));
         }
@@ -522,10 +526,12 @@ public class MainActivity extends CastEnabledActivity {
     };
 
     private void showBottomNavigationMorePopup() {
-        String[] tags = new String[] {AllEpisodesFragment.TAG, CompletedDownloadsFragment.TAG,
-                PlaybackHistoryFragment.TAG, AddFeedFragment.TAG};
+        List<String> drawerItems = UserPreferences.getVisibleDrawerItemOrder();
+        drawerItems.remove(NavListAdapter.SUBSCRIPTION_LIST_TAG);
+
         final List<MenuItem> popupMenuItems = new ArrayList<>();
-        for (String tag : tags) {
+        for (int i = 4; i < drawerItems.size(); i++) {
+            String tag = drawerItems.get(i);
             MenuItem item = new MenuBuilder(this).add(0, getBottomNavigationItemId(tag),
                     0, getString(NavigationNames.getLabel(tag)));
             item.setIcon(NavigationNames.getDrawable(tag));
@@ -541,7 +547,7 @@ public class MainActivity extends CastEnabledActivity {
         listPopupWindow.setAnchorView(bottomNavigationView);
         listPopupWindow.setAdapter(new BottomNavigationMoreAdapter(this, popupMenuItems));
         listPopupWindow.setOnItemClickListener((parent, view, position, id) -> {
-            if (position == tags.length) {
+            if (position == popupMenuItems.size() - 1) {
                 startActivity(new Intent(this, PreferenceActivity.class));
             } else {
                 loadFragment(getBottomNavigationFragmentTag(popupMenuItems.get(position).getItemId()), null);
