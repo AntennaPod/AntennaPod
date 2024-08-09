@@ -42,10 +42,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <CheckBox
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/pref_skip_silence_title"
+        style="@style/AntennaPod.TextView.ListItemPrimaryTitle" />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/skipSilence"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/pref_skip_silence_title" />
+        android:weightSum="3"
+        app:singleSelection="true">
+
+        <Button
+            android:id="@+id/skipSilenceOff"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Off"
+            style="@style/OutlinedButtonBetterContrast" />
+
+        <Button
+            android:id="@+id/skipSilenceMedium"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Medium"
+            style="@style/OutlinedButtonBetterContrast" />
+
+        <Button
+            android:id="@+id/skipSilenceAggressive"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Aggressive"
+            style="@style/OutlinedButtonBetterContrast" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
 </LinearLayout>
