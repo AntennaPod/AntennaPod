@@ -49,6 +49,7 @@ public abstract class UserPreferences {
     public static final String PREF_THEME_BLACK = "prefThemeBlack";
     public static final String PREF_TINTED_COLORS = "prefTintedColors";
     public static final String PREF_HIDDEN_DRAWER_ITEMS = "prefHiddenDrawerItems";
+    public static final String PREF_DRAWER_ITEM_ORDER = "prefDrawerItemOrder";
     public static final String PREF_DRAWER_FEED_ORDER = "prefDrawerFeedOrder";
     public static final String PREF_DRAWER_FEED_COUNTER = "prefDrawerFeedIndicator";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
@@ -193,6 +194,33 @@ public abstract class UserPreferences {
     public static List<String> getHiddenDrawerItems() {
         String hiddenItems = prefs.getString(PREF_HIDDEN_DRAWER_ITEMS, "");
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenItems, ",")));
+    }
+
+    public static List<String> getVisibleDrawerItemOrder() {
+        String itemOrderStr = prefs.getString(PREF_DRAWER_ITEM_ORDER, "");
+        List<String> itemOrderTags = new ArrayList<>(Arrays.asList(TextUtils.split(itemOrderStr, ",")));
+        List<String> hiddenItemTags = getHiddenDrawerItems();
+        String[] sectionTags = context.getResources().getStringArray(R.array.nav_drawer_section_tags);
+        Arrays.sort(sectionTags, (String a, String b) -> Integer.signum(
+                indexOfOrMaxValue(itemOrderTags, a) - indexOfOrMaxValue(itemOrderTags, b)));
+        List<String> finalItemTags = new ArrayList<>();
+        for (String sectionTag: sectionTags) {
+            if (hiddenItemTags.contains(sectionTag)) {
+                continue;
+            }
+            finalItemTags.add(sectionTag);
+        }
+        return finalItemTags;
+    }
+
+    private static int indexOfOrMaxValue(List<String> haystack, String needle) {
+        int index = haystack.indexOf(needle);
+        return index == -1 ? Integer.MAX_VALUE : index;
+    }
+
+    public static void setDrawerItemOrder(List<String> hiddenItems, List<String> visibleItemsOrder) {
+        prefs.edit().putString(PREF_HIDDEN_DRAWER_ITEMS, TextUtils.join(",", hiddenItems)).apply();
+        prefs.edit().putString(PREF_DRAWER_ITEM_ORDER, TextUtils.join(",", visibleItemsOrder)).apply();
     }
 
     public static List<Integer> getFullNotificationButtons() {
@@ -620,11 +648,6 @@ public abstract class UserPreferences {
 
     public static void setGpodnetNotificationsEnabled() {
         prefs.edit().putBoolean(PREF_GPODNET_NOTIFICATIONS, true).apply();
-    }
-
-    public static void setHiddenDrawerItems(List<String> items) {
-        String str = TextUtils.join(",", items);
-        prefs.edit().putString(PREF_HIDDEN_DRAWER_ITEMS, str).apply();
     }
 
     public static void setFullNotificationButtons(List<Integer> items) {

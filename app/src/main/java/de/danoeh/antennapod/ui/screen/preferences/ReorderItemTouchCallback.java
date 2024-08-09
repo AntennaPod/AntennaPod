@@ -1,10 +1,10 @@
-package de.danoeh.antennapod.ui.screen.home.settingsdialog;
+package de.danoeh.antennapod.ui.screen.preferences;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-public abstract class ItemTouchCallback extends ItemTouchHelper.Callback {
+public abstract class ReorderItemTouchCallback extends ItemTouchHelper.Callback {
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;

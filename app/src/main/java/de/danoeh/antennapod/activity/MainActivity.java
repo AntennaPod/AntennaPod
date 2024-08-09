@@ -160,7 +160,7 @@ public class MainActivity extends CastEnabledActivity {
                 loadFragment(UserPreferences.getDefaultPage(), null);
             } else {
                 String lastFragment = NavDrawerFragment.getLastNavFragment(this);
-                if (ArrayUtils.contains(NavDrawerFragment.NAV_DRAWER_TAGS, lastFragment)) {
+                if (ArrayUtils.contains(getResources().getStringArray(R.array.nav_drawer_section_tags), lastFragment)) {
                     loadFragment(lastFragment, null);
                 } else {
                     try {
