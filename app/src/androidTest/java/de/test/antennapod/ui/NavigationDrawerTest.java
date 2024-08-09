@@ -52,6 +52,7 @@ public class NavigationDrawerTest {
 
         EspressoTestUtils.clearPreferences();
         EspressoTestUtils.clearDatabase();
+        UserPreferences.setBottomNavigationEnabled(false);
     }
 
     @After
