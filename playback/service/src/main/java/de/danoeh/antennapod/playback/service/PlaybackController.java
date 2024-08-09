@@ -348,6 +348,10 @@ public abstract class PlaybackController {
         return playbackService != null && playbackService.sleepTimerActive();
     }
 
+    public boolean isSleepTimerEndingThisEpisode(long episodeRemainingMillis) {
+        return playbackService != null && playbackService.isSleepTimerEndingThisEpisode(episodeRemainingMillis);
+    }
+
     public void disableSleepTimer() {
         if (playbackService != null) {
             playbackService.disableSleepTimer();
