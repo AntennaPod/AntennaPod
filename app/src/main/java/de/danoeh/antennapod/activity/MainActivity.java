@@ -139,7 +139,9 @@ public class MainActivity extends CastEnabledActivity {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         buildBottomNavigationMenu();
         if (UserPreferences.isBottomNavigationEnabled()) {
-            if (drawerLayout != null) {
+            if (drawerLayout == null) { // Tablet mode
+                navDrawer.setVisibility(View.GONE);
+            } else {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }
             drawerLayout = null;
@@ -506,7 +508,7 @@ public class MainActivity extends CastEnabledActivity {
 
         Menu menu = bottomNavigationView.getMenu();
         menu.clear();
-        for (int i = 0; i < drawerItems.size() && i < 4; i++) {
+        for (int i = 0; i < drawerItems.size() && i < bottomNavigationView.getMaxItemCount() - 1; i++) {
             String tag = drawerItems.get(i);
             MenuItem item = menu.add(0, getBottomNavigationItemId(tag), 0, getString(NavigationNames.getLabel(tag)));
             item.setIcon(NavigationNames.getDrawable(tag));
@@ -533,7 +535,7 @@ public class MainActivity extends CastEnabledActivity {
         drawerItems.remove(NavListAdapter.SUBSCRIPTION_LIST_TAG);
 
         final List<MenuItem> popupMenuItems = new ArrayList<>();
-        for (int i = 4; i < drawerItems.size(); i++) {
+        for (int i = bottomNavigationView.getMaxItemCount() - 1; i < drawerItems.size(); i++) {
             String tag = drawerItems.get(i);
             MenuItem item = new MenuBuilder(this).add(0, getBottomNavigationItemId(tag),
                     0, getString(NavigationNames.getLabel(tag)));
