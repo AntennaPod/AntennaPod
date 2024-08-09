@@ -505,6 +505,14 @@ public class PodDBAdapter {
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedId)});
     }
 
+    public void setFeedItemAutoDownload(long feedItemId) {
+        Log.d(TAG, String.format(Locale.US,
+                "setFeedItemAutoDownload() called with: feedId = [%d]", feedItemId));
+        ContentValues values = new ContentValues();
+        values.put(KEY_AUTO_DOWNLOAD_ENABLED, true);
+        db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(feedItemId)});
+    }
+
     /**
      * Inserts or updates a media entry
      *

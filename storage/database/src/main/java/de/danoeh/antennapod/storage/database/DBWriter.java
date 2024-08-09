@@ -740,6 +740,27 @@ public class DBWriter {
         });
     }
 
+
+    /**
+     * Sets the 'autodownload'-attribute of a FeedItem to true.
+     *
+     * @param item               The FeedItem object
+     */
+    @NonNull
+    public static Future<?> markItemForAutodownload(FeedItem item) {
+        return runOnDbThread(() -> {
+            final PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.setFeedItemAutoDownload(item.getId());
+            adapter.close();
+
+            EventBus.getDefault().post(FeedItemEvent.updated(item));
+        });
+    }
+
+
+
+
     /**
      * Sets the 'read'-attribute of all NEW FeedItems of a specific Feed to UNPLAYED.
      *
