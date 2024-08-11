@@ -6,25 +6,20 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public enum MediaType {
-    AUDIO, VIDEO, UNKNOWN;
 
-    private static final Set<String> AUDIO_APPLICATION_MIME_STRINGS = new HashSet<>(Arrays.asList(
-            "application/ogg",
-            "application/opus",
-            "application/x-flac"
-    ));
+public abstract class MediaType {
+    public abstract boolean matches(String mimeType);
+
+    public static MediaType AUDIO = new AudioType();
+    public static MediaType VIDEO = new VideoType();
+    public static MediaType UNKNOWN = new UnknownType();
 
     public static MediaType fromMimeType(String mimeType) {
-        if (TextUtils.isEmpty(mimeType)) {
-            return MediaType.UNKNOWN;
-        } else if (mimeType.startsWith("audio")) {
-            return MediaType.AUDIO;
-        } else if (mimeType.startsWith("video")) {
-            return MediaType.VIDEO;
-        } else if (AUDIO_APPLICATION_MIME_STRINGS.contains(mimeType)) {
-            return MediaType.AUDIO;
+        if (AUDIO.matches(mimeType)) {
+            return AUDIO;
+        } else if (VIDEO.matches(mimeType)) {
+            return VIDEO;
         }
-        return MediaType.UNKNOWN;
+        return UNKNOWN;
     }
 }

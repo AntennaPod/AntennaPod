@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.net.common;
 
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
@@ -7,6 +8,7 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -16,7 +18,6 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public abstract class NetworkUtils {
     private static final String REGEX_PATTERN_IP_ADDRESS = "([0-9]{1,3}[\\.]){3}[0-9]{1,3}";
-
     private static Context context;
 
     public static void init(Context context) {
@@ -29,17 +30,8 @@ public abstract class NetworkUtils {
         if (networkInfo == null) {
             return false;
         }
-        if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-            if (UserPreferences.isEnableAutodownloadWifiFilter()) {
-                return isInAllowedWifiNetwork();
-            } else {
-                return !isNetworkMetered();
-            }
-        } else if (networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET) {
-            return true;
-        } else {
-            return UserPreferences.isAllowMobileAutoDownload() || !NetworkUtils.isNetworkRestricted();
-        }
+        NetworkStrategy strategy = NetworkStrategyFactory.getNetworkStrategy(networkInfo);
+        return strategy.isAutoDownloadAllowed();
     }
 
     public static boolean networkAvailable() {
@@ -118,7 +110,7 @@ public abstract class NetworkUtils {
         }
     }
 
-    private static boolean isInAllowedWifiNetwork() {
+    public static boolean isInAllowedWifiNetwork() {
         WifiManager wm = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         List<String> selectedNetworks = Arrays.asList(UserPreferences.getAutodownloadSelectedNetworks());
         return selectedNetworks.contains(Integer.toString(wm.getConnectionInfo().getNetworkId()));
@@ -139,4 +131,3 @@ public abstract class NetworkUtils {
         }
         return false;
     }
-}

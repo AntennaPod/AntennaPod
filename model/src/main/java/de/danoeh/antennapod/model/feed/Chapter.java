@@ -80,7 +80,7 @@ public class Chapter {
 
     public static int getAfterPosition(List<Chapter> chapters, int playbackPosition) {
         if (chapters == null || chapters.isEmpty()) {
-            return -1;
+        	throw new ExcepcionCostoReserva("Números fuera del intervalo");
         }
         for (int i = 0; i < chapters.size(); i++) {
             if (chapters.get(i).getStart() > playbackPosition) {
