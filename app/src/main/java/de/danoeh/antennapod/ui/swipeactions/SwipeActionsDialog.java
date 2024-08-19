@@ -6,6 +6,10 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ScrollView;
 
 import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -143,15 +147,38 @@ public class SwipeActionsDialog {
         view.previewContainer.setOnClickListener(v -> showPicker(view, direction));
     }
 
+
     private void showPicker(SwipeactionsRowBinding view, int direction) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setTitle(direction == LEFT ? R.string.swipe_left : R.string.swipe_right);
 
+        // Inflate the picker layout
         SwipeactionsPickerBinding picker = SwipeactionsPickerBinding.inflate(LayoutInflater.from(context));
-        builder.setView(picker.getRoot());
-        builder.setNegativeButton(R.string.cancel_label, null);
-        AlertDialog dialog = builder.show();
 
+        // Create a ScrollView and set its layout parameters
+        ScrollView scrollView = new ScrollView(context);
+        scrollView.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        ));
+
+        scrollView.addView(picker.getRoot());
+        builder.setView(scrollView);
+
+        builder.setNegativeButton(R.string.cancel_label, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        // Set dialog window width to WRAP_CONTENT
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setLayout(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+        }
+
+        // Add items to the picker grid layout
         for (int i = 0; i < keys.size(); i++) {
             final int actionIndex = i;
             SwipeAction action = keys.get(actionIndex);
@@ -178,15 +205,19 @@ public class SwipeActionsDialog {
                 setupSwipeDirectionView(view, direction);
                 dialog.dismiss();
             });
+
             GridLayout.LayoutParams param = new GridLayout.LayoutParams(
-                    GridLayout.spec(GridLayout.UNDEFINED, GridLayout.BASELINE),
-                    GridLayout.spec(GridLayout.UNDEFINED, GridLayout.FILL, 1f));
-            param.width  = 0;
+                    GridLayout.spec(GridLayout.UNDEFINED, GridLayout.TOP),
+                    GridLayout.spec(GridLayout.UNDEFINED, 1f)
+            );
+            param.width = 0;
+            param.setMargins(16, 16, 16, 16);
             picker.pickerGridLayout.addView(item.getRoot(), param);
         }
+
         picker.pickerGridLayout.setColumnCount(2);
-        picker.pickerGridLayout.setRowCount((keys.size() + 1) / 2);
     }
+
 
     private void populateMockEpisode(FeeditemlistItemBinding view) {
         view.container.setAlpha(0.3f);
