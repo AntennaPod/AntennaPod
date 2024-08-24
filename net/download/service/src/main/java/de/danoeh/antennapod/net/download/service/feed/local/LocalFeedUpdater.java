@@ -79,11 +79,14 @@ public class LocalFeedUpdater {
     @VisibleForTesting
     static Feed tryUpdateFeed(Feed feed, Context context, Uri folderUri,
                               UpdaterProgressListener updaterProgressListener) throws IOException {
+        //make sure it is the latest 'version' of this feed from the db (all items etc)
+        Feed inDatabase = DBReader.getFeed(feed.getId(), false, 0, Integer.MAX_VALUE);
+        if (inDatabase != null) {
+            feed = inDatabase;
+        }
         if (feed.getItems() == null) {
             feed.setItems(new ArrayList<>());
         }
-        //make sure it is the latest 'version' of this feed from the db (all items etc)
-        feed = DBReader.getFeed(feed.getId(), false, 0, Integer.MAX_VALUE);
 
         // list files in feed folder
         List<FastDocumentFile> allFiles = FastDocumentFile.list(context, folderUri);
