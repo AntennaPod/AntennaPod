@@ -9,14 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.gridlayout.widget.GridLayout;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,16 +24,14 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.FeeditemlistItemBinding;
 import de.danoeh.antennapod.databinding.SwipeactionsDialogBinding;
-import de.danoeh.antennapod.databinding.SwipeactionsPickerBinding;
-import de.danoeh.antennapod.databinding.SwipeactionsPickerItemBinding;
 import de.danoeh.antennapod.databinding.SwipeactionsRowBinding;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
-import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
-import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 import de.danoeh.antennapod.ui.screen.InboxFragment;
 import de.danoeh.antennapod.ui.screen.PlaybackHistoryFragment;
+import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
+import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
 
 public class SwipeActionsDialog {
     private static final int LEFT = 1;
@@ -68,7 +66,7 @@ public class SwipeActionsDialog {
             keys.add(new StartDownloadSwipeAction());
         }
         if (!tag.equals(CompletedDownloadsFragment.TAG)
-                && ! tag.equals(QueueFragment.TAG)
+                && !tag.equals(QueueFragment.TAG)
                 && !tag.equals(PlaybackHistoryFragment.TAG)) {
             keys.add(new RemoveFromInboxSwipeAction());
         }
@@ -103,7 +101,8 @@ public class SwipeActionsDialog {
             case PlaybackHistoryFragment.TAG:
                 forFragment = context.getString(R.string.playback_history_label);
                 break;
-            default: break;
+            default:
+                break;
         }
 
         builder.setTitle(context.getString(R.string.swipeactions_label) + " - " + forFragment);
