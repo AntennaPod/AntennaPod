@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.gridlayout.widget.GridLayout xmlns:grid="http://schemas.android.com/apk/res-auto"
+    <androidx.gridlayout.widget.GridLayout
             android:id="@+id/pickerGridLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            grid:columnCount="2"
-            grid:alignmentMode="alignBounds" />
+            app:columnCount="2"
+            app:alignmentMode="alignBounds"/>
 
 </ScrollView>
