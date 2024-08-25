@@ -151,7 +151,6 @@ public class SwipeActionsDialog {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setTitle(direction == LEFT ? R.string.swipe_left : R.string.swipe_right);
 
-        // Inflate the picker layout from XML (swipeactions_picker.xml)
         LayoutInflater inflater = LayoutInflater.from(context);
         View pickerView = inflater.inflate(R.layout.swipeactions_picker, null);
 
@@ -177,7 +176,6 @@ public class SwipeActionsDialog {
             final int actionIndex = i;
             SwipeAction action = keys.get(actionIndex);
 
-            // Inflate each item layout (swipeactions_picker_item.xml)
             View itemView = inflater.inflate(R.layout.swipeactions_picker_item, pickerGridLayout, false);
 
             // Setting the label and icon
