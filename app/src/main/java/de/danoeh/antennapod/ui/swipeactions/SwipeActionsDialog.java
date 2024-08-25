@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -146,23 +148,17 @@ public class SwipeActionsDialog {
         view.previewContainer.setOnClickListener(v -> showPicker(view, direction));
     }
 
-
     private void showPicker(SwipeactionsRowBinding view, int direction) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setTitle(direction == LEFT ? R.string.swipe_left : R.string.swipe_right);
 
-        // Inflate the picker layout
-        SwipeactionsPickerBinding picker = SwipeactionsPickerBinding.inflate(LayoutInflater.from(context));
+        // Inflate the picker layout from XML (swipeactions_picker.xml)
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View pickerView = inflater.inflate(R.layout.swipeactions_picker, null);
 
-        // Create a ScrollView and set its layout parameters
-        ScrollView scrollView = new ScrollView(context);
-        scrollView.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
+        GridLayout pickerGridLayout = pickerView.findViewById(R.id.pickerGridLayout);
 
-        scrollView.addView(picker.getRoot());
-        builder.setView(scrollView);
+        builder.setView(pickerView);
 
         builder.setNegativeButton(R.string.cancel_label, null);
         AlertDialog dialog = builder.create();
@@ -181,21 +177,29 @@ public class SwipeActionsDialog {
         for (int i = 0; i < keys.size(); i++) {
             final int actionIndex = i;
             SwipeAction action = keys.get(actionIndex);
-            SwipeactionsPickerItemBinding item = SwipeactionsPickerItemBinding.inflate(LayoutInflater.from(context));
-            item.swipeActionLabel.setText(action.getTitle(context));
+
+            // Inflate each item layout (swipeactions_picker_item.xml)
+            View itemView = inflater.inflate(R.layout.swipeactions_picker_item, pickerGridLayout, false);
+
+            // Setting the label and icon
+            TextView actionLabel = itemView.findViewById(R.id.swipeActionLabel);
+            ImageView actionIcon = itemView.findViewById(R.id.swipeIcon);
+
+            actionLabel.setText(action.getTitle(context));
 
             Drawable icon = DrawableCompat.wrap(AppCompatResources.getDrawable(context, action.getActionIcon()));
             icon.mutate();
             icon.setTintMode(PorterDuff.Mode.SRC_ATOP);
             if ((direction == LEFT && leftAction == action) || (direction == RIGHT && rightAction == action)) {
                 icon.setTint(ThemeUtils.getColorFromAttr(context, action.getActionColor()));
-                item.swipeActionLabel.setTextColor(ThemeUtils.getColorFromAttr(context, action.getActionColor()));
+                actionLabel.setTextColor(ThemeUtils.getColorFromAttr(context, action.getActionColor()));
             } else {
                 icon.setTint(ThemeUtils.getColorFromAttr(context, R.attr.action_icon_color));
             }
-            item.swipeIcon.setImageDrawable(icon);
+            actionIcon.setImageDrawable(icon);
 
-            item.getRoot().setOnClickListener(v -> {
+            // Set the click listener for each item
+            itemView.setOnClickListener(v -> {
                 if (direction == LEFT) {
                     leftAction = keys.get(actionIndex);
                 } else {
@@ -211,10 +215,10 @@ public class SwipeActionsDialog {
             );
             param.width = 0;
             param.setMargins(16, 16, 16, 16);
-            picker.pickerGridLayout.addView(item.getRoot(), param);
+            pickerGridLayout.addView(itemView, param);
         }
 
-        picker.pickerGridLayout.setColumnCount(2);
+        pickerGridLayout.setColumnCount(2);
     }
 
 
