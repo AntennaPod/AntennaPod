@@ -111,7 +111,6 @@
   <string name="close_label">Bezárás</string>
   <string name="retry_label">Újra</string>
   <string name="auto_download_label">Hozzáadás az automatikus letöltésekhez</string>
-  <string name="auto_delete_label">Epizódok automatikus törlése</string>
   <string name="feed_volume_adapdation">Hangerő igazítása</string>
   <string name="feed_volume_adaptation_summary">Az ebbe a podcastba tartozó epizódok hangerejének növelése vagy csökkentése: %1$s</string>
   <string name="feed_volume_reduction_off">Nincs igazítás</string>
@@ -322,7 +321,6 @@
   <string name="random">Véletlenszerű</string>
   <string name="smart_shuffle">Okos keverés</string>
   <string name="size">Méret</string>
-  <string name="clear_queue_confirmation_msg">Erősítse meg, hogy törölni akarja az ÖSSZES epizódot a sorból</string>
   <string name="time_left_label">Hátralévő idő:\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">Előbeállítások</string>
@@ -352,7 +350,6 @@
   <string name="download_pref_details">Részletek</string>
   <string name="import_export_pref">Importálás/exportálás</string>
   <string name="import_export_search_keywords">biztonsági mentés, helyreállítás</string>
-  <string name="appearance">Megjelenés</string>
   <string name="external_elements">Külső elemek</string>
   <string name="interruptions">Megszakítások</string>
   <string name="playback_control">Lejátszásvezérlés </string>
@@ -360,7 +357,6 @@
   <string name="preference_search_hint">Keresés…</string>
   <string name="preference_search_no_results">Nincsenek találatok</string>
   <string name="preference_search_clear_history">Napló törlése</string>
-  <string name="pref_episode_cleanup_title">Epizódok tisztítása</string>
   <string name="pref_episode_cleanup_summary">Azon epizódok, melyek törölhetők, ha az Automatikus letöltésnek helyre van szüksége az új epizódok miatt.</string>
   <string name="pref_pauseOnDisconnect_sum">Lejátszás szüneteltetése fejhallgató vagy bluetooth leválasztásakor</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Lejátszás folytatása a fejhallgatók újracsatlakoztatásakor</string>
@@ -369,13 +365,10 @@
   <string name="pref_hardware_forward_button_summary">A tovább gomb viselkedésének testreszabása</string>
   <string name="pref_hardware_previous_button_title">Előző gomb</string>
   <string name="pref_hardware_previous_button_summary">Az előző gomb viselkedésének testreszabása</string>
-  <string name="button_action_fast_forward">Előretekerés</string>
   <string name="button_action_rewind">Visszatekerés</string>
   <string name="button_action_skip_episode">Epizód kihagyása</string>
   <string name="button_action_restart_episode">Epizód újraindítása</string>
   <string name="pref_followQueue_sum">A lejátszás befejeztével ugrás a sor következő elemére</string>
-  <string name="pref_auto_delete_sum">Az epizód törlése, ha a lejátszás véget ért</string>
-  <string name="pref_auto_delete_title">Automatikus törlés</string>
   <string name="pref_auto_local_delete_title">Automatikus törlés a helyi mappákból</string>
   <string name="pref_auto_local_delete_sum">A helyi mappák belevétele az automatikus törlési funkcióba</string>
   <string name="pref_auto_local_delete_dialog_body">Vegye figyelembe, hogy a helyi mappák esetén ez eltávolítja az epizódokat az AntennaPodból, és törli a médiafájlokat az eszköz tárhelyéről. Nem tölthetők le újra az AntennaPoddal. Engedélyezi az automatikus törlést?</string>
@@ -430,8 +423,6 @@
   <string name="pref_autodl_wifi_filter_sum">Automatikus letöltés engedélyezése csak a kiválasztott Wi-Fi hálózatok esetén.</string>
   <string name="pref_automatic_download_on_battery_title">Letöltés, ha nincs akkumulátortöltés</string>
   <string name="pref_automatic_download_on_battery_sum">Automatikus letöltés engedélyezése, ha az akkumulátor nem töltődik</string>
-  <string name="pref_episode_cache_title">Epizódok tárhelye</string>
-  <string name="pref_episode_cache_summary">Az eszközön tárolt letöltött epizódok száma. Az automatikus letöltés felfüggesztésre kerül, ha eléri ezt a számot.</string>
   <string name="pref_episode_cover_title">Epizódok borítóképének használata</string>
   <string name="pref_episode_cover_summary">Epizódspecifikus borító használata, ha lehetséges. Ha nincs bekapcsolva, akkor az alkalmazás mindig a podcast borítóját fogja használni.</string>
   <string name="pref_show_remain_time_title">Hátralévő idő megjelenítése</string>
@@ -450,8 +441,6 @@
   <string name="pref_feed_skip_intro_toast">Első %d másodperc kihagyva</string>
   <string name="pref_playback_time_respects_speed_title">Médiainformáció hozzáigazítása a lejátszási sebességhez</string>
   <string name="pref_playback_time_respects_speed_sum">A megjelenített pozíció és hossz a lejátszási sebességhez lesz igazítva</string>
-  <string name="pref_fast_forward">Előretekerés mértéke</string>
-  <string name="pref_fast_forward_sum">Szabja testre, hogy hány másodperccel ugorjon előre az előretekerés gomb megnyomásakor</string>
   <string name="pref_rewind">Visszatekerés mértéke</string>
   <string name="pref_rewind_sum">Szabja testre, hogy hány másodperccel ugorjon vissza a visszatekerés gomb megnyomásakor</string>
   <string name="pref_expandNotify_title">Magas értesítési prioritás</string>
@@ -500,8 +489,6 @@
   <string name="new_episode_notification_disabled">Értesítés letiltva</string>
   <string name="pref_feed_settings_dialog_msg">A beállítás minden podcastnál egyedi. A podcast lapját megnyitva módosíthatja.</string>
   <string name="pref_contribute">Közreműködés</string>
-  <string name="pref_show_subscription_title">Feliratkozás címének megjelenítése</string>
-  <string name="pref_show_subscription_title_summary">A feliratkozás címének megjelenítése a borítókép alatt</string>
   <string name="pref_new_episodes_action_title">Új epizódok művelete</string>
   <string name="pref_new_episodes_action_sum">Teendő az új epizódok esetén</string>
   <!--About screen-->
@@ -634,7 +621,6 @@
   <string name="gpodnetsync_username_characters_error">A felhasználónevek csak betűket, számokat, kötőjeleket és aláhúzásokat tartalmazhatnak.</string>
   <!--Directory chooser-->
   <string name="choose_data_directory">Válasszon adatmappát</string>
-  <string name="choose_data_directory_message">Válassza ki az adatmappája gyökerét. Az AntennaPod létre fogja hozni a megfelelő alkönyvtárakat.</string>
   <string name="choose_data_directory_available_space">%1$s / %2$s szabad</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Lejátszás szüneteltetése a hangerő csökkentése helyett, ha egy másik alkalmazás akar hangot lejátszani</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Megszakítások esetén szüneteltetés</string>
@@ -642,18 +628,13 @@
   <string name="rating_tagline">%1$s óta %2$s%3$d%4$sórányi podcastot hallgatott.</string>
   <string name="rating_contribute_label">Csatlakozna? Akár a fordításba, a támogatásba, a dizájnba vagy a kódolásba szállna be, örömmel látjuk!</string>
   <string name="rating_contribute_button">Fedezze fel, hogyan működhet közre</string>
-  <string name="rating_volunteers_label">Az AntennaPodot önkéntesek készítik a szabadidejükben. Örömünkre szolgálna, ha a munkánkat megbecsülné azzal, hogy jó értékelést ad le.</string>
   <string name="rating_rate">Értékelje az AntennaPodot.</string>
   <string name="rating_later">Később</string>
   <!--Online feed view-->
   <string name="subscribe_label">Feliratkozás</string>
-  <string name="subscribing_label">Feliratkozás…</string>
-  <string name="preview_episode">Előnézet</string>
-  <string name="stop_preview">Előnézet leállítása</string>
   <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">Vissza</string>
   <string name="rewind_label">Visszatekerés</string>
-  <string name="fast_forward_label">Előretekerés</string>
   <string name="increase_speed">Sebesség növelése</string>
   <string name="decrease_speed">Sebesség csökkentése</string>
   <string name="media_type_video_label">Videó</string>
@@ -665,7 +646,6 @@
   <string name="load_next_page_label">Következő oldal betöltése</string>
   <string name="position">Pozíció: %1$s</string>
   <string name="remaining_time">Hátralévő idő: %1$s</string>
-  <string name="apply_action">Művelet alkalmazása</string>
   <string name="play_chapter">Fejezet lejátszása</string>
   <string name="prev_chapter">Előző fejezet</string>
   <string name="next_chapter">Következő fejezet</string>
@@ -698,7 +678,6 @@
   <string name="statistics_expected_next_episode_unknown">Ismeretlen</string>
   <string name="statistics_view_all">Megtekintés az összes podcasthoz »</string>
   <string name="edit_url_menu">Csatorna webcímének szerkesztése</string>
-  <string name="edit_url_confirmation_msg">Az RSS-cím módosítása könnyen elronthatja a lejátszási állapotokat és a podcast epizódlistáját. NEM javasoljuk a megváltoztatását, és ha hiba történik, akkor NEM nyújtunk támogatást. Ez nem vonható vissza. A hibás feliratkozás NEM javítható ki a cím visszaírásával. Azt javasoljuk, hogy a folytatás előtt készítsen biztonsági mentést.</string>
   <!--Podcast release schedules-->
   <string name="release_schedule_daily">naponta</string>
   <string name="release_schedule_weekdays">hétköznapokon</string>

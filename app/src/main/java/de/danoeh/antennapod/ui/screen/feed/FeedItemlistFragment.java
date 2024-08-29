@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.ui.screen.feed;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
@@ -12,9 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -22,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -51,6 +51,7 @@ import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.cleaner.HtmlToPlainText;
 import de.danoeh.antennapod.ui.common.IntentUtils;
+import de.danoeh.antennapod.ui.common.OnCollapseChangeListener;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeMultiSelectActionHandler;
@@ -86,6 +87,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         MaterialToolbar.OnMenuItemClickListener, EpisodeItemListAdapter.OnSelectModeListener {
     public static final String TAG = "ItemlistFragment";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
+    private static final String ARGUMENT_IS_FIRST_TIME = "argument.de.danoeh.antennapod.first_time";
     private static final String KEY_UP_ARROW = "up_arrow";
     protected static final int EPISODES_PER_PAGE = 150;
     protected int page = 1;
@@ -97,6 +99,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private MoreContentListFooterUtil nextPageLoader;
     private boolean displayUpArrow;
     private long feedID;
+    private boolean isFirstTime = false;
     private Feed feed;
     private Disposable disposable;
     private FeedItemListFragmentBinding viewBinding;
@@ -109,9 +112,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
      * @return the newly created instance of an ItemlistFragment
      */
     public static FeedItemlistFragment newInstance(long feedId) {
+        return newInstance(feedId, false);
+    }
+
+    public static FeedItemlistFragment newInstance(long feedId, boolean isFirstTime) {
         FeedItemlistFragment i = new FeedItemlistFragment();
         Bundle b = new Bundle();
         b.putLong(ARGUMENT_FEED_ID, feedId);
+        b.putBoolean(ARGUMENT_IS_FIRST_TIME, isFirstTime);
         i.setArguments(b);
         return i;
     }
@@ -123,6 +131,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         Bundle args = getArguments();
         Validate.notNull(args);
         feedID = args.getLong(ARGUMENT_FEED_ID);
+        isFirstTime = args.getBoolean(ARGUMENT_IS_FIRST_TIME, false);
     }
 
     @Nullable
@@ -159,18 +168,18 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         swipeActions = new SwipeActions(this, TAG).attachTo(viewBinding.recyclerView);
         viewBinding.progressBar.setVisibility(View.VISIBLE);
 
-        ToolbarIconTintManager iconTintManager = new ToolbarIconTintManager(
-                viewBinding.toolbar.getContext(), viewBinding.toolbar, viewBinding.collapsingToolbar) {
-            @Override
-            protected void doTint(Context themedContext) {
-                viewBinding.toolbar.getMenu().findItem(R.id.refresh_item)
-                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_refresh));
-                viewBinding.toolbar.getMenu().findItem(R.id.action_search)
-                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_search));
-            }
-        };
-        iconTintManager.updateTint();
+        ToolbarIconTintManager iconTintManager =
+                new ToolbarIconTintManager(viewBinding.toolbar, viewBinding.collapsingToolbar);
         viewBinding.appBar.addOnOffsetChangedListener(iconTintManager);
+        viewBinding.appBar.addOnOffsetChangedListener(new OnCollapseChangeListener(viewBinding.collapsingToolbar) {
+            @Override
+            public void onCollapseChanged(boolean isCollapsed) {
+                if (feed == null) {
+                    return;
+                }
+                viewBinding.toolbar.setTitle(isCollapsed ? feed.getTitle() : "");
+            }
+        });
 
         nextPageLoader = new MoreContentListFooterUtil(viewBinding.moreContent.moreContentListFooter);
         nextPageLoader.setClickListener(() -> {
@@ -257,6 +266,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             viewBinding.toolbar.getMenu().findItem(R.id.refresh_item).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.rename_item).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.remove_feed).setVisible(false);
+            viewBinding.toolbar.getMenu().findItem(R.id.remove_all_inbox_item).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.action_search).setVisible(false);
         }
     }
@@ -303,6 +313,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 // Make sure fragment is hidden before actually starting to delete
                 getActivity().getSupportFragmentManager().executePendingTransactions();
             });
+        } else if (item.getItemId() == R.id.remove_all_inbox_item) {
+            showRemoveAllDialog();
         } else if (item.getItemId() == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(feed.getId(), feed.getTitle()));
         } else {
@@ -474,6 +486,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (feed.getState() != Feed.STATE_SUBSCRIBED) {
             viewBinding.header.descriptionContainer.setVisibility(View.VISIBLE);
             viewBinding.header.headerDescriptionLabel.setText(HtmlToPlainText.getPlainText(feed.getDescription()));
+            viewBinding.header.subscribeNagLabel.setVisibility(isFirstTime ? View.GONE : View.VISIBLE);
         } else if (feed.getItemFilter() != null) {
             FeedItemFilter filter = feed.getItemFilter();
             if (filter.getValues().length > 0) {
@@ -553,6 +566,20 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     .addToBackStack("Info")
                     .commitAllowingStateLoss();
         }
+    }
+
+    private void showRemoveAllDialog() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+        builder.setTitle(R.string.remove_all_inbox_label);
+        builder.setMessage(R.string.remove_all_inbox_confirmation_msg);
+
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+            dialog.dismiss();
+            DBWriter.removeFeedNewFlag(feedID);
+            ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.removed_all_inbox_msg, Toast.LENGTH_SHORT);
+        });
+        builder.setNegativeButton(R.string.cancel_label, null);
+        builder.show();
     }
 
     private void loadFeedImage() {

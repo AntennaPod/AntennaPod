@@ -155,10 +155,14 @@ public class FeedUpdateWorker extends Worker {
                     return;
                 }
                 try {
+                    Feed savedFeed;
                     if (feed.isLocalFeed()) {
-                        LocalFeedUpdater.updateFeed(feed, getApplicationContext(), null);
+                        savedFeed = LocalFeedUpdater.updateFeed(feed, getApplicationContext(), null);
                     } else {
-                        refreshFeed(feed, force);
+                        savedFeed = refreshFeed(feed, force);
+                    }
+                    if (savedFeed != null) {
+                        newEpisodesNotification.showIfNeeded(getApplicationContext(), savedFeed);
                     }
                 } catch (Exception e) {
                     DBWriter.setFeedLastUpdateFailed(feed.getId(), true);
@@ -183,7 +187,7 @@ public class FeedUpdateWorker extends Worker {
         }
     }
 
-    void refreshFeed(Feed feed, boolean force) throws Exception {
+    Feed refreshFeed(Feed feed, boolean force) throws Exception {
         boolean nextPage = getInputData().getBoolean(FeedUpdateManagerImpl.EXTRA_NEXT_PAGE, false)
                 && feed.getNextPageLink() != null;
         if (nextPage) {
@@ -205,11 +209,11 @@ public class FeedUpdateWorker extends Worker {
 
         if (!downloader.getResult().isSuccessful()) {
             if (downloader.cancelled || downloader.getResult().getReason() == DownloadError.ERROR_DOWNLOAD_CANCELLED) {
-                return;
+                return null;
             }
             DBWriter.setFeedLastUpdateFailed(request.getFeedfileId(), true);
             DBWriter.addDownloadStatus(downloader.getResult());
-            return;
+            return null;
         }
 
         FeedParserTask parserTask = new FeedParserTask(request);
@@ -217,25 +221,25 @@ public class FeedUpdateWorker extends Worker {
         if (!parserTask.isSuccessful()) {
             DBWriter.setFeedLastUpdateFailed(request.getFeedfileId(), true);
             DBWriter.addDownloadStatus(parserTask.getDownloadStatus());
-            return;
+            return null;
         }
         feedHandlerResult.feed.setLastRefreshAttempt(System.currentTimeMillis());
         Feed savedFeed = FeedDatabaseWriter.updateFeed(getApplicationContext(), feedHandlerResult.feed, false);
 
         if (request.getFeedfileId() == 0) {
-            return; // No download logs for new subscriptions
+            return savedFeed; // No download logs for new subscriptions
         }
         // we create a 'successful' download log if the feed's last refresh failed
         List<DownloadResult> log = DBReader.getFeedDownloadLog(request.getFeedfileId());
         if (!log.isEmpty() && !log.get(0).isSuccessful()) {
             DBWriter.addDownloadStatus(parserTask.getDownloadStatus());
         }
-        newEpisodesNotification.showIfNeeded(getApplicationContext(), savedFeed);
         if (downloader.permanentRedirectUrl != null) {
             DBWriter.updateFeedDownloadURL(request.getSource(), downloader.permanentRedirectUrl);
         } else if (feedHandlerResult.redirectUrl != null
                 && !feedHandlerResult.redirectUrl.equals(request.getSource())) {
             DBWriter.updateFeedDownloadURL(request.getSource(), feedHandlerResult.redirectUrl);
         }
+        return savedFeed;
     }
 }

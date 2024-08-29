@@ -68,6 +68,7 @@ public class PreferenceUpgrader {
                     UserPreferences.setAllowMobileEpisodeDownload(true);
                     UserPreferences.setAllowMobileImages(true);
                     break;
+                default: // Fall-through to "images"
                 case "images":
                     UserPreferences.setAllowMobileImages(true);
                     break;

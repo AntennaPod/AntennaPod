@@ -111,7 +111,6 @@
   <string name="close_label">閉じる</string>
   <string name="retry_label">再試行</string>
   <string name="auto_download_label">自動ダウンロードに含める</string>
-  <string name="auto_delete_label">エピソードを自動削除</string>
   <string name="feed_volume_adapdation">音量の調整</string>
   <string name="feed_volume_adaptation_summary">このポッドキャストのエピソードの音量を調整する: %1$s</string>
   <string name="feed_volume_reduction_off">調整なし</string>
@@ -307,7 +306,6 @@
   <string name="random">ランダム</string>
   <string name="smart_shuffle">スマートシャッフル</string>
   <string name="size">サイズ</string>
-  <string name="clear_queue_confirmation_msg">キューにあるすべてのエピソードをクリアすることを確認してください。</string>
   <string name="time_left_label">残り時間:\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">プリセット</string>
@@ -337,7 +335,6 @@
   <string name="download_pref_details">詳細</string>
   <string name="import_export_pref">インポート/エクスポート</string>
   <string name="import_export_search_keywords">バックアップ、復元</string>
-  <string name="appearance">外観</string>
   <string name="external_elements">外部要素</string>
   <string name="interruptions">割り込み</string>
   <string name="playback_control">再生コントロール</string>
@@ -345,7 +342,6 @@
   <string name="preference_search_hint">検索…</string>
   <string name="preference_search_no_results">結果はありません</string>
   <string name="preference_search_clear_history">履歴をクリア</string>
-  <string name="pref_episode_cleanup_title">エピソードクリーンアップ</string>
   <string name="pref_episode_cleanup_summary">自動ダウンロードによって新しいエピソード用のスペースが必要な場合に、削除の対象となるエピソード</string>
   <string name="pref_pauseOnDisconnect_sum">ヘッドフォンまたはBluetoothの接続が切断された時、再生を一時停止します</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">ヘッドフォンが再接続された時に再生を再開します</string>
@@ -354,13 +350,10 @@
   <string name="pref_hardware_forward_button_summary">進むボタンの動作をカスタマイズします</string>
   <string name="pref_hardware_previous_button_title">戻るボタン</string>
   <string name="pref_hardware_previous_button_summary">戻るボタンの動作をカスタマイズします</string>
-  <string name="button_action_fast_forward">早送り</string>
   <string name="button_action_rewind">巻き戻し</string>
   <string name="button_action_skip_episode">エピソードをスキップ</string>
   <string name="button_action_restart_episode">エピソードを最初から再生</string>
   <string name="pref_followQueue_sum">再生が完了した時に次のキューのアイテムに移動します</string>
-  <string name="pref_auto_delete_sum">再生が完了した時にエピソードを削除します</string>
-  <string name="pref_auto_delete_title">自動削除</string>
   <string name="pref_auto_local_delete_title">ローカルフォルダーから自動削除</string>
   <string name="pref_auto_local_delete_sum">ローカルフォルダーに自動削除機能を適用</string>
   <string name="pref_auto_local_delete_dialog_body">これにより AntennaPod のエピソードがローカルフォルダーから削除され、デバイスのストレージからメディアファイルが削除されます。AntennaPod により再度ダウンロードされることはありません。自動削除を有効にしますか?</string>
@@ -415,8 +408,6 @@
   <string name="pref_autodl_wifi_filter_sum">選択したWi-Fiネットワークに対してのみ自動ダウンロードを許可します。</string>
   <string name="pref_automatic_download_on_battery_title">充電時以外にダウンロード</string>
   <string name="pref_automatic_download_on_battery_sum">バッテリーを充電していない時に自動ダウンロードを許可します</string>
-  <string name="pref_episode_cache_title">エピソードキャッシュ</string>
-  <string name="pref_episode_cache_summary">デバイスにキャッシュされるダウンロード済みエピソードの合計数。この数に達すると自動ダウンロードが中断されます。</string>
   <string name="pref_episode_cover_title">エピソードカバーを使用する</string>
   <string name="pref_episode_cover_summary">エピソード固有のカバー画像が利用可能な場合は常にリストで使います。チェックを外すと、アプリは常にポッドキャストのカバー画像を使います。</string>
   <string name="pref_show_remain_time_title">残り時間を表示</string>
@@ -435,8 +426,6 @@
   <string name="pref_feed_skip_intro_toast">最初の %d 秒をスキップしました</string>
   <string name="pref_playback_time_respects_speed_title">メディア情報を再生速度に合わせる</string>
   <string name="pref_playback_time_respects_speed_sum">表示位置と時間が再生速度に合わせて調整されます</string>
-  <string name="pref_fast_forward">早送りのスキップ時間</string>
-  <string name="pref_fast_forward_sum">早送りボタンをタップしたときに進む秒数をカスタマイズします</string>
   <string name="pref_rewind">巻き戻しのスキップ時間</string>
   <string name="pref_rewind_sum">巻き戻しボタンをタップしたときに戻る秒数をカスタマイズします</string>
   <string name="pref_expandNotify_title">優先度の高い通知</string>
@@ -485,8 +474,6 @@
   <string name="new_episode_notification_disabled">通知が無効</string>
   <string name="pref_feed_settings_dialog_msg">この設定は各ポッドキャストに固有のものです。ポッドキャストのページを開くと、変更することができます。</string>
   <string name="pref_contribute">貢献</string>
-  <string name="pref_show_subscription_title">購読タイトルを表示</string>
-  <string name="pref_show_subscription_title_summary">カバー画像の下に購読タイトルを表示します</string>
   <string name="pref_new_episodes_action_title">新規エピソードのアクション</string>
   <string name="pref_new_episodes_action_sum">新規エピソードに対して行う動作</string>
   <!--About screen-->
@@ -615,7 +602,6 @@
   <string name="gpodnetsync_username_characters_error">ユーザー名には文字、数字、ハイフン、下線のみ含めることができます。</string>
   <!--Directory chooser-->
   <string name="choose_data_directory">データフォルダーの選択</string>
-  <string name="choose_data_directory_message">基本となるデータフォルダーを選択してください。AntennaPodは、適切なサブディレクトリを作成します。</string>
   <string name="choose_data_directory_available_space">%1$s / %2$s 空き</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">他のアプリがサウンドを再生したい時に、音量を下げる代わりに再生を一時停止します</string>
   <string name="pref_pausePlaybackForFocusLoss_title">割り込み時に一時停止</string>
@@ -623,18 +609,13 @@
   <string name="rating_tagline">%1$s から、%2$s%3$d%4$s 時間のポッドキャストを再生しました。</string>
   <string name="rating_contribute_label">翻訳、サポート、デザイン、またはコーディングといった形で貢献してくれると嬉しいです!</string>
   <string name="rating_contribute_button">貢献する方法</string>
-  <string name="rating_volunteers_label">AantennaPod はボランティアにより開発されています。高評価いただけると幸いです。</string>
   <string name="rating_rate">AntennaPod を評価</string>
   <string name="rating_later">後で</string>
   <!--Online feed view-->
   <string name="subscribe_label">購読</string>
-  <string name="subscribing_label">購読中…</string>
-  <string name="preview_episode">プレビュー</string>
-  <string name="stop_preview">プレビュー停止</string>
   <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">戻る</string>
   <string name="rewind_label">巻き戻し</string>
-  <string name="fast_forward_label">早送り</string>
   <string name="increase_speed">速度アップ</string>
   <string name="decrease_speed">速度ダウン</string>
   <string name="media_type_video_label">動画</string>
@@ -646,7 +627,6 @@
   <string name="load_next_page_label">次のページをロード</string>
   <string name="position">位置: %1$s</string>
   <string name="remaining_time">残り時間: %1$s</string>
-  <string name="apply_action">アクションを適用</string>
   <string name="play_chapter">チャプターを再生</string>
   <string name="prev_chapter">前のチャプター</string>
   <string name="next_chapter">次のチャプター</string>
@@ -679,7 +659,6 @@
   <string name="statistics_expected_next_episode_unknown">不明</string>
   <string name="statistics_view_all">すべてのポッドキャストを表示 »</string>
   <string name="edit_url_menu">フィードのURLを編集</string>
-  <string name="edit_url_confirmation_msg">RSSのアドレスを変更すると、ポッドキャストの再生状態とエピソードのリストが壊れてしまう可能性があります。RSSのアドレスを変更することはおすすめしません。何か問題が起きたとしてもサポートは提供されません。この変更は元に戻せません。アドレスを元に戻すだけでは壊れた購読を修復することはできません。続行する前にバックアップを作成することをおすすめします。</string>
   <!--Podcast release schedules-->
   <string name="release_schedule_daily">毎日</string>
   <string name="release_schedule_weekdays">週末</string>

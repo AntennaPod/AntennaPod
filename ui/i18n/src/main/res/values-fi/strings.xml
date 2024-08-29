@@ -109,7 +109,6 @@
   <string name="close_label">Sulje</string>
   <string name="retry_label">Yritä uudelleen</string>
   <string name="auto_download_label">Lataa automaattisesti</string>
-  <string name="auto_delete_label">Poista jakso automaattisesti</string>
   <string name="feed_volume_adapdation">Äänenvoimakkuuden säätö</string>
   <string name="feed_volume_reduction_off">Pois käytöstä</string>
   <string name="feed_volume_reduction_light">Vähäinen vaimennus</string>
@@ -312,7 +311,6 @@
   <string name="random">Sekalainen</string>
   <string name="smart_shuffle">Älykäs sekoitus</string>
   <string name="size">Koko</string>
-  <string name="clear_queue_confirmation_msg">Vahvista, että haluat tyhjentää jonon KAIKISTA jaksoista</string>
   <string name="time_left_label">Aikaa jäljellä:\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">Esiasetukset</string>
@@ -342,7 +340,6 @@
   <string name="download_pref_details">Tietoja</string>
   <string name="import_export_pref">Tuo/Vie</string>
   <string name="import_export_search_keywords">varmuuskopiointi, palautus</string>
-  <string name="appearance">Näkymä</string>
   <string name="external_elements">Ulkoiset elementit</string>
   <string name="interruptions">Keskeytykset</string>
   <string name="playback_control">Toistonhallinta</string>
@@ -350,7 +347,6 @@
   <string name="preference_search_hint">Hae...</string>
   <string name="preference_search_no_results">Ei tuloksia</string>
   <string name="preference_search_clear_history">Tyhjennä historia</string>
-  <string name="pref_episode_cleanup_title">Jakson siivous</string>
   <string name="pref_episode_cleanup_summary">Jaksot, jotka voidaan poistaa, jos automaattinen lataus tarvitsee tilaa uusille jaksoille</string>
   <string name="pref_pauseOnDisconnect_sum">Pysäytä toisto, kun kuuloke- tai bluetooth-yhteys katkaistaan</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Jatka toistoa, kun kuulokkeet yhdistetään uudestaan</string>
@@ -359,13 +355,10 @@
   <string name="pref_hardware_forward_button_summary">Mukauta eteenpäin-painikkeen toimintaa</string>
   <string name="pref_hardware_previous_button_title">Edellinen-painike</string>
   <string name="pref_hardware_previous_button_summary">Mukauta edellinen-painikkeen toimintaa</string>
-  <string name="button_action_fast_forward">Pikakelaus</string>
   <string name="button_action_rewind">Taaksepäin kelaus</string>
   <string name="button_action_skip_episode">Ohita jakso</string>
   <string name="button_action_restart_episode">Aloita jakso alusta</string>
   <string name="pref_followQueue_sum">Hyppää seuraavaan jonossa kun toisto valmistuu</string>
-  <string name="pref_auto_delete_sum">Poista jakso toiston loputtua</string>
-  <string name="pref_auto_delete_title">Automaattinen poisto</string>
   <string name="pref_smart_mark_as_played_sum">Merkitse jaksot toistetuiksi, vaikka vähemmän kuin tietty määrä sekunteja toistoajasta on vielä jäljellä</string>
   <string name="pref_smart_mark_as_played_title">Älykäs toistetuksi merkitseminen</string>
   <string name="pref_skip_keeps_episodes_sum">Säilytä jaksot, kun ne ohitetaan</string>
@@ -414,8 +407,6 @@
   <string name="pref_autodl_wifi_filter_sum">Salli automaattiset lataukset vain sallittujen Wi-Fi-verkkojen kautta.</string>
   <string name="pref_automatic_download_on_battery_title">Lataa, kun akkua ei ladata</string>
   <string name="pref_automatic_download_on_battery_sum">Salli automaattiset lataukset, kun akku ei ole latautumassa</string>
-  <string name="pref_episode_cache_title">Jaksovälimuisti</string>
-  <string name="pref_episode_cache_summary">Ladattuja jaksoja yhteensä välimuistissa tällä laitteella. Automaattinen lataaminen pysäytetään, jos tämä raja ylittyy.</string>
   <string name="pref_episode_cover_title">Käytä jakson kansikuvaa</string>
   <string name="pref_episode_cover_summary">Käytä jaksokohtaista kansikuvaa luetteloissa aina, kun se on saatavilla. Jos tätä ei ole valittu, sovellus käyttää aina podcastin kansikuvaa.</string>
   <string name="pref_show_remain_time_title">Näytä jäljellä oleva aika</string>
@@ -434,7 +425,6 @@
   <string name="pref_feed_skip_intro_toast">Ohitettiin ensimmäiset %d sekuntia</string>
   <string name="pref_playback_time_respects_speed_title">Mukauta mediatietoja toiston nopeuteen</string>
   <string name="pref_playback_time_respects_speed_sum">Näytetty aika ja kesto mukautuvat toiston nopeuteen</string>
-  <string name="pref_fast_forward_sum">Kustomoi sekunnit jonka verran skipataaan kun painat Seuraava nappia.</string>
   <string name="pref_rewind_sum">Mukauta sekunnit jonka verran hypätään takaisin kun painat taakse kelaus -painiketta.</string>
   <string name="pref_expandNotify_title">Korkea ilmoitusprioriteetti</string>
   <string name="pref_expandNotify_sum">Tämä laajentaa ilmoituksen näyttämään toistopainikkeet</string>
@@ -476,8 +466,6 @@
   <string name="new_episode_notification_disabled">Ilmoitus pois käytöstä</string>
   <string name="pref_feed_settings_dialog_msg">Tämä asetus on podcast-kohtainen. Voit muuttaa sitä avaamalla podcastin-sivun.</string>
   <string name="pref_contribute">Osallistu</string>
-  <string name="pref_show_subscription_title">Näytä tilauksen nimi</string>
-  <string name="pref_show_subscription_title_summary">Näytä tilauksen nimi kansikuvan alapuolella</string>
   <!--About screen-->
   <string name="about_pref">Tietoja</string>
   <string name="antennapod_version">AntennaPod versio</string>
@@ -600,7 +588,6 @@
   <string name="gpodnetsync_username_characters_error">Käyttäjätunnukset saavat sisältää vain kirjaimia, numeroita, viivoja ja aliviivoja.</string>
   <!--Directory chooser-->
   <string name="choose_data_directory">Valitse datahakemisto</string>
-  <string name="choose_data_directory_message">Valitse datahakemiston juuri. AntennaPod luo tarvittavat alihakemistot</string>
   <string name="choose_data_directory_available_space">%1$s / %2$s vapaana</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Pysäytä toisto äänenvoimakkuuden hiljentämisen sijasta, kun toinen sovellus haluaa toistaa ääniä</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pysäytä keskeytyksiin</string>
@@ -609,13 +596,9 @@
   <string name="rating_later">Myöhemmin</string>
   <!--Online feed view-->
   <string name="subscribe_label">Tilaa</string>
-  <string name="subscribing_label">Tilataan...</string>
-  <string name="preview_episode">Näyte</string>
-  <string name="stop_preview">Pysäytä näyte</string>
   <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">Takaisin</string>
   <string name="rewind_label">Kelaa takaisin</string>
-  <string name="fast_forward_label">Hyppää eteen</string>
   <string name="increase_speed">Nopeuta</string>
   <string name="decrease_speed">Hidasta</string>
   <string name="media_type_video_label">Video</string>
@@ -626,7 +609,6 @@
   <string name="is_played">Toistettu</string>
   <string name="load_next_page_label">Lataa seuraava sivu</string>
   <string name="position">Kohta: %1$s</string>
-  <string name="apply_action">Käytä toiminto</string>
   <string name="play_chapter">Toista kappale</string>
   <string name="prev_chapter">Edellinen kappale</string>
   <string name="next_chapter">Seuraava kappale</string>
@@ -653,7 +635,6 @@
   <string name="statistics_episodes_started_total">Aloitettuja jaksoja/yhteensä:</string>
   <string name="statistics_view_all">Kaikki podcastit »</string>
   <string name="edit_url_menu">Muokkaa syötteen URLia</string>
-  <string name="edit_url_confirmation_msg">Syötteen osoitteen muokkaaminen voi helposti sotkea podcastin toistotilan ja jaksolistaukset. Sen muokkaamista EI suositella, EIKÄ tukea tarjota mikäli jokin menee vikaan. Tätä ei saa tekemättömäksi. Sotkeutunutta tilausta EI voi korjata yksinkertaisesti vaihtamalla osoite takaisin. Varmuuskopion ottaminen ennen jatkamista on suositeltavaa.</string>
   <!--Podcast release schedules-->
   <string name="release_schedule_daily">päivittäin</string>
   <string name="release_schedule_weekly">viikoittain</string>

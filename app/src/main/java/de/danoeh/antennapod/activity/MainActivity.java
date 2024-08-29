@@ -139,7 +139,7 @@ public class MainActivity extends CastEnabledActivity {
                 loadFragment(UserPreferences.getDefaultPage(), null);
             } else {
                 String lastFragment = NavDrawerFragment.getLastNavFragment(this);
-                if (ArrayUtils.contains(NavDrawerFragment.NAV_DRAWER_TAGS, lastFragment)) {
+                if (ArrayUtils.contains(getResources().getStringArray(R.array.nav_drawer_section_tags), lastFragment)) {
                     loadFragment(lastFragment, null);
                 } else {
                     try {
@@ -431,17 +431,14 @@ public class MainActivity extends CastEnabledActivity {
         Validate.notNull(fragment);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        switch (transition) {
-            case FADE:
-                transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-                break;
-            case SLIDE:
-                transaction.setCustomAnimations(
-                        R.anim.slide_right_in,
-                        R.anim.slide_left_out,
-                        R.anim.slide_left_in,
-                        R.anim.slide_right_out);
-                break;
+        if (transition == TransitionEffect.FADE) {
+            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        } else if (transition == TransitionEffect.SLIDE) {
+            transaction.setCustomAnimations(
+                    R.anim.slide_right_in,
+                    R.anim.slide_left_out,
+                    R.anim.slide_left_in,
+                    R.anim.slide_right_out);
         }
 
         transaction

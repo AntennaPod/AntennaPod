@@ -18,11 +18,11 @@ import androidx.media3.common.util.UnstableApi;
 import androidx.media3.database.StandaloneDatabaseProvider;
 import androidx.media3.datasource.DataSource;
 import androidx.media3.datasource.DefaultDataSource;
+import androidx.media3.datasource.DefaultHttpDataSource;
 import androidx.media3.datasource.HttpDataSource;
 import androidx.media3.datasource.cache.CacheDataSource;
 import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor;
 import androidx.media3.datasource.cache.SimpleCache;
-import androidx.media3.datasource.okhttp.OkHttpDataSource;
 import androidx.media3.exoplayer.DefaultLoadControl;
 import androidx.media3.exoplayer.DefaultRenderersFactory;
 import androidx.media3.common.Format;
@@ -48,14 +48,12 @@ import de.danoeh.antennapod.net.common.UserAgentInterceptor;
 import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.danoeh.antennapod.net.common.HttpCredentialEncoder;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.model.playback.Playable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import okhttp3.Call;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -235,16 +233,14 @@ public class ExoPlayerWrapper {
     public void setDataSource(String s, String user, String password)
             throws IllegalArgumentException, IllegalStateException {
         Log.d(TAG, "setDataSource: " + s);
-        final OkHttpDataSource.Factory httpDataSourceFactory =
-                new OkHttpDataSource.Factory((Call.Factory) AntennapodHttpClient.getHttpClient())
-                        .setUserAgent(UserAgentInterceptor.USER_AGENT);
+        final DefaultHttpDataSource.Factory httpDataSourceFactory = new DefaultHttpDataSource.Factory();
+        httpDataSourceFactory.setUserAgent(UserAgentInterceptor.USER_AGENT);
+        httpDataSourceFactory.setAllowCrossProtocolRedirects(true);
+        httpDataSourceFactory.setKeepPostFor302Redirects(true);
 
         if (!TextUtils.isEmpty(user) && !TextUtils.isEmpty(password)) {
             final HashMap<String, String> requestProperties = new HashMap<>();
-            requestProperties.put(
-                    "Authorization",
-                    HttpCredentialEncoder.encode(user, password, "ISO-8859-1")
-            );
+            requestProperties.put("Authorization", HttpCredentialEncoder.encode(user, password, "ISO-8859-1"));
             httpDataSourceFactory.setDefaultRequestProperties(requestProperties);
         }
         DataSource.Factory dataSourceFactory = new DefaultDataSource.Factory(context, httpDataSourceFactory);
@@ -278,14 +274,22 @@ public class ExoPlayerWrapper {
     public void setVolume(float v, float v1) {
         if (v > 1) {
             exoPlayer.setVolume(1f);
-            if (loudnessEnhancer != null) {
-                loudnessEnhancer.setEnabled(true);
-                loudnessEnhancer.setTargetGain((int) (1000 * (v - 1)));
+            try {
+                if (loudnessEnhancer != null) {
+                    loudnessEnhancer.setEnabled(true);
+                    loudnessEnhancer.setTargetGain((int) (1000 * (v - 1)));
+                }
+            } catch (Exception e) {
+                Log.d(TAG, e.toString());
             }
         } else {
             exoPlayer.setVolume(v);
-            if (loudnessEnhancer != null) {
-                loudnessEnhancer.setEnabled(false);
+            try {
+                if (loudnessEnhancer != null) {
+                    loudnessEnhancer.setEnabled(false);
+                }
+            } catch (Exception e) {
+                Log.d(TAG, e.toString());
             }
         }
     }
