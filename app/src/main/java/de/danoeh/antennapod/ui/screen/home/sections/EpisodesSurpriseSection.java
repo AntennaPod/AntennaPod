@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.ui.episodeslist.HorizontalItemListAdapter;
 import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -121,6 +122,11 @@ public class EpisodesSurpriseSection extends HomeSection {
                 listAdapter.notifyItemChangedCompat(pos);
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FeedListUpdateEvent event) {
+        loadItems();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
