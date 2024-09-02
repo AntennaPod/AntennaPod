@@ -483,6 +483,38 @@ public class Feed {
         this.state = state;
     }
 
+    public boolean hasEpisodeInApp() {
+        if (items == null) {
+            return false;
+        }
+        for (FeedItem item : items) {
+            if (item.isTagged(FeedItem.TAG_FAVORITE)
+                    || item.isTagged(FeedItem.TAG_QUEUE)
+                    || item.isDownloaded()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasInteractedWithEpisode() {
+        if (items == null) {
+            return false;
+        }
+        for (FeedItem item : items) {
+            if (item.isTagged(FeedItem.TAG_FAVORITE)
+                    || item.isTagged(FeedItem.TAG_QUEUE)
+                    || item.isDownloaded()
+                    || item.isPlayed()) {
+                return true;
+            }
+            if (item.getMedia() != null && item.getMedia().getPosition() > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
