@@ -3,7 +3,6 @@ package de.danoeh.antennapod.storage.database;
 import android.content.Context;
 import android.util.Log;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
 
@@ -33,13 +32,8 @@ public class NonSubscribedFeedsCleaner {
             return false;
         } else if (feed.getItems() == null) {
             return false;
-        }
-        for (FeedItem item : feed.getItems()) {
-            if (item.isTagged(FeedItem.TAG_FAVORITE)
-                    || item.isTagged(FeedItem.TAG_QUEUE)
-                    || item.isDownloaded()) {
-                return false;
-            }
+        } else if (feed.hasEpisodeInApp()) {
+            return false;
         }
         return feed.getLastRefreshAttempt() < System.currentTimeMillis() - TIME_TO_KEEP;
     }
