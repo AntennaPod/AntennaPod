@@ -129,12 +129,12 @@
   <string name="episode_cleanup_queue_removal">Cando non estea na cola</string>
   <string name="episode_cleanup_after_listening">Após rematar</string>
   <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 hora após rematar</item>
-    <item quantity="other">%d horas após rematar</item>
+    <item quantity="one">%d hora despois de finalizar</item>
+    <item quantity="other">%d horas despois de finalizar</item>
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 día após rematar</item>
-    <item quantity="other">%d días após rematar</item>
+    <item quantity="one">%d día despois de finalizar</item>
+    <item quantity="other">%d días despois de finalizar</item>
   </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d / %2$d seleccionado</item>
@@ -203,7 +203,7 @@
   <string name="delete_label">Borrar</string>
   <string name="delete_episode_label">Eliminar episodio</string>
   <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">Eliminado 1 episodio descargado.</item>
+    <item quantity="one">Eliminado %d episodio descargado.</item>
     <item quantity="other">Eliminados %d episodios descargados.</item>
   </plurals>
   <string name="remove_inbox_label">Retirar da lista de novidades</string>
@@ -582,19 +582,19 @@
   <string name="time_minutes">minutos</string>
   <string name="time_hours">horas</string>
   <plurals name="time_seconds_quantified">
-    <item quantity="one">1 segundo</item>
+    <item quantity="one">%d segundo</item>
     <item quantity="other">%d segundos</item>
   </plurals>
   <plurals name="time_minutes_quantified">
-    <item quantity="one">1 minuto</item>
+    <item quantity="one">%d minuto</item>
     <item quantity="other">%d minutos</item>
   </plurals>
   <plurals name="time_hours_quantified">
-    <item quantity="one">1 hora</item>
+    <item quantity="one">%d hora</item>
     <item quantity="other">%d horas</item>
   </plurals>
   <plurals name="time_days_quantified">
-    <item quantity="one">1 día</item>
+    <item quantity="one">%d día</item>
     <item quantity="other">%d días</item>
   </plurals>
   <string name="auto_enable_label">Activar automáticamente o temporizador ao iniciar a reprodución</string>

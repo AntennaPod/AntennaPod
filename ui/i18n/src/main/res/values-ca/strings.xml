@@ -128,14 +128,6 @@
   <string name="episode_cleanup_except_favorite_removal">Quan no és favorit</string>
   <string name="episode_cleanup_queue_removal">Quan no és a la cua</string>
   <string name="episode_cleanup_after_listening">Després d\'acabar</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 hora després d\'acabar</item>
-    <item quantity="other">%d hores després d\'acabar</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 dia després d\'acabar</item>
-    <item quantity="other">%d dies després d\'acabar</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d seleccionat</item>
     <item quantity="other">%1$d/%2$d seleccionats</item>
@@ -201,10 +193,6 @@
   <string name="stream_label">Reprodueix sense baixar</string>
   <string name="delete_label">Esborra</string>
   <string name="delete_episode_label">Esborrar episodi</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 episodi descarregat, suprimit.</item>
-    <item quantity="other">%d episodis baixats, suprimits.</item>
-  </plurals>
   <string name="remove_inbox_label">Elimina de la Safata d\'entrada</string>
   <string name="removed_inbox_label">Eliminat de la Safata d\'entrada</string>
   <string name="mark_read_label">Marca com a reproduït</string>
@@ -238,6 +226,9 @@
     <item quantity="other">%d episodis eliminats de la Safata d\'entrada.</item>
   </plurals>
   <string name="add_to_favorite_label">Afegeix a preferits</string>
+  <string name="show_transcript">Mostra la transcripció</string>
+  <string name="transcript">Transcripció</string>
+  <string name="transcript_follow">Segueix l\'àudio</string>
   <string name="remove_from_favorite_label">Suprimeix de preferits</string>
   <string name="visit_website_label">Visita el lloc web</string>
   <string name="skip_episode_label">Omet l\'episodi</string>
@@ -321,6 +312,7 @@
   <string name="random">Aleatori</string>
   <string name="smart_shuffle">Reproducció intel·ligent</string>
   <string name="size">Mida</string>
+  <string name="clear_queue_confirmation_msg">Confirmeu que voleu suprimir TOTS els episodis de la cua</string>
   <string name="time_left_label">Temps restant:\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">Valors predeterminats</string>
@@ -563,22 +555,6 @@
   <string name="time_seconds">segons</string>
   <string name="time_minutes">minuts</string>
   <string name="time_hours">hores</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 segon</item>
-    <item quantity="other">%d segons</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 minut</item>
-    <item quantity="other">%d minuts</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 hora</item>
-    <item quantity="other">%d hores</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">1 dia</item>
-    <item quantity="other">%ddies</item>
-  </plurals>
   <string name="auto_enable_label">Activació automàtica del temporitzador en reproduir</string>
   <string name="auto_enable_label_with_times">Activa el temporitzador de son automàticament en reproduir entre les %1$si les %2$s</string>
   <string name="auto_enable_change_times">Canvia el rang de temps</string>
@@ -679,6 +655,7 @@
   <string name="statistics_expected_next_episode_unknown">Desconegut</string>
   <string name="statistics_view_all">Veure per tots els podcasts »</string>
   <string name="edit_url_menu">Edita l\'enllaç del canal</string>
+  <string name="edit_url_confirmation_msg">Canviar l\'adreça RSS pot trencar fàcilment l\'estat de reproducció i les llistes d\'episodis del pòdcast. NO recomanem canviar-la i NO oferirem suport si alguna cosa va malament. Això no es pot desfer. La subscripció trencada NO es pot reparar simplement recuperant l\'adreça anterior. Us suggerim que creeu una còpia de seguretat abans de continuar.</string>
   <!--Podcast release schedules-->
   <string name="release_schedule_daily">cada dia</string>
   <string name="release_schedule_weekdays">els caps de setmana</string>
@@ -755,6 +732,7 @@
   <string name="proxy_port_invalid_error">El port no és vàlid</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Número de columnes</string>
+  <string name="subscription_display_list">Llista</string>
   <!--Notification channels-->
   <string name="notification_group_errors">Errors</string>
   <string name="notification_group_news">Notícies</string>

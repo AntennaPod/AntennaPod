@@ -125,20 +125,6 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="episode_cleanup_except_favorite_removal">Pa n\'emañ ket er sinedoù</string>
   <string name="episode_cleanup_queue_removal">Pa n\'emañ ket el lost</string>
   <string name="episode_cleanup_after_listening">Goude bezañ echuet</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">%d eur goude bezañ selaouet</item>
-    <item quantity="two">%d eur goude bezañ selaouet</item>
-    <item quantity="few">%d eur goude bezañ selaouet</item>
-    <item quantity="many">%d eur goude bezañ selaouet</item>
-    <item quantity="other">%d eur goude bezañ selaouet</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">%d devezh goude vefe echuet </item>
-    <item quantity="two">%d zevezh goude vefe echuet </item>
-    <item quantity="few">%d devezh goude vefe echuet </item>
-    <item quantity="many">%d a zevezhioù goude vefe echuet </item>
-    <item quantity="other">%d devezh goude vefe echuet </item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d diuzet</item>
     <item quantity="two">%1$d/%2$d diuzet</item>
@@ -220,13 +206,6 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="stream_label">Streaming</string>
   <string name="delete_label">Dilemel</string>
   <string name="delete_episode_label">Dilemel ar rann</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">Dilamet ez eus bet 1 rann bellgarget.</item>
-    <item quantity="two">Dilamet ez eus bet %d rann pellgarget.</item>
-    <item quantity="few">Dilamet ez eus bet %d rann pellgarget.</item>
-    <item quantity="many">Dilamet ez eus bet %d rann pellgarget.</item>
-    <item quantity="other">Dilamet ez eus bet %d rann pellgarget.</item>
-  </plurals>
   <string name="remove_inbox_label">Tennañ eus ar voest degemer</string>
   <string name="removed_inbox_label">Tennet eo bet eus ar voest degemer</string>
   <string name="mark_read_label">Merkañ evel lennet</string>
@@ -583,34 +562,6 @@ Digorit al lañser evit ouzhpennañ unan.</string>
   <string name="time_seconds">eilennoù</string>
   <string name="time_minutes">munutennoù</string>
   <string name="time_hours">eurioù</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">%d eilenn</item>
-    <item quantity="two">%d eilenn</item>
-    <item quantity="few">%d eilenn</item>
-    <item quantity="many">%d a eilennoù</item>
-    <item quantity="other">%d eilenn</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">%d vunutenn</item>
-    <item quantity="two">%d munutenn</item>
-    <item quantity="few">%d munutenn</item>
-    <item quantity="many">%d a vunutennoù</item>
-    <item quantity="other">%d munutenn</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">%d eur</item>
-    <item quantity="two">%d eur</item>
-    <item quantity="few">%d eur</item>
-    <item quantity="many">%d eur</item>
-    <item quantity="other">%d eur</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">1 devezh</item>
-    <item quantity="two">%d zevezh</item>
-    <item quantity="few">%d devezh</item>
-    <item quantity="many">%d devezh</item>
-    <item quantity="other">%d devezh</item>
-  </plurals>
   <string name="auto_enable_label">Gweredekaat ent emgefreek ar munuter pa vez kroget gant al lenn</string>
   <string name="auto_enable_change_times">Kemmañ an tachad eurioù</string>
   <string name="sleep_timer_enabled_label">Harzh emgefreek gweredekaet</string>

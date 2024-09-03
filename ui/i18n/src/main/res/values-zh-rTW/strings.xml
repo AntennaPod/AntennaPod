@@ -128,12 +128,6 @@
   <string name="episode_cleanup_except_favorite_removal">若未標記為最愛</string>
   <string name="episode_cleanup_queue_removal">若未列入待播清單</string>
   <string name="episode_cleanup_after_listening">聽完後</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="other">聽完後 %d 小時</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="other">聽完後 %d 天</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="other">%1$d/%2$d 被選取</item>
   </plurals>
@@ -191,9 +185,6 @@
   <string name="stream_label">串流播放</string>
   <string name="delete_label">刪除</string>
   <string name="delete_episode_label">刪除單集</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="other">%d 已刪除下載的集數</item>
-  </plurals>
   <string name="remove_inbox_label">從收件匣中移除</string>
   <string name="removed_inbox_label">從收件匣中移除</string>
   <string name="mark_read_label">標記為已播放</string>
@@ -451,15 +442,6 @@
   <string name="time_seconds">秒</string>
   <string name="time_minutes">分鐘</string>
   <string name="time_hours">小時</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="other">%d 秒</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="other">%d 分鐘</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="other">%d 小時</item>
-  </plurals>
   <string name="sleep_timer_enabled_label">已設定睡眠定時</string>
   <!--Synchronisation-->
   <string name="synchronization_host_label">伺服器位址</string>

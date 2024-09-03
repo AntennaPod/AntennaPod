@@ -76,18 +76,6 @@
   <string name="episode_cleanup_except_favorite_removal">Kai nėra mėgstamas</string>
   <string name="episode_cleanup_queue_removal">Jei nėra eilėje</string>
   <string name="episode_cleanup_after_listening">Pabaigus klausyti</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">Praėjus 1 valandai po perklausymo</item>
-    <item quantity="few">Praėjus %d valandoms po perklausymo</item>
-    <item quantity="many">Praėjus %d valandoms po perklausymo</item>
-    <item quantity="other">Praėjus %d valandoms po perklausymo</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">Praėjus 1 dienai nuo perklausymo</item>
-    <item quantity="few">Praėjus %d dienoms nuo perklausymo</item>
-    <item quantity="many">Praėjus %d dienų nuo perklausymo</item>
-    <item quantity="other">Praėjus %d dienų nuo perklausymo</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d pažymėtas</item>
     <item quantity="few">%1$d/%2$d pažymėti</item>
@@ -144,12 +132,6 @@
   <string name="pause_label">Pristabdyti</string>
   <string name="stream_label">Klausytis tiesiogiai</string>
   <string name="delete_label">Ištrinti</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 atsiųstas epizodas ištrintas.</item>
-    <item quantity="few">%d atsiųsti epizodai ištrinti.</item>
-    <item quantity="many">%d atsiųsti epizodai ištrinti.</item>
-    <item quantity="other">%d atsiųsti epizodai ištrinti.</item>
-  </plurals>
   <string name="mark_read_label">Pažymėti kaip perklausytą</string>
   <string name="marked_as_played_label">Pažymėtas kaip perklausytas</string>
   <string name="marked_as_unplayed_label">Pažymėtas kaip neperklausytas</string>
@@ -401,24 +383,6 @@
   <string name="time_seconds">sekundės</string>
   <string name="time_minutes">minutės</string>
   <string name="time_hours">valandos</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 sekundė</item>
-    <item quantity="few">%d sekundės</item>
-    <item quantity="many">%d sekundžių</item>
-    <item quantity="other">%d sekundžių</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 minutė</item>
-    <item quantity="few">%d minutės</item>
-    <item quantity="many">%d minučių</item>
-    <item quantity="other">%d minučių</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 valanda</item>
-    <item quantity="few">%d valandos</item>
-    <item quantity="many">%d valandų</item>
-    <item quantity="other">%d valandų</item>
-  </plurals>
   <string name="sleep_timer_enabled_label">Miego laikmatis įjungtas</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">Pasirinkite sinchronizavimo teikėją</string>

@@ -128,14 +128,6 @@
   <string name="episode_cleanup_except_favorite_removal">Kui pole lemmik</string>
   <string name="episode_cleanup_queue_removal">Kui pole järjekorras</string>
   <string name="episode_cleanup_after_listening">Pärast lõpetamist</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 tund pärast lõpetamist</item>
-    <item quantity="other">%d tundi pärast lõpetamist</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 päev pärast lõpetamist</item>
-    <item quantity="other">%d päeva pärast lõpetamist</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d valitud</item>
     <item quantity="other">%1$d/%2$d valitud</item>
@@ -201,10 +193,6 @@
   <string name="stream_label">Voogedastusena</string>
   <string name="delete_label">Kustuta</string>
   <string name="delete_episode_label">Kustuta saade</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 allalaaditud saade kustutatud.</item>
-    <item quantity="other">%d allalaaditud saadet kustutatud.</item>
-  </plurals>
   <string name="remove_inbox_label">Eemalda postkastist</string>
   <string name="removed_inbox_label">Postkastist eemaldatud</string>
   <string name="mark_read_label">Märgi kuulatuks</string>
@@ -562,22 +550,6 @@
   <string name="time_seconds">sekundit</string>
   <string name="time_minutes">minutit</string>
   <string name="time_hours">tundi</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 sekund</item>
-    <item quantity="other">%d sekundit</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 minut</item>
-    <item quantity="other">%d minutit</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 tund</item>
-    <item quantity="other">%d tundi</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">1 päev</item>
-    <item quantity="other">%d päeva</item>
-  </plurals>
   <string name="auto_enable_label">Automaatne unetaimeri aktiveerimine \"Esita\" valimisel</string>
   <string name="auto_enable_label_with_times">Automaatne unetaimeri aktiveerimine kui \"Esita\" valitakse %1$s ja %2$s vahel.</string>
   <string name="auto_enable_change_times">Muuda ajavahemikku</string>

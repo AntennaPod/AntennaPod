@@ -128,18 +128,6 @@
   <string name="episode_cleanup_except_favorite_removal">Коли не вибрано</string>
   <string name="episode_cleanup_queue_removal">Якщо не в черзі</string>
   <string name="episode_cleanup_after_listening">Після закінчення</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 година після завершення</item>
-    <item quantity="few">%d години після завершення </item>
-    <item quantity="many">%d годин після завершення </item>
-    <item quantity="other">%d годин після завершення</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 день після закінчення</item>
-    <item quantity="few">%d дні після закінчення</item>
-    <item quantity="many">%d днів після закінчення</item>
-    <item quantity="other">%d днів після завершення</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d вибрано</item>
     <item quantity="few">%1$d/%2$d вибрано</item>
@@ -218,12 +206,6 @@
   <string name="stream_label">Прослухати без завантаження</string>
   <string name="delete_label">Видалити</string>
   <string name="delete_episode_label">Видалити епізод</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 завантажений епізод видалено.</item>
-    <item quantity="few">%dзавантажених епізоди видалено.</item>
-    <item quantity="many">%dзавантажених епізодів видалено.</item>
-    <item quantity="other">%d завантажених епізодів видалено.</item>
-  </plurals>
   <string name="remove_inbox_label">Вилучити з вхідних</string>
   <string name="removed_inbox_label">Вилучено з вхідних</string>
   <string name="mark_read_label">Позначити як відтворений</string>
@@ -611,30 +593,6 @@
   <string name="time_seconds">секунд</string>
   <string name="time_minutes">хвилин</string>
   <string name="time_hours">годин</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 секунда</item>
-    <item quantity="few">%d секунди</item>
-    <item quantity="many">%d секунд</item>
-    <item quantity="other">%d секунд</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 хвилина</item>
-    <item quantity="few">%d хвилини</item>
-    <item quantity="many">%d хвилин</item>
-    <item quantity="other">%d хвилин</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 година</item>
-    <item quantity="few">%d години</item>
-    <item quantity="many">%d годин</item>
-    <item quantity="other">%d годин</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">1 день</item>
-    <item quantity="few">%d дні</item>
-    <item quantity="many">%d днів</item>
-    <item quantity="other">%d днів</item>
-  </plurals>
   <string name="auto_enable_label">Автоматично активувати таймер сну при натисканні кнопки відтворення</string>
   <string name="auto_enable_label_with_times">Автоматично активувати таймер сну при натисканні на кнопку відтворення в проміжок часу між %1$s та %2$s</string>
   <string name="auto_enable_change_times">Змінити проміжок часу</string>
@@ -716,7 +674,7 @@
   <string name="download_started_talkback">Почалось завантаження %1$s</string>
   <string name="download_completed_talkback">Успішно завантажено %1$s</string>
   <!--Feed settings/information screen-->
-  <string name="authentication_label">Автентикація</string>
+  <string name="authentication_label">Автентифікація</string>
   <string name="authentication_descr">Змінити ваші логін та пароль для подкаста та епізодів</string>
   <string name="feed_tags_label">Мітки</string>
   <string name="feed_tags_summary">Змініть теги цього подкасту, щоб упорядкувати ваші підписки</string>

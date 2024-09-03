@@ -129,12 +129,12 @@
   <string name="episode_cleanup_queue_removal">Når ikke i kø</string>
   <string name="episode_cleanup_after_listening">Efter færdig afspilning</string>
   <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 time efter afslutning</item>
-    <item quantity="other">%d timer efter afslutning</item>
+    <item quantity="one">%d time efter afsluttet afspilning</item>
+    <item quantity="other">%d timer efter afsluttet afspilning</item>
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 dag efter færdig afspilning</item>
-    <item quantity="other">%d dage efter færdig afspilning</item>
+    <item quantity="one">%d dag efter afsluttet afspilning</item>
+    <item quantity="other">%d dage efter afsluttet afspilning</item>
   </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d valgt</item>
@@ -203,7 +203,7 @@
   <string name="delete_label">Slet</string>
   <string name="delete_episode_label">Slet afsnit</string>
   <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 overført afsnit slettet.</item>
+    <item quantity="one">%d overført afsnit slettet.</item>
     <item quantity="other">%d overførte afsnit slettet.</item>
   </plurals>
   <string name="remove_inbox_label">Fjern fra indbakken</string>
@@ -582,19 +582,19 @@
   <string name="time_minutes">minutter</string>
   <string name="time_hours">timer</string>
   <plurals name="time_seconds_quantified">
-    <item quantity="one">1 sekund</item>
+    <item quantity="one">%d sekund</item>
     <item quantity="other">%d sekunder</item>
   </plurals>
   <plurals name="time_minutes_quantified">
-    <item quantity="one">1 minut</item>
+    <item quantity="one">%d minut</item>
     <item quantity="other">%d minutter</item>
   </plurals>
   <plurals name="time_hours_quantified">
-    <item quantity="one">1 time</item>
+    <item quantity="one">%d time</item>
     <item quantity="other">%d timer</item>
   </plurals>
   <plurals name="time_days_quantified">
-    <item quantity="one">1 dag</item>
+    <item quantity="one">%d dag</item>
     <item quantity="other">%d dage</item>
   </plurals>
   <string name="auto_enable_label">Aktivér automatisk slukkefunktion ved at tryk på afspil</string>

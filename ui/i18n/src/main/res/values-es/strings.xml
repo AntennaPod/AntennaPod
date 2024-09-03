@@ -128,16 +128,6 @@
   <string name="episode_cleanup_except_favorite_removal">Cuando no esté en Favoritos</string>
   <string name="episode_cleanup_queue_removal">Cuando no esté en la cola</string>
   <string name="episode_cleanup_after_listening">Después de acabar</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 hora después de acabar</item>
-    <item quantity="many">%d horas después de acabar</item>
-    <item quantity="other">%d horas después de acabar</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 día después de acabar</item>
-    <item quantity="many">%d días después de acabar</item>
-    <item quantity="other">%d días después de acabar</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d seleccionado</item>
     <item quantity="many">%1$d/%2$d seleccionados</item>
@@ -209,11 +199,6 @@
   <string name="stream_label">Escuchar en directo</string>
   <string name="delete_label">Borrar</string>
   <string name="delete_episode_label">Borrar episodio</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">Eliminado 1 episodio descargado.</item>
-    <item quantity="many">Eliminados %d episodios descargados.</item>
-    <item quantity="other">Eliminados %d episodios descargados.</item>
-  </plurals>
   <string name="remove_inbox_label">Borrar de la bandeja de entrada</string>
   <string name="removed_inbox_label">Borrado de la bandeja de entrada</string>
   <string name="mark_read_label">Marcar como reproducido</string>
@@ -577,26 +562,6 @@
   <string name="time_seconds">segundos</string>
   <string name="time_minutes">minutos</string>
   <string name="time_hours">horas</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 segundo</item>
-    <item quantity="many">%d segundos</item>
-    <item quantity="other">%d segundos</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 minuto</item>
-    <item quantity="many">%d minutos</item>
-    <item quantity="other">%d minutos</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 hora</item>
-    <item quantity="many">%d horas</item>
-    <item quantity="other">%d horas</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">1 día</item>
-    <item quantity="many">%d días</item>
-    <item quantity="other">%d días</item>
-  </plurals>
   <string name="auto_enable_label">Activar el temporizador de sueño automáticamente al pulsar play</string>
   <string name="auto_enable_label_with_times">Activar el temporizador de sueño automáticamente al pulsar el botón de play  entre %1$s y %2$s</string>
   <string name="auto_enable_change_times">Cambiar rango de tiempo</string>

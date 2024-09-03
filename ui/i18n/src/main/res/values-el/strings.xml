@@ -128,14 +128,6 @@
   <string name="episode_cleanup_except_favorite_removal">Όταν δεν είναι στα Αγαπημένα</string>
   <string name="episode_cleanup_queue_removal">Όταν δεν βρίσκεται στη λίστα αναπαραγωγής</string>
   <string name="episode_cleanup_after_listening">Με την ολοκλήρωση</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 ώρα μετά το τέλος</item>
-    <item quantity="other">%d ώρα μετά το τέλος</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 ημέρα μετά το τέλος</item>
-    <item quantity="other">%d ημέρες μετά το τέλος</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d επιλέχθηκε</item>
     <item quantity="other">%1$d/%2$d επιλέχθηκαν</item>
@@ -201,10 +193,6 @@
   <string name="stream_label">Ροή</string>
   <string name="delete_label">Διαγραφή</string>
   <string name="delete_episode_label">Διαγραφή επεισοδίου</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 κατεβασμένο επεισόδιο διαγράφηκε.</item>
-    <item quantity="other">%d κατεβασμένα επεισόδια διαγράφηκαν.</item>
-  </plurals>
   <string name="remove_inbox_label">Αφαίρεση από τα Εισερχόμενα</string>
   <string name="removed_inbox_label">Αφαιρέθηκε από τα Εισερχόμενα</string>
   <string name="mark_read_label">Επισήμανση ως αναπαραχθέν</string>
@@ -535,11 +523,11 @@
   <string name="deselect_all_label">Αποεπιλογή όλων</string>
   <string name="opml_export_label">OPML εξαγωγή</string>
   <string name="html_export_label">Εξαγωγή HTML</string>
-  <string name="database_export_label">Εισαγωγή βάσης δεδομένων</string>
+  <string name="database_export_label">Εξαγωγή βάσης δεδομένων</string>
   <string name="automatic_database_export_label">Αυτόματη εξαγωγή βάσης δεδομένων</string>
   <string name="automatic_database_export_summary">Δημιουργήστε αντίγραφο ασφαλείας της βάσης δεδομένων του AntennaPod κάθε 3 ημέρες. Κρατήστε μόνο τα 5 πιο πρόσφατα αντίγραφα ασφαλείας.</string>
   <string name="automatic_database_export_error">Σφάλμα κατά την αυτόματη δημιουργία αντιγράφου ασφαλείας της βάσης δεδομένων</string>
-  <string name="database_import_label">Εξαγωγή βάσης δεδομένων</string>
+  <string name="database_import_label">Εισαγωγή βάσης δεδομένων</string>
   <string name="database_import_warning">Η εισαγωγή βάσης δεδομένων θα αντικαταστήσει όλες τις τρέχουσες συνδρομές και το ιστορικό αναπαραγωγής. Συνίσταται η εξαγωγή της τρέχουσας βάσης δεδομένων ως backup. Επιθυμείτε την αντικατάσταση;</string>
   <string name="please_wait">Παρακαλώ περιμένετε…</string>
   <string name="export_error_label">Σφάλμα κατά την εξαγωγή</string>
@@ -562,22 +550,6 @@
   <string name="time_seconds">δευτερόλεπτα</string>
   <string name="time_minutes">λεπτά</string>
   <string name="time_hours">ώρες</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 δευτερόλεπτο</item>
-    <item quantity="other">%d δευτερόλεπτα</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 λεπτό</item>
-    <item quantity="other">%d λεπτά</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 ώρα</item>
-    <item quantity="other">%d ώρες</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">1 μέρα</item>
-    <item quantity="other">%d μέρες</item>
-  </plurals>
   <string name="auto_enable_label">Αυτόματη ενεργοποίηση του χρονοδιακόπτη ύπνου με το πάτημα αναπαραγωγής</string>
   <string name="auto_enable_label_with_times">Αυτόματη ενεργοποίηση του χρονοδιακόπτη ύπνου κατά το πάτημα του πλήκτρου αναπαραγωγής μεταξύ %1$s και %2$s</string>
   <string name="auto_enable_change_times">Αλλαγή του χρονικού διαστήματος</string>

@@ -125,18 +125,6 @@
   <string name="episode_cleanup_except_favorite_removal">Če ni med priljubljenimi</string>
   <string name="episode_cleanup_queue_removal">Če ni v čakalni vrsti</string>
   <string name="episode_cleanup_after_listening">Takoj po predvajanju</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 uro po predvajanju</item>
-    <item quantity="two">%d uri po predvajanju</item>
-    <item quantity="few">%d ure po predvajanju</item>
-    <item quantity="other">%d ure po predvajanju</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 dan po predvajanju</item>
-    <item quantity="two">%d dneva po predvajanju</item>
-    <item quantity="few">%d dni po predvajanju</item>
-    <item quantity="other">%d dni po predvajanju</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d izbrana</item>
     <item quantity="two">%1$d/%2$d izbrani</item>
@@ -213,12 +201,6 @@
   <string name="stream_label">Pretočno predvajanje</string>
   <string name="delete_label">Briši</string>
   <string name="delete_episode_label">Izbriši epizodo</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 prenesena epizoda izbrisana.</item>
-    <item quantity="two">%d preneseni epizodi izbrisani.</item>
-    <item quantity="few">%d prenesene epizode izbrisane.</item>
-    <item quantity="other">%d prenesene epizode izbrisane.</item>
-  </plurals>
   <string name="remove_inbox_label">Odstrani iz nabiralnika</string>
   <string name="removed_inbox_label">Odstranjeno iz nabiralnika</string>
   <string name="mark_read_label">Označi kot predvajano</string>
@@ -579,30 +561,6 @@
   <string name="time_seconds">sekund</string>
   <string name="time_minutes">minute</string>
   <string name="time_hours">ure</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 sekunda</item>
-    <item quantity="two">%d sekundi</item>
-    <item quantity="few">%d sekunde</item>
-    <item quantity="other">%d sekund</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 minuta</item>
-    <item quantity="two">%d minuti</item>
-    <item quantity="few">%d minute</item>
-    <item quantity="other">%d minut</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 ura</item>
-    <item quantity="two">%d uri</item>
-    <item quantity="few">%d ure</item>
-    <item quantity="other">%d uri</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">1 dan</item>
-    <item quantity="two">%d dneva</item>
-    <item quantity="few">%d dni</item>
-    <item quantity="other">%d dni</item>
-  </plurals>
   <string name="auto_enable_label">Samodejno aktiviraj časovnik spanja ob začetku predvajanja.</string>
   <string name="auto_enable_change_times">Spremeni časovno obdobje</string>
   <string name="sleep_timer_enabled_label">Časovnik za izklop je omogočen</string>
