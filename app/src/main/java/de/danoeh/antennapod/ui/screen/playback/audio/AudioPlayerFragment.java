@@ -23,7 +23,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.elevation.SurfaceColors;
 
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.playback.service.PlaybackController;
@@ -121,8 +120,6 @@ public class AudioPlayerFragment extends Fragment implements
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.playerFragment, externalPlayerFragment, ExternalPlayerFragment.TAG)
                 .commit();
-        root.findViewById(R.id.playerFragment).setBackgroundColor(
-                SurfaceColors.getColorForElevation(getContext(), 8 * getResources().getDisplayMetrics().density));
 
         butPlaybackSpeed = root.findViewById(R.id.butPlaybackSpeed);
         txtvPlaybackSpeed = root.findViewById(R.id.txtvPlaybackSpeed);

@@ -21,7 +21,7 @@ project.ext {
     recyclerViewVersion = "1.2.1"
     viewPager2Version = "1.1.0-beta01"
     workManagerVersion = "2.7.1"
-    googleMaterialVersion = "1.7.0"
+    googleMaterialVersion = "1.12.0"
 
     // Third-party
     commonslangVersion = "3.6"
