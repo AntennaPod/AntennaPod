@@ -27,6 +27,7 @@
         <item name="android:splitMotionEvents">false</item>
         <item name="android:fitsSystemWindows">false</item>
         <item name="android:windowContentTransitions">true</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="toolbarStyle">@style/Style.AntennaPod.Toolbar</item>
         <item name="preferenceTheme">@style/AppPreferenceThemeOverlay</item>
         <item name="badgeStyle">@style/Style.AntennaPod.Badge</item>
@@ -71,7 +72,7 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowContentTransitions">true</item>
-        <item name="android:navigationBarColor">@color/background_darktheme</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="toolbarStyle">@style/Style.AntennaPod.Toolbar</item>
         <item name="preferenceTheme">@style/AppPreferenceThemeOverlay</item>
         <item name="badgeStyle">@style/Style.AntennaPod.Badge</item>
