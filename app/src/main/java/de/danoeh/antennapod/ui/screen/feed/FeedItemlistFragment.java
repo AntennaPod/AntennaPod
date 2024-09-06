@@ -696,6 +696,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     .withPlaceholderView(holder.placeholder)
                     .withCoverView(holder.cover)
                     .load();
+            if (feed.getState() != Feed.STATE_SUBSCRIBED) {
+                holder.secondaryActionButton.setVisibility(View.GONE);
+            }
         }
 
         @Override
