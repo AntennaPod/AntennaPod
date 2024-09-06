@@ -39,7 +39,7 @@
                 android:background="?android:attr/colorBackground"
                 android:elevation="8dp"
                 android:visibility="gone"
-                app:paddingBottomSystemWindowInsets="true"
+                android:fitsSystemWindows="false"
                 app:layout_behavior="de.danoeh.antennapod.ui.view.LockableBottomSheetBehavior" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
@@ -57,7 +57,12 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
         app:labelVisibilityMode="labeled" />
+
+    <View
+        android:id="@+id/bottom_padding"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="?attr/colorSurfaceContainer" />
 
 </LinearLayout>

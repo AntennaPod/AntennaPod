@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -111,7 +112,7 @@ public class MainActivity extends CastEnabledActivity {
     private LockableBottomSheetBehavior sheetBehavior;
     private RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
     private int lastTheme = 0;
-    private Insets navigationBarInsets = Insets.NONE;
+    private Insets systemBarInsets = Insets.NONE;
 
     @NonNull
     public static Intent getIntentToOpenFeed(@NonNull Context context, long feedId) {
@@ -152,9 +153,11 @@ public class MainActivity extends CastEnabledActivity {
 
         // Consume navigation bar insets - we apply them in setPlayerVisible()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_view), (v, insets) -> {
-            navigationBarInsets = insets.getInsets(WindowInsetsCompat.Type.navigationBars());
+            systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             updateInsets();
-            return insets;
+            return new WindowInsetsCompat.Builder(insets)
+                    .setInsets(WindowInsetsCompat.Type.navigationBars(), Insets.NONE)
+                    .build();
         });
 
         final FragmentManager fm = getSupportFragmentManager();
@@ -344,34 +347,35 @@ public class MainActivity extends CastEnabledActivity {
 
     private void updateInsets() {
         setPlayerVisible(findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE);
-        int playerHeight = (int) getResources().getDimension(R.dimen.external_player_height);
-
-        if (bottomNavigationView != null) {
-            sheetBehavior.setPeekHeight(playerHeight - navigationBarInsets.bottom);
-        } else {
-            sheetBehavior.setPeekHeight(playerHeight);
-        }
     }
 
     public void setPlayerVisible(boolean visible) {
         getBottomSheet().setLocked(!visible);
+        findViewById(R.id.audioplayerFragment).setVisibility(visible ? View.VISIBLE : View.GONE);
         if (visible) {
             bottomSheetCallback.onStateChanged(null, getBottomSheet().getState()); // Update toolbar visibility
         } else {
             getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
         }
-        FragmentContainerView mainView = findViewById(R.id.main_content_view);
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mainView.getLayoutParams();
+        View bottomPaddingView = findViewById(R.id.bottom_padding);
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) bottomPaddingView.getLayoutParams();
+        params.height = systemBarInsets.bottom;
+        bottomPaddingView.setLayoutParams(params);
+
         int externalPlayerHeight = (int) getResources().getDimension(R.dimen.external_player_height);
-        int bottomInset = bottomNavigationView == null ? navigationBarInsets.bottom : 0;
-        params.setMargins(navigationBarInsets.left, 0,
-                navigationBarInsets.right, bottomInset + (visible ? externalPlayerHeight : 0));
+        FragmentContainerView mainView = findViewById(R.id.main_content_view);
+        params = (ViewGroup.MarginLayoutParams) mainView.getLayoutParams();
+        params.setMargins(systemBarInsets.left, 0, systemBarInsets.right, (visible ? externalPlayerHeight : 0));
         mainView.setLayoutParams(params);
+        sheetBehavior.setPeekHeight(externalPlayerHeight);
+        sheetBehavior.setGestureInsetBottomIgnored(true);
+
         FragmentContainerView playerView = findViewById(R.id.playerFragment);
         ViewGroup.MarginLayoutParams playerParams = (ViewGroup.MarginLayoutParams) playerView.getLayoutParams();
-        playerParams.setMargins(navigationBarInsets.left, 0, navigationBarInsets.right, 0);
+        playerParams.setMargins(systemBarInsets.left, 0, systemBarInsets.right, 0);
         playerView.setLayoutParams(playerParams);
-        findViewById(R.id.audioplayerFragment).setVisibility(visible ? View.VISIBLE : View.GONE);
+        RelativeLayout playerContent = findViewById(R.id.playerContent);
+        playerContent.setPadding(systemBarInsets.left, systemBarInsets.top, systemBarInsets.right, 0);
     }
 
     public RecyclerView.RecycledViewPool getRecycledViewPool() {
@@ -537,7 +541,7 @@ public class MainActivity extends CastEnabledActivity {
         popupMenuItems.add(item);
 
         final ListPopupWindow listPopupWindow = new ListPopupWindow(this);
-        listPopupWindow.setWidth(600);
+        listPopupWindow.setWidth((int) (250 * getResources().getDisplayMetrics().density));
         listPopupWindow.setAnchorView(bottomNavigationView);
         listPopupWindow.setAdapter(new BottomNavigationMoreAdapter(this, popupMenuItems));
         listPopupWindow.setOnItemClickListener((parent, view, position, id) -> {
