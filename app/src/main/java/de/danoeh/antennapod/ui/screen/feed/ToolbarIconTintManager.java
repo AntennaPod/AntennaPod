@@ -5,38 +5,27 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.view.Menu;
 
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.appbar.MaterialToolbar;
+
+import de.danoeh.antennapod.ui.common.OnCollapseChangeListener;
 
 /**
  * A manager that automatically finds all icons in a collapsable toolbar and tints them according to the collapse state
  * of the toolbar.
  */
-public class ToolbarIconTintManager implements AppBarLayout.OnOffsetChangedListener {
-    private final CollapsingToolbarLayout collapsingToolbar;
+public class ToolbarIconTintManager extends OnCollapseChangeListener {
     private final MaterialToolbar toolbar;
-    private boolean isTinted = false;
 
     public ToolbarIconTintManager(MaterialToolbar toolbar, CollapsingToolbarLayout collapsingToolbar) {
-        this.collapsingToolbar = collapsingToolbar;
+        super(collapsingToolbar);
         this.toolbar = toolbar;
+        this.onCollapseChanged(false);
     }
 
     @Override
-    public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
-        boolean tint  = (collapsingToolbar.getHeight() + offset) > (2 * collapsingToolbar.getMinimumHeight());
-        if (isTinted != tint) {
-            isTinted = tint;
-            updateTint();
-        }
-    }
-
-    public void updateTint() {
-        PorterDuffColorFilter filter = null;
-        if (isTinted) {
-            filter = new PorterDuffColorFilter(0xffffffff, Mode.SRC_ATOP);
-        }
+    public void onCollapseChanged(boolean isCollapsed) {
+        PorterDuffColorFilter filter = isCollapsed ? null : new PorterDuffColorFilter(0xffffffff, Mode.SRC_ATOP);
 
         safeSetColorFilter(toolbar.getNavigationIcon(), filter);
         safeSetColorFilter(toolbar.getOverflowIcon(), filter);

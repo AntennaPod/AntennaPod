@@ -231,6 +231,14 @@
         <item name="windowSplashScreenAnimatedIcon">@drawable/launcher_animate</item>
     </style>
 
+    <style name="Theme.AntennaPod.Splash.Translucent" parent="Theme.AntennaPod.Splash">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/AnimationFade</item>
+    </style>
+
     <style name="Style.AntennaPod.Toolbar" parent="Widget.Material3.Toolbar">
         <item name="materialThemeOverlay">@style/Theme.AntennaPod.Toolbar</item>
     </style>

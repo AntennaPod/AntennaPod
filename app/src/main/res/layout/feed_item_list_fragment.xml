@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:scrimAnimationDuration="200"
+            app:titleEnabled="false"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView

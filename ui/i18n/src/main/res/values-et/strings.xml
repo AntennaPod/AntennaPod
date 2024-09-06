@@ -111,7 +111,6 @@
   <string name="close_label">Sulge</string>
   <string name="retry_label">Proovi uuesti</string>
   <string name="auto_download_label">Lisa automaatsetesse allalaadimistesse</string>
-  <string name="auto_delete_label">Saadete automaatne kustutamine</string>
   <string name="feed_volume_adapdation">Helitugevuse kohandamine</string>
   <string name="feed_volume_adaptation_summary">Keera selle taskuhäälingu saadete helitase üles või alla: %1$s</string>
   <string name="feed_volume_reduction_off">Kohandamiseta</string>
@@ -322,7 +321,6 @@
   <string name="random">Juhuslik</string>
   <string name="smart_shuffle">Nutikas juhuslik</string>
   <string name="size">Maht</string>
-  <string name="clear_queue_confirmation_msg">Palun kinnita, et tahad puhastada järjekorra KÕIGIST selles olevatest saadetest</string>
   <string name="time_left_label">Aega jäänud:\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">Eelseaded</string>
@@ -352,7 +350,6 @@
   <string name="download_pref_details">Üksikasjad</string>
   <string name="import_export_pref">Import/eksport</string>
   <string name="import_export_search_keywords">varundus, taastamine</string>
-  <string name="appearance">Välimus</string>
   <string name="external_elements">Välised elemendid</string>
   <string name="interruptions">Katkestused</string>
   <string name="playback_control">Esituse nupud</string>
@@ -360,7 +357,6 @@
   <string name="preference_search_hint">Otsing...</string>
   <string name="preference_search_no_results">Tulemusi pole</string>
   <string name="preference_search_clear_history">Puhasta ajalugu</string>
-  <string name="pref_episode_cleanup_title">Saadete kustutamine</string>
   <string name="pref_episode_cleanup_summary">Saated, mida tohib kustutada, kui automaatne allalaadimine vajab ruumi uute saadete jaoks</string>
   <string name="pref_pauseOnDisconnect_sum">Esitus pausitakse, kui kõrvaklapid või bluetooth eemaldatakse</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Esitus jätkub, kui kõrvaklapid uuesti ühendatakse</string>
@@ -369,13 +365,10 @@
   <string name="pref_hardware_forward_button_summary">Muuda edasi nupu tegevust</string>
   <string name="pref_hardware_previous_button_title">Tagasi nupp</string>
   <string name="pref_hardware_previous_button_summary">Muuda tagasi nupu tegevust</string>
-  <string name="button_action_fast_forward">Keri edasi</string>
   <string name="button_action_rewind">Keri tagasi</string>
   <string name="button_action_skip_episode">Jäta saade vahele</string>
   <string name="button_action_restart_episode">Alusta saadet algusest</string>
   <string name="pref_followQueue_sum">Kui saade lõpeb, siis esita kohe järgmine järjekorras olev saade.</string>
-  <string name="pref_auto_delete_sum">Kustuta saated, kui need on kuulatud</string>
-  <string name="pref_auto_delete_title">Automaatne kustutamine</string>
   <string name="pref_auto_local_delete_title">Automaatne kustutamine kohalikest kaustadest</string>
   <string name="pref_auto_local_delete_sum">Vali kohalikud kaustad Automaatse kustutamise jaoks</string>
   <string name="pref_auto_local_delete_dialog_body">Kohalike kaustade puhul kustutamine eemaldab saate AntennaPodist ja meedia faili seadme salvestusruumist. Seda ei saa uuesti AntennaPodi kaudu alla laadida. Luba automaatne kustutamine?</string>
@@ -430,8 +423,6 @@
   <string name="pref_autodl_wifi_filter_sum">Luba automaatne allalaadimine ainult valitud Wifi võrkudes.</string>
   <string name="pref_automatic_download_on_battery_title">Allalaadimine, kui seade ei lae</string>
   <string name="pref_automatic_download_on_battery_sum">Luba automaatne allalaadimine ka siis, kui seade pole laadimas</string>
-  <string name="pref_episode_cache_title">Saadete vahemälu</string>
-  <string name="pref_episode_cache_summary">Seadme puhvrisse allalaaditud saadete koguarv. Automaatne allalaadimine peatub, kui selle numbrini jõutakse.</string>
   <string name="pref_episode_cover_title">Kasuta saate kaanepilti</string>
   <string name="pref_episode_cover_summary">Kui võimalik, kasutatakse nimekirjades saate kaanepilti. Kui märkimata, kasutab rakendus alati taskuhäälingu kaanepilti.</string>
   <string name="pref_show_remain_time_title">Näita allesjäänud aega</string>
@@ -450,8 +441,6 @@
   <string name="pref_feed_skip_intro_toast">Algusest jäeti vahele %d sekundit</string>
   <string name="pref_playback_time_respects_speed_title">Meedia info kohandamine esituse kiirusega</string>
   <string name="pref_playback_time_respects_speed_sum">Kuvatav asukoht ja kestus kohandatakse esituse kiiruse järgi</string>
-  <string name="pref_fast_forward">Edasi kerimise hüpe</string>
-  <string name="pref_fast_forward_sum">Määra, mitu sekundit edasi hüpatakse, kui vajutatakse edasi kerimise nuppu</string>
   <string name="pref_rewind">Tagasi kerimise hüpe</string>
   <string name="pref_rewind_sum">Määra, mitu sekundit tagasi hüpatakse, kui vajutatakse tagasi kerimise nuppu</string>
   <string name="pref_expandNotify_title">Kõrge teate prioriteet</string>
@@ -500,8 +489,6 @@
   <string name="new_episode_notification_disabled">Teavitus keelatud</string>
   <string name="pref_feed_settings_dialog_msg">See seade on taskuhäälingupõhine. Seda saad muuta taskuhäälingu lehel.</string>
   <string name="pref_contribute">Aita kaasa</string>
-  <string name="pref_show_subscription_title">Näita tellimuse pealkirja</string>
-  <string name="pref_show_subscription_title_summary">Näita tellimuse pealkirja kaanepildi all</string>
   <string name="pref_new_episodes_action_title">Uute saadete tegevus</string>
   <string name="pref_new_episodes_action_sum">Tegevus, mis tehakse uute saadete jaoks</string>
   <!--About screen-->
@@ -634,7 +621,6 @@
   <string name="gpodnetsync_username_characters_error">Kasutajanimi võib sisaldada ainult tähti, numbreid, side- ja allkriipsu.</string>
   <!--Directory chooser-->
   <string name="choose_data_directory">Vali andmete kaust</string>
-  <string name="choose_data_directory_message">Palun vali oma andmete kaust. AntennaPod loob vajalikud alamkaustad.</string>
   <string name="choose_data_directory_available_space">vaba on %1$s %2$s-st</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Kui teine äpp tahab helisid mängida, pausi esitus, selle asemel et vähendada helitugevust</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Peata kõne korral</string>
@@ -642,18 +628,13 @@
   <string name="rating_tagline">Alates %1$s oled esitanud %2$s %3$d %4$s tundi taskuhäälinguid.</string>
   <string name="rating_contribute_label">Soovid kaasa lüüa? Ükskõik kas tahad tõlkida, pakkuda tuge, disainida, kodeerida, meil on sinu üle hea meel!</string>
   <string name="rating_contribute_button">Avasta millega saad kaasa aidata</string>
-  <string name="rating_volunteers_label">AntennaPodi arendatakse vabatahtlike poolt meie vabast ajast. Me oleksime õnnelikud kui avaldaksid meie tööle tunnustust jättes hea hinnangu.</string>
   <string name="rating_rate">Hinda AntennaPodi</string>
   <string name="rating_later">Hiljem</string>
   <!--Online feed view-->
   <string name="subscribe_label">Telli</string>
-  <string name="subscribing_label">Tellimine...</string>
-  <string name="preview_episode">Eelvaade</string>
-  <string name="stop_preview">Lõpeta eelvaade</string>
   <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">Tagasi</string>
   <string name="rewind_label">Keri tagasi</string>
-  <string name="fast_forward_label">Keri edasi</string>
   <string name="increase_speed">Suurenda kiirust</string>
   <string name="decrease_speed">Vähenda kiirust</string>
   <string name="media_type_video_label">Video</string>
@@ -665,7 +646,6 @@
   <string name="load_next_page_label">Laadi järgmine lehekülg</string>
   <string name="position">Asukoht: %1$s</string>
   <string name="remaining_time">Aega jäänud: %1$s</string>
-  <string name="apply_action">Vii ellu</string>
   <string name="play_chapter">Esita peatükk</string>
   <string name="prev_chapter">Eelmine peatükk</string>
   <string name="next_chapter">Järgmine peatükk</string>
@@ -698,7 +678,6 @@
   <string name="statistics_expected_next_episode_unknown">Teadmata</string>
   <string name="statistics_view_all">Vaata kõiki taskuhäälinguid »</string>
   <string name="edit_url_menu">Muuda voo URLi</string>
-  <string name="edit_url_confirmation_msg">RSS aadressi muutmine võib rikkuda taskuhäälingu saadete nimekirja ja esitatud oleku. Me EI soovita seda muuta ja EI paku tuge kui midagi viltu läheb. Seda tegevust ei saa tagasi võtta. Vigast tellimust EI SAA parandada lihtsalt aadressi tagasi muutes. Soovitame luua enne jätkamist varukoopia.</string>
   <!--Podcast release schedules-->
   <string name="release_schedule_daily">iga päev</string>
   <string name="release_schedule_weekdays">nädalapäevadel</string>

@@ -105,7 +105,6 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
 
         ToolbarIconTintManager iconTintManager =
                 new ToolbarIconTintManager(viewBinding.toolbar, viewBinding.collapsingToolbar);
-        iconTintManager.updateTint();
         viewBinding.appBar.addOnOffsetChangedListener(iconTintManager);
 
         viewBinding.header.butShowInfo.setVisibility(View.INVISIBLE);

@@ -70,6 +70,7 @@
     <string name="open_settings">Open settings</string>
     <string name="configure_home">Configure Home Screen</string>
     <string name="section_hidden">Hidden</string>
+    <string name="section_shown">Shown</string>
 
     <!-- Download Statistics fragment -->
     <string name="total_size_downloaded_podcasts">Total size of episodes on the device</string>
@@ -145,11 +146,11 @@
     <string name="episode_cleanup_queue_removal">When not in queue</string>
     <string name="episode_cleanup_after_listening">After finishing</string>
     <plurals name="episode_cleanup_hours_after_listening">
-        <item quantity="one">1 hour after finishing</item>
+        <item quantity="one">%d hour after finishing</item>
         <item quantity="other">%d hours after finishing</item>
     </plurals>
     <plurals name="episode_cleanup_days_after_listening">
-        <item quantity="one">1 day after finishing</item>
+        <item quantity="one">%d day after finishing</item>
         <item quantity="other">%d days after finishing</item>
     </plurals>
     <plurals name="num_selected_label">
@@ -185,9 +186,9 @@
     <string name="remove_feed_label">Remove podcast</string>
     <string name="share_label">Share</string>
     <string name="share_file_label">Share file</string>
-    <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\", ALL its episodes (including downloaded episodes), and its statistics.</string>
-    <string name="feed_delete_confirmation_msg_batch">Please confirm that you want to remove the selected podcasts, ALL their episodes (including downloaded episodes), and its statistics.</string>
-    <string name="feed_delete_confirmation_local_msg">Please confirm that you want to remove the podcast \"%1$s\" and its statistics. The files in the local source folder will not be deleted.</string>
+    <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\", ALL its episodes (including downloaded episodes), playback history, and its statistics.</string>
+    <string name="feed_delete_confirmation_msg_batch">Please confirm that you want to remove the selected podcasts, ALL their episodes (including downloaded episodes), playback history, and its statistics.</string>
+    <string name="feed_delete_confirmation_local_msg">Please confirm that you want to remove the podcast \"%1$s\", its playback history, and its statistics. The files in the local source folder will not be deleted.</string>
     <string name="feed_remover_msg">Removing podcast</string>
     <string name="load_complete_feed">Refresh complete podcast</string>
     <string name="multi_select">Multi select</string>
@@ -221,7 +222,7 @@
     <string name="delete_label">Delete</string>
     <string name="delete_episode_label">Delete episode</string>
     <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">1 downloaded episode deleted.</item>
+        <item quantity="one">%d downloaded episode deleted.</item>
         <item quantity="other">%d downloaded episodes deleted.</item>
     </plurals>
     <string name="remove_inbox_label">Remove from inbox</string>
@@ -616,19 +617,19 @@
     <string name="time_minutes">minutes</string>
     <string name="time_hours">hours</string>
     <plurals name="time_seconds_quantified">
-        <item quantity="one">1 second</item>
+        <item quantity="one">%d second</item>
         <item quantity="other">%d seconds</item>
     </plurals>
     <plurals name="time_minutes_quantified">
-        <item quantity="one">1 minute</item>
+        <item quantity="one">%d minute</item>
         <item quantity="other">%d minutes</item>
     </plurals>
     <plurals name="time_hours_quantified">
-        <item quantity="one">1 hour</item>
+        <item quantity="one">%d hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
     <plurals name="time_days_quantified">
-        <item quantity="one">1 day</item>
+        <item quantity="one">%d day</item>
         <item quantity="other">%d days</item>
     </plurals>
     <string name="auto_enable_label">Automatically activate the sleep timer when pressing play</string>
@@ -714,6 +715,8 @@
     <string name="next_chapter">Next chapter</string>
     <string name="shuffle_suggestions">Shuffle suggestions</string>
     <string name="add_preset">Add preset</string>
+    <string name="download_started_talkback">Download started for %1$s</string>
+    <string name="download_completed_talkback">Download completed for %1$s</string>
 
     <!-- Feed settings/information screen -->
     <string name="authentication_label">Authentication</string>

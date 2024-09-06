@@ -51,6 +51,7 @@ import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.cleaner.HtmlToPlainText;
 import de.danoeh.antennapod.ui.common.IntentUtils;
+import de.danoeh.antennapod.ui.common.OnCollapseChangeListener;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeMultiSelectActionHandler;
@@ -86,6 +87,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         MaterialToolbar.OnMenuItemClickListener, EpisodeItemListAdapter.OnSelectModeListener {
     public static final String TAG = "ItemlistFragment";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
+    private static final String ARGUMENT_IS_FIRST_TIME = "argument.de.danoeh.antennapod.first_time";
     private static final String KEY_UP_ARROW = "up_arrow";
     protected static final int EPISODES_PER_PAGE = 150;
     protected int page = 1;
@@ -97,6 +99,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private MoreContentListFooterUtil nextPageLoader;
     private boolean displayUpArrow;
     private long feedID;
+    private boolean isFirstTime = false;
     private Feed feed;
     private Disposable disposable;
     private FeedItemListFragmentBinding viewBinding;
@@ -109,9 +112,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
      * @return the newly created instance of an ItemlistFragment
      */
     public static FeedItemlistFragment newInstance(long feedId) {
+        return newInstance(feedId, false);
+    }
+
+    public static FeedItemlistFragment newInstance(long feedId, boolean isFirstTime) {
         FeedItemlistFragment i = new FeedItemlistFragment();
         Bundle b = new Bundle();
         b.putLong(ARGUMENT_FEED_ID, feedId);
+        b.putBoolean(ARGUMENT_IS_FIRST_TIME, isFirstTime);
         i.setArguments(b);
         return i;
     }
@@ -123,6 +131,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         Bundle args = getArguments();
         Validate.notNull(args);
         feedID = args.getLong(ARGUMENT_FEED_ID);
+        isFirstTime = args.getBoolean(ARGUMENT_IS_FIRST_TIME, false);
     }
 
     @Nullable
@@ -161,8 +170,16 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
         ToolbarIconTintManager iconTintManager =
                 new ToolbarIconTintManager(viewBinding.toolbar, viewBinding.collapsingToolbar);
-        iconTintManager.updateTint();
         viewBinding.appBar.addOnOffsetChangedListener(iconTintManager);
+        viewBinding.appBar.addOnOffsetChangedListener(new OnCollapseChangeListener(viewBinding.collapsingToolbar) {
+            @Override
+            public void onCollapseChanged(boolean isCollapsed) {
+                if (feed == null) {
+                    return;
+                }
+                viewBinding.toolbar.setTitle(isCollapsed ? feed.getTitle() : "");
+            }
+        });
 
         nextPageLoader = new MoreContentListFooterUtil(viewBinding.moreContent.moreContentListFooter);
         nextPageLoader.setClickListener(() -> {
@@ -469,6 +486,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (feed.getState() != Feed.STATE_SUBSCRIBED) {
             viewBinding.header.descriptionContainer.setVisibility(View.VISIBLE);
             viewBinding.header.headerDescriptionLabel.setText(HtmlToPlainText.getPlainText(feed.getDescription()));
+            viewBinding.header.subscribeNagLabel.setVisibility(isFirstTime ? View.GONE : View.VISIBLE);
         } else if (feed.getItemFilter() != null) {
             FeedItemFilter filter = feed.getItemFilter();
             if (filter.getValues().length > 0) {

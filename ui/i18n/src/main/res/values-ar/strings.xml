@@ -103,7 +103,7 @@
   <string name="error_msg_prefix">حدث خطأ:</string>
   <string name="refresh_label">تحديث</string>
   <string name="chapters_label">فصول</string>
-  <string name="no_chapters_label">لا توجد فصول</string>
+  <string name="no_chapters_label">لا يوجد فصول</string>
   <string name="chapter_duration">المدة: %1$s</string>
   <string name="description_label">الوصف</string>
   <string name="shownotes_label">ملاحظات الحلقة</string>
@@ -111,7 +111,6 @@
   <string name="close_label">اغلاق</string>
   <string name="retry_label">اعادة المحاولة</string>
   <string name="auto_download_label">تضمين في التنزيل التلقائي</string>
-  <string name="auto_delete_label">حذف الحلقات تلقائيا</string>
   <string name="feed_volume_adapdation">تكييف الصوت</string>
   <string name="feed_volume_adaptation_summary">قلل أو ارفع شدة الصوت لحلقات هذه القناة: %1$s</string>
   <string name="feed_volume_reduction_off">بدون تكييف</string>
@@ -382,7 +381,6 @@
   <string name="random">عشوائي</string>
   <string name="smart_shuffle">الخلط الذكي</string>
   <string name="size">الحجم</string>
-  <string name="clear_queue_confirmation_msg">نرجو تأكيد تصفية لائحة الإستماع من كل الحلقات فيها</string>
   <string name="time_left_label">الوقت المتبقى:\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">إعدادات أولية</string>
@@ -412,7 +410,6 @@
   <string name="download_pref_details">تفاصيل</string>
   <string name="import_export_pref">استيراد/تصدير</string>
   <string name="import_export_search_keywords">النسخ الاحتياطي و الاسترجاع</string>
-  <string name="appearance">المظهر</string>
   <string name="external_elements">العوامل الخارجية</string>
   <string name="interruptions">المقاطعات</string>
   <string name="playback_control">تحكم التشغيل</string>
@@ -420,7 +417,6 @@
   <string name="preference_search_hint">بحث</string>
   <string name="preference_search_no_results">لا توجد نتائج</string>
   <string name="preference_search_clear_history">مسح السجل</string>
-  <string name="pref_episode_cleanup_title">مسح تلقائي</string>
   <string name="pref_episode_cleanup_summary">الحلقات المؤهلة للإزالة إذا كان التنزيل التلقائي يحتاج إلى مساحة للحلقات الجديدة</string>
   <string name="pref_pauseOnDisconnect_sum">ايقاف التشغيل عند نزع سماعات الأذن أو البلوتوث</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">استكمال التشغيل عند ايصال سماعات الأذن أو البلوتوث</string>
@@ -429,13 +425,10 @@
   <string name="pref_hardware_forward_button_summary">تخصيص سلوك زر التخطي للأمام</string>
   <string name="pref_hardware_previous_button_title">زر الرجوع للسابق</string>
   <string name="pref_hardware_previous_button_summary">تخصيص سلوك زر الرجوع للسابق</string>
-  <string name="button_action_fast_forward">التقدم السريع</string>
   <string name="button_action_rewind">التخطي للخلف</string>
   <string name="button_action_skip_episode">تخطى الحلقة</string>
   <string name="button_action_restart_episode">إعادة تشغيل الحلقة</string>
   <string name="pref_followQueue_sum">أذهب الى الحلقة التالية في لائحة الاستماع عندما ينتهي استماع السابقة. </string>
-  <string name="pref_auto_delete_sum">احذف الحلقة عندما ينتهي تشغيلها</string>
-  <string name="pref_auto_delete_title">الحذف التلقائي</string>
   <string name="pref_auto_local_delete_title">إحذف من المجلدات المحلية تلقائيًا</string>
   <string name="pref_auto_local_delete_sum">ضمّن المجلدات المحلية في خاصية الحذف التلقائي</string>
   <string name="pref_auto_local_delete_dialog_body">فيما يخص المجلدات المحلية، يرجى ملاحظة أنه ستحذف الحلقات من آنتينابود وستحذف ملفاتها من ذاكرة تخزين جهازك، ولن تتمكن من تنزيلها عن طريق آنتينابود مرة أخرى. هل تود بأن تفعل الحذف التلقائي؟</string>
@@ -490,8 +483,6 @@
   <string name="pref_autodl_wifi_filter_sum">أسمح بالتنزيل التلقائي فقط على شبكات الواي فاي المختارة.</string>
   <string name="pref_automatic_download_on_battery_title">التنزيل عند عدم الشحن الجهاز</string>
   <string name="pref_automatic_download_on_battery_sum">السماح بالتنزيل التلقائي عندما لا يتم شحن البطارية</string>
-  <string name="pref_episode_cache_title">تخزين الحلقات</string>
-  <string name="pref_episode_cache_summary">العدد الإجمالي للحلقات التي تم تنزيلها والمخزنة مؤقتًا على الجهاز. سيتم تعليق التنزيل التلقائي إذا تم الوصول إلى هذا الرقم.</string>
   <string name="pref_episode_cover_title">استخدم صورة غلاف الحلقة</string>
   <string name="pref_episode_cover_summary">استخدم الغلاف المخصص للحلقة في القوائم إن وجد. إذا لم يتم تحديد هذا الاختيار ، فسيستخدم التطبيق صورة غلاف البودكاست.</string>
   <string name="pref_show_remain_time_title">أظهر الوقت المتبقي</string>
@@ -510,15 +501,15 @@
   <string name="pref_feed_skip_intro_toast">تخطى أول %d ثانية</string>
   <string name="pref_playback_time_respects_speed_title">عدل بيانات الوسائط مع سرعة التشغيل</string>
   <string name="pref_playback_time_respects_speed_sum">الوقت المنقضي والمتبقي يتناسب مع سرعة التشغيل</string>
-  <string name="pref_fast_forward">وقت التخطي السريع</string>
-  <string name="pref_fast_forward_sum">قم بتخصيص عدد الثواني للانتقال إلى الأمام عند النقر فوق زر التقديم السريع</string>
   <string name="pref_rewind">وقت التخطي للخلف</string>
   <string name="pref_rewind_sum">قم بتخصيص عدد الثواني للانتقال للخلف عند النقر فوق زر الإرجاع</string>
   <string name="pref_expandNotify_title">أولوية عالية للإشعار</string>
   <string name="pref_expandNotify_sum">هذه عادة توسع الإشعار ليظهر أزرار التشغيل.</string>
   <string name="pref_persistNotify_title">تحكم التشغيل ظاهر دائما</string>
   <string name="pref_persistNotify_sum">أبقي تحكم التشغيل في الإشعارات وشاشة القفل عند التوقف</string>
+  <string name="pref_compact_notification_buttons_dialog_error_exact">يجب أختيار عنصرين فقط</string>
   <string name="pref_full_notification_buttons_title">عيّن أزرار الإشعارات</string>
+  <string name="pref_full_notification_buttons_sum">غير أزرار التحكم في شريط الاشعارات</string>
   <string name="pref_enqueue_location_title">مكان الإضافة في لائحة الاستماع</string>
   <string name="pref_enqueue_location_sum">أضف حلقات إلى: %1$s</string>
   <string name="enqueue_location_back">خلف</string>
@@ -558,8 +549,6 @@
   <string name="new_episode_notification_disabled">الإشعارات غير مفعلة</string>
   <string name="pref_feed_settings_dialog_msg">هذا الإعداد فريد لكل بودكاست. يمكنك تغييره بفتح صفحة البودكاست.</string>
   <string name="pref_contribute">ساهم</string>
-  <string name="pref_show_subscription_title">إظهار عنوان الاشتراك</string>
-  <string name="pref_show_subscription_title_summary">أعرض عنوان الاشتراك أسفل صورة الغلاف</string>
   <string name="pref_new_episodes_action_title">التعامل مع الحلقات الجديدة</string>
   <string name="pref_new_episodes_action_sum">كيف يتم التعامل مع الحلقات الجديدة</string>
   <!--About screen-->
@@ -607,6 +596,9 @@
   <string name="opml_export_label">تصدير بصيغة OPML</string>
   <string name="html_export_label">تصدير بصيغة HTML</string>
   <string name="database_export_label">تصدير قاعدة البيانات</string>
+  <string name="automatic_database_export_label">التصدير التلقائي</string>
+  <string name="automatic_database_export_summary">أنشئ نسخة احتياطية كل 3 أيام. مع الأحتفاظ بآخر 5 نسخ.</string>
+  <string name="automatic_database_export_error">خطأ أثناء التصدير التلقائي</string>
   <string name="database_import_label">استيراد قاعدة البيانات</string>
   <string name="database_import_warning">استيراد قاعدة بيانات سيمسح كل اشتراكاتك الحالية وسجل الاستماع. الأفضل أن تصدر قاعدة البيانات الحالية لأرشيف. هل تريد تبديل البيانات؟</string>
   <string name="please_wait">يرجى الانتظار...</string>
@@ -663,6 +655,7 @@
     <item quantity="other">%d يوما</item>
   </plurals>
   <string name="auto_enable_label">قم بتشغيل مؤقت النوم آليا عند تشغيل الحلقة</string>
+  <string name="auto_enable_label_with_times">فعّل مؤقت النوم تلقائيا عند تشغيل حلقة بين %1$s و%2$s</string>
   <string name="auto_enable_change_times">غير النطاق الزمني</string>
   <string name="sleep_timer_enabled_label">مؤقت النوم مفعل</string>
   <!--Synchronisation-->
@@ -704,20 +697,20 @@
   <string name="gpodnetsync_username_characters_error">يشترط أن تحتوي أسماء المستخدمين على أحرف وأرقام وواصلات وشرطات سفلية فقط.</string>
   <!--Directory chooser-->
   <string name="choose_data_directory">إختيار مجلد البيانات</string>
-  <string name="choose_data_directory_message">الرجاء اختيار قاعدة مجلد البيانات الخاص بك. سيقوم AntennaPod بإنشاء المجلدات الفرعية المناسبة.</string>
   <string name="choose_data_directory_available_space">%1$sمن %2$sفاضي  </string>
   <string name="pref_pausePlaybackForFocusLoss_sum">توقف التشغيل بدل اخفات الصوت عندما برنامج يشغل صوت</string>
   <string name="pref_pausePlaybackForFocusLoss_title">توقف للمقاطعات</string>
   <!--Rating dialog-->
+  <string name="rating_tagline">منذ %1$s، استمعت إلى %2$s%3$d%4$s ساعة من البودكاستات.</string>
+  <string name="rating_contribute_label">هل تود الأنضمام؟ سواء كنت تود الترجمة أو الدعم أو التصميم أو التطوير، سنكون سعداء بك!</string>
+  <string name="rating_contribute_button">اكتشف طرق للمساهمة</string>
+  <string name="rating_rate">تقييم AntennaPod</string>
+  <string name="rating_later">لاحقاً</string>
   <!--Online feed view-->
   <string name="subscribe_label">أشترك</string>
-  <string name="subscribing_label">جاري الاشتراك...</string>
-  <string name="preview_episode">معاينة</string>
-  <string name="stop_preview">أوقف المعاينة</string>
   <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">الرجوع</string>
   <string name="rewind_label">التخطى للخلف</string>
-  <string name="fast_forward_label">التقدم السريع</string>
   <string name="increase_speed">زد السرعة</string>
   <string name="decrease_speed">قلل السرعة</string>
   <string name="media_type_video_label">فيديو</string>
@@ -729,7 +722,6 @@
   <string name="load_next_page_label">تحميل الصفحة التالية</string>
   <string name="position">موقع: %1$s</string>
   <string name="remaining_time">الوقت المتبقي: %1$s</string>
-  <string name="apply_action">طبق القرار</string>
   <string name="play_chapter">تشغيل فصل</string>
   <string name="prev_chapter">الفصل السابق</string>
   <string name="next_chapter">الفصل التالي</string>
@@ -741,6 +733,7 @@
   <string name="feed_tags_label">العلامات</string>
   <string name="feed_tags_summary">قم بتغيير العلامات الخاصة بهذا البودكاست للمساعدة في تنظيم اشتراكاتك</string>
   <string name="feed_folders_include_root">اعرض هذا البودكاست في القائمة الرئيسية</string>
+  <string name="multi_feed_common_tags_info">سيتم عرض العلامات المشتركة بين الاشتراكات المختارة فقط. لن يتم تعديل العلامات الأخرى.</string>
   <string name="auto_download_settings_label">إعدادات التنزيل التلقائي</string>
   <string name="episode_filters_label">مصفاة الحلقات</string>
   <string name="episode_filters_description">قائمة الكلمات المستخدمة لتحديد ما إذا كان يجب تضمين حلقة أو استبعادها عند التنزيل التلقائي</string>
@@ -756,10 +749,24 @@
   <string name="statistics_episodes_on_device">حلقات مسجلة على هذا الجهاز:</string>
   <string name="statistics_space_used">المساحة المستخدمة:</string>
   <string name="statistics_episodes_started_total">الحلقات التي بدأت / المجموع:</string>
+  <string name="statistics_expected_next_episode">توقع الحلقة القادمة:</string>
+  <string name="statistics_expected_next_episode_any_day">قريبًا</string>
+  <string name="statistics_expected_next_episode_unknown">غير معرف</string>
   <string name="statistics_view_all">عرض لجميع البودكاستات »</string>
   <string name="edit_url_menu">عدل على الرابط </string>
-  <string name="edit_url_confirmation_msg">تغيير رابط الـ RSS قد يؤدي إلى كسر حالة التشغيل و قائمة الحلقات للبودكاست. نحن لا ننصح بتغيرها ولن نقوم بتوفير أي دعم في حالة حصول أي خطأ. لا يمكن التراجع عن هذا التغيير. الاشتراك المكسور لن يمكن أن يتم استرجاعه بإعادة إرجاع الرابط القديم. ننصح بإنشاء نسخة احتياطية قبل المتابعة.</string>
   <!--Podcast release schedules-->
+  <string name="release_schedule_daily">يومياً</string>
+  <string name="release_schedule_weekdays">في أيام الأسبوع</string>
+  <string name="release_schedule_weekly">أسبوعياً</string>
+  <string name="release_schedule_biweekly">كل أسبوعين</string>
+  <string name="release_schedule_monthly">شهرياً</string>
+  <string name="release_schedule_monday">الأثنين</string>
+  <string name="release_schedule_tuesday">الثلاثاء</string>
+  <string name="release_schedule_wednesday">الأربعاء</string>
+  <string name="release_schedule_thursday">الخميس</string>
+  <string name="release_schedule_friday">الجمعة</string>
+  <string name="release_schedule_saturday">السبت</string>
+  <string name="release_schedule_sunday">الأحد</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">استيراد الاشتراكات من التطبيقات ذات الغرض الواحد ...</string>
   <!--Add podcast fragment-->
@@ -768,6 +775,7 @@
   <string name="search_podcastindex_label">إبحث في Podcast Index</string>
   <string name="search_fyyd_label">ابحث fyyd</string>
   <string name="advanced">متقدم</string>
+  <string name="add_podcast_by_url">أضف بودكاست برابط RSS</string>
   <string name="discover">اكتشف</string>
   <string name="discover_hide">اخفاء</string>
   <string name="discover_is_hidden">لقد اخترت اخفاء الاقتراحات.</string>

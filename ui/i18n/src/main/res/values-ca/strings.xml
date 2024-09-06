@@ -111,7 +111,6 @@
   <string name="close_label">Tanca</string>
   <string name="retry_label">Reintenta</string>
   <string name="auto_download_label">Inclou a baixades automàtiques</string>
-  <string name="auto_delete_label">Elimina l\'episodi automàticament</string>
   <string name="feed_volume_adapdation">Adaptació del volum</string>
   <string name="feed_volume_adaptation_summary">Apuja o abaixa el volum dels episodis d\'aquest pòdcast: %1$s</string>
   <string name="feed_volume_reduction_off">Sense adaptació</string>
@@ -322,7 +321,6 @@
   <string name="random">Aleatori</string>
   <string name="smart_shuffle">Reproducció intel·ligent</string>
   <string name="size">Mida</string>
-  <string name="clear_queue_confirmation_msg">Confirmeu que voleu suprimir tots els episodis de la cua</string>
   <string name="time_left_label">Temps restant:\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">Valors predeterminats</string>
@@ -352,7 +350,6 @@
   <string name="download_pref_details">Detalls</string>
   <string name="import_export_pref">Importa/Exporta</string>
   <string name="import_export_search_keywords">còpia de seguretat, restaurar</string>
-  <string name="appearance">Aparença</string>
   <string name="external_elements">Elements externs</string>
   <string name="interruptions">Interrupcions</string>
   <string name="playback_control">Control de reproducció</string>
@@ -360,7 +357,6 @@
   <string name="preference_search_hint">Cerca…</string>
   <string name="preference_search_no_results">No hi ha resultats</string>
   <string name="preference_search_clear_history">Esborra l\'historial</string>
-  <string name="pref_episode_cleanup_title">Neteja d\'episodis</string>
   <string name="pref_episode_cleanup_summary">Episodis que podrien eliminar-se si la Descàrrega Automàtica necessita espai per a episodis nous</string>
   <string name="pref_pauseOnDisconnect_sum">Pausa la reproducció en desconnectar els auriculars o el bluetooth</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Continua la reproducció en connectar novament els auriculars</string>
@@ -369,13 +365,10 @@
   <string name="pref_hardware_forward_button_summary">Personalitza el comportament del botó d\'avançament</string>
   <string name="pref_hardware_previous_button_title">Botó de retrocés</string>
   <string name="pref_hardware_previous_button_summary">Personalitza el comportament del botó d\'anterior</string>
-  <string name="button_action_fast_forward">Avanç ràpid</string>
   <string name="button_action_rewind">Rebobina</string>
   <string name="button_action_skip_episode">Ometre episodi</string>
   <string name="button_action_restart_episode">Reiniciar episodi</string>
   <string name="pref_followQueue_sum">Salta al següent element de la cua en acabar la reproducció</string>
-  <string name="pref_auto_delete_sum">Suprimeix l\'episodi quan s\'acabi de reproduir</string>
-  <string name="pref_auto_delete_title">Suprimir automàticament</string>
   <string name="pref_auto_local_delete_title">Suprimeix automàticament de carpetes locals</string>
   <string name="pref_auto_local_delete_sum">Inclou les carpetes locals a la funció de suprimir automàticament</string>
   <string name="pref_auto_local_delete_dialog_body">Tingueu en compte que per a les carpetes locals, això eliminarà episodis de l\'AntennaPod i els seus fitxers multimèdia de l\'emmagatzematge del dispositiu. No es poden tornar a baixar mitjançant AntennaPod. Vols activar la supressió automàtica?</string>
@@ -430,8 +423,7 @@
   <string name="pref_autodl_wifi_filter_sum">Permet les baixades automàtiques només per a les xarxes sense fils seleccionades.</string>
   <string name="pref_automatic_download_on_battery_title">Baixa mentre no es carrega</string>
   <string name="pref_automatic_download_on_battery_sum">Permet les baixades automàtiques mentre la bateria no es carrega</string>
-  <string name="pref_episode_cache_title">Episodis baixats</string>
-  <string name="pref_episode_cache_summary">Nombre total d\'episodis baixats al dispositiu. La baixada automàtica serà suspesa si s\'arriba a aquest nombre.</string>
+  <string name="pref_episode_cache_title">Límit d\'episodis</string>
   <string name="pref_episode_cover_title">Usa la coberta de l\'episodi</string>
   <string name="pref_episode_cover_summary">Utilitza la portada específica de l\'episodi quan sigui possible. Si es desactiva, l\'aplicació utilitzarà sempre la portada del pòdcast.</string>
   <string name="pref_show_remain_time_title">Mostra el temps restant</string>
@@ -450,8 +442,6 @@
   <string name="pref_feed_skip_intro_toast">Omesos els primers %d segons</string>
   <string name="pref_playback_time_respects_speed_title">Ajusta la informació dels medis a la velocitat de reproducció</string>
   <string name="pref_playback_time_respects_speed_sum">La posició i la duració son adaptades a la velocitat de reproducció</string>
-  <string name="pref_fast_forward">Intèrval d\'avanç</string>
-  <string name="pref_fast_forward_sum">Personalitzar el nombre de segons del salt endavant quan es prem el botó d\'Avanç ràpid.</string>
   <string name="pref_rewind">Intèrval de retrocés</string>
   <string name="pref_rewind_sum">Personalitza el nombre de segons del salt endarrere quan es prem el botó de Rebobinat</string>
   <string name="pref_expandNotify_title">Alta prioritat a les notificacions</string>
@@ -500,8 +490,6 @@
   <string name="new_episode_notification_disabled">Notificació desactivada</string>
   <string name="pref_feed_settings_dialog_msg">Aquesta configuració és exclusiva de cada pòdcast. Podeu canviar-la obrint la pàgina del pòdcast.</string>
   <string name="pref_contribute">Contribueix</string>
-  <string name="pref_show_subscription_title">Mostra el títol de la subscripció</string>
-  <string name="pref_show_subscription_title_summary">Mostra el títol de la subscripció sota la imatge de la portada</string>
   <string name="pref_new_episodes_action_title">Acció per a nous episodis</string>
   <string name="pref_new_episodes_action_sum">Acció a fer per a episodis nous</string>
   <!--About screen-->
@@ -634,7 +622,6 @@
   <string name="gpodnetsync_username_characters_error">Noms d\'usuari sols poden contindre lletres, dígits, guions i guions baixos.</string>
   <!--Directory chooser-->
   <string name="choose_data_directory">Selecciona carpeta de dades</string>
-  <string name="choose_data_directory_message">Selecciona l\'arrel del teu directori d\'informació. AntennaPod crearà els subdirectoris pertinents</string>
   <string name="choose_data_directory_available_space">%1$s de %2$s lliures</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Pausa la reproducció en lloc de baixar el volum quan una altra app necessiti reproduir sons</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pausa per interrupcions</string>
@@ -642,18 +629,13 @@
   <string name="rating_tagline">Des del %1$sheu reproduït %2$s%3$d%4$shores de pòdcasts.</string>
   <string name="rating_contribute_label">Us voleu unir? Tant si voleu traduir, ajudar, dissenyar o programar, serem molt feliços de tenir-vos amb nosaltres!</string>
   <string name="rating_contribute_button">Descobriu maneres de contribuir</string>
-  <string name="rating_volunteers_label">Un grup de voluntaris desenvolupem AntennaPod en el nostre temps lliure. Ens faria molt feliços que apreciessis la nostra feina deixant una bona puntuació.</string>
   <string name="rating_rate">Valoreu AntennaPod</string>
   <string name="rating_later">Més tard</string>
   <!--Online feed view-->
   <string name="subscribe_label">Subscriu</string>
-  <string name="subscribing_label">Subscrivint...</string>
-  <string name="preview_episode">Vista prelimiar</string>
-  <string name="stop_preview">Atura vista preliminar</string>
   <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">Enrere</string>
   <string name="rewind_label">Rebobina</string>
-  <string name="fast_forward_label">Avança ràpidament</string>
   <string name="increase_speed">Augmenta la velocitat</string>
   <string name="decrease_speed">Disminueix la velocitat</string>
   <string name="media_type_video_label">Vídeo</string>
@@ -665,7 +647,6 @@
   <string name="load_next_page_label">Carrega la següent pàgina</string>
   <string name="position">Posició: %1$s</string>
   <string name="remaining_time">Temps restant: %1$s</string>
-  <string name="apply_action">Aplica acció</string>
   <string name="play_chapter">Reprodueix el capítol</string>
   <string name="prev_chapter">Capítol anterior</string>
   <string name="next_chapter">Capítol següent</string>
@@ -698,7 +679,6 @@
   <string name="statistics_expected_next_episode_unknown">Desconegut</string>
   <string name="statistics_view_all">Veure per tots els podcasts »</string>
   <string name="edit_url_menu">Edita l\'enllaç del canal</string>
-  <string name="edit_url_confirmation_msg">Canviar l\'adreça RSS pot trencar fàcilment l\'estat de reproducció i les llistes d\'episodis del pòdcast. NO recomanem canviar-lo i NO oferirem suport si alguna cosa va malament. Això no es pot desfer. La subscripció trencada NO es pot reparar simplement canviant l\'adreça. Us suggerim que creeu una còpia de seguretat abans de continuar.</string>
   <!--Podcast release schedules-->
   <string name="release_schedule_daily">cada dia</string>
   <string name="release_schedule_weekdays">els caps de setmana</string>

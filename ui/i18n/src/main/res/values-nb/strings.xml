@@ -111,7 +111,6 @@
   <string name="close_label">Lukk</string>
   <string name="retry_label">Prøv igjen</string>
   <string name="auto_download_label">Inkluder i automatiske nedlastninger</string>
-  <string name="auto_delete_label">Slett episode automatisk</string>
   <string name="feed_volume_adapdation">Volumtilpasning</string>
   <string name="feed_volume_adaptation_summary">Skru volumet for denne podcasten opp eller ned: %1$s</string>
   <string name="feed_volume_reduction_off">Ingen tilpasning</string>
@@ -322,7 +321,6 @@
   <string name="random">Tilfeldig</string>
   <string name="smart_shuffle">Smart blanding</string>
   <string name="size">Størrelse</string>
-  <string name="clear_queue_confirmation_msg">Bekreft at du ønsker å slette ALLE elementer i køen</string>
   <string name="time_left_label">Tid igjen:\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">Forhåndsvalg</string>
@@ -352,7 +350,6 @@
   <string name="download_pref_details">Detaljer</string>
   <string name="import_export_pref">Importer/Eksporter</string>
   <string name="import_export_search_keywords">sikkerhetskopier, gjenopprett</string>
-  <string name="appearance">Utseende</string>
   <string name="external_elements">Eksterne elementer</string>
   <string name="interruptions">Forstyrrelser</string>
   <string name="playback_control">Avspillingskontroll</string>
@@ -360,7 +357,6 @@
   <string name="preference_search_hint">Søk...</string>
   <string name="preference_search_no_results">Ingen resultater</string>
   <string name="preference_search_clear_history">Slett logg</string>
-  <string name="pref_episode_cleanup_title">Episodeopprydding</string>
   <string name="pref_episode_cleanup_summary">Episoder som kan bli utpekt for fjerning hvis Automatisk nedlasting trenger plass til nye episoder</string>
   <string name="pref_pauseOnDisconnect_sum">Sett avspilling på pause når hodetelefoner eller blåtann blir koblet fra</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Gjenoppta avspilling når hodetelefonene kobles til igjen</string>
@@ -369,13 +365,10 @@
   <string name="pref_hardware_forward_button_summary">Tilpass aksjonen til neste kapittel-knappen</string>
   <string name="pref_hardware_previous_button_title">Forrige kapittel-knapp</string>
   <string name="pref_hardware_previous_button_summary">Tilpass aksjonen av forrige kapittel-knappen</string>
-  <string name="button_action_fast_forward">Spol fremover</string>
   <string name="button_action_rewind">Spol tilbake</string>
   <string name="button_action_skip_episode">Hopp over episode</string>
   <string name="button_action_restart_episode">Omstart episode</string>
   <string name="pref_followQueue_sum">Hopp til neste element i køen når avspillingen er ferdig</string>
-  <string name="pref_auto_delete_sum">Slett episode når avspillingen er ferdig</string>
-  <string name="pref_auto_delete_title">Automatisk sletting</string>
   <string name="pref_auto_local_delete_title">Slett automatisk fra lokale mapper</string>
   <string name="pref_auto_local_delete_sum">Ta med lokale mapper i autoslettfunksjonen</string>
   <string name="pref_auto_local_delete_dialog_body">Merk at for lokale mapper vil dette fjerne episoden fra AntennaPod og slette mediefilen fra enhetslagringen. De kan ikke lastes ned på ny gjennom AntennaPod. Aktivere Autoslett?</string>
@@ -430,8 +423,6 @@
   <string name="pref_autodl_wifi_filter_sum">Tillat automatisk nedlasting kun for valgte Wi-Fi-nettverk.</string>
   <string name="pref_automatic_download_on_battery_title">Last ned når enheten ikke lader</string>
   <string name="pref_automatic_download_on_battery_sum">Tillat automatisk nedlasting når enheten ikke står til lading</string>
-  <string name="pref_episode_cache_title">Mellomlager for episoder</string>
-  <string name="pref_episode_cache_summary">Totalt antall nedlastede episoder bufret på enheten. Automatisk nedlasting vil bli stoppet hvis dette nummeret er nådd.</string>
   <string name="pref_episode_cover_title">Bruk episode-cover</string>
   <string name="pref_episode_cover_summary">Bruk et episode-spesifikt cover hvis det er tilgjengelig. Hvis dette ikke er valgt vil appen alltid bruke podkastens cover-bilde.</string>
   <string name="pref_show_remain_time_title">Vis gjenværende tid</string>
@@ -450,8 +441,6 @@
   <string name="pref_feed_skip_intro_toast">Hoppet over første %d sekunder</string>
   <string name="pref_playback_time_respects_speed_title">Juster media-info til avspillingshastighet</string>
   <string name="pref_playback_time_respects_speed_sum">Vist posisjon og varighet tilpasses avspillingshastighet</string>
-  <string name="pref_fast_forward">Hopp fremover</string>
-  <string name="pref_fast_forward_sum">Velg hvor mange sekunder som skal hoppes når du trykker på \"Spol fremover\"-knappen</string>
   <string name="pref_rewind">Hopp tilbake</string>
   <string name="pref_rewind_sum">Velg hvor mange sekunder som skal hoppes tilbake når \"Spol tilbake\"-knappen trykkes</string>
   <string name="pref_expandNotify_title">Høy varsling-prioritet</string>
@@ -500,8 +489,6 @@
   <string name="new_episode_notification_disabled">Varslinger slått av</string>
   <string name="pref_feed_settings_dialog_msg">Den innstillingen er unik til hver podkast. Du kan endre den med å åpne siden til podkasten.</string>
   <string name="pref_contribute">Bidra</string>
-  <string name="pref_show_subscription_title">Vis abonnement titel</string>
-  <string name="pref_show_subscription_title_summary">Vis abonnementstittelen under bildet.</string>
   <string name="pref_new_episodes_action_title">Aksjon til nye episoder</string>
   <string name="pref_new_episodes_action_sum">Aksjon som utføres for nye episoder</string>
   <!--About screen-->
@@ -634,7 +621,6 @@
   <string name="gpodnetsync_username_characters_error">Brukernavn kan kun inneholde bokstaver, tall, bindestrek og understrek</string>
   <!--Directory chooser-->
   <string name="choose_data_directory">Velg datamappe</string>
-  <string name="choose_data_directory_message">Vennligst velg plasseringa til datamappa di. AntennaPod vil lage de nødvendige undermappene.</string>
   <string name="choose_data_directory_available_space">%1$s av %2$s ledig</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Sett avspilling på pause istedenfor å skru ned volumet når en annen app vil spille av lyder</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pause for forstyrrelser</string>
@@ -642,18 +628,13 @@
   <string name="rating_tagline">Siden %1$shar du spilt %2$s%3$d%4$stimer med podkaster.</string>
   <string name="rating_contribute_label">Vil du være med? Enten du vil oversette, støtte, designe eller kode er vi glade for å få deg med på laget!</string>
   <string name="rating_contribute_button">Oppdag måter å bidra på</string>
-  <string name="rating_volunteers_label">Antennapod er utviklet av frivillige på fritiden. Vi blir svært glade om du setter pris på arbeidet vårt ved å legge igjen en fin vurdering.</string>
   <string name="rating_rate">Vurder AntennaPod</string>
   <string name="rating_later">Senere</string>
   <!--Online feed view-->
   <string name="subscribe_label">Abonner</string>
-  <string name="subscribing_label">Abonnerer...</string>
-  <string name="preview_episode">Forhåndsvisning</string>
-  <string name="stop_preview">Stopp forhåndsvisning</string>
   <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">Tilbake</string>
   <string name="rewind_label">Spol tilbake</string>
-  <string name="fast_forward_label">Spol fremover</string>
   <string name="increase_speed">Øk hastighet</string>
   <string name="decrease_speed">Reduser hastigheten</string>
   <string name="media_type_video_label">Video</string>
@@ -665,7 +646,6 @@
   <string name="load_next_page_label">Last inn neste side</string>
   <string name="position">Posisjon: %1$s</string>
   <string name="remaining_time">Gjenværende tid: %1$s</string>
-  <string name="apply_action">Anvend handling</string>
   <string name="play_chapter">Spill kapittel</string>
   <string name="prev_chapter">Forrige kapitel</string>
   <string name="next_chapter">Neste kapitel</string>
@@ -698,7 +678,6 @@
   <string name="statistics_expected_next_episode_unknown">Ukjent</string>
   <string name="statistics_view_all">Vis for alle podkaster »</string>
   <string name="edit_url_menu">Endre feed URL</string>
-  <string name="edit_url_confirmation_msg">Å endre RSS adressen kan lett ødelegge avspillingsstatusen og episodekøen av podcastene. Vi anbefaler å IKKE endre den og vil ikke tilby noen som helst støtte hvis noe slutter å virke. Dette kan ikke angres. Et ødelagt abonnement kan ikke fikses ved å endre adressen tilbake. Vi anbefaler å lage en sikkerhetskopi før du forsetter.</string>
   <!--Podcast release schedules-->
   <string name="release_schedule_daily">daglig</string>
   <string name="release_schedule_weekdays">på ukedager</string>

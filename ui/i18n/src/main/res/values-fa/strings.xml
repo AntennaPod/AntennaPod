@@ -111,7 +111,6 @@
   <string name="close_label">بستن</string>
   <string name="retry_label">تلاش مجدد</string>
   <string name="auto_download_label">شامل بارگیری خودکار شود</string>
-  <string name="auto_delete_label">حذف خودکار قسمت</string>
   <string name="feed_volume_adapdation">سازگارسازی صدا</string>
   <string name="feed_volume_adaptation_summary">کم و زیاد کردن حجم صدا برای قسمت‌های این پادپخش: %1$s</string>
   <string name="feed_volume_reduction_off">ناسازگاری:</string>
@@ -322,7 +321,6 @@
   <string name="random">تصادفی</string>
   <string name="smart_shuffle">بر زدن هوشمند</string>
   <string name="size">اندازه</string>
-  <string name="clear_queue_confirmation_msg">لطفاً تأیید کنید که می‌خواهید صف را از همهٔ قسمت‌های درونش پاک‌سازی کنید</string>
   <string name="time_left_label">زمان مانده:\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">از پیش نشاندن</string>
@@ -352,7 +350,6 @@
   <string name="download_pref_details">جزئیات</string>
   <string name="import_export_pref">وارد/صادر کرد</string>
   <string name="import_export_search_keywords">پشتیبان، بازگردانی</string>
-  <string name="appearance">نمایش</string>
   <string name="external_elements">عناصر خارجی</string>
   <string name="interruptions">وقفه‌ها</string>
   <string name="playback_control">واپایش پخش</string>
@@ -360,7 +357,6 @@
   <string name="preference_search_hint">جست‌وجو...</string>
   <string name="preference_search_no_results">نتیجه‌ای یافت نشد</string>
   <string name="preference_search_clear_history">پاک کردن تاریخچه</string>
-  <string name="pref_episode_cleanup_title">پاک‌سازی قسمت</string>
   <string name="pref_episode_cleanup_summary">قسمت‌هایی که اگر بارگیری خودکار نیاز به فضا برای قسمت‌های جدید داشت، شایستهٔ برداشتنند.</string>
   <string name="pref_pauseOnDisconnect_sum">متوقف‌سازی پخش هنگامی که هدفن‌ها یا بلوتوث قطع شود</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">ادامه پخش وقتی که هدفن‌ها دوباره متصل شود</string>
@@ -369,13 +365,10 @@
   <string name="pref_hardware_forward_button_summary">سفارشی کردن رفتار دکمه پرش به جلو</string>
   <string name="pref_hardware_previous_button_title">دکمهٔ پیشین</string>
   <string name="pref_hardware_previous_button_summary">سفارشی کردن رفتار دکمه بازگشت</string>
-  <string name="button_action_fast_forward">پیش‌روی سریع</string>
   <string name="button_action_rewind">عقب زدن</string>
   <string name="button_action_skip_episode">پرش از قسمت</string>
   <string name="button_action_restart_episode">آغاز دوبارهٔ قسمت</string>
   <string name="pref_followQueue_sum">پس از پایان پخش ، به مورد صف بعدی بروید</string>
-  <string name="pref_auto_delete_sum">حذف قسمت هنگام تکمیل پخش</string>
-  <string name="pref_auto_delete_title">حذف خودکار</string>
   <string name="pref_auto_local_delete_title">حذف خودکار از پوشه‌های محلی</string>
   <string name="pref_auto_local_delete_sum">پوشه های محلی را در لیست قابلیت حذف خودکار قرار دهید</string>
   <string name="pref_auto_local_delete_dialog_body">توجه داشته باشید که برای پوشه‌های محلی، این گزینه قسمت‌ها را از AntennaPod حذف می‌کند و فایل‌های آن‌ها را از حافظه دستگاه شما نیز حذف می‌کند بطوریکه آنها را نمی توان دوباره از طریق AntennaPod بارگیری کرد. آیا حذف خودکار فعال شود؟</string>
@@ -430,8 +423,6 @@
   <string name="pref_autodl_wifi_filter_sum">بارگیری خودکار فقط باید از طریق شبکه های Wi-Fi انتخاب شده مجاز باشد.</string>
   <string name="pref_automatic_download_on_battery_title">بارگیری زمانی که سیستم شارژ نمیشود مجاز باشد</string>
   <string name="pref_automatic_download_on_battery_sum">وقتی باتری شارژ نمی شود ، امکان بارگیری خودکار وجود داشته باشد</string>
-  <string name="pref_episode_cache_title">انبارهٔ قسمت</string>
-  <string name="pref_episode_cache_summary">تعداد کل قسمت‌های بار گرفته‌ٔ انبار شده روی افزاره. بارگیری خودکار در صورت رسیدن به این عدد معلّق خواهد شد.</string>
   <string name="pref_episode_cover_title">استفاده از جلد قسمت</string>
   <string name="pref_episode_cover_summary">استفاده از طرح جلد مخصوص قسمت در سیاهه‌ها در صورت موجود بودن. اگر تیک نخورد کاره همواره از تصویر جلد پادپخش استفاده خواهد کرد.</string>
   <string name="pref_show_remain_time_title">نمایش زمان مانده</string>
@@ -450,8 +441,6 @@
   <string name="pref_feed_skip_intro_toast">پرش از %d ثانیه اول</string>
   <string name="pref_playback_time_respects_speed_title">اطلاعات رسانه را برای سرعت بازپخش تنظیم کنید</string>
   <string name="pref_playback_time_respects_speed_sum">موقعیت و مدت نمایش داده شده با سرعت پخش سازگار شده</string>
-  <string name="pref_fast_forward">زمان پرش پیش‌روی سریع</string>
-  <string name="pref_fast_forward_sum">با کلیک بر روی دکمه سریع جلو ، تعداد ثانیه ها را برای پرش به جلو تنظیم کنید</string>
   <string name="pref_rewind">زمان پرش پس‌روی</string>
   <string name="pref_rewind_sum">با کلیک روی دکمه برگشت تعداد ثانیه ها را برای پرش به عقب تنظیم کنید</string>
   <string name="pref_expandNotify_title">اولویت زیاد آگاهی</string>
@@ -500,8 +489,6 @@
   <string name="new_episode_notification_disabled">آگاهی از کار افتاده</string>
   <string name="pref_feed_settings_dialog_msg">این تنظیمات مختص هر پادپخش است. می‌توان با گشودن صفحهٔ پادپخش تغییرش داد.</string>
   <string name="pref_contribute">مشارکت</string>
-  <string name="pref_show_subscription_title">نمایش عنوان اشتراک</string>
-  <string name="pref_show_subscription_title_summary">عنوان اشتراک را در زیر تصویر جلد نمایش دهید.</string>
   <string name="pref_new_episodes_action_title">کنش قسمت جدید</string>
   <string name="pref_new_episodes_action_sum">کنشی که برای قسمت‌های جدید انجام می‌شود</string>
   <!--About screen-->
@@ -634,7 +621,6 @@
   <string name="gpodnetsync_username_characters_error">نام‌های کاربری فقط می‌توانند شامل حروف، ارقام، خط‌های تیره و زیرخط‌ها باشند.</string>
   <!--Directory chooser-->
   <string name="choose_data_directory">گزینش شاخهٔ داده</string>
-  <string name="choose_data_directory_message">لطفاً پایهٔ شاخهٔ داده‌تان را برگزینید. آنتناپاد زیرشاخه‌های مناسب را خواهد ساخت.</string>
   <string name="choose_data_directory_available_space">%1$s از %2$s آزاد</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">وقتی برنامه دیگری می خواهد صداها را پخش کند ، به جای کاهش میزان صدا ، پخش را متوقف کن</string>
   <string name="pref_pausePlaybackForFocusLoss_title">مکث برای وقفه‌ها</string>
@@ -642,18 +628,13 @@
   <string name="rating_tagline">از %1$s، %2$s%3$d%4$s ساعت پادپخش پخش کرده‌اید.</string>
   <string name="rating_contribute_label">می‌خواهید بپیوندید؟ چه بخواهید ترجمه، پشتیبانی، طرّاحی یا کدزنی کنیید از داشتنتان خوشحال خواهیم بود!</string>
   <string name="rating_contribute_button">کشف راه‌هایی برای مشارکت</string>
-  <string name="rating_volunteers_label">آنتناپاد به دست داوطلبانی در زمان آزادمان توسعه داده شده. خوشحال خواهیم شد اگر با داده رتبه‌بندی خوبی تلاشمان را قدر بدانید.</string>
   <string name="rating_rate">رتبه‌دهی به آنتناپاد</string>
   <string name="rating_later">بعداً</string>
   <!--Online feed view-->
   <string name="subscribe_label">اشتراک</string>
-  <string name="subscribing_label">مشترک شدن ...</string>
-  <string name="preview_episode">پیش نمایش</string>
-  <string name="stop_preview">توقف پیش نمایش</string>
   <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">عقب</string>
   <string name="rewind_label">عقب زدن</string>
-  <string name="fast_forward_label">حرکت سریع به جلو</string>
   <string name="increase_speed">افزایش سرعت</string>
   <string name="decrease_speed">کاهش سرعت</string>
   <string name="media_type_video_label">ویدئو</string>
@@ -665,7 +646,6 @@
   <string name="load_next_page_label">صفحه بعدی را لود کن</string>
   <string name="position">موقعیت: %1$s</string>
   <string name="remaining_time">زمان اجرا:%1$s</string>
-  <string name="apply_action">حرکت را اعمال کن</string>
   <string name="play_chapter">اجرای فصل</string>
   <string name="prev_chapter">فصل قبل</string>
   <string name="next_chapter">فصل بعد</string>
@@ -698,7 +678,6 @@
   <string name="statistics_expected_next_episode_unknown">نانعلوم</string>
   <string name="statistics_view_all">مشاهده برای همهٔ پادپخش‌ها »</string>
   <string name="edit_url_menu">URL فید را ویرایش کنید</string>
-  <string name="edit_url_confirmation_msg">تغییر نشانی خوراک می‌تواند وضعیت پخش و سیاهه کردن قسمت‌های پادپخش را به سادگی خراب کند. تغییرش را توصیه نکرده و در صورت بروز مشکل، پشتیبانی فراهم نمی‌کنیم. این عمل بازگشت‌پذیر نیست. اشتراک خراب را نمی توان به سادگی با بازگرداندن نشانی درست کرد. پیشنهاد می‌کنیم پیش از ادامه، پشتیبان بگیرید.</string>
   <!--Podcast release schedules-->
   <string name="release_schedule_daily">ویانه</string>
   <string name="release_schedule_weekdays">آخر هفته‌ها</string>

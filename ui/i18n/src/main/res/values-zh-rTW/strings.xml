@@ -111,7 +111,6 @@
   <string name="close_label">關閉</string>
   <string name="retry_label">重試</string>
   <string name="auto_download_label">加入自動下載</string>
-  <string name="auto_delete_label">自動刪除集數</string>
   <string name="feed_volume_adapdation">音量調節</string>
   <string name="feed_volume_adaptation_summary">調高或調低此播客單集的音量：%1$s</string>
   <string name="feed_volume_reduction_off">無調節</string>
@@ -284,7 +283,6 @@
   <string name="episode_title">單集標題</string>
   <string name="feed_title">Podcast 標題</string>
   <string name="random">隨機</string>
-  <string name="clear_queue_confirmation_msg">請確認您要清除待播清單中的每一集</string>
   <string name="time_left_label">時間尚餘：\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">備選清單</string>
@@ -308,7 +306,6 @@
   <string name="download_pref_details">細節</string>
   <string name="import_export_pref">匯入/匯出</string>
   <string name="import_export_search_keywords">備份, 還原, backup, restore, export, import, 匯出, 匯入</string>
-  <string name="appearance">外觀</string>
   <string name="external_elements">外部元素</string>
   <string name="interruptions">中斷</string>
   <string name="playback_control">播放控制</string>
@@ -323,7 +320,6 @@
   <string name="pref_hardware_previous_button_summary">自訂倒轉鈕的功能</string>
   <string name="button_action_rewind">倒轉</string>
   <string name="pref_followQueue_sum">當播放完畢時自動跳至待播清單中的下一集</string>
-  <string name="pref_auto_delete_sum">播放完畢後刪除該集</string>
   <string name="pref_smart_mark_as_played_sum">若離開時還剩下特定秒數以內，也將該集標記為已播放</string>
   <string name="pref_skip_keeps_episodes_sum">當跳過某集不播放時，仍於清單中保留該集</string>
   <string name="playback_pref">播放</string>
@@ -349,7 +345,6 @@
   <string name="pref_autodl_wifi_filter_sum">限定於特定 Wi-Fi 連線時自動下載</string>
   <string name="pref_automatic_download_on_battery_title">未充電時下載</string>
   <string name="pref_automatic_download_on_battery_sum">允許未充電時也自動下載</string>
-  <string name="pref_episode_cache_summary">在本機中可以暫存的集數，若達上限則將停止自動下載。</string>
   <string name="pref_episode_cover_summary">在單集有專屬封面的情況下使用該封面圖。如果取消，則一律使用 Podcast 的封面圖</string>
   <string name="pref_show_remain_time_summary">勾選時顯示剩餘播放時間，不勾選時顯示單集的總時間。</string>
   <string name="pref_theme_title_automatic">自動</string>
@@ -366,7 +361,6 @@
   <string name="pref_feed_skip_intro_toast">跳過最初 %d 秒</string>
   <string name="pref_playback_time_respects_speed_title">依據播放速度調整媒體資訊</string>
   <string name="pref_playback_time_respects_speed_sum">根據播放速度調整播放進度、時長等資訊</string>
-  <string name="pref_fast_forward_sum">自訂快轉鈕要往前快轉多少時間</string>
   <string name="pref_rewind_sum">自訂倒轉鈕要往後倒轉多少時間</string>
   <string name="pref_expandNotify_sum">此功能通常會加大通知訊息以便顯示控制鈕</string>
   <string name="pref_enqueue_location_sum">將這幾集加到：%1$s</string>
@@ -488,25 +482,19 @@
   <string name="gpodnetsync_pref_report_failed">失敗</string>
   <string name="gpodnetsync_username_characters_error">帳號中只能包含英文字母、數字、橫線及底線</string>
   <!--Directory chooser-->
-  <string name="choose_data_directory_message">請選擇您儲存檔案用的資料夾，AntennaPod 會自動建立相應的子資料夾。</string>
   <string name="choose_data_directory_available_space">可用空間 %1$s/%2$s</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">有其他 App 也要播放聲音時，停止播放 Podcast（而非降低音量）</string>
   <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">訂閱</string>
-  <string name="subscribing_label">訂閱中</string>
-  <string name="preview_episode">預覽</string>
-  <string name="stop_preview">停止預覽</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">倒轉</string>
-  <string name="fast_forward_label">快轉</string>
   <string name="increase_speed">加速</string>
   <string name="decrease_speed">放慢</string>
   <string name="media_type_video_label">影片</string>
   <string name="status_downloading_label">正在下載這集</string>
   <string name="load_next_page_label">載入下一頁</string>
   <string name="position">播放進度：%1$s</string>
-  <string name="apply_action">套用</string>
   <string name="play_chapter">播放章節</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">驗證</string>

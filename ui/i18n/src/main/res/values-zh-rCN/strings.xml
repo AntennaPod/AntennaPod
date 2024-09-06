@@ -111,7 +111,6 @@
   <string name="close_label">关闭</string>
   <string name="retry_label">重试</string>
   <string name="auto_download_label">包含到自动下载</string>
-  <string name="auto_delete_label">自动删除节目</string>
   <string name="feed_volume_adapdation">音量调节</string>
   <string name="feed_volume_adaptation_summary">调高或调低此播客中节目的音量：%1$s</string>
   <string name="feed_volume_reduction_off">无调节</string>
@@ -171,6 +170,7 @@
   <string name="multi_select">多选</string>
   <string name="select_all_above">选中上面所有</string>
   <string name="select_all_below">选中下面所有</string>
+  <string name="multi_select_started_talkback">显示在底部的多选操作</string>
   <string name="filtered_label">已过滤的</string>
   <string name="refresh_failed_msg">上次刷新失败了。轻按查看详情</string>
   <string name="open_podcast">打开播客</string>
@@ -225,6 +225,10 @@
     <item quantity="other">从收件箱中删除了 %d 期节目。</item>
   </plurals>
   <string name="add_to_favorite_label">加为收藏</string>
+  <string name="show_transcript">显示声音文字</string>
+  <string name="transcript">声音文字</string>
+  <string name="transcript_follow">跟随音频</string>
+  <string name="no_transcript_label">无声音文字</string>
   <string name="remove_from_favorite_label">从收藏中删除</string>
   <string name="visit_website_label">访问网站</string>
   <string name="skip_episode_label">跳过曲目</string>
@@ -307,7 +311,7 @@
   <string name="random">随机</string>
   <string name="smart_shuffle">智能随机播放</string>
   <string name="size">大小</string>
-  <string name="clear_queue_confirmation_msg">请确认您要清除队列中的全部曲目</string>
+  <string name="clear_queue_confirmation_msg">请确认您要清除队列中的全部节目</string>
   <string name="time_left_label">计时剩余:\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">预设定</string>
@@ -337,7 +341,7 @@
   <string name="download_pref_details">细节</string>
   <string name="import_export_pref">导入/导出</string>
   <string name="import_export_search_keywords">数据, 备份, 还原, backup, restore</string>
-  <string name="appearance">样式</string>
+  <string name="theming">主题设置</string>
   <string name="external_elements">外部元素</string>
   <string name="interruptions">中断</string>
   <string name="playback_control">回放控制</string>
@@ -345,7 +349,7 @@
   <string name="preference_search_hint">搜索</string>
   <string name="preference_search_no_results">无结果</string>
   <string name="preference_search_clear_history">清除历史记录</string>
-  <string name="pref_episode_cleanup_title">节目清理</string>
+  <string name="pref_episode_cleanup_title">自动下载前删除</string>
   <string name="pref_episode_cleanup_summary">在自动下载需要新曲目空间时，应该被删除的旧曲目</string>
   <string name="pref_pauseOnDisconnect_sum">耳机或蓝牙断开连接时暂停播放</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">当耳机重新连接时恢复播放</string>
@@ -359,8 +363,10 @@
   <string name="button_action_skip_episode">跳过节目</string>
   <string name="button_action_restart_episode">重新开始节目</string>
   <string name="pref_followQueue_sum">播放完成跳转到播放列表下一项</string>
-  <string name="pref_auto_delete_sum">当播放完成后删除曲目</string>
+  <string name="pref_auto_delete_playback_sum">播放完毕时删除节目</string>
+  <string name="pref_auto_delete_playback_title">播放后删除</string>
   <string name="pref_auto_delete_title">自动删除</string>
+  <string name="pref_auto_delete_sum">播放后或当自动下载需要空间时删除节目</string>
   <string name="pref_auto_local_delete_title">自动从本地文件夹删除</string>
   <string name="pref_auto_local_delete_sum">在自动删除功能中包括本地文件夹</string>
   <string name="pref_auto_local_delete_dialog_body">请注意，对于本地文件夹，此操作会从 AntennaPod 删除播客并从设备存储删除媒体文件。无法再通过 AntennaPod 下载它们。要开启自动删除吗？</string>
@@ -415,9 +421,8 @@
   <string name="pref_autodl_wifi_filter_sum">只允许在 Wi-Fi 网络下自动下载</string>
   <string name="pref_automatic_download_on_battery_title">未充电时下载</string>
   <string name="pref_automatic_download_on_battery_sum">未充电时允许自动下载</string>
-  <string name="pref_episode_cache_title">节目缓存</string>
-  <string name="pref_episode_cache_summary">缓存在设备上的已下载节目总数
-若达到此数目，自动下载将被暂停</string>
+  <string name="pref_episode_cache_title">节目限制</string>
+  <string name="pref_episode_cache_summary">如果达到此数目，自动下载将停止</string>
   <string name="pref_episode_cover_title">使用节目封面</string>
   <string name="pref_episode_cover_summary">勾选后，在列表中使用一期节目特定的封面图。如果不勾选，应用程序将始终使用播客封面图像。</string>
   <string name="pref_show_remain_time_title">显示剩余时间</string>
@@ -436,8 +441,8 @@
   <string name="pref_feed_skip_intro_toast">跳过最初%d秒</string>
   <string name="pref_playback_time_respects_speed_title">根据回放速度调整媒体信息</string>
   <string name="pref_playback_time_respects_speed_sum">显示的播放位置和持续时间已根据回放速度进行调整</string>
-  <string name="pref_fast_forward">快进操作的跳过时间</string>
-  <string name="pref_fast_forward_sum">自定义每次快进节目的秒数</string>
+  <string name="pref_fast_forward">快进跳转时间</string>
+  <string name="pref_fast_forward_sum">自定义单击快进按钮向前跳转的秒数</string>
   <string name="pref_rewind">快退操作的跳过时间</string>
   <string name="pref_rewind_sum">自定义每次倒回节目的秒数</string>
   <string name="pref_expandNotify_title">高通知优先级</string>
@@ -486,10 +491,10 @@
   <string name="new_episode_notification_disabled">通知已禁用</string>
   <string name="pref_feed_settings_dialog_msg">你可以为每个播客设置不同的间隔或时间。可以通过打开播客页面来改变它。</string>
   <string name="pref_contribute">贡献</string>
-  <string name="pref_show_subscription_title">显示订阅标题</string>
-  <string name="pref_show_subscription_title_summary">在封面图下方显示订阅标题</string>
+  <string name="pref_show_subscription_title">显示标题</string>
   <string name="pref_new_episodes_action_title">新节目操作</string>
   <string name="pref_new_episodes_action_sum">对新节目采取的操作</string>
+  <string name="episode_information">节目信息</string>
   <!--About screen-->
   <string name="about_pref">关于</string>
   <string name="antennapod_version">AntennaPod版本</string>
@@ -624,14 +629,13 @@
   <string name="rating_tagline">自 %1$s 以来，你累计播放的播客节目时长达 %2$s %3$d %4$s</string>
   <string name="rating_contribute_label">想加入吗？无论你是要翻译、支持、设计还是写代码，我们都欢迎！</string>
   <string name="rating_contribute_button">如何作出贡献</string>
-  <string name="rating_volunteers_label">AntennaPod 由志愿者在闲暇时间开发。如果您赞赏我们的工作留下好评，我们将非常高兴。</string>
+  <string name="rating_volunteers_label">AntennaPod 由志愿者在闲暇时间开发。留下好评分享您的感激之情。</string>
   <string name="rating_rate">评价 AntennaPod</string>
   <string name="rating_later">稍后</string>
   <!--Online feed view-->
   <string name="subscribe_label">订阅</string>
-  <string name="subscribing_label">订阅中...</string>
-  <string name="preview_episode">预览</string>
-  <string name="stop_preview">停止预览</string>
+  <string name="preview_episodes">节目预览</string>
+  <string name="state_deleted_not_subscribed">你尚未订阅此播客。免费订阅让访问更加轻松并保留播放历史。</string>
   <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">返回</string>
   <string name="rewind_label">回放</string>
@@ -647,12 +651,13 @@
   <string name="load_next_page_label">载入下一页</string>
   <string name="position">位置：%1$s</string>
   <string name="remaining_time">剩余时间：%1$s</string>
-  <string name="apply_action">应用动作</string>
   <string name="play_chapter">播放章节</string>
   <string name="prev_chapter">上一章</string>
   <string name="next_chapter">下一章</string>
   <string name="shuffle_suggestions">随机播放建议</string>
   <string name="add_preset">添加预设</string>
+  <string name="download_started_talkback">开始下载 %1$s</string>
+  <string name="download_completed_talkback">%1$s 下载完成</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">验证</string>
   <string name="authentication_descr">给本播客及曲目变更用户名及密码</string>
@@ -680,7 +685,7 @@
   <string name="statistics_expected_next_episode_unknown">未知</string>
   <string name="statistics_view_all">所有播客视图 »</string>
   <string name="edit_url_menu">编辑订阅源 URL</string>
-  <string name="edit_url_confirmation_msg">更改 RSS 地址很容易破坏播客的播放状态和节目列表。我们不建议更改它，如果出现任何错误我们不会提供支持。这是无法挽回的。无法通过简单地将地址更改回来修复损坏的订阅。我们建议在继续之前创建备份。</string>
+  <string name="edit_url_confirmation_msg">更改 RSS 地址很容易破坏播客的播放状态和节目列表。我们不建议更改它，如果出现任何错误我们不会提供支持。这是无法挽回的。只是将地址更改回来无法修复损坏的订阅。我们建议在继续之前创建备份。</string>
   <!--Podcast release schedules-->
   <string name="release_schedule_daily">每天</string>
   <string name="release_schedule_weekdays">工作日</string>
@@ -757,6 +762,7 @@
   <string name="proxy_port_invalid_error">端口不可用</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">列数</string>
+  <string name="subscription_display_list">列表</string>
   <!--Notification channels-->
   <string name="notification_group_errors">错误</string>
   <string name="notification_group_news">新闻</string>
