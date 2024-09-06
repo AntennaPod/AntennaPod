@@ -13,10 +13,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        app:cardBackgroundColor="?attr/colorSurfaceContainer"
         android:foreground="?android:attr/selectableItemBackground"
-        app:cardCornerRadius="12dp"
         android:layout_margin="4dp"
+        app:cardBackgroundColor="?attr/colorSurfaceContainer"
+        app:cardCornerRadius="12dp"
         app:cardElevation="1dp">
 
         <LinearLayout
