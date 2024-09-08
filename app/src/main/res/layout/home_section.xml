@@ -110,7 +110,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:paddingHorizontal="16dp"
+        android:paddingHorizontal="32dp"
         android:paddingVertical="8dp"
         android:textAlignment="center"
         app:layout_constraintTop_toBottomOf="@id/barrier" />
