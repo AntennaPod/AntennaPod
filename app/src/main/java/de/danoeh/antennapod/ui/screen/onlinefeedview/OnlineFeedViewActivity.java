@@ -279,8 +279,12 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
     private void parseFeed(String destination) {
         Log.d(TAG, "Parsing feed");
-        parser = Observable.fromCallable(() -> {
+        parser = Maybe.<Long>create(emitter -> {
             FeedHandlerResult handlerResult = doParseFeed(destination);
+            if (handlerResult == null) { // Started another attempt with another url
+                emitter.onComplete();
+                return;
+            }
             Feed feed = handlerResult.feed;
             feed.setState(Feed.STATE_NOT_SUBSCRIBED);
             feed.setLastRefreshAttempt(System.currentTimeMillis());
@@ -288,7 +292,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             Feed feedFromDb = DBReader.getFeed(feed.getId(), false, 0, Integer.MAX_VALUE);
             feedFromDb.getPreferences().setKeepUpdated(false);
             DBWriter.setFeedPreferences(feedFromDb.getPreferences());
-            return feed.getId();
+            emitter.onSuccess(feed.getId());
         })
         .subscribeOn(Schedulers.computation())
         .observeOn(AndroidSchedulers.mainThread())
