@@ -106,4 +106,14 @@
         tools:listitem="@layout/horizontal_itemlist_item"
         tools:itemCount="1" />
 
+    <TextView
+        android:id="@+id/emptyLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:paddingHorizontal="32dp"
+        android:paddingVertical="8dp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/barrier" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

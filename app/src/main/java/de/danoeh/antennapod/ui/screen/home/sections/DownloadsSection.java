@@ -6,35 +6,38 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
-import de.danoeh.antennapod.event.DownloadLogEvent;
-import de.danoeh.antennapod.ui.MenuItemUtils;
-import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.event.FeedItemEvent;
-import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
-import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
-import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedItemFilter;
-import de.danoeh.antennapod.model.feed.SortOrder;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.screen.home.HomeSection;
-import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.DownloadLogEvent;
+import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.MenuItemUtils;
+import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
+import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
+import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
+import de.danoeh.antennapod.ui.screen.home.HomeSection;
+import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class DownloadsSection extends HomeSection {
     public static final String TAG = "DownloadsSection";
@@ -63,6 +66,7 @@ public class DownloadsSection extends HomeSection {
         };
         adapter.setDummyViews(NUM_EPISODES);
         viewBinding.recyclerView.setAdapter(adapter);
+        viewBinding.emptyLabel.setText(R.string.home_downloads_empty_text);
 
         SwipeActions swipeActions = new SwipeActions(this, CompletedDownloadsFragment.TAG);
         swipeActions.attachTo(viewBinding.recyclerView);
@@ -133,6 +137,7 @@ public class DownloadsSection extends HomeSection {
                     items = downloads;
                     adapter.setDummyViews(0);
                     adapter.updateItems(items);
+                    viewBinding.emptyLabel.setVisibility(items.isEmpty() ? View.VISIBLE : View.GONE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 }
