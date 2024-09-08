@@ -399,11 +399,15 @@ public class ExoPlayerWrapper {
         LoudnessEnhancer newEnhancer = new LoudnessEnhancer(audioStreamId);
         LoudnessEnhancer oldEnhancer = this.loudnessEnhancer;
         if (oldEnhancer != null) {
-            newEnhancer.setEnabled(oldEnhancer.getEnabled());
-            if (oldEnhancer.getEnabled()) {
-                newEnhancer.setTargetGain((int) oldEnhancer.getTargetGain());
+            try {
+                newEnhancer.setEnabled(oldEnhancer.getEnabled());
+                if (oldEnhancer.getEnabled()) {
+                    newEnhancer.setTargetGain((int) oldEnhancer.getTargetGain());
+                }
+                oldEnhancer.release();
+            } catch (Exception e) {
+                Log.d(TAG, e.toString());
             }
-            oldEnhancer.release();
         }
 
         this.loudnessEnhancer = newEnhancer;
