@@ -394,17 +394,17 @@
   <string name="button_action_restart_episode">Riavvia l\'episodio</string>
   <string name="pref_followQueue_sum">Passa al prossimo episodio in coda al termine della riproduzione</string>
   <string name="pref_auto_delete_playback_sum">Elimina l\'episodio al termine della riproduzione</string>
-  <string name="pref_auto_delete_playback_title">Elimina dopo la riproduzione</string>
+  <string name="pref_auto_delete_playback_title">Elimina episodi riprodotti</string>
   <string name="pref_auto_delete_title">Eliminazione automatica</string>
-  <string name="pref_auto_delete_sum">Elimina gli episodi dopo la riproduzione o quando il download automatico ha bisogno di spazio</string>
-  <string name="pref_auto_local_delete_title">Auto-eliminazione da cartelle locali</string>
+  <string name="pref_auto_delete_sum">Elimina gli episodi al termine della riproduzione o quando il download automatico richiede spazio</string>
+  <string name="pref_auto_local_delete_title">Elimina da cartelle locali</string>
   <string name="pref_auto_local_delete_sum">Includi le cartelle locali nella funzione di eliminazione automatica</string>
   <string name="pref_auto_local_delete_dialog_body">Ricorda che questa funzione rimuoverà gli episodi da AntennaPod ed eliminerà i file multimediali dallo spazio di archiviazione del tuo dispositivo. Non potranno essere scaricati di nuovo attraverso AntennaPod. Sei sicuro di voler abilitare l\'eliminazione automatica?</string>
   <string name="pref_smart_mark_as_played_sum">Contrassegna gli episodi come riprodotti anche se rimangono alcuni secondi da riprodurre</string>
   <string name="pref_smart_mark_as_played_title">Marcatura intelligente</string>
   <string name="pref_skip_keeps_episodes_sum">Mantiene gli episodi nella coda quando vengono saltati</string>
   <string name="pref_skip_keeps_episodes_title">Manteni gli episodi saltati</string>
-  <string name="pref_favorite_keeps_episodes_sum">Mantiene gli episodi se sono segnati come preferiti</string>
+  <string name="pref_favorite_keeps_episodes_sum">Mantieni gli episodi se sono segnati come preferiti</string>
   <string name="pref_favorite_keeps_episodes_title">Mantieni episodi preferiti</string>
   <string name="playback_pref">Riproduzione</string>
   <string name="playback_pref_sum">Controllo cuffie, salto intervalli, coda</string>
@@ -449,10 +449,10 @@
   <string name="pref_automatic_download_sum">Configura il download automatico degli episodi</string>
   <string name="pref_autodl_wifi_filter_title">Abilita il filtro Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Abilita il download automatico solo per alcune reti Wi-Fi selezionate.</string>
-  <string name="pref_automatic_download_on_battery_title">Scarica episodi con batteria non in carica</string>
-  <string name="pref_automatic_download_on_battery_sum">Permetti il download automatico quando la batteria non è in carica</string>
+  <string name="pref_automatic_download_on_battery_title">Download con batteria non in carica</string>
+  <string name="pref_automatic_download_on_battery_sum">Permetti il download automatico quando il dispositivo non è in carica</string>
   <string name="pref_episode_cache_title">Limite di episodi</string>
-  <string name="pref_episode_cache_summary">Il download automatico è interrotto se si raggiunge questo valore</string>
+  <string name="pref_episode_cache_summary">Interrompi il download automatico se si raggiunge questo valore</string>
   <string name="pref_episode_cover_title">Usa immagine episodio</string>
   <string name="pref_episode_cover_summary">Usa l\'immagine dell\'episodio quando disponibile. Se disattivato, l\'app userà sempre l\'immagine di copertina del podcast.</string>
   <string name="pref_show_remain_time_title">Mostra tempo residuo</string>
@@ -667,13 +667,13 @@
   <string name="rating_tagline">Dal %1$s, hai riprodotto %2$s%3$d%4$s ore di podcast.</string>
   <string name="rating_contribute_label">Vuoi partecipare? Saremmo felici di averti con noi per tradurre, supportare, sviluppare o occuparti di design!</string>
   <string name="rating_contribute_button">Scopri come contribuire</string>
-  <string name="rating_volunteers_label">AntennaPod è sviluppato da volontari nel tempo libero. Mostra il tuo apprezzamento per il nostro lavoro lasciando una valutazione positiva.</string>
+  <string name="rating_volunteers_label">AntennaPod è sviluppato da volontari nel tempo libero. Mostra il tuo apprezzamento per il nostro lavoro lasciando una recensione positiva.</string>
   <string name="rating_rate">Valuta AntennaPod</string>
   <string name="rating_later">Dopo</string>
   <!--Online feed view-->
   <string name="subscribe_label">Iscriviti</string>
   <string name="preview_episodes">Anteprima episodi</string>
-  <string name="state_deleted_not_subscribed">Non sei ancora iscritto a questo podcast. Iscriviti gratuitamente per accedervi più facilmente e per mantenere la sua cronologia riproduzioni.</string>
+  <string name="state_deleted_not_subscribed">Non sei ancora iscritto a questo podcast. Iscriviti gratuitamente per accedervi più facilmente e mantenere la cronologia riproduzioni.</string>
   <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">Indietro</string>
   <string name="rewind_label">Riavvolgi</string>
