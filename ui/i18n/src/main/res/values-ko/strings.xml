@@ -128,12 +128,6 @@
   <string name="episode_cleanup_except_favorite_removal">즐겨찾기 아닐 때</string>
   <string name="episode_cleanup_queue_removal">대기열에 없을 때</string>
   <string name="episode_cleanup_after_listening">끝나고 나서</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="other">끝마치고 나서 %d시간</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="other">재생이 끝나고 나서 %d일 뒤</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="other">%1$d/%2$d 선택</item>
   </plurals>
@@ -193,9 +187,6 @@
   <string name="stream_label">스트리밍</string>
   <string name="delete_label">삭제</string>
   <string name="delete_episode_label">에피소드 삭제</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="other">다운로드한 %d개 에피소드 삭제함.</item>
-  </plurals>
   <string name="remove_inbox_label">새로 받음 목록에서 제거</string>
   <string name="removed_inbox_label">새로 받음 목록에서 제거함</string>
   <string name="mark_read_label">재생했다고 표시</string>
@@ -547,18 +538,6 @@
   <string name="time_seconds">초</string>
   <string name="time_minutes">분</string>
   <string name="time_hours">시간</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="other">%d초</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="other">%d분</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="other">%d시간</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="other">%d일</item>
-  </plurals>
   <string name="auto_enable_label">재생을 누를 때 자동으로 취침 타이머를 활성화</string>
   <string name="auto_enable_label_with_times">%1$s 및 %2$s 사이에 재생을 누르면 자동으로 잠자기 타이머 활성화</string>
   <string name="auto_enable_change_times">시간 범위 바꾸기</string>

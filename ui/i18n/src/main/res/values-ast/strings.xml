@@ -60,14 +60,6 @@
   <string name="episode_cleanup_except_favorite_removal">Al nun tar en Favoritos</string>
   <string name="episode_cleanup_queue_removal">Al nun tar na cola</string>
   <string name="episode_cleanup_after_listening">Dempués d\'acabar</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 hora dempués d\'acabar</item>
-    <item quantity="other">%d hores dempués d\'acabar</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 día dempués d\'acabar</item>
-    <item quantity="other">%d díes dempués d\'acabar</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d na esbilla</item>
     <item quantity="other">%1$d/%2$d na esbilla</item>
@@ -276,18 +268,6 @@
   <string name="time_seconds">segundos</string>
   <string name="time_minutes">minutos</string>
   <string name="time_hours">hores</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 segundu</item>
-    <item quantity="other">%d segundos</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 minutu</item>
-    <item quantity="other">%d minutos</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 hora</item>
-    <item quantity="other">%d hores</item>
-  </plurals>
   <!--Synchronisation-->
   <string name="gpodnetauth_login_butLabel">Aniciar sesión</string>
   <string name="gpodnetauth_encryption_warning">¡Los datos y la contraseña nun tán cifraos!</string>

@@ -128,18 +128,6 @@
   <string name="episode_cleanup_except_favorite_removal">Pokud není mezi oblíbenými</string>
   <string name="episode_cleanup_queue_removal">Pokud není ve frontě</string>
   <string name="episode_cleanup_after_listening">Po dokončení</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">%d hodinu po dokončení</item>
-    <item quantity="few">%d hodiny po dokončení</item>
-    <item quantity="many">%d hodin po dokončení</item>
-    <item quantity="other">%d hodin po dokončení</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 den po dokončení</item>
-    <item quantity="few">%d dny po dokončení</item>
-    <item quantity="many">%d dnů po dokončení</item>
-    <item quantity="other">%d dnů po dokončení</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">vybráno %1$d/%2$d</item>
     <item quantity="few">vybráno %1$d/%2$d</item>
@@ -217,12 +205,6 @@
   <string name="stream_label">Streamovat</string>
   <string name="delete_label">Smazat</string>
   <string name="delete_episode_label">Smazat epizodu</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 stažená epizoda smazána.</item>
-    <item quantity="few">%d stažené epizody smazány.</item>
-    <item quantity="many">%d stažených epizod smazáno.</item>
-    <item quantity="other">%d stažených epizod smazáno.</item>
-  </plurals>
   <string name="remove_inbox_label">Odebrat z nových</string>
   <string name="removed_inbox_label">Odebráno z nových</string>
   <string name="mark_read_label">Označit jako poslechnuté</string>
@@ -592,30 +574,6 @@
   <string name="time_seconds">sekund</string>
   <string name="time_minutes">minut</string>
   <string name="time_hours">hodin</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 sekunda</item>
-    <item quantity="few">%d sekundy</item>
-    <item quantity="many">%d sekund</item>
-    <item quantity="other">%d sekund</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 minuta</item>
-    <item quantity="few">%d minuty</item>
-    <item quantity="many">%d minut</item>
-    <item quantity="other">%d minut</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 hodina</item>
-    <item quantity="few">%d hodiny</item>
-    <item quantity="many">%d hodin</item>
-    <item quantity="other">%d hodin</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">1 day</item>
-    <item quantity="few">%d dny</item>
-    <item quantity="many">%d dní</item>
-    <item quantity="other">%ddní</item>
-  </plurals>
   <string name="auto_enable_label">Automatická aktivace časovače spánku při stisknutí tlačítka přehrávání</string>
   <string name="auto_enable_label_with_times">Automaticky aktivovat časovač spánku stisknutím tlačítka přehrávání mezi %1$s a %2$s</string>
   <string name="auto_enable_change_times">Změna časového rozmezí</string>

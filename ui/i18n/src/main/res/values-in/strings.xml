@@ -96,12 +96,6 @@
   <string name="episode_cleanup_except_favorite_removal">Saat tidak difavoritkan</string>
   <string name="episode_cleanup_queue_removal">Ketika tidak dalam antrian</string>
   <string name="episode_cleanup_after_listening">Setelah menyelesaikan</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="other">%d jam setelah menyelesaikan</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="other">%d hari setelah menyelesaikan</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="other">%1$d/%2$d terpilih</item>
   </plurals>
@@ -150,9 +144,6 @@
   <string name="pause_label">Jeda</string>
   <string name="stream_label">Streaming</string>
   <string name="delete_label">Hapus</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="other">%depisode terunduh dihapus.</item>
-  </plurals>
   <string name="remove_inbox_label">Hapus dari kotak masuk</string>
   <string name="removed_inbox_label">Dihapus dari kotak masuk</string>
   <string name="mark_read_label">Tandai diputar</string>
@@ -436,15 +427,6 @@
   <string name="time_seconds">detik</string>
   <string name="time_minutes">menit</string>
   <string name="time_hours">jam</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="other">%d detik</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="other">%d menit</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="other">%d jam</item>
-  </plurals>
   <string name="auto_enable_label">Aktifkan timer tidur secara otomatis saat menekan \'putar\'</string>
   <string name="auto_enable_change_times">Ubah jangka waktu</string>
   <string name="sleep_timer_enabled_label">Timer tidur diaktifkan</string>

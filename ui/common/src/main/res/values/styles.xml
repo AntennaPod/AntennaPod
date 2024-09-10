@@ -161,7 +161,6 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>
-        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="Theme.AntennaPod.Light.Translucent" parent="Theme.AntennaPod.Light.NoTitle">
@@ -172,7 +171,6 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>
-        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="Theme.AntennaPod.Dynamic.Dark.Translucent" parent="Theme.AntennaPod.Dynamic.Dark.NoTitle">
@@ -183,7 +181,6 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>
-        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.Translucent" parent="Theme.AntennaPod.Dark.NoTitle">
@@ -194,7 +191,6 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>
-        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="Theme.AntennaPod.Dynamic.TrueBlack.Translucent" parent="Theme.AntennaPod.Dynamic.TrueBlack.NoTitle">
@@ -205,7 +201,6 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>
-        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack.Translucent" parent="Theme.AntennaPod.TrueBlack.NoTitle">
@@ -216,7 +211,6 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>
-        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="AnimationFade">

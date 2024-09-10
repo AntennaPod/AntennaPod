@@ -122,14 +122,6 @@
   <string name="episode_cleanup_except_favorite_removal">Kun ei ole suosikeissa</string>
   <string name="episode_cleanup_queue_removal">Kun ei ole jonossa</string>
   <string name="episode_cleanup_after_listening">Lopetuksen jälkeen</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 hour after finishing</item>
-    <item quantity="other">%d tuntia lopetuksen jälkeen</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 päivä lataamisen jälkeen</item>
-    <item quantity="other">%d päivää lataamisen jälkeen</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d valittu</item>
     <item quantity="other">%1$d/%2$d valittu</item>
@@ -194,10 +186,6 @@
   <string name="stream_label">Suoratoista</string>
   <string name="delete_label">Poista</string>
   <string name="delete_episode_label">Poista jakso</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 ladattu jakso poistettu.</item>
-    <item quantity="other">%d ladattua jaksoa poistettu.</item>
-  </plurals>
   <string name="remove_inbox_label">Poista saapuneista</string>
   <string name="removed_inbox_label">Poistettu saapuneista</string>
   <string name="mark_read_label">Merkitse toistetuksi</string>
@@ -532,22 +520,6 @@
   <string name="time_seconds">sekuntia</string>
   <string name="time_minutes">minuuttia</string>
   <string name="time_hours">tuntia</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 sekunti</item>
-    <item quantity="other">%d sekuntia</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 minuutti</item>
-    <item quantity="other">%d minuuttia</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 tunti</item>
-    <item quantity="other">%d tuntia</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">1 päivä</item>
-    <item quantity="other">%d päivää</item>
-  </plurals>
   <string name="sleep_timer_enabled_label">Uniajastin asetettu</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">Valitse synkronointipalveluntarjoaja</string>

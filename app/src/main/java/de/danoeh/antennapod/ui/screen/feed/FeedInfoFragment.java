@@ -84,9 +84,11 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 android.content.ClipboardManager cm = (android.content.ClipboardManager) getContext()
                         .getSystemService(Context.CLIPBOARD_SERVICE);
                 cm.setPrimaryClip(clipData);
-                if (Build.VERSION.SDK_INT <= 32) {
+                if (Build.VERSION.SDK_INT <= 32 && getActivity() instanceof MainActivity) {
                     ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.copied_to_clipboard,
                             Snackbar.LENGTH_SHORT);
+                } else if (Build.VERSION.SDK_INT <= 32) {
+                    Snackbar.make(getView(), R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
                 }
             }
         }

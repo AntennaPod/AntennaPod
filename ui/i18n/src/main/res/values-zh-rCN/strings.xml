@@ -129,10 +129,10 @@
   <string name="episode_cleanup_queue_removal">当不在队列中</string>
   <string name="episode_cleanup_after_listening">结束后</string>
   <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="other">结束后 %d 小时</item>
+    <item quantity="other">完成后 %d 小时</item>
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="other">结束后 %d 天</item>
+    <item quantity="other">完成后 %d 天</item>
   </plurals>
   <plurals name="num_selected_label">
     <item quantity="other">共 %2$d 播客，已选中 %1$d</item>
@@ -195,7 +195,7 @@
   <string name="delete_label">删除</string>
   <string name="delete_episode_label">删除节目</string>
   <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="other">删除了 %d 个已下载的节目。</item>
+    <item quantity="other">删除了 %d 期已下载的节目。</item>
   </plurals>
   <string name="remove_inbox_label">从收件箱删除</string>
   <string name="removed_inbox_label">已从收件箱删除</string>
@@ -570,7 +570,7 @@
     <item quantity="other">%d 秒</item>
   </plurals>
   <plurals name="time_minutes_quantified">
-    <item quantity="other">%d 分</item>
+    <item quantity="other">%d 分钟</item>
   </plurals>
   <plurals name="time_hours_quantified">
     <item quantity="other">%d 小时</item>

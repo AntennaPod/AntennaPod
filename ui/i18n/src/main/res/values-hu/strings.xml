@@ -128,14 +128,6 @@
   <string name="episode_cleanup_except_favorite_removal">Ha nincs felvéve a kedvencek közé</string>
   <string name="episode_cleanup_queue_removal">Ha nincs sorbaállítva</string>
   <string name="episode_cleanup_after_listening">Befejezés után</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">befejezés után 1 órával</item>
-    <item quantity="other">befejezés után %d órával</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">befejezés után 1 nappal</item>
-    <item quantity="other">befejezés után %d nappal</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d kiválasztva</item>
     <item quantity="other">%1$d/%2$d kiválasztva</item>
@@ -201,10 +193,6 @@
   <string name="stream_label">Közvetítés</string>
   <string name="delete_label">Törlés</string>
   <string name="delete_episode_label">Epizód törlése</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 letöltött epizód törölve.</item>
-    <item quantity="other">%d letöltött epizód törölve.</item>
-  </plurals>
   <string name="remove_inbox_label">Eltávolítás a beérkezők közül</string>
   <string name="removed_inbox_label">Eltávolítva a beérkezők közül</string>
   <string name="mark_read_label">Megjelölés lejátszottként</string>
@@ -562,22 +550,6 @@
   <string name="time_seconds">másodperc</string>
   <string name="time_minutes">perc</string>
   <string name="time_hours">óra</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 másodperc</item>
-    <item quantity="other">%d másodperc</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 perc</item>
-    <item quantity="other">%d perc</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 óra</item>
-    <item quantity="other">%d óra</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">1 nap</item>
-    <item quantity="other">%d nap</item>
-  </plurals>
   <string name="auto_enable_label">Az elalvási időzítő automatikus aktiválása a lejátszás megnyomásakor</string>
   <string name="auto_enable_label_with_times">Az elalvási időzítő automatikus aktiválása, ha %1$s és %2$s között nyomja meg a lejátszást</string>
   <string name="auto_enable_change_times">Időtartomány módosítása</string>

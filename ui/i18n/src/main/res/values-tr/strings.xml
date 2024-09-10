@@ -128,14 +128,6 @@
   <string name="episode_cleanup_except_favorite_removal">Favorilenmemişken</string>
   <string name="episode_cleanup_queue_removal">Sırada değilse</string>
   <string name="episode_cleanup_after_listening">Bittikten sonra</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">Bittikten 1 saat sonra</item>
-    <item quantity="other">Bittikten %d saat sonra</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">Bittikten 1 gün sonra</item>
-    <item quantity="other">Bittikten %d gün sonra</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d seçildi</item>
     <item quantity="other">%1$d/%2$d seçildi</item>
@@ -201,10 +193,6 @@
   <string name="stream_label">Akış</string>
   <string name="delete_label">Sil</string>
   <string name="delete_episode_label">Bölümü sil</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 indirilmiş bölüm silindi.</item>
-    <item quantity="other">%d indirilmiş bölüm silindi.</item>
-  </plurals>
   <string name="remove_inbox_label">Gelen kutusundan sil</string>
   <string name="removed_inbox_label">Gelen kutusundan silindi</string>
   <string name="mark_read_label">Oynatıldı olarak işaretle</string>
@@ -562,22 +550,6 @@
   <string name="time_seconds">saniye</string>
   <string name="time_minutes">dakika</string>
   <string name="time_hours">saat</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 saniye</item>
-    <item quantity="other">%d saniye</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 dakika</item>
-    <item quantity="other">%d dakika</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 saat</item>
-    <item quantity="other">%d saat</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">1 gün</item>
-    <item quantity="other">%d gün</item>
-  </plurals>
   <string name="auto_enable_label">Oynata basıldığında, uyku zamanlayıcısı otomatik olarak etkinleştirilsin</string>
   <string name="auto_enable_label_with_times">Oynat düğmesine %1$s ve %2$s arasında basıldığında uyku zamanlayıcısını otomatik olarak etkinleştir</string>
   <string name="auto_enable_change_times">Zaman aralığını değiştir</string>

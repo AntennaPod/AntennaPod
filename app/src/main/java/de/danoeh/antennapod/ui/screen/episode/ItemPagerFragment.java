@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import org.greenrobot.eventbus.EventBus;
@@ -169,6 +170,11 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
                 return;
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(UnreadItemsUpdateEvent event) {
+        refreshToolbarState();
     }
 
     private void openPodcast() {

@@ -128,12 +128,6 @@
   <string name="episode_cleanup_except_favorite_removal">お気に入りされていない</string>
   <string name="episode_cleanup_queue_removal">キューにない時</string>
   <string name="episode_cleanup_after_listening">完了後</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="other">完了後 %d 時間</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="other">完了 %d 日後</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="other">%1$d/%2$d 項目を選択中</item>
   </plurals>
@@ -193,9 +187,6 @@
   <string name="stream_label">ストリーム</string>
   <string name="delete_label">削除</string>
   <string name="delete_episode_label">エピソードを削除</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="other">ダウンロードした %d 項目のエピソードが削除されました。</item>
-  </plurals>
   <string name="remove_inbox_label">受信トレイから取り除く</string>
   <string name="removed_inbox_label">受信トレイから取り除きました</string>
   <string name="mark_read_label">再生済みとしてマーク</string>
@@ -547,18 +538,6 @@
   <string name="time_seconds">秒</string>
   <string name="time_minutes">分</string>
   <string name="time_hours">時間</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="other">%d 秒</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="other">%d 分</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="other">%d 時間</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="other">%d日</item>
-  </plurals>
   <string name="auto_enable_label">再生をタップした時に自動的にスリープタイマーを有効化</string>
   <string name="auto_enable_label_with_times">%1$s 〜 %2$s の間で再生を押下した時に自動的にスリープタイマーを有効化</string>
   <string name="auto_enable_change_times">時間の間隔を変更</string>

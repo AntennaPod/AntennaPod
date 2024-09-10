@@ -359,7 +359,10 @@ public class AudioPlayerFragment extends Fragment implements
         int currentPosition = converter.convert(event.getPosition());
         int duration = converter.convert(event.getDuration());
         int remainingTime = converter.convert(Math.max(event.getDuration() - event.getPosition(), 0));
-        currentChapterIndex = Chapter.getAfterPosition(controller.getMedia().getChapters(), currentPosition);
+        @Nullable Playable media = controller.getMedia();
+        if (media != null) {
+            currentChapterIndex = Chapter.getAfterPosition(media.getChapters(), currentPosition);
+        }
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
         if (currentPosition == Playable.INVALID_TIME || duration == Playable.INVALID_TIME) {
             Log.w(TAG, "Could not react to position observer update because of invalid time");

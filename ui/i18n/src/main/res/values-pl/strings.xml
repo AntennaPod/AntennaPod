@@ -125,18 +125,6 @@
   <string name="episode_cleanup_except_favorite_removal">Gdy nie oznaczone jako ulubione</string>
   <string name="episode_cleanup_queue_removal">Kiedy nie są w kolejce</string>
   <string name="episode_cleanup_after_listening">Po odtworzeniu</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 godzinę po odtworzeniu</item>
-    <item quantity="few"> %d godzin(y) po odtworzeniu</item>
-    <item quantity="many">%d  godzin(y) po odtworzeniu</item>
-    <item quantity="other">%d godzin(y) po odtworzeniu</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 dzień po odtworzeniu</item>
-    <item quantity="few">%d dni po odtworzeniu</item>
-    <item quantity="many">%d dni po odtworzeniu</item>
-    <item quantity="other">%d dni po odtworzeniu</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d wybrany</item>
     <item quantity="few">%1$d/%2$d wybranych</item>
@@ -213,12 +201,6 @@
   <string name="stream_label">Streamuj</string>
   <string name="delete_label">Usuń</string>
   <string name="delete_episode_label">Usuń odcinek</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">Usunięto 1 pobrany odcinek.</item>
-    <item quantity="few">Usunięto kilka pobranych odcinków.</item>
-    <item quantity="many">Usunięto wiele pobranych odcinków.</item>
-    <item quantity="other">Usunięto %d pobranych odcinków.</item>
-  </plurals>
   <string name="remove_inbox_label">Usuń ze skrzynki odbiorczej</string>
   <string name="removed_inbox_label">Usunięto ze skrzynki odbiorczej</string>
   <string name="mark_read_label">Oznacz jako odtworzone</string>
@@ -581,30 +563,6 @@
   <string name="time_seconds">sekund</string>
   <string name="time_minutes">minut</string>
   <string name="time_hours">godzin</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 sekunda</item>
-    <item quantity="few">%d sekundy</item>
-    <item quantity="many">%d sekund</item>
-    <item quantity="other">%d sekund</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 minuta</item>
-    <item quantity="few">%d minuty</item>
-    <item quantity="many">%d minut</item>
-    <item quantity="other">%d minut</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 godzina</item>
-    <item quantity="few">%d godziny</item>
-    <item quantity="many">%d godzin</item>
-    <item quantity="other">%d godzin</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">1 dzień</item>
-    <item quantity="few">%d dni</item>
-    <item quantity="many">%d dni</item>
-    <item quantity="other">%d dni</item>
-  </plurals>
   <string name="auto_enable_label">Automatycznie aktywuj wyłącznik czasowy po naciśnięciu odtwarzania</string>
   <string name="auto_enable_change_times">Zmień zakres czasowy</string>
   <string name="sleep_timer_enabled_label">Wyłącznik czasowy włączony</string>
