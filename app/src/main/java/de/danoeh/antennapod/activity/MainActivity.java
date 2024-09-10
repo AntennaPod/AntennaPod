@@ -46,11 +46,13 @@ import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.net.download.service.feed.FeedUpdateManagerImpl;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.TransitionEffect;
@@ -67,6 +69,7 @@ import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
 import de.danoeh.antennapod.ui.screen.download.DownloadLogFragment;
 import de.danoeh.antennapod.ui.screen.drawer.BottomNavigationMoreAdapter;
+import de.danoeh.antennapod.ui.screen.drawer.DrawerPreferencesDialog;
 import de.danoeh.antennapod.ui.screen.drawer.NavDrawerFragment;
 import de.danoeh.antennapod.ui.screen.drawer.NavListAdapter;
 import de.danoeh.antennapod.ui.screen.drawer.NavigationNames;
@@ -78,6 +81,9 @@ import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
 import de.danoeh.antennapod.ui.screen.rating.RatingDialogManager;
 import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
 import de.danoeh.antennapod.ui.view.LockableBottomSheetBehavior;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
@@ -509,7 +515,15 @@ public class MainActivity extends CastEnabledActivity {
         MenuItem moreItem = menu.add(0, R.id.bottom_navigation_more, 0, getString(R.string.searchpreference_more));
         moreItem.setIcon(R.drawable.dots_vertical);
         bottomNavigationView.setOnItemSelectedListener(bottomItemSelectedListener);
-        bottomNavigationView.getOrCreateBadge(R.id.bottom_navigation_inbox).setNumber(42);
+
+        if (bottomNavigationView.getMenu().findItem(R.id.bottom_navigation_inbox) != null) {
+            Observable.fromCallable(() -> DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW)))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(result ->
+                            bottomNavigationView.getOrCreateBadge(R.id.bottom_navigation_inbox).setNumber(result),
+                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+        }
     }
 
     private final NavigationBarView.OnItemSelectedListener bottomItemSelectedListener = item -> {
@@ -535,10 +549,15 @@ public class MainActivity extends CastEnabledActivity {
             item.setIcon(NavigationNames.getDrawable(tag));
             popupMenuItems.add(item);
         }
-        MenuItem item = new MenuBuilder(this).add(0, R.id.bottom_navigation_settings,
+        MenuItem customizeItem = new MenuBuilder(this).add(0, R.id.bottom_navigation_settings,
+                0, getString(R.string.bottom_navigation_customize));
+        customizeItem.setIcon(R.drawable.ic_pencil);
+        popupMenuItems.add(customizeItem);
+
+        MenuItem settingsItem = new MenuBuilder(this).add(0, R.id.bottom_navigation_settings,
                 0, getString(R.string.settings_label));
-        item.setIcon(R.drawable.ic_settings);
-        popupMenuItems.add(item);
+        settingsItem.setIcon(R.drawable.ic_settings);
+        popupMenuItems.add(settingsItem);
 
         final ListPopupWindow listPopupWindow = new ListPopupWindow(this);
         listPopupWindow.setWidth((int) (250 * getResources().getDisplayMetrics().density));
@@ -547,6 +566,8 @@ public class MainActivity extends CastEnabledActivity {
         listPopupWindow.setOnItemClickListener((parent, view, position, id) -> {
             if (position == popupMenuItems.size() - 1) {
                 startActivity(new Intent(this, PreferenceActivity.class));
+            } else if (position == popupMenuItems.size() - 2) {
+                new DrawerPreferencesDialog(this, this::buildBottomNavigationMenu).show();
             } else {
                 loadFragment(getBottomNavigationFragmentTag(popupMenuItems.get(position).getItemId()), null);
             }
@@ -716,7 +737,7 @@ public class MainActivity extends CastEnabledActivity {
             String toPage = UserPreferences.getDefaultPage();
             if (NavDrawerFragment.getLastNavFragment(this).equals(toPage)
                     || UserPreferences.DEFAULT_PAGE_REMEMBER.equals(toPage)) {
-                if (UserPreferences.backButtonOpensDrawer() && drawerLayout != null) {
+                if (UserPreferences.backButtonOpensDrawer() && drawerLayout != null && bottomNavigationView == null) {
                     drawerLayout.openDrawer(navDrawer);
                 } else {
                     super.onBackPressed();

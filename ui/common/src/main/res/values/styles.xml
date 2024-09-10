@@ -46,6 +46,8 @@
         <item name="android:colorBackground">@color/background_light</item>
         <item name="colorSurface">@color/background_light</item>
         <item name="colorSurfaceVariant">#D3DCE0</item>
+        <item name="colorSurfaceContainer">#EBEEF3</item>
+        <item name="colorSecondaryContainer">#D3DCE0</item>
     </style>
 
     <style name="Theme.AntennaPod.Dynamic.Dark" parent="Theme.Base.AntennaPod.Dynamic.Dark">
@@ -91,6 +93,8 @@
         <item name="android:colorBackground">@color/background_darktheme</item>
         <item name="colorSurface">@color/background_darktheme</item>
         <item name="colorSurfaceVariant">#2F3B4F</item>
+        <item name="colorSurfaceContainer">#1C2024</item>
+        <item name="colorSecondaryContainer">#2F3B4F</item>
     </style>
 
     <style name="Theme.AntennaPod.Dynamic.TrueBlack" parent="Theme.AntennaPod.Dynamic.Dark">
