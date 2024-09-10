@@ -13,12 +13,13 @@
         android:layout_gravity="top"
         android:elevation="8dp"
         android:outlineProvider="none"
+        android:background="?attr/colorSurfaceContainer"
         tools:layout_height="@dimen/external_player_height" />
 
     <RelativeLayout
+        android:id="@+id/playerContent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:layout_height="match_parent">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
