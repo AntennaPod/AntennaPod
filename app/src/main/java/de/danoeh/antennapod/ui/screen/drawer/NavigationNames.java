@@ -60,4 +60,47 @@ public abstract class NavigationNames {
                 return 0;
         }
     }
+
+    public static int getBottomNavigationItemId(String tag) {
+        switch (tag) {
+            case QueueFragment.TAG:
+                return R.id.bottom_navigation_queue;
+            case InboxFragment.TAG:
+                return R.id.bottom_navigation_inbox;
+            case AllEpisodesFragment.TAG:
+                return R.id.bottom_navigation_episodes;
+            case CompletedDownloadsFragment.TAG:
+                return R.id.bottom_navigation_downloads;
+            case PlaybackHistoryFragment.TAG:
+                return R.id.bottom_navigation_history;
+            case AddFeedFragment.TAG:
+                return R.id.bottom_navigation_addfeed;
+            case SubscriptionFragment.TAG:
+                return R.id.bottom_navigation_subscriptions;
+            case HomeFragment.TAG: // fall-through
+            default:
+                return R.id.bottom_navigation_home;
+        }
+    }
+
+    public static String getBottomNavigationFragmentTag(int id) {
+        if (id == R.id.bottom_navigation_queue) {
+            return QueueFragment.TAG;
+        } else if (id == R.id.bottom_navigation_inbox) {
+            return InboxFragment.TAG;
+        } else if (id == R.id.bottom_navigation_episodes) {
+            return AllEpisodesFragment.TAG;
+        } else if (id == R.id.bottom_navigation_downloads) {
+            return CompletedDownloadsFragment.TAG;
+        } else if (id == R.id.bottom_navigation_history) {
+            return PlaybackHistoryFragment.TAG;
+        } else if (id == R.id.bottom_navigation_addfeed) {
+            return AddFeedFragment.TAG;
+        } else if (id == R.id.bottom_navigation_subscriptions) {
+            return SubscriptionFragment.TAG;
+        } else if (id == R.id.bottom_navigation_home) {
+            return HomeFragment.TAG;
+        }
+        return null;
+    }
 }

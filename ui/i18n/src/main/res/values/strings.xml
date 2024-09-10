@@ -452,8 +452,7 @@
     <string name="pref_tinted_theme_message">Adapt app colors based on the wallpaper</string>
     <string name="bottom_navigation">Bottom navigation</string>
     <string name="bottom_navigation_summary">Beta feature: Access the most important screens from everywhere, in a single tap</string>
-    <string name="bottom_navigation_customize">Customize screens</string>
-    <string name="pref_nav_drawer_items_title">Set navigation items</string>
+    <string name="pref_nav_drawer_items_title">Customize navigation</string>
     <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer or bottom navigation</string>
     <string name="pref_nav_drawer_feed_order_title">Set subscription order</string>
     <string name="pref_nav_drawer_feed_order_sum">Change the order of your subscriptions</string>

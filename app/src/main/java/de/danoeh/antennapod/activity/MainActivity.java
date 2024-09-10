@@ -143,8 +143,8 @@ public class MainActivity extends CastEnabledActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         navDrawer = findViewById(R.id.navDrawerFragment);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        buildBottomNavigationMenu();
         if (UserPreferences.isBottomNavigationEnabled()) {
+            buildBottomNavigationMenu();
             if (drawerLayout == null) { // Tablet mode
                 navDrawer.setVisibility(View.GONE);
             } else {
@@ -434,7 +434,7 @@ public class MainActivity extends CastEnabledActivity {
     public void loadFragment(String tag, Bundle args) {
         NavDrawerFragment.saveLastNavFragment(this, tag);
         if (bottomNavigationView != null) {
-            int bottomSelectedItem = getBottomNavigationItemId(tag);
+            int bottomSelectedItem = NavigationNames.getBottomNavigationItemId(tag);
             if (bottomNavigationView.getMenu().findItem(bottomSelectedItem) == null) {
                 bottomSelectedItem = R.id.bottom_navigation_more;
             }
@@ -509,7 +509,8 @@ public class MainActivity extends CastEnabledActivity {
         menu.clear();
         for (int i = 0; i < drawerItems.size() && i < bottomNavigationView.getMaxItemCount() - 1; i++) {
             String tag = drawerItems.get(i);
-            MenuItem item = menu.add(0, getBottomNavigationItemId(tag), 0, getString(NavigationNames.getLabel(tag)));
+            MenuItem item = menu.add(0, NavigationNames.getBottomNavigationItemId(tag),
+                    0, getString(NavigationNames.getLabel(tag)));
             item.setIcon(NavigationNames.getDrawable(tag));
         }
         MenuItem moreItem = menu.add(0, R.id.bottom_navigation_more, 0, getString(R.string.searchpreference_more));
@@ -532,7 +533,7 @@ public class MainActivity extends CastEnabledActivity {
             showBottomNavigationMorePopup();
             return false;
         } else {
-            loadFragment(getBottomNavigationFragmentTag(item.getItemId()), null);
+            loadFragment(NavigationNames.getBottomNavigationFragmentTag(item.getItemId()), null);
             return true;
         }
     };
@@ -544,13 +545,13 @@ public class MainActivity extends CastEnabledActivity {
         final List<MenuItem> popupMenuItems = new ArrayList<>();
         for (int i = bottomNavigationView.getMaxItemCount() - 1; i < drawerItems.size(); i++) {
             String tag = drawerItems.get(i);
-            MenuItem item = new MenuBuilder(this).add(0, getBottomNavigationItemId(tag),
+            MenuItem item = new MenuBuilder(this).add(0, NavigationNames.getBottomNavigationItemId(tag),
                     0, getString(NavigationNames.getLabel(tag)));
             item.setIcon(NavigationNames.getDrawable(tag));
             popupMenuItems.add(item);
         }
         MenuItem customizeItem = new MenuBuilder(this).add(0, R.id.bottom_navigation_settings,
-                0, getString(R.string.bottom_navigation_customize));
+                0, getString(R.string.pref_nav_drawer_items_title));
         customizeItem.setIcon(R.drawable.ic_pencil);
         popupMenuItems.add(customizeItem);
 
@@ -569,56 +570,14 @@ public class MainActivity extends CastEnabledActivity {
             } else if (position == popupMenuItems.size() - 2) {
                 new DrawerPreferencesDialog(this, this::buildBottomNavigationMenu).show();
             } else {
-                loadFragment(getBottomNavigationFragmentTag(popupMenuItems.get(position).getItemId()), null);
+                loadFragment(NavigationNames.getBottomNavigationFragmentTag(
+                        popupMenuItems.get(position).getItemId()), null);
             }
             listPopupWindow.dismiss();
         });
         listPopupWindow.setDropDownGravity(Gravity.END | Gravity.BOTTOM);
         listPopupWindow.setModal(true);
         listPopupWindow.show();
-    }
-
-    private int getBottomNavigationItemId(String tag) {
-        switch (tag) {
-            case QueueFragment.TAG:
-                return R.id.bottom_navigation_queue;
-            case InboxFragment.TAG:
-                return R.id.bottom_navigation_inbox;
-            case AllEpisodesFragment.TAG:
-                return R.id.bottom_navigation_episodes;
-            case CompletedDownloadsFragment.TAG:
-                return R.id.bottom_navigation_downloads;
-            case PlaybackHistoryFragment.TAG:
-                return R.id.bottom_navigation_history;
-            case AddFeedFragment.TAG:
-                return R.id.bottom_navigation_addfeed;
-            case SubscriptionFragment.TAG:
-                return R.id.bottom_navigation_subscriptions;
-            case HomeFragment.TAG: // fall-through
-            default:
-                return R.id.bottom_navigation_home;
-        }
-    }
-
-    private String getBottomNavigationFragmentTag(int id) {
-        if (id == R.id.bottom_navigation_queue) {
-            return QueueFragment.TAG;
-        } else if (id == R.id.bottom_navigation_inbox) {
-            return InboxFragment.TAG;
-        } else if (id == R.id.bottom_navigation_episodes) {
-            return AllEpisodesFragment.TAG;
-        } else if (id == R.id.bottom_navigation_downloads) {
-            return CompletedDownloadsFragment.TAG;
-        } else if (id == R.id.bottom_navigation_history) {
-            return PlaybackHistoryFragment.TAG;
-        } else if (id == R.id.bottom_navigation_addfeed) {
-            return AddFeedFragment.TAG;
-        } else if (id == R.id.bottom_navigation_subscriptions) {
-            return SubscriptionFragment.TAG;
-        } else if (id == R.id.bottom_navigation_home) {
-            return HomeFragment.TAG;
-        }
-        return null;
     }
 
     @Override

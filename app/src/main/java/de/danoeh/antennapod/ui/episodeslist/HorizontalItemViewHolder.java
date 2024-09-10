@@ -55,6 +55,7 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
         this.item = item;
 
         card.setAlpha(1.0f);
+        card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(activity, R.attr.colorSurfaceContainer));
         new CoverLoader()
                 .withUri(ImageResourceUtils.getEpisodeListImageLocation(item))
                 .withFallbackUri(item.getFeed().getImageUrl())
