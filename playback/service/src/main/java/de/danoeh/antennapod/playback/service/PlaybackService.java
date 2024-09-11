@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.playback.service;
 
 import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
+import static de.danoeh.antennapod.storage.preferences.UserPreferences.CONST_AUTODL_QUEUE_ITEMS;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -54,6 +55,7 @@ import androidx.lifecycle.Observer;
 import androidx.media.MediaBrowserServiceCompat;
 
 import de.danoeh.antennapod.event.PlayerStatusEvent;
+import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
 import de.danoeh.antennapod.playback.service.internal.LocalPSMP;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
@@ -1170,6 +1172,27 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         || !UserPreferences.shouldFavoriteKeepEpisode())) {
                     DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media);
                     Log.d(TAG, "Episode Deleted");
+                }
+
+                if (UserPreferences.shouldAutodownloadQueue()) {
+                    // First, get items and assign the maximum. Either 5, or the listsize, the smaller one.
+                    List<FeedItem> items = DBReader.getQueue();
+                    int maxItems = Math.min(items.size(), CONST_AUTODL_QUEUE_ITEMS);
+
+                    for (int i = 0; i < items.size(); i++) {
+
+                        // Filter items when they are played.
+                        FeedItem fitem = items.get(i);
+                        if (!fitem.isPlayed()) {
+                            DBWriter.markItemForAutodownload(fitem);
+                            maxItems--;
+                        }
+
+                        if (maxItems == 0) {
+                            break;
+                        }
+                    }
+                    AutoDownloadManager.getInstance().autodownloadUndownloadedItems(getApplicationContext());
                 }
                 notifyChildrenChanged(getString(R.string.queue_label));
             }

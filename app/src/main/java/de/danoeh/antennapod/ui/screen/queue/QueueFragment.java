@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.ui.screen.queue;
 
+import static de.danoeh.antennapod.storage.preferences.UserPreferences.CONST_AUTODL_QUEUE_ITEMS;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -28,6 +30,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
+import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
@@ -129,6 +132,32 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
     }
 
+    private void updateQueueDownloads() {
+        if (!UserPreferences.shouldAutodownloadQueue()) {
+            return;
+        }
+        Observable.fromCallable(DBReader::getQueue)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(items -> {
+                    int maxItems = Math.min(items.size(), CONST_AUTODL_QUEUE_ITEMS);
+
+                    for (int i = 0; i < items.size(); i++) {
+                        // Filter items when they are played.
+                        FeedItem fitem = items.get(i);
+                        if (!fitem.isPlayed()) {
+                            DBWriter.markItemForAutodownload(fitem);
+                            maxItems--;
+                        }
+
+                        if (maxItems == 0) {
+                            break;
+                        }
+                    }
+                    AutoDownloadManager.getInstance().autodownloadUndownloadedItems(this.getContext());
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(QueueEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
@@ -138,6 +167,9 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             loadItems(true);
             return;
         }
+
+        updateQueueDownloads();
+
         switch(event.action) {
             case ADDED:
                 queue.add(event.position, event.item);
@@ -267,6 +299,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedUpdateRunningEvent event) {
         swipeRefreshLayout.setRefreshing(event.isFeedUpdateRunning);
+        updateQueueDownloads();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
