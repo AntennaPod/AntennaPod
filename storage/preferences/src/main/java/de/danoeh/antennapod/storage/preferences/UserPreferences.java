@@ -51,6 +51,7 @@ public abstract class UserPreferences {
     public static final String PREF_HIDDEN_DRAWER_ITEMS = "prefHiddenDrawerItems";
     public static final String PREF_DRAWER_ITEM_ORDER = "prefDrawerItemOrder";
     public static final String PREF_DRAWER_FEED_ORDER = "prefDrawerFeedOrder";
+    public static final String PREF_DRAWER_FEED_ORDER_REVERSED = "prefDrawerFeedOrderReversed";
     public static final String PREF_DRAWER_FEED_COUNTER = "prefDrawerFeedIndicator";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     public static final String PREF_USE_EPISODE_COVER = "prefEpisodeCover";
@@ -271,6 +272,17 @@ public abstract class UserPreferences {
 
     public static void setFeedOrder(FeedOrder feedOrder) {
         prefs.edit().putString(PREF_DRAWER_FEED_ORDER, "" + feedOrder.id).apply();
+    }
+
+    public static boolean getFeedOrderReversed() {
+        return prefs.getBoolean(PREF_DRAWER_FEED_ORDER_REVERSED, false);
+    }
+
+    public static void setFeedOrderReversed(boolean reversed) {
+        Log.d("Pref", "Setting reversed to: " + reversed);
+        prefs.edit()
+                .putBoolean(PREF_DRAWER_FEED_ORDER_REVERSED, reversed)
+                .apply();
     }
 
     public static FeedCounter getFeedCounterSetting() {

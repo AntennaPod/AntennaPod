@@ -1,8 +1,20 @@
 package de.danoeh.antennapod.ui.screen.subscriptions;
 
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ToggleButton;
 
+import androidx.preference.SwitchPreferenceCompat;
+import androidx.work.Logger;
+
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 import de.danoeh.antennapod.model.feed.FeedOrder;
 import org.greenrobot.eventbus.EventBus;
@@ -18,7 +30,7 @@ public class FeedSortDialog {
     public static void showDialog(Context context) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
         dialog.setTitle(context.getString(R.string.pref_nav_drawer_feed_order_title));
-        dialog.setNegativeButton(android.R.string.cancel, (d, listener) -> d.dismiss());
+        dialog.setNegativeButton(android.R.string.ok, (d, listener) -> d.dismiss());
 
         int selected = UserPreferences.getFeedOrder().id;
         List<String> entryValues =
@@ -32,8 +44,24 @@ public class FeedSortDialog {
                 //Update subscriptions
                 EventBus.getDefault().post(new UnreadItemsUpdateEvent());
             }
-            d.dismiss();
         });
+        boolean reversed = UserPreferences.getFeedOrderReversed();
+        LinearLayout ll = new LinearLayout(dialog.getContext());
+
+
+        LayoutInflater inflater = LayoutInflater.from(dialog.getContext());
+        View layout = inflater.inflate(R.layout.dialog_switch_preference_subs, null, false);
+        MaterialSwitch switchButton = layout.findViewById(R.id.dialogSwitch);
+        switchButton.setChecked(reversed);
+        switchButton.setText("Reversed");
+        switchButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            UserPreferences.setFeedOrderReversed(isChecked);
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
+        });
+        ViewParent parent = switchButton.getParent();
+        ((ViewGroup)parent).removeAllViews();
+        ll.addView(switchButton);
+        dialog.setView(ll);
         dialog.show();
     }
 }
