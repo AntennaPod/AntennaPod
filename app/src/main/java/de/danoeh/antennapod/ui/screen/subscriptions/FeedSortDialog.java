@@ -4,15 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ToggleButton;
 
-import androidx.preference.SwitchPreferenceCompat;
-import androidx.work.Logger;
-
-import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
 
@@ -46,9 +39,6 @@ public class FeedSortDialog {
             }
         });
         boolean reversed = UserPreferences.getFeedOrderReversed();
-        LinearLayout ll = new LinearLayout(dialog.getContext());
-
-
         LayoutInflater inflater = LayoutInflater.from(dialog.getContext());
         View layout = inflater.inflate(R.layout.dialog_switch_preference_subs, null, false);
         MaterialSwitch switchButton = layout.findViewById(R.id.dialogSwitch);
@@ -58,8 +48,11 @@ public class FeedSortDialog {
             UserPreferences.setFeedOrderReversed(isChecked);
             EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
-        ViewParent parent = switchButton.getParent();
-        ((ViewGroup)parent).removeAllViews();
+        if (switchButton.getParent() instanceof ViewGroup) {
+            ViewGroup parent = (ViewGroup) switchButton.getParent();
+            parent.removeAllViews();
+        }
+        LinearLayout ll = new LinearLayout(dialog.getContext());
         ll.addView(switchButton);
         dialog.setView(ll);
         dialog.show();
