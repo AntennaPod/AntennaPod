@@ -1,131 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <TableRow
-        android:tag="detailed">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/statistics_episodes_started_total" />
+        <include
+            android:id="@+id/playbackTime"
+            layout="@layout/feed_statistics_card" />
 
-        <TextView
-            android:id="@+id/startedTotalLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:text="@string/wait_icon"
-            tools:text="0 / 0" />
+        <include
+            android:id="@+id/episodesStarted"
+            layout="@layout/feed_statistics_card" />
 
-    </TableRow>
+        <include
+            android:id="@+id/spaceDownloaded"
+            layout="@layout/feed_statistics_card" />
 
-    <TableRow>
+    </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/statistics_time_played" />
+    <LinearLayout
+        android:id="@+id/secondRowContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        tools:visibility="visible">
 
-        <TextView
-            android:id="@+id/timePlayedLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:text="@string/wait_icon"
-            tools:text="0 min" />
+        <include
+            android:id="@+id/episodesTotal"
+            layout="@layout/feed_statistics_card" />
 
-    </TableRow>
+        <include
+            android:id="@+id/durationTotal"
+            layout="@layout/feed_statistics_card" />
 
-    <TableRow
-        android:tag="detailed">
+        <include
+            android:id="@+id/episodesDownloaded"
+            layout="@layout/feed_statistics_card" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/statistics_total_duration" />
+    </LinearLayout>
 
-        <TextView
-            android:id="@+id/totalDurationLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:text="@string/wait_icon"
-            tools:text="0 min" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    </TableRow>
+        <include
+            android:id="@+id/expectedNextEpisode"
+            layout="@layout/feed_statistics_card" />
 
-    <TableRow>
+        <include
+            android:id="@+id/episodeSchedule"
+            layout="@layout/feed_statistics_card" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/statistics_episodes_on_device" />
+    </LinearLayout>
 
-        <TextView
-            android:id="@+id/onDeviceLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:text="@string/wait_icon"
-            tools:text="0" />
-
-    </TableRow>
-
-    <TableRow>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/statistics_space_used" />
-
-        <TextView
-            android:id="@+id/spaceUsedLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:text="@string/wait_icon"
-            tools:text="0 MB" />
-
-    </TableRow>
-
-    <TableRow>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/statistics_expected_next_episode" />
-
-        <TextView
-            android:id="@+id/expectedNextEpisodeLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:lines="2"
-            android:text="@string/wait_icon"
-            tools:text="Jan 1st (weekly)" />
-
-    </TableRow>
-
-</TableLayout>
+</LinearLayout>

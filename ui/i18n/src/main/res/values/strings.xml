@@ -737,15 +737,16 @@
     <string name="keep_updated">Keep updated</string>
     <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>
     <string name="auto_download_disabled_globally">Auto download is disabled in the main AntennaPod settings</string>
-    <string name="statistics_time_played">Time played:</string>
-    <string name="statistics_total_duration">Total duration (estimate):</string>
-    <string name="statistics_episodes_on_device">Episodes on the device:</string>
-    <string name="statistics_space_used">Space used:</string>
-    <string name="statistics_episodes_started_total">Episodes started/total:</string>
-    <string name="statistics_expected_next_episode">Expected next episode:</string>
+    <string name="statistics_episodes_started">started</string>
+    <string name="statistics_episodes_total">total</string>
+    <string name="statistics_episodes_played">played</string>
+    <string name="statistics_episodes_downloaded">downloaded</string>
+    <string name="statistics_episodes_space">space taken</string>
+    <string name="statistics_release_schedule">release schedule</string>
+    <string name="statistics_release_next">next episode (estimate)</string>
     <string name="statistics_expected_next_episode_any_day">Any day now</string>
     <string name="statistics_expected_next_episode_unknown">Unknown</string>
-    <string name="statistics_view_all">View for all podcasts »</string>
+    <string name="statistics_view_all">All podcasts »</string>
     <string name="wait_icon" translatable="false">…</string>
     <string name="edit_url_menu">Edit feed URL</string>
     <string name="edit_url_confirmation_msg">Changing the RSS address can easily break the playback state and episode listings of the podcast. We do NOT recommend changing it and will NOT provide support if anything goes wrong. This cannot be undone. The broken subscription CANNOT be repaired by simply changing the address back. We recommend creating a backup before continuing.</string>

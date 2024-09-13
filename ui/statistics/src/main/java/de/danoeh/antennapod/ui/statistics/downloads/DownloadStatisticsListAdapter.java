@@ -49,11 +49,9 @@ public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
         text += " • " + context.getResources().getQuantityString(R.plurals.num_episodes, numEpisodes, numEpisodes);
         holder.value.setText(text);
 
-        holder.itemView.setOnClickListener(v -> {
-            FeedStatisticsDialogFragment yourDialogFragment = FeedStatisticsDialogFragment.newInstance(
-                    item.feed.getId(), item.feed.getTitle());
-            yourDialogFragment.show(fragment.getChildFragmentManager().beginTransaction(), "DialogFragment");
-        });
+        holder.itemView.setOnClickListener(v ->
+                FeedStatisticsDialogFragment.newInstance(item.feed.getId(), item.feed.getTitle())
+                        .show(fragment.getChildFragmentManager().beginTransaction(), "FeedStatistics"));
     }
 
 }
