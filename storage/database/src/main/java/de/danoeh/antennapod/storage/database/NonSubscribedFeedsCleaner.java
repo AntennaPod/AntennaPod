@@ -10,7 +10,8 @@ import java.util.List;
 
 public class NonSubscribedFeedsCleaner {
     private static final String TAG = "NonSubscrFeedsCleaner";
-    private static final long TIME_TO_KEEP = 1000L * 3600 * 24 * 30; // 30 days
+    private static final long TIME_TO_KEEP_UNTOUCHED = 1000L * 3600 * 24; // 1 day
+    private static final long TIME_TO_KEEP_PLAYED = 1000L * 3600 * 24 * 30; // 30 days
 
     public static void deleteOldNonSubscribedFeeds(Context context) {
         List<Feed> feeds = DBReader.getFeedList();
@@ -35,6 +36,10 @@ public class NonSubscribedFeedsCleaner {
         } else if (feed.hasEpisodeInApp()) {
             return false;
         }
-        return feed.getLastRefreshAttempt() < System.currentTimeMillis() - TIME_TO_KEEP;
+        long timeSinceLastRefresh = System.currentTimeMillis() - feed.getLastRefreshAttempt();
+        if (!feed.hasInteractedWithEpisode()) {
+            return timeSinceLastRefresh > TIME_TO_KEEP_UNTOUCHED;
+        }
+        return timeSinceLastRefresh > TIME_TO_KEEP_PLAYED;
     }
 }

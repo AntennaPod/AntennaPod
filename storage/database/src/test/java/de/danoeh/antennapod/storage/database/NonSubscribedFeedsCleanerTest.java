@@ -34,7 +34,7 @@ public class NonSubscribedFeedsCleanerTest {
         feed.setLastRefreshAttempt(System.currentTimeMillis());
         assertFalse(NonSubscribedFeedsCleaner.shouldDelete(feed));
 
-        feed.setLastRefreshAttempt(System.currentTimeMillis() - TimeUnit.MILLISECONDS.convert(10, TimeUnit.DAYS));
+        feed.setLastRefreshAttempt(System.currentTimeMillis() - TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS));
         assertFalse(NonSubscribedFeedsCleaner.shouldDelete(feed));
 
         feed.setLastRefreshAttempt(System.currentTimeMillis() - TimeUnit.MILLISECONDS.convert(200, TimeUnit.DAYS));
@@ -42,6 +42,26 @@ public class NonSubscribedFeedsCleanerTest {
 
         feed.setLastRefreshAttempt(System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(200, TimeUnit.DAYS));
         assertFalse(NonSubscribedFeedsCleaner.shouldDelete(feed));
+    }
+
+    @Test
+    public void testPlayedItem() {
+        Feed feed = createFeed();
+        feed.setState(Feed.STATE_NOT_SUBSCRIBED);
+        FeedItem item = createItem(feed);
+        feed.getItems().add(item);
+
+        item.setPlayed(false);
+        feed.setLastRefreshAttempt(System.currentTimeMillis() - TimeUnit.MILLISECONDS.convert(10, TimeUnit.DAYS));
+        assertTrue(NonSubscribedFeedsCleaner.shouldDelete(feed));
+
+        item.setPlayed(true);
+        feed.setLastRefreshAttempt(System.currentTimeMillis() - TimeUnit.MILLISECONDS.convert(10, TimeUnit.DAYS));
+        assertFalse(NonSubscribedFeedsCleaner.shouldDelete(feed));
+
+        item.setPlayed(true);
+        feed.setLastRefreshAttempt(System.currentTimeMillis() - TimeUnit.MILLISECONDS.convert(100, TimeUnit.DAYS));
+        assertTrue(NonSubscribedFeedsCleaner.shouldDelete(feed));
     }
 
     @Test
