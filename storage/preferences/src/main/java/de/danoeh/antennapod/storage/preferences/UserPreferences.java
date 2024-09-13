@@ -279,7 +279,6 @@ public abstract class UserPreferences {
     }
 
     public static void setFeedOrderReversed(boolean reversed) {
-        Log.d("Pref", "Setting reversed to: " + reversed);
         prefs.edit()
                 .putBoolean(PREF_DRAWER_FEED_ORDER_REVERSED, reversed)
                 .apply();
