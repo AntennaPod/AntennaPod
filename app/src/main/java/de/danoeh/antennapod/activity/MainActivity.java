@@ -37,6 +37,7 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationBarView;
@@ -45,6 +46,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.net.download.service.feed.FeedUpdateManagerImpl;
@@ -83,6 +85,7 @@ import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
 import de.danoeh.antennapod.ui.view.LockableBottomSheetBehavior;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
@@ -114,6 +117,7 @@ public class MainActivity extends CastEnabledActivity {
     private @Nullable DrawerLayout drawerLayout;
     private @Nullable ActionBarDrawerToggle drawerToggle;
     private BottomNavigationView bottomNavigationView;
+    private Disposable bottomNavigationBadgeLoader = null;
     private View navDrawer;
     private LockableBottomSheetBehavior sheetBehavior;
     private RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
@@ -330,6 +334,10 @@ public class MainActivity extends CastEnabledActivity {
         if (drawerLayout != null && drawerToggle != null) {
             drawerLayout.removeDrawerListener(drawerToggle);
         }
+        if (bottomNavigationBadgeLoader != null) {
+            bottomNavigationBadgeLoader.dispose();
+            bottomNavigationBadgeLoader = null;
+        }
     }
 
     private void checkFirstLaunch() {
@@ -516,15 +524,28 @@ public class MainActivity extends CastEnabledActivity {
         MenuItem moreItem = menu.add(0, R.id.bottom_navigation_more, 0, getString(R.string.searchpreference_more));
         moreItem.setIcon(R.drawable.dots_vertical);
         bottomNavigationView.setOnItemSelectedListener(bottomItemSelectedListener);
+        updateBottomNavigationBadgeIfNeeded(null);
+    }
 
-        if (bottomNavigationView.getMenu().findItem(R.id.bottom_navigation_inbox) != null) {
-            Observable.fromCallable(() -> DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW)))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(result ->
-                            bottomNavigationView.getOrCreateBadge(R.id.bottom_navigation_inbox).setNumber(result),
-                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+    @Subscribe
+    public void updateBottomNavigationBadgeIfNeeded(@Nullable UnreadItemsUpdateEvent ignore) {
+        if (bottomNavigationView == null) {
+            return;
+        } else if (bottomNavigationView.getMenu().findItem(R.id.bottom_navigation_inbox) == null) {
+            return;
         }
+        if (bottomNavigationBadgeLoader != null) {
+            bottomNavigationBadgeLoader.dispose();
+        }
+        bottomNavigationBadgeLoader = Observable.fromCallable(
+                        () -> DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW)))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    BadgeDrawable badge = bottomNavigationView.getOrCreateBadge(R.id.bottom_navigation_inbox);
+                    badge.setVisible(result > 0);
+                    badge.setNumber(result);
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private final NavigationBarView.OnItemSelectedListener bottomItemSelectedListener = item -> {
