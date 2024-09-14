@@ -674,6 +674,7 @@
     <string name="gpodnetsync_pref_report_successful">Successful</string>
     <string name="gpodnetsync_pref_report_failed">Failed</string>
     <string name="gpodnetsync_username_characters_error">Usernames may only contain letters, digits, hyphens and underscores.</string>
+    <string name="nextcloud_login_error_generic"><![CDATA[Unable to log into your Nextcloud.\n\n- Check your network connection.\n- Confirm that you are using the correct server address.\n- Make sure that the gpoddersync Nextcloud plugin is installed.]]></string>
 
     <!-- Directory chooser -->
     <string name="choose_data_directory">Choose data folder</string>
