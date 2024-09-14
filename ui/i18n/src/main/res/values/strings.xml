@@ -435,6 +435,8 @@
     <string name="feed_every_12_hours">Every 12 hours</string>
     <string name="feed_every_24_hours">Every day</string>
     <string name="feed_every_72_hours">Every 3 days</string>
+    <string name="pref_networkConstraintsDisabled_0_minutes">0 Minutes</string>
+    <string name="pref_networkConstraintsDisabled_10_minutes">10 Minutes</string>
     <string name="pref_followQueue_title">Continuous playback</string>
     <string name="pref_pauseOnHeadsetDisconnect_title">Headphones or Bluetooth disconnect</string>
     <string name="pref_unpauseOnHeadsetReconnect_title">Headphones reconnect</string>
@@ -526,6 +528,10 @@
     <string name="remember_last_page">Remember last page</string>
     <string name="pref_delete_removes_from_queue_title">Delete removes from queue</string>
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted</string>
+    <string name="pref_networkConstraintsDisabled_title">Mobile download remember decision</string>
+    <string name="pref_networkConstraintsDisabled_sum">Remember decision what should happen for downloads on mobile data connection.</string>
+    <string name="pref_networkConstraintsDisabledTimespanMinutes_title">Mobile download remember decision time</string>
+    <string name="pref_networkConstraintsDisabledTimespanMinutes_sum">Time to remember decision what should happen for downloads on mobile data connection.</string>
     <string name="pref_filter_feed_title">Subscription filter</string>
     <string name="pref_filter_feed_sum">Filter your subscriptions in navigation drawer and subscriptions screen</string>
     <string name="subscriptions_are_filtered">Subscriptions are filtered.</string>

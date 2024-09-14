@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.net.Proxy;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -107,6 +109,9 @@ public abstract class UserPreferences {
     private static final String PREF_PROXY_PORT = "prefProxyPort";
     private static final String PREF_PROXY_USER = "prefProxyUser";
     private static final String PREF_PROXY_PASSWORD = "prefProxyPassword";
+    public static final String PREF_NETWORK_CONSTRAINTS_DISABLED = "prefNetworkConstraintsDisabled";
+    public static final String PREF_NETWORK_CONSTRAINTS_DISABLED_TIMESPAN_MINUTES = "prefNetworkConstraintsDisabledTimespan";
+    public static final String PREF_NETWORK_CONSTRAINTS_DISABLED_UNTIL = "prefNetworkConstraintsDisabledUntil";
 
     // Services
     private static final String PREF_GPODNET_NOTIFICATIONS = "pref_gpodnet_notifications";
@@ -560,6 +565,30 @@ public abstract class UserPreferences {
     public static String[] getAutodownloadSelectedNetworks() {
         String selectedNetWorks = prefs.getString(PREF_AUTODL_SELECTED_NETWORKS, "");
         return TextUtils.split(selectedNetWorks, ",");
+    }
+
+    public static boolean areNetworkConstraintsDisabled() {
+        String untilPref = prefs.getString(PREF_NETWORK_CONSTRAINTS_DISABLED_UNTIL, LocalDateTime.now().minusMinutes(1).toString());
+        if (untilPref == null) { return false; }
+        LocalDateTime until = LocalDateTime.parse(untilPref);
+        LocalDateTime now = LocalDateTime.now();
+        return now.isBefore(until);
+    }
+
+    public static void setPrefNetworkConstraintsDisabledTimespanMinutes(int timespanMinutes) {
+        if (timespanMinutes < 0) { timespanMinutes = 0; }
+        prefs.edit().putInt(PREF_NETWORK_CONSTRAINTS_DISABLED_TIMESPAN_MINUTES,timespanMinutes).apply();
+    }
+
+    public static void setPrefNetworkConstraintsDisabled(boolean isEnabled) {
+        int minutes = prefs.getInt(PREF_NETWORK_CONSTRAINTS_DISABLED_TIMESPAN_MINUTES,10);
+        LocalDateTime until = (isEnabled) ? LocalDateTime.now().plus(minutes,ChronoUnit.MINUTES) : LocalDateTime.now().minusMinutes(1);
+        setPrefNetworkConstraintsDisabled(until);
+    }
+
+    private static void setPrefNetworkConstraintsDisabled(LocalDateTime until) {
+        prefs.edit().putBoolean(PREF_NETWORK_CONSTRAINTS_DISABLED,true).apply();
+        prefs.edit().putString(PREF_NETWORK_CONSTRAINTS_DISABLED_UNTIL,until.toString()).apply();
     }
 
     public static void setProxyConfig(ProxyConfig config) {

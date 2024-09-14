@@ -36,7 +36,7 @@
             android:enabled="true"
             android:key="prefDeleteRemovesFromQueue"
             android:summary="@string/pref_delete_removes_from_queue_sum"
-            android:title="@string/pref_delete_removes_from_queue_title"/>
+            android:title="@string/pref_delete_removes_from_queue_title" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/download_pref_details">
@@ -47,6 +47,19 @@
                 android:key="prefMobileUpdateTypes"
                 android:summary="@string/pref_mobileUpdate_sum"
                 android:title="@string/pref_mobileUpdate_title"/>
+        <SwitchPreferenceCompat
+                android:defaultValue="false"
+                android:enabled="true"
+                android:key="prefNetworkConstraintsDisabled"
+                android:summary="@string/pref_networkConstraintsDisabled_sum"
+                android:title="@string/pref_networkConstraintsDisabled_title"/>
+        <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
+                android:entryValues="@array/pref_networkConstraintsDisabledTimespanMinutes_values"
+                android:entries="@array/pref_networkConstraintsDisabledTimespanMinutes_entries"
+                android:key="prefNetworkConstraintsDisabledTimespanMinutes"
+                android:title="@string/pref_networkConstraintsDisabledTimespanMinutes_title"
+                android:summary="@string/pref_networkConstraintsDisabledTimespanMinutes_sum"
+                android:defaultValue="10"/>
         <Preference
                 android:key="prefProxy"
                 android:summary="@string/pref_proxy_sum"

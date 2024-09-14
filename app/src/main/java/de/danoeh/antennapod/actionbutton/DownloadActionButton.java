@@ -14,6 +14,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.storage.preferences.UsageStatistics;
 import de.danoeh.antennapod.net.common.NetworkUtils;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public class DownloadActionButton extends ItemActionButton {
 
@@ -49,13 +50,16 @@ public class DownloadActionButton extends ItemActionButton {
 
         if (NetworkUtils.isEpisodeDownloadAllowed()) {
             DownloadServiceInterface.get().downloadNow(context, item, false);
+        } else if(NetworkUtils.areConstraintsDisabled()) {
+            DownloadServiceInterface.get().downloadNow(context, item, true);
         } else {
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context)
                     .setTitle(R.string.confirm_mobile_download_dialog_title)
-                    .setPositiveButton(R.string.confirm_mobile_download_dialog_download_later,
-                            (d, w) -> DownloadServiceInterface.get().downloadNow(context, item, false))
-                    .setNeutralButton(R.string.confirm_mobile_download_dialog_allow_this_time,
-                            (d, w) -> DownloadServiceInterface.get().downloadNow(context, item, true))
+                    .setPositiveButton(R.string.confirm_mobile_download_dialog_download_later, (d, w) -> DownloadServiceInterface.get().downloadNow(context, item, false))
+                    .setNeutralButton(R.string.confirm_mobile_download_dialog_allow_this_time, (d, w) -> {
+                        DownloadServiceInterface.get().downloadNow(context, item, true);
+                        UserPreferences.setPrefNetworkConstraintsDisabled(true);
+                    })
                     .setNegativeButton(R.string.cancel_label, null);
             if (NetworkUtils.isNetworkRestricted() && NetworkUtils.isVpnOverWifi()) {
                 builder.setMessage(R.string.confirm_mobile_download_dialog_message_vpn);

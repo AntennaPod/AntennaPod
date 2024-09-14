@@ -52,6 +52,10 @@ public abstract class NetworkUtils {
         return UserPreferences.isAllowMobileEpisodeDownload() || !NetworkUtils.isNetworkRestricted();
     }
 
+    public static boolean areConstraintsDisabled() {
+        return UserPreferences.areNetworkConstraintsDisabled();
+    }
+
     public static boolean isEpisodeHeadDownloadAllowed() {
         // It is not an image but it is a similarly tiny request
         // that is probably not even considered a download by most users

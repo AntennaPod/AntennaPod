@@ -53,6 +53,16 @@
         <item>72</item>
     </string-array>
 
+    <string-array name="pref_networkConstraintsDisabledTimespanMinutes_entries">
+        <item>0</item>
+        <item>10</item>
+    </string-array>
+
+    <string-array name="pref_networkConstraintsDisabledTimespanMinutes_values">
+        <item>@string/pref_networkConstraintsDisabled_0_minutes</item>
+        <item>@string/pref_networkConstraintsDisabled_10_minutes</item>
+    </string-array>
+
     <string-array name="globalNewEpisodesActionItems">
         <item>@string/feed_new_episodes_action_add_to_inbox</item>
         <item>@string/feed_new_episodes_action_add_to_queue</item>
