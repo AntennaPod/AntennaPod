@@ -1,10 +1,9 @@
 package de.danoeh.antennapod.ui.screen.subscriptions;
 
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
@@ -38,23 +37,23 @@ public class FeedSortDialog {
                 EventBus.getDefault().post(new UnreadItemsUpdateEvent());
             }
         });
-        boolean reversed = UserPreferences.getFeedOrderReversed();
-        LayoutInflater inflater = LayoutInflater.from(dialog.getContext());
-        View layout = inflater.inflate(R.layout.dialog_switch_preference_subs, null, false);
-        MaterialSwitch switchButton = layout.findViewById(R.id.dialogSwitch);
-        switchButton.setChecked(reversed);
+
+        dialog.setView(getReverseButtonLayout(dialog));
+        dialog.show();
+    }
+
+    private static @NonNull LinearLayout getReverseButtonLayout(MaterialAlertDialogBuilder dialog) {
+        MaterialSwitch switchButton = new MaterialSwitch(dialog.getContext());
+        int padding = 64;
+        switchButton.setPadding(padding, padding, padding, padding);
+        switchButton.setChecked(UserPreferences.getFeedOrderReversed());
         switchButton.setText("Reversed");
         switchButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             UserPreferences.setFeedOrderReversed(isChecked);
             EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
-        if (switchButton.getParent() instanceof ViewGroup) {
-            ViewGroup parent = (ViewGroup) switchButton.getParent();
-            parent.removeAllViews();
-        }
-        LinearLayout ll = new LinearLayout(dialog.getContext());
-        ll.addView(switchButton);
-        dialog.setView(ll);
-        dialog.show();
+        LinearLayout linearLayout = new LinearLayout(dialog.getContext());
+        linearLayout.addView(switchButton);
+        return linearLayout;
     }
 }
