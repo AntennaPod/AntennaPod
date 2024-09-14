@@ -763,6 +763,9 @@ public final class DBReader {
         }
         List<NavDrawerData.TagDrawerItem> foldersSorted = new ArrayList<>(folders.values());
         Collections.sort(foldersSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
+        if (UserPreferences.getFeedOrderReversed()) {
+            Collections.reverse(foldersSorted);
+        }
         items.addAll(foldersSorted);
 
         NavDrawerData result = new NavDrawerData(items, queueSize, numNewItems, numDownloadedItems, feedCounters);

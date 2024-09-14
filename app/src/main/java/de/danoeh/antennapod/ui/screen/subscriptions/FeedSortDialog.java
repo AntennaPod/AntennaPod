@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.ui.screen.subscriptions;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -48,6 +49,7 @@ public class FeedSortDialog {
         switchButton.setPadding(padding, padding, padding, padding);
         switchButton.setChecked(UserPreferences.getFeedOrderReversed());
         switchButton.setText("Reversed");
+        switchButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,  16);
         switchButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             UserPreferences.setFeedOrderReversed(isChecked);
             EventBus.getDefault().post(new UnreadItemsUpdateEvent());
