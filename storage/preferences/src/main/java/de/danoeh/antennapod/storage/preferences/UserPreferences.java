@@ -100,8 +100,6 @@ public abstract class UserPreferences {
     public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
     public static final String PREF_ENABLE_AUTODL = "prefEnableAutoDl";
     public static final String PREF_ENABLE_AUTODL_ON_BATTERY = "prefEnableAutoDownloadOnBattery";
-    public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
-    private static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
     private static final String PREF_PROXY_TYPE = "prefProxyType";
     private static final String PREF_PROXY_HOST = "prefProxyHost";
     private static final String PREF_PROXY_PORT = "prefProxyPort";
@@ -536,17 +534,8 @@ public abstract class UserPreferences {
         return prefs.getBoolean(PREF_ENABLE_AUTODL, false);
     }
 
-    @VisibleForTesting
-    public static void setEnableAutodownload(boolean enabled) {
-        prefs.edit().putBoolean(PREF_ENABLE_AUTODL, enabled).apply();
-    }
-
     public static boolean isEnableAutodownloadOnBattery() {
         return prefs.getBoolean(PREF_ENABLE_AUTODL_ON_BATTERY, true);
-    }
-
-    public static boolean isEnableAutodownloadWifiFilter() {
-        return Build.VERSION.SDK_INT < 29 && prefs.getBoolean(PREF_ENABLE_AUTODL_WIFI_FILTER, false);
     }
 
     public static int getFastForwardSecs() {
@@ -555,11 +544,6 @@ public abstract class UserPreferences {
 
     public static int getRewindSecs() {
         return prefs.getInt(PREF_REWIND_SECS, 10);
-    }
-
-    public static String[] getAutodownloadSelectedNetworks() {
-        String selectedNetWorks = prefs.getString(PREF_AUTODL_SELECTED_NETWORKS, "");
-        return TextUtils.split(selectedNetWorks, ",");
     }
 
     public static void setProxyConfig(ProxyConfig config) {
@@ -626,10 +610,6 @@ public abstract class UserPreferences {
             jsonArray.put(speedFormat.format(speed));
         }
         prefs.edit().putString(PREF_PLAYBACK_SPEED_ARRAY, jsonArray.toString()).apply();
-    }
-
-    public static void setAutodownloadSelectedNetworks(String[] value) {
-        prefs.edit().putString(PREF_AUTODL_SELECTED_NETWORKS, TextUtils.join(",", value)).apply();
     }
 
     public static boolean gpodnetNotificationsEnabled() {

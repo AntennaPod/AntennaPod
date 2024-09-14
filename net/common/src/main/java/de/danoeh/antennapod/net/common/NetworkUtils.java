@@ -5,10 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
-import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,11 +27,7 @@ public abstract class NetworkUtils {
             return false;
         }
         if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-            if (UserPreferences.isEnableAutodownloadWifiFilter()) {
-                return isInAllowedWifiNetwork();
-            } else {
-                return !isNetworkMetered();
-            }
+            return !isNetworkMetered();
         } else if (networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET) {
             return true;
         } else {
@@ -116,12 +109,6 @@ public abstract class NetworkUtils {
             //noinspection deprecation
             return info.getType() == ConnectivityManager.TYPE_MOBILE;
         }
-    }
-
-    private static boolean isInAllowedWifiNetwork() {
-        WifiManager wm = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        List<String> selectedNetworks = Arrays.asList(UserPreferences.getAutodownloadSelectedNetworks());
-        return selectedNetworks.contains(Integer.toString(wm.getConnectionInfo().getNetworkId()));
     }
 
     public static boolean wasDownloadBlocked(Throwable throwable) {
