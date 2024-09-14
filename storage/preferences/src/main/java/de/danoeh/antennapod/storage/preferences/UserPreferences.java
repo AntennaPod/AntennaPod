@@ -577,6 +577,10 @@ public abstract class UserPreferences {
         setPrefNetworkConstraintsDisabled(until);
     }
 
+    public static boolean getPrefNetworkConstraintsDisabled() {
+        return prefs.getBoolean(PREF_NETWORK_CONSTRAINTS_DISABLED,false);
+    }
+
     private static void setPrefNetworkConstraintsDisabled(LocalDateTime until) {
         prefs.edit().putBoolean(PREF_NETWORK_CONSTRAINTS_DISABLED,true).apply();
         prefs.edit().putString(PREF_NETWORK_CONSTRAINTS_DISABLED_UNTIL,until.toString()).apply();

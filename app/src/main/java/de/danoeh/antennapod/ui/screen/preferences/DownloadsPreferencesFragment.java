@@ -2,7 +2,7 @@ package de.danoeh.antennapod.ui.screen.preferences;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import de.danoeh.antennapod.R;
@@ -20,6 +20,7 @@ public class DownloadsPreferencesFragment extends PreferenceFragmentCompat
     private static final String PREF_PROXY = "prefProxy";
     private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
     private static final String PREF_NETWORK_CONSTRAINTS_DISABLED = "prefNetworkConstraintsDisabled";
+    public static final String PREF_NETWORK_CONSTRAINTS_DISABLED_TIMESPAN_MINUTES = "prefNetworkConstraintsDisabledTimespanMinutes";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -69,11 +70,11 @@ public class DownloadsPreferencesFragment extends PreferenceFragmentCompat
             return true;
         });
         findPreference(PREF_NETWORK_CONSTRAINTS_DISABLED).setOnPreferenceClickListener(preference -> {
-            UserPreferences.setPrefNetworkConstraintsDisabled(preference.isEnabled());
-
-            if (!preference.isEnabled()) {
-                // todo disable "prefNetworkConstraintsDisabledTimespanMinutes"
-            }
+            boolean value = UserPreferences.getPrefNetworkConstraintsDisabled();
+            UserPreferences.setPrefNetworkConstraintsDisabled(value);
+            Preference p =  findPreference(PREF_NETWORK_CONSTRAINTS_DISABLED_TIMESPAN_MINUTES);
+            p.setEnabled(value);
+            p.setShouldDisableView(!value);
             return true;
         });
     }
