@@ -305,7 +305,7 @@
         <item name="elevation">0dp</item>
     </style>
 
-    <style name="AddPodcastTextView">
+    <style name="AddPodcastTextView" parent="@style/TextAppearance.Material3.BodyMedium">
         <item name="android:drawablePadding">8dp</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>

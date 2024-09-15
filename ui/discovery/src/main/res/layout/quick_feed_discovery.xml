@@ -6,32 +6,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:text="@string/discover"
-            android:textSize="18sp"
-            android:layout_marginBottom="8dp"
-            android:layout_weight="1"
-            android:accessibilityHeading="true"
-            android:textColor="?android:attr/textColorPrimary" />
-
-        <Button
-            android:id="@+id/discover_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:minWidth="0dp"
-            android:text="@string/discover_more"
-            style="@style/Widget.MaterialComponents.Button.TextButton" />
-
-    </LinearLayout>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -49,7 +23,7 @@
             android:layout_rowWeight="1" />
 
         <LinearLayout
-            android:id="@+id/discover_error"
+            android:id="@+id/errorContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -57,7 +31,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/discover_error_txtV"
+                android:id="@+id/errorLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -67,7 +41,7 @@
                 tools:background="@android:color/holo_red_light" />
 
             <Button
-                android:id="@+id/discover_error_retry_btn"
+                android:id="@+id/errorRetryButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
@@ -78,15 +52,30 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/discover_powered_by_itunes"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="?android:attr/textColorTertiary"
-        android:text="@string/discover_powered_by_itunes"
-        android:textSize="12sp"
-        android:layout_gravity="right|end"
-        android:paddingHorizontal="4dp"
-        android:textAlignment="textEnd" />
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/poweredByLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/discover_powered_by_itunes"
+            android:paddingHorizontal="4dp"
+            style="@style/TextAppearance.Material3.BodySmall" />
+
+        <Button
+            android:id="@+id/discover_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="40dp"
+            android:minWidth="0dp"
+            android:text="@string/discover_more"
+            style="@style/Widget.MaterialComponents.Button.TextButton" />
+
+    </LinearLayout>
 
 </LinearLayout>
