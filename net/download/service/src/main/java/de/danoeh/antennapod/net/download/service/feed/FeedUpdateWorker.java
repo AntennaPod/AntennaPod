@@ -101,7 +101,7 @@ public class FeedUpdateWorker extends Worker {
         refreshFeeds(toUpdate,  force);
 
         NonSubscribedFeedsCleaner.deleteOldNonSubscribedFeeds(getApplicationContext());
-        AutoDownloadManager.getInstance().autodownloadUndownloadedItems(getApplicationContext());
+        AutoDownloadManager.getInstance().performAutoDownload(getApplicationContext());
         notificationManager.cancel(R.id.notification_updating_feeds);
         return Result.success();
     }

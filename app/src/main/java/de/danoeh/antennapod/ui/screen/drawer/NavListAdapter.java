@@ -25,6 +25,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.ImagePlaceholder;
@@ -216,11 +217,10 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
                 holder.count.setText(NumberFormat.getInstance().format(sum));
                 holder.count.setVisibility(View.VISIBLE);
             }
-        } else if (tag.equals(CompletedDownloadsFragment.TAG) && UserPreferences.isEnableAutodownload()) {
+        } else if (tag.equals(CompletedDownloadsFragment.TAG)
+                && UserPreferences.isEnableAutodownload() == FeedPreferences.AutoDownload.ENABLED) {
             int epCacheSize = UserPreferences.getEpisodeCacheSize();
-            // don't count episodes that can be reclaimed
-            int spaceUsed = itemAccess.getNumberOfDownloadedItems()
-                    - itemAccess.getReclaimableItems();
+            int spaceUsed = itemAccess.getNumberOfDownloadedItems();
             if (epCacheSize > 0 && spaceUsed >= epCacheSize) {
                 holder.count.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_disc_alert, 0);
                 holder.count.setVisibility(View.VISIBLE);
@@ -366,8 +366,6 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         int getNumberOfNewItems();
 
         int getNumberOfDownloadedItems();
-
-        int getReclaimableItems();
 
         int getFeedCounterSum();
 

@@ -33,9 +33,7 @@ public class CancelDownloadActionButton extends ItemActionButton {
     public void onClick(Context context) {
         FeedMedia media = item.getMedia();
         DownloadServiceInterface.get().cancel(context, media);
-        if (UserPreferences.isEnableAutodownload()) {
-            item.disableAutoDownload();
-            DBWriter.setFeedItem(item);
-        }
+        item.disableAutoDownload();
+        DBWriter.setFeedItem(item);
     }
 }

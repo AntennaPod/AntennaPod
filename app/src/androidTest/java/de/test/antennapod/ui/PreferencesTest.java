@@ -3,21 +3,15 @@ package de.test.antennapod.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-
 import androidx.annotation.StringRes;
 import androidx.preference.PreferenceManager;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
-import de.danoeh.antennapod.net.download.service.episode.autodownload.APCleanupAlgorithm;
-import de.danoeh.antennapod.net.download.service.episode.autodownload.APNullCleanupAlgorithm;
-import de.danoeh.antennapod.net.download.service.episode.autodownload.APQueueCleanupAlgorithm;
-import de.danoeh.antennapod.net.download.service.episode.autodownload.EpisodeCleanupAlgorithm;
-import de.danoeh.antennapod.net.download.service.episode.autodownload.EpisodeCleanupAlgorithmFactory;
-import de.danoeh.antennapod.net.download.service.episode.autodownload.ExceptFavoriteCleanupAlgorithm;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
+import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
 import de.test.antennapod.EspressoTestUtils;
 import org.awaitility.Awaitility;
 import org.junit.Before;
@@ -28,7 +22,6 @@ import java.util.Arrays;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.swipeDown;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -174,13 +167,13 @@ public class PreferencesTest {
     public void testAutoDelete() {
         clickPreference(R.string.downloads_pref);
         onView(withText(R.string.pref_auto_delete_title)).perform(click());
-        final boolean autoDelete = UserPreferences.isAutoDelete();
+        final boolean autoDelete = UserPreferences.isAutoDeletePlayed();
         onView(withText(R.string.pref_auto_delete_playback_title)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> autoDelete != UserPreferences.isAutoDelete());
+                .until(() -> autoDelete != UserPreferences.isAutoDeletePlayed());
         onView(withText(R.string.pref_auto_delete_playback_title)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> autoDelete == UserPreferences.isAutoDelete());
+                .until(() -> autoDelete == UserPreferences.isAutoDeletePlayed());
     }
 
     @Test
@@ -188,7 +181,7 @@ public class PreferencesTest {
         clickPreference(R.string.downloads_pref);
         onView(withText(R.string.pref_auto_delete_title)).perform(click());
         onView(withText(R.string.pref_auto_delete_playback_title)).perform(click());
-        assertTrue(UserPreferences.isAutoDelete());
+        assertTrue(UserPreferences.isAutoDeletePlayed());
         assertFalse(UserPreferences.isAutoDeleteLocal());
 
         onView(withText(R.string.pref_auto_local_delete_title)).perform(click());
@@ -269,17 +262,17 @@ public class PreferencesTest {
 
     @Test
     public void testAutomaticDownload() {
-        final boolean automaticDownload = UserPreferences.isEnableAutodownload();
+        final FeedPreferences.AutoDownload automaticDownload = UserPreferences.isEnableAutodownload();
         clickPreference(R.string.downloads_pref);
         clickPreference(R.string.pref_automatic_download_title);
         clickPreference(R.string.pref_automatic_download_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> automaticDownload != UserPreferences.isEnableAutodownload());
-        if (!UserPreferences.isEnableAutodownload()) {
+        if (UserPreferences.isEnableAutodownload() != FeedPreferences.AutoDownload.ENABLED) {
             clickPreference(R.string.pref_automatic_download_title);
         }
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(UserPreferences::isEnableAutodownload);
+                .until(() -> UserPreferences.isEnableAutodownload() == FeedPreferences.AutoDownload.ENABLED);
         final boolean enableAutodownloadOnBattery = UserPreferences.isEnableAutodownloadOnBattery();
         clickPreference(R.string.pref_automatic_download_on_battery_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
@@ -287,75 +280,6 @@ public class PreferencesTest {
         clickPreference(R.string.pref_automatic_download_on_battery_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> enableAutodownloadOnBattery == UserPreferences.isEnableAutodownloadOnBattery());
-    }
-
-    @Test
-    public void testEpisodeCleanupFavoriteOnly() {
-        clickPreference(R.string.downloads_pref);
-        onView(withText(R.string.pref_auto_delete_title)).perform(click());
-        onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
-        onView(withId(R.id.select_dialog_listview)).perform(swipeDown());
-        onView(withText(R.string.episode_cleanup_except_favorite_removal)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> EpisodeCleanupAlgorithmFactory.build() instanceof ExceptFavoriteCleanupAlgorithm);
-    }
-
-    @Test
-    public void testEpisodeCleanupQueueOnly() {
-        clickPreference(R.string.downloads_pref);
-        onView(withText(R.string.pref_auto_delete_title)).perform(click());
-        onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
-        onView(withId(R.id.select_dialog_listview)).perform(swipeDown());
-        onView(withText(R.string.episode_cleanup_queue_removal)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> EpisodeCleanupAlgorithmFactory.build() instanceof APQueueCleanupAlgorithm);
-    }
-
-    @Test
-    public void testEpisodeCleanupNeverAlg() {
-        clickPreference(R.string.downloads_pref);
-        onView(withText(R.string.pref_auto_delete_title)).perform(click());
-        onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
-        onView(withId(R.id.select_dialog_listview)).perform(swipeUp());
-        onView(withText(R.string.episode_cleanup_never)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> EpisodeCleanupAlgorithmFactory.build() instanceof APNullCleanupAlgorithm);
-    }
-
-    @Test
-    public void testEpisodeCleanupClassic() {
-        clickPreference(R.string.downloads_pref);
-        onView(withText(R.string.pref_auto_delete_title)).perform(click());
-        onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
-        onView(withText(R.string.episode_cleanup_after_listening)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> {
-                    EpisodeCleanupAlgorithm alg = EpisodeCleanupAlgorithmFactory.build();
-                    if (alg instanceof APCleanupAlgorithm) {
-                        APCleanupAlgorithm cleanupAlg = (APCleanupAlgorithm) alg;
-                        return cleanupAlg.getNumberOfHoursAfterPlayback() == 0;
-                    }
-                    return false;
-                });
-    }
-
-    @Test
-    public void testEpisodeCleanupNumDays() {
-        clickPreference(R.string.downloads_pref);
-        onView(withText(R.string.pref_auto_delete_title)).perform(click());
-        clickPreference(R.string.pref_episode_cleanup_title);
-        String search = res.getQuantityString(R.plurals.episode_cleanup_days_after_listening, 3, 3);
-        onView(withText(search)).perform(scrollTo());
-        onView(withText(search)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> {
-                    EpisodeCleanupAlgorithm alg = EpisodeCleanupAlgorithmFactory.build();
-                    if (alg instanceof APCleanupAlgorithm) {
-                        APCleanupAlgorithm cleanupAlg = (APCleanupAlgorithm) alg;
-                        return cleanupAlg.getNumberOfHoursAfterPlayback() == 72; // 5 days
-                    }
-                    return false;
-                });
     }
 
     @Test

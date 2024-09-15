@@ -9,6 +9,7 @@ import android.util.Log;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
@@ -348,6 +349,22 @@ class DBUpgrader {
                     + " ADD COLUMN " + PodDBAdapter.KEY_PODCASTINDEX_TRANSCRIPT_URL + " TEXT");
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
                     + " ADD COLUMN " + PodDBAdapter.KEY_PODCASTINDEX_TRANSCRIPT_TYPE + " TEXT");
+        }
+        if (oldVersion < 3060000) {
+            if (UserPreferences.isEnableAutodownload() == FeedPreferences.AutoDownload.ENABLED) {
+                db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEEDS
+                        + " SET " + PodDBAdapter.KEY_AUTO_DOWNLOAD_ENABLED + " = "
+                            + FeedPreferences.AutoDownload.GLOBAL.code
+                        + " WHERE " + PodDBAdapter.KEY_AUTO_DOWNLOAD_ENABLED + " = 1");
+            } else {
+                db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEEDS
+                        + " SET " + PodDBAdapter.KEY_AUTO_DOWNLOAD_ENABLED + " = "
+                        + FeedPreferences.AutoDownload.GLOBAL.code);
+            }
+            db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
+                    + " SET " + PodDBAdapter.KEY_DOWNLOAD_DATE + " = " + System.currentTimeMillis()
+                    + " WHERE " + PodDBAdapter.KEY_DOWNLOAD_DATE + " = 1");
+
         }
     }
 

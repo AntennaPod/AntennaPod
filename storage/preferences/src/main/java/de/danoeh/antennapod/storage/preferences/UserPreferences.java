@@ -83,7 +83,8 @@ public abstract class UserPreferences {
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
     public static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
     public static final String PREF_FAVORITE_KEEPS_EPISODE = "prefFavoriteKeepsEpisode";
-    public static final String PREF_AUTO_DELETE = "prefAutoDelete";
+    public static final String PREF_AUTO_DELETE_PLAYED = "prefAutoDelete";
+    public static final String PREF_AUTO_DELETE_OLD_DOWNLOADS = "prefAutoDeleteOldDownloads";
     private static final String PREF_AUTO_DELETE_LOCAL = "prefAutoDeleteLocal";
     public static final String PREF_SMART_MARK_AS_PLAYED_SECS = "prefSmartMarkAsPlayedSecs";
     private static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
@@ -407,8 +408,12 @@ public abstract class UserPreferences {
         return prefs.getBoolean(PREF_FAVORITE_KEEPS_EPISODE, true);
     }
 
-    public static boolean isAutoDelete() {
-        return prefs.getBoolean(PREF_AUTO_DELETE, false);
+    public static boolean isAutoDeletePlayed() {
+        return prefs.getBoolean(PREF_AUTO_DELETE_PLAYED, false);
+    }
+
+    public static int isAutoDeleteOldDownloads() {
+        return Integer.parseInt(prefs.getString(PREF_AUTO_DELETE_OLD_DOWNLOADS, "0"));
     }
 
     public static boolean isAutoDeleteLocal() {
@@ -530,8 +535,9 @@ public abstract class UserPreferences {
         return Integer.parseInt(prefs.getString(PREF_EPISODE_CACHE_SIZE, "20"));
     }
 
-    public static boolean isEnableAutodownload() {
-        return prefs.getBoolean(PREF_ENABLE_AUTODL, false);
+    public static FeedPreferences.AutoDownload isEnableAutodownload() {
+        return prefs.getBoolean(PREF_ENABLE_AUTODL, false)
+                ? FeedPreferences.AutoDownload.ENABLED : FeedPreferences.AutoDownload.DISABLED;
     }
 
     public static boolean isEnableAutodownloadOnBattery() {

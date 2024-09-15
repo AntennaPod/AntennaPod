@@ -33,7 +33,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 
-import de.danoeh.antennapod.net.download.service.episode.autodownload.EpisodeCleanupAlgorithmFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -79,7 +78,6 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
     public static final String TAG = "NavDrawerFragment";
 
     private NavDrawerData navDrawerData;
-    private int reclaimableSpace = 0;
     private List<NavDrawerData.DrawerItem> flatItemList;
     private NavDrawerData.DrawerItem contextPressedItem = null;
     private NavListAdapter navAdapter;
@@ -312,11 +310,6 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         }
 
         @Override
-        public int getReclaimableItems() {
-            return reclaimableSpace;
-        }
-
-        @Override
         public int getFeedCounterSum() {
             if (navDrawerData == null) {
                 return 0;
@@ -404,7 +397,6 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                 () -> {
                     NavDrawerData data = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter(),
                             UserPreferences.getFeedOrder(), UserPreferences.getFeedCounterSetting());
-                    reclaimableSpace = EpisodeCleanupAlgorithmFactory.build().getReclaimableItems();
                     return new Pair<>(data, makeFlatDrawerData(data.items, 0));
                 })
                 .subscribeOn(Schedulers.io())

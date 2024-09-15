@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.ui.screen.preferences;
 
-import android.content.res.Resources;
 import android.os.Bundle;
-import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.TwoStatePreference;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -18,8 +16,7 @@ public class AutomaticDeletionPreferencesFragment extends PreferenceFragmentComp
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences_auto_deletion);
         setupScreen();
-        buildEpisodeCleanupPreference();
-        checkItemVisibility(UserPreferences.isAutoDelete());
+        checkItemVisibility(UserPreferences.isAutoDeletePlayed());
     }
 
     @Override
@@ -34,10 +31,6 @@ public class AutomaticDeletionPreferencesFragment extends PreferenceFragmentComp
     }
 
     private void setupScreen() {
-        if (!UserPreferences.isEnableAutodownload()) {
-            findPreference(UserPreferences.PREF_EPISODE_CLEANUP).setEnabled(false);
-            findPreference(UserPreferences.PREF_EPISODE_CLEANUP).setSummary(R.string.auto_download_disabled_globally);
-        }
         findPreference(PREF_AUTO_DELETE_LOCAL).setOnPreferenceChangeListener((preference, newValue) -> {
             if (blockAutoDeleteLocal && newValue.equals(Boolean.TRUE)) {
                 showAutoDeleteEnableDialog();
@@ -46,7 +39,7 @@ public class AutomaticDeletionPreferencesFragment extends PreferenceFragmentComp
                 return true;
             }
         });
-        findPreference(UserPreferences.PREF_AUTO_DELETE).setOnPreferenceChangeListener((preference, newValue) -> {
+        findPreference(UserPreferences.PREF_AUTO_DELETE_PLAYED).setOnPreferenceChangeListener((preference, newValue) -> {
             if (newValue instanceof Boolean) {
                 checkItemVisibility((Boolean) newValue);
             }
@@ -64,33 +57,5 @@ public class AutomaticDeletionPreferencesFragment extends PreferenceFragmentComp
                 })
                 .setNegativeButton(R.string.cancel_label, null)
                 .show();
-    }
-
-
-    private void buildEpisodeCleanupPreference() {
-        final Resources res = getActivity().getResources();
-
-        ListPreference pref = findPreference(UserPreferences.PREF_EPISODE_CLEANUP);
-        String[] values = res.getStringArray(
-                de.danoeh.antennapod.ui.preferences.R.array.episode_cleanup_values);
-        String[] entries = new String[values.length];
-        for (int x = 0; x < values.length; x++) {
-            int v = Integer.parseInt(values[x]);
-            if (v == UserPreferences.EPISODE_CLEANUP_EXCEPT_FAVORITE) {
-                entries[x] =  res.getString(R.string.episode_cleanup_except_favorite_removal);
-            } else if (v == UserPreferences.EPISODE_CLEANUP_QUEUE) {
-                entries[x] = res.getString(R.string.episode_cleanup_queue_removal);
-            } else if (v == UserPreferences.EPISODE_CLEANUP_NULL) {
-                entries[x] = res.getString(R.string.episode_cleanup_never);
-            } else if (v == 0) {
-                entries[x] = res.getString(R.string.episode_cleanup_after_listening);
-            } else if (v > 0 && v < 24) {
-                entries[x] = res.getQuantityString(R.plurals.episode_cleanup_hours_after_listening, v, v);
-            } else {
-                int numDays = v / 24; // assume underlying value will be NOT fraction of days, e.g., 36 (hours)
-                entries[x] = res.getQuantityString(R.plurals.episode_cleanup_days_after_listening, numDays, numDays);
-            }
-        }
-        pref.setEntries(entries);
     }
 }

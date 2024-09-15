@@ -30,7 +30,7 @@ public class PowerConnectionReceiver extends BroadcastReceiver {
             // downloading now. They shouldn't mind.
             // autodownloadUndownloadedItems will make sure we're on the right wifi networks,
             // etc... so we don't have to worry about it.
-            AutoDownloadManager.getInstance().autodownloadUndownloadedItems(context);
+            AutoDownloadManager.getInstance().performAutoDownload(context);
         } else {
             // if we're not supposed to be auto-downloading when we're not charging, stop it
             if (!UserPreferences.isEnableAutodownloadOnBattery()) {

@@ -52,7 +52,7 @@ public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
-    public static final int VERSION = 3050000;
+    public static final int VERSION = 3060000;
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -154,7 +154,7 @@ public class PodDBAdapter {
             + KEY_IMAGE_URL + " TEXT,"
             + KEY_TYPE + " TEXT,"
             + KEY_FEED_IDENTIFIER + " TEXT,"
-            + KEY_AUTO_DOWNLOAD_ENABLED + " INTEGER DEFAULT 1,"
+            + KEY_AUTO_DOWNLOAD_ENABLED + " INTEGER DEFAULT " + FeedPreferences.AutoDownload.GLOBAL.code + ","
             + KEY_USERNAME + " TEXT,"
             + KEY_PASSWORD + " TEXT,"
             + KEY_INCLUDE_FILTER + " TEXT DEFAULT '',"
@@ -471,7 +471,7 @@ public class PodDBAdapter {
             throw new IllegalArgumentException("Feed ID of preference must not be null");
         }
         ContentValues values = new ContentValues();
-        values.put(KEY_AUTO_DOWNLOAD_ENABLED, prefs.getAutoDownload());
+        values.put(KEY_AUTO_DOWNLOAD_ENABLED, prefs.getAutoDownload().code);
         values.put(KEY_KEEP_UPDATED, prefs.getKeepUpdated());
         values.put(KEY_AUTO_DELETE_ACTION, prefs.getAutoDeleteAction().code);
         values.put(KEY_FEED_VOLUME_ADAPTION, prefs.getVolumeAdaptionSetting().toInteger());

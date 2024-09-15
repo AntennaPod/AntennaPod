@@ -142,15 +142,19 @@
         <item>sync</item>
     </string-array>
 
-    <string-array name="episode_cleanup_entries">
-        <item>@string/episode_cleanup_except_favorite_removal</item>
-        <item>@string/episode_cleanup_queue_removal</item>
+    <string-array name="auto_delete_old_downloads_values">
         <item>0</item>
         <item>1</item>
-        <item>3</item>
         <item>5</item>
-        <item>7</item>
-        <item>@string/episode_cleanup_never</item>
+        <item>10</item>
+    </string-array>
+
+    <!-- TODO -->
+    <string-array name="auto_delete_old_downloads_titles">
+        <item>Never</item>
+        <item>After 1 day</item>
+        <item>After 5 days</item>
+        <item>After 10 days</item>
     </string-array>
 
     <string-array name="button_action_options">
@@ -180,18 +184,6 @@
         <item>FRONT</item>
         <item>AFTER_CURRENTLY_PLAYING</item>
         <item>RANDOM</item>
-    </string-array>
-
-    <string-array name="episode_cleanup_values">
-        <item>-3</item>
-        <item>-1</item>
-        <item>0</item>
-        <item>12</item>
-        <item>24</item>
-        <item>72</item>
-        <item>120</item>
-        <item>168</item>
-        <item>-2</item>
     </string-array>
 
     <string-array name="nav_drawer_feed_order_options">

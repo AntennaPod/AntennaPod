@@ -21,7 +21,7 @@ public class ConnectivityActionReceiver extends BroadcastReceiver {
 
             if (NetworkUtils.isAutoDownloadAllowed()) {
                 Log.d(TAG, "auto-dl network available, starting auto-download");
-                AutoDownloadManager.getInstance().autodownloadUndownloadedItems(context);
+                AutoDownloadManager.getInstance().performAutoDownload(context);
             } else { // if new network is Wi-Fi, finish ongoing downloads,
                 // otherwise cancel all downloads
                 if (NetworkUtils.isNetworkRestricted()) {

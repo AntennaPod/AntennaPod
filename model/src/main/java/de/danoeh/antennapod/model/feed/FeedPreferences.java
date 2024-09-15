@@ -16,6 +16,27 @@ public class FeedPreferences implements Serializable {
     public static final String TAG_ROOT = "#root";
     public static final String TAG_SEPARATOR = "\u001e";
 
+    public enum AutoDownload {
+        GLOBAL(2),
+        ENABLED(1),
+        DISABLED(0);
+
+        public final int code;
+
+        AutoDownload(int code) {
+            this.code = code;
+        }
+
+        public static AutoDownload fromCode(int code) {
+            for (AutoDownload action : values()) {
+                if (code == action.code) {
+                    return action;
+                }
+            }
+            return DISABLED;
+        }
+    }
+
     public enum AutoDeleteAction {
         GLOBAL(0),
         ALWAYS(1),
@@ -81,7 +102,7 @@ public class FeedPreferences implements Serializable {
     @NonNull
     private FeedFilter filter;
     private long feedID;
-    private boolean autoDownload;
+    private AutoDownload autoDownload;
     private boolean keepUpdated;
     private AutoDeleteAction autoDeleteAction;
     private VolumeAdaptionSetting volumeAdaptionSetting;
@@ -95,7 +116,7 @@ public class FeedPreferences implements Serializable {
     private boolean showEpisodeNotification;
     private final Set<String> tags = new HashSet<>();
 
-    public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction autoDeleteAction,
+    public FeedPreferences(long feedID, AutoDownload autoDownload, AutoDeleteAction autoDeleteAction,
                            VolumeAdaptionSetting volumeAdaptionSetting, NewEpisodesAction newEpisodesAction,
                            String username, String password) {
         this(feedID, autoDownload, true, autoDeleteAction, volumeAdaptionSetting, username, password,
@@ -103,7 +124,7 @@ public class FeedPreferences implements Serializable {
                 false, newEpisodesAction, new HashSet<>());
     }
 
-    public FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated,
+    public FeedPreferences(long feedID, AutoDownload autoDownload, boolean keepUpdated,
                             AutoDeleteAction autoDeleteAction, VolumeAdaptionSetting volumeAdaptionSetting,
                             String username, String password, @NonNull FeedFilter filter,
                             float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding, SkipSilence feedSkipSilence,
@@ -168,11 +189,11 @@ public class FeedPreferences implements Serializable {
         this.feedID = feedID;
     }
 
-    public boolean getAutoDownload() {
+    public AutoDownload getAutoDownload() {
         return autoDownload;
     }
 
-    public void setAutoDownload(boolean autoDownload) {
+    public void setAutoDownload(AutoDownload autoDownload) {
         this.autoDownload = autoDownload;
     }
 

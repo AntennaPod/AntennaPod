@@ -12,6 +12,7 @@ dependencies {
     implementation project(':event')
     implementation project(':model')
     implementation project(':net:common')
+    implementation project(':net:download:service-interface')
     implementation project(':net:sync:service-interface')
     implementation project(':playback:base')
     implementation project(':playback:cast')

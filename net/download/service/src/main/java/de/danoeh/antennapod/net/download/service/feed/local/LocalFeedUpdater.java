@@ -28,6 +28,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.documentfile.provider.DocumentFile;
 import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
 import de.danoeh.antennapod.model.download.DownloadResult;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.net.download.service.R;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
@@ -125,7 +126,7 @@ public class LocalFeedUpdater {
 
         feed.setImageUrl(getImageUrl(allFiles, folderUri));
 
-        feed.getPreferences().setAutoDownload(false);
+        feed.getPreferences().setAutoDownload(FeedPreferences.AutoDownload.DISABLED);
         feed.setDescription(context.getString(R.string.local_feed_description));
         feed.setAuthor(context.getString(R.string.local_folder));
 

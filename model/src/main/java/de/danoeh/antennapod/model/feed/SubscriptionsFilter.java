@@ -74,9 +74,11 @@ public class SubscriptionsFilter {
             FeedPreferences itemPreferences = item.getPreferences();
 
             // If the item does not meet a requirement, skip it.
-            if (showAutoDownloadEnabled && !itemPreferences.getAutoDownload()) {
+            if (showAutoDownloadEnabled
+                    && itemPreferences.getAutoDownload() == FeedPreferences.AutoDownload.DISABLED) {
                 continue;
-            } else if (showAutoDownloadDisabled && itemPreferences.getAutoDownload()) {
+            } else if (showAutoDownloadDisabled
+                    && itemPreferences.getAutoDownload() == FeedPreferences.AutoDownload.ENABLED) {
                 continue;
             }
 

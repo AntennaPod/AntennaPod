@@ -1,31 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreferenceCompat
-        android:defaultValue="false"
-        android:enabled="true"
-        android:key="prefAutoDelete"
-        android:summary="@string/pref_auto_delete_playback_sum"
-        android:title="@string/pref_auto_delete_playback_title"/>
-    <SwitchPreferenceCompat
-        android:defaultValue="false"
-        android:enabled="true"
-        android:key="prefAutoDeleteLocal"
-        android:summary="@string/pref_auto_local_delete_sum"
-        android:title="@string/pref_auto_local_delete_title"/>
     <SwitchPreferenceCompat
         android:defaultValue="true"
         android:enabled="true"
         android:key="prefFavoriteKeepsEpisode"
         android:summary="@string/pref_favorite_keeps_episodes_sum"
-        android:title="@string/pref_favorite_keeps_episodes_title"/>
-    <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
-        android:defaultValue="-1"
-        android:entries="@array/episode_cleanup_entries"
-        android:key="prefEpisodeCleanup"
-        android:title="@string/pref_episode_cleanup_title"
-        android:summary="@string/pref_episode_cleanup_summary"
-        android:entryValues="@array/episode_cleanup_values"/>
+        android:title="@string/pref_favorite_keeps_episodes_title" />
+
+    <PreferenceCategory
+        android:key="playback"
+        android:title="@string/pref_auto_delete_playback_title">
+
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefAutoDelete"
+            android:summary="@string/pref_auto_delete_playback_sum"
+            android:title="@string/pref_auto_delete_playback_title" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefAutoDeleteLocal"
+            android:summary="@string/pref_auto_local_delete_sum"
+            android:title="@string/pref_auto_local_delete_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="old"
+        android:title="@string/pref_auto_delete_old_title">
+
+        <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
+            android:defaultValue="0"
+            android:entries="@array/auto_delete_old_downloads_titles"
+            android:key="prefAutoDeleteOldDownloads"
+            android:title="@string/pref_auto_delete_old_sum"
+            android:summary="@string/pref_auto_delete_old_title"
+            android:entryValues="@array/auto_delete_old_downloads_values" />
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

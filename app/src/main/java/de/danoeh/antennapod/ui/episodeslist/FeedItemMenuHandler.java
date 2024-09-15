@@ -241,7 +241,7 @@ public class FeedItemMenuHandler {
             if (media == null) {
                 return;
             }
-            boolean shouldAutoDelete = UserPreferences.isAutoDelete()
+            boolean shouldAutoDelete = UserPreferences.isAutoDeletePlayed()
                     && (!item.getFeed().isLocalFeed() || UserPreferences.isAutoDeleteLocal());
             int smartMarkAsPlayedSecs = UserPreferences.getSmartMarkAsPlayedSecs();
             boolean almostEnded = media.getDuration() > 0

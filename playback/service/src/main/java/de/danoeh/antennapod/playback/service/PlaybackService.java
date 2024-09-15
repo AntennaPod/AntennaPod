@@ -54,6 +54,7 @@ import androidx.lifecycle.Observer;
 import androidx.media.MediaBrowserServiceCompat;
 
 import de.danoeh.antennapod.event.PlayerStatusEvent;
+import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
 import de.danoeh.antennapod.playback.service.internal.LocalPSMP;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
@@ -1162,15 +1163,16 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 // Delete episode if enabled
                 FeedPreferences.AutoDeleteAction action =
                         item.getFeed().getPreferences().getCurrentAutoDelete();
-                boolean autoDeleteEnabledGlobally = UserPreferences.isAutoDelete()
+                boolean autoDeleteEnabledGlobally = UserPreferences.isAutoDeletePlayed()
                         && (!item.getFeed().isLocalFeed() || UserPreferences.isAutoDeleteLocal());
                 boolean shouldAutoDelete = action == FeedPreferences.AutoDeleteAction.ALWAYS
                         || (action == FeedPreferences.AutoDeleteAction.GLOBAL && autoDeleteEnabledGlobally);
                 if (shouldAutoDelete && (!item.isTagged(FeedItem.TAG_FAVORITE)
                         || !UserPreferences.shouldFavoriteKeepEpisode())) {
-                    DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media);
+                    AutoDownloadManager.getInstance().performAutoDeletion(getApplicationContext());
                     Log.d(TAG, "Episode Deleted");
                 }
+
                 notifyChildrenChanged(getString(R.string.queue_label));
             }
         }

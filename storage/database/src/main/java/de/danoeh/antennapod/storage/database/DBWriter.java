@@ -364,7 +364,7 @@ public class DBWriter {
 
             adapter.close();
             if (performAutoDownload) {
-                AutoDownloadManager.getInstance().autodownloadUndownloadedItems(context);
+                AutoDownloadManager.getInstance().performAutoDownload(context);
             }
 
         });
@@ -458,7 +458,7 @@ public class DBWriter {
             }
             adapter.close();
             if (performAutoDownload) {
-                AutoDownloadManager.getInstance().autodownloadUndownloadedItems(context);
+                AutoDownloadManager.getInstance().performAutoDownload(context);
             }
         });
     }
@@ -563,7 +563,7 @@ public class DBWriter {
         }
         adapter.close();
         if (performAutoDownload) {
-            AutoDownloadManager.getInstance().autodownloadUndownloadedItems(context);
+            AutoDownloadManager.getInstance().performAutoDownload(context);
         }
     }
 

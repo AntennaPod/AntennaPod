@@ -394,8 +394,6 @@
     <string name="preference_search_hint">Search…</string>
     <string name="preference_search_no_results">No results</string>
     <string name="preference_search_clear_history">Clear history</string>
-    <string name="pref_episode_cleanup_title">Delete before auto download</string>
-    <string name="pref_episode_cleanup_summary">Episodes that should be eligible for removal if Auto Download needs space for new episodes</string>
     <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth are disconnected</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Resume playback when the headphones are reconnected</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Resume playback when bluetooth reconnects</string>
@@ -410,6 +408,8 @@
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="pref_auto_delete_playback_sum">Delete episode when playback completes</string>
     <string name="pref_auto_delete_playback_title">Delete after playing</string>
+    <string name="pref_auto_delete_old_sum">Delete episodes some time after downloading, even if not played</string>
+    <string name="pref_auto_delete_old_title">Delete old episodes</string>
     <string name="pref_auto_delete_title">Automatic deletion</string>
     <string name="pref_auto_delete_sum">Delete episodes after playing or when automatic download needs space</string>
     <string name="pref_auto_local_delete_title">Auto delete from local folders</string>
@@ -735,7 +735,6 @@
     <string name="exclude_episodes_shorter_than">Exclude episodes shorter than</string>
     <string name="keep_updated">Keep updated</string>
     <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>
-    <string name="auto_download_disabled_globally">Auto download is disabled in the main AntennaPod settings</string>
     <string name="statistics_episodes_started">started</string>
     <string name="statistics_episodes_total">total</string>
     <string name="statistics_episodes_played">played</string>
