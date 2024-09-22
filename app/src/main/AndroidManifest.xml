@@ -242,7 +242,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:pathPattern="/.*\\..*/.*" />
-                <data android:host="subscribeonandroid.com" />
+                <data android:host="www.subscribeonandroid.com" />
                 <data android:scheme="https" />
             </intent-filter>
 
