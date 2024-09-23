@@ -412,8 +412,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onStartSelectMode() {
         swipeActions.detach();
-        viewBinding.floatingSelectMenu.getMenu().findItem(R.id.download_batch).setVisible(!feed.isLocalFeed());
-        viewBinding.floatingSelectMenu.setVisibility(View.VISIBLE);
         updateRecyclerPadding();
         updateToolbar();
     }
@@ -708,6 +706,13 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 menu.findItem(R.id.multi_select).setVisible(true);
             }
             MenuItemUtils.setOnClickListeners(menu, FeedItemlistFragment.this::onContextItemSelected);
+        }
+
+        @Override
+        protected void onSelectedItemsUpdated() {
+            super.onSelectedItemsUpdated();
+            FeedItemMenuHandler.onPrepareMenu(viewBinding.floatingSelectMenu.getMenu(), getSelectedItems());
+            viewBinding.floatingSelectMenu.updateItemVisibility();
         }
     }
 }

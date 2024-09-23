@@ -28,19 +28,19 @@ public class EpisodeMultiSelectActionHandler {
     }
 
     public void handleAction(List<FeedItem> items) {
-        if (actionId == R.id.add_to_queue_batch) {
+        if (actionId == R.id.add_to_queue_item) {
             queueChecked(items);
-        } else if (actionId == R.id.remove_from_queue_batch) {
+        } else if (actionId == R.id.remove_from_queue_item) {
             removeFromQueueChecked(items);
-        }  else if (actionId == R.id.remove_from_inbox_batch) {
+        }  else if (actionId == R.id.remove_inbox_item) {
             removeFromInboxChecked(items);
-        } else if (actionId == R.id.mark_read_batch) {
+        } else if (actionId == R.id.mark_read_item) {
             markedCheckedPlayed(items);
-        } else if (actionId == R.id.mark_unread_batch) {
+        } else if (actionId == R.id.mark_unread_item) {
             markedCheckedUnplayed(items);
-        } else if (actionId == R.id.download_batch) {
+        } else if (actionId == R.id.download_item) {
             downloadChecked(items);
-        } else if (actionId == R.id.delete_batch) {
+        } else if (actionId == R.id.remove_item) {
             LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(activity, items, () -> deleteChecked(items));
         } else {
             Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionId);
@@ -112,6 +112,9 @@ public class EpisodeMultiSelectActionHandler {
     }
 
     private void showMessage(@PluralsRes int msgId, int numItems) {
+        if (numItems == 1) {
+            return;
+        }
         totalNumItems += numItems;
         activity.runOnUiThread(() -> {
             String text = activity.getResources().getQuantityString(msgId, totalNumItems, totalNumItems);

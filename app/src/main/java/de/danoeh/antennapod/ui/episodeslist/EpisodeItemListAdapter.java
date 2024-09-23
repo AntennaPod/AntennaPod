@@ -20,6 +20,7 @@ import de.danoeh.antennapod.ui.common.ThemeUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -53,7 +54,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     public void updateItems(List<FeedItem> items) {
         episodes = items;
         notifyDataSetChanged();
-        updateTitle();
+        onSelectedItemsUpdated();
     }
 
     @Override
@@ -209,7 +210,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
             }
             inflater.inflate(R.menu.feeditemlist_context, menu);
             menu.setHeaderTitle(longPressedItem.getTitle());
-            FeedItemMenuHandler.onPrepareMenu(menu, longPressedItem, R.id.skip_episode_item);
+            FeedItemMenuHandler.onPrepareMenu(menu, Collections.singletonList(longPressedItem), R.id.skip_episode_item);
         }
     }
 

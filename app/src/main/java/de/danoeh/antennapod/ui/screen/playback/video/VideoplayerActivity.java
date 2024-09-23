@@ -74,6 +74,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Collections;
+
 /**
  * Activity for playing video files.
  */
@@ -549,7 +551,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
         menu.findItem(R.id.open_feed_item).setVisible(isFeedMedia); // FeedMedia implies it belongs to a Feed
         if (isFeedMedia) {
-            FeedItemMenuHandler.onPrepareMenu(menu, ((FeedMedia) media).getItem());
+            FeedItemMenuHandler.onPrepareMenu(menu, Collections.singletonList(((FeedMedia) media).getItem()));
         }
 
         menu.findItem(R.id.set_sleeptimer_item).setVisible(!controller.sleepTimerActive());

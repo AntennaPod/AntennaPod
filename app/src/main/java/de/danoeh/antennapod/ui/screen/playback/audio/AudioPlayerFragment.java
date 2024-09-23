@@ -42,6 +42,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -467,7 +468,8 @@ public class AudioPlayerFragment extends Fragment implements
         boolean isFeedMedia = media instanceof FeedMedia;
         toolbar.getMenu().findItem(R.id.open_feed_item).setVisible(isFeedMedia);
         if (isFeedMedia) {
-            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(), ((FeedMedia) media).getItem());
+            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(),
+                    Collections.singletonList(((FeedMedia) media).getItem()));
         }
 
         toolbar.getMenu().findItem(R.id.set_sleeptimer_item).setVisible(!controller.sleepTimerActive());
