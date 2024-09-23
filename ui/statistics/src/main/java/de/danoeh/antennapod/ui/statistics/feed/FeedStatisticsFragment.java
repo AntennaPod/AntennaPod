@@ -175,9 +175,12 @@ public class FeedStatisticsFragment extends Fragment {
         viewBinding.expectedNextEpisode.subtitleLabel.setText(R.string.statistics_release_next);
         viewBinding.episodeSchedule.subtitleLabel.setText(R.string.statistics_release_schedule);
         ReleaseScheduleGuesser.Guess guess = p.second;
-        if (!s.feed.getPreferences().getKeepUpdated()) {
-            viewBinding.expectedNextEpisode.subtitleLabel.setText(R.string.statistics_expected_next_episode_unknown);
-            viewBinding.episodeSchedule.subtitleLabel.setText(R.string.updates_disabled_label);
+        if (s.feed.isLocalFeed()) {
+            viewBinding.expectedNextEpisode.mainLabel.setText(R.string.local_folder);
+            viewBinding.episodeSchedule.mainLabel.setText(R.string.local_folder);
+        } else if (!s.feed.getPreferences().getKeepUpdated()) {
+            viewBinding.expectedNextEpisode.mainLabel.setText(R.string.updates_disabled_label);
+            viewBinding.episodeSchedule.mainLabel.setText(R.string.updates_disabled_label);
         } else if (guess == null || guess.nextExpectedDate.getTime() <= new Date().getTime() - 7 * 24 * 3600000L) {
             // More than 30 days delayed
             viewBinding.expectedNextEpisode.mainLabel.setText(R.string.statistics_expected_next_episode_unknown);
