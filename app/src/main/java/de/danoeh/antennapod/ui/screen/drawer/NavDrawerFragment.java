@@ -2,7 +2,6 @@ package de.danoeh.antennapod.ui.screen.drawer;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -34,13 +33,13 @@ import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 
 import de.danoeh.antennapod.net.download.service.episode.autodownload.EpisodeCleanupAlgorithmFactory;
+import de.danoeh.antennapod.ui.screen.subscriptions.FeedMenuHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -48,15 +47,12 @@ import java.util.Set;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
-import de.danoeh.antennapod.ui.common.ConfirmationDialog;
 import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.ui.screen.feed.RemoveFeedDialog;
 import de.danoeh.antennapod.ui.screen.feed.RenameFeedDialog;
 import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionsFilterDialog;
-import de.danoeh.antennapod.ui.screen.feed.preferences.TagSettingsDialog;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -188,26 +184,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
 
     private boolean onFeedContextMenuClicked(Feed feed, MenuItem item) {
         final int itemId = item.getItemId();
-        if (itemId == R.id.remove_all_inbox_item) {
-            ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getContext(),
-                    R.string.remove_all_inbox_label,
-                    R.string.remove_all_inbox_confirmation_msg) {
-                @Override
-                public void onConfirmButtonPressed(DialogInterface dialog) {
-                    dialog.dismiss();
-                    DBWriter.removeFeedNewFlag(feed.getId());
-                }
-            };
-            removeAllNewFlagsConfirmationDialog.createNewDialog().show();
-            return true;
-        } else if (itemId == R.id.edit_tags) {
-            TagSettingsDialog.newInstance(Collections.singletonList(feed.getPreferences()))
-                    .show(getChildFragmentManager(), TagSettingsDialog.TAG);
-            return true;
-        } else if (itemId == R.id.rename_item) {
-            new RenameFeedDialog(getActivity(), feed).show();
-            return true;
-        } else if (itemId == R.id.remove_feed) {
+        if (itemId == R.id.remove_feed) {
             RemoveFeedDialog.show(getContext(), feed, () -> {
                 if (String.valueOf(feed.getId()).equals(getLastNavFragment(getContext()))) {
                     ((MainActivity) getActivity()).loadFragment(UserPreferences.getDefaultPage(), null);
@@ -215,6 +192,9 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                     getActivity().getSupportFragmentManager().executePendingTransactions();
                 }
             });
+            return true;
+        }
+        if (FeedMenuHandler.onMenuItemClicked(this, itemId, feed, null)) {
             return true;
         }
         return super.onContextItemSelected(item);
