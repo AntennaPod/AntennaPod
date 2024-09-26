@@ -32,6 +32,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -144,10 +145,10 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
             return;
         }
         if (item.hasMedia()) {
-            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(), item);
+            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(), Collections.singletonList(item));
         } else {
             // these are already available via button1 and button2
-            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(), item,
+            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(), Collections.singletonList(item),
                     R.id.mark_read_item, R.id.visit_website_item);
         }
     }

@@ -427,6 +427,14 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 super.onCreateContextMenu(menu, v, menuInfo);
                 MenuItemUtils.setOnClickListeners(menu, QueueFragment.this::onContextItemSelected);
             }
+
+            @Override
+            protected void onSelectedItemsUpdated() {
+                super.onSelectedItemsUpdated();
+                FeedItemMenuHandler.onPrepareMenu(floatingSelectMenu.getMenu(), getSelectedItems(),
+                        R.id.add_to_queue_item, R.id.remove_inbox_item);
+                floatingSelectMenu.updateItemVisibility();
+            }
         };
         recyclerAdapter.setOnSelectModeListener(this);
         recyclerView.setAdapter(recyclerAdapter);
@@ -444,15 +452,13 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
 
         floatingSelectMenu = root.findViewById(R.id.floatingSelectMenu);
         floatingSelectMenu.inflate(R.menu.episodes_apply_action_speeddial);
-        floatingSelectMenu.getMenu().findItem(R.id.add_to_queue_batch).setVisible(false);
-        floatingSelectMenu.getMenu().findItem(R.id.remove_from_inbox_batch).setVisible(false);
         floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
             if (recyclerAdapter.getSelectedCount() == 0) {
                 ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
                         Snackbar.LENGTH_SHORT);
                 return false;
             }
-            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), menuItem.getItemId())
+            new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId())
                     .handleAction(recyclerAdapter.getSelectedItems());
             recyclerAdapter.endSelectMode();
             return true;

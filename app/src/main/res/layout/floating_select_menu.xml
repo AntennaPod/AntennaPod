@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="16dp"
-        app:cardCornerRadius="16dp">
+        app:cardCornerRadius="8dp">
 
         <HorizontalScrollView
             android:id="@+id/scrollView"

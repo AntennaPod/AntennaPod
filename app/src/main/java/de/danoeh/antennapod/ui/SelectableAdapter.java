@@ -47,7 +47,7 @@ public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> exten
 
             @Override
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                updateTitle();
+                onSelectedItemsUpdated();
                 toggleSelectAllIcon(menu.findItem(R.id.select_toggle), false);
                 return false;
             }
@@ -59,7 +59,7 @@ public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> exten
                     shouldSelectLazyLoadedItems = selectAll;
                     setSelected(0, getItemCount(), selectAll);
                     toggleSelectAllIcon(item, selectAll);
-                    updateTitle();
+                    onSelectedItemsUpdated();
                     return true;
                 }
                 return false;
@@ -74,7 +74,7 @@ public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> exten
                 notifyDataSetChanged();
             }
         });
-        updateTitle();
+        onSelectedItemsUpdated();
 
         if (onSelectModeListener != null) {
             onSelectModeListener.onStartSelectMode();
@@ -109,7 +109,7 @@ public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> exten
         } else {
             selectedIds.remove(getItemId(pos));
         }
-        updateTitle();
+        onSelectedItemsUpdated();
     }
 
     /**
@@ -154,7 +154,7 @@ public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> exten
         }
     }
 
-    protected void updateTitle() {
+    protected void onSelectedItemsUpdated() {
         if (actionMode == null) {
             return;
         }
