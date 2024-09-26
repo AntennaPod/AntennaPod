@@ -16,13 +16,6 @@ public class ShareDialog extends BottomSheetDialogFragment {
     private static final String ARGUMENT_FEED_ITEM = "feedItem";
     private static final String PREF_NAME = "ShareDialog";
     private static final String PREF_SHARE_EPISODE_START_AT = "prefShareEpisodeStartAt";
-    private static final String PREF_SHARE_EPISODE_TYPE = "prefShareEpisodeType";
-
-    private Context ctx;
-    private FeedItem item;
-    private SharedPreferences prefs;
-
-    private ShareEpisodeDialogBinding viewBinding;
 
     public ShareDialog() {
         // Empty constructor required for DialogFragment
@@ -40,60 +33,46 @@ public class ShareDialog extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        if (getArguments() != null) {
-            ctx = getActivity();
-            item = (FeedItem) getArguments().getSerializable(ARGUMENT_FEED_ITEM);
-            prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        if (getArguments() == null) {
+            return null;
+        }
+        FeedItem item = (FeedItem) getArguments().getSerializable(ARGUMENT_FEED_ITEM);
+        ShareEpisodeDialogBinding viewBinding = ShareEpisodeDialogBinding.inflate(inflater);
+
+        if (item.getMedia() != null && item.getMedia().isDownloaded()) {
+            viewBinding.mediaFileCardCard.setOnClickListener(v -> {
+                ShareUtils.shareFeedItemFile(getContext(), item.getMedia());
+                dismiss();
+            });
+        } else {
+            viewBinding.mediaFileCardCard.setVisibility(View.GONE);
         }
 
-        viewBinding = ShareEpisodeDialogBinding.inflate(inflater);
-        viewBinding.shareDialogRadioGroup.setOnCheckedChangeListener((group, checkedId) ->
-                viewBinding.sharePositionCheckbox.setEnabled(checkedId == viewBinding.shareSocialRadio.getId()));
+        if (item.getMedia() != null && item.getMedia().getDownloadUrl() != null) {
+            viewBinding.mediaAddressText.setText(item.getMedia().getDownloadUrl());
+            viewBinding.mediaAddressCard.setOnClickListener(v -> {
+                ShareUtils.shareLink(getContext(), item.getMedia().getDownloadUrl());
+                dismiss();
+            });
+        } else {
+            viewBinding.mediaAddressCard.setVisibility(View.GONE);
+        }
 
-        setupOptions();
-
-        viewBinding.shareButton.setOnClickListener((v) -> {
-            boolean includePlaybackPosition = viewBinding.sharePositionCheckbox.isChecked();
-            int position;
-            if (viewBinding.shareSocialRadio.isChecked()) {
-                ShareUtils.shareFeedItemLinkWithDownloadLink(ctx, item, includePlaybackPosition);
-                position = 1;
-            } else if (viewBinding.shareMediaReceiverRadio.isChecked()) {
-                ShareUtils.shareMediaDownloadLink(ctx, item.getMedia());
-                position = 2;
-            } else if (viewBinding.shareMediaFileRadio.isChecked()) {
-                ShareUtils.shareFeedItemFile(ctx, item.getMedia());
-                position = 3;
-            } else {
-                throw new IllegalStateException("Unknown share method");
-            }
-            prefs.edit()
-                    .putBoolean(PREF_SHARE_EPISODE_START_AT, includePlaybackPosition)
-                    .putInt(PREF_SHARE_EPISODE_TYPE, position)
-                    .apply();
+        SharedPreferences prefs = getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        viewBinding.sharePositionCheckbox.setChecked(prefs.getBoolean(PREF_SHARE_EPISODE_START_AT, false));
+        viewBinding.socialMessageText.setText(ShareUtils.getSocialFeedItemShareText(
+                getContext(), item, viewBinding.sharePositionCheckbox.isChecked(), true));
+        viewBinding.sharePositionCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            prefs.edit().putBoolean(PREF_SHARE_EPISODE_START_AT, isChecked).apply();
+            viewBinding.socialMessageText.setText(
+                    ShareUtils.getSocialFeedItemShareText(getContext(), item, isChecked, true));
+        });
+        viewBinding.socialMessageCard.setOnClickListener(v -> {
+            ShareUtils.shareLink(getContext(), ShareUtils.getSocialFeedItemShareText(
+                    getContext(), item, viewBinding.sharePositionCheckbox.isChecked(), false));
             dismiss();
         });
+
         return viewBinding.getRoot();
-    }
-
-    private void setupOptions() {
-        final boolean hasMedia = item.getMedia() != null;
-        boolean downloaded = hasMedia && item.getMedia().isDownloaded();
-        viewBinding.shareMediaFileRadio.setVisibility(downloaded ? View.VISIBLE : View.GONE);
-
-        boolean hasDownloadUrl = hasMedia && item.getMedia().getDownloadUrl() != null;
-        if (!hasDownloadUrl) {
-            viewBinding.shareMediaReceiverRadio.setVisibility(View.GONE);
-        }
-        int type = prefs.getInt(PREF_SHARE_EPISODE_TYPE, 1);
-        if ((type == 2 && !hasDownloadUrl) || (type == 3 && !downloaded)) {
-            type = 1;
-        }
-        viewBinding.shareSocialRadio.setChecked(type == 1);
-        viewBinding.shareMediaReceiverRadio.setChecked(type == 2);
-        viewBinding.shareMediaFileRadio.setChecked(type == 3);
-
-        boolean switchIsChecked = prefs.getBoolean(PREF_SHARE_EPISODE_START_AT, false);
-        viewBinding.sharePositionCheckbox.setChecked(switchIsChecked);
     }
 }
