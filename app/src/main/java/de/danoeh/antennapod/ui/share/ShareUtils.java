@@ -21,6 +21,7 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 /** Utility methods for sharing data */
 public class ShareUtils {
     private static final String TAG = "ShareUtils";
+    private static final int ABBREVIATE_MAX_LENGTH = 50;
 
     private ShareUtils() {
     }
@@ -47,32 +48,48 @@ public class ShareUtils {
         return item.getLinkWithFallback() != null;
     }
 
-    public static void shareMediaDownloadLink(Context context, FeedMedia media) {
-        shareLink(context, media.getDownloadUrl());
-    }
+    public static String getSocialFeedItemShareText(Context context, FeedItem item,
+                                                    boolean withPosition, boolean abbreviate) {
+        String text = item.getFeed().getTitle() + ": ";
 
-    public static void shareFeedItemLinkWithDownloadLink(Context context, FeedItem item, boolean withPosition) {
-        String text = item.getFeed().getTitle() + ": " + item.getTitle();
-        int pos = 0;
+        if (abbreviate && item.getTitle().length() > ABBREVIATE_MAX_LENGTH) {
+            text += item.getTitle().substring(0, ABBREVIATE_MAX_LENGTH) + "…";
+        } else {
+            text += item.getTitle();
+        }
+
         if (item.getMedia() != null && withPosition) {
             text += "\n" + context.getResources().getString(R.string.share_starting_position_label) + ": ";
-            pos = item.getMedia().getPosition();
-            text +=  Converter.getDurationStringLong(pos);
+            text +=  Converter.getDurationStringLong(item.getMedia().getPosition());
         }
 
         if (hasLinkToShare(item)) {
-            text +=  "\n\n" + context.getResources().getString(R.string.share_dialog_episode_website_label) + ": ";
-            text += item.getLinkWithFallback();
+            if (!abbreviate) {
+                text += "\n";
+            }
+            text +=  "\n" + context.getResources().getString(R.string.share_dialog_episode_website_label) + ": ";
+            if (abbreviate && item.getLinkWithFallback().length() > ABBREVIATE_MAX_LENGTH) {
+                text += item.getLinkWithFallback().substring(0, ABBREVIATE_MAX_LENGTH) + "…";
+            } else {
+                text += item.getLinkWithFallback();
+            }
         }
 
         if (item.getMedia() != null && item.getMedia().getDownloadUrl() != null) {
-            text += "\n\n" + context.getResources().getString(R.string.share_dialog_media_file_label) + ": ";
-            text +=  item.getMedia().getDownloadUrl();
+            if (!abbreviate) {
+                text += "\n";
+            }
+            text += "\n" + context.getResources().getString(R.string.share_dialog_media_file_label) + ": ";
+            if (abbreviate && item.getMedia().getDownloadUrl().length() > ABBREVIATE_MAX_LENGTH) {
+                text += item.getMedia().getDownloadUrl().substring(0, ABBREVIATE_MAX_LENGTH) + "…";
+            } else {
+                text += item.getMedia().getDownloadUrl();
+            }
             if (withPosition) {
-                text += "#t=" + pos / 1000;
+                text += "#t=" + item.getMedia().getPosition() / 1000;
             }
         }
-        shareLink(context, text);
+        return text;
     }
 
     public static void shareFeedItemFile(Context context, FeedMedia media) {
