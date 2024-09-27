@@ -111,7 +111,6 @@
   <string name="close_label">닫기</string>
   <string name="retry_label">다시 시도</string>
   <string name="auto_download_label">자동 다운로드에 포함</string>
-  <string name="auto_delete_label">에피소드 자동 삭제</string>
   <string name="feed_volume_adapdation">볼륨 조정</string>
   <string name="feed_volume_adaptation_summary">이 팟캐스트 에피소드의 볼륨을 높이거나 낮추기: %1$s</string>
   <string name="feed_volume_reduction_off">조정 없음</string>
@@ -129,12 +128,6 @@
   <string name="episode_cleanup_except_favorite_removal">즐겨찾기 아닐 때</string>
   <string name="episode_cleanup_queue_removal">대기열에 없을 때</string>
   <string name="episode_cleanup_after_listening">끝나고 나서</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="other">끝마치고 나서 %d시간</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="other">재생이 끝나고 나서 %d일 뒤</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="other">%1$d/%2$d 선택</item>
   </plurals>
@@ -194,9 +187,6 @@
   <string name="stream_label">스트리밍</string>
   <string name="delete_label">삭제</string>
   <string name="delete_episode_label">에피소드 삭제</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="other">다운로드한 %d개 에피소드 삭제함.</item>
-  </plurals>
   <string name="remove_inbox_label">새로 받음 목록에서 제거</string>
   <string name="removed_inbox_label">새로 받음 목록에서 제거함</string>
   <string name="mark_read_label">재생했다고 표시</string>
@@ -307,7 +297,6 @@
   <string name="random">임의 순서</string>
   <string name="smart_shuffle">똑똑한 무작위 순서</string>
   <string name="size">크기</string>
-  <string name="clear_queue_confirmation_msg">내부의 모든 에피소드를 지울지 확인하십시오.</string>
   <string name="time_left_label">남은 시간:\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">프리셋</string>
@@ -337,7 +326,6 @@
   <string name="download_pref_details">자세히</string>
   <string name="import_export_pref">가져오기/내보내기</string>
   <string name="import_export_search_keywords">백업, 복구</string>
-  <string name="appearance">모양</string>
   <string name="external_elements">외부 항목</string>
   <string name="interruptions">끼어들기</string>
   <string name="playback_control">재생 조작</string>
@@ -345,7 +333,6 @@
   <string name="preference_search_hint">검색…</string>
   <string name="preference_search_no_results">결과 없음</string>
   <string name="preference_search_clear_history">기록 지우기</string>
-  <string name="pref_episode_cleanup_title">에피소드 정리</string>
   <string name="pref_episode_cleanup_summary">자동 다운로드에서 새 에피소드에 공간이 더 필요할 때 삭제될 수 있는 에피소드</string>
   <string name="pref_pauseOnDisconnect_sum">헤드폰이나 블루투스가 연결 해제되었을 경우 일시정지합니다.</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">헤드폰 다시 연결할 때 재생을 계속합니다.</string>
@@ -354,13 +341,10 @@
   <string name="pref_hardware_forward_button_summary">다음 버튼의 동작을 직접 설정합니다</string>
   <string name="pref_hardware_previous_button_title">이전 버튼</string>
   <string name="pref_hardware_previous_button_summary">이전 버튼의 동작을 직접 설정합니다</string>
-  <string name="button_action_fast_forward">빨리 감기</string>
   <string name="button_action_rewind">뒤로 감기</string>
   <string name="button_action_skip_episode">에피소드 건너뛰기</string>
   <string name="button_action_restart_episode">에피소드 다시 시작</string>
   <string name="pref_followQueue_sum">재생을 마쳤을 때 다음 대기열로 이동</string>
-  <string name="pref_auto_delete_sum">재생이 끝나면 에피소드 삭제</string>
-  <string name="pref_auto_delete_title">자동 삭제</string>
   <string name="pref_auto_local_delete_title">로컬 폴더에서 자동 삭제</string>
   <string name="pref_auto_local_delete_sum">자동 삭제 기능에 로컬 폴더 포함</string>
   <string name="pref_auto_local_delete_dialog_body">로컬 폴더의 경우 자동 삭제 기능은 안테나팟에서 에피소드도 제거하고, 장치 저장소에서 미디어 파일도 삭제합니다. 안테나팟을 통해 다시 다운로드할 수 없게 됩니다. 자동 삭제를 사용하시겠습니까?</string>
@@ -415,8 +399,6 @@
   <string name="pref_autodl_wifi_filter_sum">선택한 Wi-Fi 네트워크에 대해서만 자동 다운로드를 허용합니다.</string>
   <string name="pref_automatic_download_on_battery_title">충전하지 않을 때 다운로드</string>
   <string name="pref_automatic_download_on_battery_sum">배터리 충전 중이 아닐 때 자동 다운로드 허용</string>
-  <string name="pref_episode_cache_title">에피소드 캐시</string>
-  <string name="pref_episode_cache_summary">장치에 임시 저장한 다운로드한 에피소드의 전체 개수. 이 숫자에 도달하면 자동 다운로드가 지연됩니다.</string>
   <string name="pref_episode_cover_title">에피소드 커버 사용</string>
   <string name="pref_episode_cover_summary">에피소드마다 설정된 커버가 있으면 그 커버를 사용합니다. 사용하지 않으면, 앱에서는 항상 팟캐스트 커버 이미지를 사용합니다.</string>
   <string name="pref_show_remain_time_title">남은 시간 표시</string>
@@ -435,8 +417,6 @@
   <string name="pref_feed_skip_intro_toast">처음 %d초 건너뜀</string>
   <string name="pref_playback_time_respects_speed_title">미디어 정보를 재생 속도에 맞게 조정</string>
   <string name="pref_playback_time_respects_speed_sum">재생 속도에 맞춰 재생 위치와 재생 시간을 표시합니다</string>
-  <string name="pref_fast_forward">빠르게 감기 건너뛰기 시간</string>
-  <string name="pref_fast_forward_sum">앞으로 감기 버튼을 눌렀을 때 앞으로 넘어갈 초를 지정합니다.</string>
   <string name="pref_rewind">뒤로 건너뛰기 시간</string>
   <string name="pref_rewind_sum">뒤로 감기 버튼을 눌렀을 때 뒤로 넘어갈 초를 지정합니다.</string>
   <string name="pref_expandNotify_title">높은 알림 우선순위</string>
@@ -485,8 +465,6 @@
   <string name="new_episode_notification_disabled">알림 사용하지 않음</string>
   <string name="pref_feed_settings_dialog_msg">이 설정은 팟캐스트마다 다릅니다. 팟캐스트 페이지를 열어서 바꿀 수 있습니다.</string>
   <string name="pref_contribute">기여</string>
-  <string name="pref_show_subscription_title">구독 제목 표시</string>
-  <string name="pref_show_subscription_title_summary">커버 이미지 아래에 구독 제목 표시</string>
   <string name="pref_new_episodes_action_title">새 에피소드 동작</string>
   <string name="pref_new_episodes_action_sum">새 에피소드에 대해 할 동작</string>
   <!--About screen-->
@@ -560,18 +538,6 @@
   <string name="time_seconds">초</string>
   <string name="time_minutes">분</string>
   <string name="time_hours">시간</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="other">%d초</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="other">%d분</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="other">%d시간</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="other">%d일</item>
-  </plurals>
   <string name="auto_enable_label">재생을 누를 때 자동으로 취침 타이머를 활성화</string>
   <string name="auto_enable_label_with_times">%1$s 및 %2$s 사이에 재생을 누르면 자동으로 잠자기 타이머 활성화</string>
   <string name="auto_enable_change_times">시간 범위 바꾸기</string>
@@ -615,7 +581,6 @@
   <string name="gpodnetsync_username_characters_error">사용자 이름은 알파벳, 숫자, 하이픈, 밑줄만 사용할 수 있습니다.</string>
   <!--Directory chooser-->
   <string name="choose_data_directory">데이터 폴더 선택</string>
-  <string name="choose_data_directory_message">데이터 폴더를 선택하십시오. 안테나팟은 알아서 그 하위 디렉토리를 생성합니다.</string>
   <string name="choose_data_directory_available_space">%1$s 비어 있음 (전체 %2$s)</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">다른 앱이 소리를 낼 때 볼륨을 줄이지 않고 재생을 일시 중지</string>
   <string name="pref_pausePlaybackForFocusLoss_title">끼어들면 일시 중지</string>
@@ -623,18 +588,13 @@
   <string name="rating_tagline">%1$s 이후, %2$s%3$d%4$s 시간의 팟캐스트를 재생했습니다.</string>
   <string name="rating_contribute_label">참여하고 싶으십니까? 번역, 지원, 디자인, 코딩 중 하나를 하고 싶다면, 얼마든지 환영합니다!</string>
   <string name="rating_contribute_button">기여할 방법 발견하기</string>
-  <string name="rating_volunteers_label">안테나팟은 자원봉사자들이 여가 시간에 개발하는 앱입니다. 저희 작업을 좋아하신다면 훌륭한 평가를 남겨 주시면 감사하겠습니다.</string>
   <string name="rating_rate">안테나팟 평가</string>
   <string name="rating_later">나중에</string>
   <!--Online feed view-->
   <string name="subscribe_label">구독</string>
-  <string name="subscribing_label">구독하는 중…</string>
-  <string name="preview_episode">미리보기</string>
-  <string name="stop_preview">미리 보기 중지</string>
   <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">뒤로</string>
   <string name="rewind_label">뒤로 감기</string>
-  <string name="fast_forward_label">앞으로 감기</string>
   <string name="increase_speed">속도 증가</string>
   <string name="decrease_speed">속도 감소</string>
   <string name="media_type_video_label">비디오</string>
@@ -646,7 +606,6 @@
   <string name="load_next_page_label">다음 페이지 읽기</string>
   <string name="position">위치: %1$s</string>
   <string name="remaining_time">남은 시간: %1$s</string>
-  <string name="apply_action">동작 적용</string>
   <string name="play_chapter">챕터 재생</string>
   <string name="prev_chapter">이전 챕터</string>
   <string name="next_chapter">다음 챕터</string>
@@ -679,7 +638,6 @@
   <string name="statistics_expected_next_episode_unknown">알 수 없음</string>
   <string name="statistics_view_all">모든 팟캐스트에 대한 뷰 »</string>
   <string name="edit_url_menu">피드 URL 편집</string>
-  <string name="edit_url_confirmation_msg">RSS 주소를 바꾸면 재생 상태와 팟캐스트 에피소드 목록을 쉽게 망가뜨립니다. RSS 주소를 바꾸지 않기를 권하고, 잘못된 경우 어떤 지원도 하지 않을 것입니다. RSS 주소를 한번 바꾸면 되돌릴 수 없습니다. 구독이 한번 망가지면 주소를 되돌린다고 해도 바로잡을 수 없습니다. 계속 하기 전에 백업을 만드시길 권장합니다.</string>
   <!--Podcast release schedules-->
   <string name="release_schedule_daily">매일</string>
   <string name="release_schedule_weekdays">매 평일</string>

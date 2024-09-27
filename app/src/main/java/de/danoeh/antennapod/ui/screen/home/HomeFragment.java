@@ -139,7 +139,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.homesettings_items) {
-            HomeSectionsSettingsDialog.open(getContext(), this::populateSectionList);
+            new HomeSectionsSettingsDialog(getContext(), this::populateSectionList).show();
             return true;
         } else if (item.getItemId() == R.id.refresh_item) {
             FeedUpdateManager.getInstance().runOnceOrAsk(requireContext());
@@ -184,6 +184,10 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                 .subscribe(numEpisodes -> {
                     viewBinding.welcomeContainer.setVisibility(numEpisodes == 0 ? View.VISIBLE : View.GONE);
                     viewBinding.homeContainer.setVisibility(numEpisodes == 0 ? View.GONE : View.VISIBLE);
+                    viewBinding.swipeRefresh.setVisibility(numEpisodes == 0 ? View.GONE : View.VISIBLE);
+                    if (numEpisodes == 0) {
+                        viewBinding.homeScrollView.setScrollY(0);
+                    }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 

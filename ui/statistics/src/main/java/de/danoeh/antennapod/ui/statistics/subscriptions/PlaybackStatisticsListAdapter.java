@@ -68,10 +68,8 @@ public class PlaybackStatisticsListAdapter extends StatisticsListAdapter {
         long time = statsItem.timePlayed;
         holder.value.setText(Converter.shortLocalizedDuration(context, time));
 
-        holder.itemView.setOnClickListener(v -> {
-            FeedStatisticsDialogFragment yourDialogFragment = FeedStatisticsDialogFragment.newInstance(
-                    statsItem.feed.getId(), statsItem.feed.getTitle());
-            yourDialogFragment.show(fragment.getChildFragmentManager().beginTransaction(), "DialogFragment");
-        });
+        holder.itemView.setOnClickListener(v ->
+                FeedStatisticsDialogFragment.newInstance(statsItem.feed.getId(), statsItem.feed.getTitle())
+                        .show(fragment.getChildFragmentManager().beginTransaction(), "FeedStatistics"));
     }
 }

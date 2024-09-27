@@ -111,7 +111,6 @@
   <string name="close_label">Luk</string>
   <string name="retry_label">Prøv igen</string>
   <string name="auto_download_label">Inkludér i automatiske overførsler</string>
-  <string name="auto_delete_label">Auto-slet afsnit</string>
   <string name="feed_volume_adapdation">Tilpasning af lydstyrke</string>
   <string name="feed_volume_adaptation_summary">Skru op eller ned for lydstyrken for afsnit af denne podcast: %1$s</string>
   <string name="feed_volume_reduction_off">Ingen tilpasning</string>
@@ -130,12 +129,12 @@
   <string name="episode_cleanup_queue_removal">Når ikke i kø</string>
   <string name="episode_cleanup_after_listening">Efter færdig afspilning</string>
   <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 time efter afslutning</item>
-    <item quantity="other">%d timer efter afslutning</item>
+    <item quantity="one">%d time efter afsluttet afspilning</item>
+    <item quantity="other">%d timer efter afsluttet afspilning</item>
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 dag efter færdig afspilning</item>
-    <item quantity="other">%d dage efter færdig afspilning</item>
+    <item quantity="one">%d dag efter afsluttet afspilning</item>
+    <item quantity="other">%d dage efter afsluttet afspilning</item>
   </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d valgt</item>
@@ -177,6 +176,7 @@
   <string name="multi_select">Vælg flere</string>
   <string name="select_all_above">Vælg alt ovenfor</string>
   <string name="select_all_below">Vælg alt nedenfor</string>
+  <string name="multi_select_started_talkback">Flere valgmuligheder vises i bunden</string>
   <string name="filtered_label">Filtrerede</string>
   <string name="refresh_failed_msg">Sidste opdatering mislykkedes. Tryk for at se detaljer.</string>
   <string name="open_podcast">Åbn podcast</string>
@@ -203,7 +203,7 @@
   <string name="delete_label">Slet</string>
   <string name="delete_episode_label">Slet afsnit</string>
   <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 overført afsnit slettet.</item>
+    <item quantity="one">%d overført afsnit slettet.</item>
     <item quantity="other">%d overførte afsnit slettet.</item>
   </plurals>
   <string name="remove_inbox_label">Fjern fra indbakken</string>
@@ -239,6 +239,10 @@
     <item quantity="other">%d afsnit fjernet fra indbakken.</item>
   </plurals>
   <string name="add_to_favorite_label">Føj til favoritter</string>
+  <string name="show_transcript">Vis transskription</string>
+  <string name="transcript">Transskription</string>
+  <string name="transcript_follow">Følg lyd</string>
+  <string name="no_transcript_label">Ingen transskription</string>
   <string name="remove_from_favorite_label">Fjern fra favoritter</string>
   <string name="visit_website_label">Besøg hjemmeside</string>
   <string name="skip_episode_label">Spring afsnit over</string>
@@ -322,7 +326,7 @@
   <string name="random">Tilfældig</string>
   <string name="smart_shuffle">Smart blanding</string>
   <string name="size">Størrelse</string>
-  <string name="clear_queue_confirmation_msg">Bekræft venligst at du vil rydde ALLE afsnit fra køen</string>
+  <string name="clear_queue_confirmation_msg">Bekræft, at du ønsker at fjerne ALLE afsnit fra køen.</string>
   <string name="time_left_label">Tid tilbage:\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">Forudindstillinger</string>
@@ -352,7 +356,7 @@
   <string name="download_pref_details">Detaljer</string>
   <string name="import_export_pref">Import/eksport</string>
   <string name="import_export_search_keywords">sikkerhedskopiering, sikkerhedskopi, backup, gendan, gendannelse, restore</string>
-  <string name="appearance">Udseende</string>
+  <string name="theming">Tema</string>
   <string name="external_elements">Eksterne elementer</string>
   <string name="interruptions">Afbrydelser</string>
   <string name="playback_control">Afspilningskontrol</string>
@@ -360,7 +364,7 @@
   <string name="preference_search_hint">Søg...</string>
   <string name="preference_search_no_results">Ingen resultater</string>
   <string name="preference_search_clear_history">Slet historik</string>
-  <string name="pref_episode_cleanup_title">Afsnitsoprydning</string>
+  <string name="pref_episode_cleanup_title">Slet før automatisk overførsel</string>
   <string name="pref_episode_cleanup_summary">Afsnit der kan fjernes, hvis Automatisk overførsel har brug for plads til nye afsnit.</string>
   <string name="pref_pauseOnDisconnect_sum">Sæt afspilning på pause, hvis hovedtelefoner eller bluetooth afkobles</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Genoptag afspilning når hovedtelefonerne tilsluttes igen</string>
@@ -374,8 +378,10 @@
   <string name="button_action_skip_episode">Spring afsnit over</string>
   <string name="button_action_restart_episode">Genstart afsnit</string>
   <string name="pref_followQueue_sum">Gå til næste element i køen når afspilningen er færdig</string>
-  <string name="pref_auto_delete_sum">Slet afsnit når afspilningen er færdig</string>
-  <string name="pref_auto_delete_title">Slet automatisk</string>
+  <string name="pref_auto_delete_playback_sum">Slet afsnittet, når afspilningen er færdig</string>
+  <string name="pref_auto_delete_playback_title">Slet efter afspilning</string>
+  <string name="pref_auto_delete_title">Automatisk sletning</string>
+  <string name="pref_auto_delete_sum">Slet afsnit efter afspilning, eller når automatisk overførsel har brug for plads</string>
   <string name="pref_auto_local_delete_title">Slet automatisk fra lokale mapper</string>
   <string name="pref_auto_local_delete_sum">Inkluder lokale mapper i automatisk sletning</string>
   <string name="pref_auto_local_delete_dialog_body">Bemærk, at for lokale mapper vil dette fjerne afsnit fra AntennaPod og slette deres mediefiler fra din enheds lager. De kan ikke hentes igen via AntennaPod. Aktivér automatisk sletning?</string>
@@ -430,8 +436,8 @@
   <string name="pref_autodl_wifi_filter_sum">Tillad automatisk overførsel kun på de valgte wi-fi-netværk</string>
   <string name="pref_automatic_download_on_battery_title">Tillad overførsel ved batteridrift</string>
   <string name="pref_automatic_download_on_battery_sum">Tillad automatisk overførsel, når batteriet ikke oplades</string>
-  <string name="pref_episode_cache_title">Mellemlager for afsnit</string>
-  <string name="pref_episode_cache_summary">Totalt antal af overførte afsnit gemt på din enhed. Automatisk overførsel stilles i bero, når dette nummer nåes.</string>
+  <string name="pref_episode_cache_title">Afsnitsgrænse</string>
+  <string name="pref_episode_cache_summary">Automatisk overførsel stoppes, hvis dette antal nås</string>
   <string name="pref_episode_cover_title">Brug afsnitbillede</string>
   <string name="pref_episode_cover_summary">Brug det afsnitspecifikke cover i lister når muligt. Hvis dette slås fra, vil appen altid bruge podcastens coverbillede.</string>
   <string name="pref_show_remain_time_title">Vis resterende tid</string>
@@ -450,8 +456,8 @@
   <string name="pref_feed_skip_intro_toast">Overspring første %d sekunder</string>
   <string name="pref_playback_time_respects_speed_title">Afpas medieinformation til afspilningshastighed</string>
   <string name="pref_playback_time_respects_speed_sum">Vist position og varighed er tilpasset afspilningshastighed</string>
-  <string name="pref_fast_forward">Tidshop for fremadspring</string>
-  <string name="pref_fast_forward_sum">Indstil antallet af sekunder, der skal springes fremad, når der trykkes på fremadspolingsknappen</string>
+  <string name="pref_fast_forward">Tidshop for fremadspoling</string>
+  <string name="pref_fast_forward_sum">Tilpas antallet af sekunder, der skal springes frem, når der klikkes på fremadpolingsknappen</string>
   <string name="pref_rewind">Tidshop for tilbagespring</string>
   <string name="pref_rewind_sum">Indstil antallet af sekunder, der skal springes tilbage, når der trykkes på tilbagespolingsknappen</string>
   <string name="pref_expandNotify_title">Høj prioritet for notifikation</string>
@@ -500,10 +506,10 @@
   <string name="new_episode_notification_disabled">Notifikation deaktiveret</string>
   <string name="pref_feed_settings_dialog_msg">Denne indstilling er unik for hver podcast. Du kan ændre den ved at åbne podcast-siden.</string>
   <string name="pref_contribute">Bidrag</string>
-  <string name="pref_show_subscription_title">Vis abonnementstitel</string>
-  <string name="pref_show_subscription_title_summary">Vis abonnementets titel under billedet</string>
+  <string name="pref_show_subscription_title">Vis titler</string>
   <string name="pref_new_episodes_action_title">Handling ved nyt afsnit</string>
   <string name="pref_new_episodes_action_sum">Handling ved nye afsnit</string>
+  <string name="episode_information">Information om afsnittet</string>
   <!--About screen-->
   <string name="about_pref">Om</string>
   <string name="antennapod_version">AntennaPod-version</string>
@@ -576,19 +582,19 @@
   <string name="time_minutes">minutter</string>
   <string name="time_hours">timer</string>
   <plurals name="time_seconds_quantified">
-    <item quantity="one">1 sekund</item>
+    <item quantity="one">%d sekund</item>
     <item quantity="other">%d sekunder</item>
   </plurals>
   <plurals name="time_minutes_quantified">
-    <item quantity="one">1 minut</item>
+    <item quantity="one">%d minut</item>
     <item quantity="other">%d minutter</item>
   </plurals>
   <plurals name="time_hours_quantified">
-    <item quantity="one">1 time</item>
+    <item quantity="one">%d time</item>
     <item quantity="other">%d timer</item>
   </plurals>
   <plurals name="time_days_quantified">
-    <item quantity="one">1 dag</item>
+    <item quantity="one">%d dag</item>
     <item quantity="other">%d dage</item>
   </plurals>
   <string name="auto_enable_label">Aktivér automatisk slukkefunktion ved at tryk på afspil</string>
@@ -634,7 +640,7 @@
   <string name="gpodnetsync_username_characters_error">Brugernavne kan kun indeholde bogstaver, tal, bindestreger og understreger.</string>
   <!--Directory chooser-->
   <string name="choose_data_directory">Vælg datamappe</string>
-  <string name="choose_data_directory_message">Vælg venligst roden af din datamappe. AntennaPod vil oprette passende undermapper.</string>
+  <string name="choose_data_directory_message">Vælg basen for din datamappe. AntennaPod vil oprette de relevante undermapper.</string>
   <string name="choose_data_directory_available_space">%1$s af %2$s ledig</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Sæt afspilning på pause i stedet for at sænke lydniveauet, når en anden app vil afspille lyde</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Sæt på pause ved afbrydelser</string>
@@ -642,14 +648,13 @@
   <string name="rating_tagline">Siden %1$s har du afspillet %2$s%3$d%4$s timers podcasts.</string>
   <string name="rating_contribute_label">Har du lyst til at være med? Uanset om du vil oversætte, supportere, designe eller kode, vil vi være glade for at have dig med!</string>
   <string name="rating_contribute_button">Find ud af, hvordan du kan bidrage</string>
-  <string name="rating_volunteers_label">AntennaPod er udviklet af frivillige i vores fritid. Vi ville blive glade, hvis du værdsatte vores arbejde ved at give os en god bedømmelse.</string>
+  <string name="rating_volunteers_label">AntennaPod er udviklet af frivillige i deres fritid. Del din påskønnelse af deres arbejde ved at give en god bedømmelse.</string>
   <string name="rating_rate">Bedøm AntennaPod</string>
   <string name="rating_later">Senere</string>
   <!--Online feed view-->
   <string name="subscribe_label">Abonner</string>
-  <string name="subscribing_label">Abonnerer ...</string>
-  <string name="preview_episode">Forhåndsvisning</string>
-  <string name="stop_preview">Stop forhåndsvisning</string>
+  <string name="preview_episodes">Forsmag på afsnit</string>
+  <string name="state_deleted_not_subscribed">Du abonnerer ikke på denne podcast endnu. Abonner gratis for at få lettere adgang til den og beholde dens afspilningshistorik.</string>
   <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">Tilbage</string>
   <string name="rewind_label">Spol tilbage</string>
@@ -665,12 +670,13 @@
   <string name="load_next_page_label">Indlæs næste side</string>
   <string name="position">Position: %1$s</string>
   <string name="remaining_time">Resterende tid: %1$s</string>
-  <string name="apply_action">Anvend handling</string>
   <string name="play_chapter">Afspil kapitel</string>
   <string name="prev_chapter">Forrige kapitel</string>
   <string name="next_chapter">Næste kapitel</string>
   <string name="shuffle_suggestions">Forslag til blanding</string>
   <string name="add_preset">Tilføj forudindstilling</string>
+  <string name="download_started_talkback">Overførsel påbegyndt for %1$s</string>
+  <string name="download_completed_talkback">Overførsel gennemført for %1$s</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">Godkendelse</string>
   <string name="authentication_descr">Ændr dit brugernavn og adgangskode for denne podcast og dens afsnit.</string>
@@ -698,7 +704,7 @@
   <string name="statistics_expected_next_episode_unknown">Ukendt</string>
   <string name="statistics_view_all">Vis for alle podcasts »</string>
   <string name="edit_url_menu">Rediger feed-URL</string>
-  <string name="edit_url_confirmation_msg">Hvis du ændrer RSS-adressen, kan du nemt ødelægge podcastens afspilningstilstand og afsnitslisterne for podcasten. Vi anbefaler IKKE at ændre den og vil IKKE yde support, hvis noget går galt. Dette kan ikke gøres om. Det ødelagte abonnement KAN IKKE repareres ved blot at ændre adressen tilbage. Vi foreslår, at du opretter en sikkerhedskopi, før du fortsætter.</string>
+  <string name="edit_url_confirmation_msg">Ændring af RSS-adressen kan nemt ødelægge podcastens afspilningstilstand og afsnitslisterne for podcasten. Vi anbefaler IKKE at ændre den og vil IKKE yde support, hvis noget går galt. Dette kan ikke gøres om. Det ødelagte abonnement KAN IKKE repareres ved blot at ændre adressen tilbage. Vi foreslår, at du opretter en sikkerhedskopi, før du fortsætter.</string>
   <!--Podcast release schedules-->
   <string name="release_schedule_daily">dagligt</string>
   <string name="release_schedule_weekdays">på hverdage</string>
@@ -775,6 +781,7 @@
   <string name="proxy_port_invalid_error">Port ikke gyldig</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Antal kolonner</string>
+  <string name="subscription_display_list">Liste</string>
   <!--Notification channels-->
   <string name="notification_group_errors">Fejl</string>
   <string name="notification_group_news">Nyheder</string>

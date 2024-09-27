@@ -1123,16 +1123,15 @@ public class PodDBAdapter {
     }
 
     public Cursor getRandomEpisodesCursor(int limit, int seed) {
-        final String allItemsRandomOrder = SELECT_FEED_ITEMS_AND_MEDIA
+        final String allItems = SELECT_FEED_ITEMS_AND_MEDIA
                 + " WHERE (" + KEY_READ + " = " + FeedItem.NEW + " OR " + KEY_READ + " = " + FeedItem.UNPLAYED + ") "
                     // Only from the last two years. Older episodes often contain broken covers and stuff like that
                     + " AND " + KEY_PUBDATE + " > " + (System.currentTimeMillis() - 1000L * 3600L * 24L * 356L * 2)
                     // Hide episodes that have been played but not completed
                     + " AND (" + KEY_LAST_PLAYED_TIME + " == 0"
                         + " OR " + KEY_LAST_PLAYED_TIME + " > " + (System.currentTimeMillis() - 1000L * 3600L) + ")"
-                    + " AND " + SELECT_WHERE_FEED_IS_SUBSCRIBED
-                + " ORDER BY " + randomEpisodeNumber(seed);
-        final String query = "SELECT * FROM (" + allItemsRandomOrder + ")"
+                    + " AND " + SELECT_WHERE_FEED_IS_SUBSCRIBED;
+        final String query = "SELECT MAX(" + randomEpisodeNumber(seed) + "), * FROM (" + allItems + ")"
                 + " GROUP BY " + KEY_FEED
                 + " ORDER BY " + randomEpisodeNumber(seed * 3) + " DESC LIMIT " + limit;
         return db.rawQuery(query, null);
@@ -1309,7 +1308,7 @@ public class PodDBAdapter {
     }
 
     private Map<Long, Integer> conditionalFeedCounterRead(String whereRead, long... feedIds) {
-        String limitFeeds = "";
+        String limitFeeds;
         if (feedIds.length > 0) {
             // work around TextUtils.join wanting only boxed items
             // and StringUtils.join() causing NoSuchMethodErrors on MIUI
@@ -1321,6 +1320,8 @@ public class PodDBAdapter {
             // there's an extra ',', get rid of it
             builder.deleteCharAt(builder.length() - 1);
             limitFeeds = KEY_FEED + " IN (" + builder.toString() + ") AND ";
+        } else {
+            limitFeeds = SELECT_WHERE_FEED_IS_SUBSCRIBED + " AND ";
         }
 
         final String query = "SELECT " + KEY_FEED + ", COUNT(" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + ") AS count "

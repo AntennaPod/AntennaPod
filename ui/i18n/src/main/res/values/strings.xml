@@ -61,6 +61,10 @@
     <string name="home_continue_title">Continue listening</string>
     <string name="home_new_title">See what\'s new</string>
     <string name="home_downloads_title">Manage downloads</string>
+    <string name="home_no_recent_unplayed_episodes_text">You already played all recent episodes. Nothing to be surprised here ;)</string>
+    <string name="home_continue_empty_text">You can add episodes by downloading them or long-pressing them and selecting \"Add to queue\".</string>
+    <string name="home_new_empty_text">New episodes will show up here. You can then decide whether you are interested in them.</string>
+    <string name="home_downloads_empty_text">You can download any episode to listen to it offline.</string>
     <string name="home_welcome_title">Welcome to AntennaPod!</string>
     <string name="home_welcome_text">You are not subscribed to any podcasts yet. Open the side menu to add a podcast.</string>
     <string name="notification_permission_text">AntennaPod needs your permission to show notifications. By default, AntennaPod only shows notifications while something is being downloaded or when something goes wrong.</string>
@@ -70,6 +74,7 @@
     <string name="open_settings">Open settings</string>
     <string name="configure_home">Configure Home Screen</string>
     <string name="section_hidden">Hidden</string>
+    <string name="section_shown">Shown</string>
 
     <!-- Download Statistics fragment -->
     <string name="total_size_downloaded_podcasts">Total size of episodes on the device</string>
@@ -145,11 +150,11 @@
     <string name="episode_cleanup_queue_removal">When not in queue</string>
     <string name="episode_cleanup_after_listening">After finishing</string>
     <plurals name="episode_cleanup_hours_after_listening">
-        <item quantity="one">1 hour after finishing</item>
+        <item quantity="one">%d hour after finishing</item>
         <item quantity="other">%d hours after finishing</item>
     </plurals>
     <plurals name="episode_cleanup_days_after_listening">
-        <item quantity="one">1 day after finishing</item>
+        <item quantity="one">%d day after finishing</item>
         <item quantity="other">%d days after finishing</item>
     </plurals>
     <plurals name="num_selected_label">
@@ -185,9 +190,9 @@
     <string name="remove_feed_label">Remove podcast</string>
     <string name="share_label">Share</string>
     <string name="share_file_label">Share file</string>
-    <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\", ALL its episodes (including downloaded episodes), and its statistics.</string>
-    <string name="feed_delete_confirmation_msg_batch">Please confirm that you want to remove the selected podcasts, ALL their episodes (including downloaded episodes), and its statistics.</string>
-    <string name="feed_delete_confirmation_local_msg">Please confirm that you want to remove the podcast \"%1$s\" and its statistics. The files in the local source folder will not be deleted.</string>
+    <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\", ALL its episodes (including downloaded episodes), playback history, and its statistics.</string>
+    <string name="feed_delete_confirmation_msg_batch">Please confirm that you want to remove the selected podcasts, ALL their episodes (including downloaded episodes), playback history, and its statistics.</string>
+    <string name="feed_delete_confirmation_local_msg">Please confirm that you want to remove the podcast \"%1$s\", its playback history, and its statistics. The files in the local source folder will not be deleted.</string>
     <string name="feed_remover_msg">Removing podcast</string>
     <string name="load_complete_feed">Refresh complete podcast</string>
     <string name="multi_select">Multi select</string>
@@ -219,9 +224,8 @@
     <string name="pause_label">Pause</string>
     <string name="stream_label">Stream</string>
     <string name="delete_label">Delete</string>
-    <string name="delete_episode_label">Delete episode</string>
     <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">1 downloaded episode deleted.</item>
+        <item quantity="one">%d downloaded episode deleted.</item>
         <item quantity="other">%d downloaded episodes deleted.</item>
     </plurals>
     <string name="remove_inbox_label">Remove from inbox</string>
@@ -348,7 +352,7 @@
     <string name="random">Random</string>
     <string name="smart_shuffle">Smart shuffle</string>
     <string name="size">Size</string>
-    <string name="clear_queue_confirmation_msg">Please confirm that you want to clear the queue of ALL of the episodes in it</string>
+    <string name="clear_queue_confirmation_msg">Please confirm that you want to remove ALL episodes from the queue.</string>
     <string name="time_left_label">Time left:\u0020</string>
 
     <!--  Variable Speed -->
@@ -398,7 +402,7 @@
     <string name="pref_hardware_forward_button_summary">Customize the forward button behavior</string>
     <string name="pref_hardware_previous_button_title">Previous button</string>
     <string name="pref_hardware_previous_button_summary">Customize the previous button behavior</string>
-    <string name="button_action_fast_forward">Fast forward</string>
+    <string name="button_action_fast_forward">Fast-forward</string>
     <string name="button_action_rewind">Rewind</string>
     <string name="button_action_skip_episode">Skip episode</string>
     <string name="button_action_restart_episode">Restart episode</string>
@@ -449,16 +453,16 @@
     <string name="pref_black_theme_message">Use full black for the dark theme</string>
     <string name="pref_tinted_theme_title">Dynamic colors</string>
     <string name="pref_tinted_theme_message">Adapt app colors based on the wallpaper</string>
-    <string name="pref_nav_drawer_items_title">Set navigation drawer items</string>
-    <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer</string>
+    <string name="bottom_navigation">Bottom navigation</string>
+    <string name="bottom_navigation_summary">Beta feature: Access the most important screens from everywhere, in a single tap</string>
+    <string name="pref_nav_drawer_items_title">Customize navigation</string>
+    <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer or bottom navigation</string>
     <string name="pref_nav_drawer_feed_order_title">Set subscription order</string>
     <string name="pref_nav_drawer_feed_order_sum">Change the order of your subscriptions</string>
     <string name="pref_nav_drawer_feed_counter_title">Set subscription counter</string>
     <string name="pref_nav_drawer_feed_counter_sum">Change the information displayed by the subscription counter. Also affects the sorting of subscriptions if \'Subscription Order\' is set to \'Counter\'.</string>
     <string name="pref_automatic_download_title">Automatic download</string>
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes</string>
-    <string name="pref_autodl_wifi_filter_title">Enable Wi-Fi filter</string>
-    <string name="pref_autodl_wifi_filter_sum">Allow automatic download only for selected Wi-Fi networks.</string>
     <string name="pref_automatic_download_on_battery_title">Download when not charging</string>
     <string name="pref_automatic_download_on_battery_sum">Allow automatic download when the battery is not charging</string>
     <string name="pref_episode_cache_title">Episode limit</string>
@@ -481,8 +485,8 @@
     <string name="pref_feed_skip_intro_toast">Skipped first %d seconds</string>
     <string name="pref_playback_time_respects_speed_title">Adjust media info to playback speed</string>
     <string name="pref_playback_time_respects_speed_sum">Displayed position and duration are adapted to playback speed</string>
-    <string name="pref_fast_forward">Fast forward skip time</string>
-    <string name="pref_fast_forward_sum">Customize the number of seconds to jump forward when the fast forward button is clicked</string>
+    <string name="pref_fast_forward">Fast-forward skip time</string>
+    <string name="pref_fast_forward_sum">Customize the number of seconds to jump forward when the fast-forward button is clicked</string>
     <string name="pref_rewind">Rewind skip time</string>
     <string name="pref_rewind_sum">Customize the number of seconds to jump backwards when the rewind button is clicked</string>
     <string name="pref_expandNotify_title">High notification priority</string>
@@ -612,19 +616,19 @@
     <string name="time_minutes">minutes</string>
     <string name="time_hours">hours</string>
     <plurals name="time_seconds_quantified">
-        <item quantity="one">1 second</item>
+        <item quantity="one">%d second</item>
         <item quantity="other">%d seconds</item>
     </plurals>
     <plurals name="time_minutes_quantified">
-        <item quantity="one">1 minute</item>
+        <item quantity="one">%d minute</item>
         <item quantity="other">%d minutes</item>
     </plurals>
     <plurals name="time_hours_quantified">
-        <item quantity="one">1 hour</item>
+        <item quantity="one">%d hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
     <plurals name="time_days_quantified">
-        <item quantity="one">1 day</item>
+        <item quantity="one">%d day</item>
         <item quantity="other">%d days</item>
     </plurals>
     <string name="auto_enable_label">Automatically activate the sleep timer when pressing play</string>
@@ -669,10 +673,11 @@
     <string name="gpodnetsync_pref_report_successful">Successful</string>
     <string name="gpodnetsync_pref_report_failed">Failed</string>
     <string name="gpodnetsync_username_characters_error">Usernames may only contain letters, digits, hyphens and underscores.</string>
+    <string name="nextcloud_login_error_generic"><![CDATA[Unable to log into your Nextcloud.\n\n- Check your network connection.\n- Confirm that you are using the correct server address.\n- Make sure that the gpoddersync Nextcloud plugin is installed.]]></string>
 
     <!-- Directory chooser -->
     <string name="choose_data_directory">Choose data folder</string>
-    <string name="choose_data_directory_message">Please choose the base of your data folder. AntennaPod will create the appropriate sub-directories.</string>
+    <string name="choose_data_directory_message">Please choose the base of your data folder. AntennaPod will create the appropriate subdirectories.</string>
     <string name="choose_data_directory_available_space">%1$s of %2$s free</string>
     <string name="pref_pausePlaybackForFocusLoss_sum">Pause playback instead of lowering volume when another app wants to play sounds</string>
     <string name="pref_pausePlaybackForFocusLoss_title">Pause for interruptions</string>
@@ -681,19 +686,19 @@
     <string name="rating_tagline">Since %1$s, you played %2$s%3$d%4$s hours of podcasts.</string>
     <string name="rating_contribute_label">Want to join? Whether you want to translate, support, design or code, we would be happy to have you!</string>
     <string name="rating_contribute_button">Discover ways to contribute</string>
-    <string name="rating_volunteers_label">AntennaPod is developed by volunteers in our free time. We would be happy if you appreciated our work by leaving a nice rating.</string>
+    <string name="rating_volunteers_label">AntennaPod is developed by volunteers in their free time. Share your appreciation of their work by leaving a nice rating.</string>
     <string name="rating_rate">Rate AntennaPod</string>
     <string name="rating_later">Later</string>
 
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
     <string name="preview_episodes">Episodes preview</string>
-    <string name="state_deleted_not_subscribed">Playback state and history of non-subscribed podcasts are deleted after a while. Subscribe to keep them.</string>
+    <string name="state_deleted_not_subscribed">You are not subscribed to this podcast yet. Subscribe for free to access it more easily and keep its playback history.</string>
 
     <!-- Content descriptions for image buttons -->
     <string name="toolbar_back_button_content_description">Back</string>
     <string name="rewind_label">Rewind</string>
-    <string name="fast_forward_label">Fast forward</string>
+    <string name="fast_forward_label">Fast-forward</string>
     <string name="increase_speed">Increase speed</string>
     <string name="decrease_speed">Decrease speed</string>
     <string name="media_type_video_label">Video</string>
@@ -710,6 +715,8 @@
     <string name="next_chapter">Next chapter</string>
     <string name="shuffle_suggestions">Shuffle suggestions</string>
     <string name="add_preset">Add preset</string>
+    <string name="download_started_talkback">Download started for %1$s</string>
+    <string name="download_completed_talkback">Download completed for %1$s</string>
 
     <!-- Feed settings/information screen -->
     <string name="authentication_label">Authentication</string>
@@ -728,18 +735,19 @@
     <string name="keep_updated">Keep updated</string>
     <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>
     <string name="auto_download_disabled_globally">Auto download is disabled in the main AntennaPod settings</string>
-    <string name="statistics_time_played">Time played:</string>
-    <string name="statistics_total_duration">Total duration (estimate):</string>
-    <string name="statistics_episodes_on_device">Episodes on the device:</string>
-    <string name="statistics_space_used">Space used:</string>
-    <string name="statistics_episodes_started_total">Episodes started/total:</string>
-    <string name="statistics_expected_next_episode">Expected next episode:</string>
+    <string name="statistics_episodes_started">started</string>
+    <string name="statistics_episodes_total">total</string>
+    <string name="statistics_episodes_played">played</string>
+    <string name="statistics_episodes_downloaded">downloaded</string>
+    <string name="statistics_episodes_space">space taken</string>
+    <string name="statistics_release_schedule">release schedule</string>
+    <string name="statistics_release_next">next episode (estimate)</string>
     <string name="statistics_expected_next_episode_any_day">Any day now</string>
     <string name="statistics_expected_next_episode_unknown">Unknown</string>
-    <string name="statistics_view_all">View for all podcasts »</string>
+    <string name="statistics_view_all">All podcasts »</string>
     <string name="wait_icon" translatable="false">…</string>
     <string name="edit_url_menu">Edit feed URL</string>
-    <string name="edit_url_confirmation_msg">Changing the RSS address can easily break the playback state and episode listings of the podcast. We do NOT recommend changing it and will NOT provide support if anything goes wrong. This cannot be undone. The broken subscription CANNOT be repaired by simply changing the address back. We suggest creating a backup before continuing.</string>
+    <string name="edit_url_confirmation_msg">Changing the RSS address can easily break the playback state and episode listings of the podcast. We do NOT recommend changing it and will NOT provide support if anything goes wrong. This cannot be undone. The broken subscription CANNOT be repaired by simply changing the address back. We recommend creating a backup before continuing.</string>
 
     <!-- Podcast release schedules -->
     <string name="release_schedule_daily">daily</string>
@@ -764,13 +772,12 @@
     <string name="search_itunes_label">Search Apple Podcasts</string>
     <string name="search_podcastindex_label">Search Podcast Index</string>
     <string name="search_fyyd_label">Search fyyd</string>
-    <string name="advanced">Advanced</string>
     <string name="add_podcast_by_url">Add podcast by RSS address</string>
     <string name="add_podcast_by_url_hint" translatable="false">www.example.com/feed</string>
     <string name="discover">Discover</string>
     <string name="discover_hide">Hide</string>
     <string name="discover_is_hidden">You selected to hide suggestions.</string>
-    <string name="discover_more">more »</string>
+    <string name="discover_more">Discover more »</string>
     <string name="discover_powered_by_itunes">Suggestions by Apple Podcasts</string>
     <string name="discover_confirm">Show suggestions</string>
     <string name="search_powered_by">Results by %1$s</string>

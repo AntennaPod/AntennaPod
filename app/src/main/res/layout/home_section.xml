@@ -8,6 +8,7 @@
     android:layout_centerInParent="true"
     android:gravity="center"
     android:orientation="vertical"
+    android:paddingTop="8dp"
     android:paddingBottom="4dp">
 
     <TextView
@@ -16,9 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:textAlignment="textStart"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="18sp"
-        android:layout_marginVertical="8dp"
+        android:layout_marginVertical="4dp"
         android:accessibilityHeading="true"
         app:layout_constraintWidth_max="wrap"
         app:layout_constraintWidth_percent="0.6"
@@ -29,13 +28,14 @@
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintWidth_default="wrap"
         app:layout_constraintEnd_toStartOf="@id/shuffleButton"
+        style="@style/TextAppearance.Material3.TitleMedium"
         tools:text="Title" />
 
     <ImageButton
         android:id="@+id/shuffleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="8dp"
+        android:layout_marginVertical="4dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:background="?attr/selectableItemBackgroundBorderless"
@@ -52,15 +52,16 @@
         android:id="@+id/numNewItemsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="12dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="0dp"
+        android:paddingBottom="1sp"
         android:background="@drawable/bg_pill"
         android:paddingHorizontal="8dp"
-        android:paddingBottom="1sp"
         android:textAlignment="center"
         android:textColor="?attr/colorPrimary"
-        android:textSize="16sp"
         android:visibility="gone"
+        style="@style/TextAppearance.Material3.TitleMedium"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/barrier"
         app:layout_constraintStart_toEndOf="@id/shuffleButton"
@@ -73,7 +74,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:minWidth="0dp"
-        android:paddingVertical="0dp"
+        android:minHeight="0dp"
+        android:paddingVertical="4dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:textAlignment="textEnd"
@@ -82,7 +84,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/barrier"
-        tools:text="@string/discover_more"
+        tools:text="more »"
         style="@style/Widget.MaterialComponents.Button.TextButton" />
 
     <androidx.constraintlayout.widget.Barrier
@@ -104,5 +106,15 @@
         app:layout_constraintTop_toBottomOf="@id/barrier"
         tools:listitem="@layout/horizontal_itemlist_item"
         tools:itemCount="1" />
+
+    <TextView
+        android:id="@+id/emptyLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:paddingHorizontal="32dp"
+        android:paddingVertical="8dp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/barrier" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

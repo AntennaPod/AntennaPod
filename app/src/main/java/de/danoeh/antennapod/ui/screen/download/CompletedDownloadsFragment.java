@@ -117,17 +117,13 @@ public class CompletedDownloadsFragment extends Fragment
 
         floatingSelectMenu = root.findViewById(R.id.floatingSelectMenu);
         floatingSelectMenu.inflate(R.menu.episodes_apply_action_speeddial);
-        floatingSelectMenu.getMenu().findItem(R.id.download_batch).setVisible(false);
-        floatingSelectMenu.getMenu().findItem(R.id.mark_read_batch).setVisible(false);
-        floatingSelectMenu.getMenu().findItem(R.id.mark_unread_batch).setVisible(false);
-        floatingSelectMenu.getMenu().findItem(R.id.remove_from_inbox_batch).setVisible(false);
         floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
             if (adapter.getSelectedCount() == 0) {
                 ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
                         Snackbar.LENGTH_SHORT);
                 return false;
             }
-            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), menuItem.getItemId())
+            new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId())
                     .handleAction(adapter.getSelectedItems());
             adapter.endSelectMode();
             return true;
@@ -369,6 +365,13 @@ public class CompletedDownloadsFragment extends Fragment
                 menu.findItem(R.id.multi_select).setVisible(true);
             }
             MenuItemUtils.setOnClickListeners(menu, CompletedDownloadsFragment.this::onContextItemSelected);
+        }
+
+        @Override
+        protected void onSelectedItemsUpdated() {
+            super.onSelectedItemsUpdated();
+            FeedItemMenuHandler.onPrepareMenu(floatingSelectMenu.getMenu(), getSelectedItems());
+            floatingSelectMenu.updateItemVisibility();
         }
     }
 

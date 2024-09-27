@@ -177,7 +177,7 @@ public abstract class EpisodesListFragment extends Fragment
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
         swipeRefreshLayout.setOnRefreshListener(() -> FeedUpdateManager.getInstance().runOnceOrAsk(requireContext()));
 
-        listAdapter = new EpisodeItemListAdapter((MainActivity) getActivity()) {
+        listAdapter = new EpisodeItemListAdapter(getActivity()) {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
                 super.onCreateContextMenu(menu, v, menuInfo);
@@ -185,6 +185,13 @@ public abstract class EpisodesListFragment extends Fragment
                     menu.findItem(R.id.multi_select).setVisible(true);
                 }
                 MenuItemUtils.setOnClickListeners(menu, EpisodesListFragment.this::onContextItemSelected);
+            }
+
+            @Override
+            protected void onSelectedItemsUpdated() {
+                super.onSelectedItemsUpdated();
+                FeedItemMenuHandler.onPrepareMenu(floatingSelectMenu.getMenu(), getSelectedItems());
+                floatingSelectMenu.updateItemVisibility();
             }
         };
         listAdapter.setOnSelectModeListener(this);
@@ -211,9 +218,9 @@ public abstract class EpisodesListFragment extends Fragment
             int confirmationString = 0;
             if (listAdapter.getSelectedItems().size() >= 25 || listAdapter.shouldSelectLazyLoadedItems()) {
                 // Should ask for confirmation
-                if (menuItem.getItemId() == R.id.mark_read_batch) {
+                if (menuItem.getItemId() == R.id.mark_read_item) {
                     confirmationString = R.string.multi_select_mark_played_confirmation;
-                } else if (menuItem.getItemId() == R.id.mark_unread_batch) {
+                } else if (menuItem.getItemId() == R.id.mark_unread_item) {
                     confirmationString = R.string.multi_select_mark_unplayed_confirmation;
                 }
             }

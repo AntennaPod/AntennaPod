@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.ui.screen.feed;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -23,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -53,6 +50,7 @@ import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.cleaner.HtmlToPlainText;
 import de.danoeh.antennapod.ui.common.IntentUtils;
+import de.danoeh.antennapod.ui.common.OnCollapseChangeListener;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeMultiSelectActionHandler;
@@ -64,7 +62,7 @@ import de.danoeh.antennapod.ui.screen.download.DownloadLogDetailsDialog;
 import de.danoeh.antennapod.ui.screen.download.DownloadLogFragment;
 import de.danoeh.antennapod.ui.screen.episode.ItemPagerFragment;
 import de.danoeh.antennapod.ui.screen.feed.preferences.FeedSettingsFragment;
-import de.danoeh.antennapod.ui.share.ShareUtils;
+import de.danoeh.antennapod.ui.screen.subscriptions.FeedMenuHandler;
 import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
@@ -161,18 +159,18 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         swipeActions = new SwipeActions(this, TAG).attachTo(viewBinding.recyclerView);
         viewBinding.progressBar.setVisibility(View.VISIBLE);
 
-        ToolbarIconTintManager iconTintManager = new ToolbarIconTintManager(
-                viewBinding.toolbar.getContext(), viewBinding.toolbar, viewBinding.collapsingToolbar) {
-            @Override
-            protected void doTint(Context themedContext) {
-                viewBinding.toolbar.getMenu().findItem(R.id.refresh_item)
-                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_refresh));
-                viewBinding.toolbar.getMenu().findItem(R.id.action_search)
-                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_search));
-            }
-        };
-        iconTintManager.updateTint();
+        ToolbarIconTintManager iconTintManager =
+                new ToolbarIconTintManager(viewBinding.toolbar, viewBinding.collapsingToolbar);
         viewBinding.appBar.addOnOffsetChangedListener(iconTintManager);
+        viewBinding.appBar.addOnOffsetChangedListener(new OnCollapseChangeListener(viewBinding.collapsingToolbar) {
+            @Override
+            public void onCollapseChanged(boolean isCollapsed) {
+                if (feed == null) {
+                    return;
+                }
+                viewBinding.toolbar.setTitle(isCollapsed ? feed.getTitle() : "");
+            }
+        });
 
         nextPageLoader = new MoreContentListFooterUtil(viewBinding.moreContent.moreContentListFooter);
         nextPageLoader.setClickListener(() -> {
@@ -281,10 +279,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
         if (item.getItemId() == R.id.visit_website_item) {
             IntentUtils.openInBrowser(getContext(), feed.getLink());
-        } else if (item.getItemId() == R.id.share_item) {
-            ShareUtils.shareFeedLink(getContext(), feed);
+            return true;
         } else if (item.getItemId() == R.id.refresh_item) {
             FeedUpdateManager.getInstance().runOnceOrAsk(getContext(), feed);
+            return true;
         } else if (item.getItemId() == R.id.refresh_complete_item) {
             new Thread(() -> {
                 feed.setNextPageLink(feed.getDownloadUrl());
@@ -296,24 +294,25 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     throw new RuntimeException(e);
                 }
             }).start();
+            return true;
         } else if (item.getItemId() == R.id.sort_items) {
             SingleFeedSortDialog.newInstance(feed).show(getChildFragmentManager(), "SortDialog");
-        } else if (item.getItemId() == R.id.rename_item) {
-            new RenameFeedDialog(getActivity(), feed).show();
+            return true;
         } else if (item.getItemId() == R.id.remove_feed) {
             RemoveFeedDialog.show(getContext(), feed, () -> {
                 ((MainActivity) getActivity()).loadFragment(UserPreferences.getDefaultPage(), null);
                 // Make sure fragment is hidden before actually starting to delete
                 getActivity().getSupportFragmentManager().executePendingTransactions();
             });
-        } else if (item.getItemId() == R.id.remove_all_inbox_item) {
-            showRemoveAllDialog();
+            return true;
         } else if (item.getItemId() == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(feed.getId(), feed.getTitle()));
-        } else {
-            return false;
+            return true;
         }
-        return true;
+
+        Runnable showRemovedAllSnackbar = () -> ((MainActivity) getActivity())
+                .showSnackbarAbovePlayer(R.string.removed_all_inbox_msg, Toast.LENGTH_SHORT);
+        return FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), feed, showRemovedAllSnackbar);
     }
 
     @Override
@@ -413,8 +412,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onStartSelectMode() {
         swipeActions.detach();
-        viewBinding.floatingSelectMenu.getMenu().findItem(R.id.download_batch).setVisible(!feed.isLocalFeed());
-        viewBinding.floatingSelectMenu.setVisibility(View.VISIBLE);
         updateRecyclerPadding();
         updateToolbar();
     }
@@ -479,6 +476,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (feed.getState() != Feed.STATE_SUBSCRIBED) {
             viewBinding.header.descriptionContainer.setVisibility(View.VISIBLE);
             viewBinding.header.headerDescriptionLabel.setText(HtmlToPlainText.getPlainText(feed.getDescription()));
+            viewBinding.header.subscribeNagLabel.setVisibility(
+                    feed.hasInteractedWithEpisode() ? View.VISIBLE : View.GONE);
         } else if (feed.getItemFilter() != null) {
             FeedItemFilter filter = feed.getItemFilter();
             if (filter.getValues().length > 0) {
@@ -558,20 +557,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     .addToBackStack("Info")
                     .commitAllowingStateLoss();
         }
-    }
-
-    private void showRemoveAllDialog() {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
-        builder.setTitle(R.string.remove_all_inbox_label);
-        builder.setMessage(R.string.remove_all_inbox_confirmation_msg);
-
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            dialog.dismiss();
-            DBWriter.removeFeedNewFlag(feedID);
-            ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.removed_all_inbox_msg, Toast.LENGTH_SHORT);
-        });
-        builder.setNegativeButton(R.string.cancel_label, null);
-        builder.show();
     }
 
     private void loadFeedImage() {
@@ -695,6 +680,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     .withPlaceholderView(holder.placeholder)
                     .withCoverView(holder.cover)
                     .load();
+            if (feed.getState() != Feed.STATE_SUBSCRIBED) {
+                holder.secondaryActionButton.setVisibility(View.GONE);
+            }
         }
 
         @Override
@@ -704,6 +692,13 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 menu.findItem(R.id.multi_select).setVisible(true);
             }
             MenuItemUtils.setOnClickListeners(menu, FeedItemlistFragment.this::onContextItemSelected);
+        }
+
+        @Override
+        protected void onSelectedItemsUpdated() {
+            super.onSelectedItemsUpdated();
+            FeedItemMenuHandler.onPrepareMenu(viewBinding.floatingSelectMenu.getMenu(), getSelectedItems());
+            viewBinding.floatingSelectMenu.updateItemVisibility();
         }
     }
 }

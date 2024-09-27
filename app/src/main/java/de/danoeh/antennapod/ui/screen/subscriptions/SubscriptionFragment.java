@@ -325,12 +325,12 @@ public class SubscriptionFragment extends Fragment
     }
 
     private void updateFilterVisibility() {
-        if (subscriptionAdapter.inActionMode()) {
-            feedsFilteredMsg.setVisibility(View.INVISIBLE);
-        } else if (UserPreferences.getSubscriptionsFilter().isEnabled()) {
-            feedsFilteredMsg.setVisibility(View.VISIBLE);
-        } else {
+        if (!UserPreferences.getSubscriptionsFilter().isEnabled()) {
             feedsFilteredMsg.setVisibility(View.GONE);
+        } else if (subscriptionAdapter.inActionMode()) {
+            feedsFilteredMsg.setVisibility(View.INVISIBLE);
+        } else {
+            feedsFilteredMsg.setVisibility(View.VISIBLE);
         }
     }
 

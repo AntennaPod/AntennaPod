@@ -47,14 +47,14 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
         String freeSpace = Formatter.formatShortFileSize(context, storagePath.getAvailableSpace());
         String totalSpace = Formatter.formatShortFileSize(context, storagePath.getTotalSpace());
 
-        holder.path.setText(storagePath.getShortPath());
+        holder.path.setText(storagePath.getPath());
         holder.size.setText(String.format(freeSpaceString, freeSpace, totalSpace));
         holder.progressBar.setProgress(storagePath.getUsagePercentage());
-        View.OnClickListener selectListener = v -> selectionHandler.accept(storagePath.getFullPath());
+        View.OnClickListener selectListener = v -> selectionHandler.accept(storagePath.getPath());
         holder.root.setOnClickListener(selectListener);
         holder.radioButton.setOnClickListener(selectListener);
 
-        if (storagePath.getFullPath().equals(currentPath)) {
+        if (storagePath.getPath().equals(currentPath)) {
             holder.radioButton.toggle();
         }
     }
@@ -73,8 +73,10 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
     }
 
     private List<StoragePath> getStorageEntries(Context context) {
-        File[] mediaDirs = context.getExternalFilesDirs(null);
-        final List<StoragePath> entries = new ArrayList<>(mediaDirs.length);
+        final List<File> mediaDirs = new ArrayList<>();
+        mediaDirs.addAll(List.of(context.getExternalFilesDirs(null)));
+        mediaDirs.addAll(List.of(context.getExternalMediaDirs()));
+        final List<StoragePath> entries = new ArrayList<>(mediaDirs.size());
         for (File dir : mediaDirs) {
             if (!isWritable(dir)) {
                 continue;
@@ -115,12 +117,7 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
             this.path = path;
         }
 
-        String getShortPath() {
-            int prefixIndex = path.indexOf("Android");
-            return (prefixIndex > 0) ? path.substring(0, prefixIndex) : path;
-        }
-
-        String getFullPath() {
+        String getPath() {
             return this.path;
         }
 

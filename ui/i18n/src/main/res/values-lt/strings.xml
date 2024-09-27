@@ -76,18 +76,6 @@
   <string name="episode_cleanup_except_favorite_removal">Kai nėra mėgstamas</string>
   <string name="episode_cleanup_queue_removal">Jei nėra eilėje</string>
   <string name="episode_cleanup_after_listening">Pabaigus klausyti</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">Praėjus 1 valandai po perklausymo</item>
-    <item quantity="few">Praėjus %d valandoms po perklausymo</item>
-    <item quantity="many">Praėjus %d valandoms po perklausymo</item>
-    <item quantity="other">Praėjus %d valandoms po perklausymo</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">Praėjus 1 dienai nuo perklausymo</item>
-    <item quantity="few">Praėjus %d dienoms nuo perklausymo</item>
-    <item quantity="many">Praėjus %d dienų nuo perklausymo</item>
-    <item quantity="other">Praėjus %d dienų nuo perklausymo</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d pažymėtas</item>
     <item quantity="few">%1$d/%2$d pažymėti</item>
@@ -144,12 +132,6 @@
   <string name="pause_label">Pristabdyti</string>
   <string name="stream_label">Klausytis tiesiogiai</string>
   <string name="delete_label">Ištrinti</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 atsiųstas epizodas ištrintas.</item>
-    <item quantity="few">%d atsiųsti epizodai ištrinti.</item>
-    <item quantity="many">%d atsiųsti epizodai ištrinti.</item>
-    <item quantity="other">%d atsiųsti epizodai ištrinti.</item>
-  </plurals>
   <string name="mark_read_label">Pažymėti kaip perklausytą</string>
   <string name="marked_as_played_label">Pažymėtas kaip perklausytas</string>
   <string name="marked_as_unplayed_label">Pažymėtas kaip neperklausytas</string>
@@ -237,7 +219,6 @@
   <string name="episode_title">Epizodo pavadinimas</string>
   <string name="feed_title">Tinklalaidės pavadinimas</string>
   <string name="random">Atsitiktinai</string>
-  <string name="clear_queue_confirmation_msg">Patvirtinkite, jog norite pašalinti VISUS epizodus iš perklausos eilės</string>
   <string name="time_left_label">Liko laiko:\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">Išsaugotos reikšmės</string>
@@ -262,7 +243,6 @@
   <string name="download_pref_details">Išsamiau</string>
   <string name="import_export_pref">Importas/Eksportas</string>
   <string name="import_export_search_keywords">atsarginės kopijos, atkūrimas</string>
-  <string name="appearance">Išvaizda</string>
   <string name="external_elements">Išoriniai elementai</string>
   <string name="interruptions">Pertraukimai</string>
   <string name="playback_control">Atkūrimo valdymas</string>
@@ -278,7 +258,6 @@
   <string name="pref_hardware_previous_button_summary">Derinkite mygtuko „ankstesnis“ elgseną</string>
   <string name="button_action_rewind">Atsukti</string>
   <string name="pref_followQueue_sum">Atkūrimui pasibaigus peršokti į kitą eilės elementą</string>
-  <string name="pref_auto_delete_sum">Ištrinti epizodą pasibaigus atkūrimui</string>
   <string name="pref_smart_mark_as_played_sum">Žymėti epizodus kaip perklausytus iki pilnos perklausos likus nurodytam sekundžių kiekiui.</string>
   <string name="pref_skip_keeps_episodes_sum">Palikti epizodus, kai šie praleidžiami</string>
   <string name="playback_pref">Atkūrimas</string>
@@ -298,7 +277,6 @@
   <string name="pref_autodl_wifi_filter_sum">Leisti automatinį atsiuntimą tik prisijungus prie nurodytų belaidžių tinklų.</string>
   <string name="pref_automatic_download_on_battery_title">Atsiuntimas ne įkrovimo metu</string>
   <string name="pref_automatic_download_on_battery_sum">Leisti automatinį atsiuntimą kai baterija nėra įkraunama</string>
-  <string name="pref_episode_cache_summary">Bendras podėlyje atsiųstų epizodų skaičius šiame įrenginyje. Pasiekus šį skaičių automatinis atsiuntimas bus pristabdytas.</string>
   <string name="pref_episode_cover_summary">Naudoti epizodo viršelį, kai prieinama. Nepažymėjus, programėlė visada naudos tinklalaidės viršelio paveikslėlį.</string>
   <string name="pref_show_remain_time_summary">Kai pažymėta, atvaizduojamas likęs epizodų laikas. Jei nepažymėta, atvaizduojama bendra epizodų trukmė.</string>
   <string name="pref_theme_title_light">Šviesi</string>
@@ -313,7 +291,6 @@
   <string name="pref_feed_skip_intro_toast">Praleistos pirmos %d sekundžių</string>
   <string name="pref_playback_time_respects_speed_title">Derinti medijos informaciją pagal atkūrimo spartą</string>
   <string name="pref_playback_time_respects_speed_sum">Atvaizduojama pozicija ir trukmė yra pritakyta prie atkūrimo spartos</string>
-  <string name="pref_fast_forward_sum">Derinkite, per kiek sekundžių šoktelėti į priekį kai paspaudžiamas persukimo į priekį mygtukas</string>
   <string name="pref_rewind_sum">Derinkite, per kiek sekundžių šoktelėti atgal kai paspaudžiamas atsukimo atgal mygtukas</string>
   <string name="pref_expandNotify_sum">Tai dažniausiai išskleidžia pranešimą, kad būtų rodomi atkūrimo valdymo mygtukai.</string>
   <string name="pref_enqueue_location_sum">Epizodus pridėti: %1$s</string>
@@ -406,24 +383,6 @@
   <string name="time_seconds">sekundės</string>
   <string name="time_minutes">minutės</string>
   <string name="time_hours">valandos</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 sekundė</item>
-    <item quantity="few">%d sekundės</item>
-    <item quantity="many">%d sekundžių</item>
-    <item quantity="other">%d sekundžių</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 minutė</item>
-    <item quantity="few">%d minutės</item>
-    <item quantity="many">%d minučių</item>
-    <item quantity="other">%d minučių</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 valanda</item>
-    <item quantity="few">%d valandos</item>
-    <item quantity="many">%d valandų</item>
-    <item quantity="other">%d valandų</item>
-  </plurals>
   <string name="sleep_timer_enabled_label">Miego laikmatis įjungtas</string>
   <!--Synchronisation-->
   <string name="synchronization_choose_title">Pasirinkite sinchronizavimo teikėją</string>
@@ -456,26 +415,20 @@
   <string name="gpodnetsync_pref_report_failed">Nepavyko</string>
   <string name="gpodnetsync_username_characters_error">Naudotojo vardą sudaryti gali tik raidės, skaitmenys, brūkšniai ir pabraukimo brūkšniai.</string>
   <!--Directory chooser-->
-  <string name="choose_data_directory_message">Prašome pasirinkti pamatinį duomenų aplanką. „AntennaPod“ sukurs reikiamus poaplankius.</string>
   <string name="choose_data_directory_available_space">%1$s iš %2$s laisva</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Kai kita programėlė nori atkurti garsus, pristabdyti atkūrimą vietoje garsio sumažinimo</string>
   <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">Prenumeruoti</string>
-  <string name="subscribing_label">Prenumeruojama...</string>
-  <string name="preview_episode">Peržiūra</string>
-  <string name="stop_preview">Stabdyti peržiūrą</string>
   <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">Atgal</string>
   <string name="rewind_label">Atsukti</string>
-  <string name="fast_forward_label">Persukti į priekį</string>
   <string name="increase_speed">Padidinti spartą</string>
   <string name="decrease_speed">Sumažinti spartą</string>
   <string name="media_type_video_label">Vaizdas</string>
   <string name="status_downloading_label">Epizodas atsiunčiamas</string>
   <string name="load_next_page_label">Įkelti kitą puslapį</string>
   <string name="position">Pozicija: %1$s</string>
-  <string name="apply_action">Pritaikyti veiksmą</string>
   <string name="play_chapter">Atkurti skyrių</string>
   <string name="prev_chapter">Ankstesnis skyrius</string>
   <string name="next_chapter">Kitas skyrius</string>

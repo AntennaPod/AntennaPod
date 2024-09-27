@@ -65,7 +65,7 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
 
         findPreference(UserPreferences.PREF_HIDDEN_DRAWER_ITEMS)
                 .setOnPreferenceClickListener(preference -> {
-                    DrawerPreferencesDialog.show(getContext(), null);
+                    new DrawerPreferencesDialog(getContext(), null).show();
                     return true;
                 });
 

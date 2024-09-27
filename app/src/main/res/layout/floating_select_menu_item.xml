@@ -21,8 +21,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:textColor="?android:attr/textColorPrimary"
-        android:lines="2"
+        android:maxLines="2"
         android:textAlignment="center"
-        android:ellipsize="end" />
+        android:ellipsize="end"
+        style="@style/TextAppearance.Material3.BodySmall" />
 
 </LinearLayout>

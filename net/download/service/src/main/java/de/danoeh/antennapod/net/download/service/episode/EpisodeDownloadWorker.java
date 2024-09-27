@@ -167,6 +167,8 @@ public class EpisodeDownloadWorker extends Worker {
             wifiLock = wifiManager.createWifiLock(TAG);
             wifiLock.acquire();
         }
+
+        DownloadAnnouncer.announceStart(getApplicationContext(), request.getTitle());
         try {
             downloader.call();
         } catch (Exception e) {
@@ -190,6 +192,7 @@ public class EpisodeDownloadWorker extends Worker {
                     getApplicationContext(), downloader.getResult(), request);
             handler.run();
             DBWriter.addDownloadStatus(handler.getUpdatedStatus());
+            DownloadAnnouncer.announceCompleted(getApplicationContext(), request.getTitle());
             return Result.success();
         }
 

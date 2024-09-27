@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activity and fragment titles-->
-  <string name="feed_update_receiver_name">सदस्यता अपडेट करें</string>
+  <string name="feed_update_receiver_name">सब्सक्रिप्शन अपडेट करें</string>
   <string name="feeds_label">पॉडकास्ट</string>
   <string name="statistics_label">आंकड़े</string>
   <string name="add_feed_label">पॉडकास्ट जोड़ें</string>
@@ -14,24 +14,25 @@
   <string name="downloads_label">डाउनलोड</string>
   <string name="open_autodownload_settings">सेटिंग खोलें</string>
   <string name="downloads_log_label">लॉग डाउनलोड</string>
-  <string name="subscriptions_label">सदस्यता</string>
-  <string name="subscriptions_list_label">सदस्यता सूची</string>
+  <string name="subscriptions_label">सब्सक्रिप्शन</string>
+  <string name="subscriptions_list_label">सब्सक्रिप्शन लिस्ट</string>
   <string name="cancel_download_label">डाउनलोड कैंसिल करें</string>
   <string name="playback_history_label">प्लेबैक लॉग</string>
   <string name="episode_cache_full_title">एपिसोड कैश भर गया</string>
   <string name="episode_cache_full_message">एपिसोड कैश भर गया। सेटिंग में कैश साइज़ बढ़ाया जा सकता है।</string>
   <string name="years_statistics_label">साल</string>
   <string name="notification_pref_fragment">नोटिफिकेशन</string>
+  <string name="current_playing_episode">ये</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" नहीं मिला</string>
   <!--SwipeActions-->
   <string name="swipeactions_label">स्वाइप एक्शन</string>
   <string name="swipeactions_summary">लिस्ट में एपिसोड स्वाइप करने पर क्या होगा चुनें</string>
-  <string name="swipe_right">राइट स्वाइप करें</string>
-  <string name="swipe_left">लेफ्ट स्वाइप करें</string>
+  <string name="swipe_right">राइट स्वाइप</string>
+  <string name="swipe_left">लेफ्ट स्वाइप</string>
   <string name="enable_swipeactions">इस स्क्रीन के लिए स्वाइप एक्शन शुरू करें</string>
   <string name="change_setting">बदलें</string>
-  <string name="individual_subscription">व्यक्तिगत सदस्यता</string>
+  <string name="individual_subscription">सब्सक्रिप्शन</string>
   <!--Statistics fragment-->
   <string name="statistics_include_marked">उन एपिसोड का टाइम शामिल करें जिन्हे सुना हुआ मार्क किया गया है</string>
   <string name="statistics_speed_not_counted">नोट: प्लेबैक स्पीड को कभी भी ध्यान में नहीं रखा जाता।</string>
@@ -51,13 +52,14 @@
   <string name="home_new_title">क्या नया है</string>
   <string name="home_downloads_title">डाउनलोड मैनेज करें</string>
   <string name="home_welcome_title">एंटीनापॉड में वेलकम!</string>
-  <string name="home_welcome_text">आप अभी तक किसी पॉडकास्ट की सदस्यता नहीं लिए हैं। पॉडकास्ट जोड़ने के लिए साइड मेन्यू खोलें।</string>
+  <string name="home_welcome_text">आपने अभी तक किसी पॉडकास्ट का सब्सक्रिप्शन नहीं लिया हैं। पॉडकास्ट जोड़ने के लिए साइड मेन्यू खोलें।</string>
   <string name="notification_permission_text">एंटीनापॉड को नोटिफिकेशन दिखाने के लिए परमिशन चाहिए। एंटीनापॉड डिफॉल्ट सेटअप में नोटिफिकेशन सिर्फ तभी दिखाता है जब कोई डाउनलोड चल रहा हो या जब कोई गड़बड़ हो जाए।</string>
   <string name="notification_permission_denied">आपने परमिशन नहीं दिया।</string>
   <string name="notification_permission_deny_warning">अगर आप नोटिफिकेशन बंद रखते है और कोई गड़बड़ हो जाती है, तो शायद आपको गड़बड़ के बारे में पता ही ना चले।</string>
   <string name="deny_label">मना करें</string>
   <string name="open_settings">सेटिंग खोलें</string>
   <string name="configure_home">होमस्क्रीन बदलें</string>
+  <string name="section_hidden">छुपा हुआ</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">डिवाइस के सारे एपिसोड का कुल साइज़</string>
   <!--Main activity-->
@@ -109,7 +111,6 @@
   <string name="close_label">बंद करें</string>
   <string name="retry_label">वापस कोशिश करें</string>
   <string name="auto_download_label">ऑटो डाउनलोड में शामिल करें</string>
-  <string name="auto_delete_label">एपिसोड अपनेआप हटाएं</string>
   <string name="feed_volume_adapdation">वॉल्यूम अडाप्टेशन</string>
   <string name="feed_volume_adaptation_summary">इस पॉडकास्ट के लिए आवाज़ ऊपर या नीचे करें: %1$s</string>
   <string name="feed_volume_reduction_off">कोई अडाप्टेशन नहीं</string>
@@ -121,19 +122,12 @@
   <string name="feed_auto_download_always">हमेशा</string>
   <string name="feed_auto_download_never">कभी नहीं</string>
   <string name="feed_new_episodes_action_add_to_inbox">इनबॉक्स में जोड़ें</string>
+  <string name="feed_new_episodes_action_add_to_queue">कतार में जोड़ें</string>
   <string name="feed_new_episodes_action_nothing">कुछ नहीं</string>
   <string name="episode_cleanup_never">कभी नहीं</string>
   <string name="episode_cleanup_except_favorite_removal">जब मनपसंद ना हो</string>
   <string name="episode_cleanup_queue_removal">जब कतार में ना हो</string>
   <string name="episode_cleanup_after_listening">खत्म होने के बाद</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">खत्म होने के 1 घंटे बाद</item>
-    <item quantity="other">खत्म होने के %d घंटे बाद</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">खत्म होने के 1 दिन बाद</item>
-    <item quantity="other">खत्म होने के %d दिन बाद</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d चुना गया</item>
     <item quantity="other">%1$d/%2$d चुना गया</item>
@@ -198,10 +192,6 @@
   <string name="stream_label">स्ट्रीम करें</string>
   <string name="delete_label">हटाएं</string>
   <string name="delete_episode_label">एपिसोड हटाएं</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 डाउनलोड किया गया एपिसोड हटाया गया।</item>
-    <item quantity="other">%d डाउनलोड किए गए एपिसोड हटाए गए।</item>
-  </plurals>
   <string name="remove_inbox_label">इनबॉक्स से हटाएं</string>
   <string name="removed_inbox_label">इनबॉक्स से हटाया गया</string>
   <string name="mark_read_label">सुना हुआ मार्क करें</string>
@@ -318,7 +308,6 @@
   <string name="random">बेतरतीब</string>
   <string name="smart_shuffle">स्मार्ट मिश्रण</string>
   <string name="size">साइज़</string>
-  <string name="clear_queue_confirmation_msg">पक्का करें कि उसके सारे एपिसोड का कतार साफ करना है</string>
   <string name="time_left_label">समय बचा:\u0020</string>
   <!--Variable Speed-->
   <string name="speed_presets">डिफॉल्ट</string>
@@ -348,7 +337,6 @@
   <string name="download_pref_details">जानकारी</string>
   <string name="import_export_pref">आयात/निर्यात</string>
   <string name="import_export_search_keywords">बैकअप, रीस्टोर, बैकअप करें, रीस्टोर करें, वापस लाएं</string>
-  <string name="appearance">दिखावट</string>
   <string name="external_elements">बाहरी चीज़</string>
   <string name="interruptions">रोकटोक</string>
   <string name="playback_control">प्लेबैक कंट्रोल</string>
@@ -356,7 +344,6 @@
   <string name="preference_search_hint">खोजें...</string>
   <string name="preference_search_no_results">कोई नतीजा नहीं मिला</string>
   <string name="preference_search_clear_history">इतिहास साफ करें</string>
-  <string name="pref_episode_cleanup_title">एपिसोड सफाई</string>
   <string name="pref_episode_cleanup_summary">एपिसोड जो हटाने लायक होंगे अगर अपनेआप-डाउनलोड को नए एपिसोड के लिए जगह चाहिए।</string>
   <string name="pref_pauseOnDisconnect_sum">प्लेबैक ठहराएं जब हैडफोन या ब्लूटुथ से कनेक्शन टूटता है</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">हैडफोन वापस जुड़ने पे प्लेबैक जारी रखें</string>
@@ -365,13 +352,10 @@
   <string name="pref_hardware_forward_button_summary">फास्ट फॉरवर्ड का बर्ताव बदलें</string>
   <string name="pref_hardware_previous_button_title">पीछे जाएं</string>
   <string name="pref_hardware_previous_button_summary"> पिछे जाएं बटन का बर्ताव बदलें</string>
-  <string name="button_action_fast_forward">फास्ट फॉरवर्ड</string>
   <string name="button_action_rewind">रिवाइंड करें</string>
   <string name="button_action_skip_episode">एपिसोड छोड़ें</string>
   <string name="button_action_restart_episode">एपिसोड पुनःशुरू करें</string>
   <string name="pref_followQueue_sum">प्लेबैक के खत्म होने पे अगले कतार आइटम पे जाएं</string>
-  <string name="pref_auto_delete_sum">प्लेबैक खत्म होने पे एपिसोड मिटाएं</string>
-  <string name="pref_auto_delete_title">स्वतः हटाएं</string>
   <string name="pref_auto_local_delete_title">स्थानीय फ़ोल्डरों से स्वतः हटाएं</string>
   <string name="pref_auto_local_delete_sum">स्वतः हटाने की कार्यक्षमता में स्थानीय फ़ोल्डर शामिल करें</string>
   <string name="pref_auto_local_delete_dialog_body">ध्यान दें कि स्थानीय फ़ोल्डरों के लिए यह एंटेना पॉड से एपिसोड हटा देगा और उनके मीडिया फ़ाइलों को आपके डिवाइस स्टोरेज से हटा देगा। इन्हें फिर से एंटेना पॉड के माध्यम से डाउनलोड नहीं किया जा सकता। क्या आप स्वतः हटाने को सक्षम करना चाहते हैं?</string>
@@ -426,8 +410,6 @@
   <string name="pref_autodl_wifi_filter_sum">सिर्फ चुने गए वाईफाई नेटवर्क के लिए अपनेआप-डाउनलोड की अनुमति दें।</string>
   <string name="pref_automatic_download_on_battery_title">जब चार्ज नहीं हो रहा हो तो डाउनलोड करें</string>
   <string name="pref_automatic_download_on_battery_sum">बैटरी के चार्ज नहीं होते वक्त अपनेआप-डाउनलोड की अनुमति दें</string>
-  <string name="pref_episode_cache_title">एपिसोड कैश</string>
-  <string name="pref_episode_cache_summary">डिवाइस पे कैश किए गए डाउनलोड किए गए एपिसोड का नंबर। अपनेआप-डाउनलोड इस नंबर पे पहुंचने पे बंद कर दिया जाएगा।</string>
   <string name="pref_episode_cover_title">एपिसोड कवर का उपयोग करें</string>
   <string name="pref_episode_cover_summary">जब भी हो सके, लिस्ट में एपिसोड का खास कवर इस्तेमाल करें। अगर सही का निशान नहीं दिया जाता, तो ऐप हमेशा पॉडकास्ट का कवर तस्वीर इस्तेमाल करेगा।</string>
   <string name="pref_show_remain_time_title">शेष समय दिखाएं</string>
@@ -446,8 +428,6 @@
   <string name="pref_feed_skip_intro_toast">शुरूआत के %d सेकंड छोड़ें</string>
   <string name="pref_playback_time_respects_speed_title">मीडिया जानकारी को प्लेबैक रफ्तार पे जमाएं</string>
   <string name="pref_playback_time_respects_speed_sum">पट्टी और अर्सा प्लेबैक रफ्तार के हिसाब से दिखाए जाते है</string>
-  <string name="pref_fast_forward">फास्ट फॉरवर्ड में छोड़ने का समय</string>
-  <string name="pref_fast_forward_sum">फास्ट फॉरवर्ड बटन दबाने पे कितना आगे जाए बदलें</string>
   <string name="pref_rewind">स्किप समय रिवाइंड किया जाये</string>
   <string name="pref_rewind_sum">रिवाइंड बटन दबाने पे कितना पीछे जाए बदलें</string>
   <string name="pref_expandNotify_title">उच्च सूचना प्राथमिकता</string>
@@ -493,8 +473,6 @@
   <string name="new_episode_notification_disabled">सूचना बंद</string>
   <string name="pref_feed_settings_dialog_msg">ये सेटिंग हर पॉडकास्ट के लिए खास है। इसे पॉडकास्ट पन्ने से बदला जा सकता है।</string>
   <string name="pref_contribute">मदद करें</string>
-  <string name="pref_show_subscription_title">सदस्यता शीर्षक दिखाएं</string>
-  <string name="pref_show_subscription_title_summary">कवर छवि के नीचे सदस्यता शीर्षक प्रदर्शित करें</string>
   <string name="pref_new_episodes_action_title">नए एपिसोड कार्रवाई</string>
   <string name="pref_new_episodes_action_sum">नए एपिसोड के लिए कार्रवाई</string>
   <!--About screen-->
@@ -564,22 +542,6 @@
   <string name="time_seconds">सेकंड</string>
   <string name="time_minutes">मिनट</string>
   <string name="time_hours">घंटे</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 सेकंड</item>
-    <item quantity="other">%d सेकंड</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 मिनट</item>
-    <item quantity="other">%d मिनट</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 घंटा</item>
-    <item quantity="other">%d घंटे</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">1 दिन</item>
-    <item quantity="other">%d दिन</item>
-  </plurals>
   <string name="auto_enable_label">प्ले बटन दबाने पर स्लीप टाइमर स्वचालित रूप से सक्रिय करें</string>
   <string name="auto_enable_change_times">समय सीमा बदलें</string>
   <string name="sleep_timer_enabled_label">नींद घड़ी चालू</string>
@@ -622,20 +584,15 @@
   <string name="gpodnetsync_username_characters_error">यूजरनेम में सिर्फ अक्षर, नंबर, हायफन (-), और अंडरलाइन हो सकते है।</string>
   <!--Directory chooser-->
   <string name="choose_data_directory">डाटा फोल्डर चुनें</string>
-  <string name="choose_data_directory_message">कृपया अपने डेटा फ़ोल्डर का आधार चुनें। एंटेनापॉड संबंधित उप-निर्देशिकाएँ बनाएगा।</string>
   <string name="choose_data_directory_available_space">%2$s में से %1$s खाली</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">जब कोई दूसरा ऐप ऑडियो चलाना चाहता है तो आवाज़ कम करने के जगह प्लेबैक पॉज़ करें।</string>
   <string name="pref_pausePlaybackForFocusLoss_title">रोकटोक पे पॉज़ करें</string>
   <!--Rating dialog-->
   <!--Online feed view-->
   <string name="subscribe_label">सदस्यता लें</string>
-  <string name="subscribing_label">सदस्यता लिया जा रहा है...</string>
-  <string name="preview_episode">प्रीव्यू करें</string>
-  <string name="stop_preview">प्रीव्यू बंद करें</string>
   <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">पीछे जाएं</string>
   <string name="rewind_label">रिवाइंड करें</string>
-  <string name="fast_forward_label">फास्ट फॉरवर्ड करें</string>
   <string name="increase_speed">स्पीड ज़्यादा करें</string>
   <string name="decrease_speed">स्पीड कम करें</string>
   <string name="media_type_video_label">वीडियो</string>
@@ -647,7 +604,6 @@
   <string name="load_next_page_label">अगला पेज लोड करें</string>
   <string name="position">पोज़िशन: %1$s</string>
   <string name="remaining_time">टाइम बाकी: %1$s</string>
-  <string name="apply_action">अप्लाए करें</string>
   <string name="play_chapter">चैप्टर सुनें</string>
   <string name="prev_chapter">पिछला चैप्टर</string>
   <string name="next_chapter">अगला चैप्टर</string>
@@ -676,7 +632,6 @@
   <string name="statistics_episodes_started_total">शुरू किए गए एपिसोड:</string>
   <string name="statistics_view_all">सारे पॉडकास्ट »</string>
   <string name="edit_url_menu">फीड यूआरएल बदलें</string>
-  <string name="edit_url_confirmation_msg">आरएसएस पता बदलने से पॉडकास्ट का प्लेबैक पोज़िशन और एपिसोड लिस्ट आसानी से टूट सकता है। हम ये नहीं करने की सलाह देते है और कोई भी गड़बड़ होने पे हम मदद नहीं करेंगे। इस बदलाव को कैंसिल नहीं किया जा सकता। टूटी हुई सदस्यता सिर्फ पता पहले जैसा करने से ठीक नहीं होगा। हम आगे बढ़ने से पहले बैकअप बनाने की सलाह देंगे।</string>
   <!--Podcast release schedules-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">एकल उद्देश्य वाले ऐप्स से सदस्यताओं का आयात किया जा रहा है...</string>

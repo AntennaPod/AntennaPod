@@ -23,7 +23,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.elevation.SurfaceColors;
 
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.playback.service.PlaybackController;
@@ -43,6 +42,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -64,7 +64,6 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.common.PlaybackSpeedIndicatorView;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -80,8 +79,8 @@ public class AudioPlayerFragment extends Fragment implements
     public static final int POS_DESCRIPTION = 1;
     private static final int NUM_CONTENT_FRAGMENTS = 2;
 
-    PlaybackSpeedIndicatorView butPlaybackSpeed;
-    TextView txtvPlaybackSpeed;
+    private ImageButton butPlaybackSpeed;
+    private TextView txtvPlaybackSpeed;
     private ViewPager2 pager;
     private TextView txtvPosition;
     private TextView txtvLength;
@@ -121,8 +120,6 @@ public class AudioPlayerFragment extends Fragment implements
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.playerFragment, externalPlayerFragment, ExternalPlayerFragment.TAG)
                 .commit();
-        root.findViewById(R.id.playerFragment).setBackgroundColor(
-                SurfaceColors.getColorForElevation(getContext(), 8 * getResources().getDisplayMetrics().density));
 
         butPlaybackSpeed = root.findViewById(R.id.butPlaybackSpeed);
         txtvPlaybackSpeed = root.findViewById(R.id.txtvPlaybackSpeed);
@@ -248,7 +245,6 @@ public class AudioPlayerFragment extends Fragment implements
     public void updatePlaybackSpeedButton(SpeedChangedEvent event) {
         String speedStr = new DecimalFormat("0.00").format(event.getNewSpeed());
         txtvPlaybackSpeed.setText(speedStr);
-        butPlaybackSpeed.setSpeed(event.getNewSpeed());
     }
 
     private void loadMediaInfo(boolean includingChapters) {
@@ -362,7 +358,10 @@ public class AudioPlayerFragment extends Fragment implements
         int currentPosition = converter.convert(event.getPosition());
         int duration = converter.convert(event.getDuration());
         int remainingTime = converter.convert(Math.max(event.getDuration() - event.getPosition(), 0));
-        currentChapterIndex = Chapter.getAfterPosition(controller.getMedia().getChapters(), currentPosition);
+        @Nullable Playable media = controller.getMedia();
+        if (media != null) {
+            currentChapterIndex = Chapter.getAfterPosition(media.getChapters(), currentPosition);
+        }
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
         if (currentPosition == Playable.INVALID_TIME || duration == Playable.INVALID_TIME) {
             Log.w(TAG, "Could not react to position observer update because of invalid time");
@@ -469,7 +468,8 @@ public class AudioPlayerFragment extends Fragment implements
         boolean isFeedMedia = media instanceof FeedMedia;
         toolbar.getMenu().findItem(R.id.open_feed_item).setVisible(isFeedMedia);
         if (isFeedMedia) {
-            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(), ((FeedMedia) media).getItem());
+            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(),
+                    Collections.singletonList(((FeedMedia) media).getItem()));
         }
 
         toolbar.getMenu().findItem(R.id.set_sleeptimer_item).setVisible(!controller.sleepTimerActive());

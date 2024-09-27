@@ -6,14 +6,15 @@
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingHorizontal="16dp"
-    android:paddingVertical="16dp">
+    android:paddingVertical="4dp"
+    android:background="?attr/colorSurfaceVariant">
 
     <TextView
         android:id="@+id/headerLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="18sp" />
+        android:layout_margin="4dp"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="16sp" />
 
 </LinearLayout>

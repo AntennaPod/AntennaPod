@@ -107,14 +107,15 @@ public class FeedSettingsFragment extends Fragment {
     }
 
     public static class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
-        private static final CharSequence PREF_EPISODE_FILTER = "episodeFilter";
-        private static final CharSequence PREF_SCREEN = "feedSettingsScreen";
-        private static final CharSequence PREF_AUTHENTICATION = "authentication";
-        private static final CharSequence PREF_AUTO_DELETE = "autoDelete";
-        private static final CharSequence PREF_CATEGORY_AUTO_DOWNLOAD = "autoDownloadCategory";
-        private static final CharSequence PREF_NEW_EPISODES_ACTION = "feedNewEpisodesAction";
+        private static final String PREF_EPISODE_FILTER = "episodeFilter";
+        private static final String PREF_SCREEN = "feedSettingsScreen";
+        private static final String PREF_AUTHENTICATION = "authentication";
+        private static final String PREF_AUTO_DELETE = "autoDelete";
+        private static final String PREF_CATEGORY_AUTO_DOWNLOAD = "autoDownloadCategory";
+        private static final String PREF_NEW_EPISODES_ACTION = "feedNewEpisodesAction";
         private static final String PREF_FEED_PLAYBACK_SPEED = "feedPlaybackSpeed";
         private static final String PREF_AUTO_SKIP = "feedAutoSkip";
+        private static final String PREF_NOTIFICATION = "episodeNotification";
         private static final String PREF_TAGS = "tags";
 
         private Feed feed;
@@ -130,9 +131,12 @@ public class FeedSettingsFragment extends Fragment {
         }
 
         boolean notificationPermissionDenied = false;
-        private final ActivityResultLauncher<String> requestPermissionLauncher =
+        private final ActivityResultLauncher<String> enableNotificationsRequestPermissionLauncher =
                 registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                     if (isGranted) {
+                        SwitchPreferenceCompat pref = findPreference(PREF_NOTIFICATION);
+                        pref.setChecked(true);
+                        pref.callChangeListener(true);
                         return;
                     }
                     if (notificationPermissionDenied) {
@@ -506,16 +510,16 @@ public class FeedSettingsFragment extends Fragment {
         }
 
         private void setupEpisodeNotificationPreference() {
-            SwitchPreferenceCompat pref = findPreference("episodeNotification");
+            SwitchPreferenceCompat pref = findPreference(PREF_NOTIFICATION);
 
             pref.setChecked(feedPreferences.getShowEpisodeNotification());
             pref.setOnPreferenceChangeListener((preference, newValue) -> {
-                if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(getContext(),
+                boolean checked = Boolean.TRUE.equals(newValue);
+                if (checked && Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(getContext(),
                         Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+                    enableNotificationsRequestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
                     return false;
                 }
-                boolean checked = Boolean.TRUE.equals(newValue);
                 feedPreferences.setShowEpisodeNotification(checked);
                 DBWriter.setFeedPreferences(feedPreferences);
                 pref.setChecked(checked);
