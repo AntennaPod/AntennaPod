@@ -14,6 +14,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
  */
 public abstract class CastEnabledActivity extends AppCompatActivity {
     private boolean canCast = false;
+    private boolean hasCastButton = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,11 @@ public abstract class CastEnabledActivity extends AppCompatActivity {
         if (!canCast) {
             return;
         }
-        getMenuInflater().inflate(R.menu.cast_button, menu);
-        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
+
+        if (!hasCastButton) {
+            getMenuInflater().inflate(R.menu.cast_button, menu);
+            CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
+        }
+        hasCastButton = true;
     }
 }
