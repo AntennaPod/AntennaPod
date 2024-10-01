@@ -68,18 +68,18 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/queue_label">
-        <SwitchPreferenceCompat
-                android:defaultValue="true"
-                android:enabled="true"
-                android:key="prefEnqueueDownloaded"
-                android:summary="@string/pref_enqueue_downloaded_summary"
-                android:title="@string/pref_enqueue_downloaded_title" />
         <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
                 android:defaultValue="BACK"
                 android:entries="@array/enqueue_location_options"
                 android:entryValues="@array/enqueue_location_values"
                 android:key="prefEnqueueLocation"
                 android:title="@string/pref_enqueue_location_title"/>
+        <SwitchPreferenceCompat
+                android:defaultValue="true"
+                android:enabled="true"
+                android:key="prefEnqueueDownloaded"
+                android:summary="@string/pref_enqueue_downloaded_summary"
+                android:title="@string/pref_enqueue_downloaded_title" />
         <SwitchPreferenceCompat
                 android:defaultValue="true"
                 android:enabled="true"
