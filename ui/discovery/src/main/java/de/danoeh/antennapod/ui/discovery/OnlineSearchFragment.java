@@ -15,7 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.SearchView;
-import androidx.fragment.app.Fragment;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -26,9 +25,10 @@ import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 import de.danoeh.antennapod.net.discovery.PodcastSearcher;
 import de.danoeh.antennapod.net.discovery.PodcastSearcherRegistry;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
+import de.danoeh.antennapod.ui.common.AnimatedFragment;
 import io.reactivex.disposables.Disposable;
 
-public class OnlineSearchFragment extends Fragment {
+public class OnlineSearchFragment extends AnimatedFragment {
 
     private static final String TAG = "FyydSearchFragment";
     private static final String ARG_SEARCHER = "searcher";

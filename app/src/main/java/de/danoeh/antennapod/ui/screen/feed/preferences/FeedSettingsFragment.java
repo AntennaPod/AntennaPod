@@ -17,7 +17,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.appbar.MaterialToolbar;
 import androidx.preference.ListPreference;
@@ -38,6 +37,7 @@ import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.ui.common.AnimatedFragment;
 import de.danoeh.antennapod.ui.preferences.screen.synchronization.AuthenticationDialog;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
@@ -52,7 +52,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class FeedSettingsFragment extends Fragment {
+public class FeedSettingsFragment extends AnimatedFragment {
     private static final String TAG = "FeedSettingsFragment";
     private static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
 

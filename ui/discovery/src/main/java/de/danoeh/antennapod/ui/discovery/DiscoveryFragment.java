@@ -15,7 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
@@ -26,6 +25,7 @@ import de.danoeh.antennapod.event.DiscoveryDefaultUpdateEvent;
 import de.danoeh.antennapod.net.discovery.ItunesTopListLoader;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
+import de.danoeh.antennapod.ui.common.AnimatedFragment;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -43,7 +43,7 @@ import java.util.Map;
 /**
  * Searches iTunes store for top podcasts and displays results in a list.
  */
-public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
+public class DiscoveryFragment extends AnimatedFragment implements Toolbar.OnMenuItemClickListener {
     public static final String TAG = "DiscoveryFragment";
     private static final int NUM_OF_TOP_PODCASTS = 25;
     private SharedPreferences prefs;

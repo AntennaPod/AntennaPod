@@ -10,6 +10,7 @@ public class AutoDownloadPreferencesFragment extends AnimatedPreferenceFragment 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences_autodownload);
+        checkAutodownloadItemVisibility(UserPreferences.isEnableAutodownload());
 
         findPreference(UserPreferences.PREF_ENABLE_AUTODL).setOnPreferenceChangeListener(
                 (preference, newValue) -> {
@@ -24,12 +25,6 @@ public class AutoDownloadPreferencesFragment extends AnimatedPreferenceFragment 
     public void onStart() {
         super.onStart();
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.pref_automatic_download_title);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        checkAutodownloadItemVisibility(UserPreferences.isEnableAutodownload());
     }
 
     private void checkAutodownloadItemVisibility(boolean autoDownload) {
