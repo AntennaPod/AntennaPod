@@ -17,6 +17,12 @@
         custom:showAsAction="always" />
 
     <item
+        android:id="@+id/action_delete_downloads_played"
+        android:icon="@drawable/ic_delete_auto"
+        android:title="@string/delete_downloads_played"
+        custom:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/refresh_item"
         android:title="@string/refresh_label"
         android:menuCategory="container"

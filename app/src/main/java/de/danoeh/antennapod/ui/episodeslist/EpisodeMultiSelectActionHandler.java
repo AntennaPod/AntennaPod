@@ -20,9 +20,10 @@ public class EpisodeMultiSelectActionHandler {
     private static final String TAG = "EpisodeSelectHandler";
     private final Activity activity;
     private final int actionId;
-    private int totalNumItems = 0;
+    private static int totalNumItems = 0;
 
     public EpisodeMultiSelectActionHandler(Activity activity, int actionId) {
+        totalNumItems = 0;
         this.activity = activity;
         this.actionId = actionId;
     }
@@ -41,7 +42,7 @@ public class EpisodeMultiSelectActionHandler {
         } else if (actionId == R.id.download_item) {
             downloadChecked(items);
         } else if (actionId == R.id.remove_item) {
-            LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(activity, items, () -> deleteChecked(items));
+            LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(activity, items, () -> deleteChecked(items, activity));
         } else {
             Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionId);
         }
@@ -56,13 +57,13 @@ public class EpisodeMultiSelectActionHandler {
             }
         }
         DBWriter.addQueueItem(activity, true, toQueue.toArray());
-        showMessage(R.plurals.added_to_queue_batch_label, toQueue.size());
+        showMessage(R.plurals.added_to_queue_batch_label, toQueue.size(), activity);
     }
 
     private void removeFromQueueChecked(List<FeedItem> items) {
         long[] checkedIds = getSelectedIds(items);
         DBWriter.removeQueueItem(activity, true, checkedIds);
-        showMessage(R.plurals.removed_from_queue_batch_label, checkedIds.length);
+        showMessage(R.plurals.removed_from_queue_batch_label, checkedIds.length, activity);
     }
 
     private void removeFromInboxChecked(List<FeedItem> items) {
@@ -73,19 +74,19 @@ public class EpisodeMultiSelectActionHandler {
             }
         }
         DBWriter.markItemPlayed(FeedItem.UNPLAYED, markUnplayed.toArray());
-        showMessage(R.plurals.removed_from_inbox_batch_label, markUnplayed.size());
+        showMessage(R.plurals.removed_from_inbox_batch_label, markUnplayed.size(), activity);
     }
 
     private void markedCheckedPlayed(List<FeedItem> items) {
         long[] checkedIds = getSelectedIds(items);
         DBWriter.markItemPlayed(FeedItem.PLAYED, checkedIds);
-        showMessage(R.plurals.marked_read_batch_label, checkedIds.length);
+        showMessage(R.plurals.marked_read_batch_label, checkedIds.length, activity);
     }
 
     private void markedCheckedUnplayed(List<FeedItem> items) {
         long[] checkedIds = getSelectedIds(items);
         DBWriter.markItemPlayed(FeedItem.UNPLAYED, checkedIds);
-        showMessage(R.plurals.marked_unread_batch_label, checkedIds.length);
+        showMessage(R.plurals.marked_unread_batch_label, checkedIds.length, activity);
     }
 
     private void downloadChecked(List<FeedItem> items) {
@@ -97,10 +98,10 @@ public class EpisodeMultiSelectActionHandler {
                 downloaded++;
             }
         }
-        showMessage(R.plurals.downloading_batch_label, downloaded);
+        showMessage(R.plurals.downloading_batch_label, downloaded, activity);
     }
 
-    private void deleteChecked(List<FeedItem> items) {
+    public static void deleteChecked(List<FeedItem> items, Activity activity) {
         int countHasMedia = 0;
         for (FeedItem feedItem : items) {
             if (feedItem.hasMedia() && feedItem.getMedia().isDownloaded()) {
@@ -108,10 +109,10 @@ public class EpisodeMultiSelectActionHandler {
                 DBWriter.deleteFeedMediaOfItem(activity, feedItem.getMedia());
             }
         }
-        showMessage(R.plurals.deleted_multi_episode_batch_label, countHasMedia);
+        showMessage(R.plurals.deleted_multi_episode_batch_label, countHasMedia, activity);
     }
 
-    private void showMessage(@PluralsRes int msgId, int numItems) {
+    private static void showMessage(@PluralsRes int msgId, int numItems, Activity activity) {
         if (numItems == 1) {
             return;
         }

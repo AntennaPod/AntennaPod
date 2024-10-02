@@ -44,6 +44,7 @@ import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.ui.view.FloatingSelectMenu;
 import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
+import de.danoeh.antennapod.ui.view.LocalDeleteModal;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -181,6 +182,10 @@ public class CompletedDownloadsFragment extends Fragment
             return true;
         } else if (item.getItemId() == R.id.downloads_sort) {
             new DownloadsSortDialog().show(getChildFragmentManager(), "SortDialog");
+            return true;
+        } else if (item.getItemId() == R.id.action_delete_downloads_played) {
+            LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(getActivity(), adapter.getPlayedItems(),
+                    () -> EpisodeMultiSelectActionHandler.deleteChecked(adapter.getPlayedItems(), getActivity()));
             return true;
         }
         return false;
