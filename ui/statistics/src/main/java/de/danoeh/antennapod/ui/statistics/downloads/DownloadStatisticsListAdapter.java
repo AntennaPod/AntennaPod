@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
     private final Fragment fragment;
+    private int cacheEpisodes;
 
     public DownloadStatisticsListAdapter(Context context, Fragment fragment) {
         super(context);
@@ -29,15 +30,19 @@ public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
 
     @Override
     protected String getHeaderValue() {
-        return Formatter.formatShortFileSize(context, (long) pieChartData.getSum());
+        return Formatter.formatShortFileSize(context, (long) pieChartData.getSum()) +
+        " • " + context.getResources().getQuantityString(R.plurals.num_episodes, cacheEpisodes, cacheEpisodes);
+
     }
 
     @Override
     protected PieChartView.PieChartData generateChartData(List<StatisticsItem> statisticsData) {
         float[] dataValues = new float[statisticsData.size()];
+        cacheEpisodes = 0;
         for (int i = 0; i < statisticsData.size(); i++) {
             StatisticsItem item = statisticsData.get(i);
             dataValues[i] = item.totalDownloadSize;
+            cacheEpisodes += item.episodesDownloadCount;
         }
         return new PieChartView.PieChartData(dataValues);
     }
