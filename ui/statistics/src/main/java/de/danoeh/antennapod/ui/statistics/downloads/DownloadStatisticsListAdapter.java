@@ -30,8 +30,9 @@ public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
 
     @Override
     protected String getHeaderValue() {
-        return Formatter.formatShortFileSize(context, (long) pieChartData.getSum()) +
-        " • " + context.getResources().getQuantityString(R.plurals.num_episodes, cacheEpisodes, cacheEpisodes);
+        return Formatter.formatShortFileSize(context, (long) pieChartData.getSum())
+                + " • "
+                + context.getResources().getQuantityString(R.plurals.num_episodes, cacheEpisodes, cacheEpisodes);
 
     }
 
