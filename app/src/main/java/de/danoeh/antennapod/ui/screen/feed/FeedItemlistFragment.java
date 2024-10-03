@@ -250,7 +250,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             viewBinding.toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(false);
         }
         if (feed.isLocalFeed()) {
-            viewBinding.toolbar.getMenu().findItem(R.id.share_item).setVisible(false);
+            viewBinding.toolbar.getMenu().findItem(R.id.share_feed).setVisible(false);
         }
         if (feed.getState() == Feed.STATE_NOT_SUBSCRIBED) {
             viewBinding.toolbar.getMenu().findItem(R.id.sort_items).setVisible(false);
