@@ -58,7 +58,6 @@ import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
@@ -495,29 +494,13 @@ public class MainActivity extends CastEnabledActivity {
         }
     }
 
-    public void loadChildFragment(Fragment fragment, TransitionEffect transition) {
-        Validate.notNull(fragment);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        if (transition == TransitionEffect.FADE) {
-            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-        } else if (transition == TransitionEffect.SLIDE) {
-            transaction.setCustomAnimations(
-                    R.anim.slide_right_in,
-                    R.anim.slide_left_out,
-                    R.anim.slide_left_in,
-                    R.anim.slide_right_out);
-        }
-
-        transaction
-                .hide(getSupportFragmentManager().findFragmentByTag(MAIN_FRAGMENT_TAG))
-                .add(R.id.main_content_view, fragment, MAIN_FRAGMENT_TAG)
-                .addToBackStack(null)
-                .commit();
-    }
-
     public void loadChildFragment(Fragment fragment) {
-        loadChildFragment(fragment, TransitionEffect.NONE);
+        Validate.notNull(fragment);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_content_view, fragment, MAIN_FRAGMENT_TAG)
+                .addToBackStack(null)
+                .commitAllowingStateLoss();
     }
 
     private void buildBottomNavigationMenu() {

@@ -29,7 +29,6 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.FeedinfoBinding;
-import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
 import de.danoeh.antennapod.ui.common.AnimatedFragment;
@@ -127,7 +126,7 @@ public class FeedInfoFragment extends AnimatedFragment implements MaterialToolba
 
         viewBinding.statisticsButton.setOnClickListener(view -> {
             StatisticsFragment fragment = new StatisticsFragment();
-            ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
+            ((MainActivity) getActivity()).loadChildFragment(fragment);
         });
 
         return viewBinding.getRoot();
@@ -234,13 +233,13 @@ public class FeedInfoFragment extends AnimatedFragment implements MaterialToolba
 
         if (feed.getState() == Feed.STATE_SUBSCRIBED) {
             long feedId = getArguments().getLong(EXTRA_FEED_ID);
-            getParentFragmentManager().beginTransaction().replace(R.id.statisticsFragmentContainer,
+            getChildFragmentManager().beginTransaction().replace(R.id.statisticsFragmentContainer,
                             FeedStatisticsFragment.newInstance(feedId, false), "feed_statistics_fragment")
                     .commitAllowingStateLoss();
 
             viewBinding.statisticsButton.setOnClickListener(view -> {
                 StatisticsFragment fragment = new StatisticsFragment();
-                ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
+                ((MainActivity) getActivity()).loadChildFragment(fragment);
             });
         } else {
             viewBinding.statisticsHeading.setVisibility(View.GONE);

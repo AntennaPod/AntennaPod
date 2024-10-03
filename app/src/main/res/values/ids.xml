@@ -29,4 +29,13 @@
     <item name="bottom_navigation_subscriptions" type="id"/>
     <item name="bottom_navigation_more" type="id"/>
     <item name="bottom_navigation_settings" type="id"/>
+
+    <!-- Home sections -->
+    <item name="home_section_queue" type="id"/>
+    <item name="home_section_inbox" type="id"/>
+    <item name="home_section_surprise" type="id"/>
+    <item name="home_section_subscriptions" type="id"/>
+    <item name="home_section_downloads" type="id"/>
+    <item name="home_section_notifications" type="id"/>
+    <item name="home_section_echo" type="id"/>
 </resources>

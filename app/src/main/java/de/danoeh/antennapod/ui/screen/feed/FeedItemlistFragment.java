@@ -46,7 +46,6 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.CoverLoader;
 import de.danoeh.antennapod.ui.FeedItemFilterDialog;
 import de.danoeh.antennapod.ui.MenuItemUtils;
-import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.cleaner.HtmlToPlainText;
 import de.danoeh.antennapod.ui.common.AnimatedFragment;
@@ -550,7 +549,7 @@ public class FeedItemlistFragment extends AnimatedFragment implements AdapterVie
         }
         FeedInfoFragment fragment = FeedInfoFragment.newInstance(feed);
         if (getActivity() instanceof MainActivity) {
-            ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
+            ((MainActivity) getActivity()).loadChildFragment(fragment);
         } else {
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
