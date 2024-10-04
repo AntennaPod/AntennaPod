@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.ui.statistics.downloads;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.format.Formatter;
 import androidx.fragment.app.Fragment;
