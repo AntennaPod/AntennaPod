@@ -184,8 +184,16 @@ public class CompletedDownloadsFragment extends Fragment
             new DownloadsSortDialog().show(getChildFragmentManager(), "SortDialog");
             return true;
         } else if (item.getItemId() == R.id.action_delete_downloads_played) {
+            EpisodeMultiSelectActionHandler handler = new EpisodeMultiSelectActionHandler(getActivity(), R.id.remove_item);
+            adapter.endSelectMode();
+
             LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(getActivity(), adapter.getPlayedItems(),
-                    () -> EpisodeMultiSelectActionHandler.deleteChecked(adapter.getPlayedItems(), getActivity()));
+                    () -> handler.deleteChecked(
+                            DBReader.getEpisodes(0, Integer.MAX_VALUE, new FeedItemFilter(
+                                            FeedItemFilter.DOWNLOADED,
+                                            FeedItemFilter.INCLUDE_NOT_SUBSCRIBED,
+                                            FeedItemFilter.PLAYED), SortOrder.DATE_OLD_NEW))
+                            );
             return true;
         }
         return false;

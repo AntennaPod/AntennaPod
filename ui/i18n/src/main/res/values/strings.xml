@@ -18,7 +18,7 @@
     <string name="downloads_label">Downloads</string>
     <string name="open_autodownload_settings">Open settings</string>
     <string name="downloads_log_label">Download log</string>
-    <string name="delete_downloads_played">Delete played downloads</string>
+    <string name="delete_downloads_played">Delete played</string>
     <string name="subscriptions_label">Subscriptions</string>
     <string name="subscriptions_list_label">Subscriptions list</string>
     <string name="cancel_download_label">Cancel download</string>

@@ -20,10 +20,9 @@ public class EpisodeMultiSelectActionHandler {
     private static final String TAG = "EpisodeSelectHandler";
     private final Activity activity;
     private final int actionId;
-    private static int totalNumItems = 0;
+    private int totalNumItems = 0;
 
     public EpisodeMultiSelectActionHandler(Activity activity, int actionId) {
-        totalNumItems = 0;
         this.activity = activity;
         this.actionId = actionId;
     }
@@ -42,10 +41,7 @@ public class EpisodeMultiSelectActionHandler {
         } else if (actionId == R.id.download_item) {
             downloadChecked(items);
         } else if (actionId == R.id.remove_item) {
-            LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(
-                    activity,
-                    items,
-                    () -> deleteChecked(items, activity));
+            LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(activity, items, () -> deleteChecked(items));
         } else {
             Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionId);
         }
@@ -60,13 +56,13 @@ public class EpisodeMultiSelectActionHandler {
             }
         }
         DBWriter.addQueueItem(activity, true, toQueue.toArray());
-        showMessage(R.plurals.added_to_queue_batch_label, toQueue.size(), activity);
+        showMessage(R.plurals.added_to_queue_batch_label, toQueue.size());
     }
 
     private void removeFromQueueChecked(List<FeedItem> items) {
         long[] checkedIds = getSelectedIds(items);
         DBWriter.removeQueueItem(activity, true, checkedIds);
-        showMessage(R.plurals.removed_from_queue_batch_label, checkedIds.length, activity);
+        showMessage(R.plurals.removed_from_queue_batch_label, checkedIds.length);
     }
 
     private void removeFromInboxChecked(List<FeedItem> items) {
@@ -77,19 +73,19 @@ public class EpisodeMultiSelectActionHandler {
             }
         }
         DBWriter.markItemPlayed(FeedItem.UNPLAYED, markUnplayed.toArray());
-        showMessage(R.plurals.removed_from_inbox_batch_label, markUnplayed.size(), activity);
+        showMessage(R.plurals.removed_from_inbox_batch_label, markUnplayed.size());
     }
 
     private void markedCheckedPlayed(List<FeedItem> items) {
         long[] checkedIds = getSelectedIds(items);
         DBWriter.markItemPlayed(FeedItem.PLAYED, checkedIds);
-        showMessage(R.plurals.marked_read_batch_label, checkedIds.length, activity);
+        showMessage(R.plurals.marked_read_batch_label, checkedIds.length);
     }
 
     private void markedCheckedUnplayed(List<FeedItem> items) {
         long[] checkedIds = getSelectedIds(items);
         DBWriter.markItemPlayed(FeedItem.UNPLAYED, checkedIds);
-        showMessage(R.plurals.marked_unread_batch_label, checkedIds.length, activity);
+        showMessage(R.plurals.marked_unread_batch_label, checkedIds.length);
     }
 
     private void downloadChecked(List<FeedItem> items) {
@@ -101,10 +97,10 @@ public class EpisodeMultiSelectActionHandler {
                 downloaded++;
             }
         }
-        showMessage(R.plurals.downloading_batch_label, downloaded, activity);
+        showMessage(R.plurals.downloading_batch_label, downloaded);
     }
 
-    public static void deleteChecked(List<FeedItem> items, Activity activity) {
+    public void deleteChecked(List<FeedItem> items) {
         int countHasMedia = 0;
         for (FeedItem feedItem : items) {
             if (feedItem.hasMedia() && feedItem.getMedia().isDownloaded()) {
@@ -112,10 +108,10 @@ public class EpisodeMultiSelectActionHandler {
                 DBWriter.deleteFeedMediaOfItem(activity, feedItem.getMedia());
             }
         }
-        showMessage(R.plurals.deleted_multi_episode_batch_label, countHasMedia, activity);
+        showMessage(R.plurals.deleted_multi_episode_batch_label, countHasMedia);
     }
 
-    private static void showMessage(@PluralsRes int msgId, int numItems, Activity activity) {
+    private void showMessage(@PluralsRes int msgId, int numItems) {
         if (numItems == 1) {
             return;
         }
