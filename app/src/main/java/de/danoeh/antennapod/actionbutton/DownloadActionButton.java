@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -18,10 +17,12 @@ import de.danoeh.antennapod.storage.preferences.UsageStatistics;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 
 public class DownloadActionButton extends ItemActionButton {
+    private static final int TIMEOUT_NETWORK_WARN_SECONDS = 300;
+    private static final int BYPASS_TYPE_NOW = 1;
+    private static final int BYPASS_TYPE_LATER = 2;
 
-    private static boolean bypassCellularNetworkNow = true;
+    private static int bypassCellularNetworkType = 0;
     private static long bypassCellularNetworkWarningTimer = 0;
-    private static int TIMEOUT_NETWORK_WARN_MINS = 300; // timeout in 10 minutes for download over cellular network
 
     public DownloadActionButton(FeedItem item) {
         super(item);
@@ -53,28 +54,25 @@ public class DownloadActionButton extends ItemActionButton {
 
         UsageStatistics.logAction(UsageStatistics.ACTION_DOWNLOAD);
 
-        if ((System.currentTimeMillis() / 1000) - bypassCellularNetworkWarningTimer < TIMEOUT_NETWORK_WARN_MINS) {
-            if (bypassCellularNetworkNow) {
-                Toast.makeText(context, context.getString(R.string.mobile_download_timeout,
-                                TIMEOUT_NETWORK_WARN_MINS / 60),
-                        Toast.LENGTH_LONG).show();
-            }
+        boolean shouldBypass = (System.currentTimeMillis() / 1000
+                - bypassCellularNetworkWarningTimer) < TIMEOUT_NETWORK_WARN_SECONDS;
+        if (shouldBypass && bypassCellularNetworkType == BYPASS_TYPE_NOW) {
+            Toast.makeText(context, context.getString(R.string.mobile_download_notice), Toast.LENGTH_LONG).show();
         }
-        if ((System.currentTimeMillis() / 1000) - bypassCellularNetworkWarningTimer < TIMEOUT_NETWORK_WARN_MINS
-                || NetworkUtils.isEpisodeDownloadAllowed()) {
-            DownloadServiceInterface.get().downloadNow(context, item, bypassCellularNetworkNow);
+        if (NetworkUtils.isEpisodeDownloadAllowed() || shouldBypass) {
+            DownloadServiceInterface.get().downloadNow(context, item, bypassCellularNetworkType == BYPASS_TYPE_NOW);
         } else {
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context)
                     .setTitle(R.string.confirm_mobile_download_dialog_title)
                     .setPositiveButton(R.string.confirm_mobile_download_dialog_download_later,
                             (d, w) -> {
-                                bypassCellularNetworkNow = false;
+                                bypassCellularNetworkType = BYPASS_TYPE_LATER;
                                 bypassCellularNetworkWarningTimer = System.currentTimeMillis() / 1000;
                                 DownloadServiceInterface.get().downloadNow(context, item, false);
                             })
                     .setNeutralButton(R.string.confirm_mobile_download_dialog_allow_this_time,
                             (d, w) -> {
-                                bypassCellularNetworkNow = true;
+                                bypassCellularNetworkType = BYPASS_TYPE_NOW;
                                 bypassCellularNetworkWarningTimer = System.currentTimeMillis() / 1000;
                                 DownloadServiceInterface.get().downloadNow(context, item, true);
                             })
