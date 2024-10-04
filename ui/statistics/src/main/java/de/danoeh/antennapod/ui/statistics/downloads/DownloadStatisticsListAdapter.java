@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.statistics.downloads;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.format.Formatter;
 import androidx.fragment.app.Fragment;
@@ -25,14 +26,15 @@ public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
 
     @Override
     protected String getHeaderCaption() {
-        return context.getString(R.string.total_size_downloaded_podcasts);
+        return context.getResources().getQuantityString(
+                R.plurals.total_size_downloaded_podcasts,
+                cacheEpisodes,
+                cacheEpisodes);
     }
 
     @Override
     protected String getHeaderValue() {
-        return Formatter.formatShortFileSize(context, (long) pieChartData.getSum())
-                + " • "
-                + context.getResources().getQuantityString(R.plurals.num_episodes, cacheEpisodes, cacheEpisodes);
+        return Formatter.formatShortFileSize(context, (long) pieChartData.getSum());
 
     }
 

@@ -77,7 +77,10 @@
     <string name="section_shown">Shown</string>
 
     <!-- Download Statistics fragment -->
-    <string name="total_size_downloaded_podcasts">Total size of episodes on the device</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">Total size of %d episode on the device</item>
+        <item quantity="other">Total size of %d episodes on the device</item>
+    </plurals>
 
     <!-- Main activity -->
     <string name="drawer_open">Open menu</string>
