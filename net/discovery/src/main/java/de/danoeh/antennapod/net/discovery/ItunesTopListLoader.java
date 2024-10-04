@@ -60,7 +60,7 @@ public class ItunesTopListLoader {
         for (Feed subscribedFeed : subscribedFeeds) {
             if (subscribedFeed.getTitle() != null && subscribedFeed.getAuthor() != null
                     && subscribedFeed.getState() == Feed.STATE_SUBSCRIBED) {
-                subscribedPodcastsSet.add(subscribedFeed.getTitle().trim() + " - " + subscribedFeed.getAuthor().trim());
+                subscribedPodcastsSet.add(subscribedFeed.getTitle().trim());
             }
         }
         List<PodcastSearchResult> suggestedNotSubscribed = new ArrayList<>();

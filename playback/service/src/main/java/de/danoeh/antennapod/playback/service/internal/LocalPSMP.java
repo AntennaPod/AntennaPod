@@ -32,6 +32,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -580,6 +581,9 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     }
 
     public List<String> getAudioTracks() {
+        if (mediaPlayer == null) {
+            return Collections.emptyList();
+        }
         return mediaPlayer.getAudioTracks();
     }
 
@@ -588,6 +592,9 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     }
 
     public int getSelectedAudioTrack() {
+        if (mediaPlayer == null) {
+            return -1;
+        }
         return mediaPlayer.getSelectedAudioTrack();
     }
 

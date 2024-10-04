@@ -128,14 +128,6 @@
   <string name="episode_cleanup_except_favorite_removal">När ej favorit</string>
   <string name="episode_cleanup_queue_removal">Om inte köad</string>
   <string name="episode_cleanup_after_listening">Efter färdigspelad</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 timma efter klar</item>
-    <item quantity="other">%d timmar efter klar</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 dag efter färdigspelad</item>
-    <item quantity="other">%d dagar efter färdigspelad</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d vald</item>
     <item quantity="other">%1$d/%2$d valda</item>
@@ -202,10 +194,6 @@
   <string name="stream_label">Strömma</string>
   <string name="delete_label">Ta bort</string>
   <string name="delete_episode_label">Radera avsnitt</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 nedladdad episod borttagen.</item>
-    <item quantity="other">%d nedladdade avsnitt borttagna.</item>
-  </plurals>
   <string name="remove_inbox_label">Ta bort från inkorg</string>
   <string name="removed_inbox_label">Tog bort från inkorg</string>
   <string name="mark_read_label">Markera som spelad</string>
@@ -581,22 +569,6 @@
   <string name="time_seconds">sekunder</string>
   <string name="time_minutes">minuter</string>
   <string name="time_hours">timmar</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 sekund</item>
-    <item quantity="other">%d sekunder</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 minut</item>
-    <item quantity="other">%d minuter</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 timme</item>
-    <item quantity="other">%d timmar</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">1 dag</item>
-    <item quantity="other">%d dagar</item>
-  </plurals>
   <string name="auto_enable_label">Aktivera insomningstimern automatiskt när du trycker på play</string>
   <string name="auto_enable_label_with_times">Aktivera sömntimern automatiskt när du startar uppspelning mellan %1$soch %2$s</string>
   <string name="auto_enable_change_times">Ändra tidsspann</string>

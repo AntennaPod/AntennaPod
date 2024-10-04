@@ -128,14 +128,6 @@
   <string name="episode_cleanup_except_favorite_removal">Gogoko ez denean</string>
   <string name="episode_cleanup_queue_removal">Ilaran ez dagoenean</string>
   <string name="episode_cleanup_after_listening">Bukatu ondoren</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 ordu bukatu ondoren</item>
-    <item quantity="other">%d ordu bukatu ondoren</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 egun bukatu ondoren</item>
-    <item quantity="other">%d egun bukatu ondoren</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d hautatuta</item>
     <item quantity="other">%1$d/%2$d hautatuta</item>
@@ -201,10 +193,6 @@
   <string name="stream_label">Entzun zuzenean</string>
   <string name="delete_label">Ezabatu</string>
   <string name="delete_episode_label">Ezabatu saioa</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">Deskargatutako saio 1 ezabatu da</item>
-    <item quantity="other">Deskargatutako %d saio ezabatu dira</item>
-  </plurals>
   <string name="remove_inbox_label">Kendu sarrerako ontzitik</string>
   <string name="removed_inbox_label">Sarrerako ontzitik kenduta</string>
   <string name="mark_read_label">Markatu erreproduzitutzat</string>
@@ -562,22 +550,6 @@
   <string name="time_seconds">segundo</string>
   <string name="time_minutes">minutu</string>
   <string name="time_hours">ordu</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">Segundo 1</item>
-    <item quantity="other">%d segundo</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">Minutu 1</item>
-    <item quantity="other">%d minutu</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">Ordu 1</item>
-    <item quantity="other">%d ordu</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">Egun 1</item>
-    <item quantity="other">%d egun</item>
-  </plurals>
   <string name="auto_enable_label">Aktibatu tenporizadorea automatikoki erreproduzitu sakatzean</string>
   <string name="auto_enable_label_with_times">Aktibatu tenporizadorea automatikoki erreproduzitu %1$s eta %2$s artean sakatzean</string>
   <string name="auto_enable_change_times">Aldatu denbora tartea</string>

@@ -41,6 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 app:cardCornerRadius="28dp"
                 app:cardElevation="0dp">
 
@@ -49,7 +50,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="?attr/colorPrimaryContainer">
+                    android:background="?attr/colorSurfaceContainer">
 
                     <ImageView
                         android:id="@+id/searchButton"
@@ -86,17 +87,8 @@
                 android:id="@+id/quickFeedDiscovery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="16dp"
                 android:name="de.danoeh.antennapod.ui.discovery.QuickFeedDiscoveryFragment" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/advanced"
-                android:textSize="18sp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
-                android:accessibilityHeading="true"
-                android:textColor="?android:attr/textColorPrimary" />
 
             <TextView
                 android:id="@+id/addViaUrlButton"

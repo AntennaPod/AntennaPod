@@ -129,13 +129,13 @@
   <string name="episode_cleanup_queue_removal">כאשר לא בתור</string>
   <string name="episode_cleanup_after_listening">אחרי סיום</string>
   <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">שעה לאחר הסיום</item>
-    <item quantity="two">%d שעות לאחר הסיום</item>
+    <item quantity="one">שעה (%d) לאחר הסיום</item>
+    <item quantity="two">שעתיים (%d) לאחר הסיום</item>
     <item quantity="other">%d שעות לאחר הסיום</item>
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">יום לאחר סיום</item>
-    <item quantity="two">יומיים לאחר סיום </item>
+    <item quantity="one">יום (%d) לאחר סיום</item>
+    <item quantity="two">יומיים (%d) לאחר סיום </item>
     <item quantity="other">%d ימים לאחר סיום </item>
   </plurals>
   <plurals name="num_selected_label">
@@ -211,9 +211,9 @@
   <string name="delete_label">מחיקה</string>
   <string name="delete_episode_label">מחיקת פרק</string>
   <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">פרק שהורד נמחק.</item>
-    <item quantity="two">שני פרקים שהורדו נמחקו.</item>
-    <item quantity="other">%d פרקים שהורדו נמחקו.</item>
+    <item quantity="one">פרק (%d) שירד נמחק.</item>
+    <item quantity="two">%d פרקים שירדו נמחקו.</item>
+    <item quantity="other">%d פרקים שירדו נמחקו.</item>
   </plurals>
   <string name="remove_inbox_label">הסרה מהדואר הנכנס</string>
   <string name="removed_inbox_label">הוסר מהדואר הנכנס</string>
@@ -597,22 +597,22 @@
   <string name="time_minutes">דקות</string>
   <string name="time_hours">שעות</string>
   <plurals name="time_seconds_quantified">
-    <item quantity="one">שנייה אחת</item>
+    <item quantity="one">שנייה (%d)</item>
     <item quantity="two">%d שניות</item>
     <item quantity="other">%d שניות</item>
   </plurals>
   <plurals name="time_minutes_quantified">
-    <item quantity="one">דקה אחת</item>
+    <item quantity="one">דקה (%d)</item>
     <item quantity="two">%d דקות</item>
     <item quantity="other">%d דקות</item>
   </plurals>
   <plurals name="time_hours_quantified">
-    <item quantity="one">שעה</item>
-    <item quantity="two">שעתיים</item>
+    <item quantity="one">שעה (%d)</item>
+    <item quantity="two">שעתיים (%d)</item>
     <item quantity="other">%d שעות</item>
   </plurals>
   <plurals name="time_days_quantified">
-    <item quantity="one">יום</item>
+    <item quantity="one">יום (%d)</item>
     <item quantity="two">יומיים (%d)</item>
     <item quantity="other">%d ימים</item>
   </plurals>

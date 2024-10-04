@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import org.greenrobot.eventbus.EventBus;
@@ -31,6 +32,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -143,10 +145,10 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
             return;
         }
         if (item.hasMedia()) {
-            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(), item);
+            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(), Collections.singletonList(item));
         } else {
             // these are already available via button1 and button2
-            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(), item,
+            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(), Collections.singletonList(item),
                     R.id.mark_read_item, R.id.visit_website_item);
         }
     }
@@ -169,6 +171,11 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
                 return;
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(UnreadItemsUpdateEvent event) {
+        refreshToolbarState();
     }
 
     private void openPodcast() {

@@ -6,8 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:clipToPadding="false"
-    android:padding="4dp">
+    android:clipToPadding="false">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card"
@@ -15,8 +14,10 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
+        android:layout_margin="4dp"
+        app:cardBackgroundColor="?attr/colorSurfaceContainer"
         app:cardCornerRadius="12dp"
-        app:cardElevation="0dp">
+        app:cardElevation="1dp">
 
         <LinearLayout
             android:layout_width="match_parent"

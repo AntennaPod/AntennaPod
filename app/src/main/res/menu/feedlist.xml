@@ -37,7 +37,7 @@
     </item>
 
     <item
-        android:id="@+id/share_item"
+        android:id="@+id/share_feed"
         android:menuCategory="container"
         custom:showAsAction="never"
         android:title="@string/share_label" />

@@ -129,12 +129,12 @@
   <string name="episode_cleanup_queue_removal">Wenn nicht in der Warteschlange</string>
   <string name="episode_cleanup_after_listening">Wenn fertig abgespielt</string>
   <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 Stunde nachdem fertig abgespielt</item>
-    <item quantity="other">%d Stunden nachdem fertig abgespielt</item>
+    <item quantity="one">%d Stunde nachdem abgespielt</item>
+    <item quantity="other">%d Stunden nachdem abgespielt</item>
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 Tag nachdem fertig abgespielt</item>
-    <item quantity="other">%d Tage nachdem fertig abgespielt</item>
+    <item quantity="one">%d Tag nachdem abgespielt</item>
+    <item quantity="other">%d Tage nachdem abgespielt</item>
   </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d ausgewählt</item>
@@ -184,7 +184,7 @@
   <string name="updates_disabled_label">Updates deaktiviert</string>
   <plurals name="updated_feeds_batch_label">
     <item quantity="one">%d Abonnement aktualisiert.</item>
-    <item quantity="other">%d Abonnemnts aktualisiert.</item>
+    <item quantity="other">%d Abonnements aktualisiert.</item>
   </plurals>
   <string name="edit_tags">Tags bearbeiten</string>
   <string name="add_tag">Tag hinzufügen</string>
@@ -203,7 +203,7 @@
   <string name="delete_label">Löschen</string>
   <string name="delete_episode_label">Episode löschen</string>
   <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 heruntergeladene Episode gelöscht.</item>
+    <item quantity="one">%d heruntergeladene Episode gelöscht.</item>
     <item quantity="other">%d heruntergeladene Episoden gelöscht.</item>
   </plurals>
   <string name="remove_inbox_label">Aus dem Posteingang entfernen</string>
@@ -355,7 +355,7 @@
   <string name="automation">Automatisierung</string>
   <string name="download_pref_details">Details</string>
   <string name="import_export_pref">Import/Export</string>
-  <string name="import_export_search_keywords">backup, Sicherung, Datensicherung, Wiederherstellung</string>
+  <string name="import_export_search_keywords">Backup, Sicherung, Datensicherung, Wiederherstellung</string>
   <string name="theming">Thema</string>
   <string name="external_elements">Externe Elemente</string>
   <string name="interruptions">Unterbrechungen</string>
@@ -474,7 +474,7 @@
   <string name="enqueue_location_after_current">Hinter der aktuell abgespielten Episode</string>
   <string name="enqueue_location_random">Zufällig</string>
   <string name="pref_smart_mark_as_played_disabled">Deaktiviert</string>
-  <string name="documentation_support">Dokumentation + Support</string>
+  <string name="documentation_support">Dokumentation &amp; Support</string>
   <string name="visit_user_forum">Benutzerforum</string>
   <string name="bug_report_title">Fehler melden</string>
   <string name="open_bug_tracker">Bug-Tracker öffnen</string>
@@ -582,19 +582,19 @@
   <string name="time_minutes">Minuten</string>
   <string name="time_hours">Stunden</string>
   <plurals name="time_seconds_quantified">
-    <item quantity="one">1 Sekunde</item>
+    <item quantity="one">%d Sekunde</item>
     <item quantity="other">%d Sekunden</item>
   </plurals>
   <plurals name="time_minutes_quantified">
-    <item quantity="one">1 Minute</item>
+    <item quantity="one">%d Minute</item>
     <item quantity="other">%d Minuten</item>
   </plurals>
   <plurals name="time_hours_quantified">
-    <item quantity="one">1 Stunde</item>
+    <item quantity="one">%d Stunde</item>
     <item quantity="other">%d Stunden</item>
   </plurals>
   <plurals name="time_days_quantified">
-    <item quantity="one">1 Tag</item>
+    <item quantity="one">%d Tag</item>
     <item quantity="other">%d Tage</item>
   </plurals>
   <string name="auto_enable_label">Schlummerfunktion automatisch aktivieren, wenn auf Play gedrückt wird</string>
@@ -682,7 +682,7 @@
   <string name="authentication_descr">Ändere den Benutzernamen und das Passwort für diesen Podcast und dessen Episoden.</string>
   <string name="feed_tags_label">Tags</string>
   <string name="feed_tags_summary">Ändere die Schlagworte (Tags) dieses Podcasts, um deine Abonnements zu organisieren</string>
-  <string name="feed_folders_include_root">Diesen Podcast in der Haupliste anzeigen</string>
+  <string name="feed_folders_include_root">Diesen Podcast in der Hauptliste anzeigen</string>
   <string name="multi_feed_common_tags_info">Es werden nur gemeinsame Tags aus allen ausgewählten Abonnements angezeigt. Andere Tags bleiben davon unberührt.</string>
   <string name="auto_download_settings_label">Einstellungen für Automatischen Download</string>
   <string name="episode_filters_label">Episoden-Filter</string>

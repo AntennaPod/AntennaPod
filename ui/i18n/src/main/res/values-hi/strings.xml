@@ -128,14 +128,6 @@
   <string name="episode_cleanup_except_favorite_removal">जब मनपसंद ना हो</string>
   <string name="episode_cleanup_queue_removal">जब कतार में ना हो</string>
   <string name="episode_cleanup_after_listening">खत्म होने के बाद</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">खत्म होने के 1 घंटे बाद</item>
-    <item quantity="other">खत्म होने के %d घंटे बाद</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">खत्म होने के 1 दिन बाद</item>
-    <item quantity="other">खत्म होने के %d दिन बाद</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d चुना गया</item>
     <item quantity="other">%1$d/%2$d चुना गया</item>
@@ -200,10 +192,6 @@
   <string name="stream_label">स्ट्रीम करें</string>
   <string name="delete_label">हटाएं</string>
   <string name="delete_episode_label">एपिसोड हटाएं</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 डाउनलोड किया गया एपिसोड हटाया गया।</item>
-    <item quantity="other">%d डाउनलोड किए गए एपिसोड हटाए गए।</item>
-  </plurals>
   <string name="remove_inbox_label">इनबॉक्स से हटाएं</string>
   <string name="removed_inbox_label">इनबॉक्स से हटाया गया</string>
   <string name="mark_read_label">सुना हुआ मार्क करें</string>
@@ -554,22 +542,6 @@
   <string name="time_seconds">सेकंड</string>
   <string name="time_minutes">मिनट</string>
   <string name="time_hours">घंटे</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 सेकंड</item>
-    <item quantity="other">%d सेकंड</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 मिनट</item>
-    <item quantity="other">%d मिनट</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 घंटा</item>
-    <item quantity="other">%d घंटे</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">1 दिन</item>
-    <item quantity="other">%d दिन</item>
-  </plurals>
   <string name="auto_enable_label">प्ले बटन दबाने पर स्लीप टाइमर स्वचालित रूप से सक्रिय करें</string>
   <string name="auto_enable_change_times">समय सीमा बदलें</string>
   <string name="sleep_timer_enabled_label">नींद घड़ी चालू</string>

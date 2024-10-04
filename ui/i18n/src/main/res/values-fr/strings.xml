@@ -129,12 +129,12 @@
   <string name="episode_cleanup_queue_removal">Quand pas dans la liste de lecture</string>
   <string name="episode_cleanup_after_listening">Après avoir été écouté</string>
   <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 heure après avoir été écouté</item>
+    <item quantity="one">%d heure après avoir été écouté</item>
     <item quantity="many">%d heures après avoir été écouté</item>
     <item quantity="other">%d heures après avoir été écouté</item>
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 jour après avoir été écouté</item>
+    <item quantity="one">%d jour après avoir été écouté</item>
     <item quantity="many">%d jours après avoir été écouté</item>
     <item quantity="other">%d jours après avoir été écouté</item>
   </plurals>
@@ -211,7 +211,7 @@
   <string name="delete_label">Supprimer</string>
   <string name="delete_episode_label">Suppression de l\'épisode</string>
   <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1  épisode téléchargé supprimé.</item>
+    <item quantity="one">%d épisode téléchargé supprimé.</item>
     <item quantity="many">%d épisodes téléchargés supprimés.</item>
     <item quantity="other">%d épisodes téléchargés supprimés.</item>
   </plurals>
@@ -253,7 +253,7 @@
     <item quantity="other">%d épisodes supprimés de la boîte de réception.</item>
   </plurals>
   <string name="add_to_favorite_label">Ajouter aux favoris</string>
-  <string name="show_transcript">Montrer la transcription</string>
+  <string name="show_transcript">Transcription</string>
   <string name="transcript">Transcription</string>
   <string name="transcript_follow">Suivre l\'audio</string>
   <string name="no_transcript_label">Aucune transcription</string>
@@ -469,7 +469,7 @@
   <string name="pref_feed_skip_intro">Sauter au début</string>
   <string name="pref_feed_skip_ending_toast">%d dernières secondes sautées</string>
   <string name="pref_feed_skip_intro_toast">%d premières secondes sautées</string>
-  <string name="pref_playback_time_respects_speed_title">Ajuster les informations en fonction la vitesse de lecture</string>
+  <string name="pref_playback_time_respects_speed_title">Tenir compte de la vitesse de lecture</string>
   <string name="pref_playback_time_respects_speed_sum">La position et la durée affichée tiendront compte de la vitesse de lecture</string>
   <string name="pref_fast_forward">Durée du saut avant</string>
   <string name="pref_fast_forward_sum">Nombre de secondes à sauter quand le bouton \"saut avant\" est pressé</string>
@@ -597,22 +597,22 @@
   <string name="time_minutes">minutes</string>
   <string name="time_hours">heures</string>
   <plurals name="time_seconds_quantified">
-    <item quantity="one">1 seconde</item>
+    <item quantity="one">%d seconde</item>
     <item quantity="many">%d secondes</item>
     <item quantity="other">%d secondes</item>
   </plurals>
   <plurals name="time_minutes_quantified">
-    <item quantity="one">1 minute</item>
+    <item quantity="one">%d minute</item>
     <item quantity="many">%d minutes</item>
     <item quantity="other">%d minutes</item>
   </plurals>
   <plurals name="time_hours_quantified">
-    <item quantity="one">1 heure</item>
+    <item quantity="one">%d heure</item>
     <item quantity="many">%d heures</item>
     <item quantity="other">%d heures</item>
   </plurals>
   <plurals name="time_days_quantified">
-    <item quantity="one">1 jour</item>
+    <item quantity="one">%d jour</item>
     <item quantity="many">%d jours</item>
     <item quantity="other">%d jours</item>
   </plurals>
@@ -672,7 +672,7 @@
   <string name="rating_later">Plus tard</string>
   <!--Online feed view-->
   <string name="subscribe_label">S\'abonner</string>
-  <string name="preview_episodes">Prélecture des épisodes</string>
+  <string name="preview_episodes">Aperçu des épisodes</string>
   <string name="state_deleted_not_subscribed">Vous n\'êtes pas encore abonné à ce podcast. Faites-le pour accéder plus facilement à son contenu et ne pas perdre l\'historique des épisodes lus.</string>
   <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">Retour</string>

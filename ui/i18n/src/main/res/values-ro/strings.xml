@@ -128,16 +128,6 @@
   <string name="episode_cleanup_except_favorite_removal">Cănd nu este preferată</string>
   <string name="episode_cleanup_queue_removal">Când nu e în coadă</string>
   <string name="episode_cleanup_after_listening">După terminare</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 oră după terminare</item>
-    <item quantity="few">%dore după terminare</item>
-    <item quantity="other">%d ore după terminare</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">o zi după terminare</item>
-    <item quantity="few">%d zile după terminare</item>
-    <item quantity="other">%d zile după terminare</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$dselectat</item>
     <item quantity="few">%1$d/%2$dselectate</item>
@@ -210,11 +200,6 @@
   <string name="stream_label">Stream</string>
   <string name="delete_label">Șterge</string>
   <string name="delete_episode_label">Șterge episod</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 episod descărcat a fost șters.</item>
-    <item quantity="few">%d episoade descărcare au fost șterse.</item>
-    <item quantity="other">%d de episoade descărcare au fost șterse.</item>
-  </plurals>
   <string name="remove_inbox_label">Elimină din inbox</string>
   <string name="removed_inbox_label">Eliminat din inbox</string>
   <string name="mark_read_label">Marchează ca redat</string>
@@ -596,26 +581,6 @@
   <string name="time_seconds">secunde</string>
   <string name="time_minutes">minute</string>
   <string name="time_hours">ore</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 secundă</item>
-    <item quantity="few">%d secunde</item>
-    <item quantity="other">%d de secunde</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 minut</item>
-    <item quantity="few">%d minute</item>
-    <item quantity="other">%d de minute</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 oră</item>
-    <item quantity="few">%d ore</item>
-    <item quantity="other">%d de ore</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">1 zi</item>
-    <item quantity="few">%d zile</item>
-    <item quantity="other">%d de zile</item>
-  </plurals>
   <string name="auto_enable_label">Activează automat cronometrul de somn în momenul redării</string>
   <string name="auto_enable_label_with_times">Activează automat cronometrul de somn după apăsarea butonului play între %1$s și %2$s</string>
   <string name="auto_enable_change_times">Schimbă intervalul de timp</string>

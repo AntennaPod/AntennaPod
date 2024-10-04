@@ -234,7 +234,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             if (subscribedFeed.getState() == Feed.STATE_SUBSCRIBED) {
                 openFeed(subscribedFeed.getId());
             } else {
-                showFeedFragment(subscribedFeed.getId(), false);
+                showFeedFragment(subscribedFeed.getId());
             }
         }, error -> Log.e(TAG, Log.getStackTraceString(error)), () -> startFeedDownload(url));
         return null;
@@ -279,8 +279,12 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
     private void parseFeed(String destination) {
         Log.d(TAG, "Parsing feed");
-        parser = Observable.fromCallable(() -> {
+        parser = Maybe.<Long>create(emitter -> {
             FeedHandlerResult handlerResult = doParseFeed(destination);
+            if (handlerResult == null) { // Started another attempt with another url
+                emitter.onComplete();
+                return;
+            }
             Feed feed = handlerResult.feed;
             feed.setState(Feed.STATE_NOT_SUBSCRIBED);
             feed.setLastRefreshAttempt(System.currentTimeMillis());
@@ -288,11 +292,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             Feed feedFromDb = DBReader.getFeed(feed.getId(), false, 0, Integer.MAX_VALUE);
             feedFromDb.getPreferences().setKeepUpdated(false);
             DBWriter.setFeedPreferences(feedFromDb.getPreferences());
-            return feed.getId();
+            emitter.onSuccess(feed.getId());
         })
         .subscribeOn(Schedulers.computation())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(id -> showFeedFragment(id, true), error -> {
+        .subscribe(this::showFeedFragment, error -> {
             error.printStackTrace();
             showErrorDialog(error.getMessage(), "");
         });
@@ -333,13 +337,13 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
     }
 
-    private void showFeedFragment(long id, boolean isFirstTime) {
+    private void showFeedFragment(long id) {
         if (isFeedFoundBySearch) {
             Toast.makeText(this, R.string.no_feed_url_podcast_found_by_search, Toast.LENGTH_LONG).show();
         }
 
         viewBinding.progressBar.setVisibility(View.GONE);
-        FeedItemlistFragment fragment = FeedItemlistFragment.newInstance(id, isFirstTime);
+        FeedItemlistFragment fragment = FeedItemlistFragment.newInstance(id);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragmentContainer, fragment, FeedItemlistFragment.TAG)

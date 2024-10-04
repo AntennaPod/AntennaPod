@@ -41,6 +41,7 @@ import de.danoeh.antennapod.model.feed.FeedFunding;
 import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 import de.danoeh.antennapod.ui.screen.feed.preferences.EditUrlSettingsDialog;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
+import de.danoeh.antennapod.ui.statistics.feed.FeedStatisticsDialogFragment;
 import de.danoeh.antennapod.ui.statistics.feed.FeedStatisticsFragment;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
@@ -84,9 +85,11 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 android.content.ClipboardManager cm = (android.content.ClipboardManager) getContext()
                         .getSystemService(Context.CLIPBOARD_SERVICE);
                 cm.setPrimaryClip(clipData);
-                if (Build.VERSION.SDK_INT <= 32) {
+                if (Build.VERSION.SDK_INT <= 32 && getActivity() instanceof MainActivity) {
                     ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.copied_to_clipboard,
                             Snackbar.LENGTH_SHORT);
+                } else if (Build.VERSION.SDK_INT <= 32) {
+                    Snackbar.make(getView(), R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
                 }
             }
         }
@@ -118,6 +121,9 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         getParentFragmentManager().beginTransaction().replace(R.id.statisticsFragmentContainer,
                         FeedStatisticsFragment.newInstance(feedId, false), "feed_statistics_fragment")
                 .commitAllowingStateLoss();
+        viewBinding.statisticsFragmentContainer.setOnClickListener(v ->
+                FeedStatisticsDialogFragment.newInstance(feedId, feed.getTitle())
+                        .show(getChildFragmentManager().beginTransaction(), "FeedStatistics"));
 
         viewBinding.statisticsButton.setOnClickListener(view -> {
             StatisticsFragment fragment = new StatisticsFragment();
@@ -237,12 +243,10 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
             });
         } else {
-            viewBinding.statisticsButton.setVisibility(View.GONE);
+            viewBinding.statisticsHeading.setVisibility(View.GONE);
             viewBinding.statisticsFragmentContainer.setVisibility(View.GONE);
-            viewBinding.statisticsHeadingLabel.setVisibility(View.GONE);
             viewBinding.supportHeadingLabel.setVisibility(View.GONE);
             viewBinding.supportUrl.setVisibility(View.GONE);
-            viewBinding.descriptionHeadingLabel.setVisibility(View.GONE);
         }
 
         refreshToolbarState();

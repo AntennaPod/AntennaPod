@@ -128,14 +128,6 @@
   <string name="episode_cleanup_except_favorite_removal">Cando no est in is preferidos</string>
   <string name="episode_cleanup_queue_removal">Cando no est in sa lista</string>
   <string name="episode_cleanup_after_listening">Comente agabbat</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">A un\'ora de èssere agabbadu</item>
-    <item quantity="other">%d oras a pustis chi agabbet</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 die a pustis de èssere agabbadu</item>
-    <item quantity="other">%d dies a pustis chi agabbet</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d seletzionados</item>
     <item quantity="other">%1$d/%2$d seletzionados</item>
@@ -202,10 +194,6 @@
   <string name="stream_label">Riprodui sena iscarrigare</string>
   <string name="delete_label">Cantzella</string>
   <string name="delete_episode_label">Cantzella s\'episòdiu</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 episòdiu iscarrigadu cantzelladu.</item>
-    <item quantity="other">%d episòdios iscarrigados cantzellados.</item>
-  </plurals>
   <string name="remove_inbox_label">Boga dae sa cartella de intrada</string>
   <string name="removed_inbox_label">Bogadu dae sa cartella de intrada</string>
   <string name="mark_read_label">Sinnala comente riproduidu</string>
@@ -581,22 +569,6 @@
   <string name="time_seconds">segundos</string>
   <string name="time_minutes">minutos</string>
   <string name="time_hours">oras</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 segundu</item>
-    <item quantity="other">%d segundos</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 minutu</item>
-    <item quantity="other">%d minutos</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 ora</item>
-    <item quantity="other">%d oras</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">1 die</item>
-    <item quantity="other">%d dies</item>
-  </plurals>
   <string name="auto_enable_label">Ativatzione automàtica de su temporizadore</string>
   <string name="auto_enable_label_with_times">Ativa in automàticu su temporizadore cando si premet su butone de riprodutzione intre custas oras: %1$s - %2$s</string>
   <string name="auto_enable_change_times">Modìfica su perìodu temporale</string>

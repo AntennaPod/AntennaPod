@@ -128,14 +128,6 @@
   <string name="episode_cleanup_except_favorite_removal">Indien niet favoriet</string>
   <string name="episode_cleanup_queue_removal">Indien niet in wachtrij</string>
   <string name="episode_cleanup_after_listening">Als aflevering is beluisterd</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 uur na afronden</item>
-    <item quantity="other">%d uur na beluisteren</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 dag na afronden</item>
-    <item quantity="other">%d dagen na beluisteren</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d geselecteerd</item>
     <item quantity="other">%1$d/%2$d geselecteerd</item>
@@ -201,10 +193,6 @@
   <string name="stream_label">Streamen</string>
   <string name="delete_label">Verwijderen</string>
   <string name="delete_episode_label">Aflevering verwijderen</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 gedownloade aflevering verwijderd.</item>
-    <item quantity="other">%d gedownloade afleveringen verwijderd.</item>
-  </plurals>
   <string name="remove_inbox_label">Verwijderen uit Postvak IN</string>
   <string name="removed_inbox_label">Verwijderd uit Postvak IN</string>
   <string name="mark_read_label">Als afgespeeld markeren</string>
@@ -562,22 +550,6 @@
   <string name="time_seconds">seconden</string>
   <string name="time_minutes">minuten</string>
   <string name="time_hours">uur</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 seconde</item>
-    <item quantity="other">%d seconden</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 minuut</item>
-    <item quantity="other">%d minuten</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 uur</item>
-    <item quantity="other">%d uur</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">1 dag</item>
-    <item quantity="other">%d dagen</item>
-  </plurals>
   <string name="auto_enable_label">Automatisch de slaaptimer activeren door op afspelen te klikken</string>
   <string name="auto_enable_label_with_times">Slaaptimer automatisch activeren als afspelen begint tussen %1$s en %2$s</string>
   <string name="auto_enable_change_times">Verander tijdsduur</string>

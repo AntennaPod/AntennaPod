@@ -41,6 +41,7 @@ import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
+import de.danoeh.antennapod.ui.episodeslist.FeedItemMenuHandler;
 import de.danoeh.antennapod.ui.screen.chapter.ChaptersFragment;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.playback.service.PlaybackService;
@@ -49,7 +50,7 @@ import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.common.IntentUtils;
-import de.danoeh.antennapod.ui.share.ShareUtils;
+import de.danoeh.antennapod.ui.screen.playback.TranscriptDialogFragment;
 import de.danoeh.antennapod.databinding.VideoplayerActivityBinding;
 import de.danoeh.antennapod.ui.share.ShareDialog;
 import de.danoeh.antennapod.ui.screen.feed.preferences.SkipPreferenceDialog;
@@ -72,6 +73,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.Collections;
 
 /**
  * Activity for playing video files.
@@ -547,26 +550,13 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         boolean isFeedMedia = (media instanceof FeedMedia);
 
         menu.findItem(R.id.open_feed_item).setVisible(isFeedMedia); // FeedMedia implies it belongs to a Feed
-
-        boolean hasWebsiteLink = getWebsiteLinkWithFallback(media) != null;
-        menu.findItem(R.id.visit_website_item).setVisible(hasWebsiteLink);
-
-        boolean isItemAndHasLink = isFeedMedia && ShareUtils.hasLinkToShare(((FeedMedia) media).getItem());
-        boolean isItemHasDownloadLink = isFeedMedia && ((FeedMedia) media).getDownloadUrl() != null;
-        menu.findItem(R.id.share_item).setVisible(hasWebsiteLink || isItemAndHasLink || isItemHasDownloadLink);
-
-        menu.findItem(R.id.add_to_favorites_item).setVisible(false);
-        menu.findItem(R.id.remove_from_favorites_item).setVisible(false);
         if (isFeedMedia) {
-            menu.findItem(R.id.add_to_favorites_item).setVisible(!isFavorite);
-            menu.findItem(R.id.remove_from_favorites_item).setVisible(isFavorite);
+            FeedItemMenuHandler.onPrepareMenu(menu, Collections.singletonList(((FeedMedia) media).getItem()));
         }
 
         menu.findItem(R.id.set_sleeptimer_item).setVisible(!controller.sleepTimerActive());
         menu.findItem(R.id.disable_sleeptimer_item).setVisible(controller.sleepTimerActive());
-
         menu.findItem(R.id.player_switch_to_audio_only).setVisible(true);
-
         menu.findItem(R.id.audio_controls).setVisible(controller.getAudioTracks().size() >= 2);
         menu.findItem(R.id.playback_speed).setVisible(true);
         menu.findItem(R.id.player_show_chapters).setVisible(true);
@@ -587,6 +577,9 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             return true;
         } else if (item.getItemId() == R.id.player_show_chapters) {
             new ChaptersFragment().show(getSupportFragmentManager(), ChaptersFragment.TAG);
+            return true;
+        } else if (item.getItemId() == R.id.transcript_item) {
+            new TranscriptDialogFragment().show(getSupportFragmentManager(), TranscriptDialogFragment.TAG);
             return true;
         }
 

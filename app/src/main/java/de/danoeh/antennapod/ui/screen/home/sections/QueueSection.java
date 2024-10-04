@@ -59,6 +59,7 @@ public class QueueSection extends HomeSection {
         viewBinding.recyclerView.setAdapter(listAdapter);
         int paddingHorizontal = (int) (12 * getResources().getDisplayMetrics().density);
         viewBinding.recyclerView.setPadding(paddingHorizontal, 0, paddingHorizontal, 0);
+        viewBinding.emptyLabel.setText(R.string.home_continue_empty_text);
         return view;
     }
 
@@ -156,6 +157,7 @@ public class QueueSection extends HomeSection {
                     this.queue = queue;
                     listAdapter.setDummyViews(0);
                     listAdapter.updateData(queue);
+                    viewBinding.emptyLabel.setVisibility(queue.isEmpty() ? View.VISIBLE : View.GONE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
 
     }

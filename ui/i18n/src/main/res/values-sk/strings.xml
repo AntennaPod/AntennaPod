@@ -129,15 +129,15 @@
   <string name="episode_cleanup_queue_removal">Ak nie je v poradí</string>
   <string name="episode_cleanup_after_listening">Po dokončení</string>
   <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 hodinu po dokončení</item>
+    <item quantity="one">%dhodina po dokončení</item>
     <item quantity="few">%d hodiny po dokončení</item>
     <item quantity="many">%d hodín po dokončení</item>
-    <item quantity="other">%d hodín po dokončení </item>
+    <item quantity="other">%d hodín po dokončení</item>
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 deň po dokončení</item>
+    <item quantity="one">%d deň po dokončení</item>
     <item quantity="few">%d dni po dokončení</item>
-    <item quantity="many">%d dní po dokončení</item>
+    <item quantity="many">%ddní po dokončení</item>
     <item quantity="other">%d dní po dokončení</item>
   </plurals>
   <plurals name="num_selected_label">
@@ -219,10 +219,10 @@
   <string name="delete_label">Zmazať</string>
   <string name="delete_episode_label">Zmazať epizódu</string>
   <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 stiahnutá epizóda zmazaná.</item>
-    <item quantity="few">%dstiahnutých epizód zmazaných.</item>
-    <item quantity="many">%dstiahnutých epizód zmazaných.</item>
-    <item quantity="other">%dstiahnutých epizód zmazaných.</item>
+    <item quantity="one">%d stiahnutá epizóda zmazaná.</item>
+    <item quantity="few">%d stiahnuté epizódy zmazané.</item>
+    <item quantity="many">%d stiahnutých epizód zmazaných.</item>
+    <item quantity="other">%d stiahnutých epizód zmazaných.</item>
   </plurals>
   <string name="remove_inbox_label">Odstrániť zo schránky</string>
   <string name="removed_inbox_label">Odstránené zo schránky</string>
@@ -612,25 +612,25 @@
   <string name="time_minutes">minúty</string>
   <string name="time_hours">hodiny</string>
   <plurals name="time_seconds_quantified">
-    <item quantity="one">1 sekunda</item>
+    <item quantity="one">%d sekunda</item>
     <item quantity="few">%d sekundy</item>
     <item quantity="many">%d sekúnd</item>
     <item quantity="other">%d sekúnd</item>
   </plurals>
   <plurals name="time_minutes_quantified">
-    <item quantity="one">1 minúta</item>
+    <item quantity="one">%d minúta</item>
     <item quantity="few">%d minúty</item>
     <item quantity="many">%d minút</item>
     <item quantity="other">%d minút</item>
   </plurals>
   <plurals name="time_hours_quantified">
-    <item quantity="one">1 hodina</item>
+    <item quantity="one">%d hodina</item>
     <item quantity="few">%d hodiny</item>
     <item quantity="many">%d hodín</item>
     <item quantity="other">%d hodín</item>
   </plurals>
   <plurals name="time_days_quantified">
-    <item quantity="one">1 deň</item>
+    <item quantity="one">%d deň</item>
     <item quantity="few">%d dni</item>
     <item quantity="many">%d dní</item>
     <item quantity="other">%d dní</item>

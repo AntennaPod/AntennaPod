@@ -128,14 +128,6 @@
   <string name="episode_cleanup_except_favorite_removal">وقتی که جزو علاقه‌مندی‌ها نباشد</string>
   <string name="episode_cleanup_queue_removal">وقتی که در صف نیست</string>
   <string name="episode_cleanup_after_listening">بعد از تمام شدن</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">۱ ساعت پس از پایان</item>
-    <item quantity="other">%d ساعت پس از پایان</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">%dروز بعد از اتمام</item>
-    <item quantity="other">%dروز بعد از اتمام</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d انتخاب شده</item>
     <item quantity="other">%1$d/%2$d انتخاب شده</item>
@@ -201,10 +193,6 @@
   <string name="stream_label">جریان</string>
   <string name="delete_label">حذف</string>
   <string name="delete_episode_label">حذف قسمت</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">۱ قسمت بارگرفته حذف شد.</item>
-    <item quantity="other">%dقسمت بار گرفته حذف شد.</item>
-  </plurals>
   <string name="remove_inbox_label">حذف از صندوق ورودی</string>
   <string name="removed_inbox_label">حذف شده از صندوق ورودی</string>
   <string name="mark_read_label">علامت‌گذاری به‌عنوان پخش‌شده</string>
@@ -562,22 +550,6 @@
   <string name="time_seconds">ثانیه</string>
   <string name="time_minutes">دقیقه</string>
   <string name="time_hours">ساعت</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">۱ ثانیه</item>
-    <item quantity="other">%d ثانیه</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">۱ دقیقه</item>
-    <item quantity="other">%d دقیقه</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">۱ ساعت</item>
-    <item quantity="other">%d ساعت</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">1 روز</item>
-    <item quantity="other">%d روز</item>
-  </plurals>
   <string name="auto_enable_label">فعّال سازی خودکار شمارشگر معکوس خواب هنگام زدن پخش</string>
   <string name="auto_enable_label_with_times">فعّال کردن خودکار شمارشگر خواب هنگام زدن پخش بین %1$s و %2$s</string>
   <string name="auto_enable_change_times">زمان‌های تعویض</string>

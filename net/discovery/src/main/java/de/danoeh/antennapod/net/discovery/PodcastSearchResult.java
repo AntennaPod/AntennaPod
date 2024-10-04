@@ -63,7 +63,7 @@ public class PodcastSearchResult {
      * @throws JSONException
      */
     public static PodcastSearchResult fromItunesToplist(JSONObject json) throws JSONException {
-        String title = json.getJSONObject("title").getString("label");
+        String title = json.getJSONObject("im:name").getString("label");
         String imageUrl = null;
         JSONArray images =  json.getJSONArray("im:image");
         for(int i=0; imageUrl == null && i < images.length(); i++) {

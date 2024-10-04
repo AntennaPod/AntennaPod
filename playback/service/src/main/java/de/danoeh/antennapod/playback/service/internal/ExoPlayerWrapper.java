@@ -47,7 +47,6 @@ import androidx.media3.ui.TrackNameProvider;
 import de.danoeh.antennapod.net.common.UserAgentInterceptor;
 import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.playback.service.R;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.net.common.HttpCredentialEncoder;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.model.playback.Playable;
@@ -97,10 +96,10 @@ public class ExoPlayerWrapper {
 
     private void createPlayer() {
         DefaultLoadControl.Builder loadControl = new DefaultLoadControl.Builder();
-        loadControl.setBufferDurationsMs(30000, 120000,
+        loadControl.setBufferDurationsMs((int) TimeUnit.HOURS.toMillis(1), (int) TimeUnit.HOURS.toMillis(3),
                 DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
                 DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
-        loadControl.setBackBuffer(UserPreferences.getRewindSecs() * 1000 + 500, true);
+        loadControl.setBackBuffer((int) TimeUnit.MINUTES.toMillis(5), true);
         trackSelector = new DefaultTrackSelector(context);
         exoPlayer = new ExoPlayer.Builder(context, new DefaultRenderersFactory(context))
                 .setTrackSelector(trackSelector)
@@ -154,7 +153,7 @@ public class ExoPlayerWrapper {
             }
         });
         simpleCache = new SimpleCache(new File(context.getCacheDir(), "streaming"),
-                new LeastRecentlyUsedCacheEvictor(50 * 1024 * 1024), new StandaloneDatabaseProvider(context));
+                new LeastRecentlyUsedCacheEvictor(100 * 1024 * 1024), new StandaloneDatabaseProvider(context));
         initLoudnessEnhancer(exoPlayer.getAudioSessionId());
     }
 
@@ -400,11 +399,15 @@ public class ExoPlayerWrapper {
         LoudnessEnhancer newEnhancer = new LoudnessEnhancer(audioStreamId);
         LoudnessEnhancer oldEnhancer = this.loudnessEnhancer;
         if (oldEnhancer != null) {
-            newEnhancer.setEnabled(oldEnhancer.getEnabled());
-            if (oldEnhancer.getEnabled()) {
-                newEnhancer.setTargetGain((int) oldEnhancer.getTargetGain());
+            try {
+                newEnhancer.setEnabled(oldEnhancer.getEnabled());
+                if (oldEnhancer.getEnabled()) {
+                    newEnhancer.setTargetGain((int) oldEnhancer.getTargetGain());
+                }
+                oldEnhancer.release();
+            } catch (Exception e) {
+                Log.d(TAG, e.toString());
             }
-            oldEnhancer.release();
         }
 
         this.loudnessEnhancer = newEnhancer;

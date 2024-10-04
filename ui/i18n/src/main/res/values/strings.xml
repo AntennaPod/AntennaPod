@@ -61,6 +61,10 @@
     <string name="home_continue_title">Continue listening</string>
     <string name="home_new_title">See what\'s new</string>
     <string name="home_downloads_title">Manage downloads</string>
+    <string name="home_no_recent_unplayed_episodes_text">You already played all recent episodes. Nothing to be surprised here ;)</string>
+    <string name="home_continue_empty_text">You can add episodes by downloading them or long-pressing them and selecting \"Add to queue\".</string>
+    <string name="home_new_empty_text">New episodes will show up here. You can then decide whether you are interested in them.</string>
+    <string name="home_downloads_empty_text">You can download any episode to listen to it offline.</string>
     <string name="home_welcome_title">Welcome to AntennaPod!</string>
     <string name="home_welcome_text">You are not subscribed to any podcasts yet. Open the side menu to add a podcast.</string>
     <string name="notification_permission_text">AntennaPod needs your permission to show notifications. By default, AntennaPod only shows notifications while something is being downloaded or when something goes wrong.</string>
@@ -220,7 +224,6 @@
     <string name="pause_label">Pause</string>
     <string name="stream_label">Stream</string>
     <string name="delete_label">Delete</string>
-    <string name="delete_episode_label">Delete episode</string>
     <plurals name="deleted_multi_episode_batch_label">
         <item quantity="one">%d downloaded episode deleted.</item>
         <item quantity="other">%d downloaded episodes deleted.</item>
@@ -450,16 +453,16 @@
     <string name="pref_black_theme_message">Use full black for the dark theme</string>
     <string name="pref_tinted_theme_title">Dynamic colors</string>
     <string name="pref_tinted_theme_message">Adapt app colors based on the wallpaper</string>
-    <string name="pref_nav_drawer_items_title">Set navigation drawer items</string>
-    <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer</string>
+    <string name="bottom_navigation">Bottom navigation</string>
+    <string name="bottom_navigation_summary">Beta feature: Access the most important screens from everywhere, in a single tap</string>
+    <string name="pref_nav_drawer_items_title">Customize navigation</string>
+    <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer or bottom navigation</string>
     <string name="pref_nav_drawer_feed_order_title">Set subscription order</string>
     <string name="pref_nav_drawer_feed_order_sum">Change the order of your subscriptions</string>
     <string name="pref_nav_drawer_feed_counter_title">Set subscription counter</string>
     <string name="pref_nav_drawer_feed_counter_sum">Change the information displayed by the subscription counter. Also affects the sorting of subscriptions if \'Subscription Order\' is set to \'Counter\'.</string>
     <string name="pref_automatic_download_title">Automatic download</string>
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes</string>
-    <string name="pref_autodl_wifi_filter_title">Enable Wi-Fi filter</string>
-    <string name="pref_autodl_wifi_filter_sum">Allow automatic download only for selected Wi-Fi networks.</string>
     <string name="pref_automatic_download_on_battery_title">Download when not charging</string>
     <string name="pref_automatic_download_on_battery_sum">Allow automatic download when the battery is not charging</string>
     <string name="pref_episode_cache_title">Episode limit</string>
@@ -674,6 +677,7 @@
     <string name="gpodnetsync_pref_report_successful">Successful</string>
     <string name="gpodnetsync_pref_report_failed">Failed</string>
     <string name="gpodnetsync_username_characters_error">Usernames may only contain letters, digits, hyphens and underscores.</string>
+    <string name="nextcloud_login_error_generic"><![CDATA[Unable to log into your Nextcloud.\n\n- Check your network connection.\n- Confirm that you are using the correct server address.\n- Make sure that the gpoddersync Nextcloud plugin is installed.]]></string>
 
     <!-- Directory chooser -->
     <string name="choose_data_directory">Choose data folder</string>
@@ -735,15 +739,16 @@
     <string name="keep_updated">Keep updated</string>
     <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>
     <string name="auto_download_disabled_globally">Auto download is disabled in the main AntennaPod settings</string>
-    <string name="statistics_time_played">Time played:</string>
-    <string name="statistics_total_duration">Total duration (estimate):</string>
-    <string name="statistics_episodes_on_device">Episodes on the device:</string>
-    <string name="statistics_space_used">Space used:</string>
-    <string name="statistics_episodes_started_total">Episodes started/total:</string>
-    <string name="statistics_expected_next_episode">Expected next episode:</string>
+    <string name="statistics_episodes_started">started</string>
+    <string name="statistics_episodes_total">total</string>
+    <string name="statistics_episodes_played">played</string>
+    <string name="statistics_episodes_downloaded">downloaded</string>
+    <string name="statistics_episodes_space">space taken</string>
+    <string name="statistics_release_schedule">release schedule</string>
+    <string name="statistics_release_next">next episode (estimate)</string>
     <string name="statistics_expected_next_episode_any_day">Any day now</string>
     <string name="statistics_expected_next_episode_unknown">Unknown</string>
-    <string name="statistics_view_all">View for all podcasts »</string>
+    <string name="statistics_view_all">All podcasts »</string>
     <string name="wait_icon" translatable="false">…</string>
     <string name="edit_url_menu">Edit feed URL</string>
     <string name="edit_url_confirmation_msg">Changing the RSS address can easily break the playback state and episode listings of the podcast. We do NOT recommend changing it and will NOT provide support if anything goes wrong. This cannot be undone. The broken subscription CANNOT be repaired by simply changing the address back. We recommend creating a backup before continuing.</string>
@@ -771,13 +776,12 @@
     <string name="search_itunes_label">Search Apple Podcasts</string>
     <string name="search_podcastindex_label">Search Podcast Index</string>
     <string name="search_fyyd_label">Search fyyd</string>
-    <string name="advanced">Advanced</string>
     <string name="add_podcast_by_url">Add podcast by RSS address</string>
     <string name="add_podcast_by_url_hint" translatable="false">www.example.com/feed</string>
     <string name="discover">Discover</string>
     <string name="discover_hide">Hide</string>
     <string name="discover_is_hidden">You selected to hide suggestions.</string>
-    <string name="discover_more">more »</string>
+    <string name="discover_more">Discover more »</string>
     <string name="discover_powered_by_itunes">Suggestions by Apple Podcasts</string>
     <string name="discover_confirm">Show suggestions</string>
     <string name="search_powered_by">Results by %1$s</string>

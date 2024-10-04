@@ -48,9 +48,6 @@ public class InboxFragment extends EpisodesListFragment {
         emptyView.setIcon(R.drawable.ic_inbox);
         emptyView.setTitle(R.string.no_inbox_head_label);
         emptyView.setMessage(R.string.no_inbox_label);
-        floatingSelectMenu.getMenu().findItem(R.id.mark_unread_batch).setVisible(false);
-        floatingSelectMenu.getMenu().findItem(R.id.remove_from_queue_batch).setVisible(false);
-        floatingSelectMenu.getMenu().findItem(R.id.delete_batch).setVisible(false);
         return root;
     }
 

@@ -128,14 +128,6 @@
   <string name="episode_cleanup_except_favorite_removal">Når ikke favorittmerket</string>
   <string name="episode_cleanup_queue_removal">Når ikke lagt i kø</string>
   <string name="episode_cleanup_after_listening">Etter fullført avspilling</string>
-  <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 time etter fullført avspilling</item>
-    <item quantity="other">%d timer etter fullført avspilling</item>
-  </plurals>
-  <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">1 dag etter fullført avspilling</item>
-    <item quantity="other">%d dager etter fullført avspilling</item>
-  </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d valgt</item>
     <item quantity="other">%1$d/%2$d valgt</item>
@@ -201,10 +193,6 @@
   <string name="stream_label">Strøm</string>
   <string name="delete_label">Slett</string>
   <string name="delete_episode_label">Slett episode</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">1 nedlasted episode slettet.</item>
-    <item quantity="other">%d nedlastede episoder slettet.</item>
-  </plurals>
   <string name="remove_inbox_label">Fjern fra innboksen</string>
   <string name="removed_inbox_label">Fjernet fra innboksen</string>
   <string name="mark_read_label">Marker som avspilt</string>
@@ -562,22 +550,6 @@
   <string name="time_seconds">sekunder</string>
   <string name="time_minutes">minutter</string>
   <string name="time_hours">timer</string>
-  <plurals name="time_seconds_quantified">
-    <item quantity="one">1 sekund</item>
-    <item quantity="other">%d sekunder</item>
-  </plurals>
-  <plurals name="time_minutes_quantified">
-    <item quantity="one">1 minutt</item>
-    <item quantity="other">%d minutter</item>
-  </plurals>
-  <plurals name="time_hours_quantified">
-    <item quantity="one">1 time</item>
-    <item quantity="other">%d timer</item>
-  </plurals>
-  <plurals name="time_days_quantified">
-    <item quantity="one">1 dag</item>
-    <item quantity="other">%d dager</item>
-  </plurals>
   <string name="auto_enable_label">Aktivere søvnnedtelling automatisk når det trykkes spill av</string>
   <string name="auto_enable_label_with_times">Aktiver søvnnedtelling automatisk når du trykker spill av mellom %1$sog %2$s</string>
   <string name="auto_enable_change_times">Endre tidsrom</string>
