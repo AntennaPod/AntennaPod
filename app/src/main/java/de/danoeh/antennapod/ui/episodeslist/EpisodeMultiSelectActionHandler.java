@@ -100,7 +100,7 @@ public class EpisodeMultiSelectActionHandler {
         showMessage(R.plurals.downloading_batch_label, downloaded);
     }
 
-    public void deleteChecked(List<FeedItem> items) {
+    private void deleteChecked(List<FeedItem> items) {
         int countHasMedia = 0;
         for (FeedItem feedItem : items) {
             if (feedItem.hasMedia() && feedItem.getMedia().isDownloaded()) {

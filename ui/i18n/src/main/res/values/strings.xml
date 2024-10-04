@@ -18,7 +18,6 @@
     <string name="downloads_label">Downloads</string>
     <string name="open_autodownload_settings">Open settings</string>
     <string name="downloads_log_label">Download log</string>
-    <string name="delete_downloads_played">Delete played</string>
     <string name="subscriptions_label">Subscriptions</string>
     <string name="subscriptions_list_label">Subscriptions list</string>
     <string name="cancel_download_label">Cancel download</string>
@@ -214,6 +213,8 @@
     <string name="rename_tag_label">Rename tag</string>
     <string name="confirm_mobile_feed_refresh_dialog_message">Refreshing podcasts over mobile data connection is disabled in the settings.\n\nDo you want to refresh anyway?</string>
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Your VPN app pretends to be a mobile network (metered connection). Refreshing podcasts over mobile data connection is disabled in the settings.\n\nDo you want to refresh anyway? If you want this problem to be fixed, contact the creators of your VPN app.</string>
+    <string name="delete_downloads_played">Delete played</string>
+    <string name="delete_downloads_played_confirmation">Please confirm that you want to delete all played downloads.</string>
 
     <!-- actions on feeditems -->
     <string name="download_label">Download</string>

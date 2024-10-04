@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.download;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -18,6 +19,7 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
+import de.danoeh.antennapod.ui.common.ConfirmationDialog;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
 import de.danoeh.antennapod.actionbutton.DeleteActionButton;
 import de.danoeh.antennapod.event.DownloadLogEvent;
@@ -44,7 +46,6 @@ import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.ui.view.FloatingSelectMenu;
 import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
-import de.danoeh.antennapod.ui.view.LocalDeleteModal;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -184,18 +185,21 @@ public class CompletedDownloadsFragment extends Fragment
             new DownloadsSortDialog().show(getChildFragmentManager(), "SortDialog");
             return true;
         } else if (item.getItemId() == R.id.action_delete_downloads_played) {
-            EpisodeMultiSelectActionHandler handler =
-                    new EpisodeMultiSelectActionHandler(getActivity(), R.id.remove_item);
-            adapter.endSelectMode();
-
-            LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(getActivity(), adapter.getPlayedItems(),
-                    () -> handler.deleteChecked(DBReader.getEpisodes(
-                            0,
-                            Integer.MAX_VALUE,
-                            new FeedItemFilter(
-                                            FeedItemFilter.DOWNLOADED,
-                                            FeedItemFilter.INCLUDE_NOT_SUBSCRIBED,
-                                            FeedItemFilter.PLAYED), SortOrder.DATE_OLD_NEW)));
+            ConfirmationDialog dialog = new ConfirmationDialog(getActivity(),
+                    R.string.delete_downloads_played,  R.string.delete_downloads_played_confirmation) {
+                @Override
+                public void onConfirmButtonPressed(DialogInterface clickedDialog) {
+                    clickedDialog.dismiss();
+                    Observable.fromCallable(() -> DBReader.getEpisodes(0, Integer.MAX_VALUE,
+                                    new FeedItemFilter(FeedItemFilter.DOWNLOADED, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED,
+                                            FeedItemFilter.PLAYED), SortOrder.DATE_OLD_NEW))
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(items -> new EpisodeMultiSelectActionHandler(getActivity(), R.id.remove_item)
+                                    .handleAction(items), error -> Log.e(TAG, Log.getStackTraceString(error)));
+                }
+            };
+            dialog.createNewDialog().show();
             return true;
         }
         return false;
