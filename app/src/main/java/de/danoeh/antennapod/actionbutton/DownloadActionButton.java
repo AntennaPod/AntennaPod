@@ -19,10 +19,9 @@ import de.danoeh.antennapod.net.common.NetworkUtils;
 
 public class DownloadActionButton extends ItemActionButton {
 
-    private static int bypassCellularNetworkWarning = 0;
     private static boolean bypassCellularNetworkNow = true;
     private static long bypassCellularNetworkWarningTimer = 0;
-    private static int TIMEOUT_NETWORK_WARN_MINS = 600; // timeout in 10 minutes
+    private static int TIMEOUT_NETWORK_WARN_MINS = 300; // timeout in 10 minutes for download over cellular network
 
     public DownloadActionButton(FeedItem item) {
         super(item);
@@ -54,9 +53,7 @@ public class DownloadActionButton extends ItemActionButton {
 
         UsageStatistics.logAction(UsageStatistics.ACTION_DOWNLOAD);
 
-        if (bypassCellularNetworkWarning >= 3) {
-            bypassCellularNetworkWarningTimer = System.currentTimeMillis() / 1000;
-            bypassCellularNetworkWarning = 0;
+        if ((System.currentTimeMillis() / 1000) - bypassCellularNetworkWarningTimer < TIMEOUT_NETWORK_WARN_MINS) {
             if (bypassCellularNetworkNow) {
                 Toast.makeText(context, context.getString(R.string.mobile_download_timeout,
                                 TIMEOUT_NETWORK_WARN_MINS / 60),
@@ -71,20 +68,14 @@ public class DownloadActionButton extends ItemActionButton {
                     .setTitle(R.string.confirm_mobile_download_dialog_title)
                     .setPositiveButton(R.string.confirm_mobile_download_dialog_download_later,
                             (d, w) -> {
-                                if (bypassCellularNetworkNow) {
-                                    bypassCellularNetworkWarning = 0;
-                                }
                                 bypassCellularNetworkNow = false;
-                                bypassCellularNetworkWarning++;
+                                bypassCellularNetworkWarningTimer = System.currentTimeMillis() / 1000;
                                 DownloadServiceInterface.get().downloadNow(context, item, false);
                             })
                     .setNeutralButton(R.string.confirm_mobile_download_dialog_allow_this_time,
                             (d, w) -> {
-                                if (!bypassCellularNetworkNow) {
-                                    bypassCellularNetworkWarning = 0;
-                                }
                                 bypassCellularNetworkNow = true;
-                                bypassCellularNetworkWarning++;
+                                bypassCellularNetworkWarningTimer = System.currentTimeMillis() / 1000;
                                 DownloadServiceInterface.get().downloadNow(context, item, true);
                             })
                     .setNegativeButton(R.string.cancel_label, null);
