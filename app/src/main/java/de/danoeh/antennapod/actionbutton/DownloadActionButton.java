@@ -54,10 +54,11 @@ public class DownloadActionButton extends ItemActionButton {
 
         UsageStatistics.logAction(UsageStatistics.ACTION_DOWNLOAD);
 
-        boolean shouldBypass = (System.currentTimeMillis() / 1000
-                - bypassCellularNetworkWarningTimer) < TIMEOUT_NETWORK_WARN_SECONDS;
+        long timeSinceBypass = System.currentTimeMillis() / 1000 - bypassCellularNetworkWarningTimer;
+        boolean shouldBypass = timeSinceBypass < TIMEOUT_NETWORK_WARN_SECONDS;
         if (shouldBypass && bypassCellularNetworkType == BYPASS_TYPE_NOW) {
-            Toast.makeText(context, context.getString(R.string.mobile_download_notice), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, context.getString(
+                    R.string.mobile_download_notice, TIMEOUT_NETWORK_WARN_SECONDS / 60), Toast.LENGTH_LONG).show();
         }
         if (NetworkUtils.isEpisodeDownloadAllowed() || shouldBypass) {
             DownloadServiceInterface.get().downloadNow(context, item, bypassCellularNetworkType == BYPASS_TYPE_NOW);
