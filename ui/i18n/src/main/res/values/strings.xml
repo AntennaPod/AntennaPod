@@ -77,7 +77,10 @@
     <string name="section_shown">Shown</string>
 
     <!-- Download Statistics fragment -->
-    <string name="total_size_downloaded_podcasts">Total size of episodes on the device</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">Total size of %d episode on the device</item>
+        <item quantity="other">Total size of %d episodes on the device</item>
+    </plurals>
 
     <!-- Main activity -->
     <string name="drawer_open">Open menu</string>
@@ -213,6 +216,8 @@
     <string name="rename_tag_label">Rename tag</string>
     <string name="confirm_mobile_feed_refresh_dialog_message">Refreshing podcasts over mobile data connection is disabled in the settings.\n\nDo you want to refresh anyway?</string>
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Your VPN app pretends to be a mobile network (metered connection). Refreshing podcasts over mobile data connection is disabled in the settings.\n\nDo you want to refresh anyway? If you want this problem to be fixed, contact the creators of your VPN app.</string>
+    <string name="delete_downloads_played">Delete played</string>
+    <string name="delete_downloads_played_confirmation">Please confirm that you want to delete all played downloads.</string>
 
     <!-- actions on feeditems -->
     <string name="download_label">Download</string>
@@ -320,6 +325,7 @@
     <string name="confirm_mobile_download_dialog_message_vpn">Your VPN app pretends to be a mobile network (metered connection). Downloading over mobile data connection is disabled in the settings. If you want this problem to be fixed, contact the creators of your VPN app.</string>
     <string name="confirm_mobile_download_dialog_download_later">Download later</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Download anyway</string>
+    <string name="mobile_download_notice">Downloading over mobile data connection for the next %d minutes</string>
     <string name="confirm_mobile_streaming_notification_title">Confirm mobile streaming</string>
     <string name="confirm_mobile_streaming_notification_message">Streaming over mobile data connection is disabled in the settings. Tap to stream anyway.</string>
     <string name="confirm_mobile_streaming_button_always">Always</string>
