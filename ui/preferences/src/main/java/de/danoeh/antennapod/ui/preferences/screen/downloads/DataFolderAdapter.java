@@ -29,7 +29,7 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
         this.entries = getStorageEntries(context);
         this.currentPath = getCurrentPath();
         this.selectionHandler = selectionHandler;
-        this.freeSpaceString = context.getString(R.string.choose_data_directory_available_space);
+        this.freeSpaceString = context.getResources().getQuantityString(R.plurals.choose_data_directory_available_space);
     }
 
     @NonNull
