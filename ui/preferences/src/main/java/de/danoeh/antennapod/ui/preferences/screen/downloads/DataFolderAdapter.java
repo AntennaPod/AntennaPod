@@ -23,14 +23,13 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
     private final Consumer<String> selectionHandler;
     private final String currentPath;
     private final List<StoragePath> entries;
-    private final String freeSpaceString;
+    private final Resources resources;
 
     public DataFolderAdapter(Context context, @NonNull Consumer<String> selectionHandler) {
         this.entries = getStorageEntries(context);
         this.currentPath = getCurrentPath();
         this.selectionHandler = selectionHandler;
-        this.freeSpaceString = context.getResources()
-            .getQuantityString(R.plurals.choose_data_directory_available_space);
+        this.resources = context.getResources();
     }
 
     @NonNull
@@ -49,7 +48,13 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
         String totalSpace = Formatter.formatShortFileSize(context, storagePath.getTotalSpace());
 
         holder.path.setText(storagePath.getPath());
-        holder.size.setText(String.format(freeSpaceString, freeSpace, totalSpace));
+        String sizeText = resources.getQuantityString(
+            R.plurals.choose_data_directory_available_space,
+            (int) (availableSpace / (1024 * 1024)),
+            freeSpace,
+            totalSpace
+        );
+        holder.size.setText(sizeText);
         holder.progressBar.setProgress(storagePath.getUsagePercentage());
         View.OnClickListener selectListener = v -> selectionHandler.accept(storagePath.getPath());
         holder.root.setOnClickListener(selectListener);
