@@ -45,13 +45,15 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         StoragePath storagePath = entries.get(position);
         Context context = holder.root.getContext();
-        String freeSpace = Formatter.formatShortFileSize(context, storagePath.getAvailableSpace());
+        long availableSpace = storagePath.getAvailableSpace();
+        String freeSpace = Formatter.formatShortFileSize(context, availableSpace);
         String totalSpace = Formatter.formatShortFileSize(context, storagePath.getTotalSpace());
 
         holder.path.setText(storagePath.getPath());
+        int quantity = (int) (availableSpace / (1024L * 1024L));
         String sizeText = resources.getQuantityString(
                 R.plurals.choose_data_directory_available_space,
-                (int) (availableSpace / (1024 * 1024)),
+                quantity,
                 freeSpace,
                 totalSpace
         );
