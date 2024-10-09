@@ -684,7 +684,10 @@
     <!-- Directory chooser -->
     <string name="choose_data_directory">Choose data folder</string>
     <string name="choose_data_directory_message">Please choose the base of your data folder. AntennaPod will create the appropriate subdirectories.</string>
-    <string name="choose_data_directory_available_space">%1$s of %2$s free</string>
+    <plurals name="choose_data_directory_available_space">
+        <item quantity="one">%1$s of %2$s free</item>
+        <item quantity="other">%1$s of %2$s free</item>
+    </plurals>
     <string name="pref_pausePlaybackForFocusLoss_sum">Pause playback instead of lowering volume when another app wants to play sounds</string>
     <string name="pref_pausePlaybackForFocusLoss_title">Pause for interruptions</string>
 
