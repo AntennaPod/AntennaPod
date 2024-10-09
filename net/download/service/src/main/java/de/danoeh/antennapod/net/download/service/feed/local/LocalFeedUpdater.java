@@ -194,6 +194,7 @@ public class LocalFeedUpdater {
         try {
             loadMetadata(item, file, context);
         } catch (Exception e) {
+            e.printStackTrace();
             item.setDescriptionIfLonger(e.getMessage());
         }
         return item;
@@ -222,7 +223,9 @@ public class LocalFeedUpdater {
             }
 
             String durationStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-            item.getMedia().setDuration((int) Long.parseLong(durationStr));
+            if (durationStr != null && !durationStr.equals("null")) {
+                item.getMedia().setDuration((int) Long.parseLong(durationStr));
+            }
 
             item.getMedia().setHasEmbeddedPicture(mediaMetadataRetriever.getEmbeddedPicture() != null);
 
