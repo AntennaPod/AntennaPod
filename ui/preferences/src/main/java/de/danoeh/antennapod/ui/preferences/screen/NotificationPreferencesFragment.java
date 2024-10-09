@@ -2,11 +2,10 @@ package de.danoeh.antennapod.ui.preferences.screen;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceFragmentCompat;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.ui.preferences.R;
 
-public class NotificationPreferencesFragment extends PreferenceFragmentCompat {
+public class NotificationPreferencesFragment extends AnimatedPreferenceFragment {
 
     private static final String PREF_GPODNET_NOTIFICATIONS = "pref_gpodnet_notifications";
 

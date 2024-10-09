@@ -23,7 +23,6 @@ import androidx.preference.SwitchPreferenceCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
-import androidx.preference.PreferenceFragmentCompat;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
@@ -37,6 +36,7 @@ import de.danoeh.antennapod.storage.importexport.FavoritesWriter;
 import de.danoeh.antennapod.storage.importexport.HtmlWriter;
 import de.danoeh.antennapod.storage.importexport.OpmlWriter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -54,7 +54,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
+public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment {
     private static final String TAG = "ImportExPrefFragment";
     private static final String PREF_OPML_EXPORT = "prefOpmlExport";
     private static final String PREF_OPML_IMPORT = "prefOpmlImport";

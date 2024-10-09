@@ -21,7 +21,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.documentfile.provider.DocumentFile;
-import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -30,9 +29,9 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.FeedinfoBinding;
-import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
+import de.danoeh.antennapod.ui.common.AnimatedFragment;
 import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.share.ShareUtils;
 import de.danoeh.antennapod.ui.cleaner.HtmlToPlainText;
@@ -57,7 +56,7 @@ import java.util.Iterator;
 /**
  * Displays information about a feed.
  */
-public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenuItemClickListener {
+public class FeedInfoFragment extends AnimatedFragment implements MaterialToolbar.OnMenuItemClickListener {
 
     private static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
     private static final String TAG = "FeedInfoActivity";
@@ -127,7 +126,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
 
         viewBinding.statisticsButton.setOnClickListener(view -> {
             StatisticsFragment fragment = new StatisticsFragment();
-            ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
+            ((MainActivity) getActivity()).loadChildFragment(fragment);
         });
 
         return viewBinding.getRoot();
@@ -234,13 +233,13 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
 
         if (feed.getState() == Feed.STATE_SUBSCRIBED) {
             long feedId = getArguments().getLong(EXTRA_FEED_ID);
-            getParentFragmentManager().beginTransaction().replace(R.id.statisticsFragmentContainer,
+            getChildFragmentManager().beginTransaction().replace(R.id.statisticsFragmentContainer,
                             FeedStatisticsFragment.newInstance(feedId, false), "feed_statistics_fragment")
                     .commitAllowingStateLoss();
 
             viewBinding.statisticsButton.setOnClickListener(view -> {
                 StatisticsFragment fragment = new StatisticsFragment();
-                ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
+                ((MainActivity) getActivity()).loadChildFragment(fragment);
             });
         } else {
             viewBinding.statisticsHeading.setVisibility(View.GONE);

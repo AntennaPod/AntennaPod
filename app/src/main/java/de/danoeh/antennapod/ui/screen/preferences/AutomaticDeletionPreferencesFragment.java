@@ -3,14 +3,14 @@ package de.danoeh.antennapod.ui.screen.preferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import androidx.preference.ListPreference;
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.TwoStatePreference;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 
 
-public class AutomaticDeletionPreferencesFragment extends PreferenceFragmentCompat {
+public class AutomaticDeletionPreferencesFragment extends AnimatedPreferenceFragment {
     private static final String PREF_AUTO_DELETE_LOCAL = "prefAutoDeleteLocal";
     private boolean blockAutoDeleteLocal = true;
 

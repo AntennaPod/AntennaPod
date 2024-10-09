@@ -7,16 +7,16 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.ui.common.IntentUtils;
+import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import de.danoeh.antennapod.ui.preferences.screen.about.AboutFragment;
 
-public class MainPreferencesFragment extends PreferenceFragmentCompat {
+public class MainPreferencesFragment extends AnimatedPreferenceFragment {
 
     private static final String PREF_SCREEN_USER_INTERFACE = "prefScreenInterface";
     private static final String PREF_SCREEN_PLAYBACK = "prefScreenPlayback";

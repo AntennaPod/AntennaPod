@@ -8,13 +8,13 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceFragmentCompat;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.preferences.BuildConfig;
 import de.danoeh.antennapod.ui.preferences.R;
+import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 
-public class AboutFragment extends PreferenceFragmentCompat {
+public class AboutFragment extends AnimatedPreferenceFragment {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
