@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.ui.preferences.screen.downloads;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.StatFs;
 import android.text.format.Formatter;
 import android.view.LayoutInflater;
