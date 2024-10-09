@@ -49,10 +49,10 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
 
         holder.path.setText(storagePath.getPath());
         String sizeText = resources.getQuantityString(
-            R.plurals.choose_data_directory_available_space,
-            (int) (availableSpace / (1024 * 1024)),
-            freeSpace,
-            totalSpace
+                R.plurals.choose_data_directory_available_space,
+                (int) (availableSpace / (1024 * 1024)),
+                freeSpace,
+                totalSpace
         );
         holder.size.setText(sizeText);
         holder.progressBar.setProgress(storagePath.getUsagePercentage());
