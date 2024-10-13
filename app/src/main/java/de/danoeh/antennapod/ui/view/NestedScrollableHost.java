@@ -158,7 +158,7 @@ public class NestedScrollableHost extends FrameLayout {
         int orientation = parentViewPager.getOrientation();
         boolean preferedDirection = preferHorizontal + preferVertical > 2;
 
-        // Early return if child can't scroll in same direction as parent and theres no prefered scroll direction
+        // Early return if child can't scroll in same direction as parent and there's no preferred scroll direction
         if (!canChildScroll(orientation, -1f) && !canChildScroll(orientation, 1f) && !preferedDirection) {
             return;
         }

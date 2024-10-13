@@ -84,7 +84,7 @@ public abstract class PlaybackServiceMediaPlayer {
 
     /**
      * Saves the current position and pauses playback. Note that, if audiofocus
-     * is abandoned, the lockscreen controls will also disapear.
+     * is abandoned, the lockscreen controls will also disappear.
      * <p/>
      * This method is executed on an internal executor service.
      *

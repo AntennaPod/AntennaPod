@@ -59,7 +59,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
     private TextView txtvEmpty;
 
     /**
-     * List of podcasts retreived from the search.
+     * List of podcasts retrieved from the search.
      */
     private List<PodcastSearchResult> searchResults;
     private List<PodcastSearchResult> topList;
