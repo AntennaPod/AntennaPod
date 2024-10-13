@@ -228,7 +228,7 @@ public class FeedMedia implements Playable {
 
     /**
      * Indicates we asked the service what the size was, but didn't
-     * get a valid answer and we shoudln't check using the network again.
+     * get a valid answer and we shouldn't check using the network again.
      */
     public void setCheckedOnSizeButUnknown() {
         this.size = CHECKED_ON_SIZE_BUT_UNKNOWN;
