@@ -135,6 +135,8 @@
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto downloads</string>
+    <string name="auto_download_enabled_because_global">Enabled because of global default</string>
+    <string name="auto_download_disabled_because_global">Disabled because of global default</string>
     <string name="feed_volume_adapdation">Volume adaptation</string>
     <string name="feed_volume_adaptation_summary">Turn volume for episodes of this podcast up or down: %1$s</string>
     <string name="feed_volume_reduction_off">No adaption</string>
@@ -740,7 +742,6 @@
     <string name="exclude_episodes_shorter_than">Exclude episodes shorter than</string>
     <string name="keep_updated">Keep updated</string>
     <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>
-    <string name="auto_download_disabled_globally">Auto download is disabled in the main AntennaPod settings</string>
     <string name="statistics_episodes_started">started</string>
     <string name="statistics_episodes_total">total</string>
     <string name="statistics_episodes_played">played</string>

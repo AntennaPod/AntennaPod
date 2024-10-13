@@ -349,6 +349,9 @@ class DBUpgrader {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
                     + " ADD COLUMN " + PodDBAdapter.KEY_PODCASTINDEX_TRANSCRIPT_TYPE + " TEXT");
         }
+        if (oldVersion < 3060000) {
+            db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEEDS + " SET " + PodDBAdapter.KEY_AUTO_DOWNLOAD_ENABLED + "=2  WHERE " + PodDBAdapter.KEY_AUTO_DOWNLOAD_ENABLED + "=1");
+        }
     }
 
 }

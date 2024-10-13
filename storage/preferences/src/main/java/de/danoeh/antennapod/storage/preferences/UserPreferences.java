@@ -98,7 +98,9 @@ public abstract class UserPreferences {
     private static final String PREF_MOBILE_UPDATE = "prefMobileUpdateTypes";
     public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
     public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
+    @Deprecated
     public static final String PREF_ENABLE_AUTODL = "prefEnableAutoDl";
+    public static final String PREF_AUTODL_DEFAULT = "prefAutoDownloadNewEpisodesDefault";
     public static final String PREF_ENABLE_AUTODL_ON_BATTERY = "prefEnableAutoDownloadOnBattery";
     private static final String PREF_PROXY_TYPE = "prefProxyType";
     private static final String PREF_PROXY_HOST = "prefProxyHost";
@@ -530,8 +532,13 @@ public abstract class UserPreferences {
         return Integer.parseInt(prefs.getString(PREF_EPISODE_CACHE_SIZE, "20"));
     }
 
+    @Deprecated
     public static boolean isEnableAutodownload() {
         return prefs.getBoolean(PREF_ENABLE_AUTODL, false);
+    }
+
+    public static boolean defaultAutodownloadState() {
+        return prefs.getBoolean(PREF_AUTODL_DEFAULT, false);
     }
 
     public static boolean isEnableAutodownloadOnBattery() {

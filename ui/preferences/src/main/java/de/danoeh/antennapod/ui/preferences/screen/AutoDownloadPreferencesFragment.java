@@ -11,14 +11,6 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences_autodownload);
-
-        findPreference(UserPreferences.PREF_ENABLE_AUTODL).setOnPreferenceChangeListener(
-                (preference, newValue) -> {
-                    if (newValue instanceof Boolean) {
-                        checkAutodownloadItemVisibility((Boolean) newValue);
-                    }
-                    return true;
-                });
     }
 
     @Override
@@ -30,11 +22,5 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
     @Override
     public void onResume() {
         super.onResume();
-        checkAutodownloadItemVisibility(UserPreferences.isEnableAutodownload());
-    }
-
-    private void checkAutodownloadItemVisibility(boolean autoDownload) {
-        findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE).setEnabled(autoDownload);
-        findPreference(UserPreferences.PREF_ENABLE_AUTODL_ON_BATTERY).setEnabled(autoDownload);
     }
 }

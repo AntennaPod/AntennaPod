@@ -78,10 +78,33 @@ public class FeedPreferences implements Serializable {
         }
     }
 
+    public enum AutoDownloadSetting {
+        DISABLED(0),
+        ENABLED(2),
+        // the reason for this is that the database column uses 1 as the default value.
+        // migrating the cells to "2" is more easy than changing the default value.
+        DEFAULT(1);
+
+        public final int state;
+
+        AutoDownloadSetting(int state) {
+            this.state = state;
+        }
+
+        public static AutoDownloadSetting fromInteger(int state) {
+            for (AutoDownloadSetting setting : values()) {
+                if (state == setting.state) {
+                    return setting;
+                }
+            }
+            return DEFAULT;
+        }
+    }
+
     @NonNull
     private FeedFilter filter;
     private long feedID;
-    private boolean autoDownload;
+    private AutoDownloadSetting autoDownload;
     private boolean keepUpdated;
     private AutoDeleteAction autoDeleteAction;
     private VolumeAdaptionSetting volumeAdaptionSetting;
@@ -95,7 +118,7 @@ public class FeedPreferences implements Serializable {
     private boolean showEpisodeNotification;
     private final Set<String> tags = new HashSet<>();
 
-    public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction autoDeleteAction,
+    public FeedPreferences(long feedID, AutoDownloadSetting autoDownload, AutoDeleteAction autoDeleteAction,
                            VolumeAdaptionSetting volumeAdaptionSetting, NewEpisodesAction newEpisodesAction,
                            String username, String password) {
         this(feedID, autoDownload, true, autoDeleteAction, volumeAdaptionSetting, username, password,
@@ -103,7 +126,7 @@ public class FeedPreferences implements Serializable {
                 false, newEpisodesAction, new HashSet<>());
     }
 
-    public FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated,
+    public FeedPreferences(long feedID, AutoDownloadSetting autoDownload, boolean keepUpdated,
                             AutoDeleteAction autoDeleteAction, VolumeAdaptionSetting volumeAdaptionSetting,
                             String username, String password, @NonNull FeedFilter filter,
                             float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding, SkipSilence feedSkipSilence,
@@ -168,12 +191,28 @@ public class FeedPreferences implements Serializable {
         this.feedID = feedID;
     }
 
-    public boolean getAutoDownload() {
-        return autoDownload;
+    public boolean getAutoDownload(boolean globalDefault) {
+        switch (this.autoDownload) {
+            case ENABLED -> {
+                return true;
+            }
+            case DISABLED -> {
+                return false;
+            }
+        }
+        return globalDefault;
+    }
+
+    public AutoDownloadSetting getAutoDownloadRaw() {
+        return this.autoDownload;
     }
 
     public void setAutoDownload(boolean autoDownload) {
-        this.autoDownload = autoDownload;
+        if(autoDownload) {
+            this.autoDownload = AutoDownloadSetting.ENABLED;
+        } else  {
+            this.autoDownload = AutoDownloadSetting.DISABLED;
+        }
     }
 
     public AutoDeleteAction getAutoDeleteAction() {
