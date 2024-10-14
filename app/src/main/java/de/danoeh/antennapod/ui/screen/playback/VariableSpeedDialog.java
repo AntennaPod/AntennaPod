@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,7 +38,11 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
     private final List<Float> selectedSpeeds;
     private PlaybackSpeedSeekBar speedSeekBar;
     private Chip addCurrentSpeedChip;
+    private LinearLayout skipSilenceToggleContainer;
+    private ImageView skipSilenceToggleButton;
     private CheckBox skipSilenceCheckbox;
+
+    private boolean skipSilenceVisible;
 
     public VariableSpeedDialog() {
         DecimalFormatSymbols format = new DecimalFormatSymbols(Locale.US);
@@ -103,6 +109,23 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         addCurrentSpeedChip.setOnCloseIconClickListener(v -> addCurrentSpeed());
         addCurrentSpeedChip.setCloseIconContentDescription(getString(R.string.add_preset));
         addCurrentSpeedChip.setOnClickListener(v -> addCurrentSpeed());
+
+        skipSilenceToggleButton = root.findViewById(R.id.skipSilenceVisibilityToggleIcon);
+
+        skipSilenceToggleContainer = root.findViewById(R.id.skipSilenceVisibilityToggle);
+        skipSilenceToggleContainer.setOnClickListener(
+                v -> {
+                    if (skipSilenceVisible) {
+                        skipSilenceVisible = false;
+                        skipSilenceCheckbox.setVisibility(View.GONE);
+                        skipSilenceToggleButton.setRotation(0);
+                    } else {
+                        skipSilenceVisible = true;
+                        skipSilenceCheckbox.setVisibility(View.VISIBLE);
+                        skipSilenceToggleButton.setRotation(180);
+                    }
+                }
+        );
 
         skipSilenceCheckbox = root.findViewById(R.id.skipSilence);
         skipSilenceCheckbox.setChecked(UserPreferences.isSkipSilence());

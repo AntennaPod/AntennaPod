@@ -42,10 +42,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <LinearLayout
+            android:id="@+id/skipSilenceVisibilityToggle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <ImageView
+                android:id="@+id/skipSilenceVisibilityToggleIcon"
+                android:padding="8dp"
+                android:src="@drawable/ic_arrow_down"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/advanced_settings"
+                style="@style/AntennaPod.TextView.ListItemSecondaryTitle" />
+
+    </LinearLayout>
+
     <CheckBox
         android:id="@+id/skipSilence"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginStart="4dp"
         android:text="@string/pref_skip_silence_title" />
 
 </LinearLayout>
