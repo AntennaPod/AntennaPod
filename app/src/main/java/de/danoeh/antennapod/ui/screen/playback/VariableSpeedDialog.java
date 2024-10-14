@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.ui.screen.playback;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -117,12 +119,38 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
                 v -> {
                     if (skipSilenceVisible) {
                         skipSilenceVisible = false;
-                        skipSilenceCheckbox.setVisibility(View.GONE);
-                        skipSilenceToggleButton.setRotation(0);
+                        skipSilenceCheckbox
+                                .animate()
+                                .alpha(0)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        super.onAnimationEnd(animation);
+                                        skipSilenceCheckbox.setVisibility(View.GONE);
+                                    }
+                                })
+                                .start();
+                        skipSilenceToggleButton
+                                .animate()
+                                .rotation(0)
+                                .start();
                     } else {
                         skipSilenceVisible = true;
-                        skipSilenceCheckbox.setVisibility(View.VISIBLE);
-                        skipSilenceToggleButton.setRotation(180);
+                        skipSilenceCheckbox
+                                .animate()
+                                .alpha(1)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationStart(Animator animation) {
+                                        super.onAnimationStart(animation);
+                                        skipSilenceCheckbox.setVisibility(View.VISIBLE);
+                                    }
+                                })
+                                .start();
+                        skipSilenceToggleButton
+                                .animate()
+                                .rotation(180)
+                                .start();
                     }
                 }
         );
