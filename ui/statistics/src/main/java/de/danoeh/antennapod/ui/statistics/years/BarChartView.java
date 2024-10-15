@@ -89,7 +89,7 @@ public class BarChartView extends AppCompatImageView {
             paintBars.setStrokeWidth(height * 0.015f);
             paintBars.setColor(colors[0]);
             int colorIndex = 0;
-			int firstYear = data.size() > 0 ? data.get(data.size()-1).getYear() : 0;
+			int firstYear = data.size() > 0 ? data.get(data.size() - 1).getYear() : 0;
             int lastYear = data.size() > 0 ? data.get(0).getYear() : 0;
 			int timeSpan = firstYear - lastYear;
 
