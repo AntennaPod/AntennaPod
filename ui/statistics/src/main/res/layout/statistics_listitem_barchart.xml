@@ -16,10 +16,10 @@
         android:layout_centerInParent="true" />
 
     <TextView
+        android:id="@+id/barchart_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:id="@+id/barchart_description"
         android:textAlignment="center"
         android:text="@string/statistics_years_barchart_description"
         android:layout_below="@id/barChart"
