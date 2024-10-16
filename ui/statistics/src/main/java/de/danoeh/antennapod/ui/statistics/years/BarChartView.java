@@ -85,7 +85,7 @@ public class BarChartView extends AppCompatImageView {
             final float stepSize = (width - textPadding) / (data.size() + 2);
             final float textSize = height * 0.06f;
 
-			paintGridText.setTextSize(textSize);
+            paintGridText.setTextSize(textSize);
             paintBars.setStrokeWidth(height * 0.015f);
             paintBars.setColor(colors[0]);
 
