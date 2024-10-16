@@ -97,7 +97,6 @@ public class BarChartView extends AppCompatImageView {
 
             for (int i = 0; i < data.size(); i++) {
                 float x = textPadding + (i + 1) * stepSize;
-
                 if ((lastYear != data.get(i).getYear()) || (i == 0 && displayFirstYearLabel)) {
                     lastYear = data.get(i).getYear();
                     colorIndex++;
