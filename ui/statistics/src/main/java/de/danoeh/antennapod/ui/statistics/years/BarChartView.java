@@ -108,7 +108,7 @@ public class BarChartView extends AppCompatImageView {
                     }
                     canvas.drawLine(x, height, x, barHeight, paintGridText);
                 }
-
+				
                 float valuePercentage = (float) Math.max(0.005, (float) data.get(i).getTimePlayed() / maxValue);
                 float y = (1 - valuePercentage) * barHeight;
                 canvas.drawRect(x, y, x + stepSize * 0.95f, barHeight, paintBars);
