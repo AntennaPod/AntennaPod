@@ -467,15 +467,15 @@ public class FeedSettingsFragment extends Fragment {
 
             boolean enableAutodownloadSwitch = feedPreferences.getAutoDownload(UserPreferences.defaultAutodownloadState());
             pref.setChecked(enableAutodownloadSwitch);
-            if(feedPreferences.getAutoDownloadRaw() == FeedPreferences.AutoDownloadSetting.DEFAULT) {
-                if(enableAutodownloadSwitch) {
+            if (feedPreferences.getAutoDownloadRaw() == FeedPreferences.AutoDownloadSetting.DEFAULT) {
+                if (enableAutodownloadSwitch) {
                     pref.setSummary(getString(R.string.auto_download_enabled_because_global));
                 } else {
                     pref.setSummary(getString(R.string.auto_download_disabled_because_global));
                 }
             }
 
-            if(!enableAutodownloadSwitch) {
+            if (!enableAutodownloadSwitch) {
                 findPreference(PREF_EPISODE_FILTER).setEnabled(false);
             }
 

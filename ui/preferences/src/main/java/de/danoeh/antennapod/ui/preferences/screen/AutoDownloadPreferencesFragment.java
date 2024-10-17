@@ -3,7 +3,6 @@ package de.danoeh.antennapod.ui.preferences.screen;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.preferences.R;
 
 public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
