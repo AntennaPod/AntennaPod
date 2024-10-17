@@ -108,6 +108,7 @@ public class FeedSettingsFragment extends Fragment {
 
     public static class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
         private static final String PREF_EPISODE_FILTER = "episodeFilter";
+        private static final String PREF_AUTODOWNLOAD = "autoDownload";
         private static final String PREF_SCREEN = "feedSettingsScreen";
         private static final String PREF_AUTHENTICATION = "authentication";
         private static final String PREF_AUTO_DELETE = "autoDelete";
@@ -462,7 +463,7 @@ public class FeedSettingsFragment extends Fragment {
         }
 
         private void setupAutoDownloadPreference() {
-            SwitchPreferenceCompat pref = findPreference("autoDownload");
+            SwitchPreferenceCompat pref = findPreference(PREF_AUTODOWNLOAD);
 
             boolean enableAutodownloadSwitch = feedPreferences.getAutoDownload(UserPreferences.defaultAutodownloadState());
             pref.setChecked(enableAutodownloadSwitch);
@@ -475,7 +476,7 @@ public class FeedSettingsFragment extends Fragment {
             }
 
             if(!enableAutodownloadSwitch) {
-                findPreference("episodeFilter").setEnabled(false);
+                findPreference(PREF_EPISODE_FILTER).setEnabled(false);
             }
 
             pref.setOnPreferenceChangeListener((preference, newValue) -> {
@@ -485,6 +486,7 @@ public class FeedSettingsFragment extends Fragment {
                 DBWriter.setFeedPreferences(feedPreferences);
                 updateAutoDownloadEnabled();
                 pref.setChecked(checked);
+                pref.setSummary("");
                 return false;
             });
         }
