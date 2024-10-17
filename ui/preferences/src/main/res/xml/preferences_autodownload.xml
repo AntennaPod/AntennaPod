@@ -16,7 +16,7 @@
             android:defaultValue="true"/>
     <SwitchPreferenceCompat
             android:defaultValue="false"
-            android:key="prefAutoDownloadNewEpisodesDefault"
+            android:key="prefEnableAutoDl"
             android:summary="Default for new Podcasts"
             android:title="Auto Download new Episodes"/>
 </PreferenceScreen>
