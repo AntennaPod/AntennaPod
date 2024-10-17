@@ -530,11 +530,6 @@ public abstract class UserPreferences {
         return Integer.parseInt(prefs.getString(PREF_EPISODE_CACHE_SIZE, "20"));
     }
 
-    @Deprecated
-    public static boolean isEnableAutodownload() {
-        return prefs.getBoolean(PREF_AUTODL_DEFAULT, false);
-    }
-
     public static boolean defaultAutodownloadState() {
         return prefs.getBoolean(PREF_AUTODL_DEFAULT, false);
     }

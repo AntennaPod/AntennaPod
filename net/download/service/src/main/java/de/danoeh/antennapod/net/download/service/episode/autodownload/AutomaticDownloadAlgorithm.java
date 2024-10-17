@@ -40,8 +40,7 @@ public class AutomaticDownloadAlgorithm {
         return () -> {
 
             // true if we should auto download based on network status
-            boolean networkShouldAutoDl = NetworkUtils.isAutoDownloadAllowed()
-                    && UserPreferences.isEnableAutodownload();
+            boolean networkShouldAutoDl = NetworkUtils.isAutoDownloadAllowed();
 
             // true if we should auto download based on power status
             boolean powerShouldAutoDl = deviceCharging(context) || UserPreferences.isEnableAutodownloadOnBattery();

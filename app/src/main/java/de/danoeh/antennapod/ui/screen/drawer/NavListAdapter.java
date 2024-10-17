@@ -216,7 +216,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
                 holder.count.setText(NumberFormat.getInstance().format(sum));
                 holder.count.setVisibility(View.VISIBLE);
             }
-        } else if (tag.equals(CompletedDownloadsFragment.TAG) && UserPreferences.isEnableAutodownload()) {
+        } else if (tag.equals(CompletedDownloadsFragment.TAG)) {
             int epCacheSize = UserPreferences.getEpisodeCacheSize();
             // don't count episodes that can be reclaimed
             int spaceUsed = itemAccess.getNumberOfDownloadedItems()
