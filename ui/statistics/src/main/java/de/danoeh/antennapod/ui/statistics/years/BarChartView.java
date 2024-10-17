@@ -84,27 +84,24 @@ public class BarChartView extends AppCompatImageView {
             final float textPadding = width * 0.05f;
             final float stepSize = (width - textPadding) / (data.size() + 2);
             final float textSize = height * 0.06f;
-
             paintGridText.setTextSize(textSize);
+
             paintBars.setStrokeWidth(height * 0.015f);
             paintBars.setColor(colors[0]);
-
             int colorIndex = 0;
-            int firstYear = data.size() > 0 ? data.get(data.size() - 1).getYear() : 0;
-            int lastYear = data.size() > 0 ? data.get(0).getYear() : 0;
-            int timeSpan = firstYear - lastYear;
-            boolean displayFirstYearLabel = timeSpan < 3;
+            int lastYear = data.size() > 0 ? data.get(data.size() - 1).getYear() : 0;
+            int prevYear = data.size() > 0 ? data.get(0).getYear() : 0;
+            int timeSpan = lastYear - prevYear;
+            boolean firstYearDisplay = timeSpan < 3;
 
             for (int i = 0; i < data.size(); i++) {
                 float x = textPadding + (i + 1) * stepSize;
-                if ((lastYear != data.get(i).getYear()) || (i == 0 && displayFirstYearLabel)) {
-                    lastYear = data.get(i).getYear();
+                if ((prevYear != data.get(i).getYear() || ((i == 0) && firstYearDisplay ))) {
+                    prevYear = data.get(i).getYear();
                     colorIndex++;
                     paintBars.setColor(colors[colorIndex % 2]);
-                    if (i < data.size()) {
-                        canvas.drawText(String.valueOf(data.get(i).getYear()), x + stepSize,
-                                barHeight + (height - barHeight + textSize) / 2, paintGridText);
-                    }
+                    canvas.drawText(String.valueOf(data.get(i).getYear()), x + (stepSize / 3),
+                        barHeight + (height - barHeight + textSize) / 2, paintGridText);
                     canvas.drawLine(x, height, x, barHeight, paintGridText);
                 }
 
@@ -116,13 +113,20 @@ public class BarChartView extends AppCompatImageView {
             float maxLine = (float) (Math.floor(maxValue / (10.0 * ONE_HOUR)) * 10 * ONE_HOUR);
             float y = (1 - (maxLine / maxValue)) * barHeight;
             canvas.drawLine(0, y, width, y, paintGridLines);
-            canvas.drawText(String.valueOf((long) maxLine / ONE_HOUR), 0, y + 1.2f * textSize, paintGridText);
+            if (maxLine > 0){
+                canvas.drawText(String.valueOf((long) maxLine / ONE_HOUR), 0,
+                    y + 1.2f * textSize, paintGridText);
+            }
 
             float midLine = maxLine / 2;
             y = (1 - (midLine / maxValue)) * barHeight;
             canvas.drawLine(0, y, width, y, paintGridLines);
-            canvas.drawText(String.valueOf((long) midLine / ONE_HOUR), 0, y + 1.2f * textSize, paintGridText);
+            if (midLine > 0){
+                canvas.drawText(String.valueOf((long) midLine / ONE_HOUR), 0,
+                    y + 1.2f * textSize, paintGridText);
+            }
         }
+
 
         @Override
         public int getOpacity() {
