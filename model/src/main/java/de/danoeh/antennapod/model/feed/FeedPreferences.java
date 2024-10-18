@@ -199,8 +199,10 @@ public class FeedPreferences implements Serializable {
             case DISABLED -> {
                 return false;
             }
+            default -> {
+                return globalDefault;
+            }
         }
-        return globalDefault;
     }
 
     public AutoDownloadSetting getAutoDownloadRaw() {
