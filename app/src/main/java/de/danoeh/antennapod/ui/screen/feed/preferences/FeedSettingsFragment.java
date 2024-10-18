@@ -261,6 +261,7 @@ public class FeedSettingsFragment extends Fragment {
                         int id = View.NO_ID;
                         switch (skipSilence) {
                             case OFF: id = R.id.skipSilenceOff; break;
+                            case MILD : id = R.id.skipSilenceMild; break;
                             case MEDIUM: id = R.id.skipSilenceMedium; break;
                             case AGGRESSIVE: id = R.id.skipSilenceAggressive; break;
                         }
@@ -278,10 +279,17 @@ public class FeedSettingsFragment extends Fragment {
                                 newSkipSilence = FeedPreferences.SkipSilence.GLOBAL;
                             } else {
                                 final int id = viewBinding.skipSilence.getCheckedButtonId();
-                                if (id == R.id.skipSilenceOff) newSkipSilence = FeedPreferences.SkipSilence.OFF;
-                                else if (id == R.id.skipSilenceMedium) newSkipSilence = FeedPreferences.SkipSilence.MEDIUM;
-                                else if (id == R.id.skipSilenceAggressive) newSkipSilence = FeedPreferences.SkipSilence.AGGRESSIVE;
-                                else newSkipSilence = FeedPreferences.SkipSilence.GLOBAL;
+                                if (id == R.id.skipSilenceOff) {
+                                    newSkipSilence = FeedPreferences.SkipSilence.OFF;
+                                } else if (id == R.id.skipSilenceMild) {
+                                    newSkipSilence = FeedPreferences.SkipSilence.MILD;
+                                } else if (id == R.id.skipSilenceMedium) {
+                                    newSkipSilence = FeedPreferences.SkipSilence.MEDIUM;
+                                } else if (id == R.id.skipSilenceAggressive) {
+                                    newSkipSilence = FeedPreferences.SkipSilence.AGGRESSIVE;
+                                } else {
+                                    newSkipSilence = FeedPreferences.SkipSilence.GLOBAL;
+                                }
                             }
                             feedPreferences.setFeedSkipSilence(newSkipSilence);
                             DBWriter.setFeedPreferences(feedPreferences);
