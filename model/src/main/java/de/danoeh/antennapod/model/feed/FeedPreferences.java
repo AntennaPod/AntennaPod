@@ -208,7 +208,7 @@ public class FeedPreferences implements Serializable {
     }
 
     public void setAutoDownload(boolean autoDownload) {
-        if(autoDownload) {
+        if (autoDownload) {
             this.autoDownload = AutoDownloadSetting.ENABLED;
         } else  {
             this.autoDownload = AutoDownloadSetting.DISABLED;
