@@ -52,8 +52,7 @@ public abstract class PlaybackSpeedUtils {
             }
         }
         if (skipSilence == FeedPreferences.SkipSilence.GLOBAL) {
-            skipSilence = UserPreferences.isSkipSilence()
-                    ? FeedPreferences.SkipSilence.AGGRESSIVE : FeedPreferences.SkipSilence.OFF;
+            skipSilence = UserPreferences.getSkipSilence();
         }
         return skipSilence;
     }

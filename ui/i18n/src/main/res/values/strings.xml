@@ -120,6 +120,9 @@
     <string name="no">No</string>
     <string name="reset">Reset</string>
     <string name="global_default">Global default</string>
+    <string name="skip_silence_mild">Mild</string>
+    <string name="skip_silence_medium">Medium</string>
+    <string name="skip_silence_aggressive">Aggressive</string>
     <string name="url_label">URL</string>
     <string name="support_funding_label">Support</string>
     <string name="support_podcast">Support this podcast</string>
