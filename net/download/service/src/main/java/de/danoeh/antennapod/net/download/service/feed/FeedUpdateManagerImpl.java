@@ -78,14 +78,9 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
             builder.putBoolean(EXTRA_NEXT_PAGE, nextPage);
         }
         workRequest.setInputData(builder.build());
-        OneTimeWorkRequest syncWorkRequest = new OneTimeWorkRequest.Builder(PreRefreshSyncWorker.class)
-                .setInitialDelay(0L, TimeUnit.MILLISECONDS)
-                .build();
-
-        WorkManager.getInstance(context)
-                .beginUniqueWork(WORK_ID_FEED_UPDATE_MANUAL, ExistingWorkPolicy.REPLACE, syncWorkRequest)
-                .then(workRequest.build())
-                .enqueue();
+        WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_FEED_UPDATE_MANUAL,
+                ExistingWorkPolicy.REPLACE, workRequest.build());
+        SyncService.syncImmediately(context);
     }
 
     public void runOnceOrAsk(@NonNull Context context) {
@@ -104,7 +99,7 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
         } else {
             confirmMobileRefresh(context, feed);
         }
-        SyncService.syncImmediately(context);
+
     }
 
     private void confirmMobileRefresh(final Context context, @Nullable Feed feed) {
