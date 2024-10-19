@@ -61,9 +61,6 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
     }
 
     public void runOnce(Context context, Feed feed, boolean nextPage) {
-        OneTimeWorkRequest syncWorkRequest = new OneTimeWorkRequest.Builder(PreRefreshSyncWorker.class)
-                .setInitialDelay(0L, TimeUnit.MILLISECONDS)
-                .build();
 
         OneTimeWorkRequest.Builder workRequest = new OneTimeWorkRequest.Builder(FeedUpdateWorker.class)
                 .setInitialDelay(0L, TimeUnit.MILLISECONDS)
@@ -80,6 +77,10 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
             builder.putBoolean(EXTRA_NEXT_PAGE, nextPage);
         }
         workRequest.setInputData(builder.build());
+        OneTimeWorkRequest syncWorkRequest = new OneTimeWorkRequest.Builder(PreRefreshSyncWorker.class)
+                .setInitialDelay(0L, TimeUnit.MILLISECONDS)
+                .build();
+
         WorkManager.getInstance(context)
                 .beginUniqueWork(WORK_ID_FEED_UPDATE_MANUAL, ExistingWorkPolicy.REPLACE, syncWorkRequest)
                 .then(workRequest.build())
