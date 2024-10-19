@@ -20,6 +20,7 @@ import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.net.download.service.R;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
+import de.danoeh.antennapod.net.sync.service.SyncService;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import org.greenrobot.eventbus.EventBus;
 import java.util.concurrent.TimeUnit;
@@ -103,6 +104,7 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
         } else {
             confirmMobileRefresh(context, feed);
         }
+        SyncService.syncImmediately(context);
     }
 
     private void confirmMobileRefresh(final Context context, @Nullable Feed feed) {
