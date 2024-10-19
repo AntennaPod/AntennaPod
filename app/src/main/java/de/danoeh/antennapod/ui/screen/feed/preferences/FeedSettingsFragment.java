@@ -108,6 +108,7 @@ public class FeedSettingsFragment extends Fragment {
 
     public static class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
         private static final String PREF_EPISODE_FILTER = "episodeFilter";
+        private static final String PREF_AUTODOWNLOAD = "autoDownload";
         private static final String PREF_SCREEN = "feedSettingsScreen";
         private static final String PREF_AUTHENTICATION = "authentication";
         private static final String PREF_AUTO_DELETE = "autoDelete";
@@ -180,7 +181,6 @@ public class FeedSettingsFragment extends Fragment {
                         feed = result;
                         feedPreferences = feed.getPreferences();
 
-                        setupAutoDownloadGlobalPreference();
                         setupAutoDownloadPreference();
                         setupKeepUpdatedPreference();
                         setupAutoDeletePreference();
@@ -462,25 +462,21 @@ public class FeedSettingsFragment extends Fragment {
             });
         }
 
-        private void setupAutoDownloadGlobalPreference() {
-            if (!UserPreferences.isEnableAutodownload()) {
-                SwitchPreferenceCompat autodl = findPreference("autoDownload");
-                autodl.setChecked(false);
-                autodl.setEnabled(false);
-                autodl.setSummary(R.string.auto_download_disabled_globally);
-                findPreference(PREF_EPISODE_FILTER).setEnabled(false);
-            }
-        }
-
         private void setupAutoDownloadPreference() {
-            SwitchPreferenceCompat pref = findPreference("autoDownload");
+            SwitchPreferenceCompat pref = findPreference(PREF_AUTODOWNLOAD);
 
-            pref.setEnabled(UserPreferences.isEnableAutodownload());
-            if (UserPreferences.isEnableAutodownload()) {
-                pref.setChecked(feedPreferences.getAutoDownload());
-            } else {
-                pref.setChecked(false);
-                pref.setSummary(R.string.auto_download_disabled_globally);
+            boolean enableAutodownloadSwitch = feedPreferences.getAutoDownload(UserPreferences.defaultAutodownloadState());
+            pref.setChecked(enableAutodownloadSwitch);
+            if (feedPreferences.getAutoDownloadRaw() == FeedPreferences.AutoDownloadSetting.DEFAULT) {
+                if (enableAutodownloadSwitch) {
+                    pref.setSummary(getString(R.string.auto_download_enabled_because_global));
+                } else {
+                    pref.setSummary(getString(R.string.auto_download_disabled_because_global));
+                }
+            }
+
+            if (!enableAutodownloadSwitch) {
+                findPreference(PREF_EPISODE_FILTER).setEnabled(false);
             }
 
             pref.setOnPreferenceChangeListener((preference, newValue) -> {
@@ -490,13 +486,14 @@ public class FeedSettingsFragment extends Fragment {
                 DBWriter.setFeedPreferences(feedPreferences);
                 updateAutoDownloadEnabled();
                 pref.setChecked(checked);
+                pref.setSummary("");
                 return false;
             });
         }
 
         private void updateAutoDownloadEnabled() {
             if (feed != null && feed.getPreferences() != null) {
-                boolean enabled = feed.getPreferences().getAutoDownload() && UserPreferences.isEnableAutodownload();
+                boolean enabled = feed.getPreferences().getAutoDownload(UserPreferences.defaultAutodownloadState());
                 findPreference(PREF_EPISODE_FILTER).setEnabled(enabled);
             }
         }

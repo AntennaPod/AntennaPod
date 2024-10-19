@@ -4,9 +4,6 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public abstract class EpisodeCleanupAlgorithmFactory {
     public static EpisodeCleanupAlgorithm build() {
-        if (!UserPreferences.isEnableAutodownload()) {
-            return new APNullCleanupAlgorithm();
-        }
         int cleanupValue = UserPreferences.getEpisodeCleanupValue();
         switch (cleanupValue) {
             case UserPreferences.EPISODE_CLEANUP_EXCEPT_FAVORITE:
