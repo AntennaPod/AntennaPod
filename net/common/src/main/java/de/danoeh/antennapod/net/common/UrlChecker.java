@@ -62,12 +62,19 @@ public final class UrlChecker {
             } catch (UnsupportedEncodingException e) {
                 return prepareUrl(query);
             }
+        } else if (lowerCaseUrl.contains("subscribeonandroid.com")) {
+            return prepareUrl(url.replaceFirst("((www.)?(subscribeonandroid.com/))", ""));
         } else if (!(lowerCaseUrl.startsWith("http://") || lowerCaseUrl.startsWith("https://"))) {
             Log.d(TAG, "Adding http:// at the beginning of the URL");
             return "http://" + url;
         } else {
             return url;
         }
+    }
+
+    public static boolean isDeeplinkWithoutUrl(String url) {
+        return url.toLowerCase(Locale.ROOT).contains(AP_SUBSCRIBE_DEEPLINK)
+                && Uri.parse(url).getQueryParameter("url") == null;
     }
 
     /**
