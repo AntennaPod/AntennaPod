@@ -5,19 +5,22 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Vibrator;
 import android.util.Log;
 
 public class ShakeListener implements SensorEventListener {
     private static final String TAG = ShakeListener.class.getSimpleName();
+    private final long mResetCount;
 
     private Sensor mAccelerometer;
     private SensorManager mSensorMgr;
-    private final PlaybackServiceTaskManager.SleepTimer mSleepTimer;
+    private final SleepTimer mSleepTimer;
     private final Context mContext;
 
-    public ShakeListener(Context context, PlaybackServiceTaskManager.SleepTimer sleepTimer) {
+    public ShakeListener(Context context, long resetCount, SleepTimer sleepTimer) {
         mContext = context;
         mSleepTimer = sleepTimer;
+        mResetCount = resetCount;
         resume();
     }
 
@@ -51,7 +54,12 @@ public class ShakeListener implements SensorEventListener {
         double gForce = Math.sqrt(gX*gX + gY*gY + gZ*gZ);
         if (gForce > 2.25) {
             Log.d(TAG, "Detected shake " + gForce);
-            mSleepTimer.restart();
+            mSleepTimer.reset(mResetCount);
+
+            Vibrator v = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
+            if (v != null) {
+                v.vibrate(100);
+            }
         }
     }
 
