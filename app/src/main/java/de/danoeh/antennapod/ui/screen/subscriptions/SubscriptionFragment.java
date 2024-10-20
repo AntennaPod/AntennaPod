@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -21,6 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import de.danoeh.antennapod.ui.common.AnimatedFragment;
 import de.danoeh.antennapod.ui.screen.AddFeedFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
@@ -55,7 +55,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Fragment for displaying feed subscriptions
  */
-public class SubscriptionFragment extends Fragment
+public class SubscriptionFragment extends AnimatedFragment
         implements MaterialToolbar.OnMenuItemClickListener,
         SubscriptionsRecyclerAdapter.OnSelectModeListener {
     public static final String TAG = "SubscriptionFragment";

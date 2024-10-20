@@ -24,6 +24,7 @@ import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.ui.common.AnimatedFragment;
 import de.danoeh.antennapod.ui.echo.EchoConfig;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.ui.screen.home.sections.AllowNotificationsSection;
@@ -50,7 +51,7 @@ import java.util.List;
 /**
  * Shows unread or recently published episodes
  */
-public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
+public class HomeFragment extends AnimatedFragment implements Toolbar.OnMenuItemClickListener {
 
     public static final String TAG = "HomeFragment";
     public static final String PREF_NAME = "PrefHomeFragment";
@@ -91,25 +92,25 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             if (!prefs.getBoolean(HomeFragment.PREF_DISABLE_NOTIFICATION_PERMISSION_NAG, false)) {
-                addSection(new AllowNotificationsSection());
+                addSection(new AllowNotificationsSection(), R.id.home_section_notifications);
             }
         }
         if (Calendar.getInstance().get(Calendar.YEAR) == EchoConfig.RELEASE_YEAR
                 && Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER
                 && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) >= 10
                 && prefs.getInt(PREF_HIDE_ECHO, 0) != EchoConfig.RELEASE_YEAR) {
-            addSection(new EchoSection());
+            addSection(new EchoSection(), R.id.home_section_echo);
         }
 
         List<String> sectionTags = HomePreferences.getSortedSectionTags(getContext());
         for (String sectionTag : sectionTags) {
-            addSection(getSection(sectionTag));
+            addSection(getSection(sectionTag), getSectionId(sectionTag));
         }
     }
 
-    private void addSection(Fragment section) {
+    private void addSection(Fragment section, int id) {
         FragmentContainerView containerView = new FragmentContainerView(getContext());
-        containerView.setId(View.generateViewId());
+        containerView.setId(id);
         viewBinding.homeContainer.addView(containerView);
         getChildFragmentManager().beginTransaction().add(containerView.getId(), section).commit();
     }
@@ -128,6 +129,23 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                 return new DownloadsSection();
             default:
                 return null;
+        }
+    }
+
+    private int getSectionId(String tag) {
+        switch (tag) {
+            case QueueSection.TAG:
+                return R.id.home_section_queue;
+            case InboxSection.TAG:
+                return R.id.home_section_inbox;
+            case EpisodesSurpriseSection.TAG:
+                return R.id.home_section_surprise;
+            case SubscriptionsSection.TAG:
+                return R.id.home_section_subscriptions;
+            case DownloadsSection.TAG:
+                return R.id.home_section_downloads;
+            default:
+                return 0;
         }
     }
 

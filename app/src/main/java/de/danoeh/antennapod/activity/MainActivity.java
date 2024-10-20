@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import androidx.activity.OnBackPressedCallback;
 import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,7 +58,6 @@ import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
@@ -77,6 +77,7 @@ import de.danoeh.antennapod.ui.screen.drawer.NavListAdapter;
 import de.danoeh.antennapod.ui.screen.drawer.NavigationNames;
 import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 import de.danoeh.antennapod.ui.screen.home.HomeFragment;
+import de.danoeh.antennapod.ui.view.BottomSheetBackPressedCallback;
 import de.danoeh.antennapod.ui.screen.playback.audio.AudioPlayerFragment;
 import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
 import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
@@ -120,6 +121,8 @@ public class MainActivity extends CastEnabledActivity {
     private Disposable bottomNavigationBadgeLoader = null;
     private View navDrawer;
     private LockableBottomSheetBehavior sheetBehavior;
+    private OnBackPressedCallback bottomSheetBackPressedCallback;
+
     private RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
     private int lastTheme = 0;
     private Insets systemBarInsets = Insets.NONE;
@@ -203,6 +206,8 @@ public class MainActivity extends CastEnabledActivity {
         sheetBehavior = (LockableBottomSheetBehavior) BottomSheetBehavior.from(bottomSheet);
         sheetBehavior.setHideable(false);
         sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
+        bottomSheetBackPressedCallback = new BottomSheetBackPressedCallback(sheetBehavior);
+        getOnBackPressedDispatcher().addCallback(this, bottomSheetBackPressedCallback);
 
         FeedUpdateManager.getInstance().restartUpdateAlarm(this, false);
         SynchronizationQueueSink.syncNowIfNotSyncedRecently();
@@ -290,6 +295,11 @@ public class MainActivity extends CastEnabledActivity {
                 onSlide(view, 0.0f);
             } else if (state == BottomSheetBehavior.STATE_EXPANDED) {
                 onSlide(view, 1.0f);
+            }
+            if (state == BottomSheetBehavior.STATE_EXPANDED || state == BottomSheetBehavior.STATE_HALF_EXPANDED) {
+                bottomSheetBackPressedCallback.setEnabled(true);
+            } else if (state == BottomSheetBehavior.STATE_COLLAPSED || state == BottomSheetBehavior.STATE_HIDDEN) {
+                bottomSheetBackPressedCallback.setEnabled(false);
             }
         }
 
@@ -484,29 +494,13 @@ public class MainActivity extends CastEnabledActivity {
         }
     }
 
-    public void loadChildFragment(Fragment fragment, TransitionEffect transition) {
-        Validate.notNull(fragment);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        if (transition == TransitionEffect.FADE) {
-            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-        } else if (transition == TransitionEffect.SLIDE) {
-            transaction.setCustomAnimations(
-                    R.anim.slide_right_in,
-                    R.anim.slide_left_out,
-                    R.anim.slide_left_in,
-                    R.anim.slide_right_out);
-        }
-
-        transaction
-                .hide(getSupportFragmentManager().findFragmentByTag(MAIN_FRAGMENT_TAG))
-                .add(R.id.main_content_view, fragment, MAIN_FRAGMENT_TAG)
-                .addToBackStack(null)
-                .commit();
-    }
-
     public void loadChildFragment(Fragment fragment) {
-        loadChildFragment(fragment, TransitionEffect.NONE);
+        Validate.notNull(fragment);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_content_view, fragment, MAIN_FRAGMENT_TAG)
+                .addToBackStack(null)
+                .commitAllowingStateLoss();
     }
 
     private void buildBottomNavigationMenu() {
@@ -707,11 +701,7 @@ public class MainActivity extends CastEnabledActivity {
 
     @Override
     public void onBackPressed() {
-        if (isDrawerOpen() && drawerLayout != null) {
-            drawerLayout.closeDrawer(navDrawer);
-        } else if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        } else if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
+        if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
             super.onBackPressed();
         } else {
             String toPage = UserPreferences.getDefaultPage();
