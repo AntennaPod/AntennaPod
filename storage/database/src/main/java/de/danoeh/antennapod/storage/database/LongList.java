@@ -200,7 +200,7 @@ public final class LongList {
 
     /**
      * Removes an element at a given index, shifting elements at greater
-     * indicies down one.
+     * indices down one.
      *
      * @param index index of element to remove
      */

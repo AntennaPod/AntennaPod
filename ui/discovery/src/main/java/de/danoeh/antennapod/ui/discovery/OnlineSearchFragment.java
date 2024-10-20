@@ -46,7 +46,7 @@ public class OnlineSearchFragment extends Fragment {
     private TextView txtvEmpty;
 
     /**
-     * List of podcasts retreived from the search
+     * List of podcasts retrieved from the search
      */
     private List<PodcastSearchResult> searchResults;
     private Disposable disposable;
