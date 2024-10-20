@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.ui.preferences.screen.downloads;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.StatFs;
 import android.text.format.Formatter;
 import android.view.LayoutInflater;
@@ -23,13 +24,13 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
     private final Consumer<String> selectionHandler;
     private final String currentPath;
     private final List<StoragePath> entries;
-    private final String freeSpaceString;
+    private final Resources resources;
 
     public DataFolderAdapter(Context context, @NonNull Consumer<String> selectionHandler) {
         this.entries = getStorageEntries(context);
         this.currentPath = getCurrentPath();
         this.selectionHandler = selectionHandler;
-        this.freeSpaceString = context.getString(R.string.choose_data_directory_available_space);
+        this.resources = context.getResources();
     }
 
     @NonNull
@@ -44,11 +45,19 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         StoragePath storagePath = entries.get(position);
         Context context = holder.root.getContext();
-        String freeSpace = Formatter.formatShortFileSize(context, storagePath.getAvailableSpace());
+        long availableSpace = storagePath.getAvailableSpace();
+        String freeSpace = Formatter.formatShortFileSize(context, availableSpace);
         String totalSpace = Formatter.formatShortFileSize(context, storagePath.getTotalSpace());
 
         holder.path.setText(storagePath.getPath());
-        holder.size.setText(String.format(freeSpaceString, freeSpace, totalSpace));
+        int quantity = (int) (availableSpace / (1024L * 1024L));
+        String sizeText = resources.getQuantityString(
+                R.plurals.choose_data_directory_available_space,
+                quantity,
+                freeSpace,
+                totalSpace
+        );
+        holder.size.setText(sizeText);
         holder.progressBar.setProgress(storagePath.getUsagePercentage());
         View.OnClickListener selectListener = v -> selectionHandler.accept(storagePath.getPath());
         holder.root.setOnClickListener(selectListener);
