@@ -20,9 +20,9 @@ import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.net.download.service.R;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
+import de.danoeh.antennapod.net.sync.service.SyncService;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import org.greenrobot.eventbus.EventBus;
-
 import java.util.concurrent.TimeUnit;
 
 public class FeedUpdateManagerImpl extends FeedUpdateManager {
@@ -62,6 +62,7 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
     }
 
     public void runOnce(Context context, Feed feed, boolean nextPage) {
+
         OneTimeWorkRequest.Builder workRequest = new OneTimeWorkRequest.Builder(FeedUpdateWorker.class)
                 .setInitialDelay(0L, TimeUnit.MILLISECONDS)
                 .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
@@ -79,6 +80,7 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
         workRequest.setInputData(builder.build());
         WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_FEED_UPDATE_MANUAL,
                 ExistingWorkPolicy.REPLACE, workRequest.build());
+        SyncService.syncImmediately(context);
     }
 
     public void runOnceOrAsk(@NonNull Context context) {
@@ -97,6 +99,7 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
         } else {
             confirmMobileRefresh(context, feed);
         }
+
     }
 
     private void confirmMobileRefresh(final Context context, @Nullable Feed feed) {
