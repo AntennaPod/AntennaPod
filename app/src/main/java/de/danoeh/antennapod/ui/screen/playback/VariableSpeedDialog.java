@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.ui.screen.playback;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -7,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,7 +40,11 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
     private final List<Float> selectedSpeeds;
     private PlaybackSpeedSeekBar speedSeekBar;
     private Chip addCurrentSpeedChip;
+    private LinearLayout skipSilenceToggleContainer;
+    private ImageView skipSilenceToggleButton;
     private CheckBox skipSilenceCheckbox;
+
+    private boolean skipSilenceVisible;
 
     public VariableSpeedDialog() {
         DecimalFormatSymbols format = new DecimalFormatSymbols(Locale.US);
@@ -103,6 +111,49 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         addCurrentSpeedChip.setOnCloseIconClickListener(v -> addCurrentSpeed());
         addCurrentSpeedChip.setCloseIconContentDescription(getString(R.string.add_preset));
         addCurrentSpeedChip.setOnClickListener(v -> addCurrentSpeed());
+
+        skipSilenceToggleButton = root.findViewById(R.id.skipSilenceVisibilityToggleIcon);
+
+        skipSilenceToggleContainer = root.findViewById(R.id.skipSilenceVisibilityToggle);
+        skipSilenceToggleContainer.setOnClickListener(
+                v -> {
+                    if (skipSilenceVisible) {
+                        skipSilenceVisible = false;
+                        skipSilenceCheckbox
+                                .animate()
+                                .alpha(0)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        super.onAnimationEnd(animation);
+                                        skipSilenceCheckbox.setVisibility(View.GONE);
+                                    }
+                                })
+                                .start();
+                        skipSilenceToggleButton
+                                .animate()
+                                .rotation(0)
+                                .start();
+                    } else {
+                        skipSilenceVisible = true;
+                        skipSilenceCheckbox
+                                .animate()
+                                .alpha(1)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationStart(Animator animation) {
+                                        super.onAnimationStart(animation);
+                                        skipSilenceCheckbox.setVisibility(View.VISIBLE);
+                                    }
+                                })
+                                .start();
+                        skipSilenceToggleButton
+                                .animate()
+                                .rotation(180)
+                                .start();
+                    }
+                }
+        );
 
         skipSilenceCheckbox = root.findViewById(R.id.skipSilence);
         skipSilenceCheckbox.setChecked(UserPreferences.isSkipSilence());
