@@ -132,7 +132,7 @@ public class PlaybackServiceMediaPlayerTest {
     private Playable writeTestPlayable(String downloadUrl, String fileUrl) {
         Feed f = new Feed(0, null, "f", "l", "d", null, null, null, null,
                 "i", null, null, "l", System.currentTimeMillis());
-        FeedPreferences prefs = new FeedPreferences(f.getId(), false, FeedPreferences.AutoDeleteAction.NEVER,
+        FeedPreferences prefs = new FeedPreferences(f.getId(), FeedPreferences.AutoDownloadSetting.DEFAULT, FeedPreferences.AutoDeleteAction.NEVER,
                 VolumeAdaptionSetting.OFF, FeedPreferences.NewEpisodesAction.NOTHING, null, null);
         f.setPreferences(prefs);
         f.setItems(new ArrayList<>());
