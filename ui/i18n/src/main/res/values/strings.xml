@@ -751,6 +751,7 @@
     <string name="statistics_expected_next_episode_any_day">Any day now</string>
     <string name="statistics_expected_next_episode_unknown">Unknown</string>
     <string name="statistics_view_all">All podcasts »</string>
+    <string name="statistics_years_barchart_description">Time played per month</string>
     <string name="wait_icon" translatable="false">…</string>
     <string name="edit_url_menu">Edit feed URL</string>
     <string name="edit_url_confirmation_msg">Changing the RSS address can easily break the playback state and episode listings of the podcast. We do NOT recommend changing it and will NOT provide support if anything goes wrong. This cannot be undone. The broken subscription CANNOT be repaired by simply changing the address back. We recommend creating a backup before continuing.</string>
@@ -871,5 +872,4 @@
     <string name="shortcut_subscription_label">Subscription shortcut</string>
     <string name="shortcut_select_subscription">Select subscription</string>
     <string name="add_shortcut">Add shortcut</string>
-    <string name="statistics_years_barchart_description">Time played per month</string>
 </resources>

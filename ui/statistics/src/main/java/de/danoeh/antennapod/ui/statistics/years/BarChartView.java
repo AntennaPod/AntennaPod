@@ -91,18 +91,20 @@ public class BarChartView extends AppCompatImageView {
             int colorIndex = 0;
             int lastYear = data.size() > 0 ? data.get(data.size() - 1).getYear() : 0;
             int prevYear = data.size() > 0 ? data.get(0).getYear() : 0;
+			int prevMonth = data.size() > 0 ? data.get(0).getMonth() : 0;
             int timeSpan = lastYear - prevYear;
             boolean firstYearDisplay = timeSpan < 3;
 
             for (int i = 0; i < data.size(); i++) {
                 float x = textPadding + (i + 1) * stepSize;
-                if ((prevYear != data.get(i).getYear()) || ((i == 0) && firstYearDisplay)) {
+                if ((prevYear != data.get(i).getYear()) || ((i == 0) && firstYearDisplay) && (prevMonth <= 10)) {
                     prevYear = data.get(i).getYear();
                     colorIndex++;
                     paintBars.setColor(colors[colorIndex % 2]);
-                    canvas.drawText(String.valueOf(data.get(i).getYear()), x + (stepSize / 3),
-                            barHeight + (height - barHeight + textSize) / 2, paintGridText);
-                    canvas.drawLine(x, height, x, barHeight, paintGridText);
+					if (data.get(i).getMonth() == 1){
+                    	canvas.drawText(String.valueOf(data.get(i).getYear()), x + (stepSize / 3), barHeight + (height - barHeight + textSize) / 2, paintGridText);
+                    	canvas.drawLine(x, height, x, barHeight, paintGridText);
+					}
                 }
 
                 float valuePercentage = (float) Math.max(0.005, (float) data.get(i).getTimePlayed() / maxValue);
@@ -113,20 +115,13 @@ public class BarChartView extends AppCompatImageView {
             float maxLine = (float) (Math.floor(maxValue / (10.0 * ONE_HOUR)) * 10 * ONE_HOUR);
             float y = (1 - (maxLine / maxValue)) * barHeight;
             canvas.drawLine(0, y, width, y, paintGridLines);
-            if (maxLine > 0) {
-                canvas.drawText(String.valueOf((long) maxLine / ONE_HOUR), 0,
-                        y + 1.2f * textSize, paintGridText);
-            }
+            canvas.drawText(String.valueOf((long) maxLine / ONE_HOUR), 0, y + 1.2f * textSize, paintGridText);
 
             float midLine = maxLine / 2;
             y = (1 - (midLine / maxValue)) * barHeight;
             canvas.drawLine(0, y, width, y, paintGridLines);
-            if (midLine > 0) {
-                canvas.drawText(String.valueOf((long) midLine / ONE_HOUR), 0,
-                        y + 1.2f * textSize, paintGridText);
-            }
+            canvas.drawText(String.valueOf((long) midLine / ONE_HOUR), 0, y + 1.2f * textSize, paintGridText);
         }
-
 
         @Override
         public int getOpacity() {
