@@ -260,10 +260,19 @@ public class FeedSettingsFragment extends Fragment {
                 } else {
                     int id = View.NO_ID;
                     switch (skipSilence) {
-                        case OFF: id = R.id.skipSilenceOff; break;
-                        case MILD : id = R.id.skipSilenceMild; break;
-                        case MEDIUM: id = R.id.skipSilenceMedium; break;
-                        case AGGRESSIVE: id = R.id.skipSilenceAggressive; break;
+                        case MILD:
+                            id = R.id.skipSilenceMild;
+                            break;
+                        case MEDIUM:
+                            id = R.id.skipSilenceMedium;
+                            break;
+                        case AGGRESSIVE:
+                            id = R.id.skipSilenceAggressive;
+                            break;
+                        case OFF:
+                        default:
+                            id = R.id.skipSilenceOff;
+                            break;
                     }
                     viewBinding.skipSilence.check(id);
                 }

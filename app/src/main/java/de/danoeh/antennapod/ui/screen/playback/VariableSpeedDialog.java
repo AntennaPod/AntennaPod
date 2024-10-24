@@ -3,7 +3,6 @@ package de.danoeh.antennapod.ui.screen.playback;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class VariableSpeedDialog extends BottomSheetDialogFragment {
-    static String TAG = "VariableSpeedDialog";
     private SpeedSelectionAdapter adapter;
     private PlaybackController controller;
     private final List<Float> selectedSpeeds;
@@ -146,7 +144,7 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
 
         skipSilenceToggleGroup = root.findViewById(R.id.skipSilence);
         skipSilenceToggleGroup.addOnButtonCheckedListener(
-            (group, checkedId, isChecked) -> onSkipSilenceChanged(group, checkedId, isChecked));
+                (group, checkedId, isChecked) -> onSkipSilenceChanged(group, checkedId, isChecked));
         updateSkipSilence(UserPreferences.getSkipSilence());
         return root;
     }
