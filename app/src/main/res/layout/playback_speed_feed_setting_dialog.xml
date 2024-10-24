@@ -20,17 +20,17 @@
         android:gravity="center_vertical">
 
         <de.danoeh.antennapod.ui.screen.playback.PlaybackSpeedSeekBar
-           android:id="@+id/seekBar"
-           android:layout_width="0dp"
-           android:layout_height="wrap_content"
-           android:layout_weight="1" />
+            android:id="@+id/seekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <TextView
-           android:id="@+id/currentSpeedLabel"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginStart="8dp"
-           android:layout_marginLeft="8dp" />
+            android:id="@+id/currentSpeedLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp" />
 
     </LinearLayout>
 
