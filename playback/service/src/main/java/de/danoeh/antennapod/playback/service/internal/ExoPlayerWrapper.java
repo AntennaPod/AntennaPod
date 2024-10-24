@@ -112,10 +112,18 @@ public class ExoPlayerWrapper {
         trackSelector = new DefaultTrackSelector(context);
         final int skipSilenceDurationUs;
         switch (skipSilence) {
-            case MILD: skipSilenceDurationUs = 100_000; break;
-            case MEDIUM: skipSilenceDurationUs = 300_000; break;
-            case AGGRESSIVE: skipSilenceDurationUs = 50_000; break;
-            default: skipSilenceDurationUs = 0;
+            case MILD:
+                skipSilenceDurationUs = 100_000;
+                break;
+            case MEDIUM:
+                skipSilenceDurationUs = 300_000;
+                break;
+            case AGGRESSIVE:
+                skipSilenceDurationUs = 50_000;
+                break;
+            default:
+                skipSilenceDurationUs = 0;
+                break;
         }
         exoPlayer = new ExoPlayer.Builder(context, new DefaultRenderersFactory(context) {
             @Override
@@ -323,9 +331,13 @@ public class ExoPlayerWrapper {
             final int position = getCurrentPosition();
             exoPlayer.release();
             createPlayer();
-            if (mediaSource != null) prepare();
+            if (mediaSource != null) {
+                prepare();
+            }
             exoPlayer.seekTo(position);
-            if (wasPlaying) exoPlayer.play();
+            if (wasPlaying) {
+                exoPlayer.play();
+            }
         }
         exoPlayer.setSkipSilenceEnabled(skipSilence != FeedPreferences.SkipSilence.OFF);
         exoPlayer.setPlaybackParameters(playbackParameters);

@@ -173,8 +173,9 @@ public class PreferenceUpgrader {
         }
 
         if (oldVersion < 3060000) {
-            FeedPreferences.SkipSilence skipSilence = prefs.getBoolean(PREF_PLAYBACK_SKIP_SILENCE, false) ?
-                    FeedPreferences.SkipSilence.AGGRESSIVE : FeedPreferences.SkipSilence.OFF;
+            FeedPreferences.SkipSilence skipSilence = prefs.getBoolean(PREF_PLAYBACK_SKIP_SILENCE, false)
+                    ? FeedPreferences.SkipSilence.AGGRESSIVE
+                    : FeedPreferences.SkipSilence.OFF;
             setSkipSilence(skipSilence);
         }
     }

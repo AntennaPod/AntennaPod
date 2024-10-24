@@ -255,18 +255,18 @@ public class FeedSettingsFragment extends Fragment {
                 boolean isGlobal = speed == FeedPreferences.SPEED_USE_GLOBAL;
                 viewBinding.useGlobalCheckbox.setChecked(isGlobal);
                 viewBinding.seekBar.updateSpeed(isGlobal ? 1 : speed);
-                    if (isGlobal) {
-                        viewBinding.skipSilence.clearChecked();
-                    } else {
-                        int id = View.NO_ID;
-                        switch (skipSilence) {
-                            case OFF: id = R.id.skipSilenceOff; break;
-                            case MILD : id = R.id.skipSilenceMild; break;
-                            case MEDIUM: id = R.id.skipSilenceMedium; break;
-                            case AGGRESSIVE: id = R.id.skipSilenceAggressive; break;
-                        }
-                        viewBinding.skipSilence.check(id);
+                if (isGlobal) {
+                    viewBinding.skipSilence.clearChecked();
+                } else {
+                    int id = View.NO_ID;
+                    switch (skipSilence) {
+                        case OFF: id = R.id.skipSilenceOff; break;
+                        case MILD : id = R.id.skipSilenceMild; break;
+                        case MEDIUM: id = R.id.skipSilenceMedium; break;
+                        case AGGRESSIVE: id = R.id.skipSilenceAggressive; break;
                     }
+                    viewBinding.skipSilence.check(id);
+                }
                 new MaterialAlertDialogBuilder(getContext())
                         .setTitle(R.string.playback_speed)
                         .setView(viewBinding.getRoot())

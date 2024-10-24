@@ -3,6 +3,7 @@ package de.danoeh.antennapod.ui.screen.playback;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class VariableSpeedDialog extends BottomSheetDialogFragment {
+    static String TAG = "VariableSpeedDialog";
     private SpeedSelectionAdapter adapter;
     private PlaybackController controller;
     private final List<Float> selectedSpeeds;
@@ -78,10 +80,19 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
     public void updateSkipSilence(FeedPreferences.SkipSilence skipSilence) {
         int id = View.NO_ID;
         switch (skipSilence) {
-            case OFF: id = R.id.skipSilenceOff; break;
-            case MILD: id = R.id.skipSilenceMild; break;
-            case MEDIUM: id = R.id.skipSilenceMedium; break;
-            case AGGRESSIVE: id = R.id.skipSilenceAggressive; break;
+            case MILD:
+                id = R.id.skipSilenceMild;
+                break;
+            case MEDIUM:
+                id = R.id.skipSilenceMedium;
+                break;
+            case AGGRESSIVE:
+                id = R.id.skipSilenceAggressive;
+                break;
+            case OFF:
+            default:
+                id = R.id.skipSilenceOff;
+                break;
         }
         skipSilenceToggleGroup.check(id);
     }
@@ -96,7 +107,7 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
             opt = FeedPreferences.SkipSilence.MILD;
         } else if (id == R.id.skipSilenceMedium) {
             opt = FeedPreferences.SkipSilence.MEDIUM;
-        } else if (id == R.id.skipSilenceAggressive){
+        } else if (id == R.id.skipSilenceAggressive) {
             opt = FeedPreferences.SkipSilence.AGGRESSIVE;
         }
         if (UserPreferences.getSkipSilence() != opt) {
