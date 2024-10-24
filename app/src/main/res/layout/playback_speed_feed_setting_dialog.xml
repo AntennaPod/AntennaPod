@@ -83,4 +83,5 @@
             style="@style/OutlinedButtonBetterContrast" />
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
+
 </LinearLayout>
