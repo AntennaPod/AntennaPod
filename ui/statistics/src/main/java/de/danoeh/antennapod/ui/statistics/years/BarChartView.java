@@ -102,10 +102,10 @@ public class BarChartView extends AppCompatImageView {
                     colorIndex++;
                     paintBars.setColor(colors[colorIndex % 2]);
                     if (data.get(i).getMonth() == 1) {
-                    	canvas.drawText(String.valueOf(data.get(i).getYear()), x + (stepSize / 3),
+                        canvas.drawText(String.valueOf(data.get(i).getYear()), x + (stepSize / 3),
                                 barHeight + (height - barHeight + textSize) / 2, paintGridText);
                         canvas.drawLine(x, height, x, barHeight, paintGridText);
-					}
+                    }
                 }
 
                 float valuePercentage = (float) Math.max(0.005, (float) data.get(i).getTimePlayed() / maxValue);
