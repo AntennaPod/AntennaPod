@@ -91,7 +91,7 @@ public class BarChartView extends AppCompatImageView {
             int colorIndex = 0;
             int lastYear = data.size() > 0 ? data.get(data.size() - 1).getYear() : 0;
             int prevYear = data.size() > 0 ? data.get(0).getYear() : 0;
-			int prevMonth = data.size() > 0 ? data.get(0).getMonth() : 0;
+            int prevMonth = data.size() > 0 ? data.get(0).getMonth() : 0;
             int timeSpan = lastYear - prevYear;
             boolean firstYearDisplay = timeSpan < 3;
 
@@ -101,9 +101,10 @@ public class BarChartView extends AppCompatImageView {
                     prevYear = data.get(i).getYear();
                     colorIndex++;
                     paintBars.setColor(colors[colorIndex % 2]);
-					if (data.get(i).getMonth() == 1){
-                    	canvas.drawText(String.valueOf(data.get(i).getYear()), x + (stepSize / 3), barHeight + (height - barHeight + textSize) / 2, paintGridText);
-                    	canvas.drawLine(x, height, x, barHeight, paintGridText);
+                    if (data.get(i).getMonth() == 1) {
+                    	canvas.drawText(String.valueOf(data.get(i).getYear()), x + (stepSize / 3),
+                                barHeight + (height - barHeight + textSize) / 2, paintGridText);
+                        canvas.drawLine(x, height, x, barHeight, paintGridText);
 					}
                 }
 
