@@ -12,9 +12,8 @@ import androidx.annotation.Nullable;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
-import de.danoeh.antennapod.net.sync.service.SyncService;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationProvider;
-import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.net.sync.nextcloud.NextcloudLoginFlow;
@@ -93,11 +92,11 @@ public class NextcloudAuthenticationFragment extends DialogFragment
         SynchronizationSettings.setSelectedSyncProvider(
                 SynchronizationProvider.NEXTCLOUD_GPODDER.getIdentifier());
         SynchronizationCredentials.clear();
-        SynchronizationQueueSink.clearQueue(getContext());
+        SynchronizationQueue.getInstance().clear();
         SynchronizationCredentials.setPassword(password);
         SynchronizationCredentials.setHosturl(server);
         SynchronizationCredentials.setUsername(username);
-        SyncService.fullSync(getContext());
+        SynchronizationQueue.getInstance().fullSync();
         if (isResumed()) {
             dismiss();
         } else {
