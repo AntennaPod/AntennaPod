@@ -80,7 +80,7 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
         workRequest.setInputData(builder.build());
         WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_FEED_UPDATE_MANUAL,
                 ExistingWorkPolicy.REPLACE, workRequest.build());
-        SynchronizationQueueSink.AfterRefreshSync();
+        SynchronizationQueueSink.afterRefreshSync();
     }
 
     public void runOnceOrAsk(@NonNull Context context) {
