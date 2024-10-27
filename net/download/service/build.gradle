@@ -23,7 +23,7 @@ dependencies {
     implementation project(':ui:app-start-intent')
     implementation project(':ui:chapters')
     implementation project(':ui:transcript')
-    implementation project(':net:sync:service')
+
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.core:core:$coreVersion"

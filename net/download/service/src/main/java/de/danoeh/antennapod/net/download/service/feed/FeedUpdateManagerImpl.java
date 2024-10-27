@@ -20,7 +20,7 @@ import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.net.download.service.R;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
-import de.danoeh.antennapod.net.sync.service.SyncService;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import org.greenrobot.eventbus.EventBus;
 import java.util.concurrent.TimeUnit;
@@ -80,7 +80,7 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
         workRequest.setInputData(builder.build());
         WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_FEED_UPDATE_MANUAL,
                 ExistingWorkPolicy.REPLACE, workRequest.build());
-        SyncService.syncImmediately(context);
+        SynchronizationQueueSink.AfterRefreshSync();
     }
 
     public void runOnceOrAsk(@NonNull Context context) {

@@ -78,5 +78,14 @@ public class SynchronizationQueueSink {
                 .build();
         enqueueEpisodeActionIfSynchronizationIsActive(context, action);
     }
+    public static void AfterRefreshSync() {
+        if (!SynchronizationSettings.isProviderConnected()) {
+            return;
+        }
+        LockingAsyncExecutor.executeLockedAsync(() -> {
+            syncNow();
+        });
+    }
+
 
 }
