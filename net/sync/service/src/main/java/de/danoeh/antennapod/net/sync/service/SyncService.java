@@ -15,7 +15,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.util.Pair;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.SyncServiceEvent;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -70,12 +69,21 @@ public class SyncService extends Worker {
             return Result.success();
         }
 
-        SynchronizationSettings.updateLastSynchronizationAttempt();
+        if (currentlyActive) {
+            return Result.success();
+        }
         currentlyActive = true;
+        SynchronizationSettings.updateLastSynchronizationAttempt();
         try {
             activeSyncProvider.login();
             syncSubscriptions(activeSyncProvider);
-            waitForDownloadServiceCompleted();
+            if (someFeedWasNotRefreshedYet()) {
+                // Note that this service might get called several times before the FeedUpdate completes
+                Log.d(TAG, "Found new subscriptions. Need to refresh them before syncing episode actions");
+                EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_wait_for_downloads));
+                FeedUpdateManager.getInstance().runOnce(getApplicationContext());
+                return Result.success();
+            }
             syncEpisodeActions(activeSyncProvider);
             activeSyncProvider.logout();
             clearErrorNotifications();
@@ -102,6 +110,15 @@ public class SyncService extends Worker {
         }
     }
 
+    private boolean someFeedWasNotRefreshedYet() {
+        for (Feed feed : DBReader.getFeedList()) {
+            if (feed.getLastRefreshAttempt() == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /* package-private */ static boolean isCurrentlyActive() {
         return currentlyActive;
     }
@@ -125,8 +142,7 @@ public class SyncService extends Worker {
             if (!UrlChecker.containsUrl(localSubscriptions, downloadUrl) && !queuedRemovedFeeds.contains(downloadUrl)) {
                 Feed feed = new Feed(downloadUrl, null, "Unknown podcast");
                 feed.setItems(Collections.emptyList());
-                Feed newFeed = FeedDatabaseWriter.updateFeed(getApplicationContext(), feed, false);
-                FeedUpdateManager.getInstance().runOnce(getApplicationContext(), newFeed);
+                FeedDatabaseWriter.updateFeed(getApplicationContext(), feed, false);
             }
         }
 
@@ -140,11 +156,15 @@ public class SyncService extends Worker {
         if (lastSync == 0) {
             Log.d(TAG, "First sync. Adding all local subscriptions.");
             queuedAddedFeeds = localSubscriptions;
-            queuedAddedFeeds.removeAll(subscriptionChanges.getAdded());
-            queuedRemovedFeeds.removeAll(subscriptionChanges.getRemoved());
         }
 
-        if (!queuedAddedFeeds.isEmpty() || !queuedRemovedFeeds.isEmpty()) {
+        queuedAddedFeeds.removeAll(subscriptionChanges.getAdded());
+        queuedRemovedFeeds.removeAll(subscriptionChanges.getRemoved());
+
+        if (queuedAddedFeeds.isEmpty() && queuedRemovedFeeds.isEmpty()) {
+            Log.d(TAG, "No feeds to add or remove from server");
+            synchronizationQueueStorage.clearFeedQueues();
+        } else {
             Log.d(TAG, "Added: " + StringUtils.join(queuedAddedFeeds, ", "));
             Log.d(TAG, "Removed: " + StringUtils.join(queuedRemovedFeeds, ", "));
 
@@ -159,22 +179,6 @@ public class SyncService extends Worker {
             }
         }
         SynchronizationSettings.setLastSubscriptionSynchronizationAttemptTimestamp(newTimeStamp);
-    }
-
-    private void waitForDownloadServiceCompleted() {
-        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_wait_for_downloads));
-        try {
-            while (true) {
-                //noinspection BusyWait
-                Thread.sleep(1000);
-                FeedUpdateRunningEvent event = EventBus.getDefault().getStickyEvent(FeedUpdateRunningEvent.class);
-                if (event == null || !event.isFeedUpdateRunning) {
-                    return;
-                }
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     private void syncEpisodeActions(ISyncService syncServiceImpl) throws SyncServiceException {
