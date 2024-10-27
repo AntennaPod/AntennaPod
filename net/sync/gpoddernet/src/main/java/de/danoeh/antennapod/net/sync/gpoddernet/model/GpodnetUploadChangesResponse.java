@@ -10,7 +10,7 @@ import org.json.JSONObject;
 import java.util.Map;
 
 /**
- * Object returned by {@link GpodnetService} in uploadChanges method.
+ * Object returned by {@link de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService} in uploadChanges method.
  */
 public class GpodnetUploadChangesResponse extends UploadChangesResponse {
     /**
