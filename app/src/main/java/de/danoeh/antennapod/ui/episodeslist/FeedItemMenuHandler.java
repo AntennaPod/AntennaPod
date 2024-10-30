@@ -18,7 +18,7 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.storage.database.DBWriter;
@@ -195,7 +195,7 @@ public class FeedItemMenuHandler {
                             .position(media.getDuration() / 1000)
                             .total(media.getDuration() / 1000)
                             .build();
-                    SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, actionPlay);
+                    SynchronizationQueue.getInstance().enqueueEpisodeAction(actionPlay);
                 }
             }
         } else if (menuItemId == R.id.mark_unread_item) {
@@ -203,10 +203,10 @@ public class FeedItemMenuHandler {
             DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, false);
             if (!selectedItem.getFeed().isLocalFeed() && selectedItem.getMedia() != null
                     && selectedItem.getFeed().getState() == Feed.STATE_SUBSCRIBED) {
-                EpisodeAction actionNew = new EpisodeAction.Builder(selectedItem, EpisodeAction.NEW)
-                        .currentTimestamp()
-                        .build();
-                SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, actionNew);
+                SynchronizationQueue.getInstance().enqueueEpisodeAction(
+                        new EpisodeAction.Builder(selectedItem, EpisodeAction.NEW)
+                            .currentTimestamp()
+                            .build());
             }
         } else if (menuItemId == R.id.add_to_queue_item) {
             DBWriter.addQueueItem(context, selectedItem);

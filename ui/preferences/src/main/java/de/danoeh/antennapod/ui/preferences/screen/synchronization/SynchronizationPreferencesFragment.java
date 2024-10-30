@@ -22,9 +22,8 @@ import androidx.preference.Preference;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import de.danoeh.antennapod.net.sync.service.SyncService;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationProvider;
-import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.ui.preferences.R;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import org.greenrobot.eventbus.EventBus;
@@ -95,16 +94,16 @@ public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragme
                     return true;
                 });
         findPreference(PREFERENCE_SYNC).setOnPreferenceClickListener(preference -> {
-            SyncService.syncImmediately(getActivity().getApplicationContext());
+            SynchronizationQueue.getInstance().syncImmediately();
             return true;
         });
         findPreference(PREFERENCE_FORCE_FULL_SYNC).setOnPreferenceClickListener(preference -> {
-            SyncService.fullSync(getContext());
+            SynchronizationQueue.getInstance().fullSync();
             return true;
         });
         findPreference(PREFERENCE_LOGOUT).setOnPreferenceClickListener(preference -> {
             SynchronizationCredentials.clear();
-            SynchronizationQueueSink.clearQueue(getContext());
+            SynchronizationQueue.getInstance().clear();
             Snackbar.make(getView(), R.string.pref_synchronization_logout_toast, Snackbar.LENGTH_LONG).show();
             SynchronizationSettings.setSelectedSyncProvider(null);
             updateScreen();
@@ -168,12 +167,10 @@ public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragme
             public View getView(int position, View convertView, ViewGroup parent) {
                 final LayoutInflater inflater = LayoutInflater.from(getContext());
                 if (convertView == null) {
-                    convertView = inflater.inflate(
-                            R.layout.alertdialog_sync_provider_chooser, null);
-
+                    convertView = inflater.inflate(R.layout.alertdialog_sync_provider_chooser, null);
                     holder = new ViewHolder();
-                    holder.icon = (ImageView) convertView.findViewById(R.id.icon);
-                    holder.title = (TextView) convertView.findViewById(R.id.title);
+                    holder.icon = convertView.findViewById(R.id.icon);
+                    holder.title = convertView.findViewById(R.id.title);
                     convertView.setTag(holder);
                 } else {
                     holder = (ViewHolder) convertView.getTag();
