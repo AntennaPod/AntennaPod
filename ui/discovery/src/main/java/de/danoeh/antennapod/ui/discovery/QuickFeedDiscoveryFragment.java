@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.net.discovery.BuildConfig;
+import de.danoeh.antennapod.net.discovery.PodcastIndexTrendingLoader;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.event.DiscoveryDefaultUpdateEvent;
 import de.danoeh.antennapod.net.discovery.ItunesTopListLoader;
@@ -103,7 +104,6 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         viewBinding.errorRetryButton.setText(R.string.retry_label);
         viewBinding.poweredByLabel.setVisibility(View.VISIBLE);
 
-        ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
         SharedPreferences prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
         String countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE,
                 Locale.getDefault().getCountry());
@@ -131,7 +131,7 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         }
 
         disposable = Observable.fromCallable(() ->
-                        loader.loadToplist(countryCode, NUM_SUGGESTIONS, DBReader.getFeedList()))
+                        PodcastIndexTrendingLoader.loadTrending(countryCode, NUM_SUGGESTIONS, DBReader.getFeedList()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

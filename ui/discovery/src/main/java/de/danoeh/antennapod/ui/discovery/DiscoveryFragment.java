@@ -20,11 +20,12 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
-import de.danoeh.antennapod.net.discovery.BuildConfig;
-import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.event.DiscoveryDefaultUpdateEvent;
+import de.danoeh.antennapod.net.discovery.BuildConfig;
 import de.danoeh.antennapod.net.discovery.ItunesTopListLoader;
+import de.danoeh.antennapod.net.discovery.PodcastIndexTrendingLoader;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -182,9 +183,8 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
             return;
         }
 
-        ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
         disposable = Observable.fromCallable(() ->
-                        loader.loadToplist(country, NUM_OF_TOP_PODCASTS, DBReader.getFeedList()))
+                        PodcastIndexTrendingLoader.loadTrending(country, NUM_OF_TOP_PODCASTS, DBReader.getFeedList()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
