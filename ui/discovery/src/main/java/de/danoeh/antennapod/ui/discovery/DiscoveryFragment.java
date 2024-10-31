@@ -45,7 +45,6 @@ import java.util.Map;
  */
 public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
     public static final String TAG = "DiscoveryFragment";
-    private static final int NUM_OF_TOP_PODCASTS = 25;
     private SharedPreferences prefs;
 
     /**
@@ -184,7 +183,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
 
         disposable = Observable.fromCallable(() ->
                         PodcastIndexTrendingLoader.loadTrending(country, null,
-                                NUM_OF_TOP_PODCASTS, DBReader.getFeedList()))
+                                Integer.MAX_VALUE, DBReader.getFeedList()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
