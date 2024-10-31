@@ -184,7 +184,8 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
         }
 
         disposable = Observable.fromCallable(() ->
-                        PodcastIndexTrendingLoader.loadTrending(country, NUM_OF_TOP_PODCASTS, DBReader.getFeedList()))
+                        PodcastIndexTrendingLoader.loadTrending(country, null,
+                                NUM_OF_TOP_PODCASTS, DBReader.getFeedList()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

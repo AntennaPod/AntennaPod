@@ -13,16 +13,20 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public abstract class PodcastIndexTrendingLoader {
-    private static final String API_URL = "https://api.podcastindex.org/api/1.0/podcasts/trending?max=%d&lang=%s";
     private static final int NUM_LOADED = 25;
 
-    public static List<PodcastSearchResult> loadTrending(String country, int limit, List<Feed> subscribed)
+    public static List<PodcastSearchResult> loadTrending(String language, String categories,
+                                                         int limit, List<Feed> subscribed)
             throws JSONException, IOException {
-        String formattedUrl = String.format(Locale.ROOT, API_URL, NUM_LOADED, "de");
+        String formattedUrl = "https://api.podcastindex.org/api/1.0/podcasts/trending"
+                + "?max=" + NUM_LOADED
+                + "&lang=" + "de";
+        if (categories != null) {
+            formattedUrl += "&cat=" + categories;
+        }
 
         List<PodcastSearchResult> podcasts = new ArrayList<>();
         OkHttpClient client = AntennapodHttpClient.getHttpClient();
