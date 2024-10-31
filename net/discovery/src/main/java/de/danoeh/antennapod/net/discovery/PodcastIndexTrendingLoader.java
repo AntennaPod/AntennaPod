@@ -13,17 +13,39 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public abstract class PodcastIndexTrendingLoader {
+    public static final String PREF_KEY_LANGUAGE = "language";
+    public static final String PREF_KEY_HIDDEN_DISCOVERY_COUNTRY = "hidden_discovery_country";
+    public static final String PREF_KEY_NEEDS_CONFIRM = "needs_confirm";
+    public static final String PREFS = "CountryRegionPrefs";
+    public static final String LANGUAGE_UNSET = "99";
     private static final int NUM_LOADED = 25;
 
     public static List<PodcastSearchResult> loadTrending(String language, String categories,
-                                                         int limit, List<Feed> subscribed)
-            throws JSONException, IOException {
+                                         int limit, List<Feed> subscribed) throws JSONException, IOException {
+        String loadLanguage = language;
+        if (LANGUAGE_UNSET.equals(language)) {
+            loadLanguage = Locale.getDefault().getCountry();
+        }
+        try {
+            return doLoad(loadLanguage, categories, limit, subscribed);
+        } catch (IOException e) {
+            if (LANGUAGE_UNSET.equals(language)) {
+                return doLoad("en", categories, limit, subscribed);
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    private static List<PodcastSearchResult> doLoad(String language, String categories,
+                                         int limit, List<Feed> subscribed) throws JSONException, IOException {
         String formattedUrl = "https://api.podcastindex.org/api/1.0/podcasts/trending"
                 + "?max=" + NUM_LOADED
-                + "&lang=" + "de";
+                + "&lang=" + language;
         if (categories != null) {
             formattedUrl += "&cat=" + categories;
         }

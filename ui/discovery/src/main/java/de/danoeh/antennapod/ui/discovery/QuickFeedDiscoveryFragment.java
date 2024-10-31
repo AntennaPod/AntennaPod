@@ -15,7 +15,6 @@ import de.danoeh.antennapod.net.discovery.BuildConfig;
 import de.danoeh.antennapod.net.discovery.PodcastIndexTrendingLoader;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.event.DiscoveryDefaultUpdateEvent;
-import de.danoeh.antennapod.net.discovery.ItunesTopListLoader;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
@@ -104,10 +103,10 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         viewBinding.errorRetryButton.setText(R.string.retry_label);
         viewBinding.poweredByLabel.setVisibility(View.VISIBLE);
 
-        SharedPreferences prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
-        String countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE,
+        SharedPreferences prefs = getActivity().getSharedPreferences(PodcastIndexTrendingLoader.PREFS, MODE_PRIVATE);
+        String countryCode = prefs.getString(PodcastIndexTrendingLoader.PREF_KEY_LANGUAGE,
                 Locale.getDefault().getCountry());
-        if (prefs.getBoolean(ItunesTopListLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, false)) {
+        if (prefs.getBoolean(PodcastIndexTrendingLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, false)) {
             viewBinding.errorLabel.setText(R.string.discover_is_hidden);
             viewBinding.errorContainer.setVisibility(View.VISIBLE);
             viewBinding.discoverGrid.setVisibility(View.GONE);
@@ -116,7 +115,8 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
             return;
         }
         //noinspection ConstantConditions
-        if (BuildConfig.FLAVOR.equals("free") && prefs.getBoolean(ItunesTopListLoader.PREF_KEY_NEEDS_CONFIRM, true)) {
+        if (BuildConfig.FLAVOR.equals("free")
+                && prefs.getBoolean(PodcastIndexTrendingLoader.PREF_KEY_NEEDS_CONFIRM, true)) {
             viewBinding.errorLabel.setText("");
             viewBinding.errorContainer.setVisibility(View.VISIBLE);
             viewBinding.discoverGrid.setVisibility(View.VISIBLE);
@@ -124,7 +124,7 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
             viewBinding.errorRetryButton.setText(R.string.discover_confirm);
             viewBinding.poweredByLabel.setVisibility(View.VISIBLE);
             viewBinding.errorRetryButton.setOnClickListener(v -> {
-                prefs.edit().putBoolean(ItunesTopListLoader.PREF_KEY_NEEDS_CONFIRM, false).apply();
+                prefs.edit().putBoolean(PodcastIndexTrendingLoader.PREF_KEY_NEEDS_CONFIRM, false).apply();
                 loadToplist();
             });
             return;

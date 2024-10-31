@@ -19,14 +19,13 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
-import com.google.android.material.textfield.TextInputLayout;
 import de.danoeh.antennapod.event.DiscoveryDefaultUpdateEvent;
 import de.danoeh.antennapod.net.discovery.BuildConfig;
-import de.danoeh.antennapod.net.discovery.ItunesTopListLoader;
 import de.danoeh.antennapod.net.discovery.PodcastIndexTrendingLoader;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
+import de.danoeh.antennapod.ui.discovery.databinding.SelectLanguageDialogBinding;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -65,7 +64,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
     private List<PodcastSearchResult> searchResults;
     private List<PodcastSearchResult> topList;
     private Disposable disposable;
-    private String countryCode = "US";
+    private String language = "US";
     private boolean hidden;
     private boolean needsConfirm;
     private MaterialToolbar toolbar;
@@ -98,10 +97,10 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, Context.MODE_PRIVATE);
-        countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, Locale.getDefault().getCountry());
-        hidden = prefs.getBoolean(ItunesTopListLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, false);
-        needsConfirm = prefs.getBoolean(ItunesTopListLoader.PREF_KEY_NEEDS_CONFIRM, true);
+        prefs = getActivity().getSharedPreferences(PodcastIndexTrendingLoader.PREFS, Context.MODE_PRIVATE);
+        language = prefs.getString(PodcastIndexTrendingLoader.PREF_KEY_LANGUAGE, Locale.getDefault().getLanguage());
+        hidden = prefs.getBoolean(PodcastIndexTrendingLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, false);
+        needsConfirm = prefs.getBoolean(PodcastIndexTrendingLoader.PREF_KEY_NEEDS_CONFIRM, true);
     }
 
     @Override
@@ -133,7 +132,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
         butRetry = root.findViewById(R.id.butRetry);
         txtvEmpty = root.findViewById(android.R.id.empty);
 
-        loadToplist(countryCode);
+        loadToplist(language);
         return root;
     }
 
@@ -174,7 +173,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
             butRetry.setVisibility(View.VISIBLE);
             butRetry.setText(R.string.discover_confirm);
             butRetry.setOnClickListener(v -> {
-                prefs.edit().putBoolean(ItunesTopListLoader.PREF_KEY_NEEDS_CONFIRM, false).apply();
+                prefs.edit().putBoolean(PodcastIndexTrendingLoader.PREF_KEY_NEEDS_CONFIRM, false).apply();
                 needsConfirm = false;
                 loadToplist(country);
             });
@@ -209,37 +208,34 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
         if (itemId == R.id.discover_hide_item) {
             item.setChecked(!item.isChecked());
             hidden = item.isChecked();
-            prefs.edit().putBoolean(ItunesTopListLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, hidden).apply();
+            prefs.edit().putBoolean(PodcastIndexTrendingLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, hidden).apply();
 
             EventBus.getDefault().post(new DiscoveryDefaultUpdateEvent());
-            loadToplist(countryCode);
+            loadToplist(language);
             return true;
-        } else if (itemId == R.id.discover_countries_item) {
-
+        } else if (itemId == R.id.discover_language_item) {
             LayoutInflater inflater = getLayoutInflater();
-            View selectCountryDialogView = inflater.inflate(R.layout.select_country_dialog, null);
+            SelectLanguageDialogBinding viewBinding = SelectLanguageDialogBinding.inflate(inflater);
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
-            builder.setView(selectCountryDialogView);
+            builder.setView(viewBinding.getRoot());
 
-            List<String> countryCodeArray = new ArrayList<>(Arrays.asList(Locale.getISOCountries()));
-            Map<String, String> countryCodeNames = new HashMap<>();
-            Map<String, String> countryNameCodes = new HashMap<>();
-            for (String code : countryCodeArray) {
-                Locale locale = new Locale("", code);
-                String countryName = locale.getDisplayCountry();
-                countryCodeNames.put(code, countryName);
-                countryNameCodes.put(countryName, code);
+            List<String> languagesArray = new ArrayList<>(Arrays.asList(Locale.getISOLanguages()));
+            Map<String, String> languageNames = new HashMap<>();
+            Map<String, String> languageCodes = new HashMap<>();
+            for (String code : languagesArray) {
+                String languageName = new Locale(code).getDisplayLanguage();
+                languageNames.put(code, languageName);
+                languageCodes.put(languageName, code);
             }
 
-            List<String> countryNamesSort = new ArrayList<>(countryCodeNames.values());
-            Collections.sort(countryNamesSort);
+            List<String> languagesSort = new ArrayList<>(languageNames.values());
+            Collections.sort(languagesSort);
 
             ArrayAdapter<String> dataAdapter =
-                    new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, countryNamesSort);
-            TextInputLayout textInput = selectCountryDialogView.findViewById(R.id.country_text_input);
-            MaterialAutoCompleteTextView editText = (MaterialAutoCompleteTextView) textInput.getEditText();
+                    new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, languagesSort);
+            MaterialAutoCompleteTextView editText = (MaterialAutoCompleteTextView) viewBinding.textInput.getEditText();
             editText.setAdapter(dataAdapter);
-            editText.setText(countryCodeNames.get(countryCode));
+            editText.setText(languageNames.get(language));
             editText.setOnClickListener(view -> {
                 if (editText.getText().length() != 0) {
                     editText.setText("");
@@ -254,19 +250,19 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
             });
 
             builder.setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
-                String countryName = editText.getText().toString();
-                if (countryNameCodes.containsKey(countryName)) {
-                    countryCode = countryNameCodes.get(countryName);
+                String languageName = editText.getText().toString();
+                if (languageCodes.containsKey(languageName)) {
+                    language = languageCodes.get(languageName);
                     MenuItem discoverHideItem = toolbar.getMenu().findItem(R.id.discover_hide_item);
                     discoverHideItem.setChecked(false);
                     hidden = false;
                 }
 
-                prefs.edit().putBoolean(ItunesTopListLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, hidden).apply();
-                prefs.edit().putString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, countryCode).apply();
+                prefs.edit().putBoolean(PodcastIndexTrendingLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, hidden).apply();
+                prefs.edit().putString(PodcastIndexTrendingLoader.PREF_KEY_LANGUAGE, language).apply();
 
                 EventBus.getDefault().post(new DiscoveryDefaultUpdateEvent());
-                loadToplist(countryCode);
+                loadToplist(language);
             });
             builder.setNegativeButton(R.string.cancel_label, null);
             builder.show();

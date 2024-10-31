@@ -7,11 +7,11 @@
     android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/country_text_input"
+        android:id="@+id/textInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:hint="@string/select_country"
+        android:hint="@string/select_language"
         app:endIconMode="none"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
 

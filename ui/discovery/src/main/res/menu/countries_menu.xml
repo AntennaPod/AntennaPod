@@ -10,8 +10,8 @@
         android:visible="true"
         app:showAsAction="never" />
     <item
-        android:id="@+id/discover_countries_item"
+        android:id="@+id/discover_language_item"
         android:enabled="true"
-        android:title="@string/select_country"
+        android:title="@string/select_language"
         android:visible="true" />
 </menu>
