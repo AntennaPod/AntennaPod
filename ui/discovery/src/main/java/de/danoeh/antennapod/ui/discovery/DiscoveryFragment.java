@@ -9,27 +9,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import de.danoeh.antennapod.event.DiscoveryDefaultUpdateEvent;
 import de.danoeh.antennapod.net.discovery.BuildConfig;
+import de.danoeh.antennapod.net.discovery.PodcastIndexApi;
 import de.danoeh.antennapod.net.discovery.PodcastIndexTrendingLoader;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
+import de.danoeh.antennapod.ui.discovery.databinding.FragmentOnlineSearchBinding;
 import de.danoeh.antennapod.ui.discovery.databinding.SelectLanguageDialogBinding;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
@@ -47,26 +46,15 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
     public static final String TAG = "DiscoveryFragment";
     private SharedPreferences prefs;
 
-    /**
-     * Adapter responsible with the search results.
-     */
     private OnlineSearchAdapter adapter;
-    private GridView gridView;
-    private ProgressBar progressBar;
-    private TextView txtvError;
-    private Button butRetry;
-    private TextView txtvEmpty;
-
-    /**
-     * List of podcasts retreived from the search.
-     */
+    private FragmentOnlineSearchBinding viewBinding;
     private List<PodcastSearchResult> searchResults;
     private List<PodcastSearchResult> topList;
     private Disposable disposable;
     private String language = "US";
+    private int[] categories = null;
     private boolean hidden;
     private boolean needsConfirm;
-    private MaterialToolbar toolbar;
 
     public DiscoveryFragment() {
         // Required empty public constructor
@@ -80,16 +68,16 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
     private void updateData(List<PodcastSearchResult> result) {
         this.searchResults = result;
         adapter.clear();
-        if (result != null && result.size() > 0) {
-            gridView.setVisibility(View.VISIBLE);
-            txtvEmpty.setVisibility(View.GONE);
+        if (result != null && !result.isEmpty()) {
+            viewBinding.gridView.setVisibility(View.VISIBLE);
+            viewBinding.empty.setVisibility(View.GONE);
             for (PodcastSearchResult p : result) {
                 adapter.add(p);
             }
             adapter.notifyDataSetInvalidated();
         } else {
-            gridView.setVisibility(View.GONE);
-            txtvEmpty.setVisibility(View.VISIBLE);
+            viewBinding.gridView.setVisibility(View.GONE);
+            viewBinding.empty.setVisibility(View.VISIBLE);
         }
     }
 
@@ -104,35 +92,25 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_online_search, container, false);
-        gridView = root.findViewById(R.id.gridView);
+        viewBinding = FragmentOnlineSearchBinding.inflate(inflater);
         adapter = new OnlineSearchAdapter(getActivity(), new ArrayList<>());
-        gridView.setAdapter(adapter);
+        viewBinding.gridView.setAdapter(adapter);
 
-        toolbar = root.findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
-        toolbar.inflateMenu(R.menu.countries_menu);
-        MenuItem discoverHideItem = toolbar.getMenu().findItem(R.id.discover_hide_item);
+        viewBinding.toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
+        viewBinding.toolbar.inflateMenu(R.menu.countries_menu);
+        MenuItem discoverHideItem = viewBinding.toolbar.getMenu().findItem(R.id.discover_hide_item);
         discoverHideItem.setChecked(hidden);
-        toolbar.setOnMenuItemClickListener(this);
+        viewBinding.toolbar.setOnMenuItemClickListener(this);
 
-        //Show information about the podcast when the list item is clicked
-        gridView.setOnItemClickListener((parent, view1, position, id) -> {
+        viewBinding.gridView.setOnItemClickListener((parent, view1, position, id) -> {
             PodcastSearchResult podcast = searchResults.get(position);
             if (podcast.feedUrl == null) {
                 return;
             }
             startActivity(new OnlineFeedviewActivityStarter(getContext(), podcast.feedUrl).getIntent());
         });
-
-        progressBar = root.findViewById(R.id.progressBar);
-        txtvError = root.findViewById(R.id.txtvError);
-        butRetry = root.findViewById(R.id.butRetry);
-        txtvEmpty = root.findViewById(android.R.id.empty);
-
-        loadToplist(language);
-        return root;
+        loadToplist();
+        return viewBinding.getRoot();
     }
 
     @Override
@@ -144,61 +122,88 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
         adapter = null;
     }
 
-    private void loadToplist(String country) {
+    private void loadToplist() {
         if (disposable != null) {
             disposable.dispose();
         }
 
-        gridView.setVisibility(View.GONE);
-        txtvError.setVisibility(View.GONE);
-        butRetry.setVisibility(View.GONE);
-        butRetry.setText(R.string.retry_label);
-        txtvEmpty.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
+        viewBinding.gridView.setVisibility(View.GONE);
+        viewBinding.txtvError.setVisibility(View.GONE);
+        viewBinding.butRetry.setVisibility(View.GONE);
+        viewBinding.butRetry.setText(R.string.retry_label);
+        viewBinding.empty.setVisibility(View.GONE);
+        viewBinding.progressBar.setVisibility(View.VISIBLE);
 
         if (hidden) {
-            gridView.setVisibility(View.GONE);
-            txtvError.setVisibility(View.VISIBLE);
-            txtvError.setText(getResources().getString(R.string.discover_is_hidden));
-            butRetry.setVisibility(View.GONE);
-            txtvEmpty.setVisibility(View.GONE);
-            progressBar.setVisibility(View.GONE);
+            viewBinding.gridView.setVisibility(View.GONE);
+            viewBinding.txtvError.setVisibility(View.VISIBLE);
+            viewBinding.txtvError.setText(getResources().getString(R.string.discover_is_hidden));
+            viewBinding.butRetry.setVisibility(View.GONE);
+            viewBinding.empty.setVisibility(View.GONE);
+            viewBinding.progressBar.setVisibility(View.GONE);
             return;
         }
         //noinspection ConstantConditions
         if (BuildConfig.FLAVOR.equals("free") && needsConfirm) {
-            txtvError.setVisibility(View.VISIBLE);
-            txtvError.setText("");
-            butRetry.setVisibility(View.VISIBLE);
-            butRetry.setText(R.string.discover_confirm);
-            butRetry.setOnClickListener(v -> {
+            viewBinding.txtvError.setVisibility(View.VISIBLE);
+            viewBinding.txtvError.setText("");
+            viewBinding.butRetry.setVisibility(View.VISIBLE);
+            viewBinding.butRetry.setText(R.string.discover_confirm);
+            viewBinding.butRetry.setOnClickListener(v -> {
                 prefs.edit().putBoolean(PodcastIndexTrendingLoader.PREF_KEY_NEEDS_CONFIRM, false).apply();
                 needsConfirm = false;
-                loadToplist(country);
+                loadToplist();
             });
-            txtvEmpty.setVisibility(View.GONE);
-            progressBar.setVisibility(View.GONE);
+            viewBinding.empty.setVisibility(View.GONE);
+            viewBinding.progressBar.setVisibility(View.GONE);
             return;
         }
 
+        setupCategoryUi();
         disposable = Observable.fromCallable(() ->
-                        PodcastIndexTrendingLoader.loadTrending(country, null,
+                        PodcastIndexTrendingLoader.loadTrending(language,
+                                categories == null ? null : StringUtils.join(categories, ','),
                                 Integer.MAX_VALUE, DBReader.getFeedList()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     podcasts -> {
-                        progressBar.setVisibility(View.GONE);
+                        viewBinding.progressBar.setVisibility(View.GONE);
                         topList = podcasts;
                         updateData(topList);
                     }, error -> {
                         Log.e(TAG, Log.getStackTraceString(error));
-                        progressBar.setVisibility(View.GONE);
-                        txtvError.setText(error.getMessage());
-                        txtvError.setVisibility(View.VISIBLE);
-                        butRetry.setOnClickListener(v -> loadToplist(country));
-                        butRetry.setVisibility(View.VISIBLE);
+                        viewBinding.progressBar.setVisibility(View.GONE);
+                        viewBinding.txtvError.setText(error.getMessage());
+                        viewBinding.txtvError.setVisibility(View.VISIBLE);
+                        viewBinding.butRetry.setOnClickListener(v -> loadToplist());
+                        viewBinding.butRetry.setVisibility(View.VISIBLE);
                     });
+    }
+
+    private void setupCategoryUi() {
+        viewBinding.categoriesContainer.removeAllViews();
+        viewBinding.categoriesScrollView.scrollTo(0, 0);
+        if (categories == null) {
+            for (PodcastIndexApi.TopLevelCategory category : PodcastIndexApi.getTopLevelCategories()) {
+                Chip chip = new Chip(getContext());
+                chip.setText(category.name);
+                chip.setOnClickListener(v -> loadCategories(category.subCategories));
+                viewBinding.categoriesContainer.addView(chip);
+            }
+        } else if (categories.length > 1) {
+            for (int category : categories) {
+                Chip chip = new Chip(getContext());
+                chip.setText(PodcastIndexApi.getCategoryName(category));
+                chip.setOnClickListener(v -> loadCategories(new int[] {category}));
+                viewBinding.categoriesContainer.addView(chip);
+            }
+        }
+    }
+
+    private void loadCategories(int[] categories) {
+        this.categories = categories;
+        loadToplist();
     }
 
     @Override
@@ -210,13 +215,13 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
             prefs.edit().putBoolean(PodcastIndexTrendingLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, hidden).apply();
 
             EventBus.getDefault().post(new DiscoveryDefaultUpdateEvent());
-            loadToplist(language);
+            loadToplist();
             return true;
         } else if (itemId == R.id.discover_language_item) {
             LayoutInflater inflater = getLayoutInflater();
-            SelectLanguageDialogBinding viewBinding = SelectLanguageDialogBinding.inflate(inflater);
+            SelectLanguageDialogBinding dialogBinding = SelectLanguageDialogBinding.inflate(inflater);
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
-            builder.setView(viewBinding.getRoot());
+            builder.setView(dialogBinding.getRoot());
 
             List<String> languagesArray = new ArrayList<>(Arrays.asList(Locale.getISOLanguages()));
             Map<String, String> languageNames = new HashMap<>();
@@ -232,7 +237,8 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
 
             ArrayAdapter<String> dataAdapter =
                     new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, languagesSort);
-            MaterialAutoCompleteTextView editText = (MaterialAutoCompleteTextView) viewBinding.textInput.getEditText();
+            MaterialAutoCompleteTextView editText =
+                    (MaterialAutoCompleteTextView) dialogBinding.textInput.getEditText();
             editText.setAdapter(dataAdapter);
             editText.setText(languageNames.get(language));
             editText.setOnClickListener(view -> {
@@ -252,7 +258,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
                 String languageName = editText.getText().toString();
                 if (languageCodes.containsKey(languageName)) {
                     language = languageCodes.get(languageName);
-                    MenuItem discoverHideItem = toolbar.getMenu().findItem(R.id.discover_hide_item);
+                    MenuItem discoverHideItem = viewBinding.toolbar.getMenu().findItem(R.id.discover_hide_item);
                     discoverHideItem.setChecked(false);
                     hidden = false;
                 }
@@ -261,7 +267,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
                 prefs.edit().putString(PodcastIndexTrendingLoader.PREF_KEY_LANGUAGE, language).apply();
 
                 EventBus.getDefault().post(new DiscoveryDefaultUpdateEvent());
-                loadToplist(language);
+                loadToplist();
             });
             builder.setNegativeButton(R.string.cancel_label, null);
             builder.show();
