@@ -124,7 +124,6 @@
     <string name="support_funding_label">Support</string>
     <string name="support_podcast">Support this podcast</string>
     <string name="error_label">Error</string>
-    <string name="error_msg_prefix">An error occurred:</string>
     <string name="refresh_label">Refresh</string>
     <string name="chapters_label">Chapters</string>
     <string name="no_chapters_label">No chapters</string>
