@@ -47,7 +47,9 @@ import io.reactivex.schedulers.Schedulers;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -247,35 +249,22 @@ public class FeedSettingsFragment extends Fragment {
                     viewBinding.seekBar.setAlpha(isChecked ? 0.4f : 1f);
                     viewBinding.currentSpeedLabel.setAlpha(isChecked ? 0.4f : 1f);
 
-                    viewBinding.skipSilence.setEnabled(!isChecked);
-                    viewBinding.skipSilence.setAlpha(isChecked ? 0.4f : 1f);
+                    viewBinding.skipSilenceSpinner.setEnabled(!isChecked);
+                    viewBinding.skipSilenceSpinner.setAlpha(isChecked ? 0.4f : 1f);
                 });
                 float speed = feedPreferences.getFeedPlaybackSpeed();
                 FeedPreferences.SkipSilence skipSilence = feedPreferences.getFeedSkipSilence();
                 boolean isGlobal = speed == FeedPreferences.SPEED_USE_GLOBAL;
                 viewBinding.useGlobalCheckbox.setChecked(isGlobal);
                 viewBinding.seekBar.updateSpeed(isGlobal ? 1 : speed);
-                if (isGlobal) {
-                    viewBinding.skipSilence.clearChecked();
-                } else {
-                    int id = View.NO_ID;
-                    switch (skipSilence) {
-                        case MILD:
-                            id = R.id.skipSilenceMild;
-                            break;
-                        case MEDIUM:
-                            id = R.id.skipSilenceMedium;
-                            break;
-                        case AGGRESSIVE:
-                            id = R.id.skipSilenceAggressive;
-                            break;
-                        case OFF:
-                        default:
-                            id = R.id.skipSilenceOff;
-                            break;
-                    }
-                    viewBinding.skipSilence.check(id);
+                List<String> skipSilenceValues =
+                        Arrays.asList(getContext().getResources().getStringArray(R.array.skip_silence_values));
+                int skipSilencePos = skipSilenceValues.indexOf(String.valueOf(skipSilence.code));
+                if (skipSilencePos == -1) {
+                    viewBinding.skipSilenceSpinner.setSelection(0);
                 }
+                viewBinding.skipSilenceSpinner.setSelection(skipSilencePos);
+
                 new MaterialAlertDialogBuilder(getContext())
                         .setTitle(R.string.playback_speed)
                         .setView(viewBinding.getRoot())
@@ -287,15 +276,12 @@ public class FeedSettingsFragment extends Fragment {
                             if (viewBinding.useGlobalCheckbox.isChecked()) {
                                 newSkipSilence = FeedPreferences.SkipSilence.GLOBAL;
                             } else {
-                                final int id = viewBinding.skipSilence.getCheckedButtonId();
-                                if (id == R.id.skipSilenceOff) {
-                                    newSkipSilence = FeedPreferences.SkipSilence.OFF;
-                                } else if (id == R.id.skipSilenceMild) {
-                                    newSkipSilence = FeedPreferences.SkipSilence.MILD;
-                                } else if (id == R.id.skipSilenceMedium) {
-                                    newSkipSilence = FeedPreferences.SkipSilence.MEDIUM;
-                                } else if (id == R.id.skipSilenceAggressive) {
-                                    newSkipSilence = FeedPreferences.SkipSilence.AGGRESSIVE;
+                                final int pos = viewBinding.skipSilenceSpinner.getSelectedItemPosition();
+                                List<String> entryValues =
+                                        Arrays.asList(getContext().getResources().getStringArray(R.array.skip_silence_values));
+                                final int id = Integer.parseInt(entryValues.get(pos));
+                                if (pos >= 0 && pos < entryValues.size()) {
+                                    newSkipSilence = FeedPreferences.SkipSilence.fromCode(id);
                                 } else {
                                     newSkipSilence = FeedPreferences.SkipSilence.GLOBAL;
                                 }

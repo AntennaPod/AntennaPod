@@ -41,47 +41,11 @@
         android:text="@string/pref_skip_silence_title"
         style="@style/AntennaPod.TextView.ListItemPrimaryTitle" />
 
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/skipSilence"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:weightSum="4"
-        android:orientation="vertical"
-        app:singleSelection="true">
-
-        <Button
-            android:id="@+id/skipSilenceOff"
+    <Spinner
+            android:id="@+id/skipSilenceSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Off"
-            style="@style/OutlinedButtonBetterContrast" />
-
-        <Button
-            android:id="@+id/skipSilenceMild"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/skip_silence_mild"
-            style="@style/OutlinedButtonBetterContrast" />
-
-        <Button
-            android:id="@+id/skipSilenceMedium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/skip_silence_medium"
-            style="@style/OutlinedButtonBetterContrast" />
-
-        <Button
-            android:id="@+id/skipSilenceAggressive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/skip_silence_aggressive"
-            style="@style/OutlinedButtonBetterContrast" />
-
-    </com.google.android.material.button.MaterialButtonToggleGroup>
+            android:entries="@array/skip_silence_options"
+            android:spinnerMode="dropdown"/>
 
 </LinearLayout>

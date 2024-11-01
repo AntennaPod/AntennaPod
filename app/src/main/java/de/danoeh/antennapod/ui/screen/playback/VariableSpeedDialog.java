@@ -6,13 +6,14 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
@@ -27,6 +28,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -37,7 +39,7 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
     private final List<Float> selectedSpeeds;
     private PlaybackSpeedSeekBar speedSeekBar;
     private Chip addCurrentSpeedChip;
-    private MaterialButtonToggleGroup skipSilenceToggleGroup;
+    private Spinner skipSilenceSpinner;
 
     public VariableSpeedDialog() {
         DecimalFormatSymbols format = new DecimalFormatSymbols(Locale.US);
@@ -52,13 +54,11 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
             @Override
             public void loadMediaInfo() {
                 updateSpeed(new SpeedChangedEvent(controller.getCurrentPlaybackSpeedMultiplier()));
-                updateSkipSilence(controller.getCurrentPlaybackSkipSilence());
             }
         };
         controller.init();
         EventBus.getDefault().register(this);
         updateSpeed(new SpeedChangedEvent(controller.getCurrentPlaybackSpeedMultiplier()));
-        updateSkipSilence(controller.getCurrentPlaybackSkipSilence());
     }
 
     @Override
@@ -76,44 +76,11 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
     }
 
     public void updateSkipSilence(FeedPreferences.SkipSilence skipSilence) {
-        int id = View.NO_ID;
-        switch (skipSilence) {
-            case MILD:
-                id = R.id.skipSilenceMild;
-                break;
-            case MEDIUM:
-                id = R.id.skipSilenceMedium;
-                break;
-            case AGGRESSIVE:
-                id = R.id.skipSilenceAggressive;
-                break;
-            case OFF:
-            default:
-                id = R.id.skipSilenceOff;
-                break;
-        }
-        skipSilenceToggleGroup.check(id);
-    }
+        List<String> entryValues =
+                Arrays.asList(getContext().getResources().getStringArray(R.array.skip_silence_values));
+        int pos = entryValues.indexOf(String.valueOf(skipSilence.code));
 
-    private void onSkipSilenceChanged(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-        FeedPreferences.SkipSilence opt;
-        final int id = group.getCheckedButtonId();
-        opt = FeedPreferences.SkipSilence.GLOBAL;
-        if (id == R.id.skipSilenceOff) {
-            opt = FeedPreferences.SkipSilence.OFF;
-        } else if (id == R.id.skipSilenceMild) {
-            opt = FeedPreferences.SkipSilence.MILD;
-        } else if (id == R.id.skipSilenceMedium) {
-            opt = FeedPreferences.SkipSilence.MEDIUM;
-        } else if (id == R.id.skipSilenceAggressive) {
-            opt = FeedPreferences.SkipSilence.AGGRESSIVE;
-        }
-        if (UserPreferences.getSkipSilence() != opt) {
-            UserPreferences.setSkipSilence(opt);
-        }
-        if (controller != null) {
-            controller.setSkipSilence(opt);
-        }
+        skipSilenceSpinner.setSelection(pos);
     }
 
     @Nullable
@@ -142,9 +109,35 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         addCurrentSpeedChip.setCloseIconContentDescription(getString(R.string.add_preset));
         addCurrentSpeedChip.setOnClickListener(v -> addCurrentSpeed());
 
-        skipSilenceToggleGroup = root.findViewById(R.id.skipSilence);
-        skipSilenceToggleGroup.addOnButtonCheckedListener(
-                (group, checkedId, isChecked) -> onSkipSilenceChanged(group, checkedId, isChecked));
+        skipSilenceSpinner = root.findViewById(R.id.skipSilenceSpinner);
+        skipSilenceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                FeedPreferences.SkipSilence opt;
+                List<String> entryValues =
+                        Arrays.asList(getContext().getResources().getStringArray(R.array.skip_silence_values));
+                final int skipSilenceId = Integer.parseInt(entryValues.get(position));
+
+                if (position >= 0 && position < entryValues.size()) {
+                    opt = FeedPreferences.SkipSilence.fromCode(skipSilenceId);
+                } else {
+                    opt = FeedPreferences.SkipSilence.GLOBAL;
+                }
+
+                if (UserPreferences.getSkipSilence() != opt) {
+                    UserPreferences.setSkipSilence(opt);
+                }
+                if (controller != null) {
+                    controller.setSkipSilence(opt);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         updateSkipSilence(UserPreferences.getSkipSilence());
         return root;
     }
