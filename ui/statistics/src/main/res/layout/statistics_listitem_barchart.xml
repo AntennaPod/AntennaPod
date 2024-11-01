@@ -9,9 +9,7 @@
     <de.danoeh.antennapod.ui.statistics.years.BarChartView
         android:id="@+id/barChart"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
+        android:layout_height="200dp" />
 
     <TextView
         android:id="@+id/barchart_description"
@@ -19,7 +17,6 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:text="@string/statistics_years_barchart_description"
-        android:layout_marginTop="16dp"
         android:layout_gravity="center" />
 
     <View
