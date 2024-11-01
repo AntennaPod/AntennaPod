@@ -11,6 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="200dp" />
 
+    <TextView
+        android:id="@+id/barchart_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="@string/statistics_years_barchart_description"
+        android:layout_gravity="center" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
