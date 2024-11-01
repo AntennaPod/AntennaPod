@@ -75,7 +75,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         mediaType = MediaType.UNKNOWN;
         videoSize = null;
 
-
         androidAutoConnectionState = new CarConnection(context).getType();
         androidAutoConnectionObserver = connectionState -> {
             androidAutoConnected = connectionState == CarConnection.CONNECTION_TYPE_PROJECTION;
@@ -194,7 +193,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 throw new IOException("Unable to read local file " + media.getLocalFileUrl());
             }
             
-            if (! androidAutoConnected) {
+            if (!androidAutoConnected) {
                 setPlayerStatus(PlayerStatus.INITIALIZED, media);
             }
 
@@ -536,7 +535,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             mediaPlayer = null;
             playerStatus = PlayerStatus.STOPPED;
         }
-
         androidAutoConnectionState.removeObserver(androidAutoConnectionObserver);
         isShutDown = true;
         abandonAudioFocus();
