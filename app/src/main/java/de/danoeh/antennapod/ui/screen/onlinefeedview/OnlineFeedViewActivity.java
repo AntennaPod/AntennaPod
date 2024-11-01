@@ -102,15 +102,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             feedUrl = getIntent().getDataString();
         }
 
-        if (feedUrl == null) {
+        if (feedUrl == null || UrlChecker.isDeeplinkWithoutUrl(feedUrl)) {
             Log.e(TAG, "feedUrl is null.");
             showNoPodcastFoundError();
         } else {
             Log.d(TAG, "Activity was started with url " + feedUrl);
-            // Remove subscribeonandroid.com from feed URL in order to subscribe to the actual feed URL
-            if (feedUrl.contains("subscribeonandroid.com")) {
-                feedUrl = feedUrl.replaceFirst("((www.)?(subscribeonandroid.com/))", "");
-            }
             if (savedInstanceState != null) {
                 username = savedInstanceState.getString("username");
                 password = savedInstanceState.getString("password");

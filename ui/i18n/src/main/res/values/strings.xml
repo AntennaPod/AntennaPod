@@ -319,7 +319,7 @@
     <string name="download_log_title_unknown">Unknown title</string>
     <string name="download_type_feed">Feed</string>
     <string name="download_type_media">Media file</string>
-    <string name="null_value_podcast_error">No podcast was provided that could be shown.</string>
+    <string name="null_value_podcast_error">The link you tapped does not contain a valid podcast URL. Please verify the link and try again, or search for the podcast manually.</string>
     <string name="no_feed_url_podcast_found_by_search">The suggested podcast did not have an RSS link, AntennaPod found a podcast that could match</string>
     <string name="authentication_notification_title">Authentication required</string>
     <string name="confirm_mobile_download_dialog_title">Confirm mobile download</string>
@@ -575,7 +575,7 @@
     <string name="sync_status_episodes_download">Downloading episode changes…</string>
     <string name="sync_status_upload_played">Uploading played status…</string>
     <string name="sync_status_subscriptions">Synchronizing subscriptions…</string>
-    <string name="sync_status_wait_for_downloads">Waiting for downloads to complete…</string>
+    <string name="sync_status_wait_for_downloads">Waiting for subscriptions refresh…</string>
     <string name="sync_status_success">Synchronization successful</string>
     <string name="sync_status_error">Synchronization failed</string>
 
@@ -754,6 +754,7 @@
     <string name="statistics_expected_next_episode_any_day">Any day now</string>
     <string name="statistics_expected_next_episode_unknown">Unknown</string>
     <string name="statistics_view_all">All podcasts »</string>
+    <string name="statistics_years_barchart_description">Time played per month</string>
     <string name="wait_icon" translatable="false">…</string>
     <string name="edit_url_menu">Edit feed URL</string>
     <string name="edit_url_confirmation_msg">Changing the RSS address can easily break the playback state and episode listings of the podcast. We do NOT recommend changing it and will NOT provide support if anything goes wrong. This cannot be undone. The broken subscription CANNOT be repaired by simply changing the address back. We recommend creating a backup before continuing.</string>

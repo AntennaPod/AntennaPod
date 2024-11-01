@@ -9,32 +9,38 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.util.Pair;
-import androidx.work.BackoffPolicy;
-import androidx.work.Constraints;
-import androidx.work.ExistingWorkPolicy;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-
-import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.event.SyncServiceEvent;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.net.common.AntennapodHttpClient;
+import de.danoeh.antennapod.net.common.UrlChecker;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
-import de.danoeh.antennapod.net.sync.serviceinterface.LockingAsyncExecutor;
+import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
+import de.danoeh.antennapod.net.sync.nextcloud.NextcloudSyncService;
+import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
+import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeActionChanges;
+import de.danoeh.antennapod.net.sync.serviceinterface.ISyncService;
+import de.danoeh.antennapod.net.sync.serviceinterface.SubscriptionChanges;
+import de.danoeh.antennapod.net.sync.serviceinterface.SyncServiceException;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationProvider;
-import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueStorage;
+import de.danoeh.antennapod.net.sync.serviceinterface.UploadChangesResponse;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
+import de.danoeh.antennapod.storage.database.LongList;
 import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -43,31 +49,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import de.danoeh.antennapod.event.SyncServiceEvent;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.net.common.AntennapodHttpClient;
-import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.storage.database.LongList;
-import de.danoeh.antennapod.net.common.UrlChecker;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
-import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
-import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeActionChanges;
-import de.danoeh.antennapod.net.sync.serviceinterface.ISyncService;
-import de.danoeh.antennapod.net.sync.serviceinterface.SubscriptionChanges;
-import de.danoeh.antennapod.net.sync.serviceinterface.SyncServiceException;
-import de.danoeh.antennapod.net.sync.serviceinterface.UploadChangesResponse;
-import de.danoeh.antennapod.net.sync.nextcloud.NextcloudSyncService;
 
 public class SyncService extends Worker {
     public static final String TAG = "SyncService";
-    private static final String WORK_ID_SYNC = "SyncServiceWorkId";
 
-    private static boolean isCurrentlyActive = false;
+    private static boolean currentlyActive = false;
     private final SynchronizationQueueStorage synchronizationQueueStorage;
 
     public SyncService(@NonNull Context context, @NonNull WorkerParameters params) {
@@ -83,12 +69,21 @@ public class SyncService extends Worker {
             return Result.success();
         }
 
+        if (currentlyActive) {
+            return Result.success();
+        }
+        currentlyActive = true;
         SynchronizationSettings.updateLastSynchronizationAttempt();
-        setCurrentlyActive(true);
         try {
             activeSyncProvider.login();
             syncSubscriptions(activeSyncProvider);
-            waitForDownloadServiceCompleted();
+            if (someFeedWasNotRefreshedYet()) {
+                // Note that this service might get called several times before the FeedUpdate completes
+                Log.d(TAG, "Found new subscriptions. Need to refresh them before syncing episode actions");
+                EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_wait_for_downloads));
+                FeedUpdateManager.getInstance().runOnce(getApplicationContext());
+                return Result.success();
+            }
             syncEpisodeActions(activeSyncProvider);
             activeSyncProvider.logout();
             clearErrorNotifications();
@@ -111,34 +106,21 @@ public class SyncService extends Worker {
                 return Result.failure();
             }
         } finally {
-            setCurrentlyActive(false);
+            currentlyActive = false;
         }
     }
 
-    private static void setCurrentlyActive(boolean active) {
-        isCurrentlyActive = active;
+    private boolean someFeedWasNotRefreshedYet() {
+        for (Feed feed : DBReader.getFeedList()) {
+            if (feed.getLastRefreshAttempt() == 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public static void sync(Context context) {
-        OneTimeWorkRequest workRequest = getWorkRequest().build();
-        WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
-    }
-
-    public static void syncImmediately(Context context) {
-        OneTimeWorkRequest workRequest = getWorkRequest()
-                .setInitialDelay(0L, TimeUnit.SECONDS)
-                .build();
-        WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
-    }
-
-    public static void fullSync(Context context) {
-        LockingAsyncExecutor.executeLockedAsync(() -> {
-            SynchronizationSettings.resetTimestamps();
-            OneTimeWorkRequest workRequest = getWorkRequest()
-                    .setInitialDelay(0L, TimeUnit.SECONDS)
-                    .build();
-            WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
-        });
+    /* package-private */ static boolean isCurrentlyActive() {
+        return currentlyActive;
     }
 
     private void syncSubscriptions(ISyncService syncServiceImpl) throws SyncServiceException {
@@ -160,8 +142,7 @@ public class SyncService extends Worker {
             if (!UrlChecker.containsUrl(localSubscriptions, downloadUrl) && !queuedRemovedFeeds.contains(downloadUrl)) {
                 Feed feed = new Feed(downloadUrl, null, "Unknown podcast");
                 feed.setItems(Collections.emptyList());
-                Feed newFeed = FeedDatabaseWriter.updateFeed(getApplicationContext(), feed, false);
-                FeedUpdateManager.getInstance().runOnce(getApplicationContext(), newFeed);
+                FeedDatabaseWriter.updateFeed(getApplicationContext(), feed, false);
             }
         }
 
@@ -175,11 +156,15 @@ public class SyncService extends Worker {
         if (lastSync == 0) {
             Log.d(TAG, "First sync. Adding all local subscriptions.");
             queuedAddedFeeds = localSubscriptions;
-            queuedAddedFeeds.removeAll(subscriptionChanges.getAdded());
-            queuedRemovedFeeds.removeAll(subscriptionChanges.getRemoved());
         }
 
-        if (queuedAddedFeeds.size() > 0 || queuedRemovedFeeds.size() > 0) {
+        queuedAddedFeeds.removeAll(subscriptionChanges.getAdded());
+        queuedRemovedFeeds.removeAll(subscriptionChanges.getRemoved());
+
+        if (queuedAddedFeeds.isEmpty() && queuedRemovedFeeds.isEmpty()) {
+            Log.d(TAG, "No feeds to add or remove from server");
+            synchronizationQueueStorage.clearFeedQueues();
+        } else {
             Log.d(TAG, "Added: " + StringUtils.join(queuedAddedFeeds, ", "));
             Log.d(TAG, "Removed: " + StringUtils.join(queuedRemovedFeeds, ", "));
 
@@ -194,22 +179,6 @@ public class SyncService extends Worker {
             }
         }
         SynchronizationSettings.setLastSubscriptionSynchronizationAttemptTimestamp(newTimeStamp);
-    }
-
-    private void waitForDownloadServiceCompleted() {
-        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_wait_for_downloads));
-        try {
-            while (true) {
-                //noinspection BusyWait
-                Thread.sleep(1000);
-                FeedUpdateRunningEvent event = EventBus.getDefault().getStickyEvent(FeedUpdateRunningEvent.class);
-                if (event == null || !event.isFeedUpdateRunning) {
-                    return;
-                }
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     private void syncEpisodeActions(ISyncService syncServiceImpl) throws SyncServiceException {
@@ -260,7 +229,7 @@ public class SyncService extends Worker {
 
     private synchronized void processEpisodeActions(List<EpisodeAction> remoteActions) {
         Log.d(TAG, "Processing " + remoteActions.size() + " actions");
-        if (remoteActions.size() == 0) {
+        if (remoteActions.isEmpty()) {
             return;
         }
 
@@ -342,29 +311,6 @@ public class SyncService extends Worker {
                 == PackageManager.PERMISSION_GRANTED) {
             nm.notify(R.id.notification_gpodnet_sync_error, notification);
         }
-    }
-
-    private static OneTimeWorkRequest.Builder getWorkRequest() {
-        Constraints.Builder constraints = new Constraints.Builder();
-        if (UserPreferences.isAllowMobileSync()) {
-            constraints.setRequiredNetworkType(NetworkType.CONNECTED);
-        } else {
-            constraints.setRequiredNetworkType(NetworkType.UNMETERED);
-        }
-
-        OneTimeWorkRequest.Builder builder = new OneTimeWorkRequest.Builder(SyncService.class)
-                .setConstraints(constraints.build())
-                .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 10, TimeUnit.MINUTES);
-
-        if (isCurrentlyActive) {
-            // Debounce: don't start sync again immediately after it was finished.
-            builder.setInitialDelay(2L, TimeUnit.MINUTES);
-        } else {
-            // Give it some time, so other possible actions can be queued.
-            builder.setInitialDelay(20L, TimeUnit.SECONDS);
-            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
-        }
-        return builder;
     }
 
     private ISyncService getActiveSyncProvider() {
