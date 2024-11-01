@@ -195,7 +195,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             }
             androidAutoConnectionState.removeObserver(androidAutoConnectionObserver);
 
-            if (! androidAutoConnected) {
+            if (!androidAutoConnected) {
                 setPlayerStatus(PlayerStatus.INITIALIZED, media);
             }
 
