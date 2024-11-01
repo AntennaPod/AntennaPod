@@ -19,14 +19,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.text.HtmlCompat;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import de.danoeh.antennapod.net.sync.service.SyncService;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationProvider;
-import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.ui.preferences.R;
+import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -35,7 +34,7 @@ import de.danoeh.antennapod.event.SyncServiceEvent;
 import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 
-public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat {
+public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragment {
     private static final String PREFERENCE_SYNCHRONIZATION_DESCRIPTION = "preference_synchronization_description";
     private static final String PREFERENCE_GPODNET_SETLOGIN_INFORMATION = "pref_gpodnet_setlogin_information";
     private static final String PREFERENCE_SYNC = "pref_synchronization_sync";
@@ -95,16 +94,16 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                     return true;
                 });
         findPreference(PREFERENCE_SYNC).setOnPreferenceClickListener(preference -> {
-            SyncService.syncImmediately(getActivity().getApplicationContext());
+            SynchronizationQueue.getInstance().syncImmediately();
             return true;
         });
         findPreference(PREFERENCE_FORCE_FULL_SYNC).setOnPreferenceClickListener(preference -> {
-            SyncService.fullSync(getContext());
+            SynchronizationQueue.getInstance().fullSync();
             return true;
         });
         findPreference(PREFERENCE_LOGOUT).setOnPreferenceClickListener(preference -> {
             SynchronizationCredentials.clear();
-            SynchronizationQueueSink.clearQueue(getContext());
+            SynchronizationQueue.getInstance().clear();
             Snackbar.make(getView(), R.string.pref_synchronization_logout_toast, Snackbar.LENGTH_LONG).show();
             SynchronizationSettings.setSelectedSyncProvider(null);
             updateScreen();
@@ -168,12 +167,10 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             public View getView(int position, View convertView, ViewGroup parent) {
                 final LayoutInflater inflater = LayoutInflater.from(getContext());
                 if (convertView == null) {
-                    convertView = inflater.inflate(
-                            R.layout.alertdialog_sync_provider_chooser, null);
-
+                    convertView = inflater.inflate(R.layout.alertdialog_sync_provider_chooser, null);
                     holder = new ViewHolder();
-                    holder.icon = (ImageView) convertView.findViewById(R.id.icon);
-                    holder.title = (TextView) convertView.findViewById(R.id.title);
+                    holder.icon = convertView.findViewById(R.id.icon);
+                    holder.title = convertView.findViewById(R.id.title);
                     convertView.setTag(holder);
                 } else {
                     holder = (ViewHolder) convertView.getTag();

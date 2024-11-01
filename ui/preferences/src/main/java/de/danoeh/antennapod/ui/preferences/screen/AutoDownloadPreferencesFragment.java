@@ -2,15 +2,15 @@ package de.danoeh.antennapod.ui.preferences.screen;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceFragmentCompat;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.preferences.R;
 
-public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
+public class AutoDownloadPreferencesFragment extends AnimatedPreferenceFragment {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences_autodownload);
+        checkAutodownloadItemVisibility(UserPreferences.isEnableAutodownload());
 
         findPreference(UserPreferences.PREF_ENABLE_AUTODL).setOnPreferenceChangeListener(
                 (preference, newValue) -> {
@@ -25,12 +25,6 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
     public void onStart() {
         super.onStart();
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.pref_automatic_download_title);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        checkAutodownloadItemVisibility(UserPreferences.isEnableAutodownload());
     }
 
     private void checkAutodownloadItemVisibility(boolean autoDownload) {

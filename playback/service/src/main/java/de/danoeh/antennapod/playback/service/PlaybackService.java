@@ -54,7 +54,7 @@ import androidx.lifecycle.Observer;
 import androidx.media.MediaBrowserServiceCompat;
 
 import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.service.internal.LocalPSMP;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
 import de.danoeh.antennapod.playback.service.internal.PlaybackServiceNotificationBuilder;
@@ -943,8 +943,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     // Don't store position after position is already reset
                     saveCurrentPosition(position == Playable.INVALID_TIME, playable, position);
                 }
-                SynchronizationQueueSink.enqueueEpisodePlayedIfSynchronizationIsActive(getApplicationContext(),
-                        media, false);
+                SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, false);
             }
             playable.onPlaybackPause(getApplicationContext());
         }
@@ -1141,12 +1140,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         if (ended || almostEnded) {
-            SynchronizationQueueSink.enqueueEpisodePlayedIfSynchronizationIsActive(
-                    getApplicationContext(), media, true);
+            SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, true);
             media.onPlaybackCompleted(getApplicationContext());
         } else {
-            SynchronizationQueueSink.enqueueEpisodePlayedIfSynchronizationIsActive(
-                    getApplicationContext(), media, false);
+            SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, false);
             media.onPlaybackPause(getApplicationContext());
         }
 
