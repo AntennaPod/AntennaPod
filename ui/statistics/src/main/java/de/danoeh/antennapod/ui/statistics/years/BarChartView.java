@@ -97,8 +97,7 @@ public class BarChartView extends AppCompatImageView {
 
             for (int i = 0; i < data.size(); i++) {
                 float x = textPadding + (i + 1) * stepSize;
-                if (prevYear != data.get(i).getYear()
-                        || (i == 0 && monthsInFirstYear > 4)) {
+                if (prevYear != data.get(i).getYear() || (i == 0 && monthsInFirstYear > 4)) {
                     prevYear = data.get(i).getYear();
                     colorIndex++;
                     paintBars.setColor(colors[colorIndex % 2]);
