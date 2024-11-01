@@ -193,9 +193,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             } else {
                 throw new IOException("Unable to read local file " + media.getLocalFileUrl());
             }
-            androidAutoConnectionState.removeObserver(androidAutoConnectionObserver);
-
-            if (!androidAutoConnected) {
+            
+            if (! androidAutoConnected) {
                 setPlayerStatus(PlayerStatus.INITIALIZED, media);
             }
 
@@ -537,6 +536,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             mediaPlayer = null;
             playerStatus = PlayerStatus.STOPPED;
         }
+
+        androidAutoConnectionState.removeObserver(androidAutoConnectionObserver);
         isShutDown = true;
         abandonAudioFocus();
         releaseWifiLockIfNecessary();
