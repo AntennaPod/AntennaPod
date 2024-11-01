@@ -42,10 +42,10 @@
         style="@style/AntennaPod.TextView.ListItemPrimaryTitle" />
 
     <Spinner
-            android:id="@+id/skipSilenceSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/skip_silence_options"
-            android:spinnerMode="dropdown"/>
+        android:id="@+id/skipSilenceSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/skip_silence_options"
+        android:spinnerMode="dropdown" />
 
 </LinearLayout>
