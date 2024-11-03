@@ -81,23 +81,21 @@ public class FeedPreferences implements Serializable {
     public enum AutoDownloadSetting {
         DISABLED(0),
         ENABLED(2),
-        // the reason for this is that the database column uses 1 as the default value.
-        // migrating the cells to "2" is more easy than changing the default value.
-        DEFAULT(1);
+        GLOBAL(1);
 
-        public final int state;
+        public final int code;
 
-        AutoDownloadSetting(int state) {
-            this.state = state;
+        AutoDownloadSetting(int code) {
+            this.code = code;
         }
 
-        public static AutoDownloadSetting fromInteger(int state) {
+        public static AutoDownloadSetting fromInteger(int code) {
             for (AutoDownloadSetting setting : values()) {
-                if (state == setting.state) {
+                if (code == setting.code) {
                     return setting;
                 }
             }
-            return DEFAULT;
+            return GLOBAL;
         }
     }
 

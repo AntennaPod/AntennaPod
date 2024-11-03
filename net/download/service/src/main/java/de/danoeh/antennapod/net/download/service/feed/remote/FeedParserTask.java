@@ -42,7 +42,7 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
         feed.setId(request.getFeedfileId());
         // todo: Check handling of autoDownload parameter
         feed.setPreferences(new FeedPreferences(0,
-                FeedPreferences.AutoDownloadSetting.DEFAULT,
+                FeedPreferences.AutoDownloadSetting.GLOBAL,
                 FeedPreferences.AutoDeleteAction.GLOBAL,
                 VolumeAdaptionSetting.OFF,
                 FeedPreferences.NewEpisodesAction.GLOBAL,

@@ -180,7 +180,7 @@ public class Feed {
      */
     public Feed(String url, String lastModified, String title, String username, String password) {
         this(url, lastModified, title);
-        preferences = new FeedPreferences(0, FeedPreferences.AutoDownloadSetting.DEFAULT, FeedPreferences.AutoDeleteAction.GLOBAL, VolumeAdaptionSetting.OFF,
+        preferences = new FeedPreferences(0, FeedPreferences.AutoDownloadSetting.GLOBAL, FeedPreferences.AutoDeleteAction.GLOBAL, VolumeAdaptionSetting.OFF,
             FeedPreferences.NewEpisodesAction.GLOBAL, username, password);
     }
 

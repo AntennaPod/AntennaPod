@@ -59,7 +59,7 @@ public class PreferencesTest {
         EspressoTestUtils.clearPreferences();
         activityTestRule.launchActivity(new Intent());
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activityTestRule.getActivity());
-        prefs.edit().putBoolean(UserPreferences.PREF_AUTODL_DEFAULT, true).commit();
+        prefs.edit().putBoolean(UserPreferences.PREF_AUTODL_GLOBAL, true).commit();
 
         res = activityTestRule.getActivity().getResources();
         UserPreferences.init(activityTestRule.getActivity());

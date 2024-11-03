@@ -467,7 +467,7 @@ public class FeedSettingsFragment extends Fragment {
 
             boolean enableAutodownloadSwitch = feedPreferences.getAutoDownload(UserPreferences.defaultAutodownloadState());
             pref.setChecked(enableAutodownloadSwitch);
-            if (feedPreferences.getAutoDownloadRaw() == FeedPreferences.AutoDownloadSetting.DEFAULT) {
+            if (feedPreferences.getAutoDownloadRaw() == FeedPreferences.AutoDownloadSetting.GLOBAL) {
                 if (enableAutodownloadSwitch) {
                     pref.setSummary(getString(R.string.auto_download_enabled_because_global));
                 } else {
