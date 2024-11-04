@@ -39,6 +39,7 @@ import de.danoeh.antennapod.net.discovery.FyydPodcastSearcher;
 import de.danoeh.antennapod.net.discovery.ItunesPodcastSearcher;
 import de.danoeh.antennapod.net.discovery.PodcastIndexPodcastSearcher;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
+import de.danoeh.antennapod.ui.common.AnimatedFragment;
 import de.danoeh.antennapod.ui.discovery.OnlineSearchFragment;
 import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
@@ -51,7 +52,7 @@ import java.util.Collections;
 /**
  * Provides actions for adding new podcast subscriptions.
  */
-public class AddFeedFragment extends Fragment {
+public class AddFeedFragment extends AnimatedFragment {
 
     public static final String TAG = "AddFeedFragment";
     private static final String KEY_UP_ARROW = "up_arrow";
