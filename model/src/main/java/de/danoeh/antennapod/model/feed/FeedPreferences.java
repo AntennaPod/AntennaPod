@@ -190,17 +190,11 @@ public class FeedPreferences implements Serializable {
     }
 
     public boolean getAutoDownload(boolean globalDefault) {
-        switch (this.autoDownload) {
-            case ENABLED -> {
-                return true;
-            }
-            case DISABLED -> {
-                return false;
-            }
-            default -> {
-                return globalDefault;
-            }
-        }
+        return switch (this.autoDownload) {
+            case ENABLED -> true;
+            case DISABLED -> false;
+            default -> globalDefault;
+        };
     }
 
     public AutoDownloadSetting getAutoDownloadRaw() {

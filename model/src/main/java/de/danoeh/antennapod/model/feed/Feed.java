@@ -176,7 +176,6 @@ public class Feed {
     /**
      * This constructor is used for requesting a feed download (it must not be used for anything else!). It should be
      * used if the title of the feed is already known.
-     * Todo: check if the change to DEFAULT is correct
      */
     public Feed(String url, String lastModified, String title, String username, String password) {
         this(url, lastModified, title);
