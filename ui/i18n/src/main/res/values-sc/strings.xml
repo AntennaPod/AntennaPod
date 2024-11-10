@@ -316,7 +316,7 @@
     <string name="smart_shuffle">Riprodutzione inteligente</string>
     <string name="size">Mannària</string>
     <string name="clear_queue_confirmation_msg">Cunfirma chi boles bogare totu is episòdios de sa coa.</string>
-    <string name="time_left_label">Tempus a s\'agabbu:\u0020</string>
+    <string name="time_left_label">"Tempus a s\'agabbu: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Predefinidos</string>
     <string name="preset_already_exists">%1$.2fx est giai sarvadu comente predefinidu.</string>
@@ -618,7 +618,7 @@
     <string name="synchronization_login_status"><![CDATA[Identificadu comente <i>%1$s</i> in <i>%2$s</i>. <br/><br/>Podes torrare a seberare unu frunidore de sincronizatziones una borta disconnètidu]]></string>
     <string name="pref_synchronization_logout_toast">Essida cumpletada</string>
     <string name="gpodnetsync_error_title">errore de sincronizatzione cun gpodder.net</string>
-    <string name="gpodnetsync_error_descr">Errore in sa sincronizatzione:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Errore in sa sincronizatzione: "</string>
     <string name="gpodnetsync_pref_report_successful">Fatu</string>
     <string name="gpodnetsync_pref_report_failed">Faddidu</string>
     <string name="gpodnetsync_username_characters_error">Is nòmines de utente podent cuntènnere isceti lìteras, nùmeros, tratigheddos e linieddas bàscias.</string>
