@@ -331,7 +331,7 @@
     <string name="smart_shuffle">Casuale intelligente</string>
     <string name="size">Dimensione</string>
     <string name="clear_queue_confirmation_msg">Conferma che vuoi rimuovere dalla coda TUTTI gli episodi presenti.</string>
-    <string name="time_left_label">Tempo residuo:\u0020</string>
+    <string name="time_left_label">"Tempo residuo: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Preimpostazioni</string>
     <string name="preset_already_exists">%1$.2fx è già salvato come preimpostazione.</string>
@@ -637,7 +637,7 @@
     <string name="synchronization_login_status"><![CDATA[Accesso effettuato come <i>%1$s</i> su <i>%2$s</i>. <br/><br/>Potrai selezionare un\'altra sincronizzazione una volta effettuato il logout]]></string>
     <string name="pref_synchronization_logout_toast">Logout eseguito con successo</string>
     <string name="gpodnetsync_error_title">errore di sincronizzazione di gpodder.net</string>
-    <string name="gpodnetsync_error_descr">Rilevato un errore in fase di sincronizzazione:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Rilevato un errore in fase di sincronizzazione: "</string>
     <string name="gpodnetsync_pref_report_successful">Eseguito</string>
     <string name="gpodnetsync_pref_report_failed">Fallito</string>
     <string name="gpodnetsync_username_characters_error">Il nome utente può contenere solo lettere, numeri e trattini alti o bassi.</string>
