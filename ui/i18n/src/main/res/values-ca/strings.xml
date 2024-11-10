@@ -124,20 +124,24 @@
     <string name="episode_cleanup_after_listening">Després d\'acabar</string>
     <plurals name="num_selected_label">
         <item quantity="one">%1$d/%2$d seleccionat</item>
+        <item quantity="many"/>
         <item quantity="other">%1$d/%2$d seleccionats</item>
     </plurals>
     <plurals name="num_episodes">
         <item quantity="one">%d episodi</item>
+        <item quantity="many"/>
         <item quantity="other">%d episodis</item>
     </plurals>
     <string name="episode_notification">Notificacions d\'episodi nou</string>
     <string name="episode_notification_summary">Mostra una notificació quan es publiqui un episodi nou</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s té un nou episodi</item>
+        <item quantity="many"/>
         <item quantity="other">%2$sté %1$d episodis nous</item>
     </plurals>
     <plurals name="new_episode_notification_title">
         <item quantity="one">Nou episodi</item>
+        <item quantity="many"/>
         <item quantity="other">Episodis nous</item>
     </plurals>
     <string name="new_episode_notification_group_text">Les teves subscripcions tenen episodis nous.</string>
@@ -167,17 +171,19 @@
     <string name="updates_disabled_label">Actualitzacions desactivades</string>
     <plurals name="updated_feeds_batch_label">
         <item quantity="one">%d subscripció actualizada.</item>
+        <item quantity="many"/>
         <item quantity="other">%d subscripcions actualizades.</item>
     </plurals>
     <string name="edit_tags">Edita etiquetes</string>
     <string name="add_tag">Afegeix etiqueta</string>
     <string name="rename_tag_label">Canvia etiqueta</string>
-    <string name="confirm_mobile_feed_refresh_dialog_message">L\'actualització d\'episodis en connexió de dades està desactivada a les preferències.\n\nTot i això, voleu actualitzar els pòdcasts en connexió de dades? </string>
+    <string name="confirm_mobile_feed_refresh_dialog_message">L\'actualització d\'episodis en connexió de dades està desactivada a les preferències.\n\nTot i això, voleu actualitzar els pòdcasts en connexió de dades?</string>
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">La vostra aplicació VPN pretén ser una xarxa mòbil (connexió mesurada). L\'actualització de pòdcasts mitjançant la connexió de dades mòbils està desactivada a la configuració. Voleu actualitzar-los igualment? Si voleu que aquest problema es solucioni, poseu-vos en contacte amb els creadors de la vostra aplicació VPN.</string>
     <!--actions on feeditems-->
   <string name="download_label">Baixa</string>
     <plurals name="downloading_batch_label">
         <item quantity="one">Baixant %d episodi.</item>
+        <item quantity="many"/>
         <item quantity="other">Baixant %d episodis.</item>
     </plurals>
     <string name="play_label">Reprodueix</string>
@@ -193,27 +199,32 @@
     <string name="mark_read_no_media_label">Marcar com a llegit</string>
     <string name="play_this_to_seek_position">Per a botar a posicions deus reproduir l\'episodi.</string>
     <plurals name="marked_read_batch_label">
-        <item quantity="one">%d  episodi marcat com a reproduït.</item>
-        <item quantity="other">%d episodis marcats com a reproduïts. </item>
+        <item quantity="one">%d episodi marcat com a reproduït.</item>
+        <item quantity="many"/>
+        <item quantity="other">%d episodis marcats com a reproduïts.</item>
     </plurals>
     <string name="mark_unread_label">Marca com a pendent</string>
     <string name="mark_unread_label_no_media">Marcar com a no llegit</string>
     <plurals name="marked_unread_batch_label">
         <item quantity="one">%d episodi marcat com a no llegit.</item>
+        <item quantity="many"/>
         <item quantity="other">%d episodis marcats com a no llegits.</item>
     </plurals>
     <string name="add_to_queue_label">Afegeix a la cua</string>
     <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d  episodi afegit a la cua.</item>
+        <item quantity="one">%d episodi afegit a la cua.</item>
+        <item quantity="many"/>
         <item quantity="other">%d episodis afegits a la cua.</item>
     </plurals>
     <string name="remove_from_queue_label">Suprimeix de la cua</string>
     <plurals name="removed_from_queue_batch_label">
         <item quantity="one">%d episodi retirat de la cua.</item>
+        <item quantity="many"/>
         <item quantity="other">%d episodis retirats de la cua.</item>
     </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d episodi eliminat de la Safata d\'entrada.</item>
+        <item quantity="many"/>
         <item quantity="other">%d episodis eliminats de la Safata d\'entrada.</item>
     </plurals>
     <string name="add_to_favorite_label">Afegeix a preferits</string>
@@ -260,6 +271,7 @@
     <string name="download_error_db_access">Error d\'accés a la Base de Dades</string>
     <plurals name="downloads_left">
         <item quantity="one">%d baixada pendent</item>
+        <item quantity="many"/>
         <item quantity="other">%d baixades pendents</item>
     </plurals>
     <string name="download_notification_title_feeds">S\'estan actualitzant els pòdcasts</string>
@@ -304,7 +316,7 @@
     <string name="smart_shuffle">Reproducció intel·ligent</string>
     <string name="size">Mida</string>
     <string name="clear_queue_confirmation_msg">Confirmeu que voleu suprimir TOTS els episodis de la cua</string>
-    <string name="time_left_label">Temps restant:\u0020</string>
+    <string name="time_left_label">"Temps restant: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Valors predeterminats</string>
     <string name="preset_already_exists">%1$.2fx ja està guardat com a valor predeterminat.</string>
@@ -451,7 +463,7 @@
     <string name="visit_user_forum">Fòrum d\'usuaris</string>
     <string name="bug_report_title">Informa d\'un bug</string>
     <string name="open_bug_tracker">Obri rastrejador de bugs</string>
-    <string name="copy_to_clipboard">Còpia al porta-retalls </string>
+    <string name="copy_to_clipboard">Còpia al porta-retalls</string>
     <string name="copied_to_clipboard">Copiat al porta-retalls</string>
     <string name="pref_proxy_title">Servidor intermediari</string>
     <string name="pref_proxy_sum">Estableix un servidor intermediari</string>
@@ -555,18 +567,22 @@
     <string name="time_hours">hores</string>
     <plurals name="time_seconds_quantified">
         <item quantity="one">%d segon</item>
+        <item quantity="many"/>
         <item quantity="other">%d segons</item>
     </plurals>
     <plurals name="time_minutes_quantified">
         <item quantity="one">%d minut</item>
+        <item quantity="many"/>
         <item quantity="other">%d minuts</item>
     </plurals>
     <plurals name="time_hours_quantified">
         <item quantity="one">%d hora</item>
+        <item quantity="many"/>
         <item quantity="other">%d hores</item>
     </plurals>
     <plurals name="time_days_quantified">
         <item quantity="one">%d dia</item>
+        <item quantity="many"/>
         <item quantity="other">%d dies</item>
     </plurals>
     <string name="auto_enable_label">Activació automàtica del temporitzador en reproduir</string>
@@ -606,7 +622,7 @@
     <string name="synchronization_login_status"><![CDATA[Connectat com <i>%1$s</i> en <i>%2$s</i>. <br/><br/>Podeu escollir de nou el vostre proveïdor de sincronització, un cop hagueu desconnectat]]></string>
     <string name="pref_synchronization_logout_toast">Us heu desconnectat correctament.</string>
     <string name="gpodnetsync_error_title">Error de sincronització a gpodder.net</string>
-    <string name="gpodnetsync_error_descr">S\'ha produït un error durant la sincronització:\u0020</string>
+    <string name="gpodnetsync_error_descr">"S\'ha produït un error durant la sincronització: "</string>
     <string name="gpodnetsync_pref_report_successful">Correcte</string>
     <string name="gpodnetsync_pref_report_failed">Ha fallat</string>
     <string name="gpodnetsync_username_characters_error">Noms d\'usuari sols poden contindre lletres, dígits, guions i guions baixos.</string>
