@@ -783,4 +783,7 @@
     <string name="shortcut_subscription_label">Abonnement-Verknüpfung</string>
     <string name="shortcut_select_subscription">Abonnement auswählen</string>
     <string name="add_shortcut">Verknüpfung hinzufügen</string>
+    <string name="section_shown">Angezeigt</string>
+    <string name="sync_status_wait_for_downloads">Warte auf Aktualisierung der Abonnements…</string>
+    <string name="pref_nav_drawer_items_title">Navigation anpassen</string>
 </resources>
