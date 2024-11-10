@@ -640,6 +640,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS)
                 == PackageManager.PERMISSION_GRANTED) {
             notificationManager.notify(R.id.notification_streaming_confirmation, builder.build());
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    R.string.confirm_mobile_streaming_notification_message, Toast.LENGTH_LONG).show();
         }
     }
 
