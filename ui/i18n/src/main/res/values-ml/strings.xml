@@ -36,7 +36,7 @@
     <string name="yes">ശരി</string>
     <string name="no">വേണ്ട</string>
     <string name="reset">പുനഃക്രമീകരിക്കുക</string>
-    <string name="url_label">യുആർഎൽ </string>
+    <string name="url_label">യുആർഎൽ</string>
     <string name="support_funding_label">പിന്തുണക്കുക</string>
     <string name="error_label">പ്രശ്നം</string>
     <string name="error_msg_prefix">ഒരു പ്രശ്നമുണ്ട്:</string>
@@ -69,7 +69,7 @@
     <string name="share_label">പങ്കിടുക</string>
     <string name="feed_remover_msg">പോഡ്‍കാസ്റ്റു് നീക്കം ചെയ്യുന്നു</string>
     <string name="load_complete_feed">എല്ലാ പോഡ്കാസ്റ്റുകളും പുതുക്കുക</string>
-    <string name="multi_select">ഒന്നിലധികം തിരഞ്ഞെടുക്കുക </string>
+    <string name="multi_select">ഒന്നിലധികം തിരഞ്ഞെടുക്കുക</string>
     <string name="select_all_above">എല്ലാം തിരഞ്ഞെടുക്കുക</string>
     <string name="select_all_below">താഴെയുള്ളവയെല്ലാം തിരഞ്ഞെടുക്കുക</string>
     <string name="filtered_label">അരിച്ചെടുത്തത്</string>
