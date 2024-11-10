@@ -22,7 +22,7 @@
     <string name="episode_cache_full_message">Se alcanzó el límite de la caché de episodios. Puede aumentar el tamaño en Configuración.</string>
     <string name="years_statistics_label">Años</string>
     <string name="notification_pref_fragment">Notificaciones</string>
-    <string name="current_playing_episode">Actual </string>
+    <string name="current_playing_episode">Actual</string>
     <!--Google Assistant-->
   <string name="app_action_not_found">No se encontró «%1$s»</string>
     <!--SwipeActions-->
@@ -272,7 +272,7 @@
     <string name="download_error_not_found">El servidor del host del podcast no sabe dónde encontrar el archivo. Es posible que se haya borrado.</string>
     <string name="download_error_connection_error">Error de conexión</string>
     <string name="download_error_no_connection">Sin conexión</string>
-    <string name="download_error_unknown_host">Servidor no encontrado. Verifique su conexión de red y que la dirección este escrita correctamente. </string>
+    <string name="download_error_unknown_host">Servidor no encontrado. Verifique su conexión de red y que la dirección este escrita correctamente.</string>
     <string name="download_error_unauthorized">Error de autenticación. Comprueba el usuario y la contarseña.</string>
     <string name="download_error_file_type_type">Tipo de archivo erróneo</string>
     <string name="download_error_forbidden">El servidor del host del podcast se niega a responder.</string>
@@ -331,7 +331,7 @@
     <string name="smart_shuffle">Reproducción inteligente</string>
     <string name="size">Tamaño</string>
     <string name="clear_queue_confirmation_msg">Confirme que quiere borrar TODOS los episodios de la cola.</string>
-    <string name="time_left_label">Tiempo restante:\u0020</string>
+    <string name="time_left_label">"Tiempo restante: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Presets</string>
     <string name="preset_already_exists">%1$.2fx ya existe como preset.</string>
@@ -499,7 +499,7 @@
     <string name="subscriptions_are_filtered">Las suscripciones están filtradas.</string>
     <string name="subscriptions_counter_greater_zero">Contador mayor que cero</string>
     <string name="auto_downloaded">Descargado automáticamente</string>
-    <string name="not_auto_downloaded"> No auto-descargado</string>
+    <string name="not_auto_downloaded">No auto-descargado</string>
     <string name="kept_updated">Mantenido actualizado</string>
     <string name="not_kept_updated">No mantenido actualizado</string>
     <string name="new_episode_notification_enabled">Notificación habilitada</string>
@@ -601,7 +601,7 @@
         <item quantity="other">%d días</item>
     </plurals>
     <string name="auto_enable_label">Activar el temporizador de sueño automáticamente al pulsar play</string>
-    <string name="auto_enable_label_with_times">Activar el temporizador de sueño automáticamente al pulsar el botón de play  entre %1$s y %2$s</string>
+    <string name="auto_enable_label_with_times">Activar el temporizador de sueño automáticamente al pulsar el botón de play entre %1$s y %2$s</string>
     <string name="auto_enable_change_times">Cambiar rango de tiempo</string>
     <string name="sleep_timer_enabled_label">Temporizador habilitado</string>
     <!--Synchronisation-->
@@ -637,7 +637,7 @@
     <string name="synchronization_login_status"><![CDATA[Autenticado como <i>%1$s</i> en <i>%2$s</i>. <br/><br/>Puedes elegir tu proveedor de sincronización de nuevo si cierras sesión.]]></string>
     <string name="pref_synchronization_logout_toast">Te has desconectado correctamente</string>
     <string name="gpodnetsync_error_title">Error de sincronización de gpodder.net</string>
-    <string name="gpodnetsync_error_descr">Ocurrió un error de sincronización:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Ocurrió un error de sincronización: "</string>
     <string name="gpodnetsync_pref_report_successful">Exitoso</string>
     <string name="gpodnetsync_pref_report_failed">Fallido</string>
     <string name="gpodnetsync_username_characters_error">Los nombres de usuario solo pueden contener legras, dígitos, guiones medios y guiones bajos.</string>
@@ -651,7 +651,7 @@
   <string name="rating_tagline">Desde %1$s, has reproducido %2$s%3$d%4$s horas de pódcasts.</string>
     <string name="rating_contribute_label">¿Quieres unirte? Puedes traducir, dar soporte, diseñar o programar. ¡Estaremos encantados de tenerte!</string>
     <string name="rating_contribute_button">Descubre formas de contribuir</string>
-    <string name="rating_volunteers_label">AntennaPod se desarrolla gracias a voluntarios en su tiempo libre. Puede  apreciar su trabajo dejando una buena valoración.</string>
+    <string name="rating_volunteers_label">AntennaPod se desarrolla gracias a voluntarios en su tiempo libre. Puede apreciar su trabajo dejando una buena valoración.</string>
     <string name="rating_rate">Valorar AntennaPod</string>
     <string name="rating_later">Después</string>
     <!--Online feed view-->
