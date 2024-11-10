@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--Activity and fragment titles-->
+  <string name="feed_update_receiver_name">Renova subscriptiones</string>
+    <string name="feeds_label">Transmissiones</string>
+    <string name="statistics_label">Statistica</string>
+    <string name="add_feed_label">Adde transmissiones</string>
+    <string name="episodes_label">Casus</string>
+    <string name="home_label">Domi</string>
+    <string name="queue_label">Opus facens</string>
+    <string name="inbox_label">Epistulae</string>
+    <string name="favorite_episodes_label">Deliciae</string>
+    <string name="settings_label">Optiones</string>
+    <string name="downloads_label">Horreum</string>
+    <string name="open_autodownload_settings">Aperi optiones</string>
+    <string name="downloads_log_label">Tabulae horrei</string>
+    <string name="subscriptions_label">Subscriptiones</string>
+    <string name="subscriptions_list_label">Tabulae subscriptionum</string>
+    <string name="cancel_download_label">Destrue translatio</string>
+    <string name="playback_history_label">Historia orationum</string>
+    <string name="episode_cache_full_title">Conditorium casuum plenum</string>
+    <string name="episode_cache_full_message">Conditorium casuum plenum est. In optiones fieri potest conditorium extendere.</string>
+    <string name="years_statistics_label">Anni</string>
+</resources>
