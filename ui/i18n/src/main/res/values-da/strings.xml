@@ -21,7 +21,7 @@
     <string name="episode_cache_full_title">Mellemlageret for afsnit er fuldt</string>
     <string name="episode_cache_full_message">Der er ikke mere plads i mellemlageret. Du kan øge størrelsen på mellemlageret i indstillinger.</string>
     <string name="years_statistics_label">År</string>
-    <string name="notification_pref_fragment">Notifikationer </string>
+    <string name="notification_pref_fragment">Notifikationer</string>
     <string name="current_playing_episode">Nuværende</string>
     <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" ikke fundet</string>
@@ -281,7 +281,7 @@
     <string name="download_type_media">Mediefil</string>
     <string name="no_feed_url_podcast_found_by_search">Den foreslåede podcast havde ikke et RSS-link, AntennaPod fandt en podcast, der måske matcher</string>
     <string name="authentication_notification_title">Godkendelse kræves</string>
-    <string name="confirm_mobile_download_dialog_title">Bekræft mobiloverførsel </string>
+    <string name="confirm_mobile_download_dialog_title">Bekræft mobiloverførsel</string>
     <string name="confirm_mobile_download_dialog_message">Overførsel via mobildataforbindelse er deaktiveret i indstillingerne. AntennaPod kan hente afsnittet automatisk senere, når Wi-Fi er tilgængeligt.</string>
     <string name="confirm_mobile_download_dialog_message_vpn">Din VPN-app udgiver sig for at være et mobilnetværk (forbrugsafregnet forbindelse). Overførsel af podcasts via mobildataforbindelse er deaktiveret i indstillingerne.\n\nVil du overføre alligevel? Hvis du vil have løst dette problem, skal du kontakte udviklerne af din VPN-app.</string>
     <string name="confirm_mobile_download_dialog_download_later">Hent senere</string>
@@ -316,7 +316,7 @@
     <string name="smart_shuffle">Smart blanding</string>
     <string name="size">Størrelse</string>
     <string name="clear_queue_confirmation_msg">Bekræft, at du ønsker at fjerne ALLE afsnit fra køen.</string>
-    <string name="time_left_label">Tid tilbage:\u0020</string>
+    <string name="time_left_label">"Tid tilbage: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Forudindstillinger</string>
     <string name="preset_already_exists">%1$.2fx er allerede gemt som en forudindstilling.</string>
@@ -618,7 +618,7 @@
     <string name="synchronization_login_status"><![CDATA[Logget ind som <i>%1$s</i> på <i>%2$s</i>. <br/><br/>Du kan vælge din synkroniseringsudbyder igen, når du har logget ud]]></string>
     <string name="pref_synchronization_logout_toast">Det er lykkedes at logge af</string>
     <string name="gpodnetsync_error_title">gpodder.net-synkroniseringsfejl</string>
-    <string name="gpodnetsync_error_descr">En fejl opstod under synkronisering:\u0020</string>
+    <string name="gpodnetsync_error_descr">"En fejl opstod under synkronisering: "</string>
     <string name="gpodnetsync_pref_report_successful">Lykkedes</string>
     <string name="gpodnetsync_pref_report_failed">Fejlede</string>
     <string name="gpodnetsync_username_characters_error">Brugernavne kan kun indeholde bogstaver, tal, bindestreger og understreger.</string>
@@ -783,4 +783,5 @@
     <string name="shortcut_subscription_label">Genvej til abonnement</string>
     <string name="shortcut_select_subscription">Vælg abonnement</string>
     <string name="add_shortcut">Tilføj genvej</string>
+    <string name="home_no_recent_unplayed_episodes_text">Du har allerede afspillet alle de seneste afsnit. Ingen ting at blive overrasket over her ;)</string>
 </resources>
