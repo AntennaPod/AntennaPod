@@ -42,7 +42,7 @@
     <string name="statistics_filter_all_time">Vseh časov</string>
     <string name="statistics_filter_past_year">Preteklo leto</string>
     <string name="statistics_reset_data">Ponastavi statistične podatke</string>
-    <string name="statistics_reset_data_msg">To bo pobrisalo vso zgodovino pretečenega časa predvajanja  vseh epizod. Ali ste prepričani da želite nadaljevati?</string>
+    <string name="statistics_reset_data_msg">To bo pobrisalo vso zgodovino pretečenega časa predvajanja vseh epizod. Ali ste prepričani da želite nadaljevati?</string>
     <string name="statistics_counting_range">Predvajano med %1$s in %2$s</string>
     <string name="statistics_counting_total">Predvajano skupaj</string>
     <!--Home fragment-->
@@ -198,7 +198,7 @@
     <string name="marked_as_played_label">Označeno kot predvajano</string>
     <string name="marked_as_unplayed_label">Označeno kot nepredvajano</string>
     <string name="mark_read_no_media_label">Označi kot prebrano</string>
-    <string name="play_this_to_seek_position">Če želite skočiti na to mesto, morate predvajati epizodo </string>
+    <string name="play_this_to_seek_position">Če želite skočiti na to mesto, morate predvajati epizodo</string>
     <plurals name="marked_read_batch_label">
         <item quantity="one">%d epizoda označena kot predvajana.</item>
         <item quantity="two">%d epizodi označeni kot predvajani.</item>
@@ -285,7 +285,7 @@
     <string name="authentication_notification_title">Potrebna je avtentikacija</string>
     <string name="confirm_mobile_download_dialog_title">Potrdite prenos preko mobilnih podatkov</string>
     <string name="confirm_mobile_download_dialog_message">Prenos preko mobilne podatkovne povezave je onemogočen v nastavitvah. AntennaPod lahko pozneje, ko bo na voljo Wi-Fi, epizodo prenese samodejno.</string>
-    <string name="confirm_mobile_download_dialog_message_vpn">Vaša VPN aplikacija se pretvarja, da je mobilno omrežje (omejena povezava). Prenos preko mobilne podatkovne povezave je onemogočeno v nastavitvah.  Če želite, da se ta težava odpravi, se obrnite na ustvarjalce vaše VPN aplikacije.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">Vaša VPN aplikacija se pretvarja, da je mobilno omrežje (omejena povezava). Prenos preko mobilne podatkovne povezave je onemogočeno v nastavitvah. Če želite, da se ta težava odpravi, se obrnite na ustvarjalce vaše VPN aplikacije.</string>
     <string name="confirm_mobile_download_dialog_download_later">Prenesi kasneje</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Vseeno prenesi</string>
     <string name="confirm_mobile_streaming_notification_title">Potrdite mobilno pretočno predvajanje</string>
@@ -315,7 +315,7 @@
     <string name="random">Naključno</string>
     <string name="smart_shuffle">Pametno mešanje</string>
     <string name="size">Velikost</string>
-    <string name="time_left_label">Preostali čas:\u0020</string>
+    <string name="time_left_label">"Preostali čas: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Prednastavitve</string>
     <string name="preset_already_exists">%1$.2fx je že shranjeno kot prednastavitev.</string>
@@ -330,7 +330,7 @@
     <string name="no_history_head_label">Ni zgodovine</string>
     <string name="no_history_label">Potem ko bo epizoda predvajana do konca, bo prikazana tukaj.</string>
     <string name="no_all_episodes_head_label">Ni epizod</string>
-    <string name="no_all_episodes_label">Ko dodate poddajo, bodo epizode prikazane tukaj. </string>
+    <string name="no_all_episodes_label">Ko dodate poddajo, bodo epizode prikazane tukaj.</string>
     <string name="no_all_episodes_filtered_label">Odstranite filtre, da vidite več epizod.</string>
     <string name="no_inbox_head_label">V nabiralniku ni epizod</string>
     <string name="no_inbox_label">Ko prispejo nove epizode, bodo prikazane tukaj. Takrat se lahko odločite, če so vam zanimive.</string>
@@ -480,7 +480,7 @@
     <string name="pref_new_episodes_action_sum">Kaj storiti z novimi epizodami</string>
     <!--About screen-->
   <string name="about_pref">Vizitka</string>
-    <string name="antennapod_version">AntennaPod različica </string>
+    <string name="antennapod_version">AntennaPod različica</string>
     <string name="contributors">Sodelujoči</string>
     <string name="contributors_summary">Vsakdo lahko pomaga izboljšati AntennaPod: s kodo, prevodi ali z nudenjem pomoči uporabnikom na našem forumu</string>
     <string name="developers">Razvijalci</string>
@@ -566,7 +566,7 @@
     <string name="gpodnetauth_existing_devices">Obstoječe naprave</string>
     <string name="gpodnetauth_create_device">Ustvari napravo</string>
     <string name="gpodnetauth_finish_descr">Čestitam! Vaš račun gpodder.net je zdaj povezan z vašo napravo. AntennaPod bo od zdaj naprej samodejno sinhroniziral naročnine na vaši napravi z vašim računom gpodder.net.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Začnite sedaj sinhronizirati </string>
+    <string name="gpodnetauth_finish_butsyncnow">Začnite sedaj sinhronizirati</string>
     <string name="pref_gpodnet_setlogin_information_title">Spremenite podatke za prijavo</string>
     <string name="pref_gpodnet_setlogin_information_sum">Spremenite podatke za prijavo za svoj račun gpodder.net.</string>
     <string name="synchronization_sync_changes_title">Sinhroniziraj takoj</string>
@@ -575,7 +575,7 @@
     <string name="synchronization_logout">Odjava</string>
     <string name="pref_synchronization_logout_toast">Odjava je bila uspešna</string>
     <string name="gpodnetsync_error_title">napaka pri sinhronizaciji gpodder.net</string>
-    <string name="gpodnetsync_error_descr">Med sinhronizacijo je prišlo do napake:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Med sinhronizacijo je prišlo do napake: "</string>
     <string name="gpodnetsync_pref_report_successful">Uspešno</string>
     <string name="gpodnetsync_pref_report_failed">Ne uspešno</string>
     <string name="gpodnetsync_username_characters_error">Uporabniška imena lahko vsebujejo samo črke, številke, vezaje in podčrtaje.</string>
