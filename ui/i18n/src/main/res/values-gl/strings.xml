@@ -316,7 +316,7 @@
     <string name="smart_shuffle">Barallado intelixente</string>
     <string name="size">Tamaño</string>
     <string name="clear_queue_confirmation_msg">Por favor confirma que queres desbotar TODOS os episodios da cola.</string>
-    <string name="time_left_label">Tempo restante:\u0020</string>
+    <string name="time_left_label">"Tempo restante: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Axustes establecidos</string>
     <string name="preset_already_exists">%1$.2fx xa está gardado como un axuste previo.</string>
@@ -618,7 +618,7 @@
     <string name="synchronization_login_status"><![CDATA[Accedeches como <i>%1$s</i> en <i>%2$s</i>. <br/><br/>Podes cambiar de provedor de sincronización unha vez te desconectes do actual]]></string>
     <string name="pref_synchronization_logout_toast">Desconexión correcta</string>
     <string name="gpodnetsync_error_title">fallo na sincronización con gpodder.net</string>
-    <string name="gpodnetsync_error_descr">Houbo un fallo durante a sincronización:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Houbo un fallo durante a sincronización: "</string>
     <string name="gpodnetsync_pref_report_successful">Con éxito</string>
     <string name="gpodnetsync_pref_report_failed">Fallou</string>
     <string name="gpodnetsync_username_characters_error">Os nomes de usuario só conteñen letras, números e guións medio e baixo.</string>
