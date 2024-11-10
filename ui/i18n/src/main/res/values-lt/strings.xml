@@ -18,7 +18,7 @@
     <string name="swipeactions_summary">Pasirinkite, kas įvyks pirštu perbraukus per ekraną epizodų sąraše</string>
     <string name="change_setting">Keisti</string>
     <!--Statistics fragment-->
-  <string name="statistics_include_marked">Įtraukti epizodų, kurie yra tik pažymėti kaip perklausyti, trukmę </string>
+  <string name="statistics_include_marked">Įtraukti epizodų, kurie yra tik pažymėti kaip perklausyti, trukmę</string>
     <string name="statistics_speed_not_counted">Atkreipkite dėmesį: į atkūrimo spartą neatsižvelgiama.</string>
     <string name="statistics_from">Nuo</string>
     <string name="statistics_to">Iki</string>
@@ -73,20 +73,17 @@
     <plurals name="num_selected_label">
         <item quantity="one">%1$d/%2$d pažymėtas</item>
         <item quantity="few">%1$d/%2$d pažymėti</item>
-        <item quantity="many">%1$d/%2$d pažymėtų</item>
         <item quantity="other">%1$d/%2$d pažymėtų</item>
     </plurals>
     <plurals name="num_episodes">
         <item quantity="one">%d epizodas</item>
         <item quantity="few">%d epizodai</item>
-        <item quantity="many">%d epizodų</item>
         <item quantity="other">%d epizodų</item>
     </plurals>
     <string name="episode_notification_summary">Rodyti pranešimą, kai išleidžiamas naujas epizodas.</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s yra naujas epizodas</item>
         <item quantity="few">%2$s yra %1$d nauji epizodai</item>
-        <item quantity="many">%2$s yra %1$d naujų epizodų</item>
         <item quantity="other">%2$s yra %1$d naujų epizodų</item>
     </plurals>
     <string name="new_episode_notification_group_text">Jūsų prenumeruojamose tinklalaidėse yra naujų epizodų.</string>
@@ -107,7 +104,6 @@
     <plurals name="updated_feeds_batch_label">
         <item quantity="one">%d prenumerata atnaujinta.</item>
         <item quantity="few">%d prenumeratos atnaujintos.</item>
-        <item quantity="many">%d prenumeratų atnaujinta.</item>
         <item quantity="other">%d prenumeratų atnaujinta.</item>
     </plurals>
     <string name="edit_tags">Redaguoti žymes</string>
@@ -118,7 +114,6 @@
     <plurals name="downloading_batch_label">
         <item quantity="one">Atsiunčiamas %d epizodas.</item>
         <item quantity="few">Atsiunčiami %d epizodai.</item>
-        <item quantity="many">Atsiunčiami %d epizodai.</item>
         <item quantity="other">Atsiunčiami %d epizodai.</item>
     </plurals>
     <string name="play_label">Atkurti</string>
@@ -133,7 +128,6 @@
     <plurals name="marked_read_batch_label">
         <item quantity="one">%d epizodas pažymėtas kaip perklausytas.</item>
         <item quantity="few">%d epizodai pažymėti kaip perklausyti.</item>
-        <item quantity="many">%d epizodai pažymėti kaip perklausyti.</item>
         <item quantity="other">%d epizodai pažymėti kaip perklausyti.</item>
     </plurals>
     <string name="mark_unread_label">Pažymėti kaip neperklausytą</string>
@@ -141,19 +135,16 @@
     <plurals name="marked_unread_batch_label">
         <item quantity="one">%d epizodas pažymėtas kaip neperklausytas.</item>
         <item quantity="few">%d epizodai pažymėti kaip neperklausyti.</item>
-        <item quantity="many">%d epizodai pažymėti kaip neperklausyti.</item>
         <item quantity="other">%d epizodai pažymėti kaip neperklausyti.</item>
     </plurals>
     <plurals name="added_to_queue_batch_label">
         <item quantity="one">%d epizodas pridėtas į eilę.</item>
         <item quantity="few">%d epizodai pridėti į eilę.</item>
-        <item quantity="many">%d epizodai pridėti į eilę.</item>
         <item quantity="other">%d epizodai pridėti į eilę.</item>
     </plurals>
     <plurals name="removed_from_queue_batch_label">
         <item quantity="one">%d epizodas pašalintas iš eilės.</item>
         <item quantity="few">%d epizodai pašalinti iš eilės.</item>
-        <item quantity="many">%d epizodai pašalinti iš eilės.</item>
         <item quantity="other">%d epizodai pašalinti iš eilės.</item>
     </plurals>
     <string name="skip_episode_label">Praleisti epizodą</string>
@@ -179,7 +170,6 @@
     <plurals name="downloads_left">
         <item quantity="one">Liko %d atsiuntimas</item>
         <item quantity="few">Liko %d atsiuntimai</item>
-        <item quantity="many">Liko %d atsiuntimų</item>
         <item quantity="other">Liko %d atsiuntimų</item>
     </plurals>
     <string name="download_notification_title_feeds">Atnaujinamos tinklalaidės</string>
@@ -209,7 +199,7 @@
     <string name="episode_title">Epizodo pavadinimas</string>
     <string name="feed_title">Tinklalaidės pavadinimas</string>
     <string name="random">Atsitiktinai</string>
-    <string name="time_left_label">Liko laiko:\u0020</string>
+    <string name="time_left_label">"Liko laiko: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Išsaugotos reikšmės</string>
     <string name="preset_already_exists">%1$.2fx jau yra tarp išsaugotų reikšmių.</string>
@@ -240,7 +230,7 @@
     <string name="preference_search_hint">Ieškoti...</string>
     <string name="preference_search_no_results">Rezultatų nėra</string>
     <string name="preference_search_clear_history">Išvalyti istoriją</string>
-    <string name="pref_episode_cleanup_summary">Epizodai, kurie gali būti ištrinti automatinio atsiuntimo metu pritrūkus laisvos vietos naujiems epizodams </string>
+    <string name="pref_episode_cleanup_summary">Epizodai, kurie gali būti ištrinti automatinio atsiuntimo metu pritrūkus laisvos vietos naujiems epizodams</string>
     <string name="pref_pauseOnDisconnect_sum">Pristabdyti atkūrimą, kai atjungiamos ausinės ar „Bluetooth“</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Pratęsti atkūrimą, kai ausinės pakartotinai prijungiamos</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Pratęsti atkūrimą, kai pakartotinai prisijungiama prie „Bluetooth“</string>
@@ -397,7 +387,7 @@
     <string name="synchronization_login_status"><![CDATA[Prisijungta kaip <i>%1$s</i> <i>%2$s</i> serveryje. <br/><br/>Atsijungę vėl galėsite pasirinkti sinchronizavimo teikėją]]></string>
     <string name="pref_synchronization_logout_toast">Sėkmingai atsijungta</string>
     <string name="gpodnetsync_error_title">„gpodder.net“ sinchronizavimo klaida</string>
-    <string name="gpodnetsync_error_descr">Sinchronizavimo metu įvyko klaida:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Sinchronizavimo metu įvyko klaida: "</string>
     <string name="gpodnetsync_pref_report_successful">Pavyko</string>
     <string name="gpodnetsync_pref_report_failed">Nepavyko</string>
     <string name="gpodnetsync_username_characters_error">Naudotojo vardą sudaryti gali tik raidės, skaitmenys, brūkšniai ir pabraukimo brūkšniai.</string>
