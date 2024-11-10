@@ -43,7 +43,7 @@
     <string name="statistics_filter_past_year">Минулий рік</string>
     <string name="statistics_reset_data">Cкинути дані статистики</string>
     <string name="statistics_reset_data_msg">Це видалить всі дані про тривалість відтворення епізодів. Ви впевнені, що хочете продовжити?</string>
-    <string name="statistics_counting_range">Прослухано між %1$sта%2$s </string>
+    <string name="statistics_counting_range">Прослухано між %1$sта%2$s</string>
     <string name="statistics_counting_total">Прослухано загалом</string>
     <!--Home fragment-->
   <string name="home_surprise_title">Здивуйтеся</string>
@@ -84,7 +84,7 @@
     <string name="remove_history_label">Вилучити з історії</string>
     <string name="removed_history_label">Вилучено з історії</string>
     <!--Other-->
-  <string name="confirm_label"> Підтвердити</string>
+  <string name="confirm_label">Підтвердити</string>
     <string name="cancel_label">Скасувати</string>
     <string name="yes">Так</string>
     <string name="no">Ні</string>
@@ -144,7 +144,7 @@
         <item quantity="one">%d епізод</item>
         <item quantity="few">%d епізоди</item>
         <item quantity="many">%d епізодів</item>
-        <item quantity="other">%d епізоди</item>
+        <item quantity="other">%d епізодів</item>
     </plurals>
     <string name="episode_notification">Сповіщення про епізоди</string>
     <string name="episode_notification_summary">Показувати сповіщення, коли виходить нова серія.</string>
@@ -152,7 +152,7 @@
         <item quantity="one">%2$s має новий епізод</item>
         <item quantity="few">%2$s має %1$d нових епізоди</item>
         <item quantity="many">%2$s має %1$d нові епізодів</item>
-        <item quantity="other">%2$s має %1$d нових епізодів</item>
+        <item quantity="other">%2$s має %1$d нові епізодів</item>
     </plurals>
     <plurals name="new_episode_notification_title">
         <item quantity="one">Новий епізод</item>
@@ -189,7 +189,7 @@
         <item quantity="one">%d підписку оновлено.</item>
         <item quantity="few">%d підписки оновлено.</item>
         <item quantity="many">%d підписок оновлено.</item>
-        <item quantity="other">%d підписки оновлено.</item>
+        <item quantity="other">%d підписок оновлено.</item>
     </plurals>
     <string name="edit_tags">Редагувати теги</string>
     <string name="add_tag">Додати тег</string>
@@ -254,7 +254,7 @@
         <item quantity="one">%d епізод вилучено зі скриньки вхідних.</item>
         <item quantity="few">%d епізоди вилучено зі скриньки вхідних.</item>
         <item quantity="many">%d епізодів вилучено зі скриньки вхідних.</item>
-        <item quantity="other">%d епізоди(-ів) вилучено зі скриньки вхідних.</item>
+        <item quantity="other">%d епізодів вилучено зі скриньки вхідних.</item>
     </plurals>
     <string name="add_to_favorite_label">Додати до обраного</string>
     <string name="show_transcript">Показати транскрипцію</string>
@@ -346,7 +346,7 @@
     <string name="smart_shuffle">Розумне перемішування</string>
     <string name="size">Розмір</string>
     <string name="clear_queue_confirmation_msg">Будь ласка, підтвердіть, що ви хочете видалити ВСІ епізоди з черги.</string>
-    <string name="time_left_label">Залишилось:\u0020</string>
+    <string name="time_left_label">"Залишилось: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Заготовки</string>
     <string name="preset_already_exists">%1$.2fx вже збережено як заготовку.</string>
@@ -406,7 +406,7 @@
     <string name="pref_auto_local_delete_dialog_body">Зверніть увагу, що для локальних тек це призведе до видалення епізодів з AntennaPod і видалення їхніх медіафайлів зі сховища вашого пристрою. Їх не можна буде знову завантажити через AntennaPod. Увімкнути автоматичне видалення?</string>
     <string name="pref_smart_mark_as_played_sum">Позначити епізоди як відтворені, навіть якщо залишилось менш ніж зазначене число секунд до кінця відтворення</string>
     <string name="pref_smart_mark_as_played_title">Розумне позначення прослуханих епізодів</string>
-    <string name="pref_skip_keeps_episodes_sum">Зберігати пропущені  епізоди при програванні  </string>
+    <string name="pref_skip_keeps_episodes_sum">Зберігати пропущені епізоди при програванні</string>
     <string name="pref_skip_keeps_episodes_title">Зберігати пропущені епізоди</string>
     <string name="pref_favorite_keeps_episodes_sum">Зберігати епізоди що помічені як улюблені</string>
     <string name="pref_favorite_keeps_episodes_title">Зберігати улюблені епізоди</string>
@@ -656,7 +656,7 @@
     <string name="synchronization_login_status"><![CDATA[Ви авторизовані як <i>%1$s</i> на сервері <i>%2$s</i>. <br/><br/>Вийдіть з системи щоб обрати інший сервер]]></string>
     <string name="pref_synchronization_logout_toast">Вихід з системи виконано</string>
     <string name="gpodnetsync_error_title">gpodder.net помилка синхронізації</string>
-    <string name="gpodnetsync_error_descr">Трапилась помилка при сінхронизації:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Трапилась помилка при сінхронизації: "</string>
     <string name="gpodnetsync_pref_report_successful">Успішно</string>
     <string name="gpodnetsync_pref_report_failed">Невдало</string>
     <string name="gpodnetsync_username_characters_error">Імена користувачів можуть містити лише літери, цифри, дефіси та підкреслення.</string>
