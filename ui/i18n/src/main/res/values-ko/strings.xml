@@ -53,15 +53,10 @@
   <string name="home_downloads_title">다운로드 관리</string>
   <string name="home_welcome_title">안테나팟에 잘 오셨습니다!</string>
   <string name="home_welcome_text">아직 어떤 팟캐스트도 구독하지 않았습니다. 가장자리 메뉴를 열어 팟캐스트를 추가하십시오.</string>
-  <string name="notification_permission_text">안테나팟에서 알림을 표시하려면 권한이 필요합니다. 기본값으로, 안테나팟은 무언가 다운로드 중이거나 무언가 잘못됐을 경우에만 알림을 표시합니다.</string>
   <string name="notification_permission_denied">권한을 거부했습니다.</string>
-  <string name="notification_permission_deny_warning">알림을 사용하지 않고 무언가 잘못될 경우, 왜 잘못되었는지 알아내지 못할 수도 있습니다.</string>
-  <string name="deny_label">거절</string>
-  <string name="open_settings">설정 열기</string>
   <string name="configure_home">홈 화면 구성</string>
   <string name="section_hidden">감춤</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">장치의 에피소드 전체 크기</string>
   <!--Main activity-->
   <string name="drawer_open">메뉴 열기</string>
   <string name="drawer_close">메뉴 닫기</string>
@@ -156,9 +151,6 @@
   <string name="remove_feed_label">팟캐스트 제거</string>
   <string name="share_label">공유</string>
   <string name="share_file_label">파일 공유</string>
-  <string name="feed_delete_confirmation_msg">정말로 \"%1$s\" 팟캐스트, 그 모든 에피소드 (다운로드한 에피소드 포함), 그 통계를 삭제할지 확인하십시오.</string>
-  <string name="feed_delete_confirmation_msg_batch">확인하면 선택한 팟캐스트와, 그 팟캐스트의 모든 에피소드 (다운로드한 에피소드 포함) 및 통계를 삭제합니다.</string>
-  <string name="feed_delete_confirmation_local_msg">정말로 \"%1$s\" 팟캐스트 및 그 통계를 지울지 확인하십시오. 로컬 소스 폴더에 있는 파일은 삭제하지 않을 것입니다.</string>
   <string name="feed_remover_msg">팟캐스트 삭제하는 중</string>
   <string name="load_complete_feed">전체 팟캐스트 새로 고침</string>
   <string name="multi_select">다중 선택</string>
@@ -186,7 +178,6 @@
   <string name="pause_label">일시 중지</string>
   <string name="stream_label">스트리밍</string>
   <string name="delete_label">삭제</string>
-  <string name="delete_episode_label">에피소드 삭제</string>
   <string name="remove_inbox_label">새로 받음 목록에서 제거</string>
   <string name="removed_inbox_label">새로 받음 목록에서 제거함</string>
   <string name="mark_read_label">재생했다고 표시</string>
@@ -260,7 +251,6 @@
   <string name="download_log_title_unknown">알 수 없는 제목</string>
   <string name="download_type_feed">피드</string>
   <string name="download_type_media">미디어 파일</string>
-  <string name="null_value_podcast_error">표시할 수 있는 팟캐스트가 없습니다.</string>
   <string name="no_feed_url_podcast_found_by_search">제안된 팟캐스트에는 안테나팟에서 팟캐스트로 찾을 수 있는 RSS 링크가 없습니다</string>
   <string name="authentication_notification_title">인증이 필요합니다</string>
   <string name="confirm_mobile_download_dialog_title">휴대전화 망 다운로드 확인</string>
@@ -387,16 +377,12 @@
   <string name="pref_black_theme_message">다크모드에서 완전 검정 사용</string>
   <string name="pref_tinted_theme_title">동적으로 색깔 바꾸기</string>
   <string name="pref_tinted_theme_message">배경에 따라 앱의 색 맞추기</string>
-  <string name="pref_nav_drawer_items_title">네비게이션 드로어 항목 설정</string>
-  <string name="pref_nav_drawer_items_sum">네비게이션 드로어에서 표시할 항목 바꾸기</string>
   <string name="pref_nav_drawer_feed_order_title">구독 순서 설정</string>
   <string name="pref_nav_drawer_feed_order_sum">구독 순서를 바꿉니다</string>
   <string name="pref_nav_drawer_feed_counter_title">구독 카운터 설정</string>
   <string name="pref_nav_drawer_feed_counter_sum">구독 카운터로 표시하는 정보를 바꿉니다. \'구독 순서\'를 \'카운터\'로 설정한 경우 구독 목록의 정렬 순서에도 영향을 미칩니다.</string>
   <string name="pref_automatic_download_title">자동 다운로드</string>
   <string name="pref_automatic_download_sum">에피소드 자동 다운로드 설정</string>
-  <string name="pref_autodl_wifi_filter_title">Wi-Fi 필터 사용</string>
-  <string name="pref_autodl_wifi_filter_sum">선택한 Wi-Fi 네트워크에 대해서만 자동 다운로드를 허용합니다.</string>
   <string name="pref_automatic_download_on_battery_title">충전하지 않을 때 다운로드</string>
   <string name="pref_automatic_download_on_battery_sum">배터리 충전 중이 아닐 때 자동 다운로드 허용</string>
   <string name="pref_episode_cover_title">에피소드 커버 사용</string>
@@ -490,7 +476,6 @@
   <string name="sync_status_episodes_download">에피소드 변경 다운로드 중...</string>
   <string name="sync_status_upload_played">재생한 상태 업로드 중...</string>
   <string name="sync_status_subscriptions">구독 정보 동기화 중...</string>
-  <string name="sync_status_wait_for_downloads">다운로드 마칠 때까지 기다리기…</string>
   <string name="sync_status_success">동기화 성공</string>
   <string name="sync_status_error">동기화 실패</string>
   <!--import and export-->
@@ -628,15 +613,8 @@
   <string name="keep_updated">최신 업데이트 유지</string>
   <string name="keep_updated_summary">모든 팟캐스트를 (자동) 새로 고칠 때 이 팟캐스트 포함</string>
   <string name="auto_download_disabled_globally">자동 다운로드는 안테나팟 메인 설정에서 꺼져 있습니다</string>
-  <string name="statistics_time_played">재생한 시간:</string>
-  <string name="statistics_total_duration">전체 재생 시간 (예상):</string>
-  <string name="statistics_episodes_on_device">장치에 들어 있는 에피소드:</string>
-  <string name="statistics_space_used">사용한 용량:</string>
-  <string name="statistics_episodes_started_total">에피소드 시작/전체:</string>
-  <string name="statistics_expected_next_episode">다음 에피소드 예상:</string>
   <string name="statistics_expected_next_episode_any_day">지금 언제든지</string>
   <string name="statistics_expected_next_episode_unknown">알 수 없음</string>
-  <string name="statistics_view_all">모든 팟캐스트에 대한 뷰 »</string>
   <string name="edit_url_menu">피드 URL 편집</string>
   <!--Podcast release schedules-->
   <string name="release_schedule_daily">매일</string>
@@ -658,12 +636,10 @@
   <string name="search_itunes_label">애플 팟캐스트 검색</string>
   <string name="search_podcastindex_label">팟캐스트 인덱스 검색</string>
   <string name="search_fyyd_label">fyyd 검색</string>
-  <string name="advanced">고급</string>
   <string name="add_podcast_by_url">RSS 주소로 팟캐스트 추가</string>
   <string name="discover">발견</string>
   <string name="discover_hide">숨기기</string>
   <string name="discover_is_hidden">제안 사항을 감추도록 선택했습니다.</string>
-  <string name="discover_more">더 보기 »</string>
   <string name="discover_powered_by_itunes">애플 팟캐스트에서 제안</string>
   <string name="discover_confirm">제안 표시</string>
   <string name="search_powered_by">%1$s 검색 결과</string>

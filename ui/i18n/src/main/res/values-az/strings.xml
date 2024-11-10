@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--Activity and fragment titles-->
+  <string name="feed_update_receiver_name">Abunəlikləri yeniləyin</string>
+    <string name="feeds_label">Podcastlar</string>
+    <string name="statistics_label">Statistika</string>
+    <string name="add_feed_label">Podkast əlavə edin</string>
+    <string name="episodes_label">Epizodlar</string>
+    <string name="home_label">Ev</string>
+    <string name="queue_label">Növbə</string>
+    <string name="inbox_label">Gələnlər qutusu</string>
+    <string name="favorite_episodes_label">Seçilmişlər</string>
+    <string name="settings_label">Parametrlər</string>
+    <string name="downloads_label">Yükləmələr</string>
+    <string name="open_autodownload_settings">Ayarları açın</string>
+    <string name="downloads_log_label">Yükləmə qeydiyyatı</string>
+    <string name="subscriptions_label">Abinəliklər</string>
+    <string name="subscriptions_list_label">Abunəlik siyahısı</string>
+    <string name="cancel_download_label">Endirməni dayandırın</string>
+    <string name="playback_history_label">Səsləndirmə tarixiçəsi</string>
+    <string name="episode_cache_full_title">Epizod keşi dolub</string>
+    <string name="episode_cache_full_message">Epizod keşi limiti bitdi. Keş ölçüsünü ayarlardan artıra bilərsiniz.</string>
+    <string name="years_statistics_label">İllər</string>
+    <string name="notification_pref_fragment">Bildirişlər</string>
+    <!--Google Assistant-->
+  <string name="app_action_not_found">\"%1$s\" tapılmadı</string>
+    <!--SwipeActions-->
+  <string name="swipeactions_label">Sürüşdürmə hərəkətləri</string>
+    <string name="swipeactions_summary">Siyahıdakı epizodu sürüşdürərkən nə baş verəcəyini seçin</string>
+    <string name="swipe_right">Sağa sürüşdürün</string>
+    <string name="swipe_left">Sola sürüşdürün</string>
+    <string name="enable_swipeactions">Bu ekran üçün sürüşdürmə hərəkətini açın</string>
+    <string name="change_setting">Dəyişdirin</string>
+    <string name="individual_subscription">Fərdi abunəlik</string>
+    <!--Statistics fragment-->
+  <string name="statistics_include_marked">Sadəcə səsləndirilmiş kimi işarələnən epizodların müddətini daxil edin</string>
+    <string name="statistics_speed_not_counted">Qeyd: Oynatma sürəti heç vaxt nəzərə alınmır.</string>
+    <string name="statistics_from">Bu vaxtdan</string>
+    <string name="statistics_to">Bu vaxta</string>
+    <string name="statistics_today">Bugün</string>
+    <string name="statistics_filter_all_time">Həmişə</string>
+    <string name="statistics_filter_past_year">Son il</string>
+    <string name="statistics_reset_data">Statistika verilənlərini sıfırlayın</string>
+    <string name="statistics_reset_data_msg">Bu, bütün epizodlar üçün oynatma müddəti tarixçəsini siləcək. Davam etmək istədiyinizə əminisiniz?</string>
+    <string name="statistics_counting_range">%1$s və %2$s arasındakı səsləndirilib</string>
+    <string name="statistics_counting_total">Ümumilikdə səsləndirilib</string>
+    <!--Home fragment-->
+  <string name="home_surprise_title">Təəcüblənmək</string>
+    <string name="home_classics_title">Klassiklərinizi yoxlayın</string>
+    <string name="home_continue_title">Qulaq asmağa davam edin</string>
+    <string name="home_new_title">Yeniliklərə baxın</string>
+    <string name="home_downloads_title">Endirmələrin idarə edilməsi</string>
+    <string name="home_welcome_title">AntennaPod-a xoş gəldiniz!</string>
+    <string name="home_welcome_text">Sizin hələlik heç bir abunəliyiniz yoxdur. Podkast əlavə etmək üçün yandakı menyunu açın.</string>
+    <string name="copy_url_label">URLı kopiyala</string>
+    <string name="share_url_label">URLı paylaş</string>
+    <!--Other-->
+  <string name="confirm_label">Oldu</string>
+    <string name="cancel_label">Ləğv et</string>
+    <string name="error_label">Xəta</string>
+    <string name="error_msg_prefix">Xəta baş verdi:</string>
+    <string name="refresh_label">Təzələ</string>
+    <string name="chapters_label">Fəsillər</string>
+    <string name="description_label">Təsviri</string>
+    <string name="close_label">Bağla</string>
+    <string name="retry_label">Yenidən cəhd edin</string>
+    <string name="auto_download_label">Avtomatik endirməyə daxil edin</string>
+    <string name="show_info_label">Məlumatı göstər</string>
+    <string name="remove_feed_label">Podcastı silin</string>
+    <string name="feed_remover_msg">Podcast silinir</string>
+    <!--actions on feeditems-->
+  <string name="download_label">Yüklə</string>
+    <string name="play_label">Oynat</string>
+    <string name="pause_label">Pauza</string>
+    <string name="stream_label">İnternetən yayimla</string>
+    <string name="mark_read_label">Oxumuş kimi işarələ</string>
+    <string name="mark_unread_label">Oxunmamış kimi işarələ</string>
+    <string name="skip_episode_label">Epizodu burax</string>
+    <!--Download messages and labels-->
+  <string name="download_successful">uğurlu</string>
+    <string name="download_pending">Yükləmə gözlənir</string>
+    <string name="download_running">Yükləmə gedir</string>
+    <string name="download_error_device_not_found">Yaddaş cihazı tapılmadı</string>
+    <string name="download_error_insufficient_space">Cihazınızda kifayət qədər boş yer qalmayıb.</string>
+    <string name="download_error_parser_exception">Podcastın ana serveri pozulmuş podcast lenti göndərdi.</string>
+    <string name="download_error_unknown_host">Serverə qoşula bilmir. Ünvanın düzgün yazıldığını və internetə bağlantısınının olduğunu yoxlayın.</string>
+    <string name="download_canceled_msg">Yükləmə ləğv olundu</string>
+    <string name="download_report_title">Yükləmə başa çatdı</string>
+    <string name="download_type_feed">Kanal</string>
+    <string name="download_type_media">Mediya fayl</string>
+    <string name="no_media_playing_label">Heç nə oynadılmır</string>
+    <string name="undo">Qaytar</string>
+    <string name="move_to_top_label">Yuxarı qaldırın</string>
+    <string name="move_to_bottom_label">Aşağı saldırın</string>
+    <string name="time_left_label">Vaxt galdı:\u0020</string>
+    <string name="no_items_label">Endirərək epizodu əlavə edin və ya epizodun üzərinə basıb saxlayın və \"Sıraya əlavə et\" seçin.</string>
+    <string name="pref_followQueue_sum">Oynatma başa çatanda növbədə irəlidəki epizodu oynat</string>
+    <string name="playback_pref">Oynatma</string>
+    <string name="pref_pauseOnHeadsetDisconnect_title">Qulaqlıq və ya Bluetooth ayrılır</string>
+    <string name="pref_mobileUpdate_sum">Mobil internet bağlantısı zamanı nə ediləcəyini seçin</string>
+    <string name="pref_theme_title_light">Ağ</string>
+    <string name="pref_theme_title_dark">Qara</string>
+    <string name="pref_episode_cache_unlimited">Hədsiz</string>
+    <string name="pref_playback_speed_sum">Sürətin ayarlanması dəyişən sürətli oxutma üçün əlçatandır.</string>
+    <!--About screen-->
+  <string name="about_pref">Proqram haqqinda</string>
+    <!--Search-->
+  <string name="search_status_no_results">Heç nə tapılmadı</string>
+    <string name="search_label">Axtar</string>
+    <string name="opml_import_label">OPML idxalı</string>
+    <string name="select_all_label">Hamısını seç</string>
+    <string name="deselect_all_label">Seçimi ləğv et</string>
+    <string name="opml_export_label">OPML ixraçı</string>
+    <string name="export_error_label">İxracın xətası</string>
+    <!--Sleep timer-->
+  <string name="set_sleeptimer_label">Yuxu taymerini qoy</string>
+    <string name="disable_sleeptimer_label">Yuxu taymerini keçir</string>
+    <string name="sleep_timer_label">Yuxu taymeri</string>
+    <string name="time_dialog_invalid_input">Yanlış yazi. Vaxt təkçə rəqmlərlə yazılır</string>
+    <string name="gpodnetauth_login_butLabel">Giriş</string>
+    <string name="username_label">İstifadəçi adı</string>
+    <string name="password_label">Şifrə</string>
+    <string name="gpodnetauth_finish_descr">Təbriklər! Gpodder hesabınız ilə cihazınız arasında əlaqə yarandə. Bundan sonra AntennaPod cihazınızdakı abunəlikləri gpodder.net hesabınız ilə eyniləşdiriləcək.</string>
+    <string name="gpodnetauth_finish_butsyncnow">Eyniləşdirməni indi başladın</string>
+    <string name="pref_gpodnet_setlogin_information_title">Giriş məlumatını dəyişin</string>
+    <string name="pref_gpodnet_setlogin_information_sum">Gpodder.net hesabınız üçün giriş məlumatını dəyişin.</string>
+    <string name="gpodnetsync_error_title">gpodder.net ilə eyniləşdirmə xətası</string>
+    <string name="gpodnetsync_error_descr">Eyniləşdirmə zamanı xəta baş verdi:\u0020</string>
+</resources>

@@ -53,15 +53,10 @@
   <string name="home_downloads_title">Gerir descargas</string>
   <string name="home_welcome_title">Bem-vindo a AntennaPod!</string>
   <string name="home_welcome_text">Ainda não subscreveu quaisquer podcasts. Abra o menu lateral para adicionar um.</string>
-  <string name="notification_permission_text">AntennaPod precisa da sua permissão para mostrar notificações. Por definição, a aplicação apenas mostra notificações se estiver a descarregar ficheiros ou se algo errado acontecer.</string>
   <string name="notification_permission_denied">Permissões recusadas</string>
-  <string name="notification_permission_deny_warning">Se desativar as notificações e ocorrer algum erro, não receberá quaisquer informações acerca desse erro</string>
-  <string name="deny_label">Recusar</string>
-  <string name="open_settings">Abrir definições</string>
   <string name="configure_home">Configurar ecrã inicial</string>
   <string name="section_hidden">Ocultar</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Tamanho total dos episódios no dispositivo</string>
   <!--Main activity-->
   <string name="drawer_open">Abrir menu</string>
   <string name="drawer_close">Fechar menu</string>
@@ -174,9 +169,6 @@
   <string name="remove_feed_label">Remover podcast</string>
   <string name="share_label">Partilhar</string>
   <string name="share_file_label">Partilhar ficheiro</string>
-  <string name="feed_delete_confirmation_msg">Tem a certeza de que deseja eliminar o podcast  \"%1$s\", TODOS os seus episódios (inclusive descarregados) e as estatísticas?</string>
-  <string name="feed_delete_confirmation_msg_batch">Tem a certeza de que deseja eliminar os podcasts selecionados, TODOS os seus episódios (inclusive descarregados) e as estatísticas?</string>
-  <string name="feed_delete_confirmation_local_msg">Tem a certeza de que deseja eliminar o podcast \"%1$s\" e as suas estatísticas? Os ficheiros existentes na pasta não serão eliminados.</string>
   <string name="feed_remover_msg">A remover podcast</string>
   <string name="load_complete_feed">Atualizar podcast</string>
   <string name="multi_select">Seleção múltipla</string>
@@ -209,7 +201,6 @@
   <string name="pause_label">Pausa</string>
   <string name="stream_label">Emitir</string>
   <string name="delete_label">Eliminar</string>
-  <string name="delete_episode_label">Eliminar episódio</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">%d episódio eliminado.</item>
     <item quantity="many">%d episódios eliminados.</item>
@@ -304,7 +295,6 @@
   <string name="download_log_title_unknown">Título desconhecido</string>
   <string name="download_type_feed">Fonte</string>
   <string name="download_type_media">Ficheiro multimédia</string>
-  <string name="null_value_podcast_error">Não foi possível mostrar o podcast</string>
   <string name="no_feed_url_podcast_found_by_search">O podcast sugerido não tem uma ligação RSS mas AntennaPod encontrou um podcast que pode ser coincidente</string>
   <string name="authentication_notification_title">Requer autenticação</string>
   <string name="confirm_mobile_download_dialog_title">Confirmação de descarga através de dados móveis</string>
@@ -439,16 +429,12 @@
   <string name="pref_black_theme_message">Utilizar preto total para o tema escuro</string>
   <string name="pref_tinted_theme_title">Cores dinâmicas</string>
   <string name="pref_tinted_theme_message">Ajustar cores da aplicação à cor de fundo do ecrã</string>
-  <string name="pref_nav_drawer_items_title">Itens no menu de navegação</string>
-  <string name="pref_nav_drawer_items_sum">Alterar itens mostrados no menu de navegação</string>
   <string name="pref_nav_drawer_feed_order_title">Ordem de subscrições</string>
   <string name="pref_nav_drawer_feed_order_sum">Alterar ordem das subscrições</string>
   <string name="pref_nav_drawer_feed_counter_title">Contador de subscrições</string>
   <string name="pref_nav_drawer_feed_counter_sum">Alterar informação mostrada no contador de subscrições. Também afeta as subscrições se \'Ordem de subscrição\' estiver definida como \'Contador\'</string>
   <string name="pref_automatic_download_title">Descarga automática</string>
   <string name="pref_automatic_download_sum">Configurar descarga automática de episódios</string>
-  <string name="pref_autodl_wifi_filter_title">Ativar filtro Wi-Fi</string>
-  <string name="pref_autodl_wifi_filter_sum">Apenas permitir descargas automáticas através de redes sem fios</string>
   <string name="pref_automatic_download_on_battery_title">Descarregar se não estiver a carregar</string>
   <string name="pref_automatic_download_on_battery_sum">Permitir descarga automática se a bateria não estiver a ser carregada</string>
   <string name="pref_episode_cache_title">Limite de episódios</string>
@@ -548,7 +534,6 @@
   <string name="sync_status_episodes_download">Descarregar alterações nos episódios...</string>
   <string name="sync_status_upload_played">Carregar estado de reprodução...</string>
   <string name="sync_status_subscriptions">Sincronizar subscrições...</string>
-  <string name="sync_status_wait_for_downloads">A aguardar pelo fim das descargas...</string>
   <string name="sync_status_success">Sincronização bem sucedida</string>
   <string name="sync_status_error">Falha na sincronização</string>
   <!--import and export-->
@@ -713,15 +698,8 @@
   <string name="keep_updated">Manter atualizada</string>
   <string name="keep_updated_summary">Incluir este podcast ao atualizar (automaticamente) todos os podcasts</string>
   <string name="auto_download_disabled_globally">A descarga automática está desativada nas definições AntennaPod</string>
-  <string name="statistics_time_played">Tempo de reprodução:</string>
-  <string name="statistics_total_duration">Duração total (estimada):</string>
-  <string name="statistics_episodes_on_device">Episódios no dispositivo:</string>
-  <string name="statistics_space_used">Espaço utilizado:</string>
-  <string name="statistics_episodes_started_total">Episódios iniciados/total:</string>
-  <string name="statistics_expected_next_episode">Próximo episódio esperado a:</string>
   <string name="statistics_expected_next_episode_any_day">Qualquer dia</string>
   <string name="statistics_expected_next_episode_unknown">Desconhecido</string>
-  <string name="statistics_view_all">Ver para todos os podcasts »</string>
   <string name="edit_url_menu">Editar URL</string>
   <string name="edit_url_confirmation_msg">Alterar o endereço RSS pode, facilmente, danificar o estado de reprodução e a lista dos episódios do podcast. NÃO recomendamos a alteração e NÃO disponibilizaremos ajuda se algo errado acontecer. Este processo não pode ser revertido. Uma subscrição danificada NÃO pode ser reparada com a recuperação do endereço original. Deve fazer um backup antes de continuar.</string>
   <!--Podcast release schedules-->
@@ -744,12 +722,10 @@
   <string name="search_itunes_label">Pesquisar em Apple Podcasts</string>
   <string name="search_podcastindex_label">Pesquisar em Podcast Index</string>
   <string name="search_fyyd_label">Pesquisar em fyyd</string>
-  <string name="advanced">Avançado</string>
   <string name="add_podcast_by_url">Adicionar podcast via endereço RSS</string>
   <string name="discover">Descobrir</string>
   <string name="discover_hide">Ocultar</string>
   <string name="discover_is_hidden">Optou por ocultar sugestões</string>
-  <string name="discover_more">mais »</string>
   <string name="discover_powered_by_itunes">Sugestões de Apple Podcasts</string>
   <string name="discover_confirm">Mostrar sugestões</string>
   <string name="search_powered_by">Resultados de %1$s</string>
