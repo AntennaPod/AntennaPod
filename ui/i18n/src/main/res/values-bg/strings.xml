@@ -116,7 +116,7 @@
     <string name="feed_auto_download_always">Винаги</string>
     <string name="feed_auto_download_never">Никога</string>
     <string name="feed_new_episodes_action_add_to_inbox">Добави към входящата поща</string>
-    <string name="feed_new_episodes_action_add_to_queue">Добави към списъка за записване </string>
+    <string name="feed_new_episodes_action_add_to_queue">Добави към списъка за записване</string>
     <string name="episode_cleanup_never">Никога</string>
     <string name="episode_cleanup_except_favorite_removal">Когато не е в любими</string>
     <string name="episode_cleanup_queue_removal">Когато не е на опашката</string>
