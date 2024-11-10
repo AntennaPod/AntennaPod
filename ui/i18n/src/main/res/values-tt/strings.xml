@@ -23,9 +23,6 @@
     <string name="feed_auto_download_always">Һәрвакыт</string>
     <string name="feed_auto_download_never">Беркайчан да</string>
     <string name="episode_cleanup_never">Беркайчан да</string>
-    <plurals name="num_selected_label">
-        <item quantity="other">%1$d/%2$d сайланды</item>
-    </plurals>
     <string name="share_label">Уртаклашу</string>
     <!--actions on feeditems-->
   <string name="download_label">Йөкләү</string>
@@ -34,9 +31,6 @@
     <!--Download messages and labels-->
   <string name="download_successful">уңышлы</string>
     <string name="download_error_details">Нечкәлекләр</string>
-    <plurals name="downloads_left">
-        <item quantity="other">%d йөкләү калды</item>
-    </plurals>
     <string name="download_type_media">Медиа файлы</string>
     <string name="confirm_mobile_streaming_button_always">Һәрвакыт</string>
     <string name="confirm_mobile_streaming_button_once">Бер тапкыр</string>
