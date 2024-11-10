@@ -145,7 +145,7 @@
     <string name="show_info_label">Näytä tiedot</string>
     <string name="show_feed_settings_label">Näytä podcastin asetukset</string>
     <string name="feed_settings_label">Podcastin asetukset</string>
-    <string name="rename_feed_label">Uudelleennimeä podcast </string>
+    <string name="rename_feed_label">Uudelleennimeä podcast</string>
     <string name="remove_feed_label">Poista podcast</string>
     <string name="share_label">Jaa</string>
     <string name="share_file_label">Jaa tietodosto</string>
@@ -288,7 +288,7 @@
     <string name="random">Sekalainen</string>
     <string name="smart_shuffle">Älykäs sekoitus</string>
     <string name="size">Koko</string>
-    <string name="time_left_label">Aikaa jäljellä:\u0020</string>
+    <string name="time_left_label">"Aikaa jäljellä: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Esiasetukset</string>
     <string name="preset_already_exists">%1$.2fx on jo tallennettu esiasetuksena.</string>
@@ -388,7 +388,7 @@
     <string name="pref_theme_title_light">Vaalea</string>
     <string name="pref_theme_title_dark">Tumma</string>
     <string name="pref_episode_cache_unlimited">Ei rajoitettu</string>
-    <string name="pref_playback_speed_sum">Mukauta muuttuvanopeuksisen toiston käytettävissä olevia nopeuksia </string>
+    <string name="pref_playback_speed_sum">Mukauta muuttuvanopeuksisen toiston käytettävissä olevia nopeuksia</string>
     <string name="pref_feed_playback_speed_sum">Tämän podcastin jaksoja toistamaan aloitettaessa käytettävä nopeus</string>
     <string name="pref_feed_skip">Automaattinen ohitus</string>
     <string name="pref_feed_skip_sum">Ohita esittelyt ja loppukiitokset.</string>
@@ -404,7 +404,7 @@
     <string name="pref_persistNotify_title">Pysyvät toistokontrollit</string>
     <string name="pref_persistNotify_sum">Säilytä ilmoitus- ja lukitusnäytön kontrollit, kun toisto on pysäytetty</string>
     <string name="pref_enqueue_location_title">Jonoon lisäyksen paikka</string>
-    <string name="pref_enqueue_location_sum">Lisää jaksot kohteeseen%1$s: </string>
+    <string name="pref_enqueue_location_sum">Lisää jaksot kohteeseen%1$s:</string>
     <string name="enqueue_location_back">Perään</string>
     <string name="enqueue_location_front">Eteen</string>
     <string name="enqueue_location_after_current">Nykyisen jakson jälkeen</string>
@@ -538,7 +538,7 @@
     <string name="synchronization_login_status"><![CDATA[Kirjauduttu sisään <i>%1$s</i> kohteessa <i>%2$s</i>. <br/><br/>Voit valita synkronointipalveluntarjoajan uudelleen kirjauduttuasi ulos]]></string>
     <string name="pref_synchronization_logout_toast">Uloskirjautuminen onnistui</string>
     <string name="gpodnetsync_error_title">gpodder.net synkrointivirhe</string>
-    <string name="gpodnetsync_error_descr">Synkronointivirhe:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Synkronointivirhe: "</string>
     <string name="gpodnetsync_pref_report_successful">Onnistui</string>
     <string name="gpodnetsync_pref_report_failed">Epäonnistui</string>
     <string name="gpodnetsync_username_characters_error">Käyttäjätunnukset saavat sisältää vain kirjaimia, numeroita, viivoja ja aliviivoja.</string>
