@@ -19,7 +19,7 @@
     <string name="cancel_download_label">İndirmeyi iptal et</string>
     <string name="playback_history_label">Oynatma geçmişi</string>
     <string name="episode_cache_full_title">Bölüm önbelleği dolu</string>
-    <string name="episode_cache_full_message">Bölüm önbelleği limitine ulaşıldı. Ayarlardan önbellek limitini arttırabilirsiniz. </string>
+    <string name="episode_cache_full_message">Bölüm önbelleği limitine ulaşıldı. Ayarlardan önbellek limitini arttırabilirsiniz.</string>
     <string name="years_statistics_label">Yıllar</string>
     <string name="notification_pref_fragment">Bildirimler</string>
     <string name="current_playing_episode">Şimdiki</string>
@@ -141,8 +141,8 @@
     <string name="episode_notification">Bölüm bildirimleri</string>
     <string name="episode_notification_summary">Yeni bölüm yayınlandığında bildirim ver.</string>
     <plurals name="new_episode_notification_message">
-        <item quantity="one">%2$s\'de yeni bir bölüm var </item>
-        <item quantity="other">%2$s \'de yeni  %1$d bölüm var </item>
+        <item quantity="one">%2$s\'de yeni bir bölüm var</item>
+        <item quantity="other">%2$s \'de yeni %1$d bölüm var</item>
     </plurals>
     <plurals name="new_episode_notification_title">
         <item quantity="one">Yeni bölümler</item>
@@ -185,7 +185,7 @@
     <!--actions on feeditems-->
   <string name="download_label">İndir</string>
     <plurals name="downloading_batch_label">
-        <item quantity="one"> %d bölüm indiriliyor.</item>
+        <item quantity="one">%d bölüm indiriliyor.</item>
         <item quantity="other">%d bölüm indiriliyor.</item>
     </plurals>
     <string name="play_label">Oynat</string>
@@ -206,7 +206,7 @@
     <string name="play_this_to_seek_position">Başka bir konuma atlamak için bölümü oynatmanız gerekir.</string>
     <plurals name="marked_read_batch_label">
         <item quantity="one">%d bölüm oynatıldı olarak işaretlendi.</item>
-        <item quantity="other">%d bölüm oynatıldı olarak işaretlendi. </item>
+        <item quantity="other">%d bölüm oynatıldı olarak işaretlendi.</item>
     </plurals>
     <string name="mark_unread_label">Oynatılmadı olarak işaretle</string>
     <string name="mark_unread_label_no_media">Okunmadı olarak işaretle</string>
@@ -264,7 +264,7 @@
     <string name="download_error_forbidden">Podcast\'in bulunduğu sunucu cevap vermeyi reddediyor.</string>
     <string name="download_canceled_msg">İndirme iptal edildi</string>
     <string name="download_error_wrong_size">İndirme tamamlanamadan sunucu ile bağlantı kesildi.</string>
-    <string name="download_error_blocked">İndirmek cihazınızdaki başka bir uygulama (VPN veya reklam engelleyicisi gibi)  tarafından engellendi.</string>
+    <string name="download_error_blocked">İndirmek cihazınızdaki başka bir uygulama (VPN veya reklam engelleyicisi gibi) tarafından engellendi.</string>
     <string name="download_error_certificate">Güvenli bir bağlantı kurulamadı. Bu, indirmenin cihazınızdaki başka bir uygulama (VPN veya reklam engelleyicisi gibi) tarafından engellendiği veya sunucu sertifikalarında bir hata olduğu anlamına gelebilir.</string>
     <string name="download_report_title">İndirme hatalar ile tamamlandı</string>
     <string name="download_error_io_error">IO hatası</string>
@@ -316,13 +316,13 @@
     <string name="smart_shuffle">Akıllı karıştırma</string>
     <string name="size">Boyut</string>
     <string name="clear_queue_confirmation_msg">Lütfen TÜM bölümleri kuyruktan kaldırmak istediğinizi onaylayın.</string>
-    <string name="time_left_label">Kalan süre:\u0020</string>
+    <string name="time_left_label">"Kalan süre: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Kayıtlı Hızlar</string>
     <string name="preset_already_exists">%1$.2fx is already saved as a preset.</string>
     <!--Empty list labels-->
   <string name="no_items_header_label">Kuyrukta bölüm yok</string>
-    <string name="no_items_label">Bir bölümü indirerek veya üzerine basılı tutup \\"Kuyruğa ekle\\" diyerek buraya ekleyebilirsiniz.</string>
+    <string name="no_items_label">Bir bölümü indirerek veya üzerine basılı tutup \\Kuyruğa ekle\\ diyerek buraya ekleyebilirsiniz.</string>
     <string name="no_shownotes_label">Bu dosyabirrhangi bir bilgi notu içermiyor.</string>
     <string name="no_comp_downloads_head_label">İndirilmiş bölüm yok</string>
     <string name="no_comp_downloads_label">Podcast ayrıntıları sayfasından bölümleri indirebilirsiniz.</string>
@@ -385,7 +385,7 @@
     <string name="downloads_pref">İndirilenler</string>
     <string name="downloads_pref_sum">Güncelleme aralığı, Mobil veri, Otomatik indirme, Otomatik silme</string>
     <string name="feed_refresh_title">Podcastleri güncelle</string>
-    <string name="feed_refresh_sum">AntennaPod\'un yeni bölümleri otomatik olarak arayacağı zaman aralığını  belirtin</string>
+    <string name="feed_refresh_sum">AntennaPod\'un yeni bölümleri otomatik olarak arayacağı zaman aralığını belirtin</string>
     <string name="feed_refresh_never">Hiçbir zaman</string>
     <string name="feed_every_hour">Saatte bir</string>
     <string name="feed_every_2_hours">2 saatte bir</string>
@@ -404,7 +404,7 @@
     <string name="pref_mobileUpdate_sum">Mobil veri üzerinden nelere izin verileceğini seçiniz</string>
     <string name="pref_mobileUpdate_refresh">Podcast yenileme</string>
     <string name="pref_mobileUpdate_images">Kapak görselleri</string>
-    <string name="pref_mobileUpdate_auto_download">Otomatik  indir</string>
+    <string name="pref_mobileUpdate_auto_download">Otomatik indir</string>
     <string name="pref_mobileUpdate_episode_download">Bölümü indir</string>
     <string name="pref_mobileUpdate_streaming">Akış</string>
     <string name="user_interface_label">Kullanıcı arayüzü</string>
@@ -510,7 +510,7 @@
   <string name="search_status_no_results">Sonuç bulunamadı</string>
     <string name="type_to_search">Aramak için bir kelime yazın</string>
     <string name="search_label">Ara</string>
-    <string name="no_results_for_query"> \"%1$s\" için bir sonuç bulunamadı</string>
+    <string name="no_results_for_query">\"%1$s\" için bir sonuç bulunamadı</string>
     <string name="search_online">Çevrimiçi ara</string>
     <!--Synchronization-->
   <string name="sync_status_started">Senkronizasyon başlatıldı</string>
@@ -618,7 +618,7 @@
     <string name="synchronization_login_status"><![CDATA[<i>%2$s</i> üzerinde<i>%1$s</i> olarak oturum açıldı. <br/><br/> Çıkış yaptıktan sonra senkronizasyon sağlayıcınızı tekrar seçebilirsiniz.]]></string>
     <string name="pref_synchronization_logout_toast">Çıkış başarılı</string>
     <string name="gpodnetsync_error_title">gpodder.net senkronizasyon hatası</string>
-    <string name="gpodnetsync_error_descr">Senkronize edilirken bir hata oluştu:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Senkronize edilirken bir hata oluştu: "</string>
     <string name="gpodnetsync_pref_report_successful">Başarılı</string>
     <string name="gpodnetsync_pref_report_failed">Başarısız</string>
     <string name="gpodnetsync_username_characters_error">Usernames may only contain letters, digits, hyphens and underscores.</string>
