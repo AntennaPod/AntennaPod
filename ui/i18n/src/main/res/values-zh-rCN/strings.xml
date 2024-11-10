@@ -113,7 +113,7 @@
     <string name="feed_volume_boost_light">略微上调</string>
     <string name="feed_volume_boost_medium">中度上调</string>
     <string name="feed_volume_boost_heavy">大幅上调</string>
-    <string name="feed_auto_download_always"> 总是</string>
+    <string name="feed_auto_download_always">总是</string>
     <string name="feed_auto_download_never">从不</string>
     <string name="feed_new_episodes_action_add_to_inbox">添加到收件箱</string>
     <string name="feed_new_episodes_action_add_to_queue">添加到队列</string>
@@ -301,7 +301,7 @@
     <string name="smart_shuffle">智能随机播放</string>
     <string name="size">大小</string>
     <string name="clear_queue_confirmation_msg">请确认您要清除队列中的全部节目</string>
-    <string name="time_left_label">计时剩余:\u0020</string>
+    <string name="time_left_label">"计时剩余: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">预设定</string>
     <string name="preset_already_exists">%1$.2fx已被保存为一个预设定。</string>
@@ -387,7 +387,7 @@
     <string name="pref_stream_over_download_sum">在列表中显示在线播放按钮而不是下载按钮</string>
     <string name="pref_mobileUpdate_title">移动数据更新</string>
     <string name="pref_mobileUpdate_sum">选择使用移动数据连接时应当允许的内容</string>
-    <string name="pref_mobileUpdate_refresh">播客刷新 </string>
+    <string name="pref_mobileUpdate_refresh">播客刷新</string>
     <string name="pref_mobileUpdate_images">封面图片</string>
     <string name="pref_mobileUpdate_auto_download">自动下载</string>
     <string name="pref_mobileUpdate_episode_download">节目下载</string>
@@ -511,10 +511,10 @@
     <string name="opml">OPML格式</string>
     <string name="html">HTML格式</string>
     <string name="html_export_summary">向一位朋友展示您的订阅</string>
-    <string name="opml_export_summary">将您的订阅转移到另一个播客应用 </string>
+    <string name="opml_export_summary">将您的订阅转移到另一个播客应用</string>
     <string name="opml_import_summary">从另一个播客应用导入您的订阅</string>
     <string name="database_export_summary">将订阅，听过的节目和队列转移到另一台设备上的AntennaPod</string>
-    <string name="database_import_summary">从另一台设备导入AntennaPod数据库 </string>
+    <string name="database_import_summary">从另一台设备导入AntennaPod数据库</string>
     <string name="opml_import_label">OPML 导入</string>
     <string name="opml_add_podcast_label">导入播客列表 (OPML)</string>
     <string name="opml_reader_error">读取文件时发生了错误。请确保你的确选中了 OPML 文件且该文件有效。</string>
@@ -587,7 +587,7 @@
     <string name="gpodnetauth_device_name_default">AntennaPod 于 %1$s</string>
     <string name="gpodnetauth_existing_devices">现有设备</string>
     <string name="gpodnetauth_create_device">创建设备</string>
-    <string name="gpodnetauth_finish_descr">恭喜! 你的 gpodder.net 帐户与设备已连结完成.  现在开始 AntennaPod 将自动同步你 gpodder.net 帐户内的订阅信息到设备上.</string>
+    <string name="gpodnetauth_finish_descr">恭喜! 你的 gpodder.net 帐户与设备已连结完成. 现在开始 AntennaPod 将自动同步你 gpodder.net 帐户内的订阅信息到设备上.</string>
     <string name="gpodnetauth_finish_butsyncnow">开始同步</string>
     <string name="pref_gpodnet_setlogin_information_title">改变登录信息</string>
     <string name="pref_gpodnet_setlogin_information_sum">改变 gpodder.net 账户登录信息.</string>
@@ -599,7 +599,7 @@
     <string name="synchronization_login_status"><![CDATA[登录为 <i>%2$s</i>上的 <i>%1$s</i>。<br/><br/>退出后，您可以再次选择同步提供商]]></string>
     <string name="pref_synchronization_logout_toast">成功退出登录</string>
     <string name="gpodnetsync_error_title">gpodder.net 同步错误</string>
-    <string name="gpodnetsync_error_descr">同步过程中发生错误: \u0020</string>
+    <string name="gpodnetsync_error_descr">"同步过程中发生错误:  "</string>
     <string name="gpodnetsync_pref_report_successful">成功了</string>
     <string name="gpodnetsync_pref_report_failed">失败了</string>
     <string name="gpodnetsync_username_characters_error">用户名只能包含字母、数字、连字符和下划线</string>
@@ -657,7 +657,7 @@
     <string name="include_terms">只包括含有任意下列术语的节目</string>
     <string name="exclude_episodes_shorter_than">排除持续了不到指定时间的节目</string>
     <string name="keep_updated">保持更新</string>
-    <string name="keep_updated_summary">（自动）刷新所有播客时包括此播客 </string>
+    <string name="keep_updated_summary">（自动）刷新所有播客时包括此播客</string>
     <string name="auto_download_disabled_globally">AntennaPod主设置中已禁用自动下载</string>
     <string name="statistics_expected_next_episode_any_day">不久之后</string>
     <string name="statistics_expected_next_episode_unknown">未知</string>
