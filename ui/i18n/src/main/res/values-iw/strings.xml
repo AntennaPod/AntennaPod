@@ -63,7 +63,7 @@
     <string name="drawer_feed_order_unplayed_episodes">מיון לפי מונה</string>
     <string name="drawer_feed_order_alphabetical">מיון בסדר אלפביתי</string>
     <string name="drawer_feed_order_last_update">מיון לפי תאריך פרסום</string>
-    <string name="drawer_feed_order_most_played">מיון לפי מספר פרקים שהושמעו </string>
+    <string name="drawer_feed_order_most_played">מיון לפי מספר פרקים שהושמעו</string>
     <string name="drawer_feed_counter_inbox">מספר הפרקים בדואר הנכנס</string>
     <string name="drawer_feed_counter_unplayed">מספר פרקים שעוד לא התנגנו</string>
     <string name="drawer_feed_counter_downloaded">מספר פרקים שהתקבלו</string>
@@ -129,8 +129,8 @@
     </plurals>
     <plurals name="episode_cleanup_days_after_listening">
         <item quantity="one">יום (%d) לאחר סיום</item>
-        <item quantity="two">יומיים (%d) לאחר סיום </item>
-        <item quantity="other">%d ימים לאחר סיום </item>
+        <item quantity="two">יומיים (%d) לאחר סיום</item>
+        <item quantity="other">%d ימים לאחר סיום</item>
     </plurals>
     <plurals name="num_selected_label">
         <item quantity="one">%1$d/%2$d נבחר</item>
@@ -331,7 +331,7 @@
     <string name="smart_shuffle">ערבול חכם</string>
     <string name="size">גודל</string>
     <string name="clear_queue_confirmation_msg">נא לאשר את הסרת כל הפרקים מהתור.</string>
-    <string name="time_left_label">זמן שנותר:\u0020</string>
+    <string name="time_left_label">"זמן שנותר: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">ערכות מוגדרות</string>
     <string name="preset_already_exists">%1$.2fx כבר נשמרה כערכה מוגדרת.</string>
@@ -637,7 +637,7 @@
     <string name="synchronization_login_status"><![CDATA[נכנסת בתור <i>%1$s</i> אל <i>%2$s</i>. <br/><br/>אפשר לבחור את שרת הסנכרון שלך שוב לאחר היציאה מהחשבון]]></string>
     <string name="pref_synchronization_logout_toast">היציאה הצליחה</string>
     <string name="gpodnetsync_error_title">שגיאת סנכרון מול gpodder.net</string>
-    <string name="gpodnetsync_error_descr">שגיאה במהלך סינכרון:\u0020</string>
+    <string name="gpodnetsync_error_descr">"שגיאה במהלך סינכרון: "</string>
     <string name="gpodnetsync_pref_report_successful">מוצלח</string>
     <string name="gpodnetsync_pref_report_failed">נכשל</string>
     <string name="gpodnetsync_username_characters_error">שמות המשתמשים יכולים להכיל אותיות, ספרות, מינוסים וקווים תחתיים בלבד.</string>
