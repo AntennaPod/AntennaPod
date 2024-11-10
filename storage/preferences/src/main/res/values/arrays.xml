@@ -4,8 +4,8 @@
         <item>HomeFragment</item>
         <item>QueueFragment</item>
         <item>NewEpisodesFragment</item>
-        <item>EpisodesFragment</item>
         <item>SubscriptionFragment</item>
+        <item>EpisodesFragment</item>
         <item>DownloadsFragment</item>
         <item>PlaybackHistoryFragment</item>
         <item>AddFeedFragment</item>
