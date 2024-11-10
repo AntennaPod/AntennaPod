@@ -213,7 +213,7 @@
     <string name="add_to_queue_label">Adaugă la coadă</string>
     <plurals name="added_to_queue_batch_label">
         <item quantity="one">Un episod adăugat la coadă.</item>
-        <item quantity="few">%d  episoade adăugate la coadă.</item>
+        <item quantity="few">%d episoade adăugate la coadă.</item>
         <item quantity="other">%d de episoade adăugate la coadă.</item>
     </plurals>
     <string name="remove_from_queue_label">Șterge din coadă</string>
@@ -253,7 +253,7 @@
     <string name="download_error_error_unknown">Eroare necuonscută</string>
     <string name="download_error_parser_exception">Serverul podcastului a trimis un flux de date defect.</string>
     <string name="download_error_unsupported_type">Tip de feed nesuportat</string>
-    <string name="download_error_unsupported_type_html">Serverul podcastului a trimis un website, nu un podcast. </string>
+    <string name="download_error_unsupported_type_html">Serverul podcastului a trimis un website, nu un podcast.</string>
     <string name="download_error_not_found">Serverul podcastului nu știe unde să găsească fisierul dorit. Acesta ar putea fii sters.</string>
     <string name="download_error_connection_error">Eroare de conexiune</string>
     <string name="download_error_no_connection">Nu există o conexiune la rețea</string>
@@ -316,7 +316,7 @@
     <string name="smart_shuffle">Smart shuffle</string>
     <string name="size">Mărime</string>
     <string name="clear_queue_confirmation_msg">Te rugăm să confirmi că doreşti să elimini TOATE episoadele din coada de redare.</string>
-    <string name="time_left_label">Timp rămas:\u0020</string>
+    <string name="time_left_label">"Timp rămas: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Presetări</string>
     <string name="preset_already_exists">%1$.2fx este deja o presetare salvată.</string>
@@ -508,7 +508,7 @@
     <string name="licenses_summary">AntennaPod folosește alte softwareuri excelente</string>
     <!--Search-->
   <string name="search_status_no_results">Nu s-a găsit nici un rezultat</string>
-    <string name="type_to_search">Introdu o întrebare pentru a începe căutarea </string>
+    <string name="type_to_search">Introdu o întrebare pentru a începe căutarea</string>
     <string name="search_label">Caută</string>
     <string name="no_results_for_query">Nu au fost găsite rezultate pentru \"%1$s\"</string>
     <string name="search_online">Caută online</string>
@@ -595,14 +595,14 @@
     <string name="pref_gpodnet_setlogin_information_title">Schimbă informațiile de autentificare</string>
     <string name="pref_gpodnet_setlogin_information_sum">Schimbă informațiile de autentificare pentru contul tău gpodder.net.</string>
     <string name="synchronization_sync_changes_title">Sincronizează acum</string>
-    <string name="synchronization_sync_summary">Sincronizează schimbările abonamentelor și starea episoadelor </string>
+    <string name="synchronization_sync_summary">Sincronizează schimbările abonamentelor și starea episoadelor</string>
     <string name="synchronization_full_sync_title">Forțează sincronizarea completă</string>
     <string name="synchronization_force_sync_summary">Resincronizează toate abonamentele și starea episoadelor</string>
     <string name="synchronization_logout">Deconectare</string>
     <string name="synchronization_login_status"><![CDATA[Conectat ca <i>%1$s</i> pe <i>%2$s</i>. <br/><br/>Puteți să vă alegeți furnizorul de sincronizare din nou, după ce v-ați deconectat]]></string>
     <string name="pref_synchronization_logout_toast">Deconectarea a reușit</string>
     <string name="gpodnetsync_error_title">eroare de sincronizare gpodder.net</string>
-    <string name="gpodnetsync_error_descr">A apărut o eroare în timpul sincronizării:\u0020</string>
+    <string name="gpodnetsync_error_descr">"A apărut o eroare în timpul sincronizării: "</string>
     <string name="gpodnetsync_pref_report_successful">Succes</string>
     <string name="gpodnetsync_pref_report_failed">Eșuat</string>
     <string name="gpodnetsync_username_characters_error">Numele contului poate conține numai litere, numere, cratime și bară jos.</string>
@@ -721,7 +721,7 @@
     <string name="share_dialog_for_social">Mesaj Social</string>
     <string name="share_dialog_media_address">Adresa Media</string>
     <string name="share_dialog_media_file_label">Fișier media</string>
-    <string name="share_starting_position_label">Pornind de la </string>
+    <string name="share_starting_position_label">Pornind de la</string>
     <!--Audio controls-->
   <string name="audio_controls">Control audio</string>
     <string name="playback_speed">Viteza de redare</string>
@@ -751,7 +751,7 @@
     <string name="notification_channel_playing">Se redă acum</string>
     <string name="notification_channel_playing_description">Permite controlul redării. Aceasta este notificarea principală afișată în timpul redării unui podcast.</string>
     <string name="notification_channel_download_error">Descărcarea a eșuat</string>
-    <string name="notification_channel_download_error_description">Afișate când descărcarea sau reîmprospătarea fluxului de date a eșuat. </string>
+    <string name="notification_channel_download_error_description">Afișate când descărcarea sau reîmprospătarea fluxului de date a eșuat.</string>
     <string name="notification_channel_sync_error">Sincronizarea a eșuat</string>
     <string name="notification_channel_sync_error_description">Indicată când sincronizarea cu gpodder eșuează</string>
     <string name="notification_channel_new_episode">Episod nou</string>
