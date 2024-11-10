@@ -179,7 +179,7 @@
     <!--actions on feeditems-->
   <string name="download_label">डाउनलोड करें</string>
     <plurals name="downloading_batch_label">
-        <item quantity="one">%d एपिसोड डाउनलोड कर रहे। </item>
+        <item quantity="one">%d एपिसोड डाउनलोड कर रहे।</item>
         <item quantity="other">%d एपिसोड डाउनलोड कर रहे।</item>
     </plurals>
     <string name="play_label">सुनें</string>
@@ -263,7 +263,7 @@
     <string name="download_notification_title_feeds">पॉडकास्ट ताज़ा कर रहे</string>
     <string name="download_notification_title_episodes">एपिसोड डाउनलोड कर रहे</string>
     <string name="download_log_title_unknown">अज्ञात शीर्षक</string>
-    <string name="download_type_feed"> फीड</string>
+    <string name="download_type_feed">फीड</string>
     <string name="download_type_media">मीडिया फाइल</string>
     <string name="no_feed_url_podcast_found_by_search">दिए गए पॉडकास्ट के पास आरएसएस लिंक नहीं है, एंटीनापॉड को एक पॉडकास्ट मिला है जो मेल खाता है</string>
     <string name="authentication_notification_title">सत्यापन ज़रूरी</string>
@@ -301,7 +301,7 @@
     <string name="random">बेतरतीब</string>
     <string name="smart_shuffle">स्मार्ट मिश्रण</string>
     <string name="size">साइज़</string>
-    <string name="time_left_label">समय बचा:\u0020</string>
+    <string name="time_left_label">"समय बचा: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">डिफॉल्ट</string>
     <string name="preset_already_exists">%1$.2f गुना पहले से डिफॉल्ट है।</string>
@@ -344,7 +344,7 @@
     <string name="pref_hardware_forward_button_title">फॉरवर्ड बटन</string>
     <string name="pref_hardware_forward_button_summary">फास्ट फॉरवर्ड का बर्ताव बदलें</string>
     <string name="pref_hardware_previous_button_title">पीछे जाएं</string>
-    <string name="pref_hardware_previous_button_summary"> पिछे जाएं बटन का बर्ताव बदलें</string>
+    <string name="pref_hardware_previous_button_summary">पिछे जाएं बटन का बर्ताव बदलें</string>
     <string name="button_action_rewind">रिवाइंड करें</string>
     <string name="button_action_skip_episode">एपिसोड छोड़ें</string>
     <string name="button_action_restart_episode">एपिसोड पुनःशुरू करें</string>
@@ -374,7 +374,7 @@
     <string name="feed_every_72_hours">हर 3 दिन</string>
     <string name="pref_followQueue_title">निरंतर प्लेबैक</string>
     <string name="pref_pauseOnHeadsetDisconnect_title">हैडफोन या ब्लूटुथ का कनेक्शन टूटा</string>
-    <string name="pref_unpauseOnHeadsetReconnect_title">हेडफोन पुनःकनेक्ट </string>
+    <string name="pref_unpauseOnHeadsetReconnect_title">हेडफोन पुनःकनेक्ट</string>
     <string name="pref_unpauseOnBluetoothReconnect_title">ब्लूटूथ पुनःकनेक्ट</string>
     <string name="pref_stream_over_download_title">स्ट्रीमिंग को प्राथमिकता दें</string>
     <string name="pref_stream_over_download_sum">सूचियों में डाउनलोड बटन की जगह स्ट्रीम बटन दिखाएं</string>
@@ -566,7 +566,7 @@
     <string name="synchronization_login_status"><![CDATA[<i>%1$s</i> के तरह<i>%2$s</i> पे लॉगइन है।  <br/><br/> लॉगआउट करके सिंक प्रदाता वापस चुन सकते है]]></string>
     <string name="pref_synchronization_logout_toast">लॉगआउट हो गए</string>
     <string name="gpodnetsync_error_title">gpodder.net सिंक गड़बड़</string>
-    <string name="gpodnetsync_error_descr">सिंक करते टाइम एक गड़बड़ हुई:\u0020</string>
+    <string name="gpodnetsync_error_descr">"सिंक करते टाइम एक गड़बड़ हुई: "</string>
     <string name="gpodnetsync_pref_report_successful">हो गया</string>
     <string name="gpodnetsync_pref_report_failed">फेल हो गया</string>
     <string name="gpodnetsync_username_characters_error">यूजरनेम में सिर्फ अक्षर, नंबर, हायफन (-), और अंडरलाइन हो सकते है।</string>
