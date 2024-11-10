@@ -60,7 +60,7 @@
   <string name="drawer_open">Menü öffnen</string>
     <string name="drawer_close">Menü schließen</string>
     <string name="drawer_preferences">Seitenleisten-Einstellungen</string>
-    <string name="drawer_feed_order_unplayed_episodes">Nach Zähler sortieren </string>
+    <string name="drawer_feed_order_unplayed_episodes">Nach Zähler sortieren</string>
     <string name="drawer_feed_order_alphabetical">Alphabetisch sortieren</string>
     <string name="drawer_feed_order_last_update">Nach Veröffentlichungsdatum sortieren</string>
     <string name="drawer_feed_order_most_played">Nach Anzahl abgespielter Episoden sortieren</string>
@@ -221,7 +221,7 @@
     </plurals>
     <string name="remove_from_queue_label">Aus der Warteschlange entfernen</string>
     <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d Episode aus der Warteschlange entfernt. </item>
+        <item quantity="one">%d Episode aus der Warteschlange entfernt.</item>
         <item quantity="other">%d Episoden aus der Warteschlange entfernt.</item>
     </plurals>
     <plurals name="removed_from_inbox_batch_label">
@@ -316,7 +316,7 @@
     <string name="smart_shuffle">Schlaues Mischen</string>
     <string name="size">Größe</string>
     <string name="clear_queue_confirmation_msg">Bitte bestätige, dass du ALLE Episoden aus der Warteschlange entfernen möchtest.</string>
-    <string name="time_left_label">Zeit übrig:\u0020</string>
+    <string name="time_left_label">"Zeit übrig: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Voreinstellungen</string>
     <string name="preset_already_exists">%1$.2fx ist bereits als Voreinstellung gespeichert.</string>
@@ -453,7 +453,7 @@
     <string name="pref_full_notification_buttons_title">Benachrichtigungs-Buttons einstellen</string>
     <string name="pref_full_notification_buttons_sum">Ändere die Buttons von der Wiedergabe-Benachrichtigung</string>
     <string name="pref_enqueue_location_title">Position beim Einreihen</string>
-    <string name="pref_enqueue_location_sum">Episoden hinzufügen: %1$s </string>
+    <string name="pref_enqueue_location_sum">Episoden hinzufügen: %1$s</string>
     <string name="enqueue_location_back">Hinten</string>
     <string name="enqueue_location_front">Vorne</string>
     <string name="enqueue_location_after_current">Hinter der aktuell abgespielten Episode</string>
@@ -483,7 +483,7 @@
     <string name="pref_filter_feed_sum">Deine Abonnements in der Seitenleiste und auf der Abonnement-Übersicht filtern</string>
     <string name="subscriptions_are_filtered">Abonnements sind gefiltert</string>
     <string name="subscriptions_counter_greater_zero">Anzahl größer als Null</string>
-    <string name="auto_downloaded">Automatisch heruntergeladen </string>
+    <string name="auto_downloaded">Automatisch heruntergeladen</string>
     <string name="not_auto_downloaded">Nicht automatisch heruntergeladen</string>
     <string name="kept_updated">Aktuell gehalten</string>
     <string name="not_kept_updated">Nicht aktuell gehalten</string>
@@ -618,7 +618,7 @@
     <string name="synchronization_login_status"><![CDATA[Angemeldet als <i>%1$s</i> auf <i>%2$s</i>. <br/><br/>Nach dem Abmelden kann der Synchronisationsanbieter erneut ausgewählt werden.]]></string>
     <string name="pref_synchronization_logout_toast">Abmeldung war erfolgreich</string>
     <string name="gpodnetsync_error_title">gpodder.net-Synchronisierungsfehler</string>
-    <string name="gpodnetsync_error_descr">Ein Fehler ist beim Synchronisieren aufgetreten:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Ein Fehler ist beim Synchronisieren aufgetreten: "</string>
     <string name="gpodnetsync_pref_report_successful">Erfolgreich</string>
     <string name="gpodnetsync_pref_report_failed">Fehlgeschlagen</string>
     <string name="gpodnetsync_username_characters_error">Benutzernamen dürfen nur Buchstaben, Zahlen, Bindestriche und Unterstriche enthalten.</string>
@@ -640,7 +640,7 @@
     <string name="preview_episodes">Episoden-Vorschau</string>
     <string name="state_deleted_not_subscribed">Du hast diesen Podcast noch nicht abonniert. Abonniere ihn kostenlos, um ihn leichter zu erreichen und den Wiedergabeverlauf zu behalten.</string>
     <!--Content descriptions for image buttons-->
-  <string name="toolbar_back_button_content_description">Zurück </string>
+  <string name="toolbar_back_button_content_description">Zurück</string>
     <string name="rewind_label">Zurückspulen</string>
     <string name="fast_forward_label">Vorspulen</string>
     <string name="increase_speed">Geschwindigkeit erhöhen</string>
@@ -783,4 +783,9 @@
     <string name="shortcut_subscription_label">Abonnement-Verknüpfung</string>
     <string name="shortcut_select_subscription">Abonnement auswählen</string>
     <string name="add_shortcut">Verknüpfung hinzufügen</string>
+    <string name="section_shown">Angezeigt</string>
+    <string name="sync_status_wait_for_downloads">Warte auf Aktualisierung der Abonnements…</string>
+    <string name="pref_nav_drawer_items_title">Navigation anpassen</string>
+    <string name="home_continue_empty_text">Du kannst Episoden hinzufügen, indem du sie lange antippst und \"Zur Warteschlange hinzufügen\" auswählst.</string>
+    <string name="home_no_recent_unplayed_episodes_text">Du hast bereits alle aktuellen Episoden abgespielt. Hier gibt es nichts zum überrascht werden ;)</string>
 </resources>
