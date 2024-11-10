@@ -298,7 +298,7 @@
     <string name="random">Willekeurig</string>
     <string name="smart_shuffle">Slim willekeurig afspelen</string>
     <string name="size">Grootte</string>
-    <string name="time_left_label">Resterende tijd:\u0020</string>
+    <string name="time_left_label">"Resterende tijd: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Voorinstellingen</string>
     <string name="preset_already_exists">%1$.2fx is al opgeslagen als voorinstelling.</string>
@@ -479,7 +479,7 @@
   <string name="search_status_no_results">Er zijn geen resultaten gevonden</string>
     <string name="type_to_search">Typ een zoekopdracht</string>
     <string name="search_label">Zoeken</string>
-    <string name="no_results_for_query">Geen resultaten gevonden voor  \"%1$s\"</string>
+    <string name="no_results_for_query">Geen resultaten gevonden voor \"%1$s\"</string>
     <string name="search_online">Zoek online</string>
     <!--Synchronization-->
   <string name="sync_status_started">Synchronisatie gestart</string>
@@ -571,7 +571,7 @@
     <string name="synchronization_login_status"><![CDATA[Ingelogd als <i>%1$s</i> op <i>%2$s</i>. <br/><br/>Na uitloggen is het weer mogelijk een synchronisatie provider te kiezen]]></string>
     <string name="pref_synchronization_logout_toast">Uitloggen geslaagd</string>
     <string name="gpodnetsync_error_title">gpodder.net - synchronisatiefout</string>
-    <string name="gpodnetsync_error_descr">Er is een fout opgetreden tijdens het synchroniseren:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Er is een fout opgetreden tijdens het synchroniseren: "</string>
     <string name="gpodnetsync_pref_report_successful">Voltooid</string>
     <string name="gpodnetsync_pref_report_failed">Mislukt</string>
     <string name="gpodnetsync_username_characters_error">Gebruikersnamen mogen alleen letters, cijfers en (onderliggende) streepjes bevatten.</string>
