@@ -126,25 +126,25 @@
         <item quantity="one">%d час после завершения</item>
         <item quantity="few">%d часа после завершения</item>
         <item quantity="many">%d часов после завершения</item>
-        <item quantity="other">%d часа после завершения</item>
+        <item quantity="other">%d часов после завершения</item>
     </plurals>
     <plurals name="episode_cleanup_days_after_listening">
         <item quantity="one">%d день после завершения</item>
         <item quantity="few">%d дня после завершения</item>
         <item quantity="many">%d дней после завершения</item>
-        <item quantity="other">%d дня после завершения</item>
+        <item quantity="other">%d дней после завершения</item>
     </plurals>
     <plurals name="num_selected_label">
         <item quantity="one">%1$d/%2$d выбран</item>
         <item quantity="few">%1$d/%2$d выбрано</item>
         <item quantity="many">%1$d/%2$d выбрано</item>
-        <item quantity="other">Выбрано %1$d/%2$d </item>
+        <item quantity="other">%1$d/%2$d выбрано</item>
     </plurals>
     <plurals name="num_episodes">
         <item quantity="one">%d выпуск</item>
         <item quantity="few">%d выпуска</item>
         <item quantity="many">%d выпусков</item>
-        <item quantity="other">%d выпуска</item>
+        <item quantity="other">%d выпусков</item>
     </plurals>
     <string name="episode_notification">Уведомления о новых выпусках</string>
     <string name="episode_notification_summary">Показывать уведомление при появлении новых выпусков.</string>
@@ -158,7 +158,7 @@
         <item quantity="one">Новый выпуск</item>
         <item quantity="few">Новых выпуска</item>
         <item quantity="many">Новых выпусков</item>
-        <item quantity="other">Новые выпуски</item>
+        <item quantity="other">Новых выпусков</item>
     </plurals>
     <string name="new_episode_notification_group_text">Появились новые выпуски.</string>
     <!--Actions on feeds-->
@@ -189,22 +189,20 @@
         <item quantity="one">%d подписка обновлена.</item>
         <item quantity="few">%d подписки обновлены.</item>
         <item quantity="many">%d подписок обновлены.</item>
-        <item quantity="other">%d подписки обновлено.</item>
+        <item quantity="other">%d подписок обновлены.</item>
     </plurals>
     <string name="edit_tags">Править метки</string>
     <string name="add_tag">Добавить метку</string>
     <string name="rename_tag_label">Изменить метку</string>
     <string name="confirm_mobile_feed_refresh_dialog_message">Обновление подкастов через мобильное соединение отключено в настройках.\n\nВы действительно хотите обновить подкасты?</string>
-    <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Приложение VPN имитирует соединение через мобильную сеть (с ограничением трафика). Обновление подкастов через мобильное соединение отключено в настройках.
-
-Всё равно желаете обновить? Чтобы устранить эту проблему, свяжитесь с авторами вашего приложения VPN.</string>
+    <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Приложение VPN имитирует соединение через мобильную сеть (с ограничением трафика). Обновление подкастов через мобильное соединение отключено в настройках. Всё равно желаете обновить? Чтобы устранить эту проблему, свяжитесь с авторами вашего приложения VPN.</string>
     <!--actions on feeditems-->
   <string name="download_label">Загрузить</string>
     <plurals name="downloading_batch_label">
         <item quantity="one">Загружается %d выпуск.</item>
         <item quantity="few">Загружаются %d выпуска.</item>
         <item quantity="many">Загружаются %d выпусков.</item>
-        <item quantity="other">Загружается %d выпуска.</item>
+        <item quantity="other">Загружаются %d выпусков.</item>
     </plurals>
     <string name="play_label">Воспроизвести</string>
     <string name="pause_label">Пауза</string>
@@ -214,12 +212,12 @@
         <item quantity="one">%d скачанный выпуск удалён.</item>
         <item quantity="few">%d скачанных выпуска удалены.</item>
         <item quantity="many">%d скачанных выпусков удалены.</item>
-        <item quantity="other">%d скачанных выпусков удалено.</item>
+        <item quantity="other">%d скачанных выпусков удалены.</item>
     </plurals>
     <string name="remove_inbox_label">Убрать из входящих</string>
     <string name="removed_inbox_label">Убрано из входящих</string>
     <string name="mark_read_label">Отметить как прослушанное</string>
-    <string name="toggle_played_label">Прослушано — непрослушано　</string>
+    <string name="toggle_played_label">Прослушано — непрослушано</string>
     <string name="marked_as_played_label">Отмечено как прослушанное</string>
     <string name="marked_as_unplayed_label">Отмечено как непрослушанное</string>
     <string name="mark_read_no_media_label">Отметить как прочитанное</string>
@@ -228,7 +226,7 @@
         <item quantity="one">%d выпуск отмечен как прослушанный.</item>
         <item quantity="few">%d выпуска отмечены как прослушанные.</item>
         <item quantity="many">%d выпусков отмечены как прослушанные.</item>
-        <item quantity="other">%d выпуска отмечено как прослушанные.</item>
+        <item quantity="other">%d выпусков отмечены как прослушанные.</item>
     </plurals>
     <string name="mark_unread_label">Отметить как непрослушанное</string>
     <string name="mark_unread_label_no_media">Отметить как непрочитанное</string>
@@ -236,27 +234,27 @@
         <item quantity="one">%d выпуск отмечен непрослушанным.</item>
         <item quantity="few">%d выпуска отмечены непрослушанными.</item>
         <item quantity="many">%d выпусков отмечены непрослушанными.</item>
-        <item quantity="other">%d выпуска отмечено непрослушанными.</item>
+        <item quantity="other">%d выпусков отмечены непрослушанными.</item>
     </plurals>
     <string name="add_to_queue_label">Добавить в очередь</string>
     <plurals name="added_to_queue_batch_label">
         <item quantity="one">%d выпуск добавлен в очередь.</item>
         <item quantity="few">%d выпуска добавлены в очередь.</item>
         <item quantity="many">%d выпусков добавлены в очередь.</item>
-        <item quantity="other">%d выпуска добавлено в очередь.</item>
+        <item quantity="other">%d выпусков добавлены в очередь.</item>
     </plurals>
     <string name="remove_from_queue_label">Убрать из очереди</string>
     <plurals name="removed_from_queue_batch_label">
         <item quantity="one">%d выпуск удалён из очереди.</item>
         <item quantity="few">%d выпуска удалены из очереди.</item>
         <item quantity="many">%d выпусков удалены из очереди.</item>
-        <item quantity="other">%d выпуска удалено из очереди.</item>
+        <item quantity="other">%d выпусков удалены из очереди.</item>
     </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d выпуск удалён из входящих.</item>
         <item quantity="few">%d выпуска удалены из входящих.</item>
         <item quantity="many">%d выпусков удалены из входящих.</item>
-        <item quantity="other">%d выпуска удалено из входящих.</item>
+        <item quantity="other">%d выпусков удалены из входящих.</item>
     </plurals>
     <string name="add_to_favorite_label">Добавить в избранное</string>
     <string name="show_transcript">Показать расшифровку</string>
@@ -274,7 +272,7 @@
     <string name="download_pending">Загрузка в ожидании</string>
     <string name="download_running">Загрузка в процессе</string>
     <string name="download_error_details">Подробнее</string>
-    <string name="download_log_details_message">%1$s \n\nПричина: \n%2$s \n\Адрес файла:\n%3$s</string>
+    <string name="download_log_details_message">%1$s \n\nПричина: \n%2$s \nдрес файла:\n%3$s</string>
     <string name="download_error_retrying">\"%1$s\" загрузка не удалась. Повтор – позже.</string>
     <string name="download_error_not_retrying">\"%1$s\" загрузка не удалась.</string>
     <string name="download_error_tap_for_details">Подробнее...</string>
@@ -304,7 +302,7 @@
         <item quantity="one">Осталась %d загрузка</item>
         <item quantity="few">Осталось %d загрузки</item>
         <item quantity="many">Осталось %d загрузок</item>
-        <item quantity="other">Осталось %d загрузки</item>
+        <item quantity="other">Осталось %d загрузок</item>
     </plurals>
     <string name="download_notification_title_feeds">Подкасты обновляются</string>
     <string name="download_notification_title_episodes">Выпуски загружаются</string>
@@ -348,7 +346,7 @@
     <string name="smart_shuffle">Умное перемешивание</string>
     <string name="size">Размер</string>
     <string name="clear_queue_confirmation_msg">Подтвердите, что хотите удалить из очереди ВСЕ выпуски.</string>
-    <string name="time_left_label">Осталось времени:\u0020</string>
+    <string name="time_left_label">"Осталось времени: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Заготовки</string>
     <string name="preset_already_exists">%1$.2fx такая заготовка уже есть.</string>
@@ -601,25 +599,25 @@
         <item quantity="one">%d секунда</item>
         <item quantity="few">%d секунды</item>
         <item quantity="many">%d секунд</item>
-        <item quantity="other">%d секунды</item>
+        <item quantity="other">%d секунд</item>
     </plurals>
     <plurals name="time_minutes_quantified">
         <item quantity="one">%d минута</item>
         <item quantity="few">%d минуты</item>
         <item quantity="many">%d минут</item>
-        <item quantity="other">%d минуты</item>
+        <item quantity="other">%d минут</item>
     </plurals>
     <plurals name="time_hours_quantified">
         <item quantity="one">%d час</item>
         <item quantity="few">%d часа</item>
         <item quantity="many">%d часов</item>
-        <item quantity="other">%d часа</item>
+        <item quantity="other">%d часов</item>
     </plurals>
     <plurals name="time_days_quantified">
         <item quantity="one">%d день</item>
         <item quantity="few">%d дня</item>
         <item quantity="many">%d дней</item>
-        <item quantity="other">%d дня</item>
+        <item quantity="other">%d дней</item>
     </plurals>
     <string name="auto_enable_label">Запускать таймер сна вместе с началом воспроизведения</string>
     <string name="auto_enable_label_with_times">Автоматически включать таймер сна при нажатии кнопки воспроизведения с %1$s до %2$s</string>
@@ -658,7 +656,7 @@
     <string name="synchronization_login_status"><![CDATA[Авторизованы как <i>%1$s</i> на <i>%2$s</i>. <br/><br/>Вы сможете снова выбрать провайдера синхронизации после выхода из системы]]></string>
     <string name="pref_synchronization_logout_toast">Выход успешно выполнен</string>
     <string name="gpodnetsync_error_title">Ошибка синхронизации с gpodder.net</string>
-    <string name="gpodnetsync_error_descr">Произошла ошибка во время синхронизации:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Произошла ошибка во время синхронизации: "</string>
     <string name="gpodnetsync_pref_report_successful">Успешно</string>
     <string name="gpodnetsync_pref_report_failed">Неудачно</string>
     <string name="gpodnetsync_username_characters_error">Имя пользователя может содержать только буквы, цифры, дефисы и символы подчеркивания.</string>
@@ -721,7 +719,7 @@
     <string name="statistics_expected_next_episode_any_day">Со дня на день</string>
     <string name="statistics_expected_next_episode_unknown">Неизвестно</string>
     <string name="edit_url_menu">Изменить адрес канала</string>
-    <string name="edit_url_confirmation_msg">Изменение адреса ссылки может запросто испортить состояние воспроизведения и список выпусков подкаста. Мы крайне НЕ рекомендуем его менять и НЕ сможем Вам помочь, если что-то пойдёт не так. Действие необратимо. Простым возвратом старого адреса поломку HE исправить. Советуем сперва создать резервную копию. </string>
+    <string name="edit_url_confirmation_msg">Изменение адреса ссылки может запросто испортить состояние воспроизведения и список выпусков подкаста. Мы крайне НЕ рекомендуем его менять и НЕ сможем Вам помочь, если что-то пойдёт не так. Действие необратимо. Простым возвратом старого адреса поломку HE исправить. Советуем сперва создать резервную копию.</string>
     <!--Podcast release schedules-->
   <string name="release_schedule_daily">ежедневно</string>
     <string name="release_schedule_weekdays">по будням</string>

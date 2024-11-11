@@ -31,7 +31,7 @@
     <string name="swipe_right">Przeciągnięcie w prawo</string>
     <string name="swipe_left">Przeciągnięcie w lewo</string>
     <string name="enable_swipeactions">Włącz akcje przeciągania dla tego ekranu</string>
-    <string name="change_setting">Zmień </string>
+    <string name="change_setting">Zmień</string>
     <string name="individual_subscription">Subskrypcja indywidualna</string>
     <!--Statistics fragment-->
   <string name="statistics_include_marked">Włącznie z długością odcinków oznaczonych jako przesłuchane</string>
@@ -72,7 +72,7 @@
     <!--Bug report activity-->
   <string name="log_file_share_exception">Nie znaleziono kompatybilnych aplikacji</string>
     <string name="export_logs_menu_title">Eksportuj szczegółowe logi</string>
-    <string name="confirm_export_log_dialog_message">Szczegółowe logi mogą zawierać wrażliwe dane, takie jak listę twoich subskrypcji </string>
+    <string name="confirm_export_log_dialog_message">Szczegółowe logi mogą zawierać wrażliwe dane, takie jak listę twoich subskrypcji</string>
     <!--Webview actions-->
   <string name="open_in_browser_label">Otwórz w przeglądarce</string>
     <string name="copy_url_label">Kopiuj adres</string>
@@ -84,7 +84,7 @@
     <string name="remove_history_label">Usuń z historii</string>
     <string name="removed_history_label">Usunięto z historii</string>
     <!--Other-->
-  <string name="confirm_label">Potwierdź </string>
+  <string name="confirm_label">Potwierdź</string>
     <string name="cancel_label">Anuluj</string>
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
@@ -140,7 +140,7 @@
         <item quantity="one">%2$s ma nowy odcinek</item>
         <item quantity="few">%2$s ma nowe odcinki</item>
         <item quantity="many">%2$s ma nowe odcinki</item>
-        <item quantity="other">%2$s ma %1$d nowych odcinków</item>
+        <item quantity="other">%2$s ma nowe odcinki</item>
     </plurals>
     <plurals name="new_episode_notification_title">
         <item quantity="one">Nowy odcinek</item>
@@ -176,7 +176,7 @@
         <item quantity="one">Uaktualniono %d subskrypcję.</item>
         <item quantity="few">%d subskrypcji uaktualniono.</item>
         <item quantity="many">%d subskrypcji uaktualniono.</item>
-        <item quantity="other">%dsubskrypcji uaktualniono.</item>
+        <item quantity="other">%d subskrypcji uaktualniono.</item>
     </plurals>
     <string name="edit_tags">Edytuj tagi</string>
     <string name="add_tag">Dodaj tag</string>
@@ -301,7 +301,7 @@
     <string name="confirm_mobile_streaming_button_once">Tylko tym razem</string>
     <!--Mediaplayer messages-->
   <string name="playback_error_generic"><![CDATA[Nie można odtworzyć pliku.\n\n- Spróbuj usunąć i pobrać ponownie odcinek.\n- Sprawdź połączenie sieciowe i upewnij się, że VPN lub strona logowania nie blokują dostępu.\n- Spróbuj przytrzymać dłużej i udostępnić \"Adres URL\" przeglądarce internetowej, aby sprawdzić, czy może być tam odtworzony. Jeśli nie, skontaktuj się z twórcami podcastu.]]></string>
-    <string name="no_media_playing_label">Żadne media nie odtwarzane </string>
+    <string name="no_media_playing_label">Żadne media nie odtwarzane</string>
     <string name="unknown_media_key">AntennaPod - Nieznany klawisz: %1$d</string>
     <string name="error_file_not_found">Nie znaleziono pliku</string>
     <string name="no_media_label">Element nie zawiera pliku multimedialnego</string>
@@ -325,7 +325,7 @@
     <string name="smart_shuffle">Inteligentne tasowanie</string>
     <string name="size">Rozmiar</string>
     <string name="clear_queue_confirmation_msg">Potwierdź, że chcesz usunąć WSZYSTKIE odcinki z kolejki.</string>
-    <string name="time_left_label">Pozostały czas:\u0020</string>
+    <string name="time_left_label">"Pozostały czas: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Nastawy</string>
     <string name="preset_already_exists">%1$.2fx już istnieje jako nastawa.</string>
@@ -553,7 +553,7 @@
     <string name="opml_import_ask_read_permission">Dostęp do zewnętrznej pamięci jest potrzebny do odczytywania plików OPML</string>
     <string name="successful_import_label">Import udany</string>
     <string name="import_ok">Naciśnij OK, aby zrestartować AntennaPod</string>
-    <string name="import_no_downgrade">Baza danych została eksportowana z nowszej wersji AntennaPod. Twoja wersja nie potrafi obsłużyć tego pliku. </string>
+    <string name="import_no_downgrade">Baza danych została eksportowana z nowszej wersji AntennaPod. Twoja wersja nie potrafi obsłużyć tego pliku.</string>
     <string name="favorites_export_label">Eksport ulubionych</string>
     <string name="favorites_export_summary">Wyeksportuj ulubione do pliku</string>
     <!--Sleep timer-->
@@ -592,7 +592,7 @@
     <string name="gpodnetauth_device_name_default">AntennaPod na %1$s</string>
     <string name="gpodnetauth_existing_devices">Istniejące urządzenia</string>
     <string name="gpodnetauth_create_device">Utwórz urządzenie</string>
-    <string name="gpodnetauth_finish_descr">Gratulacje! Twoje konto na gpodder.net jest połączone z urządzeniem.  AntennaPod będzie automatycznie synchronizować subskrypcje na urządzeniu z kontem na gpodder.net. </string>
+    <string name="gpodnetauth_finish_descr">Gratulacje! Twoje konto na gpodder.net jest połączone z urządzeniem. AntennaPod będzie automatycznie synchronizować subskrypcje na urządzeniu z kontem na gpodder.net.</string>
     <string name="gpodnetauth_finish_butsyncnow">Rozpocznij synchronizację</string>
     <string name="pref_gpodnet_setlogin_information_title">Zmień informacje logowania</string>
     <string name="pref_gpodnet_setlogin_information_sum">Zmień dane logowania konta gpodder.net.</string>
@@ -604,13 +604,13 @@
     <string name="synchronization_login_status"><![CDATA[Zalogowany jako <i>%1$s</i>z pośrednictwem <i>%2$s</i><br/><br/>Po wylogowaniu się możesz ponownie wybrać dostawcę synchronizacji]]></string>
     <string name="pref_synchronization_logout_toast">Wylogowanie się powiodło</string>
     <string name="gpodnetsync_error_title">Błąd synchronizacji z gpodder.net</string>
-    <string name="gpodnetsync_error_descr">Wystąpił błąd podczas synchronizacji:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Wystąpił błąd podczas synchronizacji: "</string>
     <string name="gpodnetsync_pref_report_successful">Sukces</string>
     <string name="gpodnetsync_pref_report_failed">Porażka</string>
     <string name="gpodnetsync_username_characters_error">Nazwa użytkownika może zawierać tylko litery, cyfry, myślniki i podkreślniki.</string>
     <!--Directory chooser-->
   <string name="choose_data_directory">Wybierz folder danych</string>
-    <string name="choose_data_directory_available_space">%1$s z %2$s wolnych </string>
+    <string name="choose_data_directory_available_space">%1$s z %2$s wolnych</string>
     <string name="pref_pausePlaybackForFocusLoss_sum">Wstrzymaj odtwarzanie zamiast wyciszenia jeśli inna aplikacja chce odtworzyć dźwięk.</string>
     <string name="pref_pausePlaybackForFocusLoss_title">Wstrzymaj przy przerwaniu</string>
     <string name="rating_contribute_label">Chcesz do nas dołączyć? Bez względu na to, czy chcesz wspomóc projekt tłumaczeniem, designem, kodem lub finansowo, z chęcią przyjmiemy każdą pomoc!</string>

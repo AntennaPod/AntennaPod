@@ -28,7 +28,7 @@
     <string name="change_setting">পরিবর্তন করুন</string>
     <string name="individual_subscription">ব্যক্তিগত সাবস্ক্রিপশন</string>
     <!--Statistics fragment-->
-  <string name="statistics_include_marked">এপিসোডের  স্থিতিকাল অন্তর্ভুক্ত করুন যেগুলি শুধুমাত্র প্লে হিসাবে চিহ্নিত করা হয়েছে৷</string>
+  <string name="statistics_include_marked">এপিসোডের স্থিতিকাল অন্তর্ভুক্ত করুন যেগুলি শুধুমাত্র প্লে হিসাবে চিহ্নিত করা হয়েছে৷</string>
     <string name="statistics_speed_not_counted">বিঃদ্রঃ : প্লেব্যাকের গতি কখনই বিবেচনায় নেওয়া হয় না।</string>
     <string name="statistics_from">থেকে</string>
     <string name="statistics_to">পর্যন্ত</string>
@@ -147,7 +147,7 @@
   <string name="download_label">ডাউনলোড</string>
     <plurals name="downloading_batch_label">
         <item quantity="one">%d টি পর্ব ডাউনলোড করা হচ্ছে।</item>
-        <item quantity="other">%d টি পর্ব ডাউনলোড করা হচ্ছে। </item>
+        <item quantity="other">%d টি পর্ব ডাউনলোড করা হচ্ছে।</item>
     </plurals>
     <string name="play_label">প্লে</string>
     <string name="pause_label">বিরতি দিন</string>
@@ -188,7 +188,7 @@
     <string name="gpodnetauth_create_device">ডিভাইস তৈরি করুন</string>
     <string name="pref_gpodnet_setlogin_information_title">লগইন তথ্য পরিবর্তন করুন</string>
     <!--Rating dialog-->
-  <string name="rating_tagline"> %1$s থেকে, আপনি %2$s%3$d%4$s ঘন্টা পডকাস্ট শুনেছেন।</string>
+  <string name="rating_tagline">%1$s থেকে, আপনি %2$s%3$d%4$s ঘন্টা পডকাস্ট শুনেছেন।</string>
     <string name="rating_rate">AntennaPod রেটিং করুন</string>
     <string name="rating_later">পরে শুনুন</string>
     <!--Online feed view-->

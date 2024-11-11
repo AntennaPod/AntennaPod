@@ -35,7 +35,7 @@
     <string name="individual_subscription">Enskild prenumeration</string>
     <!--Statistics fragment-->
   <string name="statistics_include_marked">Inkludera längden på avsnitt som bara är markerade som spelade</string>
-    <string name="statistics_speed_not_counted">Notera: Uppspelningshastighet tas inte med i beräkningarna. </string>
+    <string name="statistics_speed_not_counted">Notera: Uppspelningshastighet tas inte med i beräkningarna.</string>
     <string name="statistics_from">Från</string>
     <string name="statistics_to">Till</string>
     <string name="statistics_today">Idag</string>
@@ -316,7 +316,7 @@
     <string name="smart_shuffle">Smart blandning</string>
     <string name="size">Storlek</string>
     <string name="clear_queue_confirmation_msg">Var god bekräfta att du vill radera ALLA avsnitt från kön.</string>
-    <string name="time_left_label">Återstående tid:\u0020</string>
+    <string name="time_left_label">"Återstående tid: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Förhandsinställningar</string>
     <string name="preset_already_exists">%1$.2fx är redan sparad som en förhandsinställning.</string>
@@ -618,7 +618,7 @@
     <string name="synchronization_login_status"><![CDATA[Inloggad som <i>%1$s</i> på <i>%2$s</i>. <br/><br/> Du kan välja en ny synkroniseringsleverantör när du har loggat ut]]></string>
     <string name="pref_synchronization_logout_toast">Utloggning lyckades</string>
     <string name="gpodnetsync_error_title">gpodder.net synkroniseringsfel</string>
-    <string name="gpodnetsync_error_descr">Ett fel uppstod under synkronisering:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Ett fel uppstod under synkronisering: "</string>
     <string name="gpodnetsync_pref_report_successful">Lyckades</string>
     <string name="gpodnetsync_pref_report_failed">Misslyckades</string>
     <string name="gpodnetsync_username_characters_error">Användarnamn får bara innehålla bokstäver, siffror, bindestreck och understreck.</string>

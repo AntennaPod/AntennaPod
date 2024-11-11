@@ -76,7 +76,7 @@
     <!--Webview actions-->
   <string name="open_in_browser_label">گشودن در مرورگر</string>
     <string name="copy_url_label">کپی کردن URL</string>
-    <string name="share_url_label">اشتراک‌گذاری  URL </string>
+    <string name="share_url_label">اشتراک‌گذاری URL</string>
     <string name="go_to_position_label">رفتن به این مکان</string>
     <!--Playback history-->
   <string name="clear_history_label">پاک سازی تاریخچه</string>
@@ -143,7 +143,7 @@
     <string name="new_episode_notification_group_text">اشتراک‌هایتان قسمت‌های جدیدی دارند.</string>
     <!--Actions on feeds-->
   <string name="remove_all_inbox_label">همه موارد را از صندوق ورودی حذف کن</string>
-    <string name="removed_all_inbox_msg">موارد حذف شده از صندوق ورودی </string>
+    <string name="removed_all_inbox_msg">موارد حذف شده از صندوق ورودی</string>
     <string name="remove_all_inbox_confirmation_msg">لطفاً تأیید کنید که می‌خواهید همه را از صندوق ورودی حذف کنید.</string>
     <string name="multi_select_mark_played_confirmation">لطفاً تأیید کنید که می‌خواهید همه موارد انتخابی را به‌عنوان پخش شده علامت‌گذاری کنید.</string>
     <string name="multi_select_mark_unplayed_confirmation">لطفاً تأیید کنید که می‌خواهید همه موارد انتخابی را به‌عنوان پخش‌نشده علامت‌گذاری کنید.</string>
@@ -221,7 +221,7 @@
     <string name="skip_episode_label">رد شدن از قسمت</string>
     <string name="reset_position">بازنشانی مکان پخش</string>
     <string name="no_items_selected">چیزی انتخاب نشده است</string>
-    <string name="delete_local_feed_warning_body">حذف  باعث میشود که قسمت از AntennaPod حذف شده و فایل از حافظه دستگاه شما حذف شود. و نتوان آن را دوباره از طریق AntennaPod بارگیری کرد.</string>
+    <string name="delete_local_feed_warning_body">حذف باعث میشود که قسمت از AntennaPod حذف شده و فایل از حافظه دستگاه شما حذف شود. و نتوان آن را دوباره از طریق AntennaPod بارگیری کرد.</string>
     <!--Download messages and labels-->
   <string name="download_successful">موفقیت‌آمیز</string>
     <string name="download_pending">بارگیری معوق</string>
@@ -298,7 +298,7 @@
     <string name="random">تصادفی</string>
     <string name="smart_shuffle">بر زدن هوشمند</string>
     <string name="size">اندازه</string>
-    <string name="time_left_label">زمان مانده:\u0020</string>
+    <string name="time_left_label">"زمان مانده: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">از پیش نشاندن</string>
     <string name="preset_already_exists">%1$.2f قبلاً به عنوان یک پیش تنظیم ذخیره شده است.</string>
@@ -316,7 +316,7 @@
     <string name="no_all_episodes_label">هنگامی که پادپخشی می‌افزایید، قسمت‌ها این‌جا نمایش داده می‌شوند.</string>
     <string name="no_all_episodes_filtered_label">برای دیدن قسمت‌های بیش‌تر، پالایه را بردارید.</string>
     <string name="no_inbox_head_label">هیچ قسمتی در صندوق ورودی نیست</string>
-    <string name="no_inbox_label">هنگام رسیدن قسمت‌های جدید  این‌جا نشان داده خواهند شد. سپس می‌توانید تصمیم بگیرید که به آن‌ها علاقه‌مندید یا نه.</string>
+    <string name="no_inbox_label">هنگام رسیدن قسمت‌های جدید این‌جا نشان داده خواهند شد. سپس می‌توانید تصمیم بگیرید که به آن‌ها علاقه‌مندید یا نه.</string>
     <string name="no_subscriptions_head_label">بدون اشتراک</string>
     <string name="no_subscriptions_label">برای اشتراک در یک پادپخش، نقشک مثبت را در زیر بزنید.</string>
     <!--Preferences-->
@@ -399,7 +399,7 @@
     <string name="pref_episode_cover_title">استفاده از جلد قسمت</string>
     <string name="pref_episode_cover_summary">استفاده از طرح جلد مخصوص قسمت در سیاهه‌ها در صورت موجود بودن. اگر تیک نخورد کاره همواره از تصویر جلد پادپخش استفاده خواهد کرد.</string>
     <string name="pref_show_remain_time_title">نمایش زمان مانده</string>
-    <string name="pref_show_remain_time_summary">در صورت انتخاب زمان  باقی مانده قسمت ها نمایش داده شود. در صورت عدم انتخاب، مدت کل قسمت ها نمایش داده میشود..</string>
+    <string name="pref_show_remain_time_summary">در صورت انتخاب زمان باقی مانده قسمت ها نمایش داده شود. در صورت عدم انتخاب، مدت کل قسمت ها نمایش داده میشود..</string>
     <string name="pref_theme_title_automatic">خودکار</string>
     <string name="pref_theme_title_light">روشن</string>
     <string name="pref_theme_title_dark">تاریک</string>
@@ -474,7 +474,7 @@
     <string name="special_thanks">تشکر ویژه</string>
     <string name="privacy_policy">سیاست حریم شخصی</string>
     <string name="licenses">پروانه‌ها</string>
-    <string name="licenses_summary"> آنتن پاد از نرم افزارهای عالی دیگری نیز استفاده می کند</string>
+    <string name="licenses_summary">آنتن پاد از نرم افزارهای عالی دیگری نیز استفاده می کند</string>
     <!--Search-->
   <string name="search_status_no_results">نتیجه‌ای یافت نشد</string>
     <string name="type_to_search">برای جستجو عبارت را وارد نمایید</string>
@@ -571,7 +571,7 @@
     <string name="synchronization_login_status"><![CDATA[وارد شده به عنوان <i>%1$s</i> روی <i>%2$s</i>. <br/><br/> می‌تواندی فراهمگر همگام سازیتان را پس از خروجتان برگزینید]]></string>
     <string name="pref_synchronization_logout_toast">خروج موفقیت آمیز بود</string>
     <string name="gpodnetsync_error_title">خطای همگام‌سازی gpodder.net</string>
-    <string name="gpodnetsync_error_descr">هنگام همگام‌سازی خطایی رخ داد:\u0020</string>
+    <string name="gpodnetsync_error_descr">"هنگام همگام‌سازی خطایی رخ داد: "</string>
     <string name="gpodnetsync_pref_report_successful">موفق</string>
     <string name="gpodnetsync_pref_report_failed">شکست خورد</string>
     <string name="gpodnetsync_username_characters_error">نام‌های کاربری فقط می‌توانند شامل حروف، ارقام، خط‌های تیره و زیرخط‌ها باشند.</string>
@@ -623,7 +623,7 @@
     <string name="exclude_episodes_shorter_than">حذف قسمت‌های کوتاه‌تر از</string>
     <string name="keep_updated">به‌روز ماندن</string>
     <string name="keep_updated_summary">شامل شدن این پادپخش هنگام نوسازی (خودکار) همهٔ پادپخش‌ها</string>
-    <string name="auto_download_disabled_globally">بارگیری خودکار در تنظیمات اصلی  آنتن پاد غیرفعال است</string>
+    <string name="auto_download_disabled_globally">بارگیری خودکار در تنظیمات اصلی آنتن پاد غیرفعال است</string>
     <string name="statistics_expected_next_episode_any_day">همین روزها</string>
     <string name="statistics_expected_next_episode_unknown">نانعلوم</string>
     <string name="edit_url_menu">URL فید را ویرایش کنید</string>
@@ -659,7 +659,7 @@
   <string name="add_local_folder">پوشه محلی را اضافه کنید</string>
     <string name="local_folder">پوشه محلی</string>
     <string name="reconnect_local_folder">اتصال دوباره پوشه محلی</string>
-    <string name="reconnect_local_folder_warning">در صورت عدم پذیرش اجازه ، می توانید این را برای اتصال مجدد  به همان پوشه قبلی استفاده کنید. پوشه دیگری را انتخاب نکنید.</string>
+    <string name="reconnect_local_folder_warning">در صورت عدم پذیرش اجازه ، می توانید این را برای اتصال مجدد به همان پوشه قبلی استفاده کنید. پوشه دیگری را انتخاب نکنید.</string>
     <string name="local_feed_description">این پادپخش مجازی با افزودن شاخه‌ای به آنتنتاپاد ایجاد شده.</string>
     <string name="unable_to_start_system_file_manager">ناتوان در آغاز مدیر پروندهٔ سامانه</string>
     <string name="filter">فیلتر</string>

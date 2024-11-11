@@ -219,7 +219,7 @@
     <string name="episode_title">Judul episode</string>
     <string name="feed_title">Judul podcast</string>
     <string name="random">Acak</string>
-    <string name="time_left_label">Waktu tersisa:\u0020</string>
+    <string name="time_left_label">"Waktu tersisa: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Preset</string>
     <string name="preset_already_exists">%1$.2fx sudah disimpan sebagai preset.</string>
@@ -419,7 +419,7 @@
     <string name="sleep_timer_enabled_label">Timer tidur diaktifkan</string>
     <!--Synchronisation-->
   <string name="synchronization_choose_title">Pilih layanan penyedia sinkronisasi</string>
-    <string name="synchronization_summary_unchoosen">Anda dapat memilih dari berbagai layanan penyedia  untuk menyinkronisasikan langganan dan status memutar episode Anda dengan</string>
+    <string name="synchronization_summary_unchoosen">Anda dapat memilih dari berbagai layanan penyedia untuk menyinkronisasikan langganan dan status memutar episode Anda dengan</string>
     <string name="dialog_choose_sync_service_title">Pilih layanan penyedia sinkronisasi</string>
     <string name="gpodnet_description">Gpodder.net adalah layanan sinkronisasi podcast sumber terbuka yang bisa Anda pasang pada server Anda sendiri. Gpodder.net tidak bergantung kepada proyek AntennaPod project.</string>
     <string name="synchronization_summary_nextcloud">Gpoddersync adalah aplikasi Nextcloud bersumber terbuka yang dapat Anda pasang di server Anda sendiri. Gpoddersync tidak bergantung kepada proyek AntennaPod project.</string>
@@ -450,7 +450,7 @@
     <string name="synchronization_login_status"><![CDATA[Telah masuk sebagai: <i>%1$s</i> di <i>%2$s</i>. <br/><br/>Anda dapat memilih penyedia sinkronisasi kembali saat Anda sudah keluar]]></string>
     <string name="pref_synchronization_logout_toast">Sudah keluar</string>
     <string name="gpodnetsync_error_title">Kesalahan sinkronisasi gpodder.net</string>
-    <string name="gpodnetsync_error_descr">Sebuah kesalahan terjadi selama sinkronisasi:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Sebuah kesalahan terjadi selama sinkronisasi: "</string>
     <string name="gpodnetsync_pref_report_successful">Berhasil</string>
     <string name="gpodnetsync_pref_report_failed">Gagal</string>
     <string name="gpodnetsync_username_characters_error">Nama pengguna hanya dapat mengandung huruf, angka, tanda penghubung, dan underscore.</string>

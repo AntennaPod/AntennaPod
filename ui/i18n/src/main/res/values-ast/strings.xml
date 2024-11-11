@@ -132,7 +132,7 @@
     <string name="date">Data</string>
     <string name="duration">Duración</string>
     <string name="random">Al debalu</string>
-    <string name="time_left_label">Tiempu que queda:\u0020</string>
+    <string name="time_left_label">"Tiempu que queda: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Preaxustes</string>
     <!--Empty list labels-->
@@ -266,7 +266,7 @@
     <string name="gpodnetauth_finish_butsyncnow">Sincronizar agora</string>
     <string name="pref_gpodnet_setlogin_information_title">Camudar la información del aniciu de sesión</string>
     <string name="pref_gpodnet_setlogin_information_sum">Camuda la información d\'aniciu de sesión de la to cuenta de gpodder.net .</string>
-    <string name="gpodnetsync_error_descr">Asocedió un fallu demientres la sincronización:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Asocedió un fallu demientres la sincronización: "</string>
     <string name="gpodnetsync_pref_report_successful">Sincronización correuta</string>
     <string name="gpodnetsync_pref_report_failed">Sincronización fallida</string>
     <string name="gpodnetsync_username_characters_error">Los nomes d\'usuariu namás puen contener lletres, díxitos, guiones y guiones baxos.</string>

@@ -217,8 +217,8 @@
     <string name="download_running">ダウンロード実行中</string>
     <string name="download_error_details">詳細</string>
     <string name="download_log_details_message">%1$s \n\n技術的な理由: \n%2$s \n\nファイル URL:\n%3$s</string>
-    <string name="download_error_retrying">\\"%1$s\\" のダウンロードに失敗しました。後ほど再度ダウンロードを試みます。</string>
-    <string name="download_error_not_retrying">\\"%1$s\\" のダウンロードに失敗しました。</string>
+    <string name="download_error_retrying">\\%1$s\\ のダウンロードに失敗しました。後ほど再度ダウンロードを試みます。</string>
+    <string name="download_error_not_retrying">\\%1$s\\ のダウンロードに失敗しました。</string>
     <string name="download_error_tap_for_details">タップして詳細を表示します。</string>
     <string name="download_error_device_not_found">ストレージ デバイスが見つかりません</string>
     <string name="download_error_insufficient_space">デバイスに十分な空きスペースがありません。</string>
@@ -286,13 +286,13 @@
     <string name="random">ランダム</string>
     <string name="smart_shuffle">スマートシャッフル</string>
     <string name="size">サイズ</string>
-    <string name="time_left_label">残り時間:\u0020</string>
+    <string name="time_left_label">"残り時間: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">プリセット</string>
     <string name="preset_already_exists">%1$.2f 倍は既にプリセットとして保存されています。</string>
     <!--Empty list labels-->
   <string name="no_items_header_label">キューにエピソードがありません</string>
-    <string name="no_items_label">エピソードをダウンロードして追加するか、エピソードを長押しして \\"キューに追加\\" を選択してください。</string>
+    <string name="no_items_label">エピソードをダウンロードして追加するか、エピソードを長押しして \\キューに追加\\ を選択してください。</string>
     <string name="no_shownotes_label">このエピソードにショーノートはありません。</string>
     <string name="no_comp_downloads_head_label">ダウンロード済みのエピソードはありません</string>
     <string name="no_comp_downloads_label">ポッドキャスト詳細画面でエピソードをダウンロードできます。</string>
@@ -467,7 +467,7 @@
   <string name="search_status_no_results">見つかりませんでした</string>
     <string name="type_to_search">検索ワードを入力してください</string>
     <string name="search_label">検索</string>
-    <string name="no_results_for_query">\\"%1$s\\" の結果は見つかりませんでした</string>
+    <string name="no_results_for_query">\\%1$s\\ の結果は見つかりませんでした</string>
     <string name="search_online">オンラインで検索</string>
     <!--Synchronization-->
   <string name="sync_status_started">同期開始</string>
@@ -559,7 +559,7 @@
     <string name="synchronization_login_status"><![CDATA[<i>%2$s</i> に <i>%1$s</i> としてログインしました。ログアウトすると、同期プロバイダーを再度選択できます]]></string>
     <string name="pref_synchronization_logout_toast">ログアウトしました</string>
     <string name="gpodnetsync_error_title">gpodder.net 同期エラー</string>
-    <string name="gpodnetsync_error_descr">同期中にエラーが発生しました:\u0020</string>
+    <string name="gpodnetsync_error_descr">"同期中にエラーが発生しました: "</string>
     <string name="gpodnetsync_pref_report_successful">成功しました</string>
     <string name="gpodnetsync_pref_report_failed">失敗しました</string>
     <string name="gpodnetsync_username_characters_error">ユーザー名には文字、数字、ハイフン、下線のみ含めることができます。</string>

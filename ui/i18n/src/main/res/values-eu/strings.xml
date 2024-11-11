@@ -127,7 +127,7 @@
         <item quantity="other">%1$d/%2$d hautatuta</item>
     </plurals>
     <plurals name="num_episodes">
-        <item quantity="one">Saio %d </item>
+        <item quantity="one">Saio %d</item>
         <item quantity="other">%d saio</item>
     </plurals>
     <string name="episode_notification">Saioen jakinarazpenak</string>
@@ -177,7 +177,7 @@
   <string name="download_label">Deskargatu</string>
     <plurals name="downloading_batch_label">
         <item quantity="one">Saio %d deskargatzen.</item>
-        <item quantity="other"> %d saio deskargatzen.</item>
+        <item quantity="other">%d saio deskargatzen.</item>
     </plurals>
     <string name="play_label">Entzun</string>
     <string name="pause_label">Pausatu</string>
@@ -298,7 +298,7 @@
     <string name="random">Ausaz</string>
     <string name="smart_shuffle">Nahasketa adimentsua</string>
     <string name="size">Tamaina</string>
-    <string name="time_left_label">Gelditzen den denbora:\u0020</string>
+    <string name="time_left_label">"Gelditzen den denbora: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Aurrezarpenak</string>
     <string name="preset_already_exists">%1$.2f x dagoeneko gordea dago aurrezarpen bezala.</string>
@@ -571,7 +571,7 @@
     <string name="synchronization_login_status"><![CDATA[<i>%1$s</i> bezala saioa hasita hemen: <i>%2$s</i>. Saioa itxi ondoren, berriz hauta dezakezu zure sinkronizazio-hornitzailea]]></string>
     <string name="pref_synchronization_logout_toast">Saioaren itxiera arrakastatsua izan da</string>
     <string name="gpodnetsync_error_title">Sinkronizazio errorea gpodder.net-en</string>
-    <string name="gpodnetsync_error_descr">Errore bat gertatu da sinkronizatzean:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Errore bat gertatu da sinkronizatzean: "</string>
     <string name="gpodnetsync_pref_report_successful">Arrakastatsua</string>
     <string name="gpodnetsync_pref_report_failed">Huts egin du</string>
     <string name="gpodnetsync_username_characters_error">Erabiltzaile-izenek letrak, digituak, marratxoak eta azpimarrak baino ezin dituzte eduki.</string>

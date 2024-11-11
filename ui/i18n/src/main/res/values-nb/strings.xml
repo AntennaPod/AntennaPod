@@ -298,7 +298,7 @@
     <string name="random">Tilfeldig</string>
     <string name="smart_shuffle">Smart blanding</string>
     <string name="size">Størrelse</string>
-    <string name="time_left_label">Tid igjen:\u0020</string>
+    <string name="time_left_label">"Tid igjen: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Forhåndsvalg</string>
     <string name="preset_already_exists">%1$.2fx er allerede lagret som et forhåndsvalg.</string>
@@ -571,7 +571,7 @@
     <string name="synchronization_login_status"><![CDATA[Logget på som <i>%1$s</i> på <i>%2$s</i>. <br/><br/>Du kan velge ny tilbyder for synkronisering med en gang du har logget deg av.]]></string>
     <string name="pref_synchronization_logout_toast">Utlogging lyktes</string>
     <string name="gpodnetsync_error_title">gpodder.net synkroniseringsfeil</string>
-    <string name="gpodnetsync_error_descr">En feil oppsto under synkronisering av:\u0020</string>
+    <string name="gpodnetsync_error_descr">"En feil oppsto under synkronisering av: "</string>
     <string name="gpodnetsync_pref_report_successful">Vellykket</string>
     <string name="gpodnetsync_pref_report_failed">Mislyktes</string>
     <string name="gpodnetsync_username_characters_error">Brukernavn kan kun inneholde bokstaver, tall, bindestrek og understrek</string>
