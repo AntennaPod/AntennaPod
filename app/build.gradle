@@ -56,7 +56,6 @@ android {
 
     androidResources {
         additionalParameters += ["--no-version-vectors"]
-        generateLocaleConfig true
     }
 }
 
