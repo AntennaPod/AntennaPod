@@ -300,7 +300,7 @@
     <string name="download_error_wrong_size">The server connection was lost before completing the download</string>
     <string name="download_error_blocked">The download was blocked by another app on your device (like a VPN or ad blocker).</string>
     <string name="download_error_certificate">Unable to establish a secure connection. This can mean that another app on your device (like a VPN or an ad blocker) blocked the download, or that something is wrong with the server certificates.</string>
-    <string name="download_report_title">Downloads completed with error(s)</string>
+    <string name="episode_download_failed">Episode download failed</string>
     <string name="download_error_io_error">IO error</string>
     <string name="download_error_request_error">Request error</string>
     <string name="download_error_db_access">Database access error</string>
@@ -328,7 +328,7 @@
     <string name="confirm_mobile_streaming_button_once">Once</string>
 
     <!-- Mediaplayer messages -->
-    <string name="playback_error_generic"><![CDATA[The media file could not be played.\n\n- Try deleting and re-downloading the episode.\n- Check your network connection, and make sure no VPN or login page is blocking access.\n- Try long-pressing and sharing the \"Media address\" to your web browser to see if it can be played there. If not, contact the podcast creators.]]></string>
+    <string name="playback_error_generic">The media file could not be played.\n\n- Try deleting and re-downloading the episode.\n- Check your network connection, and make sure no VPN or login page is blocking access.\n- Try long-pressing and sharing the \"Media address\" to your web browser to see if it can be played there. If not, contact the podcast creators.</string>
     <string name="no_media_playing_label">No media playing</string>
     <string name="position_default_label" translatable="false">00:00:00</string>
     <string name="unknown_media_key">AntennaPod - Unknown media key: %1$d</string>
@@ -668,14 +668,14 @@
     <string name="synchronization_full_sync_title">Force full synchronization</string>
     <string name="synchronization_force_sync_summary">Re-synchronize all subscriptions and episode states</string>
     <string name="synchronization_logout">Logout</string>
-    <string name="synchronization_login_status"><![CDATA[Logged in as <i>%1$s</i> on <i>%2$s</i>. <br/><br/>You can choose your synchronization provider again once you have logged out]]></string>
+    <string name="synchronization_login_status">Logged in as %1$s on %2$s.\n\nYou can choose your synchronization provider again once you have logged out.</string>
     <string name="pref_synchronization_logout_toast">Logout was successful</string>
     <string name="gpodnetsync_error_title">gpodder.net sync error</string>
     <string name="gpodnetsync_error_descr">An error occurred during syncing:\u0020</string>
     <string name="gpodnetsync_pref_report_successful">Successful</string>
     <string name="gpodnetsync_pref_report_failed">Failed</string>
     <string name="gpodnetsync_username_characters_error">Usernames may only contain letters, digits, hyphens and underscores.</string>
-    <string name="nextcloud_login_error_generic"><![CDATA[Unable to log into your Nextcloud.\n\n- Check your network connection.\n- Confirm that you are using the correct server address.\n- Make sure that the gpoddersync Nextcloud plugin is installed.]]></string>
+    <string name="nextcloud_login_error_generic">Unable to log into your Nextcloud.\n\n- Check your network connection.\n- Confirm that you are using the correct server address.\n- Make sure that the gpoddersync Nextcloud plugin is installed.</string>
 
     <!-- Directory chooser -->
     <string name="choose_data_directory">Choose data folder</string>
