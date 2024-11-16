@@ -266,7 +266,6 @@
     <string name="download_error_wrong_size">İndirme tamamlanamadan sunucu ile bağlantı kesildi.</string>
     <string name="download_error_blocked">İndirmek cihazınızdaki başka bir uygulama (VPN veya reklam engelleyicisi gibi) tarafından engellendi.</string>
     <string name="download_error_certificate">Güvenli bir bağlantı kurulamadı. Bu, indirmenin cihazınızdaki başka bir uygulama (VPN veya reklam engelleyicisi gibi) tarafından engellendiği veya sunucu sertifikalarında bir hata olduğu anlamına gelebilir.</string>
-    <string name="download_report_title">İndirme hatalar ile tamamlandı</string>
     <string name="download_error_io_error">IO hatası</string>
     <string name="download_error_request_error">İstek hatası</string>
     <string name="download_error_db_access">Veri tabanı erişim hatası</string>
@@ -783,4 +782,25 @@
     <string name="shortcut_subscription_label">Abonelik kısayolu</string>
     <string name="shortcut_select_subscription">Abonelik seçiniz</string>
     <string name="add_shortcut">Kısayol ekle</string>
+    <string name="sync_status_wait_for_downloads">Aboneliklerin yenilenmesi bekleniyor …</string>
+    <string name="home_new_empty_text">Yeni bölümler burada gösterilecek. Daha sonra bunlarla ilgilenip ilgilenmediğinize karar verebilirsiniz.</string>
+    <string name="home_no_recent_unplayed_episodes_text">Zaten son bölümlerin hepsini oynadın. Burada şaşılacak bir şey yok ;)</string>
+    <string name="home_continue_empty_text">Bölümleri indirerek veya uzun basarak ve \" Sıraya ekle\" seçeneğini seçerek ekleyebilirsiniz .</string>
+    <string name="home_downloads_empty_text">İstediğiniz bölümü indirip çevrimdışı dinleyebilirsiniz.</string>
+    <string name="section_shown">Gösterilen</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">Cihazdaki %d bölümün toplam boyutu</item>
+        <item quantity="other">Cihazdaki %d bölümün toplam boyutu</item>
+    </plurals>
+    <string name="feed_delete_confirmation_msg">Lütfen \" %1$s \" adlı podcast\'i, TÜM bölümlerini (indirilen bölümler dahil), oynatma geçmişini ve istatistiklerini silmek istediğinizi onaylayın .</string>
+    <string name="feed_delete_confirmation_msg_batch">Lütfen seçili podcast\'leri, TÜM bölümlerini (indirilen bölümler dahil), oynatma geçmişini ve istatistiklerini kaldırmak istediğinizi onaylayın.</string>
+    <string name="feed_delete_confirmation_local_msg">Lütfen \" %1$s \" podcast\'ini, oynatma geçmişini ve istatistiklerini kaldırmak istediğinizi onaylayın . Yerel kaynak klasöründeki dosyalar silinmeyecektir.</string>
+    <string name="delete_downloads_played">Oynatılanı sil</string>
+    <string name="mobile_download_notice">Önümüzdeki %d dakika boyunca mobil veri bağlantısı üzerinden indiriliyor</string>
+    <string name="bottom_navigation">Alt gezinme</string>
+    <string name="delete_downloads_played_confirmation">Lütfen oynatılan tüm indirmeleri silmek istediğinizi onaylayın.</string>
+    <string name="null_value_podcast_error">Dokunduğunuz bağlantı geçerli bir podcast URL\'si içermiyor. Lütfen bağlantıyı doğrulayın ve tekrar deneyin veya podcast\'i manuel olarak arayın.</string>
+    <string name="bottom_navigation_summary">Beta özelliği: Tek bir dokunuşla her yerden en önemli ekranlara erişin</string>
+    <string name="pref_nav_drawer_items_title">Gezinmeyi özelleştir</string>
+    <string name="pref_nav_drawer_items_sum">Gezinme çekmecesinde veya alt gezinmede hangi öğelerin görüneceğini değiştirin</string>
 </resources>

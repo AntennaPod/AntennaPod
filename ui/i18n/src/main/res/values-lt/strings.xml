@@ -166,7 +166,6 @@
     <string name="download_error_wrong_size">Ryšys su serveriu nutrūko prieš užbaigiant atsiuntimą</string>
     <string name="download_error_blocked">Atsiuntimą blokavo kita įrenginyje esanti programėlė (pvz. VPN ar reklamos blokavimo programa).</string>
     <string name="download_error_certificate">Nepavyko užmegzti saugaus ryšio. Tai gali reikšti, jog kita įrenginyje esanti programėlė (pvz. VPN ar reklamos blokavimo programa) blokavo atsiuntimą arba kilo problemų su serverio sertifikatais.</string>
-    <string name="download_report_title">Atsiuntimai užbaigti su klaida (-omis)</string>
     <plurals name="downloads_left">
         <item quantity="one">Liko %d atsiuntimas</item>
         <item quantity="few">Liko %d atsiuntimai</item>

@@ -239,7 +239,6 @@
     <string name="download_error_wrong_size">다운로드를 마치기 전에 서버 연결이 끊겼습니다</string>
     <string name="download_error_blocked">다운로드가 장치의 다른 앱에 (예를 들어 VPN 또는 광고 차단 프로그램) 의해 막혔습니다.</string>
     <string name="download_error_certificate">보안 연결을 수립할 수 없습니다. 장치의 다른 앱이 (VPN 또는 광고 차단 프로그램 등) 다운로드를 막았거나, 서버 인증서에 문제가 있을 수 있습니다.</string>
-    <string name="download_report_title">다운로드 마침 (오류 있음)</string>
     <string name="download_error_io_error">입출력 오류</string>
     <string name="download_error_request_error">요청 오류</string>
     <string name="download_error_db_access">데이터베이스 접근 오류</string>

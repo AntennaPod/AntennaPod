@@ -305,7 +305,7 @@
     <string name="download_error_not_retrying">فشل تنزيل \"%1$s\".</string>
     <string name="download_error_tap_for_details">اضغط لرؤية التفاصيل.</string>
     <string name="download_error_device_not_found">جهاز التخزين غير موجود</string>
-    <string name="download_error_insufficient_space">لا توجد مساحة متبقية كافية في جهازك</string>
+    <string name="download_error_insufficient_space">لا توجد مساحة متبقية كافية في جهازك.</string>
     <string name="download_error_http_data_error">خطأ في بيانات HTTP</string>
     <string name="download_error_error_unknown">خطأ غير معروف</string>
     <string name="download_error_parser_exception">خادم البودكاست المستضيف ارسل ملف تغذية معطوب</string>
@@ -317,12 +317,11 @@
     <string name="download_error_unknown_host">لم يعثر على الخادم. تأكد من كتابة العنوان بشكل صحيح و توفر اتصال بالشبكة.</string>
     <string name="download_error_unauthorized">فشل التحقق. تأكد من صحة اسم المستخدم وكلمة المرور.</string>
     <string name="download_error_file_type_type">خطأ في نوع الملف</string>
-    <string name="download_error_forbidden">خادم البودكاست يرفض الرد</string>
+    <string name="download_error_forbidden">خادم البودكاست يرفض الرد.</string>
     <string name="download_canceled_msg">أُلغي التنزيل</string>
     <string name="download_error_wrong_size">فُقد الاتصال مع الخادم قبل الانتهاء من التنزيل</string>
     <string name="download_error_blocked">حٌظر التنزيل بواسطة تطبيق آخر على جهازك(مثل الـ VPN أو مانع الإعلانات)</string>
     <string name="download_error_certificate">غير قادر على تأسيس اتصال آمن. قد يعني هذا أن تطبيقًا آخر على جهازك (مثل VPN أو مانع الإعلانات) قد حظر التنزيل ، أو أن هناك خطأ ما في شهادات الخادم.</string>
-    <string name="download_report_title">أنتهى التنزيل مع خطأ (أو أكثر)</string>
     <string name="download_error_io_error">خطأ إدخال/إخراج</string>
     <string name="download_error_request_error">خطأ طلب</string>
     <string name="download_error_db_access">خطأ وصول لقاعدة البيانات</string>
@@ -375,7 +374,7 @@
     <string name="random">عشوائي</string>
     <string name="smart_shuffle">الخلط الذكي</string>
     <string name="size">الحجم</string>
-    <string name="clear_queue_confirmation_msg">أكد رغبتك في إزالة جميع الحلقات من لائحة الاستماع</string>
+    <string name="clear_queue_confirmation_msg">أكد رغبتك في إزالة جميع الحلقات من لائحة الاستماع.</string>
     <string name="time_left_label">"الوقت المتبقى: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">إعدادات أولية</string>
@@ -410,7 +409,7 @@
     <string name="interruptions">المقاطعات</string>
     <string name="playback_control">تحكم التشغيل</string>
     <string name="reassign_hardware_buttons">اعد تحديد وظائف الازرار الملموسة</string>
-    <string name="preference_search_hint">بحث</string>
+    <string name="preference_search_hint">بحث…</string>
     <string name="preference_search_no_results">لا توجد نتائج</string>
     <string name="preference_search_clear_history">محو السجل</string>
     <string name="pref_episode_cleanup_title">احذف قبل التنزيل التلقائي</string>
@@ -593,7 +592,7 @@
     <string name="opml_import_label">استيراد ملف بصيغة OPML</string>
     <string name="opml_add_podcast_label">استورد قائمة بودكاستات (OPML)</string>
     <string name="opml_reader_error">حدث خطأ أثناء قراءة الملف. تأكد من إختيار ملف OPML وأنه صالح</string>
-    <string name="opml_import_error_no_file">لم يختر أي ملف</string>
+    <string name="opml_import_error_no_file">لم يختر أي ملف!</string>
     <string name="select_all_label">اختر الكل</string>
     <string name="deselect_all_label">ألغ اختيار الكل</string>
     <string name="opml_export_label">تصدير بصيغة OPML</string>
@@ -604,7 +603,7 @@
     <string name="automatic_database_export_error">خطأ أثناء التصدير التلقائي</string>
     <string name="database_import_label">استيراد قاعدة البيانات</string>
     <string name="database_import_warning">استيراد قاعدة بيانات سيمسح كل اشتراكاتك الحالية وسجل الاستماع. الأفضل أن تصدر قاعدة البيانات الحالية لأرشيف. هل تريد تبديل البيانات؟</string>
-    <string name="please_wait">انتظر...</string>
+    <string name="please_wait">يرجى الانتظار…</string>
     <string name="export_error_label">حدث خطأ أثناء التصدير</string>
     <string name="export_success_title">تم التصدير بنجاح</string>
     <string name="opml_import_ask_read_permission">الوصول الى مساحة التخزين الخارجية مطلوب لقراءة ملف الـ OPML</string>
@@ -774,7 +773,7 @@
     <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">استيراد الاشتراكات من التطبيقات ذات الغرض الواحد ...</string>
     <!--Add podcast fragment-->
-  <string name="search_podcast_hint">ابحث عن بودكاست...</string>
+  <string name="search_podcast_hint">ابحث عن بودكاست…</string>
     <string name="search_itunes_label">ابحث Apple Podcasts</string>
     <string name="search_podcastindex_label">ابحث Podcast Index</string>
     <string name="search_fyyd_label">ابحث fyyd</string>
@@ -824,7 +823,7 @@
     <string name="port_label">رقم المنفذ</string>
     <string name="optional_hint">(إختياري)</string>
     <string name="proxy_test_label">اختبار</string>
-    <string name="proxy_checking">تفحص...</string>
+    <string name="proxy_checking">تفحص…</string>
     <string name="proxy_test_successful">اختبار ناجح</string>
     <string name="proxy_test_failed">الإختبار فشل</string>
     <string name="proxy_host_empty_error">لا يمكن أن يكون اسم المضيف فارغًا</string>
@@ -859,4 +858,8 @@
     <string name="shortcut_subscription_label">اختصار الاشتراك</string>
     <string name="shortcut_select_subscription">اختر الاشتراك</string>
     <string name="add_shortcut">أضف اختصارا</string>
+    <string name="statistics_episodes_total">الإجمالي</string>
+    <string name="home_continue_empty_text">يمكنك إضافة حلقات عن طريق تنزيلها أو الضغط مطولاً عليها واختيار ”إضافة إلى قائمة الانتظار“.</string>
+    <string name="home_no_recent_unplayed_episodes_text">لقد استمعت بالفعل لجميع الحلقات الأخيرة. لا شيء يدعو للدهشة هنا ؛)</string>
+    <string name="home_new_empty_text">ستظهر الحلقات الجديدة هنا. يمكنك بعد ذلك تحديد ما إذا كنت مهتمًا بها أم لا.</string>
 </resources>

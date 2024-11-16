@@ -281,7 +281,6 @@
     <string name="download_error_wrong_size">A conexão com o servidor foi perdida antes de completar o download</string>
     <string name="download_error_blocked">O download foi bloqueado por outro aplicativo no seu dispositivo (como uma VPN ou bloqueador de anúncios).</string>
     <string name="download_error_certificate">Não foi possível estabelecer uma conexão segura. Isso pode significar que outro aplicativo no seu dispositivo (como uma VPN ou bloqueador de anúncios), bloqueou o download ou que há algo errado com os certificados do servidor.</string>
-    <string name="download_report_title">Downloads finalizados com erro(s)</string>
     <string name="download_error_io_error">Erro de IO</string>
     <string name="download_error_request_error">Erro de requisição</string>
     <string name="download_error_db_access">Erro de acesso ao banco de dados</string>
@@ -803,4 +802,5 @@
     <string name="shortcut_subscription_label">Atalho da assinatura</string>
     <string name="shortcut_select_subscription">Selecione a assinatura</string>
     <string name="add_shortcut">Adicionar atalho</string>
+    <string name="home_no_recent_unplayed_episodes_text">Você já reproduziu todos os episódios recentes. Nada para se surpreender aqui ;)</string>
 </resources>

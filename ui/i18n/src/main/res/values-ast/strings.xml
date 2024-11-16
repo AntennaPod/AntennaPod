@@ -110,7 +110,6 @@
     <string name="download_error_unknown_host">Nun se pue atopar el sirvidor. Comprueba que la direición tea bien escrita y que la conexón a la rede funcione.</string>
     <string name="download_error_forbidden">L\'agospiador del podcast refuga responder.</string>
     <string name="download_error_wrong_size">Perdióse la conexón al sirvidor enantes de completar la descarga</string>
-    <string name="download_report_title">Les descargues completáronse con fallos</string>
     <plurals name="downloads_left">
         <item quantity="one">Queda %d descarga</item>
         <item quantity="other">Queden %d descargues</item>

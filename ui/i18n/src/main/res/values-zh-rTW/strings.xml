@@ -252,7 +252,6 @@
     <string name="download_error_wrong_size">伺服器連線在完成下載前中斷</string>
     <string name="download_error_blocked">您裝置上的其他應用程式 (如 VPN 或廣告封鎖程式) 阻擋了下載。</string>
     <string name="download_error_certificate">無法建立安全連線。這可能表示您裝置上的其他應用程式 (例如 VPN 或廣告封鎖程式) 阻擋了下載，或是伺服器證書出了問題。</string>
-    <string name="download_report_title">下載已完成，但可能有錯誤</string>
     <string name="download_error_io_error">IO 錯誤</string>
     <string name="download_error_request_error">要求錯誤</string>
     <string name="download_error_db_access">資料庫存取錯誤</string>

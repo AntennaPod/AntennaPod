@@ -266,7 +266,6 @@
     <string name="download_error_wrong_size">Η σύνδεση με τον διακομιστή απέτυχε πριν από την ολοκλήρωση της λήψης</string>
     <string name="download_error_blocked">Η λήψη παρεμποδίστηκε από μια άλλη εφαρμογή της συσκευής (όπως VPN ή ad blocker).</string>
     <string name="download_error_certificate">Δεν είναι δυνατή η ασφαλής σύνδεση με τον διακομιστή. Αυτό μπορεί να σημαίνει ότι κάποια άλλη εφαρμογή στη συσκευή (όπως VPN ή ad blocker) μπλοκάρει τη λήψη δεδομένων ή ότι κάτι πήγε στραβά με τα πιστοποιητικά του διακομιστή.</string>
-    <string name="download_report_title">Οι λήψεις ολοκληρώθηκαν με σφάλμα(τα)</string>
     <string name="download_error_io_error">Σφάλμα IO</string>
     <string name="download_error_request_error">Σφάλμα αίτησης</string>
     <string name="download_error_db_access">Σφάλμα πρόσβασης βάσης δεδομένων</string>

@@ -265,7 +265,6 @@
     <string name="download_error_wrong_size">La connexió del servidor s\'ha perdut abans de completar la descàrrega</string>
     <string name="download_error_blocked">La baixada ha estat bloquejada per una altra aplicació al vostre dispositiu (com ara una VPN o un bloquejador d\'anuncis).</string>
     <string name="download_error_certificate">No s\'ha pogut establir una connexió segura. Això pot indicar que una altra aplicació (com una VPN o un bloquejador d\'anuncis) ha bloquejat la baixada, o que hi ha algun problema amb els certificats del servidor.</string>
-    <string name="download_report_title">Baixades completades amb error(s)</string>
     <string name="download_error_io_error">Error d\'E/S</string>
     <string name="download_error_request_error">Error de sol·licitut</string>
     <string name="download_error_db_access">Error d\'accés a la Base de Dades</string>

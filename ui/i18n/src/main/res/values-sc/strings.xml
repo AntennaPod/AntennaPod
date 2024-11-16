@@ -266,7 +266,6 @@
     <string name="download_error_wrong_size">Sa connessione cun su serbidore est istada pèrdida prima chi s\'iscarrigamentu esseret cumpletu.</string>
     <string name="download_error_blocked">S\'iscarrigamentu est istadu blocadu dae un\'àtera aplicatzione in su dispositivu tuo (comente un VPN o unu blocadore de publitzidade).</string>
     <string name="download_error_certificate">Impossìbile istabilire una connessione sicura. Custu podet bòlere nàrrere chi un\'àtera aplicatzione in su dispositivu tuo (comente un VPN o un blocadore de publitzidade) at blocadu s\'iscarrigamentu, o chi nc\'est unu problema cun is tzertificados de su serbidore.</string>
-    <string name="download_report_title">Iscarrigamentos cumpletados cun errore(s)</string>
     <string name="download_error_io_error">Errore IO</string>
     <string name="download_error_request_error">Errore in sa rechesta</string>
     <string name="download_error_db_access">Errore de atzessu a sa base de datos</string>

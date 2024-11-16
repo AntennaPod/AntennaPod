@@ -85,7 +85,6 @@
     <string name="download_error_parser_exception">Podcastın ana serveri pozulmuş podcast lenti göndərdi.</string>
     <string name="download_error_unknown_host">Serverə qoşula bilmir. Ünvanın düzgün yazıldığını və internetə bağlantısınının olduğunu yoxlayın.</string>
     <string name="download_canceled_msg">Yükləmə ləğv olundu</string>
-    <string name="download_report_title">Yükləmə başa çatdı</string>
     <string name="download_type_feed">Kanal</string>
     <string name="download_type_media">Mediya fayl</string>
     <string name="no_media_playing_label">Heç nə oynadılmır</string>
@@ -126,4 +125,5 @@
     <string name="pref_gpodnet_setlogin_information_sum">Gpodder.net hesabınız üçün giriş məlumatını dəyişin.</string>
     <string name="gpodnetsync_error_title">gpodder.net ilə eyniləşdirmə xətası</string>
     <string name="gpodnetsync_error_descr">"Eyniləşdirmə zamanı xəta baş verdi: "</string>
+    <string name="current_playing_episode">İndiki</string>
 </resources>

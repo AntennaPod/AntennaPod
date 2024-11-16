@@ -250,7 +250,6 @@
     <string name="download_error_wrong_size">A kiszolgálókapcsolat elveszett a letöltés befejezése előtt</string>
     <string name="download_error_blocked">A letöltést egy másik, az eszközön lévő alkalmazás megakadályozta (például egy VPN vagy egy reklámblokkoló).</string>
     <string name="download_error_certificate">A biztonságos kapcsolat nem építhető fel. Ez azt jelentheti, hogy egy másik, az eszközön lévő alkalmazás (például egy VPN vagy egy reklámblokkoló) blokkolta a letöltést, vagy valami hibás a kiszolgálótanúsítványokban.</string>
-    <string name="download_report_title">A letöltések hibákkal fejeződtek be</string>
     <string name="download_error_io_error">Ki-/bemeneti hiba</string>
     <string name="download_error_request_error">Kérési hiba</string>
     <string name="download_error_db_access">Adatbázis-hozzáférési hiba</string>
