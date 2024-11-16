@@ -266,7 +266,6 @@
     <string name="download_canceled_msg">Prenos je preklican</string>
     <string name="download_error_wrong_size">Povezava s strežnikom je bila izgubljena, preden se je prenos končal</string>
     <string name="download_error_blocked">Prenosi so blokirani s strani drugih aplikacij na vaši napravi (kot na primer VPN ali aplikacija za blokiranje oglasov).</string>
-    <string name="download_report_title">Prenosi so bili izvedeni z napako.</string>
     <string name="download_error_io_error">IO napaka</string>
     <string name="download_error_request_error">Napaka zahteve</string>
     <string name="download_error_db_access">Napaka pri dostopu do baze podatkov</string>

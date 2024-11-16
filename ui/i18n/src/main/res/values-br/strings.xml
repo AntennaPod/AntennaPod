@@ -274,7 +274,6 @@
     <string name="download_error_wrong_size">Kollet eo bet ar c\'hennaskañ gant ar servijer a-raok fin ar pellgargadur</string>
     <string name="download_error_blocked">Ar bellgargadur \'zo bet paouezet dre faot un arload all (\'giz ur VPN pe un arload enep-bruderezh).</string>
     <string name="download_error_certificate">N\'haller ket implijout ur c\'hennask suraet. Marteze ez eus un arload all eus ho penveg (e-giz ur VPN pe ur stanker bruderezh) o stankañ ar pellgargadur, pe n\'ez a ket en-dro un dra bennak gant testenioù ar servijer.</string>
-    <string name="download_report_title">Pellgargañ echuet gant fazi(où)</string>
     <string name="download_error_io_error">Fazi lenn/skrivañ</string>
     <string name="download_error_request_error">Fazi azgoulenn</string>
     <string name="download_error_db_access">Fazi haeziñ ar stlennvon</string>

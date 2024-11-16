@@ -249,7 +249,6 @@
     <string name="download_error_wrong_size">اتّصال کارساز پیش از کامل شدن بارگیری از دست رفت</string>
     <string name="download_error_blocked">دانلود توسط برنامه دیگری در دستگاه شما مسدود شده است (مانند یک VPN یا مسدودکننده تبلیغات).</string>
     <string name="download_error_certificate">ناتوان در برقراری اتّصالی امن. می‌تواند بدین معنی باشد که کاره‌ای دیگر روی افزاره‌تان (چون وی‌پی‌‌ان یا تبلیغ‌شکن) بارگیری را مسدود کرده یا چیزی در گواهی‌های کارساز اشتباه شده.</string>
-    <string name="download_report_title">بارگیری‌ها با خطا(ها) کامل شد</string>
     <string name="download_error_io_error">خطای ورودی و خروجی</string>
     <string name="download_error_request_error">خطای درخواست</string>
     <string name="download_error_db_access">خطای دسترسی به پایگاه داده</string>

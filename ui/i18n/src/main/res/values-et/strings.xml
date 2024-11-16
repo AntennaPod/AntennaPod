@@ -249,7 +249,6 @@
     <string name="download_error_wrong_size">Ühendus serveriga katkes enne allalaadimise lõppu</string>
     <string name="download_error_blocked">Allalaadimise blokeeris mingi teine rakendus sinu telefonis (nt VPN või reklaami blokeerija).</string>
     <string name="download_error_certificate">Turvalist ühendust pole võimalik luua. See võib tähendada, et mõni teine rakendus su seadmes (nt VPN või reklaami blokeerija) blokeeris allalaadimise või on serveri sertifikaatidel midagi viga.</string>
-    <string name="download_report_title">Allalaadimised lõpetati veaga (vigadega)</string>
     <string name="download_error_io_error">IO viga</string>
     <string name="download_error_request_error">Päringu viga</string>
     <string name="download_error_db_access">Andmebaasile ligipääsu viga</string>

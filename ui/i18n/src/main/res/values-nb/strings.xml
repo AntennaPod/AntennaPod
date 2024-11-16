@@ -22,7 +22,7 @@
     <string name="episode_cache_full_message">Grensen for størrelse på hurtigbuffer er nådd. Du kan øke størrelsen på hurtigbuffer i innstillingene.</string>
     <string name="years_statistics_label">År</string>
     <string name="notification_pref_fragment">Varslinger</string>
-    <string name="current_playing_episode">Gjeldende</string>
+    <string name="current_playing_episode">Spilles nå</string>
     <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" ikke funnet</string>
     <!--SwipeActions-->
@@ -249,7 +249,6 @@
     <string name="download_error_wrong_size">Mistet tjenertilkoblingen før nedlastingen var ferdig</string>
     <string name="download_error_blocked">Nedlasting ble blokkert av en andre app på enhenten din (som en VPN eller ad-blokker).</string>
     <string name="download_error_certificate">Kunne ikke opprette en sikker tilkopling. Det kan bety at en annen app på enheten din (som en VPN eller en annonseblokkerer) blokkerte nedlastinga, eller at noe er galt med sertifikatene til tjeneren.</string>
-    <string name="download_report_title">Nedlasting fullført med feilmelding(er)</string>
     <string name="download_error_io_error">IU-feil</string>
     <string name="download_error_request_error">Forespørselfeil</string>
     <string name="download_error_db_access">Tilgangsfeil for database</string>
@@ -727,4 +726,21 @@
     <string name="shortcut_subscription_label">Abonnementsnarvei</string>
     <string name="shortcut_select_subscription">Velg abonnement</string>
     <string name="add_shortcut">Legg til snarvei</string>
+    <plurals name="episode_cleanup_hours_after_listening">
+        <item quantity="one">%d time etter ferdig</item>
+        <item quantity="other">%d timer etter ferdig</item>
+    </plurals>
+    <plurals name="episode_cleanup_days_after_listening">
+        <item quantity="one">%d dag etter ferdig</item>
+        <item quantity="other">%d dager etter ferdig</item>
+    </plurals>
+    <string name="home_continue_empty_text">Du kn legge dem til episoder ved å laste de ned eller langtrykke på dem og velge \"Legg til i køen\".</string>
+    <string name="home_downloads_empty_text">Du kan laste ned hvilken som helst episode og lytte til den frakoblet.</string>
+    <string name="section_shown">Vist</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">Total størrelse for %d episode på enheten</item>
+        <item quantity="other">Total størrelse for %d episoder på enheten</item>
+    </plurals>
+    <string name="home_no_recent_unplayed_episodes_text">Du har allerede spilt av alle de nyeste episodene. Det er ingenting å bli overrasket med her :)</string>
+    <string name="home_new_empty_text">Nye episoder vil dukke opp her. Deretter kan velge om du er interessert i dem.</string>
 </resources>

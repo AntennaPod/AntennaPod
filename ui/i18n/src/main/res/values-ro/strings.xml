@@ -265,7 +265,6 @@
     <string name="download_error_wrong_size">Conexiunea cu serverul a fost pierdută înainte să se termine descărcarea.</string>
     <string name="download_error_blocked">Descărcarea a fost blocată de o altă aplicație de pe dispozitivul dumneavoastră (VPN sau ad blocker).</string>
     <string name="download_error_certificate">Nu s-a putut stabili o conexiune securizată. Acest lucru poate sugera că o aplicație de pe dispozitivul dumoneavoastră (VPN sau ad blocker) a blocat descărcarea, sau că ceva este în neregulă cu certificatele de la server.</string>
-    <string name="download_report_title">Descărcări terminate</string>
     <string name="download_error_io_error">Eroare IO</string>
     <string name="download_error_request_error">Eroare de cerere</string>
     <string name="download_error_db_access">Eroare în accesarea bazei de date</string>

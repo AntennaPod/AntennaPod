@@ -294,7 +294,6 @@
     <string name="download_error_wrong_size">Соединение с сервером было оборвано до завершения загрузки.</string>
     <string name="download_error_blocked">Загрузка была заблокирована другим приложением на вашем устройстве (например, VPN или блокировщиком рекламы).</string>
     <string name="download_error_certificate">Невозможно установить защищённое соединение. Возможно загрузке препятствует другое приложение (например, VPN или блокировщик рекламы), либо что-то не так с сертификатом сервера.</string>
-    <string name="download_report_title">Загрузки завершились с ошибкой</string>
     <string name="download_error_io_error">Ошибка ввода-вывода</string>
     <string name="download_error_request_error">Ошибка запроса</string>
     <string name="download_error_db_access">Ошибка доступа к базе данных</string>

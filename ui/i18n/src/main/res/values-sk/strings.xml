@@ -280,7 +280,6 @@
     <string name="download_error_wrong_size">Pred dokončením sťahovania došlo k strate pripojenia k serveru</string>
     <string name="download_error_blocked">Sťahovanie bolo zablokované inou aplikáciou vo Vašom zariadení (napríklad VPN alebo Ad blocker).</string>
     <string name="download_error_certificate">Nie je možné nadviazať bezpečné spojenie. To môže znamenať, že iná aplikácia vo Vašom zariadení (ako napríklad VPN alebo Ad blocker) zablokovala sťahovanie, alebo, že niečo je v neporiadku s certifikátmi servera.</string>
-    <string name="download_report_title">Pri sťahovaní nastali chyby</string>
     <string name="download_error_io_error">Vstupno-výstupná chyba</string>
     <string name="download_error_request_error">Chyba požiadavky</string>
     <string name="download_error_db_access">Chyba prístupu k databáze</string>
@@ -678,8 +677,8 @@
     <string name="next_chapter">Nasledujúca kapitola</string>
     <string name="shuffle_suggestions">Premiešať návrhy</string>
     <string name="add_preset">Pridať predvoľbu</string>
-    <string name="download_started_talkback">Začalo sťahovanie pre%1$s</string>
-    <string name="download_completed_talkback">Dokončené sťahovanie pre%1$s</string>
+    <string name="download_started_talkback">Začalo sťahovanie pre %1$s</string>
+    <string name="download_completed_talkback">Dokončené sťahovanie pre %1$s</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">Overenie</string>
     <string name="authentication_descr">Zmeniť svoje používateľské meno a heslo pre tento podcast a jeho epizódy.</string>
@@ -802,4 +801,30 @@
     <string name="shortcut_subscription_label">Skratka odberu</string>
     <string name="shortcut_select_subscription">Vyberte odber</string>
     <string name="add_shortcut">Pridať skratku</string>
+    <string name="sync_status_wait_for_downloads">Čaká sa na obnovenie odberov…</string>
+    <string name="pref_nav_drawer_items_sum">Zmeňte, ktoré položky sa zobrazia v navigačnom vysúvacom paneli alebo v spodnej navigácii</string>
+    <string name="feed_delete_confirmation_msg">Potvrďte, že chcete odstrániť podcast „%1$s“, VŠETKY jeho epizódy (vrátane stiahnutých epizód), históriu prehrávania a jeho štatistiky.</string>
+    <string name="home_no_recent_unplayed_episodes_text">Všetky posledné epizódy ste už prehrali. Tu sa niet čomu čudovať ;)</string>
+    <string name="home_continue_empty_text">Epizódy môžete pridať ich stiahnutím alebo dlhým stlačením a výberom možnosti „Pridať do poradia“.</string>
+    <string name="delete_downloads_played">Odstrániť prehraté</string>
+    <string name="delete_downloads_played_confirmation">Potvrďte, že chcete odstrániť všetky prehrané stiahnuté súbory.</string>
+    <string name="bottom_navigation">Spodná navigácia</string>
+    <string name="bottom_navigation_summary">Beta funkcia: Prístup k najdôležitejším obrazovkám odkiaľkoľvek jediným kliknutím</string>
+    <string name="statistics_release_next">ďalšia epizóda (odhad)</string>
+    <string name="statistics_years_barchart_description">Hraný čas za mesiac</string>
+    <string name="section_shown">Ukázaná</string>
+    <string name="pref_nav_drawer_items_title">Prispôsobiť navigáciu</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">Celková veľkosť %d epizódy v zariadení</item>
+        <item quantity="few">Celková veľkosť %d epizód v zariadení</item>
+        <item quantity="other">Celková veľkosť %d epizód v zariadení</item>
+    </plurals>
+    <string name="home_downloads_empty_text">Môžete si stiahnuť akúkoľvek epizódu a počúvať ju offline.</string>
+    <string name="home_new_empty_text">Tu sa zobrazia nové epizódy. Potom sa môžete rozhodnúť, či o ne máte záujem.</string>
+    <string name="feed_delete_confirmation_local_msg">Potvrďte, že chcete odstrániť podcast „%1$s“, jeho históriu prehrávania a jeho štatistiky. Súbory v lokálnom zdrojovom priečinku sa neodstránia.</string>
+    <string name="feed_delete_confirmation_msg_batch">Potvrďte, že chcete odstrániť vybraté podcasty, VŠETKY ich epizódy (vrátane stiahnutých epizód), históriu prehrávania a štatistiky.</string>
+    <string name="discover_more">Objavte viac »</string>
+    <string name="null_value_podcast_error">Odkaz, na ktorý ste klikli, neobsahuje platnú webovú adresu podcastu. Overte odkaz a skúste to znova, alebo vyhľadajte podcast manuálne.</string>
+    <string name="nextcloud_login_error_generic"><![CDATA[Nedá sa prihlásiť do vášho Nextcloudu.\n\n- Skontrolujte si sieťové pripojenie.\n- Potvrďte, že používate správnu adresu servera.\n- Uistite sa, že doplnok gpoddersync Nextcloud je nainštalovaný.]]></string>
+    <string name="statistics_view_all">Všetky podcasty »</string>
 </resources>

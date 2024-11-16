@@ -53,7 +53,7 @@
     <string name="home_downloads_title">Xestiona as descargas</string>
     <string name="home_welcome_title">Benvida a AntennaPod!</string>
     <string name="home_welcome_text">Aínda non tes subscricións. Abre o menú lateral e engade un podcast.</string>
-    <string name="notification_permission_denied">Non outorgaches o permiso</string>
+    <string name="notification_permission_denied">Non outorgaches o permiso.</string>
     <string name="configure_home">Configura a pantalla de Inicio</string>
     <string name="section_hidden">Oculto</string>
     <!--Main activity-->
@@ -185,8 +185,8 @@
     <!--actions on feeditems-->
   <string name="download_label">Descargar</string>
     <plurals name="downloading_batch_label">
-        <item quantity="one">Descargando %d episodio</item>
-        <item quantity="other">Descargando %d episodios</item>
+        <item quantity="one">Descargando %d episodio.</item>
+        <item quantity="other">Descargando %d episodios.</item>
     </plurals>
     <string name="play_label">Reproducir</string>
     <string name="pause_label">Pausar</string>
@@ -266,7 +266,6 @@
     <string name="download_error_wrong_size">Perdeuse a conexión co servidor antes de completar a descarga</string>
     <string name="download_error_blocked">A descarga foi bloqueada por outra app no dispositivo (como unha VPN ou bloqueador de publicidade).</string>
     <string name="download_error_certificate">Non se puido establecer unha conexión segura. Pode que outra app no dispositivo (VPN ou bloqueador de publicidade) impedise a descarga, ou que hai algún fallo nos certificados do servidor.</string>
-    <string name="download_report_title">Descargas completadas con erro(s)</string>
     <string name="download_error_io_error">Erro IO</string>
     <string name="download_error_request_error">Fallo na petición</string>
     <string name="download_error_db_access">Erro no acceso á base de datos</string>
@@ -783,4 +782,36 @@
     <string name="shortcut_subscription_label">Atallo á subscrición</string>
     <string name="shortcut_select_subscription">Elexir subscrición</string>
     <string name="add_shortcut">Engadir atallo</string>
+    <string name="sync_status_wait_for_downloads">Agardando a que se actualicen as subscricións…</string>
+    <string name="statistics_view_all">Todos os podcasts »</string>
+    <string name="statistics_episodes_started">iniciado</string>
+    <string name="bottom_navigation_summary">Característica ßeta: Acceder ás pantallas máis importantes desde calquera lugar cun só toque</string>
+    <string name="statistics_episodes_space">espazo ocupado</string>
+    <string name="home_new_empty_text">Aquí aparecerán os novos episodios. Poderás decidir entón se son do teu interese.</string>
+    <string name="home_downloads_empty_text">Podes descargar os episodios e escoitalos sen conexión.</string>
+    <string name="section_shown">Mostrados</string>
+    <string name="delete_downloads_played">Eliminar os escoitados</string>
+    <string name="delete_downloads_played_confirmation">Confirma que queres eliminar todos as descargas escoitadas.</string>
+    <string name="statistics_episodes_total">total</string>
+    <string name="statistics_episodes_played">reproducido</string>
+    <string name="statistics_episodes_downloaded">descargado</string>
+    <string name="statistics_release_next">próximo episodio (estimación)</string>
+    <string name="statistics_years_barchart_description">Tempo de escoita por mes</string>
+    <string name="statistics_release_schedule">programación dos episodios</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">Tamaño total de %d episodio no dispositivo</item>
+        <item quantity="other">Tamaño total de %d episodios no dispositivo</item>
+    </plurals>
+    <string name="home_no_recent_unplayed_episodes_text">Xa escoitaches todos os episodios recentes. Nada por aquí para sorprenderte ;)</string>
+    <string name="home_continue_empty_text">Podes engadir episodios descargándoos ou cunha pulsación longa sobre eles e elixir \"Engadir á cola\".</string>
+    <string name="feed_delete_confirmation_msg_batch">Confirma que queres retirar os podcasts seleccionados, TODOS os seus episodios (incluíndo os episodios descargados, historial de reprodución e a súas estatísticas.</string>
+    <string name="feed_delete_confirmation_msg">Confirma que queres eliminar o podcast \"%1$s\", TODOS os seus episodios (incluídos os descargados), historial de reprodución e as estatísticas.</string>
+    <string name="feed_delete_confirmation_local_msg">Confirma que queres retirar o podcast \"%1$s\", o seu historial de reprodución e estatísticas. Os ficheiros no cartafol de base local non serán eliminados.</string>
+    <string name="mobile_download_notice">Descargar usando datos do móbil durante os próximos %d minutos</string>
+    <string name="null_value_podcast_error">A ligazón indicada non contén un URL de podcast válido. Comproba a ligazón e volve a intentalo, ou busca o podcast de xeito manual.</string>
+    <string name="bottom_navigation">Navegación inferior</string>
+    <string name="pref_nav_drawer_items_title">Personalizar a navegación</string>
+    <string name="pref_nav_drawer_items_sum">Cambia os elementos que aparecen na caixa de navegación ou na barra inferior</string>
+    <string name="discover_more">Achar mais »</string>
+    <string name="nextcloud_login_error_generic"><![CDATA[Non se puido acceder ao teu Nextcloud.\n\n- Comproba a conexión á rede.\n- Confirma que é o enderezo correcto do servidor.\n- Verifica que está instalado o complemento Nextcloud gpoddersync.]]></string>
 </resources>

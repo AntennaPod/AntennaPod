@@ -260,7 +260,6 @@
     <string name="download_error_wrong_size">Před dokončením stahování došlo ke ztrátě připojení k serveru</string>
     <string name="download_error_blocked">Stahování bylo zablokováno jinou aplikací ve vašem zařízení (například VPN nebo blokovačem reklam).</string>
     <string name="download_error_certificate">Nelze navázat zabezpečené připojení. To může znamenat, že jiná aplikace ve vašem zařízení (například VPN nebo blokátor reklam) zablokovala stahování nebo že něco není v pořádku s certifikáty serveru.</string>
-    <string name="download_report_title">Stahování dokončeno s chybou</string>
     <string name="download_error_io_error">Vstupně-výstupní chyba</string>
     <string name="download_error_request_error">Chyba požadavku</string>
     <string name="download_error_db_access">Chyba přístupu do databáze</string>
@@ -739,4 +738,5 @@
     <string name="shortcut_subscription_label">Zkratka odběru</string>
     <string name="shortcut_select_subscription">Vyberte odběr</string>
     <string name="add_shortcut">Přidat zkratku</string>
+    <string name="home_no_recent_unplayed_episodes_text">Už jste přehráli všechny epizody. Není vás čím překvapit ;)</string>
 </resources>

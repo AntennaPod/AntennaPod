@@ -242,7 +242,6 @@
     <string name="download_error_wrong_size">Palvelinyhteys katkesi ennen latauksen valmistumista</string>
     <string name="download_error_blocked">Toinen laitteesi sovellus (kuten VPN tai mainosten esto) esti latauksen.</string>
     <string name="download_error_certificate">Suojattua yhteyttä ei voi muodostaa. Tämä voi tarkoittaa, että jokin muu laitteesi sovellus (kuten VPN tai mainosten esto) esti latauksen tai että palvelimen varmenteissa on jotain vialla.</string>
-    <string name="download_report_title">Lataukset valmistuivat virhe(id)en kanssa</string>
     <string name="download_error_io_error">IO-virhe</string>
     <string name="download_error_request_error">Pyyntövirhe</string>
     <string name="download_error_db_access">Tietokannan pääsyvirhe</string>

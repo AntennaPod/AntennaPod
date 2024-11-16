@@ -185,7 +185,6 @@
     <string name="download_error_wrong_size">Hubungan ke server terputus sebelum download selesai terunduh</string>
     <string name="download_error_blocked">Pengunduhan diblokir oleh aplikasi lain di perangkat Anda (cth: VPN, atau penghalau iklan)</string>
     <string name="download_error_certificate">Tidak dapat membuat hubungan yang aman; kemungkinan ada aplikasi dalam perangkat Anda (cth: VPN atau penghalau iklan) yang memblokir unduhan atau kesalahan pada sertifikat server.</string>
-    <string name="download_report_title">Unduhan berhasil dengan kesalahan</string>
     <plurals name="downloads_left">
         <item quantity="other">%d unduhan tersisa</item>
     </plurals>

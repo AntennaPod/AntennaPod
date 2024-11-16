@@ -238,7 +238,6 @@
     <string name="download_error_wrong_size">ダウンロードが完了する前にサーバーへの接続が失われました</string>
     <string name="download_error_blocked">あなたのデバイスの別のアプリ（VPNや広告ブロッカーなど）によってダウンロードがブロックされました。</string>
     <string name="download_error_certificate">安全な接続を確立できません。これは、あなたのデバイス上にある他のアプリ（VPNや広告ブロッカーなど）がダウンロードをブロックしたか、サーバー証明書に問題があることを意味している可能性があります。</string>
-    <string name="download_report_title">ダウンロードがエラーで完了しました</string>
     <string name="download_error_io_error">IOエラー</string>
     <string name="download_error_request_error">リクエストエラー</string>
     <string name="download_error_db_access">データベースアクセスエラー</string>

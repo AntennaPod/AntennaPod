@@ -273,7 +273,6 @@
     <string name="download_error_wrong_size">Połączenie z serwerem zostało zerwane przed ukończeniem pobierania.</string>
     <string name="download_error_blocked">Pobieranie zostało zablokowane przez inną aplikację na twoim urządzeniu (np. VPN lub blokadę reklam).</string>
     <string name="download_error_certificate">Nie można ustanowić bezpiecznego połączenia. Może to oznaczać, że inna aplikacja na twoim urządzeniu (np. VPN lub blokada reklam) zablokowała pobieranie, lub coś jest nie tak z certyfikatami serwera.</string>
-    <string name="download_report_title">Pobieranie ukończone</string>
     <string name="download_error_io_error">Błąd wejścia/wyjścia</string>
     <string name="download_error_request_error">Błąd żądania</string>
     <string name="download_error_db_access">Błąd dostępu do bazy danych</string>

@@ -249,7 +249,6 @@
     <string name="download_error_wrong_size">Zerbitzariaren konexioa galdu egin da deskarga amaitu aurretik</string>
     <string name="download_error_blocked">Deskarga beste aplikazio batek blokeatu du zure gailuan (VPN edo iragarki-blokeatzaile batek, adibidez).</string>
     <string name="download_error_certificate">Ezin da konexio segururik ezarri. Baliteke zure gailuko beste aplikazio batek (hala nola VPN batek edo iragarki-blokeatzaile batek) deskarga blokeatu izana, edo arazoren bat egotea zerbitzariaren ziurtagiriekin.</string>
-    <string name="download_report_title">Erroreren bat egon da deskargetan</string>
     <string name="download_error_io_error">S/I errorea</string>
     <string name="download_error_request_error">Eskaera-errorea</string>
     <string name="download_error_db_access">Datu-baseko sarbide-errorea</string>

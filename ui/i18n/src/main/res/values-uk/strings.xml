@@ -223,10 +223,10 @@
     <string name="mark_read_no_media_label">Позначити як прочитане</string>
     <string name="play_this_to_seek_position">Щоб перейти до позиції, потрібно відтворити епізод</string>
     <plurals name="marked_read_batch_label">
-        <item quantity="one">%d епізод помічено як відтворений</item>
-        <item quantity="few">%d епізоди помічено як відтворені</item>
-        <item quantity="many">%d епізодів помічено як відтворені</item>
-        <item quantity="other">%d епізодів помічено як відтворені</item>
+        <item quantity="one">%d епізод помічено як відтворений.</item>
+        <item quantity="few">%d епізоди помічено як відтворені.</item>
+        <item quantity="many">%d епізодів помічено як відтворені.</item>
+        <item quantity="other">%d епізодів помічено як відтворені.</item>
     </plurals>
     <string name="mark_unread_label">Позначити як невідтворений</string>
     <string name="mark_unread_label_no_media">Позначити як непрочитане</string>
@@ -294,7 +294,6 @@
     <string name="download_error_wrong_size">З\'єднання з сервером було втрачено перед завершенням завантаження</string>
     <string name="download_error_blocked">Завантаження було заблоковане іншою програмою на Вашому пристрої (на кшталт VPN або блокувальником реклами).</string>
     <string name="download_error_certificate">Не вдається встановити безпечне з\'єднання. Це може означати, що інша програма на вашому пристрої (наприклад, VPN або ad blocker) заблокувала завантаження, або що щось не так із сертифікатами сервера.</string>
-    <string name="download_report_title">Завантаження завершені з помилками</string>
     <string name="download_error_io_error">Помилка вводу-виводу</string>
     <string name="download_error_request_error">Помилка запиту</string>
     <string name="download_error_db_access">Помилка доступу до бази даних</string>
@@ -351,12 +350,12 @@
   <string name="speed_presets">Заготовки</string>
     <string name="preset_already_exists">%1$.2fx вже збережено як заготовку.</string>
     <!--Empty list labels-->
-  <string name="no_items_header_label">В черзі немає епізодів.</string>
+  <string name="no_items_header_label">В черзі немає епізодів</string>
     <string name="no_items_label">Додайте епізод, завантаживши його, або довго натиснувши на нього і вибравши \"Додати до черги\".</string>
     <string name="no_shownotes_label">До цього епізода немає нотаток.</string>
     <string name="no_comp_downloads_head_label">Немає завантажених епізодів</string>
     <string name="no_comp_downloads_label">Можна завантажувати епізоди на екрані подробиць подкасту.</string>
-    <string name="no_log_downloads_head_label">Журнал завантажень пустий.</string>
+    <string name="no_log_downloads_head_label">Журнал завантажень пустий</string>
     <string name="no_log_downloads_label">Журнал завантажень з’явиться тут.</string>
     <string name="no_history_head_label">Немає історії</string>
     <string name="no_history_label">Коли ви прослухаєте епізод, ця інформація з’явиться тут.</string>
@@ -366,7 +365,7 @@
     <string name="no_inbox_head_label">У папці \"Вхідні\" немає епізодів</string>
     <string name="no_inbox_label">Коли з\'являться нові епізоди, вони будуть показані тут. Ви зможете вирішити, чи цікавлять вони вас, чи ні.</string>
     <string name="no_subscriptions_head_label">Немає підписок</string>
-    <string name="no_subscriptions_label">Щоб підписатись на подкаст, натисніть на значок плюса нижче</string>
+    <string name="no_subscriptions_label">Щоб підписатися на подкаст, натисніть іконку «плюс» нижче.</string>
     <!--Preferences-->
   <string name="project_pref">Проект</string>
     <string name="synchronization_pref">Синхронізація</string>
@@ -380,7 +379,7 @@
     <string name="interruptions">Тимчасові паузи</string>
     <string name="playback_control">Керування відтворенням</string>
     <string name="reassign_hardware_buttons">Перепризначення апаратних кнопок</string>
-    <string name="preference_search_hint">Пошук...</string>
+    <string name="preference_search_hint">Пошук…</string>
     <string name="preference_search_no_results">Немає результатів</string>
     <string name="preference_search_clear_history">Очистити історію</string>
     <string name="pref_episode_cleanup_title">Видалити перед автозавантаженням</string>
@@ -439,7 +438,7 @@
     <string name="pref_mobileUpdate_streaming">Потокове передавання</string>
     <string name="user_interface_label">Оболонка</string>
     <string name="user_interface_sum">Зовнішній вигляд, підписки, екран блокування</string>
-    <string name="pref_black_theme_title">Чорний, як смола.</string>
+    <string name="pref_black_theme_title">Чорний, як смола</string>
     <string name="pref_black_theme_message">Використовуйте повний чорний для темної теми</string>
     <string name="pref_tinted_theme_title">Динамічні кольори</string>
     <string name="pref_tinted_theme_message">Адаптація кольорів програми на основі шпалер</string>
@@ -481,7 +480,7 @@
     <string name="pref_persistNotify_sum">Не ховайте сповіщення та елементи керування на екрані блокування, коли відтворення призупинено</string>
     <string name="pref_compact_notification_buttons_dialog_error_exact">Ви маєте обрати рівно два варіанти</string>
     <string name="pref_full_notification_buttons_title">Оберіть кнопки на сповіщенні</string>
-    <string name="pref_full_notification_buttons_sum">Змініть кнопки на сповіщенні про відтворення.</string>
+    <string name="pref_full_notification_buttons_sum">Змініть кнопки на сповіщенні про відтворення</string>
     <string name="pref_enqueue_location_title">Позиція в черзі при додаванні</string>
     <string name="pref_enqueue_location_sum">Додати епізоди до: %1$s</string>
     <string name="enqueue_location_back">В кінець</string>
@@ -584,9 +583,9 @@
     <string name="favorites_export_label">Експорт улюбленого</string>
     <string name="favorites_export_summary">Експортувати збережені улюблені файли</string>
     <!--Sleep timer-->
-  <string name="set_sleeptimer_label">Таймер сну</string>
+  <string name="set_sleeptimer_label">Встановіть таймер сну</string>
     <string name="disable_sleeptimer_label">Вимкнути таймер сну</string>
-    <string name="extend_sleep_timer_label">+%d хв.</string>
+    <string name="extend_sleep_timer_label">+%d хв</string>
     <string name="sleep_timer_always">Завжди</string>
     <string name="sleep_timer_label">Таймер сну</string>
     <string name="time_dialog_invalid_input">Помилка вводу, час повинен бути цілим</string>
@@ -647,7 +646,7 @@
     <string name="gpodnetauth_finish_descr">Вітаємо! Ваш обліковий запис gpodder.net тепер пов\'язаний з вашим пристроєм. Відтепер AntennaPod буде автоматично синхронізувати підписки на вашому пристрої з вашим акаунтом gpodder.net.</string>
     <string name="gpodnetauth_finish_butsyncnow">Почати синхронізацію</string>
     <string name="pref_gpodnet_setlogin_information_title">Змінити інформацію для входу</string>
-    <string name="pref_gpodnet_setlogin_information_sum">Змінити інформацію щодо облікового запису gpodder.net</string>
+    <string name="pref_gpodnet_setlogin_information_sum">Змінити інформацію щодо облікового запису gpodder.net.</string>
     <string name="synchronization_sync_changes_title">Синхронізувати зараз</string>
     <string name="synchronization_sync_summary">Синхронізуйте підписки та стан прослуховування епізодів</string>
     <string name="synchronization_full_sync_title">Примусово синхронізувати все</string>
@@ -670,7 +669,7 @@
   <string name="rating_tagline">З %1$s ви прослухали %2$s%3$d%4$s годин подкастів.</string>
     <string name="rating_contribute_label">Бажаєте приєднатися? Якщо ви хочете перекладати, підтримувати, створювати дизайн або писати код, ми будемо раді бачити вас!</string>
     <string name="rating_contribute_button">Дізнайтеся, як зробити свій внесок</string>
-    <string name="rating_volunteers_label">AntennaPod розробляється волонтерами у вільний від роботи час (перекладаю це сидячи в офісі, але тсс!). Ви можете проявити вдячність, залишивши приємну оцінку :)</string>
+    <string name="rating_volunteers_label">AntennaPod розробляється волонтерами у вільний від роботи час (перекладаю це сидячи в офісі, але тсс!). Ви можете проявити вдячність, залишивши приємну оцінку.</string>
     <string name="rating_rate">Оцініть AntennaPod</string>
     <string name="rating_later">Пізніше якось</string>
     <!--Online feed view-->
@@ -701,7 +700,7 @@
     <string name="download_completed_talkback">Успішно завантажено %1$s</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">Автентифікація</string>
-    <string name="authentication_descr">Змінити ваші логін та пароль для подкаста та епізодів</string>
+    <string name="authentication_descr">Змінити ваші логін та пароль для подкаста та епізодів.</string>
     <string name="feed_tags_label">Мітки</string>
     <string name="feed_tags_summary">Змініть теги цього подкасту, щоб упорядкувати ваші підписки</string>
     <string name="feed_folders_include_root">Відображати цей подкаст в основному списку підписок</string>
@@ -734,9 +733,9 @@
     <string name="release_schedule_saturday">Сб</string>
     <string name="release_schedule_sunday">Нд</string>
     <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Імпорт подкастів з інших програм...</string>
+  <string name="sp_apps_importing_feeds_msg">Імпорт подкастів з інших програм…</string>
     <!--Add podcast fragment-->
-  <string name="search_podcast_hint">Шукати подкаст...</string>
+  <string name="search_podcast_hint">Шукати подкаст…</string>
     <string name="search_itunes_label">Шукати на Apple Podcasts</string>
     <string name="search_podcastindex_label">Шукати на Podcast Index</string>
     <string name="search_fyyd_label">Шукати на Fyyd</string>
@@ -786,7 +785,7 @@
     <string name="port_label">Порт</string>
     <string name="optional_hint">(Необов\'язково)</string>
     <string name="proxy_test_label">Тест</string>
-    <string name="proxy_checking">Триває перевірка...</string>
+    <string name="proxy_checking">Триває перевірка…</string>
     <string name="proxy_test_successful">Протестовано успішно</string>
     <string name="proxy_test_failed">Протестовано з помилками</string>
     <string name="proxy_host_empty_error">Поле \"Хост\" не може бути пустим</string>
@@ -821,4 +820,38 @@
     <string name="shortcut_subscription_label">Скорочення підписки</string>
     <string name="shortcut_select_subscription">Вибрати підписку</string>
     <string name="add_shortcut">Додати ярлик</string>
+    <string name="pref_nav_drawer_items_title">Налаштувати навігацію</string>
+    <string name="home_downloads_empty_text">Ви можете завантажити будь-який епізод, щоб слухати його офлайн.</string>
+    <string name="delete_downloads_played">Видалити відтворене</string>
+    <string name="null_value_podcast_error">Посилання, на яке ви натиснули, не містить дійсної URL-адреси подкасту. Будь ласка, перевірте посилання і спробуйте ще раз або знайдіть подкаст вручну.</string>
+    <string name="pref_nav_drawer_items_sum">Оберіть елементи, які відображатимуться в панелі навігації або в нижній навігації</string>
+    <string name="sync_status_wait_for_downloads">Чекаємо на оновлення підписок…</string>
+    <string name="statistics_view_all">Всі подкасти »</string>
+    <string name="discover_more">Дізнатися більше »</string>
+    <string name="home_no_recent_unplayed_episodes_text">Ви вже прослухали всі нові епізоди. Тут немає чому дивуватися ;)</string>
+    <string name="home_continue_empty_text">Ви можете додати епізоди, завантаживши їх або довго натиснувши на них і вибравши «Додати в чергу».</string>
+    <string name="section_shown">Показані</string>
+    <string name="delete_downloads_played_confirmation">Будь ласка, підтвердіть, що ви хочете видалити всі відтворені завантаження.</string>
+    <string name="mobile_download_notice">Завантаження через мобільне з\'єднання протягом наступних %d хвилин</string>
+    <string name="bottom_navigation">Навігація внизу екрана</string>
+    <string name="nextcloud_login_error_generic"><![CDATA[Не вдається увійти до Nextcloud.\n\n- Перевірте мережу.\n- Переконайтеся, що ви використовуєте правильну адресу сервера.\n- Переконайтеся, що плагін gpoddersync Nextcloud встановлено.]]></string>
+    <string name="statistics_episodes_started">початі</string>
+    <string name="statistics_episodes_total">загалом</string>
+    <string name="statistics_episodes_space">використано місця</string>
+    <string name="statistics_release_schedule">графік випусків</string>
+    <string name="statistics_release_next">наступний епізод (орієнтовно)</string>
+    <string name="statistics_years_barchart_description">Час, прослуханий за місяць</string>
+    <string name="home_new_empty_text">Тут з\'являтимуться нові епізоди. Ви зможете вирішити, чи вони вам цікаві.</string>
+    <string name="feed_delete_confirmation_msg">Будь ласка, підтвердіть, що ви хочете видалити подкаст «%1$s», а також ВСІ його випуски (включно із завантаженими), історію відтворення та статистику.</string>
+    <string name="feed_delete_confirmation_local_msg">Будь ласка, підтвердіть, що ви хочете видалити подкаст «%1$s», історію його відтворення та статистику. Файли у локальній теці джерела не буде видалено.</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">Загальний розмір %d епізоду на пристрої</item>
+        <item quantity="few">Загальний розмір %d епізодів на пристрої</item>
+        <item quantity="many">Загальний розмір %d епізодів на пристрої</item>
+        <item quantity="other">Загальний розмір %d епізодів на пристрої</item>
+    </plurals>
+    <string name="feed_delete_confirmation_msg_batch">Будь ласка, підтвердіть, що ви хочете видалити вибрані подкасти, ВСІ їхні епізоди (включно із завантаженими), історію відтворення та статистику.</string>
+    <string name="bottom_navigation_summary">Бета-версія функції: Доступ до найважливіших екранів звідусіль в один дотик</string>
+    <string name="statistics_episodes_downloaded">завантажено</string>
+    <string name="statistics_episodes_played">відтворено</string>
 </resources>

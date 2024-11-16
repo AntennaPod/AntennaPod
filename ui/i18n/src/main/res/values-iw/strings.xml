@@ -280,7 +280,6 @@
     <string name="download_error_wrong_size">החיבור לשרת אבד לפני השלמת ההורדה</string>
     <string name="download_error_blocked">ההורדה נחסמה על ידי יישומון אחר במכשיר שלך (כנראה VPN או חוסם פרסומות).</string>
     <string name="download_error_certificate">לא ניתן ליצור חיבור מאובטח. יכול להיות שיישומון אחר במכשיר שלך חסם את ההורדה (כנראה VPN או חוסם פרסומות) או שמשהו השתבש באישורי השרת.</string>
-    <string name="download_report_title">הורדות הושלמו עם שגיאה אחת או יותר</string>
     <string name="download_error_io_error">שגיאת קלט/פלט</string>
     <string name="download_error_request_error">שגיאת בקשה</string>
     <string name="download_error_db_access">שגיאת גישה למסד הנתונים</string>
@@ -565,7 +564,7 @@
     <string name="opml_import_ask_read_permission">נדרשת גישה לאחסון חיצוני כדי לקרוא את קובץ ה־OPML</string>
     <string name="successful_import_label">הייבוא הצליח</string>
     <string name="import_ok">נא ללחוץ על אישור כדי להפעיל את אנטנה־פּוֹד מחדש</string>
-    <string name="import_no_downgrade">מסד נתונים זה ייוצא עם גרסה עדכנית יותר של AntennaPod</string>
+    <string name="import_no_downgrade">מסד נתונים זה ייוצא עם גרסה עדכנית יותר של AntennaPod. ההתקנה הנוכחית שלך לא יודעת עדיין איך לטפל בקובץ הזה.</string>
     <string name="favorites_export_label">ייצוא מועדפים</string>
     <string name="favorites_export_summary">ייצור המועדפים השמורים לקובץ</string>
     <!--Sleep timer-->
@@ -802,4 +801,37 @@
     <string name="shortcut_subscription_label">קיצור למינוי</string>
     <string name="shortcut_select_subscription">בחירת מינוי</string>
     <string name="add_shortcut">הוספת קיצור דרך</string>
+    <string name="statistics_view_all">כל ההסכתים »</string>
+    <string name="statistics_episodes_started">החל</string>
+    <string name="delete_downloads_played">מחיקת אלו שהושמעו</string>
+    <string name="pref_nav_drawer_items_title">ניווט מותאם אישית</string>
+    <string name="home_new_empty_text">פרקים חדשים יופיעו כאן. אפשר להחליט האם הם מעניינים אותך.</string>
+    <string name="home_downloads_empty_text">אפשר להוריד כל פרק שהוא כדי להאזין לו ללא חיבור לאינטרנט.</string>
+    <string name="section_shown">מוצג</string>
+    <string name="delete_downloads_played_confirmation">נא לאשר את מחיקת על ההורדות שהושמעו.</string>
+    <string name="mobile_download_notice">מתבצעת הורדה דרך חיבור נתונים סלולרי למשך %d הדקות הקרובות</string>
+    <string name="statistics_release_schedule">לו״ז הוצאה לאור</string>
+    <string name="nextcloud_login_error_generic"><![CDATA[לא ניתן להיכנס ל־Nextcloud שלך.\n\n- נא לבדוק שהחיבור שלך לרשת תקין.\n- לוודא שזאת כתובת השרת הנכונה.\n- לבדוק שתוסף Nextcloud בשם gpoddersync מותקן.]]></string>
+    <string name="statistics_release_next">הפרק הבא (הערכה)</string>
+    <string name="statistics_years_barchart_description">זמן השמעה בחודש</string>
+    <string name="home_no_recent_unplayed_episodes_text">כבר ניגנת את כל הפרקים האחרונים. אין יותר איך להפתיע אותך ؛)</string>
+    <string name="feed_delete_confirmation_msg_batch">נא לאשר את הסרת ההסכתים הנבחרים, לרבות כל הפרקים שלהם (כולל פרקים שירדו), היסטוריית נגינה והסטטיסטיקה שלהם.</string>
+    <string name="home_continue_empty_text">אפשר להוסיף פרקים על ידי הורדתם או בלחיצה ארוכה עליהם ובחירה ב„הוספה לתור”.</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">הגודל הכולל של פרק במכשיר</item>
+        <item quantity="two">הגודל הכולל של שני פרקים במכשיר</item>
+        <item quantity="other">הגודל הכולל של %d פרקים במכשיר</item>
+    </plurals>
+    <string name="feed_delete_confirmation_msg">נא לאשר את מחיקת ההסכת „%1$s”, לרבות כל הפרקים (כולל פרקים שירדו), היסטוריית הנגינה והסטטיסטיקה שלו.</string>
+    <string name="feed_delete_confirmation_local_msg">נא לאשר את הסרת ההסכת „%1$s”, לרבות היסטוריית הנגינה שלו והסטטיסטיקה שלו. הקבצים בתיקיית המקור המקומית לא יימחקו.</string>
+    <string name="null_value_podcast_error">הקישור בו נגעת לא מכיל כתובת הסכת תקנית. נא לוודא שהקישור תקין ולנסות שוב או לחפש את ההסכת ידנית.</string>
+    <string name="bottom_navigation">ניווט תחתון</string>
+    <string name="bottom_navigation_summary">יכולת ניסיונית: גישה למסכים החשובים ביותר מכל מקום, בנגיעה אחת</string>
+    <string name="statistics_episodes_total">סך הכול</string>
+    <string name="statistics_episodes_played">הושמעו</string>
+    <string name="statistics_episodes_space">מקום תפוס</string>
+    <string name="pref_nav_drawer_items_sum">נא לבחור אילו פריטים מופיעים במגירת הניווט או בניווט התחתון</string>
+    <string name="sync_status_wait_for_downloads">בהמתנה לרענון המינויים…</string>
+    <string name="statistics_episodes_downloaded">ירדו</string>
+    <string name="discover_more">להיחשף לעוד »</string>
 </resources>

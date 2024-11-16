@@ -252,7 +252,6 @@
     <string name="download_error_wrong_size">डाउनलोड खत्म होने से पहले सर्वर से कनेक्शन दूट गया</string>
     <string name="download_error_blocked">आपके डिवाइस पे किसी दूसरे ऐप ने (जैसे कोई वीपीएन या विज्ञापन ब्लॉकर) डाउनलोड ब्लॉक कर दिया।</string>
     <string name="download_error_certificate">सुरक्षित कनेक्शन लगाने में असफल। इसका ये मतलब है कि आपके डिवाइस पे किसी दूसरे ऐप ने (जैसे कोई वीपीएन या विज्ञापन ब्लॉकर) डाउनलोड ब्लॉक कर दिया, या सर्वर प्रमाण के साथ कुछ गड़बड़ है।</string>
-    <string name="download_report_title">डाउनलोड एक (या उससे ज़्यादा) गड़बड़ के साथ हो गया</string>
     <string name="download_error_io_error">आईओ गड़बड़</string>
     <string name="download_error_request_error">अनुरोध त्रुटि</string>
     <string name="download_error_db_access">डेटाबेस एक्सेस त्रुटि</string>
