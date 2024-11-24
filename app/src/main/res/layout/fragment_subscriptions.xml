@@ -31,7 +31,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-                tools:ignore="RtlSymmetry">
+            tools:ignore="RtlSymmetry">
 
             <ImageView
                 android:layout_width="20dp"
