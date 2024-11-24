@@ -27,8 +27,7 @@
             android:paddingBottom="8dp"
             android:text="@string/filtered_label"
             android:layout_marginTop="-12dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginStart="15dp"
+            android:layout_marginHorizontal="16dp"
             android:visibility="gone"
             tools:visibility="visible" />
 

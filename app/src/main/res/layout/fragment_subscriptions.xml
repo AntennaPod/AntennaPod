@@ -24,13 +24,14 @@
             android:id="@+id/feeds_filtered_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="15dp"
+            android:layout_marginHorizontal="16dp"
             android:paddingEnd="0dp"
             android:paddingVertical="4dp"
             android:layout_marginTop="-12dp"
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+                tools:ignore="RtlSymmetry">
 
             <ImageView
                 android:layout_width="20dp"
