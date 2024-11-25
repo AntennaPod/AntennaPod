@@ -28,8 +28,7 @@
             android:paddingVertical="4dp"
             android:layout_marginTop="-12dp"
             android:background="?android:attr/selectableItemBackground"
-            android:gravity="center_vertical"
-            >
+            android:gravity="center_vertical">
 
             <ImageView
                 android:layout_width="20dp"
