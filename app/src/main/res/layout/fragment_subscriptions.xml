@@ -30,7 +30,6 @@
             android:layout_marginTop="-12dp"
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
             tools:ignore="RtlSymmetry">
 
             <ImageView
