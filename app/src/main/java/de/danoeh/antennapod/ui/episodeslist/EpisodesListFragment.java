@@ -67,7 +67,7 @@ public abstract class EpisodesListFragment extends Fragment
     protected int page = 1;
     protected boolean isLoadingMore = false;
     protected boolean hasMoreItems = false;
-    private boolean displayUpArrow;
+    protected boolean displayUpArrow;
 
     protected EpisodeItemListRecyclerView recyclerView;
     protected EpisodeItemListAdapter listAdapter;
