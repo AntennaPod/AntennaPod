@@ -408,6 +408,10 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         progressBar.setVisibility(View.VISIBLE);
 
         infoBar = root.findViewById(R.id.info_bar);
+        boolean largePadding = displayUpArrow || !UserPreferences.isBottomNavigationEnabled();
+        int paddingHorizontal = (int) (getResources().getDisplayMetrics().density * (largePadding ? 60 : 16));
+        infoBar.setPadding(paddingHorizontal, 0, paddingHorizontal, 0);
+
         recyclerView = root.findViewById(R.id.recyclerView);
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
         if (animator instanceof SimpleItemAnimator) {

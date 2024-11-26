@@ -527,7 +527,6 @@
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted</string>
     <string name="pref_filter_feed_title">Subscription filter</string>
     <string name="pref_filter_feed_sum">Filter your subscriptions in navigation drawer and subscriptions screen</string>
-    <string name="subscriptions_are_filtered">Subscriptions are filtered.</string>
     <string name="subscriptions_counter_greater_zero">Counter greater than zero</string>
     <string name="auto_downloaded">Auto downloaded</string>
     <string name="not_auto_downloaded">Not auto downloaded</string>

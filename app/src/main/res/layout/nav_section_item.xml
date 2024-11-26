@@ -36,7 +36,7 @@
             android:layout_marginStart="4dp"
             android:gravity="start"
             android:paddingTop="4dp"
-            android:text="@string/subscriptions_are_filtered"
+            android:text="@string/filtered_label"
             android:textColor="?android:attr/textColorSecondary"
             android:textSize="@dimen/text_size_small" />
 
