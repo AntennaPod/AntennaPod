@@ -321,7 +321,10 @@
     <string name="confirm_mobile_download_dialog_message_vpn">Your VPN app pretends to be a mobile network (metered connection). Downloading over mobile data connection is disabled in the settings. If you want this problem to be fixed, contact the creators of your VPN app.</string>
     <string name="confirm_mobile_download_dialog_download_later">Download later</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Download anyway</string>
-    <string name="mobile_download_notice">Downloading over mobile data connection for the next %d minutes</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Downloading over mobile data connection for the next %d minute</item>
+        <item quantity="other">Downloading over mobile data connection for the next %d minutes</item>
+    </plurals>
     <string name="confirm_mobile_streaming_notification_title">Confirm mobile streaming</string>
     <string name="confirm_mobile_streaming_notification_message">Streaming over mobile data connection is disabled in the settings. Tap to stream anyway.</string>
     <string name="confirm_mobile_streaming_button_always">Always</string>
@@ -737,10 +740,20 @@
     <string name="keep_updated">Keep updated</string>
     <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>
     <string name="auto_download_disabled_globally">Auto download is disabled in the main AntennaPod settings</string>
-    <string name="statistics_episodes_started">started</string>
-    <string name="statistics_episodes_total">total</string>
-    <string name="statistics_episodes_played">played</string>
-    <string name="statistics_episodes_downloaded">downloaded</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">started</item>
+        <item quantity="other">started</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">total</item>
+        <item quantity="other">total</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">downloaded</item>
+        <item quantity="other">downloaded</item>
+    </plurals>
+    <string name="statistics_time_total">total</string>
+    <string name="statistics_time_played">played</string>
     <string name="statistics_episodes_space">space taken</string>
     <string name="statistics_release_schedule">release schedule</string>
     <string name="statistics_release_next">next episode (estimate)</string>
