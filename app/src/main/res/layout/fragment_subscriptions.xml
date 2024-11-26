@@ -27,6 +27,7 @@
             android:paddingHorizontal="16dp"
             android:paddingVertical="4dp"
             android:layout_marginTop="-12dp"
+            android:orientation="horizontal"
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center_vertical">
 
