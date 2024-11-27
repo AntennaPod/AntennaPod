@@ -27,17 +27,6 @@ body:
       placeholder: x.y.z
     validations:
       required: true
-  - type: dropdown
-    id: source
-    attributes:
-      label: Where did you get the app from
-      multiple: false
-      options:
-        - Google Play
-        - F-Droid
-        - Other
-    validations:
-      required: true
   - type: input
     id: android_version
     attributes:
