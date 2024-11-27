@@ -495,7 +495,6 @@
     <string name="pref_delete_removes_from_queue_sum">Eliminar automáticamente un episodio de la cola cuando se borra</string>
     <string name="pref_filter_feed_title">Filtro de suscripción</string>
     <string name="pref_filter_feed_sum">Filtrar tus suscripciones en el cajón de de navegación y pantallas de suscripción</string>
-    <string name="subscriptions_are_filtered">Las suscripciones están filtradas.</string>
     <string name="subscriptions_counter_greater_zero">Contador mayor que cero</string>
     <string name="auto_downloaded">Descargado automáticamente</string>
     <string name="not_auto_downloaded">No auto-descargado</string>

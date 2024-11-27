@@ -428,7 +428,6 @@
     <string name="pref_delete_removes_from_queue_title">Deletointi poistaa jonosta</string>
     <string name="pref_filter_feed_title">Tilaussuodin</string>
     <string name="pref_filter_feed_sum">Suodata navigointivalikossa ja tilausnäkymässä näytettäviä tilauksia</string>
-    <string name="subscriptions_are_filtered">Tilauksia on suodatettu.</string>
     <string name="subscriptions_counter_greater_zero">Laskurin arvo suurempi kuin nolla</string>
     <string name="auto_downloaded">Automaattisesti ladattu</string>
     <string name="not_auto_downloaded">Ei ladattu automaattisesti</string>

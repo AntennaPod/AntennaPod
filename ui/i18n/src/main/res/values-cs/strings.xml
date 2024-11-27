@@ -463,7 +463,6 @@
     <string name="pref_delete_removes_from_queue_sum">Automaticky odstraní epizodu z fronty poté, co je smazána.</string>
     <string name="pref_filter_feed_title">Filtr odběrů</string>
     <string name="pref_filter_feed_sum">Filtrujte svoje odběry v navigačním panelu a na obrazovce odběrů.</string>
-    <string name="subscriptions_are_filtered">Odběry jsou filtrovány.</string>
     <string name="subscriptions_counter_greater_zero">Počet vyšší než nula</string>
     <string name="auto_downloaded">Automaticky stahováno</string>
     <string name="not_auto_downloaded">Nebylo automaticky staženo</string>

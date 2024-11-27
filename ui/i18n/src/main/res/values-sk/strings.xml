@@ -15,7 +15,7 @@
     <string name="open_autodownload_settings">Otvoriť nastavenia</string>
     <string name="downloads_log_label">Záznam sťahovaní</string>
     <string name="subscriptions_label">Odbery</string>
-    <string name="subscriptions_list_label">Zoznam odberov</string>
+    <string name="subscriptions_list_label">Zoznam odberov (iba bočné menu)</string>
     <string name="cancel_download_label">Zrušiť sťahovanie</string>
     <string name="playback_history_label">História prehrávania</string>
     <string name="episode_cache_full_title">Vyrovnávacia pamäť epizód je plná</string>
@@ -495,7 +495,6 @@
     <string name="pref_delete_removes_from_queue_sum">Po zmazaní automaticky odstrániť epizódu z poradia</string>
     <string name="pref_filter_feed_title">Filter odberov</string>
     <string name="pref_filter_feed_sum">Filtrujte svoje odbery v navigačnom paneli a na obrazovke odberov</string>
-    <string name="subscriptions_are_filtered">Odbery sú filtrované.</string>
     <string name="subscriptions_counter_greater_zero">Počet vyšší ako nula</string>
     <string name="auto_downloaded">Automaticky stiahnuté</string>
     <string name="not_auto_downloaded">Nebolo automaticky stiahnuté</string>
@@ -827,4 +826,5 @@
     <string name="null_value_podcast_error">Odkaz, na ktorý ste klikli, neobsahuje platnú webovú adresu podcastu. Overte odkaz a skúste to znova, alebo vyhľadajte podcast manuálne.</string>
     <string name="nextcloud_login_error_generic"><![CDATA[Nedá sa prihlásiť do vášho Nextcloudu.\n\n- Skontrolujte si sieťové pripojenie.\n- Potvrďte, že používate správnu adresu servera.\n- Uistite sa, že doplnok gpoddersync Nextcloud je nainštalovaný.]]></string>
     <string name="statistics_view_all">Všetky podcasty »</string>
+    <string name="episode_download_failed">Sťahovanie epizódy zlyhalo</string>
 </resources>

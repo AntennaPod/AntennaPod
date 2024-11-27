@@ -439,7 +439,6 @@
     <string name="pref_delete_removes_from_queue_sum">削除した時に、自動的にキューからエピソードを削除します</string>
     <string name="pref_filter_feed_title">購読フィルター</string>
     <string name="pref_filter_feed_sum">ナビゲーションドロワーと購読画面で表示される購読をフィルター処理</string>
-    <string name="subscriptions_are_filtered">購読はフィルター処理されています。</string>
     <string name="subscriptions_counter_greater_zero">カウンターが 1 以上</string>
     <string name="auto_downloaded">自動DL</string>
     <string name="not_auto_downloaded">Not自動DL</string>

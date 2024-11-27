@@ -15,7 +15,7 @@
     <string name="open_autodownload_settings">Ouvrir les préférences</string>
     <string name="downloads_log_label">Journal des téléchargements</string>
     <string name="subscriptions_label">Abonnements</string>
-    <string name="subscriptions_list_label">Liste des abonnements</string>
+    <string name="subscriptions_list_label">Liste des abonnements (volet uniquement)</string>
     <string name="cancel_download_label">Annuler le téléchargement</string>
     <string name="playback_history_label">Journal de lecture</string>
     <string name="episode_cache_full_title">L\'emplacement pour stocker les épisodes est plein</string>
@@ -496,7 +496,6 @@
     <string name="pref_delete_removes_from_queue_sum">Retirer de la liste de lecture un épisode quand son fichier est supprimé</string>
     <string name="pref_filter_feed_title">Filtre des abonnements</string>
     <string name="pref_filter_feed_sum">Filtrer les abonnements dans le volet de navigation et dans l\'écran des abonnements</string>
-    <string name="subscriptions_are_filtered">Les abonnements sont filtrés.</string>
     <string name="subscriptions_counter_greater_zero">Compteur supérieur à zéro</string>
     <string name="auto_downloaded">Avec téléchargement automatique</string>
     <string name="not_auto_downloaded">Sans téléchargement automatique</string>
@@ -698,7 +697,7 @@
     <string name="keep_updated_summary">Inclure ce podcast lors de la mise à jour des podcasts</string>
     <string name="auto_download_disabled_globally">Le téléchargement automatique n\'est pas activé dans les préférences</string>
     <string name="statistics_expected_next_episode_any_day">Imminent, à tout moment</string>
-    <string name="statistics_expected_next_episode_unknown">Inconnu, pas d\'estimation</string>
+    <string name="statistics_expected_next_episode_unknown">Inconnu</string>
     <string name="edit_url_menu">Modifier le lien</string>
     <string name="edit_url_confirmation_msg">Modifier le lien RSS peut facilement corrompre l\'état de lecture et la liste des épisodes du podcast. Il est recommandé de NE PAS LE CHANGER et AUCUNE AIDE ne pourra être fournie si quelque chose se passe mal. Cette action ne peut pas être annulée. L\'abonnement NE POURRA PAS ÊTRE RÉPARÉ en remettant juste l\'ancien lien. Il est fortement conseillé de CRÉER UNE SAUVEGARDE avant de continuer.</string>
     <!--Podcast release schedules-->
@@ -805,12 +804,12 @@
     <string name="statistics_years_barchart_description">Temps de lecture par mois</string>
     <string name="feed_delete_confirmation_msg_batch">Confirmer que vous voulez supprimer les podcasts sélectionnés, TOUS leurs épisodes (y compris ceux téléchargés), leurs historiques de lecture et leurs statistiques.</string>
     <string name="pref_nav_drawer_items_title">Personnaliser la navigation</string>
-    <string name="pref_nav_drawer_items_sum">Choisir les éléments qui apparaissent dans le volet de navigation ou pour la navigation en bas</string>
+    <string name="pref_nav_drawer_items_sum">Choisir les éléments du volet de navigation ou pour la navigation en bas</string>
     <string name="statistics_view_all">Tous les podcasts »</string>
     <string name="section_shown">Affiché</string>
     <string name="delete_downloads_played">Supprimé ceux lus</string>
     <string name="bottom_navigation">Navigation en bas</string>
-    <string name="statistics_episodes_played">lu(s)</string>
+    <string name="statistics_episodes_played">d\'écoute</string>
     <string name="statistics_release_schedule">rythme de sortie</string>
     <string name="home_no_recent_unplayed_episodes_text">Vous avez déjà lu tous les épisodes récents. Pas de quoi être surpris ! ;-)</string>
     <string name="home_continue_empty_text">Vous pouvez ajouter des épisodes en les téléchargeant ou par un appui long sur eux pour choisir \"Ajouter à la liste de lecture\".</string>
@@ -830,9 +829,9 @@
     <string name="sync_status_wait_for_downloads">En attente de la mise à jour des abonnements…</string>
     <string name="statistics_episodes_downloaded">sur l\'appareil</string>
     <string name="nextcloud_login_error_generic">Impossible de se connecter à votre Nextcloud.\n\n- Vérifiez votre connexion réseau.\n- Confirmez que vous utilisez la bonne adresse de serveur.\n- Assurez-vous que le plugin gpoddersync pour Nextcloud est bien installé.</string>
-    <string name="statistics_episodes_started">lancé(s)</string>
+    <string name="statistics_episodes_started">commencés</string>
     <string name="statistics_episodes_total">total</string>
-    <string name="statistics_episodes_space">espace occupé</string>
+    <string name="statistics_episodes_space">d\'espace occupé</string>
     <string name="statistics_release_next">prochain épisode (estimation)</string>
     <string name="discover_more">En découvrir plus »</string>
     <string name="episode_download_failed">Échec de téléchargement de l\'épisode</string>

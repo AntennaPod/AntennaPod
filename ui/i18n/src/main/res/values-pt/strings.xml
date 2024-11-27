@@ -306,7 +306,7 @@
     <string name="confirm_mobile_streaming_button_always">Sempre</string>
     <string name="confirm_mobile_streaming_button_once">Uma vez</string>
     <!--Mediaplayer messages-->
-  <string name="playback_error_generic"><![CDATA[Não foi possível reproduzir o ficheiro.\n\n- Experimente eliminar o episódio e descarregar novamente.\n- Verifique a sua ligação de rede e certifique-se se existe uma VPN ou página de acesso que esteja a impedir a emissão.\n- Toque longo no episódio e aceda ao \"Endereço multimédia\" no navegador web, para se certificar de que o episódio pode ser reproduzido. Se nada disto funcionar, contacte os criadores do podcast.]]></string>
+  <string name="playback_error_generic">Não foi possível reproduzir o ficheiro.\n\n- Experimente eliminar o episódio e descarregar novamente.\n- Verifique a sua ligação de rede e certifique-se se existe uma VPN ou página de acesso que esteja a impedir a emissão.\n- Toque longo no episódio e aceda ao \\\"Endereço multimédia\\\" no navegador web, para se certificar de que o episódio pode ser reproduzido.\n\nSe nada disto funcionar, contacte os criadores do podcast.</string>
     <string name="no_media_playing_label">Nada em reprodução</string>
     <string name="unknown_media_key">Tecla multimédia desconhecida: %1$d</string>
     <string name="error_file_not_found">Ficheiro não encontrado</string>
@@ -347,7 +347,7 @@
     <string name="no_history_label">Assim que reproduzir um episódio, será mostrado aqui.</string>
     <string name="no_all_episodes_head_label">Não existem episódios</string>
     <string name="no_all_episodes_label">Assim que adicionar um podcast, os episódios serão mostrados aqui.</string>
-    <string name="no_all_episodes_filtered_label">Tente remover o filtro para ver mais episódios</string>
+    <string name="no_all_episodes_filtered_label">Tente remover o filtro para ver mais episódios.</string>
     <string name="no_inbox_head_label">Não existem episódios na caixa de entrada</string>
     <string name="no_inbox_label">Assim que um episódio chegar, será mostrado aqui. Depois, poderá decidir se tem ou não interesse na sua reprodução.</string>
     <string name="no_subscriptions_head_label">Não tem subscrições</string>
@@ -359,7 +359,7 @@
     <string name="automation">Automatização</string>
     <string name="download_pref_details">Detalhes</string>
     <string name="import_export_pref">Importar/Exportar</string>
-    <string name="import_export_search_keywords">backup, restauro</string>
+    <string name="import_export_search_keywords">backup, restauro, segurança, importação, exportação</string>
     <string name="theming">Tema</string>
     <string name="external_elements">Elementos externos</string>
     <string name="interruptions">Interrupções</string>
@@ -368,8 +368,8 @@
     <string name="preference_search_hint">Pesquisar…</string>
     <string name="preference_search_no_results">Não existem resultados</string>
     <string name="preference_search_clear_history">Limpar histórico</string>
-    <string name="pref_episode_cleanup_title">Eliminar antes de uma transferência automática</string>
-    <string name="pref_episode_cleanup_summary">Episódios que são elegíveis para remoção se a Transferência automática precisar de espaço para novos episódios</string>
+    <string name="pref_episode_cleanup_title">Eliminar antes de uma descarga automática</string>
+    <string name="pref_episode_cleanup_summary">Episódios que são elegíveis para remoção se a Descarga automática precisar de espaço para novos episódios</string>
     <string name="pref_pauseOnDisconnect_sum">Pausa na reprodução ao desligar os auscultadores ou o Bluetooth</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Continuar reprodução ao ligar os auscultadores</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Continuar reprodução ao estabelecer a ligação Bluetooth</string>
@@ -385,10 +385,10 @@
     <string name="pref_auto_delete_playback_sum">Eliminar episódio ao terminar a reprodução</string>
     <string name="pref_auto_delete_playback_title">Eliminar após reprodução</string>
     <string name="pref_auto_delete_title">Eliminação automática</string>
-    <string name="pref_auto_delete_sum">Eliminar episódios depois de reproduzir ou quando a transferência automática necessitar de espaço</string>
+    <string name="pref_auto_delete_sum">Eliminar episódios depois de reproduzir ou se for necessário para descarregar ficheiros</string>
     <string name="pref_auto_local_delete_title">Eliminação automática para pastas locais</string>
     <string name="pref_auto_local_delete_sum">Incluir pastas locais na funcionalidade Eliminação automática</string>
-    <string name="pref_auto_local_delete_dialog_body">Tem a certeza de que pretende ativar a eliminação automática? Para pastas locais, esta opção elimina os episódios da aplicação, do dispositivo e não será possível uma nova transferência. Ativar eliminação automática?</string>
+    <string name="pref_auto_local_delete_dialog_body">Para pastas locais, esta opção elimina os episódios da aplicação, do dispositivo e não será possível a recuperação. Tem a certeza de que pretende ativar a eliminação automática?</string>
     <string name="pref_smart_mark_as_played_sum">Marcar episódio como reproduzido mesmo que restem alguns segundos de reprodução</string>
     <string name="pref_smart_mark_as_played_title">Marcar como reproduzido (inteligente)</string>
     <string name="pref_skip_keeps_episodes_sum">Manter episódios mesmo se tiverem sido ignorados</string>
@@ -397,8 +397,8 @@
     <string name="pref_favorite_keeps_episodes_title">Manter episódios favoritos</string>
     <string name="playback_pref">Reprodução</string>
     <string name="playback_pref_sum">Controlo com auscultador, intervalos e fila</string>
-    <string name="downloads_pref">Transferências</string>
-    <string name="downloads_pref_sum">Intervalo de atualização, dados móveis, transferências e eliminação automática</string>
+    <string name="downloads_pref">Descargas</string>
+    <string name="downloads_pref_sum">Intervalo de atualização, dados móveis, descargas e eliminação automática</string>
     <string name="feed_refresh_title">Atualizar podcasts</string>
     <string name="feed_refresh_sum">Defina um intervalo para que AntennaPod procure episódios automaticamente</string>
     <string name="feed_refresh_never">Nunca</string>
@@ -414,14 +414,14 @@
     <string name="pref_unpauseOnHeadsetReconnect_title">Auscultadores inseridos</string>
     <string name="pref_unpauseOnBluetoothReconnect_title">Ligação bluetooth</string>
     <string name="pref_stream_over_download_title">Preferir emissão</string>
-    <string name="pref_stream_over_download_sum">Mostrar botão de emissão em vez do botão para transferir</string>
+    <string name="pref_stream_over_download_sum">Mostrar botão de emissão em vez do botão para descarregar</string>
     <string name="pref_mobileUpdate_title">Dados móveis</string>
     <string name="pref_mobileUpdate_sum">Selecione o que pode ser permitido através de dados móveis</string>
     <string name="pref_mobileUpdate_refresh">Atualização de podcasts</string>
-    <string name="pref_mobileUpdate_images">Transferência de imagens</string>
-    <string name="pref_mobileUpdate_auto_download">Transferência automática</string>
-    <string name="pref_mobileUpdate_episode_download">Transferência de episódios</string>
-    <string name="pref_mobileUpdate_streaming">Reprodução</string>
+    <string name="pref_mobileUpdate_images">Descarga de imagens</string>
+    <string name="pref_mobileUpdate_auto_download">Descarga automática</string>
+    <string name="pref_mobileUpdate_episode_download">Descarga de episódios</string>
+    <string name="pref_mobileUpdate_streaming">Emissão</string>
     <string name="user_interface_label">Interface</string>
     <string name="user_interface_sum">Aparência, subscrições e ecrã de bloqueio</string>
     <string name="pref_black_theme_title">Preto total</string>
@@ -431,13 +431,13 @@
     <string name="pref_nav_drawer_feed_order_title">Ordem de subscrições</string>
     <string name="pref_nav_drawer_feed_order_sum">Alterar ordem das subscrições</string>
     <string name="pref_nav_drawer_feed_counter_title">Contador de subscrições</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Alterar informação mostrada no contador de subscrições. Também afeta as subscrições se \'Ordem de subscrição\' estiver definida como \'Contador\'</string>
-    <string name="pref_automatic_download_title">Transferência automática</string>
-    <string name="pref_automatic_download_sum">Configurar transferência automática de episódios</string>
-    <string name="pref_automatic_download_on_battery_title">Transferir se não estiver a carregar</string>
-    <string name="pref_automatic_download_on_battery_sum">Permitir transferência automática se a bateria não estiver a ser carregada</string>
+    <string name="pref_nav_drawer_feed_counter_sum">Alterar informação mostrada no contador de subscrições. Também afeta as subscrições se a \'Ordem de subscrição\' estiver definida como \'Contador\'</string>
+    <string name="pref_automatic_download_title">Descarga automática</string>
+    <string name="pref_automatic_download_sum">Configurar descarga automática de episódios</string>
+    <string name="pref_automatic_download_on_battery_title">Descarregar se não estiver a carregar</string>
+    <string name="pref_automatic_download_on_battery_sum">Permitir descarga automática se a bateria não estiver a ser carregada</string>
     <string name="pref_episode_cache_title">Limite de episódios</string>
-    <string name="pref_episode_cache_summary">A transferência automática será colocada em pausa se este número for atingido</string>
+    <string name="pref_episode_cache_summary">A descarga automática será colocada em pausa se este número for atingido</string>
     <string name="pref_episode_cover_title">Utilizar imagem do episódio</string>
     <string name="pref_episode_cover_summary">Utilizar imagem do episódio, se disponível. Se desativar esta opção, será utilizada a imagem do podcast.</string>
     <string name="pref_show_remain_time_title">Mostrar tempo restante</string>
@@ -496,7 +496,6 @@
     <string name="pref_delete_removes_from_queue_sum">Remover episódio da fila se for eliminado do dispositivo</string>
     <string name="pref_filter_feed_title">Filtro de subscrições</string>
     <string name="pref_filter_feed_sum">Filtrar subscrições no menu de navegação e no ecrã de subscrições</string>
-    <string name="subscriptions_are_filtered">Subscrições filtradas</string>
     <string name="subscriptions_counter_greater_zero">Contagem maior do que zero</string>
     <string name="auto_downloaded">Transferido automaticamente</string>
     <string name="not_auto_downloaded">Não transferido automaticamente</string>
@@ -828,11 +827,12 @@
     <string name="statistics_release_next">próximo episódio (estimativa)</string>
     <string name="feed_delete_confirmation_msg">Confirma que pretende remover o podcast \"%1$s\"? Irá eliminar todos os episódios (incluindo os descarregados), histórico de reprodução e as suas estatísticas.</string>
     <string name="feed_delete_confirmation_local_msg">Confirma que pretende remover o podcast \"%1$s\", o seu histórico de reprodução e as suas estatísticas? Os ficheiros guardados na pasta não serão eliminados.</string>
-    <string name="bottom_navigation_summary">Funcionalidade Beta: aceda aos ecrãs mais importantes de qualquer lado com apenas um toque</string>
+    <string name="bottom_navigation_summary">Funcionalidade Beta: aceda aos ecrãs mais importantes em qualquer lado com apenas um toque</string>
     <string name="bottom_navigation">Navegação em baixo</string>
     <string name="statistics_episodes_total">total</string>
     <string name="statistics_episodes_played">reproduzido</string>
     <string name="statistics_episodes_space">espaço ocupado</string>
     <string name="statistics_years_barchart_description">Tempo de reprodução (por mês)</string>
     <string name="statistics_episodes_downloaded">descarregado</string>
+    <string name="episode_download_failed">Falha ao descarregar o episódio</string>
 </resources>

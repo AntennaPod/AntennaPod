@@ -510,7 +510,6 @@
     <string name="pref_delete_removes_from_queue_sum">Автоматически убирать выпуск из очереди при его удалении</string>
     <string name="pref_filter_feed_title">Фильтр подписок</string>
     <string name="pref_filter_feed_sum">Отфильтруйте подписки на панели навигации и на экране подписок</string>
-    <string name="subscriptions_are_filtered">Подписки отфильтрованы.</string>
     <string name="subscriptions_counter_greater_zero">Ненулевой счётчик подписок</string>
     <string name="auto_downloaded">С автозагрузкой</string>
     <string name="not_auto_downloaded">Без автозагрузки</string>

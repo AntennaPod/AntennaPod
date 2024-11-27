@@ -290,7 +290,7 @@
     <string name="confirm_mobile_streaming_button_always">Alltid</string>
     <string name="confirm_mobile_streaming_button_once">En gång</string>
     <!--Mediaplayer messages-->
-  <string name="playback_error_generic"><![CDATA[Mediefilen kunde inte spelas upp.\n\n- Försök att ta bort och ladda ner avsnittet igen.\n- Kontrollera din nätverksanslutning och se till att ingen VPN- eller inloggningssida blockerar åtkomst.\n- Försök att trycka länge och dela \"Mediaadressen\" till din webbläsare för att se om den kan spelas där. Om inte, kontakta podcastskaparna.]]></string>
+  <string name="playback_error_generic">Mediafilen kunde inte spelas upp.\n\n- Testa att ta bort och ladda ner avsnittet igen.\n- Kontrollera din nätverksanslutning och se till att ingen VPN eller inloggningssida blockerar åtkomst.\n- Försök att trycka länge och dela \"Mediaadressen\" till din webbläsare för att se om den kan spelas där. Om inte, kontakta poddskaparna.</string>
     <string name="no_media_playing_label">Inget media spelar</string>
     <string name="unknown_media_key">AntennaPod - Okänd mediaknapp: %1$d</string>
     <string name="error_file_not_found">Filen hittades inte</string>
@@ -480,7 +480,6 @@
     <string name="pref_delete_removes_from_queue_sum">Ta automatiskt bort ett avsnitt från kön när det raderas</string>
     <string name="pref_filter_feed_title">Prenumerationsfilter</string>
     <string name="pref_filter_feed_sum">Filtrera dina prenumerationer i navigeringsmenyn och på prenumerationsskärmen</string>
-    <string name="subscriptions_are_filtered">Prenumerationer är filtrerade.</string>
     <string name="subscriptions_counter_greater_zero">Räknare högre än noll</string>
     <string name="auto_downloaded">Automatiskt nedladdad</string>
     <string name="not_auto_downloaded">Manuellt nedladdad</string>
@@ -614,7 +613,7 @@
     <string name="synchronization_full_sync_title">Tvinga full synkronisering</string>
     <string name="synchronization_force_sync_summary">Synkronisera om alla prenumerationer och avnittsstatus</string>
     <string name="synchronization_logout">Logga ut</string>
-    <string name="synchronization_login_status"><![CDATA[Inloggad som <i>%1$s</i> på <i>%2$s</i>. <br/><br/> Du kan välja en ny synkroniseringsleverantör när du har loggat ut]]></string>
+    <string name="synchronization_login_status">Inloggad som %1$s på %2$s\n\nDu kan välja en ny synkroniseringsleverantör när du har loggat ut.</string>
     <string name="pref_synchronization_logout_toast">Utloggning lyckades</string>
     <string name="gpodnetsync_error_title">gpodder.net synkroniseringsfel</string>
     <string name="gpodnetsync_error_descr">"Ett fel uppstod under synkronisering: "</string>
@@ -809,9 +808,10 @@
     <string name="pref_nav_drawer_items_sum">Ändra vilka objekt som visas i navigeringslådan eller nedersta navigeringen</string>
     <string name="sync_status_wait_for_downloads">Väntar på uppdatering av prenumerationer…</string>
     <string name="statistics_years_barchart_description">Spelad tid per månad</string>
-    <string name="nextcloud_login_error_generic"><![CDATA[Kan inte logga in på din Nextcloud.\n\n- Kontrollera nätverksanslutninge.\n- Bekräfta att du använder rätt serveradress.\n- Se till att insticksprogrammet gpoddersync Nextcloud är installerat.]]></string>
+    <string name="nextcloud_login_error_generic">Kan inte logga in på din Nextcloud.\n\nKontrollera nätverksanslutningen.\nBekräfta att du använder rätt serveradress.\nSe till att insticksprogrammet gpoddersync Nextcloud är installerat.</string>
     <string name="statistics_episodes_total">total</string>
     <string name="statistics_release_schedule">släppschema</string>
     <string name="statistics_view_all">Alla podcasts »</string>
     <string name="discover_more">Upptäck mer »</string>
+    <string name="episode_download_failed">Nedladdning av avsnitt misslyckades</string>
 </resources>

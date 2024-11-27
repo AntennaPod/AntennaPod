@@ -13,18 +13,18 @@
     <string name="settings_label">Axustes</string>
     <string name="downloads_label">Descargas</string>
     <string name="open_autodownload_settings">Ir aos axustes</string>
-    <string name="downloads_log_label">Descargar rexistro</string>
+    <string name="downloads_log_label">Rexistro de descargas</string>
     <string name="subscriptions_label">Subscricións</string>
     <string name="subscriptions_list_label">Lista de subscricións</string>
     <string name="cancel_download_label">Cancelar descarga</string>
     <string name="playback_history_label">Historial de reprodución</string>
     <string name="episode_cache_full_title">Caché de episodios chea</string>
-    <string name="episode_cache_full_message">Acadouse o límite de espazo na caché de episodios. Podes incrementalo nos Axustes do tamaño da caché.</string>
+    <string name="episode_cache_full_message">Acadouse o límite de espazo na caché de episodios. Podes incrementalo nos Axustes.</string>
     <string name="years_statistics_label">Anos</string>
     <string name="notification_pref_fragment">Notificacións</string>
     <string name="current_playing_episode">Actual</string>
     <!--Google Assistant-->
-  <string name="app_action_not_found">Non se atopa \"%1$s\"</string>
+  <string name="app_action_not_found">Non se atopou \"%1$s\"</string>
     <!--SwipeActions-->
   <string name="swipeactions_label">Accións ao desprazar</string>
     <string name="swipeactions_summary">Elixe o que acontecerá cando desprazas sobre un episodio na lista</string>
@@ -59,7 +59,7 @@
     <!--Main activity-->
   <string name="drawer_open">Abrir menú</string>
     <string name="drawer_close">Pechar menú</string>
-    <string name="drawer_preferences">Preferencias do panel</string>
+    <string name="drawer_preferences">Preferencias do caixón</string>
     <string name="drawer_feed_order_unplayed_episodes">Ordenar polo contador</string>
     <string name="drawer_feed_order_alphabetical">Ordenar alfabeticamente</string>
     <string name="drawer_feed_order_last_update">Ordenar por data de publicación</string>
@@ -71,8 +71,8 @@
     <string name="drawer_feed_counter_none">Ningún</string>
     <!--Bug report activity-->
   <string name="log_file_share_exception">Non se atopan apps compatibles</string>
-    <string name="export_logs_menu_title">Exportar rexistro detallado</string>
-    <string name="confirm_export_log_dialog_message">O rexistro detallado podería conter información sensible, como a túa lista de subscricións</string>
+    <string name="export_logs_menu_title">Exportar rexistros detallados</string>
+    <string name="confirm_export_log_dialog_message">Os rexistros detallados poden conter información sensible, como a túa lista de subscricións</string>
     <!--Webview actions-->
   <string name="open_in_browser_label">Abrir no navegador</string>
     <string name="copy_url_label">Copiar URL</string>
@@ -93,8 +93,8 @@
     <string name="url_label">URL</string>
     <string name="support_funding_label">Axuda</string>
     <string name="support_podcast">Axuda a este podcast</string>
-    <string name="error_label">Fallo</string>
-    <string name="error_msg_prefix">Produciuse un fallo:</string>
+    <string name="error_label">Erro</string>
+    <string name="error_msg_prefix">Produciuse un erro:</string>
     <string name="refresh_label">Actualizar</string>
     <string name="chapters_label">Capítulos</string>
     <string name="no_chapters_label">Sen capítulos</string>
@@ -138,17 +138,17 @@
         <item quantity="one">%d episodio</item>
         <item quantity="other">%d episodios</item>
     </plurals>
-    <string name="episode_notification">Notificación de episodios</string>
-    <string name="episode_notification_summary">Mostra unha notificación cando se publica un novo episodio.</string>
+    <string name="episode_notification">Notificacións de episodios</string>
+    <string name="episode_notification_summary">Mostrar unha notificación cando se publique un episodio novo.</string>
     <plurals name="new_episode_notification_message">
-        <item quantity="one">%2$s ten un novo episodio</item>
-        <item quantity="other">%2$s ten %1$d novos episodios</item>
+        <item quantity="one">%2$s ten un episodio novo</item>
+        <item quantity="other">%2$s ten %1$d episodios novos</item>
     </plurals>
     <plurals name="new_episode_notification_title">
-        <item quantity="one">Novo episodio</item>
-        <item quantity="other">Novos episodios</item>
+        <item quantity="one">Episodio novo</item>
+        <item quantity="other">Episodios novos</item>
     </plurals>
-    <string name="new_episode_notification_group_text">As túas subscricións teñen novos episodios.</string>
+    <string name="new_episode_notification_group_text">As túas subscricións teñen episodios novos.</string>
     <!--Actions on feeds-->
   <string name="remove_all_inbox_label">Limpar lista de novidades</string>
     <string name="removed_all_inbox_msg">Baleirouse a lista de novidades</string>
@@ -290,7 +290,7 @@
     <string name="confirm_mobile_streaming_button_always">Sempre</string>
     <string name="confirm_mobile_streaming_button_once">Unha vez</string>
     <!--Mediaplayer messages-->
-  <string name="playback_error_generic"><![CDATA[Non se puido reproducir o ficheiro multimedia.\n\n- Intenta eliminar e volver a descargar o episodio.\n- Comproba a conexión á rede, e comproba que unha VPN ou páxina de acceso non bloquea a conexión.\n- Copia o enderezo mantendo premido e comparte \"Enderezo multimedia\" co navegador para ver se pode ser reproducido. Se non é así, contacta cos autores.]]></string>
+  <string name="playback_error_generic">Non se puido reproducir o ficheiro multimedia.\n\n- Intenta eliminar e volver a descargar o episodio\n- Comproba a conexión á rede, e comproba que unha VPN ou páxina de acceso non bloquea a conexión.\n- Copia o enderezo mantendo premido e comparte \"Enderezo multimedia\" co navegador para ver se pode ser reproducido. Se non é así, contacta cos autores.</string>
     <string name="no_media_playing_label">Sen reprodución</string>
     <string name="unknown_media_key">AntennaPod - chave de medios descoñecida: %1$d</string>
     <string name="error_file_not_found">Non se atopa o ficheiro</string>
@@ -480,7 +480,6 @@
     <string name="pref_delete_removes_from_queue_sum">Eliminar automáticamente un episodio da cola cando se borra</string>
     <string name="pref_filter_feed_title">Filtro da subscrición</string>
     <string name="pref_filter_feed_sum">Filtra as subscricións no panel de navegación e pantalla de subscricións</string>
-    <string name="subscriptions_are_filtered">As subscricións están filtradas.</string>
     <string name="subscriptions_counter_greater_zero">Conta maior que cero</string>
     <string name="auto_downloaded">Descargado automáticamente</string>
     <string name="not_auto_downloaded">Non descargado automáticamente</string>
@@ -614,7 +613,7 @@
     <string name="synchronization_full_sync_title">Forzar sincronización completa</string>
     <string name="synchronization_force_sync_summary">Volve a sincronizar tódalas subscricións e estado dos episodios</string>
     <string name="synchronization_logout">Desconectar</string>
-    <string name="synchronization_login_status"><![CDATA[Accedeches como <i>%1$s</i> en <i>%2$s</i>. <br/><br/>Podes cambiar de provedor de sincronización unha vez te desconectes do actual]]></string>
+    <string name="synchronization_login_status">Accedeches como %1$s en %2$s.\n\nPodes cambiar de provedor de sincronización unha vez te desconectes do actual.</string>
     <string name="pref_synchronization_logout_toast">Desconexión correcta</string>
     <string name="gpodnetsync_error_title">fallo na sincronización con gpodder.net</string>
     <string name="gpodnetsync_error_descr">"Houbo un fallo durante a sincronización: "</string>
@@ -805,7 +804,7 @@
     <string name="home_no_recent_unplayed_episodes_text">Xa escoitaches todos os episodios recentes. Nada por aquí para sorprenderte ;)</string>
     <string name="home_continue_empty_text">Podes engadir episodios descargándoos ou cunha pulsación longa sobre eles e elixir \"Engadir á cola\".</string>
     <string name="feed_delete_confirmation_msg_batch">Confirma que queres retirar os podcasts seleccionados, TODOS os seus episodios (incluíndo os episodios descargados, historial de reprodución e a súas estatísticas.</string>
-    <string name="feed_delete_confirmation_msg">Confirma que queres eliminar o podcast \"%1$s\", TODOS os seus episodios (incluídos os descargados), historial de reprodución e as estatísticas.</string>
+    <string name="feed_delete_confirmation_msg">Confirma que queres eliminar o podcast \"%1$s\", TODOS os seus episodios (incluídos os descargados), historial de reprodución e as súas estatísticas.</string>
     <string name="feed_delete_confirmation_local_msg">Confirma que queres retirar o podcast \"%1$s\", o seu historial de reprodución e estatísticas. Os ficheiros no cartafol de base local non serán eliminados.</string>
     <string name="mobile_download_notice">Descargar usando datos do móbil durante os próximos %d minutos</string>
     <string name="null_value_podcast_error">A ligazón indicada non contén un URL de podcast válido. Comproba a ligazón e volve a intentalo, ou busca o podcast de xeito manual.</string>
@@ -813,5 +812,6 @@
     <string name="pref_nav_drawer_items_title">Personalizar a navegación</string>
     <string name="pref_nav_drawer_items_sum">Cambia os elementos que aparecen na caixa de navegación ou na barra inferior</string>
     <string name="discover_more">Achar mais »</string>
-    <string name="nextcloud_login_error_generic"><![CDATA[Non se puido acceder ao teu Nextcloud.\n\n- Comproba a conexión á rede.\n- Confirma que é o enderezo correcto do servidor.\n- Verifica que está instalado o complemento Nextcloud gpoddersync.]]></string>
+    <string name="nextcloud_login_error_generic">Non se puido acceder ao teu Nextcloud.\n\n- Comproba a conexión á rede.\n- Confirma que é o enderezo correcto do servidor.\n- Verifica que está instalado o complemento Nextcloud gpoddersync.</string>
+    <string name="episode_download_failed">Erro ao descargar o episodio</string>
 </resources>

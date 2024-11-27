@@ -465,7 +465,6 @@
     <string name="pref_delete_removes_from_queue_sum">Samodejna odstranitev epizode iz čakalne vrste, ko je izbrisana</string>
     <string name="pref_filter_feed_title">Filter naročnin</string>
     <string name="pref_filter_feed_sum">Filtrirajte svoje naročnine v navigacijskem predalniku in na zaslonu z naročninami</string>
-    <string name="subscriptions_are_filtered">Naročnine so filtrirane.</string>
     <string name="subscriptions_counter_greater_zero">Števec je večji od nič</string>
     <string name="auto_downloaded">Samodejni prenos</string>
     <string name="not_auto_downloaded">Ni samodejno preneseno</string>

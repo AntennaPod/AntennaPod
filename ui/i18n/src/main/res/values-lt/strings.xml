@@ -285,7 +285,6 @@
     <string name="pref_no_browser_found">Nerasta jokia interneto naršyklė.</string>
     <string name="pref_enqueue_downloaded_summary">Parsiuntus epizodus, pridėti juos į eilę</string>
     <string name="behavior">Elgsena</string>
-    <string name="subscriptions_are_filtered">Yra taikomas prenumeratų filtras.</string>
     <string name="subscriptions_counter_greater_zero">Skaitiklio reikšmė didesnė už nulį</string>
     <string name="auto_downloaded">Atsiųstas automatiškai</string>
     <string name="not_auto_downloaded">Atsiųstas ne automatiškai</string>
