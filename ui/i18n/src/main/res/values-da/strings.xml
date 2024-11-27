@@ -290,7 +290,7 @@
     <string name="confirm_mobile_streaming_button_always">Altid</string>
     <string name="confirm_mobile_streaming_button_once">Én gang</string>
     <!--Mediaplayer messages-->
-  <string name="playback_error_generic">"Mediefilen kunne ikke afspilles.\n\n-  Prøv at slette afsnittet og hente det igen\n- Tjek din netværksforbindelse, og sørg for, at ingen VPN eller login-side blokerer for adgangen.\n- Prøv at trykke længe på og dele \"Medieadressen\" med din webbrowser for at se, om den kan afspilles der. Hvis ikke, så kontakt podcastens producenter."</string>
+  <string name="playback_error_generic">Mediefilen kunne ikke afspilles.\n\n- Prøv at slette og hente afsnittet igen.\n- Tjek din netværksforbindelse, og sørg for, at ingen VPN eller login-side blokerer for adgangen.\n- Prøv at trykke længe på og dele \"Medieadressen\" med din webbrowser for at se, om den kan afspilles der. Hvis ikke, så kontakt podcastens producenter.</string>
     <string name="no_media_playing_label">Ingen medier afspiller</string>
     <string name="unknown_media_key">AntennaPod - Ukendt medienøgle: %1$d</string>
     <string name="error_file_not_found">Fil ikke fundet</string>
@@ -480,7 +480,6 @@
     <string name="pref_delete_removes_from_queue_sum">Fjern automatisk et afsnit fra køen, når det slettes</string>
     <string name="pref_filter_feed_title">Abonnementsfilter</string>
     <string name="pref_filter_feed_sum">Filtrér dine abonnementer i navigationspanelet og på abonnementsskærmen</string>
-    <string name="subscriptions_are_filtered">Abonnementer er filtreret.</string>
     <string name="subscriptions_counter_greater_zero">Tæller større end 0</string>
     <string name="auto_downloaded">Automatisk hentet</string>
     <string name="not_auto_downloaded">Ikke automatisk hentet</string>
@@ -814,4 +813,5 @@
     <string name="statistics_episodes_played">afspillet</string>
     <string name="statistics_release_next">næste afsnit (estimat)</string>
     <string name="statistics_view_all">Alle podcasts »</string>
+    <string name="episode_download_failed">Overførsel af afsnit mislykkedes</string>
 </resources>

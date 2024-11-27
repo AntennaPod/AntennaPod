@@ -496,7 +496,6 @@
     <string name="pref_delete_removes_from_queue_sum">Remove automaticamente um episódio da fila quando ele é excluído.</string>
     <string name="pref_filter_feed_title">Filtro de assinaturas</string>
     <string name="pref_filter_feed_sum">Filtra suas assinaturas no menu de navegação e na tela de assinaturas</string>
-    <string name="subscriptions_are_filtered">Assinaturas estão filtradas.</string>
     <string name="subscriptions_counter_greater_zero">Contador maior que zero</string>
     <string name="auto_downloaded">Download automático</string>
     <string name="not_auto_downloaded">Download não automático</string>

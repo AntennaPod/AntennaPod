@@ -440,7 +440,6 @@
     <string name="pref_delete_removes_from_queue_sum">에피소드를 삭제할 때 대기열에서 자동으로 제거</string>
     <string name="pref_filter_feed_title">구독 필터</string>
     <string name="pref_filter_feed_sum">네비게이션 드로어 및 구독 화면에서 내 구독 필터링</string>
-    <string name="subscriptions_are_filtered">구독 필터 적용함.</string>
     <string name="subscriptions_counter_greater_zero">0보다 큰 개수</string>
     <string name="auto_downloaded">자동 다운로드</string>
     <string name="not_auto_downloaded">자동 다운로드 아님</string>

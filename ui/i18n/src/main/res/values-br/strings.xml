@@ -467,7 +467,6 @@
     <string name="pref_delete_removes_from_queue_sum">Tennañ ur rann eus al lost ent emgefreek pa vez dilamet</string>
     <string name="pref_filter_feed_title">Sil ar c\'houmanantoù</string>
     <string name="pref_filter_feed_sum">Silañ ho koumanantoù war ar stalaf merdeiñ ha war skramm ar c\'houmanantoù</string>
-    <string name="subscriptions_are_filtered">Silet eo ar c\'houmanantoù.</string>
     <string name="subscriptions_counter_greater_zero">Konter brasoc\'h eget mann</string>
     <string name="auto_downloaded">Pellgarget ent emgefreek</string>
     <string name="not_auto_downloaded">N\'eo ket pellgarget ent emgefreek</string>

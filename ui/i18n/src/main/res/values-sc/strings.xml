@@ -480,7 +480,6 @@
     <string name="pref_delete_removes_from_queue_sum">Boga in automàticu de sa lista is episòdios cantzellados</string>
     <string name="pref_filter_feed_title">Filtru de sutiscritziones</string>
     <string name="pref_filter_feed_sum">Filtra is sutiscritziones in sa barra de navigatzione e in s\'ischermu de sutiscritziones</string>
-    <string name="subscriptions_are_filtered">Filtru ativu in is sutiscritziones</string>
     <string name="subscriptions_counter_greater_zero">Contadore prus mannu de zero</string>
     <string name="auto_downloaded">Iscarrigadu in automàticu</string>
     <string name="not_auto_downloaded">No iscarrigadu in automàticu</string>

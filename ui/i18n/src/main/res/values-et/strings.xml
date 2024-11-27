@@ -451,7 +451,6 @@
     <string name="pref_delete_removes_from_queue_sum">Saade kustutamisel eemaldatakse see järjekorrast</string>
     <string name="pref_filter_feed_title">Tellimuste filter</string>
     <string name="pref_filter_feed_sum">Filtreeri oma tellimusi navigeerimismenüüs ja tellimuste lehel</string>
-    <string name="subscriptions_are_filtered">Tellimused on filtreeritud.</string>
     <string name="subscriptions_counter_greater_zero">Loendur on suurem kui null</string>
     <string name="auto_downloaded">Automaatselt alla laaditud</string>
     <string name="not_auto_downloaded">Pole automaatselt alla laaditud</string>

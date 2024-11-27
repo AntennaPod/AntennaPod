@@ -480,7 +480,6 @@
     <string name="pref_delete_removes_from_queue_sum">Eliminar automàticament un episodi de la cua quan s\'esborri.</string>
     <string name="pref_filter_feed_title">Filtre de subscripcions</string>
     <string name="pref_filter_feed_sum">Filtreu les vostres subscripcions al tauler de navegació i a la pantalla de subscripcions</string>
-    <string name="subscriptions_are_filtered">Les subscripcions estan filtrades.</string>
     <string name="subscriptions_counter_greater_zero">Comptador superior a zero</string>
     <string name="auto_downloaded">Auto descarregat</string>
     <string name="not_auto_downloaded">No auto descarregat</string>

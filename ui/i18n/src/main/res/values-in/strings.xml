@@ -339,7 +339,6 @@
     <string name="behavior">Perilaku</string>
     <string name="remember_last_page">Ingat halaman terakhir</string>
     <string name="pref_delete_removes_from_queue_title">Hapus saat disingkirkan dari antrean</string>
-    <string name="subscriptions_are_filtered">Langganan difilter.</string>
     <string name="subscriptions_counter_greater_zero">Konter lebih dari nol</string>
     <string name="auto_downloaded">Otomatis diunduh</string>
     <string name="not_auto_downloaded">Tidak diunduh otomatis</string>

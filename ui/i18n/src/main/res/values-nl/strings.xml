@@ -15,7 +15,7 @@
     <string name="open_autodownload_settings">Instellingen openen</string>
     <string name="downloads_log_label">Log downloaden</string>
     <string name="subscriptions_label">Abonnementen</string>
-    <string name="subscriptions_list_label">Abonnementenlijst</string>
+    <string name="subscriptions_list_label">Abonnementenlijst (alleen zijpaneel)</string>
     <string name="cancel_download_label">Download afbreken</string>
     <string name="playback_history_label">Afspeelgeschiedenis</string>
     <string name="episode_cache_full_title">Afleveringscache is vol</string>
@@ -411,7 +411,7 @@
     <string name="pref_feed_skip_intro">Eerste overslaan</string>
     <string name="pref_feed_skip_ending_toast">Laatste %d seconden overgeslagen</string>
     <string name="pref_feed_skip_intro_toast">Eerste %d seconden overgeslagen</string>
-    <string name="pref_playback_time_respects_speed_title">Pas media-info afspeelsnelheid aan</string>
+    <string name="pref_playback_time_respects_speed_title">Pas media-info aan op afspeelsnelheid</string>
     <string name="pref_playback_time_respects_speed_sum">Weergegeven positie en duur worden aangepast aan afspeelsnelheid</string>
     <string name="pref_rewind">Terugspoelduur</string>
     <string name="pref_rewind_sum">Stel het aantal seconden terugspoelen in per klik op de snel terug knop</string>
@@ -451,7 +451,6 @@
     <string name="pref_delete_removes_from_queue_sum">Automatisch uit de wachtrij wissen als de aflevering is verwijderd</string>
     <string name="pref_filter_feed_title">Abonnementsfilter</string>
     <string name="pref_filter_feed_sum">Filter de abonnementen in het menu en op het abonnementsscherm</string>
-    <string name="subscriptions_are_filtered">De abonnementen zijn gefilterd.</string>
     <string name="subscriptions_counter_greater_zero">Teller hoger dan nul</string>
     <string name="auto_downloaded">Automatisch gedownload</string>
     <string name="not_auto_downloaded">Niet automatisch gedownload</string>

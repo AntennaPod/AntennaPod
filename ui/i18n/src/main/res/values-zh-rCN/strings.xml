@@ -15,7 +15,7 @@
     <string name="open_autodownload_settings">打开设置</string>
     <string name="downloads_log_label">下载日志</string>
     <string name="subscriptions_label">订阅</string>
-    <string name="subscriptions_list_label">订阅列表</string>
+    <string name="subscriptions_list_label">订阅列表（仅侧菜单）</string>
     <string name="cancel_download_label">取消下载</string>
     <string name="playback_history_label">播放历史</string>
     <string name="episode_cache_full_title">节目缓存已满</string>
@@ -465,7 +465,6 @@
     <string name="pref_delete_removes_from_queue_sum">播客被删除后，自动从队列中删掉它</string>
     <string name="pref_filter_feed_title">订阅筛选器</string>
     <string name="pref_filter_feed_sum">在导航抽屉和订阅屏幕中过滤你的订阅</string>
-    <string name="subscriptions_are_filtered">订阅已过滤。</string>
     <string name="subscriptions_counter_greater_zero">仅显示有计数的订阅</string>
     <string name="auto_downloaded">自动下载的</string>
     <string name="not_auto_downloaded">非自动下载的</string>

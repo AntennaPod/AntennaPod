@@ -452,7 +452,6 @@
     <string name="pref_delete_removes_from_queue_sum">Törléskor az epizód automatikus eltávolítása a sorból</string>
     <string name="pref_filter_feed_title">Feliratkozások szűrője</string>
     <string name="pref_filter_feed_sum">A feliratkozások szűrése a navigációs fiókban és a feliratkozások képernyőjén</string>
-    <string name="subscriptions_are_filtered">A feliratkozások szűrtek.</string>
     <string name="subscriptions_counter_greater_zero">Nullánál nagyobb számláló</string>
     <string name="auto_downloaded">Automatikusan letöltve</string>
     <string name="not_auto_downloaded">Nem automatikusan letöltve</string>

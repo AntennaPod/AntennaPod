@@ -480,7 +480,6 @@
     <string name="pref_delete_removes_from_queue_sum">Αυτόματη αφαίρεση ενός επεισοδίου από την ουρά όταν διαγράφεται</string>
     <string name="pref_filter_feed_title">Φίλτρο συνδρομών</string>
     <string name="pref_filter_feed_sum">Φιλτράρετε τις συνδρομές σας στο συαρτάρι πλοήγησης και στην οθόνη συνδρομών</string>
-    <string name="subscriptions_are_filtered">Οι συνδρομές είναι φιλτραρισμένες.</string>
     <string name="subscriptions_counter_greater_zero">Μετρητής μεγαλύτερος του μηδενός</string>
     <string name="auto_downloaded">Κατέβηκε αυτόματα</string>
     <string name="not_auto_downloaded">Δεν κατέβηκε αυτόματα</string>
@@ -781,4 +780,9 @@
     <string name="shortcut_subscription_label">Συντόμευση συνδρομής</string>
     <string name="shortcut_select_subscription">Επιλογή συνδρομής</string>
     <string name="add_shortcut">Προσθήκη συντόμευσης</string>
+    <string name="home_no_recent_unplayed_episodes_text">Έχεις ήδη ακούσει όλα τα πρόσφατα επεισόδια. Τίποτα ενδιαφέρον εδώ ;)</string>
+    <string name="home_continue_empty_text">Μπορείς να προσθέσεις επεισόδια κατεβάζοντας τα ή πατώντας παρατεταμένα πάνω τους και επιλέγοντας \"Πρόσθήκη στην ουρά\".</string>
+    <string name="home_downloads_empty_text">Μπορείς να κατεβάσεις οποιοδήποτε επεισόδια και να το ακούσεις εκτός σύνδεσης.</string>
+    <string name="section_shown">Εμφανιζόμενα</string>
+    <string name="home_new_empty_text">Τα νέα επεισόδια θα εμφανίζονται εδώ. Μετά, μπορείς να αποφασίσεις αν ενδιαφέρεσαι για αυτά.</string>
 </resources>

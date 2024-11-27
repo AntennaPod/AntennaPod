@@ -290,7 +290,7 @@
     <string name="confirm_mobile_streaming_button_always">Mereu</string>
     <string name="confirm_mobile_streaming_button_once">O dată</string>
     <!--Mediaplayer messages-->
-  <string name="playback_error_generic"><![CDATA[Fișierul media nu a putut fi redat.\n\n- Încearcă să ștergi și să redescraci episodul.\n- Verifică conexiunea ta la internet, și asigurăte că nu există un VPN sau o pagină de autentificare ce blochează accesul.\n- Încearcă să ții apăsat și să partajezi \"adresa media\" către browserul web, pentru a vedea dacă fisierul poate fi redat acolo. În cazul în care nu se poate contactează creatorul podacstului.]]></string>
+  <string name="playback_error_generic"><![CDATA[Fișierul media nu a putut fi redat.\n\n- Încearcă să ștergi și să redescarci episodul.\n- Verifică conexiunea ta la internet și asigurăte că nu există un VPN sau o pagină de autentificare ce blochează accesul.\n- Încearcă să ții apăsat și să partajezi \"adresa media\" către browserul web, pentru a vedea dacă fisierul poate fi redat acolo. În cazul în care nu se poate contactează creatorul podacstului.]]></string>
     <string name="no_media_playing_label">Nu se ascultă nimic</string>
     <string name="unknown_media_key">AntennaPod - tastă media necunoscută: %1$d</string>
     <string name="error_file_not_found">Fișierul nu a fost găsit</string>
@@ -480,7 +480,6 @@
     <string name="pref_delete_removes_from_queue_sum">Elimină automat un episod din coada de redare când acesta este șters</string>
     <string name="pref_filter_feed_title">Filtru de abonamente</string>
     <string name="pref_filter_feed_sum">Filtrează abonamentele tale în sertarul de navigare și ecranul cu abonamente</string>
-    <string name="subscriptions_are_filtered">Abonamentele sunt filtrate</string>
     <string name="subscriptions_counter_greater_zero">Contor diferit de zero</string>
     <string name="auto_downloaded">Descărcare automată</string>
     <string name="not_auto_downloaded">Nu se descarcă automat</string>
@@ -766,4 +765,5 @@
     <string name="shortcut_subscription_label">Scurtătură pentru abonamente</string>
     <string name="shortcut_select_subscription">Selectează abonamentul</string>
     <string name="add_shortcut">Adaugă scurtătură</string>
+    <string name="home_no_recent_unplayed_episodes_text">Ai redat deja toate episoadele recente. Nimic surpinzător ;)</string>
 </resources>

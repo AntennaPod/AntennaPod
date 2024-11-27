@@ -451,7 +451,6 @@
     <string name="pref_delete_removes_from_queue_sum">जब एक एपिसोड मिटा दिया जाता है, तो स्वचालित रूप से उसे कतार से हटा दें</string>
     <string name="pref_filter_feed_title">सदस्यता फ़िल्टर</string>
     <string name="pref_filter_feed_sum">नेविगेशन ड्रायर और सदस्यता स्क्रीन में अपनी सदस्यताओं को फ़िल्टर करें</string>
-    <string name="subscriptions_are_filtered">सदस्यताएं फ़िल्टर की गई हैं।</string>
     <string name="subscriptions_counter_greater_zero">काउंटर ज़ीरो से बढ़ा</string>
     <string name="auto_downloaded">अपनेआप-डाउनलोड किया गया</string>
     <string name="not_auto_downloaded">अपनेआप-डाउनलोड नहीं किया गया</string>

@@ -465,7 +465,6 @@
     <string name="pref_delete_removes_from_queue_sum">刪除某單集後，也自動將其從待播清單中移除</string>
     <string name="pref_filter_feed_title">篩選訂閱內容</string>
     <string name="pref_filter_feed_sum">在側邊欄和訂閱頁面中篩選您的訂閱</string>
-    <string name="subscriptions_are_filtered">此為篩選過的訂閱清單。</string>
     <string name="subscriptions_counter_greater_zero">計數大於 0 的</string>
     <string name="auto_downloaded">已自動下載</string>
     <string name="not_auto_downloaded">未自動下載</string>

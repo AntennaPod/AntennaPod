@@ -305,7 +305,7 @@
     <string name="confirm_mobile_streaming_button_always">תמיד</string>
     <string name="confirm_mobile_streaming_button_once">פעם אחת</string>
     <!--Mediaplayer messages-->
-  <string name="playback_error_generic"><![CDATA[לא ניתן לנגן את המדיה.\n\n- כדאי לנסות למחוק ולהוריד מחדש את הפרק.\n- לבדוק את החיבור שלך לרשת ולוודא שאין VPN או עמוד כניסה שחוסמים את הגישה.\n- לנסות ללחוץ ארוכות ולשתף את „כתובת מדיה” עם הדפדפן שלך כדי לראות אם אפשר לנגן את זה שם. אם לא, נא ליצור קשר עם יוצרי ההסכת.]]></string>
+  <string name="playback_error_generic">לא ניתן לנגן את המדיה.\n\n- כדאי לנסות למחוק ולהוריד את הפרק מחדש.\n- לבדוק את החיבור שלך לרשת ולוודא שאין VPN או עמוד כניסה שחוסמים את הגישה.\n- לנסות ללחוץ ארוכות ולשתף את „כתובת מדיה” עם הדפדפן שלך כדי לראות אם אפשר לנגן את זה שם. אם לא, נא ליצור קשר עם יוצרי ההסכת.</string>
     <string name="no_media_playing_label">אין מדיה מתנגנת</string>
     <string name="unknown_media_key">אנטנה־פּוֹד - מפתח מדיה לא ידוע: %1$d</string>
     <string name="error_file_not_found">הקובץ לא נמצא</string>
@@ -495,7 +495,6 @@
     <string name="pref_delete_removes_from_queue_sum">הסרת פרק מהתור אוטומטית עם מחיקתו</string>
     <string name="pref_filter_feed_title">מסנן מינויים</string>
     <string name="pref_filter_feed_sum">סינון המינויים שלך במגירת הניווט ובמסך המינויים</string>
-    <string name="subscriptions_are_filtered">המינויים מסוננים.</string>
     <string name="subscriptions_counter_greater_zero">המונה גדול מאפס</string>
     <string name="auto_downloaded">התקבלו אוטומטית</string>
     <string name="not_auto_downloaded">לא התקבלו אוטומטית</string>
@@ -633,7 +632,7 @@
     <string name="synchronization_full_sync_title">אילוץ סנכרון מלא</string>
     <string name="synchronization_force_sync_summary">סנכרון המינוי ושינויי מצב הפרקים מחדש</string>
     <string name="synchronization_logout">יציאה</string>
-    <string name="synchronization_login_status"><![CDATA[נכנסת בתור <i>%1$s</i> אל <i>%2$s</i>. <br/><br/>אפשר לבחור את שרת הסנכרון שלך שוב לאחר היציאה מהחשבון]]></string>
+    <string name="synchronization_login_status">נכנסת בתור %1$s אל %2$s.\n\nאפשר לבחור את ספק הסנכרון שלך שוב לאחר היציאה מהחשבון.</string>
     <string name="pref_synchronization_logout_toast">היציאה הצליחה</string>
     <string name="gpodnetsync_error_title">שגיאת סנכרון מול gpodder.net</string>
     <string name="gpodnetsync_error_descr">"שגיאה במהלך סינכרון: "</string>
@@ -811,7 +810,7 @@
     <string name="delete_downloads_played_confirmation">נא לאשר את מחיקת על ההורדות שהושמעו.</string>
     <string name="mobile_download_notice">מתבצעת הורדה דרך חיבור נתונים סלולרי למשך %d הדקות הקרובות</string>
     <string name="statistics_release_schedule">לו״ז הוצאה לאור</string>
-    <string name="nextcloud_login_error_generic"><![CDATA[לא ניתן להיכנס ל־Nextcloud שלך.\n\n- נא לבדוק שהחיבור שלך לרשת תקין.\n- לוודא שזאת כתובת השרת הנכונה.\n- לבדוק שתוסף Nextcloud בשם gpoddersync מותקן.]]></string>
+    <string name="nextcloud_login_error_generic">לא ניתן להיכנס ל־Nextcloud שלך.\n\n- נא לבדוק שהחיבור שלך לרשת תקין.\n- לוודא שזאת כתובת השרת הנכונה.\n- לבדוק שתוסף Nextcloud בשם gpoddersync מותקן.</string>
     <string name="statistics_release_next">הפרק הבא (הערכה)</string>
     <string name="statistics_years_barchart_description">זמן השמעה בחודש</string>
     <string name="home_no_recent_unplayed_episodes_text">כבר ניגנת את כל הפרקים האחרונים. אין יותר איך להפתיע אותך ؛)</string>
@@ -834,4 +833,5 @@
     <string name="sync_status_wait_for_downloads">בהמתנה לרענון המינויים…</string>
     <string name="statistics_episodes_downloaded">ירדו</string>
     <string name="discover_more">להיחשף לעוד »</string>
+    <string name="episode_download_failed">הורדת פרק נכשלה</string>
 </resources>
