@@ -52,8 +52,7 @@
     <string name="home_new_title">Sellit ouzh an nevezinti</string>
     <string name="home_downloads_title">Merañ ar pellgargadurioù</string>
     <string name="home_welcome_title">Donemat war AntennaPod !</string>
-    <string name="home_welcome_text">N\'oc\'h ket koumanantet c\'hoazh d\'ur podskignad.
-Digorit al lañser evit ouzhpennañ unan.</string>
+    <string name="home_welcome_text">N\'oc\'h ket koumanantet c\'hoazh d\'ur podskignad. Digorit al lañser evit ouzhpennañ unan.</string>
     <string name="notification_permission_denied">Nac’het ho peus an aotre.</string>
     <string name="configure_home">Kefluniañ ar skramm degemer</string>
     <string name="section_hidden">Kuzhet</string>
@@ -217,11 +216,11 @@ Digorit al lañser evit ouzhpennañ unan.</string>
     <string name="mark_unread_label">Merkañ evel anlennet</string>
     <string name="mark_unread_label_no_media">Merkañ evel anlennet</string>
     <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d rann merket evel anlennet. </item>
-        <item quantity="two">%d rann merket evel anlennet. </item>
-        <item quantity="few">%d rann merket evel anlennet. </item>
+        <item quantity="one">%d rann merket evel anlennet.</item>
+        <item quantity="two">%d rann merket evel anlennet.</item>
+        <item quantity="few">%d rann merket evel anlennet.</item>
         <item quantity="many">%d rann merket evel anlennet.</item>
-        <item quantity="other">%d rann merket evel anlennet. </item>
+        <item quantity="other">%d rann merket evel anlennet.</item>
     </plurals>
     <string name="add_to_queue_label">Ouzhpennañ el lost</string>
     <plurals name="added_to_queue_batch_label">
@@ -273,9 +272,8 @@ Digorit al lañser evit ouzhpennañ unan.</string>
     <string name="download_error_forbidden">Reiñ ur respont a nac\'h servijer ostiz ar podskignad.</string>
     <string name="download_canceled_msg">Pellgargadur nullet</string>
     <string name="download_error_wrong_size">Kollet eo bet ar c\'hennaskañ gant ar servijer a-raok fin ar pellgargadur</string>
-    <string name="download_error_blocked">Ar bellgargadur \'zo bet paouezet dre faot un arload all (\'giz ur VPN pe un arload enep-bruderezh).  </string>
+    <string name="download_error_blocked">Ar bellgargadur \'zo bet paouezet dre faot un arload all (\'giz ur VPN pe un arload enep-bruderezh).</string>
     <string name="download_error_certificate">N\'haller ket implijout ur c\'hennask suraet. Marteze ez eus un arload all eus ho penveg (e-giz ur VPN pe ur stanker bruderezh) o stankañ ar pellgargadur, pe n\'ez a ket en-dro un dra bennak gant testenioù ar servijer.</string>
-    <string name="download_report_title">Pellgargañ echuet gant fazi(où)</string>
     <string name="download_error_io_error">Fazi lenn/skrivañ</string>
     <string name="download_error_request_error">Fazi azgoulenn</string>
     <string name="download_error_db_access">Fazi haeziñ ar stlennvon</string>
@@ -323,7 +321,7 @@ Digorit al lañser evit ouzhpennañ unan.</string>
     <string name="random">Dre zegouezh</string>
     <string name="smart_shuffle">Urzh emgefreek</string>
     <string name="size">Ment</string>
-    <string name="time_left_label">Padelezh a chom:\u0020</string>
+    <string name="time_left_label">"Padelezh a chom: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Rakreolamantoù</string>
     <string name="preset_already_exists">%1$.2fx a zo ur rakreolamant saveteet dija.</string>
@@ -352,7 +350,7 @@ Digorit al lañser evit ouzhpennañ unan.</string>
     <string name="import_export_pref">Enporzhiadur / Ezporzhiadur</string>
     <string name="import_export_search_keywords">gwarediñ, assav</string>
     <string name="external_elements">Elfennoù diavaez</string>
-    <string name="interruptions"> Diskrogoù</string>
+    <string name="interruptions">Diskrogoù</string>
     <string name="playback_control">Reoliadurioù lenn</string>
     <string name="reassign_hardware_buttons">Asinañ en-dro afelloù fizikel</string>
     <string name="preference_search_hint">Klask...</string>
@@ -419,7 +417,7 @@ Digorit al lañser evit ouzhpennañ unan.</string>
     <string name="pref_episode_cover_title">Skeudenn ar rannoù</string>
     <string name="pref_episode_cover_summary">Ober gant golo ar rann e listennoù pa vez dioutañ. Mard eo digevasket e vo graet gant golo ar podskignad.</string>
     <string name="pref_show_remain_time_title">Diskouez amzer a chom</string>
-    <string name="pref_show_remain_time_summary">Diskouez amzer ar rannoù a chom mard eo gweredekaet. Ma n\'eo ket e tiskouez padelezh ar rannoù. </string>
+    <string name="pref_show_remain_time_summary">Diskouez amzer ar rannoù a chom mard eo gweredekaet. Ma n\'eo ket e tiskouez padelezh ar rannoù.</string>
     <string name="pref_theme_title_automatic">Emgefreek</string>
     <string name="pref_theme_title_light">Sklaer</string>
     <string name="pref_theme_title_dark">Teñval</string>
@@ -469,7 +467,6 @@ Digorit al lañser evit ouzhpennañ unan.</string>
     <string name="pref_delete_removes_from_queue_sum">Tennañ ur rann eus al lost ent emgefreek pa vez dilamet</string>
     <string name="pref_filter_feed_title">Sil ar c\'houmanantoù</string>
     <string name="pref_filter_feed_sum">Silañ ho koumanantoù war ar stalaf merdeiñ ha war skramm ar c\'houmanantoù</string>
-    <string name="subscriptions_are_filtered">Silet eo ar c\'houmanantoù.</string>
     <string name="subscriptions_counter_greater_zero">Konter brasoc\'h eget mann</string>
     <string name="auto_downloaded">Pellgarget ent emgefreek</string>
     <string name="not_auto_downloaded">N\'eo ket pellgarget ent emgefreek</string>
@@ -570,7 +567,7 @@ Digorit al lañser evit ouzhpennañ unan.</string>
     <string name="gpodnetauth_existing_devices">Binviji a zo anezho</string>
     <string name="gpodnetauth_create_device">Krouiñ ur benveg</string>
     <string name="gpodnetauth_finish_descr">Gourc\'hemennoù! Liammet eo ho kont gpodder.net gant ho penveg. Goubredet e vo ent emgefreek ar c\'houmanantoù war ho penveg gant ho kont gpodder.net.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Kregiñ gant ar goubredañ bremañ </string>
+    <string name="gpodnetauth_finish_butsyncnow">Kregiñ gant ar goubredañ bremañ</string>
     <string name="pref_gpodnet_setlogin_information_title">Kemmañ an titouroù kennaskañ</string>
     <string name="pref_gpodnet_setlogin_information_sum">Kemmañ ho titouroù kennaskañ evit ho kont gpodder.net.</string>
     <string name="synchronization_sync_changes_title">Goubredañ bremañ</string>
@@ -581,7 +578,7 @@ Digorit al lañser evit ouzhpennañ unan.</string>
     <string name="synchronization_login_status"><![CDATA[Kennasket evel <i>%1$s</i> war <i>%2$s</i>. <br/><br/>Ho pourchaser a c\'hellot dibab en-dro pa vioc\'h digennasket]]></string>
     <string name="pref_synchronization_logout_toast">Digennasket gant berzh</string>
     <string name="gpodnetsync_error_title">fazi goubredañ gpodder.net</string>
-    <string name="gpodnetsync_error_descr">Degouezhet ez eus bet ur fazi en ur c\'houbredañ:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Degouezhet ez eus bet ur fazi en ur c\'houbredañ: "</string>
     <string name="gpodnetsync_pref_report_successful">Berzh</string>
     <string name="gpodnetsync_pref_report_failed">C\'hwitet</string>
     <string name="gpodnetsync_username_characters_error">Gallout a rit lakaat lizherennoù, niveroù pe tiredoù en anv arveriad hepken.</string>
@@ -684,7 +681,7 @@ Digorit al lañser evit ouzhpennañ unan.</string>
     <string name="proxy_test_successful">Amprouet gant berzh</string>
     <string name="proxy_test_failed">C\'hwitet</string>
     <string name="proxy_host_empty_error">N\'hall ket an ostiz bezañ goullo</string>
-    <string name="proxy_host_invalid_error">An ostiz n\'eo ket ur chomlec\'h IP pe un domani talvoudek </string>
+    <string name="proxy_host_invalid_error">An ostiz n\'eo ket ur chomlec\'h IP pe un domani talvoudek</string>
     <string name="proxy_port_invalid_error">Porzh didalvoudek</string>
     <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Niver a vannoù</string>

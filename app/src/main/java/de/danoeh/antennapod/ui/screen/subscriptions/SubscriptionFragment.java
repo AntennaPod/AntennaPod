@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -75,7 +74,7 @@ public class SubscriptionFragment extends Fragment
     private RecyclerView subscriptionRecycler;
     private SubscriptionsRecyclerAdapter subscriptionAdapter;
     private EmptyViewHandler emptyView;
-    private LinearLayout feedsFilteredMsg;
+    private View feedsFilteredMsg;
     private MaterialToolbar toolbar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressBar progressBar;
@@ -163,6 +162,10 @@ public class SubscriptionFragment extends Fragment
         feedsFilteredMsg = root.findViewById(R.id.feeds_filtered_message);
         feedsFilteredMsg.setOnClickListener((l) ->
                 new SubscriptionsFilterDialog().show(getChildFragmentManager(), "filter"));
+        boolean largePadding = displayUpArrow || !UserPreferences.isBottomNavigationEnabled();
+        int paddingHorizontal = (int) (getResources().getDisplayMetrics().density * (largePadding ? 60 : 16));
+        int paddingVertical = (int) (getResources().getDisplayMetrics().density * 4);
+        feedsFilteredMsg.setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical);
 
         swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));

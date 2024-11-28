@@ -15,7 +15,7 @@
     <string name="open_autodownload_settings">Otvoriť nastavenia</string>
     <string name="downloads_log_label">Záznam sťahovaní</string>
     <string name="subscriptions_label">Odbery</string>
-    <string name="subscriptions_list_label">Zoznam odberov</string>
+    <string name="subscriptions_list_label">Zoznam odberov (iba bočné menu)</string>
     <string name="cancel_download_label">Zrušiť sťahovanie</string>
     <string name="playback_history_label">História prehrávania</string>
     <string name="episode_cache_full_title">Vyrovnávacia pamäť epizód je plná</string>
@@ -125,25 +125,21 @@
     <plurals name="episode_cleanup_hours_after_listening">
         <item quantity="one">%dhodina po dokončení</item>
         <item quantity="few">%d hodiny po dokončení</item>
-        <item quantity="many">%d hodín po dokončení</item>
         <item quantity="other">%d hodín po dokončení</item>
     </plurals>
     <plurals name="episode_cleanup_days_after_listening">
         <item quantity="one">%d deň po dokončení</item>
         <item quantity="few">%d dni po dokončení</item>
-        <item quantity="many">%ddní po dokončení</item>
         <item quantity="other">%d dní po dokončení</item>
     </plurals>
     <plurals name="num_selected_label">
         <item quantity="one">%1$d/%2$d vybraný</item>
         <item quantity="few">%1$d/%2$d vybrané</item>
-        <item quantity="many">%1$d/%2$d vybraných</item>
         <item quantity="other">%1$d/%2$d vybraných</item>
     </plurals>
     <plurals name="num_episodes">
         <item quantity="one">%d epizóda</item>
         <item quantity="few">%d epizódy</item>
-        <item quantity="many">%d epizód</item>
         <item quantity="other">%d epizód</item>
     </plurals>
     <string name="episode_notification">Oznámenia o epizódach</string>
@@ -151,13 +147,11 @@
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s má novú epizódu</item>
         <item quantity="few">%2$s má %1$d nové epizódy</item>
-        <item quantity="many">%2$s má %1$d nových epizód</item>
         <item quantity="other">%2$s má %1$d nových epizód</item>
     </plurals>
     <plurals name="new_episode_notification_title">
         <item quantity="one">Nová epizóda</item>
         <item quantity="few">Nové epizódy</item>
-        <item quantity="many">Nové epizódy</item>
         <item quantity="other">Nové epizódy</item>
     </plurals>
     <string name="new_episode_notification_group_text">Vaše odbery majú nové epizódy</string>
@@ -188,7 +182,6 @@
     <plurals name="updated_feeds_batch_label">
         <item quantity="one">%d odber aktualizovaný.</item>
         <item quantity="few">%d odbery aktualizované.</item>
-        <item quantity="many">%d odberov aktualizovaných.</item>
         <item quantity="other">%d odberov aktualizovaných.</item>
     </plurals>
     <string name="edit_tags">Upraviť štítky</string>
@@ -201,7 +194,6 @@
     <plurals name="downloading_batch_label">
         <item quantity="one">Sťahuje sa %d epizóda.</item>
         <item quantity="few">Sťahujú sa %d epizódy.</item>
-        <item quantity="many">Sťahuje sa %d epizód.</item>
         <item quantity="other">Sťahuje sa %d epizód.</item>
     </plurals>
     <string name="play_label">Prehrať</string>
@@ -211,7 +203,6 @@
     <plurals name="deleted_multi_episode_batch_label">
         <item quantity="one">%d stiahnutá epizóda zmazaná.</item>
         <item quantity="few">%d stiahnuté epizódy zmazané.</item>
-        <item quantity="many">%d stiahnutých epizód zmazaných.</item>
         <item quantity="other">%d stiahnutých epizód zmazaných.</item>
     </plurals>
     <string name="remove_inbox_label">Odstrániť zo schránky</string>
@@ -225,7 +216,6 @@
     <plurals name="marked_read_batch_label">
         <item quantity="one">%d epizóda bola označená ako prehraná.</item>
         <item quantity="few">%d epizódy boli označené ako prehrané.</item>
-        <item quantity="many">%d epizód bolo označených ako prehrané.</item>
         <item quantity="other">%d epizód bolo označených ako prehrané.</item>
     </plurals>
     <string name="mark_unread_label">Označiť ako neprehrané</string>
@@ -233,27 +223,23 @@
     <plurals name="marked_unread_batch_label">
         <item quantity="one">%d epizóda bola označená ako neprehraná.</item>
         <item quantity="few">%d epizódy bolo označené ako neprehrané.</item>
-        <item quantity="many">%d epizód bolo označených ako neprehrané.</item>
         <item quantity="other">%d epizód bolo označených ako neprehrané.</item>
     </plurals>
     <string name="add_to_queue_label">Pridať do poradia</string>
     <plurals name="added_to_queue_batch_label">
         <item quantity="one">%d epizóda bola pridaná do poradia</item>
         <item quantity="few">%d epizódy boli pridaná do poradia</item>
-        <item quantity="many">%d epizód bolo pridaných do poradia</item>
         <item quantity="other">%d epizód bolo pridaných do poradia</item>
     </plurals>
     <string name="remove_from_queue_label">Odstrániť z poradia</string>
     <plurals name="removed_from_queue_batch_label">
         <item quantity="one">%d epizóda bola odstránená z poradia</item>
         <item quantity="few">%d epizódy boli odstránené z poradia</item>
-        <item quantity="many">%d epizód bolo odstránených z poradia</item>
         <item quantity="other">%d epizód bolo odstránených z poradia</item>
     </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%depizóda bola odstránená z priečinku doručených.</item>
         <item quantity="few">%d epizód bolo odstránených z priečinku doručených.</item>
-        <item quantity="many">%d epizód bolo odstránených z priečinku doručených.</item>
         <item quantity="other">%d epizód bolo odstránených z priečinku doručených.</item>
     </plurals>
     <string name="add_to_favorite_label">Pridať medzi obľúbené</string>
@@ -294,14 +280,12 @@
     <string name="download_error_wrong_size">Pred dokončením sťahovania došlo k strate pripojenia k serveru</string>
     <string name="download_error_blocked">Sťahovanie bolo zablokované inou aplikáciou vo Vašom zariadení (napríklad VPN alebo Ad blocker).</string>
     <string name="download_error_certificate">Nie je možné nadviazať bezpečné spojenie. To môže znamenať, že iná aplikácia vo Vašom zariadení (ako napríklad VPN alebo Ad blocker) zablokovala sťahovanie, alebo, že niečo je v neporiadku s certifikátmi servera.</string>
-    <string name="download_report_title">Pri sťahovaní nastali chyby</string>
     <string name="download_error_io_error">Vstupno-výstupná chyba</string>
     <string name="download_error_request_error">Chyba požiadavky</string>
     <string name="download_error_db_access">Chyba prístupu k databáze</string>
     <plurals name="downloads_left">
         <item quantity="one">Zostáva %d súbor na stiahnutie</item>
         <item quantity="few">Zostávajú %d súbory na stiahnutie</item>
-        <item quantity="many">Zostáva %d súborov na stiahnutie</item>
         <item quantity="other">Zostáva %d súborov na stiahnutie</item>
     </plurals>
     <string name="download_notification_title_feeds">Obnovujem podcasty</string>
@@ -309,10 +293,10 @@
     <string name="download_log_title_unknown">Neznámy titul</string>
     <string name="download_type_feed">Zdroj</string>
     <string name="download_type_media">Mediálny súbor</string>
-    <string name="no_feed_url_podcast_found_by_search">Navrhovaný podcast nemal RSS link, AntennaPod našiel podcast, ktorý by sa mohol zhodovať. </string>
+    <string name="no_feed_url_podcast_found_by_search">Navrhovaný podcast nemal RSS link, AntennaPod našiel podcast, ktorý by sa mohol zhodovať.</string>
     <string name="authentication_notification_title">Vyžaduje sa overenie</string>
     <string name="confirm_mobile_download_dialog_title">Potvrďte sťahovanie cez mobilné dáta</string>
-    <string name="confirm_mobile_download_dialog_message">Sťahovanie cez mobilné dáta je zakázané v nastaveniach. AntennaPod môže  automaticky stiahnuť epizódu neskôr, keď bude k dispozícii Wi-Fi.</string>
+    <string name="confirm_mobile_download_dialog_message">Sťahovanie cez mobilné dáta je zakázané v nastaveniach. AntennaPod môže automaticky stiahnuť epizódu neskôr, keď bude k dispozícii Wi-Fi.</string>
     <string name="confirm_mobile_download_dialog_message_vpn">Vaša VPN aplikácia predstiera, že je mobilná sieť (merané pripojenie). Sťahovanie cez mobilné dátové pripojenie je v nastaveniach zakázané. Ak chcete, aby bol tento problém vyriešený, kontaktujte tvorcov vašej VPN aplikácie.</string>
     <string name="confirm_mobile_download_dialog_download_later">Stiahnuť neskôr</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Napriek tomu stiahnuť</string>
@@ -346,7 +330,7 @@
     <string name="smart_shuffle">Inteligentné miešanie</string>
     <string name="size">Veľkosť</string>
     <string name="clear_queue_confirmation_msg">Potvrďte, že chcete z poradia odstrániť VŠETKY epizódy.</string>
-    <string name="time_left_label">Zostávajúci čas:\u0020</string>
+    <string name="time_left_label">"Zostávajúci čas: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Predvoľby</string>
     <string name="preset_already_exists">%1$.2fx je už uložené ako predvoľba.</string>
@@ -511,7 +495,6 @@
     <string name="pref_delete_removes_from_queue_sum">Po zmazaní automaticky odstrániť epizódu z poradia</string>
     <string name="pref_filter_feed_title">Filter odberov</string>
     <string name="pref_filter_feed_sum">Filtrujte svoje odbery v navigačnom paneli a na obrazovke odberov</string>
-    <string name="subscriptions_are_filtered">Odbery sú filtrované.</string>
     <string name="subscriptions_counter_greater_zero">Počet vyšší ako nula</string>
     <string name="auto_downloaded">Automaticky stiahnuté</string>
     <string name="not_auto_downloaded">Nebolo automaticky stiahnuté</string>
@@ -598,25 +581,21 @@
     <plurals name="time_seconds_quantified">
         <item quantity="one">%d sekunda</item>
         <item quantity="few">%d sekundy</item>
-        <item quantity="many">%d sekúnd</item>
         <item quantity="other">%d sekúnd</item>
     </plurals>
     <plurals name="time_minutes_quantified">
         <item quantity="one">%d minúta</item>
         <item quantity="few">%d minúty</item>
-        <item quantity="many">%d minút</item>
         <item quantity="other">%d minút</item>
     </plurals>
     <plurals name="time_hours_quantified">
         <item quantity="one">%d hodina</item>
         <item quantity="few">%d hodiny</item>
-        <item quantity="many">%d hodín</item>
         <item quantity="other">%d hodín</item>
     </plurals>
     <plurals name="time_days_quantified">
         <item quantity="one">%d deň</item>
         <item quantity="few">%d dni</item>
-        <item quantity="many">%d dní</item>
         <item quantity="other">%d dní</item>
     </plurals>
     <string name="auto_enable_label">Po stlačení tlačidla prehrávania automaticky aktivovať časovač vypnutia</string>
@@ -656,7 +635,7 @@
     <string name="synchronization_login_status"><![CDATA[Prihlásený ako <i>%1$s</i> na <i>%2$s</i>. <br/><br/>Môžete si vybrať Vášho poskytovateľa synchronizácie opäť keď sa odhlásite]]></string>
     <string name="pref_synchronization_logout_toast">Odhlásenie bolo úspešné</string>
     <string name="gpodnetsync_error_title">chyba synchronizácie s gpodder.net</string>
-    <string name="gpodnetsync_error_descr">Počas synchronizácie sa vyskytla chyba:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Počas synchronizácie sa vyskytla chyba: "</string>
     <string name="gpodnetsync_pref_report_successful">Úspešné</string>
     <string name="gpodnetsync_pref_report_failed">Nepodarilo sa</string>
     <string name="gpodnetsync_username_characters_error">Používateľské mená môžu obsahovať iba písmena, číslice, spojovníky a podčiarkovníky.</string>
@@ -697,8 +676,8 @@
     <string name="next_chapter">Nasledujúca kapitola</string>
     <string name="shuffle_suggestions">Premiešať návrhy</string>
     <string name="add_preset">Pridať predvoľbu</string>
-    <string name="download_started_talkback">Začalo sťahovanie pre%1$s</string>
-    <string name="download_completed_talkback">Dokončené sťahovanie pre%1$s</string>
+    <string name="download_started_talkback">Začalo sťahovanie pre %1$s</string>
+    <string name="download_completed_talkback">Dokončené sťahovanie pre %1$s</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">Overenie</string>
     <string name="authentication_descr">Zmeniť svoje používateľské meno a heslo pre tento podcast a jeho epizódy.</string>
@@ -821,4 +800,31 @@
     <string name="shortcut_subscription_label">Skratka odberu</string>
     <string name="shortcut_select_subscription">Vyberte odber</string>
     <string name="add_shortcut">Pridať skratku</string>
+    <string name="sync_status_wait_for_downloads">Čaká sa na obnovenie odberov…</string>
+    <string name="pref_nav_drawer_items_sum">Zmeňte, ktoré položky sa zobrazia v navigačnom vysúvacom paneli alebo v spodnej navigácii</string>
+    <string name="feed_delete_confirmation_msg">Potvrďte, že chcete odstrániť podcast „%1$s“, VŠETKY jeho epizódy (vrátane stiahnutých epizód), históriu prehrávania a jeho štatistiky.</string>
+    <string name="home_no_recent_unplayed_episodes_text">Všetky posledné epizódy ste už prehrali. Tu sa niet čomu čudovať ;)</string>
+    <string name="home_continue_empty_text">Epizódy môžete pridať ich stiahnutím alebo dlhým stlačením a výberom možnosti „Pridať do poradia“.</string>
+    <string name="delete_downloads_played">Odstrániť prehraté</string>
+    <string name="delete_downloads_played_confirmation">Potvrďte, že chcete odstrániť všetky prehrané stiahnuté súbory.</string>
+    <string name="bottom_navigation">Spodná navigácia</string>
+    <string name="bottom_navigation_summary">Beta funkcia: Prístup k najdôležitejším obrazovkám odkiaľkoľvek jediným kliknutím</string>
+    <string name="statistics_release_next">ďalšia epizóda (odhad)</string>
+    <string name="statistics_years_barchart_description">Hraný čas za mesiac</string>
+    <string name="section_shown">Ukázaná</string>
+    <string name="pref_nav_drawer_items_title">Prispôsobiť navigáciu</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">Celková veľkosť %d epizódy v zariadení</item>
+        <item quantity="few">Celková veľkosť %d epizód v zariadení</item>
+        <item quantity="other">Celková veľkosť %d epizód v zariadení</item>
+    </plurals>
+    <string name="home_downloads_empty_text">Môžete si stiahnuť akúkoľvek epizódu a počúvať ju offline.</string>
+    <string name="home_new_empty_text">Tu sa zobrazia nové epizódy. Potom sa môžete rozhodnúť, či o ne máte záujem.</string>
+    <string name="feed_delete_confirmation_local_msg">Potvrďte, že chcete odstrániť podcast „%1$s“, jeho históriu prehrávania a jeho štatistiky. Súbory v lokálnom zdrojovom priečinku sa neodstránia.</string>
+    <string name="feed_delete_confirmation_msg_batch">Potvrďte, že chcete odstrániť vybraté podcasty, VŠETKY ich epizódy (vrátane stiahnutých epizód), históriu prehrávania a štatistiky.</string>
+    <string name="discover_more">Objavte viac »</string>
+    <string name="null_value_podcast_error">Odkaz, na ktorý ste klikli, neobsahuje platnú webovú adresu podcastu. Overte odkaz a skúste to znova, alebo vyhľadajte podcast manuálne.</string>
+    <string name="nextcloud_login_error_generic"><![CDATA[Nedá sa prihlásiť do vášho Nextcloudu.\n\n- Skontrolujte si sieťové pripojenie.\n- Potvrďte, že používate správnu adresu servera.\n- Uistite sa, že doplnok gpoddersync Nextcloud je nainštalovaný.]]></string>
+    <string name="statistics_view_all">Všetky podcasty »</string>
+    <string name="episode_download_failed">Sťahovanie epizódy zlyhalo</string>
 </resources>

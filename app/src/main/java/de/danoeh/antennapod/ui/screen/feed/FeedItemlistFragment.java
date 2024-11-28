@@ -411,6 +411,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public void onStartSelectMode() {
+        viewBinding.floatingSelectMenu.setVisibility(View.VISIBLE);
         swipeActions.detach();
         updateRecyclerPadding();
         updateToolbar();

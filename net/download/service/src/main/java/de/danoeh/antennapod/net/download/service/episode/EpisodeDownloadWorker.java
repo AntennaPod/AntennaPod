@@ -263,8 +263,8 @@ public class EpisodeDownloadWorker extends Worker {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(),
                 NotificationUtils.CHANNEL_ID_DOWNLOAD_ERROR);
-        builder.setTicker(getApplicationContext().getString(R.string.download_report_title))
-                .setContentTitle(getApplicationContext().getString(R.string.download_report_title))
+        builder.setTicker(getApplicationContext().getString(R.string.episode_download_failed))
+                .setContentTitle(getApplicationContext().getString(R.string.episode_download_failed))
                 .setContentText(getApplicationContext().getString(R.string.download_error_tap_for_details))
                 .setSmallIcon(R.drawable.ic_notification_sync_error)
                 .setContentIntent(getDownloadLogsIntent(getApplicationContext()))

@@ -63,7 +63,7 @@
     <string name="drawer_feed_order_unplayed_episodes">מיון לפי מונה</string>
     <string name="drawer_feed_order_alphabetical">מיון בסדר אלפביתי</string>
     <string name="drawer_feed_order_last_update">מיון לפי תאריך פרסום</string>
-    <string name="drawer_feed_order_most_played">מיון לפי מספר פרקים שהושמעו </string>
+    <string name="drawer_feed_order_most_played">מיון לפי מספר פרקים שהושמעו</string>
     <string name="drawer_feed_counter_inbox">מספר הפרקים בדואר הנכנס</string>
     <string name="drawer_feed_counter_unplayed">מספר פרקים שעוד לא התנגנו</string>
     <string name="drawer_feed_counter_downloaded">מספר פרקים שהתקבלו</string>
@@ -129,8 +129,8 @@
     </plurals>
     <plurals name="episode_cleanup_days_after_listening">
         <item quantity="one">יום (%d) לאחר סיום</item>
-        <item quantity="two">יומיים (%d) לאחר סיום </item>
-        <item quantity="other">%d ימים לאחר סיום </item>
+        <item quantity="two">יומיים (%d) לאחר סיום</item>
+        <item quantity="other">%d ימים לאחר סיום</item>
     </plurals>
     <plurals name="num_selected_label">
         <item quantity="one">%1$d/%2$d נבחר</item>
@@ -280,7 +280,6 @@
     <string name="download_error_wrong_size">החיבור לשרת אבד לפני השלמת ההורדה</string>
     <string name="download_error_blocked">ההורדה נחסמה על ידי יישומון אחר במכשיר שלך (כנראה VPN או חוסם פרסומות).</string>
     <string name="download_error_certificate">לא ניתן ליצור חיבור מאובטח. יכול להיות שיישומון אחר במכשיר שלך חסם את ההורדה (כנראה VPN או חוסם פרסומות) או שמשהו השתבש באישורי השרת.</string>
-    <string name="download_report_title">הורדות הושלמו עם שגיאה אחת או יותר</string>
     <string name="download_error_io_error">שגיאת קלט/פלט</string>
     <string name="download_error_request_error">שגיאת בקשה</string>
     <string name="download_error_db_access">שגיאת גישה למסד הנתונים</string>
@@ -306,7 +305,7 @@
     <string name="confirm_mobile_streaming_button_always">תמיד</string>
     <string name="confirm_mobile_streaming_button_once">פעם אחת</string>
     <!--Mediaplayer messages-->
-  <string name="playback_error_generic"><![CDATA[לא ניתן לנגן את המדיה.\n\n- כדאי לנסות למחוק ולהוריד מחדש את הפרק.\n- לבדוק את החיבור שלך לרשת ולוודא שאין VPN או עמוד כניסה שחוסמים את הגישה.\n- לנסות ללחוץ ארוכות ולשתף את „כתובת מדיה” עם הדפדפן שלך כדי לראות אם אפשר לנגן את זה שם. אם לא, נא ליצור קשר עם יוצרי ההסכת.]]></string>
+  <string name="playback_error_generic">לא ניתן לנגן את המדיה.\n\n- כדאי לנסות למחוק ולהוריד את הפרק מחדש.\n- לבדוק את החיבור שלך לרשת ולוודא שאין VPN או עמוד כניסה שחוסמים את הגישה.\n- לנסות ללחוץ ארוכות ולשתף את „כתובת מדיה” עם הדפדפן שלך כדי לראות אם אפשר לנגן את זה שם. אם לא, נא ליצור קשר עם יוצרי ההסכת.</string>
     <string name="no_media_playing_label">אין מדיה מתנגנת</string>
     <string name="unknown_media_key">אנטנה־פּוֹד - מפתח מדיה לא ידוע: %1$d</string>
     <string name="error_file_not_found">הקובץ לא נמצא</string>
@@ -331,7 +330,7 @@
     <string name="smart_shuffle">ערבול חכם</string>
     <string name="size">גודל</string>
     <string name="clear_queue_confirmation_msg">נא לאשר את הסרת כל הפרקים מהתור.</string>
-    <string name="time_left_label">זמן שנותר:\u0020</string>
+    <string name="time_left_label">"זמן שנותר: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">ערכות מוגדרות</string>
     <string name="preset_already_exists">%1$.2fx כבר נשמרה כערכה מוגדרת.</string>
@@ -496,7 +495,6 @@
     <string name="pref_delete_removes_from_queue_sum">הסרת פרק מהתור אוטומטית עם מחיקתו</string>
     <string name="pref_filter_feed_title">מסנן מינויים</string>
     <string name="pref_filter_feed_sum">סינון המינויים שלך במגירת הניווט ובמסך המינויים</string>
-    <string name="subscriptions_are_filtered">המינויים מסוננים.</string>
     <string name="subscriptions_counter_greater_zero">המונה גדול מאפס</string>
     <string name="auto_downloaded">התקבלו אוטומטית</string>
     <string name="not_auto_downloaded">לא התקבלו אוטומטית</string>
@@ -565,7 +563,7 @@
     <string name="opml_import_ask_read_permission">נדרשת גישה לאחסון חיצוני כדי לקרוא את קובץ ה־OPML</string>
     <string name="successful_import_label">הייבוא הצליח</string>
     <string name="import_ok">נא ללחוץ על אישור כדי להפעיל את אנטנה־פּוֹד מחדש</string>
-    <string name="import_no_downgrade">מסד נתונים זה ייוצא עם גרסה עדכנית יותר של AntennaPod</string>
+    <string name="import_no_downgrade">מסד נתונים זה ייוצא עם גרסה עדכנית יותר של AntennaPod. ההתקנה הנוכחית שלך לא יודעת עדיין איך לטפל בקובץ הזה.</string>
     <string name="favorites_export_label">ייצוא מועדפים</string>
     <string name="favorites_export_summary">ייצור המועדפים השמורים לקובץ</string>
     <!--Sleep timer-->
@@ -634,10 +632,10 @@
     <string name="synchronization_full_sync_title">אילוץ סנכרון מלא</string>
     <string name="synchronization_force_sync_summary">סנכרון המינוי ושינויי מצב הפרקים מחדש</string>
     <string name="synchronization_logout">יציאה</string>
-    <string name="synchronization_login_status"><![CDATA[נכנסת בתור <i>%1$s</i> אל <i>%2$s</i>. <br/><br/>אפשר לבחור את שרת הסנכרון שלך שוב לאחר היציאה מהחשבון]]></string>
+    <string name="synchronization_login_status">נכנסת בתור %1$s אל %2$s.\n\nאפשר לבחור את ספק הסנכרון שלך שוב לאחר היציאה מהחשבון.</string>
     <string name="pref_synchronization_logout_toast">היציאה הצליחה</string>
     <string name="gpodnetsync_error_title">שגיאת סנכרון מול gpodder.net</string>
-    <string name="gpodnetsync_error_descr">שגיאה במהלך סינכרון:\u0020</string>
+    <string name="gpodnetsync_error_descr">"שגיאה במהלך סינכרון: "</string>
     <string name="gpodnetsync_pref_report_successful">מוצלח</string>
     <string name="gpodnetsync_pref_report_failed">נכשל</string>
     <string name="gpodnetsync_username_characters_error">שמות המשתמשים יכולים להכיל אותיות, ספרות, מינוסים וקווים תחתיים בלבד.</string>
@@ -802,4 +800,38 @@
     <string name="shortcut_subscription_label">קיצור למינוי</string>
     <string name="shortcut_select_subscription">בחירת מינוי</string>
     <string name="add_shortcut">הוספת קיצור דרך</string>
+    <string name="statistics_view_all">כל ההסכתים »</string>
+    <string name="statistics_episodes_started">החל</string>
+    <string name="delete_downloads_played">מחיקת אלו שהושמעו</string>
+    <string name="pref_nav_drawer_items_title">ניווט מותאם אישית</string>
+    <string name="home_new_empty_text">פרקים חדשים יופיעו כאן. אפשר להחליט האם הם מעניינים אותך.</string>
+    <string name="home_downloads_empty_text">אפשר להוריד כל פרק שהוא כדי להאזין לו ללא חיבור לאינטרנט.</string>
+    <string name="section_shown">מוצג</string>
+    <string name="delete_downloads_played_confirmation">נא לאשר את מחיקת על ההורדות שהושמעו.</string>
+    <string name="mobile_download_notice">מתבצעת הורדה דרך חיבור נתונים סלולרי למשך %d הדקות הקרובות</string>
+    <string name="statistics_release_schedule">לו״ז הוצאה לאור</string>
+    <string name="nextcloud_login_error_generic">לא ניתן להיכנס ל־Nextcloud שלך.\n\n- נא לבדוק שהחיבור שלך לרשת תקין.\n- לוודא שזאת כתובת השרת הנכונה.\n- לבדוק שתוסף Nextcloud בשם gpoddersync מותקן.</string>
+    <string name="statistics_release_next">הפרק הבא (הערכה)</string>
+    <string name="statistics_years_barchart_description">זמן השמעה בחודש</string>
+    <string name="home_no_recent_unplayed_episodes_text">כבר ניגנת את כל הפרקים האחרונים. אין יותר איך להפתיע אותך ؛)</string>
+    <string name="feed_delete_confirmation_msg_batch">נא לאשר את הסרת ההסכתים הנבחרים, לרבות כל הפרקים שלהם (כולל פרקים שירדו), היסטוריית נגינה והסטטיסטיקה שלהם.</string>
+    <string name="home_continue_empty_text">אפשר להוסיף פרקים על ידי הורדתם או בלחיצה ארוכה עליהם ובחירה ב„הוספה לתור”.</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">הגודל הכולל של פרק במכשיר</item>
+        <item quantity="two">הגודל הכולל של שני פרקים במכשיר</item>
+        <item quantity="other">הגודל הכולל של %d פרקים במכשיר</item>
+    </plurals>
+    <string name="feed_delete_confirmation_msg">נא לאשר את מחיקת ההסכת „%1$s”, לרבות כל הפרקים (כולל פרקים שירדו), היסטוריית הנגינה והסטטיסטיקה שלו.</string>
+    <string name="feed_delete_confirmation_local_msg">נא לאשר את הסרת ההסכת „%1$s”, לרבות היסטוריית הנגינה שלו והסטטיסטיקה שלו. הקבצים בתיקיית המקור המקומית לא יימחקו.</string>
+    <string name="null_value_podcast_error">הקישור בו נגעת לא מכיל כתובת הסכת תקנית. נא לוודא שהקישור תקין ולנסות שוב או לחפש את ההסכת ידנית.</string>
+    <string name="bottom_navigation">ניווט תחתון</string>
+    <string name="bottom_navigation_summary">יכולת ניסיונית: גישה למסכים החשובים ביותר מכל מקום, בנגיעה אחת</string>
+    <string name="statistics_episodes_total">סך הכול</string>
+    <string name="statistics_episodes_played">הושמעו</string>
+    <string name="statistics_episodes_space">מקום תפוס</string>
+    <string name="pref_nav_drawer_items_sum">נא לבחור אילו פריטים מופיעים במגירת הניווט או בניווט התחתון</string>
+    <string name="sync_status_wait_for_downloads">בהמתנה לרענון המינויים…</string>
+    <string name="statistics_episodes_downloaded">ירדו</string>
+    <string name="discover_more">להיחשף לעוד »</string>
+    <string name="episode_download_failed">הורדת פרק נכשלה</string>
 </resources>

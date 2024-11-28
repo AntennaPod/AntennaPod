@@ -249,7 +249,6 @@
     <string name="download_error_wrong_size">Ühendus serveriga katkes enne allalaadimise lõppu</string>
     <string name="download_error_blocked">Allalaadimise blokeeris mingi teine rakendus sinu telefonis (nt VPN või reklaami blokeerija).</string>
     <string name="download_error_certificate">Turvalist ühendust pole võimalik luua. See võib tähendada, et mõni teine rakendus su seadmes (nt VPN või reklaami blokeerija) blokeeris allalaadimise või on serveri sertifikaatidel midagi viga.</string>
-    <string name="download_report_title">Allalaadimised lõpetati veaga (vigadega)</string>
     <string name="download_error_io_error">IO viga</string>
     <string name="download_error_request_error">Päringu viga</string>
     <string name="download_error_db_access">Andmebaasile ligipääsu viga</string>
@@ -265,7 +264,7 @@
     <string name="no_feed_url_podcast_found_by_search">Soovitud taskuhääling ei paku RSS voogu, AntennaPod leidis taskuhäälingu, mis võib sobida.</string>
     <string name="authentication_notification_title">Autentimine on nõutud</string>
     <string name="confirm_mobile_download_dialog_title">Kinnita mobiilse andmeside kasutamine allalaadimiseks</string>
-    <string name="confirm_mobile_download_dialog_message">Mobiilse andmeside kaudu allalaadimine on seadetest keelatud. AntennaPod  saab saate hiljem Wi-Fi võrgus olles alla laadida.</string>
+    <string name="confirm_mobile_download_dialog_message">Mobiilse andmeside kaudu allalaadimine on seadetest keelatud. AntennaPod saab saate hiljem Wi-Fi võrgus olles alla laadida.</string>
     <string name="confirm_mobile_download_dialog_message_vpn">Sinu VPN ühendus paistab mobiilse andmeside võrguna (mahupõhine hinnastamine). Taskuhäälingute allalaadimine üle mobiilse andmeside on seadetes keelatud. Probleemi lahendamiseks pöördu oma VPN rakenduse arendajate poole.</string>
     <string name="confirm_mobile_download_dialog_download_later">Laadi hiljem</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Laadi ikkagi</string>
@@ -298,7 +297,7 @@
     <string name="random">Juhuslik</string>
     <string name="smart_shuffle">Nutikas juhuslik</string>
     <string name="size">Maht</string>
-    <string name="time_left_label">Aega jäänud:\u0020</string>
+    <string name="time_left_label">"Aega jäänud: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Eelseaded</string>
     <string name="preset_already_exists">%1$.2fx on juba eelseadena salvestatud.</string>
@@ -409,7 +408,7 @@
     <string name="pref_feed_skip">Automaatne vahelejätmine</string>
     <string name="pref_feed_skip_sum">Sissejuhatuse ja lõputänu vahele jätmine.</string>
     <string name="pref_feed_skip_ending">Jäta vahele lõpust</string>
-    <string name="pref_feed_skip_intro">Jäta vahele  algusest</string>
+    <string name="pref_feed_skip_intro">Jäta vahele algusest</string>
     <string name="pref_feed_skip_ending_toast">Lõpust jäeti vahele %d sekundit</string>
     <string name="pref_feed_skip_intro_toast">Algusest jäeti vahele %d sekundit</string>
     <string name="pref_playback_time_respects_speed_title">Meedia info kohandamine esituse kiirusega</string>
@@ -452,7 +451,6 @@
     <string name="pref_delete_removes_from_queue_sum">Saade kustutamisel eemaldatakse see järjekorrast</string>
     <string name="pref_filter_feed_title">Tellimuste filter</string>
     <string name="pref_filter_feed_sum">Filtreeri oma tellimusi navigeerimismenüüs ja tellimuste lehel</string>
-    <string name="subscriptions_are_filtered">Tellimused on filtreeritud.</string>
     <string name="subscriptions_counter_greater_zero">Loendur on suurem kui null</string>
     <string name="auto_downloaded">Automaatselt alla laaditud</string>
     <string name="not_auto_downloaded">Pole automaatselt alla laaditud</string>
@@ -571,7 +569,7 @@
     <string name="synchronization_login_status"><![CDATA[Sisse logitud kui <i>%1$s</i> serveril <i>%2$s</i>. <br/><br/>Võid sünkroonimispakkuja uuesti valida kui logid välja]]></string>
     <string name="pref_synchronization_logout_toast">Väljalogimine oli edukas</string>
     <string name="gpodnetsync_error_title">gpodder.net sünkroonimise viga</string>
-    <string name="gpodnetsync_error_descr">Sünkroonimise ajal tekkis viga:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Sünkroonimise ajal tekkis viga: "</string>
     <string name="gpodnetsync_pref_report_successful">Korras</string>
     <string name="gpodnetsync_pref_report_failed">Ebaõnnestus</string>
     <string name="gpodnetsync_username_characters_error">Kasutajanimi võib sisaldada ainult tähti, numbreid, side- ja allkriipsu.</string>

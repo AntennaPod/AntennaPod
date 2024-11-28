@@ -22,7 +22,7 @@
     <string name="episode_cache_full_message">Se alcanzó el límite de la caché de episodios. Puede aumentar el tamaño en Configuración.</string>
     <string name="years_statistics_label">Años</string>
     <string name="notification_pref_fragment">Notificaciones</string>
-    <string name="current_playing_episode">Actual </string>
+    <string name="current_playing_episode">Actual</string>
     <!--Google Assistant-->
   <string name="app_action_not_found">No se encontró «%1$s»</string>
     <!--SwipeActions-->
@@ -272,7 +272,7 @@
     <string name="download_error_not_found">El servidor del host del podcast no sabe dónde encontrar el archivo. Es posible que se haya borrado.</string>
     <string name="download_error_connection_error">Error de conexión</string>
     <string name="download_error_no_connection">Sin conexión</string>
-    <string name="download_error_unknown_host">Servidor no encontrado. Verifique su conexión de red y que la dirección este escrita correctamente. </string>
+    <string name="download_error_unknown_host">Servidor no encontrado. Verifique su conexión de red y que la dirección este escrita correctamente.</string>
     <string name="download_error_unauthorized">Error de autenticación. Comprueba el usuario y la contarseña.</string>
     <string name="download_error_file_type_type">Tipo de archivo erróneo</string>
     <string name="download_error_forbidden">El servidor del host del podcast se niega a responder.</string>
@@ -280,7 +280,6 @@
     <string name="download_error_wrong_size">Descarga incompleta por perdida de conexión con el servidor.</string>
     <string name="download_error_blocked">La descarga fue bloqueada por otra aplicación en tu dispositivo (como una VPN o bloqueador de anuncios).</string>
     <string name="download_error_certificate">Incapaz de establecer una conexión segura. Esto puede significar que otra aplicación en tu dispositivo (como una VPN o un bloqueador de anuncios) bloqueó la descarga, o que algo está mal con los certificados del servidor.</string>
-    <string name="download_report_title">Descargas completadas con error(es)</string>
     <string name="download_error_io_error">Error de E/S</string>
     <string name="download_error_request_error">Error de solicitud</string>
     <string name="download_error_db_access">Error de acceso a la base de datos</string>
@@ -306,7 +305,7 @@
     <string name="confirm_mobile_streaming_button_always">Siempre</string>
     <string name="confirm_mobile_streaming_button_once">Una vez</string>
     <!--Mediaplayer messages-->
-  <string name="playback_error_generic"><![CDATA[El archivo no se pudo reproducir.\n\n- Intenta borrar el episodio y descargarlo de nuevo.\n- Comprueba la conexión de red, y asegúrate de que no haya conexiones VPN o portales cautivos activos.\n- Intenta pulsar prolongadamente y compartir la \"dirección del medio\" hacia tu navegador web para ver si se puede reproducir desde ahí. En caso contrario, contacta con los creador del pódcast.]]></string>
+  <string name="playback_error_generic">No se ha podido reproducir el archivo multimedia.\n\n- Prueba a borrar y volver a descargar el episodio.\n- Comprueba tu conexión de red y asegúrate de que ninguna VPN o página de inicio de sesión esté bloqueando el acceso.\n- Prueba a pulsar prolongadamente y compartir la \"Dirección multimedia\" en tu navegador web para ver si se puede reproducir allí. Si no es así, ponte en contacto con los creadores del podcast.</string>
     <string name="no_media_playing_label">No hay medios en reproducción</string>
     <string name="unknown_media_key">AntennaPod - Tecla multimedia desconocida: %1$d</string>
     <string name="error_file_not_found">Archivo no encontrado</string>
@@ -331,7 +330,7 @@
     <string name="smart_shuffle">Reproducción inteligente</string>
     <string name="size">Tamaño</string>
     <string name="clear_queue_confirmation_msg">Confirme que quiere borrar TODOS los episodios de la cola.</string>
-    <string name="time_left_label">Tiempo restante:\u0020</string>
+    <string name="time_left_label">"Tiempo restante: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Presets</string>
     <string name="preset_already_exists">%1$.2fx ya existe como preset.</string>
@@ -496,10 +495,9 @@
     <string name="pref_delete_removes_from_queue_sum">Eliminar automáticamente un episodio de la cola cuando se borra</string>
     <string name="pref_filter_feed_title">Filtro de suscripción</string>
     <string name="pref_filter_feed_sum">Filtrar tus suscripciones en el cajón de de navegación y pantallas de suscripción</string>
-    <string name="subscriptions_are_filtered">Las suscripciones están filtradas.</string>
     <string name="subscriptions_counter_greater_zero">Contador mayor que cero</string>
     <string name="auto_downloaded">Descargado automáticamente</string>
-    <string name="not_auto_downloaded"> No auto-descargado</string>
+    <string name="not_auto_downloaded">No auto-descargado</string>
     <string name="kept_updated">Mantenido actualizado</string>
     <string name="not_kept_updated">No mantenido actualizado</string>
     <string name="new_episode_notification_enabled">Notificación habilitada</string>
@@ -601,7 +599,7 @@
         <item quantity="other">%d días</item>
     </plurals>
     <string name="auto_enable_label">Activar el temporizador de sueño automáticamente al pulsar play</string>
-    <string name="auto_enable_label_with_times">Activar el temporizador de sueño automáticamente al pulsar el botón de play  entre %1$s y %2$s</string>
+    <string name="auto_enable_label_with_times">Activar el temporizador de sueño automáticamente al pulsar el botón de play entre %1$s y %2$s</string>
     <string name="auto_enable_change_times">Cambiar rango de tiempo</string>
     <string name="sleep_timer_enabled_label">Temporizador habilitado</string>
     <!--Synchronisation-->
@@ -634,10 +632,10 @@
     <string name="synchronization_full_sync_title">Fuerza sincronización completa</string>
     <string name="synchronization_force_sync_summary">Resincronizar todas las suscripciones y estados de los episodios</string>
     <string name="synchronization_logout">Desconecta</string>
-    <string name="synchronization_login_status"><![CDATA[Autenticado como <i>%1$s</i> en <i>%2$s</i>. <br/><br/>Puedes elegir tu proveedor de sincronización de nuevo si cierras sesión.]]></string>
+    <string name="synchronization_login_status">Conectado como %1$s en %2$s.\n\nPuede volver a elegir su proveedor de sincronización una vez que haya cerrado la sesión.</string>
     <string name="pref_synchronization_logout_toast">Te has desconectado correctamente</string>
     <string name="gpodnetsync_error_title">Error de sincronización de gpodder.net</string>
-    <string name="gpodnetsync_error_descr">Ocurrió un error de sincronización:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Ocurrió un error de sincronización: "</string>
     <string name="gpodnetsync_pref_report_successful">Exitoso</string>
     <string name="gpodnetsync_pref_report_failed">Fallido</string>
     <string name="gpodnetsync_username_characters_error">Los nombres de usuario solo pueden contener legras, dígitos, guiones medios y guiones bajos.</string>
@@ -651,7 +649,7 @@
   <string name="rating_tagline">Desde %1$s, has reproducido %2$s%3$d%4$s horas de pódcasts.</string>
     <string name="rating_contribute_label">¿Quieres unirte? Puedes traducir, dar soporte, diseñar o programar. ¡Estaremos encantados de tenerte!</string>
     <string name="rating_contribute_button">Descubre formas de contribuir</string>
-    <string name="rating_volunteers_label">AntennaPod se desarrolla gracias a voluntarios en su tiempo libre. Puede  apreciar su trabajo dejando una buena valoración.</string>
+    <string name="rating_volunteers_label">AntennaPod se desarrolla gracias a voluntarios en su tiempo libre. Puede apreciar su trabajo dejando una buena valoración.</string>
     <string name="rating_rate">Valorar AntennaPod</string>
     <string name="rating_later">Después</string>
     <!--Online feed view-->
@@ -802,4 +800,38 @@
     <string name="shortcut_subscription_label">Atajo de suscripción</string>
     <string name="shortcut_select_subscription">Seleccionar suscripción</string>
     <string name="add_shortcut">Añadir atajo</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">Tamaño total de %d episodio en el dispositivo</item>
+        <item quantity="many">Tamaño total de %d episodios en el dispositivo</item>
+        <item quantity="other">Tamaño total de %d episodios en el dispositivo</item>
+    </plurals>
+    <string name="pref_nav_drawer_items_sum">Cambiar qué elementos aparecen en el cajón de navegación o en la navegación inferior</string>
+    <string name="statistics_view_all">Todos los podcasts »</string>
+    <string name="statistics_episodes_played">reproducido</string>
+    <string name="statistics_episodes_space">espacio ocupado</string>
+    <string name="home_no_recent_unplayed_episodes_text">Ya has reproducido todos los episodios recientes. Nada de que sorprenderse aquí ;)</string>
+    <string name="statistics_release_schedule">calendario de lanzamiento</string>
+    <string name="delete_downloads_played">Eliminar reproducido</string>
+    <string name="discover_more">« Descubrir más »</string>
+    <string name="home_new_empty_text">Los nuevos episodios aparecerán aquí. Luego podrás decidir si te interesan.</string>
+    <string name="home_downloads_empty_text">Puedes descargar cualquier episodio para escucharlo sin conexión.</string>
+    <string name="section_shown">Mostrar</string>
+    <string name="bottom_navigation">Navegación inferior</string>
+    <string name="statistics_episodes_started">iniciado</string>
+    <string name="statistics_episodes_total">total</string>
+    <string name="statistics_episodes_downloaded">descargado</string>
+    <string name="statistics_release_next">próximo episodio (estimado)</string>
+    <string name="statistics_years_barchart_description">Tiempo reproducido por mes</string>
+    <string name="home_continue_empty_text">Puedes añadir episodios descargándolos o pulsando y seleccionando \"Añadir a la cola\".</string>
+    <string name="feed_delete_confirmation_msg">Por favor confirme que desea eliminar el podcast \"%1$s\", TODOS sus episodios (incluyendo los descargados), su historial de reproducción y sus estadísticas.</string>
+    <string name="delete_downloads_played_confirmation">Por favor, confirma que deseas eliminar todas las descargas reproducidas.</string>
+    <string name="feed_delete_confirmation_msg_batch">Por favor, confirme que desea eliminar los podcasts seleccionados, TODOS sus episodios (incluidos los episodios descargados), el historial de reproducción y sus estadísticas.</string>
+    <string name="mobile_download_notice">Descargando a través de conexión de datos móviles durante los próximos %d minutos</string>
+    <string name="feed_delete_confirmation_local_msg">Por favor confirme que desea eliminar el podcast \"%1$s\", su historial de reproducción y sus estadísticas. Los archivos de la carpeta local de origen no se eliminarán.</string>
+    <string name="null_value_podcast_error">El enlace que seleccionaste no contiene una URL de podcast válida. Verifica el enlace e inténtalo nuevamente o busca el podcast manualmente.</string>
+    <string name="bottom_navigation_summary">Función beta: accede a las pantallas más importantes desde cualquier lugar, con un solo toque</string>
+    <string name="pref_nav_drawer_items_title">Personalizar la navegación</string>
+    <string name="sync_status_wait_for_downloads">Esperando que se actualicen las suscripciones …</string>
+    <string name="nextcloud_login_error_generic">No se puede iniciar sesión en Nextcloud.\n\n- Compruebe su conexión de red.\n- Confirme que está utilizando la dirección correcta del servidor.\n- Asegúrese de que el plugin gpoddersync Nextcloud está instalado.</string>
+    <string name="episode_download_failed">Error al descargar el episodio</string>
 </resources>

@@ -266,7 +266,6 @@
     <string name="download_error_wrong_size">Sa connessione cun su serbidore est istada pèrdida prima chi s\'iscarrigamentu esseret cumpletu.</string>
     <string name="download_error_blocked">S\'iscarrigamentu est istadu blocadu dae un\'àtera aplicatzione in su dispositivu tuo (comente un VPN o unu blocadore de publitzidade).</string>
     <string name="download_error_certificate">Impossìbile istabilire una connessione sicura. Custu podet bòlere nàrrere chi un\'àtera aplicatzione in su dispositivu tuo (comente un VPN o un blocadore de publitzidade) at blocadu s\'iscarrigamentu, o chi nc\'est unu problema cun is tzertificados de su serbidore.</string>
-    <string name="download_report_title">Iscarrigamentos cumpletados cun errore(s)</string>
     <string name="download_error_io_error">Errore IO</string>
     <string name="download_error_request_error">Errore in sa rechesta</string>
     <string name="download_error_db_access">Errore de atzessu a sa base de datos</string>
@@ -316,7 +315,7 @@
     <string name="smart_shuffle">Riprodutzione inteligente</string>
     <string name="size">Mannària</string>
     <string name="clear_queue_confirmation_msg">Cunfirma chi boles bogare totu is episòdios de sa coa.</string>
-    <string name="time_left_label">Tempus a s\'agabbu:\u0020</string>
+    <string name="time_left_label">"Tempus a s\'agabbu: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Predefinidos</string>
     <string name="preset_already_exists">%1$.2fx est giai sarvadu comente predefinidu.</string>
@@ -481,7 +480,6 @@
     <string name="pref_delete_removes_from_queue_sum">Boga in automàticu de sa lista is episòdios cantzellados</string>
     <string name="pref_filter_feed_title">Filtru de sutiscritziones</string>
     <string name="pref_filter_feed_sum">Filtra is sutiscritziones in sa barra de navigatzione e in s\'ischermu de sutiscritziones</string>
-    <string name="subscriptions_are_filtered">Filtru ativu in is sutiscritziones</string>
     <string name="subscriptions_counter_greater_zero">Contadore prus mannu de zero</string>
     <string name="auto_downloaded">Iscarrigadu in automàticu</string>
     <string name="not_auto_downloaded">No iscarrigadu in automàticu</string>
@@ -618,7 +616,7 @@
     <string name="synchronization_login_status"><![CDATA[Identificadu comente <i>%1$s</i> in <i>%2$s</i>. <br/><br/>Podes torrare a seberare unu frunidore de sincronizatziones una borta disconnètidu]]></string>
     <string name="pref_synchronization_logout_toast">Essida cumpletada</string>
     <string name="gpodnetsync_error_title">errore de sincronizatzione cun gpodder.net</string>
-    <string name="gpodnetsync_error_descr">Errore in sa sincronizatzione:\u0020</string>
+    <string name="gpodnetsync_error_descr">"Errore in sa sincronizatzione: "</string>
     <string name="gpodnetsync_pref_report_successful">Fatu</string>
     <string name="gpodnetsync_pref_report_failed">Faddidu</string>
     <string name="gpodnetsync_username_characters_error">Is nòmines de utente podent cuntènnere isceti lìteras, nùmeros, tratigheddos e linieddas bàscias.</string>

@@ -230,9 +230,9 @@
     <string name="download_pending">下載等待中</string>
     <string name="download_running">下載中</string>
     <string name="download_error_details">詳情</string>
-    <string name="download_log_details_message">%1$s技術原因：%2$s  檔案網址：%3$s</string>
+    <string name="download_log_details_message">%1$s技術原因：%2$s 檔案網址：%3$s</string>
     <string name="download_error_retrying">下載\"%1$s\" 失敗。 稍後將重試。</string>
-    <string name="download_error_not_retrying">下載\"%1$s\" 失敗。 </string>
+    <string name="download_error_not_retrying">下載\"%1$s\" 失敗。</string>
     <string name="download_error_tap_for_details">點擊查閱詳情。</string>
     <string name="download_error_device_not_found">找不到儲存設備</string>
     <string name="download_error_insufficient_space">您設備的儲存空間不夠了</string>
@@ -252,7 +252,6 @@
     <string name="download_error_wrong_size">伺服器連線在完成下載前中斷</string>
     <string name="download_error_blocked">您裝置上的其他應用程式 (如 VPN 或廣告封鎖程式) 阻擋了下載。</string>
     <string name="download_error_certificate">無法建立安全連線。這可能表示您裝置上的其他應用程式 (例如 VPN 或廣告封鎖程式) 阻擋了下載，或是伺服器證書出了問題。</string>
-    <string name="download_report_title">下載已完成，但可能有錯誤</string>
     <string name="download_error_io_error">IO 錯誤</string>
     <string name="download_error_request_error">要求錯誤</string>
     <string name="download_error_db_access">資料庫存取錯誤</string>
@@ -301,10 +300,10 @@
     <string name="smart_shuffle">智慧隨機播放</string>
     <string name="size">大小</string>
     <string name="clear_queue_confirmation_msg">請確認您要從佇列中移除所有集數。</string>
-    <string name="time_left_label">時間尚餘：\u0020</string>
+    <string name="time_left_label">"時間尚餘： "</string>
     <!--Variable Speed-->
   <string name="speed_presets">備選清單</string>
-    <string name="preset_already_exists">目前備選清單裡已有 %1$.2fx </string>
+    <string name="preset_already_exists">目前備選清單裡已有 %1$.2fx</string>
     <!--Empty list labels-->
   <string name="no_items_header_label">待播清單裡沒有任何單集</string>
     <string name="no_items_label">下載或長按後選擇「加入待播清單」即可將這一集放入待播清單。</string>
@@ -466,7 +465,6 @@
     <string name="pref_delete_removes_from_queue_sum">刪除某單集後，也自動將其從待播清單中移除</string>
     <string name="pref_filter_feed_title">篩選訂閱內容</string>
     <string name="pref_filter_feed_sum">在側邊欄和訂閱頁面中篩選您的訂閱</string>
-    <string name="subscriptions_are_filtered">此為篩選過的訂閱清單。</string>
     <string name="subscriptions_counter_greater_zero">計數大於 0 的</string>
     <string name="auto_downloaded">已自動下載</string>
     <string name="not_auto_downloaded">未自動下載</string>
@@ -599,7 +597,7 @@
     <string name="synchronization_login_status"><![CDATA[登入 <i>%2$s</i>上的 <i>%1$s</i>。<br/><br/>退出後，您可以再次選擇同步供應者]]></string>
     <string name="pref_synchronization_logout_toast">成功登出</string>
     <string name="gpodnetsync_error_title">gpodder.net 同步錯誤</string>
-    <string name="gpodnetsync_error_descr">更新時發生錯誤：\u0020</string>
+    <string name="gpodnetsync_error_descr">"更新時發生錯誤： "</string>
     <string name="gpodnetsync_pref_report_successful">成功</string>
     <string name="gpodnetsync_pref_report_failed">失敗</string>
     <string name="gpodnetsync_username_characters_error">帳號中只能包含英文字母、數字、橫線及底線</string>
@@ -614,7 +612,7 @@
     <string name="rating_contribute_label">想要加入嗎？無論您是想翻譯、支援、設計或編碼，我們都非常歡迎您的加入！</string>
     <string name="rating_contribute_button">探索貢獻方式</string>
     <string name="rating_volunteers_label">AntennaPod 是由志工利用空閒時間開發的。請留下好評，分享您對他們工作的欣賞。</string>
-    <string name="rating_rate">評分 AntennaPod </string>
+    <string name="rating_rate">評分 AntennaPod</string>
     <string name="rating_later">稍後</string>
     <!--Online feed view-->
   <string name="subscribe_label">訂閱</string>
