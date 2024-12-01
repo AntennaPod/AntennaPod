@@ -15,7 +15,7 @@
     <string name="open_autodownload_settings">Ir aos axustes</string>
     <string name="downloads_log_label">Rexistro de descargas</string>
     <string name="subscriptions_label">Subscricións</string>
-    <string name="subscriptions_list_label">Lista de subscricións</string>
+    <string name="subscriptions_list_label">Lista de subscricións (só menú lateral)</string>
     <string name="cancel_download_label">Cancelar descarga</string>
     <string name="playback_history_label">Historial de reprodución</string>
     <string name="episode_cache_full_title">Caché de episodios chea</string>
@@ -48,7 +48,7 @@
     <!--Home fragment-->
   <string name="home_surprise_title">Sorpréndete</string>
     <string name="home_classics_title">Mira os teus clásicos</string>
-    <string name="home_continue_title">Segue escoitando</string>
+    <string name="home_continue_title">Continúa a escoita</string>
     <string name="home_new_title">Olla as novidades</string>
     <string name="home_downloads_title">Xestiona as descargas</string>
     <string name="home_welcome_title">Benvida a AntennaPod!</string>
@@ -89,7 +89,7 @@
     <string name="yes">Si</string>
     <string name="no">Non</string>
     <string name="reset">Restablecer</string>
-    <string name="global_default">Valor por defecto xeral</string>
+    <string name="global_default">Predeterminado xeral</string>
     <string name="url_label">URL</string>
     <string name="support_funding_label">Axuda</string>
     <string name="support_podcast">Axuda a este podcast</string>
@@ -181,7 +181,7 @@
     <string name="add_tag">Engadir etiqueta</string>
     <string name="rename_tag_label">Cambiar nome etiqueta</string>
     <string name="confirm_mobile_feed_refresh_dialog_message">A actualización utilizando datos do móbil está desactiva nos axustes.\n\nQueres actualizar igualmente?</string>
-    <string name="confirm_mobile_feed_refresh_dialog_message_vpn">A túa VPN compórtase como unha rede móbil (conexión medida). A actualización dos podcast sobre redes móbiles está desactivada nos axustes.\n\nQueres actualizar actualmente? Se queres solucionar este problema, contacta coas desenvolvedoras da túa app VPN</string>
+    <string name="confirm_mobile_feed_refresh_dialog_message_vpn">A túa VPN compórtase como unha rede móbil (conexión medida). A actualización dos podcast sobre redes móbiles está desactivada nos axustes.\n\nQueres actualizar actualmente? Se queres solucionar este problema, contacta coas desenvolvedoras da túa app VPN.</string>
     <!--actions on feeditems-->
   <string name="download_label">Descargar</string>
     <plurals name="downloading_batch_label">
@@ -225,7 +225,7 @@
         <item quantity="other">%d episodios elimnados da cola.</item>
     </plurals>
     <plurals name="removed_from_inbox_batch_label">
-        <item quantity="one">%d episodio eliminado da caixa de entrada</item>
+        <item quantity="one">%d episodio eliminado das novidades.</item>
         <item quantity="other">%d episodios eliminados das novidades.</item>
     </plurals>
     <string name="add_to_favorite_label">Engadir a favoritos</string>
@@ -349,7 +349,7 @@
     <string name="interruptions">Interrupcións</string>
     <string name="playback_control">Control de reprodución</string>
     <string name="reassign_hardware_buttons">Reasignar botóns físicos</string>
-    <string name="preference_search_hint">Busca....</string>
+    <string name="preference_search_hint">Busca…</string>
     <string name="preference_search_no_results">Sen resultados</string>
     <string name="preference_search_clear_history">Eliminar historial</string>
     <string name="pref_episode_cleanup_title">Eliminar antes da descarga automática</string>
@@ -445,7 +445,7 @@
     <string name="pref_rewind">Tempo de salto ao retroceder</string>
     <string name="pref_rewind_sum">Personaliza o número de segundos que se retrocede na reprodución cando se preme o botón retroceso</string>
     <string name="pref_expandNotify_title">Alta prioridade nas notificacións</string>
-    <string name="pref_expandNotify_sum">Isto expande as notificacións para mostrar os botóns de reprodución</string>
+    <string name="pref_expandNotify_sum">Isto expande as notificacións para mostrar os botóns de reprodución.</string>
     <string name="pref_persistNotify_title">Controis persistentes de reprodución</string>
     <string name="pref_persistNotify_sum">Manter a notificación e os controis de reprodución na pantalla de bloqueo cando está detida a reprodución</string>
     <string name="pref_compact_notification_buttons_dialog_error_exact">Tes que escoller exactamente dous elementos</string>
@@ -466,15 +466,15 @@
     <string name="copied_to_clipboard">Copiado ó portapapeis</string>
     <string name="pref_proxy_title">Proxy</string>
     <string name="pref_proxy_sum">Establecer un proxy para a rede</string>
-    <string name="pref_no_browser_found">Non se atopou un navegador web</string>
+    <string name="pref_no_browser_found">Non se atopou un navegador web.</string>
     <string name="pref_enqueue_downloaded_title">Pór na cola os descargados</string>
     <string name="pref_enqueue_downloaded_summary">Engadir os episodios descargados á cola</string>
     <string name="pref_skip_silence_title">Omitir silencio no audio</string>
     <string name="behavior">Comportamento</string>
-    <string name="pref_default_page">Páxina por defecto</string>
+    <string name="pref_default_page">Páxina predeterminada</string>
     <string name="pref_default_page_sum">Pantalla que se mostra cando inicias AntennaPod</string>
     <string name="pref_back_button_opens_drawer">O botón Atrás abre o panel</string>
-    <string name="pref_back_button_opens_drawer_summary">Ao premer o botón atrás na páxina por defecto abre o panel de navegación</string>
+    <string name="pref_back_button_opens_drawer_summary">Ao premer no botón atrás na páxina predeterminada abre o panel de navegación</string>
     <string name="remember_last_page">Lembrar última páxina</string>
     <string name="pref_delete_removes_from_queue_title">Eliminar quita da cola</string>
     <string name="pref_delete_removes_from_queue_sum">Eliminar automáticamente un episodio da cola cando se borra</string>
@@ -511,11 +511,11 @@
     <string name="no_results_for_query">Non hai resultados para \"%1$s\"</string>
     <string name="search_online">Busca en liña</string>
     <!--Synchronization-->
-  <string name="sync_status_started">Comezou a sincr.</string>
-    <string name="sync_status_episodes_upload">Subindo cambios nos episodios...</string>
-    <string name="sync_status_episodes_download">Descargando cambios nos episodios...</string>
-    <string name="sync_status_upload_played">Subindo estado de reprodución...</string>
-    <string name="sync_status_subscriptions">Sincronizando subscricións...</string>
+  <string name="sync_status_started">Está sincronizando</string>
+    <string name="sync_status_episodes_upload">Subindo cambios nos episodios…</string>
+    <string name="sync_status_episodes_download">Descargando cambios nos episodios…</string>
+    <string name="sync_status_upload_played">Subindo estado de reprodución…</string>
+    <string name="sync_status_subscriptions">Sincronizando subscricións…</string>
     <string name="sync_status_success">Sincronización correcta</string>
     <string name="sync_status_error">Fallou a sincronización</string>
     <!--import and export-->
@@ -542,7 +542,7 @@
     <string name="automatic_database_export_error">Erro ao realizar a copia de apoio automática</string>
     <string name="database_import_label">Importar base de datos</string>
     <string name="database_import_warning">Ao importar a base de datos substituirás todas as subscricións actuais e historial de reprodución. Deberías exportar a base de datos actual como copia de apoio. Desexas substituíla?</string>
-    <string name="please_wait">Agarda...</string>
+    <string name="please_wait">Agarda…</string>
     <string name="export_error_label">Fallo ao exportar</string>
     <string name="export_success_title">Exportado con éxito</string>
     <string name="opml_import_ask_read_permission">Precísase acceso ao almacenamento externo para ler o ficheiro OPML</string>
@@ -604,10 +604,10 @@
     <string name="gpodnetauth_device_name_default">AntennaPod en %1$s</string>
     <string name="gpodnetauth_existing_devices">Dispositivos existentes</string>
     <string name="gpodnetauth_create_device">Crear dispositivo</string>
-    <string name="gpodnetauth_finish_descr">Parabéns! A túa conta gpodder.net está conectada ao dispositivo. AntennaPod poderá agora sincronizar automaticamente as túas subscricións no dispositivo na conta de gpodder.net</string>
+    <string name="gpodnetauth_finish_descr">Parabéns! A túa conta gpodder.net está conectada ao dispositivo. AntennaPod poderá agora sincronizar automaticamente as túas subscricións no dispositivo na conta de gpodder.net.</string>
     <string name="gpodnetauth_finish_butsyncnow">Iniciar a sincronización</string>
     <string name="pref_gpodnet_setlogin_information_title">Cambiar a información de conexión</string>
-    <string name="pref_gpodnet_setlogin_information_sum">Cambiar as credenciais de conexión da túa conta gpodder.net</string>
+    <string name="pref_gpodnet_setlogin_information_sum">Cambiar as credenciais de conexión da túa conta gpodder.net.</string>
     <string name="synchronization_sync_changes_title">Sincronizar agora</string>
     <string name="synchronization_sync_summary">Sincroniza os cambios nas subscricións e estado dos episodios</string>
     <string name="synchronization_full_sync_title">Forzar sincronización completa</string>
@@ -624,7 +624,7 @@
   <string name="choose_data_directory">Elixe cartafol de datos</string>
     <string name="choose_data_directory_message">Elixe o cartafol base para os datos. AntennaPod creará os subdirectorios que precise.</string>
     <string name="choose_data_directory_available_space">%1$s de %2$s libre</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Pausar a reprodución en lugar de baixar o volume cando outra aplicación quere reproducir un son.</string>
+    <string name="pref_pausePlaybackForFocusLoss_sum">Pausar a reprodución en lugar de baixar o volume cando outra aplicación quere reproducir un son</string>
     <string name="pref_pausePlaybackForFocusLoss_title">Pausa para interrupcións</string>
     <!--Rating dialog-->
   <string name="rating_tagline">Desde %1$s, reproduciches %2$s%3$d%4$s horas de podcasts.</string>
@@ -694,9 +694,9 @@
     <string name="release_schedule_saturday">Sáb</string>
     <string name="release_schedule_sunday">Dom</string>
     <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Importando as subscricións desde aplicacións de propósito único...</string>
+  <string name="sp_apps_importing_feeds_msg">Importando as subscricións desde aplicacións de propósito único…</string>
     <!--Add podcast fragment-->
-  <string name="search_podcast_hint">Buscar podcast...</string>
+  <string name="search_podcast_hint">Buscar podcast…</string>
     <string name="search_itunes_label">Buscar en Apple Podcasts</string>
     <string name="search_podcastindex_label">Buscar en Podcast Index</string>
     <string name="search_fyyd_label">Buscar en fyyd</string>
@@ -746,7 +746,7 @@
     <string name="port_label">Porto</string>
     <string name="optional_hint">(Optativo)</string>
     <string name="proxy_test_label">Proba</string>
-    <string name="proxy_checking">Comprobando...</string>
+    <string name="proxy_checking">Comprobando…</string>
     <string name="proxy_test_successful">Proba exitosa</string>
     <string name="proxy_test_failed">Fallo na proba</string>
     <string name="proxy_host_empty_error">Servidor non pode quedar baleiro</string>
