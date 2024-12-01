@@ -15,7 +15,7 @@
     <string name="open_autodownload_settings">פתיחת הגדרות</string>
     <string name="downloads_log_label">יומן הורדות</string>
     <string name="subscriptions_label">הסכתים</string>
-    <string name="subscriptions_list_label">רשימת מינויים</string>
+    <string name="subscriptions_list_label">רשימת מינויים (תפריט צד בלבד)</string>
     <string name="cancel_download_label">ביטול הורדה</string>
     <string name="playback_history_label">היסטוריית נגינה</string>
     <string name="episode_cache_full_title">מטמון הפרקים מלא</string>

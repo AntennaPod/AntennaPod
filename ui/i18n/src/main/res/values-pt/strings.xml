@@ -15,7 +15,7 @@
     <string name="open_autodownload_settings">Abrir definições</string>
     <string name="downloads_log_label">Registo de descargas</string>
     <string name="subscriptions_label">Subscrições</string>
-    <string name="subscriptions_list_label">Lista de subscrições</string>
+    <string name="subscriptions_list_label">Lista de assinaturas (apenas menu lateral)</string>
     <string name="cancel_download_label">Cancelar descarga</string>
     <string name="playback_history_label">Histórico de reprodução</string>
     <string name="episode_cache_full_title">Cache de episódios cheia</string>
@@ -306,7 +306,7 @@
     <string name="confirm_mobile_streaming_button_always">Sempre</string>
     <string name="confirm_mobile_streaming_button_once">Uma vez</string>
     <!--Mediaplayer messages-->
-  <string name="playback_error_generic">Não foi possível reproduzir o ficheiro.\n\n- Experimente eliminar o episódio e descarregar novamente.\n- Verifique a sua ligação de rede e certifique-se se existe uma VPN ou página de acesso que esteja a impedir a emissão.\n- Toque longo no episódio e aceda ao \\\"Endereço multimédia\\\" no navegador web, para se certificar de que o episódio pode ser reproduzido.\n\nSe nada disto funcionar, contacte os criadores do podcast.</string>
+  <string name="playback_error_generic">O arquivo de mídia não pôde ser reproduzido.\n\n- Tente excluir e baixar novamente o episódio.\n- Verifique sua conexão de rede e certifique-se de que nenhuma VPN ou página de login esteja bloqueando o acesso.\n- Tente manter pressionado e compartilhar o \"Endereço de mídia\" em seu navegador para ver se ele pode ser reproduzido lá. Caso contrário, entre em contato com os criadores do podcast.</string>
     <string name="no_media_playing_label">Nada em reprodução</string>
     <string name="unknown_media_key">Tecla multimédia desconhecida: %1$d</string>
     <string name="error_file_not_found">Ficheiro não encontrado</string>
@@ -330,7 +330,7 @@
     <string name="random">Aleatório</string>
     <string name="smart_shuffle">Mistura inteligente</string>
     <string name="size">Tamanho</string>
-    <string name="clear_queue_confirmation_msg">Tem a certeza de que pretende remover todos os episódios da fila?</string>
+    <string name="clear_queue_confirmation_msg">Confirme que deseja remover TODOS os episódios da fila.</string>
     <string name="time_left_label">"Tempo restante: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Pré-definidas</string>
@@ -431,7 +431,7 @@
     <string name="pref_nav_drawer_feed_order_title">Ordem de subscrições</string>
     <string name="pref_nav_drawer_feed_order_sum">Alterar ordem das subscrições</string>
     <string name="pref_nav_drawer_feed_counter_title">Contador de subscrições</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Alterar informação mostrada no contador de subscrições. Também afeta as subscrições se a \'Ordem de subscrição\' estiver definida como \'Contador\'</string>
+    <string name="pref_nav_drawer_feed_counter_sum">Altere as informações exibidas pelo contador de assinaturas. Também afeta a classificação de assinaturas se \'Pedido de assinatura\' estiver definido como \'Contador\'.</string>
     <string name="pref_automatic_download_title">Descarga automática</string>
     <string name="pref_automatic_download_sum">Configurar descarga automática de episódios</string>
     <string name="pref_automatic_download_on_battery_title">Descarregar se não estiver a carregar</string>
@@ -449,7 +449,7 @@
     <string name="pref_playback_speed_sum">Personalizar disponibilidade das velocidades variáveis de reprodução</string>
     <string name="pref_feed_playback_speed_sum">Velocidade utilizada para a reprodução áudio dos episódios deste podcast</string>
     <string name="pref_feed_skip">Ignorar automaticamente</string>
-    <string name="pref_feed_skip_sum">Ignorar introduções e créditos finais</string>
+    <string name="pref_feed_skip_sum">Pule as introduções e os créditos finais.</string>
     <string name="pref_feed_skip_ending">Ignorar os últimos</string>
     <string name="pref_feed_skip_intro">Ignorar os primeiros</string>
     <string name="pref_feed_skip_ending_toast">Últimos %d segundos ignorados</string>
@@ -633,7 +633,7 @@
     <string name="synchronization_full_sync_title">Impor sincronização total</string>
     <string name="synchronization_force_sync_summary">Voltar a sincronizar todas as subscrições e o estado de reprodução</string>
     <string name="synchronization_logout">Terminar sessão</string>
-    <string name="synchronization_login_status"><![CDATA[Iniciou sessão como <i>%1$s</i> em <i>%2$s</i>. <br/><br/>Se quiser, pode escolher outro serviço de sincronização assim quer terminar a sessão]]></string>
+    <string name="synchronization_login_status">Conectado como %1$s em %2$s.\n\nVocê pode escolher seu provedor de sincronização novamente depois de sair.</string>
     <string name="pref_synchronization_logout_toast">Sessão terminada com sucesso</string>
     <string name="gpodnetsync_error_title">Erro de sincronização gpodder.net</string>
     <string name="gpodnetsync_error_descr">"Ocorreu um erro ao sincronizar: "</string>
@@ -817,7 +817,7 @@
     <string name="statistics_view_all">Todos os podcasts »</string>
     <string name="discover_more">Descobrir mais »</string>
     <string name="statistics_release_schedule">agendamento</string>
-    <string name="nextcloud_login_error_generic"><![CDATA[Não foi possível iniciar sessão no servidor Nextcloud.\n\n- Verifique a sua ligação de rede.\n- Confirme se introduziu o endereço correto.\n- Certifique-se de que o plugin "gpoddersync Nextcloud" está instalado.]]></string>
+    <string name="nextcloud_login_error_generic">Não é possível fazer login em seu Nextcloud.\n\n- Verifique sua conexão de rede.\n- Confirme se você está usando o endereço de servidor correto.\n- Certifique-se de que o plugin gpoddersync Nextcloud esteja instalado.</string>
     <string name="feed_delete_confirmation_msg_batch">Confirma que pretende remover os podcasts selecionados? Irá eliminar todos os episódios (incluindo os descarregados), histórico de reprodução e as suas estatísticas.</string>
     <string name="null_value_podcast_error">A ligação não contém um URL válido como podcast. Analise a ligação e tente novamente ou, em alternativa pesquise manualmente.</string>
     <string name="pref_nav_drawer_items_title">Personalizar navegação</string>

@@ -15,7 +15,7 @@
     <string name="open_autodownload_settings">Άνοιγμα ρυθμίσεων</string>
     <string name="downloads_log_label">Αρχείο καταγραφής λήψεων</string>
     <string name="subscriptions_label">Συνδρομές</string>
-    <string name="subscriptions_list_label">Λίστα συνδρομών</string>
+    <string name="subscriptions_list_label">Λίστα συνδρομών (μόνο στο πλαϊνό μενού)</string>
     <string name="cancel_download_label">Ακύρωση λήψης</string>
     <string name="playback_history_label">Ιστορικό αναπαραγωγής</string>
     <string name="episode_cache_full_title">Η κρυφή μνήμη του επεισοδίου είναι γεμάτη</string>

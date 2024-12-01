@@ -15,7 +15,7 @@
     <string name="open_autodownload_settings">Åbn indstillinger</string>
     <string name="downloads_log_label">Overførselslog</string>
     <string name="subscriptions_label">Abonnementer</string>
-    <string name="subscriptions_list_label">Abonnementsliste</string>
+    <string name="subscriptions_list_label">Abonnementsliste (kun sidemenu)</string>
     <string name="cancel_download_label">Annullér overførsel</string>
     <string name="playback_history_label">Afspilningshistorik</string>
     <string name="episode_cache_full_title">Mellemlageret for afsnit er fuldt</string>
