@@ -62,6 +62,8 @@ public class TranscriptUtils {
 
     public static Transcript loadTranscript(FeedMedia media, Boolean forceRefresh) throws InterruptedIOException {
         String transcriptType = media.getItem().getTranscriptType();
+        // debug log; remove before merging
+        Log.i(TAG, "transcript type: " + transcriptType);
 
         if (!forceRefresh && media.getItem().getTranscript() != null) {
             return media.getTranscript();
@@ -83,6 +85,8 @@ public class TranscriptUtils {
         }
 
         String transcriptUrl = media.getItem().getTranscriptUrl();
+        // debug log; remove before merging
+        Log.i(TAG, "transcript url: " + transcriptUrl);
         String t = TranscriptUtils.loadTranscriptFromUrl(transcriptUrl, forceRefresh);
         if (StringUtils.isNotEmpty(t)) {
             return TranscriptParser.parse(t, transcriptType);

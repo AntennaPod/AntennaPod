@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.model.feed;
 
+import android.util.Log; // for debug logs; remove before merging
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -9,6 +11,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -103,6 +106,8 @@ public class FeedItem implements Serializable {
         this.autoDownloadEnabled = autoDownloadEnabled;
         this.podcastIndexChapterUrl = podcastIndexChapterUrl;
         if (transcriptUrl != null) {
+            // debug log; remove before merging
+            Log.i("Transcript", "override type " + transcriptType + ", URL " + transcriptUrl);
             this.podcastIndexTranscriptUrl = transcriptUrl;
             this.podcastIndexTranscriptType = transcriptType;
         }
@@ -430,6 +435,8 @@ public class FeedItem implements Serializable {
     }
 
     public void setTranscriptUrl(String type, String url) {
+        // debug log; remove before merging
+        Log.i("Transcript", "Set transcript URL, type: " + type + ", URL: " + url);
         updateTranscriptPreferredFormat(type, url);
     }
 
@@ -448,22 +455,44 @@ public class FeedItem implements Serializable {
 
         String canonicalSrr = "application/srr";
         String jsonType = "application/json";
+        String vttType = "text/vtt";
 
+        // We prefer JSON over VTT over SRT
+        HashMap<String, Integer> typePriority = new HashMap<String, Integer>();
+        typePriority.put(jsonType, 2);
+        typePriority.put(vttType, 1);
+        typePriority.put(canonicalSrr, 0);
+
+        String detectedType = "";
         switch (type) {
             case "application/json":
-                podcastIndexTranscriptUrl = url;
-                podcastIndexTranscriptType = type;
+                detectedType = jsonType;
+                break;
+            case "text/vtt":
+                detectedType = vttType;
                 break;
             case "application/srr":
             case "application/srt":
             case "application/x-subrip":
-                if (podcastIndexTranscriptUrl == null || !podcastIndexTranscriptType.equals(jsonType)) {
-                    podcastIndexTranscriptUrl = url;
-                    podcastIndexTranscriptType = canonicalSrr;
-                }
+                detectedType = canonicalSrr;
                 break;
             default:
                 break;
+        }
+
+        if (!detectedType.isEmpty()) {
+            Integer previousPriority = typePriority.get(podcastIndexTranscriptType);
+            Integer currentPriority = typePriority.get(detectedType);
+            if (previousPriority == null) {
+                previousPriority = -1;
+            }
+            if (currentPriority == null) {
+                currentPriority = -1;
+            }
+            if (previousPriority < currentPriority) {
+                podcastIndexTranscriptUrl = url;
+                podcastIndexTranscriptType = detectedType;
+            }
         }
     }
 
