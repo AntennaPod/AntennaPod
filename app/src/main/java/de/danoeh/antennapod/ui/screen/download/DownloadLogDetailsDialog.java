@@ -4,6 +4,9 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Build;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -39,15 +42,19 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
             message = status.getReasonDetailed();
         }
 
-        String messageFull = context.getString(R.string.download_log_details_message,
-                context.getString(DownloadErrorLabel.from(status.getReason())), message, url);
+        String humanReadableReason = context.getString(DownloadErrorLabel.from(status.getReason()));
+        SpannableString errorMessage = new SpannableString(context.getString(R.string.download_log_details_message,
+                humanReadableReason, message, url));
+        errorMessage.setSpan(new ForegroundColorSpan(0x88888888),
+                humanReadableReason.length(), errorMessage.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
         setTitle(R.string.download_error_details);
-        setMessage(messageFull);
+        setMessage(errorMessage);
         setPositiveButton(android.R.string.ok, null);
         setNeutralButton(R.string.copy_to_clipboard, (dialog, which) -> {
             ClipboardManager clipboard = (ClipboardManager) getContext()
                     .getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText(context.getString(R.string.download_error_details), messageFull);
+            ClipData clip = ClipData.newPlainText(context.getString(R.string.download_error_details), errorMessage);
             clipboard.setPrimaryClip(clip);
             if (Build.VERSION.SDK_INT < 32) {
                 EventBus.getDefault().post(new MessageEvent(context.getString(R.string.copied_to_clipboard)));

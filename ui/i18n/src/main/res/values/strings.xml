@@ -286,7 +286,7 @@
     <string name="download_error_insufficient_space">There is not enough space left on your device.</string>
     <string name="download_error_http_data_error">HTTP data error</string>
     <string name="download_error_error_unknown">Unknown error</string>
-    <string name="download_error_parser_exception">The podcast host\'s server sent a broken podcast feed.</string>
+    <string name="download_error_parser_exception">The podcast host\'s server sent a broken podcast feed. We recommend checking with a podcast validator such as castfeedvalidator.com and contacting the podcast creator to let them know.</string>
     <string name="download_error_unsupported_type">Unsupported feed type</string>
     <string name="download_error_unsupported_type_html">The podcast host\'s server sent a website, not a podcast.</string>
     <string name="download_error_not_found">The podcast host\'s server does not know where to find the file. It may have been deleted.</string>
