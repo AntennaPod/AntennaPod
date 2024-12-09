@@ -70,7 +70,7 @@ public class FeedItemMenuHandler {
         boolean canDownload = false;
         boolean canAddFavorite = false;
         boolean canRemoveFavorite = false;
-        boolean canShowTranscript = selectedItems.size() == 1;
+        boolean canShowTranscript = false;
 
         for (FeedItem item : selectedItems) {
             boolean hasMedia = item.getMedia() != null;
