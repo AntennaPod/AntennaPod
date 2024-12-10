@@ -60,8 +60,8 @@ public class FeedItemMenuHandler {
         boolean canSkip = false;
         boolean canRemoveFromQueue = false;
         boolean canAddToQueue = false;
-        boolean canVisitWebsite = selectedItems.size() == 1;
-        boolean canShare = selectedItems.size() == 1;
+        boolean canVisitWebsite = false;
+        boolean canShare = false;
         boolean canRemoveFromInbox = false;
         boolean canMarkPlayed = false;
         boolean canMarkUnplayed = false;
