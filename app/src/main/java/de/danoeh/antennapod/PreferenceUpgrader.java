@@ -1,5 +1,8 @@
 package de.danoeh.antennapod;
 
+import static de.danoeh.antennapod.storage.preferences.UserPreferences.PREF_PLAYBACK_SKIP_SILENCE;
+import static de.danoeh.antennapod.storage.preferences.UserPreferences.setSkipSilence;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.KeyEvent;
@@ -12,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.CrashReportWriter;
 import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
@@ -122,7 +126,7 @@ public class PreferenceUpgrader {
 
             SharedPreferences sleepTimerPreferences =
                     context.getSharedPreferences(SleepTimerPreferences.PREF_NAME, Context.MODE_PRIVATE);
-            TimeUnit[] timeUnits = { TimeUnit.SECONDS, TimeUnit.MINUTES, TimeUnit.HOURS };
+            TimeUnit[] timeUnits = {TimeUnit.SECONDS, TimeUnit.MINUTES, TimeUnit.HOURS};
             long value = Long.parseLong(SleepTimerPreferences.lastTimerValue());
             TimeUnit unit = timeUnits[sleepTimerPreferences.getInt("LastTimeUnit", 1)];
             SleepTimerPreferences.setLastTimer(String.valueOf(unit.toMinutes(value)));
@@ -166,6 +170,13 @@ public class PreferenceUpgrader {
             if (!StringUtils.isAllEmpty(oldEpisodeFilter)) {
                 prefs.edit().putString(UserPreferences.PREF_FILTER_ALL_EPISODES, oldEpisodeFilter).apply();
             }
+        }
+
+        if (oldVersion < 3060000) {
+            FeedPreferences.SkipSilence skipSilence = prefs.getBoolean(PREF_PLAYBACK_SKIP_SILENCE, false)
+                    ? FeedPreferences.SkipSilence.AGGRESSIVE
+                    : FeedPreferences.SkipSilence.OFF;
+            setSkipSilence(skipSilence);
         }
     }
 }
