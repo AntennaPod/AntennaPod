@@ -15,7 +15,7 @@
     <string name="open_autodownload_settings">Öppna inställningar</string>
     <string name="downloads_log_label">Nedladdningslogg</string>
     <string name="subscriptions_label">Prenumerationer</string>
-    <string name="subscriptions_list_label">Prenumerationslista</string>
+    <string name="subscriptions_list_label">Prenumerationslista (sidomeny endast)</string>
     <string name="cancel_download_label">Avbryt nedladdning</string>
     <string name="playback_history_label">Uppspelningshistorik</string>
     <string name="episode_cache_full_title">Avsnittscachen är full</string>

@@ -15,7 +15,7 @@
     <string name="open_autodownload_settings">افتح الإعدادات</string>
     <string name="downloads_log_label">سجل التنزيلات</string>
     <string name="subscriptions_label">الاشتراكات</string>
-    <string name="subscriptions_list_label">لائحة الاشتراكات</string>
+    <string name="subscriptions_list_label">لائحة الاشتراكات (فقط في الدرج)</string>
     <string name="cancel_download_label">ألغِ التنزيل</string>
     <string name="playback_history_label">سجل التشغيل</string>
     <string name="episode_cache_full_title">ذاكرة تخزين الحلقات ممتلئة</string>
