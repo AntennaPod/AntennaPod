@@ -15,7 +15,7 @@
     <string name="open_autodownload_settings">Apri Impostazioni</string>
     <string name="downloads_log_label">Registro dei download</string>
     <string name="subscriptions_label">Iscrizioni</string>
-    <string name="subscriptions_list_label">Lista iscrizioni</string>
+    <string name="subscriptions_list_label">Lista iscrizioni (solo menù laterale)</string>
     <string name="cancel_download_label">Annulla download</string>
     <string name="playback_history_label">Cronologia riproduzioni</string>
     <string name="episode_cache_full_title">Cache degli episodi piena</string>
