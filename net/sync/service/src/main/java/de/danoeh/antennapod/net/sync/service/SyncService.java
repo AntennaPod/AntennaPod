@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.util.Pair;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.SyncServiceEvent;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -77,6 +78,7 @@ public class SyncService extends Worker {
         try {
             activeSyncProvider.login();
             syncSubscriptions(activeSyncProvider);
+            waitForDownloadServiceCompleted();
             if (someFeedWasNotRefreshedYet()) {
                 // Note that this service might get called several times before the FeedUpdate completes
                 Log.d(TAG, "Found new subscriptions. Need to refresh them before syncing episode actions");
@@ -107,6 +109,22 @@ public class SyncService extends Worker {
             }
         } finally {
             currentlyActive = false;
+        }
+    }
+
+    private void waitForDownloadServiceCompleted() {
+        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_wait_for_downloads));
+        try {
+            while (true) {
+                FeedUpdateRunningEvent event = EventBus.getDefault().getStickyEvent(FeedUpdateRunningEvent.class);
+                if (event == null || !event.isFeedUpdateRunning) {
+                    return;
+                }
+                //noinspection BusyWait
+                Thread.sleep(1000);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
