@@ -528,6 +528,8 @@
     <string name="remember_last_page">Remember last page</string>
     <string name="pref_delete_removes_from_queue_title">Delete removes from queue</string>
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted</string>
+    <string name="pref_downloads_button_action_title">Switch Delete button to Play/Pause</string>
+    <string name="pref_downloads_button_action_sum">Should Delete button be changed to Play/Pause in Downloads view</string>
     <string name="pref_filter_feed_title">Subscription filter</string>
     <string name="pref_filter_feed_sum">Filter your subscriptions in navigation drawer and subscriptions screen</string>
     <string name="subscriptions_counter_greater_zero">Counter greater than zero</string>
