@@ -20,7 +20,7 @@ dependencies {
     implementation project(':model')
     implementation project(':net:ssl')
     implementation project(':storage:preferences')
-    implementation 'androidx.core:core-ktx:1.15.0'
+    implementation 'androidx.core:core-ktx:$coreKtxVersion'
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
