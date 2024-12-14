@@ -40,7 +40,7 @@ public class ShareUtils {
      * @param context
      * @param feed
      */
-    public static void shareFeedLink(@NonNull Context context, Feed feed) {
+    public static void shareFeedLink(@NonNull Context context, @NonNull Feed feed) {
         String feedurl = URLEncoder.encode(feed.getDownloadUrl());
         feedurl = feedurl.replace("htt", "%68%74%74"); // To not confuse users by having a url inside a url
         String text = feed.getTitle() + "\n\n"
