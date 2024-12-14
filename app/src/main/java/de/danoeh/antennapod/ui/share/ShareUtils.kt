@@ -10,7 +10,7 @@ import de.danoeh.antennapod.net.common.urlEncode
 /**
  * Shares an individual feed item. To share a feed, use [ShareUtils.shareFeedLink].
  */
-fun shareFeedItemLink(context: Context, item: FeedItem) {
+fun getShareFeedItemText(item: FeedItem): String {
     val itemUrl = urlEncode(item.link)
     val query = queryString(mapOf(
         "url" to itemUrl,
@@ -18,7 +18,6 @@ fun shareFeedItemLink(context: Context, item: FeedItem) {
         "eGuid" to item.feedId.toString(),
         "date" to item.pubDate.time.toString()
     ))
-    val text = item.title + "\n\n" +
-        "https://antennapod.org/deeplink/episode?$query"
-    ShareUtils.shareLink(context, text)
+    return item.title + "\n\n" +
+            "https://antennapod.org/deeplink/episode?$query"
 }

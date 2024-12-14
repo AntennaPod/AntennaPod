@@ -36,7 +36,7 @@ public class ShareUtils {
     }
 
     /**
-     * Shares a feed link. To share a feed item, use {@link ShareUtilsKt#shareFeedItemLink(Context, FeedItem)}.
+     * Shares a feed link. To share a feed item, use {@link ShareUtilsKt#getShareFeedItemText(FeedItem)} with {@link #shareLink(Context, String)}.
      * @param context The context of the activity
      * @param feed The feed to share
      */
