@@ -2,6 +2,7 @@ package de.danoeh.antennapod.ui.screen.drawer;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -16,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
@@ -27,13 +27,35 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
-
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.event.QueueEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.net.download.service.episode.autodownload.EpisodeCleanupAlgorithmFactory;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.storage.database.NavDrawerData;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.MenuItemUtils;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.common.ConfirmationDialog;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
+import de.danoeh.antennapod.ui.screen.feed.RemoveFeedDialog;
+import de.danoeh.antennapod.ui.screen.feed.RenameFeedDialog;
+import de.danoeh.antennapod.ui.screen.home.HomeFragment;
+import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
 import de.danoeh.antennapod.ui.screen.subscriptions.FeedMenuHandler;
+import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionsFilterDialog;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -43,28 +65,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
-import de.danoeh.antennapod.ui.MenuItemUtils;
-import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.storage.database.NavDrawerData;
-import de.danoeh.antennapod.ui.screen.feed.RemoveFeedDialog;
-import de.danoeh.antennapod.ui.screen.feed.RenameFeedDialog;
-import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionsFilterDialog;
-import de.danoeh.antennapod.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.event.QueueEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
-import de.danoeh.antennapod.ui.screen.home.HomeFragment;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class NavDrawerFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     @VisibleForTesting
@@ -205,7 +205,28 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         if (itemId == R.id.rename_folder_item) {
             new RenameFeedDialog(getActivity(), drawerItem).show();
             return true;
+        } else if (itemId == R.id.delete_folder_item) {
+            ConfirmationDialog dialog = new ConfirmationDialog(getContext(), R.string.delete_tag_label, getContext().getString(R.string.delete_tag_confirmation, drawerItem.getTitle())) {
+
+                @Override
+                public void onConfirmButtonPressed(DialogInterface dialog) {
+                    Log.d(TAG, "Clicked confirmation dialog");
+
+                    List<NavDrawerData.DrawerItem> feeds = ((NavDrawerData.TagDrawerItem) drawerItem).getChildren();
+
+                    for (NavDrawerData.DrawerItem feed : feeds) {
+                        FeedPreferences preferences = ((NavDrawerData.FeedDrawerItem) feed).feed.getPreferences();
+                        preferences.getTags().remove(drawerItem.getTitle());
+                        DBWriter.setFeedPreferences(preferences);
+                    }
+                }
+            };
+            dialog.createNewDialog().show();
+
+            Log.d(TAG, "onTagContextMenuClicked: tried to delete tag");
+            return true;
         }
+        Log.d(TAG, "onTagContextMenuClicked: " + itemId);
         return super.onContextItemSelected(item);
     }
 
@@ -381,12 +402,12 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
 
     private void loadData() {
         disposable = Observable.fromCallable(
-                () -> {
-                    NavDrawerData data = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter(),
-                            UserPreferences.getFeedOrder(), UserPreferences.getFeedCounterSetting());
-                    reclaimableSpace = EpisodeCleanupAlgorithmFactory.build().getReclaimableItems();
-                    return new Pair<>(data, makeFlatDrawerData(data.items, 0));
-                })
+                        () -> {
+                            NavDrawerData data = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter(),
+                                    UserPreferences.getFeedOrder(), UserPreferences.getFeedCounterSetting());
+                            reclaimableSpace = EpisodeCleanupAlgorithmFactory.build().getReclaimableItems();
+                            return new Pair<>(data, makeFlatDrawerData(data.items, 0));
+                        })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

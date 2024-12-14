@@ -210,6 +210,8 @@
     <string name="edit_tags">Edit tags</string>
     <string name="add_tag">Add tag</string>
     <string name="rename_tag_label">Rename tag</string>
+    <string name="delete_tag_label">Delete tag</string>
+    <string name="delete_tag_confirmation">Please confirm that you want to delete the %s tag.</string>
     <string name="confirm_mobile_feed_refresh_dialog_message">Refreshing podcasts over mobile data connection is disabled in the settings.\n\nDo you want to refresh anyway?</string>
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Your VPN app pretends to be a mobile network (metered connection). Refreshing podcasts over mobile data connection is disabled in the settings.\n\nDo you want to refresh anyway? If you want this problem to be fixed, contact the creators of your VPN app.</string>
     <string name="delete_downloads_played">Delete played</string>
