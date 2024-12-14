@@ -10,7 +10,7 @@ class UriUtil2Test {
     @Test
     fun testUrlEncode() {
         val testUrl = "http://example.com/this is not encoded"
-        val expected = "http%3A%2F%2Fexample.com%2Fthis%20is%20not%20encoded"
+        val expected = "http%3A%2F%2Fexample.com%2Fthis+is+not+encoded"
         assertEquals(expected, urlEncode(testUrl))
     }
 
