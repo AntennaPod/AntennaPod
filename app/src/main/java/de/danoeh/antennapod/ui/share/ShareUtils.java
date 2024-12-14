@@ -37,8 +37,8 @@ public class ShareUtils {
 
     /**
      * Shares a feed link. To share a feed item, use {@link ShareUtilsKt#shareFeedItemLink(Context, FeedItem)}.
-     * @param context
-     * @param feed
+     * @param context The context of the activity
+     * @param feed The feed to share
      */
     public static void shareFeedLink(@NonNull Context context, @NonNull Feed feed) {
         String feedurl = UriUtilKt.urlEncode(feed.getDownloadUrl());
