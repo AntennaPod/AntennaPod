@@ -16,6 +16,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.net.common.UriUtilKt;
 import de.danoeh.antennapod.ui.common.Converter;
 
 /** Utility methods for sharing data */
@@ -41,11 +42,11 @@ public class ShareUtils {
      * @param feed
      */
     public static void shareFeedLink(@NonNull Context context, @NonNull Feed feed) {
-        String feedurl = URLEncoder.encode(feed.getDownloadUrl());
+        String feedurl = UriUtilKt.urlEncode(feed.getDownloadUrl());
         feedurl = feedurl.replace("htt", "%68%74%74"); // To not confuse users by having a url inside a url
         String text = feed.getTitle() + "\n\n"
                 + "https://antennapod.org/deeplink/subscribe/?url=" + feedurl
-                + "&title=" + URLEncoder.encode(feed.getTitle());
+                + "&title=" + UriUtilKt.urlEncode(feed.getTitle());
         shareLink(context, text);
     }
 
