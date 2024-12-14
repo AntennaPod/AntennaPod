@@ -23,7 +23,7 @@ fun queryString(params: Map<String, String>): String {
 /**
  * Encodes a URL using UTF-8. Implementation is chosen based on the current platform version.
  */
-interface PlatformUrlEncoder {
+internal interface PlatformUrlEncoder {
     fun encode(input: String?): String
 }
 
@@ -31,7 +31,7 @@ interface PlatformUrlEncoder {
  * Signature with defined charset is only available in API 33 and above.
  */
 @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-class StandardUrlEncoder : PlatformUrlEncoder {
+internal class StandardUrlEncoder : PlatformUrlEncoder {
     override fun encode(input: String?): String {
         return URLEncoder.encode(input, StandardCharsets.UTF_8)
     }
@@ -41,7 +41,7 @@ class StandardUrlEncoder : PlatformUrlEncoder {
  * Legacy implementation for API 32 and below - uses the default charset, which is documented as unreliable since
  * it can differ with each platform.
  */
-class LegacyUrlEncoder : PlatformUrlEncoder {
+internal class LegacyUrlEncoder : PlatformUrlEncoder {
     override fun encode(input: String?): String {
         @Suppress("DEPRECATION")
         return URLEncoder.encode(input)
