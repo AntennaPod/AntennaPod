@@ -18,6 +18,7 @@ fun shareFeedItemLink(context: Context, item: FeedItem) {
         "eGuid" to item.feedId.toString(),
         "date" to item.pubDate.time.toString()
     ))
-    val text = "https://antennapod.org/deeplink/episode?$query"
+    val text = item.title + "\n\n" +
+        "https://antennapod.org/deeplink/episode?$query"
     ShareUtils.shareLink(context, text)
 }
