@@ -43,6 +43,7 @@ class StandardUrlEncoder : PlatformUrlEncoder {
  */
 class LegacyUrlEncoder : PlatformUrlEncoder {
     override fun encode(input: String?): String {
+        @Suppress("DEPRECATION")
         return URLEncoder.encode(input)
     }
 }
