@@ -4,7 +4,6 @@ package de.danoeh.antennapod.ui.share
 
 import android.content.Context
 import de.danoeh.antennapod.model.feed.FeedItem
-import de.danoeh.antennapod.net.common.UriUtil
 import de.danoeh.antennapod.net.common.queryString
 import de.danoeh.antennapod.net.common.urlEncode
 
