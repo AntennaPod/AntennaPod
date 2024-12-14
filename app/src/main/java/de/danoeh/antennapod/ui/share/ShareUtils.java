@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 
-import de.danoeh.antennapod.ui.common.Converter;
 import java.io.File;
 import java.net.URLEncoder;
 
@@ -17,6 +16,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.net.common.UriUtil;
+import de.danoeh.antennapod.ui.common.Converter;
 
 /** Utility methods for sharing data */
 public class ShareUtils {
@@ -42,6 +43,11 @@ public class ShareUtils {
                 + "https://antennapod.org/deeplink/subscribe/?url=" + feedurl
                 + "&title=" + URLEncoder.encode(feed.getTitle());
         shareLink(context, text);
+    }
+
+    public static void shareFeedItemLink(Context context, FeedItem item) {
+        String itemUrl = UriUtil.urlEncode(item.getLink());
+        shareLink();
     }
 
     public static boolean hasLinkToShare(FeedItem item) {
