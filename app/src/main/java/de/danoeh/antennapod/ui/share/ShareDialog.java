@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.ui.share;
 
+import static de.danoeh.antennapod.ui.share.ShareUtilsKt.getShareFeedItemText;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -72,10 +74,12 @@ public class ShareDialog extends BottomSheetDialogFragment {
                     getContext(), item, viewBinding.sharePositionCheckbox.isChecked(), false));
             dismiss();
         });
+        String antennaPodAddressText = getShareFeedItemText(item);
         viewBinding.antennaPodAddressCard.setOnClickListener(v -> {
-            ShareUtilsKt.shareFeedItemLink(getContext(), item);
+            ShareUtils.shareLink(getContext(), antennaPodAddressText);
             dismiss();
         });
+        viewBinding.antennapodAddressText.setText(antennaPodAddressText);
 
         return viewBinding.getRoot();
     }
