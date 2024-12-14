@@ -94,7 +94,7 @@ dependencies {
     implementation project(':playback:service')
     implementation project(':ui:chapters')
     implementation project(':ui:transcript')
-    implementation 'androidx.core:core-ktx:$coreKtxVersion'
+    implementation "androidx.core:core-ktx:$coreKtxVersion"
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
