@@ -72,6 +72,10 @@ public class ShareDialog extends BottomSheetDialogFragment {
                     getContext(), item, viewBinding.sharePositionCheckbox.isChecked(), false));
             dismiss();
         });
+        viewBinding.antennaPodAddressCard.setOnClickListener(v -> {
+            ShareUtilsKt.shareFeedItemLink(getContext(), item);
+            dismiss();
+        });
 
         return viewBinding.getRoot();
     }
