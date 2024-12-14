@@ -6,6 +6,7 @@ plugins {
     id 'com.android.library' version "$agpVersion" apply false
     id 'com.github.spotbugs' version '4.8.0' apply false
     id 'checkstyle'
+    id 'org.jetbrains.kotlin.android' version '2.1.0' apply false
 }
 
 project.ext {

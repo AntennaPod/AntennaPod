@@ -1,11 +1,15 @@
 plugins {
     id("com.android.library")
+    id 'org.jetbrains.kotlin.android'
 }
 apply from: "../../common.gradle"
 apply from: "../../playFlavor.gradle"
 
 android {
     namespace "de.danoeh.antennapod.net.common"
+    kotlinOptions {
+        jvmTarget = '17'
+    }
 
     lint {
         disable 'StaticFieldLeak'
@@ -16,6 +20,7 @@ dependencies {
     implementation project(':model')
     implementation project(':net:ssl')
     implementation project(':storage:preferences')
+    implementation 'androidx.core:core-ktx:1.15.0'
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
