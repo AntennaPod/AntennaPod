@@ -10,7 +10,6 @@ import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 
 import java.io.File;
-import java.net.URLEncoder;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.Feed;
