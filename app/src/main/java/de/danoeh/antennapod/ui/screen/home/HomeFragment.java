@@ -39,7 +39,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -82,10 +81,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         viewBinding.homeContainer.removeAllViews();
 
         SharedPreferences prefs = getContext().getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
-        if (Calendar.getInstance().get(Calendar.YEAR) == EchoConfig.RELEASE_YEAR
-                && Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER
-                && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) >= 10
-                && prefs.getInt(PREF_HIDE_ECHO, 0) != EchoConfig.RELEASE_YEAR) {
+        if (EchoConfig.isCurrentlyVisible() && prefs.getInt(PREF_HIDE_ECHO, 0) != EchoConfig.RELEASE_YEAR) {
             addSection(new EchoSection());
         }
 
