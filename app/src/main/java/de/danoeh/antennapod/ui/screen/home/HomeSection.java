@@ -21,8 +21,6 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.Locale;
-
 /**
  * Section on the HomeFragment
  */
@@ -36,11 +34,7 @@ public abstract class HomeSection extends Fragment implements View.OnCreateConte
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         viewBinding = HomeSectionBinding.inflate(inflater);
         viewBinding.titleLabel.setText(getSectionTitle());
-        if (TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_LTR) {
-            viewBinding.moreButton.setText(getMoreLinkTitle() + "\u00A0»");
-        } else {
-            viewBinding.moreButton.setText("«\u00A0" + getMoreLinkTitle());
-        }
+        viewBinding.moreButton.setText(getMoreLinkTitle());
         viewBinding.moreButton.setOnClickListener((view) -> handleMoreClick());
         if (TextUtils.isEmpty(getMoreLinkTitle())) {
             viewBinding.moreButton.setVisibility(View.INVISIBLE);
