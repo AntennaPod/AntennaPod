@@ -548,6 +548,8 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     }
 
     public static class QueueSortDialog extends ItemSortDialog {
+        boolean turnedOffKeepSortedForRandom = false;
+
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater,
@@ -573,9 +575,16 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         @Override
         protected void onSelectionChanged() {
             super.onSelectionChanged();
-            viewBinding.keepSortedCheckbox.setEnabled(sortOrder != SortOrder.RANDOM);
             if (sortOrder == SortOrder.RANDOM) {
+                turnedOffKeepSortedForRandom |= viewBinding.keepSortedCheckbox.isChecked();
                 viewBinding.keepSortedCheckbox.setChecked(false);
+                viewBinding.keepSortedCheckbox.setEnabled(false);
+            } else {
+                if (turnedOffKeepSortedForRandom) {
+                    viewBinding.keepSortedCheckbox.setChecked(true);
+                    turnedOffKeepSortedForRandom = false;
+                }
+                viewBinding.keepSortedCheckbox.setEnabled(true);
             }
             UserPreferences.setQueueKeepSorted(viewBinding.keepSortedCheckbox.isChecked());
             UserPreferences.setQueueKeepSortedOrder(sortOrder);
