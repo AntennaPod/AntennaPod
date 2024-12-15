@@ -14,8 +14,8 @@
         custom:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/debug_echo"
-        android:title="@string/debug_echo"
+        android:id="@+id/show_echo"
+        android:title="@string/antennapod_echo"
         custom:showAsAction="never"
         android:visible="false" />
 
