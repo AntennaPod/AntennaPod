@@ -28,7 +28,7 @@
                 android:layout_height="@dimen/thumbnail_length_queue_item"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@string/open_podcast"
-                android:foreground="?attr/selectableItemBackground"
+                android:background="?attr/selectableItemBackground"
                 tools:src="@tools:sample/avatars" />
 
             <LinearLayout

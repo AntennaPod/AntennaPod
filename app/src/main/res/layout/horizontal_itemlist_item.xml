@@ -72,7 +72,7 @@
                             android:layout_gravity="bottom|end"
                             android:layout_margin="4dp"
                             android:clickable="true"
-                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:background="?attr/selectableItemBackgroundBorderless"
                             android:padding="12dp"
                             app:srcCompat="@drawable/ic_play_24dp"
                             app:tint="?attr/colorOnPrimary"

@@ -22,7 +22,7 @@
             android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_marginHorizontal="32dp"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:importantForAccessibility="no"
             android:scaleType="fitCenter"
             squareImageView:direction="minimum"
