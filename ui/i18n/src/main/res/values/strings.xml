@@ -71,6 +71,11 @@
     <string name="configure_home">Configure Home Screen</string>
     <string name="section_hidden">Hidden</string>
     <string name="section_shown">Shown</string>
+    <string name="episodes_label_more">Episodes »</string>
+    <string name="queue_label_more">Queue »</string>
+    <string name="inbox_label_more">Inbox »</string>
+    <string name="downloads_label_more">Downloads »</string>
+    <string name="subscriptions_label_more">Subscriptions »</string>
 
     <!-- Download Statistics fragment -->
     <plurals name="total_size_downloaded_podcasts">

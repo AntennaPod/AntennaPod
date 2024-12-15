@@ -84,7 +84,7 @@ public class SubscriptionsSection extends HomeSection {
 
     @Override
     protected String getMoreLinkTitle() {
-        return getString(R.string.subscriptions_label);
+        return getString(R.string.subscriptions_label_more);
     }
 
     private void loadItems() {
