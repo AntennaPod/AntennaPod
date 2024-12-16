@@ -35,11 +35,6 @@ public class ShareUtils {
         context.startActivity(intent);
     }
 
-    /**
-     * Shares a feed link. To share a feed item, use {@link ShareUtilsKt#getShareFeedItemText(FeedItem)} with {@link #shareLink(Context, String)}.
-     * @param context The context of the activity
-     * @param feed The feed to share
-     */
     public static void shareFeedLink(@NonNull Context context, @NonNull Feed feed) {
         String feedurl = UriUtilKt.urlEncode(feed.getDownloadUrl());
         feedurl = feedurl.replace("htt", "%68%74%74"); // To not confuse users by having a url inside a url
