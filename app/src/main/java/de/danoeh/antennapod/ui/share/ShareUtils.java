@@ -80,10 +80,11 @@ public class ShareUtils {
                 text += "\n";
             }
             text += "\n" + context.getResources().getString(R.string.share_dialog_media_file_label) + ": ";
-            if (abbreviate && item.getMedia().getDownloadUrl().length() > ABBREVIATE_MAX_LENGTH) {
-                text += item.getMedia().getDownloadUrl().substring(0, ABBREVIATE_MAX_LENGTH) + "…";
+            String shareText = ShareUtilsKt.getShareLink(item);
+            if (abbreviate && shareText.length() > ABBREVIATE_MAX_LENGTH) {
+                text += shareText.substring(0, ABBREVIATE_MAX_LENGTH) + "…";
             } else {
-                text += item.getMedia().getDownloadUrl();
+                text += shareText;
             }
             if (withPosition) {
                 text += "#t=" + item.getMedia().getPosition() / 1000;
