@@ -1,16 +1,17 @@
 package de.danoeh.antennapod.ui.share;
 
-import static de.danoeh.antennapod.ui.share.ShareUtilsKt.getShareFeedItemText;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
 import de.danoeh.antennapod.databinding.ShareEpisodeDialogBinding;
 import de.danoeh.antennapod.model.feed.FeedItem;
 
