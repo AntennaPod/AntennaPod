@@ -4,7 +4,7 @@ import de.danoeh.antennapod.model.feed.FeedItem
 import de.danoeh.antennapod.net.common.queryString
 
 /**
- *
+ * Builds a shareable link for this feed item, including media URL, title, GUID, and publication date.
  */
 fun FeedItem.getShareLink(): String {
     val query = queryString(mapOf(
