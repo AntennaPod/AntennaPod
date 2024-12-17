@@ -40,7 +40,7 @@
 
                 <TextView
                     android:id="@+id/txtvPodcast"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:foreground="?attr/selectableItemBackground"
                     android:importantForAccessibility="no"
@@ -49,7 +49,7 @@
 
                 <TextView
                     android:id="@+id/txtvTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textColor="?android:attr/textColorPrimary"
