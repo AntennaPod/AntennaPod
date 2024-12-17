@@ -2,6 +2,7 @@ package de.danoeh.antennapod.ui.screen.drawer;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -32,7 +33,10 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.net.download.service.episode.autodownload.EpisodeCleanupAlgorithmFactory;
+import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.ui.common.ConfirmationDialog;
 import de.danoeh.antennapod.ui.screen.subscriptions.FeedMenuHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -204,6 +208,25 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         final int itemId = item.getItemId();
         if (itemId == R.id.rename_folder_item) {
             new RenameFeedDialog(getActivity(), drawerItem).show();
+            return true;
+        } else if (itemId == R.id.delete_folder_item) {
+            ConfirmationDialog dialog = new ConfirmationDialog(
+                    getContext(), R.string.delete_tag_label,
+                    getString(R.string.delete_tag_confirmation, drawerItem.getTitle())) {
+
+                @Override
+                public void onConfirmButtonPressed(DialogInterface dialog) {
+                    List<NavDrawerData.DrawerItem> feeds = ((NavDrawerData.TagDrawerItem) drawerItem).getChildren();
+
+                    for (NavDrawerData.DrawerItem feed : feeds) {
+                        FeedPreferences preferences = ((NavDrawerData.FeedDrawerItem) feed).feed.getPreferences();
+                        preferences.getTags().remove(drawerItem.getTitle());
+                        DBWriter.setFeedPreferences(preferences);
+                    }
+                }
+            };
+            dialog.createNewDialog().show();
+
             return true;
         }
         return super.onContextItemSelected(item);
