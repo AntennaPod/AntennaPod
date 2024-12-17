@@ -829,6 +829,7 @@
     <string name="share_dialog_episode_website_label">Episode webpage</string>
     <string name="share_dialog_for_social">Social message</string>
     <string name="share_dialog_media_address">Media address</string>
+    <string name="share_dialog_antennapod_address">AntennaPod address</string>
     <string name="share_dialog_media_file_label">Media file</string>
     <string name="share_starting_position_label">Starting from</string>
 
