@@ -211,9 +211,8 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             return true;
         } else if (itemId == R.id.delete_folder_item) {
             ConfirmationDialog dialog = new ConfirmationDialog(
-                    getContext(),
-                    R.string.delete_tag_label,
-                    getContext().getString(R.string.delete_tag_confirmation, drawerItem.getTitle())) {
+                    getContext(), R.string.delete_tag_label,
+                    getString(R.string.delete_tag_confirmation, drawerItem.getTitle())) {
 
                 @Override
                 public void onConfirmButtonPressed(DialogInterface dialog) {
@@ -405,12 +404,12 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
 
     private void loadData() {
         disposable = Observable.fromCallable(
-                        () -> {
-                            NavDrawerData data = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter(),
-                                    UserPreferences.getFeedOrder(), UserPreferences.getFeedCounterSetting());
-                            reclaimableSpace = EpisodeCleanupAlgorithmFactory.build().getReclaimableItems();
-                            return new Pair<>(data, makeFlatDrawerData(data.items, 0));
-                        })
+                () -> {
+                    NavDrawerData data = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter(),
+                            UserPreferences.getFeedOrder(), UserPreferences.getFeedCounterSetting());
+                    reclaimableSpace = EpisodeCleanupAlgorithmFactory.build().getReclaimableItems();
+                    return new Pair<>(data, makeFlatDrawerData(data.items, 0));
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
