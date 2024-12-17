@@ -356,7 +356,7 @@ public class SubscriptionFragment extends Fragment
             if (itemId == R.id.rename_folder_item) {
                 new RenameFeedDialog(getActivity(), drawerItem).show();
                 return true;
-            } else if(itemId == R.id.delete_folder_item){
+            } else if (itemId == R.id.delete_folder_item) {
                 ConfirmationDialog dialog = new ConfirmationDialog(
                         getContext(), R.string.delete_tag_label,
                         getString(R.string.delete_tag_confirmation, drawerItem.getTitle())) {
