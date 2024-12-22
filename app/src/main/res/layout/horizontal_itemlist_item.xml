@@ -80,13 +80,13 @@
 
                     </FrameLayout>
 
-                    <ProgressBar
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
                         android:id="@+id/progressBar"
                         android:layout_width="match_parent"
                         android:layout_height="4dp"
                         android:layout_gravity="bottom"
                         android:max="100"
-                        style="?attr/progressBarTheme"
+                        app:trackStopIndicatorSize="0dp"
                         tools:progress="50" />
 
                 </LinearLayout>

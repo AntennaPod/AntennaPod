@@ -189,14 +189,14 @@
                     style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                     tools:text="00:42:23" />
 
-                <ProgressBar
+                <com.google.android.material.progressindicator.LinearProgressIndicator
                     android:id="@+id/progressBar"
                     android:layout_width="0dp"
-                    android:layout_height="4dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:max="100"
                     android:layout_margin="4dp"
-                    style="?android:attr/progressBarStyleHorizontal" />
+                    app:trackStopIndicatorSize="0dp" />
 
                 <TextView
                     android:id="@+id/txtvDuration"

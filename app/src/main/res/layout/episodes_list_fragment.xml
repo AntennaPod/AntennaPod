@@ -47,7 +47,7 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <ProgressBar
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,6 +55,7 @@
         android:indeterminateOnly="true"
         android:visibility="gone"
         android:layout_centerInParent="true"
+        app:trackStopIndicatorSize="0dp"
         tools:background="@android:color/holo_red_light" />
 
     <de.danoeh.antennapod.ui.view.FloatingSelectMenu
