@@ -37,12 +37,6 @@
             android:key="prefDeleteRemovesFromQueue"
             android:summary="@string/pref_delete_removes_from_queue_sum"
             android:title="@string/pref_delete_removes_from_queue_title"/>
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:enabled="true"
-            android:key="prefDownloadsButtonAction"
-            android:summary="@string/pref_downloads_button_action_sum"
-            android:title="@string/pref_downloads_button_action_title"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/download_pref_details">
