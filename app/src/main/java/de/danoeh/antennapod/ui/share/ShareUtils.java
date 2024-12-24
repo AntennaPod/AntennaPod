@@ -9,14 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 
-import de.danoeh.antennapod.ui.common.Converter;
 import java.io.File;
-import java.net.URLEncoder;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.net.common.UriUtilKt;
+import de.danoeh.antennapod.ui.common.Converter;
 
 /** Utility methods for sharing data */
 public class ShareUtils {
@@ -35,12 +35,12 @@ public class ShareUtils {
         context.startActivity(intent);
     }
 
-    public static void shareFeedLink(Context context, Feed feed) {
-        String feedurl = URLEncoder.encode(feed.getDownloadUrl());
+    public static void shareFeedLink(@NonNull Context context, @NonNull Feed feed) {
+        String feedurl = UriUtilKt.urlEncode(feed.getDownloadUrl());
         feedurl = feedurl.replace("htt", "%68%74%74"); // To not confuse users by having a url inside a url
         String text = feed.getTitle() + "\n\n"
                 + "https://antennapod.org/deeplink/subscribe/?url=" + feedurl
-                + "&title=" + URLEncoder.encode(feed.getTitle());
+                + "&title=" + UriUtilKt.urlEncode(feed.getTitle());
         shareLink(context, text);
     }
 
@@ -80,10 +80,11 @@ public class ShareUtils {
                 text += "\n";
             }
             text += "\n" + context.getResources().getString(R.string.share_dialog_media_file_label) + ": ";
-            if (abbreviate && item.getMedia().getDownloadUrl().length() > ABBREVIATE_MAX_LENGTH) {
-                text += item.getMedia().getDownloadUrl().substring(0, ABBREVIATE_MAX_LENGTH) + "…";
+            String shareText = ShareUtilsKt.getShareLink(item);
+            if (abbreviate && shareText.length() > ABBREVIATE_MAX_LENGTH) {
+                text += shareText.substring(0, ABBREVIATE_MAX_LENGTH) + "…";
             } else {
-                text += item.getMedia().getDownloadUrl();
+                text += shareText;
             }
             if (withPosition) {
                 text += "#t=" + item.getMedia().getPosition() / 1000;
