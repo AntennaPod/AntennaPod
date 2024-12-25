@@ -115,7 +115,7 @@
     <string name="feed_volume_boost_heavy">Kraftig forstærkning</string>
     <string name="feed_auto_download_always">Altid</string>
     <string name="feed_auto_download_never">Aldrig</string>
-    <string name="feed_new_episodes_action_add_to_inbox">Tilføj til indbakke</string>
+    <string name="feed_new_episodes_action_add_to_inbox">Føj til indbakke</string>
     <string name="feed_new_episodes_action_add_to_queue">Føj til kø</string>
     <string name="feed_new_episodes_action_nothing">Ingenting</string>
     <string name="episode_cleanup_never">Aldrig</string>
