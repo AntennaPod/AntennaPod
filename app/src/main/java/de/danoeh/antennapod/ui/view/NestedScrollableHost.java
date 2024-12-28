@@ -105,6 +105,9 @@ public class NestedScrollableHost extends FrameLayout {
             public boolean onPreDraw() {
                 View v = (View) getParent();
                 while (v != null && !(v instanceof ViewPager2) || isntSameDirection(v)) {
+                    if (!(v.getParent() instanceof View)) {
+                        return true;
+                    }
                     v = (View) v.getParent();
                 }
                 parentViewPager = (ViewPager2) v;

@@ -77,7 +77,7 @@ import java.util.Objects;
 public class ItemFragment extends Fragment {
 
     private static final String TAG = "ItemFragment";
-    private static final String ARG_FEEDITEM = "feeditem";
+    protected static final String ARG_FEEDITEM = "feeditem";
 
     /**
      * Creates a new instance of an ItemFragment
