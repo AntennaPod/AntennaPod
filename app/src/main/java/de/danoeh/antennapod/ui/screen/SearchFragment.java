@@ -145,7 +145,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         floatingSelectMenu = layout.findViewById(R.id.floatingSelectMenu);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         registerForContextMenu(recyclerView);
-        adapter = new EpisodeItemListAdapter((MainActivity) getActivity()) {
+        adapter = new EpisodeItemListAdapter(getActivity()) {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
                 super.onCreateContextMenu(menu, v, menuInfo);
@@ -153,6 +153,14 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
                     menu.findItem(R.id.multi_select).setVisible(true);
                 }
                 MenuItemUtils.setOnClickListeners(menu, SearchFragment.this::onContextItemSelected);
+            }
+
+            @Override
+            protected void onSelectedItemsUpdated() {
+                super.onSelectedItemsUpdated();
+                FeedItemMenuHandler.onPrepareMenu(floatingSelectMenu.getMenu(), getSelectedItems(),
+                        R.id.add_to_queue_item, R.id.remove_inbox_item);
+                floatingSelectMenu.updateItemVisibility();
             }
         };
         adapter.setOnSelectModeListener(this);

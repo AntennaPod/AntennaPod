@@ -15,7 +15,7 @@
     <string name="open_autodownload_settings">Aberi sa cunfiguratzione</string>
     <string name="downloads_log_label">Iscàrriga informe</string>
     <string name="subscriptions_label">Sutiscritziones</string>
-    <string name="subscriptions_list_label">Lista de sutiscritziones</string>
+    <string name="subscriptions_list_label">Lista de sutiscritziones (menù laterale ebbia)</string>
     <string name="cancel_download_label">Annulla s\'iscarrigamentu</string>
     <string name="playback_history_label">Cronologia de riprodutziones</string>
     <string name="episode_cache_full_title">Sa memòria temporànea de is episòdios est prena</string>
@@ -94,7 +94,7 @@
     <string name="support_funding_label">Agiudu</string>
     <string name="support_podcast">Agiuda a custu podcast</string>
     <string name="error_label">Errore</string>
-    <string name="error_msg_prefix">Nc\'est istadu un\'errore</string>
+    <string name="error_msg_prefix">Nch\'est istadu un\'errore:</string>
     <string name="refresh_label">Atualiza</string>
     <string name="chapters_label">Capìtulos</string>
     <string name="no_chapters_label">Nissunu capìtulu</string>
@@ -131,7 +131,7 @@
         <item quantity="other">%d dies a pustis de s\'agabbu</item>
     </plurals>
     <plurals name="num_selected_label">
-        <item quantity="one">%1$d/%2$d seletzionados</item>
+        <item quantity="one">%1$d/%2$d seletzionadu</item>
         <item quantity="other">%1$d/%2$d seletzionados</item>
     </plurals>
     <plurals name="num_episodes">
@@ -139,7 +139,7 @@
         <item quantity="other">%d episòdios</item>
     </plurals>
     <string name="episode_notification">Notìficas de episòdios</string>
-    <string name="episode_notification_summary">Ammustra una notìfica cando bèngiat publicadu un\'episòdiu nou</string>
+    <string name="episode_notification_summary">Ammustra una notìfica cando siat publicadu un\'episòdiu nou.</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s at publicadu un\'episòdiu nou</item>
         <item quantity="other">%2$s at publicadu %1$d episòdios noos</item>
@@ -248,8 +248,8 @@
     <string name="download_error_retrying">Errore in s\'iscarrigamentu de \"%1$s\". S\'at a torrare a proare luego.</string>
     <string name="download_error_not_retrying">Errore in s\'iscarrigamentu de \"%1$s\".</string>
     <string name="download_error_tap_for_details">Toca pro bìdere is detàllios.</string>
-    <string name="download_error_device_not_found">No s\'est agatadu su dispositivu de archiviatzione.</string>
-    <string name="download_error_insufficient_space">Non nc\'at ispàtziu bastante in su dispositivu tuo.</string>
+    <string name="download_error_device_not_found">No s\'est agatadu su dispositivu de archiviatzione</string>
+    <string name="download_error_insufficient_space">Non nch\'at ispàtziu bastante in su dispositivu tuo.</string>
     <string name="download_error_http_data_error">Errore de datos HTTP</string>
     <string name="download_error_error_unknown">Errore disconnotu</string>
     <string name="download_error_parser_exception">Su serbidore de su podcast at imbiadu unu feed de podcast chi no est vàlidu.</string>
@@ -263,9 +263,9 @@
     <string name="download_error_file_type_type">Errore de tipu de archìviu</string>
     <string name="download_error_forbidden">Su serbidore de su podcast non rispondet.</string>
     <string name="download_canceled_msg">Iscarrigamentu annulladu</string>
-    <string name="download_error_wrong_size">Sa connessione cun su serbidore est istada pèrdida prima chi s\'iscarrigamentu esseret cumpletu.</string>
+    <string name="download_error_wrong_size">Sa connessione cun su serbidore est istada pèrdida prima chi s\'iscarrigamentu esseret cumpletu</string>
     <string name="download_error_blocked">S\'iscarrigamentu est istadu blocadu dae un\'àtera aplicatzione in su dispositivu tuo (comente un VPN o unu blocadore de publitzidade).</string>
-    <string name="download_error_certificate">Impossìbile istabilire una connessione sicura. Custu podet bòlere nàrrere chi un\'àtera aplicatzione in su dispositivu tuo (comente un VPN o un blocadore de publitzidade) at blocadu s\'iscarrigamentu, o chi nc\'est unu problema cun is tzertificados de su serbidore.</string>
+    <string name="download_error_certificate">Impossìbile istabilire una connessione sicura. Custu podet bòlere nàrrere chi un\'àtera aplicatzione in su dispositivu tuo (comente un VPN o un blocadore de publitzidade) at blocadu s\'iscarrigamentu, o chi nch\'est unu problema cun is tzertificados de su serbidore.</string>
     <string name="download_error_io_error">Errore IO</string>
     <string name="download_error_request_error">Errore in sa rechesta</string>
     <string name="download_error_db_access">Errore de atzessu a sa base de datos</string>
@@ -278,7 +278,7 @@
     <string name="download_log_title_unknown">Tìtulu disconnotu</string>
     <string name="download_type_feed">Canale</string>
     <string name="download_type_media">Archìviu multimediale</string>
-    <string name="no_feed_url_podcast_found_by_search">Su podcast sugeridu non tenet unu ligòngiu RSS, ma AntennaPod at agatadu unu podcast chi podet corrispòndere.</string>
+    <string name="no_feed_url_podcast_found_by_search">Su podcast sugeridu non tenet unu ligòngiu RSS, ma AntennaPod at agatadu unu podcast chi podet corrispòndere</string>
     <string name="authentication_notification_title">Autenticatzione netzessària</string>
     <string name="confirm_mobile_download_dialog_title">Cunfirma s\'iscarrigamentu mòbile</string>
     <string name="confirm_mobile_download_dialog_message">S\'iscarrigamentu cun datos mòbiles est disativadu in sa cunfiguratzione. AntennaPod podet iscarrigare s\'episòdiu luego in automàticu cando su Wi-Fi siat a disponimentu.</string>
@@ -421,7 +421,7 @@
     <string name="pref_automatic_download_on_battery_title">Iscàrriga cando su dispositivu non siat in càrriga</string>
     <string name="pref_automatic_download_on_battery_sum">Permite s\'iscarrigamentu automàticu cando sa bateria no est in càrriga</string>
     <string name="pref_episode_cache_title">Lìmite de episòdios</string>
-    <string name="pref_episode_cache_summary">S\'iscarrigamentu in automàticu at a èssere suspesu cando custu nùmeru at a èssere lòmpidu.</string>
+    <string name="pref_episode_cache_summary">S\'iscarrigamentu in automàticu at a èssere suspesu cando custu nùmeru at a èssere lòmpidu</string>
     <string name="pref_episode_cover_title">Imprea sa cobertina de s\'episòdiu</string>
     <string name="pref_episode_cover_summary">Imprea in is listas is cobertinas ispetzìficas de is episòdios cando siant a disponimentu. Si custa optzione no est ativa, s\'aplicatzione at a impreare semper s\'immàgine de cobertina de su podcast.</string>
     <string name="pref_show_remain_time_title">Ammustra su tempus chi mancat</string>
@@ -433,9 +433,9 @@
     <string name="pref_playback_speed_sum">Personaliza is valores de is controllos de sa lestresa de riprodutzione</string>
     <string name="pref_feed_playback_speed_sum">Sa lestresa de impreare cando cumintzat sa riprodutzione de àudio pro is episòdios de custu podcast</string>
     <string name="pref_feed_skip">Omissione in automàticu</string>
-    <string name="pref_feed_skip_sum">Omite introdutziones e crèditos finales</string>
-    <string name="pref_feed_skip_ending">Durada de is omissiones finales:</string>
-    <string name="pref_feed_skip_intro">Durada de is omissiones initziales:</string>
+    <string name="pref_feed_skip_sum">Omite introdutziones e crèditos finales.</string>
+    <string name="pref_feed_skip_ending">Brinca is ùrtimos</string>
+    <string name="pref_feed_skip_intro">Brinca is primos</string>
     <string name="pref_feed_skip_ending_toast">Ùrtimos %d segundos omìtidos</string>
     <string name="pref_feed_skip_intro_toast">Primu %d segundos omìtidos</string>
     <string name="pref_playback_time_respects_speed_title">Acontza s\'informatzione de su cuntenutu multimediale a sa lestresa de riprodutzione</string>
@@ -512,10 +512,10 @@
     <string name="search_online">Chirca in lìnia</string>
     <!--Synchronization-->
   <string name="sync_status_started">Sincronizatzione aviada</string>
-    <string name="sync_status_episodes_upload">Carrighende modìficas de s\'episòdiu...</string>
-    <string name="sync_status_episodes_download">Iscarrighende modìficas de s\'episòdiu...</string>
-    <string name="sync_status_upload_played">Carrighende s\'istadu de riprodutzione...</string>
-    <string name="sync_status_subscriptions">Sincronizende sutiscritziones...</string>
+    <string name="sync_status_episodes_upload">Carrighende modìficas de s\'episòdiu…</string>
+    <string name="sync_status_episodes_download">Iscarrighende modìficas de s\'episòdiu…</string>
+    <string name="sync_status_upload_played">Carrighende s\'istadu de riprodutzione…</string>
+    <string name="sync_status_subscriptions">Sincronizende sutiscritziones…</string>
     <string name="sync_status_success">Sincronizatzione cumpletada</string>
     <string name="sync_status_error">Errore in sa sincronizatzione</string>
     <!--import and export-->
@@ -542,7 +542,7 @@
     <string name="automatic_database_export_error">Errore in sa còpia de seguresa automàtica de sa base de datos</string>
     <string name="database_import_label">Importatzione de base de datos</string>
     <string name="database_import_warning">S\'importatzione de una base de datos at a sostituire is sutiscritziones tuas atuales e sa cronologia de riprodutziones. Dias dèpere esportare sa base de datos tua atuale comente còpia de seguresa. Boles sighire cun sa sostitutzione?</string>
-    <string name="please_wait">Abeta...</string>
+    <string name="please_wait">Abeta…</string>
     <string name="export_error_label">Errore de esportatzione</string>
     <string name="export_success_title">Esportatzione cumpletada</string>
     <string name="opml_import_ask_read_permission">Sa letura de s\'archìviu OPML rechedet atzessu a s\'archiviatzione esterna</string>
@@ -595,7 +595,7 @@
     <string name="synchronization_nextcloud_authenticate_browser">Dona atzessu impreende su navigadore web chi tenes abertu e torra a AntennaPod.</string>
     <string name="gpodnetauth_login_butLabel">Intra</string>
     <string name="synchronization_credentials_explanation">Fruni is credentziales de su contu tuo in su serbidore de sincronizatzione.</string>
-    <string name="gpodnetauth_encryption_warning">Sa crae e is datos no sunt critografados.</string>
+    <string name="gpodnetauth_encryption_warning">Sa crae e is datos non sunt tzifrados.</string>
     <string name="username_label">Nòmine de utente</string>
     <string name="password_label">Crae</string>
     <string name="synchronization_login_butLabel">Intra</string>
@@ -613,7 +613,7 @@
     <string name="synchronization_full_sync_title">Fortza una sincronizatzione cumpleta</string>
     <string name="synchronization_force_sync_summary">Torra a sincronizare totu is sutiscritziones e is istados de is episòdios</string>
     <string name="synchronization_logout">Essi</string>
-    <string name="synchronization_login_status"><![CDATA[Identificadu comente <i>%1$s</i> in <i>%2$s</i>. <br/><br/>Podes torrare a seberare unu frunidore de sincronizatziones una borta disconnètidu]]></string>
+    <string name="synchronization_login_status">Identificadu comente %1$s in %2$s.\n\nPodes torrare a seberare unu frunidore de sincronizatziones una borta disconnètidu.</string>
     <string name="pref_synchronization_logout_toast">Essida cumpletada</string>
     <string name="gpodnetsync_error_title">errore de sincronizatzione cun gpodder.net</string>
     <string name="gpodnetsync_error_descr">"Errore in sa sincronizatzione: "</string>
@@ -694,16 +694,16 @@
     <string name="release_schedule_saturday">sàb</string>
     <string name="release_schedule_sunday">dom</string>
     <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Importende iscritziones dae aplicatziones de iscopu ùnicu...</string>
+  <string name="sp_apps_importing_feeds_msg">Importende sutiscritziones dae aplicatziones de iscopu ùnicu…</string>
     <!--Add podcast fragment-->
-  <string name="search_podcast_hint">Chirca unu podcast...</string>
+  <string name="search_podcast_hint">Chirca unu podcast…</string>
     <string name="search_itunes_label">Chirca in Apple Podcasts</string>
     <string name="search_podcastindex_label">Chirca in Podcast Index</string>
     <string name="search_fyyd_label">Chirca in fyyd</string>
     <string name="add_podcast_by_url">Agiunghe podcasts dae s\'indiritzu RSS</string>
     <string name="discover">Iscoberi</string>
     <string name="discover_hide">Cua</string>
-    <string name="discover_is_hidden">As seberadu de cuare is cussìgios</string>
+    <string name="discover_is_hidden">As seberadu de cuare is cussìgios.</string>
     <string name="discover_powered_by_itunes">Cussìgios dae Apple Podcasts</string>
     <string name="discover_confirm">Ammustra cussìgios</string>
     <string name="search_powered_by">Resurtados dae %1$s</string>
@@ -746,11 +746,11 @@
     <string name="port_label">Ghenna</string>
     <string name="optional_hint">(Optzionale)</string>
     <string name="proxy_test_label">Proa</string>
-    <string name="proxy_checking">Verifichende...</string>
+    <string name="proxy_checking">Verifichende…</string>
     <string name="proxy_test_successful">Test curretu</string>
     <string name="proxy_test_failed">Test faddidu</string>
     <string name="proxy_host_empty_error">S\'osteriàrgiu non podet èssere bòidu</string>
-    <string name="proxy_host_invalid_error">S\'osteriàrgiu no est un\'indiritzu o domìniu IP vàlidu.</string>
+    <string name="proxy_host_invalid_error">S\'osteriàrgiu no est un\'indiritzu o domìniu IP vàlidu</string>
     <string name="proxy_port_invalid_error">Ghenna non vàlida</string>
     <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Nùmeru de colunnas</string>
@@ -761,7 +761,7 @@
     <string name="notification_channel_user_action">Atzione rechesta</string>
     <string name="notification_channel_user_action_description">Ammustradu cando est rechesta un\'atzione dae parte tua, pro esempru depes insertare una crae.</string>
     <string name="notification_channel_downloading">Iscarrighende</string>
-    <string name="notification_channel_downloading_description">Ammustradu cando nc\'at un\'iscarrigamentu in cursu.</string>
+    <string name="notification_channel_downloading_description">Ammustradu cando nch\'at un\'iscarrigamentu in cursu.</string>
     <string name="notification_channel_playing">In riprodutzione immoe</string>
     <string name="notification_channel_playing_description">Permitit de controllare sa riprodutzione. Custa est sa notìfica printzipale chi est ammustrada durante sa riprodutzione de is podcasts.</string>
     <string name="notification_channel_download_error">Errore in s\'iscarrigamentu</string>
@@ -769,7 +769,7 @@
     <string name="notification_channel_sync_error">Errore in sa sincronizatzione</string>
     <string name="notification_channel_sync_error_description">Ammustradu cando sa sincronizatzione de gpodder resurtat in errore.</string>
     <string name="notification_channel_new_episode">Episòdiu nou</string>
-    <string name="notification_channel_new_episode_description">Ammustradu cando s\'agatat un\'episòdiu de unu podcast, semper chi is notìficas siant ativadas.</string>
+    <string name="notification_channel_new_episode_description">Ammustradu cando s\'agatat un\'episòdiu de unu podcast, semper chi is notìficas siant ativadas</string>
     <!--Widget settings-->
   <string name="widget_settings">Cunfiguratziones de trastos</string>
     <string name="widget_create_button">Crea unu trastu</string>
@@ -781,4 +781,37 @@
     <string name="shortcut_subscription_label">Curtzadòrgiu a sa sutiscritzione</string>
     <string name="shortcut_select_subscription">Seletziona una sutiscritzione</string>
     <string name="add_shortcut">Agiunghe collegamentu curtzu</string>
+    <string name="statistics_years_barchart_description">Tempus de riprodutzione a su mese</string>
+    <string name="pref_nav_drawer_items_title">Personaliza sa navigatzione</string>
+    <string name="sync_status_wait_for_downloads">Abetende s\'atualizatzione de is sutiscritziones…</string>
+    <string name="feed_delete_confirmation_msg_batch">Cunfirma chi boles cantzellare is podcast seletzionados, TOTU is episòdios (incluidos cussos iscarrigados), sa cronologia de riprodutzione e is istatìsticas.</string>
+    <string name="feed_delete_confirmation_local_msg">Cunfirma chi boles cantzellare su podcast \"%1$s\", sa cronologia de riprodutzione e is istatìsticas. Is archìvios in sa cartella de orìgine locale no ant a èssere cantzellados.</string>
+    <string name="pref_nav_drawer_items_sum">Modifica cale elementos ant a èssere visualizados in su pannellu o in sa navigatzione inferiore</string>
+    <string name="statistics_view_all">Totu is podcasts »</string>
+    <string name="discover_more">Iscoberi·nde àteros »</string>
+    <string name="home_no_recent_unplayed_episodes_text">As giai riproduidu totu is episòdios reghentes. Nudda de ite si ispantare inoghe ;)</string>
+    <string name="home_continue_empty_text">Podes agiùnghere episòdios iscarrighende·ddos o seletzionende \"Agiunghe a sa coa\" cun unu tocu longu in s\'episòdiu.</string>
+    <string name="home_downloads_empty_text">Podes iscarrigare cale si siat episòdiu pro ddu ascurtare in foras de lìnia.</string>
+    <string name="home_new_empty_text">Is episòdios noos ant a cumpàrrere inoghe. As a pòdere detzìdere tando si ti interessant.</string>
+    <string name="section_shown">Ammustrados</string>
+    <string name="delete_downloads_played">Cantzella cussos riproduidos</string>
+    <string name="delete_downloads_played_confirmation">Cunfirma chi boles cantzellare totu is iscarrigamentos riproduidos.</string>
+    <string name="mobile_download_notice">Iscarrighende cun connessione de datos mòbiles pro is %d minutos imbenientes</string>
+    <string name="bottom_navigation">Navigatzione inferiore</string>
+    <string name="bottom_navigation_summary">Funtzionalidade beta: atzede a is ischermos de prus importu dae onni logu, cun unu tocu isceti</string>
+    <string name="statistics_episodes_played">riproduidos</string>
+    <string name="statistics_episodes_downloaded">iscarrigados</string>
+    <string name="nextcloud_login_error_generic">Impossìbile atzèdere a su Nextcloud tuo.\n\n- Controlla sa connessione de rete.\n- Cunfirma chi ses impreende s\'indiritzu de su serbidore curretu.\n- Assegura·ti chi su cumplementu gpoddersync Nextcloud est installadu.</string>
+    <string name="statistics_episodes_started">cumintzados</string>
+    <string name="statistics_episodes_total">totales</string>
+    <string name="statistics_release_schedule">programmatzione de is publicatziones</string>
+    <string name="statistics_release_next">episòdiu imbeniente (istimadu)</string>
+    <string name="statistics_episodes_space">ispàtziu ocupadu</string>
+    <string name="feed_delete_confirmation_msg">Cunfirma chi boles cantzellare su podcast \"%1$s\", TOTU is episòdios suos (incluidos cussos iscarrigados) sa cronologia de riprodutzione e is istatìsticas.</string>
+    <string name="null_value_podcast_error">Su ligòngiu chi as tocadu non cuntenet nissunu URL de podcast vàlidu. Controlla su ligòngiu e torra·nche a proare, o chirca su podcast a manu.</string>
+    <string name="episode_download_failed">Faddina in s\'iscarrigamentu de s\'episòdiu</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">Mannària totale de %d episòdiu in su dispositivu</item>
+        <item quantity="other">Mannària totale de %d episòdios in su dispositivu</item>
+    </plurals>
 </resources>

@@ -15,7 +15,7 @@
     <string name="open_autodownload_settings">Åpne innstillinger</string>
     <string name="downloads_log_label">Nedlastingslogg</string>
     <string name="subscriptions_label">Abonnementer</string>
-    <string name="subscriptions_list_label">Abonnementliste</string>
+    <string name="subscriptions_list_label">Abonnementliste (kun sidemeny)</string>
     <string name="cancel_download_label">Avbryt nedlastingen</string>
     <string name="playback_history_label">Avspillingshistorikk</string>
     <string name="episode_cache_full_title">Hurtigbuffer for episoder er full</string>

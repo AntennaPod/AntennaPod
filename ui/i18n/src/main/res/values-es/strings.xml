@@ -15,7 +15,7 @@
     <string name="open_autodownload_settings">Abrir ajustes</string>
     <string name="downloads_log_label">Registro de descargas</string>
     <string name="subscriptions_label">Suscripciones</string>
-    <string name="subscriptions_list_label">Lista de suscripciones</string>
+    <string name="subscriptions_list_label">Lista de suscripciones (solo en el menú lateral)</string>
     <string name="cancel_download_label">Cancelar descarga</string>
     <string name="playback_history_label">Historial de reproducciones</string>
     <string name="episode_cache_full_title">Caché de episodios llena</string>

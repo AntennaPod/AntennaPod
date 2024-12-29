@@ -55,6 +55,7 @@
                         android:id="@+id/socialMessageText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:maxLines="7"
                         android:text="@string/share_dialog_for_social"
                         style="@style/TextAppearance.Material3.BodyMedium" />
 

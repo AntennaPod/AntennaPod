@@ -15,7 +15,7 @@
     <string name="open_autodownload_settings">Открыть настройки</string>
     <string name="downloads_log_label">Журнал загрузок</string>
     <string name="subscriptions_label">Подписки</string>
-    <string name="subscriptions_list_label">Перечень подписок</string>
+    <string name="subscriptions_list_label">Перечень подписок (только в боковом меню)</string>
     <string name="cancel_download_label">Отменить загрузку</string>
     <string name="playback_history_label">История</string>
     <string name="episode_cache_full_title">Кэш выпусков заполнен</string>
@@ -195,7 +195,7 @@
     <string name="add_tag">Добавить метку</string>
     <string name="rename_tag_label">Изменить метку</string>
     <string name="confirm_mobile_feed_refresh_dialog_message">Обновление подкастов через мобильное соединение отключено в настройках.\n\nВы действительно хотите обновить подкасты?</string>
-    <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Приложение VPN имитирует соединение через мобильную сеть (с ограничением трафика). Обновление подкастов через мобильное соединение отключено в настройках. Всё равно желаете обновить? Чтобы устранить эту проблему, свяжитесь с авторами вашего приложения VPN.</string>
+    <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Приложение VPN имитирует соединение через мобильную сеть (с ограничением трафика). Обновление подкастов через мобильное соединение отключено в настройках\nВсё равно желаете обновить? Чтобы устранить эту проблему, свяжитесь с авторами вашего приложения VPN.</string>
     <!--actions on feeditems-->
   <string name="download_label">Загрузить</string>
     <plurals name="downloading_batch_label">
@@ -819,4 +819,10 @@
     <string name="shortcut_subscription_label">Ярлык подписки</string>
     <string name="shortcut_select_subscription">Выбрать подписку</string>
     <string name="add_shortcut">Добавить ярлык</string>
+    <string name="home_downloads_empty_text">Вы можете скачать любой эпизод, чтобы слушать его в оффлайн-режиме.</string>
+    <string name="feed_delete_confirmation_msg">Пожалуйста, подтвердите, что вы хотите удалить подкаст «%1$s», ВСЕ его эпизоды (включая загруженные эпизоды), историю воспроизведения и статистику.</string>
+    <string name="feed_delete_confirmation_msg_batch">Пожалуйста, подтвердите, что вы хотите удалить выбранные подкасты, ВСЕ эпизоды (включая загруженные эпизоды), историю воспроизведения и статистику.</string>
+    <string name="feed_delete_confirmation_local_msg">Пожалуйста, подтвердите, что вы хотите удалить подкаст «%1$s», историю его воспроизведения и статистику. Файлы в локальной исходной папке удалены не будут.</string>
+    <string name="home_no_recent_unplayed_episodes_text">Вы уже прослушали все недавние эпизоды. Никаких сюрпризов ;)</string>
+    <string name="home_continue_empty_text">Вы можете добавлять эпизоды, загружая их или «Добавить в очередь» через долгое нажатие.</string>
 </resources>

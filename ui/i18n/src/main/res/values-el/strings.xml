@@ -15,7 +15,7 @@
     <string name="open_autodownload_settings">Άνοιγμα ρυθμίσεων</string>
     <string name="downloads_log_label">Αρχείο καταγραφής λήψεων</string>
     <string name="subscriptions_label">Συνδρομές</string>
-    <string name="subscriptions_list_label">Λίστα συνδρομών</string>
+    <string name="subscriptions_list_label">Λίστα συνδρομών (μόνο στο πλαϊνό μενού)</string>
     <string name="cancel_download_label">Ακύρωση λήψης</string>
     <string name="playback_history_label">Ιστορικό αναπαραγωγής</string>
     <string name="episode_cache_full_title">Η κρυφή μνήμη του επεισοδίου είναι γεμάτη</string>
@@ -785,4 +785,10 @@
     <string name="home_downloads_empty_text">Μπορείς να κατεβάσεις οποιοδήποτε επεισόδια και να το ακούσεις εκτός σύνδεσης.</string>
     <string name="section_shown">Εμφανιζόμενα</string>
     <string name="home_new_empty_text">Τα νέα επεισόδια θα εμφανίζονται εδώ. Μετά, μπορείς να αποφασίσεις αν ενδιαφέρεσαι για αυτά.</string>
+    <string name="feed_delete_confirmation_msg_batch">Παρακαλώ επιβεβαιώστε ότι θέλετε να αφαιρέσετε τα επιλεγμένα podcasts, ΌΛΑ τα επεισόδια τους (συμπεριλαμβανομένων των επεισοδίων που έχουν ληφθεί), το ιστορικό αναπαραγωγής και τις στατιστικές τους.</string>
+    <string name="feed_delete_confirmation_msg">Παρακαλώ επιβεβαιώστε ότι θέλετε να διαγράψετε το podcast \"%1$s\", ΌΛΑ τα επεισόδια του (συμπεριλαμβανομένων των επεισοδίων που έχουν ληφθεί), το ιστορικό αναπαραγωγής και τις στατιστικές του.</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">Σύνολο %d του επεισοδίου είναι αποθηκευμένο στη συσκευή</item>
+        <item quantity="other">Σύνολο %d των επεισοδίων είναι αποθηκευμένα στη συσκευή</item>
+    </plurals>
 </resources>
