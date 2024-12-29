@@ -1,8 +1,13 @@
 package de.danoeh.antennapod.ui.screen.subscriptions;
 
 import android.content.Context;
+import android.util.TypedValue;
+import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 import de.danoeh.antennapod.model.feed.FeedOrder;
 import org.greenrobot.eventbus.EventBus;
@@ -18,7 +23,7 @@ public class FeedSortDialog {
     public static void showDialog(Context context) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
         dialog.setTitle(context.getString(R.string.pref_nav_drawer_feed_order_title));
-        dialog.setNegativeButton(android.R.string.cancel, (d, listener) -> d.dismiss());
+        dialog.setNegativeButton(android.R.string.ok, (d, listener) -> d.dismiss());
 
         int selected = UserPreferences.getFeedOrder().id;
         List<String> entryValues =
@@ -32,8 +37,25 @@ public class FeedSortDialog {
                 //Update subscriptions
                 EventBus.getDefault().post(new UnreadItemsUpdateEvent());
             }
-            d.dismiss();
         });
+
+        dialog.setView(getReverseButtonLayout(dialog));
         dialog.show();
+    }
+
+    private static @NonNull LinearLayout getReverseButtonLayout(MaterialAlertDialogBuilder dialog) {
+        MaterialSwitch switchButton = new MaterialSwitch(dialog.getContext());
+        int padding = 64;
+        switchButton.setPadding(padding, padding, padding, padding);
+        switchButton.setChecked(UserPreferences.getFeedOrderReversed());
+        switchButton.setText("Reversed");
+        switchButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,  16);
+        switchButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            UserPreferences.setFeedOrderReversed(isChecked);
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
+        });
+        LinearLayout linearLayout = new LinearLayout(dialog.getContext());
+        linearLayout.addView(switchButton);
+        return linearLayout;
     }
 }
