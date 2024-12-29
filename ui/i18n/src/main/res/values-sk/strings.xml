@@ -305,7 +305,7 @@
     <string name="confirm_mobile_streaming_button_always">Vždy</string>
     <string name="confirm_mobile_streaming_button_once">Teraz</string>
     <!--Mediaplayer messages-->
-  <string name="playback_error_generic"><![CDATA[Mediálny súbor sa nepodarilo prehrať.\n\n- Skúste epizódu zmazať a znova stiahnuť.\n- Skontrolujte svoje sieťové pripojenie a uistite sa, že prístup neblokuje žiadna VPN ani prihlasovacia stránka.\n- Skúste dlho stlačiť a zdieľať „Adresu médií“ vo svojom webovom prehliadači, aby ste zistili, či sa tam dá prehrať. Ak nie, kontaktujte tvorcov podcastov.]]></string>
+  <string name="playback_error_generic">Mediálny súbor sa nepodarilo prehrať.\n- Skúste epizódu zmazať a znova stiahnuť.\n- Skontrolujte svoje sieťové pripojenie a uistite sa, že prístup neblokuje žiadna VPN ani prihlasovacia stránka.\n- Skúste dlho stlačiť a zdieľať „Adresu médií“ vo svojom webovom prehliadači, aby ste zistili, či sa tam dá prehrať. Ak nie, kontaktujte tvorcov podcastov.</string>
     <string name="no_media_playing_label">Neprebieha žiadne prehrávanie</string>
     <string name="unknown_media_key">AntennaPod - Neznámy kľúč médií: %1$d</string>
     <string name="error_file_not_found">Súbor nenájdený</string>
@@ -632,7 +632,7 @@
     <string name="synchronization_full_sync_title">Vynútiť plnú synchronizáciu</string>
     <string name="synchronization_force_sync_summary">Znovu synchronizovať všetky odbery a stavy epizód</string>
     <string name="synchronization_logout">Odhlásiť</string>
-    <string name="synchronization_login_status"><![CDATA[Prihlásený ako <i>%1$s</i> na <i>%2$s</i>. <br/><br/>Môžete si vybrať Vášho poskytovateľa synchronizácie opäť keď sa odhlásite]]></string>
+    <string name="synchronization_login_status">Prihlásený ako %1$s na %2$s.\n\nMôžete si vybrať vášho poskytovateľa synchronizácie opäť, keď sa odhlásite.</string>
     <string name="pref_synchronization_logout_toast">Odhlásenie bolo úspešné</string>
     <string name="gpodnetsync_error_title">chyba synchronizácie s gpodder.net</string>
     <string name="gpodnetsync_error_descr">"Počas synchronizácie sa vyskytla chyba: "</string>
@@ -824,7 +824,14 @@
     <string name="feed_delete_confirmation_msg_batch">Potvrďte, že chcete odstrániť vybraté podcasty, VŠETKY ich epizódy (vrátane stiahnutých epizód), históriu prehrávania a štatistiky.</string>
     <string name="discover_more">Objavte viac »</string>
     <string name="null_value_podcast_error">Odkaz, na ktorý ste klikli, neobsahuje platnú webovú adresu podcastu. Overte odkaz a skúste to znova, alebo vyhľadajte podcast manuálne.</string>
-    <string name="nextcloud_login_error_generic"><![CDATA[Nedá sa prihlásiť do vášho Nextcloudu.\n\n- Skontrolujte si sieťové pripojenie.\n- Potvrďte, že používate správnu adresu servera.\n- Uistite sa, že doplnok gpoddersync Nextcloud je nainštalovaný.]]></string>
+    <string name="nextcloud_login_error_generic">[Nedá sa prihlásiť do vášho Nextcloudu.\n- Skontrolujte si sieťové pripojenie.\n- Potvrďte, že používate správnu adresu servera.\n- Uistite sa, že doplnok gpoddersync Nextcloud je nainštalovaný.</string>
     <string name="statistics_view_all">Všetky podcasty »</string>
     <string name="episode_download_failed">Sťahovanie epizódy zlyhalo</string>
+    <string name="statistics_episodes_played">prehratých</string>
+    <string name="statistics_episodes_started">spustených</string>
+    <string name="statistics_episodes_space">veľkosť</string>
+    <string name="statistics_release_schedule">plánované vydanie</string>
+    <string name="statistics_episodes_total">celkovo</string>
+    <string name="statistics_episodes_downloaded">stiahnutých</string>
+    <string name="mobile_download_notice">Sťahovanie cez mobilné pripojenie počas nasledujúcich %d minút</string>
 </resources>

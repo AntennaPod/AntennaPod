@@ -829,7 +829,7 @@
     <string name="sync_status_wait_for_downloads">En attente de la mise à jour des abonnements…</string>
     <string name="statistics_episodes_downloaded">sur l\'appareil</string>
     <string name="nextcloud_login_error_generic">Impossible de se connecter à votre Nextcloud.\n\n- Vérifiez votre connexion réseau.\n- Confirmez que vous utilisez la bonne adresse de serveur.\n- Assurez-vous que le plugin gpoddersync pour Nextcloud est bien installé.</string>
-    <string name="statistics_episodes_started">commencés</string>
+    <string name="statistics_episodes_started">lancés</string>
     <string name="statistics_episodes_total">total</string>
     <string name="statistics_episodes_space">d\'espace occupé</string>
     <string name="statistics_release_next">prochain épisode (estimation)</string>

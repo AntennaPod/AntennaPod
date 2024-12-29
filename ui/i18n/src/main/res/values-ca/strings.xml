@@ -783,4 +783,19 @@
     <string name="shortcut_subscription_label">Drecera a la subscripció</string>
     <string name="shortcut_select_subscription">Selecciona subscripció</string>
     <string name="add_shortcut">Afegeix drecera</string>
+    <string name="home_no_recent_unplayed_episodes_text">Ja heu reproduït tots els episodis recents. Cap sorpresa per aquí ;)</string>
+    <string name="home_new_empty_text">Els episodis nous apareixeran aquí. Llavors podreu decidir si us interessen.</string>
+    <string name="home_downloads_empty_text">Podeu baixar qualsevol episodi per escoltar-lo sense connexió.</string>
+    <string name="section_shown">Mostrat</string>
+    <plurals name="episode_cleanup_hours_after_listening">
+        <item quantity="one">%d hora després d\'acabar</item>
+        <item quantity="many">%d hores després d\'acabar</item>
+        <item quantity="other">%d hores després d\'acabar</item>
+    </plurals>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">Mida total d\'%d episodi al dispositiu</item>
+        <item quantity="many">Mida total de %d episodis al dispositiu</item>
+        <item quantity="other">Mida total de %d episodis al dispositiu</item>
+    </plurals>
+    <string name="home_continue_empty_text">Podeu afegir episodis baixant-los o mantenint premut i seleccionant «Afegeix a la cua».</string>
 </resources>
