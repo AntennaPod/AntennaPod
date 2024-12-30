@@ -137,6 +137,8 @@
     <string name="auto_download_label">Include in auto downloads</string>
     <string name="auto_download_enabled_because_global">Enabled because of global default</string>
     <string name="auto_download_disabled_because_global">Disabled because of global default</string>
+    <string name="auto_download_disabled">Don\'t Automatically Download Podcast</string>
+    <string name="auto_download_enabled">Automatically Download Podcast</string>
     <string name="feed_volume_adapdation">Volume adaptation</string>
     <string name="feed_volume_adaptation_summary">Turn volume for episodes of this podcast up or down: %1$s</string>
     <string name="feed_volume_reduction_off">No adaption</string>

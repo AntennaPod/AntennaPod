@@ -463,38 +463,53 @@ public class FeedSettingsFragment extends Fragment {
         }
 
         private void setupAutoDownloadPreference() {
-            SwitchPreferenceCompat pref = findPreference(PREF_AUTODOWNLOAD);
-
-            boolean enableAutodownloadSwitch = feedPreferences.getAutoDownload(UserPreferences.defaultAutodownloadState());
-            pref.setChecked(enableAutodownloadSwitch);
-            if (feedPreferences.getAutoDownloadRaw() == FeedPreferences.AutoDownloadSetting.GLOBAL) {
-                if (enableAutodownloadSwitch) {
-                    pref.setSummary(getString(R.string.auto_download_enabled_because_global));
-                } else {
-                    pref.setSummary(getString(R.string.auto_download_disabled_because_global));
+            findPreference(PREF_AUTODOWNLOAD).setOnPreferenceChangeListener((preference, newValue) -> {
+                switch ((String) newValue) {
+                    case "global":
+                        feedPreferences.setAutoDownload(FeedPreferences.AutoDownloadSetting.GLOBAL);
+                        break;
+                    case "always":
+                        feedPreferences.setAutoDownload(FeedPreferences.AutoDownloadSetting.ENABLED);
+                        break;
+                    case "never":
+                        feedPreferences.setAutoDownload(FeedPreferences.AutoDownloadSetting.DISABLED);
+                        break;
+                    default:
                 }
-            }
-
-            if (!enableAutodownloadSwitch) {
-                findPreference(PREF_EPISODE_FILTER).setEnabled(false);
-            }
-
-            pref.setOnPreferenceChangeListener((preference, newValue) -> {
-                boolean checked = Boolean.TRUE.equals(newValue);
-
-                feedPreferences.setAutoDownload(checked);
                 DBWriter.setFeedPreferences(feedPreferences);
                 updateAutoDownloadEnabled();
-                pref.setChecked(checked);
-                pref.setSummary("");
                 return false;
             });
         }
 
         private void updateAutoDownloadEnabled() {
             if (feed != null && feed.getPreferences() != null) {
+
                 boolean enabled = feed.getPreferences().getAutoDownload(UserPreferences.defaultAutodownloadState());
                 findPreference(PREF_EPISODE_FILTER).setEnabled(enabled);
+
+                ListPreference autoDownloadPreference = findPreference(PREF_AUTODOWNLOAD);
+
+                switch (feedPreferences.getAutoDownloadRaw()) {
+                    case GLOBAL:
+                        if (feedPreferences.getAutoDownloadRaw() == FeedPreferences.AutoDownloadSetting.GLOBAL) {
+                            if (enabled) {
+                                autoDownloadPreference.setSummary(getString(R.string.auto_download_enabled_because_global));
+                            } else {
+                                autoDownloadPreference.setSummary(getString(R.string.auto_download_disabled_because_global));
+                            }
+                        }
+                        autoDownloadPreference.setValue("global");
+                        break;
+                    case ENABLED:
+                        autoDownloadPreference.setSummary(R.string.auto_download_enabled);
+                        autoDownloadPreference.setValue("always");
+                        break;
+                    case DISABLED:
+                        autoDownloadPreference.setSummary(R.string.auto_download_disabled);
+                        autoDownloadPreference.setValue("never");
+                        break;
+                }
             }
         }
 
