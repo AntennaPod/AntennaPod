@@ -17,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static de.danoeh.antennapod.ui.cleaner.ShownotesCleaner.makeLinkHtml;
 
 /**
  * Test class for {@link ShownotesCleaner}.
@@ -232,5 +233,68 @@ public class ShownotesCleanerTest {
                 + "#foobar {  text-decoration: underline; font-weight:bold ; }"
                 + "baz { background-color:#f00;border: solid 2px;border-color:#0f0;text-decoration: underline; }";
         assertEquals(expected, ShownotesCleaner.cleanStyleTag(input));
+    }
+
+    @Test
+    public void testConvertPlainTextLinksToHtml() {
+        final String link1 = "https://url.to/link";
+        final String textWithLink = "text " + link1;
+        assertEquals("text " + makeLinkHtml(link1), ShownotesCleaner.convertPlainTextLinksToHtml(textWithLink));
+
+        final String oneLetterDomainLink = "https://t.me/link";
+        final String textWithLink2 = "text " + oneLetterDomainLink;
+        assertEquals("text " + makeLinkHtml(oneLetterDomainLink),
+                ShownotesCleaner.convertPlainTextLinksToHtml(textWithLink2));
+
+        final String textWithTwoLinks = "text " + link1 + " and " + oneLetterDomainLink;
+        final String expectedTwoLinks = "text " + makeLinkHtml(link1) + " and " + makeLinkHtml(oneLetterDomainLink);
+        assertEquals(expectedTwoLinks, ShownotesCleaner.convertPlainTextLinksToHtml(textWithTwoLinks));
+
+        final String linkWithParams = "http://t.me/link#mark?param1=1&param2=true";
+        final String textWithParams = "text " + linkWithParams + " after-text";
+        final String expectedWithParams = "text " + makeLinkHtml(linkWithParams) + " after-text";
+        assertEquals(expectedWithParams, ShownotesCleaner.convertPlainTextLinksToHtml(textWithParams));
+    }
+
+    @Test
+    public void testConvertPlainTextLinksToHtmlWhenLinksAreAlreadyHtml() {
+        var linkTag = "<a alt=\"abc\" href=\"http://url.to/link\">http://url.to/link</a>";
+        assertEquals(linkTag, ShownotesCleaner.convertPlainTextLinksToHtml(linkTag));
+
+        var linkTag2 = "<a href=http://domain.org/link>domain.org</a>";
+        assertEquals(linkTag2, ShownotesCleaner.convertPlainTextLinksToHtml(linkTag2));
+
+        var imgTag = "<p><img src=\"https://url.to/i.jpg\" alt=\"\" /></p>";
+        assertEquals(imgTag, ShownotesCleaner.convertPlainTextLinksToHtml(imgTag));
+
+        var audioTag = "text <audio src=\"https://url.to/i.mp3\" alt=\"\" /> text";
+        assertEquals(audioTag, ShownotesCleaner.convertPlainTextLinksToHtml(audioTag));
+
+        var unknownTag = "text <unknown tag=\"https://url.to/i.mp3\" alt=\"\" /> text";
+        assertEquals(unknownTag, ShownotesCleaner.convertPlainTextLinksToHtml(unknownTag));
+    }
+
+    @Test
+    public void testConvertPlainTextLinksToHtmlWhenNoLinksAreDetected() {
+        assertEquals(null, ShownotesCleaner.convertPlainTextLinksToHtml(null));
+        assertEquals("", ShownotesCleaner.convertPlainTextLinksToHtml(""));
+
+        final String text = "plain text";
+        assertEquals(text, ShownotesCleaner.convertPlainTextLinksToHtml(text));
+
+        final String specialCharacters = "text with ' special \" characters !@#$%^&*()<>?123";
+        assertEquals(specialCharacters, ShownotesCleaner.convertPlainTextLinksToHtml(specialCharacters));
+
+        final String textWithDots = "\"Once Upon a Time...in Hollywood\" ";
+        assertEquals(textWithDots, ShownotesCleaner.convertPlainTextLinksToHtml(textWithDots));
+    }
+
+    @Test
+    public void testMakeLinkHtml() {
+        assertEquals("", ShownotesCleaner.makeLinkHtml(null));
+        assertEquals("", ShownotesCleaner.makeLinkHtml(""));
+
+        final String text = "text";
+        assertEquals("<a href=\"text\">text</a>", ShownotesCleaner.makeLinkHtml(text));
     }
 }
