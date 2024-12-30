@@ -16,6 +16,7 @@ import org.robolectric.RobolectricTestRunner;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static de.danoeh.antennapod.ui.cleaner.ShownotesCleaner.makeLinkHtml;
 
@@ -264,6 +265,9 @@ public class ShownotesCleanerTest {
         var linkTag2 = "<a href=http://domain.org/link>domain.org</a>";
         assertEquals(linkTag2, ShownotesCleaner.convertPlainTextLinksToHtml(linkTag2));
 
+        var linkTag3 = "you can find it on <a href=http://xy.org>our new website http://xy.org</a>";
+        assertEquals(linkTag3, ShownotesCleaner.convertPlainTextLinksToHtml(linkTag3));
+
         var imgTag = "<p><img src=\"https://url.to/i.jpg\" alt=\"\" /></p>";
         assertEquals(imgTag, ShownotesCleaner.convertPlainTextLinksToHtml(imgTag));
 
@@ -276,7 +280,7 @@ public class ShownotesCleanerTest {
 
     @Test
     public void testConvertPlainTextLinksToHtmlWhenNoLinksAreDetected() {
-        assertEquals(null, ShownotesCleaner.convertPlainTextLinksToHtml(null));
+        assertNull(ShownotesCleaner.convertPlainTextLinksToHtml(null));
         assertEquals("", ShownotesCleaner.convertPlainTextLinksToHtml(""));
 
         final String text = "plain text";
