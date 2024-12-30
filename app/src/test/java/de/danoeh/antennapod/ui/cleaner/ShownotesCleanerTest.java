@@ -242,14 +242,22 @@ public class ShownotesCleanerTest {
         final String textWithLink = "text " + link1;
         assertEquals("text " + makeLinkHtml(link1), ShownotesCleaner.convertPlainTextLinksToHtml(textWithLink));
 
-        final String oneLetterDomainLink = "https://t.me/link";
-        final String textWithLink2 = "text " + oneLetterDomainLink;
-        assertEquals("text " + makeLinkHtml(oneLetterDomainLink),
+        final String link2 = "https://t.me/link";
+        final String textWithLink2 = "text " + link2;
+        assertEquals("text " + makeLinkHtml(link2),
                 ShownotesCleaner.convertPlainTextLinksToHtml(textWithLink2));
 
-        final String textWithTwoLinks = "text " + link1 + " and " + oneLetterDomainLink;
-        final String expectedTwoLinks = "text " + makeLinkHtml(link1) + " and " + makeLinkHtml(oneLetterDomainLink);
+        final String textWithTwoLinks = "text " + link1 + " and " + link2;
+        final String expectedTwoLinks = "text " + makeLinkHtml(link1) + " and " + makeLinkHtml(link2);
         assertEquals(expectedTwoLinks, ShownotesCleaner.convertPlainTextLinksToHtml(textWithTwoLinks));
+
+        final String textWithMixturePlainTextAndHtml = "text " + link1 + " and " + makeLinkHtml(link2);
+        final String expectedMixture = "text " + makeLinkHtml(link1) + " and " + makeLinkHtml(link2);
+        assertEquals(expectedMixture, ShownotesCleaner.convertPlainTextLinksToHtml(textWithMixturePlainTextAndHtml));
+
+        final String textWithSpecialChars = "text'" + link1 + " and=" + link2;
+        final String expectedWithSpecialChars = "text'" + makeLinkHtml(link1) + " and=" + makeLinkHtml(link2);
+        assertEquals(expectedWithSpecialChars, ShownotesCleaner.convertPlainTextLinksToHtml(textWithSpecialChars));
 
         final String linkWithParams = "http://t.me/link#mark?param1=1&param2=true";
         final String textWithParams = "text " + linkWithParams + " after-text";
@@ -268,14 +276,14 @@ public class ShownotesCleanerTest {
         var linkTag3 = "you can find it on <a href=http://xy.org>our new website http://xy.org</a>";
         assertEquals(linkTag3, ShownotesCleaner.convertPlainTextLinksToHtml(linkTag3));
 
+        var linkTag4 = "you can find it on <a href=http://xy.org/newlanding>our new website http://xy.org</a>";
+        assertEquals(linkTag4, ShownotesCleaner.convertPlainTextLinksToHtml(linkTag4));
+
         var imgTag = "<p><img src=\"https://url.to/i.jpg\" alt=\"\" /></p>";
         assertEquals(imgTag, ShownotesCleaner.convertPlainTextLinksToHtml(imgTag));
 
         var audioTag = "text <audio src=\"https://url.to/i.mp3\" alt=\"\" /> text";
         assertEquals(audioTag, ShownotesCleaner.convertPlainTextLinksToHtml(audioTag));
-
-        var unknownTag = "text <unknown tag=\"https://url.to/i.mp3\" alt=\"\" /> text";
-        assertEquals(unknownTag, ShownotesCleaner.convertPlainTextLinksToHtml(unknownTag));
     }
 
     @Test

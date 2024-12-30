@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.ui.cleaner;
 
-import static java.lang.Integer.max;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -20,9 +19,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashSet;
 import java.util.Locale;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -221,19 +218,12 @@ public class ShownotesCleaner {
         if (text == null || text.isEmpty()) {
             return text;
         }
-        var alreadyHtmlLinks = new HashSet<String>();
+        var alreadyHtmlLinks = new ParsedHtmlLinks(text);
         int lastIndex = 0;
         StringBuilder output = new StringBuilder();
         var m = HTTP_LINK_REGEX.matcher(text);
-        var tagIndicators = Set.of('\'', '\"', '=');
         while (m.find()) {
             var candidate = m.group();
-            var prevPos = max(0, m.start() - 1);
-            var prevChar = text.charAt(prevPos);
-            var isInsideTag = tagIndicators.contains(prevChar);
-            if (isInsideTag) {
-                alreadyHtmlLinks.add(candidate);
-            }
             var transformed = alreadyHtmlLinks.contains(candidate) ? candidate : makeLinkHtml(candidate);
             output.append(text, lastIndex, m.start()).append(transformed);
             lastIndex = m.end();
