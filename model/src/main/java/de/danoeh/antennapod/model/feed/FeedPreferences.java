@@ -97,6 +97,13 @@ public class FeedPreferences implements Serializable {
             }
             return GLOBAL;
         }
+
+        public static AutoDownloadSetting fromBoolean(boolean enabled) {
+            if(enabled) {
+                return ENABLED;
+            }
+            return DISABLED;
+        }
     }
 
     @NonNull
@@ -213,14 +220,6 @@ public class FeedPreferences implements Serializable {
 
     public void setAutoDownload(AutoDownloadSetting setting) {
         this.autoDownload = setting;
-    }
-
-    public void setAutoDownload(boolean autoDownload) {
-        if (autoDownload) {
-            this.autoDownload = AutoDownloadSetting.ENABLED;
-        } else  {
-            this.autoDownload = AutoDownloadSetting.DISABLED;
-        }
     }
 
     public AutoDeleteAction getAutoDeleteAction() {

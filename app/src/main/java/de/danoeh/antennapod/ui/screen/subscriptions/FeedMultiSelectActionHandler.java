@@ -67,7 +67,7 @@ public class FeedMultiSelectActionHandler {
                 activity.getString(R.string.auto_download_settings_label),
                 activity.getString(R.string.auto_download_label));
         preferenceSwitchDialog.setOnPreferenceChangedListener(enabled ->
-                saveFeedPreferences(feedPreferences -> feedPreferences.setAutoDownload(enabled)));
+                saveFeedPreferences(feedPreferences -> feedPreferences.setAutoDownload(FeedPreferences.AutoDownloadSetting.fromBoolean(enabled))));
         preferenceSwitchDialog.openDialog();
     }
 
