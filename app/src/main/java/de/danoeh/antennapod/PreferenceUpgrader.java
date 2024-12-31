@@ -170,7 +170,8 @@ public class PreferenceUpgrader {
             }
         }
         if (oldVersion < 3050095) {
-            // If autodownloads are enabled, we will start deleting episodes. To prevent accidents, force off the deletions.
+            // If autodownloads are enabled, we will start deleting episodes.
+            // To prevent accidents, force off the deletions.
             if (!UserPreferences.defaultAutodownloadState()) {
                 prefs.edit().putString(UserPreferences.PREF_EPISODE_CLEANUP, "" + EPISODE_CLEANUP_NULL).apply();
             }

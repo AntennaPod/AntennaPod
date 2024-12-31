@@ -99,7 +99,7 @@ public class FeedPreferences implements Serializable {
         }
 
         public static AutoDownloadSetting fromBoolean(boolean enabled) {
-            if(enabled) {
+            if (enabled) {
                 return ENABLED;
             }
             return DISABLED;
