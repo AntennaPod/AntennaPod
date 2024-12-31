@@ -189,7 +189,14 @@ public class FeedPreferences implements Serializable {
         this.feedID = feedID;
     }
 
-    public boolean getAutoDownload(boolean globalDefault) {
+    /**
+     * This function returns the calculated auto-download state for the given FeedPreference.
+     * By supplying the global default, the returned value will present the actionable state of the
+     * download-state choosen by the user. No further checks need to be made.
+     * @param globalDefault Global Setting for automatic downloading of items. Can be True/False (Equals to Enabled/Disabled)
+     * @return whether or not this item should be downloaded
+     */
+    public boolean getAppliedAutoDownload(boolean globalDefault) {
         return switch (this.autoDownload) {
             case ENABLED -> true;
             case DISABLED -> false;
@@ -197,7 +204,10 @@ public class FeedPreferences implements Serializable {
         };
     }
 
-    public AutoDownloadSetting getAutoDownloadRaw() {
+    /**
+     * @return The autodownload settings value for this item.
+     */
+    public AutoDownloadSetting getAutoDownload() {
         return this.autoDownload;
     }
 

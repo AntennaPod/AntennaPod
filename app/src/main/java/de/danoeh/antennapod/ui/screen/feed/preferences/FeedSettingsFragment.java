@@ -485,14 +485,14 @@ public class FeedSettingsFragment extends Fragment {
         private void updateAutoDownloadEnabled() {
             if (feed != null && feed.getPreferences() != null) {
 
-                boolean enabled = feed.getPreferences().getAutoDownload(UserPreferences.defaultAutodownloadState());
+                boolean enabled = feed.getPreferences().getAppliedAutoDownload(UserPreferences.defaultAutodownloadState());
                 findPreference(PREF_EPISODE_FILTER).setEnabled(enabled);
 
                 ListPreference autoDownloadPreference = findPreference(PREF_AUTODOWNLOAD);
 
-                switch (feedPreferences.getAutoDownloadRaw()) {
+                switch (feedPreferences.getAutoDownload()) {
                     case GLOBAL:
-                        if (feedPreferences.getAutoDownloadRaw() == FeedPreferences.AutoDownloadSetting.GLOBAL) {
+                        if (feedPreferences.getAutoDownload() == FeedPreferences.AutoDownloadSetting.GLOBAL) {
                             if (enabled) {
                                 autoDownloadPreference.setSummary(getString(R.string.auto_download_enabled_because_global));
                             } else {

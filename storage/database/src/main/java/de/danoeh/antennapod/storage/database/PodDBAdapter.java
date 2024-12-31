@@ -471,7 +471,7 @@ public class PodDBAdapter {
             throw new IllegalArgumentException("Feed ID of preference must not be null");
         }
         ContentValues values = new ContentValues();
-        values.put(KEY_AUTO_DOWNLOAD_ENABLED, prefs.getAutoDownloadRaw().code);
+        values.put(KEY_AUTO_DOWNLOAD_ENABLED, prefs.getAutoDownload().code);
         values.put(KEY_KEEP_UPDATED, prefs.getKeepUpdated());
         values.put(KEY_AUTO_DELETE_ACTION, prefs.getAutoDeleteAction().code);
         values.put(KEY_FEED_VOLUME_ADAPTION, prefs.getVolumeAdaptionSetting().toInteger());
