@@ -44,6 +44,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -524,11 +525,20 @@ public class MainActivity extends CastEnabledActivity {
         MenuItem moreItem = menu.add(0, R.id.bottom_navigation_more, 0, getString(R.string.searchpreference_more));
         moreItem.setIcon(R.drawable.dots_vertical);
         bottomNavigationView.setOnItemSelectedListener(bottomItemSelectedListener);
-        updateBottomNavigationBadgeIfNeeded(null);
+        updateBottomNavigationBadgeIfNeeded();
     }
 
-    @Subscribe
-    public void updateBottomNavigationBadgeIfNeeded(@Nullable UnreadItemsUpdateEvent ignore) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
+        updateBottomNavigationBadgeIfNeeded();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFeedListChanged(FeedListUpdateEvent event) {
+        updateBottomNavigationBadgeIfNeeded();
+    }
+
+    private void updateBottomNavigationBadgeIfNeeded() {
         if (bottomNavigationView == null) {
             return;
         } else if (bottomNavigationView.getMenu().findItem(R.id.bottom_navigation_inbox) == null) {

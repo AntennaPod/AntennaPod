@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
@@ -122,6 +123,8 @@ public class AutomaticDatabaseExportWorker extends Worker {
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS)
                 == PackageManager.PERMISSION_GRANTED) {
             nm.notify(R.id.notification_id_backup_error, notification);
+        } else {
+            Toast.makeText(getApplicationContext(), description, Toast.LENGTH_LONG).show();
         }
     }
 }

@@ -60,8 +60,8 @@ public class FeedItemMenuHandler {
         boolean canSkip = false;
         boolean canRemoveFromQueue = false;
         boolean canAddToQueue = false;
-        boolean canVisitWebsite = selectedItems.size() == 1;
-        boolean canShare = selectedItems.size() == 1;
+        boolean canVisitWebsite = false;
+        boolean canShare = false;
         boolean canRemoveFromInbox = false;
         boolean canMarkPlayed = false;
         boolean canMarkUnplayed = false;
@@ -70,7 +70,7 @@ public class FeedItemMenuHandler {
         boolean canDownload = false;
         boolean canAddFavorite = false;
         boolean canRemoveFavorite = false;
-        boolean canShowTranscript = selectedItems.size() == 1;
+        boolean canShowTranscript = false;
 
         for (FeedItem item : selectedItems) {
             boolean hasMedia = item.getMedia() != null;
@@ -83,7 +83,7 @@ public class FeedItemMenuHandler {
             canMarkPlayed |= !item.isPlayed();
             canMarkUnplayed |= item.isPlayed();
             canResetPosition |= hasMedia && item.getMedia().getPosition() != 0;
-            canDelete |= hasMedia && item.getMedia().isDownloaded();
+            canDelete |= (hasMedia && item.getMedia().isDownloaded()) || item.getFeed().isLocalFeed();
             canDownload |= hasMedia && !item.getMedia().isDownloaded() && !item.getFeed().isLocalFeed();
             canAddFavorite |= !item.isTagged(FeedItem.TAG_FAVORITE);
             canRemoveFavorite |= item.isTagged(FeedItem.TAG_FAVORITE);

@@ -12,6 +12,7 @@ dependencies {
     implementation project(':event')
     implementation project(':model')
     implementation project(':playback:base')
+    implementation project(':ui:episodes')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"

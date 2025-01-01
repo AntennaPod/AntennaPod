@@ -153,21 +153,24 @@ public class FeedStatisticsFragment extends Fragment {
         StatisticsItem s = p.first;
         viewBinding.episodesStarted.mainLabel.setText(getResources()
                 .getQuantityString(R.plurals.num_episodes, (int) s.episodesStarted, s.episodesStarted));
-        viewBinding.episodesStarted.subtitleLabel.setText(R.string.statistics_episodes_started);
+        viewBinding.episodesStarted.subtitleLabel.setText(getResources()
+                .getQuantityString(R.plurals.statistics_episodes_started, (int) s.episodesStarted));
 
         viewBinding.episodesTotal.mainLabel.setText(getResources()
                 .getQuantityString(R.plurals.num_episodes, (int) s.episodes, s.episodes));
-        viewBinding.episodesTotal.subtitleLabel.setText(R.string.statistics_episodes_total);
+        viewBinding.episodesTotal.subtitleLabel.setText(getResources()
+                .getQuantityString(R.plurals.statistics_episodes_total, (int) s.episodes));
 
         viewBinding.playbackTime.mainLabel.setText(Converter.shortLocalizedDuration(getContext(), s.timePlayed));
-        viewBinding.playbackTime.subtitleLabel.setText(R.string.statistics_episodes_played);
+        viewBinding.playbackTime.subtitleLabel.setText(R.string.statistics_time_played);
 
         viewBinding.durationTotal.mainLabel.setText(Converter.shortLocalizedDuration(getContext(), s.time));
-        viewBinding.durationTotal.subtitleLabel.setText(R.string.statistics_episodes_total);
+        viewBinding.durationTotal.subtitleLabel.setText(R.string.statistics_time_total);
 
         viewBinding.episodesDownloaded.mainLabel.setText(getResources()
                 .getQuantityString(R.plurals.num_episodes, (int) s.episodesDownloadCount, s.episodesDownloadCount));
-        viewBinding.episodesDownloaded.subtitleLabel.setText(R.string.statistics_episodes_downloaded);
+        viewBinding.episodesDownloaded.subtitleLabel.setText(getResources()
+                .getQuantityString(R.plurals.statistics_episodes_downloaded, (int) s.episodesDownloadCount));
 
         viewBinding.spaceDownloaded.mainLabel.setText(Formatter.formatShortFileSize(getContext(), s.totalDownloadSize));
         viewBinding.spaceDownloaded.subtitleLabel.setText(R.string.statistics_episodes_space);

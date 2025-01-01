@@ -103,7 +103,8 @@ public class EpisodeMultiSelectActionHandler {
     private void deleteChecked(List<FeedItem> items) {
         int countHasMedia = 0;
         for (FeedItem feedItem : items) {
-            if (feedItem.hasMedia() && feedItem.getMedia().isDownloaded()) {
+            if ((feedItem.hasMedia() && feedItem.getMedia().isDownloaded())
+                    || feedItem.getFeed().isLocalFeed()) {
                 countHasMedia++;
                 DBWriter.deleteFeedMediaOfItem(activity, feedItem.getMedia());
             }

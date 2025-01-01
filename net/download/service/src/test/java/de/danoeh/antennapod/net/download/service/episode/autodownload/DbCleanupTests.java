@@ -16,6 +16,8 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueStub;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
@@ -83,6 +85,7 @@ public class DbCleanupTests {
         PlaybackPreferences.init(context);
         SynchronizationSettings.init(context);
         AutoDownloadManager.setInstance(new AutoDownloadManagerImpl());
+        SynchronizationQueue.setInstance(new SynchronizationQueueStub());
     }
 
     @After

@@ -408,6 +408,10 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         progressBar.setVisibility(View.VISIBLE);
 
         infoBar = root.findViewById(R.id.info_bar);
+        boolean largePadding = displayUpArrow || !UserPreferences.isBottomNavigationEnabled();
+        int paddingHorizontal = (int) (getResources().getDisplayMetrics().density * (largePadding ? 60 : 16));
+        infoBar.setPadding(paddingHorizontal, 0, paddingHorizontal, 0);
+
         recyclerView = root.findViewById(R.id.recyclerView);
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
         if (animator instanceof SimpleItemAnimator) {
@@ -544,6 +548,8 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     }
 
     public static class QueueSortDialog extends ItemSortDialog {
+        boolean turnedOffKeepSortedForRandom = false;
+
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater,
@@ -569,9 +575,16 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         @Override
         protected void onSelectionChanged() {
             super.onSelectionChanged();
-            viewBinding.keepSortedCheckbox.setEnabled(sortOrder != SortOrder.RANDOM);
             if (sortOrder == SortOrder.RANDOM) {
+                turnedOffKeepSortedForRandom |= viewBinding.keepSortedCheckbox.isChecked();
                 viewBinding.keepSortedCheckbox.setChecked(false);
+                viewBinding.keepSortedCheckbox.setEnabled(false);
+            } else {
+                if (turnedOffKeepSortedForRandom) {
+                    viewBinding.keepSortedCheckbox.setChecked(true);
+                    turnedOffKeepSortedForRandom = false;
+                }
+                viewBinding.keepSortedCheckbox.setEnabled(true);
             }
             UserPreferences.setQueueKeepSorted(viewBinding.keepSortedCheckbox.isChecked());
             UserPreferences.setQueueKeepSortedOrder(sortOrder);
