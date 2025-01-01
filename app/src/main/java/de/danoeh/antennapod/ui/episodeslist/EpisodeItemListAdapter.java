@@ -71,6 +71,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     @Override
     public final void onBindViewHolder(EpisodeItemViewHolder holder, int pos) {
         if (pos >= episodes.size()) {
+            holder.separatorLabel.setVisibility(View.GONE);
             beforeBindViewHolder(holder, pos);
             holder.bindDummy();
             afterBindViewHolder(holder, pos);
@@ -81,6 +82,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         // Reset state of recycled views
         holder.coverHolder.setVisibility(View.VISIBLE);
         holder.dragHandle.setVisibility(View.GONE);
+        holder.separatorLabel.setVisibility(View.GONE);
 
         beforeBindViewHolder(holder, pos);
 

@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:ignore="MergeRootFrame">
+    android:orientation="vertical">
 
-    <!--
-    This parent FrameLayout is necessary because RecyclerView's ItemAnimator changes alpha values,
-    which conflicts with our played state indicator.
-    -->
+    <TextView
+        android:id="@+id/separatorLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="4dp"
+        android:background="?attr/colorSurface"
+        android:visibility="gone"
+        style="@style/TextAppearance.Material3.TitleMedium" />
+
     <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -216,4 +223,4 @@
 
     </LinearLayout>
 
-</FrameLayout>
+</LinearLayout>
