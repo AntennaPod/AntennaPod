@@ -250,6 +250,9 @@ public class MainActivity extends CastEnabledActivity {
                             status = DownloadStatus.STATE_QUEUED;
                             progress = 0;
                         }
+                        if (updatedEpisodes.containsKey(downloadUrl) && status == DownloadStatus.STATE_COMPLETED) {
+                            continue; // In case of a duplicate, prefer running/queued over completed
+                        }
                         updatedEpisodes.put(downloadUrl, new DownloadStatus(status, progress));
                     }
                     DownloadServiceInterface.get().setCurrentDownloads(updatedEpisodes);
