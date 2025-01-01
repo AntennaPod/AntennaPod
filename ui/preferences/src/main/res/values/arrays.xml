@@ -21,8 +21,8 @@
 
     <string-array name="spnEnableAutoDownloadValues">
         <item>global</item>
-        <item>always</item>
-        <item>never</item>
+        <item>enabled</item>
+        <item>disabled</item>
     </string-array>
 
     <string-array name="spnVolumeAdaptationItems">

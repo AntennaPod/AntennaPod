@@ -468,10 +468,10 @@ public class FeedSettingsFragment extends Fragment {
                     case "global":
                         feedPreferences.setAutoDownload(FeedPreferences.AutoDownloadSetting.GLOBAL);
                         break;
-                    case "always":
+                    case "enabled":
                         feedPreferences.setAutoDownload(FeedPreferences.AutoDownloadSetting.ENABLED);
                         break;
-                    case "never":
+                    case "disabled":
                         feedPreferences.setAutoDownload(FeedPreferences.AutoDownloadSetting.DISABLED);
                         break;
                     default:
@@ -501,11 +501,11 @@ public class FeedSettingsFragment extends Fragment {
                     break;
                 case ENABLED:
                     autoDownloadPreference.setSummary(R.string.enabled);
-                    autoDownloadPreference.setValue("always");
+                    autoDownloadPreference.setValue("enabled");
                     break;
                 case DISABLED:
                     autoDownloadPreference.setSummary(R.string.disabled);
-                    autoDownloadPreference.setValue("never");
+                    autoDownloadPreference.setValue("disabled");
                     break;
             }
         }
