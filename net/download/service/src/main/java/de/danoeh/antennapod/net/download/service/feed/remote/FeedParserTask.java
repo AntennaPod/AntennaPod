@@ -40,14 +40,9 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
         Feed feed = new Feed(request.getSource(), request.getLastModified());
         feed.setLocalFileUrl(request.getDestination());
         feed.setId(request.getFeedfileId());
-        // todo: Check handling of autoDownload parameter
-        feed.setPreferences(new FeedPreferences(0,
-                FeedPreferences.AutoDownloadSetting.GLOBAL,
-                FeedPreferences.AutoDeleteAction.GLOBAL,
-                VolumeAdaptionSetting.OFF,
-                FeedPreferences.NewEpisodesAction.GLOBAL,
-                request.getUsername(),
-                request.getPassword()));
+        feed.setPreferences(new FeedPreferences(0, FeedPreferences.AutoDownloadSetting.GLOBAL,
+                FeedPreferences.AutoDeleteAction.GLOBAL, VolumeAdaptionSetting.OFF,
+                FeedPreferences.NewEpisodesAction.GLOBAL, request.getUsername(), request.getPassword()));
         feed.setPageNr(request.getArguments().getInt(DownloadRequest.REQUEST_ARG_PAGE_NR, 0));
 
         DownloadError reason = null;

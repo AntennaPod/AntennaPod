@@ -1,7 +1,5 @@
 package de.danoeh.antennapod;
 
-import static de.danoeh.antennapod.storage.preferences.UserPreferences.EPISODE_CLEANUP_NULL;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.KeyEvent;
@@ -12,10 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.BuildConfig;
-import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
-import de.danoeh.antennapod.CrashReportWriter;
 import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
@@ -169,11 +164,12 @@ public class PreferenceUpgrader {
                 prefs.edit().putString(UserPreferences.PREF_FILTER_ALL_EPISODES, oldEpisodeFilter).apply();
             }
         }
-        if (oldVersion < 3050095) {
+        if (oldVersion < 3070000) {
             // If autodownloads are enabled, we will start deleting episodes.
             // To prevent accidents, force off the deletions.
-            if (!UserPreferences.defaultAutodownloadState()) {
-                prefs.edit().putString(UserPreferences.PREF_EPISODE_CLEANUP, "" + EPISODE_CLEANUP_NULL).apply();
+            if (!UserPreferences.isEnableAutodownloadGlobal()) {
+                prefs.edit().putString(UserPreferences.PREF_EPISODE_CLEANUP,
+                        "" + UserPreferences.EPISODE_CLEANUP_NULL).apply();
             }
         }
     }

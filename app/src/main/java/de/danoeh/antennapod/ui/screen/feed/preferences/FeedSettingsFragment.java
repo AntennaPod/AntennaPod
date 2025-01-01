@@ -485,7 +485,7 @@ public class FeedSettingsFragment extends Fragment {
         private void updateAutoDownloadEnabled() {
             if (feed != null && feed.getPreferences() != null) {
 
-                boolean enabled = feed.getPreferences().getAppliedAutoDownload(UserPreferences.defaultAutodownloadState());
+                boolean enabled = feed.getPreferences().isAutoDownload(UserPreferences.isEnableAutodownloadGlobal());
                 findPreference(PREF_EPISODE_FILTER).setEnabled(enabled);
 
                 ListPreference autoDownloadPreference = findPreference(PREF_AUTODOWNLOAD);

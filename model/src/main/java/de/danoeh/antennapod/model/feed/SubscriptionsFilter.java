@@ -75,7 +75,7 @@ public class SubscriptionsFilter {
 
             // todo: UserPreferences
             boolean globalAutodownload = false;
-            boolean shouldItemAutoDownload = itemPreferences.getAppliedAutoDownload(globalAutodownload);
+            boolean shouldItemAutoDownload = itemPreferences.isAutoDownload(globalAutodownload);
             // If the item does not meet a requirement, skip it.
             if (showAutoDownloadEnabled && !shouldItemAutoDownload) {
                 continue;

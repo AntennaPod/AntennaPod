@@ -4,8 +4,8 @@
     <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="prefEnableAutoDl"
-            android:summary="@string/pref_automatic_download_default_title"
-            android:title="@string/pref_automatic_download_default_description"/>
+            android:title="@string/pref_automatic_download_title"
+            android:summary="@string/pref_automatic_download_global_description"/>
     <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
             android:defaultValue="25"
             android:entries="@array/episode_cache_size_entries"

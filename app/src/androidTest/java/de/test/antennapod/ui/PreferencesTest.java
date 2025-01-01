@@ -269,17 +269,17 @@ public class PreferencesTest {
 
     @Test
     public void testAutomaticDownload() {
-        final boolean automaticDownload = UserPreferences.defaultAutodownloadState();
+        final boolean automaticDownload = UserPreferences.isEnableAutodownloadGlobal();
         clickPreference(R.string.downloads_pref);
         clickPreference(R.string.pref_automatic_download_title);
-        clickPreference(R.string.pref_automatic_download_default_title);
+        clickPreference(R.string.pref_automatic_download_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> automaticDownload != UserPreferences.defaultAutodownloadState());
-        if (!UserPreferences.defaultAutodownloadState()) {
-            clickPreference(R.string.pref_automatic_download_default_title);
+                .until(() -> automaticDownload != UserPreferences.isEnableAutodownloadGlobal());
+        if (!UserPreferences.isEnableAutodownloadGlobal()) {
+            clickPreference(R.string.pref_automatic_download_title);
         }
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(UserPreferences::defaultAutodownloadState);
+                .until(UserPreferences::isEnableAutodownloadGlobal);
         final boolean enableAutodownloadOnBattery = UserPreferences.isEnableAutodownloadOnBattery();
         clickPreference(R.string.pref_automatic_download_on_battery_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
