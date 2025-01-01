@@ -108,6 +108,7 @@ public class FeedSettingsFragment extends Fragment {
 
     public static class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
         private static final String PREF_EPISODE_FILTER = "episodeFilter";
+        private static final String PREF_AUTODOWNLOAD = "autoDownload";
         private static final String PREF_SCREEN = "feedSettingsScreen";
         private static final String PREF_AUTHENTICATION = "authentication";
         private static final String PREF_AUTO_DELETE = "autoDelete";
@@ -180,7 +181,6 @@ public class FeedSettingsFragment extends Fragment {
                         feed = result;
                         feedPreferences = feed.getPreferences();
 
-                        setupAutoDownloadGlobalPreference();
                         setupAutoDownloadPreference();
                         setupKeepUpdatedPreference();
                         setupAutoDeletePreference();
@@ -462,42 +462,51 @@ public class FeedSettingsFragment extends Fragment {
             });
         }
 
-        private void setupAutoDownloadGlobalPreference() {
-            if (!UserPreferences.isEnableAutodownload()) {
-                SwitchPreferenceCompat autodl = findPreference("autoDownload");
-                autodl.setChecked(false);
-                autodl.setEnabled(false);
-                autodl.setSummary(R.string.auto_download_disabled_globally);
-                findPreference(PREF_EPISODE_FILTER).setEnabled(false);
-            }
-        }
-
         private void setupAutoDownloadPreference() {
-            SwitchPreferenceCompat pref = findPreference("autoDownload");
-
-            pref.setEnabled(UserPreferences.isEnableAutodownload());
-            if (UserPreferences.isEnableAutodownload()) {
-                pref.setChecked(feedPreferences.getAutoDownload());
-            } else {
-                pref.setChecked(false);
-                pref.setSummary(R.string.auto_download_disabled_globally);
-            }
-
-            pref.setOnPreferenceChangeListener((preference, newValue) -> {
-                boolean checked = Boolean.TRUE.equals(newValue);
-
-                feedPreferences.setAutoDownload(checked);
+            findPreference(PREF_AUTODOWNLOAD).setOnPreferenceChangeListener((preference, newValue) -> {
+                switch ((String) newValue) {
+                    case "global":
+                        feedPreferences.setAutoDownload(FeedPreferences.AutoDownloadSetting.GLOBAL);
+                        break;
+                    case "enabled":
+                        feedPreferences.setAutoDownload(FeedPreferences.AutoDownloadSetting.ENABLED);
+                        break;
+                    case "disabled":
+                        feedPreferences.setAutoDownload(FeedPreferences.AutoDownloadSetting.DISABLED);
+                        break;
+                    default:
+                }
                 DBWriter.setFeedPreferences(feedPreferences);
                 updateAutoDownloadEnabled();
-                pref.setChecked(checked);
                 return false;
             });
         }
 
         private void updateAutoDownloadEnabled() {
-            if (feed != null && feed.getPreferences() != null) {
-                boolean enabled = feed.getPreferences().getAutoDownload() && UserPreferences.isEnableAutodownload();
-                findPreference(PREF_EPISODE_FILTER).setEnabled(enabled);
+            if (feed == null || feed.getPreferences() == null) {
+                return;
+            }
+
+            boolean enabled = feed.getPreferences().isAutoDownload(UserPreferences.isEnableAutodownloadGlobal());
+            findPreference(PREF_EPISODE_FILTER).setEnabled(enabled);
+            ListPreference autoDownloadPreference = findPreference(PREF_AUTODOWNLOAD);
+
+            switch (feedPreferences.getAutoDownload()) {
+                case GLOBAL:
+                    if (feedPreferences.getAutoDownload() == FeedPreferences.AutoDownloadSetting.GLOBAL) {
+                        autoDownloadPreference.setSummary(getString(R.string.global_default_with_value,
+                                enabled ? getString(R.string.enabled) : getString(R.string.disabled)));
+                    }
+                    autoDownloadPreference.setValue("global");
+                    break;
+                case ENABLED:
+                    autoDownloadPreference.setSummary(R.string.enabled);
+                    autoDownloadPreference.setValue("enabled");
+                    break;
+                case DISABLED:
+                    autoDownloadPreference.setSummary(R.string.disabled);
+                    autoDownloadPreference.setValue("disabled");
+                    break;
             }
         }
 

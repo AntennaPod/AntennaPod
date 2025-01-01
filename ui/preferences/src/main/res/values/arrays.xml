@@ -13,6 +13,18 @@
         <item>never</item>
     </string-array>
 
+    <string-array name="spnEnableAutoDownloadItems">
+        <item>@string/global_default</item>
+        <item>@string/enabled</item>
+        <item>@string/disabled</item>
+    </string-array>
+
+    <string-array name="spnEnableAutoDownloadValues">
+        <item>global</item>
+        <item>enabled</item>
+        <item>disabled</item>
+    </string-array>
+
     <string-array name="spnVolumeAdaptationItems">
         <item>@string/feed_volume_reduction_heavy</item>
         <item>@string/feed_volume_reduction_light</item>

@@ -73,10 +73,13 @@ public class SubscriptionsFilter {
         for (Feed item : items) {
             FeedPreferences itemPreferences = item.getPreferences();
 
+            // todo: UserPreferences
+            boolean globalAutodownload = false;
+            boolean shouldItemAutoDownload = itemPreferences.isAutoDownload(globalAutodownload);
             // If the item does not meet a requirement, skip it.
-            if (showAutoDownloadEnabled && !itemPreferences.getAutoDownload()) {
+            if (showAutoDownloadEnabled && !shouldItemAutoDownload) {
                 continue;
-            } else if (showAutoDownloadDisabled && itemPreferences.getAutoDownload()) {
+            } else if (showAutoDownloadDisabled && shouldItemAutoDownload) {
                 continue;
             }
 
