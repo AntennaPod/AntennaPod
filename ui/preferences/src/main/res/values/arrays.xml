@@ -15,8 +15,8 @@
 
     <string-array name="spnEnableAutoDownloadItems">
         <item>@string/global_default</item>
-        <item>@string/auto_download_enabled</item>
-        <item>@string/auto_download_disabled</item>
+        <item>@string/enabled</item>
+        <item>@string/disabled</item>
     </string-array>
 
     <string-array name="spnEnableAutoDownloadValues">

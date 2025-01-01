@@ -483,33 +483,30 @@ public class FeedSettingsFragment extends Fragment {
         }
 
         private void updateAutoDownloadEnabled() {
-            if (feed != null && feed.getPreferences() != null) {
+            if (feed == null || feed.getPreferences() == null) {
+                return;
+            }
 
-                boolean enabled = feed.getPreferences().isAutoDownload(UserPreferences.isEnableAutodownloadGlobal());
-                findPreference(PREF_EPISODE_FILTER).setEnabled(enabled);
+            boolean enabled = feed.getPreferences().isAutoDownload(UserPreferences.isEnableAutodownloadGlobal());
+            findPreference(PREF_EPISODE_FILTER).setEnabled(enabled);
+            ListPreference autoDownloadPreference = findPreference(PREF_AUTODOWNLOAD);
 
-                ListPreference autoDownloadPreference = findPreference(PREF_AUTODOWNLOAD);
-
-                switch (feedPreferences.getAutoDownload()) {
-                    case GLOBAL:
-                        if (feedPreferences.getAutoDownload() == FeedPreferences.AutoDownloadSetting.GLOBAL) {
-                            if (enabled) {
-                                autoDownloadPreference.setSummary(getString(R.string.auto_download_enabled_because_global));
-                            } else {
-                                autoDownloadPreference.setSummary(getString(R.string.auto_download_disabled_because_global));
-                            }
-                        }
-                        autoDownloadPreference.setValue("global");
-                        break;
-                    case ENABLED:
-                        autoDownloadPreference.setSummary(R.string.auto_download_enabled);
-                        autoDownloadPreference.setValue("always");
-                        break;
-                    case DISABLED:
-                        autoDownloadPreference.setSummary(R.string.auto_download_disabled);
-                        autoDownloadPreference.setValue("never");
-                        break;
-                }
+            switch (feedPreferences.getAutoDownload()) {
+                case GLOBAL:
+                    if (feedPreferences.getAutoDownload() == FeedPreferences.AutoDownloadSetting.GLOBAL) {
+                        autoDownloadPreference.setSummary(getString(R.string.global_default_with_value,
+                                enabled ? getString(R.string.enabled) : getString(R.string.disabled)));
+                    }
+                    autoDownloadPreference.setValue("global");
+                    break;
+                case ENABLED:
+                    autoDownloadPreference.setSummary(R.string.enabled);
+                    autoDownloadPreference.setValue("always");
+                    break;
+                case DISABLED:
+                    autoDownloadPreference.setSummary(R.string.disabled);
+                    autoDownloadPreference.setValue("never");
+                    break;
             }
         }
 

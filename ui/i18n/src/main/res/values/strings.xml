@@ -117,8 +117,11 @@
     <string name="cancel_label">Cancel</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
     <string name="reset">Reset</string>
     <string name="global_default">Global default</string>
+    <string name="global_default_with_value">Global default (%1$s)</string>
     <string name="url_label">URL</string>
     <string name="support_funding_label">Support</string>
     <string name="support_podcast">Support this podcast</string>
@@ -134,10 +137,6 @@
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto downloads</string>
-    <string name="auto_download_enabled_because_global">Enabled because of global default</string>
-    <string name="auto_download_disabled_because_global">Disabled because of global default</string>
-    <string name="auto_download_disabled">Don\'t Automatically Download Podcast</string>
-    <string name="auto_download_enabled">Automatically Download Podcast</string>
     <string name="feed_volume_adapdation">Volume adaptation</string>
     <string name="feed_volume_adaptation_summary">Turn volume for episodes of this podcast up or down: %1$s</string>
     <string name="feed_volume_reduction_off">No adaption</string>
