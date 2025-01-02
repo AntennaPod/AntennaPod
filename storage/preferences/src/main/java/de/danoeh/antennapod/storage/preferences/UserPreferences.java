@@ -112,6 +112,7 @@ public abstract class UserPreferences {
     // Other
     private static final String PREF_DATA_FOLDER = "prefDataFolder";
     public static final String PREF_DELETE_REMOVES_FROM_QUEUE = "prefDeleteRemovesFromQueue";
+    public static final String PREF_DOWNLOADS_BUTTON_ACTION = "prefDownloadsButtonAction";
     private static final String PREF_AUTOMATIC_EXPORT_FOLDER = "prefAutomaticExportFolder";
 
     // Mediaplayer
@@ -421,6 +422,10 @@ public abstract class UserPreferences {
 
     public static boolean shouldDeleteRemoveFromQueue() {
         return prefs.getBoolean(PREF_DELETE_REMOVES_FROM_QUEUE, false);
+    }
+
+    public static boolean shouldDownloadsButtonActionPlay() {
+        return prefs.getBoolean(PREF_DOWNLOADS_BUTTON_ACTION, false);
     }
 
     public static float getPlaybackSpeed() {
