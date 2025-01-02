@@ -119,6 +119,10 @@
     <string name="no">No</string>
     <string name="reset">Reset</string>
     <string name="global_default">Global default</string>
+    <string name="skip_silence_off">Off</string>
+    <string name="skip_silence_mild">Mild</string>
+    <string name="skip_silence_medium">Medium</string>
+    <string name="skip_silence_aggressive">Aggressive</string>
     <string name="url_label">URL</string>
     <string name="support_funding_label">Support</string>
     <string name="support_podcast">Support this podcast</string>
@@ -485,8 +489,8 @@
     <string name="pref_theme_title_light">Light</string>
     <string name="pref_theme_title_dark">Dark</string>
     <string name="pref_episode_cache_unlimited">Unlimited</string>
-    <string name="pref_playback_speed_sum">Customize the speeds available for variable speed playback</string>
-    <string name="pref_feed_playback_speed_sum">The speed to use when starting audio playback for episodes in this podcast</string>
+    <string name="pref_playback_speed_sum">Customize the speeds available for variable speed playback and skip silence</string>
+    <string name="pref_feed_playback_speed_sum">The speed to use and skip silence settings when starting audio playback for episodes in this podcast</string>
     <string name="pref_feed_skip">Auto skip</string>
     <string name="pref_feed_skip_sum">Skip introductions and ending credits.</string>
     <string name="pref_feed_skip_ending">Skip last</string>
@@ -836,7 +840,7 @@
 
     <!-- Audio controls -->
     <string name="audio_controls">Audio controls</string>
-    <string name="playback_speed">Playback speed</string>
+    <string name="playback_speed">Playback speed and skip silence</string>
     <string name="player_switch_to_audio_only">Switch to audio only</string>
 
     <!-- proxy settings -->
