@@ -168,7 +168,7 @@
         <item quantity="other">%d episodes</item>
     </plurals>
     <string name="episode_notification">Episode notifications</string>
-    <string name="episode_notification_summary">Show a notification when a new episode is released.</string>
+    <string name="episode_notification_summary">Show a notification when a new episode is released</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s has a new episode</item>
         <item quantity="other">%2$s has %1$d new episodes</item>
@@ -488,7 +488,7 @@
     <string name="pref_playback_speed_sum">Customize the speeds available for variable speed playback</string>
     <string name="pref_feed_playback_speed_sum">The speed to use when starting audio playback for episodes in this podcast</string>
     <string name="pref_feed_skip">Auto skip</string>
-    <string name="pref_feed_skip_sum">Skip introductions and ending credits.</string>
+    <string name="pref_feed_skip_sum">Skip introductions and ending credits</string>
     <string name="pref_feed_skip_ending">Skip last</string>
     <string name="pref_feed_skip_intro">Skip first</string>
     <string name="pref_feed_skip_ending_toast">Skipped last %d seconds</string>
@@ -729,7 +729,7 @@
 
     <!-- Feed settings/information screen -->
     <string name="authentication_label">Authentication</string>
-    <string name="authentication_descr">Change your username and password for this podcast and its episodes.</string>
+    <string name="authentication_descr">Change your username and password for this podcast and its episodes</string>
     <string name="feed_tags_label">Tags</string>
     <string name="feed_tags_summary">Change the tags of this podcast to help organize your subscriptions</string>
     <string name="feed_folders_include_root">Show this podcast in main list</string>
