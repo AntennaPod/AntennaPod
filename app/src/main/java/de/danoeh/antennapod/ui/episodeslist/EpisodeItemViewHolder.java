@@ -55,6 +55,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
     public final ImageView isInQueue;
     private final ImageView isVideo;
     public final ImageView isFavorite;
+    public final TextView separatorLabel;
     private final ProgressBar progressBar;
     public final View secondaryActionButton;
     public final ImageView secondaryActionIcon;
@@ -92,6 +93,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         secondaryActionIcon = itemView.findViewById(R.id.secondaryActionIcon);
         coverHolder = itemView.findViewById(R.id.coverHolder);
         leftPadding = itemView.findViewById(R.id.left_padding);
+        separatorLabel = itemView.findViewById(R.id.separatorLabel);
         itemView.setTag(this);
     }
 
