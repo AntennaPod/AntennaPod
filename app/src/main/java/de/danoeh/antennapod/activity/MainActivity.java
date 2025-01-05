@@ -562,11 +562,11 @@ public class MainActivity extends CastEnabledActivity {
     }
 
     private final NavigationBarView.OnItemSelectedListener bottomItemSelectedListener = item -> {
-        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         if (item.getItemId() == R.id.bottom_navigation_more) {
             showBottomNavigationMorePopup();
             return false;
         } else {
+            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             loadFragment(NavigationNames.getBottomNavigationFragmentTag(item.getItemId()), null);
             return true;
         }
@@ -599,6 +599,7 @@ public class MainActivity extends CastEnabledActivity {
         listPopupWindow.setAnchorView(bottomNavigationView);
         listPopupWindow.setAdapter(new BottomNavigationMoreAdapter(this, popupMenuItems));
         listPopupWindow.setOnItemClickListener((parent, view, position, id) -> {
+            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             if (position == popupMenuItems.size() - 1) {
                 startActivity(new Intent(this, PreferenceActivity.class));
             } else if (position == popupMenuItems.size() - 2) {
