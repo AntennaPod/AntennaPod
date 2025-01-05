@@ -3,6 +3,8 @@ package de.danoeh.antennapod.ui.cleaner;
 import android.content.Context;
 
 import androidx.test.platform.app.InstrumentationRegistry;
+
+import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,6 +21,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static de.danoeh.antennapod.ui.cleaner.ShownotesCleaner.makeLinkHtml;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Test class for {@link ShownotesCleaner}.
@@ -263,11 +269,44 @@ public class ShownotesCleanerTest {
         final String textWithParams = "text " + linkWithParams + " after-text";
         final String expectedWithParams = "text " + makeLinkHtml(linkWithParams) + " after-text";
         assertEquals(expectedWithParams, ShownotesCleaner.convertPlainTextLinksToHtml(textWithParams));
+
+        final String linkWithComma = "https://wikipedia.org/wiki/%D0%9E%D1%82%D0%B5%D1%86_(%D1%84%D0%B8%D0%BB%D1%8C%D0%BC,_2020)";
+        final String textWithComma = "text " + linkWithComma;
+        assertEquals("text " + makeLinkHtml(linkWithComma),
+                ShownotesCleaner.convertPlainTextLinksToHtml(textWithComma));
+
+        final String linkWithDot = "https://www.ietf.org/rfc/rfc3986.txt";
+        final String textWithDot = "text " + linkWithDot;
+        assertEquals("text " + makeLinkHtml(linkWithDot),
+                ShownotesCleaner.convertPlainTextLinksToHtml(textWithDot));
+
+        final String linkWithTilda = "https://www.example.org/valid/-~.,/url/";
+        final String textWithTilda = "text " + linkWithTilda;
+        assertEquals("text " + makeLinkHtml(linkWithTilda),
+                ShownotesCleaner.convertPlainTextLinksToHtml(textWithTilda));
+    }
+
+    @Test
+    public void testConvertPlainTextLinksSupportsEveryHtmlTag() throws IOException {
+        var file = new File("src/test/resources/all_html_tags.html");
+        var input = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+        assertEquals(input, ShownotesCleaner.convertPlainTextLinksToHtml(input));
+    }
+
+    @Test
+    public void testConvertPlainTextLinksWorksInComplexDocuments() throws IOException {
+        var file = new File("src/test/resources/all_html_tags.html");
+        var source = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+        final String link = "https://url.to/link";
+        final String linkHtml = makeLinkHtml(link);
+        var input = source.replaceAll("PLACEHOLDER_LINK", link);
+        var expected = source.replaceAll("PLACEHOLDER_LINK", linkHtml);
+        assertEquals(expected, ShownotesCleaner.convertPlainTextLinksToHtml(input));
     }
 
     @Test
     public void testConvertPlainTextLinksToHtmlWhenLinksAreAlreadyHtml() {
-        var linkTag = "<a alt=\"abc\" href=\"http://url.to/link\">http://url.to/link</a>";
+        var linkTag = "Click <a alt=\"abc\" href=\"http://url.to/link\">http://url.to/link, this link</a>";
         assertEquals(linkTag, ShownotesCleaner.convertPlainTextLinksToHtml(linkTag));
 
         var linkTag2 = "<a href=http://domain.org/link>domain.org</a>";
