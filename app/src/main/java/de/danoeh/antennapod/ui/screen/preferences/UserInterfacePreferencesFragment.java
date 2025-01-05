@@ -34,6 +34,7 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences_user_interface);
         setupInterfaceScreen();
+        backOpensDrawerToggle(UserPreferences.isBottomNavigationEnabled());
     }
 
     @Override
@@ -94,6 +95,17 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
         if (Build.VERSION.SDK_INT >= 26) {
             findPreference(UserPreferences.PREF_EXPANDED_NOTIFICATION).setVisible(false);
         }
+
+        findPreference(UserPreferences.PREF_BOTTOM_NAVIGATION).setOnPreferenceChangeListener((preference, newValue) -> {
+            if (newValue instanceof Boolean) {
+                backOpensDrawerToggle((Boolean) newValue);
+            }
+            return true;
+        });
+    }
+
+    private void backOpensDrawerToggle(boolean bottomNavigationEnabled) {
+        findPreference(UserPreferences.PREF_BACK_OPENS_DRAWER).setEnabled(!bottomNavigationEnabled);
     }
 
     private void showFullNotificationButtonsDialog() {
