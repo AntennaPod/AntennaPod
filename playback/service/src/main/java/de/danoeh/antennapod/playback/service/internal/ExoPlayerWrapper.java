@@ -113,13 +113,13 @@ public class ExoPlayerWrapper {
         final int skipSilenceDurationUs;
         switch (skipSilence) {
             case MILD:
-                skipSilenceDurationUs = 100_000;
-                break;
-            case MEDIUM:
                 skipSilenceDurationUs = 300_000;
                 break;
+            case MEDIUM:
+                skipSilenceDurationUs = 250_000;
+                break;
             case AGGRESSIVE:
-                skipSilenceDurationUs = 50_000;
+                skipSilenceDurationUs = 150_000;
                 break;
             default:
                 skipSilenceDurationUs = 0;
@@ -334,6 +334,7 @@ public class ExoPlayerWrapper {
             if (mediaSource != null) {
                 prepare();
             }
+            exoPlayer.pause();
             exoPlayer.seekTo(position);
             if (wasPlaying) {
                 exoPlayer.play();
