@@ -34,7 +34,7 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences_user_interface);
         setupInterfaceScreen();
-        checkItemVisibility(UserPreferences.isBottomNavigationEnabled());
+        backOpensDrawerToggle(UserPreferences.isBottomNavigationEnabled());
     }
 
     @Override
@@ -98,13 +98,13 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
 
         findPreference(UserPreferences.PREF_BOTTOM_NAVIGATION).setOnPreferenceChangeListener((preference, newValue) -> {
             if (newValue instanceof Boolean) {
-                checkItemVisibility((Boolean) newValue);
+                backOpensDrawerToggle((Boolean) newValue);
             }
             return true;
         });
     }
 
-    private void checkItemVisibility(boolean bottomNavigationEnabled) {
+    private void backOpensDrawerToggle(boolean bottomNavigationEnabled) {
         findPreference(UserPreferences.PREF_BACK_OPENS_DRAWER).setEnabled(!bottomNavigationEnabled);
     }
 
