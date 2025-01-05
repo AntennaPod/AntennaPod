@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 
 import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.ui.chapters.ChapterUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -116,10 +116,10 @@ public class MediaDownloadedHandler implements Runnable {
         }
 
         if (item != null && item.getFeed().getState() == Feed.STATE_SUBSCRIBED) {
-            EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DOWNLOAD)
-                    .currentTimestamp()
-                    .build();
-            SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
+            SynchronizationQueue.getInstance().enqueueEpisodeAction(
+                    new EpisodeAction.Builder(item, EpisodeAction.DOWNLOAD)
+                        .currentTimestamp()
+                        .build());
         }
     }
 

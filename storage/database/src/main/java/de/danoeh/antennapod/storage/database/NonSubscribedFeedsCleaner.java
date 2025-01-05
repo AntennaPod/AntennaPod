@@ -7,6 +7,7 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class NonSubscribedFeedsCleaner {
     private static final String TAG = "NonSubscrFeedsCleaner";
@@ -19,10 +20,17 @@ public class NonSubscribedFeedsCleaner {
             if (feed.getState() != Feed.STATE_NOT_SUBSCRIBED) {
                 continue;
             }
-            DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
+            DBReader.getFeedItemList(feed, new FeedItemFilter(FeedItemFilter.INCLUDE_NOT_SUBSCRIBED),
+                    SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
+            DBReader.loadAdditionalFeedItemListData(feed.getItems());
             if (shouldDelete(feed)) {
                 Log.d(TAG, "Deleting unsubscribed feed " + feed.getTitle());
-                DBWriter.deleteFeed(context, feed.getId());
+                try {
+                    DBWriter.deleteFeed(context, feed.getId()).get();
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                    return;
+                }
             }
             feed.setItems(null); // Let it be garbage collected
         }

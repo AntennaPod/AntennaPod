@@ -24,6 +24,7 @@ import de.danoeh.antennapod.net.download.service.feed.remote.Downloader;
 import de.danoeh.antennapod.net.download.service.feed.remote.FeedParserTask;
 import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequestCreator;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
 import de.danoeh.antennapod.storage.database.DBWriter;
@@ -103,6 +104,7 @@ public class FeedUpdateWorker extends Worker {
         NonSubscribedFeedsCleaner.deleteOldNonSubscribedFeeds(getApplicationContext());
         AutoDownloadManager.getInstance().autodownloadUndownloadedItems(getApplicationContext());
         notificationManager.cancel(R.id.notification_updating_feeds);
+        SynchronizationQueue.getInstance().syncImmediately();
         return Result.success();
     }
 

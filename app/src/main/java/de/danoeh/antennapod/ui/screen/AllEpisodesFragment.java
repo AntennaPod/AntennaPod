@@ -42,6 +42,11 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         updateFilterUi();
         txtvInformation.setOnClickListener(
                 v -> AllEpisodesFilterDialog.newInstance(getFilter()).show(getChildFragmentManager(), null));
+
+        boolean largePadding = displayUpArrow || !UserPreferences.isBottomNavigationEnabled();
+        int paddingHorizontal = (int) (getResources().getDisplayMetrics().density * (largePadding ? 60 : 16));
+        int paddingVertical = (int) (getResources().getDisplayMetrics().density * 4);
+        txtvInformation.setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical);
         return root;
     }
 

@@ -44,6 +44,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -52,7 +53,7 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.net.download.service.feed.FeedUpdateManagerImpl;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
-import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
@@ -205,7 +206,7 @@ public class MainActivity extends CastEnabledActivity {
         sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
 
         FeedUpdateManager.getInstance().restartUpdateAlarm(this, false);
-        SynchronizationQueueSink.syncNowIfNotSyncedRecently();
+        SynchronizationQueue.getInstance().syncIfNotSyncedRecently();
         AutomaticDatabaseExportWorker.enqueueIfNeeded(this, false);
 
         WorkManager.getInstance(this)
@@ -248,6 +249,9 @@ public class MainActivity extends CastEnabledActivity {
                         if (progress == -1 && status != DownloadStatus.STATE_COMPLETED) {
                             status = DownloadStatus.STATE_QUEUED;
                             progress = 0;
+                        }
+                        if (updatedEpisodes.containsKey(downloadUrl) && status == DownloadStatus.STATE_COMPLETED) {
+                            continue; // In case of a duplicate, prefer running/queued over completed
                         }
                         updatedEpisodes.put(downloadUrl, new DownloadStatus(status, progress));
                     }
@@ -524,11 +528,20 @@ public class MainActivity extends CastEnabledActivity {
         MenuItem moreItem = menu.add(0, R.id.bottom_navigation_more, 0, getString(R.string.searchpreference_more));
         moreItem.setIcon(R.drawable.dots_vertical);
         bottomNavigationView.setOnItemSelectedListener(bottomItemSelectedListener);
-        updateBottomNavigationBadgeIfNeeded(null);
+        updateBottomNavigationBadgeIfNeeded();
     }
 
-    @Subscribe
-    public void updateBottomNavigationBadgeIfNeeded(@Nullable UnreadItemsUpdateEvent ignore) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
+        updateBottomNavigationBadgeIfNeeded();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFeedListChanged(FeedListUpdateEvent event) {
+        updateBottomNavigationBadgeIfNeeded();
+    }
+
+    private void updateBottomNavigationBadgeIfNeeded() {
         if (bottomNavigationView == null) {
             return;
         } else if (bottomNavigationView.getMenu().findItem(R.id.bottom_navigation_inbox) == null) {

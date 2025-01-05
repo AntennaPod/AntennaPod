@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.ui.screen.playback;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -9,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Consumer;
 import de.danoeh.antennapod.R;
+
+import java.util.Locale;
 
 public class PlaybackSpeedSeekBar extends FrameLayout {
     private SeekBar seekBar;
@@ -56,6 +59,9 @@ public class PlaybackSpeedSeekBar extends FrameLayout {
 
     public void updateSpeed(float speedMultiplier) {
         seekBar.setProgress(Math.round((20 * speedMultiplier) - 10));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            seekBar.setStateDescription(String.format(Locale.getDefault(), "%1$.2f", speedMultiplier));
+        }
     }
 
     public void setProgressChangedListener(Consumer<Float> progressChangedListener) {

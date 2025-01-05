@@ -10,8 +10,7 @@
         android:id="@+id/useGlobalCheckbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/global_default"
-        android:layout_marginBottom="8dp" />
+        android:text="@string/global_default" />
 
     <LinearLayout
         android:layout_width="match_parent"

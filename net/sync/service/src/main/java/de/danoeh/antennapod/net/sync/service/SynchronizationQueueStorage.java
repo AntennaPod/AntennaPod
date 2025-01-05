@@ -1,8 +1,9 @@
-package de.danoeh.antennapod.net.sync.serviceinterface;
+package de.danoeh.antennapod.net.sync.service;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
 import org.json.JSONArray;
 import org.json.JSONException;
 

@@ -18,7 +18,7 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.storage.database.DBWriter;
@@ -60,8 +60,8 @@ public class FeedItemMenuHandler {
         boolean canSkip = false;
         boolean canRemoveFromQueue = false;
         boolean canAddToQueue = false;
-        boolean canVisitWebsite = selectedItems.size() == 1;
-        boolean canShare = selectedItems.size() == 1;
+        boolean canVisitWebsite = false;
+        boolean canShare = false;
         boolean canRemoveFromInbox = false;
         boolean canMarkPlayed = false;
         boolean canMarkUnplayed = false;
@@ -70,7 +70,7 @@ public class FeedItemMenuHandler {
         boolean canDownload = false;
         boolean canAddFavorite = false;
         boolean canRemoveFavorite = false;
-        boolean canShowTranscript = selectedItems.size() == 1;
+        boolean canShowTranscript = false;
 
         for (FeedItem item : selectedItems) {
             boolean hasMedia = item.getMedia() != null;
@@ -83,7 +83,7 @@ public class FeedItemMenuHandler {
             canMarkPlayed |= !item.isPlayed();
             canMarkUnplayed |= item.isPlayed();
             canResetPosition |= hasMedia && item.getMedia().getPosition() != 0;
-            canDelete |= hasMedia && item.getMedia().isDownloaded();
+            canDelete |= (hasMedia && item.getMedia().isDownloaded()) || item.getFeed().isLocalFeed();
             canDownload |= hasMedia && !item.getMedia().isDownloaded() && !item.getFeed().isLocalFeed();
             canAddFavorite |= !item.isTagged(FeedItem.TAG_FAVORITE);
             canRemoveFavorite |= item.isTagged(FeedItem.TAG_FAVORITE);
@@ -195,7 +195,7 @@ public class FeedItemMenuHandler {
                             .position(media.getDuration() / 1000)
                             .total(media.getDuration() / 1000)
                             .build();
-                    SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, actionPlay);
+                    SynchronizationQueue.getInstance().enqueueEpisodeAction(actionPlay);
                 }
             }
         } else if (menuItemId == R.id.mark_unread_item) {
@@ -203,10 +203,10 @@ public class FeedItemMenuHandler {
             DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, false);
             if (!selectedItem.getFeed().isLocalFeed() && selectedItem.getMedia() != null
                     && selectedItem.getFeed().getState() == Feed.STATE_SUBSCRIBED) {
-                EpisodeAction actionNew = new EpisodeAction.Builder(selectedItem, EpisodeAction.NEW)
-                        .currentTimestamp()
-                        .build();
-                SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, actionNew);
+                SynchronizationQueue.getInstance().enqueueEpisodeAction(
+                        new EpisodeAction.Builder(selectedItem, EpisodeAction.NEW)
+                            .currentTimestamp()
+                            .build());
             }
         } else if (menuItemId == R.id.add_to_queue_item) {
             DBWriter.addQueueItem(context, selectedItem);

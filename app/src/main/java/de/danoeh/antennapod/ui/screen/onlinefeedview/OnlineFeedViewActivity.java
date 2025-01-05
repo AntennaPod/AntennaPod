@@ -12,6 +12,7 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -102,15 +103,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             feedUrl = getIntent().getDataString();
         }
 
-        if (feedUrl == null) {
+        if (feedUrl == null || UrlChecker.isDeeplinkWithoutUrl(feedUrl)) {
             Log.e(TAG, "feedUrl is null.");
             showNoPodcastFoundError();
         } else {
             Log.d(TAG, "Activity was started with url " + feedUrl);
-            // Remove subscribeonandroid.com from feed URL in order to subscribe to the actual feed URL
-            if (feedUrl.contains("subscribeonandroid.com")) {
-                feedUrl = feedUrl.replaceFirst("((www.)?(subscribeonandroid.com/))", "");
-            }
             if (savedInstanceState != null) {
                 username = savedInstanceState.getString("username");
                 password = savedInstanceState.getString("password");
@@ -298,7 +295,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(this::showFeedFragment, error -> {
             error.printStackTrace();
-            showErrorDialog(error.getMessage(), "");
+            showErrorDialog(getString(R.string.download_error_parser_exception), error.getMessage());
         });
     }
 
@@ -367,10 +364,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
             builder.setTitle(R.string.error_label);
             if (errorMsg != null) {
-                String total = errorMsg + "\n\n" + details;
-                SpannableString errorMessage = new SpannableString(total);
+                SpannableString errorMessage = new SpannableString(getString(
+                        R.string.download_log_details_message, errorMsg, details, selectedDownloadUrl));
                 errorMessage.setSpan(new ForegroundColorSpan(0x88888888),
-                        errorMsg.length(), total.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        errorMsg.length(), errorMessage.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 builder.setMessage(errorMessage);
             } else {
                 builder.setMessage(R.string.download_error_error_unknown);
@@ -386,6 +383,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
             dialog = builder.show();
+            ((TextView) dialog.findViewById(android.R.id.message)).setTextIsSelectable(true);
         }
     }
 
