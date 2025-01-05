@@ -55,12 +55,15 @@ import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfa
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
+import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
+import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.discovery.DiscoveryFragment;
@@ -294,6 +297,11 @@ public class MainActivity extends CastEnabledActivity {
                 onSlide(view, 0.0f);
             } else if (state == BottomSheetBehavior.STATE_EXPANDED) {
                 onSlide(view, 1.0f);
+            } else if (state == BottomSheetBehavior.STATE_HIDDEN) {
+                IntentUtils.sendLocalBroadcast(MainActivity.this,
+                        PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
+                PlaybackPreferences.writeNoMediaPlaying();
+                setPlayerVisible(false);
             }
         }
 
@@ -386,6 +394,7 @@ public class MainActivity extends CastEnabledActivity {
         params.setMargins(systemBarInsets.left, 0, systemBarInsets.right, (visible ? externalPlayerHeight : 0));
         mainView.setLayoutParams(params);
         sheetBehavior.setPeekHeight(externalPlayerHeight);
+        sheetBehavior.setHideable(true);
         sheetBehavior.setGestureInsetBottomIgnored(true);
 
         FragmentContainerView playerView = findViewById(R.id.playerFragment);
