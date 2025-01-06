@@ -322,7 +322,7 @@ public class ExoPlayerWrapper {
         exoPlayer.setVideoSurfaceHolder(sh);
     }
 
-    public void setPlaybackParams(float speed, FeedPreferences.SkipSilence skipSilence) {
+    public void setPlaybackParams(final float speed, final FeedPreferences.SkipSilence skipSilence) {
         playbackParameters = new PlaybackParameters(speed, playbackParameters.pitch);
         // update skip silence duration in audio pipeline
         if (skipSilence != FeedPreferences.SkipSilence.OFF && skipSilence != this.skipSilence) {

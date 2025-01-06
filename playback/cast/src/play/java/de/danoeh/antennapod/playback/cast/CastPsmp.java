@@ -185,7 +185,8 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
         }
 
         setBuffering(state == MediaStatus.PLAYER_STATE_BUFFERING);
-        setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentMedia));
+        setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentMedia),
+                getSkipSilence());
 
         switch (state) {
             case MediaStatus.PLAYER_STATE_PLAYING:
@@ -419,7 +420,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     }
 
     @Override
-    public void setPlaybackParams(float speed) {
+    public void setPlaybackParams(final float speed, final FeedPreferences.SkipSilence skipSilence) {
         double playbackRate = (float) Math.max(MediaLoadOptions.PLAYBACK_RATE_MIN,
                 Math.min(MediaLoadOptions.PLAYBACK_RATE_MAX, speed));
         EventBus.getDefault().post(new SpeedChangedEvent((float) playbackRate));
