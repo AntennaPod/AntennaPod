@@ -35,7 +35,7 @@ AntennaPod is licensed under the GNU General Public License (GPL-3.0). You can f
 
 ## Translating AntennaPod
 
-If you want to translate AntennaPod into another language, you can visit the [Transifex project page](https://www.transifex.com/antennapod/antennapod/).
+If you want to translate AntennaPod into another language, you can visit our [Weblate page](https://hosted.weblate.org/projects/antennapod/).
 
 
 ## Building AntennaPod
