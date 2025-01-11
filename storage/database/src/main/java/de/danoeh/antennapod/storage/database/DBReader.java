@@ -356,7 +356,9 @@ public final class DBReader {
         try (FeedCursor cursor = new FeedCursor(adapter.getFeedCursor(feedId))) {
             if (cursor.moveToNext()) {
                 feed = cursor.getFeed();
-                FeedItemFilter filter = filtered ? feed.getItemFilter() : FeedItemFilter.unfiltered();
+                FeedItemFilter filter = (filtered && feed.getItemFilter() != null)
+                        ? feed.getItemFilter() : FeedItemFilter.unfiltered();
+                filter = new FeedItemFilter(filter, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
                 List<FeedItem> items = getFeedItemList(feed, filter, feed.getSortOrder(), offset, limit);
                 for (FeedItem item : items) {
                     item.setFeed(feed);
@@ -668,9 +670,10 @@ public final class DBReader {
         final Map<Long, Integer> feedCounters = adapter.getFeedCounters(feedCounter);
         List<Feed> feeds = getFeedList();
 
-        if (subscriptionsFilter != null) {
-            feeds = subscriptionsFilter.filter(feeds, feedCounters);
+        if (subscriptionsFilter == null) {
+            subscriptionsFilter = new SubscriptionsFilter("");
         }
+        feeds = subscriptionsFilter.filter(feeds, feedCounters);
 
         Comparator<Feed> comparator;
         switch (feedOrder) {

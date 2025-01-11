@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 
 /**
  * Workaround for app:liftOnScroll flickering when in SwipeRefreshLayout
@@ -16,8 +18,9 @@ public class LiftOnScrollListener extends RecyclerView.OnScrollListener
     private boolean animatingToScrolled = false;
 
     public LiftOnScrollListener(View appBar) {
-        animator = ValueAnimator.ofFloat(0, appBar.getContext().getResources().getDisplayMetrics().density * 8);
-        animator.addUpdateListener(animation -> appBar.setElevation((float) animation.getAnimatedValue()));
+        int colorLifted = ThemeUtils.getColorFromAttr(appBar.getContext(), R.attr.colorSurfaceContainer);
+        animator = ValueAnimator.ofArgb(colorLifted & 0x00ffffff, colorLifted);
+        animator.addUpdateListener(animation -> appBar.setBackgroundColor((int) animation.getAnimatedValue()));
     }
 
     @Override

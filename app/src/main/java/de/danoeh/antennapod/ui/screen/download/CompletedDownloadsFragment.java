@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.download;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -11,11 +12,14 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
-import com.leinardi.android.speeddial.SpeedDialView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
+import de.danoeh.antennapod.ui.common.ConfirmationDialog;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
 import de.danoeh.antennapod.actionbutton.DeleteActionButton;
 import de.danoeh.antennapod.event.DownloadLogEvent;
@@ -39,6 +43,7 @@ import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfa
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.view.EmptyViewHandler;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListRecyclerView;
+import de.danoeh.antennapod.ui.view.FloatingSelectMenu;
 import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
 import io.reactivex.Observable;
@@ -71,10 +76,11 @@ public class CompletedDownloadsFragment extends Fragment
     private Disposable disposable;
     private EmptyViewHandler emptyView;
     private boolean displayUpArrow;
-    private SpeedDialView speedDialView;
+    private FloatingSelectMenu floatingSelectMenu;
     private SwipeActions swipeActions;
     private ProgressBar progressBar;
     private MaterialToolbar toolbar;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -95,6 +101,10 @@ public class CompletedDownloadsFragment extends Fragment
         }
         ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
 
+        swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
+        swipeRefreshLayout.setOnRefreshListener(() -> FeedUpdateManager.getInstance().runOnceOrAsk(requireContext()));
+
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         adapter = new CompletedDownloadsListAdapter((MainActivity) getActivity());
@@ -107,31 +117,15 @@ public class CompletedDownloadsFragment extends Fragment
         progressBar = root.findViewById(R.id.progLoading);
         progressBar.setVisibility(View.VISIBLE);
 
-        speedDialView = root.findViewById(R.id.fabSD);
-        speedDialView.setOverlayLayout(root.findViewById(R.id.fabSDOverlay));
-        speedDialView.inflate(R.menu.episodes_apply_action_speeddial);
-        speedDialView.removeActionItemById(R.id.download_batch);
-        speedDialView.removeActionItemById(R.id.mark_read_batch);
-        speedDialView.removeActionItemById(R.id.mark_unread_batch);
-        speedDialView.removeActionItemById(R.id.remove_from_queue_batch);
-        speedDialView.removeActionItemById(R.id.remove_all_inbox_item);
-        speedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
-            @Override
-            public boolean onMainActionSelected() {
+        floatingSelectMenu = root.findViewById(R.id.floatingSelectMenu);
+        floatingSelectMenu.inflate(R.menu.episodes_apply_action_speeddial);
+        floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
+            if (adapter.getSelectedCount() == 0) {
+                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
+                        Snackbar.LENGTH_SHORT);
                 return false;
             }
-
-            @Override
-            public void onToggleChanged(boolean open) {
-                if (open && adapter.getSelectedCount() == 0) {
-                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
-                            Snackbar.LENGTH_SHORT);
-                    speedDialView.close();
-                }
-            }
-        });
-        speedDialView.setOnActionSelectedListener(actionItem -> {
-            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), actionItem.getId())
+            new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId())
                     .handleAction(adapter.getSelectedItems());
             adapter.endSelectMode();
             return true;
@@ -189,6 +183,23 @@ public class CompletedDownloadsFragment extends Fragment
             return true;
         } else if (item.getItemId() == R.id.downloads_sort) {
             new DownloadsSortDialog().show(getChildFragmentManager(), "SortDialog");
+            return true;
+        } else if (item.getItemId() == R.id.action_delete_downloads_played) {
+            ConfirmationDialog dialog = new ConfirmationDialog(getActivity(),
+                    R.string.delete_downloads_played,  R.string.delete_downloads_played_confirmation) {
+                @Override
+                public void onConfirmButtonPressed(DialogInterface clickedDialog) {
+                    clickedDialog.dismiss();
+                    Observable.fromCallable(() -> DBReader.getEpisodes(0, Integer.MAX_VALUE,
+                                    new FeedItemFilter(FeedItemFilter.DOWNLOADED, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED,
+                                            FeedItemFilter.PLAYED), SortOrder.DATE_OLD_NEW))
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(items -> new EpisodeMultiSelectActionHandler(getActivity(), R.id.remove_item)
+                                    .handleAction(items), error -> Log.e(TAG, Log.getStackTraceString(error)));
+                }
+            };
+            dialog.createNewDialog().show();
             return true;
         }
         return false;
@@ -289,6 +300,11 @@ public class CompletedDownloadsFragment extends Fragment
         loadItems();
     }
 
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FeedUpdateRunningEvent event) {
+        swipeRefreshLayout.setRefreshing(event.isFeedUpdateRunning);
+    }
+
     private void loadItems() {
         if (disposable != null) {
             disposable.dispose();
@@ -297,7 +313,7 @@ public class CompletedDownloadsFragment extends Fragment
         disposable = Observable.fromCallable(() -> {
             SortOrder sortOrder = UserPreferences.getDownloadsSortedOrder();
             List<FeedItem> downloadedItems = DBReader.getEpisodes(0, Integer.MAX_VALUE,
-                        new FeedItemFilter(FeedItemFilter.DOWNLOADED), sortOrder);
+                    new FeedItemFilter(FeedItemFilter.DOWNLOADED, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED), sortOrder);
 
             List<String> mediaUrls = new ArrayList<>();
             if (runningDownloads == null) {
@@ -331,14 +347,18 @@ public class CompletedDownloadsFragment extends Fragment
     @Override
     public void onStartSelectMode() {
         swipeActions.detach();
-        speedDialView.setVisibility(View.VISIBLE);
+        floatingSelectMenu.setVisibility(View.VISIBLE);
+        recyclerView.setPadding(recyclerView.getPaddingLeft(), recyclerView.getPaddingTop(),
+                recyclerView.getPaddingRight(),
+                (int) getResources().getDimension(R.dimen.floating_select_menu_height));
     }
 
     @Override
     public void onEndSelectMode() {
-        speedDialView.close();
-        speedDialView.setVisibility(View.GONE);
+        floatingSelectMenu.setVisibility(View.GONE);
         swipeActions.attachTo(recyclerView);
+        recyclerView.setPadding(recyclerView.getPaddingLeft(), recyclerView.getPaddingTop(),
+                recyclerView.getPaddingRight(), 0);
     }
 
     private class CompletedDownloadsListAdapter extends EpisodeItemListAdapter {
@@ -364,6 +384,13 @@ public class CompletedDownloadsFragment extends Fragment
                 menu.findItem(R.id.multi_select).setVisible(true);
             }
             MenuItemUtils.setOnClickListeners(menu, CompletedDownloadsFragment.this::onContextItemSelected);
+        }
+
+        @Override
+        protected void onSelectedItemsUpdated() {
+            super.onSelectedItemsUpdated();
+            FeedItemMenuHandler.onPrepareMenu(floatingSelectMenu.getMenu(), getSelectedItems());
+            floatingSelectMenu.updateItemVisibility();
         }
     }
 

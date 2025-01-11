@@ -14,10 +14,11 @@ import androidx.documentfile.provider.DocumentFile;
 import com.google.common.util.concurrent.Futures;
 import de.danoeh.antennapod.event.DownloadLogEvent;
 
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
-import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import org.greenrobot.eventbus.EventBus;
 
@@ -118,6 +119,14 @@ public class DBWriter {
             media.setLocalFileUrl(null);
             localDelete = true;
         } else if (media.getLocalFileUrl() != null) {
+            // delete transcript file before the media file because the fileurl is needed
+            if (media.getTranscriptFileUrl() != null) {
+                File transcriptFile = new File(media.getTranscriptFileUrl());
+                if (transcriptFile.exists() && !transcriptFile.delete()) {
+                    Log.d(TAG, "Deletion of transcript file failed.");
+                }
+            }
+
             // delete downloaded media file
             File mediaFile = new File(media.getLocalFileUrl());
             if (mediaFile.exists() && !mediaFile.delete()) {
@@ -141,12 +150,12 @@ public class DBWriter {
             // Do full update of this feed to get rid of the item
             FeedUpdateManager.getInstance().runOnce(context, media.getItem().getFeed());
         } else {
-            // Gpodder: queue delete action for synchronization
-            FeedItem item = media.getItem();
-            EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DELETE)
-                    .currentTimestamp()
-                    .build();
-            SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
+            if (media.getItem().getFeed().getState() == Feed.STATE_SUBSCRIBED) {
+                SynchronizationQueue.getInstance().enqueueEpisodeAction(
+                        new EpisodeAction.Builder(media.getItem(), EpisodeAction.DELETE)
+                            .currentTimestamp()
+                            .build());
+            }
 
             EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
         }
@@ -174,8 +183,8 @@ public class DBWriter {
             adapter.removeFeed(feed);
             adapter.close();
 
-            if (!feed.isLocalFeed()) {
-                SynchronizationQueueSink.enqueueFeedRemovedIfSynchronizationIsActive(context, feed.getDownloadUrl());
+            if (!feed.isLocalFeed() && feed.getState() == Feed.STATE_SUBSCRIBED) {
+                SynchronizationQueue.getInstance().enqueueFeedRemoved(feed.getDownloadUrl());
             }
             EventBus.getDefault().post(new FeedListUpdateEvent(feed));
         });
@@ -521,39 +530,35 @@ public class DBWriter {
         adapter.open();
         final List<FeedItem> queue = DBReader.getQueue();
 
-        if (queue != null) {
-            boolean queueModified = false;
-            List<QueueEvent> events = new ArrayList<>();
-            List<FeedItem> updatedItems = new ArrayList<>();
-            for (long itemId : itemIds) {
-                int position = indexInItemList(queue, itemId);
-                if (position >= 0) {
-                    final FeedItem item = DBReader.getFeedItem(itemId);
-                    if (item == null) {
-                        Log.e(TAG, "removeQueueItem - item in queue but somehow cannot be loaded." +
-                                " Item ignored. It should never happen. id:" + itemId);
-                        continue;
-                    }
-                    queue.remove(position);
-                    item.removeTag(FeedItem.TAG_QUEUE);
-                    events.add(QueueEvent.removed(item));
-                    updatedItems.add(item);
-                    queueModified = true;
-                } else {
-                    Log.v(TAG, "removeQueueItem - item  not in queue:" + itemId);
+        boolean queueModified = false;
+        List<QueueEvent> events = new ArrayList<>();
+        List<FeedItem> updatedItems = new ArrayList<>();
+        for (long itemId : itemIds) {
+            int position = indexInItemList(queue, itemId);
+            if (position >= 0) {
+                final FeedItem item = DBReader.getFeedItem(itemId);
+                if (item == null) {
+                    Log.e(TAG, "removeQueueItem - item in queue but somehow cannot be loaded."
+                            + " Item ignored. It should never happen. id:" + itemId);
+                    continue;
                 }
-            }
-            if (queueModified) {
-                adapter.setQueue(queue);
-                for (QueueEvent event : events) {
-                    EventBus.getDefault().post(event);
-                }
-                EventBus.getDefault().post(FeedItemEvent.updated(updatedItems));
+                queue.remove(position);
+                item.removeTag(FeedItem.TAG_QUEUE);
+                events.add(QueueEvent.removed(item));
+                updatedItems.add(item);
+                queueModified = true;
             } else {
-                Log.w(TAG, "Queue was not modified by call to removeQueueItem");
+                Log.v(TAG, "removeQueueItem - item  not in queue:" + itemId);
             }
+        }
+        if (queueModified) {
+            adapter.setQueue(queue);
+            for (QueueEvent event : events) {
+                EventBus.getDefault().post(event);
+            }
+            EventBus.getDefault().post(FeedItemEvent.updated(updatedItems));
         } else {
-            Log.e(TAG, "removeQueueItem: Could not load queue");
+            Log.w(TAG, "Queue was not modified by call to removeQueueItem");
         }
         adapter.close();
         if (performAutoDownload) {
@@ -660,18 +665,14 @@ public class DBWriter {
         adapter.open();
         final List<FeedItem> queue = DBReader.getQueue();
 
-        if (queue != null) {
-            if (from >= 0 && from < queue.size() && to >= 0 && to < queue.size()) {
-                final FeedItem item = queue.remove(from);
-                queue.add(to, item);
+        if (from >= 0 && from < queue.size() && to >= 0 && to < queue.size()) {
+            final FeedItem item = queue.remove(from);
+            queue.add(to, item);
 
-                adapter.setQueue(queue);
-                if (broadcastUpdate) {
-                    EventBus.getDefault().post(QueueEvent.moved(item, to));
-                }
+            adapter.setQueue(queue);
+            if (broadcastUpdate) {
+                EventBus.getDefault().post(QueueEvent.moved(item, to));
             }
-        } else {
-            Log.e(TAG, "moveQueueItemHelper: Could not load queue");
         }
         adapter.close();
     }
@@ -685,7 +686,7 @@ public class DBWriter {
         });
     }
 
-    /*
+    /**
      * Sets the 'read'-attribute of all specified FeedItems
      *
      * @param played  New value of the 'read'-attribute, one of FeedItem.PLAYED, FeedItem.NEW,
@@ -696,7 +697,7 @@ public class DBWriter {
         return markItemPlayed(played, true, itemIds);
     }
 
-    /*
+    /**
      * Sets the 'read'-attribute of all specified FeedItems
      *
      * @param played  New value of the 'read'-attribute, one of FeedItem.PLAYED, FeedItem.NEW,
@@ -728,20 +729,10 @@ public class DBWriter {
      */
     @NonNull
     public static Future<?> markItemPlayed(FeedItem item, int played, boolean resetMediaPosition) {
-        long mediaId = (item.hasMedia()) ? item.getMedia().getId() : 0;
-        return markItemPlayed(item.getId(), played, mediaId, resetMediaPosition);
-    }
-
-    @NonNull
-    private static Future<?> markItemPlayed(final long itemId,
-                                            final int played,
-                                            final long mediaId,
-                                            final boolean resetMediaPosition) {
         return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            adapter.setFeedItemRead(played, itemId, mediaId,
-                    resetMediaPosition);
+            adapter.setFeedItemRead(item, played, resetMediaPosition);
             adapter.close();
 
             EventBus.getDefault().post(new UnreadItemsUpdateEvent());
@@ -786,8 +777,8 @@ public class DBWriter {
             adapter.close();
 
             for (Feed feed : feeds) {
-                if (!feed.isLocalFeed()) {
-                    SynchronizationQueueSink.enqueueFeedAddedIfSynchronizationIsActive(context, feed.getDownloadUrl());
+                if (!feed.isLocalFeed() && feed.getState() == Feed.STATE_SUBSCRIBED) {
+                    SynchronizationQueue.getInstance().enqueueFeedAdded(feed.getDownloadUrl());
                 }
             }
 
@@ -928,6 +919,31 @@ public class DBWriter {
         });
     }
 
+    public static Future<?> setFeedState(Context context, Feed feed, int newState) {
+        int oldState = feed.getState();
+        return runOnDbThread(() -> {
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.setFeedState(feed.getId(), newState);
+            feed.setState(newState);
+            if (oldState == Feed.STATE_NOT_SUBSCRIBED && newState == Feed.STATE_SUBSCRIBED) {
+                feed.getPreferences().setKeepUpdated(true);
+                DBWriter.setFeedPreferences(feed.getPreferences());
+                FeedUpdateManager.getInstance().runOnceOrAsk(context, feed);
+                SynchronizationQueue.getInstance().enqueueFeedAdded(feed.getDownloadUrl());
+                DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(),
+                        SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
+                for (FeedItem item : feed.getItems()) {
+                    if (item.isPlayed()) {
+                        SynchronizationQueue.getInstance().enqueueEpisodePlayed(item.getMedia(), true);
+                    }
+                }
+            }
+            adapter.close();
+            EventBus.getDefault().post(new FeedListUpdateEvent(feed));
+        });
+    }
+
     /**
      * Sort the FeedItems in the queue with the given the named sort order.
      *
@@ -946,14 +962,10 @@ public class DBWriter {
             adapter.open();
             final List<FeedItem> queue = DBReader.getQueue();
 
-            if (queue != null) {
-                permutor.reorder(queue);
-                adapter.setQueue(queue);
-                if (broadcastUpdate) {
-                    EventBus.getDefault().post(QueueEvent.sorted(queue));
-                }
-            } else {
-                Log.e(TAG, "reorderQueue: Could not load queue");
+            permutor.reorder(queue);
+            adapter.setQueue(queue);
+            if (broadcastUpdate) {
+                EventBus.getDefault().post(QueueEvent.sorted(queue));
             }
             adapter.close();
         });

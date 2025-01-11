@@ -31,7 +31,6 @@ import java.util.Locale;
 import de.danoeh.antennapod.net.sync.gpoddernet.mapper.ResponseMapper;
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetDevice;
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetEpisodeActionPostResponse;
-import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetPodcast;
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetUploadChangesResponse;
 import okhttp3.Credentials;
 import okhttp3.MediaType;
@@ -60,13 +59,13 @@ public class GpodnetService implements ISyncService {
 
     private final OkHttpClient httpClient;
 
-    public GpodnetService(OkHttpClient httpClient, String baseHosturl,
+    public GpodnetService(OkHttpClient httpClient, String baseHostUrl,
                           String deviceId, String username, String password)  {
         this.httpClient = httpClient;
         this.deviceId = deviceId;
         this.username = username;
         this.password = password;
-        HostnameParser hostname = new HostnameParser(baseHosturl == null ? DEFAULT_BASE_HOST : baseHosturl);
+        HostnameParser hostname = new HostnameParser(baseHostUrl == null ? DEFAULT_BASE_HOST : baseHostUrl);
         this.baseHost = hostname.host;
         this.basePort = hostname.port;
         this.baseScheme = hostname.scheme;
@@ -373,67 +372,14 @@ public class GpodnetService implements ISyncService {
                     }
                 }
                 if (responseCode >= 500) {
-                    throw new GpodnetServiceBadStatusCodeException("Gpodder.net is currently unavailable (code "
+                    throw new GpodnetServiceBadStatusCodeException(this.baseHost + " is currently unavailable (code "
                             + responseCode + ")", responseCode);
                 } else {
-                    throw new GpodnetServiceBadStatusCodeException("Unable to connect to Gpodder.net (code "
+                    throw new GpodnetServiceBadStatusCodeException("Unable to connect to " + this.baseHost + " (code "
                             + responseCode + ": " + response.message() + ")", responseCode);
                 }
             }
         }
-    }
-
-    private List<GpodnetPodcast> readPodcastListFromJsonArray(@NonNull JSONArray array) throws JSONException {
-        List<GpodnetPodcast> result = new ArrayList<>(array.length());
-        for (int i = 0; i < array.length(); i++) {
-            result.add(readPodcastFromJsonObject(array.getJSONObject(i)));
-        }
-        return result;
-    }
-
-    private GpodnetPodcast readPodcastFromJsonObject(JSONObject object) throws JSONException {
-        String url = object.getString("url");
-
-        String title;
-        Object titleObj = object.opt("title");
-        if (titleObj instanceof String) {
-            title = (String) titleObj;
-        } else {
-            title = url;
-        }
-
-        String description;
-        Object descriptionObj = object.opt("description");
-        if (descriptionObj instanceof String) {
-            description = (String) descriptionObj;
-        } else {
-            description = "";
-        }
-
-        int subscribers = object.getInt("subscribers");
-
-        Object logoUrlObj = object.opt("logo_url");
-        String logoUrl = (logoUrlObj instanceof String) ? (String) logoUrlObj : null;
-        if (logoUrl == null) {
-            Object scaledLogoUrl = object.opt("scaled_logo_url");
-            if (scaledLogoUrl instanceof String) {
-                logoUrl = (String) scaledLogoUrl;
-            }
-        }
-
-        String website = null;
-        Object websiteObj = object.opt("website");
-        if (websiteObj instanceof String) {
-            website = (String) websiteObj;
-        }
-        String mygpoLink = object.getString("mygpo_link");
-
-        String author = null;
-        Object authorObj = object.opt("author");
-        if (authorObj instanceof String) {
-            author = (String) authorObj;
-        }
-        return new GpodnetPodcast(url, title, description, subscribers, logoUrl, website, mygpoLink, author);
     }
 
     private List<GpodnetDevice> readDeviceListFromJsonArray(@NonNull JSONArray array) throws JSONException {

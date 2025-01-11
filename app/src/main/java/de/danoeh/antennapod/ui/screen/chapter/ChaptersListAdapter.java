@@ -19,6 +19,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
+import de.danoeh.antennapod.ui.common.ImagePlaceholder;
 import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
@@ -99,15 +100,27 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
 
         if (hasImages) {
             holder.image.setVisibility(View.VISIBLE);
+
+            float radius = 4 * context.getResources().getDisplayMetrics().density;
+            RequestOptions options = new RequestOptions()
+                    .placeholder(ImagePlaceholder.getDrawable(context, radius))
+                    .dontAnimate()
+                    .transform(new FitCenter(), new RoundedCorners((int) radius));
+
             if (TextUtils.isEmpty(sc.getImageUrl())) {
-                Glide.with(context).clear(holder.image);
+                if (media.getImageLocation() == null) {
+                    Glide.with(context).clear(holder.image);
+                    holder.image.setVisibility(View.GONE);
+                } else {
+                    Glide.with(context)
+                            .load(media.getImageLocation())
+                            .apply(options)
+                            .into(holder.image);
+                }
             } else {
                 Glide.with(context)
                         .load(EmbeddedChapterImage.getModelFor(media, position))
-                        .apply(new RequestOptions()
-                                .dontAnimate()
-                                .transform(new FitCenter(), new RoundedCorners((int)
-                                        (4 * context.getResources().getDisplayMetrics().density))))
+                        .apply(options)
                         .into(holder.image);
             }
         } else {

@@ -3,15 +3,17 @@ package de.danoeh.antennapod.ui.preferences.screen.synchronization;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
-import de.danoeh.antennapod.net.sync.service.SyncService;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationProvider;
-import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.net.sync.nextcloud.NextcloudLoginFlow;
@@ -55,7 +57,6 @@ public class NextcloudAuthenticationFragment extends DialogFragment
     }
 
     private void startLoginFlow() {
-        viewBinding.errorText.setVisibility(View.GONE);
         viewBinding.chooseHostButton.setVisibility(View.GONE);
         viewBinding.loginProgressContainer.setVisibility(View.VISIBLE);
         viewBinding.serverUrlText.setEnabled(false);
@@ -91,11 +92,11 @@ public class NextcloudAuthenticationFragment extends DialogFragment
         SynchronizationSettings.setSelectedSyncProvider(
                 SynchronizationProvider.NEXTCLOUD_GPODDER.getIdentifier());
         SynchronizationCredentials.clear();
-        SynchronizationQueueSink.clearQueue(getContext());
+        SynchronizationQueue.getInstance().clear();
         SynchronizationCredentials.setPassword(password);
         SynchronizationCredentials.setHosturl(server);
         SynchronizationCredentials.setUsername(username);
-        SyncService.fullSync(getContext());
+        SynchronizationQueue.getInstance().fullSync();
         if (isResumed()) {
             dismiss();
         } else {
@@ -106,9 +107,17 @@ public class NextcloudAuthenticationFragment extends DialogFragment
     @Override
     public void onNextcloudAuthError(String errorMessage) {
         viewBinding.loginProgressContainer.setVisibility(View.GONE);
-        viewBinding.errorText.setVisibility(View.VISIBLE);
-        viewBinding.errorText.setText(errorMessage);
         viewBinding.chooseHostButton.setVisibility(View.VISIBLE);
         viewBinding.serverUrlText.setEnabled(true);
+
+        final MaterialAlertDialogBuilder errorDialog = new MaterialAlertDialogBuilder(getContext());
+        errorDialog.setTitle(R.string.error_label);
+        String genericMessage = getString(R.string.nextcloud_login_error_generic);
+        SpannableString combinedMessage = new SpannableString(genericMessage + "\n\n" + errorMessage);
+        combinedMessage.setSpan(new ForegroundColorSpan(0x88888888),
+                genericMessage.length(), combinedMessage.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        errorDialog.setMessage(combinedMessage);
+        errorDialog.setPositiveButton(android.R.string.ok, null);
+        errorDialog.show();
     }
 }

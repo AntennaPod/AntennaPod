@@ -1,7 +1,9 @@
 package de.danoeh.antennapod.ui.glide;
 
 import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import androidx.annotation.NonNull;
 import android.util.Log;
 
@@ -27,9 +29,13 @@ public class FastBlurTransformation extends BitmapTransformation {
                                @NonNull Bitmap source,
                                int outWidth,
                                int outHeight) {
-        int targetWidth = outWidth / 3;
+        int targetWidth = outWidth / 2;
         int targetHeight = (int) (1.0 * outHeight * targetWidth / outWidth);
-        Bitmap resized = ThumbnailUtils.extractThumbnail(source, targetWidth, targetHeight);
+        Bitmap resized = Bitmap.createBitmap(targetWidth, targetHeight, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(resized);
+        c.drawBitmap(source,
+                new Rect(0, 0, source.getWidth(), source.getHeight()),
+                new Rect(0, 0, targetWidth, targetWidth * source.getWidth() / source.getHeight()), new Paint());
         Bitmap result = fastBlur(resized, STACK_BLUR_RADIUS);
         if (result == null) {
             Log.w(TAG, "result was null");

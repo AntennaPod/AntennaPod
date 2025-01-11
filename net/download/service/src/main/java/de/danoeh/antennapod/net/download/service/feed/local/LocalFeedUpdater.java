@@ -50,7 +50,7 @@ public class LocalFeedUpdater {
 
     static final String[] PREFERRED_FEED_IMAGE_FILENAMES = {"folder.jpg", "Folder.jpg", "folder.png", "Folder.png"};
 
-    public static void updateFeed(Feed feed, Context context,
+    public static Feed updateFeed(Feed feed, Context context,
                                   @Nullable UpdaterProgressListener updaterProgressListener) {
         try {
             String uriString = feed.getDownloadUrl().replace(Feed.PREFIX_LOCAL_FOLDER, "");
@@ -63,24 +63,27 @@ public class LocalFeedUpdater {
                 throw new IOException("Cannot read local directory. "
                         + "Try re-connecting the folder on the podcast info page.");
             }
-            tryUpdateFeed(feed, context, documentFolder.getUri(), updaterProgressListener);
+            Feed updatedFeed = tryUpdateFeed(feed, context, documentFolder.getUri(), updaterProgressListener);
 
             if (mustReportDownloadSuccessful(feed)) {
                 reportSuccess(feed);
             }
+            return updatedFeed;
         } catch (Exception e) {
             e.printStackTrace();
             reportError(feed, e.getMessage());
         }
+        return null;
     }
 
     @VisibleForTesting
-    static void tryUpdateFeed(Feed feed, Context context, Uri folderUri,
+    static Feed tryUpdateFeed(Feed feed, Context context, Uri folderUri,
                               UpdaterProgressListener updaterProgressListener) throws IOException {
         if (feed.getItems() == null) {
             feed.setItems(new ArrayList<>());
         }
-        //make sure it is the latest 'version' of this feed from the db (all items etc)
+        // make sure it is the latest 'version' of this feed from the db (all items etc)
+        // and for new feeds, settings etc are set up properly.
         feed = FeedDatabaseWriter.updateFeed(context, feed, false);
 
         // list files in feed folder
@@ -127,6 +130,8 @@ public class LocalFeedUpdater {
         feed.setAuthor(context.getString(R.string.local_folder));
 
         FeedDatabaseWriter.updateFeed(context, feed, true);
+
+        return feed;
     }
 
     /**
@@ -189,6 +194,7 @@ public class LocalFeedUpdater {
         try {
             loadMetadata(item, file, context);
         } catch (Exception e) {
+            e.printStackTrace();
             item.setDescriptionIfLonger(e.getMessage());
         }
         return item;
@@ -217,7 +223,9 @@ public class LocalFeedUpdater {
             }
 
             String durationStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-            item.getMedia().setDuration((int) Long.parseLong(durationStr));
+            if (durationStr != null && !durationStr.equals("null")) {
+                item.getMedia().setDuration((int) Long.parseLong(durationStr));
+            }
 
             item.getMedia().setHasEmbeddedPicture(mediaMetadataRetriever.getEmbeddedPicture() != null);
 

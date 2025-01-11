@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:scrimAnimationDuration="200"
+            app:titleEnabled="false"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
@@ -23,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/image_readability_tint"
-                android:scaleType="centerCrop"
+                android:scaleType="fitStart"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.6" />
 
@@ -76,7 +77,10 @@
         android:visibility="gone"
         layout="@layout/more_content_list_footer" />
 
-    <include
-        layout="@layout/multi_select_speed_dial" />
+    <de.danoeh.antennapod.ui.view.FloatingSelectMenu
+        android:id="@+id/floatingSelectMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

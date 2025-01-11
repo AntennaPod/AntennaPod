@@ -16,6 +16,7 @@ import de.danoeh.antennapod.parser.media.id3.ID3ReaderException;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentChapterReader;
 import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentReaderException;
+import de.danoeh.antennapod.parser.media.m4a.M4AChapterReader;
 import okhttp3.CacheControl;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -106,6 +107,19 @@ public class ChapterUtils {
         } catch (IOException | VorbisCommentReaderException e) {
             Log.e(TAG, "Unable to load vorbis chapters: " + e.getMessage());
         }
+
+        try (CountingInputStream in = openStream(playable, context)) {
+            List<Chapter> chapters = readM4AChaptersFromInputStream(in);
+            if (!chapters.isEmpty()) {
+                Log.i(TAG, "Chapters loaded");
+                return chapters;
+            }
+        } catch (InterruptedIOException e) {
+            throw e;
+        } catch (IOException e) {
+            Log.e(TAG, "Unable to open stream " + e.getMessage());
+        }
+
         return null;
     }
 
@@ -182,6 +196,22 @@ public class ChapterUtils {
     @NonNull
     private static List<Chapter> readOggChaptersFromInputStream(InputStream input) throws VorbisCommentReaderException {
         VorbisCommentChapterReader reader = new VorbisCommentChapterReader(new BufferedInputStream(input));
+        reader.readInputStream();
+        List<Chapter> chapters = reader.getChapters();
+        if (chapters == null) {
+            return Collections.emptyList();
+        }
+        Collections.sort(chapters, new ChapterStartTimeComparator());
+        enumerateEmptyChapterTitles(chapters);
+        if (chaptersValid(chapters)) {
+            return chapters;
+        }
+        return Collections.emptyList();
+    }
+
+    @NonNull
+    private static List<Chapter> readM4AChaptersFromInputStream(InputStream input) {
+        M4AChapterReader reader = new M4AChapterReader(new BufferedInputStream(input));
         reader.readInputStream();
         List<Chapter> chapters = reader.getChapters();
         if (chapters == null) {

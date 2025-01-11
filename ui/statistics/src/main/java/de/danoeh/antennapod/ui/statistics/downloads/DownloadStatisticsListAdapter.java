@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
     private final Fragment fragment;
+    private int cacheEpisodes;
 
     public DownloadStatisticsListAdapter(Context context, Fragment fragment) {
         super(context);
@@ -24,7 +25,8 @@ public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
 
     @Override
     protected String getHeaderCaption() {
-        return context.getString(R.string.total_size_downloaded_podcasts);
+        return context.getResources().getQuantityString(
+                R.plurals.total_size_downloaded_podcasts, cacheEpisodes, cacheEpisodes);
     }
 
     @Override
@@ -35,9 +37,11 @@ public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
     @Override
     protected PieChartView.PieChartData generateChartData(List<StatisticsItem> statisticsData) {
         float[] dataValues = new float[statisticsData.size()];
+        cacheEpisodes = 0;
         for (int i = 0; i < statisticsData.size(); i++) {
             StatisticsItem item = statisticsData.get(i);
             dataValues[i] = item.totalDownloadSize;
+            cacheEpisodes += item.episodesDownloadCount;
         }
         return new PieChartView.PieChartData(dataValues);
     }
@@ -49,11 +53,9 @@ public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
         text += " • " + context.getResources().getQuantityString(R.plurals.num_episodes, numEpisodes, numEpisodes);
         holder.value.setText(text);
 
-        holder.itemView.setOnClickListener(v -> {
-            FeedStatisticsDialogFragment yourDialogFragment = FeedStatisticsDialogFragment.newInstance(
-                    item.feed.getId(), item.feed.getTitle());
-            yourDialogFragment.show(fragment.getChildFragmentManager().beginTransaction(), "DialogFragment");
-        });
+        holder.itemView.setOnClickListener(v ->
+                FeedStatisticsDialogFragment.newInstance(item.feed.getId(), item.feed.getTitle())
+                        .show(fragment.getChildFragmentManager().beginTransaction(), "FeedStatistics"));
     }
 
 }

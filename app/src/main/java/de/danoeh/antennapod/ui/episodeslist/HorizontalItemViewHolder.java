@@ -8,7 +8,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.material.elevation.SurfaceColors;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.ui.CoverLoader;
@@ -56,8 +55,7 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
         this.item = item;
 
         card.setAlpha(1.0f);
-        float density = activity.getResources().getDisplayMetrics().density;
-        card.setCardBackgroundColor(SurfaceColors.getColorForElevation(activity, 1 * density));
+        card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(activity, R.attr.colorSurfaceContainer));
         new CoverLoader()
                 .withUri(ImageResourceUtils.getEpisodeListImageLocation(item))
                 .withFallbackUri(item.getFeed().getImageUrl())

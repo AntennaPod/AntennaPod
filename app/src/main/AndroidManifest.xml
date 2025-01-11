@@ -4,7 +4,6 @@
     android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
@@ -41,6 +40,7 @@
         android:logo="@mipmap/ic_launcher"
         android:resizeableActivity="true"
         android:allowAudioPlaybackCapture="true"
+        android:localeConfig="@xml/locale_config"
         android:networkSecurityConfig="@xml/network_security_config">
 
         <activity
@@ -48,7 +48,7 @@
             android:noHistory="true"
             android:exported="false"
             android:excludeFromRecents="true"
-            android:theme="@style/Theme.AntennaPod.Light.Translucent">
+            android:theme="@style/Theme.AntennaPod.Splash.Translucent">
             <intent-filter>
                 <action android:name="de.danoeh.antennapod.intents.PLAYBACK_SPEED" />
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -132,6 +132,7 @@
             android:name=".ui.screen.preferences.PreferenceActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
+            android:enableOnBackInvokedCallback="true"
             android:label="@string/settings_label">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -161,14 +162,12 @@
                 <data android:scheme="content"/>
                 <data android:scheme="http"/>
                 <data android:scheme="https"/>
-
-                <data android:host="*"/>
-                <data android:pathPattern="/.*.opml" />
             </intent-filter>
         </activity>
         <activity
-                android:name=".ui.screen.preferences.BugReportActivity"
-                android:label="@string/bug_report_title">
+            android:name=".ui.screen.preferences.BugReportActivity"
+            android:enableOnBackInvokedCallback="true"
+            android:label="@string/bug_report_title">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity"/>
@@ -179,7 +178,8 @@
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
             android:supportsPictureInPicture="true"
             android:screenOrientation="sensorLandscape"
-            android:exported="false">
+            android:exported="false"
+            tools:ignore="DiscouragedApi">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>
@@ -192,42 +192,12 @@
         <activity
             android:name=".ui.screen.onlinefeedview.OnlineFeedViewActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.AntennaPod.Dark.Translucent"
+            android:theme="@style/Theme.AntennaPod.Splash.Translucent"
             android:label="@string/add_feed_label"
             android:exported="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>
-
-            <!-- URLs ending with '.xml' or '.rss' -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data android:scheme="http"/>
-                <data android:scheme="https"/>
-                <data android:host="*"/>
-                <data android:pathPattern="/.*\\.xml"/>
-                <data android:pathPattern="/.*\\.rss"/>
-                <data android:pathPattern="/.*\\.atom"/>
-            </intent-filter>
-
-            <!-- Feedburner URLs -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data android:scheme="http"/>
-                <data android:scheme="https"/>
-                <data android:host="feeds.feedburner.com"/>
-                <data android:host="feedproxy.google.com"/>
-                <data android:host="feeds2.feedburner.com"/>
-                <data android:host="feedsproxy.google.com"/>
-            </intent-filter>
 
             <!-- Files with mimeType rss/xml/atom -->
             <intent-filter>
@@ -257,43 +227,26 @@
                 <data android:scheme="antennapod-subscribe"/>
             </intent-filter>
 
-            <!-- Support for subscribeonandroid.com URLS -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:pathPattern="/.*\\..*/.*" />
-                <data android:host="subscribeonandroid.com" />
-                <data android:host="www.subscribeonandroid.com" />
-                <data android:host="*subscribeonandroid.com" />
-                <data android:scheme="http" />
-                <data android:scheme="https" />
-            </intent-filter>
-
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:host="antennapod.org" />
-                <data android:host="www.antennapod.org" />
                 <data android:pathPrefix="/deeplink/subscribe" />
                 <data android:scheme="http" />
                 <data android:scheme="https" />
             </intent-filter>
 
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:pathPattern="/.*/podcast/.*" />
-                <data android:host="podcasts.apple.com" />
-                <data android:scheme="http" />
+                <data android:pathPattern="/.*\\..*/.*" />
+                <data android:host="www.subscribeonandroid.com" />
                 <data android:scheme="https" />
             </intent-filter>
 
@@ -314,7 +267,7 @@
         <activity android:name=".activity.SelectSubscriptionActivity"
             android:label="@string/shortcut_subscription_label"
             android:icon="@drawable/ic_shortcut_subscriptions"
-            android:theme="@style/Theme.AntennaPod.Dark.Translucent"
+            android:theme="@style/Theme.AntennaPod.Splash.Translucent"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />

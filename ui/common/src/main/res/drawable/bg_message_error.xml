@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:aapt="http://schemas.android.com/aapt">
+    <stroke
+        android:width="2dp"
+        android:color="?attr/icon_red" />
+
+    <corners android:radius="8dp" />
+
+    <solid>
+        <aapt:attr name="android:color" >
+            <selector>
+                <item android:alpha="0.1" android:color="?attr/icon_red" />
+            </selector>
+        </aapt:attr>
+    </solid>
+</shape>

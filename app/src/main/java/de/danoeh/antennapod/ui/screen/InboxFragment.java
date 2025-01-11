@@ -48,9 +48,6 @@ public class InboxFragment extends EpisodesListFragment {
         emptyView.setIcon(R.drawable.ic_inbox);
         emptyView.setTitle(R.string.no_inbox_head_label);
         emptyView.setMessage(R.string.no_inbox_label);
-        speedDialView.removeActionItemById(R.id.mark_unread_batch);
-        speedDialView.removeActionItemById(R.id.remove_from_queue_batch);
-        speedDialView.removeActionItemById(R.id.delete_batch);
         return root;
     }
 

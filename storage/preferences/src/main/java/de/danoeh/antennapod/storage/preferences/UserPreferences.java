@@ -49,6 +49,7 @@ public abstract class UserPreferences {
     public static final String PREF_THEME_BLACK = "prefThemeBlack";
     public static final String PREF_TINTED_COLORS = "prefTintedColors";
     public static final String PREF_HIDDEN_DRAWER_ITEMS = "prefHiddenDrawerItems";
+    public static final String PREF_DRAWER_ITEM_ORDER = "prefDrawerItemOrder";
     public static final String PREF_DRAWER_FEED_ORDER = "prefDrawerFeedOrder";
     public static final String PREF_DRAWER_FEED_COUNTER = "prefDrawerFeedIndicator";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
@@ -61,6 +62,7 @@ public abstract class UserPreferences {
     public static final String PREF_FILTER_FEED = "prefSubscriptionsFilter";
     public static final String PREF_SUBSCRIPTION_TITLE = "prefSubscriptionTitle";
     public static final String PREF_BACK_OPENS_DRAWER = "prefBackButtonOpensDrawer";
+    public static final String PREF_BOTTOM_NAVIGATION = "prefBottomNavigation";
 
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
@@ -80,8 +82,8 @@ public abstract class UserPreferences {
     public static final String PREF_HARDWARE_PREVIOUS_BUTTON = "prefHardwarePreviousButton";
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
     public static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
-    private static final String PREF_FAVORITE_KEEPS_EPISODE = "prefFavoriteKeepsEpisode";
-    private static final String PREF_AUTO_DELETE = "prefAutoDelete";
+    public static final String PREF_FAVORITE_KEEPS_EPISODE = "prefFavoriteKeepsEpisode";
+    public static final String PREF_AUTO_DELETE = "prefAutoDelete";
     private static final String PREF_AUTO_DELETE_LOCAL = "prefAutoDeleteLocal";
     public static final String PREF_SMART_MARK_AS_PLAYED_SECS = "prefSmartMarkAsPlayedSecs";
     private static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
@@ -98,8 +100,6 @@ public abstract class UserPreferences {
     public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
     public static final String PREF_ENABLE_AUTODL = "prefEnableAutoDl";
     public static final String PREF_ENABLE_AUTODL_ON_BATTERY = "prefEnableAutoDownloadOnBattery";
-    public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
-    private static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
     private static final String PREF_PROXY_TYPE = "prefProxyType";
     private static final String PREF_PROXY_HOST = "prefProxyHost";
     private static final String PREF_PROXY_PORT = "prefProxyPort";
@@ -192,6 +192,33 @@ public abstract class UserPreferences {
     public static List<String> getHiddenDrawerItems() {
         String hiddenItems = prefs.getString(PREF_HIDDEN_DRAWER_ITEMS, "");
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenItems, ",")));
+    }
+
+    public static List<String> getVisibleDrawerItemOrder() {
+        String itemOrderStr = prefs.getString(PREF_DRAWER_ITEM_ORDER, "");
+        List<String> itemOrderTags = new ArrayList<>(Arrays.asList(TextUtils.split(itemOrderStr, ",")));
+        List<String> hiddenItemTags = getHiddenDrawerItems();
+        String[] sectionTags = context.getResources().getStringArray(R.array.nav_drawer_section_tags);
+        Arrays.sort(sectionTags, (String a, String b) -> Integer.signum(
+                indexOfOrMaxValue(itemOrderTags, a) - indexOfOrMaxValue(itemOrderTags, b)));
+        List<String> finalItemTags = new ArrayList<>();
+        for (String sectionTag: sectionTags) {
+            if (hiddenItemTags.contains(sectionTag)) {
+                continue;
+            }
+            finalItemTags.add(sectionTag);
+        }
+        return finalItemTags;
+    }
+
+    private static int indexOfOrMaxValue(List<String> haystack, String needle) {
+        int index = haystack.indexOf(needle);
+        return index == -1 ? Integer.MAX_VALUE : index;
+    }
+
+    public static void setDrawerItemOrder(List<String> hiddenItems, List<String> visibleItemsOrder) {
+        prefs.edit().putString(PREF_HIDDEN_DRAWER_ITEMS, TextUtils.join(",", hiddenItems)).apply();
+        prefs.edit().putString(PREF_DRAWER_ITEM_ORDER, TextUtils.join(",", visibleItemsOrder)).apply();
     }
 
     public static List<Integer> getFullNotificationButtons() {
@@ -507,17 +534,8 @@ public abstract class UserPreferences {
         return prefs.getBoolean(PREF_ENABLE_AUTODL, false);
     }
 
-    @VisibleForTesting
-    public static void setEnableAutodownload(boolean enabled) {
-        prefs.edit().putBoolean(PREF_ENABLE_AUTODL, enabled).apply();
-    }
-
     public static boolean isEnableAutodownloadOnBattery() {
         return prefs.getBoolean(PREF_ENABLE_AUTODL_ON_BATTERY, true);
-    }
-
-    public static boolean isEnableAutodownloadWifiFilter() {
-        return Build.VERSION.SDK_INT < 29 && prefs.getBoolean(PREF_ENABLE_AUTODL_WIFI_FILTER, false);
     }
 
     public static int getFastForwardSecs() {
@@ -526,11 +544,6 @@ public abstract class UserPreferences {
 
     public static int getRewindSecs() {
         return prefs.getInt(PREF_REWIND_SECS, 10);
-    }
-
-    public static String[] getAutodownloadSelectedNetworks() {
-        String selectedNetWorks = prefs.getString(PREF_AUTODL_SELECTED_NETWORKS, "");
-        return TextUtils.split(selectedNetWorks, ",");
     }
 
     public static void setProxyConfig(ProxyConfig config) {
@@ -599,10 +612,6 @@ public abstract class UserPreferences {
         prefs.edit().putString(PREF_PLAYBACK_SPEED_ARRAY, jsonArray.toString()).apply();
     }
 
-    public static void setAutodownloadSelectedNetworks(String[] value) {
-        prefs.edit().putString(PREF_AUTODL_SELECTED_NETWORKS, TextUtils.join(",", value)).apply();
-    }
-
     public static boolean gpodnetNotificationsEnabled() {
         if (Build.VERSION.SDK_INT >= 26) {
             return true; // System handles notification preferences
@@ -619,11 +628,6 @@ public abstract class UserPreferences {
 
     public static void setGpodnetNotificationsEnabled() {
         prefs.edit().putBoolean(PREF_GPODNET_NOTIFICATIONS, true).apply();
-    }
-
-    public static void setHiddenDrawerItems(List<String> items) {
-        String str = TextUtils.join(",", items);
-        prefs.edit().putString(PREF_HIDDEN_DRAWER_ITEMS, str).apply();
     }
 
     public static void setFullNotificationButtons(List<Integer> items) {
@@ -735,6 +739,14 @@ public abstract class UserPreferences {
         return prefs.getBoolean(PREF_BACK_OPENS_DRAWER, false);
     }
 
+    public static boolean isBottomNavigationEnabled() {
+        return prefs.getBoolean(PREF_BOTTOM_NAVIGATION, false);
+    }
+
+    public static void setBottomNavigationEnabled(boolean enabled) {
+        prefs.edit().putBoolean(PREF_BOTTOM_NAVIGATION, enabled).apply();
+    }
+
     public static boolean timeRespectsSpeed() {
         return prefs.getBoolean(PREF_TIME_RESPECTS_SPEED, false);
     }
@@ -829,6 +841,10 @@ public abstract class UserPreferences {
 
     public static boolean shouldShowSubscriptionTitle() {
         return prefs.getBoolean(PREF_SUBSCRIPTION_TITLE, false);
+    }
+
+    public static void setShouldShowSubscriptionTitle(boolean show) {
+        prefs.edit().putBoolean(PREF_SUBSCRIPTION_TITLE, show).apply();
     }
 
     public static void setAllEpisodesSortOrder(SortOrder s) {

@@ -12,7 +12,7 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
-import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import org.greenrobot.eventbus.EventBus;
 
@@ -157,14 +157,15 @@ public abstract class FeedDatabaseWriter {
                                         + "\n\nNow the feed contains:\n" + duplicateEpisodeDetails(item)));
                         oldItem.setItemIdentifier(item.getItemIdentifier());
 
-                        if (oldItem.isPlayed() && oldItem.getMedia() != null) {
+                        if (oldItem.isPlayed() && oldItem.getMedia() != null
+                                && savedFeed.getState() == Feed.STATE_SUBSCRIBED) {
                             EpisodeAction action = new EpisodeAction.Builder(oldItem, EpisodeAction.PLAY)
                                     .currentTimestamp()
                                     .started(oldItem.getMedia().getDuration() / 1000)
                                     .position(oldItem.getMedia().getDuration() / 1000)
                                     .total(oldItem.getMedia().getDuration() / 1000)
                                     .build();
-                            SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
+                            SynchronizationQueue.getInstance().enqueueEpisodeAction(action);
                         }
                     }
                 }
@@ -181,10 +182,11 @@ public abstract class FeedDatabaseWriter {
                         savedFeed.getItems().add(idx, item);
                     }
 
-                    if (item.getPubDate() == null
+                    boolean shouldPerformNewEpisodesAction = item.getPubDate() == null
                             || priorMostRecentDate == null
                             || priorMostRecentDate.before(item.getPubDate())
-                            || priorMostRecentDate.equals(item.getPubDate())) {
+                            || priorMostRecentDate.equals(item.getPubDate());
+                    if (savedFeed.getState() == Feed.STATE_SUBSCRIBED && shouldPerformNewEpisodesAction) {
                         Log.d(TAG, "Performing new episode action for item published on " + item.getPubDate()
                                 + ", prior most recent date = " + priorMostRecentDate);
                         FeedPreferences.NewEpisodesAction action = savedFeed.getPreferences().getNewEpisodesAction();

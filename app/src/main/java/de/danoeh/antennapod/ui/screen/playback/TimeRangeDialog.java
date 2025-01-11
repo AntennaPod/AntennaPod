@@ -126,16 +126,20 @@ public class TimeRangeDialog extends MaterialAlertDialogBuilder {
             canvas.drawCircle(p2.x, p2.y, padding / 2, paintSelected);
 
             paintText.setTextSize(0.6f * padding);
-            String timeRange;
+            float textBaseY = (size - paintText.descent() - paintText.ascent()) / 2;
             if (from == to) {
-                timeRange = getContext().getString(R.string.sleep_timer_always);
+                String timeRange = getContext().getString(R.string.sleep_timer_always);
+                canvas.drawText(timeRange, size / 2, textBaseY, paintText);
             } else if (DateFormat.is24HourFormat(getContext())) {
-                timeRange = String.format(Locale.getDefault(), "%02d:00 - %02d:00", from, to);
+                String timeRange = String.format(Locale.getDefault(), "%02d:00 - %02d:00", from, to);
+                canvas.drawText(timeRange, size / 2, textBaseY, paintText);
             } else {
-                timeRange = String.format(Locale.getDefault(), "%02d:00 %s - %02d:00 %s", from % 12,
-                        from >= 12 ? "PM" : "AM", to % 12, to >= 12 ? "PM" : "AM");
+                String timeFrom = String.format(Locale.getDefault(), "%02d:00 %s", from % 12, from >= 12 ? "PM" : "AM");
+                String timeTo = String.format(Locale.getDefault(), "%02d:00 %s", to % 12, to >= 12 ? "PM" : "AM");
+                canvas.drawText(timeFrom, size / 2, textBaseY - paintText.getTextSize(), paintText);
+                canvas.drawText("-", size / 2, textBaseY, paintText);
+                canvas.drawText(timeTo, size / 2, textBaseY + paintText.getTextSize(), paintText);
             }
-            canvas.drawText(timeRange, size / 2, (size - paintText.descent() - paintText.ascent()) / 2, paintText);
         }
 
         protected Point radToPoint(float angle, float radius) {

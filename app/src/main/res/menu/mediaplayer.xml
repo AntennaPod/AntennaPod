@@ -3,11 +3,17 @@
       xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/transcript_item"
+        android:icon="@drawable/transcript"
+        android:title="@string/show_transcript"
+        custom:showAsAction="ifRoom">
+    </item>
+
+    <item
         android:id="@+id/visit_social_interest_website"
         android:icon="@drawable/ic_chat"
-        custom:showAsAction="always"
-        android:title="@string/visit_social_interest_label"
-        android:visible="true">
+        custom:showAsAction="ifRoom"
+        android:title="@string/visit_social_interest_label">
     </item>
 
     <item

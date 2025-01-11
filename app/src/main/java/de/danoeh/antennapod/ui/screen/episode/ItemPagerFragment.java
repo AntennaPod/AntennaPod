@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.episode;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -13,7 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -29,6 +32,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -141,10 +145,10 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
             return;
         }
         if (item.hasMedia()) {
-            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(), item);
+            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(), Collections.singletonList(item));
         } else {
             // these are already available via button1 and button2
-            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(), item,
+            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(), Collections.singletonList(item),
                     R.id.mark_read_item, R.id.visit_website_item);
         }
     }
@@ -169,12 +173,21 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(UnreadItemsUpdateEvent event) {
+        refreshToolbarState();
+    }
+
     private void openPodcast() {
         if (item == null) {
             return;
         }
-        Fragment fragment = FeedItemlistFragment.newInstance(item.getFeedId());
-        ((MainActivity) getActivity()).loadChildFragment(fragment);
+        if (item.getFeed().getState() == Feed.STATE_SUBSCRIBED) {
+            Intent intent = MainActivity.getIntentToOpenFeed(getContext(), item.getFeedId());
+            startActivity(intent);
+        } else {
+            startActivity(new OnlineFeedviewActivityStarter(getContext(), item.getFeed().getDownloadUrl()).getIntent());
+        }
     }
 
     private class ItemPagerAdapter extends FragmentStateAdapter {

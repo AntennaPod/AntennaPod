@@ -17,6 +17,7 @@ import de.danoeh.antennapod.storage.database.ReleaseScheduleGuesser;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.statistics.R;
 import de.danoeh.antennapod.ui.statistics.databinding.FeedStatisticsBinding;
 import io.reactivex.Observable;
@@ -29,7 +30,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class FeedStatisticsFragment extends Fragment {
     private static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
@@ -54,17 +54,20 @@ public class FeedStatisticsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         feedId = getArguments().getLong(EXTRA_FEED_ID);
         viewBinding = FeedStatisticsBinding.inflate(inflater);
-
-        if (!getArguments().getBoolean(EXTRA_DETAILED)) {
-            for (int i = 0; i < viewBinding.getRoot().getChildCount(); i++) {
-                View child = viewBinding.getRoot().getChildAt(i);
-                if ("detailed".equals(child.getTag())) {
-                    child.setVisibility(View.GONE);
-                }
-            }
-        }
-
         loadStatistics();
+
+        if (getArguments().getBoolean(EXTRA_DETAILED)) {
+            viewBinding.secondRowContainer.setVisibility(View.VISIBLE);
+            int color = ThemeUtils.getColorFromAttr(getContext(), R.attr.colorSurface);
+            viewBinding.playbackTime.getRoot().setBackgroundColor(color);
+            viewBinding.episodesStarted.getRoot().setBackgroundColor(color);
+            viewBinding.spaceDownloaded.getRoot().setBackgroundColor(color);
+            viewBinding.episodesTotal.getRoot().setBackgroundColor(color);
+            viewBinding.durationTotal.getRoot().setBackgroundColor(color);
+            viewBinding.episodesDownloaded.getRoot().setBackgroundColor(color);
+            viewBinding.expectedNextEpisode.getRoot().setBackgroundColor(color);
+            viewBinding.episodeSchedule.getRoot().setBackgroundColor(color);
+        }
         return viewBinding.getRoot();
     }
 
@@ -148,28 +151,55 @@ public class FeedStatisticsFragment extends Fragment {
 
     private void showStats(Pair<StatisticsItem, ReleaseScheduleGuesser.Guess> p) {
         StatisticsItem s = p.first;
-        viewBinding.startedTotalLabel.setText(String.format(Locale.getDefault(), "%d / %d",
-                s.episodesStarted, s.episodes));
-        viewBinding.timePlayedLabel.setText(Converter.shortLocalizedDuration(getContext(), s.timePlayed));
-        viewBinding.totalDurationLabel.setText(Converter.shortLocalizedDuration(getContext(), s.time));
-        viewBinding.onDeviceLabel.setText(String.format(Locale.getDefault(), "%d", s.episodesDownloadCount));
-        viewBinding.spaceUsedLabel.setText(Formatter.formatShortFileSize(getContext(), s.totalDownloadSize));
+        viewBinding.episodesStarted.mainLabel.setText(getResources()
+                .getQuantityString(R.plurals.num_episodes, (int) s.episodesStarted, s.episodesStarted));
+        viewBinding.episodesStarted.subtitleLabel.setText(getResources()
+                .getQuantityString(R.plurals.statistics_episodes_started, (int) s.episodesStarted));
 
+        viewBinding.episodesTotal.mainLabel.setText(getResources()
+                .getQuantityString(R.plurals.num_episodes, (int) s.episodes, s.episodes));
+        viewBinding.episodesTotal.subtitleLabel.setText(getResources()
+                .getQuantityString(R.plurals.statistics_episodes_total, (int) s.episodes));
+
+        viewBinding.playbackTime.mainLabel.setText(Converter.shortLocalizedDuration(getContext(), s.timePlayed));
+        viewBinding.playbackTime.subtitleLabel.setText(R.string.statistics_time_played);
+
+        viewBinding.durationTotal.mainLabel.setText(Converter.shortLocalizedDuration(getContext(), s.time));
+        viewBinding.durationTotal.subtitleLabel.setText(R.string.statistics_time_total);
+
+        viewBinding.episodesDownloaded.mainLabel.setText(getResources()
+                .getQuantityString(R.plurals.num_episodes, (int) s.episodesDownloadCount, s.episodesDownloadCount));
+        viewBinding.episodesDownloaded.subtitleLabel.setText(getResources()
+                .getQuantityString(R.plurals.statistics_episodes_downloaded, (int) s.episodesDownloadCount));
+
+        viewBinding.spaceDownloaded.mainLabel.setText(Formatter.formatShortFileSize(getContext(), s.totalDownloadSize));
+        viewBinding.spaceDownloaded.subtitleLabel.setText(R.string.statistics_episodes_space);
+
+        viewBinding.expectedNextEpisode.subtitleLabel.setText(R.string.statistics_release_next);
+        viewBinding.episodeSchedule.subtitleLabel.setText(R.string.statistics_release_schedule);
         ReleaseScheduleGuesser.Guess guess = p.second;
-        if (!s.feed.getPreferences().getKeepUpdated()) {
-            viewBinding.expectedNextEpisodeLabel.setText(R.string.updates_disabled_label);
+        if (s.feed.isLocalFeed()) {
+            viewBinding.expectedNextEpisode.mainLabel.setText(R.string.local_folder);
+            viewBinding.episodeSchedule.mainLabel.setText(R.string.local_folder);
+        } else if (!s.feed.getPreferences().getKeepUpdated()) {
+            viewBinding.expectedNextEpisode.mainLabel.setText(R.string.updates_disabled_label);
+            viewBinding.episodeSchedule.mainLabel.setText(R.string.updates_disabled_label);
         } else if (guess == null || guess.nextExpectedDate.getTime() <= new Date().getTime() - 7 * 24 * 3600000L) {
             // More than 30 days delayed
-            viewBinding.expectedNextEpisodeLabel.setText(R.string.statistics_expected_next_episode_unknown);
+            viewBinding.expectedNextEpisode.mainLabel.setText(R.string.statistics_expected_next_episode_unknown);
+            viewBinding.episodeSchedule.mainLabel.setText(R.string.statistics_expected_next_episode_unknown);
         } else {
-            String text = DateFormatter.formatAbbrev(getContext(), guess.nextExpectedDate);
             if (guess.nextExpectedDate.getTime() <= new Date().getTime()) {
-                text = getString(R.string.statistics_expected_next_episode_any_day);
+                viewBinding.expectedNextEpisode.mainLabel.setText(R.string.statistics_expected_next_episode_any_day);
+            } else {
+                viewBinding.expectedNextEpisode.mainLabel.setText(
+                        DateFormatter.formatAbbrev(getContext(), guess.nextExpectedDate));
             }
-            if (guess.schedule != ReleaseScheduleGuesser.Schedule.UNKNOWN) {
-                text += " (" + getReadableSchedule(guess) + ")";
+            if (guess.schedule == ReleaseScheduleGuesser.Schedule.UNKNOWN) {
+                viewBinding.episodeSchedule.mainLabel.setText(R.string.statistics_expected_next_episode_unknown);
+            } else {
+                viewBinding.episodeSchedule.mainLabel.setText(getReadableSchedule(guess));
             }
-            viewBinding.expectedNextEpisodeLabel.setText(text);
         }
     }
 

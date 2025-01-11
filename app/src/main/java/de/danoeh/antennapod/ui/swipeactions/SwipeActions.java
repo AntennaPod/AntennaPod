@@ -222,7 +222,7 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
 
     @Override
     public float getSwipeThreshold(@NonNull RecyclerView.ViewHolder viewHolder) {
-        return swipeOutEnabled ? 0.6f : 1.0f;
+        return swipeOutEnabled ? super.getSwipeThreshold(viewHolder) : 1.0f;
     }
 
     @Override

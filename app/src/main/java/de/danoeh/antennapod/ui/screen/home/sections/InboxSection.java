@@ -6,36 +6,39 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
-import de.danoeh.antennapod.ui.MenuItemUtils;
-import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.event.EpisodeDownloadEvent;
-import de.danoeh.antennapod.event.FeedItemEvent;
-import de.danoeh.antennapod.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.ui.screen.InboxFragment;
-import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedItemFilter;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.screen.home.HomeSection;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.EpisodeDownloadEvent;
+import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.MenuItemUtils;
+import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
+import de.danoeh.antennapod.ui.screen.InboxFragment;
+import de.danoeh.antennapod.ui.screen.home.HomeSection;
+import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class InboxSection extends HomeSection {
     public static final String TAG = "InboxSection";
@@ -53,7 +56,7 @@ public class InboxSection extends HomeSection {
         viewBinding.recyclerView.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         viewBinding.recyclerView.setRecycledViewPool(((MainActivity) requireActivity()).getRecycledViewPool());
-        adapter = new EpisodeItemListAdapter((MainActivity) requireActivity()) {
+        adapter = new EpisodeItemListAdapter(requireActivity()) {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
                 super.onCreateContextMenu(menu, v, menuInfo);
@@ -62,6 +65,7 @@ public class InboxSection extends HomeSection {
         };
         adapter.setDummyViews(NUM_EPISODES);
         viewBinding.recyclerView.setAdapter(adapter);
+        viewBinding.emptyLabel.setText(R.string.home_new_empty_text);
 
         SwipeActions swipeActions = new SwipeActions(this, InboxFragment.TAG);
         swipeActions.attachTo(viewBinding.recyclerView);
@@ -112,7 +116,7 @@ public class InboxSection extends HomeSection {
 
     @Override
     protected String getMoreLinkTitle() {
-        return getString(R.string.inbox_label);
+        return getString(R.string.inbox_label_more);
     }
 
     private void loadItems() {
@@ -129,7 +133,8 @@ public class InboxSection extends HomeSection {
                     items = data.first;
                     adapter.setDummyViews(0);
                     adapter.updateItems(items);
-                    viewBinding.numNewItemsLabel.setVisibility(View.VISIBLE);
+                    viewBinding.emptyLabel.setVisibility(items.isEmpty() ? View.VISIBLE : View.GONE);
+                    viewBinding.numNewItemsLabel.setVisibility(!items.isEmpty() ? View.VISIBLE : View.GONE);
                     if (data.second >= 100) {
                         viewBinding.numNewItemsLabel.setText(String.format(Locale.getDefault(), "%d+", 99));
                     } else {

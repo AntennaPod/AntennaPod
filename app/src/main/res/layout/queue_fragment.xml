@@ -28,8 +28,7 @@
             android:layout_below="@id/toolbar"
             android:textSize="12sp"
             android:layout_marginTop="-12dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginStart="60dp"
+            android:paddingHorizontal="16dp"
             android:layout_marginBottom="8dp"
             tools:text="12 Episodes - Time remaining: 12 hours" />
 
@@ -57,7 +56,10 @@
         android:indeterminateOnly="true"
         android:visibility="gone" />
 
-    <include
-        layout="@layout/multi_select_speed_dial" />
+    <de.danoeh.antennapod.ui.view.FloatingSelectMenu
+        android:id="@+id/floatingSelectMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

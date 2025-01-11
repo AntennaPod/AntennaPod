@@ -70,7 +70,7 @@ public class FeedSettingsTest {
         clickPreference(R.string.pref_feed_skip);
         onView(withText(R.string.cancel_label)).perform(click());
 
-        clickPreference(R.string.auto_delete_label);
+        clickPreference(R.string.pref_auto_delete_playback_title);
         onView(withText(R.string.cancel_label)).perform(click());
 
         clickPreference(R.string.feed_volume_adapdation);

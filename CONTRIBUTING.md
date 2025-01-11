@@ -29,7 +29,7 @@ If you would like to translate the app into another language or improve an exist
 Submit a pull request
 ---------------------
 - Before you work on the code
-  - Make sure that there is an issue *without* the `Needs: Triage` or `Needs: Decision` label for the feature you want to implement or bug you want to fix.
+  - Make sure that there is an issue *without* the `Needs: Triage` or `Needs: Decision` label for the feature you want to implement or bug you want to fix. If you just start working on a feature that is not approved yet (or not even has an issue), your PR might not get merged.
   - Add a comment to the issue so that other people know that you are working on it.
     - You don't need to ask for permission to work on something, just indicate that you are doing so.
   - If you want to discuss the approach to take, feel free to ask in the issue or join a [community call](https://antennapod.org/events/community-meeting).

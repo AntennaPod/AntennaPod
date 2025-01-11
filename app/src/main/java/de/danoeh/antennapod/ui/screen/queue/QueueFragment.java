@@ -26,11 +26,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
-import com.leinardi.android.speeddial.SpeedDialView;
 
+import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
+import de.danoeh.antennapod.ui.view.FloatingSelectMenu;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -94,7 +95,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     private SwipeActions swipeActions;
     private SharedPreferences prefs;
 
-    private SpeedDialView speedDialView;
+    private FloatingSelectMenu floatingSelectMenu;
     private ProgressBar progressBar;
 
     @Override
@@ -268,6 +269,11 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         swipeRefreshLayout.setRefreshing(event.isFeedUpdateRunning);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateSpeed(SpeedChangedEvent event) {
+        refreshInfoBar();
+    }
+
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         final int itemId = item.getItemId();
@@ -402,6 +408,10 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         progressBar.setVisibility(View.VISIBLE);
 
         infoBar = root.findViewById(R.id.info_bar);
+        boolean largePadding = displayUpArrow || !UserPreferences.isBottomNavigationEnabled();
+        int paddingHorizontal = (int) (getResources().getDisplayMetrics().density * (largePadding ? 60 : 16));
+        infoBar.setPadding(paddingHorizontal, 0, paddingHorizontal, 0);
+
         recyclerView = root.findViewById(R.id.recyclerView);
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
         if (animator instanceof SimpleItemAnimator) {
@@ -421,6 +431,14 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 super.onCreateContextMenu(menu, v, menuInfo);
                 MenuItemUtils.setOnClickListeners(menu, QueueFragment.this::onContextItemSelected);
             }
+
+            @Override
+            protected void onSelectedItemsUpdated() {
+                super.onSelectedItemsUpdated();
+                FeedItemMenuHandler.onPrepareMenu(floatingSelectMenu.getMenu(), getSelectedItems(),
+                        R.id.add_to_queue_item, R.id.remove_inbox_item);
+                floatingSelectMenu.updateItemVisibility();
+            }
         };
         recyclerAdapter.setOnSelectModeListener(this);
         recyclerView.setAdapter(recyclerAdapter);
@@ -436,30 +454,15 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         emptyView.setMessage(R.string.no_items_label);
         emptyView.updateAdapter(recyclerAdapter);
 
-        speedDialView = root.findViewById(R.id.fabSD);
-        speedDialView.setOverlayLayout(root.findViewById(R.id.fabSDOverlay));
-        speedDialView.inflate(R.menu.episodes_apply_action_speeddial);
-        speedDialView.removeActionItemById(R.id.mark_read_batch);
-        speedDialView.removeActionItemById(R.id.mark_unread_batch);
-        speedDialView.removeActionItemById(R.id.add_to_queue_batch);
-        speedDialView.removeActionItemById(R.id.remove_all_inbox_item);
-        speedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
-            @Override
-            public boolean onMainActionSelected() {
+        floatingSelectMenu = root.findViewById(R.id.floatingSelectMenu);
+        floatingSelectMenu.inflate(R.menu.episodes_apply_action_speeddial);
+        floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
+            if (recyclerAdapter.getSelectedCount() == 0) {
+                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
+                        Snackbar.LENGTH_SHORT);
                 return false;
             }
-
-            @Override
-            public void onToggleChanged(boolean open) {
-                if (open && recyclerAdapter.getSelectedCount() == 0) {
-                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
-                            Snackbar.LENGTH_SHORT);
-                    speedDialView.close();
-                }
-            }
-        });
-        speedDialView.setOnActionSelectedListener(actionItem -> {
-            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), actionItem.getId())
+            new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId())
                     .handleAction(recyclerAdapter.getSelectedItems());
             recyclerAdapter.endSelectMode();
             return true;
@@ -495,10 +498,8 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
 
         if (recyclerAdapter.inActionMode()) {
             infoBar.setVisibility(View.INVISIBLE);
-        } else if (UserPreferences.getSubscriptionsFilter().isEnabled()) {
-            infoBar.setVisibility(View.VISIBLE);
         } else {
-            infoBar.setVisibility(View.GONE);
+            infoBar.setVisibility(View.VISIBLE);
         }
     }
 
@@ -528,20 +529,27 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     @Override
     public void onStartSelectMode() {
         swipeActions.detach();
-        speedDialView.setVisibility(View.VISIBLE);
+        floatingSelectMenu.setVisibility(View.VISIBLE);
+        recyclerView.setPadding(recyclerView.getPaddingLeft(), recyclerView.getPaddingTop(),
+                recyclerView.getPaddingRight(),
+                (int) getResources().getDimension(R.dimen.floating_select_menu_height));
         refreshToolbarState();
         refreshInfoBar();
     }
 
     @Override
     public void onEndSelectMode() {
-        speedDialView.close();
-        speedDialView.setVisibility(View.GONE);
+        floatingSelectMenu.setVisibility(View.GONE);
+        recyclerView.setPadding(recyclerView.getPaddingLeft(), recyclerView.getPaddingTop(),
+                recyclerView.getPaddingRight(), 0);
+        infoBar.setVisibility(View.VISIBLE);
         swipeActions.attachTo(recyclerView);
         refreshInfoBar();
     }
 
     public static class QueueSortDialog extends ItemSortDialog {
+        boolean turnedOffKeepSortedForRandom = false;
+
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater,
@@ -567,9 +575,16 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         @Override
         protected void onSelectionChanged() {
             super.onSelectionChanged();
-            viewBinding.keepSortedCheckbox.setEnabled(sortOrder != SortOrder.RANDOM);
             if (sortOrder == SortOrder.RANDOM) {
+                turnedOffKeepSortedForRandom |= viewBinding.keepSortedCheckbox.isChecked();
                 viewBinding.keepSortedCheckbox.setChecked(false);
+                viewBinding.keepSortedCheckbox.setEnabled(false);
+            } else {
+                if (turnedOffKeepSortedForRandom) {
+                    viewBinding.keepSortedCheckbox.setChecked(true);
+                    turnedOffKeepSortedForRandom = false;
+                }
+                viewBinding.keepSortedCheckbox.setEnabled(true);
             }
             UserPreferences.setQueueKeepSorted(viewBinding.keepSortedCheckbox.isChecked());
             UserPreferences.setQueueKeepSortedOrder(sortOrder);

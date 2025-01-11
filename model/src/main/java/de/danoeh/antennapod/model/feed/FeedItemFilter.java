@@ -24,6 +24,7 @@ public class FeedItemFilter implements Serializable {
     public final boolean showIsFavorite;
     public final boolean showNotFavorite;
     public final boolean showInHistory;
+    public final boolean includeNotSubscribed;
 
     public static final String PLAYED = "played";
     public static final String UNPLAYED = "unplayed";
@@ -39,6 +40,7 @@ public class FeedItemFilter implements Serializable {
     public static final String DOWNLOADED = "downloaded";
     public static final String NOT_DOWNLOADED = "not_downloaded";
     public static final String IS_IN_HISTORY = "is_in_history";
+    public static final String INCLUDE_NOT_SUBSCRIBED = "include_not_subscribed";
 
     public static FeedItemFilter unfiltered() {
         return new FeedItemFilter("");
@@ -46,6 +48,10 @@ public class FeedItemFilter implements Serializable {
 
     public FeedItemFilter(String properties) {
         this(TextUtils.split(properties, ","));
+    }
+
+    public FeedItemFilter(FeedItemFilter filter, String... additionalProperties) {
+        this(TextUtils.join(",", filter.getValues()) + "," + TextUtils.join(",", additionalProperties));
     }
 
     public FeedItemFilter(String... properties) {
@@ -66,6 +72,7 @@ public class FeedItemFilter implements Serializable {
         showNotFavorite = hasProperty(NOT_FAVORITE);
         showNew = hasProperty(NEW);
         showInHistory = hasProperty(IS_IN_HISTORY);
+        includeNotSubscribed = hasProperty(INCLUDE_NOT_SUBSCRIBED);
     }
 
     private boolean hasProperty(String property) {
@@ -111,6 +118,9 @@ public class FeedItemFilter implements Serializable {
             return false;
         } else if (showInHistory && item.getMedia() != null
                 && item.getMedia().getPlaybackCompletionDate().getTime() == 0) {
+            return false;
+        } else if (!includeNotSubscribed && item.getFeed() != null
+                && item.getFeed().getState() != Feed.STATE_SUBSCRIBED) {
             return false;
         }
         return true;

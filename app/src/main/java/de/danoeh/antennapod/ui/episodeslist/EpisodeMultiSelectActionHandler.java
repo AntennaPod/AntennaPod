@@ -1,47 +1,46 @@
 package de.danoeh.antennapod.ui.episodeslist;
 
+import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.PluralsRes;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.LongList;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.ui.view.LocalDeleteModal;
+import org.greenrobot.eventbus.EventBus;
 
 public class EpisodeMultiSelectActionHandler {
     private static final String TAG = "EpisodeSelectHandler";
-    private final MainActivity activity;
+    private final Activity activity;
     private final int actionId;
     private int totalNumItems = 0;
-    private Snackbar snackbar = null;
 
-    public EpisodeMultiSelectActionHandler(MainActivity activity, int actionId) {
+    public EpisodeMultiSelectActionHandler(Activity activity, int actionId) {
         this.activity = activity;
         this.actionId = actionId;
     }
 
     public void handleAction(List<FeedItem> items) {
-        if (actionId == R.id.add_to_queue_batch) {
+        if (actionId == R.id.add_to_queue_item) {
             queueChecked(items);
-        } else if (actionId == R.id.remove_from_queue_batch) {
+        } else if (actionId == R.id.remove_from_queue_item) {
             removeFromQueueChecked(items);
-        }  else if (actionId == R.id.remove_from_inbox_batch) {
+        }  else if (actionId == R.id.remove_inbox_item) {
             removeFromInboxChecked(items);
-        } else if (actionId == R.id.mark_read_batch) {
+        } else if (actionId == R.id.mark_read_item) {
             markedCheckedPlayed(items);
-        } else if (actionId == R.id.mark_unread_batch) {
+        } else if (actionId == R.id.mark_unread_item) {
             markedCheckedUnplayed(items);
-        } else if (actionId == R.id.download_batch) {
+        } else if (actionId == R.id.download_item) {
             downloadChecked(items);
-        } else if (actionId == R.id.delete_batch) {
+        } else if (actionId == R.id.remove_item) {
             LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(activity, items, () -> deleteChecked(items));
         } else {
             Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionId);
@@ -104,7 +103,8 @@ public class EpisodeMultiSelectActionHandler {
     private void deleteChecked(List<FeedItem> items) {
         int countHasMedia = 0;
         for (FeedItem feedItem : items) {
-            if (feedItem.hasMedia() && feedItem.getMedia().isDownloaded()) {
+            if ((feedItem.hasMedia() && feedItem.getMedia().isDownloaded())
+                    || feedItem.getFeed().isLocalFeed()) {
                 countHasMedia++;
                 DBWriter.deleteFeedMediaOfItem(activity, feedItem.getMedia());
             }
@@ -113,15 +113,13 @@ public class EpisodeMultiSelectActionHandler {
     }
 
     private void showMessage(@PluralsRes int msgId, int numItems) {
+        if (numItems == 1) {
+            return;
+        }
         totalNumItems += numItems;
         activity.runOnUiThread(() -> {
             String text = activity.getResources().getQuantityString(msgId, totalNumItems, totalNumItems);
-            if (snackbar != null) {
-                snackbar.setText(text);
-                snackbar.show(); // Resets the timeout
-            } else {
-                snackbar = activity.showSnackbarAbovePlayer(text, Snackbar.LENGTH_LONG);
-            }
+            EventBus.getDefault().post(new MessageEvent(text));
         });
     }
 

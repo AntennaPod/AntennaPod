@@ -100,6 +100,7 @@ public class ShownotesCleaner {
         cleanCss(document);
         document.head().appendElement("style").attr("type", "text/css").text(webviewStyle);
         addTimecodes(document);
+        document.body().attr("dir", "auto");
         return document.toString();
     }
 

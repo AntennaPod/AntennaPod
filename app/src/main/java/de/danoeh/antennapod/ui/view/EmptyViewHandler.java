@@ -21,6 +21,7 @@ public class EmptyViewHandler {
     private boolean layoutAdded = false;
     private ListAdapter listAdapter;
     private RecyclerView.Adapter<?> recyclerAdapter;
+    private View listView;
 
     private final View emptyView;
     private final TextView tvTitle;
@@ -35,6 +36,10 @@ public class EmptyViewHandler {
     }
 
     public void setTitle(int title) {
+        tvTitle.setText(title);
+    }
+
+    public void setTitle(String title) {
         tvTitle.setText(title);
     }
 
@@ -61,6 +66,7 @@ public class EmptyViewHandler {
         }
         addToParentView(listView);
         layoutAdded = true;
+        this.listView = listView;
         listView.setEmptyView(emptyView);
         updateAdapter(listView.getAdapter());
     }
@@ -71,6 +77,7 @@ public class EmptyViewHandler {
         }
         addToParentView(recyclerView);
         layoutAdded = true;
+        this.listView = recyclerView;
         updateAdapter(recyclerView.getAdapter());
     }
 
@@ -148,5 +155,6 @@ public class EmptyViewHandler {
             empty = true;
         }
         emptyView.setVisibility(empty ? View.VISIBLE : View.GONE);
+        listView.setVisibility(empty ? View.INVISIBLE : View.VISIBLE);
     }
 }

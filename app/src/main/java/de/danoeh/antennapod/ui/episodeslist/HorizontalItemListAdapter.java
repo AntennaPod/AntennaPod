@@ -14,6 +14,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalItemViewHolder>
@@ -125,7 +126,7 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
         menu.clear();
         inflater.inflate(R.menu.feeditemlist_context, menu);
         menu.setHeaderTitle(longPressedItem.getTitle());
-        FeedItemMenuHandler.onPrepareMenu(menu, longPressedItem, R.id.skip_episode_item);
+        FeedItemMenuHandler.onPrepareMenu(menu, Collections.singletonList(longPressedItem), R.id.skip_episode_item);
     }
 
 

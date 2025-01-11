@@ -13,10 +13,12 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Arrays;
+import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.storage.database.DBWriter;
@@ -46,45 +48,92 @@ public class FeedItemMenuHandler {
      * This method should be called in the prepare-methods of menus. It changes
      * the visibility of the menu items depending on a FeedItem's attributes.
      *
-     * @param menu               An instance of Menu
-     * @param selectedItem     The FeedItem for which the menu is supposed to be prepared
+     * @param menu          An instance of Menu
+     * @param selectedItems The FeedItem for which the menu is supposed to be prepared
+     * @param excludeIds Menu item that should be excluded
      * @return Returns true if selectedItem is not null.
      */
-    public static boolean onPrepareMenu(Menu menu, FeedItem selectedItem) {
-        if (menu == null || selectedItem == null) {
+    public static boolean onPrepareMenu(Menu menu, List<FeedItem> selectedItems, int... excludeIds) {
+        if (menu == null || selectedItems == null) {
             return false;
         }
-        final boolean hasMedia = selectedItem.getMedia() != null;
-        final boolean isPlaying = hasMedia && PlaybackStatus.isPlaying(selectedItem.getMedia());
-        final boolean isInQueue = selectedItem.isTagged(FeedItem.TAG_QUEUE);
-        final boolean fileDownloaded = hasMedia && selectedItem.getMedia().fileExists();
-        final boolean isLocalFile = hasMedia && selectedItem.getFeed().isLocalFeed();
-        final boolean isFavorite = selectedItem.isTagged(FeedItem.TAG_FAVORITE);
+        boolean canSkip = false;
+        boolean canRemoveFromQueue = false;
+        boolean canAddToQueue = false;
+        boolean canVisitWebsite = false;
+        boolean canShare = false;
+        boolean canRemoveFromInbox = false;
+        boolean canMarkPlayed = false;
+        boolean canMarkUnplayed = false;
+        boolean canResetPosition = false;
+        boolean canDelete = false;
+        boolean canDownload = false;
+        boolean canAddFavorite = false;
+        boolean canRemoveFavorite = false;
+        boolean canShowTranscript = false;
+        boolean canShowSocialInteract = false;
 
-        setItemVisibility(menu, R.id.skip_episode_item, isPlaying);
-        setItemVisibility(menu, R.id.remove_from_queue_item, isInQueue);
-        setItemVisibility(menu, R.id.add_to_queue_item, !isInQueue && selectedItem.getMedia() != null);
-        setItemVisibility(menu, R.id.visit_website_item, !selectedItem.getFeed().isLocalFeed()
-                && ShareUtils.hasLinkToShare(selectedItem));
-        setItemVisibility(menu, R.id.share_item, !selectedItem.getFeed().isLocalFeed());
-        setItemVisibility(menu, R.id.remove_inbox_item, selectedItem.isNew());
-        setItemVisibility(menu, R.id.mark_read_item, !selectedItem.isPlayed());
-        setItemVisibility(menu, R.id.mark_unread_item, selectedItem.isPlayed());
-        setItemVisibility(menu, R.id.reset_position, hasMedia && selectedItem.getMedia().getPosition() != 0);
-        setItemVisibility(menu, R.id.visit_social_interest_website, selectedItem.getPodcastIndexSocialUrl() != null);
-
-        // Display proper strings when item has no media
-        if (hasMedia) {
-            setItemTitle(menu, R.id.mark_read_item, R.string.mark_read_label);
-            setItemTitle(menu, R.id.mark_unread_item, R.string.mark_unread_label);
-        } else {
-            setItemTitle(menu, R.id.mark_read_item, R.string.mark_read_no_media_label);
-            setItemTitle(menu, R.id.mark_unread_item, R.string.mark_unread_label_no_media);
+        for (FeedItem item : selectedItems) {
+            boolean hasMedia = item.getMedia() != null;
+            canSkip |= hasMedia && PlaybackStatus.isPlaying(item.getMedia());
+            canRemoveFromQueue |= item.isTagged(FeedItem.TAG_QUEUE);
+            canAddToQueue |= hasMedia && !item.isTagged(FeedItem.TAG_QUEUE);
+            canVisitWebsite |= !item.getFeed().isLocalFeed() && ShareUtils.hasLinkToShare(item);
+            canShare |= !item.getFeed().isLocalFeed();
+            canRemoveFromInbox |= item.isNew();
+            canMarkPlayed |= !item.isPlayed();
+            canMarkUnplayed |= item.isPlayed();
+            canResetPosition |= hasMedia && item.getMedia().getPosition() != 0;
+            canDelete |= (hasMedia && item.getMedia().isDownloaded()) || item.getFeed().isLocalFeed();
+            canDownload |= hasMedia && !item.getMedia().isDownloaded() && !item.getFeed().isLocalFeed();
+            canAddFavorite |= !item.isTagged(FeedItem.TAG_FAVORITE);
+            canRemoveFavorite |= item.isTagged(FeedItem.TAG_FAVORITE);
+            canShowTranscript |= item.hasTranscript();
+            canShowSocialInteract |= item.getPodcastIndexSocialUrl() != null;
         }
 
-        setItemVisibility(menu, R.id.add_to_favorites_item, !isFavorite);
-        setItemVisibility(menu, R.id.remove_from_favorites_item, isFavorite);
-        setItemVisibility(menu, R.id.remove_item, fileDownloaded || isLocalFile);
+        if (selectedItems.size() > 1) {
+            canVisitWebsite = false;
+            canShare = false;
+            canShowTranscript = false;
+            canShowSocialInteract = false;
+        }
+
+        setItemVisibility(menu, R.id.skip_episode_item, canSkip);
+        setItemVisibility(menu, R.id.remove_from_queue_item, canRemoveFromQueue);
+        setItemVisibility(menu, R.id.add_to_queue_item, canAddToQueue);
+        setItemVisibility(menu, R.id.visit_website_item, canVisitWebsite);
+        setItemVisibility(menu, R.id.share_item, canShare);
+        setItemVisibility(menu, R.id.remove_inbox_item, canRemoveFromInbox);
+        setItemVisibility(menu, R.id.mark_read_item, canMarkPlayed);
+        setItemVisibility(menu, R.id.mark_unread_item, canMarkUnplayed);
+        setItemVisibility(menu, R.id.reset_position, canResetPosition);
+        setItemVisibility(menu, R.id.visit_social_interest_website, canShowSocialInteract);
+
+        // Display proper strings when item has no media
+        if (selectedItems.size() == 1 && selectedItems.get(0).getMedia() == null) {
+            setItemTitle(menu, R.id.mark_read_item, R.string.mark_read_no_media_label);
+            setItemTitle(menu, R.id.mark_unread_item, R.string.mark_unread_label_no_media);
+        } else {
+            setItemTitle(menu, R.id.mark_read_item, R.string.mark_read_label);
+            setItemTitle(menu, R.id.mark_unread_item, R.string.mark_unread_label);
+        }
+
+        setItemVisibility(menu, R.id.add_to_favorites_item, canAddFavorite);
+        setItemVisibility(menu, R.id.remove_from_favorites_item, canRemoveFavorite);
+        setItemVisibility(menu, R.id.remove_item, canDelete);
+        setItemVisibility(menu, R.id.download_item, canDownload);
+        setItemVisibility(menu, R.id.transcript_item, canShowTranscript);
+
+        if (selectedItems.size() == 1 && selectedItems.get(0).getFeed().getState() != Feed.STATE_SUBSCRIBED) {
+            setItemVisibility(menu, R.id.mark_read_item, false);
+        }
+
+        if (excludeIds != null) {
+            for (int id : excludeIds) {
+                setItemVisibility(menu, id, false);
+            }
+        }
         return true;
     }
 
@@ -120,26 +169,6 @@ public class FeedItemMenuHandler {
     }
 
     /**
-     * The same method as {@link #onPrepareMenu(Menu, FeedItem)}, but lets the
-     * caller also specify a list of menu items that should not be shown.
-     *
-     * @param excludeIds Menu item that should be excluded
-     * @return true if selectedItem is not null.
-     */
-    public static boolean onPrepareMenu(Menu menu, FeedItem selectedItem, int... excludeIds) {
-        if (menu == null || selectedItem == null) {
-            return false;
-        }
-        boolean rc = onPrepareMenu(menu, selectedItem);
-        if (rc && excludeIds != null) {
-            for (int id : excludeIds) {
-                setItemVisibility(menu, id, false);
-            }
-        }
-        return rc;
-    }
-
-    /**
      * Default menu handling for the given FeedItem.
      *
      * A Fragment instance, (rather than the more generic Context), is needed as a parameter
@@ -159,7 +188,8 @@ public class FeedItemMenuHandler {
         } else if (menuItemId == R.id.mark_read_item) {
             selectedItem.setPlayed(true);
             DBWriter.markItemPlayed(selectedItem, FeedItem.PLAYED, true);
-            if (!selectedItem.getFeed().isLocalFeed() && SynchronizationSettings.isProviderConnected()) {
+            if (!selectedItem.getFeed().isLocalFeed() && selectedItem.getFeed().getState() == Feed.STATE_SUBSCRIBED
+                    && SynchronizationSettings.isProviderConnected()) {
                 FeedMedia media = selectedItem.getMedia();
                 // not all items have media, Gpodder only cares about those that do
                 if (media != null) {
@@ -169,17 +199,18 @@ public class FeedItemMenuHandler {
                             .position(media.getDuration() / 1000)
                             .total(media.getDuration() / 1000)
                             .build();
-                    SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, actionPlay);
+                    SynchronizationQueue.getInstance().enqueueEpisodeAction(actionPlay);
                 }
             }
         } else if (menuItemId == R.id.mark_unread_item) {
             selectedItem.setPlayed(false);
             DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, false);
-            if (!selectedItem.getFeed().isLocalFeed() && selectedItem.getMedia() != null) {
-                EpisodeAction actionNew = new EpisodeAction.Builder(selectedItem, EpisodeAction.NEW)
-                        .currentTimestamp()
-                        .build();
-                SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, actionNew);
+            if (!selectedItem.getFeed().isLocalFeed() && selectedItem.getMedia() != null
+                    && selectedItem.getFeed().getState() == Feed.STATE_SUBSCRIBED) {
+                SynchronizationQueue.getInstance().enqueueEpisodeAction(
+                        new EpisodeAction.Builder(selectedItem, EpisodeAction.NEW)
+                            .currentTimestamp()
+                            .build());
             }
         } else if (menuItemId == R.id.add_to_queue_item) {
             DBWriter.addQueueItem(context, selectedItem);

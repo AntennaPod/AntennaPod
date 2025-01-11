@@ -10,11 +10,11 @@ import android.widget.ListView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
+import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import de.danoeh.antennapod.ui.screen.subscriptions.FeedSortDialog;
 import org.greenrobot.eventbus.EventBus;
 
@@ -27,13 +27,14 @@ import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
-public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
+public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment {
     private static final String PREF_SWIPE = "prefSwipe";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences_user_interface);
         setupInterfaceScreen();
+        backOpensDrawerToggle(UserPreferences.isBottomNavigationEnabled());
     }
 
     @Override
@@ -65,7 +66,7 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
 
         findPreference(UserPreferences.PREF_HIDDEN_DRAWER_ITEMS)
                 .setOnPreferenceClickListener(preference -> {
-                    DrawerPreferencesDialog.show(getContext(), null);
+                    new DrawerPreferencesDialog(getContext(), null).show();
                     return true;
                 });
 
@@ -94,6 +95,17 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
         if (Build.VERSION.SDK_INT >= 26) {
             findPreference(UserPreferences.PREF_EXPANDED_NOTIFICATION).setVisible(false);
         }
+
+        findPreference(UserPreferences.PREF_BOTTOM_NAVIGATION).setOnPreferenceChangeListener((preference, newValue) -> {
+            if (newValue instanceof Boolean) {
+                backOpensDrawerToggle((Boolean) newValue);
+            }
+            return true;
+        });
+    }
+
+    private void backOpensDrawerToggle(boolean bottomNavigationEnabled) {
+        findPreference(UserPreferences.PREF_BACK_OPENS_DRAWER).setEnabled(!bottomNavigationEnabled);
     }
 
     private void showFullNotificationButtonsDialog() {

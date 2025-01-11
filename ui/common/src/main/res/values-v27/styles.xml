@@ -3,8 +3,6 @@
     <style name="Theme.AntennaPod.Dynamic.Light" parent="Theme.Base.AntennaPod.Dynamic.Light">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:navigationBarColor">@color/background_light</item>
-        <item name="android:navigationBarDividerColor">@color/navigation_bar_divider_light</item>
         <item name="android:windowLightNavigationBar">true</item>
     </style>
 </resources>

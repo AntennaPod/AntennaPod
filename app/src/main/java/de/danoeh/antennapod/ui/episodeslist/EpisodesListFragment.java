@@ -22,10 +22,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
-import com.leinardi.android.speeddial.SpeedDialView;
 
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
+import de.danoeh.antennapod.ui.view.FloatingSelectMenu;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -67,12 +67,12 @@ public abstract class EpisodesListFragment extends Fragment
     protected int page = 1;
     protected boolean isLoadingMore = false;
     protected boolean hasMoreItems = false;
-    private boolean displayUpArrow;
+    protected boolean displayUpArrow;
 
     protected EpisodeItemListRecyclerView recyclerView;
     protected EpisodeItemListAdapter listAdapter;
     protected EmptyViewHandler emptyView;
-    protected SpeedDialView speedDialView;
+    protected FloatingSelectMenu floatingSelectMenu;
     protected MaterialToolbar toolbar;
     protected SwipeRefreshLayout swipeRefreshLayout;
     protected SwipeActions swipeActions;
@@ -177,7 +177,7 @@ public abstract class EpisodesListFragment extends Fragment
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
         swipeRefreshLayout.setOnRefreshListener(() -> FeedUpdateManager.getInstance().runOnceOrAsk(requireContext()));
 
-        listAdapter = new EpisodeItemListAdapter((MainActivity) getActivity()) {
+        listAdapter = new EpisodeItemListAdapter(getActivity()) {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
                 super.onCreateContextMenu(menu, v, menuInfo);
@@ -185,6 +185,13 @@ public abstract class EpisodesListFragment extends Fragment
                     menu.findItem(R.id.multi_select).setVisible(true);
                 }
                 MenuItemUtils.setOnClickListeners(menu, EpisodesListFragment.this::onContextItemSelected);
+            }
+
+            @Override
+            protected void onSelectedItemsUpdated() {
+                super.onSelectedItemsUpdated();
+                FeedItemMenuHandler.onPrepareMenu(floatingSelectMenu.getMenu(), getSelectedItems());
+                floatingSelectMenu.updateItemVisibility();
             }
         };
         listAdapter.setOnSelectModeListener(this);
@@ -200,41 +207,30 @@ public abstract class EpisodesListFragment extends Fragment
         emptyView.updateAdapter(listAdapter);
         emptyView.hide();
 
-        speedDialView = root.findViewById(R.id.fabSD);
-        speedDialView.setOverlayLayout(root.findViewById(R.id.fabSDOverlay));
-        speedDialView.inflate(R.menu.episodes_apply_action_speeddial);
-        speedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
-            @Override
-            public boolean onMainActionSelected() {
+        floatingSelectMenu = root.findViewById(R.id.floatingSelectMenu);
+        floatingSelectMenu.inflate(R.menu.episodes_apply_action_speeddial);
+        floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
+            if (listAdapter.getSelectedCount() == 0) {
+                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
+                        Snackbar.LENGTH_SHORT);
                 return false;
             }
-
-            @Override
-            public void onToggleChanged(boolean open) {
-                if (open && listAdapter.getSelectedCount() == 0) {
-                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
-                            Snackbar.LENGTH_SHORT);
-                    speedDialView.close();
-                }
-            }
-        });
-        speedDialView.setOnActionSelectedListener(actionItem -> {
             int confirmationString = 0;
             if (listAdapter.getSelectedItems().size() >= 25 || listAdapter.shouldSelectLazyLoadedItems()) {
                 // Should ask for confirmation
-                if (actionItem.getId() == R.id.mark_read_batch) {
+                if (menuItem.getItemId() == R.id.mark_read_item) {
                     confirmationString = R.string.multi_select_mark_played_confirmation;
-                } else if (actionItem.getId() == R.id.mark_unread_batch) {
+                } else if (menuItem.getItemId() == R.id.mark_unread_item) {
                     confirmationString = R.string.multi_select_mark_unplayed_confirmation;
                 }
             }
             if (confirmationString == 0) {
-                performMultiSelectAction(actionItem.getId());
+                performMultiSelectAction(menuItem.getItemId());
             } else {
                 new ConfirmationDialog(getActivity(), R.string.multi_select, confirmationString) {
                     @Override
                     public void onConfirmButtonPressed(DialogInterface dialog) {
-                        performMultiSelectAction(actionItem.getId());
+                        performMultiSelectAction(menuItem.getItemId());
                     }
                 }.createNewDialog().show();
             }
@@ -320,13 +316,17 @@ public abstract class EpisodesListFragment extends Fragment
 
     @Override
     public void onStartSelectMode() {
-        speedDialView.setVisibility(View.VISIBLE);
+        floatingSelectMenu.setVisibility(View.VISIBLE);
+        recyclerView.setPadding(recyclerView.getPaddingLeft(), recyclerView.getPaddingTop(),
+                recyclerView.getPaddingRight(),
+                (int) getResources().getDimension(R.dimen.floating_select_menu_height));
     }
 
     @Override
     public void onEndSelectMode() {
-        speedDialView.close();
-        speedDialView.setVisibility(View.GONE);
+        floatingSelectMenu.setVisibility(View.GONE);
+        recyclerView.setPadding(recyclerView.getPaddingLeft(), recyclerView.getPaddingTop(),
+                recyclerView.getPaddingRight(), 0);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
