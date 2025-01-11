@@ -1862,7 +1862,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onStop() {
             Log.d(TAG, "onStop()");
-            mediaPlayer.stopPlayback(true);
+            if (!mediaPlayer.isCasting()) {
+                mediaPlayer.stopPlayback(true);
+            }
         }
 
         @Override
