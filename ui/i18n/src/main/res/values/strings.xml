@@ -860,8 +860,8 @@
     <string name="notification_group_news">News</string>
     <string name="notification_channel_user_action">Action required</string>
     <string name="notification_channel_user_action_description">Shown if your action is required, for example if you need to enter a password.</string>
-    <string name="notification_channel_downloading">Downloading</string>
-    <string name="notification_channel_downloading_description">Shown while currently downloading.</string>
+    <string name="notification_channel_downloading">Downloading episodes</string>
+    <string name="notification_channel_downloading_description">Shown while currently downloading episodes.</string>
     <string name="notification_channel_refreshing">Refreshing podcasts</string>
     <string name="notification_channel_refreshing_description">Shown while checking for new episodes.</string>
     <string name="notification_channel_playing">Currently playing</string>
