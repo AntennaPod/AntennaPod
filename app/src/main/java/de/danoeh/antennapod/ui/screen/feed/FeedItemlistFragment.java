@@ -411,6 +411,13 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public void onStartSelectMode() {
+        if (feed != null) {
+            // Load all items when starting select mode to ensure multi-select works on all items
+            Feed f = DBReader.getFeed(feedID, true, 0, Integer.MAX_VALUE);
+            feed.setItems(f.getItems());
+            adapter.updateItems(feed.getItems());
+            hasMoreItems = false;
+        }
         viewBinding.floatingSelectMenu.setVisibility(View.VISIBLE);
         swipeActions.detach();
         updateRecyclerPadding();
