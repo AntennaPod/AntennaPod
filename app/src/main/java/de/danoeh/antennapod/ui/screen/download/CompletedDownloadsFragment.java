@@ -17,16 +17,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.actionbutton.ItemActionButton;
-import de.danoeh.antennapod.actionbutton.PauseActionButton;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
-import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.playback.service.PlaybackStatus;
 import de.danoeh.antennapod.ui.common.ConfirmationDialog;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
 import de.danoeh.antennapod.actionbutton.DeleteActionButton;
-import de.danoeh.antennapod.actionbutton.PlayActionButton;
 import de.danoeh.antennapod.event.DownloadLogEvent;
 import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
@@ -375,20 +370,10 @@ public class CompletedDownloadsFragment extends Fragment
         @Override
         public void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
             if (!inActionMode()) {
-                if (holder.getFeedItem().isDownloaded()) {
-                    ItemActionButton actionButton = null;
-                    FeedMedia media = getItem(pos).getMedia();
-                    if (!UserPreferences.shouldDownloadsButtonActionPlay()) {
-                        actionButton = new DeleteActionButton(getItem(pos));
-                        actionButton.configure(holder.secondaryActionButton, holder.secondaryActionIcon, getActivity());
-                    } else if (UserPreferences.shouldDownloadsButtonActionPlay()
-                                && PlaybackStatus.isCurrentlyPlaying(media)) {
-                        actionButton = new PauseActionButton(getItem(pos));
-                        actionButton.configure(holder.secondaryActionButton, holder.secondaryActionIcon, getActivity());
-                    } else if (UserPreferences.shouldDownloadsButtonActionPlay()) {
-                        actionButton = new PlayActionButton(getItem(pos));
-                        actionButton.configure(holder.secondaryActionButton, holder.secondaryActionIcon, getActivity());
-                    }
+                if (holder.getFeedItem().isDownloaded()
+                        && !UserPreferences.shouldDownloadsButtonActionPlay()) {
+                    DeleteActionButton actionButton = new DeleteActionButton(getItem(pos));
+                    actionButton.configure(holder.secondaryActionButton, holder.secondaryActionIcon, getActivity());
                 }
             }
         }
