@@ -123,7 +123,7 @@ public class FeedUpdateWorker extends Worker {
                 }
             }
         }
-        return new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_DOWNLOADING)
+        return new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_REFRESHING)
                 .setContentTitle(context.getString(R.string.download_notification_title_feeds))
                 .setContentText(contentText)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(bigText))

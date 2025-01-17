@@ -14,6 +14,7 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 public class NotificationUtils {
     public static final String CHANNEL_ID_USER_ACTION = "user_action";
     public static final String CHANNEL_ID_DOWNLOADING = "downloading";
+    public static final String CHANNEL_ID_REFRESHING = "refreshing";
     public static final String CHANNEL_ID_PLAYING = "playing";
     public static final String CHANNEL_ID_DOWNLOAD_ERROR = "error";
     public static final String CHANNEL_ID_SYNC_ERROR = "sync_error";
@@ -33,6 +34,7 @@ public class NotificationUtils {
         final List<NotificationChannelCompat> channels = Arrays.asList(
                 createChannelUserAction(context),
                 createChannelDownloading(context),
+                createChannelRefreshing(context),
                 createChannelPlaying(context),
                 createChannelError(context),
                 createChannelSyncError(context),
@@ -54,6 +56,15 @@ public class NotificationUtils {
                         CHANNEL_ID_DOWNLOADING, NotificationManagerCompat.IMPORTANCE_LOW)
                 .setName(c.getString(R.string.notification_channel_downloading))
                 .setDescription(c.getString(R.string.notification_channel_downloading_description))
+                .setShowBadge(false)
+                .build();
+    }
+
+    private static NotificationChannelCompat createChannelRefreshing(final Context c) {
+        return new NotificationChannelCompat.Builder(
+                        CHANNEL_ID_REFRESHING, NotificationManagerCompat.IMPORTANCE_LOW)
+                .setName(c.getString(R.string.notification_channel_refreshing))
+                .setDescription(c.getString(R.string.notification_channel_refreshing_description))
                 .setShowBadge(false)
                 .build();
     }
