@@ -101,6 +101,11 @@
                 android:title="@string/swipeactions_label"/>
         <SwitchPreferenceCompat
                 android:defaultValue="false"
+                android:key="prefStreamOverDownload"
+                android:summary="@string/pref_stream_over_download_sum"
+                android:title="@string/pref_stream_over_download_title"/>
+        <SwitchPreferenceCompat
+                android:defaultValue="false"
                 android:enabled="true"
                 android:key="prefDownloadsButtonAction"
                 android:summary="@string/pref_downloads_button_action_sum"
