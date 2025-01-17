@@ -14,6 +14,7 @@ import androidx.preference.Preference;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
+import de.danoeh.antennapod.storage.preferences.UsageStatistics;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import de.danoeh.antennapod.ui.screen.subscriptions.FeedSortDialog;
 import org.greenrobot.eventbus.EventBus;
@@ -89,6 +90,14 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
         findPreference(PREF_SWIPE)
                 .setOnPreferenceClickListener(preference -> {
                     ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_swipe);
+                    return true;
+                });
+        findPreference(UserPreferences.PREF_STREAM_OVER_DOWNLOAD)
+                .setOnPreferenceChangeListener((preference, newValue) -> {
+                    // Update all visible lists to reflect new streaming action button
+                    EventBus.getDefault().post(new UnreadItemsUpdateEvent());
+                    // User consciously decided whether to prefer the streaming button, disable suggestion
+                    UsageStatistics.doNotAskAgain(UsageStatistics.ACTION_STREAM);
                     return true;
                 });
 
