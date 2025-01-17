@@ -43,6 +43,11 @@
                 android:key="prefPlaybackSpeedLauncher"
                 android:summary="@string/pref_playback_speed_sum"
                 android:title="@string/playback_speed"/>
+        <SwitchPreferenceCompat
+                android:defaultValue="false"
+                android:key="prefStreamOverDownload"
+                android:summary="@string/pref_stream_over_download_sum"
+                android:title="@string/pref_stream_over_download_title"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/reassign_hardware_buttons">
