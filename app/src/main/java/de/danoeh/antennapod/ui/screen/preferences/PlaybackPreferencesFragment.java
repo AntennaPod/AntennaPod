@@ -9,20 +9,17 @@ import androidx.collection.ArrayMap;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.storage.preferences.UsageStatistics;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import de.danoeh.antennapod.ui.screen.feed.preferences.SkipPreferenceDialog;
 import de.danoeh.antennapod.ui.screen.playback.VariableSpeedDialog;
+
 import java.util.Map;
-import org.greenrobot.eventbus.EventBus;
 
 public class PlaybackPreferencesFragment extends AnimatedPreferenceFragment {
     private static final String PREF_PLAYBACK_SPEED_LAUNCHER = "prefPlaybackSpeedLauncher";
     private static final String PREF_PLAYBACK_REWIND_DELTA_LAUNCHER = "prefPlaybackRewindDeltaLauncher";
     private static final String PREF_PLAYBACK_FAST_FORWARD_DELTA_LAUNCHER = "prefPlaybackFastForwardDeltaLauncher";
-    private static final String PREF_PLAYBACK_PREFER_STREAMING = "prefStreamOverDownload";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -51,13 +48,6 @@ public class PlaybackPreferencesFragment extends AnimatedPreferenceFragment {
         });
         findPreference(PREF_PLAYBACK_FAST_FORWARD_DELTA_LAUNCHER).setOnPreferenceClickListener(preference -> {
             SkipPreferenceDialog.showSkipPreference(activity, SkipPreferenceDialog.SkipDirection.SKIP_FORWARD, null);
-            return true;
-        });
-        findPreference(PREF_PLAYBACK_PREFER_STREAMING).setOnPreferenceChangeListener((preference, newValue) -> {
-            // Update all visible lists to reflect new streaming action button
-            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
-            // User consciously decided whether to prefer the streaming button, disable suggestion to change that
-            UsageStatistics.doNotAskAgain(UsageStatistics.ACTION_STREAM);
             return true;
         });
         if (Build.VERSION.SDK_INT >= 31) {
