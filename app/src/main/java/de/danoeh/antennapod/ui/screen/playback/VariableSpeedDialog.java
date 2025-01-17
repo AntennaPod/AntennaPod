@@ -6,7 +6,8 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.view.ItemOffsetDecoration;
@@ -26,6 +28,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -36,7 +39,7 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
     private final List<Float> selectedSpeeds;
     private PlaybackSpeedSeekBar speedSeekBar;
     private Chip addCurrentSpeedChip;
-    private CheckBox skipSilenceCheckbox;
+    private Spinner skipSilenceSpinner;
 
     public VariableSpeedDialog() {
         DecimalFormatSymbols format = new DecimalFormatSymbols(Locale.US);
@@ -51,13 +54,11 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
             @Override
             public void loadMediaInfo() {
                 updateSpeed(new SpeedChangedEvent(controller.getCurrentPlaybackSpeedMultiplier()));
-                updateSkipSilence(controller.getCurrentPlaybackSkipSilence());
             }
         };
         controller.init();
         EventBus.getDefault().register(this);
         updateSpeed(new SpeedChangedEvent(controller.getCurrentPlaybackSpeedMultiplier()));
-        updateSkipSilence(controller.getCurrentPlaybackSkipSilence());
     }
 
     @Override
@@ -74,8 +75,12 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         addCurrentSpeedChip.setText(String.format(Locale.getDefault(), "%1$.2f", event.getNewSpeed()));
     }
 
-    public void updateSkipSilence(boolean skipSilence) {
-        skipSilenceCheckbox.setChecked(skipSilence);
+    public void updateSkipSilence(FeedPreferences.SkipSilence skipSilence) {
+        List<String> entryValues =
+                Arrays.asList(getContext().getResources().getStringArray(R.array.skip_silence_values));
+        int pos = entryValues.indexOf(String.valueOf(skipSilence.code));
+
+        skipSilenceSpinner.setSelection(pos);
     }
 
     @Nullable
@@ -104,12 +109,36 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         addCurrentSpeedChip.setCloseIconContentDescription(getString(R.string.add_preset));
         addCurrentSpeedChip.setOnClickListener(v -> addCurrentSpeed());
 
-        skipSilenceCheckbox = root.findViewById(R.id.skipSilence);
-        skipSilenceCheckbox.setChecked(UserPreferences.isSkipSilence());
-        skipSilenceCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            UserPreferences.setSkipSilence(isChecked);
-            controller.setSkipSilence(isChecked);
+        skipSilenceSpinner = root.findViewById(R.id.skipSilenceSpinner);
+        skipSilenceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                FeedPreferences.SkipSilence opt;
+                List<String> entryValues =
+                        Arrays.asList(getContext().getResources().getStringArray(R.array.skip_silence_values));
+                final int skipSilenceId = Integer.parseInt(entryValues.get(position));
+
+                if (position >= 0 && position < entryValues.size()) {
+                    opt = FeedPreferences.SkipSilence.fromCode(skipSilenceId);
+                } else {
+                    opt = FeedPreferences.SkipSilence.GLOBAL;
+                }
+
+                if (UserPreferences.getSkipSilence() != opt) {
+                    UserPreferences.setSkipSilence(opt);
+                }
+                if (controller != null) {
+                    controller.setSkipSilence(opt);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
         });
+
+        updateSkipSilence(UserPreferences.getSkipSilence());
         return root;
     }
 
