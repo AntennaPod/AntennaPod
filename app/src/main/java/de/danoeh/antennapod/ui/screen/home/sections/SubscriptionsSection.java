@@ -94,10 +94,7 @@ public class SubscriptionsSection extends HomeSection {
         SharedPreferences prefs = getContext().getSharedPreferences(StatisticsFragment.PREF_NAME, Context.MODE_PRIVATE);
         boolean includeMarkedAsPlayed = prefs.getBoolean(StatisticsFragment.PREF_INCLUDE_MARKED_PLAYED, false);
 
-        // Calculate timestamp for 3 years ago based on current time
-        long now = System.currentTimeMillis();
-        long threeYearsAgo = now - (3L * 365L * 24L * 60L * 60L * 1000L);
-
+        long threeYearsAgo = System.currentTimeMillis() - 3L * 365L * 24L * 60L * 60L * 1000L;
         disposable = Observable.fromCallable(() ->
                         DBReader.getStatistics(includeMarkedAsPlayed, threeYearsAgo, Long.MAX_VALUE).feedTime)
                 .subscribeOn(Schedulers.io())
