@@ -62,7 +62,7 @@
     <string name="home_new_empty_text">New episodes will show up here. You can then decide whether you are interested in them.</string>
     <string name="home_downloads_empty_text">You can download any episode to listen to it offline.</string>
     <string name="home_welcome_title">Welcome to AntennaPod!</string>
-    <string name="home_welcome_text">You are not subscribed to any podcasts yet. Open the side menu to add a podcast.</string>
+    <string name="home_welcome_text">You are not subscribed to any podcasts yet. Open the menu to add a podcast.</string>
     <string name="notification_permission_denied">You denied the permission.</string>
     <string name="configure_home">Configure Home Screen</string>
     <string name="section_hidden">Hidden</string>
@@ -169,7 +169,7 @@
         <item quantity="other">%d episodes</item>
     </plurals>
     <string name="episode_notification">Episode notifications</string>
-    <string name="episode_notification_summary">Show a notification when a new episode is released.</string>
+    <string name="episode_notification_summary">Show a notification when a new episode is released</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s has a new episode</item>
         <item quantity="other">%2$s has %1$d new episodes</item>
@@ -490,7 +490,7 @@
     <string name="pref_playback_speed_sum">Customize the speeds available for variable speed playback</string>
     <string name="pref_feed_playback_speed_sum">The speed to use when starting audio playback for episodes in this podcast</string>
     <string name="pref_feed_skip">Auto skip</string>
-    <string name="pref_feed_skip_sum">Skip introductions and ending credits.</string>
+    <string name="pref_feed_skip_sum">Skip introductions and ending credits</string>
     <string name="pref_feed_skip_ending">Skip last</string>
     <string name="pref_feed_skip_intro">Skip first</string>
     <string name="pref_feed_skip_ending_toast">Skipped last %d seconds</string>
@@ -528,6 +528,7 @@
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
     <string name="pref_skip_silence_title">Skip silence in audio</string>
     <string name="behavior">Behavior</string>
+    <string name="episode_lists">Episode lists</string>
     <string name="pref_default_page">Default page</string>
     <string name="pref_default_page_sum">Screen that is opened when starting AntennaPod</string>
     <string name="pref_back_button_opens_drawer">Back button opens drawer</string>
@@ -535,6 +536,8 @@
     <string name="remember_last_page">Remember last page</string>
     <string name="pref_delete_removes_from_queue_title">Delete removes from queue</string>
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted</string>
+    <string name="pref_downloads_button_action_title">Play from downloads screen</string>
+    <string name="pref_downloads_button_action_sum">Display play button instead of delete button on downloads screen</string>
     <string name="pref_filter_feed_title">Subscription filter</string>
     <string name="pref_filter_feed_sum">Filter your subscriptions in navigation drawer and subscriptions screen</string>
     <string name="subscriptions_counter_greater_zero">Counter greater than zero</string>
@@ -731,7 +734,7 @@
 
     <!-- Feed settings/information screen -->
     <string name="authentication_label">Authentication</string>
-    <string name="authentication_descr">Change your username and password for this podcast and its episodes.</string>
+    <string name="authentication_descr">Change your username and password for this podcast and its episodes</string>
     <string name="feed_tags_label">Tags</string>
     <string name="feed_tags_summary">Change the tags of this podcast to help organize your subscriptions</string>
     <string name="feed_folders_include_root">Show this podcast in main list</string>
@@ -861,8 +864,10 @@
     <string name="notification_group_news">News</string>
     <string name="notification_channel_user_action">Action required</string>
     <string name="notification_channel_user_action_description">Shown if your action is required, for example if you need to enter a password.</string>
-    <string name="notification_channel_downloading">Downloading</string>
-    <string name="notification_channel_downloading_description">Shown while currently downloading.</string>
+    <string name="notification_channel_downloading">Downloading episodes</string>
+    <string name="notification_channel_downloading_description">Shown while currently downloading episodes.</string>
+    <string name="notification_channel_refreshing">Refreshing podcasts</string>
+    <string name="notification_channel_refreshing_description">Shown while checking for new episodes.</string>
     <string name="notification_channel_playing">Currently playing</string>
     <string name="notification_channel_playing_description">Allows to control playback. This is the main notification you see while playing a podcast.</string>
     <string name="notification_channel_download_error">Download failed</string>

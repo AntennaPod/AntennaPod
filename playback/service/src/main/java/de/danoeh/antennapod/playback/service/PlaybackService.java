@@ -496,6 +496,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.cancel(R.id.notification_streaming_confirmation);
 
+        if ((flags & Service.START_FLAG_REDELIVERY) != 0 || intent == null) {
+            Log.d(TAG, "onStartCommand is a redelivered intent, calling stopForeground now.");
+            stateManager.stopForeground(true);
+            return Service.START_NOT_STICKY;
+        }
+
         final int keycode = intent.getIntExtra(MediaButtonReceiver.EXTRA_KEYCODE, -1);
         final String customAction = intent.getStringExtra(MediaButtonReceiver.EXTRA_CUSTOM_ACTION);
         final boolean hardwareButton = intent.getBooleanExtra(MediaButtonReceiver.EXTRA_HARDWAREBUTTON, false);
@@ -506,55 +512,49 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             return Service.START_NOT_STICKY;
         }
 
-        if ((flags & Service.START_FLAG_REDELIVERY) != 0) {
-            Log.d(TAG, "onStartCommand is a redelivered intent, calling stopForeground now.");
-            stateManager.stopForeground(true);
-        } else {
-            if (keycode != -1) {
-                boolean notificationButton;
-                if (hardwareButton) {
-                    Log.d(TAG, "Received hardware button event");
-                    notificationButton = false;
-                } else {
-                    Log.d(TAG, "Received media button event");
-                    notificationButton = true;
-                }
-                boolean handled = handleKeycode(keycode, notificationButton);
-                if (!handled && !stateManager.hasReceivedValidStartCommand()) {
-                    stateManager.stopService();
-                    return Service.START_NOT_STICKY;
-                }
-            } else if (playable != null) {
-                stateManager.validStartCommandWasReceived();
-                boolean allowStreamThisTime = intent.getBooleanExtra(
-                        PlaybackServiceInterface.EXTRA_ALLOW_STREAM_THIS_TIME, false);
-                boolean allowStreamAlways = intent.getBooleanExtra(
-                        PlaybackServiceInterface.EXTRA_ALLOW_STREAM_ALWAYS, false);
-                sendNotificationBroadcast(PlaybackServiceInterface.NOTIFICATION_TYPE_RELOAD, 0);
-                if (allowStreamAlways) {
-                    UserPreferences.setAllowMobileStreaming(true);
-                }
-                Observable.fromCallable(
-                        () -> {
-                            if (playable instanceof FeedMedia) {
-                                return DBReader.getFeedMedia(((FeedMedia) playable).getId());
-                            } else {
-                                return playable;
-                            }
-                        })
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                loadedPlayable -> startPlaying(loadedPlayable, allowStreamThisTime),
-                                error -> {
-                                    Log.d(TAG, "Playable was not found. Stopping service.");
-                                    error.printStackTrace();
-                                    stateManager.stopService();
-                                });
-                return Service.START_NOT_STICKY;
+        if (keycode != -1) {
+            boolean notificationButton;
+            if (hardwareButton) {
+                Log.d(TAG, "Received hardware button event");
+                notificationButton = false;
             } else {
-                mediaSession.getController().getTransportControls().sendCustomAction(customAction, null);
+                Log.d(TAG, "Received media button event");
+                notificationButton = true;
             }
+            boolean handled = handleKeycode(keycode, notificationButton);
+            if (!handled && !stateManager.hasReceivedValidStartCommand()) {
+                stateManager.stopService();
+                return Service.START_NOT_STICKY;
+            }
+        } else if (playable != null) {
+            stateManager.validStartCommandWasReceived();
+            boolean allowStreamThisTime = intent.getBooleanExtra(
+                    PlaybackServiceInterface.EXTRA_ALLOW_STREAM_THIS_TIME, false);
+            boolean allowStreamAlways = intent.getBooleanExtra(
+                    PlaybackServiceInterface.EXTRA_ALLOW_STREAM_ALWAYS, false);
+            sendNotificationBroadcast(PlaybackServiceInterface.NOTIFICATION_TYPE_RELOAD, 0);
+            if (allowStreamAlways) {
+                UserPreferences.setAllowMobileStreaming(true);
+            }
+            Observable.fromCallable(
+                    () -> {
+                        if (playable instanceof FeedMedia) {
+                            return DBReader.getFeedMedia(((FeedMedia) playable).getId());
+                        } else {
+                            return playable;
+                        }
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            loadedPlayable -> startPlaying(loadedPlayable, allowStreamThisTime),
+                            error -> {
+                                Log.d(TAG, "Playable was not found. Stopping service.");
+                                error.printStackTrace();
+                                stateManager.stopService();
+                            });
+        } else {
+            mediaSession.getController().getTransportControls().sendCustomAction(customAction, null);
         }
 
         return Service.START_NOT_STICKY;
@@ -1862,7 +1862,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onStop() {
             Log.d(TAG, "onStop()");
-            mediaPlayer.stopPlayback(true);
+            if (!mediaPlayer.isCasting()) {
+                mediaPlayer.stopPlayback(true);
+            }
         }
 
         @Override

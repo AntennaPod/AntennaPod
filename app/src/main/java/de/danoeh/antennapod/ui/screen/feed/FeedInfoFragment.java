@@ -30,9 +30,11 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.FeedinfoBinding;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.share.ShareUtils;
 import de.danoeh.antennapod.ui.cleaner.HtmlToPlainText;
@@ -247,6 +249,14 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
             viewBinding.statisticsFragmentContainer.setVisibility(View.GONE);
             viewBinding.supportHeadingLabel.setVisibility(View.GONE);
             viewBinding.supportUrl.setVisibility(View.GONE);
+            viewBinding.header.butSubscribe.setVisibility(View.VISIBLE);
+            viewBinding.header.butSubscribe.setOnClickListener(view -> {
+                DBWriter.setFeedState(getContext(), feed, Feed.STATE_SUBSCRIBED);
+                MainActivityStarter mainActivityStarter = new MainActivityStarter(getContext());
+                mainActivityStarter.withOpenFeed(feed.getId());
+                getActivity().finish();
+                startActivity(mainActivityStarter.getIntent());
+            });
         }
 
         refreshToolbarState();
