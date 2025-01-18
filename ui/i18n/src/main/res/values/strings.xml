@@ -16,14 +16,11 @@
     <string name="favorite_episodes_label">Favorites</string>
     <string name="settings_label">Settings</string>
     <string name="downloads_label">Downloads</string>
-    <string name="open_autodownload_settings">Open settings</string>
     <string name="downloads_log_label">Download log</string>
     <string name="subscriptions_label">Subscriptions</string>
     <string name="subscriptions_list_label">Subscriptions list (side menu only)</string>
     <string name="cancel_download_label">Cancel download</string>
     <string name="playback_history_label">Playback history</string>
-    <string name="episode_cache_full_title">Episode cache full</string>
-    <string name="episode_cache_full_message">The episode cache limit has been reached. You can increase the cache size in the Settings.</string>
     <string name="years_statistics_label">Years</string>
     <string name="notification_pref_fragment">Notifications</string>
     <string name="current_playing_episode">Current</string>
@@ -117,8 +114,11 @@
     <string name="cancel_label">Cancel</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
     <string name="reset">Reset</string>
     <string name="global_default">Global default</string>
+    <string name="global_default_with_value">Global default (%1$s)</string>
     <string name="url_label">URL</string>
     <string name="support_funding_label">Support</string>
     <string name="support_podcast">Support this podcast</string>
@@ -472,6 +472,7 @@
     <string name="pref_nav_drawer_feed_counter_title">Set subscription counter</string>
     <string name="pref_nav_drawer_feed_counter_sum">Change the information displayed by the subscription counter. Also affects the sorting of subscriptions if \'Subscription Order\' is set to \'Counter\'.</string>
     <string name="pref_automatic_download_title">Automatic download</string>
+    <string name="pref_automatic_download_global_description">Automatically download new episodes. Can be overridden per podcast.</string>
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes</string>
     <string name="pref_automatic_download_on_battery_title">Download when not charging</string>
     <string name="pref_automatic_download_on_battery_sum">Allow automatic download when the battery is not charging</string>
@@ -746,7 +747,6 @@
     <string name="exclude_episodes_shorter_than">Exclude episodes shorter than</string>
     <string name="keep_updated">Keep updated</string>
     <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>
-    <string name="auto_download_disabled_globally">Auto download is disabled in the main AntennaPod settings</string>
     <plurals name="statistics_episodes_started">
         <item quantity="one">started</item>
         <item quantity="other">started</item>

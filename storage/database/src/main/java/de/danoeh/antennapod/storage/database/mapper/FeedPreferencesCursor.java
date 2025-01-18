@@ -66,7 +66,7 @@ public class FeedPreferencesCursor extends CursorWrapper {
         }
         return new FeedPreferences(
                 getLong(indexId),
-                getInt(indexAutoDownload) > 0,
+                FeedPreferences.AutoDownloadSetting.fromInteger(getInt(indexAutoDownload)),
                 getInt(indexAutoRefresh) > 0,
                 FeedPreferences.AutoDeleteAction.fromCode(getInt(indexAutoDeleteAction)),
                 VolumeAdaptionSetting.fromInteger(getInt(indexVolumeAdaption)),

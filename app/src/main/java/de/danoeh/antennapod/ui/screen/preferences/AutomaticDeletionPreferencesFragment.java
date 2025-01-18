@@ -34,10 +34,6 @@ public class AutomaticDeletionPreferencesFragment extends AnimatedPreferenceFrag
     }
 
     private void setupScreen() {
-        if (!UserPreferences.isEnableAutodownload()) {
-            findPreference(UserPreferences.PREF_EPISODE_CLEANUP).setEnabled(false);
-            findPreference(UserPreferences.PREF_EPISODE_CLEANUP).setSummary(R.string.auto_download_disabled_globally);
-        }
         findPreference(PREF_AUTO_DELETE_LOCAL).setOnPreferenceChangeListener((preference, newValue) -> {
             if (blockAutoDeleteLocal && newValue.equals(Boolean.TRUE)) {
                 showAutoDeleteEnableDialog();
