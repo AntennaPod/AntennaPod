@@ -22,8 +22,6 @@
     <string name="subscriptions_list_label">Subscriptions list (side menu only)</string>
     <string name="cancel_download_label">Cancel download</string>
     <string name="playback_history_label">Playback history</string>
-    <string name="episode_cache_full_title">Episode cache full</string>
-    <string name="episode_cache_full_message">The episode cache limit has been reached. You can increase the cache size in the Settings.</string>
     <string name="years_statistics_label">Years</string>
     <string name="notification_pref_fragment">Notifications</string>
     <string name="current_playing_episode">Current</string>

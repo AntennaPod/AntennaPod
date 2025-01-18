@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.ui.screen.drawer;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.view.ContextMenu;
@@ -22,15 +21,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.ImagePlaceholder;
 import de.danoeh.antennapod.ui.screen.InboxFragment;
-import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
-import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
 import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
 import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
 
@@ -215,27 +211,6 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             if (sum > 0) {
                 holder.count.setText(NumberFormat.getInstance().format(sum));
                 holder.count.setVisibility(View.VISIBLE);
-            }
-        } else if (tag.equals(CompletedDownloadsFragment.TAG)) {
-            int epCacheSize = UserPreferences.getEpisodeCacheSize();
-            // don't count episodes that can be reclaimed
-            int spaceUsed = itemAccess.getNumberOfDownloadedItems()
-                    - itemAccess.getReclaimableItems();
-            if (epCacheSize > 0 && spaceUsed >= epCacheSize) {
-                holder.count.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_disc_alert, 0);
-                holder.count.setVisibility(View.VISIBLE);
-                holder.count.setOnClickListener(v ->
-                        new MaterialAlertDialogBuilder(context)
-                            .setTitle(R.string.episode_cache_full_title)
-                            .setMessage(R.string.episode_cache_full_message)
-                            .setPositiveButton(android.R.string.ok, null)
-                            .setNeutralButton(R.string.open_autodownload_settings, (dialog, which) -> {
-                                Intent intent = new Intent(context, PreferenceActivity.class);
-                                intent.putExtra(PreferenceActivity.OPEN_AUTO_DOWNLOAD_SETTINGS, true);
-                                context.startActivity(intent);
-                            })
-                            .show()
-                );
             }
         }
 
