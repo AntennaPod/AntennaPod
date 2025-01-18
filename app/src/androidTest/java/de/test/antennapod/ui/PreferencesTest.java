@@ -327,6 +327,7 @@ public class PreferencesTest {
         clickPreference(R.string.downloads_pref);
         onView(withText(R.string.pref_auto_delete_title)).perform(click());
         onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
+        onView(withId(R.id.select_dialog_listview)).perform(swipeDown());
         onView(withText(R.string.episode_cleanup_after_listening)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> {
