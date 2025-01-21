@@ -36,7 +36,7 @@
 
             <TextView
                 android:id="@+id/txtvTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
@@ -45,7 +45,7 @@
 
             <TextView
                 android:id="@+id/txtvAuthor"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?android:attr/textColorSecondary"
                 android:ellipsize="end"
@@ -68,12 +68,12 @@
 
     </LinearLayout>
 
-    <ProgressBar
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/episodeProgress"
         android:layout_width="match_parent"
         android:layout_height="4dp"
         android:indeterminate="false"
-        style="?android:attr/progressBarStyleHorizontal"
+        app:trackStopIndicatorSize="0dp"
         tools:progress="100" />
 
 </LinearLayout>

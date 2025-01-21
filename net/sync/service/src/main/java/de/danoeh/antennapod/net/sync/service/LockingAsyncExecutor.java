@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.net.sync.serviceinterface;
+package de.danoeh.antennapod.net.sync.service;
 
 import java.util.concurrent.locks.ReentrantLock;
 

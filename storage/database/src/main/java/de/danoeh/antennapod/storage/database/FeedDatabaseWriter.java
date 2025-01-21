@@ -12,7 +12,7 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
-import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import org.greenrobot.eventbus.EventBus;
 
@@ -165,7 +165,7 @@ public abstract class FeedDatabaseWriter {
                                     .position(oldItem.getMedia().getDuration() / 1000)
                                     .total(oldItem.getMedia().getDuration() / 1000)
                                     .build();
-                            SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
+                            SynchronizationQueue.getInstance().enqueueEpisodeAction(action);
                         }
                     }
                 }

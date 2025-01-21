@@ -116,7 +116,7 @@ public class InboxSection extends HomeSection {
 
     @Override
     protected String getMoreLinkTitle() {
-        return getString(R.string.inbox_label);
+        return getString(R.string.inbox_label_more);
     }
 
     private void loadItems() {

@@ -92,7 +92,7 @@ public class EpisodesSurpriseSection extends HomeSection {
 
     @Override
     protected String getMoreLinkTitle() {
-        return getString(R.string.episodes_label);
+        return getString(R.string.episodes_label_more);
     }
 
 

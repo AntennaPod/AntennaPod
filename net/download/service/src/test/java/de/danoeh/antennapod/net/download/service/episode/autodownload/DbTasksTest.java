@@ -4,6 +4,8 @@ import android.content.Context;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueStub;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
@@ -45,6 +47,7 @@ public class DbTasksTest {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         UserPreferences.init(context);
         PlaybackPreferences.init(context);
+        SynchronizationQueue.setInstance(new SynchronizationQueueStub());
 
         // create new database
         PodDBAdapter.init(context);

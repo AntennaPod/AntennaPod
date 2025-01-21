@@ -34,7 +34,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="16dp"
             android:paddingBottom="16dp">
 
             <androidx.cardview.widget.CardView
@@ -42,6 +41,7 @@
                 android:layout_height="56dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
+                android:layout_marginHorizontal="16dp"
                 app:cardCornerRadius="28dp"
                 app:cardElevation="0dp">
 
@@ -88,6 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="16dp"
+                android:layout_marginHorizontal="16dp"
                 android:name="de.danoeh.antennapod.ui.discovery.QuickFeedDiscoveryFragment" />
 
             <TextView

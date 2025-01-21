@@ -16,6 +16,8 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueStub;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
@@ -76,13 +78,14 @@ public class DbCleanupTests {
                 .getDefaultSharedPreferences(context.getApplicationContext()).edit();
         prefEdit.putString(UserPreferences.PREF_EPISODE_CACHE_SIZE, Integer.toString(EPISODE_CACHE_SIZE));
         prefEdit.putString(UserPreferences.PREF_EPISODE_CLEANUP, Integer.toString(cleanupAlgorithm));
-        prefEdit.putBoolean(UserPreferences.PREF_ENABLE_AUTODL, true);
+        prefEdit.putBoolean(UserPreferences.PREF_AUTODL_GLOBAL, true);
         prefEdit.commit();
 
         UserPreferences.init(context);
         PlaybackPreferences.init(context);
         SynchronizationSettings.init(context);
         AutoDownloadManager.setInstance(new AutoDownloadManagerImpl());
+        SynchronizationQueue.setInstance(new SynchronizationQueueStub());
     }
 
     @After

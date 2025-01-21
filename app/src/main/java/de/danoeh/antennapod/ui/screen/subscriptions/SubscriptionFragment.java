@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.ui.screen.subscriptions;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -21,6 +21,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.ui.common.ConfirmationDialog;
 import de.danoeh.antennapod.ui.screen.AddFeedFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
@@ -75,7 +78,7 @@ public class SubscriptionFragment extends Fragment
     private RecyclerView subscriptionRecycler;
     private SubscriptionsRecyclerAdapter subscriptionAdapter;
     private EmptyViewHandler emptyView;
-    private LinearLayout feedsFilteredMsg;
+    private View feedsFilteredMsg;
     private MaterialToolbar toolbar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressBar progressBar;
@@ -163,6 +166,10 @@ public class SubscriptionFragment extends Fragment
         feedsFilteredMsg = root.findViewById(R.id.feeds_filtered_message);
         feedsFilteredMsg.setOnClickListener((l) ->
                 new SubscriptionsFilterDialog().show(getChildFragmentManager(), "filter"));
+        boolean largePadding = displayUpArrow || !UserPreferences.isBottomNavigationEnabled();
+        int paddingHorizontal = (int) (getResources().getDisplayMetrics().density * (largePadding ? 60 : 16));
+        int paddingVertical = (int) (getResources().getDisplayMetrics().density * 4);
+        feedsFilteredMsg.setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical);
 
         swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
@@ -345,9 +352,30 @@ public class SubscriptionFragment extends Fragment
             return false;
         }
         int itemId = item.getItemId();
-        if (drawerItem.type == NavDrawerData.DrawerItem.Type.TAG && itemId == R.id.rename_folder_item) {
-            new RenameFeedDialog(getActivity(), drawerItem).show();
-            return true;
+        if (drawerItem.type == NavDrawerData.DrawerItem.Type.TAG) {
+            if (itemId == R.id.rename_folder_item) {
+                new RenameFeedDialog(getActivity(), drawerItem).show();
+                return true;
+            } else if (itemId == R.id.delete_folder_item) {
+                ConfirmationDialog dialog = new ConfirmationDialog(
+                        getContext(), R.string.delete_tag_label,
+                        getString(R.string.delete_tag_confirmation, drawerItem.getTitle())) {
+
+                    @Override
+                    public void onConfirmButtonPressed(DialogInterface dialog) {
+                        List<NavDrawerData.DrawerItem> feeds = ((NavDrawerData.TagDrawerItem) drawerItem).getChildren();
+
+                        for (NavDrawerData.DrawerItem feed : feeds) {
+                            FeedPreferences preferences = ((NavDrawerData.FeedDrawerItem) feed).feed.getPreferences();
+                            preferences.getTags().remove(drawerItem.getTitle());
+                            DBWriter.setFeedPreferences(preferences);
+                        }
+                    }
+                };
+                dialog.createNewDialog().show();
+
+                return true;
+            }
         }
 
         Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;

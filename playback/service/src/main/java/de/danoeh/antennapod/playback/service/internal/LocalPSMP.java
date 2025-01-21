@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.playback.service.internal;
 
-import android.app.UiModeManager;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.os.Handler;
 import android.os.Looper;
@@ -10,6 +8,9 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
+import androidx.car.app.connection.CarConnection;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.media.AudioAttributesCompat;
 import androidx.media.AudioFocusRequestCompat;
 import androidx.media.AudioManagerCompat;
@@ -59,6 +60,9 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     private final Handler audioFocusCanceller;
     private boolean isShutDown = false;
     private CountDownLatch seekLatch;
+    private LiveData<Integer> androidAutoConnectionState;
+    private boolean androidAutoConnected;
+    private Observer<Integer> androidAutoConnectionObserver;
 
     public LocalPSMP(@NonNull Context context,
                      @NonNull PlaybackServiceMediaPlayer.PSMPCallback callback) {
@@ -71,6 +75,12 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         pausedBecauseOfTransientAudiofocusLoss = false;
         mediaType = MediaType.UNKNOWN;
         videoSize = null;
+
+        androidAutoConnectionState = new CarConnection(context).getType();
+        androidAutoConnectionObserver = connectionState -> {
+            androidAutoConnected = connectionState == CarConnection.CONNECTION_TYPE_PROJECTION;
+        };
+        androidAutoConnectionState.observeForever(androidAutoConnectionObserver);
 
         AudioAttributesCompat audioAttributes = new AudioAttributesCompat.Builder()
                 .setUsage(AudioAttributesCompat.USAGE_MEDIA)
@@ -183,8 +193,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             } else {
                 throw new IOException("Unable to read local file " + media.getLocalFileUrl());
             }
-            UiModeManager uiModeManager = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
-            if (uiModeManager.getCurrentModeType() != Configuration.UI_MODE_TYPE_CAR) {
+            
+            if (!androidAutoConnected) {
                 setPlayerStatus(PlayerStatus.INITIALIZED, media);
             }
 
@@ -526,6 +536,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             mediaPlayer = null;
             playerStatus = PlayerStatus.STOPPED;
         }
+        androidAutoConnectionState.removeObserver(androidAutoConnectionObserver);
         isShutDown = true;
         abandonAudioFocus();
         releaseWifiLockIfNecessary();

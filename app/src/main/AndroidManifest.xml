@@ -40,6 +40,7 @@
         android:logo="@mipmap/ic_launcher"
         android:resizeableActivity="true"
         android:allowAudioPlaybackCapture="true"
+        android:localeConfig="@xml/locale_config"
         android:networkSecurityConfig="@xml/network_security_config">
 
         <activity
@@ -177,7 +178,8 @@
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
             android:supportsPictureInPicture="true"
             android:screenOrientation="sensorLandscape"
-            android:exported="false">
+            android:exported="false"
+            tools:ignore="DiscouragedApi">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>

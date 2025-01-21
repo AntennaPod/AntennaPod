@@ -16,4 +16,10 @@ public class EchoConfig {
         date.set(Calendar.YEAR, RELEASE_YEAR);
         return date.getTimeInMillis();
     }
+
+    public static boolean isCurrentlyVisible() {
+        return Calendar.getInstance().get(Calendar.YEAR) == RELEASE_YEAR
+                && Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER
+                && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) >= 10;
+    }
 }

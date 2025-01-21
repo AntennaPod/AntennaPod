@@ -25,6 +25,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
+import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
@@ -32,6 +33,7 @@ import de.danoeh.antennapod.model.playback.RemoteMedia;
 import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
+import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
 import org.greenrobot.eventbus.EventBus;
 
 /**
@@ -103,7 +105,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
 
         @Override
         public void onMediaError(@NonNull MediaError mediaError) {
-            EventBus.getDefault().post(new PlayerErrorEvent(mediaError.getReason()));
+            EventBus.getDefault().postSticky(new PlayerErrorEvent(mediaError.getReason()));
         }
     };
 
@@ -182,6 +184,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
         }
 
         setBuffering(state == MediaStatus.PLAYER_STATE_BUFFERING);
+        setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentMedia), false);
 
         switch (state) {
             case MediaStatus.PLAYER_STATE_PLAYING:
@@ -240,7 +243,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
                     case MediaStatus.IDLE_REASON_ERROR:
                         Log.w(TAG, "Got an error status from the Chromecast. "
                                 + "Skipping, if possible, to the next episode...");
-                        EventBus.getDefault().post(new PlayerErrorEvent("Chromecast error code 1"));
+                        EventBus.getDefault().postSticky(new PlayerErrorEvent("Chromecast error code 1"));
                         endPlayback(false, false, true, true);
                         return;
                     default:
@@ -281,7 +284,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
                          final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         if (!CastUtils.isCastable(playable, castContext.getSessionManager().getCurrentCastSession())) {
             Log.d(TAG, "media provided is not compatible with cast device");
-            EventBus.getDefault().post(new PlayerErrorEvent("Media not compatible with cast device"));
+            EventBus.getDefault().postSticky(new PlayerErrorEvent("Media not compatible with cast device"));
             Playable nextPlayable = playable;
             do {
                 nextPlayable = callback.getNextInQueue(nextPlayable);
@@ -418,6 +421,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     public void setPlaybackParams(float speed, boolean skipSilence) {
         double playbackRate = (float) Math.max(MediaLoadOptions.PLAYBACK_RATE_MIN,
                 Math.min(MediaLoadOptions.PLAYBACK_RATE_MAX, speed));
+        EventBus.getDefault().post(new SpeedChangedEvent((float) playbackRate));
         remoteMediaClient.setPlaybackRate(playbackRate);
     }
 

@@ -19,9 +19,7 @@
         android:gravity="center_vertical"
         android:baselineAligned="false"
         android:paddingStart="12dp"
-        android:paddingLeft="12dp"
         android:paddingEnd="0dp"
-        android:paddingRight="0dp"
         tools:ignore="UselessParent">
 
         <LinearLayout
@@ -37,12 +35,8 @@
                 android:importantForAccessibility="no"
                 android:scaleType="fitCenter"
                 android:paddingStart="0dp"
-                android:paddingLeft="0dp"
                 android:paddingEnd="4dp"
-                android:paddingRight="4dp"
-                app:srcCompat="?attr/dragview_background"
-                tools:src="@drawable/ic_drag_darktheme"
-                tools:background="@android:color/holo_green_dark" />
+                app:srcCompat="?attr/dragview_background" />
 
         </LinearLayout>
 
@@ -52,7 +46,6 @@
             android:layout_height="@dimen/thumbnail_length_queue_item"
             android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
             android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
-            android:layout_marginRight="@dimen/listitem_threeline_textleftpadding"
             android:layout_marginEnd="@dimen/listitem_threeline_textleftpadding"
             app:cardBackgroundColor="@color/non_square_icon_background"
             app:cardCornerRadius="4dp"
@@ -90,12 +83,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
-            android:layout_marginRight="@dimen/listitem_threeline_textrightpadding"
             android:layout_marginEnd="@dimen/listitem_threeline_textrightpadding"
             android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
             android:layout_weight="1"
-            android:orientation="vertical"
-            tools:background="@android:color/holo_red_dark">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/status"
@@ -136,20 +127,16 @@
                     android:id="@+id/separatorIcons"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
                     android:layout_marginStart="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginEnd="4dp"
                     android:text="·"
                     android:importantForAccessibility="no"
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                    tools:background="@android:color/holo_blue_light" />
+                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle" />
 
                 <TextView
                     android:id="@+id/txtvPubDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="4dp"
                     android:layout_marginEnd="4dp"
                     style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                     tools:text="@sample/episodes.json/data/published_at" />
@@ -157,18 +144,15 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="4dp"
                     android:layout_marginEnd="4dp"
                     android:text="·"
                     android:importantForAccessibility="no"
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                    tools:background="@android:color/holo_blue_light" />
+                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle" />
 
                 <TextView
                     android:id="@+id/size"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="4dp"
                     android:layout_marginEnd="4dp"
                     style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                     tools:text="10 MB" />
@@ -182,13 +166,13 @@
             -->
             <TextView
                 android:id="@+id/txtvTitle"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:importantForAccessibility="no"
                 android:ellipsize="end"
+                android:textAlignment="viewStart"
                 style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
-                tools:text="@sample/episodes.json/data/title"
-                tools:background="@android:color/holo_blue_light" />
+                tools:text="@sample/episodes.json/data/title" />
 
             <LinearLayout
                 android:id="@+id/progress"
@@ -203,18 +187,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
                     style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                    tools:text="00:42:23"
-                    tools:background="@android:color/holo_blue_light" />
+                    tools:text="00:42:23" />
 
-                <ProgressBar
+                <com.google.android.material.progressindicator.LinearProgressIndicator
                     android:id="@+id/progressBar"
                     android:layout_width="0dp"
-                    android:layout_height="4dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:max="100"
                     android:layout_margin="4dp"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    tools:background="@android:color/holo_blue_light" />
+                    app:trackStopIndicatorSize="0dp" />
 
                 <TextView
                     android:id="@+id/txtvDuration"
@@ -222,8 +204,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
                     style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                    tools:text="@sample/episodes.json/data/duration"
-                    tools:background="@android:color/holo_blue_light" />
+                    tools:text="@sample/episodes.json/data/duration" />
 
             </LinearLayout>
 

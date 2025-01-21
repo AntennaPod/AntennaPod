@@ -1,10 +1,7 @@
 package de.danoeh.antennapod.ui.screen.home;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import de.danoeh.antennapod.R;
@@ -24,9 +20,9 @@ import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.echo.EchoConfig;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
-import de.danoeh.antennapod.ui.screen.home.sections.AllowNotificationsSection;
 import de.danoeh.antennapod.ui.screen.home.sections.DownloadsSection;
 import de.danoeh.antennapod.ui.screen.home.sections.EchoSection;
 import de.danoeh.antennapod.ui.screen.home.sections.EpisodesSurpriseSection;
@@ -44,7 +40,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -54,7 +49,6 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
     public static final String TAG = "HomeFragment";
     public static final String PREF_NAME = "PrefHomeFragment";
-    public static final String PREF_DISABLE_NOTIFICATION_PERMISSION_NAG = "DisableNotificationPermissionNag";
     public static final String PREF_HIDE_ECHO = "HideEcho";
 
     private static final String KEY_UP_ARROW = "up_arrow";
@@ -88,16 +82,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         viewBinding.homeContainer.removeAllViews();
 
         SharedPreferences prefs = getContext().getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
-        if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(getContext(),
-                Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            if (!prefs.getBoolean(HomeFragment.PREF_DISABLE_NOTIFICATION_PERMISSION_NAG, false)) {
-                addSection(new AllowNotificationsSection());
-            }
-        }
-        if (Calendar.getInstance().get(Calendar.YEAR) == EchoConfig.RELEASE_YEAR
-                && Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER
-                && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) >= 10
-                && prefs.getInt(PREF_HIDE_ECHO, 0) != EchoConfig.RELEASE_YEAR) {
+        if (EchoConfig.isCurrentlyVisible() && prefs.getInt(PREF_HIDE_ECHO, 0) != EchoConfig.RELEASE_YEAR) {
             addSection(new EchoSection());
         }
 
@@ -182,12 +167,16 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(numEpisodes -> {
-                    viewBinding.welcomeContainer.setVisibility(numEpisodes == 0 ? View.VISIBLE : View.GONE);
-                    viewBinding.homeContainer.setVisibility(numEpisodes == 0 ? View.GONE : View.VISIBLE);
-                    viewBinding.swipeRefresh.setVisibility(numEpisodes == 0 ? View.GONE : View.VISIBLE);
-                    if (numEpisodes == 0) {
+                    boolean hasEpisodes = numEpisodes != 0;
+                    viewBinding.welcomeContainer.setVisibility(hasEpisodes ? View.GONE : View.VISIBLE);
+                    viewBinding.homeContainer.setVisibility(hasEpisodes ? View.VISIBLE : View.GONE);
+                    viewBinding.swipeRefresh.setVisibility(hasEpisodes ? View.VISIBLE : View.GONE);
+                    if (!hasEpisodes) {
                         viewBinding.homeScrollView.setScrollY(0);
                     }
+                    boolean bottomNav = UserPreferences.isBottomNavigationEnabled();
+                    viewBinding.arrowBottomIcon.setVisibility(bottomNav ? View.VISIBLE : View.GONE);
+                    viewBinding.arrowSidebarIcon.setVisibility(bottomNav ? View.GONE : View.VISIBLE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 

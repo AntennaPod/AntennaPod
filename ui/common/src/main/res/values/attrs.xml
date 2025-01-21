@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="dragview_background" format="reference"/>
-    <attr name="progressBarTheme" format="reference"/>
     <attr name="action_icon_color" format="color"/>
     <attr name="scrollbar_thumb" format="reference"/>
     <attr name="background_color" format="color"/>

@@ -10,10 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.BuildConfig;
-import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
-import de.danoeh.antennapod.CrashReportWriter;
 import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
@@ -165,6 +162,14 @@ public class PreferenceUpgrader {
             String oldEpisodeFilter = allEpisodesPreferences.getString("filter", "");
             if (!StringUtils.isAllEmpty(oldEpisodeFilter)) {
                 prefs.edit().putString(UserPreferences.PREF_FILTER_ALL_EPISODES, oldEpisodeFilter).apply();
+            }
+        }
+        if (oldVersion < 3070000) {
+            // If autodownloads are enabled, we will start deleting episodes.
+            // To prevent accidents, force off the deletions.
+            if (!UserPreferences.isEnableAutodownloadGlobal()) {
+                prefs.edit().putString(UserPreferences.PREF_EPISODE_CLEANUP,
+                        "" + UserPreferences.EPISODE_CLEANUP_NULL).apply();
             }
         }
     }
