@@ -64,6 +64,7 @@ import de.danoeh.antennapod.ui.screen.episode.ItemPagerFragment;
 import de.danoeh.antennapod.ui.screen.feed.preferences.FeedSettingsFragment;
 import de.danoeh.antennapod.ui.screen.subscriptions.FeedMenuHandler;
 import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
+import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -201,12 +202,31 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                         Snackbar.LENGTH_SHORT);
                 return false;
             }
-            new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId())
-                    .handleAction(adapter.getSelectedItems());
-            adapter.endSelectMode();
+            EpisodeMultiSelectActionHandler handler = new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId());
+            Completable.fromAction(() -> {
+                handler.handleAction(adapter.getSelectedItems());
+                if (adapter.shouldSelectLazyLoadedItems()) {
+                    int applyPage = page + 1;
+                    List<FeedItem> nextPage;
+                    do {
+                        nextPage = loadMoreData(applyPage);
+                        handler.handleAction(nextPage);
+                        applyPage++;
+                    } while (nextPage.size() == EPISODES_PER_PAGE);
+                }
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(() -> adapter.endSelectMode(),
+                    error -> Log.e(TAG, Log.getStackTraceString(error)));
             return true;
         });
         return viewBinding.getRoot();
+    }
+
+    private List<FeedItem> loadMoreData(int page) {
+        Feed feed = DBReader.getFeed(feedID, true, (page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE);
+        return feed != null ? feed.getItems() : Collections.emptyList();
     }
 
     private void updateRecyclerPadding() {
