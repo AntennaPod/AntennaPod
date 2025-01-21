@@ -202,23 +202,25 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                         Snackbar.LENGTH_SHORT);
                 return false;
             }
-            EpisodeMultiSelectActionHandler handler = new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId());
-            Completable.fromAction(() -> {
-                handler.handleAction(adapter.getSelectedItems());
-                if (adapter.shouldSelectLazyLoadedItems()) {
-                    int applyPage = page + 1;
-                    List<FeedItem> nextPage;
-                    do {
-                        nextPage = loadMoreData(applyPage);
-                        handler.handleAction(nextPage);
-                        applyPage++;
-                    } while (nextPage.size() == EPISODES_PER_PAGE);
-                }
-            })
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(() -> adapter.endSelectMode(),
-                    error -> Log.e(TAG, Log.getStackTraceString(error)));
+            EpisodeMultiSelectActionHandler handler
+                    = new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId());
+            Completable.fromAction(
+                            () -> {
+                                handler.handleAction(adapter.getSelectedItems());
+                                if (adapter.shouldSelectLazyLoadedItems()) {
+                                    int applyPage = page + 1;
+                                    List<FeedItem> nextPage;
+                                    do {
+                                        nextPage = loadMoreData(applyPage);
+                                        handler.handleAction(nextPage);
+                                        applyPage++;
+                                    } while (nextPage.size() == EPISODES_PER_PAGE);
+                                }
+                            })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> adapter.endSelectMode(),
+                            error -> Log.e(TAG, Log.getStackTraceString(error)));
             return true;
         });
         return viewBinding.getRoot();
