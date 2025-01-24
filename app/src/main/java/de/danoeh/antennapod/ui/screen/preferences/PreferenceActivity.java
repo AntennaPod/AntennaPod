@@ -6,27 +6,21 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
-
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-
 import androidx.appcompat.app.ActionBar;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
-
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
-
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.ui.common.ThemeSwitcher;
-
 import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.ui.common.ToolbarActivity;
+import de.danoeh.antennapod.ui.preferences.databinding.SettingsActivityBinding;
 import de.danoeh.antennapod.ui.preferences.screen.AutoDownloadPreferencesFragment;
 import de.danoeh.antennapod.ui.preferences.screen.NotificationPreferencesFragment;
 import de.danoeh.antennapod.ui.preferences.screen.synchronization.SynchronizationPreferencesFragment;
-import de.danoeh.antennapod.ui.preferences.databinding.SettingsActivityBinding;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -35,14 +29,13 @@ import org.greenrobot.eventbus.ThreadMode;
  * PreferenceActivity for API 11+. In order to change the behavior of the preference UI, see
  * PreferenceController.
  */
-public class PreferenceActivity extends AppCompatActivity implements SearchPreferenceResultListener {
+public class PreferenceActivity extends ToolbarActivity implements SearchPreferenceResultListener {
     private static final String FRAGMENT_TAG = "tag_preferences";
     public static final String OPEN_AUTO_DOWNLOAD_SETTINGS = "OpenAutoDownloadSettings";
     private SettingsActivityBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(ThemeSwitcher.getTheme(this));
         super.onCreate(savedInstanceState);
 
         ActionBar ab = getSupportActionBar();

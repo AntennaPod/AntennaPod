@@ -83,7 +83,7 @@ public class LocalFeedUpdaterTest {
 
         mapDummyMetadata(LOCAL_FEED_DIR1);
         mapDummyMetadata(LOCAL_FEED_DIR2);
-        shadowOf(MimeTypeMap.getSingleton()).addExtensionMimeTypMapping("mp3", "audio/mp3");
+        shadowOf(MimeTypeMap.getSingleton()).addExtensionMimeTypeMapping("mp3", "audio/mp3");
     }
 
     @After
