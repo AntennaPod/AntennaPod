@@ -450,7 +450,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         };
 
         MaterialAlertDialogBuilder ab = new MaterialAlertDialogBuilder(OnlineFeedViewActivity.this)
-                .setTitle(R.string.feeds_label)
+                .setTitle(R.string.subscriptions_label)
                 .setCancelable(true)
                 .setOnCancelListener(dialog -> finish())
                 .setAdapter(adapter, onClickListener);

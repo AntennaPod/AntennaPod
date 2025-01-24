@@ -528,10 +528,11 @@ public class MainActivity extends CastEnabledActivity {
 
         Menu menu = bottomNavigationView.getMenu();
         menu.clear();
-        for (int i = 0; i < drawerItems.size() && i < bottomNavigationView.getMaxItemCount() - 1; i++) {
+        int maxItems = Math.min(5, bottomNavigationView.getMaxItemCount());
+        for (int i = 0; i < drawerItems.size() && i < maxItems - 1; i++) {
             String tag = drawerItems.get(i);
             MenuItem item = menu.add(0, NavigationNames.getBottomNavigationItemId(tag),
-                    0, getString(NavigationNames.getLabel(tag)));
+                    0, getString(NavigationNames.getShortLabel(tag)));
             item.setIcon(NavigationNames.getDrawable(tag));
         }
         MenuItem moreItem = menu.add(0, R.id.bottom_navigation_more, 0, getString(R.string.searchpreference_more));
