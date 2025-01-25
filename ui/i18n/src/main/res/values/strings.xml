@@ -6,21 +6,28 @@
     <!-- Activity and fragment titles -->
     <string name="provider_authority" translatable="false">de.danoeh.antennapod.provider</string>
     <string name="feed_update_receiver_name">Update subscriptions</string>
-    <string name="feeds_label">Podcasts</string>
     <string name="statistics_label">Statistics</string>
     <string name="add_feed_label">Add podcast</string>
+    <string name="add_feed_label_short">Add</string>
     <string name="episodes_label">Episodes</string>
+    <string name="episodes_label_short">Episodes</string>
     <string name="home_label">Home</string>
+    <string name="home_label_short">Home</string>
     <string name="queue_label">Queue</string>
+    <string name="queue_label_short">Queue</string>
     <string name="inbox_label">Inbox</string>
+    <string name="inbox_label_short">Inbox</string>
     <string name="favorite_episodes_label">Favorites</string>
     <string name="settings_label">Settings</string>
     <string name="downloads_label">Downloads</string>
+    <string name="downloads_label_short">Downloads</string>
     <string name="downloads_log_label">Download log</string>
     <string name="subscriptions_label">Subscriptions</string>
+    <string name="subscriptions_label_short">Subscriptions</string>
     <string name="subscriptions_list_label">Subscriptions list (side menu only)</string>
     <string name="cancel_download_label">Cancel download</string>
     <string name="playback_history_label">Playback history</string>
+    <string name="playback_history_label_short">History</string>
     <string name="years_statistics_label">Years</string>
     <string name="notification_pref_fragment">Notifications</string>
     <string name="current_playing_episode">Current</string>
