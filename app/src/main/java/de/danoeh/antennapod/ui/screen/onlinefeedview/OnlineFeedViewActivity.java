@@ -318,13 +318,13 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             if ("html".equalsIgnoreCase(e.getRootElement())) {
                 boolean dialogShown = showFeedDiscoveryDialog(destinationFile, selectedDownloadUrl);
                 if (dialogShown) {
-                    return null; // Should not display an error message
+                    return null; // We handled the problem
                 } else {
-                    throw new UnsupportedFeedtypeException(getString(R.string.download_error_unsupported_type_html));
+                    throw new UnsupportedFeedtypeException(
+                            getString(R.string.download_error_unsupported_type_html) + "\n" + e.getMessage());
                 }
-            } else {
-                throw e;
             }
+            throw e;
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
             throw e;
