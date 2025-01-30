@@ -204,19 +204,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             }
             EpisodeMultiSelectActionHandler handler
                     = new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId());
-            Completable.fromAction(
-                            () -> {
-                                handler.handleAction(adapter.getSelectedItems());
-                                if (adapter.shouldSelectLazyLoadedItems()) {
-                                    int applyPage = page + 1;
-                                    List<FeedItem> nextPage;
-                                    do {
-                                        nextPage = loadMoreData(applyPage);
-                                        handler.handleAction(nextPage);
-                                        applyPage++;
-                                    } while (nextPage.size() == EPISODES_PER_PAGE);
-                                }
-                            })
+            Completable.fromAction(() -> handleActionForAllSelectedItems(handler))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> adapter.endSelectMode(),
@@ -224,6 +212,19 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             return true;
         });
         return viewBinding.getRoot();
+    }
+
+    private void handleActionForAllSelectedItems(EpisodeMultiSelectActionHandler handler) {
+        handler.handleAction(adapter.getSelectedItems());
+        if (adapter.shouldSelectLazyLoadedItems()) {
+            int applyPage = page + 1;
+            List<FeedItem> nextPage;
+            do {
+                nextPage = loadMoreData(applyPage);
+                handler.handleAction(nextPage);
+                applyPage++;
+            } while (nextPage.size() == EPISODES_PER_PAGE);
+        }
     }
 
     private List<FeedItem> loadMoreData(int page) {
