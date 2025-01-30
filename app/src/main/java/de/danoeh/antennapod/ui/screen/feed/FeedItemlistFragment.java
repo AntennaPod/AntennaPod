@@ -641,20 +641,19 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         isLoadingMore = true;
         adapter.setDummyViews(1);
         adapter.notifyItemInserted(adapter.getItemCount() - 1);
-        disposable = Observable.fromCallable(() -> DBReader.getFeed(feedID, true,
-                        (page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE))
+        disposable = Observable.fromCallable(() -> loadMoreData(page))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        data -> {
-                            if (data.getItems().size() < EPISODES_PER_PAGE) {
+                        items -> {
+                            if (items.size() < EPISODES_PER_PAGE) {
                                 hasMoreItems = false;
                             }
-                            feed.getItems().addAll(data.getItems());
+                            feed.getItems().addAll(items);
                             adapter.setDummyViews(0);
                             adapter.updateItems(feed.getItems());
                             if (adapter.shouldSelectLazyLoadedItems()) {
-                                adapter.setSelected(feed.getItems().size() - data.getItems().size(),
+                                adapter.setSelected(feed.getItems().size() - items.size(),
                                         feed.getItems().size(), true);
                             }
                         }, error -> {
