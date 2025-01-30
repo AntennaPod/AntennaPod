@@ -301,6 +301,7 @@
     <string name="download_error_parser_exception">The podcast host\'s server sent a broken podcast feed. We recommend checking with a podcast validator such as castfeedvalidator.com and contacting the podcast creator to let them know.</string>
     <string name="download_error_unsupported_type">Unsupported feed type</string>
     <string name="download_error_unsupported_type_html">The podcast host\'s server sent a website, not a podcast.</string>
+    <string name="download_error_unsupported_type_html_manual">The address you entered is a website address, not a podcast RSS address.</string>
     <string name="download_error_not_found">The podcast host\'s server does not know where to find the file. It may have been deleted.</string>
     <string name="download_error_connection_error">Connection error</string>
     <string name="download_error_no_connection">No network connection</string>
@@ -330,7 +331,7 @@
     <string name="authentication_notification_title">Authentication required</string>
     <string name="confirm_mobile_download_dialog_title">Confirm mobile download</string>
     <string name="confirm_mobile_download_dialog_message">Downloading over mobile data connection is disabled in the settings. AntennaPod can download the episode later automatically when Wi-Fi is available.</string>
-    <string name="confirm_mobile_download_dialog_message_vpn">Your VPN app pretends to be a mobile network (metered connection). Downloading over mobile data connection is disabled in the settings. If you want this problem to be fixed, contact the creators of your VPN app.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">- Using a VPN? Your VPN app pretends to be a mobile network (metered connection). If you want this problem fixed, contact the creators of your VPN app.\n- Not using a VPN? Open the Android Wi-Fi settings and change the type of your Wi-Fi to not be metered.</string>
     <string name="confirm_mobile_download_dialog_download_later">Download later</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Download anyway</string>
     <plurals name="mobile_download_notice">
