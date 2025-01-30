@@ -295,6 +295,16 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(this::showFeedFragment, error -> {
             error.printStackTrace();
+            if (error instanceof UnsupportedFeedtypeException
+                    && "html".equalsIgnoreCase(((UnsupportedFeedtypeException) error).getRootElement())) {
+                if (getIntent().getBooleanExtra(ARG_WAS_MANUAL_URL, false)) {
+                    showErrorDialog(getString(R.string.download_error_unsupported_type_html_manual),
+                            error.getMessage());
+                } else {
+                    showErrorDialog(getString(R.string.download_error_unsupported_type_html), error.getMessage());
+                }
+                return;
+            }
             showErrorDialog(getString(R.string.download_error_parser_exception), error.getMessage());
         });
     }
@@ -319,9 +329,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 boolean dialogShown = showFeedDiscoveryDialog(destinationFile, selectedDownloadUrl);
                 if (dialogShown) {
                     return null; // We handled the problem
-                } else {
-                    throw new UnsupportedFeedtypeException(
-                            getString(R.string.download_error_unsupported_type_html) + "\n" + e.getMessage());
                 }
             }
             throw e;
