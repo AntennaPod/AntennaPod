@@ -64,6 +64,7 @@ import de.danoeh.antennapod.ui.screen.episode.ItemPagerFragment;
 import de.danoeh.antennapod.ui.screen.feed.preferences.FeedSettingsFragment;
 import de.danoeh.antennapod.ui.screen.subscriptions.FeedMenuHandler;
 import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
+import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -201,12 +202,34 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                         Snackbar.LENGTH_SHORT);
                 return false;
             }
-            new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId())
-                    .handleAction(adapter.getSelectedItems());
-            adapter.endSelectMode();
+            EpisodeMultiSelectActionHandler handler
+                    = new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId());
+            Completable.fromAction(() -> handleActionForAllSelectedItems(handler))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> adapter.endSelectMode(),
+                            error -> Log.e(TAG, Log.getStackTraceString(error)));
             return true;
         });
         return viewBinding.getRoot();
+    }
+
+    private void handleActionForAllSelectedItems(EpisodeMultiSelectActionHandler handler) {
+        handler.handleAction(adapter.getSelectedItems());
+        if (adapter.shouldSelectLazyLoadedItems()) {
+            int applyPage = page + 1;
+            List<FeedItem> nextPage;
+            do {
+                nextPage = loadMoreData(applyPage);
+                handler.handleAction(nextPage);
+                applyPage++;
+            } while (nextPage.size() == EPISODES_PER_PAGE);
+        }
+    }
+
+    private List<FeedItem> loadMoreData(int page) {
+        Feed feed = DBReader.getFeed(feedID, true, (page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE);
+        return feed != null ? feed.getItems() : Collections.emptyList();
     }
 
     private void updateRecyclerPadding() {
@@ -619,20 +642,19 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         isLoadingMore = true;
         adapter.setDummyViews(1);
         adapter.notifyItemInserted(adapter.getItemCount() - 1);
-        disposable = Observable.fromCallable(() -> DBReader.getFeed(feedID, true,
-                        (page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE))
+        disposable = Observable.fromCallable(() -> loadMoreData(page))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        data -> {
-                            if (data.getItems().size() < EPISODES_PER_PAGE) {
+                        items -> {
+                            if (items.size() < EPISODES_PER_PAGE) {
                                 hasMoreItems = false;
                             }
-                            feed.getItems().addAll(data.getItems());
+                            feed.getItems().addAll(items);
                             adapter.setDummyViews(0);
                             adapter.updateItems(feed.getItems());
                             if (adapter.shouldSelectLazyLoadedItems()) {
-                                adapter.setSelected(feed.getItems().size() - data.getItems().size(),
+                                adapter.setSelected(feed.getItems().size() - items.size(),
                                         feed.getItems().size(), true);
                             }
                         }, error -> {
