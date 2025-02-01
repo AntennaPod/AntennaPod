@@ -685,6 +685,8 @@ public class PodDBAdapter {
         String type = item.getTranscriptType();
         String url = item.getTranscriptUrl();
         if (url != null) {
+            // debug log; remove before merging
+            Log.i("Transcript", "store type " + type + ", URL " + url);
             values.put(KEY_PODCASTINDEX_TRANSCRIPT_TYPE, type);
             values.put(KEY_PODCASTINDEX_TRANSCRIPT_URL, url);
         }
