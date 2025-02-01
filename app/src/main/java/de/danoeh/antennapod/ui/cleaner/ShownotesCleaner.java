@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.cleaner;
 
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -37,6 +38,8 @@ public class ShownotesCleaner {
     private static final String TIMECODE_LINK = "<a class=\"timecode\" href=\"antennapod://timecode/%d\">%s</a>";
     private static final Pattern TIMECODE_REGEX = Pattern.compile("\\b((\\d+):)?(\\d+):(\\d{2})\\b");
     private static final Pattern LINE_BREAK_REGEX = Pattern.compile("<br */?>");
+    private static final Pattern HTTP_LINK_REGEX = Pattern.compile("http[s]?://(?:www\\.)?[-a-zA-Z0-9@%._+~#=]"
+            + "{1,256}\\.[a-z]{2,12}\\b[-a-zA-Z0-9@:%_+.,~#?&()/=]*");
     private static final String CSS_COLOR = "(?<=(\\s|;|^))color\\s*:([^;])*;";
     private static final String CSS_COMMENT = "/\\*.*?\\*/";
 
@@ -84,7 +87,7 @@ public class ShownotesCleaner {
      */
     @NonNull
     public String processShownotes() {
-        String shownotes = rawShownotes;
+        String shownotes = convertPlainTextLinksToHtml(rawShownotes);
 
         if (TextUtils.isEmpty(shownotes)) {
             Log.d(TAG, "shownotesProvider contained no shownotes. Returning 'no shownotes' message");
@@ -205,5 +208,41 @@ public class ShownotesCleaner {
 
     public static String cleanStyleTag(String oldCss) {
         return oldCss.replaceAll(CSS_COMMENT, "").replaceAll(CSS_COLOR, "");
+    }
+
+    /**
+     * Provided text could be a html document, or just a plain-text document.
+     * It can have a mixture of plain-text links and html links.
+     * Only plain-text links will be changed (converted to html)
+     */
+    public static String convertPlainTextLinksToHtml(String text) {
+        if (text == null || text.isEmpty()) {
+            return text;
+        }
+        var htmlTagContent = new ParsedHtmlTagsContent(text);
+        int lastIndex = 0;
+        StringBuilder output = new StringBuilder();
+        var m = HTTP_LINK_REGEX.matcher(text);
+        while (m.find()) {
+            var candidate = m.group();
+            var transformed = htmlTagContent.contains(candidate) ? candidate : makeLinkHtml(candidate);
+            output.append(text, lastIndex, m.start()).append(transformed);
+            lastIndex = m.end();
+        }
+        if (lastIndex < text.length()) {
+            output.append(text, lastIndex, text.length());
+        }
+
+        return output.toString();
+    }
+
+    /**
+     * Adds &lt;a href=...&gt;...&lt;/a&gt; around provided string
+     */
+    public static String makeLinkHtml(String plain) {
+        if (plain == null || plain.isEmpty()) {
+            return "";
+        }
+        return "<a href=\"" + plain + "\">" + plain + "</a>";
     }
 }
