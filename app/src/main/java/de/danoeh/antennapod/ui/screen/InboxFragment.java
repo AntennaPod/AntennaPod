@@ -81,6 +81,8 @@ public class InboxFragment extends EpisodesListFragment {
         } else if (item.getItemId() == R.id.inbox_sort) {
             new InboxSortDialog().show(getChildFragmentManager(), "SortDialog");
             return true;
+        } else if (item.getItemId() == R.id.show_card_fragment) {
+            ((MainActivity) getActivity()).loadChildFragment(new InboxCardFragment());
         }
         return false;
     }
