@@ -309,6 +309,10 @@
         <item name="android:paddingEnd">8dp</item>
     </style>
 
+    <style name="TextBottomNav" parent="TextAppearance.Material3.TitleSmall">
+       <item name="android:textSize">11sp</item>
+    </style>
+
     <style name="AppPreferenceThemeOverlay" parent="@style/PreferenceThemeOverlay">
         <item name="switchPreferenceCompatStyle">@style/AppSwitchPreference</item>
     </style>
