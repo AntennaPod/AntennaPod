@@ -2,12 +2,14 @@ package de.danoeh.antennapod.ui.screen;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.ui.common.ConfirmationDialog;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
@@ -15,7 +17,11 @@ import de.danoeh.antennapod.event.playback.PlaybackHistoryEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.ui.common.DateFormatter;
+import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
+import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
 import de.danoeh.antennapod.ui.episodeslist.EpisodesListFragment;
+import de.danoeh.antennapod.ui.episodeslist.FeedItemMenuHandler;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -37,6 +43,46 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
         emptyView.setTitle(R.string.no_history_head_label);
         emptyView.setMessage(R.string.no_history_label);
         return root;
+    }
+
+    protected EpisodeItemListAdapter createAdapter() {
+        return new EpisodeItemListAdapter(getActivity()) {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                super.onCreateContextMenu(menu, v, menuInfo);
+                if (!inActionMode()) {
+                    menu.findItem(R.id.multi_select).setVisible(true);
+                }
+                MenuItemUtils.setOnClickListeners(menu, PlaybackHistoryFragment.this::onContextItemSelected);
+            }
+
+            @Override
+            protected void onSelectedItemsUpdated() {
+                super.onSelectedItemsUpdated();
+                FeedItemMenuHandler.onPrepareMenu(floatingSelectMenu.getMenu(), getSelectedItems());
+                floatingSelectMenu.updateItemVisibility();
+            }
+
+            @Override
+            protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
+                String header = null;
+                if (episodes.get(pos).getMedia() != null) {
+                    String dateCurrent = DateFormatter.formatAbbrev(getContext(),
+                            episodes.get(pos).getMedia().getPlaybackCompletionDate());
+                    if (pos == 0) {
+                        header = dateCurrent;
+                    } else if (episodes.get(pos - 1).getMedia() != null) {
+                        String datePrevious = DateFormatter.formatAbbrev(getContext(),
+                                episodes.get(pos - 1).getMedia().getPlaybackCompletionDate());
+                        header = dateCurrent.equals(datePrevious) ? null : dateCurrent;
+                    }
+                }
+                if (header != null) {
+                    holder.separatorLabel.setVisibility(View.VISIBLE);
+                    holder.separatorLabel.setText(header);
+                }
+            }
+        };
     }
 
     @Override

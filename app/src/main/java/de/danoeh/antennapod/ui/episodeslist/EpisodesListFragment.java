@@ -177,23 +177,7 @@ public abstract class EpisodesListFragment extends Fragment
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
         swipeRefreshLayout.setOnRefreshListener(() -> FeedUpdateManager.getInstance().runOnceOrAsk(requireContext()));
 
-        listAdapter = new EpisodeItemListAdapter(getActivity()) {
-            @Override
-            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                super.onCreateContextMenu(menu, v, menuInfo);
-                if (!inActionMode()) {
-                    menu.findItem(R.id.multi_select).setVisible(true);
-                }
-                MenuItemUtils.setOnClickListeners(menu, EpisodesListFragment.this::onContextItemSelected);
-            }
-
-            @Override
-            protected void onSelectedItemsUpdated() {
-                super.onSelectedItemsUpdated();
-                FeedItemMenuHandler.onPrepareMenu(floatingSelectMenu.getMenu(), getSelectedItems());
-                floatingSelectMenu.updateItemVisibility();
-            }
-        };
+        listAdapter = createAdapter();
         listAdapter.setOnSelectModeListener(this);
         recyclerView.setAdapter(listAdapter);
         progressBar = root.findViewById(R.id.progressBar);
@@ -238,6 +222,26 @@ public abstract class EpisodesListFragment extends Fragment
         });
 
         return root;
+    }
+
+    protected EpisodeItemListAdapter createAdapter() {
+        return new EpisodeItemListAdapter(getActivity()) {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                super.onCreateContextMenu(menu, v, menuInfo);
+                if (!inActionMode()) {
+                    menu.findItem(R.id.multi_select).setVisible(true);
+                }
+                MenuItemUtils.setOnClickListeners(menu, EpisodesListFragment.this::onContextItemSelected);
+            }
+
+            @Override
+            protected void onSelectedItemsUpdated() {
+                super.onSelectedItemsUpdated();
+                FeedItemMenuHandler.onPrepareMenu(floatingSelectMenu.getMenu(), getSelectedItems());
+                floatingSelectMenu.updateItemVisibility();
+            }
+        };
     }
 
     private void performMultiSelectAction(int actionItemId) {
