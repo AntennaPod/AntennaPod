@@ -175,6 +175,9 @@ public class FeedItem implements Serializable {
         if (other.getTranscriptUrl() != null) {
             podcastIndexTranscriptUrl = other.podcastIndexTranscriptUrl;
         }
+        if (other.getTranscriptType() != null) {
+            podcastIndexTranscriptType = other.podcastIndexTranscriptType;
+        }
     }
 
     public long getId() {
