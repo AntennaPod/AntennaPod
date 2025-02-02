@@ -99,6 +99,7 @@ public abstract class UserPreferences {
     public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
     public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
     public static final String PREF_AUTODL_GLOBAL = "prefEnableAutoDl";
+    public static final String PREF_AUTODL_QUEUE = "prefEnableAutoDlQueue";
     public static final String PREF_ENABLE_AUTODL_ON_BATTERY = "prefEnableAutoDownloadOnBattery";
     private static final String PREF_PROXY_TYPE = "prefProxyType";
     private static final String PREF_PROXY_HOST = "prefProxyHost";
@@ -537,6 +538,10 @@ public abstract class UserPreferences {
 
     public static boolean isEnableAutodownloadGlobal() {
         return prefs.getBoolean(PREF_AUTODL_GLOBAL, false);
+    }
+
+    public static boolean isEnableAutodownloadQueue() {
+        return prefs.getBoolean(PREF_AUTODL_QUEUE, false);
     }
 
     public static boolean isEnableAutodownloadOnBattery() {

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.PluralsRes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -48,14 +49,14 @@ public class EpisodeMultiSelectActionHandler {
     }
 
     private void queueChecked(List<FeedItem> items) {
-        // Check if an episode actually contains any media files before adding it to queue
-        LongList toQueue = new LongList(items.size());
+        // Count here to give accurate number in snackbar
+        List<FeedItem> toQueue = new ArrayList<>();
         for (FeedItem episode : items) {
-            if (episode.hasMedia()) {
-                toQueue.add(episode.getId());
+            if (episode.hasMedia() && !episode.isTagged(FeedItem.TAG_QUEUE)) {
+                toQueue.add(episode);
             }
         }
-        DBWriter.addQueueItem(activity, true, toQueue.toArray());
+        DBWriter.addQueueItem(activity, toQueue.toArray(new FeedItem[0]));
         showMessage(R.plurals.added_to_queue_batch_label, toQueue.size());
     }
 
