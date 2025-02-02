@@ -51,7 +51,7 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
                 .addTag(DownloadServiceInterface.WORK_TAG)
                 .addTag(DownloadServiceInterface.WORK_TAG_EPISODE_URL + item.getMedia().getDownloadUrl());
         if (!item.isTagged(FeedItem.TAG_QUEUE) && UserPreferences.enqueueDownloadedEpisodes()) {
-            DBWriter.addQueueItem(context, false, item.getId());
+            DBWriter.addQueueItem(context, item);
             workRequest.addTag(DownloadServiceInterface.WORK_DATA_WAS_QUEUED);
         }
         workRequest.setInputData(new Data.Builder().putLong(WORK_DATA_MEDIA_ID, item.getMedia().getId()).build());
