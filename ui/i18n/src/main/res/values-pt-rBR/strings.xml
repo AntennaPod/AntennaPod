@@ -15,11 +15,11 @@
     <string name="open_autodownload_settings">Abrir as configurações</string>
     <string name="downloads_log_label">Registro de downloads</string>
     <string name="subscriptions_label">Assinaturas</string>
-    <string name="subscriptions_list_label">Lista de assinaturas (menu lateral apenas)</string>
+    <string name="subscriptions_list_label">Lista de assinaturas (apenas menu lateral)</string>
     <string name="cancel_download_label">Cancelar download</string>
     <string name="playback_history_label">Histórico de reprodução</string>
     <string name="episode_cache_full_title">Cache de episódios cheio</string>
-    <string name="episode_cache_full_message">O limite de cache de episódios foi alcançado. Você pode aumentar o tamanho do cache em Configurações.</string>
+    <string name="episode_cache_full_message">O limite de cache do episódio foi atingido. Você pode aumentar o tamanho do cache nas Configurações.</string>
     <string name="years_statistics_label">Anos</string>
     <string name="notification_pref_fragment">Notificações</string>
     <string name="current_playing_episode">Atual</string>
@@ -27,26 +27,26 @@
   <string name="app_action_not_found">\"%1$s\" não foi encontrado</string>
     <!--SwipeActions-->
   <string name="swipeactions_label">Ações ao arrastar</string>
-    <string name="swipeactions_summary">Defina o que fazer ao arrastar um episódio da lista</string>
+    <string name="swipeactions_summary">Escolha o que acontece ao deslizar um episódio em uma lista</string>
     <string name="swipe_right">Arrastar para a direita</string>
     <string name="swipe_left">Arrastar para a esquerda</string>
-    <string name="enable_swipeactions">Habilitar as ações de arrasto para essa tela</string>
+    <string name="enable_swipeactions">Habilitar ações de deslizar para esta tela</string>
     <string name="change_setting">Alterar</string>
     <string name="individual_subscription">Assinatura individual</string>
     <!--Statistics fragment-->
-  <string name="statistics_include_marked">Incluir duração dos episódios que foram somente marcados como reproduzidos</string>
+  <string name="statistics_include_marked">Incluir duração de episódios que são apenas marcados como reproduzidos</string>
     <string name="statistics_speed_not_counted">Nota: A velocidade de reprodução nunca é levada em conta.</string>
     <string name="statistics_from">Desde</string>
     <string name="statistics_to">Até</string>
     <string name="statistics_today">Hoje</string>
-    <string name="statistics_filter_all_time">De sempre</string>
+    <string name="statistics_filter_all_time">Todos os tempos</string>
     <string name="statistics_filter_past_year">Último ano</string>
     <string name="statistics_reset_data">Limpar dados de estatísticas</string>
     <string name="statistics_reset_data_msg">Isso ira apagar o histórico de duração de reprodução de todos os episódios. Tem certeza que deseja continuar?</string>
     <string name="statistics_counting_range">Reproduzidos entre %1$s e %2$s</string>
     <string name="statistics_counting_total">Reproduzidos no total</string>
     <!--Home fragment-->
-  <string name="home_surprise_title">Seja surpreendido</string>
+  <string name="home_surprise_title">Fique surpreso</string>
     <string name="home_classics_title">Verifique seus clássicos</string>
     <string name="home_continue_title">Continuar ouvindo</string>
     <string name="home_new_title">Veja o que há de novo</string>

@@ -34,7 +34,7 @@
     <string name="change_setting">Cambiar</string>
     <string name="individual_subscription">Subscrición individual</string>
     <!--Statistics fragment-->
-  <string name="statistics_include_marked">Incluír a duración dos episodios que foron marcados como reproducidos</string>
+  <string name="statistics_include_marked">Incluír a duración dos episodios que só están marcados como reproducidos</string>
     <string name="statistics_speed_not_counted">Aviso: A velocidade de reprodución non se ten en conta en ningún caso.</string>
     <string name="statistics_from">Desde</string>
     <string name="statistics_to">Ata</string>
@@ -499,7 +499,7 @@
     <string name="contributors">Colaboradoras</string>
     <string name="contributors_summary">Calquera persoa pode axudar a mellorar AntennaPod - con código, traducións ou botando unha man no foro</string>
     <string name="developers">Desenvolvedoras</string>
-    <string name="translators">Tradutores</string>
+    <string name="translators">Tradución</string>
     <string name="special_thanks">Grazas especialmente a</string>
     <string name="privacy_policy">Política de privacidade</string>
     <string name="licenses">Licenzas</string>
@@ -786,8 +786,8 @@
     <string name="statistics_episodes_started">iniciado</string>
     <string name="bottom_navigation_summary">Característica ßeta: Acceder ás pantallas máis importantes desde calquera lugar cun só toque</string>
     <string name="statistics_episodes_space">espazo ocupado</string>
-    <string name="home_new_empty_text">Aquí aparecerán os novos episodios. Poderás decidir entón se son do teu interese.</string>
-    <string name="home_downloads_empty_text">Podes descargar os episodios e escoitalos sen conexión.</string>
+    <string name="home_new_empty_text">Aquí aparecerán os episodios novos. Poderás decidir entón se son do teu interese.</string>
+    <string name="home_downloads_empty_text">Podes descargar calquera episodio para escoitalo sen conexión.</string>
     <string name="section_shown">Mostrados</string>
     <string name="delete_downloads_played">Eliminar os escoitados</string>
     <string name="delete_downloads_played_confirmation">Confirma que queres eliminar todos as descargas escoitadas.</string>
