@@ -784,7 +784,7 @@
     <string name="section_shown">Angezeigt</string>
     <string name="sync_status_wait_for_downloads">Warte auf Aktualisierung der Abonnements…</string>
     <string name="pref_nav_drawer_items_title">Navigation anpassen</string>
-    <string name="home_continue_empty_text">Du kannst Episoden hinzufügen, indem du sie lange antippst und „Zur Warteschlange hinzufügen“ auswählst.</string>
+    <string name="home_continue_empty_text">Du kannst Episoden hinzufügen, indem du sie herunterlädst oder indem du sie lange antippst und „Zur Warteschlange hinzufügen“ auswählst.</string>
     <string name="home_no_recent_unplayed_episodes_text">Du hast bereits alle aktuellen Episoden abgespielt. Hier gibt es nichts zum überrascht werden ;)</string>
     <string name="home_downloads_empty_text">Du kannst jede Episode herunterladen, um sie offline zu hören.</string>
     <string name="statistics_episodes_played">abgespielt</string>

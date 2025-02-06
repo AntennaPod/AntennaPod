@@ -263,7 +263,7 @@
     <string name="download_error_file_type_type">Filtypsfel</string>
     <string name="download_error_forbidden">Podcastens server svarade inte.</string>
     <string name="download_canceled_msg">Nedladdning avbruten</string>
-    <string name="download_error_wrong_size">Serveranslutningen förlorades innan nedladdningen var klar.</string>
+    <string name="download_error_wrong_size">Serveranslutningen förlorades innan nedladdningen var klar</string>
     <string name="download_error_blocked">Nedladdningen blockerades av en annan app på din enhet (exempelvis en VPN- eller reklamblockerare).</string>
     <string name="download_error_certificate">Kan inte etablera en säker anslutning. Detta kan betyda att en annan app på din enhet (exempelvis en VPN- eller reklamblockerare) blockerade nedladdningen, eller att någonting är fel med servercertifikaten.</string>
     <string name="download_error_io_error">IO-fel</string>
@@ -273,7 +273,7 @@
         <item quantity="one">%d nedladdning kvar</item>
         <item quantity="other">%d nedladdningar kvar</item>
     </plurals>
-    <string name="download_notification_title_feeds">Uppdatera podcasts</string>
+    <string name="download_notification_title_feeds">Uppdaterar podcasts</string>
     <string name="download_notification_title_episodes">Laddar ner avsnitt</string>
     <string name="download_log_title_unknown">Okänd titel</string>
     <string name="download_type_feed">Flöde</string>
@@ -349,12 +349,12 @@
     <string name="interruptions">Avbrott</string>
     <string name="playback_control">Uppspelningskontroll</string>
     <string name="reassign_hardware_buttons">Omfördela hårdvaruknappar</string>
-    <string name="preference_search_hint">Sök...</string>
+    <string name="preference_search_hint">Sök…</string>
     <string name="preference_search_no_results">Inga resultat</string>
     <string name="preference_search_clear_history">Resnsa historiken</string>
     <string name="pref_episode_cleanup_title">Radera innan automatiskt nedladdning</string>
     <string name="pref_episode_cleanup_summary">Avsnitt som får tas bort om Automatisk Nedladdning behöver mer utrymme för nya avsnitt</string>
-    <string name="pref_pauseOnDisconnect_sum">Pausa uppspelningen när hörlurar eller bluetooth kopplas ifrån.</string>
+    <string name="pref_pauseOnDisconnect_sum">Pausa uppspelningen när hörlurar eller bluetooth kopplas ifrån</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Fortsätt uppspelningen när hörlurarna återansluts</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Fortsätt uppspelningen när bluetooth återansluts</string>
     <string name="pref_hardware_forward_button_title">Framåtknapp</string>
@@ -401,7 +401,7 @@
     <string name="pref_stream_over_download_sum">Visa knappen för strömning istället för nedladdning i listor</string>
     <string name="pref_mobileUpdate_title">Mobila uppdateringar</string>
     <string name="pref_mobileUpdate_sum">Välj vad som ska tillåtas över mobila dataanslutningar</string>
-    <string name="pref_mobileUpdate_refresh">Uppdatera podcasts</string>
+    <string name="pref_mobileUpdate_refresh">Podcastuppdatering</string>
     <string name="pref_mobileUpdate_images">Omslagsbilder</string>
     <string name="pref_mobileUpdate_auto_download">Automatisk nedladdning</string>
     <string name="pref_mobileUpdate_episode_download">Avsnittsnedladdning</string>
@@ -441,7 +441,7 @@
     <string name="pref_playback_time_respects_speed_title">Justera mediainfo till uppspelningshastigheten</string>
     <string name="pref_playback_time_respects_speed_sum">Visad position och totallängd anpassas till uppspelningshastigheten</string>
     <string name="pref_fast_forward">Längd att spola fram</string>
-    <string name="pref_fast_forward_sum">Anpassa antalet sekunder att hoppa fram med knappen för att spola framåt.</string>
+    <string name="pref_fast_forward_sum">Anpassa antalet sekunder att hoppa fram med knappen för att spola framåt</string>
     <string name="pref_rewind">Snabbspolningslängd bakåt</string>
     <string name="pref_rewind_sum">Anpassa antalet sekunder att hoppa bakåt när snabbspolningsknappen bakåt används</string>
     <string name="pref_expandNotify_title">Hög aviseringsprioritet</string>
@@ -497,7 +497,7 @@
   <string name="about_pref">Om</string>
     <string name="antennapod_version">AntennaPod-version</string>
     <string name="contributors">Medverkare</string>
-    <string name="contributors_summary">Alla kan hjälpa till att göra AntennaPod bättre - med kod, översättningar eller genom att hjälpa användare i vårt forum.</string>
+    <string name="contributors_summary">Alla kan hjälpa till att göra AntennaPod bättre - med kod, översättningar eller genom att hjälpa användare i vårt forum</string>
     <string name="developers">Utvecklare</string>
     <string name="translators">Översättare</string>
     <string name="special_thanks">Speciellt tack</string>
@@ -512,10 +512,10 @@
     <string name="search_online">Sök online</string>
     <!--Synchronization-->
   <string name="sync_status_started">Synkning startad</string>
-    <string name="sync_status_episodes_upload">Laddar upp avsnittsändringar...</string>
-    <string name="sync_status_episodes_download">Laddar ner avsnittsändringar...</string>
-    <string name="sync_status_upload_played">Laddar upp spelliststatus</string>
-    <string name="sync_status_subscriptions">Synkroniserar prenumerationer...</string>
+    <string name="sync_status_episodes_upload">Laddar upp avsnittsändringar…</string>
+    <string name="sync_status_episodes_download">Laddar ned avsnittsändringar…</string>
+    <string name="sync_status_upload_played">Laddar upp spelliststatus…</string>
+    <string name="sync_status_subscriptions">Synkroniserar prenumerationer…</string>
     <string name="sync_status_success">Synkronisering lyckades</string>
     <string name="sync_status_error">Synkronisering misslyckades</string>
     <!--import and export-->
@@ -542,7 +542,7 @@
     <string name="automatic_database_export_error">Fel under automatisk databasbackup</string>
     <string name="database_import_label">Databasimport</string>
     <string name="database_import_warning">Importering av en databas kommer att ersätta alla dina befintliga prenumerationer och spelhistoriken. Du bör exportera din nuvarande databas som en backup. Vill du ersätta den?</string>
-    <string name="please_wait">Vänta...</string>
+    <string name="please_wait">Var god vänta…</string>
     <string name="export_error_label">Exporteringsfel</string>
     <string name="export_success_title">Exporten lyckades</string>
     <string name="opml_import_ask_read_permission">Tillgång till extern lagring krävs för att läsa OPML-filen</string>
@@ -696,7 +696,7 @@
     <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importerar prenumerationer från appar gjorda för ett enda syfte…</string>
     <!--Add podcast fragment-->
-  <string name="search_podcast_hint">Sök podcast...</string>
+  <string name="search_podcast_hint">Sök podcast…</string>
     <string name="search_itunes_label">Sök i Apple Podcasts</string>
     <string name="search_podcastindex_label">Sök i Podcast Index</string>
     <string name="search_fyyd_label">Sök i fyyd</string>

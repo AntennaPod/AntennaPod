@@ -195,7 +195,7 @@
     <string name="add_tag">Добавить метку</string>
     <string name="rename_tag_label">Изменить метку</string>
     <string name="confirm_mobile_feed_refresh_dialog_message">Обновление подкастов через мобильное соединение отключено в настройках.\n\nВы действительно хотите обновить подкасты?</string>
-    <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Приложение VPN имитирует соединение через мобильную сеть (с ограничением трафика). Обновление подкастов через мобильное соединение отключено в настройках\nВсё равно желаете обновить? Чтобы устранить эту проблему, свяжитесь с авторами вашего приложения VPN.</string>
+    <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Приложение VPN имитирует соединение с ограниченным трафика. Обновление подкастов через мобильное соединение отключено в настройках\n\nВсё равно обновить? Чтобы устранить эту проблему, свяжитесь с создателями вашего приложения VPN.</string>
     <!--actions on feeditems-->
   <string name="download_label">Загрузить</string>
     <plurals name="downloading_batch_label">
@@ -320,7 +320,7 @@
     <string name="confirm_mobile_streaming_button_always">Всегда</string>
     <string name="confirm_mobile_streaming_button_once">В этот раз</string>
     <!--Mediaplayer messages-->
-  <string name="playback_error_generic"><![CDATA[Не удаётся воспроизвести медиафайл.\n\n- Попробуйте удалить и загрузить выпуск заново.\n- Проверьте соединение и блокировку со стороны VPN или страницы авторизации.\n- Попробуйте долгим нажатием поделиться \"ссылкой на медиафайл\" и попытайтесь открыть её в браузере. Если это не помогло, обратитесь к авторам подкаста.]]></string>
+  <string name="playback_error_generic">Не удаётся воспроизвести файл.\n\n— Попробуйте удалить и скачать выпуск снова.\n— Проверьте соединение с интернетом: удостоверьтесь, что VPN и страница входа не блокируют его.\n— Нажмите долгим нажатием на ссылку подкаста и проверьте, что подкаст открывается в браузере. Если нет, свяжитесь с авторами подкаста.</string>
     <string name="no_media_playing_label">Ничего не воспроизводится</string>
     <string name="unknown_media_key">AntennaPod - неизвестный ключ носителя: %1$d</string>
     <string name="error_file_not_found">Файл не найден</string>
@@ -651,7 +651,7 @@
     <string name="synchronization_full_sync_title">Выполнить полную синхронизацию</string>
     <string name="synchronization_force_sync_summary">Пересихронизировать ваши подписки и состояние выпусков</string>
     <string name="synchronization_logout">Выйти</string>
-    <string name="synchronization_login_status"><![CDATA[Авторизованы как <i>%1$s</i> на <i>%2$s</i>. <br/><br/>Вы сможете снова выбрать провайдера синхронизации после выхода из системы]]></string>
+    <string name="synchronization_login_status">Выполнен вход в %2$s как %1$s.\n\nВы можете сменить провайдера синхронизации после выхода из системы.</string>
     <string name="pref_synchronization_logout_toast">Выход успешно выполнен</string>
     <string name="gpodnetsync_error_title">Ошибка синхронизации с gpodder.net</string>
     <string name="gpodnetsync_error_descr">"Произошла ошибка во время синхронизации: "</string>
@@ -739,9 +739,9 @@
     <string name="search_podcastindex_label">Поиск на Podcast Index</string>
     <string name="search_fyyd_label">Поиск в fyyd</string>
     <string name="add_podcast_by_url">Добавить подкаст по RSS</string>
-    <string name="discover">Ознакомиться</string>
+    <string name="discover">Найти новое</string>
     <string name="discover_hide">Скрыть</string>
-    <string name="discover_is_hidden">Вы предпочли скрыть рекомендации.</string>
+    <string name="discover_is_hidden">Вы скрыли рекомендации.</string>
     <string name="discover_powered_by_itunes">Предложения Apple Podcasts</string>
     <string name="discover_confirm">Показать рекомендации</string>
     <string name="search_powered_by">Результаты из %1$s</string>
@@ -825,4 +825,33 @@
     <string name="feed_delete_confirmation_local_msg">Пожалуйста, подтвердите, что вы хотите удалить подкаст «%1$s», историю его воспроизведения и статистику. Файлы в локальной исходной папке удалены не будут.</string>
     <string name="home_no_recent_unplayed_episodes_text">Вы уже прослушали все недавние эпизоды. Никаких сюрпризов ;)</string>
     <string name="home_continue_empty_text">Вы можете добавлять эпизоды, загружая их или «Добавить в очередь» через долгое нажатие.</string>
+    <string name="home_new_empty_text">Здесь будут появляться новые выпуски. Вы сможете выбрать интересные для вас.</string>
+    <string name="statistics_episodes_downloaded">Загруженные</string>
+    <string name="statistics_release_schedule">Расписание выхода</string>
+    <string name="statistics_release_next">Следующий выпуск</string>
+    <string name="statistics_years_barchart_description">Прослушано в месяц</string>
+    <string name="null_value_podcast_error">Ссылка, на которую вы нажали, не является ссылкой на подкаст. Проверьте ссылку или найдите подкаст через поиск.</string>
+    <string name="pref_nav_drawer_items_title">Настроить навигацию</string>
+    <string name="statistics_episodes_space">Объём</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">Размер %d выпуска на устройстве</item>
+        <item quantity="few">Размер %d выпусков на устройстве</item>
+        <item quantity="many">Размер %d выпусков на устройстве</item>
+        <item quantity="other">Размер %d выпусков на устройстве</item>
+    </plurals>
+    <string name="pref_nav_drawer_items_sum">Выбрать пункты в меню навигации</string>
+    <string name="sync_status_wait_for_downloads">Подписки обновляются…</string>
+    <string name="statistics_view_all">Все подкасты</string>
+    <string name="discover_more">Найти новое</string>
+    <string name="section_shown">Показываемые</string>
+    <string name="delete_downloads_played">Удалить прослушанные</string>
+    <string name="mobile_download_notice">В течение %d минут включена загрузка через мобильную сеть</string>
+    <string name="bottom_navigation">Навигация внизу</string>
+    <string name="bottom_navigation_summary">Бета: доступ к важным экранам в одно касание</string>
+    <string name="statistics_episodes_started">Начатые</string>
+    <string name="statistics_episodes_played">Прослушанные</string>
+    <string name="nextcloud_login_error_generic">Не удалось войти в Nextcloud.\n\n— Проверьте соединение с интернетом.\n— Удостоверьтесь, что указан правильный адрес сервера.\n— Удостоверьтесь, что gpoddersync установлен в Nextcloud.</string>
+    <string name="statistics_episodes_total">Всего</string>
+    <string name="episode_download_failed">Не удалось скачать выпуск</string>
+    <string name="delete_downloads_played_confirmation">Удалить все прослушанные загрузки?</string>
 </resources>

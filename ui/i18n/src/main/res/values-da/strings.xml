@@ -433,11 +433,11 @@
     <string name="pref_playback_speed_sum">Tilpas de tilgængelige hastigheder for afspilning med variabel hastighed</string>
     <string name="pref_feed_playback_speed_sum">Hastighed, der skal bruges, når lydafspilning startes for afsnit i denne podcast</string>
     <string name="pref_feed_skip">Overspring automatisk</string>
-    <string name="pref_feed_skip_sum">Overspring introduktioner og slut kreditter.</string>
-    <string name="pref_feed_skip_ending">Overspring sidste</string>
-    <string name="pref_feed_skip_intro">Overspring første</string>
-    <string name="pref_feed_skip_ending_toast">Overspring sidste %d sekunder</string>
-    <string name="pref_feed_skip_intro_toast">Overspring første %d sekunder</string>
+    <string name="pref_feed_skip_sum">Spring introduktioner og \"rulletekster\" over.</string>
+    <string name="pref_feed_skip_ending">Spring sidste over</string>
+    <string name="pref_feed_skip_intro">Spring første over</string>
+    <string name="pref_feed_skip_ending_toast">Spring sidste %d sekunder over</string>
+    <string name="pref_feed_skip_intro_toast">Spring første %d sekunder over</string>
     <string name="pref_playback_time_respects_speed_title">Afpas medieinformation til afspilningshastighed</string>
     <string name="pref_playback_time_respects_speed_sum">Vist position og varighed er tilpasset afspilningshastighed</string>
     <string name="pref_fast_forward">Tidshop for fremadspoling</string>

@@ -15,7 +15,7 @@
     <string name="open_autodownload_settings">Avaa asetukset</string>
     <string name="downloads_log_label">Latausloki</string>
     <string name="subscriptions_label">Tilaukset</string>
-    <string name="subscriptions_list_label">Tilauslista</string>
+    <string name="subscriptions_list_label">Tilausluettelo (vain sivuvalikko)</string>
     <string name="cancel_download_label">Peruuta lataus</string>
     <string name="playback_history_label">Toistohistoria</string>
     <string name="episode_cache_full_title">Jaksojen välimuisti täynnä</string>
@@ -118,8 +118,8 @@
     <string name="episode_cleanup_queue_removal">Kun ei ole jonossa</string>
     <string name="episode_cleanup_after_listening">Lopetuksen jälkeen</string>
     <plurals name="num_selected_label">
-        <item quantity="one">%1$d/%2$d valittu</item>
-        <item quantity="other">%1$d/%2$d valittu</item>
+        <item quantity="one">%1$d/%2$d valittuna</item>
+        <item quantity="other">%1$d/%2$d valittuna</item>
     </plurals>
     <plurals name="num_episodes">
         <item quantity="one">%d jakso</item>
@@ -170,7 +170,7 @@
     <!--actions on feeditems-->
   <string name="download_label">Lataa</string>
     <plurals name="downloading_batch_label">
-        <item quantity="one">Ladataan %d jaksoa.</item>
+        <item quantity="one">Ladataan %d jakso.</item>
         <item quantity="other">Ladataan %d jaksoa.</item>
     </plurals>
     <string name="play_label">Toista</string>
@@ -187,7 +187,7 @@
     <string name="play_this_to_seek_position">Jaksoa pitää toistaa siirtyäksesi kohtiin</string>
     <plurals name="marked_read_batch_label">
         <item quantity="one">%d jakso merkitty soitetuksi.</item>
-        <item quantity="other">%d jaksoa merkitty toistetuksi</item>
+        <item quantity="other">%d jaksoa merkitty toistetuksi.</item>
     </plurals>
     <string name="mark_unread_label">Merkitse toistamattomaksi</string>
     <string name="mark_unread_label_no_media">Merkitse lukemattomaksi</string>
@@ -294,7 +294,7 @@
     <!--Empty list labels-->
   <string name="no_items_header_label">Ei jaksoja jonossa</string>
     <string name="no_items_label">Lisää jakso lataamalla se, tai painamalla sitä pitkään ja valitsemalla \"Lisää jonoon\".</string>
-    <string name="no_shownotes_label">Jaksolla ei ole jaksomuistiota</string>
+    <string name="no_shownotes_label">Tässä jaksossa ei ole esiteltyjä huomautuksia.</string>
     <string name="no_comp_downloads_head_label">Ei ladattuja jaksoja</string>
     <string name="no_comp_downloads_label">Voit ladata jakson podcastin listätietosivulla.</string>
     <string name="no_log_downloads_head_label">Ei latauslokia</string>
@@ -307,7 +307,7 @@
     <string name="no_inbox_head_label">Ei jaksoja saapuneissa</string>
     <string name="no_inbox_label">Kun uusia jaksoja saapuu, ne näytetään tässä. Voit sitten valita, oletko kiinnostunut niistä.</string>
     <string name="no_subscriptions_head_label">Ei tilauksia</string>
-    <string name="no_subscriptions_label">Tilataksesi podcastin, paina plus-kuvaketta alla</string>
+    <string name="no_subscriptions_label">Tilataksesi podcastin, paina plus-kuvaketta alla.</string>
     <!--Preferences-->
   <string name="project_pref">Projekti</string>
     <string name="synchronization_pref">Synkronointi</string>
@@ -320,7 +320,7 @@
     <string name="interruptions">Keskeytykset</string>
     <string name="playback_control">Toistonhallinta</string>
     <string name="reassign_hardware_buttons">Uudelleenmääritä laitteiden painikkeet</string>
-    <string name="preference_search_hint">Hae...</string>
+    <string name="preference_search_hint">Hae…</string>
     <string name="preference_search_no_results">Ei tuloksia</string>
     <string name="preference_search_clear_history">Tyhjennä historia</string>
     <string name="pref_episode_cleanup_summary">Jaksot, jotka voidaan poistaa, jos automaattinen lataus tarvitsee tilaa uusille jaksoille</string>
@@ -397,13 +397,13 @@
     <string name="pref_feed_skip_intro_toast">Ohitettiin ensimmäiset %d sekuntia</string>
     <string name="pref_playback_time_respects_speed_title">Mukauta mediatietoja toiston nopeuteen</string>
     <string name="pref_playback_time_respects_speed_sum">Näytetty aika ja kesto mukautuvat toiston nopeuteen</string>
-    <string name="pref_rewind_sum">Mukauta sekunnit jonka verran hypätään takaisin kun painat taakse kelaus -painiketta.</string>
+    <string name="pref_rewind_sum">Mukauta sekunnit jonka verran hypätään takaisin kun painat taakse kelaus -painiketta</string>
     <string name="pref_expandNotify_title">Korkea ilmoitusprioriteetti</string>
-    <string name="pref_expandNotify_sum">Tämä laajentaa ilmoituksen näyttämään toistopainikkeet</string>
+    <string name="pref_expandNotify_sum">Tämä yleensä laajentaa ilmoituksen näyttämään toistopainikkeet.</string>
     <string name="pref_persistNotify_title">Pysyvät toistokontrollit</string>
     <string name="pref_persistNotify_sum">Säilytä ilmoitus- ja lukitusnäytön kontrollit, kun toisto on pysäytetty</string>
     <string name="pref_enqueue_location_title">Jonoon lisäyksen paikka</string>
-    <string name="pref_enqueue_location_sum">Lisää jaksot kohteeseen%1$s:</string>
+    <string name="pref_enqueue_location_sum">Lisää jaksot %1$s:een</string>
     <string name="enqueue_location_back">Perään</string>
     <string name="enqueue_location_front">Eteen</string>
     <string name="enqueue_location_after_current">Nykyisen jakson jälkeen</string>
@@ -417,7 +417,7 @@
     <string name="copied_to_clipboard">Kopioitiin leikepöydälle</string>
     <string name="pref_proxy_title">Proxy</string>
     <string name="pref_proxy_sum">Aseta verkkoproxy</string>
-    <string name="pref_no_browser_found">Selainta ei löydetty</string>
+    <string name="pref_no_browser_found">Verkkoselainta ei löytynyt.</string>
     <string name="pref_enqueue_downloaded_title">Lisää ladatut jonoon</string>
     <string name="pref_enqueue_downloaded_summary">Lisää ladatut jaksot jonoon</string>
     <string name="pref_skip_silence_title">Ohita hiljaisuus</string>
@@ -455,10 +455,10 @@
     <string name="no_results_for_query">Ei löydetty tuloksia \"%1$s\"</string>
     <!--Synchronization-->
   <string name="sync_status_started">Synkronointi aloitettu</string>
-    <string name="sync_status_episodes_upload">Ladataan jaksomuutokset palvelimelle...</string>
-    <string name="sync_status_episodes_download">Ladataan jaksomuutokset palvelimelta...</string>
-    <string name="sync_status_upload_played">Ladataan toistojen tilat palvelimelle...</string>
-    <string name="sync_status_subscriptions">Synkronoidaan tilauksia...</string>
+    <string name="sync_status_episodes_upload">Jakson muutoksia ulosladataan…</string>
+    <string name="sync_status_episodes_download">Ladataan jaksomuutoksia…</string>
+    <string name="sync_status_upload_played">Ulosladataan toistettua tilaa…</string>
+    <string name="sync_status_subscriptions">Synkronoidaan tilauksia…</string>
     <string name="sync_status_success">Synkronointi onnistui</string>
     <string name="sync_status_error">Synkronointi epäonnistui</string>
     <!--import and export-->
@@ -481,7 +481,7 @@
     <string name="database_export_label">Tietokannan vienti</string>
     <string name="database_import_label">Tietokannan tuonti</string>
     <string name="database_import_warning">Tietokannan tuonti korvaa kaikki nykyiset tilauksesi ja toistohistoriasi. Vie nykyinen tietokanta halutessasi varmuuskopioksi ennen jatkamista. Haluatko korvata?</string>
-    <string name="please_wait">Ole hyvä ja odota...</string>
+    <string name="please_wait">Ole hyvä ja odota…</string>
     <string name="export_error_label">Vientivirhe</string>
     <string name="export_success_title">Vienti onnistunut</string>
     <string name="opml_import_ask_read_permission">Pääsy ulkoiseen solvellukseen tarvitaan OPML tiedoston lukemiseen</string>
@@ -533,7 +533,7 @@
     <string name="synchronization_full_sync_title">Pakota täysi synkronointi</string>
     <string name="synchronization_force_sync_summary">Uudelleensynkronoi kaikki tilaukset ja jaksojen tilat</string>
     <string name="synchronization_logout">Kirjaudu ulos</string>
-    <string name="synchronization_login_status"><![CDATA[Kirjauduttu sisään <i>%1$s</i> kohteessa <i>%2$s</i>. <br/><br/>Voit valita synkronointipalveluntarjoajan uudelleen kirjauduttuasi ulos]]></string>
+    <string name="synchronization_login_status">Kirjautunut sisään käyttäjänä %1$s %2$s:lla.\n\nVoit valita synkronointitarjoajan uudelleen, kun olet kirjautunut ulos.</string>
     <string name="pref_synchronization_logout_toast">Uloskirjautuminen onnistui</string>
     <string name="gpodnetsync_error_title">gpodder.net synkrointivirhe</string>
     <string name="gpodnetsync_error_descr">"Synkronointivirhe: "</string>
@@ -569,7 +569,7 @@
   <string name="authentication_label">Autentikaatio</string>
     <string name="authentication_descr">Vaihda käyttäjätunnus ja salasana tälle podcastille ja sen jaksoille.</string>
     <string name="feed_tags_label">Tunnisteet</string>
-    <string name="feed_tags_summary">Muokkaa tämän podcastin tunnisteita tilaustesi järjestelemisen avuksi.</string>
+    <string name="feed_tags_summary">Muokkaa tämän podcastin tunnisteita tilaustesi järjestelemisen avuksi</string>
     <string name="feed_folders_include_root">Näytä tämä podcast päälistassa</string>
     <string name="auto_download_settings_label">Automaattisen latauksen asetukset</string>
     <string name="episode_filters_label">Jaksosuodin</string>
@@ -595,9 +595,9 @@
     <string name="release_schedule_saturday">la</string>
     <string name="release_schedule_sunday">su</string>
     <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Tuodaan tilauksia sovelluksista</string>
+  <string name="sp_apps_importing_feeds_msg">Tuodaan tilauksia yksikäyttöisistä sovelluksista…</string>
     <!--Add podcast fragment-->
-  <string name="search_podcast_hint">Etsi podcastia...</string>
+  <string name="search_podcast_hint">Etsi podcastia…</string>
     <string name="search_itunes_label">Etsi Apple Podcasteista</string>
     <string name="search_fyyd_label">Etsi fyyd:sta</string>
     <string name="add_podcast_by_url">Lisää podcast RSS-osoitteesta</string>
@@ -646,7 +646,7 @@
     <string name="port_label">Portti</string>
     <string name="optional_hint">(Valinnainen)</string>
     <string name="proxy_test_label">Testi</string>
-    <string name="proxy_checking">Testaa...</string>
+    <string name="proxy_checking">Tarkistetaan…</string>
     <string name="proxy_test_successful">Testi onnistui</string>
     <string name="proxy_test_failed">Testi epäonnistui</string>
     <string name="proxy_host_empty_error">Host ei voi olla tyhjä</string>
@@ -680,4 +680,135 @@
     <string name="shortcut_subscription_label">Tilauksen pikakuvake</string>
     <string name="shortcut_select_subscription">Valitse tilaus</string>
     <string name="add_shortcut">Lisää pikakuvake</string>
+    <string name="episode_information">Jakson tiedot</string>
+    <string name="sync_status_wait_for_downloads">Odotetaan tilausten virkistystä…</string>
+    <string name="automatic_database_export_label">Automaattinen tietokannan vienti</string>
+    <string name="automatic_database_export_error">Virhe automaattisen tietokannan varmuuskopioinnin aikana</string>
+    <string name="choose_data_directory_message">Valitse tietokansiosi perusta. AntennaPod luo asianmukaiset alihakemistot.</string>
+    <string name="rating_contribute_button">Tutustu tapoihin osallistua</string>
+    <string name="statistics_expected_next_episode_unknown">Tuntematon</string>
+    <string name="statistics_view_all">Kaikki podcastit »</string>
+    <string name="subscription_display_list">Lista</string>
+    <string name="rating_volunteers_label">AntennaPodia kehittävät vapaaehtoiset vapaa-ajallaan. Jaa arvostuksesi heidän työstään jättämällä hyvä arvosana.</string>
+    <string name="delete_local_feed_warning_body">Poistaminen poistaa jakson AntennaPodista ja mediatiedoston laitteen tallennustilasta. Sitä ei voi ladata uudelleen AntennaPodin kautta.</string>
+    <string name="pref_episode_cleanup_title">Poista ennen automaattista lataamista</string>
+    <string name="pref_new_episodes_action_title">Uusien jaksojen toiminta</string>
+    <string name="shuffle_suggestions">Sekoitusehdotukset</string>
+    <string name="search_online">Etsi verkossa</string>
+    <string name="pref_new_episodes_action_sum">Ryhdyttävät toimet uusien jaksojen suhteen</string>
+    <string name="automatic_database_export_summary">Luo AntennaPod-tietokannasta varmuuskopio kolmen päivän välein. Säilytä vain viisi viimeisintä varmuuskopiota.</string>
+    <string name="search_podcastindex_label">Etsi Podcast-hakemisto</string>
+    <string name="statistics_expected_next_episode_any_day">Nyt minä päivänä tahansa</string>
+    <string name="pref_rewind">Kelaa ohittamisaikaa taaksepäin</string>
+    <string name="pref_back_button_opens_drawer">Takaisinpainike avaa laatikon</string>
+    <string name="pref_back_button_opens_drawer_summary">Takaisin-painikkeen painaminen oletussivulla avaa navigointilaatikon</string>
+    <string name="add_preset">Lisää esiasetus</string>
+    <string name="statistics_release_schedule">julkaisuaikataulu</string>
+    <string name="pref_compact_notification_buttons_dialog_error_exact">Sinun on valittava täsmälleen kaksi kohdetta</string>
+    <string name="pref_fast_forward_sum">Mukauta sekuntien lukumäärää eteenpäin siirtymiseen, kun pikakelaus eteenpäin -painiketta napsautetaan</string>
+    <string name="statistics_episodes_started">aloitettu</string>
+    <string name="section_shown">Näytetty</string>
+    <string name="preview_episodes">Jaksojen esikatselu</string>
+    <string name="pref_full_notification_buttons_sum">Muuta toistoilmoituksen painikkeita</string>
+    <string name="pref_show_subscription_title">Näytä otsikot</string>
+    <string name="opml_reader_error">Tiedostoa luettaessa tapahtui virhe. Varmista, että olet todella valinnut OPML-tiedoston ja että tiedosto on kelvollinen.</string>
+    <string name="transcript">Transkriptio</string>
+    <string name="current_playing_episode">Nykyinen</string>
+    <string name="statistics_episodes_played">soitetut</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">%d jakson kokonaiskoko laitteella</item>
+        <item quantity="other">%d jakson kokonaiskoko laitteella</item>
+    </plurals>
+    <string name="feed_volume_adaptation_summary">Lisää tai vähennä tämän podcastin jaksojen äänenvoimakkuutta: %1$s</string>
+    <string name="feed_volume_boost_light">Kevyt tehostus</string>
+    <string name="feed_volume_boost_medium">Keskitehostus</string>
+    <string name="feed_volume_boost_heavy">Voimakas tehostus</string>
+    <string name="feed_delete_confirmation_msg">Vahvista, että haluat poistaa podcastin \"%1$s\": Kaikki sen jaksot (mukaan lukien ladatut jaksot), toistohistorian ja sen tilastot.</string>
+    <string name="feed_delete_confirmation_msg_batch">Vahvista, että haluat poistaa valitut podcastit, kaikki niiden jaksot (mukaan lukien ladatut jaksot), toistohistorian ja sen tilastot.</string>
+    <string name="feed_delete_confirmation_local_msg">Vahvista, että haluat poistaa podcastin \"%1$s\", sen toistohistorian ja tilastot. Paikallisen lähdekansion tiedostoja ei poisteta.</string>
+    <string name="multi_select_started_talkback">Monivalintatoiminnot näkyvät alareunassa</string>
+    <string name="confirm_mobile_feed_refresh_dialog_message_vpn">VPN-sovelluksesi teeskentelee olevansa mobiiliverkko (mittariyhteys). Podcastien päivittäminen mobiilidatayhteydellä on poissa käytöstä asetuksista.\n\nHaluatko silti virkistää? Jos haluat korjata tämän ongelman, ota yhteyttä VPN-sovelluksesi tekijöihin.</string>
+    <string name="show_transcript">Näytä transkriptio</string>
+    <string name="transcript_follow">Seuraa ääntä</string>
+    <string name="no_transcript_label">Ei transkriptiota</string>
+    <string name="null_value_podcast_error">Napautamasi linkki ei sisällä kelvollista podcastin URL-osoitetta. Tarkista linkki ja yritä uudelleen tai etsi podcast manuaalisesti.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">VPN-sovelluksesi väittää olevansa mobiiliverkko (mittariyhteys). Lataaminen mobiilidatayhteydellä on poissa käytöstä asetuksista. Jos haluat korjata tämän ongelman, ota yhteyttä VPN-sovelluksesi tekijöihin.</string>
+    <string name="playback_error_generic">Mediatiedostoa ei voitu toistaa.\n\n- Yritä poistaa jakso ja ladata se uudelleen.\n- Tarkista verkkoyhteytesi ja varmista, ettei mikään VPN tai kirjautumissivu estä pääsyä.\n- Yritä painaa pitkään ja jakaa \"Media-osoite\" verkkoselaimellesi nähdäksesi, voidaanko sitä toistaa siellä. Jos ei, ota yhteyttä podcastin tekijöihin.</string>
+    <string name="clear_queue_confirmation_msg">Vahvista, että haluat poistaa Kaikki jaksot jonosta.</string>
+    <string name="button_action_fast_forward">Pikakelaus eteenpäin</string>
+    <string name="pref_auto_delete_playback_sum">Poista jakso, kun toisto on valmis</string>
+    <string name="pref_auto_delete_title">Automaattinen poisto</string>
+    <string name="pref_auto_delete_sum">Poista jaksot toistamisen jälkeen tai kun automaattinen lataus vaatii tilaa</string>
+    <string name="pref_auto_delete_playback_title">Poista toistamisen jälkeen</string>
+    <string name="pref_auto_local_delete_title">Poista automaattisesti paikallisista kansioista</string>
+    <string name="pref_auto_local_delete_sum">Sisällytä paikalliset kansiot Poista automaattisesti -toimintoon</string>
+    <string name="pref_auto_local_delete_dialog_body">Huomaa, että tämä poistaa paikallisten kansioiden jaksot AntennaPodista ja niiden mediatiedostot laitteen tallennustilasta. Niitä ei voi ladata uudelleen AntennaPodin kautta. Otetaanko automaattinen poisto käyttöön?</string>
+    <string name="downloads_pref_sum">Päivitysväli, Mobiilidata, Automaattinen lataus, Automaattinen poisto</string>
+    <string name="pref_black_theme_title">Täysmusta</string>
+    <string name="pref_black_theme_message">Käytä täysmustaa tummaa teemaa varten</string>
+    <string name="pref_nav_drawer_items_title">Mukauta navigointia</string>
+    <string name="pref_nav_drawer_items_sum">Muuta, mitkä kohteet näkyvät navigoinnin vetolaatikossa tai alareunanavigoinnissa</string>
+    <string name="pref_episode_cache_title">Jakson raja</string>
+    <string name="pref_episode_cache_summary">Automaattinen lataus keskeytyy, jos tämä numero saavutetaan</string>
+    <string name="pref_fast_forward">Pikakelaus eteenpäin -ohittamisaika</string>
+    <string name="pref_full_notification_buttons_title">Aseta ilmoituspainikkeet</string>
+    <string name="pref_delete_removes_from_queue_sum">Poista jakso automaattisesti jonosta, kun se poistetaan</string>
+    <string name="auto_enable_label">Aktivoi uniajastin automaattisesti, kun painat toistopainiketta</string>
+    <string name="auto_enable_change_times">Muuta aikaaluetta</string>
+    <string name="auto_enable_label_with_times">Aktivoi uniajastin automaattisesti, kun painat toistopainiketta %1$s ja %2$s välillä</string>
+    <string name="rating_tagline">%1$s lähtien olet toistanut %2$s %3$d %4$s tuntia podcasteja.</string>
+    <string name="rating_contribute_label">Haluatko liittyä? Halusitpa sitten kääntää, tukea, suunnitella tai koodata, otamme sinut mielellämme käyttöön!</string>
+    <string name="state_deleted_not_subscribed">Et ole vielä tilannut tätä podcastia. Tilaa ilmaiseksi, jotta pääset käyttämään sitä helpommin ja säilyttämään sen toistohistorian.</string>
+    <string name="fast_forward_label">Pikakelaus eteenpäin</string>
+    <string name="remaining_time">Jäljellä oleva aika: %1$s</string>
+    <string name="download_started_talkback">Lataus aloitettu: %1$s</string>
+    <string name="download_completed_talkback">Lataus suoritettu %1$s</string>
+    <string name="multi_feed_common_tags_info">Vain yleiset tunnisteet kaikista valituista tilauksista näytetään. Muut tunnisteet pysyvät ennallaan.</string>
+    <string name="release_schedule_weekdays">arkisin</string>
+    <string name="edit_url_confirmation_msg">RSS-osoitteen muuttaminen voi helposti rikkoa podcastin toistotilan ja jaksoluettelot. Emme suosittele sen vaihtamista emmekä tarjoa tukea, jos jokin menee pieleen. Tätä ei voi kumota. Rikkinäistä tilausta ei voida korjata yksinkertaisesti vaihtamalla osoite takaisin. Suosittelemme varmuuskopion luomista ennen kuin jatkat.</string>
+    <string name="discover_more">Tutustu lisää »</string>
+    <string name="home_continue_empty_text">Voit lisätä jaksoja lataamalla ne tai painamalla niitä pitkään ja valitsemalla \"Lisää jonoon\".</string>
+    <string name="home_new_empty_text">Uudet jaksot näkyvät täällä. Voit sitten päättää, oletko kiinnostunut niistä.</string>
+    <string name="home_downloads_empty_text">Voit ladata minkä tahansa jakson kuunnellaksesi sen ei-verkkotilassa.</string>
+    <string name="delete_downloads_played">Poista toistetut</string>
+    <string name="delete_downloads_played_confirmation">Vahvista, että haluat poistaa kaikki toistetut lataukset.</string>
+    <string name="mobile_download_notice">Ladataan mobiilidatayhteyden kautta seuraavan %d minuutin ajan</string>
+    <string name="bottom_navigation">Alareunanavigointi</string>
+    <string name="bottom_navigation_summary">Beta-ominaisuus: Pääset tärkeimpiin näyttöihin missä tahansa, yhdellä napautuksella</string>
+    <string name="nextcloud_login_error_generic">Nextcloudiin kirjautuminen ei onnistu.\n\n- Tarkista verkkoyhteytesi.\n- Varmista, että käytät oikeaa palvelinosoitetta.\n- Varmista, että gpoddersync Nextcloud -liitännäinen on asennettu.</string>
+    <string name="statistics_episodes_downloaded">ladattu</string>
+    <string name="statistics_episodes_space">käytetty tila</string>
+    <string name="statistics_episodes_total">yhteensä</string>
+    <string name="statistics_release_next">seuraava jakso (arvio)</string>
+    <string name="statistics_years_barchart_description">Toistoaika kuukaudessa</string>
+    <plurals name="time_days_quantified">
+        <item quantity="one">%d päivä</item>
+        <item quantity="other">%d päivää</item>
+    </plurals>
+    <string name="home_no_recent_unplayed_episodes_text">Olet jo toistanut kaikki viimeaikaiset jaksot. Ei tässä ole mitään ihmeellistä ;)</string>
+    <plurals name="episode_cleanup_days_after_listening">
+        <item quantity="one">%d päivä lopettamisen jälkeen</item>
+        <item quantity="other">%d päivää lopettamisen jälkeen</item>
+    </plurals>
+    <plurals name="deleted_multi_episode_batch_label">
+        <item quantity="one">%d ladattu jakso poistettu.</item>
+        <item quantity="other">%d ladattua jaksoa poistettu.</item>
+    </plurals>
+    <string name="episode_download_failed">Jakson lataus epäonnistui</string>
+    <plurals name="time_hours_quantified">
+        <item quantity="one">%d tunti</item>
+        <item quantity="other">%d tuntia</item>
+    </plurals>
+    <plurals name="episode_cleanup_hours_after_listening">
+        <item quantity="one">%d tunti lopettamisen jälkeen</item>
+        <item quantity="other">%d tuntia lopettamisen jälkeen</item>
+    </plurals>
+    <plurals name="time_seconds_quantified">
+        <item quantity="one">%d sekunti</item>
+        <item quantity="other">%d sekuntia</item>
+    </plurals>
+    <plurals name="time_minutes_quantified">
+        <item quantity="one">%d minuutti</item>
+        <item quantity="other">%d minuuttia</item>
+    </plurals>
 </resources>
