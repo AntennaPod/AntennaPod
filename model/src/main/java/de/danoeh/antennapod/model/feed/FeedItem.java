@@ -7,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -46,7 +45,6 @@ public class FeedItem implements Serializable {
     private String socialInteractUrl;
     private String podcastIndexTranscriptUrl;
     private String podcastIndexTranscriptType;
-    private String podcastIndexTranscriptText;
     private Transcript transcript;
 
     private int state;
@@ -457,53 +455,15 @@ public class FeedItem implements Serializable {
         return podcastIndexTranscriptType;
     }
 
-    public void updateTranscriptPreferredFormat(String type, String url) {
-        if (StringUtils.isEmpty(type) || StringUtils.isEmpty(url)) {
+    public void updateTranscriptPreferredFormat(String typeStr, String url) {
+        if (StringUtils.isEmpty(typeStr) || StringUtils.isEmpty(url)) {
             return;
         }
-
-        String canonicalSrr = "application/srr";
-        String jsonType = "application/json";
-        String vttType = "text/vtt";
-
-        // We prefer JSON over VTT over SRT
-        HashMap<String, Integer> typePriority = new HashMap<String, Integer>();
-        typePriority.put(jsonType, 2);
-        typePriority.put(vttType, 1);
-        typePriority.put(canonicalSrr, 0);
-
-        // First let's detect exactly what type was given in input
-        String detectedType = "";
-        switch (type) {
-            case "application/json":
-                detectedType = jsonType;
-                break;
-            case "text/vtt":
-                detectedType = vttType;
-                break;
-            case "application/srr":
-            case "application/srt":
-            case "application/x-subrip":
-                detectedType = canonicalSrr;
-                break;
-            default:
-                break;
-        }
-
-        // Do the update, but only if the new type has more priority than the existing one
-        if (!detectedType.isEmpty()) {
-            Integer previousPriority = typePriority.get(podcastIndexTranscriptType);
-            Integer currentPriority = typePriority.get(detectedType);
-            if (previousPriority == null) {
-                previousPriority = -1;
-            }
-            if (currentPriority == null) {
-                currentPriority = -1;
-            }
-            if (previousPriority < currentPriority) {
-                podcastIndexTranscriptUrl = url;
-                podcastIndexTranscriptType = detectedType;
-            }
+        TranscriptType type = TranscriptType.fromMime(typeStr);
+        TranscriptType previousType = TranscriptType.fromMime(podcastIndexTranscriptType);
+        if (type.priority > previousType.priority) {
+            podcastIndexTranscriptUrl = url;
+            podcastIndexTranscriptType = type.canonicalMime;
         }
     }
 
@@ -513,14 +473,6 @@ public class FeedItem implements Serializable {
 
     public void setTranscript(Transcript t) {
         transcript = t;
-    }
-
-    public String getPodcastIndexTranscriptText() {
-        return podcastIndexTranscriptText;
-    }
-
-    public String setPodcastIndexTranscriptText(String str) {
-        return podcastIndexTranscriptText = str;
     }
 
     public boolean hasTranscript() {
