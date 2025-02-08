@@ -399,11 +399,12 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         builder.setTitle(R.string.edit_url_menu);
         final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
         if (downloader != null) {
-            dialogBinding.urlEditText.setText(downloader.getDownloadRequest().getSource());
+            dialogBinding.textInput.setText(downloader.getDownloadRequest().getSource());
+            dialogBinding.textInput.setHint(R.string.rss_address);
         }
         builder.setView(dialogBinding.getRoot());
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            lookupUrlAndDownload(dialogBinding.urlEditText.getText().toString());
+            lookupUrlAndDownload(dialogBinding.textInput.getText().toString());
         });
         builder.setNegativeButton(R.string.cancel_label, (dialog1, which) -> dialog1.cancel());
         builder.setOnCancelListener(dialog1 -> {
