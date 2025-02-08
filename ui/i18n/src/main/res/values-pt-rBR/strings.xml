@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Atualizar assinaturas</string>
-    <string name="feeds_label">Podcasts</string>
     <string name="statistics_label">Estatísticas</string>
     <string name="add_feed_label">Adicionar podcast</string>
     <string name="episodes_label">Episódios</string>
@@ -12,14 +11,13 @@
     <string name="favorite_episodes_label">Favoritos</string>
     <string name="settings_label">Configurações</string>
     <string name="downloads_label">Downloads</string>
-    <string name="open_autodownload_settings">Abrir as configurações</string>
     <string name="downloads_log_label">Registro de downloads</string>
     <string name="subscriptions_label">Assinaturas</string>
     <string name="subscriptions_list_label">Lista de assinaturas (apenas menu lateral)</string>
     <string name="cancel_download_label">Cancelar download</string>
     <string name="playback_history_label">Histórico de reprodução</string>
     <string name="episode_cache_full_title">Cache de episódios cheio</string>
-    <string name="episode_cache_full_message">O limite de cache do episódio foi atingido. Você pode aumentar o tamanho do cache nas Configurações.</string>
+    <string name="episode_cache_full_message">O limite de cache de episódios foi alcançado. Você pode aumentar o tamanho do cache em Configurações.</string>
     <string name="years_statistics_label">Anos</string>
     <string name="notification_pref_fragment">Notificações</string>
     <string name="current_playing_episode">Atual</string>
@@ -695,7 +693,6 @@
     <string name="exclude_episodes_shorter_than">Excluir episódios mais curtos que</string>
     <string name="keep_updated">Manter atualizado</string>
     <string name="keep_updated_summary">Incluir este podcast ao atualizar (automaticamente) todos os podcasts</string>
-    <string name="auto_download_disabled_globally">O download automático está desativado nas configurações principais do AntennaPod</string>
     <string name="statistics_expected_next_episode_any_day">A qualquer momento</string>
     <string name="statistics_expected_next_episode_unknown">Desconhecido</string>
     <string name="edit_url_menu">Editar URL do feed</string>
@@ -764,7 +761,6 @@
   <string name="proxy_type_label">Tipo</string>
     <string name="host_label">Servidor</string>
     <string name="port_label">Porta</string>
-    <string name="optional_hint">(Opcional)</string>
     <string name="proxy_test_label">Testar</string>
     <string name="proxy_checking">Verificando…</string>
     <string name="proxy_test_successful">Teste realizado com sucesso</string>
@@ -821,7 +817,6 @@
     <string name="nextcloud_login_error_generic">Não foi possível entrar na sua Nextcloud.\n\n- Confira sua conexão à rede.\n- Confirme que esteja usando o endereço correto do servidor.\n- Tenha certeza de que o plugin gpoddersync esteja instalado na Nextcloud.</string>
     <string name="statistics_episodes_total">total</string>
     <string name="statistics_episodes_started">iniciados</string>
-    <string name="statistics_episodes_played">tocadas</string>
     <string name="statistics_episodes_downloaded">baixados</string>
     <string name="statistics_years_barchart_description">Tempo escutado por mês</string>
     <string name="feed_delete_confirmation_local_msg">Confirme que deseja excluir o podcast \"%1$s\", seu histórico de reprodução e suas estatísticas. Os arquivos na pasta local de origem não serão removidos.</string>

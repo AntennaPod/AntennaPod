@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Actualizar Suscripciones</string>
-    <string name="feeds_label">Pódcasts</string>
     <string name="statistics_label">Estadísticas</string>
     <string name="add_feed_label">Añadir pódcast</string>
     <string name="episodes_label">Episodios</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Favoritos</string>
     <string name="settings_label">Ajustes</string>
     <string name="downloads_label">Descargas</string>
-    <string name="open_autodownload_settings">Abrir ajustes</string>
     <string name="downloads_log_label">Registro de descargas</string>
     <string name="subscriptions_label">Suscripciones</string>
     <string name="subscriptions_list_label">Lista de suscripciones (solo en el menú lateral)</string>
     <string name="cancel_download_label">Cancelar descarga</string>
     <string name="playback_history_label">Historial de reproducciones</string>
-    <string name="episode_cache_full_title">Caché de episodios llena</string>
-    <string name="episode_cache_full_message">Se alcanzó el límite de la caché de episodios. Puede aumentar el tamaño en Configuración.</string>
     <string name="years_statistics_label">Años</string>
     <string name="notification_pref_fragment">Notificaciones</string>
     <string name="current_playing_episode">Actual</string>
@@ -364,7 +360,7 @@
     <string name="interruptions">Interrupciones</string>
     <string name="playback_control">Control de reproducción</string>
     <string name="reassign_hardware_buttons">Reasignar botones físicos</string>
-    <string name="preference_search_hint">Buscar...</string>
+    <string name="preference_search_hint">Buscar…</string>
     <string name="preference_search_no_results">Sin resultados</string>
     <string name="preference_search_clear_history">Borrar historial</string>
     <string name="pref_episode_cleanup_title">Borrar antes de auto-descargar</string>
@@ -527,10 +523,10 @@
     <string name="search_online">Buscar en línea</string>
     <!--Synchronization-->
   <string name="sync_status_started">Sincronización iniciada</string>
-    <string name="sync_status_episodes_upload">Subiendo cambios de episodio...</string>
-    <string name="sync_status_episodes_download">Descargando cambios de episodios...</string>
-    <string name="sync_status_upload_played">Subiendo estado de reproducción...</string>
-    <string name="sync_status_subscriptions">Sincronizando suscripciones...</string>
+    <string name="sync_status_episodes_upload">Subiendo cambios de episodio…</string>
+    <string name="sync_status_episodes_download">Descargando cambios de episodios…</string>
+    <string name="sync_status_upload_played">Subiendo estado de reproducción…</string>
+    <string name="sync_status_subscriptions">Sincronizando suscripciones…</string>
     <string name="sync_status_success">Sincronización exitosa</string>
     <string name="sync_status_error">Error en la sincronización</string>
     <!--import and export-->
@@ -557,7 +553,7 @@
     <string name="automatic_database_export_error">Error al realizar el backup automático de la base de datos</string>
     <string name="database_import_label">Importar base de datos</string>
     <string name="database_import_warning">La importación de una base de datos reemplazará todas las suscripciones actuales y el historial de reproducción. Debes exportar la base de datos actual como una copia de seguridad. ¿Quieres reemplazarla?</string>
-    <string name="please_wait">Por favor espera...</string>
+    <string name="please_wait">Por favor espera…</string>
     <string name="export_error_label">Error en la exportación</string>
     <string name="export_success_title">Exportación exitosa</string>
     <string name="opml_import_ask_read_permission">Necesita acceso al almacenamiento externo para leer archivos OPML</string>
@@ -694,7 +690,6 @@
     <string name="exclude_episodes_shorter_than">Excluir episodios más cortos que</string>
     <string name="keep_updated">Mantener actualizado</string>
     <string name="keep_updated_summary">Incluir este podcast cuando se (auto-)refresquen todas las fuentes</string>
-    <string name="auto_download_disabled_globally">La descarga automática está deshabilitada en las preferencias generales de AntennaPod</string>
     <string name="statistics_expected_next_episode_any_day">En cualquier momento</string>
     <string name="statistics_expected_next_episode_unknown">Desconocido</string>
     <string name="edit_url_menu">Editar URL del canal</string>
@@ -715,7 +710,7 @@
     <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importando suscripciones de aplicaciones de uso específico…</string>
     <!--Add podcast fragment-->
-  <string name="search_podcast_hint">Buscar podcast...</string>
+  <string name="search_podcast_hint">Buscar podcast…</string>
     <string name="search_itunes_label">Buscar en Apple Podcasts</string>
     <string name="search_podcastindex_label">Buscar en Podcast Index</string>
     <string name="search_fyyd_label">Buscar en fyyd</string>
@@ -763,7 +758,6 @@
   <string name="proxy_type_label">Tipo</string>
     <string name="host_label">Host</string>
     <string name="port_label">Puerto</string>
-    <string name="optional_hint">(Opcional)</string>
     <string name="proxy_test_label">Test</string>
     <string name="proxy_checking">Comprobando…</string>
     <string name="proxy_test_successful">Test correcto</string>
@@ -807,7 +801,6 @@
     </plurals>
     <string name="pref_nav_drawer_items_sum">Cambiar qué elementos aparecen en el cajón de navegación o en la navegación inferior</string>
     <string name="statistics_view_all">Todos los podcasts »</string>
-    <string name="statistics_episodes_played">reproducido</string>
     <string name="statistics_episodes_space">espacio ocupado</string>
     <string name="home_no_recent_unplayed_episodes_text">Ya has reproducido todos los episodios recientes. Nada de que sorprenderse aquí ;)</string>
     <string name="statistics_release_schedule">calendario de lanzamiento</string>
@@ -836,17 +829,14 @@
     <string name="episode_download_failed">Error al descargar el episodio</string>
     <string name="echo_home_header">Revisa el año</string>
     <string name="echo_home_subtitle">Tus mejores pódcasts y estadísticas del año pasado. Exclusivamente en tu teléfono.</string>
-
     <string name="echo_intro_your_year">Tu año</string>
     <string name="echo_intro_in_podcasts">en pódcasts</string>
     <string name="echo_intro_locally">generado de forma privada en tu teléfono</string>
-
     <string name="echo_hours_this_year">Este año has reproducido</string>
     <plurals name="echo_hours_podcasts">
         <item quantity="one">horas de episodios\nde %1$d pódcast</item>
         <item quantity="other">horas de episodios\nde %1$d pódcasts diferentes</item>
     </plurals>
-
     <string name="echo_queue_title_clean">Y estás listo para empezar el año de nuevo. Tienes</string>
     <string name="echo_queue_title_many">Y aún te queda bastante este año. Tienes</string>
     <plurals name="echo_queue_hours_waiting">
@@ -856,12 +846,10 @@
     <string name="echo_queue_hours_clean">Eso es alrededor de %1$s cada día hasta que empiece %2$d</string>
     <string name="echo_queue_hours_normal">Eso son %1$s cada día hasta que empiece %2$d. Puedes empezar el año de cero si te saltas algunos episodios.</string>
     <string name="echo_queue_hours_much">Eso son %1$s cada día hasta que empiece %2$d. Espera, ¿qué?</string>
-
     <string name="echo_listened_after_title">Hemos analizado cuándo se publican los episodios y cuándo los completaste. ¿Nuestra conclusión?</string>
     <string name="echo_listened_after_comment_easy">Eres relajado</string>
     <string name="echo_listened_after_time">Normalmente, completaste un episodio %1$s después de su publicación.</string>
     <string name="echo_listened_after_comment_addict">Eres un adicto a los pódcasts</string>
-
     <string name="echo_hoarder_title">También nos hemos preguntado: ¿Escuchas los pódcasts a los que estás suscrito?</string>
     <string name="echo_hoarder_subtitle_hoarder">Viendo los números, creemos que eres un acumulador</string>
     <string name="echo_hoarder_comment_hoarder">Dicen que los números no mienten. Y con solo %1$d%% de tus %2$d suscripciones activas reproducidas este año, probablemente tengamos razón.</string>
@@ -869,12 +857,10 @@
     <string name="echo_hoarder_comment_medium">Has reproducido episodios de %1$d%% de tus %2$d suscripciones activas este año. ¿Qué tal si vuelves a escuchar \"%3$s\"?</string>
     <string name="echo_hoarder_subtitle_clean">¡Limpio!</string>
     <string name="echo_hoarder_comment_clean">Has reproducido episodios de %1$d%% de tus %2$d suscripciones activas este año. ¡Apostamos que también mantienes limpio tu escritorio!</string>
-
     <string name="echo_thanks_large">¡Gracias</string>
     <string name="echo_thanks_we_are_glad_old">por estar con nosotros este año!\n\nReproduciste tu primer episodio con nosotros en %1$s. Ha sido un honor servirte desde entonces.</string>
     <string name="echo_thanks_we_are_glad_new">por unirte a nosotros este año!\n\nWTanto si vienes de otra aplicación como si has empezado tu aventura con los pódcasts con nosotros, ¡Estamos encantados de tenerte!</string>
     <string name="echo_thanks_now_favorite">Ahora, echemos un vistazo a tus pódcasts favoritos…</string>
-
     <string name="echo_share_heading">Mis pódcasts favoritos</string>
     <string name="echo_share">Mi año %d en pódcasts. #AntennaPodEcho</string>
 </resources>

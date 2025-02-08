@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Atualizar subscrições</string>
-    <string name="feeds_label">Podcasts</string>
     <string name="statistics_label">Estatísticas</string>
     <string name="add_feed_label">Adicionar podcast</string>
     <string name="episodes_label">Episódios</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Favoritos</string>
     <string name="settings_label">Definições</string>
     <string name="downloads_label">Descargas</string>
-    <string name="open_autodownload_settings">Abrir definições</string>
     <string name="downloads_log_label">Registo de descargas</string>
     <string name="subscriptions_label">Subscrições</string>
     <string name="subscriptions_list_label">Lista de subscrições (apenas menu lateral)</string>
     <string name="cancel_download_label">Cancelar descarga</string>
     <string name="playback_history_label">Histórico de reprodução</string>
-    <string name="episode_cache_full_title">Cache de episódios cheia</string>
-    <string name="episode_cache_full_message">Atingiu o limite máximo de itens em cache. Pode aumentar o tamanho da cache nas definições.</string>
     <string name="years_statistics_label">Anos</string>
     <string name="notification_pref_fragment">Notificações</string>
     <string name="current_playing_episode">Atual</string>
@@ -695,7 +691,7 @@
     <string name="exclude_episodes_shorter_than">Excluir episódios com duração inferior a</string>
     <string name="keep_updated">Manter atualizada</string>
     <string name="keep_updated_summary">Incluir este podcast ao atualizar (automaticamente) todos os podcasts</string>
-    <string name="auto_download_disabled_globally">A descarga automática está desativada nas definições AntennaPod</string>
+    <string name="auto_download_disabled_globally">A transferência automática está desativada nas definições AntennaPod</string>
     <string name="statistics_expected_next_episode_any_day">Qualquer dia</string>
     <string name="statistics_expected_next_episode_unknown">Desconhecido</string>
     <string name="edit_url_menu">Editar URL</string>
@@ -764,7 +760,6 @@
   <string name="proxy_type_label">Tipo</string>
     <string name="host_label">Servidor</string>
     <string name="port_label">Porta</string>
-    <string name="optional_hint">(Opcional)</string>
     <string name="proxy_test_label">Testar</string>
     <string name="proxy_checking">A verificar…</string>
     <string name="proxy_test_successful">Teste bem sucedido</string>
@@ -830,7 +825,7 @@
     <string name="bottom_navigation_summary">Funcionalidade Beta: aceda aos ecrãs mais importantes em qualquer lado com apenas um toque</string>
     <string name="bottom_navigation">Navegação em baixo</string>
     <string name="statistics_episodes_total">total</string>
-    <string name="statistics_episodes_played">reproduzidas</string>
+    <string name="statistics_episodes_played">reproduzido</string>
     <string name="statistics_episodes_space">espaço ocupado</string>
     <string name="statistics_years_barchart_description">Tempo de reprodução (por mês)</string>
     <string name="statistics_episodes_downloaded">descarregados</string>

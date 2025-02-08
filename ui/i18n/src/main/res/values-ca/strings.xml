@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Actualitza les subscripcions</string>
-    <string name="feeds_label">Pòdcasts</string>
     <string name="statistics_label">Estadístiques</string>
     <string name="add_feed_label">Afegeix pòdcast</string>
     <string name="episodes_label">Episodis</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Preferits</string>
     <string name="settings_label">Configuració</string>
     <string name="downloads_label">Baixades</string>
-    <string name="open_autodownload_settings">Obre la configuració</string>
     <string name="downloads_log_label">Registre de baixades</string>
     <string name="subscriptions_label">Subscripcions</string>
     <string name="subscriptions_list_label">Llista de subscripcions (només al menu lateral)</string>
     <string name="cancel_download_label">Cancel·la la baixada</string>
     <string name="playback_history_label">Historial de reproducció</string>
-    <string name="episode_cache_full_title">La memòria cau d\'episodis és plena</string>
-    <string name="episode_cache_full_message">S\'ha arribat al límit de la memòria cau d\'episodis. Pots incrementar-ne la capacitat a la configuració.</string>
     <string name="years_statistics_label">Anys</string>
     <string name="notification_pref_fragment">Notificacions</string>
     <string name="current_playing_episode">Actual</string>
@@ -513,9 +509,9 @@
     <!--Synchronization-->
   <string name="sync_status_started">Sincronització començada</string>
     <string name="sync_status_episodes_upload">Pujant canvis d\'episodi</string>
-    <string name="sync_status_episodes_download">Descarregant canvis d\'episodi...</string>
-    <string name="sync_status_upload_played">Pujant estat de reproducció...</string>
-    <string name="sync_status_subscriptions">Sincronitzant subscripcions...</string>
+    <string name="sync_status_episodes_download">Descarregant canvis d\'episodi…</string>
+    <string name="sync_status_upload_played">Pujant estat de reproducció…</string>
+    <string name="sync_status_subscriptions">Sincronitzant subscripcions…</string>
     <string name="sync_status_success">Sincronització exitosa</string>
     <string name="sync_status_error">Sincronització fallida</string>
     <!--import and export-->
@@ -542,7 +538,7 @@
     <string name="automatic_database_export_error">Hi ha hagut un error durant l\'exportació de la base de dades</string>
     <string name="database_import_label">Importa base de dades</string>
     <string name="database_import_warning">Importar una base de dades reemplaçarà totes les teues subscripcions i històric de reproducció. Deuries exportar la teua base de dades com a còpia de seguretat. Vols reemplaçar?</string>
-    <string name="please_wait">Per favor, espera...</string>
+    <string name="please_wait">Per favor, espera…</string>
     <string name="export_error_label">Error d\'exportació</string>
     <string name="export_success_title">Exportació correcta</string>
     <string name="opml_import_ask_read_permission">Per llegir arxius OPML és necessari accés a la memòria externa</string>
@@ -677,7 +673,6 @@
     <string name="exclude_episodes_shorter_than">Exclou episodis més curts que</string>
     <string name="keep_updated">Mantenir actualitzat</string>
     <string name="keep_updated_summary">Incloure aquest pòdcast quan (auto-)actualitzen tots els podcasts</string>
-    <string name="auto_download_disabled_globally">La baixada automàtica està deshabilitada als ajustos generals d\'AntennaPod</string>
     <string name="statistics_expected_next_episode_any_day">Aviat</string>
     <string name="statistics_expected_next_episode_unknown">Desconegut</string>
     <string name="edit_url_menu">Edita l\'enllaç del canal</string>
@@ -696,7 +691,7 @@
     <string name="release_schedule_saturday">ds.</string>
     <string name="release_schedule_sunday">dg.</string>
     <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">S\'estan important les subscripcions des de les apps de propòsit únic...</string>
+  <string name="sp_apps_importing_feeds_msg">S\'estan important les subscripcions des de les apps de propòsit únic…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Cerca pòdcast…</string>
     <string name="search_itunes_label">Cerca a Apple Podcasts</string>
@@ -746,9 +741,8 @@
   <string name="proxy_type_label">Tipus</string>
     <string name="host_label">Host</string>
     <string name="port_label">Port</string>
-    <string name="optional_hint">(Opcional)</string>
     <string name="proxy_test_label">Test</string>
-    <string name="proxy_checking">Comprovant...</string>
+    <string name="proxy_checking">Comprovant…</string>
     <string name="proxy_test_successful">Test correcte</string>
     <string name="proxy_test_failed">Test fallit</string>
     <string name="proxy_host_empty_error">El host no pot estar buit</string>

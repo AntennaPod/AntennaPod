@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Aktualizuj subskrypcje</string>
-    <string name="feeds_label">Podcasty</string>
     <string name="statistics_label">Statystyki</string>
     <string name="add_feed_label">Dodaj podcast</string>
     <string name="episodes_label">Odcinki</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Ulubione</string>
     <string name="settings_label">Ustawienia</string>
     <string name="downloads_label">Pobrane</string>
-    <string name="open_autodownload_settings">Otwórz ustawienia</string>
     <string name="downloads_log_label">Dziennik pobierania</string>
     <string name="subscriptions_label">Subskrypcje</string>
     <string name="subscriptions_list_label">Lista subskrypcji</string>
     <string name="cancel_download_label">Anuluj pobieranie</string>
     <string name="playback_history_label">Historia odtwarzania</string>
-    <string name="episode_cache_full_title">Pełna pamięć cache</string>
-    <string name="episode_cache_full_message">Limit pamięci cache został osiągnięty. Możesz zwiększyć pojemność cache w ustawieniach aplikacji.</string>
     <string name="years_statistics_label">Lata</string>
     <string name="notification_pref_fragment">Powiadomienia</string>
     <string name="current_playing_episode">Obecnie odtwarzany</string>
@@ -137,10 +133,10 @@
     <string name="episode_notification">Powiadomienia odcinka</string>
     <string name="episode_notification_summary">Pokaż powiadomienie gdy nowy odcinek jest udostępniony</string>
     <plurals name="new_episode_notification_message">
-        <item quantity="one">%2$s ma nowy odcinek</item>
-        <item quantity="few">%2$s ma nowe odcinki</item>
-        <item quantity="many">%2$s ma nowe odcinki</item>
-        <item quantity="other">%2$s ma nowe odcinki</item>
+        <item quantity="one">%2$s ma nowy odcinek%2$s ma nowe odcinki%2$s ma nowe odcinki</item>
+        <item quantity="few"></item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
     </plurals>
     <plurals name="new_episode_notification_title">
         <item quantity="one">Nowy odcinek</item>
@@ -517,10 +513,10 @@
     <string name="search_online">Szukaj online</string>
     <!--Synchronization-->
   <string name="sync_status_started">Rozpoczęto synchronizację</string>
-    <string name="sync_status_episodes_upload">Wysyłanie zmian odcinków...</string>
-    <string name="sync_status_episodes_download">Pobieranie zmian odcinków...</string>
-    <string name="sync_status_upload_played">Wysyłanie statusu odtworzeń...</string>
-    <string name="sync_status_subscriptions">Synchronizowanie subskrypcji...</string>
+    <string name="sync_status_episodes_upload">Wysyłanie zmian odcinków…</string>
+    <string name="sync_status_episodes_download">Pobieranie zmian odcinków…</string>
+    <string name="sync_status_upload_played">Wysyłanie statusu odtworzeń…</string>
+    <string name="sync_status_subscriptions">Synchronizowanie subskrypcji…</string>
     <string name="sync_status_success">Synchronizacja udana</string>
     <string name="sync_status_error">Synchronizacja nie powiodła się</string>
     <!--import and export-->
@@ -545,7 +541,7 @@
     <string name="automatic_database_export_summary">Stwórz kopię zapasową bazy danych AntennaPod co 3 dni. Zachowaj tylko 5 najnowszych kopii.</string>
     <string name="database_import_label">Import bazy danych</string>
     <string name="database_import_warning">Import bazy danych nadpisze wszystkie twoje aktualne subskrypcje i historię odtworzeń. Zalecany jest eksport aktualnej bazy danych jako kopia zapasowa. Czy chcesz zamienić?</string>
-    <string name="please_wait">Proszę czekać...</string>
+    <string name="please_wait">Proszę czekać…</string>
     <string name="export_error_label">Błąd eksportu</string>
     <string name="export_success_title">Export zakończony powodzeniem</string>
     <string name="opml_import_ask_read_permission">Dostęp do zewnętrznej pamięci jest potrzebny do odczytywania plików OPML</string>
@@ -654,7 +650,6 @@
     <string name="exclude_episodes_shorter_than">Wyklucz odcinki krótsze niż</string>
     <string name="keep_updated">Utrzymuj zaktualizowany</string>
     <string name="keep_updated_summary">Uwzględnij ten podcast przy (automatycznym) odświeżaniu wszystkich kanałów</string>
-    <string name="auto_download_disabled_globally">Automatyczne pobieranie jest wyłączone w globalnych ustawieniach AntennaPod</string>
     <string name="statistics_expected_next_episode_any_day">Wkrótce</string>
     <string name="edit_url_menu">Edytuj adres kanału</string>
     <!--Podcast release schedules-->
@@ -720,9 +715,8 @@
   <string name="proxy_type_label">Typ</string>
     <string name="host_label">Host</string>
     <string name="port_label">Port</string>
-    <string name="optional_hint">(Dodatkowe)</string>
     <string name="proxy_test_label">Test</string>
-    <string name="proxy_checking">Sprawdzanie...</string>
+    <string name="proxy_checking">Sprawdzanie…</string>
     <string name="proxy_test_successful">Test zakończony powodzeniem</string>
     <string name="proxy_test_failed">Test zakończony niepowodzeniem</string>
     <string name="proxy_host_empty_error">Host nie może być pusty!</string>
@@ -826,7 +820,6 @@
     <string name="statistics_release_schedule">termin publikowania</string>
     <string name="statistics_years_barchart_description">Miesięczny czas odtwarzania</string>
     <string name="statistics_episodes_started">zaczęty(ch)</string>
-    <string name="statistics_episodes_played">odtworzony(ch)</string>
     <string name="statistics_episodes_downloaded">pobrany(ch)</string>
     <plurals name="episode_cleanup_days_after_listening">
         <item quantity="one">%d dzień po zakończeniu</item>

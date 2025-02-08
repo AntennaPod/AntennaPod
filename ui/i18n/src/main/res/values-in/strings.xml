@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="feeds_label">Podcast</string>
     <string name="statistics_label">Statistik</string>
     <string name="add_feed_label">Tambahkan podcast</string>
     <string name="episodes_label">Episode</string>
@@ -10,11 +9,8 @@
     <string name="favorite_episodes_label">Favorit</string>
     <string name="settings_label">Pengaturan</string>
     <string name="downloads_label">Unduhan</string>
-    <string name="open_autodownload_settings">Buka pengaturan</string>
     <string name="subscriptions_label">Langganan</string>
     <string name="playback_history_label">Riwayat Putar</string>
-    <string name="episode_cache_full_title">Cache episode penuh</string>
-    <string name="episode_cache_full_message">Batas tembolok episode telah tercapai. Anda dapat meningkatkan ukuran tembolok pada Pengaturan.</string>
     <string name="years_statistics_label">Tahun</string>
     <string name="notification_pref_fragment">Notifikasi</string>
     <!--Google Assistant-->
@@ -249,7 +245,7 @@
     <string name="interruptions">Gangguan</string>
     <string name="playback_control">Kontrol pemutaran</string>
     <string name="reassign_hardware_buttons">Tetapkan ulang tombol perangkat</string>
-    <string name="preference_search_hint">Cari...</string>
+    <string name="preference_search_hint">Cari…</string>
     <string name="preference_search_no_results">Tidak ditemukan</string>
     <string name="preference_search_clear_history">Bersihkan riwayat</string>
     <string name="pref_episode_cleanup_summary">Episode yang memenuhi syarat untuk penghapusan jika Pengunduhan Otomatis membutuhkan ruang untuk episode baru</string>
@@ -366,10 +362,10 @@
     <string name="no_results_for_query">Tidak ada hasil yang ditemukan untuk \"%1$s\"`</string>
     <!--Synchronization-->
   <string name="sync_status_started">Sinkronisasi dijalankan</string>
-    <string name="sync_status_episodes_upload">Mengunggah perubahan pada episode...</string>
-    <string name="sync_status_episodes_download">Mengunduh perubahan pada episode...</string>
-    <string name="sync_status_upload_played">Mengunggah status diputar...</string>
-    <string name="sync_status_subscriptions">Sedang menyinkronisasikan langganan...</string>
+    <string name="sync_status_episodes_upload">Mengunggah perubahan pada episode…</string>
+    <string name="sync_status_episodes_download">Mengunduh perubahan pada episode…</string>
+    <string name="sync_status_upload_played">Mengunggah status diputar…</string>
+    <string name="sync_status_subscriptions">Sedang menyinkronisasikan langganan…</string>
     <string name="sync_status_success">Sinkronisasi sukses!</string>
     <string name="sync_status_error">Sinkronisasi gagal..</string>
     <!--import and export-->
@@ -392,7 +388,7 @@
     <string name="database_export_label">Ekspor Database</string>
     <string name="database_import_label">Import Database</string>
     <string name="database_import_warning">Mengimpor database akan menggantikan seluruh langganan dan riwayat pemutaran Anda. Anda sebaiknya mengekspor database yang sekarang Anda miliki sebagai cadangan. Tetap lanjutkan?</string>
-    <string name="please_wait">Mohon tunggu...</string>
+    <string name="please_wait">Mohon tunggu…</string>
     <string name="export_error_label">Kesalahan ekspor</string>
     <string name="export_success_title">Ekspor berhasil</string>
     <string name="opml_import_ask_read_permission">Akses ke penyimpanan eksternal diperlukan untuk membaca berkas OPML</string>
@@ -482,12 +478,11 @@
     <string name="include_terms">Masukkan hanya jika episode berisikan istilah yang ditentukan di bawah</string>
     <string name="exclude_episodes_shorter_than">Kecualikan episode yang lebih pendek dari</string>
     <string name="keep_updated_summary">Sertakan podcast ini saat (otomatis) menyegarkan semua podcast</string>
-    <string name="auto_download_disabled_globally">Unduh otomatis dinonaktifkan di pengaturan AntennaPod utama</string>
     <string name="edit_url_menu">Sunting URL umpan</string>
     <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Impor langganan dari aplikasi bertujuan tunggal...</string>
+  <string name="sp_apps_importing_feeds_msg">Impor langganan dari aplikasi bertujuan tunggal…</string>
     <!--Add podcast fragment-->
-  <string name="search_podcast_hint">Cari podcast...</string>
+  <string name="search_podcast_hint">Cari podcast…</string>
     <string name="search_fyyd_label">Cari fyyd</string>
     <string name="discover">Temukan</string>
     <string name="discover_hide">Sembunyikan</string>
@@ -531,9 +526,8 @@
   <string name="proxy_type_label">Tipe</string>
     <string name="host_label">Host</string>
     <string name="port_label">Port</string>
-    <string name="optional_hint">(Opsional)</string>
     <string name="proxy_test_label">Tes</string>
-    <string name="proxy_checking">Memeriksa...</string>
+    <string name="proxy_checking">Memeriksa…</string>
     <string name="proxy_test_successful">Tes berhasil</string>
     <string name="proxy_test_failed">Tes gagal</string>
     <string name="proxy_host_empty_error">Host tidak bisa kosong</string>

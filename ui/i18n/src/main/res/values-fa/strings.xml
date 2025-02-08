@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">به‌روز رسانی اشتراک‌ها</string>
-    <string name="feeds_label">پادپخش‌ها</string>
     <string name="statistics_label">آمار</string>
     <string name="add_feed_label">افزودن پادپخش</string>
     <string name="episodes_label">قسمت‌ها</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">محبوب‌ها</string>
     <string name="settings_label">تنظیمات</string>
     <string name="downloads_label">بارگیری‌ها</string>
-    <string name="open_autodownload_settings">گشودن تنظمیات</string>
     <string name="downloads_log_label">گزارش بارگیری</string>
     <string name="subscriptions_label">اشتراک‌ها</string>
     <string name="subscriptions_list_label">سیاههٔ اشتراک‌ها</string>
     <string name="cancel_download_label">لغو بارگیری</string>
     <string name="playback_history_label">تاریخچهٔ پخش</string>
-    <string name="episode_cache_full_title">انبارهٔ قسمت پر شده</string>
-    <string name="episode_cache_full_message">تجاوز از کران انبارهٔ قسمت. می‌توانید اندازهٔ انباره را در تنظیمات افزایش دهید.</string>
     <string name="years_statistics_label">سال</string>
     <string name="notification_pref_fragment">آگاهی‌ها</string>
     <string name="current_playing_episode">فعلی</string>
@@ -621,7 +617,6 @@
     <string name="exclude_episodes_shorter_than">حذف قسمت‌های کوتاه‌تر از</string>
     <string name="keep_updated">به‌روز ماندن</string>
     <string name="keep_updated_summary">شامل شدن این پادپخش هنگام نوسازی (خودکار) همهٔ پادپخش‌ها</string>
-    <string name="auto_download_disabled_globally">بارگیری خودکار در تنظیمات اصلی آنتن پاد غیرفعال است</string>
     <string name="statistics_expected_next_episode_any_day">همین روزها</string>
     <string name="statistics_expected_next_episode_unknown">نانعلوم</string>
     <string name="edit_url_menu">URL فید را ویرایش کنید</string>
@@ -689,7 +684,6 @@
   <string name="proxy_type_label">نوع</string>
     <string name="host_label">میزبان</string>
     <string name="port_label">پورت</string>
-    <string name="optional_hint">(اختیاری)</string>
     <string name="proxy_test_label">تست</string>
     <string name="proxy_checking">چک کردن…</string>
     <string name="proxy_test_successful">تست موفق بود</string>
@@ -744,7 +738,6 @@
     <string name="fast_forward_label">پیشبرد سریع</string>
     <string name="home_new_empty_text">قسمت‌های جدید این‌جا ظاهر خواهند شد. می‌توانید تصمیم بگیرید که به آن‌ها علاقه دارید یا نه.</string>
     <string name="bottom_navigation_summary">ویژگی آزمایشی: دسترسی به مهم‌ترین صفحه‌ها از هرجا با یک لمس</string>
-    <string name="statistics_episodes_played">پخش شده</string>
     <string name="pref_episode_cache_title">کران قسمت</string>
     <string name="clear_queue_confirmation_msg">لطفاً تأیید کنید که می‌خواهید همهٔ قسمت‌ها را از صف بردارید.</string>
     <string name="feed_delete_confirmation_local_msg">لطفاً تأیید کنید که می‌خواهید پادپخش «%1$s»، تاریخچهٔ پخش و آمارهایش را بردارید. پرونده‌های موجود در شاخهٔ منبع محلی حذف نخواهد شد.</string>

@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Abunəlikləri yeniləyin</string>
-    <string name="feeds_label">Podcastlar</string>
     <string name="statistics_label">Statistika</string>
     <string name="add_feed_label">Podkast əlavə edin</string>
     <string name="episodes_label">Bölümlər</string>
@@ -12,7 +11,6 @@
     <string name="favorite_episodes_label">Sevimlilər</string>
     <string name="settings_label">Ayarlar</string>
     <string name="downloads_label">Yükləmələr</string>
-    <string name="open_autodownload_settings">Ayarları açın</string>
     <string name="downloads_log_label">Yükləmə qeydiyyatı</string>
     <string name="subscriptions_label">Abunəliklər</string>
     <string name="subscriptions_list_label">Abunəlik siyahısı (yalnız yan menü)</string>

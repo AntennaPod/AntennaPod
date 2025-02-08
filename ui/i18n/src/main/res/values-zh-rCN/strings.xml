@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">更新订阅</string>
-    <string name="feeds_label">播客</string>
     <string name="statistics_label">统计</string>
     <string name="add_feed_label">添加播客</string>
     <string name="episodes_label">曲目</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">收藏</string>
     <string name="settings_label">设置</string>
     <string name="downloads_label">下载</string>
-    <string name="open_autodownload_settings">打开设置</string>
     <string name="downloads_log_label">下载日志</string>
     <string name="subscriptions_label">订阅</string>
     <string name="subscriptions_list_label">订阅列表（仅侧菜单）</string>
     <string name="cancel_download_label">取消下载</string>
     <string name="playback_history_label">播放历史</string>
-    <string name="episode_cache_full_title">节目缓存已满</string>
-    <string name="episode_cache_full_message">已达到节目缓存限制，可以在设置中提高缓存大小。</string>
     <string name="years_statistics_label">年</string>
     <string name="notification_pref_fragment">通知</string>
     <string name="current_playing_episode">当前</string>
@@ -52,7 +48,7 @@
     <string name="home_new_title">最近更新</string>
     <string name="home_downloads_title">管理下载</string>
     <string name="home_welcome_title">欢迎来到 AntennaPod！</string>
-    <string name="home_welcome_text">你尚未订阅任何播客。 打开侧栏菜单添加一个。</string>
+    <string name="home_welcome_text">你尚未订阅任何播客。 打开菜单添加一个。</string>
     <string name="notification_permission_denied">你拒绝了该权限。</string>
     <string name="configure_home">配置主屏幕</string>
     <string name="section_hidden">隐藏的</string>
@@ -135,7 +131,7 @@
         <item quantity="other">%d 期节目</item>
     </plurals>
     <string name="episode_notification">节目通知</string>
-    <string name="episode_notification_summary">当一期新节目发布时，显示一条通知。</string>
+    <string name="episode_notification_summary">当一期新节目发布时，显示一条通知</string>
     <plurals name="new_episode_notification_message">
         <item quantity="other">%2$s有 %1$d 期新节目</item>
     </plurals>
@@ -238,7 +234,7 @@
     <string name="download_error_insufficient_space">你的设备上剩余空间不足。</string>
     <string name="download_error_http_data_error">HTTP 数据错误</string>
     <string name="download_error_error_unknown">未知错误</string>
-    <string name="download_error_parser_exception">播客主机的服务器发送了一个损坏的播客源。</string>
+    <string name="download_error_parser_exception">播客主机的服务器发送了一个损坏的播客源。我们建议用 castfeedvalidator.com 这样的播客验证程序进行检查并联系播客创建人让其知晓这一情况。</string>
     <string name="download_error_unsupported_type">不受支持的源类型</string>
     <string name="download_error_unsupported_type_html">播客主机的服务器发送的是一个网站，不是播客。</string>
     <string name="download_error_not_found">播客主机的服务器不知道去哪里找到文件。它可能被删除了。</string>
@@ -267,7 +263,7 @@
     <string name="authentication_notification_title">需要认证</string>
     <string name="confirm_mobile_download_dialog_title">确认使用移动数据下载</string>
     <string name="confirm_mobile_download_dialog_message">设置中禁用了使用移动数据进行下载。当 Wi-Fi 可用时，AntennaPod 可以稍后自动下载节目。</string>
-    <string name="confirm_mobile_download_dialog_message_vpn">您的 VPN 应用自称是移动网络 (按流量计费连接)。在设置中禁用了通过移动数据连接下载。如果你想修复此问题，请联系 VPN 应用的创建者。</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">- 正在用 VPN 吗？你的 VPN 应用假装是一个移动网络（按流量计费连接）。如果你想修复该问题，请联系 VPN 应用创建者。.\n- 没在用 VPN？ 请打开安卓系统 Wi-Fi 设置并更改 Wi-Fi 类型为不按流量计费。</string>
     <string name="confirm_mobile_download_dialog_download_later">稍后下载</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">仍要下载</string>
     <string name="confirm_mobile_streaming_notification_title">确认使用移动数据进行在线播放</string>
@@ -418,7 +414,7 @@
     <string name="pref_playback_speed_sum">自定义可用于变速播放的速度</string>
     <string name="pref_feed_playback_speed_sum">开始播放此播客中剧集时使用的速度</string>
     <string name="pref_feed_skip">自动跳过</string>
-    <string name="pref_feed_skip_sum">跳过介绍和结尾致谢信息。</string>
+    <string name="pref_feed_skip_sum">跳过介绍和结尾致谢信息</string>
     <string name="pref_feed_skip_ending">跳过最后多少秒</string>
     <string name="pref_feed_skip_intro">跳过开头多少秒</string>
     <string name="pref_feed_skip_ending_toast">跳过最后%d秒</string>
@@ -642,7 +638,7 @@
     <string name="download_completed_talkback">%1$s 下载完成</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">验证</string>
-    <string name="authentication_descr">更改你用于此播客及其节目的用户名和密码。</string>
+    <string name="authentication_descr">更改你用于此播客及其节目的用户名和密码</string>
     <string name="feed_tags_label">标签</string>
     <string name="feed_tags_summary">更改此播客的标签，以帮助组织您的订阅</string>
     <string name="feed_folders_include_root">在主列表中显示此播客</string>
@@ -656,7 +652,6 @@
     <string name="exclude_episodes_shorter_than">排除持续了不到指定时间的节目</string>
     <string name="keep_updated">保持更新</string>
     <string name="keep_updated_summary">（自动）刷新所有播客时包括此播客</string>
-    <string name="auto_download_disabled_globally">AntennaPod主设置中已禁用自动下载</string>
     <string name="statistics_expected_next_episode_any_day">不久之后</string>
     <string name="statistics_expected_next_episode_unknown">未知</string>
     <string name="edit_url_menu">编辑订阅源 URL</string>
@@ -725,7 +720,6 @@
   <string name="proxy_type_label">类型</string>
     <string name="host_label">主机地址</string>
     <string name="port_label">端口</string>
-    <string name="optional_hint">（可选）</string>
     <string name="proxy_test_label">测试</string>
     <string name="proxy_checking">正在测试…</string>
     <string name="proxy_test_successful">测试成功</string>
@@ -741,8 +735,8 @@
     <string name="notification_group_news">新闻</string>
     <string name="notification_channel_user_action">需要操作</string>
     <string name="notification_channel_user_action_description">显示你的操作是否是必需的，比如是否需要您输入一个密码。</string>
-    <string name="notification_channel_downloading">正在下载</string>
-    <string name="notification_channel_downloading_description">下载时显示。</string>
+    <string name="notification_channel_downloading">正在下载节目</string>
+    <string name="notification_channel_downloading_description">下载节目时显示。</string>
     <string name="notification_channel_playing">当前播放</string>
     <string name="notification_channel_playing_description">允许控制回放。这是播放播客时您所见的主通知。</string>
     <string name="notification_channel_download_error">下载失败</string>
@@ -793,5 +787,67 @@
     <string name="home_no_recent_unplayed_episodes_text">你已经播放了近期全部的节目 ;)</string>
     <string name="mobile_download_notice">接下去 %d 分钟将使用移动数据连接下载</string>
     <string name="feed_delete_confirmation_msg_batch">请确认你想删除选中的播客，这些播客的所有节目（包括已下载的节目）、播放历史及它们的统计数字。</string>
-    <string name="statistics_episodes_played">已播放</string>
+    <string name="add_feed_label_short">添加</string>
+    <string name="episodes_label_short">节目</string>
+    <string name="home_label_short">主页</string>
+    <string name="queue_label_short">队列</string>
+    <string name="inbox_label_short">收件箱</string>
+    <string name="downloads_label_short">下载</string>
+    <string name="subscriptions_label_short">订阅</string>
+    <string name="playback_history_label_short">历史记录</string>
+    <string name="episodes_label_more">节目 »</string>
+    <string name="queue_label_more">队列 »</string>
+    <string name="inbox_label_more">收件箱 »</string>
+    <string name="downloads_label_more">下载 »</string>
+    <string name="subscriptions_label_more">订阅 »</string>
+    <string name="enabled">已启用</string>
+    <string name="disabled">已停用</string>
+    <string name="global_default_with_value">全局默认值（%1$s）</string>
+    <string name="delete_tag_label">删除标签</string>
+    <string name="delete_tag_confirmation">请确认你想删除 \"%1$s\" 标签。</string>
+    <string name="download_error_unsupported_type_html_manual">你输入的地址是网站地址，不是播客 RSS 地址。</string>
+    <string name="pref_automatic_download_global_description">自动下载新节目。每档播客可以使用不同的设置。</string>
+    <string name="pref_automatic_download_queue_title">下载已加入队列</string>
+    <string name="pref_automatic_download_queue_description">自动下载队列中的节目</string>
+    <string name="episode_lists">节目列表</string>
+    <string name="pref_downloads_button_action_title">从下载屏幕播放</string>
+    <string name="pref_downloads_button_action_sum">在下载屏幕中展示播放按钮而非删除按钮</string>
+    <string name="statistics_time_total">总计</string>
+    <string name="statistics_time_played">已播放</string>
+    <string name="notification_channel_refreshing">正在刷新播客</string>
+    <string name="notification_channel_refreshing_description">检查新节目时显示。</string>
+    <string name="echo_home_header">纵览该年</string>
+    <string name="echo_home_subtitle">过去一年你的顶流播客和统计数字。这些数据只存在于你的手机上。</string>
+    <string name="echo_intro_your_year">你的播客</string>
+    <string name="echo_intro_in_podcasts">年度数据</string>
+    <string name="echo_hours_this_year">这一年你播放了</string>
+    <plurals name="echo_hours_podcasts">
+        <item quantity="other">小时的节目\n这些节目来自 %1$d 档播客</item>
+    </plurals>
+    <string name="echo_intro_locally">私密地在你的手机上生成</string>
+    <string name="echo_queue_title_clean">你已经准备好开始崭新的一年。你有</string>
+    <string name="echo_queue_title_many">你今年仍有相当多的节目没听过。你有</string>
+    <plurals name="echo_queue_hours_waiting">
+        <item quantity="other">小时的播客音频在队列中待收听，\n这些音频来自 %1$d 期节目</item>
+    </plurals>
+    <string name="echo_queue_hours_normal">这相当于大约每天 %1$s，直到 %2$d 开始。如果你跳过几期节目便可无负担地开启新一年。</string>
+    <string name="echo_queue_hours_much">这相当于大约每天 %1$s，直至 %2$d 开始。等等，我没看错吧？</string>
+    <string name="echo_listened_after_title">我们已经对节目何时发布以及你何时听完它们进行了一些分析。看看我们的结论？</string>
+    <string name="echo_listened_after_comment_easy">您悠闲自得，不慌不忙</string>
+    <string name="echo_listened_after_time">您通常在一期节目发布 %1$s 后听完它。</string>
+    <string name="echo_listened_after_comment_addict">您是播客瘾君子</string>
+    <string name="echo_hoarder_title">我们还一直在思考：您收听所订阅的播客吗？</string>
+    <string name="echo_hoarder_subtitle_hoarder">看着这些数字，我们认为您有囤积癖</string>
+    <string name="echo_hoarder_subtitle_medium">此处无囤积。</string>
+    <string name="echo_hoarder_comment_medium">您今年已播放了来自 %2$d 个活动订阅中 %1$d%% 的节目。再看看 \"%3$s\" 怎么样？</string>
+    <string name="echo_hoarder_subtitle_clean">都完成了！</string>
+    <string name="echo_hoarder_comment_clean">您今年已播放了来自 %2$d 个活动订阅中 %1$d%% 的节目。我们打赌你的桌子也很整洁！</string>
+    <string name="echo_thanks_large">感谢</string>
+    <string name="echo_thanks_we_are_glad_old">今年继续使用本应用！\n\n您于 %1$s 用 AntennaPod 播放了第一期播客节目。自那时起，我们始终对能为您服务感到荣幸。</string>
+    <string name="echo_thanks_we_are_glad_new">今年成为我们的新用户！\n\n不论您之前是其他应用的用户，还是刚刚开始播客探险，我们都十分乐意！</string>
+    <string name="echo_thanks_now_favorite">现在，让我们看看您收藏的播客…</string>
+    <string name="echo_share_heading">我收藏的播客</string>
+    <string name="echo_share">我的 %d 年播客之旅回顾。#AntennaPodEcho</string>
+    <string name="echo_queue_hours_clean">这相当于每天大约 %1$s，直至 %2$d 开始。</string>
+    <string name="echo_hoarder_comment_hoarder">数字不撒谎。考虑到今年您的 %2$d 个活动订阅中仅 %1$d%% 已播放，我们的结论或许是对的。</string>
 </resources>

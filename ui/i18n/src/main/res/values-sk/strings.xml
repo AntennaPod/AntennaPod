@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Aktualizovať odbery</string>
-    <string name="feeds_label">Podcasty</string>
     <string name="statistics_label">Štatistiky</string>
     <string name="add_feed_label">Pridať podcast</string>
     <string name="episodes_label">Epizódy</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Obľúbené</string>
     <string name="settings_label">Nastavenia</string>
     <string name="downloads_label">Sťahovanie</string>
-    <string name="open_autodownload_settings">Otvoriť nastavenia</string>
-    <string name="downloads_log_label">Záznam sťahovania</string>
+    <string name="downloads_log_label">Záznam sťahovaní</string>
     <string name="subscriptions_label">Odbery</string>
     <string name="subscriptions_list_label">Zoznam odberov (iba bočné menu)</string>
     <string name="cancel_download_label">Zrušiť sťahovanie</string>
     <string name="playback_history_label">História prehrávania</string>
-    <string name="episode_cache_full_title">Vyrovnávacia pamäť epizódy je plná</string>
-    <string name="episode_cache_full_message">Bol dosiahnutý prednastavený limit veľkosti vyrovnávacej pamäte epizódy. Jej veľkosť môžete zvýšiť v Nastaveniach.</string>
     <string name="years_statistics_label">Roky</string>
     <string name="notification_pref_fragment">Oznámenia</string>
     <string name="current_playing_episode">Prehrávané</string>
@@ -226,17 +222,7 @@
         <item quantity="other">%d epizód bolo označených ako neprehrané.</item>
     </plurals>
     <string name="add_to_queue_label">Pridať do poradia</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d epizóda bola pridaná do poradia</item>
-        <item quantity="few">%d epizódy boli pridaná do poradia</item>
-        <item quantity="other">%d epizód bolo pridaných do poradia</item>
-    </plurals>
     <string name="remove_from_queue_label">Odstrániť z poradia</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d epizóda bola odstránená z poradia.</item>
-        <item quantity="few">%d epizódy boli odstránené z poradia.</item>
-        <item quantity="other">%d epizód bolo odstránených z poradia.</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d epizóda bola odstránená z noviniek.</item>
         <item quantity="few">%d epizódy boli odstránených z noviniek.</item>
@@ -693,9 +679,8 @@
     <string name="include_terms">Zahrnúť epizódy, ktoré obsahujú niektoré z nižšie uvedených výrazov</string>
     <string name="exclude_episodes_shorter_than">Vynechať epizódy kratšie ako</string>
     <string name="keep_updated">Priebežne aktualizovať</string>
-    <string name="keep_updated_summary">Zahrnúť tento podcast pri (automatickej) aktualizácii všetkých podcastov</string>
-    <string name="auto_download_disabled_globally">Automatické sťahovanie je zakázané v hlavných nastaveniach aplikácie AntennaPod</string>
-    <string name="statistics_expected_next_episode_any_day">Ktorýkoľvek deň</string>
+    <string name="keep_updated_summary">Zahrnúť tento podcast pri (automatickej) obnove všetkých podcastov</string>
+    <string name="statistics_expected_next_episode_any_day">Teraz ktorýkoľvek deň</string>
     <string name="statistics_expected_next_episode_unknown">Neznáma</string>
     <string name="edit_url_menu">Upraviť URL adresu kanálu</string>
     <string name="edit_url_confirmation_msg">Zmenou URL adresy RSS môže ľahko narušiť stav prehrávania a zoznam epizód podcastu. NEODPORÚČAME ho meniť a NEPOSKYTUJEME podporu, ak sa niečo pokazí. Nie je to možné vrátiť späť. Pokazený odber sa NEDÁ opraviť jednoduchou zmenou adresy späť. Pred pokračovaním odporúčame si vytvoriť zálohu.</string>
@@ -763,7 +748,6 @@
   <string name="proxy_type_label">Typ</string>
     <string name="host_label">Hostiteľ</string>
     <string name="port_label">Port</string>
-    <string name="optional_hint">(Voliteľné)</string>
     <string name="proxy_test_label">Test</string>
     <string name="proxy_checking">Prebieha kontrola…</string>
     <string name="proxy_test_successful">Test bol úspešný</string>
@@ -827,7 +811,6 @@
     <string name="nextcloud_login_error_generic">Nedá sa prihlásiť do vášho Nextcloud účtu\n\n- Skontrolujte si sieťové pripojenie.\n- Potvrďte, že používate správnu adresu servera.\n- Uistite sa, že doplnok gpoddersync Nextcloud je nainštalovaný.</string>
     <string name="statistics_view_all">Všetky podcasty »</string>
     <string name="episode_download_failed">Sťahovanie epizódy zlyhalo</string>
-    <string name="statistics_episodes_played">prehratých</string>
     <string name="statistics_episodes_started">spustených</string>
     <string name="statistics_episodes_space">veľkosť</string>
     <string name="statistics_release_schedule">plánované vydanie</string>

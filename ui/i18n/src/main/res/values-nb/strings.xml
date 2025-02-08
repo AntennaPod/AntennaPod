@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Oppdater abonnementer</string>
-    <string name="feeds_label">Podkaster</string>
     <string name="statistics_label">Statistikk</string>
     <string name="add_feed_label">Legg til podkast</string>
     <string name="episodes_label">Episoder</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Favoritter</string>
     <string name="settings_label">Innstillinger</string>
     <string name="downloads_label">Nedlastninger</string>
-    <string name="open_autodownload_settings">Åpne innstillinger</string>
     <string name="downloads_log_label">Nedlastingslogg</string>
     <string name="subscriptions_label">Abonnementer</string>
     <string name="subscriptions_list_label">Abonnementliste (kun sidemeny)</string>
     <string name="cancel_download_label">Avbryt nedlastingen</string>
     <string name="playback_history_label">Avspillingshistorikk</string>
-    <string name="episode_cache_full_title">Hurtigbuffer for episoder er full</string>
-    <string name="episode_cache_full_message">Grensen for størrelse på hurtigbuffer er nådd. Du kan øke størrelsen på hurtigbuffer i innstillingene.</string>
     <string name="years_statistics_label">År</string>
     <string name="notification_pref_fragment">Varslinger</string>
     <string name="current_playing_episode">Spilles nå</string>
@@ -621,7 +617,6 @@
     <string name="exclude_episodes_shorter_than">Ekskludere episoder kortere enn</string>
     <string name="keep_updated">Hold oppdatert</string>
     <string name="keep_updated_summary">Inkluder denne podkasten når alle podkaster (auto)oppdateres</string>
-    <string name="auto_download_disabled_globally">Automatisk nedlasting er deaktivert i AntennaPod-innstillingene</string>
     <string name="statistics_expected_next_episode_any_day">Hvilken dag som helst nå</string>
     <string name="statistics_expected_next_episode_unknown">Ukjent</string>
     <string name="edit_url_menu">Endre feed URL</string>
@@ -689,7 +684,6 @@
   <string name="proxy_type_label">Type</string>
     <string name="host_label">Vert</string>
     <string name="port_label">Port</string>
-    <string name="optional_hint">(Valgfri)</string>
     <string name="proxy_test_label">Test</string>
     <string name="proxy_checking">Kontrollerer…</string>
     <string name="proxy_test_successful">Test vellykket</string>
@@ -807,7 +801,6 @@
     <string name="bottom_navigation_summary">Betafunksjon: Få tilgang til viktige skjermbilder med et enkelt tapp fra hvor som helst</string>
     <string name="statistics_episodes_started">startet</string>
     <string name="statistics_episodes_total">totalt</string>
-    <string name="statistics_episodes_played">avspilt</string>
     <string name="statistics_episodes_space">plass brukt</string>
     <string name="statistics_release_schedule">utgivelsesplan</string>
     <string name="statistics_release_next">neste episode (omtrent)</string>

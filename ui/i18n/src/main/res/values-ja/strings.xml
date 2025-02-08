@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">購読を更新</string>
-    <string name="feeds_label">ポッドキャスト</string>
     <string name="statistics_label">統計情報</string>
     <string name="add_feed_label">ポッドキャストを追加</string>
     <string name="episodes_label">エピソード</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">お気に入り</string>
     <string name="settings_label">設定</string>
     <string name="downloads_label">ダウンロード</string>
-    <string name="open_autodownload_settings">設定を開く</string>
     <string name="downloads_log_label">ダウンロードログ</string>
     <string name="subscriptions_label">購読</string>
     <string name="subscriptions_list_label">購読リスト</string>
     <string name="cancel_download_label">ダウンロードをキャンセル</string>
     <string name="playback_history_label">再生履歴</string>
-    <string name="episode_cache_full_title">エピソードキャッシュが一杯です</string>
-    <string name="episode_cache_full_message">エピソードのキャッシュが制限に達しました。キャッシュサイズは設定にて増やすことができます。</string>
     <string name="years_statistics_label">年間</string>
     <string name="notification_pref_fragment">通知</string>
     <string name="current_playing_episode">現在のエピソード</string>
@@ -469,10 +465,10 @@
     <string name="search_online">オンラインで検索</string>
     <!--Synchronization-->
   <string name="sync_status_started">同期開始</string>
-    <string name="sync_status_episodes_upload">エピソードの変更をアップロード中...</string>
-    <string name="sync_status_episodes_download">エピソードの変更をダウンロード中...</string>
-    <string name="sync_status_upload_played">再生の状態をアップロード中...</string>
-    <string name="sync_status_subscriptions">購読を同期中...</string>
+    <string name="sync_status_episodes_upload">エピソードの変更をアップロード中…</string>
+    <string name="sync_status_episodes_download">エピソードの変更をダウンロード中…</string>
+    <string name="sync_status_upload_played">再生の状態をアップロード中…</string>
+    <string name="sync_status_subscriptions">購読を同期中…</string>
     <string name="sync_status_success">同期しました</string>
     <string name="sync_status_error">同期に失敗しました</string>
     <!--import and export-->
@@ -609,7 +605,6 @@
     <string name="exclude_episodes_shorter_than">指定時間より短いエピソードを除外する</string>
     <string name="keep_updated">最新の状態を保つ</string>
     <string name="keep_updated_summary">すべてのポッドキャストを (自動) 更新する時にこのポッドキャストを含めます</string>
-    <string name="auto_download_disabled_globally">メインの AntennaPod 設定で自動ダウンロードが無効になっています</string>
     <string name="statistics_expected_next_episode_any_day">今にでも</string>
     <string name="statistics_expected_next_episode_unknown">不明</string>
     <string name="edit_url_menu">フィードのURLを編集</string>
@@ -677,7 +672,6 @@
   <string name="proxy_type_label">タイプ</string>
     <string name="host_label">ホスト</string>
     <string name="port_label">ポート</string>
-    <string name="optional_hint">(オプション)</string>
     <string name="proxy_test_label">テスト</string>
     <string name="proxy_checking">確認中…</string>
     <string name="proxy_test_successful">テストに成功しました</string>

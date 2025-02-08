@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Ενημέρωση συνδρομών</string>
-    <string name="feeds_label">Podcasts</string>
     <string name="statistics_label">Στατιστικά</string>
     <string name="add_feed_label">Προσθήκη podcast</string>
     <string name="episodes_label">Επεισόδια</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Αγαπημένα</string>
     <string name="settings_label">Ρυθμίσεις</string>
     <string name="downloads_label">Λήψεις</string>
-    <string name="open_autodownload_settings">Άνοιγμα ρυθμίσεων</string>
     <string name="downloads_log_label">Αρχείο καταγραφής λήψεων</string>
     <string name="subscriptions_label">Συνδρομές</string>
     <string name="subscriptions_list_label">Λίστα συνδρομών (μόνο στο πλαϊνό μενού)</string>
     <string name="cancel_download_label">Ακύρωση λήψης</string>
     <string name="playback_history_label">Ιστορικό αναπαραγωγής</string>
-    <string name="episode_cache_full_title">Η κρυφή μνήμη του επεισοδίου είναι γεμάτη</string>
-    <string name="episode_cache_full_message">Φθάσατε το όριο μεγέθους κρυφής μνήμης του επεισοδίου. Για να αυξήσετε το επιτρεπόμενο όριο μεγέθους κρυφής μνήμης, μεταβείτε στις Ρυθμίσεις.</string>
     <string name="years_statistics_label">Χρόνια</string>
     <string name="notification_pref_fragment">Ειδοποιήσεις</string>
     <string name="current_playing_episode">Τρέχον</string>
@@ -205,14 +201,14 @@
     <string name="mark_read_no_media_label">Επισήμανση ως αναγνωσμένο</string>
     <string name="play_this_to_seek_position">Προκειμένου να μεταπιδήσετε σε συγκεκριμένες θέσεις, πρέπει να αναπαράγετε το επεισόδιο</string>
     <plurals name="marked_read_batch_label">
-        <item quantity="one">%d επεισόδιο επισημάνθηκε ως αναπαραχθέν</item>
-        <item quantity="other">%d επεισόδια επισημάνθηκαν ως αναπαραχθέντα</item>
+        <item quantity="one">%d επεισόδιο επισημάνθηκε ως αναπαραχθέν%d επεισόδια επισημάνθηκαν ως αναπαραχθέντα</item>
+        <item quantity="other"></item>
     </plurals>
     <string name="mark_unread_label">Επισήμανση ως μη αναπαραχθέν</string>
     <string name="mark_unread_label_no_media">Επισήμανση ως μη αναγνωσμένο</string>
     <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d επεισόδιο επισημάνθηκε ως μη αναπαραχθέν</item>
-        <item quantity="other">%d επεισόδια επισημάνθηκαν ως μη αναπαραχθέντα</item>
+        <item quantity="one">%d επεισόδιο επισημάνθηκε ως μη αναπαραχθέν%d επεισόδια επισημάνθηκαν ως μη αναπαραχθέντα</item>
+        <item quantity="other"></item>
     </plurals>
     <string name="add_to_queue_label">Προσθήκη στην ουρά</string>
     <plurals name="added_to_queue_batch_label">
@@ -225,8 +221,8 @@
         <item quantity="other">%d επεισόδια αφαιρέθηκαν από την ουρά.</item>
     </plurals>
     <plurals name="removed_from_inbox_batch_label">
-        <item quantity="one">%d επεισόδιο αφαιρέθηκε από τα Εισερχόμενα</item>
-        <item quantity="other">%d επεισόδια αφαιρέθηκαν από τα Εισερχόμενα</item>
+        <item quantity="one">%d επεισόδιο αφαιρέθηκε από τα Εισερχόμενα%d επεισόδια αφαιρέθηκαν από τα Εισερχόμενα</item>
+        <item quantity="other"></item>
     </plurals>
     <string name="add_to_favorite_label">Προσθήκη στα αγαπημένα</string>
     <string name="show_transcript">Εμφάνιση μεταγραφής</string>
@@ -512,10 +508,10 @@
     <string name="search_online">Αναζήτηση online</string>
     <!--Synchronization-->
   <string name="sync_status_started">Ο συγχρονισμός ξεκίνησε</string>
-    <string name="sync_status_episodes_upload">Αποστολή αλλαγών επεισοδίου...</string>
-    <string name="sync_status_episodes_download">Λήψη αλλαγών επεισοδίου...</string>
-    <string name="sync_status_upload_played">Αποστολή κατάστασης αναπαραγωγών...</string>
-    <string name="sync_status_subscriptions">Οι συνδρομές συγχρονίζονται...</string>
+    <string name="sync_status_episodes_upload">Αποστολή αλλαγών επεισοδίου…</string>
+    <string name="sync_status_episodes_download">Λήψη αλλαγών επεισοδίου…</string>
+    <string name="sync_status_upload_played">Αποστολή κατάστασης αναπαραγωγών…</string>
+    <string name="sync_status_subscriptions">Οι συνδρομές συγχρονίζονται…</string>
     <string name="sync_status_success">Επιτυχής συγχρονισμός</string>
     <string name="sync_status_error">Ο συγχρονισμός απέτυχε</string>
     <!--import and export-->
@@ -674,7 +670,6 @@
     <string name="exclude_episodes_shorter_than">Αποκλεισμός επεισοδίων μικρότερων από</string>
     <string name="keep_updated">Διατήρηση ενημερωμένων</string>
     <string name="keep_updated_summary">Συμπερίληψη του podcast όταν (αυτο)συγχρονίζονται όλα τα podcasts</string>
-    <string name="auto_download_disabled_globally">Η αυτόματη λήψη είναι απενεργοποιημένη στις κεντρικές ρυθμίσεις του AntennaPod</string>
     <string name="statistics_expected_next_episode_any_day">Σύντομα</string>
     <string name="statistics_expected_next_episode_unknown">Άγνωστο</string>
     <string name="edit_url_menu">Επεξεργασία URL ροής</string>
@@ -693,7 +688,7 @@
     <string name="release_schedule_saturday">Σαβ</string>
     <string name="release_schedule_sunday">Κυρ</string>
     <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Εισαγωγή συνδρομών από εφαρμογές και μονο...</string>
+  <string name="sp_apps_importing_feeds_msg">Εισαγωγή συνδρομών από εφαρμογές και μονο…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Αναζήτηση podcast…</string>
     <string name="search_itunes_label">Αναζήτηση σε Apple Podcasts</string>
@@ -743,9 +738,8 @@
   <string name="proxy_type_label">Τύπος</string>
     <string name="host_label">Εξυπηρετητής</string>
     <string name="port_label">Θύρα</string>
-    <string name="optional_hint">(Προαιρετικά)</string>
     <string name="proxy_test_label">Έλεγχος</string>
-    <string name="proxy_checking">Επιβεβαίωση...</string>
+    <string name="proxy_checking">Επιβεβαίωση…</string>
     <string name="proxy_test_successful">Επιτυχής έλεγχος</string>
     <string name="proxy_test_failed">Ο έλεγχος απέτυχε</string>
     <string name="proxy_host_empty_error">Ο εξυπηρετητής δεν μπορεί να είναι άδειος</string>

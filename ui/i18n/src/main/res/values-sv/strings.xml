@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Uppdatera prenumerationer</string>
-    <string name="feeds_label">Podcasts</string>
     <string name="statistics_label">Statistik</string>
     <string name="add_feed_label">Lägg till podcast</string>
     <string name="episodes_label">Avsnitt</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Favoriter</string>
     <string name="settings_label">Inställningar</string>
     <string name="downloads_label">Nedladdningar</string>
-    <string name="open_autodownload_settings">Öppna inställningar</string>
     <string name="downloads_log_label">Nedladdningslogg</string>
     <string name="subscriptions_label">Prenumerationer</string>
     <string name="subscriptions_list_label">Prenumerationslista (sidomeny endast)</string>
     <string name="cancel_download_label">Avbryt nedladdning</string>
     <string name="playback_history_label">Uppspelningshistorik</string>
-    <string name="episode_cache_full_title">Avsnittscachen är full</string>
-    <string name="episode_cache_full_message">Avsnittscachens gräns har nåtts. Du kan öka cachens storlek i inställningarna.</string>
     <string name="years_statistics_label">År</string>
     <string name="notification_pref_fragment">Aviseringar</string>
     <string name="current_playing_episode">Aktuell</string>
@@ -513,8 +509,8 @@
     <!--Synchronization-->
   <string name="sync_status_started">Synkning startad</string>
     <string name="sync_status_episodes_upload">Laddar upp avsnittsändringar…</string>
-    <string name="sync_status_episodes_download">Laddar ned avsnittsändringar…</string>
-    <string name="sync_status_upload_played">Laddar upp spelliststatus…</string>
+    <string name="sync_status_episodes_download">Laddar ner avsnittsändringar…</string>
+    <string name="sync_status_upload_played">Laddar upp spelliststatus</string>
     <string name="sync_status_subscriptions">Synkroniserar prenumerationer…</string>
     <string name="sync_status_success">Synkronisering lyckades</string>
     <string name="sync_status_error">Synkronisering misslyckades</string>
@@ -542,7 +538,7 @@
     <string name="automatic_database_export_error">Fel under automatisk databasbackup</string>
     <string name="database_import_label">Databasimport</string>
     <string name="database_import_warning">Importering av en databas kommer att ersätta alla dina befintliga prenumerationer och spelhistoriken. Du bör exportera din nuvarande databas som en backup. Vill du ersätta den?</string>
-    <string name="please_wait">Var god vänta…</string>
+    <string name="please_wait">Vänta…</string>
     <string name="export_error_label">Exporteringsfel</string>
     <string name="export_success_title">Exporten lyckades</string>
     <string name="opml_import_ask_read_permission">Tillgång till extern lagring krävs för att läsa OPML-filen</string>
@@ -675,7 +671,6 @@
     <string name="exclude_episodes_shorter_than">Exkludera avsnitt kortare än</string>
     <string name="keep_updated">Håll uppdaterad</string>
     <string name="keep_updated_summary">Inkludera detta flöde vid (auto-)uppdatering av alla podcasts</string>
-    <string name="auto_download_disabled_globally">Automatisk nedladdning är avstängt i AntennaPods huvudinställningar</string>
     <string name="statistics_expected_next_episode_any_day">Vilken dag som helst</string>
     <string name="statistics_expected_next_episode_unknown">Okänt</string>
     <string name="edit_url_menu">Redigera flödes-URL</string>
@@ -744,7 +739,6 @@
   <string name="proxy_type_label">Typ</string>
     <string name="host_label">Värd</string>
     <string name="port_label">Port</string>
-    <string name="optional_hint">(Valfritt)</string>
     <string name="proxy_test_label">Test</string>
     <string name="proxy_checking">Kontrollerar…</string>
     <string name="proxy_test_successful">Testet lyckades</string>
@@ -793,7 +787,6 @@
     <string name="delete_downloads_played_confirmation">Vänligen bekräfta att du vill ta bort alla spelade nedladdningar.</string>
     <string name="bottom_navigation">Bottennavigering</string>
     <string name="statistics_episodes_started">påbörjad</string>
-    <string name="statistics_episodes_played">uppspelad</string>
     <string name="statistics_episodes_downloaded">nedladdade</string>
     <string name="statistics_episodes_space">utrymme tagit</string>
     <string name="statistics_release_next">nästa avsnitt (uppskattning)</string>

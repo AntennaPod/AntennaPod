@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Abonnements aktualisieren</string>
-    <string name="feeds_label">Podcasts</string>
     <string name="statistics_label">Statistiken</string>
     <string name="add_feed_label">Podcast hinzufügen</string>
     <string name="episodes_label">Episoden</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Favoriten</string>
     <string name="settings_label">Einstellungen</string>
     <string name="downloads_label">Downloads</string>
-    <string name="open_autodownload_settings">Einstellungen öffnen</string>
     <string name="downloads_log_label">Download-Protokoll</string>
     <string name="subscriptions_label">Abonnements</string>
     <string name="subscriptions_list_label">Abonnement-Übersicht (nur seitliches Menü)</string>
     <string name="cancel_download_label">Download abbrechen</string>
     <string name="playback_history_label">Zuletzt abgespielt</string>
-    <string name="episode_cache_full_title">Episodenspeicher voll</string>
-    <string name="episode_cache_full_message">Der Episodenspeicher ist voll. Du kannst die Größe des Episodenspeichers in den Einstellungen erhöhen.</string>
     <string name="years_statistics_label">Jahre</string>
     <string name="notification_pref_fragment">Benachrichtigungen</string>
     <string name="current_playing_episode">Aktuell</string>
@@ -675,7 +671,6 @@
     <string name="exclude_episodes_shorter_than">Episoden ausschließen, die kürzer sind als</string>
     <string name="keep_updated">Aktuell halten</string>
     <string name="keep_updated_summary">Diesen Podcast bei der (automatischen) Aktualisierung berücksichtigen</string>
-    <string name="auto_download_disabled_globally">Automatisches Herunterladen ist in den Einstellungen deaktiviert</string>
     <string name="statistics_expected_next_episode_any_day">In Kürze</string>
     <string name="statistics_expected_next_episode_unknown">Unbekannt</string>
     <string name="edit_url_menu">Feed-URL bearbeiten</string>
@@ -744,7 +739,6 @@
   <string name="proxy_type_label">Typ</string>
     <string name="host_label">Host</string>
     <string name="port_label">Port</string>
-    <string name="optional_hint">(Optional)</string>
     <string name="proxy_test_label">Testen</string>
     <string name="proxy_checking">Prüfe…</string>
     <string name="proxy_test_successful">Test erfolgreich</string>
@@ -787,7 +781,6 @@
     <string name="home_continue_empty_text">Du kannst Episoden hinzufügen, indem du sie herunterlädst oder indem du sie lange antippst und „Zur Warteschlange hinzufügen“ auswählst.</string>
     <string name="home_no_recent_unplayed_episodes_text">Du hast bereits alle aktuellen Episoden abgespielt. Hier gibt es nichts zum überrascht werden ;)</string>
     <string name="home_downloads_empty_text">Du kannst jede Episode herunterladen, um sie offline zu hören.</string>
-    <string name="statistics_episodes_played">abgespielt</string>
     <string name="home_new_empty_text">Neue Episoden werden hier angezeigt. Du kannst dann entscheiden, ob sie für dich interessant sind.</string>
     <string name="delete_downloads_played_confirmation">Bitte bestätige, dass du alle abgespielten Downloads löschen möchtest.</string>
     <string name="delete_downloads_played">Abgespielte löschen</string>
@@ -816,32 +809,26 @@
     <string name="episode_download_failed">Download der Episode fehlgeschlagen</string>
     <string name="echo_home_header">Jahresrückblick</string>
     <string name="echo_home_subtitle">Deine Lieblings-Podcasts und Statistiken aus dem letzten Jahr. Exklusiv auf deinem Telefon.</string>
-
     <string name="echo_intro_your_year">Dein Podcast-Jahr</string>
-    <string name="echo_intro_in_podcasts"> </string>
     <string name="echo_intro_locally">privat auf deinem Telefon generiert</string>
-
     <string name="echo_hours_this_year">Dieses Jahr hast du</string>
     <plurals name="echo_hours_podcasts">
-        <item quantity="one">Stunden an Episoden von %1$d Podcast abgespielt</item>
-        <item quantity="other">Stunden an Episoden von %1$d Podcasts abgespielt</item>
+        <item quantity="one">Stunden an Episoden von %1$d Podcast abgespieltStunden an Episoden von %1$d Podcasts abgespielt</item>
+        <item quantity="other"></item>
     </plurals>
-
     <string name="echo_queue_title_clean">Und du bist bereit, das neue Jahr frisch zu starten. In deiner Warteschlange liegen</string>
     <string name="echo_queue_title_many">Und du hast dieses Jahr noch eine ganze Menge vor dir. In deiner Warteschlange liegen</string>
     <plurals name="echo_queue_hours_waiting">
-        <item quantity="one">Stunden aus %1$d Podcast-Episode</item>
-        <item quantity="other">Stunden aus %1$d Podcast-Episoden</item>
+        <item quantity="one">Stunden aus %1$d Podcast-EpisodeStunden aus %1$d Podcast-Episoden</item>
+        <item quantity="other"></item>
     </plurals>
     <string name="echo_queue_hours_clean">Das sind jeden Tag ungefähr %1$s bevor %2$d beginnt</string>
     <string name="echo_queue_hours_normal">Das sind jeden Tag ungefähr %1$s bevor %2$d beginnt. Du kannst frisch ins Jahr starten, wenn du einige Episoden überspringst.</string>
     <string name="echo_queue_hours_much">Das sind jeden Tag ungefähr %1$s bevor %2$d beginnt. Moment, was?</string>
-
     <string name="echo_listened_after_title">Wir haben uns angeschaut, wann Episoden veröffentlicht werden und wann du sie abspielst. Unsere Folgerung?</string>
     <string name="echo_listened_after_comment_easy">Du bist entspannt</string>
     <string name="echo_listened_after_time">Typischerweise spielst du eine Episode %1$s nach der Veröffentlichung ab.</string>
     <string name="echo_listened_after_comment_addict">Du bist ein Podcast-Junkie</string>
-
     <string name="echo_hoarder_title">Wir haben uns auch gefragt: hörst du die Podcasts an, die du abonniert hast?</string>
     <string name="echo_hoarder_subtitle_hoarder">Wenn wir uns die Zahlen so anschauen, glauben wir, du hamsterst Podcasts</string>
     <string name="echo_hoarder_comment_hoarder">Zahlen lügen nicht, sagt man. Du hast dieses Jahr nur %1$d%% deiner %2$d aktiven Abonnements abgespielt, also liegen wir wahrscheinlich richtig.</string>
@@ -849,12 +836,10 @@
     <string name="echo_hoarder_comment_medium">Du hast dieses Jahr %1$d%% deiner %2$d aktiven Abonnements abgespielt. Wie wäre es damit, mal wieder \"%3$s\" anzuhören?</string>
     <string name="echo_hoarder_subtitle_clean">Aufgeräumt!</string>
     <string name="echo_hoarder_comment_clean">Du hast dieses Jahr %1$d%% deiner %2$d aktiven Abonnements abgespielt. Wetten, du hältst auch deinen Schreibtisch sauber?</string>
-
     <string name="echo_thanks_large">Danke</string>
     <string name="echo_thanks_we_are_glad_old">dass du dieses Jahr wieder dabei warst!\n\nDu hast deine erste Episode im %1$s abgespielt. Es ist uns eine Ehre, seitdem für dich da zu sein.</string>
     <string name="echo_thanks_we_are_glad_new">dass du dich dieses Jahr für uns entschieden hast!\n\nEgal ob du von einer anderen App gekommen bist oder mit AntennaPod in Podcasts eingestiegen bist: Wir sind froh, dass du da bist!</string>
     <string name="echo_thanks_now_favorite">Schauen wir uns jetzt noch deine Lieblings-Podcasts an…</string>
-
     <string name="echo_share_heading">Meine Lieblings-Podcasts</string>
     <string name="echo_share">Mein Podcast-Jahr %d. #AntennaPodEcho</string>
 </resources>

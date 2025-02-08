@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">सब्सक्रिप्शन अपडेट करें</string>
-    <string name="feeds_label">पॉडकास्ट</string>
     <string name="statistics_label">आंकड़े</string>
     <string name="add_feed_label">पॉडकास्ट जोड़ें</string>
     <string name="episodes_label">एपिसोड</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">मनपसंद</string>
     <string name="settings_label">सेटिंग</string>
     <string name="downloads_label">डाउनलोड</string>
-    <string name="open_autodownload_settings">सेटिंग खोलें</string>
     <string name="downloads_log_label">लॉग डाउनलोड</string>
     <string name="subscriptions_label">सब्सक्रिप्शन</string>
     <string name="subscriptions_list_label">सब्सक्रिप्शन लिस्ट</string>
     <string name="cancel_download_label">डाउनलोड कैंसिल करें</string>
     <string name="playback_history_label">प्लेबैक लॉग</string>
-    <string name="episode_cache_full_title">एपिसोड कैश भर गया</string>
-    <string name="episode_cache_full_message">एपिसोड कैश भर गया। सेटिंग में कैश साइज़ बढ़ाया जा सकता है।</string>
     <string name="years_statistics_label">साल</string>
     <string name="notification_pref_fragment">नोटिफिकेशन</string>
     <string name="current_playing_episode">ये</string>
@@ -333,7 +329,7 @@
     <string name="interruptions">रोकटोक</string>
     <string name="playback_control">प्लेबैक कंट्रोल</string>
     <string name="reassign_hardware_buttons">हार्डवेयर बटन बदलें</string>
-    <string name="preference_search_hint">खोजें...</string>
+    <string name="preference_search_hint">खोजें…</string>
     <string name="preference_search_no_results">कोई नतीजा नहीं मिला</string>
     <string name="preference_search_clear_history">इतिहास साफ करें</string>
     <string name="pref_episode_cleanup_summary">एपिसोड जो हटाने लायक होंगे अगर अपनेआप-डाउनलोड को नए एपिसोड के लिए जगह चाहिए।</string>
@@ -483,8 +479,8 @@
   <string name="sync_status_started">सिंक शुरू हुआ</string>
     <string name="sync_status_episodes_upload">एपिसोड बदलाव अपलोड कर रहे…</string>
     <string name="sync_status_episodes_download">एपिसोड बदलाव डाउनलोड कर रहे…</string>
-    <string name="sync_status_upload_played">सुना स्टेटस अपडेट कर रहे...</string>
-    <string name="sync_status_subscriptions">सदस्यताओं को समकालीन किया जा रहा है...</string>
+    <string name="sync_status_upload_played">सुना स्टेटस अपडेट कर रहे…</string>
+    <string name="sync_status_subscriptions">सदस्यताओं को समकालीन किया जा रहा है…</string>
     <string name="sync_status_success">सिंक सफल</string>
     <string name="sync_status_error">सिंक असफल</string>
     <!--import and export-->
@@ -507,7 +503,7 @@
     <string name="database_export_label">डाटाबेस निर्यात</string>
     <string name="database_import_label">डाटाबेस आयात</string>
     <string name="database_import_warning">डेटाबेस आयात करने से आपकी मौजूदा सभी सदस्यताएँ और प्लेयिंग हिस्ट्री को बदल दिया जाएगा। आपको अपनी वर्तमान डेटाबेस को बैकअप के रूप में निर्यात करना चाहिए। बदलाव जारी रखें?</string>
-    <string name="please_wait">इंतज़ार करें...</string>
+    <string name="please_wait">इंतज़ार करें…</string>
     <string name="export_error_label">निर्यात गड़बड़</string>
     <string name="export_success_title">निर्यात सफल</string>
     <string name="opml_import_ask_read_permission">ओपीएमएल फाइल पढ़ने के लिए बाहरी स्टोरेज तक का एक्सेस चाहिए</string>
@@ -609,12 +605,11 @@
     <string name="exclude_episodes_shorter_than">इससे छोटे एपिसोड शामिल ना करें:</string>
     <string name="keep_updated">अप-टू-डेट रखें</string>
     <string name="keep_updated_summary">सारे पॉडकास्ट को (अपनेआप) रिफ्रेश करते टाइम इस पॉडकास्ट को भी करें</string>
-    <string name="auto_download_disabled_globally">मेन एंटीनापॉड सेटिंग में ऑटो डाउनलोड बंद है</string>
     <string name="edit_url_menu">फीड यूआरएल बदलें</string>
     <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">एकल उद्देश्य वाले ऐप्स से सदस्यताओं का आयात किया जा रहा है...</string>
+  <string name="sp_apps_importing_feeds_msg">एकल उद्देश्य वाले ऐप्स से सदस्यताओं का आयात किया जा रहा है…</string>
     <!--Add podcast fragment-->
-  <string name="search_podcast_hint">पॉडकास्ट सर्च करें...</string>
+  <string name="search_podcast_hint">पॉडकास्ट सर्च करें…</string>
     <string name="search_itunes_label">एप्पल पॉडकास्ट में सर्च करें</string>
     <string name="search_podcastindex_label">पॉडकास्ट इंडेक्स में सर्च करें</string>
     <string name="search_fyyd_label">fyyd में सर्च करें</string>
@@ -660,9 +655,8 @@
   <string name="proxy_type_label">टाइप</string>
     <string name="host_label">होस्ट</string>
     <string name="port_label">पोर्ट</string>
-    <string name="optional_hint">(ज़रूरी नहीं)</string>
     <string name="proxy_test_label">टेस्ट</string>
-    <string name="proxy_checking">चेक कर रहे...</string>
+    <string name="proxy_checking">चेक कर रहे…</string>
     <string name="proxy_test_successful">टेस्ट पास हो गया</string>
     <string name="proxy_test_failed">टेस्ट फेल हो गया</string>
     <string name="proxy_host_empty_error">होस्ट फील्ड खाली नहीं हो सकता</string>

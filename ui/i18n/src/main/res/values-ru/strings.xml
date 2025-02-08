@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Обновить подписки</string>
-    <string name="feeds_label">Подкасты</string>
     <string name="statistics_label">Статистика</string>
     <string name="add_feed_label">Добавить подкаст</string>
     <string name="episodes_label">Выпуски</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Избранное</string>
     <string name="settings_label">Настройки</string>
     <string name="downloads_label">Загрузки</string>
-    <string name="open_autodownload_settings">Открыть настройки</string>
     <string name="downloads_log_label">Журнал загрузок</string>
     <string name="subscriptions_label">Подписки</string>
     <string name="subscriptions_list_label">Перечень подписок (только в боковом меню)</string>
     <string name="cancel_download_label">Отменить загрузку</string>
     <string name="playback_history_label">История</string>
-    <string name="episode_cache_full_title">Кэш выпусков заполнен</string>
-    <string name="episode_cache_full_message">Достигнут предел кэша выпусков. Объем кэша можно увеличить в настройках.</string>
     <string name="years_statistics_label">По годам</string>
     <string name="notification_pref_fragment">Уведомления</string>
     <string name="current_playing_episode">Текущий</string>
@@ -713,7 +709,6 @@
     <string name="exclude_episodes_shorter_than">Исключить выпуски короче чем</string>
     <string name="keep_updated">Постоянно обновлять</string>
     <string name="keep_updated_summary">Обновлять подкаст при (авто)обновлении всех подкастов</string>
-    <string name="auto_download_disabled_globally">Автоматическая загрузка отключена в основных настройках AntennaPod</string>
     <string name="statistics_expected_next_episode_any_day">Со дня на день</string>
     <string name="statistics_expected_next_episode_unknown">Неизвестно</string>
     <string name="edit_url_menu">Изменить адрес канала</string>
@@ -782,7 +777,6 @@
   <string name="proxy_type_label">Тип</string>
     <string name="host_label">Узел</string>
     <string name="port_label">Порт</string>
-    <string name="optional_hint">(необязательно)</string>
     <string name="proxy_test_label">Проверить</string>
     <string name="proxy_checking">Проверка…</string>
     <string name="proxy_test_successful">Проверка пройдена</string>

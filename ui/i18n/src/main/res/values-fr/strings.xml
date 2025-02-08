@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Mettre à jour les abonnements</string>
-    <string name="feeds_label">Podcasts</string>
     <string name="statistics_label">Statistiques</string>
     <string name="add_feed_label">Ajouter un podcast</string>
     <string name="episodes_label">Épisodes</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Favoris</string>
     <string name="settings_label">Préférences</string>
     <string name="downloads_label">Téléchargements</string>
-    <string name="open_autodownload_settings">Ouvrir les préférences</string>
     <string name="downloads_log_label">Journal des téléchargements</string>
     <string name="subscriptions_label">Abonnements</string>
     <string name="subscriptions_list_label">Liste des abonnements (volet uniquement)</string>
     <string name="cancel_download_label">Annuler le téléchargement</string>
     <string name="playback_history_label">Journal de lecture</string>
-    <string name="episode_cache_full_title">L\'emplacement pour stocker les épisodes est plein</string>
-    <string name="episode_cache_full_message">Le nombre maximal d\'épisodes téléchargés a été atteint. Vous pouvez changer ce nombre dans les paramètres.</string>
     <string name="years_statistics_label">Années</string>
     <string name="notification_pref_fragment">Notifications</string>
     <string name="current_playing_episode">En cours</string>
@@ -52,7 +48,7 @@
     <string name="home_new_title">Les nouveautés</string>
     <string name="home_downloads_title">Derniers téléchargements</string>
     <string name="home_welcome_title">Bienvenu dans AntennaPod !</string>
-    <string name="home_welcome_text">Vous n\'avez pas encore d\'abonnements. Ouvrez le menu latéral pour ajouter des podcasts.</string>
+    <string name="home_welcome_text">Vous n\'avez pas encore d\'abonnements. Ouvrez le menu pour ajouter des podcasts.</string>
     <string name="notification_permission_denied">Vous avez refusé l\'autorisation.</string>
     <string name="configure_home">Paramétrer l\'accueil</string>
     <string name="section_hidden">Non affiché</string>
@@ -144,7 +140,7 @@
         <item quantity="other">%d épisodes</item>
     </plurals>
     <string name="episode_notification">Notification des épisodes</string>
-    <string name="episode_notification_summary">Affiche une notification quand de nouveaux épisodes sont disponibles.</string>
+    <string name="episode_notification_summary">Affiche une notification quand de nouveaux épisodes sont disponibles</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s a un nouvel épisode</item>
         <item quantity="many">%2$s a %1$d nouveaux épisodes</item>
@@ -267,7 +263,7 @@
     <string name="download_error_insufficient_space">Espace insuffisant sur l\'appareil.</string>
     <string name="download_error_http_data_error">Erreur de données HTTP</string>
     <string name="download_error_error_unknown">Erreur inconnue</string>
-    <string name="download_error_parser_exception">Le serveur du podcast a retourné un flux ne fonctionnant pas.</string>
+    <string name="download_error_parser_exception">Le serveur du podcast a retourné un flux ne fonctionnant pas. Nous vous conseillons de vérifier avec un validateur de podcast tel que castfeedvalidator.com et de contacter les créateurs en cas pour les informer si problème.</string>
     <string name="download_error_unsupported_type">Type de flux non géré</string>
     <string name="download_error_unsupported_type_html">Le serveur du podcast retourne un site web au lieu d\'un podcast.</string>
     <string name="download_error_not_found">Le serveur du podcast ne trouve pas le fichier. Il est possible qu\'il ne soit plus disponible.</string>
@@ -298,7 +294,7 @@
     <string name="authentication_notification_title">Authentification requise</string>
     <string name="confirm_mobile_download_dialog_title">Confirmer le téléchargement avec la connexion mobile</string>
     <string name="confirm_mobile_download_dialog_message">Le téléchargement avec la connexion mobile est désactivé dans les options. AntennaPod peut télécharger l\'épisode automatiquement plus tard quand le Wifi sera disponible.</string>
-    <string name="confirm_mobile_download_dialog_message_vpn">Votre application VPN apparaît comme une connexion mobile (limitée). Dans les préférences l\'usage de ce type de connexion est désactivé pour les téléchargements. Si vous voulez régler ce problème, contactez les créateurs de votre application VPN.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">- Vous utilisez un VPN ? Votre application VPN apparaît comme une connexion mobile (limitée). Si vous voulez régler ce problème contactez les créateurs de votre application VPN.\n- Vous n\'utilisez pas de VPN ? Ouvrez les paramètres pour le Wi-Fi et changer son type en tant que \"non facturé à l\'usage\".</string>
     <string name="confirm_mobile_download_dialog_download_later">Télécharger plus tard</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Télécharger quand même</string>
     <string name="confirm_mobile_streaming_notification_title">Confirmer le streaming avec la connexion mobile</string>
@@ -449,7 +445,7 @@
     <string name="pref_playback_speed_sum">Définir les vitesses disponibles lors de la lecture</string>
     <string name="pref_feed_playback_speed_sum">Vitesse de lecture par défaut des épisodes</string>
     <string name="pref_feed_skip">Saut automatique</string>
-    <string name="pref_feed_skip_sum">Sauter le début et la fin des épisodes.</string>
+    <string name="pref_feed_skip_sum">Sauter le début et la fin des épisodes</string>
     <string name="pref_feed_skip_ending">Sauter à la fin</string>
     <string name="pref_feed_skip_intro">Sauter au début</string>
     <string name="pref_feed_skip_ending_toast">%d dernières secondes sautées</string>
@@ -681,7 +677,7 @@
     <string name="download_completed_talkback">Téléchargement fini pour %1$s</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">Authentification</string>
-    <string name="authentication_descr">Identifiant et mot de passe pour ce podcast.</string>
+    <string name="authentication_descr">Identifiant et mot de passe pour ce podcast</string>
     <string name="feed_tags_label">Tags</string>
     <string name="feed_tags_summary">Modifier les tags de ce podcast pour classer vos abonnements</string>
     <string name="feed_folders_include_root">Montrer dans la liste principale</string>
@@ -695,7 +691,6 @@
     <string name="exclude_episodes_shorter_than">Exclure les épisodes de moins de</string>
     <string name="keep_updated">Maintenir à jour</string>
     <string name="keep_updated_summary">Inclure ce podcast lors de la mise à jour des podcasts</string>
-    <string name="auto_download_disabled_globally">Le téléchargement automatique n\'est pas activé dans les préférences</string>
     <string name="statistics_expected_next_episode_any_day">Imminent, à tout moment</string>
     <string name="statistics_expected_next_episode_unknown">Inconnu</string>
     <string name="edit_url_menu">Modifier le lien</string>
@@ -764,7 +759,6 @@
   <string name="proxy_type_label">Type</string>
     <string name="host_label">Hôte</string>
     <string name="port_label">Port</string>
-    <string name="optional_hint">(Facultatif)</string>
     <string name="proxy_test_label">Tester</string>
     <string name="proxy_checking">Vérification…</string>
     <string name="proxy_test_successful">Test réussi</string>
@@ -780,8 +774,8 @@
     <string name="notification_group_news">Informations</string>
     <string name="notification_channel_user_action">Action requise</string>
     <string name="notification_channel_user_action_description">S\'affiche si une action est requise. Par exemple, un mot de passe à saisir.</string>
-    <string name="notification_channel_downloading">Téléchargement en cours</string>
-    <string name="notification_channel_downloading_description">S\'affiche lors du téléchargement d\'épisodes ou des données des podcasts.</string>
+    <string name="notification_channel_downloading">Téléchargement d\'épisodes</string>
+    <string name="notification_channel_downloading_description">S\'affiche lors du téléchargement d\'épisodes.</string>
     <string name="notification_channel_playing">Lecture en cours</string>
     <string name="notification_channel_playing_description">Permet de contrôler la lecture. C\'est la notification principale pendant la lecture d\'un podcast.</string>
     <string name="notification_channel_download_error">Erreur de téléchargement</string>
@@ -809,7 +803,6 @@
     <string name="section_shown">Affiché</string>
     <string name="delete_downloads_played">Supprimé ceux lus</string>
     <string name="bottom_navigation">Navigation en bas</string>
-    <string name="statistics_episodes_played">d\'écoute</string>
     <string name="statistics_release_schedule">rythme de sortie</string>
     <string name="home_no_recent_unplayed_episodes_text">Vous avez déjà lu tous les épisodes récents. Pas de quoi être surpris ! ;-)</string>
     <string name="home_continue_empty_text">Vous pouvez ajouter des épisodes en les téléchargeant ou par un appui long sur eux pour choisir \"Ajouter à la liste de lecture\".</string>
@@ -837,18 +830,15 @@
     <string name="episode_download_failed">Échec de téléchargement de l\'épisode</string>
     <string name="echo_home_header">Bilan de l\'année</string>
     <string name="echo_home_subtitle">Vos podcasts et statistiques de cette année. Exclusivement sur votre téléphone.</string>
-
     <string name="echo_intro_your_year">Votre année</string>
     <string name="echo_intro_in_podcasts">de podcasts</string>
     <string name="echo_intro_locally">généré par votre téléphone pour respecter votre vie privée</string>
-
     <string name="echo_hours_this_year">Cette année vous avez écouté</string>
     <plurals name="echo_hours_podcasts">
         <item quantity="one">heures d\'épisodes\nd\'%1$d seul podcast</item>
         <item quantity="many">heures d\'épisodes\nde %1$d podcasts différents</item>
         <item quantity="other">heures d\'épisodes\nde %1$d podcasts différents</item>
     </plurals>
-
     <string name="echo_queue_title_clean">Et vous êtes prêt à finir à l\'année avec seulement</string>
     <string name="echo_queue_title_many">Et vous avez de la réserve pour finir l\'année avec</string>
     <plurals name="echo_queue_hours_waiting">
@@ -857,27 +847,52 @@
         <item quantity="other">heures finir votre liste de lecture\nde %1$d épisodes</item>
     </plurals>
     <string name="echo_queue_hours_clean">C\'est environ %1$s tous les jours avant que %2$d ne commence.</string>
-    <string name="echo_queue_hours_normal">C\'est environ %1$s tous les jours avant que %2$d ne commence. Si vous voulez y arriver des épisodes vont devoir être sautés !</string>
-    <string name="echo_queue_hours_much">C\'est environ %1$s tous les jours avant que %2$d ne commence. Hein !? Ça semble tendu !</string>
-
+    <string name="echo_queue_hours_normal">C\'est environ %1$s tous les jours avant que %2$d ne commence. Pour arriver à vider votre liste des épisodes vont devoir être sautés.</string>
+    <string name="echo_queue_hours_much">C\'est environ %1$s tous les jours avant que %2$d ne commence. Hein, quoi ?</string>
     <string name="echo_listened_after_title">On a lancé quelques analyses entre le moment où un épisode est publié et son écoute. Notre conclusion ?</string>
     <string name="echo_listened_after_comment_easy">Vous êtes zen</string>
     <string name="echo_listened_after_time">En général, vous avez écouté un episode %1$s après sa publication.</string>
     <string name="echo_listened_after_comment_addict">Vous êtes accro aux podcasts</string>
-
     <string name="echo_hoarder_title">On s\'est aussi demandé si vous écoutiez les podcasts auxquels vous êtes abonné ?</string>
-    <string name="echo_hoarder_subtitle_hoarder">Au vu des chiffres on a détecté un petit syndrome de collectionnite !</string>
+    <string name="echo_hoarder_subtitle_hoarder">Au vu des chiffres on pense que vous avez un petit syndrome de collectionnite</string>
     <string name="echo_hoarder_comment_hoarder">Et il parait que les chiffres ne mentent pas. Avec seulement %1$d%% de vos %2$d abonnements actifs ayant été lu cette année, nous avons probablement raison.</string>
-    <string name="echo_hoarder_subtitle_medium">Rien à signaler ! Pas de collectionnite aigüe détectée !</string>
+    <string name="echo_hoarder_subtitle_medium">Rien à signaler. Pas de collectionnite aiguë détectée.</string>
     <string name="echo_hoarder_comment_medium">Vous avez lu %1$d%% de vos %2$d abonnements actifs cette année. Pourquoi ne pas allez rejeter un coup d\'oeil à \"%3$s\" ?</string>
     <string name="echo_hoarder_subtitle_clean">Nickel !</string>
     <string name="echo_hoarder_comment_clean">Vous avez lu %1$d%% de vos %2$d abonnements actifs cette année. On parie que vous ête du genre à avoir un bureau propre !</string>
-
     <string name="echo_thanks_large">Merci</string>
     <string name="echo_thanks_we_are_glad_old">d\'avoir partagé cette année avec nous !\n\nVotre premier épisode avec nous a été lu en %1$s et on est fier de continuer à vous être utile.</string>
     <string name="echo_thanks_we_are_glad_new">de nous avoir rejoint cette année !\n\nPeu importe si vous avez changé d\'application ou commencé à écouter les podcasts avec nous : on est content de vous avoir !</string>
     <string name="echo_thanks_now_favorite">Maintenant, jetons un coup d\'oeil à vos podcasts préférés…</string>
-
     <string name="echo_share_heading">Mes podcasts préférés</string>
     <string name="echo_share">Mon année %d en podcasts. #AntennaPodEcho</string>
+    <string name="subscriptions_label_short">Abonnements</string>
+    <string name="playback_history_label_short">Journal</string>
+    <string name="queue_label_more">Liste de lecture »</string>
+    <string name="inbox_label_more">Boîte de réception »</string>
+    <string name="enabled">Activé</string>
+    <string name="delete_tag_label">Supprimer le tag</string>
+    <string name="delete_tag_confirmation">Merci de confirmer que vous voulez supprimer le tag \"%1$s\".</string>
+    <string name="pref_automatic_download_queue_description">Téléchargement automatique des épisodes dans la liste de lecture</string>
+    <string name="episode_lists">Listes des épisodes</string>
+    <string name="pref_downloads_button_action_title">Lire à partir de l\'écran des téléchargements</string>
+    <string name="pref_downloads_button_action_sum">Afficher un bouton de lecture au lieu d\'un bouton pour supprimer dans l\'écran des téléchargements</string>
+    <string name="statistics_time_total">total</string>
+    <string name="statistics_time_played">d\'écoute</string>
+    <string name="notification_channel_refreshing">Mise à jour des podcasts</string>
+    <string name="notification_channel_refreshing_description">S\'affiche lors de la récupération des listes d\'épisodes.</string>
+    <string name="downloads_label_more">Téléchargements »</string>
+    <string name="queue_label_short">Liste</string>
+    <string name="downloads_label_short">Téléchargements</string>
+    <string name="add_feed_label_short">Ajouter</string>
+    <string name="home_label_short">Accueil</string>
+    <string name="inbox_label_short">Boîte</string>
+    <string name="global_default_with_value">Valeur par défaut (%1$s)</string>
+    <string name="episodes_label_more">Épisodes »</string>
+    <string name="subscriptions_label_more">Abonnements »</string>
+    <string name="disabled">Désactivé</string>
+    <string name="download_error_unsupported_type_html_manual">L\'adresse entrée est celle d\'un site web et pas d\'un lien RSS de podcast.</string>
+    <string name="episodes_label_short">Épisodes</string>
+    <string name="pref_automatic_download_global_description">Télécharger automatiquement les nouveaux épisodes. Peut être modifier pour chaque podcast.</string>
+    <string name="pref_automatic_download_queue_title">Téléchargement pour la liste de lecture</string>
 </resources>

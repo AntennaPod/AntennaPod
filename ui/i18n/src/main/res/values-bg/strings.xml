@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Актуализиране на абонаменти</string>
-    <string name="feeds_label">Подкасти</string>
     <string name="statistics_label">Статистика</string>
     <string name="add_feed_label">Добави подкаст</string>
     <string name="episodes_label">Епизоди</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Любими</string>
     <string name="settings_label">Настройки</string>
     <string name="downloads_label">Изтеглени</string>
-    <string name="open_autodownload_settings">Отвори Настройки</string>
     <string name="downloads_log_label">Списък на изтеглените</string>
     <string name="subscriptions_label">Абонаменти</string>
     <string name="subscriptions_list_label">Списък с абонаменти</string>
     <string name="cancel_download_label">Откажи Изтеглянето</string>
     <string name="playback_history_label">История на слушанията</string>
-    <string name="episode_cache_full_title">Пълен кеш на епизодите</string>
-    <string name="episode_cache_full_message">Ограничението на кеша на епизодите е достигнато. Можете да увеличите размера на кеша в настройките.</string>
     <string name="years_statistics_label">Години</string>
     <string name="notification_pref_fragment">Известия</string>
     <string name="current_playing_episode">Текущ</string>
@@ -299,9 +295,8 @@
   <string name="proxy_type_label">Тип</string>
     <string name="host_label">Хост</string>
     <string name="port_label">Порт</string>
-    <string name="optional_hint">(Незадължително)</string>
     <string name="proxy_test_label">Тест</string>
-    <string name="proxy_checking">Проверява се...</string>
+    <string name="proxy_checking">Проверява се…</string>
     <string name="proxy_test_successful">Тестът е успешен</string>
     <string name="proxy_test_failed">Тестът е неуспешен</string>
     <string name="proxy_host_empty_error">Хостът не може да е празен</string>

@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Aktualizovat odběry</string>
-    <string name="feeds_label">Podcasty</string>
     <string name="statistics_label">Statistiky</string>
     <string name="add_feed_label">Přidat podcast</string>
     <string name="episodes_label">Epizody</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Oblíbené</string>
     <string name="settings_label">Nastavení</string>
     <string name="downloads_label">Stahování</string>
-    <string name="open_autodownload_settings">Otevřít nastavení</string>
     <string name="downloads_log_label">Historie stáhnování</string>
     <string name="subscriptions_label">Odběry</string>
     <string name="subscriptions_list_label">Seznam odběrů</string>
     <string name="cancel_download_label">Zrušit stahování</string>
     <string name="playback_history_label">Historie přehrávání</string>
-    <string name="episode_cache_full_title">Odkládací prostor pro epizody je plný</string>
-    <string name="episode_cache_full_message">Došlo k zaplnění limitu odkládacího prostoru pro epizody. Můžete navýšit vyhrazený prostor v Nastavení.</string>
     <string name="years_statistics_label">Roky</string>
     <string name="notification_pref_fragment">Upozornění</string>
     <string name="current_playing_episode">Právě přehrávaný&lt;br&gt;</string>
@@ -198,33 +194,33 @@
     <string name="mark_read_no_media_label">Označit jako poslechnuté</string>
     <string name="play_this_to_seek_position">Pro přeskočení na pozice musíte epizodu přehrát</string>
     <plurals name="marked_read_batch_label">
-        <item quantity="one">%d epizoda označena jako přehraná</item>
-        <item quantity="few">%d epizody označeny jako přehrané</item>
-        <item quantity="other">%d epizod označeno jako přehrané</item>
+        <item quantity="one">%d epizoda označena jako přehraná%d epizody označeny jako přehrané%d epizod označeno jako přehrané</item>
+        <item quantity="few"></item>
+        <item quantity="other"></item>
     </plurals>
     <string name="mark_unread_label">Označit jako neposlechnuté</string>
     <string name="mark_unread_label_no_media">Označit jako nepřečtené</string>
     <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d epizoda označena jako neposlechnutá</item>
-        <item quantity="few">%d epizody označeny jako neposlechnuté</item>
-        <item quantity="other">%d epizod označeno jako neposlechnuté</item>
+        <item quantity="one">%d epizoda označena jako neposlechnutá%d epizody označeny jako neposlechnuté%d epizod označeno jako neposlechnuté</item>
+        <item quantity="few"></item>
+        <item quantity="other"></item>
     </plurals>
     <string name="add_to_queue_label">Přidat do fronty</string>
     <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d epizoda přidána do fronty</item>
-        <item quantity="few">%d epizody přidány do fronty</item>
-        <item quantity="other">%d epizod přidáno do fronty</item>
+        <item quantity="one">%d epizoda přidána do fronty%d epizody přidány do fronty%d epizod přidáno do fronty</item>
+        <item quantity="few"></item>
+        <item quantity="other"></item>
     </plurals>
     <string name="remove_from_queue_label">Odebrat z fronty</string>
     <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d epizoda odebrána z fronty</item>
-        <item quantity="few">%d epizody odebrány z fronty</item>
-        <item quantity="other">%d epizod odebráno z fronty</item>
+        <item quantity="one">%d epizoda odebrána z fronty%d epizody odebrány z fronty%d epizod odebráno z fronty</item>
+        <item quantity="few"></item>
+        <item quantity="other"></item>
     </plurals>
     <plurals name="removed_from_inbox_batch_label">
-        <item quantity="one">%d epizoda odebrána z doručených</item>
-        <item quantity="few">%d epizody odebrány z doručených</item>
-        <item quantity="other">%d epizod odebráno z nových</item>
+        <item quantity="one">%d epizoda odebrána z doručených%d epizody odebrány z doručených%d epizod odebráno z nových</item>
+        <item quantity="few"></item>
+        <item quantity="other"></item>
     </plurals>
     <string name="add_to_favorite_label">Přidat do oblíbených</string>
     <string name="remove_from_favorite_label">Odebrat z oblíbených</string>
@@ -633,7 +629,6 @@
     <string name="exclude_episodes_shorter_than">Vyloučit epizody kratší než</string>
     <string name="keep_updated">Udržovat aktuální</string>
     <string name="keep_updated_summary">Zahrnout tento podcast při (automatickém) obnovování všech podcastů</string>
-    <string name="auto_download_disabled_globally">Automatické stahování je zakázané v hlavním nastavení AntennaPodu</string>
     <string name="statistics_expected_next_episode_any_day">Jakýkoliv den</string>
     <string name="statistics_expected_next_episode_unknown">Neznámý</string>
     <string name="edit_url_menu">Upravit adresu URL kanálu</string>
@@ -651,7 +646,7 @@
     <string name="release_schedule_saturday">So</string>
     <string name="release_schedule_sunday">Ne</string>
     <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Importuji odběry z jednoúčelových aplikací...</string>
+  <string name="sp_apps_importing_feeds_msg">Importuji odběry z jednoúčelových aplikací…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Vyhledat podcast…</string>
     <string name="search_itunes_label">Vyhledávání v Apple Podcastech</string>
@@ -701,9 +696,8 @@
   <string name="proxy_type_label">Typ</string>
     <string name="host_label">Host</string>
     <string name="port_label">Port</string>
-    <string name="optional_hint">(Volitelný)</string>
     <string name="proxy_test_label">Test</string>
-    <string name="proxy_checking">Kontrola...</string>
+    <string name="proxy_checking">Kontrola…</string>
     <string name="proxy_test_successful">Test úspěšný</string>
     <string name="proxy_test_failed">Test selhal</string>
     <string name="proxy_host_empty_error">Host nesmí být prázdný</string>

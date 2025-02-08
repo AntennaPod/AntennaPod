@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="feeds_label">Podcasts</string>
     <string name="statistics_label">Estadístiques</string>
     <string name="episodes_label">Episodios</string>
     <string name="queue_label">Cola</string>
@@ -8,8 +7,6 @@
     <string name="settings_label">Axustes</string>
     <string name="downloads_label">Descargues</string>
     <string name="subscriptions_label">Soscripciones</string>
-    <string name="episode_cache_full_title">La caché d\'episodios ta enllena</string>
-    <string name="episode_cache_full_message">Algamóse la llende de la caché d\'episodios. Pues aumentar el so tamañu nos axustes de l\'aplicación.</string>
     <string name="notification_pref_fragment">Avisos</string>
     <!--Google Assistant-->
   <string name="app_action_not_found">Nun s\'atopó «%1$s»</string>
@@ -285,7 +282,6 @@
   <string name="authentication_label">Autenticación</string>
     <string name="episode_filters_description">La llista de términos que s\'usa pa decidir si un episodiu habría incluyise o escluyise de la descarga automática</string>
     <string name="keep_updated_summary">Inclúi esti podcast al refrescar (automáticamente) tolos podcasts</string>
-    <string name="auto_download_disabled_globally">La descarga automática ta desactivada nos axustes principales d\'AntennaPod</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Buscar podcasts…</string>
     <string name="search_fyyd_label">Buscar en fyyd</string>
@@ -316,7 +312,6 @@
   <string name="proxy_type_label">Tipu</string>
     <string name="host_label">Agospiador</string>
     <string name="port_label">Puertu</string>
-    <string name="optional_hint">(Opcional)</string>
     <string name="proxy_test_label">Probar</string>
     <string name="proxy_checking">Comprobando…</string>
     <string name="proxy_test_successful">La prueba fízose correutamente</string>

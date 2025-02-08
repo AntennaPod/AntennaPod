@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Eguneratu harpidetzak</string>
-    <string name="feeds_label">Podcastak</string>
     <string name="statistics_label">Estatistikak</string>
     <string name="add_feed_label">Gehitu podcasta</string>
     <string name="episodes_label">Saioak</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Gogokoak</string>
     <string name="settings_label">Ezarpenak</string>
     <string name="downloads_label">Deskargak</string>
-    <string name="open_autodownload_settings">Ireki ezarpenak</string>
     <string name="downloads_log_label">Deskargen erregistroa</string>
     <string name="subscriptions_label">Harpidetzak</string>
     <string name="subscriptions_list_label">Harpidetza zerrenda (alboko menua soilik)</string>
     <string name="cancel_download_label">Ezeztatu deskarga</string>
     <string name="playback_history_label">Erreprodukzio historia</string>
-    <string name="episode_cache_full_title">Saioen cache-a beteta</string>
-    <string name="episode_cache_full_message">Saioen cache-a mugara iritsi da. Ezarpenetan cache-aren tamaina handitu dezakezu.</string>
     <string name="years_statistics_label">Urteak</string>
     <string name="notification_pref_fragment">Jakinarazpenak</string>
     <string name="current_playing_episode">Unekoa</string>
@@ -52,7 +48,7 @@
     <string name="home_new_title">Ikusi berriak</string>
     <string name="home_downloads_title">Kudeatu deskargak</string>
     <string name="home_welcome_title">Ongi etorri AntennaPod-era!</string>
-    <string name="home_welcome_text">Oraindik ez zara harpidetu podcast bakar batera ere. Ireki alboko menua podcast bat gehitzeko.</string>
+    <string name="home_welcome_text">Oraindik ez zara harpidetu podcast bakar batera ere. Ireki menua podcast bat gehitzeko.</string>
     <string name="notification_permission_denied">Baimena ukatu duzu.</string>
     <string name="configure_home">Konfiguratu hasierako pantaila</string>
     <string name="section_hidden">Ezkutuan</string>
@@ -131,7 +127,7 @@
         <item quantity="other">%d saio</item>
     </plurals>
     <string name="episode_notification">Saioen jakinarazpenak</string>
-    <string name="episode_notification_summary">Erakutsi jakinarazpena saio berri bat kaleratzen denean.</string>
+    <string name="episode_notification_summary">Erakutsi jakinarazpena saio berri bat kaleratzen denean</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s (e)k saio berri bat du</item>
         <item quantity="other">%2$s (e)k %1$d saio berri ditu</item>
@@ -235,7 +231,7 @@
     <string name="download_error_insufficient_space">Ez dago nahiko lekurik zure gailuan.</string>
     <string name="download_error_http_data_error">HTTP datu-errorea</string>
     <string name="download_error_error_unknown">Errore ezezaguna</string>
-    <string name="download_error_parser_exception">Podcast ostalariaren zerbitzariak hondatutako podcast jarioa bidali du.</string>
+    <string name="download_error_parser_exception">Podcast ostalariaren zerbitzariak hondatutako podcast jarioa bidali du. Podcast balioztatzaile batekin egiaztatzea gomendatzen dugu, esate baterako, castfeedvalidator.com, eta podcast sortzailearekin harremanetan jartzea horren berri emateko.</string>
     <string name="download_error_unsupported_type">Onartzen ez den jario-mota</string>
     <string name="download_error_unsupported_type_html">Podcast ostalariaren zerbitzariak webgune bat bidali du, ez podcast bat.</string>
     <string name="download_error_not_found">Podcast ostalariaren zerbitzariak ez daki non aurkitu fitxategia. Baliteke ezabatu izana.</string>
@@ -265,7 +261,7 @@
     <string name="authentication_notification_title">Autentifikazioa beharrezkoa da</string>
     <string name="confirm_mobile_download_dialog_title">Baieztatu sare mugikor bidezko deskarga</string>
     <string name="confirm_mobile_download_dialog_message">Datu mugikorreko konexioan podcastak eguneratzea desgaituta dago ezarpenetan. Saioa beranduago deskargatu dezake AntennaPodek, wifia erabilgarri dagoenean.</string>
-    <string name="confirm_mobile_download_dialog_message_vpn">Zure VPN aplikazioak sare mugikorra izateko itxurak egiten ditu (konexio mugatua). Datu mugikorreko konexioan podcastak eguneratzea desgaituta dago ezarpenetan. Arazo hau konpontzea nahi baduzu, jarri harremanetan VPN aplikazioaren sortzaileekin.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">- VPN bat erabiltzen? Zure VPN aplikazioak sare mugikor bat dela dirudi (konexio neurtua). Arazo hau konpondu nahi baduzu, jarri harremanetan VPN aplikazioaren sortzaileekin.\n- Ez duzu VPNrik erabiltzen? Ireki Androiden Wi-Fi ezarpenak eta aldatu zure Wi-Fi mota, neurtua izan ez dadin.</string>
     <string name="confirm_mobile_download_dialog_download_later">Deskargatu beranduago</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Deskargatu hala ere</string>
     <string name="confirm_mobile_streaming_notification_title">Baieztatu sare mugikor bidezko streaming-a</string>
@@ -406,7 +402,7 @@
     <string name="pref_playback_speed_sum">Pertsonalizatu abiadura aldakorreko erreprodukzioan dauden abiadurak</string>
     <string name="pref_feed_playback_speed_sum">Podcast honen saioen audioak erreproduzitzen hastean erabiliko den abiadura</string>
     <string name="pref_feed_skip">Saltatu automatikoki</string>
-    <string name="pref_feed_skip_sum">Saltatu sarrera eta amaierako kredituak.</string>
+    <string name="pref_feed_skip_sum">Saltatu sarrera eta amaierako kredituak</string>
     <string name="pref_feed_skip_ending">Saltatu azkena</string>
     <string name="pref_feed_skip_intro">Saltatu lehenengoa</string>
     <string name="pref_feed_skip_ending_toast">Azken%d segundoak saltatu dira</string>
@@ -607,7 +603,7 @@
     <string name="add_preset">Gehitu aurrezarpena</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">Autentifikazioa</string>
-    <string name="authentication_descr">Aldatu erabiltzaile-izena eta pasahitza podcast honentzat eta bere saioentzat.</string>
+    <string name="authentication_descr">Aldatu erabiltzaile-izena eta pasahitza podcast honentzat eta bere saioentzat</string>
     <string name="feed_tags_label">Etiketak</string>
     <string name="feed_tags_summary">Aldatu podcast honen etiketak zure harpidetzak antolatzen laguntzeko</string>
     <string name="feed_folders_include_root">Erakutsi podcast hau zerrenda nagusian</string>
@@ -621,7 +617,6 @@
     <string name="exclude_episodes_shorter_than">Baztertu hau baino laburragoak diren saioak</string>
     <string name="keep_updated">Mantendu eguneratuta</string>
     <string name="keep_updated_summary">Eguneratu podcast hau ere podcast guztiak (auto-)eguneratzean</string>
-    <string name="auto_download_disabled_globally">Deskarga automatikoa desgaituta dago AntennaPod-en ezarpen orokorretan</string>
     <string name="statistics_expected_next_episode_any_day">Laster</string>
     <string name="statistics_expected_next_episode_unknown">Ezezaguna</string>
     <string name="edit_url_menu">Editatu jarioaren URLa</string>
@@ -689,7 +684,6 @@
   <string name="proxy_type_label">Mota</string>
     <string name="host_label">Ostalaria</string>
     <string name="port_label">Ataka</string>
-    <string name="optional_hint">(Hautazkoa)</string>
     <string name="proxy_test_label">Probatu</string>
     <string name="proxy_checking">Egiaztatzen…</string>
     <string name="proxy_test_successful">Proba arrakastatsua</string>
@@ -704,8 +698,8 @@
     <string name="notification_group_news">Berriak</string>
     <string name="notification_channel_user_action">Beharrezko ekintza</string>
     <string name="notification_channel_user_action_description">Zure ekintza beharrezkoa den erakusten da, adibidez, pasahitz bat sartu behar duzun edo ez.</string>
-    <string name="notification_channel_downloading">Deskargatzen</string>
-    <string name="notification_channel_downloading_description">Deskargatu bitartean erakusten da.</string>
+    <string name="notification_channel_downloading">Atalak deskargatzen</string>
+    <string name="notification_channel_downloading_description">Atalak deskargatu bitartean erakusten da.</string>
     <string name="notification_channel_playing">Une honetan erreproduzitzen</string>
     <string name="notification_channel_playing_description">Erreprodukzioa kontrolatzeko aukera ematen du. Podcast bat erreproduzitzen den bitartean ikusten den jakinarazpen nagusia da.</string>
     <string name="notification_channel_download_error">Deskargak huts egin du</string>
@@ -766,7 +760,6 @@
     <string name="bottom_navigation">Nabigatzeko botoia</string>
     <string name="statistics_episodes_started">abiatuta</string>
     <string name="statistics_episodes_total">guztira</string>
-    <string name="statistics_episodes_played">erreproduzitua</string>
     <string name="statistics_release_schedule">kaleratzeen egutegia</string>
     <string name="statistics_years_barchart_description">Erreprodukzio denbora hilean</string>
     <plurals name="episode_cleanup_hours_after_listening">
@@ -814,4 +807,69 @@
     <string name="statistics_release_next">hurrengo atala (aurreikuspena)</string>
     <string name="edit_url_confirmation_msg">RSS helbidea aldatzeak erraz hautsi ditzake podcastaren erreprodukzio-egoera eta pasarte-zerrendak. EZ dugu aldatzea gomendatzen eta EZ dugu laguntza emango zerbait gaizki gertatzen bada. Hau ezin da desegin. Hautsitako harpidetza EZIN DA konpondu helbidea berriro aldatuz. Jarraitu aurretik, babeskopia sortzea gomendatzen dugu.</string>
     <string name="sync_status_wait_for_downloads">Harpidetzak freskatzeko zain…</string>
+    <string name="inbox_label_short">Sarrera ontzia</string>
+    <string name="statistics_time_played">erreproduzituta</string>
+    <string name="downloads_label_short">Deskargak</string>
+    <string name="inbox_label_more">Sarrera ontzia »</string>
+    <string name="pref_downloads_button_action_title">Erreproduzitu deskargen pantailatik</string>
+    <string name="echo_thanks_now_favorite">Gatozen zure gogoko podcastei begiratua ematera…</string>
+    <string name="playback_history_label_short">Historia</string>
+    <string name="echo_thanks_large">Milesker</string>
+    <string name="enabled">Gaituta</string>
+    <string name="echo_queue_hours_normal">Egunero %1$s inguru da %2$d hasten den arte. Urtea garbi has dezakezu atal batzuk saltatzen badituzu.</string>
+    <string name="subscriptions_label_short">Harpidetzak</string>
+    <string name="add_feed_label_short">Gehitu</string>
+    <string name="pref_automatic_download_global_description">Deskargatu automatikoki atal berriak. Podcast bakoitzeko gainidatzi daiteke.</string>
+    <string name="episodes_label_short">Atalak</string>
+    <string name="pref_automatic_download_queue_description">Deskargatu automatikoki ilaran dauden atalak</string>
+    <string name="episode_lists">Atalen zerrendak</string>
+    <string name="echo_thanks_we_are_glad_new">gurekin bat egiteagatik aurten.\n\nBeste aplikazio batetik bazatoz edo zure podcast-abentura gurekin hasi berri bazara: pozten gara zu gurekin izateaz!</string>
+    <string name="episodes_label_more">Atalak »</string>
+    <string name="delete_tag_label">Ezabatu etiketa</string>
+    <string name="queue_label_more">Ilara »</string>
+    <string name="downloads_label_more">Deskargak »</string>
+    <string name="delete_tag_confirmation">Berretsi ezazu mesedez etiketa ezabatu nahi duzula \"%1$s\".</string>
+    <string name="statistics_time_total">guztira</string>
+    <string name="echo_hours_this_year">Aurten honakoa erreproduzitu duzu</string>
+    <string name="download_error_unsupported_type_html_manual">Sartu duzun helbidea webgunearen helbidea da, ez podcast-en RSS helbidea.</string>
+    <string name="notification_channel_refreshing_description">Atal berriak bilatu bitartean erakutsita.</string>
+    <string name="echo_listened_after_time">Normalean, atal bat osatu duzu %1$s kaleratu ostean.</string>
+    <string name="echo_home_header">Urtea berrikusi</string>
+    <string name="pref_downloads_button_action_sum">Bistaratu deskargen pantailan erreproduzitzeko botoia ezabatzeko botoia beharrean</string>
+    <string name="echo_home_subtitle">Azken urteko zure gogoko podcastak eta estatistikak. Zure telefonoan soilik.</string>
+    <string name="echo_intro_your_year">Zure urtea</string>
+    <string name="echo_hoarder_subtitle_hoarder">Zenbakiei erreparatuta, metatzaile bat zarela uste dugu</string>
+    <string name="echo_hoarder_comment_clean">Aurten zure %2$d harpidetza aktiboetatik %1$d%% atalak erreproduzitu dituzu. Ziur gaude zure mahaigaina ere garbi utzi duzula!</string>
+    <string name="echo_intro_locally">Zure telefonoan pribatuki sortua</string>
+    <plurals name="echo_hours_podcasts">
+        <item quantity="one">Atalen orduak\n%1$d podcastetik</item>
+        <item quantity="other">Atalen orduak\n%1$d podcast ezberdinetatik</item>
+    </plurals>
+    <string name="echo_listened_after_comment_easy">Lasaia zara</string>
+    <string name="echo_queue_title_clean">Honezkero prest zaude urteari hasiera berria emateko. Baduzu</string>
+    <plurals name="echo_queue_hours_waiting">
+        <item quantity="one">zure ilaran itxaron beharreko orduak\n %1$d ataletik</item>
+        <item quantity="other">zure ilaran itxaron beharreko orduak\n %1$d ataletatik</item>
+    </plurals>
+    <string name="echo_queue_hours_clean">Egunero %1$s inguru da %2$d hasten den arte.</string>
+    <string name="echo_listened_after_title">Azterketa batzuk egin ditugu atalak noiz kaleratu diren eta noiz ikusi dituzun jakiteko. Gure ondorioa jakin nahi al duzu?</string>
+    <string name="echo_listened_after_comment_addict">Podcasten zale amorratua zara</string>
+    <string name="echo_hoarder_title">Hurrengoa galdetu diogu gure buruari: harpidetuta zauden podcastak entzuten al dituzu?</string>
+    <string name="echo_hoarder_comment_hoarder">Zenbakiek ez dute gezurrik esaten, diote. Eta aurten zure %2$d harpidetza aktiboetatik %1$d%% bakarrik erreproduzitu direnez, ziurrenik arrazoia dugu.</string>
+    <string name="echo_hoarder_comment_medium">Aurten zure %2$d harpidetza aktiboetatik %1$d%% atalak erreproduzitu dituzu. Zer moduz \"%3$s\" berriro ikustea?</string>
+    <string name="echo_thanks_we_are_glad_old">aurten gurekin jarraitzeagatik!\n\nZure lehen atala erreproduzitu zenuen gurekin %1$s-n. Harrezkero ohorea izan da zuri zerbitzua ematea.</string>
+    <string name="echo_share_heading">Nire gogoko podcastak</string>
+    <string name="pref_automatic_download_queue_title">Deskarga ilaran</string>
+    <string name="notification_channel_refreshing">Podcastak eguneratzen</string>
+    <string name="echo_intro_in_podcasts">podcastetan</string>
+    <string name="echo_queue_title_many">Eta oraindik baduzu zer ikusi aurten. Baduzu</string>
+    <string name="echo_queue_hours_much">Egunero %1$s inguru da %2$d hasten den arte. Zaude, zer?</string>
+    <string name="echo_hoarder_subtitle_medium">Egiaztatuta. Hemen ez dago gordetzerik.</string>
+    <string name="echo_hoarder_subtitle_clean">Garbituta!</string>
+    <string name="echo_share">Nire %d urtea podcastetan. #AntennaPodEcho</string>
+    <string name="home_label_short">Menu nagusia</string>
+    <string name="queue_label_short">Ilara</string>
+    <string name="subscriptions_label_more">Harpidetzak »</string>
+    <string name="disabled">Desgaituta</string>
+    <string name="global_default_with_value">Lehenetsi globala (%1$s)</string>
 </resources>

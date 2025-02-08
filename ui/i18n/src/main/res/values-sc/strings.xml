@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Atualiza sutiscritziones</string>
-    <string name="feeds_label">Podcasts</string>
     <string name="statistics_label">Istatìsticas</string>
     <string name="add_feed_label">Agiunghe podcast</string>
     <string name="episodes_label">Episòdios</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Preferidos</string>
     <string name="settings_label">Cunfiguratzione</string>
     <string name="downloads_label">Iscarrigamentos</string>
-    <string name="open_autodownload_settings">Aberi sa cunfiguratzione</string>
     <string name="downloads_log_label">Iscàrriga informe</string>
     <string name="subscriptions_label">Sutiscritziones</string>
     <string name="subscriptions_list_label">Lista de sutiscritziones (menù laterale ebbia)</string>
     <string name="cancel_download_label">Annulla s\'iscarrigamentu</string>
     <string name="playback_history_label">Cronologia de riprodutziones</string>
-    <string name="episode_cache_full_title">Sa memòria temporànea de is episòdios est prena</string>
-    <string name="episode_cache_full_message">Su lìmite de memòria temporànea de episòdios est istadu lòmpidu. Podes crèschere sa mannària de sa memòria temporànea in sa Cunfiguratzione.</string>
     <string name="years_statistics_label">Annos</string>
     <string name="notification_pref_fragment">Notìficas</string>
     <string name="current_playing_episode">Atuale</string>
@@ -675,7 +671,6 @@
     <string name="exclude_episodes_shorter_than">Esclude is episòdios prus curtzos de</string>
     <string name="keep_updated">Mantene atualizadu</string>
     <string name="keep_updated_summary">Include custu podcast cando atualizende in automàticu totu is podcasts</string>
-    <string name="auto_download_disabled_globally">S\'iscarrigamentu in automàticu est disativadu in sa cunfiguratzione printzipale de AntennaPod</string>
     <string name="statistics_expected_next_episode_any_day">Una de custas dies</string>
     <string name="statistics_expected_next_episode_unknown">Disconnotu</string>
     <string name="edit_url_menu">Modìfica s\'indiritzu de su canale</string>
@@ -744,7 +739,6 @@
   <string name="proxy_type_label">Tipu</string>
     <string name="host_label">Osteriàrgiu (host)</string>
     <string name="port_label">Ghenna</string>
-    <string name="optional_hint">(Optzionale)</string>
     <string name="proxy_test_label">Proa</string>
     <string name="proxy_checking">Verifichende…</string>
     <string name="proxy_test_successful">Test curretu</string>
@@ -799,7 +793,6 @@
     <string name="mobile_download_notice">Iscarrighende cun connessione de datos mòbiles pro is %d minutos imbenientes</string>
     <string name="bottom_navigation">Navigatzione inferiore</string>
     <string name="bottom_navigation_summary">Funtzionalidade beta: atzede a is ischermos de prus importu dae onni logu, cun unu tocu isceti</string>
-    <string name="statistics_episodes_played">riproduidos</string>
     <string name="statistics_episodes_downloaded">iscarrigados</string>
     <string name="nextcloud_login_error_generic">Impossìbile atzèdere a su Nextcloud tuo.\n\n- Controlla sa connessione de rete.\n- Cunfirma chi ses impreende s\'indiritzu de su serbidore curretu.\n- Assegura·ti chi su cumplementu gpoddersync Nextcloud est installadu.</string>
     <string name="statistics_episodes_started">cumintzados</string>

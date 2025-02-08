@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">구독 업데이트</string>
-    <string name="feeds_label">팟캐스트</string>
     <string name="statistics_label">통계</string>
     <string name="add_feed_label">팟캐스트 추가</string>
     <string name="episodes_label">에피소드</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">즐겨찾기</string>
     <string name="settings_label">설정</string>
     <string name="downloads_label">다운로드</string>
-    <string name="open_autodownload_settings">설정 열기</string>
     <string name="downloads_log_label">다운로드 기록</string>
     <string name="subscriptions_label">구독</string>
     <string name="subscriptions_list_label">구독 목록</string>
     <string name="cancel_download_label">다운로드 취소</string>
     <string name="playback_history_label">재생 기록</string>
-    <string name="episode_cache_full_title">에피소드 캐시 꽉 참</string>
-    <string name="episode_cache_full_message">에피소드 캐시 한계값에 도달했습니다. 설정에서 캐시 크기를 늘릴 수 있습니다.</string>
     <string name="years_statistics_label">연</string>
     <string name="notification_pref_fragment">알림</string>
     <string name="current_playing_episode">현재</string>
@@ -470,10 +466,10 @@
     <string name="search_online">온라인 검색</string>
     <!--Synchronization-->
   <string name="sync_status_started">동기화 시작함</string>
-    <string name="sync_status_episodes_upload">에피소드 변경 업로드 중...</string>
-    <string name="sync_status_episodes_download">에피소드 변경 다운로드 중...</string>
-    <string name="sync_status_upload_played">재생한 상태 업로드 중...</string>
-    <string name="sync_status_subscriptions">구독 정보 동기화 중...</string>
+    <string name="sync_status_episodes_upload">에피소드 변경 업로드 중…</string>
+    <string name="sync_status_episodes_download">에피소드 변경 다운로드 중…</string>
+    <string name="sync_status_upload_played">재생한 상태 업로드 중…</string>
+    <string name="sync_status_subscriptions">구독 정보 동기화 중…</string>
     <string name="sync_status_success">동기화 성공</string>
     <string name="sync_status_error">동기화 실패</string>
     <!--import and export-->
@@ -610,7 +606,6 @@
     <string name="exclude_episodes_shorter_than">이보다 짧은 에피소드 제외</string>
     <string name="keep_updated">최신 업데이트 유지</string>
     <string name="keep_updated_summary">모든 팟캐스트를 (자동) 새로 고칠 때 이 팟캐스트 포함</string>
-    <string name="auto_download_disabled_globally">자동 다운로드는 안테나팟 메인 설정에서 꺼져 있습니다</string>
     <string name="statistics_expected_next_episode_any_day">지금 언제든지</string>
     <string name="statistics_expected_next_episode_unknown">알 수 없음</string>
     <string name="edit_url_menu">피드 URL 편집</string>
@@ -628,7 +623,7 @@
     <string name="release_schedule_saturday">토</string>
     <string name="release_schedule_sunday">일</string>
     <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">단일 용도 앱에서 구독 정보를 가져옵니다...</string>
+  <string name="sp_apps_importing_feeds_msg">단일 용도 앱에서 구독 정보를 가져옵니다…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">팟캐스트 검색…</string>
     <string name="search_itunes_label">애플 팟캐스트 검색</string>
@@ -678,9 +673,8 @@
   <string name="proxy_type_label">종류</string>
     <string name="host_label">호스트</string>
     <string name="port_label">포트</string>
-    <string name="optional_hint">(선택 사항)</string>
     <string name="proxy_test_label">테스트</string>
-    <string name="proxy_checking">확인 중...</string>
+    <string name="proxy_checking">확인 중…</string>
     <string name="proxy_test_successful">테스트 성공</string>
     <string name="proxy_test_failed">테스트 실패</string>
     <string name="proxy_host_empty_error">호스트가 비어 있으면 안 됩니다</string>

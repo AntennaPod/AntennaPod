@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="feeds_label">Tinklalaidės</string>
     <string name="statistics_label">Statistika</string>
     <string name="add_feed_label">Pridėti tinklalaidę</string>
     <string name="episodes_label">Epizodai</string>
@@ -9,8 +8,8 @@
     <string name="settings_label">Nustatymai</string>
     <string name="downloads_label">Atsisiuntimai</string>
     <string name="subscriptions_label">Prenumeratos</string>
-    <string name="episode_cache_full_title">Epizodas talpykla pilnas</string>
-    <string name="episode_cache_full_message">Pasiekta epizodo talpyklos riba. Galite padidinti talpyklos dydį nustatymuose.</string>
+    <string name="episode_cache_full_title">Epizodų podėlis pilnas</string>
+    <string name="episode_cache_full_message">Pasiektas epizodų podėlio dydžio limitas. Nustatymuose galite padidinti podėlio dydį.</string>
     <string name="years_statistics_label">Metai</string>
     <string name="notification_pref_fragment">Pranešimai</string>
     <!--Google Assistant-->
@@ -226,7 +225,7 @@
     <string name="interruptions">Pertraukimai</string>
     <string name="playback_control">Atkūrimo valdymas</string>
     <string name="reassign_hardware_buttons">Keisti aparatinius mygtukus</string>
-    <string name="preference_search_hint">Ieškoti...</string>
+    <string name="preference_search_hint">Ieškoti…</string>
     <string name="preference_search_no_results">Rezultatų nėra</string>
     <string name="preference_search_clear_history">Išvalyti istoriją</string>
     <string name="pref_episode_cleanup_summary">Epizodai, kurie gali būti ištrinti automatinio atsiuntimo metu pritrūkus laisvos vietos naujiems epizodams</string>
@@ -312,10 +311,10 @@
     <string name="no_results_for_query">Rezultatų paieškai \"%1$s\" nėra.</string>
     <!--Synchronization-->
   <string name="sync_status_started">Sinchronizavimas pradėtas</string>
-    <string name="sync_status_episodes_upload">Išsiunčiami epizodų pasikeitimai...</string>
-    <string name="sync_status_episodes_download">Atsiunčiami epizodų pasikeitimai...</string>
-    <string name="sync_status_upload_played">Išsiunčiama atkūrimo būsena...</string>
-    <string name="sync_status_subscriptions">Sinchronizuojamos prenumeratos...</string>
+    <string name="sync_status_episodes_upload">Išsiunčiami epizodų pasikeitimai…</string>
+    <string name="sync_status_episodes_download">Atsiunčiami epizodų pasikeitimai…</string>
+    <string name="sync_status_upload_played">Išsiunčiama atkūrimo būsena…</string>
+    <string name="sync_status_subscriptions">Sinchronizuojamos prenumeratos…</string>
     <string name="sync_status_success">Sinchronizavimas sėkmingas</string>
     <string name="sync_status_error">Sinchronizavimas nepavyko</string>
     <!--import and export-->
@@ -338,7 +337,7 @@
     <string name="database_export_label">Duomenų bazės eksportas</string>
     <string name="database_import_label">Duomenų bazės importas</string>
     <string name="database_import_warning">Importuojant duomenų bazę bus pakeistos visos dabartinės jūsų prenumeratos ir atkūrimo istorija. Rekomenduojame eksportuoti dabartinę duomenų bazę kaip atsarginę kopiją. Ar norite pakeisti?</string>
-    <string name="please_wait">Prašome luktelėti...</string>
+    <string name="please_wait">Prašome luktelėti…</string>
     <string name="export_error_label">Eksporto klaida</string>
     <string name="export_success_title">Sėkmingai eksportuota</string>
     <string name="opml_import_ask_read_permission">Norint nuskaityti OPML failą reikalinga prieiga prie išorinės laikmenos</string>
@@ -412,11 +411,10 @@
     <string name="feed_tags_summary">Keisti tinklalaidės žymes, kad palengvinti prenumeratų tvarkymą</string>
     <string name="episode_filters_description">Žodžių ar frazių sąrašas, kuriuo remiantis sprendžiama, ar epizodas turėtų būti įtrauktas ar išbrauktas iš automatiškai atsiunčiamų epizodų</string>
     <string name="keep_updated_summary">Įtraukti šią tinklalaidę į (automatinį) visų tinklalaidžių atnaujinimą</string>
-    <string name="auto_download_disabled_globally">Automatinis atsiuntimas išjungtas pagrindiniuose „AntennaPod“ nustatymuose</string>
     <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Įkeliamos prenumeratos iš specializuotų programėlių...</string>
+  <string name="sp_apps_importing_feeds_msg">Įkeliamos prenumeratos iš specializuotų programėlių…</string>
     <!--Add podcast fragment-->
-  <string name="search_podcast_hint">Ieškoti tinklalaidės...</string>
+  <string name="search_podcast_hint">Ieškoti tinklalaidės…</string>
     <string name="search_fyyd_label">Ieškoti „fyyd“</string>
     <string name="discover">Atraskite</string>
     <string name="discover_hide">Slėpti</string>
@@ -456,9 +454,8 @@
   <string name="proxy_type_label">Tipas</string>
     <string name="host_label">Serveris</string>
     <string name="port_label">Prievadas</string>
-    <string name="optional_hint">(neprivalomas)</string>
     <string name="proxy_test_label">Išbandyti</string>
-    <string name="proxy_checking">Tikrinama...</string>
+    <string name="proxy_checking">Tikrinama…</string>
     <string name="proxy_test_successful">Bandymas sėkmingas</string>
     <string name="proxy_test_failed">Bandymas nesėkmingas</string>
     <string name="proxy_host_empty_error">Serverio laukelis negali būti tuščias</string>

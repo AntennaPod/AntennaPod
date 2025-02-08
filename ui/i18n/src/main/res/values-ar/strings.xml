@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">تحديث الاشتراكات</string>
-    <string name="feeds_label">البودكاستات</string>
     <string name="statistics_label">الإحصائيات</string>
     <string name="add_feed_label">إضافة بودكاست</string>
     <string name="episodes_label">الحلقات</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">المفضلات</string>
     <string name="settings_label">الإعدادات</string>
     <string name="downloads_label">التنزيلات</string>
-    <string name="open_autodownload_settings">افتح الإعدادات</string>
     <string name="downloads_log_label">سجل التنزيلات</string>
     <string name="subscriptions_label">الاشتراكات</string>
     <string name="subscriptions_list_label">لائحة الاشتراكات (فقط في الدرج)</string>
     <string name="cancel_download_label">ألغِ التنزيل</string>
     <string name="playback_history_label">سجل التشغيل</string>
-    <string name="episode_cache_full_title">ذاكرة تخزين الحلقات ممتلئة</string>
-    <string name="episode_cache_full_message">لقد تجاوزت الحد الأقصى لتخزين الحلقات. ارفع قيمة التخزين في الإعدادات.</string>
     <string name="years_statistics_label">السنين</string>
     <string name="notification_pref_fragment">إشعارات</string>
     <string name="current_playing_episode">الحالي</string>
@@ -751,7 +747,6 @@
     <string name="exclude_episodes_shorter_than">استبعد الحلقات الاقصر من</string>
     <string name="keep_updated">أبقه محدثا</string>
     <string name="keep_updated_summary">أضف هذا البودكاست عند تحديث (أو التحديث التلقائي) جميع ملفات البودكاستات</string>
-    <string name="auto_download_disabled_globally">التنزيل التلقائي معطل في الإعدادات الرئيسية لـ AntennaPod</string>
     <string name="statistics_expected_next_episode_any_day">قريبًا</string>
     <string name="statistics_expected_next_episode_unknown">غير معروف</string>
     <string name="edit_url_menu">عدل على الرابط</string>
@@ -820,7 +815,6 @@
   <string name="proxy_type_label">النوع</string>
     <string name="host_label">خادم</string>
     <string name="port_label">رقم المنفذ</string>
-    <string name="optional_hint">(إختياري)</string>
     <string name="proxy_test_label">اختبار</string>
     <string name="proxy_checking">تفحص…</string>
     <string name="proxy_test_successful">اختبار ناجح</string>
@@ -875,7 +869,6 @@
     <string name="mobile_download_notice">سيُنزّل باستخدام بيانات الهاتف لمدة %d دقيقة</string>
     <string name="bottom_navigation">التنقل السفلي</string>
     <string name="statistics_episodes_started">بُدأت</string>
-    <string name="statistics_episodes_played">شغِّلت</string>
     <string name="statistics_episodes_downloaded">نزِّلت</string>
     <string name="statistics_episodes_space">المساحة المستخدمة</string>
     <string name="statistics_years_barchart_description">مدة التشغيل في الشهر</string>

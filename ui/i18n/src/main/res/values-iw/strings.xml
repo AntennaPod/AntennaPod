@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">עדכון מינויים</string>
-    <string name="feeds_label">הסכתים</string>
     <string name="statistics_label">סטטיסטיקה</string>
     <string name="add_feed_label">הוספת הסכת</string>
     <string name="episodes_label">פרקים</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">מועדפים</string>
     <string name="settings_label">הגדרות</string>
     <string name="downloads_label">הורדות</string>
-    <string name="open_autodownload_settings">פתיחת הגדרות</string>
     <string name="downloads_log_label">יומן הורדות</string>
     <string name="subscriptions_label">הסכתים</string>
     <string name="subscriptions_list_label">רשימת מינויים (תפריט צד בלבד)</string>
     <string name="cancel_download_label">ביטול הורדה</string>
     <string name="playback_history_label">היסטוריית נגינה</string>
-    <string name="episode_cache_full_title">מטמון הפרקים מלא</string>
-    <string name="episode_cache_full_message">מטמון הפרקים התמלא. ניתן להגדיל את גודל המטמון בהגדרות.</string>
     <string name="years_statistics_label">שנים</string>
     <string name="notification_pref_fragment">התראות</string>
     <string name="current_playing_episode">נוכחי</string>
@@ -52,7 +48,7 @@
     <string name="home_new_title">מה חדש</string>
     <string name="home_downloads_title">ניהול הורדות</string>
     <string name="home_welcome_title">ברוך בואך לאנטנה־פּוֹד!</string>
-    <string name="home_welcome_text">לא נרשמת עדיין לאף הסכת. יש לפתוח את תפריט הצד ולהוסיף הסכת.</string>
+    <string name="home_welcome_text">לא נרשמת עדיין לאף הסכת. יש לפתוח את התפריט ולהוסיף הסכת.</string>
     <string name="notification_permission_denied">דחית את בקשת ההרשאה.</string>
     <string name="configure_home">הגדרת מסך הבית</string>
     <string name="section_hidden">מוסתר</string>
@@ -143,7 +139,7 @@
         <item quantity="other">%d פרקים</item>
     </plurals>
     <string name="episode_notification">התראות פרקים</string>
-    <string name="episode_notification_summary">להציג התראה כאשר יוצא פרק חדש.</string>
+    <string name="episode_notification_summary">להציג התראה כאשר יוצא פרק חדש</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">אצל %2$s יש פרק אחד חדש</item>
         <item quantity="two">אצל %2$s יש %1$d פרקים חדשים</item>
@@ -266,7 +262,7 @@
     <string name="download_error_insufficient_space">לא נשאר מספיק מקום במכשיר שלך.</string>
     <string name="download_error_http_data_error">שגיאת נתוני HTTP</string>
     <string name="download_error_error_unknown">שגיאה בלתי ידועה</string>
-    <string name="download_error_parser_exception">השרת של מארח ההסכתים שלח ערוץ הסכתים פגום.</string>
+    <string name="download_error_parser_exception">השרת של מארח ההסכתים שלח ערוץ הסכתים פגום. אנו ממליצים לבדוק עם מאמת הסכתים כגון castfeedvalidator.com וליצור קשר עם יוצרי ההסכת כדי ליידע אותם.</string>
     <string name="download_error_unsupported_type">סוג ההזנה לא נתמך</string>
     <string name="download_error_unsupported_type_html">השרת של מארח ההסכתים שלח אתר במקום הסכת.</string>
     <string name="download_error_not_found">השרת של מארח ההסכתים לא יודע איפה למצוא את הקובץ. יכול להיות שהוא נמחק.</string>
@@ -297,7 +293,7 @@
     <string name="authentication_notification_title">נדרש אימות</string>
     <string name="confirm_mobile_download_dialog_title">אישור הורדה דרך רשת סלולרית</string>
     <string name="confirm_mobile_download_dialog_message">הורדה דרך חיבור סלולרי מושבתת בהגדרות. לאנטנה־פּוֹד יש אפשרות להוריד את הפרק הזה מאוחר יותר כשרשת אלחוטית תהיה זמינה.</string>
-    <string name="confirm_mobile_download_dialog_message_vpn">יישום ה־VPN שלך מתחזה לרשת סלולרית (חיבור מדוד). הורדה דרך חיבור רשת סלולרית מושבת בהגדרות. כדי שהבעיה הזאת תתוקן, יש ליצור קשר עם מפתחי יישומון ה־VPN שלך.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">- החיבור הוא דרך VPN? יישום ה־VPN שלך מתחזה לרשת סלולרית (חיבור מדוד). כדי שהבעיה הזאת תתוקן, יש ליצור קשר עם מפתחי יישומון ה־VPN שלך.\n- החיבור הוא לא דרך VPN? נא לפתוח את הגדרות הרשת האלחוטית ב־Android ולשנות את סוג הרשת האלחוטית שלך לרשת לא מדודה.</string>
     <string name="confirm_mobile_download_dialog_download_later">להוריד אח״כ</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">להוריד בכ״ז</string>
     <string name="confirm_mobile_streaming_notification_title">אישור הזרמה דרך רשת סלולרית</string>
@@ -448,7 +444,7 @@
     <string name="pref_playback_speed_sum">התאמת המהירויות הזמינות למהירות נגינה משתנה</string>
     <string name="pref_feed_playback_speed_sum">מהירות נגינת הפרקים בהסכת זה</string>
     <string name="pref_feed_skip">דילוג אוטומטי</string>
-    <string name="pref_feed_skip_sum">לדלג על הקדמה ותודות בסיום.</string>
+    <string name="pref_feed_skip_sum">לדלג על הקדמה ותודות בסיום</string>
     <string name="pref_feed_skip_ending">לדלג על האחרון</string>
     <string name="pref_feed_skip_intro">לדלג על הראשון</string>
     <string name="pref_feed_skip_ending_toast">%d השניות האחרונות דולגו</string>
@@ -680,7 +676,7 @@
     <string name="download_completed_talkback">הורדת %1$s הושלמה</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">אימות</string>
-    <string name="authentication_descr">שינוי שם המשתמש והססמה שלך להסכת הזה ולפרקים שלו.</string>
+    <string name="authentication_descr">שינוי שם המשתמש והססמה שלך להסכת הזה ולפרקים שלו</string>
     <string name="feed_tags_label">תגיות</string>
     <string name="feed_tags_summary">ניתן לערוך את תגיות ההסכת הזה כדי לסייע בארגון המינויים שלך</string>
     <string name="feed_folders_include_root">הצגת ההסכת הזה ברשימה הראשית</string>
@@ -694,7 +690,6 @@
     <string name="exclude_episodes_shorter_than">החרגת פרקים שאורכם אינו עולה על</string>
     <string name="keep_updated">לשמור על עדכניות</string>
     <string name="keep_updated_summary">לכלול את ההסכת בעת רענון (אוטומטי) של כל ההסכתים</string>
-    <string name="auto_download_disabled_globally">הורדה אוטומטית מושבתת בהגדרות הראשיות של אנטנה־פּוֹד</string>
     <string name="statistics_expected_next_episode_any_day">בימים הקרובים</string>
     <string name="statistics_expected_next_episode_unknown">לא ידוע</string>
     <string name="edit_url_menu">עריכת כתובת ערוץ</string>
@@ -763,7 +758,6 @@
   <string name="proxy_type_label">סוג</string>
     <string name="host_label">מארח</string>
     <string name="port_label">פתחה</string>
-    <string name="optional_hint">(רשות)</string>
     <string name="proxy_test_label">בדיקה</string>
     <string name="proxy_checking">מתבצעת בדיקה…</string>
     <string name="proxy_test_successful">הבדיקה לא הצליחה</string>
@@ -779,8 +773,8 @@
     <string name="notification_group_news">חדשות</string>
     <string name="notification_channel_user_action">נדרשת פעולה</string>
     <string name="notification_channel_user_action_description">מופיע אם נדרשת פעולה מצדך, למשך אם עליך להקליד ססמה.</string>
-    <string name="notification_channel_downloading">הורדה</string>
-    <string name="notification_channel_downloading_description">מופיע בזמן שמתרחשת הורדה.</string>
+    <string name="notification_channel_downloading">הפרקים יורדים</string>
+    <string name="notification_channel_downloading_description">מופיע בזמן שפרקים יורדים.</string>
     <string name="notification_channel_playing">מתנגן כעת</string>
     <string name="notification_channel_playing_description">מאפשר לשלוט בנגינה. זאת ההתראה הראשית שמופיעה בעת נגינת הסכת.</string>
     <string name="notification_channel_download_error">ההורדה נכשלה</string>
@@ -827,11 +821,56 @@
     <string name="bottom_navigation">ניווט תחתון</string>
     <string name="bottom_navigation_summary">יכולת ניסיונית: גישה למסכים החשובים ביותר מכל מקום, בנגיעה אחת</string>
     <string name="statistics_episodes_total">סך הכול</string>
-    <string name="statistics_episodes_played">הושמעו</string>
     <string name="statistics_episodes_space">מקום תפוס</string>
     <string name="pref_nav_drawer_items_sum">נא לבחור אילו פריטים מופיעים במגירת הניווט או בניווט התחתון</string>
     <string name="sync_status_wait_for_downloads">בהמתנה לרענון המינויים…</string>
     <string name="statistics_episodes_downloaded">ירדו</string>
     <string name="discover_more">להיחשף לעוד »</string>
     <string name="episode_download_failed">הורדת פרק נכשלה</string>
+    <string name="add_feed_label_short">הוספה</string>
+    <string name="playback_history_label_short">היסטוריה</string>
+    <string name="download_error_unsupported_type_html_manual">הכתובת שמילאת היא כתובת אתר, לא כתובת RSS של הסכתים.</string>
+    <string name="episodes_label_short">פרקים</string>
+    <string name="queue_label_short">תור</string>
+    <string name="subscriptions_label_short">מינויים</string>
+    <string name="episodes_label_more">פרקים »</string>
+    <string name="queue_label_more">תור »</string>
+    <string name="inbox_label_more">דואר נכנס »</string>
+    <string name="downloads_label_more">הורדות »</string>
+    <string name="subscriptions_label_more">מינויים »</string>
+    <string name="enabled">פעיל</string>
+    <string name="disabled">כבוי</string>
+    <string name="global_default_with_value">ברירת מחדל גלובלית (%1$s)</string>
+    <string name="delete_tag_label">מחיקת תגית</string>
+    <string name="delete_tag_confirmation">נא לאשר את מחיקת התגית „%1$s”.</string>
+    <string name="statistics_time_total">סך הכול</string>
+    <string name="statistics_time_played">התנגן</string>
+    <string name="echo_home_header">סקירה שנתית</string>
+    <string name="echo_intro_your_year">השנה שלך</string>
+    <string name="echo_intro_locally">נוצרת באופן פרטי בטלפון שלך</string>
+    <string name="echo_hours_this_year">השנה ניגנת</string>
+    <plurals name="echo_hours_podcasts">
+        <item quantity="one">שעות של פרקים\nמהסכת יחיד</item>
+        <item quantity="two">שעות של פרקים\nמ־%1$d הסכתים</item>
+        <item quantity="other">שעות של פרקים\nמ־%1$d הסכתים</item>
+    </plurals>
+    <string name="echo_thanks_we_are_glad_old">על שהמשכת להשתמש בנו השנה!\n\nניגנת את הפרק הראשון שלך איתנו ב־%1$s. לכבוד הוא לנו לספק לך שירות עוד מאותו הרגע.</string>
+    <string name="echo_thanks_now_favorite">עכשיו, בוא נסקור את ההסכתים המועדפים עליך…</string>
+    <string name="pref_automatic_download_global_description">להוריד פרקים חדשים אוטומטית. אפשר לדרוס את זה ברמת הסכת פרטנית.</string>
+    <string name="pref_automatic_download_queue_title">ההורדה נוספה לתור</string>
+    <string name="pref_automatic_download_queue_description">להוריד אוטומטית פרקים שנוספו לתור</string>
+    <string name="episode_lists">רשימת הפרקים</string>
+    <string name="inbox_label_short">דואר נכנס</string>
+    <string name="echo_thanks_large">תודה רבה</string>
+    <string name="echo_share">שנת %d שלי בהסכתים. ‎#AntennaPodEcho</string>
+    <string name="pref_downloads_button_action_title">נגינה ממסך ההורדות</string>
+    <string name="echo_thanks_we_are_glad_new">שהצטרפת אלינו השנה!\n\nבין אם עברת מיישומון אחר או שהתחלת את מסע ההסתכים שלך איתנו: אנחנו שמחים לראות אותך איתנו!</string>
+    <string name="echo_intro_in_podcasts">בהסכתים</string>
+    <string name="pref_downloads_button_action_sum">להציג כפתור נגינה במקום כפתור מחיקה במסך ההורדות</string>
+    <string name="echo_share_heading">ההסכתים המועדפים עליי</string>
+    <string name="echo_home_subtitle">ההסכתים והסטטיסטיקה המובילים שלך מהשנה החולפת. בלעדית לטלפון שלך.</string>
+    <string name="downloads_label_short">הורדות</string>
+    <string name="notification_channel_refreshing">ההסכתים מתעדכנים</string>
+    <string name="notification_channel_refreshing_description">מופיע בעת בדיקה לאיתור פרקים חדשים.</string>
+    <string name="home_label_short">בית</string>
 </resources>

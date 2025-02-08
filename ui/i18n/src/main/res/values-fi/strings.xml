@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Päivitä tilaukset</string>
-    <string name="feeds_label">Podcastit</string>
     <string name="statistics_label">Tilastot</string>
     <string name="add_feed_label">Lisää podcast</string>
     <string name="episodes_label">Jaksot</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Suosikit</string>
     <string name="settings_label">Asetukset</string>
     <string name="downloads_label">Lataukset</string>
-    <string name="open_autodownload_settings">Avaa asetukset</string>
     <string name="downloads_log_label">Latausloki</string>
     <string name="subscriptions_label">Tilaukset</string>
     <string name="subscriptions_list_label">Tilausluettelo (vain sivuvalikko)</string>
     <string name="cancel_download_label">Peruuta lataus</string>
     <string name="playback_history_label">Toistohistoria</string>
-    <string name="episode_cache_full_title">Jaksojen välimuisti täynnä</string>
-    <string name="episode_cache_full_message">Jaksojen välimuistin rajoitus on ylitetty. Voit lisätä välimuistin kokoa asetuksissa.</string>
     <string name="years_statistics_label">Vuosia</string>
     <string name="notification_pref_fragment">Ilmoitukset</string>
     <!--Google Assistant-->
@@ -187,7 +183,7 @@
     <string name="play_this_to_seek_position">Jaksoa pitää toistaa siirtyäksesi kohtiin</string>
     <plurals name="marked_read_batch_label">
         <item quantity="one">%d jakso merkitty soitetuksi.</item>
-        <item quantity="other">%d jaksoa merkitty toistetuksi.</item>
+        <item quantity="other">%d jaksoa merkitty toistetuksi</item>
     </plurals>
     <string name="mark_unread_label">Merkitse toistamattomaksi</string>
     <string name="mark_unread_label_no_media">Merkitse lukemattomaksi</string>
@@ -455,9 +451,9 @@
     <string name="no_results_for_query">Ei löydetty tuloksia \"%1$s\"</string>
     <!--Synchronization-->
   <string name="sync_status_started">Synkronointi aloitettu</string>
-    <string name="sync_status_episodes_upload">Jakson muutoksia ulosladataan…</string>
-    <string name="sync_status_episodes_download">Ladataan jaksomuutoksia…</string>
-    <string name="sync_status_upload_played">Ulosladataan toistettua tilaa…</string>
+    <string name="sync_status_episodes_upload">Ladataan jaksomuutokset palvelimelle…</string>
+    <string name="sync_status_episodes_download">Ladataan jaksomuutokset palvelimelta…</string>
+    <string name="sync_status_upload_played">Ladataan toistojen tilat palvelimelle…</string>
     <string name="sync_status_subscriptions">Synkronoidaan tilauksia…</string>
     <string name="sync_status_success">Synkronointi onnistui</string>
     <string name="sync_status_error">Synkronointi epäonnistui</string>
@@ -580,7 +576,6 @@
     <string name="exclude_episodes_shorter_than">Jätä ulkopuolelle lyhyemmät jaksot kuin</string>
     <string name="keep_updated">Pidä päivitettynä</string>
     <string name="keep_updated_summary">Sisällytä tämä podcast kun kaikki podcastit (auto)päivitetään</string>
-    <string name="auto_download_disabled_globally">Automaattinen lataaminen on pysäytetty AntennaPodin asetuksissa</string>
     <string name="edit_url_menu">Muokkaa syötteen URLia</string>
     <!--Podcast release schedules-->
   <string name="release_schedule_daily">päivittäin</string>
@@ -644,9 +639,8 @@
   <string name="proxy_type_label">Tyyppi</string>
     <string name="host_label">Host</string>
     <string name="port_label">Portti</string>
-    <string name="optional_hint">(Valinnainen)</string>
     <string name="proxy_test_label">Testi</string>
-    <string name="proxy_checking">Tarkistetaan…</string>
+    <string name="proxy_checking">Testaa…</string>
     <string name="proxy_test_successful">Testi onnistui</string>
     <string name="proxy_test_failed">Testi epäonnistui</string>
     <string name="proxy_host_empty_error">Host ei voi olla tyhjä</string>
