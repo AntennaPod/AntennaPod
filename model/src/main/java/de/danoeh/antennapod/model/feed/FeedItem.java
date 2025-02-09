@@ -44,6 +44,7 @@ public class FeedItem implements Serializable {
     private transient Feed feed;
     private long feedId;
     private String podcastIndexChapterUrl;
+    private String socialInteractUrl;
     private String podcastIndexTranscriptUrl;
     private String podcastIndexTranscriptType;
     private String podcastIndexTranscriptText;
@@ -89,7 +90,7 @@ public class FeedItem implements Serializable {
     public FeedItem(long id, String title, String link, Date pubDate, String paymentLink, long feedId,
                     boolean hasChapters, String imageUrl, int state,
                     String itemIdentifier, boolean autoDownloadEnabled, String podcastIndexChapterUrl,
-                    String transcriptType, String transcriptUrl) {
+                    String transcriptType, String transcriptUrl, String socialInteractUrl) {
         this.id = id;
         this.title = title;
         this.link = link;
@@ -102,6 +103,7 @@ public class FeedItem implements Serializable {
         this.itemIdentifier = itemIdentifier;
         this.autoDownloadEnabled = autoDownloadEnabled;
         this.podcastIndexChapterUrl = podcastIndexChapterUrl;
+        this.socialInteractUrl = socialInteractUrl;
         if (transcriptUrl != null) {
             this.podcastIndexTranscriptUrl = transcriptUrl;
             this.podcastIndexTranscriptType = transcriptType;
@@ -171,6 +173,9 @@ public class FeedItem implements Serializable {
         }
         if (other.podcastIndexChapterUrl != null) {
             podcastIndexChapterUrl = other.podcastIndexChapterUrl;
+        }
+        if (other.socialInteractUrl != null) {
+            socialInteractUrl = other.socialInteractUrl;
         }
         if (other.getTranscriptUrl() != null) {
             podcastIndexTranscriptUrl = other.podcastIndexTranscriptUrl;
@@ -430,6 +435,14 @@ public class FeedItem implements Serializable {
 
     public void setPodcastIndexChapterUrl(String url) {
         podcastIndexChapterUrl = url;
+    }
+
+    public void setPodcastIndexSocialUrl(String url) {
+        socialInteractUrl = url;
+    }
+
+    public String getPodcastIndexSocialUrl() {
+        return socialInteractUrl;
     }
 
     public void setTranscriptUrl(String type, String url) {
