@@ -29,6 +29,7 @@ import de.danoeh.antennapod.storage.database.mapper.ChapterCursor;
 import de.danoeh.antennapod.storage.database.mapper.DownloadResultCursor;
 import de.danoeh.antennapod.storage.database.mapper.FeedCursor;
 import de.danoeh.antennapod.storage.database.mapper.FeedItemCursor;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 /**
  * Provides methods for reading data from the AntennaPod database.
@@ -730,6 +731,11 @@ public final class DBReader {
         }
 
         Collections.sort(feeds, comparator);
+
+        if (UserPreferences.getFeedOrderReversed()) {
+            Collections.reverse(feeds);
+        }
+
         final int queueSize = adapter.getQueueSize();
         final int numNewItems = getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW));
         final int numDownloadedItems = getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.DOWNLOADED));
@@ -757,6 +763,9 @@ public final class DBReader {
         }
         List<NavDrawerData.TagDrawerItem> foldersSorted = new ArrayList<>(folders.values());
         Collections.sort(foldersSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
+        if (UserPreferences.getFeedOrderReversed()) {
+            Collections.reverse(foldersSorted);
+        }
         items.addAll(foldersSorted);
 
         NavDrawerData result = new NavDrawerData(items, queueSize, numNewItems, numDownloadedItems, feedCounters);
