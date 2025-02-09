@@ -41,12 +41,12 @@ public class RenameFeedDialog {
         final EditTextDialogBinding binding = EditTextDialogBinding.inflate(LayoutInflater.from(activity));
         String title = feed != null ? feed.getTitle() : drawerItem.getTitle();
 
-        binding.urlEditText.setText(title);
+        binding.textInput.setText(title);
         AlertDialog dialog = new MaterialAlertDialogBuilder(activity)
                 .setView(binding.getRoot())
                 .setTitle(feed != null ? R.string.rename_feed_label : R.string.rename_tag_label)
                 .setPositiveButton(android.R.string.ok, (d, input) -> {
-                    String newTitle = binding.urlEditText.getText().toString();
+                    String newTitle = binding.textInput.getText().toString();
                     if (feed != null) {
                         feed.setCustomTitle(newTitle);
                         DBWriter.setFeedCustomTitle(feed);
@@ -60,7 +60,7 @@ public class RenameFeedDialog {
 
         // To prevent cancelling the dialog on button click
         dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(
-                (view) -> binding.urlEditText.setText(title));
+                (view) -> binding.textInput.setText(title));
     }
 
     private void renameTag(String title) {

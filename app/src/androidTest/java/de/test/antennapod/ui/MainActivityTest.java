@@ -63,7 +63,7 @@ public class MainActivityTest {
         openNavDrawer();
         onView(withText(R.string.add_feed_label)).perform(click());
         onView(withId(R.id.addViaUrlButton)).perform(scrollTo(), click());
-        onView(withId(R.id.urlEditText)).perform(replaceText(feed.getDownloadUrl()));
+        onView(withId(R.id.textInput)).perform(replaceText(feed.getDownloadUrl()));
         onView(withText(R.string.confirm_label)).perform(scrollTo(), click());
 
         // subscribe podcast
