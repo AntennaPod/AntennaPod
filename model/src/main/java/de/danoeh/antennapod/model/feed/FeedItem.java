@@ -150,6 +150,9 @@ public class FeedItem implements Serializable {
             link = other.link;
         }
         if (other.pubDate != null && !other.pubDate.equals(pubDate)) {
+            if (pubDate.before(other.pubDate)) {
+                setNew();
+            }
             pubDate = other.pubDate;
         }
         if (other.media != null) {
