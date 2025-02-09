@@ -327,7 +327,7 @@ public abstract class UserPreferences {
     /**
      * Returns true if notifications are persistent
      *
-     * @return {@code true} if notifications are persistent, {@code false}  otherwise
+     * @return {@code true} if notifications are persistent, {@code false} otherwise
      */
     public static boolean isPersistNotify() {
         return prefs.getBoolean(PREF_PERSISTENT_NOTIFICATION, true);
