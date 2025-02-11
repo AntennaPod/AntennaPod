@@ -8,8 +8,6 @@
     <string name="settings_label">Nustatymai</string>
     <string name="downloads_label">Atsisiuntimai</string>
     <string name="subscriptions_label">Prenumeratos</string>
-    <string name="episode_cache_full_title">Epizodų podėlis pilnas</string>
-    <string name="episode_cache_full_message">Pasiektas epizodų podėlio dydžio limitas. Nustatymuose galite padidinti podėlio dydį.</string>
     <string name="years_statistics_label">Metai</string>
     <string name="notification_pref_fragment">Pranešimai</string>
     <!--Google Assistant-->
@@ -539,7 +537,6 @@
     <string name="automatic_database_export_summary">Kas 3 dienas sukurkite atsarginę „AntennaPod“ duomenų bazės kopiją. Saugokite tik 5 naujausias atsargines kopijas.</string>
     <string name="automatic_database_export_error">Automatinio duomenų bazės atsarginės kopijos kūrimo klaida</string>
     <string name="automatic_database_export_label">Automatinis duomenų bazės eksportavimas</string>
-    <string name="open_autodownload_settings">Atidaryti nustatymus</string>
     <string name="no_all_episodes_head_label">Nėra epizodų</string>
     <string name="home_continue_empty_text">Epizodus galite įtraukti juos atsisiųsdami arba ilgai paspausdami ir pasirinkdami „Įtraukti į eilę“.</string>
     <string name="statistics_episodes_started">pradėjo</string>
@@ -739,7 +736,6 @@
     <string name="delete_downloads_played_confirmation">Patvirtinkite, kad norite ištrinti visus atsisiųstus failus, kurie buvo paleisti.</string>
     <string name="bottom_navigation">Apatinė navigacija</string>
     <string name="statistics_episodes_total">iš viso</string>
-    <string name="statistics_episodes_played">grojo</string>
     <string name="statistics_episodes_downloaded">atsisiųsta</string>
     <string name="statistics_episodes_space">užimama vieta</string>
     <string name="episode_download_failed">Epizodo atsisiųsti nepavyko</string>

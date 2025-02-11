@@ -843,7 +843,6 @@
     <string name="bottom_navigation">Навигация внизу</string>
     <string name="bottom_navigation_summary">Бета: доступ к важным экранам в одно касание</string>
     <string name="statistics_episodes_started">Начатые</string>
-    <string name="statistics_episodes_played">Прослушанные</string>
     <string name="nextcloud_login_error_generic">Не удалось войти в Nextcloud.\n\n— Проверьте соединение с интернетом.\n— Удостоверьтесь, что указан правильный адрес сервера.\n— Удостоверьтесь, что gpoddersync установлен в Nextcloud.</string>
     <string name="statistics_episodes_total">Всего</string>
     <string name="episode_download_failed">Не удалось скачать выпуск</string>

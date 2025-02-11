@@ -72,7 +72,7 @@
     <!--Webview actions-->
   <string name="open_in_browser_label">在瀏覽器中開啟</string>
     <string name="copy_url_label">複製網址</string>
-    <string name="share_url_label">分析網址</string>
+    <string name="share_url_label">分享網址</string>
     <string name="go_to_position_label">跳轉至指定位置</string>
     <!--Playback history-->
   <string name="clear_history_label">清除歷程記錄</string>

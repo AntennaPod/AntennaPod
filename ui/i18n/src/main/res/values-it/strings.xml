@@ -48,7 +48,7 @@
     <string name="home_new_title">Controlla le novità</string>
     <string name="home_downloads_title">Gestisci i download</string>
     <string name="home_welcome_title">Benvenuti su AntennaPod!</string>
-    <string name="home_welcome_text">Non sei iscritto a nessun podcast. Apri il menù laterale per aggiungerne uno.</string>
+    <string name="home_welcome_text">Non sei iscritto a nessun podcast. Apri il menù per aggiungerne uno.</string>
     <string name="notification_permission_denied">Hai negato l\'autorizzazione.</string>
     <string name="configure_home">Configura schermata Home</string>
     <string name="section_hidden">Nascosti</string>
@@ -139,7 +139,7 @@
         <item quantity="other">%d episodi</item>
     </plurals>
     <string name="episode_notification">Notifiche episodi</string>
-    <string name="episode_notification_summary">Invia una notifica quando viene pubblicato un nuovo episodio.</string>
+    <string name="episode_notification_summary">Mostra una notifica quando viene pubblicato un nuovo episodio</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s ha un nuovo episodio</item>
         <item quantity="many">%2$s ha %1$d di nuovi episodi</item>
@@ -171,7 +171,7 @@
     <string name="select_all_below">Seleziona tutti in giù</string>
     <string name="multi_select_started_talkback">Azioni di selezione multipla mostrate in basso</string>
     <string name="filtered_label">Filtrati</string>
-    <string name="refresh_failed_msg">Aggiornamento fallito. Tocca per i dettagli.</string>
+    <string name="refresh_failed_msg">Ultimo aggiornamento fallito. Tocca per i dettagli.</string>
     <string name="open_podcast">Apri podcast</string>
     <string name="please_wait_for_data">Attendi il caricamento dei dati</string>
     <string name="updates_disabled_label">Aggiornamenti disabilitati</string>
@@ -444,7 +444,7 @@
     <string name="pref_playback_speed_sum">Personalizza le velocità di riproduzione selezionabili</string>
     <string name="pref_feed_playback_speed_sum">Velocità da usare per la riproduzione degli episodi di questo podcast</string>
     <string name="pref_feed_skip">Salta automaticamente</string>
-    <string name="pref_feed_skip_sum">Salta le introduzioni e i titoli di coda.</string>
+    <string name="pref_feed_skip_sum">Salta le introduzioni e i titoli di coda</string>
     <string name="pref_feed_skip_ending">Salta gli ultimi</string>
     <string name="pref_feed_skip_intro">Salta i primi</string>
     <string name="pref_feed_skip_ending_toast">Ultimi %d secondi saltati</string>
@@ -676,7 +676,7 @@
     <string name="download_completed_talkback">Download di %1$s completato</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">Autenticazione</string>
-    <string name="authentication_descr">Cambia il nome utente e la password per questo podcast e i suoi episodi.</string>
+    <string name="authentication_descr">Cambia il nome utente e la password per questo podcast e i suoi episodi</string>
     <string name="feed_tags_label">Tag</string>
     <string name="feed_tags_summary">Cambia i tag di questo podcast per agevolare l\'organizzazione delle tue iscrizioni</string>
     <string name="feed_folders_include_root">Mostra il podcast nella lista principale</string>
@@ -773,8 +773,8 @@
     <string name="notification_group_news">Novità</string>
     <string name="notification_channel_user_action">Azione richiesta</string>
     <string name="notification_channel_user_action_description">Visualizzato se è richiesto un intervento, ad esempio se è necessario inserire la password.</string>
-    <string name="notification_channel_downloading">Scaricamento</string>
-    <string name="notification_channel_downloading_description">Visualizzato mentre il download è in corso.</string>
+    <string name="notification_channel_downloading">Scaricamento episodi</string>
+    <string name="notification_channel_downloading_description">Visualizzato mentre si stanno scaricando episodi.</string>
     <string name="notification_channel_playing">In riproduzione</string>
     <string name="notification_channel_playing_description">Permette di controllare la riproduzione. È la principale notifica visualizzata quando un podcast è in riproduzione.</string>
     <string name="notification_channel_download_error">Download fallito</string>
@@ -863,4 +863,22 @@
     <string name="echo_thanks_now_favorite">Ora diamo un\'occhiata ai tuoi podcast preferiti…</string>
     <string name="echo_share_heading">I miei podcast preferiti</string>
     <string name="echo_share">Il mio %d in podcast. #AntennaPodEcho</string>
+    <string name="add_feed_label_short">Aggiungi</string>
+    <string name="episodes_label_short">Episodi</string>
+    <string name="home_label_short">Home</string>
+    <string name="queue_label_short">Coda</string>
+    <string name="inbox_label_short">Inbox</string>
+    <string name="downloads_label_short">Download</string>
+    <string name="subscriptions_label_short">Iscrizioni</string>
+    <string name="episodes_label_more">Episodi »</string>
+    <string name="queue_label_more">Coda »</string>
+    <string name="inbox_label_more">Inbox »</string>
+    <string name="downloads_label_more">Download »</string>
+    <string name="subscriptions_label_more">Iscrizioni »</string>
+    <string name="enabled">Abilitato</string>
+    <string name="disabled">Disabilitato</string>
+    <string name="statistics_time_total">totale</string>
+    <string name="notification_channel_refreshing">Aggiornamento podcast</string>
+    <string name="notification_channel_refreshing_description">Visualizzato mentre si sta controllando se ci sono nuovi episodi.</string>
+    <string name="playback_history_label_short">Cronologia</string>
 </resources>

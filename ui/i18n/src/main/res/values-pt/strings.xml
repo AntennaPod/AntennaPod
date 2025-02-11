@@ -691,7 +691,6 @@
     <string name="exclude_episodes_shorter_than">Excluir episódios com duração inferior a</string>
     <string name="keep_updated">Manter atualizada</string>
     <string name="keep_updated_summary">Incluir este podcast ao atualizar (automaticamente) todos os podcasts</string>
-    <string name="auto_download_disabled_globally">A transferência automática está desativada nas definições AntennaPod</string>
     <string name="statistics_expected_next_episode_any_day">Qualquer dia</string>
     <string name="statistics_expected_next_episode_unknown">Desconhecido</string>
     <string name="edit_url_menu">Editar URL</string>
@@ -825,7 +824,6 @@
     <string name="bottom_navigation_summary">Funcionalidade Beta: aceda aos ecrãs mais importantes em qualquer lado com apenas um toque</string>
     <string name="bottom_navigation">Navegação em baixo</string>
     <string name="statistics_episodes_total">total</string>
-    <string name="statistics_episodes_played">reproduzido</string>
     <string name="statistics_episodes_space">espaço ocupado</string>
     <string name="statistics_years_barchart_description">Tempo de reprodução (por mês)</string>
     <string name="statistics_episodes_downloaded">descarregados</string>
