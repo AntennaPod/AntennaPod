@@ -139,7 +139,7 @@
         <item quantity="other">%d epizód</item>
     </plurals>
     <string name="episode_notification">Oznámenia o epizódach</string>
-    <string name="episode_notification_summary">Zobraziť oznámenie pri vydaní novej epizódy.</string>
+    <string name="episode_notification_summary">Zobraziť oznámenie pri vydaní novej epizódy</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s má novú epizódu</item>
         <item quantity="few">%2$s má %1$d nové epizódy</item>
@@ -208,7 +208,7 @@
     <string name="marked_as_played_label">Označené ako prehrané</string>
     <string name="marked_as_unplayed_label">Označené ako neprehrané</string>
     <string name="mark_read_no_media_label">Označiť ako prečítané</string>
-    <string name="play_this_to_seek_position">Preskočenie na určitú pozíciu funguje len pri prehrávaní epizódy.</string>
+    <string name="play_this_to_seek_position">Preskočenie na určitú pozíciu funguje len pri prehrávaní epizódy</string>
     <plurals name="marked_read_batch_label">
         <item quantity="one">%d epizóda bola označená ako prehraná.</item>
         <item quantity="few">%d epizódy boli označené ako prehrané.</item>
@@ -283,7 +283,7 @@
     <string name="authentication_notification_title">Vyžaduje sa overenie</string>
     <string name="confirm_mobile_download_dialog_title">Potvrdiť sťahovanie cez mobilné dáta</string>
     <string name="confirm_mobile_download_dialog_message">Sťahovanie cez mobilné dáta je zakázané v nastaveniach. AntennaPod môže automaticky stiahnuť epizódu neskôr, keď bude k dispozícii Wi-Fi pripojenie.</string>
-    <string name="confirm_mobile_download_dialog_message_vpn">Vaša VPN aplikácia predstiera, že je mobilná sieť (merané pripojenie). Sťahovanie cez mobilné dátové pripojenie je v nastaveniach zakázané. Ak chcete, aby bol tento problém vyriešený, kontaktujte tvorcov vašej VPN aplikácie.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">- Používate VPN? Vaša aplikácia VPN predstiera, že je mobilná sieť (merané pripojenie). Ak chcete tento problém vyriešiť, kontaktujte tvorcov vašej aplikácie VPN.\n- Nepoužívate VPN? Otvorte nastavenia Wi-Fi systému Android a zmeňte typ siete Wi-Fi tak, aby sa nemerala.</string>
     <string name="confirm_mobile_download_dialog_download_later">Stiahnuť neskôr</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Napriek tomu stiahnuť</string>
     <string name="confirm_mobile_streaming_notification_title">Potvrďte streamovanie cez mobilné dáta</string>
@@ -434,7 +434,7 @@
     <string name="pref_playback_speed_sum">Upraviť predvybrané možnosti pre prehrávanie zvuku rôznymi rýchlosťami</string>
     <string name="pref_feed_playback_speed_sum">Rýchlosť, ktorá bude použitá pri začatí prehrávania epizód tohoto podcastu</string>
     <string name="pref_feed_skip">Automatické preskočenie</string>
-    <string name="pref_feed_skip_sum">Preskočiť úvod a záver.</string>
+    <string name="pref_feed_skip_sum">Preskočiť úvod a záverečné titulky</string>
     <string name="pref_feed_skip_ending">Preskočiť posledných</string>
     <string name="pref_feed_skip_intro">Preskočiť prvých</string>
     <string name="pref_feed_skip_ending_toast">Posledných %d sekúnd bolo preskočených</string>
@@ -451,7 +451,7 @@
     <string name="pref_persistNotify_sum">Zachovať oznámenia a ovládanie na uzamknutej obrazovke aj pri pozastavenom prehrávaní</string>
     <string name="pref_compact_notification_buttons_dialog_error_exact">Musíte vybrať presne dve položky</string>
     <string name="pref_full_notification_buttons_title">Nastaviť tlačidlá v upozornení</string>
-    <string name="pref_full_notification_buttons_sum">Zmeniť tlačidlá v upozornení na prehrávanie.</string>
+    <string name="pref_full_notification_buttons_sum">Zmeniť tlačidlá v upozornení na prehrávanie</string>
     <string name="pref_enqueue_location_title">Pozícia pridávania do poradia</string>
     <string name="pref_enqueue_location_sum">Pridávať epizódy na: %1$s</string>
     <string name="enqueue_location_back">Dozadu</string>
@@ -666,7 +666,7 @@
     <string name="download_completed_talkback">Dokončené sťahovanie pre %1$s</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">Overenie</string>
-    <string name="authentication_descr">Zmeniť svoje používateľské meno a heslo pre tento podcast a jeho epizódy.</string>
+    <string name="authentication_descr">Zmeniť svoje používateľské meno a heslo pre tento podcast a jeho epizódy</string>
     <string name="feed_tags_label">Štítky</string>
     <string name="feed_tags_summary">Pre lepšiu organizáciu vašich odberov môžete zmeniť štítky pre tento podcast</string>
     <string name="feed_folders_include_root">Zobraziť tento podcast v hlavnom zozname</string>
@@ -763,8 +763,8 @@
     <string name="notification_group_news">Novinky</string>
     <string name="notification_channel_user_action">Vyžaduje sa akcia</string>
     <string name="notification_channel_user_action_description">Zobrazí sa, ak je potrebná vaša akcia, napríklad ak potrebujete zadať heslo.</string>
-    <string name="notification_channel_downloading">Sťahovanie</string>
-    <string name="notification_channel_downloading_description">Zobrazí sa počas aktuálneho sťahovania.</string>
+    <string name="notification_channel_downloading">Sťahovanie epizód</string>
+    <string name="notification_channel_downloading_description">Zobrazí sa počas aktuálneho sťahovania epizód.</string>
     <string name="notification_channel_playing">Prehráva sa</string>
     <string name="notification_channel_playing_description">Umožňuje ovládať prehrávanie. Toto je hlavné upozornenie, ktoré sa vám zobrazuje pri prehrávaní podcastov.</string>
     <string name="notification_channel_download_error">Sťahovanie zlyhalo</string>
@@ -817,4 +817,81 @@
     <string name="statistics_episodes_total">celkovo</string>
     <string name="statistics_episodes_downloaded">stiahnutých</string>
     <string name="mobile_download_notice">Sťahovanie cez mobilné pripojenie počas nasledujúcich %d minút</string>
+    <plurals name="removed_from_queue_batch_label">
+        <item quantity="one">%d epizóda bola odstránená z poradia.</item>
+        <item quantity="few">%d epizódy boli odstránené z poradia.</item>
+        <item quantity="other">%d epizód bolo odstránených z poradia.</item>
+    </plurals>
+    <string name="add_feed_label_short">Pridať</string>
+    <string name="episodes_label_short">Epizódy</string>
+    <string name="home_label_short">Domov</string>
+    <string name="queue_label_short">Poradie</string>
+    <string name="inbox_label_short">Schránka</string>
+    <string name="downloads_label_short">Sťahovanie</string>
+    <string name="subscriptions_label_short">Odbery</string>
+    <string name="playback_history_label_short">História</string>
+    <string name="episodes_label_more">Epizódy »</string>
+    <string name="queue_label_more">Poradie »</string>
+    <string name="inbox_label_more">Schránka »</string>
+    <string name="downloads_label_more">Sťahovanie »</string>
+    <string name="subscriptions_label_more">Odbery »</string>
+    <string name="enabled">Povolené</string>
+    <string name="disabled">Zakázané</string>
+    <string name="global_default_with_value">Globálne predvolené (%1$s)</string>
+    <string name="delete_tag_label">Odstrániť značku</string>
+    <string name="delete_tag_confirmation">Potvrďte, že chcete odstrániť značku „%1$s“.</string>
+    <string name="download_error_unsupported_type_html_manual">Adresa, ktorú ste zadali, je adresa webovej stránky, nie adresa RSS podcastu.</string>
+    <string name="pref_automatic_download_queue_title">Sťahovanie poradia</string>
+    <string name="episode_lists">Zoznamy epizód</string>
+    <string name="pref_downloads_button_action_title">Prehrávanie z obrazovky sťahovania</string>
+    <string name="pref_downloads_button_action_sum">Na obrazovke sťahovania zobraziť tlačidlo Prehrať namiesto tlačidla Odstrániť</string>
+    <string name="pref_automatic_download_global_description">Automaticky sťahovať nové epizódy. Dá sa nastaviť pre jednotlivý podcast.</string>
+    <string name="pref_automatic_download_queue_description">Automaticky sťahovať epizódy v poradí</string>
+    <plurals name="added_to_queue_batch_label">
+        <item quantity="one">%d epizóda bola pridaná do poradia.</item>
+        <item quantity="few">%d epizódy boli pridaná do poradia.</item>
+        <item quantity="other">%d epizód bolo pridaných do poradia.</item>
+    </plurals>
+    <string name="statistics_time_total">celkovo</string>
+    <string name="statistics_time_played">prehrávané</string>
+    <string name="echo_home_header">Prehľad roka</string>
+    <string name="echo_home_subtitle">Vaše najlepšie podcasty a štatistiky za posledný rok. Exkluzívne vo vašom telefóne.</string>
+    <string name="echo_intro_your_year">Váš rok</string>
+    <string name="echo_intro_in_podcasts">v podcastoch</string>
+    <string name="echo_intro_locally">generované súkromne vo vašom telefóne</string>
+    <string name="echo_hours_this_year">Tento rok ste prehrali</string>
+    <string name="echo_queue_title_clean">A ste pripravení urobiť čistý začiatok roka. Máte</string>
+    <string name="echo_queue_title_many">A tento rok máte ešte celkom pred sebou. Máte</string>
+    <plurals name="echo_hours_podcasts">
+        <item quantity="one">hodín epizód\nz %1$d podcastu</item>
+        <item quantity="few">hodín epizód\nz %1$d rôznych podcastov</item>
+        <item quantity="other">hodín epizód\nz %1$d rôznych podcastov</item>
+    </plurals>
+    <plurals name="echo_queue_hours_waiting">
+        <item quantity="one">hodín čakajúcich vo vašom poradí\nz %1$d epizódy</item>
+        <item quantity="few">hodín čakajúcich vo vašom poradí\nz %1$d epizód</item>
+        <item quantity="other">hodín čakajúcich vo vašom poradí\nz %1$d epizód</item>
+    </plurals>
+    <string name="echo_queue_hours_clean">To je približne %1$s každý deň, kým sa nezačne %2$d.</string>
+    <string name="echo_queue_hours_normal">To je približne %1$s každý deň, kým sa nezačne %2$d. Rok môžete začať čisto, ak preskočíte niekoľko epizód.</string>
+    <string name="echo_queue_hours_much">To je približne %1$s každý deň, kým sa nezačne %2$d. Počkať, čože?</string>
+    <string name="echo_listened_after_title">Vykonali sme analýzu, kedy sú epizódy vydané a kedy ste ich dokončili. Náš záver?</string>
+    <string name="echo_listened_after_comment_easy">Idete ľahko</string>
+    <string name="echo_listened_after_time">Zvyčajne ste dokončili epizódu %1$s po jej vydaní.</string>
+    <string name="echo_listened_after_comment_addict">Ste závislí na podcastoch</string>
+    <string name="echo_hoarder_title">Tiež nás zaujímalo: počúvate podcasty, ktoré odoberáte?</string>
+    <string name="echo_hoarder_subtitle_hoarder">Pri pohľade na čísla si myslíme, že ste hromaditeľ</string>
+    <string name="echo_hoarder_comment_hoarder">Vraví sa, že čísla neklamú. A keďže ste tento rok prehrali iba %1$d%% z vašich %2$d aktívnych odberov, pravdepodobne máme pravdu.</string>
+    <string name="echo_hoarder_subtitle_medium">Skontrolujte. Žiadne hromadenie.</string>
+    <string name="echo_hoarder_comment_medium">Tento rok ste prehrali epizódy z %1$d%% vašich %2$d aktívnych odberov. Čo tak si znova pozrieť \"%3$s\"?</string>
+    <string name="echo_hoarder_subtitle_clean">Čisté!</string>
+    <string name="echo_thanks_large">Ďakujeme</string>
+    <string name="echo_thanks_we_are_glad_old">za to, že ste s nami tento rok!\n\nSvoju prvú epizódu ste s nami prehrali v %1$s. Je nám cťou vám odvtedy slúžiť.</string>
+    <string name="echo_thanks_we_are_glad_new">za to, že ste sa k nám tento rok pridali!\n\nČi už ste prešli z inej aplikácie alebo ste s nami začali svoje podcastové dobrodružstvo: sme radi, že vás máme!</string>
+    <string name="echo_thanks_now_favorite">Teraz sa pozrime na vaše obľúbené podcasty…</string>
+    <string name="echo_share_heading">Moje obľúbené podcasty</string>
+    <string name="echo_share">Môj rok %d v podcastoch. #AntennaPodEcho</string>
+    <string name="echo_hoarder_comment_clean">Tento rok ste prehrali epizódy z %1$d%% vašich %2$d aktívnych odberov. Stavíme sa, že aj vy budete udržiavať svoj pracovný stôl čistý!</string>
+    <string name="notification_channel_refreshing">Obnovujem podcasty</string>
+    <string name="notification_channel_refreshing_description">Zobrazuje sa pri kontrole nových epizód.</string>
 </resources>

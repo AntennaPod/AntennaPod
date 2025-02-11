@@ -182,8 +182,8 @@
     <string name="mark_read_no_media_label">Merkitse luetuksi</string>
     <string name="play_this_to_seek_position">Jaksoa pitää toistaa siirtyäksesi kohtiin</string>
     <plurals name="marked_read_batch_label">
-        <item quantity="one">%d jakso merkitty soitetuksi.</item>
-        <item quantity="other">%d jaksoa merkitty toistetuksi</item>
+        <item quantity="one">%d jakso merkitty soitetuksi.%d jaksoa merkitty toistetuksi</item>
+        <item quantity="other"></item>
     </plurals>
     <string name="mark_unread_label">Merkitse toistamattomaksi</string>
     <string name="mark_unread_label_no_media">Merkitse lukemattomaksi</string>
@@ -708,7 +708,6 @@
     <string name="opml_reader_error">Tiedostoa luettaessa tapahtui virhe. Varmista, että olet todella valinnut OPML-tiedoston ja että tiedosto on kelvollinen.</string>
     <string name="transcript">Transkriptio</string>
     <string name="current_playing_episode">Nykyinen</string>
-    <string name="statistics_episodes_played">soitetut</string>
     <plurals name="total_size_downloaded_podcasts">
         <item quantity="one">%d jakson kokonaiskoko laitteella</item>
         <item quantity="other">%d jakson kokonaiskoko laitteella</item>

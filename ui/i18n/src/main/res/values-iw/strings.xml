@@ -873,4 +873,25 @@
     <string name="notification_channel_refreshing">ההסכתים מתעדכנים</string>
     <string name="notification_channel_refreshing_description">מופיע בעת בדיקה לאיתור פרקים חדשים.</string>
     <string name="home_label_short">בית</string>
+    <string name="echo_queue_title_many">ויש לך עוד כברת דרך משמעותית השנה. יש לך</string>
+    <string name="echo_queue_title_clean">ועכשיו אפשר להתחיל את השנה בראש נקי. יש לך</string>
+    <plurals name="echo_queue_hours_waiting">
+        <item quantity="one">שעות המתנה בתור שלך\nמפרק אחד</item>
+        <item quantity="two">שעות המתנה בתור שלך\nמ־%1$d פרקים</item>
+        <item quantity="other">שעות המתנה בתור שלך\nמ־%1$d פרקים</item>
+    </plurals>
+    <string name="echo_queue_hours_normal">זה בערך %1$s בכל יום עד להתחלת %2$d. אפשר להתחיל את השנה בראש נקי עם דילוג על כמה פרקים.</string>
+    <string name="echo_queue_hours_much">זה בערך %1$s בכל יום עד להתחלת %2$d. רגע, מה?</string>
+    <string name="echo_listened_after_title">הרצנו ניתוחים על מועדי הוצאה לאור של פרקים ומתי סיימת להאזין להם. המסקנות שלנו?</string>
+    <string name="echo_listened_after_comment_easy">ברוגע</string>
+    <string name="echo_listened_after_time">בדרך כלל, סיימת להאזין לפרק %1$s לאחר יציאתו לאור.</string>
+    <string name="echo_hoarder_subtitle_hoarder">לפי המספרים, נראה שמדובר באגרנות</string>
+    <string name="echo_hoarder_subtitle_medium">מצוין. אין פה שום אגרנות.</string>
+    <string name="echo_hoarder_comment_medium">ניגנת פרקים מ־%1$d%% מתוך %2$d המינויים הפעילים שלך השנה. מה בנוגע לחזרה על „%3$s”?</string>
+    <string name="echo_hoarder_subtitle_clean">מצוחצח!</string>
+    <string name="echo_hoarder_comment_clean">ניגנת פרקים מ־%1$d%% מתוך %2$d המינויים הפעילים שלך השנה. אנחנו משוכנעים שגם לך יש איך לנקות את השולחן!</string>
+    <string name="echo_hoarder_title">גם אנחנו תהינו: יצא לך להאזין לכל ההסתכים שנרשמת אליהם?</string>
+    <string name="echo_listened_after_comment_addict">יש לך התמכרות להסכתים</string>
+    <string name="echo_queue_hours_clean">זה בערך %1$s בכל יום עד להתחלת %2$d.</string>
+    <string name="echo_hoarder_comment_hoarder">המספרים לא משקרים. ועם %1$d%% בלבד מתוך %2$d מינויים פעילים שהתנגנו השנה, כנראה שהתובנות האלה נכונות.</string>
 </resources>
