@@ -414,9 +414,6 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     }
 
     private void showInputMethod(View view) {
-        if (getActivity() == null) { //Fixes https://github.com/AntennaPod/AntennaPod/issues/7609
-            return;
-        }
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.showSoftInput(view, 0);
