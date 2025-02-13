@@ -126,6 +126,9 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     @Override
     public void onStop() {
         super.onStop();
+        if (adapter != null && adapter.inActionMode()) {
+            adapter.endSelectMode();
+        }
         if (disposableFeeds != null) {
             disposableFeeds.dispose();
         }
