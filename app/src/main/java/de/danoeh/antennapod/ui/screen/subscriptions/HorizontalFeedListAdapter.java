@@ -74,8 +74,7 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
         holder.itemView.setAlpha(1.0f);
         final Feed podcast = data.get(position);
         holder.imageView.setContentDescription(podcast.getTitle());
-        holder.imageView.setOnClickListener(v ->
-                mainActivityRef.get().loadChildFragment(FeedItemlistFragment.newInstance(podcast.getId())));
+        holder.imageView.setOnClickListener(v -> onClick(podcast));
 
         holder.imageView.setOnCreateContextMenuListener(this);
         holder.imageView.setOnLongClickListener(v -> {
@@ -91,6 +90,10 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
                         .fitCenter()
                         .dontAnimate())
                 .into(holder.imageView);
+    }
+
+    protected void onClick(Feed feed) {
+        mainActivityRef.get().loadChildFragment(FeedItemlistFragment.newInstance(feed.getId()));
     }
 
     @Nullable
