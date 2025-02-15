@@ -46,5 +46,5 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
     implementation "org.greenrobot:eventbus:$eventbusVersion"
-    implementation 'com.github.ByteHamster:SearchPreference:v2.5.0'
+    implementation 'com.github.ByteHamster:SearchPreference:2.7.1'
 }

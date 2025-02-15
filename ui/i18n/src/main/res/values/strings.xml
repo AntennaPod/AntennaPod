@@ -411,6 +411,8 @@
     <string name="preference_search_hint">Search…</string>
     <string name="preference_search_no_results">No results</string>
     <string name="preference_search_clear_history">Clear history</string>
+    <string name="preference_search_clear_input">Clear</string>
+    <string name="overflow_more">More</string>
     <string name="pref_episode_cleanup_title">Delete before auto download</string>
     <string name="pref_episode_cleanup_summary">Episodes that should be eligible for removal if Auto Download needs space for new episodes</string>
     <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth are disconnected</string>
