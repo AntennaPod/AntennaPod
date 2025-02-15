@@ -347,7 +347,11 @@ public class FeedSettingsFragment extends Fragment {
 
             switch (feedPreferences.getAutoDeleteAction()) {
                 case GLOBAL:
-                    autoDeletePreference.setSummary(R.string.global_default);
+                    boolean isEnabledGlobally = feed.isLocalFeed()
+                            ? UserPreferences.isAutoDeleteLocal() : UserPreferences.isAutoDelete();
+                    int global = isEnabledGlobally
+                            ? R.string.feed_auto_download_always : R.string.feed_auto_download_never;
+                    autoDeletePreference.setSummary(getString(R.string.global_default_with_value, getString(global)));
                     autoDeletePreference.setValue("global");
                     break;
                 case ALWAYS:
@@ -434,7 +438,12 @@ public class FeedSettingsFragment extends Fragment {
 
             switch (feedPreferences.getNewEpisodesAction()) {
                 case GLOBAL:
-                    newEpisodesAction.setSummary(R.string.global_default);
+                    int global = switch (UserPreferences.getNewEpisodesAction()) {
+                        case ADD_TO_INBOX -> R.string.feed_new_episodes_action_add_to_inbox;
+                        case ADD_TO_QUEUE -> R.string.feed_new_episodes_action_add_to_queue;
+                        default -> R.string.feed_new_episodes_action_nothing;
+                    };
+                    newEpisodesAction.setSummary(getString(R.string.global_default_with_value, getString(global)));
                     break;
                 case ADD_TO_INBOX:
                     newEpisodesAction.setSummary(R.string.feed_new_episodes_action_add_to_inbox);
@@ -493,10 +502,8 @@ public class FeedSettingsFragment extends Fragment {
 
             switch (feedPreferences.getAutoDownload()) {
                 case GLOBAL:
-                    if (feedPreferences.getAutoDownload() == FeedPreferences.AutoDownloadSetting.GLOBAL) {
-                        autoDownloadPreference.setSummary(getString(R.string.global_default_with_value,
-                                enabled ? getString(R.string.enabled) : getString(R.string.disabled)));
-                    }
+                    autoDownloadPreference.setSummary(getString(R.string.global_default_with_value,
+                            getString(enabled ? R.string.enabled : R.string.disabled)));
                     autoDownloadPreference.setValue("global");
                     break;
                 case ENABLED:
