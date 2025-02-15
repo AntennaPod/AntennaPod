@@ -535,7 +535,7 @@ public class MainActivity extends CastEnabledActivity {
                     0, getString(NavigationNames.getShortLabel(tag)));
             item.setIcon(NavigationNames.getDrawable(tag));
         }
-        MenuItem moreItem = menu.add(0, R.id.bottom_navigation_more, 0, getString(R.string.searchpreference_more));
+        MenuItem moreItem = menu.add(0, R.id.bottom_navigation_more, 0, getString(R.string.overflow_more));
         moreItem.setIcon(R.drawable.dots_vertical);
         bottomNavigationView.setOnItemSelectedListener(bottomItemSelectedListener);
         updateBottomNavigationBadgeIfNeeded();
