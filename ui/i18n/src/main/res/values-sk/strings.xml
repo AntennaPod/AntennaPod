@@ -894,4 +894,6 @@
     <string name="echo_hoarder_comment_clean">Tento rok ste prehrali epizódy z %1$d%% vašich %2$d aktívnych odberov. Stavíme sa, že aj vy budete udržiavať svoj pracovný stôl čistý!</string>
     <string name="notification_channel_refreshing">Obnovujem podcasty</string>
     <string name="notification_channel_refreshing_description">Zobrazuje sa pri kontrole nových epizód.</string>
+    <string name="preference_search_clear_input">Vymazať</string>
+    <string name="overflow_more">Viac</string>
 </resources>

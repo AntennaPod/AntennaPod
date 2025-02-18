@@ -5,7 +5,7 @@
     <string name="queue_label">ക്യൂ</string>
     <string name="favorite_episodes_label">മുന്‍നിരയിലുളളത്</string>
     <string name="settings_label">ക്രമീകരണം</string>
-    <string name="downloads_label">ഡൌണ്‍ലോഡുകള്‍</string>
+    <string name="downloads_label">ഡൗൺലോഡുകൾ</string>
     <string name="subscriptions_label">സബ്‍സ്‍ക്രിപ്ഷനുകള്‍</string>
     <string name="notification_pref_fragment">നോട്ടിഫിക്കേഷനുകൾ</string>
     <string name="swipeactions_summary">ലിസ്റ്റിൽ ഒരു എപ്പിസോഡ് സ്വൈപ്പ് ചെയ്യുമ്പോൾ എന്താണ് സംഭവിക്കുന്നതെന്ന് തിരഞ്ഞെടുക്കുക</string>
@@ -21,7 +21,7 @@
     <string name="drawer_feed_order_last_update">പ്രസിദ്ധീകരിച്ച സമയമനുസരിച്ച് ക്രമീകരിക്കുക</string>
     <string name="drawer_feed_order_most_played">പരമ്പരകള്‍ പ്ലേ ചെയ്ത എണ്ണത്തിനനുസരിച്ച ക്രമീകരീക്കുക</string>
     <string name="drawer_feed_counter_unplayed">പ്ലേ ചെയ്യാത്ത പരമ്പരകളുടെ എണ്ണം</string>
-    <string name="drawer_feed_counter_downloaded">ഡൗണ്‍ലോഡുചെയ്ത എപ്പിസോഡുകളുടെ എണ്ണം</string>
+    <string name="drawer_feed_counter_downloaded">ഡൗണ്ലോഡ് ചെയ്ത എപ്പിസോഡുകളുടെ എണ്ണം</string>
     <string name="drawer_feed_counter_none">ഒന്നുമില്ല</string>
     <!--Bug report activity-->
   <string name="log_file_share_exception">അനുയോജ്യമായ ആപ്പുകളോന്നും കണ്ടില്ല</string>
@@ -88,13 +88,13 @@
     <string name="play_this_to_seek_position">പരമ്പരയിലെ നിങ്ങൾക്കു കേൾക്കേണ്ട ഭാഗത്തേക്ക് നീക്കുക</string>
     <plurals name="marked_read_batch_label">
         <item quantity="one">%d പരമ്പര കേട്ടതായി അടയാളപ്പെടുത്തി%d പരമ്പരകൾ കേട്ടതായി അടയാളപ്പെടുത്തി</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="mark_unread_label">പ്ലേ ചെയ്യാത്തതായി അടയാളപ്പെടുത്തുക</string>
     <string name="mark_unread_label_no_media">പ്ലേ ചെയ്യാത്തതായി അടയാളപ്പെടുത്തി</string>
     <plurals name="marked_unread_batch_label">
         <item quantity="one">%d പരമ്പര കേട്ടില്ലെന്ന് അടയാളപ്പെടുത്തി%d പരമ്പരകൾ കേട്ടില്ലെന്ന് അടയാളപ്പെടുത്തി</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <plurals name="added_to_queue_batch_label">
         <item quantity="one">%d പരമ്പര ക്യൂവിൽ ചേർത്തു.</item>
@@ -102,7 +102,7 @@
     </plurals>
     <plurals name="removed_from_queue_batch_label">
         <item quantity="one">%d പരമ്പര ക്യൂവിൽ നിന്നും നീക്കം ചെയ്കു%d പരമ്പരകൾ ക്യൂവിൽ നിന്നും നീക്കം ചെയ്കു</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="skip_episode_label">പരമ്പര വിട്ടു കളയുക</string>
     <string name="no_items_selected">ഒന്നും തിരഞ്ഞടുത്തിട്ടില്ല</string>

@@ -90,7 +90,7 @@
     <string name="support_podcast">Tue tätä podcastia</string>
     <string name="error_label">Virhe</string>
     <string name="error_msg_prefix">Tapahtui virhe:</string>
-    <string name="refresh_label">Päivitä</string>
+    <string name="refresh_label">Virkistä</string>
     <string name="chapters_label">Kappaleet</string>
     <string name="no_chapters_label">Ei kappaleita</string>
     <string name="chapter_duration">Kesto: %1$s</string>
@@ -183,7 +183,7 @@
     <string name="play_this_to_seek_position">Jaksoa pitää toistaa siirtyäksesi kohtiin</string>
     <plurals name="marked_read_batch_label">
         <item quantity="one">%d jakso merkitty soitetuksi.%d jaksoa merkitty toistetuksi</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="mark_unread_label">Merkitse toistamattomaksi</string>
     <string name="mark_unread_label_no_media">Merkitse lukemattomaksi</string>

@@ -872,4 +872,6 @@
     <string name="episode_lists">Afsnitslister</string>
     <string name="pref_downloads_button_action_title">Afspil fra overførselsskærm</string>
     <string name="pref_downloads_button_action_sum">Vis afspilningsknappen i stedet for sletteknappen på overførselsskærm</string>
+    <string name="overflow_more">Mere</string>
+    <string name="preference_search_clear_input">Ryd</string>
 </resources>

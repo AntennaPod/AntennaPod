@@ -682,7 +682,7 @@
     <string name="feed_tags_summary">Modifier les tags de ce podcast pour classer vos abonnements</string>
     <string name="feed_folders_include_root">Montrer dans la liste principale</string>
     <string name="multi_feed_common_tags_info">Seul les tags communs à tous les abonnements sélectionnés sont montrés. Les autres tags ne seront pas modifiés.</string>
-    <string name="auto_download_settings_label">Préférence de téléchargement automatique</string>
+    <string name="auto_download_settings_label">Préférences de téléchargement automatique</string>
     <string name="episode_filters_label">Filtre d\'épisode</string>
     <string name="episode_filters_description">Liste de mots permettant de décider si un épisode est à inclure ou à exclure des téléchargements automatiques</string>
     <string name="add_term">Ajouter le mot</string>
@@ -886,7 +886,7 @@
     <string name="downloads_label_short">Téléchargements</string>
     <string name="add_feed_label_short">Ajouter</string>
     <string name="home_label_short">Accueil</string>
-    <string name="inbox_label_short">Réception</string>
+    <string name="inbox_label_short">Reçus</string>
     <string name="global_default_with_value">Valeur par défaut (%1$s)</string>
     <string name="episodes_label_more">Épisodes »</string>
     <string name="subscriptions_label_more">Abonnements »</string>
@@ -895,4 +895,6 @@
     <string name="episodes_label_short">Épisodes</string>
     <string name="pref_automatic_download_global_description">Télécharger automatiquement les nouveaux épisodes. Peut-être modifié pour chaque podcast dans ses paramètres.</string>
     <string name="pref_automatic_download_queue_title">Téléchargement de la liste de lecture</string>
+    <string name="preference_search_clear_input">Effacer</string>
+    <string name="overflow_more">Plus</string>
 </resources>
