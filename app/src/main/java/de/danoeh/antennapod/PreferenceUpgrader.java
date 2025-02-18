@@ -33,12 +33,12 @@ public class PreferenceUpgrader {
         if (oldVersion != newVersion) {
             CrashReportWriter.getFile().delete();
 
-            upgrade(oldVersion, context);
+            upgrade(oldVersion, newVersion, context);
             upgraderPrefs.edit().putInt(PREF_CONFIGURED_VERSION, newVersion).apply();
         }
     }
 
-    private static void upgrade(int oldVersion, Context context) {
+    private static void upgrade(int oldVersion, int newVersion, Context context) {
         if (oldVersion == -1) {
             //New installation
             return;
@@ -171,6 +171,10 @@ public class PreferenceUpgrader {
                 prefs.edit().putString(UserPreferences.PREF_EPISODE_CLEANUP,
                         "" + UserPreferences.EPISODE_CLEANUP_NULL).apply();
             }
+        }
+        if (newVersion == 3070003) {
+            // Enable bottom navigation for beta users, so only this exact app version
+            UserPreferences.setBottomNavigationEnabled(true);
         }
     }
 }
