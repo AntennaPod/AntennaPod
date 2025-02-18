@@ -916,4 +916,6 @@
         <item quantity="other">годин очікування у вашій черзі\nз %1$d епізодів</item>
     </plurals>
     <string name="echo_hoarder_subtitle_medium">Перевірте. Тут немає накопичення.</string>
+    <string name="overflow_more">Більше</string>
+    <string name="preference_search_clear_input">Очистити</string>
 </resources>

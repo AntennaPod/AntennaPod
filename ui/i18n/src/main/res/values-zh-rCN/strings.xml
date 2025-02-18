@@ -850,4 +850,6 @@
     <string name="echo_share">我的 %d 年播客之旅回顾。#AntennaPodEcho</string>
     <string name="echo_queue_hours_clean">这相当于每天大约 %1$s，直至 %2$d 开始。</string>
     <string name="echo_hoarder_comment_hoarder">数字不撒谎。考虑到今年您的 %2$d 个活动订阅中仅 %1$d%% 已播放，我们的结论或许是对的。</string>
+    <string name="overflow_more">更多</string>
+    <string name="preference_search_clear_input">清除</string>
 </resources>

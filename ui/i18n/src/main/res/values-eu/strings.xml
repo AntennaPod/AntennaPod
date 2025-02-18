@@ -872,4 +872,6 @@
     <string name="subscriptions_label_more">Harpidetzak »</string>
     <string name="disabled">Desgaituta</string>
     <string name="global_default_with_value">Lehenetsi globala (%1$s)</string>
+    <string name="overflow_more">Gehiago</string>
+    <string name="preference_search_clear_input">Garbitu</string>
 </resources>

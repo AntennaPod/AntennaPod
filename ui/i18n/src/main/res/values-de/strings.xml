@@ -872,4 +872,6 @@
     <string name="pref_downloads_button_action_title">Vom Download-Bildschirm aus abspielen</string>
     <string name="pref_downloads_button_action_sum">Wiedergabe- anstelle des Lösch-Buttons auf dem Download-Bildschirm anzeigen</string>
     <string name="download_error_unsupported_type_html_manual">Du hast eine Website-Adresse eingegeben, keine Podcast-RSS-Adresse.</string>
+    <string name="overflow_more">Mehr</string>
+    <string name="preference_search_clear_input">Leeren</string>
 </resources>

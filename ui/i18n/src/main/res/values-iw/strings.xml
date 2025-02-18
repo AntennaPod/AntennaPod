@@ -894,4 +894,6 @@
     <string name="echo_listened_after_comment_addict">יש לך התמכרות להסכתים</string>
     <string name="echo_queue_hours_clean">זה בערך %1$s בכל יום עד להתחלת %2$d.</string>
     <string name="echo_hoarder_comment_hoarder">המספרים לא משקרים. ועם %1$d%% בלבד מתוך %2$d מינויים פעילים שהתנגנו השנה, כנראה שהתובנות האלה נכונות.</string>
+    <string name="preference_search_clear_input">פינוי</string>
+    <string name="overflow_more">עוד</string>
 </resources>
