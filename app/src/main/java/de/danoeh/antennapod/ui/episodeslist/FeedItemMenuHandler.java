@@ -235,11 +235,7 @@ public class FeedItemMenuHandler {
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    switch (which){
-                        case DialogInterface.BUTTON_POSITIVE:
-                            IntentUtils.openInBrowser(context, selectedItem.getPodcastIndexSocialUrl());
-                            break;
-                    }
+                    IntentUtils.openInBrowser(context, selectedItem.getPodcastIndexSocialUrl());
                 }
             };
 
