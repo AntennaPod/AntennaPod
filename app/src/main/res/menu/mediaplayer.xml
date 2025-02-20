@@ -10,10 +10,10 @@
     </item>
 
     <item
-        android:id="@+id/visit_social_interest_website"
+        android:id="@+id/social_url"
         android:icon="@drawable/ic_chat"
         custom:showAsAction="ifRoom"
-        android:title="@string/visit_social_interest_label">
+        android:title="@string/visit_social_comments_label">
     </item>
 
     <item
@@ -71,7 +71,6 @@
         android:title="@string/visit_website_label"
         android:visible="false">
     </item>
-
 
     <item
         android:id="@+id/player_switch_to_audio_only"

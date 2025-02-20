@@ -273,7 +273,8 @@
     <string name="no_transcript_label">No transcript</string>
     <string name="remove_from_favorite_label">Remove from favorites</string>
     <string name="visit_website_label">Visit website</string>
-    <string name="visit_social_interest_label">Social comments</string>
+    <string name="visit_social_comments_label">Social comments</string>
+    <string name="visit_social_comments_query">You are leaving AntennaPod and visiting \"%1$s\"</string>
     <string name="skip_episode_label">Skip episode</string>
     <string name="reset_position">Reset playback position</string>
     <string name="no_items_selected">No items selected</string>

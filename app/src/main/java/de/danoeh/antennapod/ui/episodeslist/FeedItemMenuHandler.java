@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.ui.episodeslist;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -71,7 +73,7 @@ public class FeedItemMenuHandler {
         boolean canAddFavorite = false;
         boolean canRemoveFavorite = false;
         boolean canShowTranscript = false;
-        boolean canShowSocialInteract = false;
+        boolean canShowSocialComments = false;
 
         for (FeedItem item : selectedItems) {
             boolean hasMedia = item.getMedia() != null;
@@ -89,14 +91,14 @@ public class FeedItemMenuHandler {
             canAddFavorite |= !item.isTagged(FeedItem.TAG_FAVORITE);
             canRemoveFavorite |= item.isTagged(FeedItem.TAG_FAVORITE);
             canShowTranscript |= item.hasTranscript();
-            canShowSocialInteract |= item.getPodcastIndexSocialUrl() != null;
+            canShowSocialComments |= item.getPodcastIndexSocialUrl() != null;
         }
 
         if (selectedItems.size() > 1) {
             canVisitWebsite = false;
             canShare = false;
             canShowTranscript = false;
-            canShowSocialInteract = false;
+            canShowSocialComments = false;
         }
 
         setItemVisibility(menu, R.id.skip_episode_item, canSkip);
@@ -108,7 +110,7 @@ public class FeedItemMenuHandler {
         setItemVisibility(menu, R.id.mark_read_item, canMarkPlayed);
         setItemVisibility(menu, R.id.mark_unread_item, canMarkUnplayed);
         setItemVisibility(menu, R.id.reset_position, canResetPosition);
-        setItemVisibility(menu, R.id.visit_social_interest_website, canShowSocialInteract);
+        setItemVisibility(menu, R.id.social_url, canShowSocialComments);
 
         // Display proper strings when item has no media
         if (selectedItems.size() == 1 && selectedItems.get(0).getMedia() == null) {
@@ -229,8 +231,24 @@ public class FeedItemMenuHandler {
             DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, true);
         } else if (menuItemId == R.id.visit_website_item) {
             IntentUtils.openInBrowser(context, selectedItem.getLinkWithFallback());
-        } else if (menuItemId == R.id.visit_social_interest_website) {
-            IntentUtils.openInBrowser(context, selectedItem.getPodcastIndexSocialUrl());
+        } else if (menuItemId == R.id.social_url) {
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            IntentUtils.openInBrowser(context, selectedItem.getPodcastIndexSocialUrl());
+                            break;
+                    }
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage(context.getString(R.string.visit_social_comments_query,
+                            selectedItem.getPodcastIndexSocialUrl()))
+                    .setPositiveButton(R.string.yes, dialogClickListener)
+                    .setNegativeButton(R.string.no, dialogClickListener).show();
+
         } else if (menuItemId == R.id.share_item) {
             ShareDialog shareDialog = ShareDialog.newInstance(selectedItem);
             shareDialog.show((fragment.getActivity().getSupportFragmentManager()), "ShareEpisodeDialog");

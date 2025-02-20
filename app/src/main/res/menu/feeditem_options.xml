@@ -58,10 +58,10 @@
     </item>
 
     <item
-        android:id="@+id/visit_social_interest_website"
+        android:id="@+id/social_url"
         android:icon="@drawable/ic_chat"
-        custom:showAsAction="ifRoom|collapseActionView"
-        android:title="@string/visit_social_interest_label"
+        custom:showAsAction="never|collapseActionView"
+        android:title="@string/visit_social_comments_label"
         android:visible="true">
     </item>
 
