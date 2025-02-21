@@ -462,7 +462,6 @@
     <string name="pref_mobileUpdate_sum">Select what should be allowed over the mobile data connection</string>
     <string name="pref_mobileUpdate_refresh">Podcast refresh</string>
     <string name="pref_mobileUpdate_images">Cover images</string>
-    <string name="pref_mobileUpdate_auto_download">Auto download</string>
     <string name="pref_mobileUpdate_episode_download">Episode download</string>
     <string name="pref_mobileUpdate_streaming">Streaming</string>
     <string name="user_interface_label">User interface</string>
@@ -681,7 +680,6 @@
     <string name="gpodnetauth_existing_devices">Existing devices</string>
     <string name="gpodnetauth_create_device">Create device</string>
     <string name="gpodnetauth_finish_descr">Congratulations! Your gpodder.net account is now linked with your device. AntennaPod will from now on automatically sync subscriptions on your device with your gpodder.net account.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Start sync now</string>
     <string name="pref_gpodnet_setlogin_information_title">Change login information</string>
     <string name="pref_gpodnet_setlogin_information_sum">Change the login information for your gpodder.net account.</string>
     <string name="synchronization_sync_changes_title">Synchronize now</string>
