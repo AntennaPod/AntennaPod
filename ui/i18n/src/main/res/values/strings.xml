@@ -280,6 +280,9 @@
     <string name="no_transcript_label">No transcript</string>
     <string name="remove_from_favorite_label">Remove from favorites</string>
     <string name="visit_website_label">Visit website</string>
+    <string name="visit_social_interact_label">Show comments</string>
+    <string name="visit_social_interact_query_title">You are leaving AntennaPod</string>
+    <string name="visit_social_interact_query_message">Please make sure that you trust the website \"%1$s\".</string>
     <string name="skip_episode_label">Skip episode</string>
     <string name="reset_position">Reset playback position</string>
     <string name="no_items_selected">No items selected</string>
