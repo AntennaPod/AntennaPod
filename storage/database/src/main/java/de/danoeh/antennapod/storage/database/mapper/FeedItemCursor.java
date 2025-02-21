@@ -25,7 +25,7 @@ public class FeedItemCursor extends CursorWrapper {
     private final int indexAutoDownload;
     private final int indexImageUrl;
     private final int indexPodcastIndexChapterUrl;
-    private final int indexPodcastIndexSocialUrl;
+    private final int indexSocialInteractUrl;
     private final int indexMediaId;
     private final int indexPodcastIndexTranscriptType;
     private final int indexPodcastIndexTranscriptUrl;
@@ -46,7 +46,7 @@ public class FeedItemCursor extends CursorWrapper {
         indexImageUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_IMAGE_URL);
         indexPodcastIndexChapterUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PODCASTINDEX_CHAPTER_URL);
         indexMediaId = cursor.getColumnIndexOrThrow(PodDBAdapter.SELECT_KEY_MEDIA_ID);
-        indexPodcastIndexSocialUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PODCASTINDEX_SOCIAL_URL);
+        indexSocialInteractUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_SOCIAL_INTERACT_URL);
         indexPodcastIndexTranscriptType = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PODCASTINDEX_TRANSCRIPT_TYPE);
         indexPodcastIndexTranscriptUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PODCASTINDEX_TRANSCRIPT_URL);
     }
@@ -71,7 +71,7 @@ public class FeedItemCursor extends CursorWrapper {
                 getString(indexPodcastIndexChapterUrl),
                 getString(indexPodcastIndexTranscriptType),
                 getString(indexPodcastIndexTranscriptUrl),
-                getString(indexPodcastIndexSocialUrl));
+                getString(indexSocialInteractUrl));
         if (!isNull(indexMediaId)) {
             item.setMedia(feedMediaCursor.getFeedMedia());
         }

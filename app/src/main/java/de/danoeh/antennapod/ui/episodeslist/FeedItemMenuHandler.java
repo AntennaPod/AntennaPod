@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.ui.episodeslist;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -12,6 +10,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Arrays;
@@ -91,7 +90,7 @@ public class FeedItemMenuHandler {
             canAddFavorite |= !item.isTagged(FeedItem.TAG_FAVORITE);
             canRemoveFavorite |= item.isTagged(FeedItem.TAG_FAVORITE);
             canShowTranscript |= item.hasTranscript();
-            canShowSocialComments |= item.getPodcastIndexSocialUrl() != null;
+            canShowSocialComments |= item.getSocialInteractUrl() != null;
         }
 
         if (selectedItems.size() > 1) {
@@ -110,7 +109,7 @@ public class FeedItemMenuHandler {
         setItemVisibility(menu, R.id.mark_read_item, canMarkPlayed);
         setItemVisibility(menu, R.id.mark_unread_item, canMarkUnplayed);
         setItemVisibility(menu, R.id.reset_position, canResetPosition);
-        setItemVisibility(menu, R.id.social_url, canShowSocialComments);
+        setItemVisibility(menu, R.id.open_social_url, canShowSocialComments);
 
         // Display proper strings when item has no media
         if (selectedItems.size() == 1 && selectedItems.get(0).getMedia() == null) {
@@ -231,20 +230,15 @@ public class FeedItemMenuHandler {
             DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, true);
         } else if (menuItemId == R.id.visit_website_item) {
             IntentUtils.openInBrowser(context, selectedItem.getLinkWithFallback());
-        } else if (menuItemId == R.id.social_url) {
-            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    IntentUtils.openInBrowser(context, selectedItem.getPodcastIndexSocialUrl());
-                }
-            };
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage(context.getString(R.string.visit_social_comments_query,
-                            selectedItem.getPodcastIndexSocialUrl()))
-                    .setPositiveButton(R.string.yes, dialogClickListener)
-                    .setNegativeButton(R.string.no, dialogClickListener).show();
-
+        } else if (menuItemId == R.id.open_social_url) {
+            new MaterialAlertDialogBuilder(context)
+                    .setTitle(R.string.visit_social_interact_query_title)
+                    .setMessage(context.getString(R.string.visit_social_interact_query_message,
+                            selectedItem.getSocialInteractUrl()))
+                    .setPositiveButton(R.string.confirm_label, (dialog, which) ->
+                            IntentUtils.openInBrowser(context, selectedItem.getSocialInteractUrl()))
+                    .setNegativeButton(R.string.cancel_label, null)
+                    .show();
         } else if (menuItemId == R.id.share_item) {
             ShareDialog shareDialog = ShareDialog.newInstance(selectedItem);
             shareDialog.show((fragment.getActivity().getSupportFragmentManager()), "ShareEpisodeDialog");

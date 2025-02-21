@@ -434,11 +434,11 @@ public class FeedItem implements Serializable {
         podcastIndexChapterUrl = url;
     }
 
-    public void setPodcastIndexSocialUrl(String url) {
+    public void setSocialInteractUrl(String url) {
         socialInteractUrl = url;
     }
 
-    public String getPodcastIndexSocialUrl() {
+    public String getSocialInteractUrl() {
         return socialInteractUrl;
     }
 

@@ -35,7 +35,7 @@ public class PodcastIndex extends Namespace {
         } else if (SOCIAL_INTERACT.equals(localName)) {
             String href = attributes.getValue(URI);
             if (!TextUtils.isEmpty(href) && state.getCurrentItem() != null) {
-                state.getCurrentItem().setPodcastIndexSocialUrl(href);
+                state.getCurrentItem().setSocialInteractUrl(href);
             }
         } else if (TRANSCRIPT.equals(localName)) {
             String href = attributes.getValue(URL);
