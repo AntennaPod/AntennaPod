@@ -85,7 +85,7 @@ public class Atom extends Namespace {
                     String strSize = attributes.getValue(LINK_LENGTH);
                     long size = 0;
                     try {
-                        if (strSize != null) {
+                        if (!TextUtils.isEmpty(strSize)) {
                             size = Long.parseLong(strSize);
                         }
                     } catch (NumberFormatException e) {

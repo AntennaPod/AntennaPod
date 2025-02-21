@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -493,7 +491,7 @@ public class FeedItem implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return "FeedItem [id=" + id + ", title=" + title + ", feedId=" + feedId + ", pubDate=" + pubDate + "]";
     }
 
     @Override
