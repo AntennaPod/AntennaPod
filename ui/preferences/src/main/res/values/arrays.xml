@@ -137,7 +137,7 @@
     <string-array name="mobile_update_entries">
         <item>@string/pref_mobileUpdate_refresh</item>
         <item>@string/pref_mobileUpdate_episode_download</item>
-        <item>@string/pref_mobileUpdate_auto_download</item>
+        <item>@string/pref_automatic_download_title</item>
         <item>@string/pref_mobileUpdate_streaming</item>
         <item>@string/pref_mobileUpdate_images</item>
         <item>@string/synchronization_pref</item>
