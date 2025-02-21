@@ -113,8 +113,8 @@
     <string name="feed_auto_download_always">Sempre</string>
     <string name="feed_auto_download_never">Nunca</string>
     <string name="feed_new_episodes_action_add_to_inbox">Adicionar à caixa de entrada</string>
-    <string name="feed_new_episodes_action_add_to_queue">Adicionar à fila</string>
-    <string name="feed_new_episodes_action_nothing">Nada</string>
+    <string name="feed_new_episodes_action_add_to_queue">Adicionar à fila, desativa a transferência automática</string>
+    <string name="feed_new_episodes_action_nothing">Nada, desativar a transferência automática</string>
     <string name="episode_cleanup_never">Nunca</string>
     <string name="episode_cleanup_except_favorite_removal">Se não for favorito</string>
     <string name="episode_cleanup_queue_removal">Se não estiver na fila</string>
@@ -419,7 +419,7 @@
     <string name="pref_mobileUpdate_episode_download">Descarga de episódios</string>
     <string name="pref_mobileUpdate_streaming">Emissão</string>
     <string name="user_interface_label">Interface</string>
-    <string name="user_interface_sum">Aparência, subscrições e ecrã de bloqueio</string>
+    <string name="user_interface_sum">Aspeto, subscrições e ecrã de bloqueio</string>
     <string name="pref_black_theme_title">Preto total</string>
     <string name="pref_black_theme_message">Utilizar preto total para o tema escuro</string>
     <string name="pref_tinted_theme_title">Cores dinâmicas</string>
@@ -895,4 +895,6 @@
     <string name="echo_hoarder_subtitle_hoarder">A julgar pelos números, achamos que tem um pouco de distúrbio de acumulação compulsiva</string>
     <string name="notification_channel_refreshing">A atualizar podcasts</string>
     <string name="notification_channel_refreshing_description">Mostrado durante a verificação de novos episódios.</string>
+    <string name="preference_search_clear_input">Limpar</string>
+    <string name="overflow_more">Mais</string>
 </resources>

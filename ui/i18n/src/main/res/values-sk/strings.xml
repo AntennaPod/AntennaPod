@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">Vždy</string>
     <string name="feed_auto_download_never">Nikdy</string>
     <string name="feed_new_episodes_action_add_to_inbox">Pridať do noviniek</string>
-    <string name="feed_new_episodes_action_add_to_queue">Pridať do poradia</string>
-    <string name="feed_new_episodes_action_nothing">Nerobiť nič</string>
+    <string name="feed_new_episodes_action_add_to_queue">Pridať do poradia, vypnúť automatické sťahovanie</string>
+    <string name="feed_new_episodes_action_nothing">Nerobiť nič, vypnúť automatické sťahovanie</string>
     <string name="episode_cleanup_never">Nikdy</string>
     <string name="episode_cleanup_except_favorite_removal">Ak nie je medzi obľúbenými</string>
     <string name="episode_cleanup_queue_removal">Ak nie je v poradí</string>

@@ -113,8 +113,8 @@
     <string name="feed_auto_download_always">Toujours</string>
     <string name="feed_auto_download_never">Jamais</string>
     <string name="feed_new_episodes_action_add_to_inbox">Ajouter à la boîte de réception</string>
-    <string name="feed_new_episodes_action_add_to_queue">Ajouter à la liste de lecture</string>
-    <string name="feed_new_episodes_action_nothing">Ne rien faire</string>
+    <string name="feed_new_episodes_action_add_to_queue">Ajouter à la liste de lecture (désactive le téléchargement automatique)</string>
+    <string name="feed_new_episodes_action_nothing">Ne rien faire (désactive le téléchargement automatique)</string>
     <string name="episode_cleanup_never">Jamais</string>
     <string name="episode_cleanup_except_favorite_removal">Quand pas un favori</string>
     <string name="episode_cleanup_queue_removal">Quand pas dans la liste de lecture</string>

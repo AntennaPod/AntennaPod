@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">Завжди</string>
     <string name="feed_auto_download_never">Ніколи</string>
     <string name="feed_new_episodes_action_add_to_inbox">Додати у вхідні</string>
-    <string name="feed_new_episodes_action_add_to_queue">Додати до черги</string>
-    <string name="feed_new_episodes_action_nothing">Нічого</string>
+    <string name="feed_new_episodes_action_add_to_queue">Додати в чергу, вимкнути автоматичне завантаження</string>
+    <string name="feed_new_episodes_action_nothing">Нічого, вимкнути автоматичне завантаження</string>
     <string name="episode_cleanup_never">Ніколи</string>
     <string name="episode_cleanup_except_favorite_removal">Коли не вибрано</string>
     <string name="episode_cleanup_queue_removal">Якщо не в черзі</string>

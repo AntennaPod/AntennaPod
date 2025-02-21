@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">总是</string>
     <string name="feed_auto_download_never">从不</string>
     <string name="feed_new_episodes_action_add_to_inbox">添加到收件箱</string>
-    <string name="feed_new_episodes_action_add_to_queue">添加到队列</string>
-    <string name="feed_new_episodes_action_nothing">啥都没有</string>
+    <string name="feed_new_episodes_action_add_to_queue">添加到队列，禁用自动下载</string>
+    <string name="feed_new_episodes_action_nothing">无，禁用自动下载</string>
     <string name="episode_cleanup_never">从不</string>
     <string name="episode_cleanup_except_favorite_removal">当未收藏时</string>
     <string name="episode_cleanup_queue_removal">当不在队列中</string>

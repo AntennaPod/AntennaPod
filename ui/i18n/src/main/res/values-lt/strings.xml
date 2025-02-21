@@ -77,7 +77,7 @@
         <item quantity="few">%d epizodai</item>
         <item quantity="other">%d epizodų</item>
     </plurals>
-    <string name="episode_notification_summary">Rodyti pranešimą, kai išleidžiamas naujas epizodas.</string>
+    <string name="episode_notification_summary">Rodyti pranešimą, kai išleidžiamas naujas epizodas</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s yra naujas epizodas</item>
         <item quantity="few">%2$s yra %1$d nauji epizodai</item>
@@ -234,7 +234,7 @@
     <string name="pref_hardware_previous_button_summary">Derinkite mygtuko „ankstesnis“ elgseną</string>
     <string name="button_action_rewind">Atsukti</string>
     <string name="pref_followQueue_sum">Atkūrimui pasibaigus peršokti į kitą eilės elementą</string>
-    <string name="pref_smart_mark_as_played_sum">Žymėti epizodus kaip perklausytus iki pilnos perklausos likus nurodytam sekundžių kiekiui.</string>
+    <string name="pref_smart_mark_as_played_sum">Žymėti epizodus kaip perklausytus iki pilnos perklausos likus nurodytam sekundžių kiekiui</string>
     <string name="pref_skip_keeps_episodes_sum">Palikti epizodus, kai šie praleidžiami</string>
     <string name="playback_pref">Atkūrimas</string>
     <string name="playback_pref_sum">Ausinių valdikliai, praleidimo intervalai, eilė</string>
@@ -258,7 +258,7 @@
     <string name="pref_episode_cache_unlimited">Neribojamas</string>
     <string name="pref_playback_speed_sum">Derinkite prieinamas garso atkūrimo spartas</string>
     <string name="pref_feed_playback_speed_sum">Atkūrimo sparta, naudojama pradedant šios tinklalaidės epizodų atkūrimą</string>
-    <string name="pref_feed_skip_sum">Praleisti įvadą ir pabaigos žodį.</string>
+    <string name="pref_feed_skip_sum">Praleisti įvadą ir pabaigos žodį</string>
     <string name="pref_feed_skip_ending">Praleisti pirmas</string>
     <string name="pref_feed_skip_intro">Praleisti paskutines</string>
     <string name="pref_feed_skip_ending_toast">Praleistos paskutinės %d sekundžių</string>
@@ -306,7 +306,7 @@
   <string name="search_status_no_results">Nieko nerasta</string>
     <string name="type_to_search">Įveskite užklausą paieškai pradėti</string>
     <string name="search_label">Paieška</string>
-    <string name="no_results_for_query">Rezultatų paieškai \"%1$s\" nėra.</string>
+    <string name="no_results_for_query">Rezultatų paieškai \"%1$s\" nėra</string>
     <!--Synchronization-->
   <string name="sync_status_started">Sinchronizavimas pradėtas</string>
     <string name="sync_status_episodes_upload">Išsiunčiami epizodų pasikeitimai…</string>
@@ -347,7 +347,7 @@
     <!--Sleep timer-->
   <string name="set_sleeptimer_label">Nustatyti miego laikmatį</string>
     <string name="disable_sleeptimer_label">Išjungti miego laikmatį</string>
-    <string name="extend_sleep_timer_label">+%d min.</string>
+    <string name="extend_sleep_timer_label">+%d min</string>
     <string name="sleep_timer_label">Miego laikmatis</string>
     <string name="time_dialog_invalid_input">Netinkama įvestis, laikas turi būti sveikasis skaičius</string>
     <string name="shake_to_reset_label">Pakratykite, kad nustatyti iš naujo</string>
@@ -404,7 +404,7 @@
     <string name="next_chapter">Kitas skyrius</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">Tapatumo nustatymas</string>
-    <string name="authentication_descr">Keisti vartotojo vardą ir slaptažodį šiai tinklalaidei ir jos epizodams.</string>
+    <string name="authentication_descr">Keisti vartotojo vardą ir slaptažodį šiai tinklalaidei ir jos epizodams</string>
     <string name="feed_tags_label">Žymės</string>
     <string name="feed_tags_summary">Keisti tinklalaidės žymes, kad palengvinti prenumeratų tvarkymą</string>
     <string name="episode_filters_description">Žodžių ar frazių sąrašas, kuriuo remiantis sprendžiama, ar epizodas turėtų būti įtrauktas ar išbrauktas iš automatiškai atsiunčiamų epizodų</string>
@@ -625,7 +625,7 @@
     <string name="size">Dydis</string>
     <string name="no_history_head_label">Nėra istorijos</string>
     <string name="no_inbox_head_label">Nėra epizodų gautuosiuose</string>
-    <string name="no_inbox_label">Kai naujos epizodos atvyks, jos bus rodomos čia. Tada galėsite nuspręsti, ar jos jus domina, ar ne</string>
+    <string name="no_inbox_label">Kai naujos epizodos atvyks, jos bus rodomos čia. Tada galėsite nuspręsti, ar jos jus domina, ar ne.</string>
     <string name="no_all_episodes_filtered_label">Pabandykite išvalyti filtrą, kad pamatytumėte daugiau epizodų.</string>
     <string name="theming">Tema</string>
     <string name="pref_episode_cleanup_title">Ištrinti prieš automatinį atsisiuntimą</string>
@@ -760,8 +760,8 @@
     <string name="pref_auto_delete_sum">Ištrinkite epizodus po atkūrimo arba kai reikia vietos automatiškai atsisiunčiant</string>
     <string name="bottom_navigation_summary">Beta funkcija: Vienu bakstelėjimu pasiekite svarbiausius ekranus iš bet kur</string>
     <string name="pref_auto_local_delete_sum">Į automatinio ištrynimo funkciją įtraukite vietinius aplankus</string>
-    <string name="multi_select_mark_unplayed_confirmation">Patvirtinkite, kad norite pažymėti visus pasirinktus elementus kaip neatkurtus</string>
-    <string name="multi_select_mark_played_confirmation">Patvirtinkite, kad norite pažymėti visus pasirinktus elementus kaip atkurtus</string>
+    <string name="multi_select_mark_unplayed_confirmation">Patvirtinkite, kad norite pažymėti visus pasirinktus elementus kaip neatkurtus.</string>
+    <string name="multi_select_mark_played_confirmation">Patvirtinkite, kad norite pažymėti visus pasirinktus elementus kaip atkurtus.</string>
     <string name="removed_all_inbox_msg">Pašalinta visa iš gautųjų</string>
     <string name="playback_error_generic">Medijos failo nepavyko atkurti.\n\n- Pabandykite ištrinti ir iš naujo atsisiųsti epizodą.\n- Patikrinkite tinklo ryšį ir įsitikinkite, kad prieigos neužkerta joks VPN ar prisijungimo puslapis.\n- Pabandykite ilgai paspausti ir bendrinti „Medijos adresą“ su interneto naršykle, kad pamatytumėte, ar jį galima atkurti ten. Jei ne, susisiekite su podkasto kūrėjais.</string>
 </resources>

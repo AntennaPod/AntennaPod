@@ -87,22 +87,22 @@
     <string name="mark_read_no_media_label">വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
     <string name="play_this_to_seek_position">പരമ്പരയിലെ നിങ്ങൾക്കു കേൾക്കേണ്ട ഭാഗത്തേക്ക് നീക്കുക</string>
     <plurals name="marked_read_batch_label">
-        <item quantity="one">%d പരമ്പര കേട്ടതായി അടയാളപ്പെടുത്തി%d പരമ്പരകൾ കേട്ടതായി അടയാളപ്പെടുത്തി</item>
-        <item quantity="other"/>
+        <item quantity="one">%d പരമ്പര കേട്ടതായി അടയാളപ്പെടുത്തി</item>
+        <item quantity="other">%d പരമ്പരകൾ കേട്ടതായി അടയാളപ്പെടുത്തി</item>
     </plurals>
     <string name="mark_unread_label">പ്ലേ ചെയ്യാത്തതായി അടയാളപ്പെടുത്തുക</string>
     <string name="mark_unread_label_no_media">പ്ലേ ചെയ്യാത്തതായി അടയാളപ്പെടുത്തി</string>
     <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d പരമ്പര കേട്ടില്ലെന്ന് അടയാളപ്പെടുത്തി%d പരമ്പരകൾ കേട്ടില്ലെന്ന് അടയാളപ്പെടുത്തി</item>
-        <item quantity="other"/>
+        <item quantity="one">%d പരമ്പര കേട്ടില്ലെന്ന് അടയാളപ്പെടുത്തി</item>
+        <item quantity="other">%d പരമ്പരകൾ കേട്ടില്ലെന്ന് അടയാളപ്പെടുത്തി</item>
     </plurals>
     <plurals name="added_to_queue_batch_label">
         <item quantity="one">%d പരമ്പര ക്യൂവിൽ ചേർത്തു.</item>
         <item quantity="other">%d പരമ്പരകൾ ക്യൂവിൽ ചേർത്തു.</item>
     </plurals>
     <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d പരമ്പര ക്യൂവിൽ നിന്നും നീക്കം ചെയ്കു%d പരമ്പരകൾ ക്യൂവിൽ നിന്നും നീക്കം ചെയ്കു</item>
-        <item quantity="other"/>
+        <item quantity="one">%d പരമ്പര ക്യൂവിൽ നിന്നും നീക്കം ചെയ്കു</item>
+        <item quantity="other">%d പരമ്പരകൾ ക്യൂവിൽ നിന്നും നീക്കം ചെയ്കു</item>
     </plurals>
     <string name="skip_episode_label">പരമ്പര വിട്ടു കളയുക</string>
     <string name="no_items_selected">ഒന്നും തിരഞ്ഞടുത്തിട്ടില്ല</string>
