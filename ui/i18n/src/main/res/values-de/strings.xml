@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">Immer</string>
     <string name="feed_auto_download_never">Nie</string>
     <string name="feed_new_episodes_action_add_to_inbox">Zum Posteingang hinzufügen</string>
-    <string name="feed_new_episodes_action_add_to_queue">Zur Warteschlange hinzufügen</string>
-    <string name="feed_new_episodes_action_nothing">Nichts</string>
+    <string name="feed_new_episodes_action_add_to_queue">Zur Warteschlange hinzufügen, automatisches Herunterladen deaktivieren</string>
+    <string name="feed_new_episodes_action_nothing">Nichts, automatisches Herunterladen deaktivieren</string>
     <string name="episode_cleanup_never">Nie</string>
     <string name="episode_cleanup_except_favorite_removal">Wenn nicht favorisiert</string>
     <string name="episode_cleanup_queue_removal">Wenn nicht in der Warteschlange</string>

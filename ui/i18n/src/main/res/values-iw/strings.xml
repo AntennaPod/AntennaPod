@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">תמיד</string>
     <string name="feed_auto_download_never">אף פעם</string>
     <string name="feed_new_episodes_action_add_to_inbox">הוספה לדואר נכנס</string>
-    <string name="feed_new_episodes_action_add_to_queue">הוספה לתור</string>
-    <string name="feed_new_episodes_action_nothing">כלום</string>
+    <string name="feed_new_episodes_action_add_to_queue">הוספה לתור, השבתת הורדה אוטומטית</string>
+    <string name="feed_new_episodes_action_nothing">כלום, השבתת הורדה אוטומטית</string>
     <string name="episode_cleanup_never">אף פעם</string>
     <string name="episode_cleanup_except_favorite_removal">כאשר לא במועדפים</string>
     <string name="episode_cleanup_queue_removal">כאשר לא בתור</string>

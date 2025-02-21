@@ -133,10 +133,10 @@
     <string name="episode_notification">Powiadomienia odcinka</string>
     <string name="episode_notification_summary">Pokaż powiadomienie gdy nowy odcinek jest udostępniony</string>
     <plurals name="new_episode_notification_message">
-        <item quantity="one">%2$s ma nowy odcinek%2$s ma nowe odcinki%2$s ma nowe odcinki</item>
-        <item quantity="few"></item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">%2$s ma opublikował nowy odcinek</item>
+        <item quantity="few">%2$s opublikował %1$d nowe odcinków</item>
+        <item quantity="many">%2$s opublikował %1$d nowych odcinków</item>
+        <item quantity="other">%2$s opublikował %1$d nowych odcinków</item>
     </plurals>
     <plurals name="new_episode_notification_title">
         <item quantity="one">Nowy odcinek</item>
@@ -144,7 +144,7 @@
         <item quantity="many">Nowe odcinki</item>
         <item quantity="other">Nowe odcinki</item>
     </plurals>
-    <string name="new_episode_notification_group_text">Twoje subskrypcje mają nowe odcinki</string>
+    <string name="new_episode_notification_group_text">Twoje subskrypcje mają nowe odcinki.</string>
     <!--Actions on feeds-->
   <string name="remove_all_inbox_label">Usuń wszystkie ze skrzynki odbiorczej</string>
     <string name="removed_all_inbox_msg">Usunięto wszystkie ze skrzynki odbiorczej</string>
@@ -164,7 +164,7 @@
     <string name="select_all_above">Zaznacz wszystkie powyżej</string>
     <string name="select_all_below">Zaznacz wszystkie poniżej</string>
     <string name="filtered_label">Przefiltrowany</string>
-    <string name="refresh_failed_msg">Ostatnie odświeżanie nie powiodło się. Naciśnij, aby zobaczyć szczegóły</string>
+    <string name="refresh_failed_msg">Ostatnie odświeżanie nie powiodło się. Naciśnij, aby zobaczyć szczegóły.</string>
     <string name="open_podcast">Otwórz podcast</string>
     <string name="please_wait_for_data">Proszę czekać aż dane zostaną załadowane</string>
     <string name="updates_disabled_label">Aktualizacje wyłączone</string>
@@ -250,7 +250,7 @@
     <string name="download_log_details_message">%1$s \n\nTechniczne powody: \n%2$s \n\nAdres URL pliku:\n%3$s</string>
     <string name="download_error_retrying">Pobieranie \"%1$s\" nie powiodło się. Spróbujemy ponownie później.</string>
     <string name="download_error_not_retrying">Pobieranie \"%1$s\" nie powiodło się.</string>
-    <string name="download_error_tap_for_details">Naciśnij, aby zobaczyć szczegóły</string>
+    <string name="download_error_tap_for_details">Naciśnij, aby zobaczyć szczegóły.</string>
     <string name="download_error_device_not_found">Nie znaleziono urządzenia docelowego</string>
     <string name="download_error_insufficient_space">Brak wystarczającej ilości wolnego miejsca na twoim urządzeniu.</string>
     <string name="download_error_http_data_error">Błąd danych HTTP</string>
@@ -287,7 +287,7 @@
     <string name="authentication_notification_title">Wymagana autoryzacja</string>
     <string name="confirm_mobile_download_dialog_title">Potwierdź pobieranie przez sieć komórkową</string>
     <string name="confirm_mobile_download_dialog_message">Pobieranie za pomocą sieci komórkowej jest wyłączone w ustawieniach. AntennaPod może później pobrać odcinek automatycznie, kiedy będzie dostępna sieć Wi-Fi.</string>
-    <string name="confirm_mobile_download_dialog_message_vpn">Twoja aplikacja VPN udaje sieć mobilną (połączenie taryfowe). Odświeżanie kanałów po sieci mobilnej jest wyłączone w ustawieniach. Aby rozwiązać ten problem, skontaktuj się z twórcami aplikacji VPN.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">- Korzystasz z VPN? Twoja aplikacja VPN udaje sieć komórkową (połączenie taryfowe). Jeśli chcesz naprawić ten problem, skontaktuj się z twórcami aplikacji VPN.\n- Nie korzystasz z VPN? Otwórz ustawienia Wi-Fi w systemie Android i zmień typ sieci Wi-Fi, aby nie była mierzona.</string>
     <string name="confirm_mobile_download_dialog_download_later">Pobierz później</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Pobierz mimo to</string>
     <string name="confirm_mobile_streaming_notification_title">Potwierdź streamowanie przy użyciu sieci komórkowej</string>
@@ -495,7 +495,7 @@
     <string name="pref_new_episodes_action_sum">Działanie dla nowych odcinków</string>
     <string name="episode_information">Informacje o odcinku</string>
     <!--About screen-->
-  <string name="about_pref">O...</string>
+  <string name="about_pref">O aplikacji</string>
     <string name="antennapod_version">Wersja AntennaPod</string>
     <string name="contributors">Kontrybutorzy</string>
     <string name="contributors_summary">Każdy może pomóc ulepszyć AntennaPod - pisząc kod, tłumacząc lub pomagając użytkownikom na forum.</string>
@@ -666,7 +666,7 @@
     <string name="release_schedule_saturday">Sob</string>
     <string name="release_schedule_sunday">Nie</string>
     <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Importowanie subskrybcji z jednozadaniowych aplikacji</string>
+  <string name="sp_apps_importing_feeds_msg">Importowanie subskrybcji z jednozadaniowych aplikacji…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Szukaj podcast…</string>
     <string name="search_itunes_label">Wyszukaj w Apple Podcasts</string>
@@ -674,7 +674,7 @@
     <string name="search_fyyd_label">Szukaj w fyyd</string>
     <string name="discover">Odkryj</string>
     <string name="discover_hide">Ukryj</string>
-    <string name="discover_is_hidden">Wybrano ukrywanie sugestii</string>
+    <string name="discover_is_hidden">Wybrano ukrywanie sugestii.</string>
     <string name="discover_powered_by_itunes">Sugestie z Apple Podcasts</string>
     <string name="discover_confirm">Pokaż sugestie</string>
     <string name="search_powered_by">Wyniki z %1$s</string>
@@ -719,7 +719,7 @@
     <string name="proxy_checking">Sprawdzanie…</string>
     <string name="proxy_test_successful">Test zakończony powodzeniem</string>
     <string name="proxy_test_failed">Test zakończony niepowodzeniem</string>
-    <string name="proxy_host_empty_error">Host nie może być pusty!</string>
+    <string name="proxy_host_empty_error">Host nie może być pusty</string>
     <string name="proxy_host_invalid_error">Host nie jest prawidłowym adresem IP albo domeną</string>
     <string name="proxy_port_invalid_error">Błędny port</string>
     <!--Subscriptions fragment-->
@@ -814,7 +814,7 @@
     <string name="delete_downloads_played_confirmation">Potwierdź proszę, że chcesz usunąć wszystkie odtworzone pobrane odcinki.</string>
     <string name="mobile_download_notice">Pobieranie przez dane mobilne przez następne %d minut(y)</string>
     <string name="section_shown">Pokazane</string>
-    <string name="bottom_navigation">Dolny pasek</string>
+    <string name="bottom_navigation">Dolny pasek nawigacji</string>
     <string name="statistics_episodes_total">łącznie</string>
     <string name="statistics_episodes_space">zajęta pamięć</string>
     <string name="statistics_release_schedule">termin publikowania</string>
@@ -844,4 +844,31 @@
     </plurals>
     <string name="feed_delete_confirmation_msg_batch">Potwierdź proszę, że chcesz usunąć wybrane podcasty, WSZYSTKIE ich odcinki (w tym te pobrane), historię odtwarzania i ich statystyki.</string>
     <string name="bottom_navigation_summary">Funkcja beta: Miej dostęp do najpotrzebniejszych menu wszędzie, za jednym dotknięciem</string>
+    <string name="no_transcript_label">Bez transkrypcji</string>
+    <string name="add_feed_label_short">Dodaj</string>
+    <string name="episodes_label_short">Odcinki</string>
+    <string name="home_label_short">Strona główna</string>
+    <string name="queue_label_short">Kolejka</string>
+    <string name="inbox_label_short">Skrzynka odbiorcza</string>
+    <string name="downloads_label_short">Pobrane</string>
+    <string name="subscriptions_label_short">Subskrypcje</string>
+    <string name="playback_history_label_short">Historia</string>
+    <string name="queue_label_more">Kolejka »</string>
+    <string name="inbox_label_more">Skrzynka odbiorcza »</string>
+    <string name="episodes_label_more">Odcinki »</string>
+    <string name="downloads_label_more">Pobrane »</string>
+    <string name="subscriptions_label_more">Subskrypcje »</string>
+    <string name="enabled">Włączono</string>
+    <string name="disabled">Wyłączono</string>
+    <string name="echo_hoarder_subtitle_clean">Czysto!</string>
+    <string name="overflow_more">Więcej</string>
+    <string name="statistics_time_total">łącznie</string>
+    <string name="preference_search_clear_input">Wyczyść</string>
+    <string name="statistics_time_played">odtworzono</string>
+    <string name="echo_thanks_large">Dziękujemy</string>
+    <string name="notification_channel_refreshing">Odświeżanie podcastów</string>
+    <string name="echo_intro_your_year">Twój rok</string>
+    <string name="echo_intro_in_podcasts">w podcastach</string>
+    <string name="episode_lists">Lista odcinków</string>
+    <string name="transcript_follow">Dopasuj do dźwięku</string>
 </resources>

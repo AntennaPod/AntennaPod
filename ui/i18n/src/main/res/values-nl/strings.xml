@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">Altijd</string>
     <string name="feed_auto_download_never">Nooit</string>
     <string name="feed_new_episodes_action_add_to_inbox">Aan inbox toevoegen</string>
-    <string name="feed_new_episodes_action_add_to_queue">Toevoegen aan wachtrij</string>
-    <string name="feed_new_episodes_action_nothing">Niets</string>
+    <string name="feed_new_episodes_action_add_to_queue">Toevoegen aan wachtrij, automatisch downloaden uitschakelen</string>
+    <string name="feed_new_episodes_action_nothing">Niets, automatisch downloaden uitschakelen</string>
     <string name="episode_cleanup_never">Nooit</string>
     <string name="episode_cleanup_except_favorite_removal">Indien niet favoriet</string>
     <string name="episode_cleanup_queue_removal">Indien niet in wachtrij</string>

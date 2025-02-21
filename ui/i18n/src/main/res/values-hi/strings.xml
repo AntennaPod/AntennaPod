@@ -557,7 +557,7 @@
     <string name="synchronization_full_sync_title">पूरा सिंक ज़बरदस्ती करें</string>
     <string name="synchronization_force_sync_summary">सभी सदस्यताओं और एपिसोड स्थितियों को पुनः-समकालित करें</string>
     <string name="synchronization_logout">लॉगआउट करें</string>
-    <string name="synchronization_login_status"><![CDATA[<i>%1$s</i> के तरह<i>%2$s</i> पे लॉगइन है।  <br/><br/> लॉगआउट करके सिंक प्रदाता वापस चुन सकते है]]></string>
+    <string name="synchronization_login_status"><![CDATA[<i>%1$s</i> के तरह<i>%2$s</i> पे लॉगइन है। <br/><br/> लॉगआउट करके सिंक प्रदाता वापस चुन सकते है]]></string>
     <string name="pref_synchronization_logout_toast">लॉगआउट हो गए</string>
     <string name="gpodnetsync_error_title">gpodder.net सिंक गड़बड़</string>
     <string name="gpodnetsync_error_descr">"सिंक करते टाइम एक गड़बड़ हुई: "</string>

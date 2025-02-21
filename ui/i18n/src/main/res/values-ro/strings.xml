@@ -131,9 +131,9 @@
     <string name="episode_notification">Notificări episoade</string>
     <string name="episode_notification_summary">Arată notificări când un nou episod este disponibil.</string>
     <plurals name="new_episode_notification_message">
-        <item quantity="one">%2$s are un episod nou%2$s are episoade noi%2$s are %1$d episoade noi</item>
-        <item quantity="few"></item>
-        <item quantity="other"></item>
+        <item quantity="one">%2$s are un episod nou</item>
+        <item quantity="few">%2$s are %1$d episoade noi</item>
+        <item quantity="other">%2$s are %1$d episoade noi</item>
     </plurals>
     <plurals name="new_episode_notification_title">
         <item quantity="one">Episod nou</item>
