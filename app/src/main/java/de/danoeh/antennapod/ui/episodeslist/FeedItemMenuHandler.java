@@ -72,7 +72,7 @@ public class FeedItemMenuHandler {
         boolean canAddFavorite = false;
         boolean canRemoveFavorite = false;
         boolean canShowTranscript = false;
-        boolean canShowSocialComments = false;
+        boolean canShowSocialInteract = false;
 
         for (FeedItem item : selectedItems) {
             boolean hasMedia = item.getMedia() != null;
@@ -90,14 +90,14 @@ public class FeedItemMenuHandler {
             canAddFavorite |= !item.isTagged(FeedItem.TAG_FAVORITE);
             canRemoveFavorite |= item.isTagged(FeedItem.TAG_FAVORITE);
             canShowTranscript |= item.hasTranscript();
-            canShowSocialComments |= item.getSocialInteractUrl() != null;
+            canShowSocialInteract |= item.getSocialInteractUrl() != null;
         }
 
         if (selectedItems.size() > 1) {
             canVisitWebsite = false;
             canShare = false;
             canShowTranscript = false;
-            canShowSocialComments = false;
+            canShowSocialInteract = false;
         }
 
         setItemVisibility(menu, R.id.skip_episode_item, canSkip);
@@ -109,7 +109,7 @@ public class FeedItemMenuHandler {
         setItemVisibility(menu, R.id.mark_read_item, canMarkPlayed);
         setItemVisibility(menu, R.id.mark_unread_item, canMarkUnplayed);
         setItemVisibility(menu, R.id.reset_position, canResetPosition);
-        setItemVisibility(menu, R.id.open_social_url, canShowSocialComments);
+        setItemVisibility(menu, R.id.open_social_interact_url, canShowSocialInteract);
 
         // Display proper strings when item has no media
         if (selectedItems.size() == 1 && selectedItems.get(0).getMedia() == null) {
@@ -230,7 +230,7 @@ public class FeedItemMenuHandler {
             DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, true);
         } else if (menuItemId == R.id.visit_website_item) {
             IntentUtils.openInBrowser(context, selectedItem.getLinkWithFallback());
-        } else if (menuItemId == R.id.open_social_url) {
+        } else if (menuItemId == R.id.open_social_interact_url) {
             new MaterialAlertDialogBuilder(context)
                     .setTitle(R.string.visit_social_interact_query_title)
                     .setMessage(context.getString(R.string.visit_social_interact_query_message,
