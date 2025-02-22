@@ -9,10 +9,10 @@ import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
+import de.danoeh.antennapod.net.common.RedirectChecker;
 import de.danoeh.antennapod.net.download.service.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import okhttp3.CacheControl;
-import okhttp3.internal.http.StatusLine;
 import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedInputStream;
@@ -24,7 +24,6 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
@@ -116,7 +115,10 @@ public class HttpDownloader extends Downloader {
                 onFail(DownloadError.ERROR_FILE_TYPE, null);
                 return;
             }
-            checkIfRedirect(response);
+            String redirect = RedirectChecker.getNewUrlIfPermanentRedirect(response);
+            if (redirect != null) {
+                permanentRedirectUrl = redirect;
+            }
 
             connection = new BufferedInputStream(responseBody.byteStream());
 
@@ -273,29 +275,6 @@ public class HttpDownloader extends Downloader {
             details = String.valueOf(response.code());
         }
         onFail(error, details);
-    }
-
-    private void checkIfRedirect(Response response) {
-        // detect 301 Moved permanently and 308 Permanent Redirect
-        ArrayList<Response> responses = new ArrayList<>();
-        while (response != null) {
-            responses.add(response);
-            response = response.priorResponse();
-        }
-        if (responses.size() < 2) {
-            return;
-        }
-        Collections.reverse(responses);
-        int firstCode = responses.get(0).code();
-        String firstUrl = responses.get(0).request().url().toString();
-        String secondUrl = responses.get(1).request().url().toString();
-        if (firstCode == HttpURLConnection.HTTP_MOVED_PERM || firstCode == StatusLine.HTTP_PERM_REDIRECT) {
-            Log.d(TAG, "Detected permanent redirect from " + request.getSource() + " to " + secondUrl);
-            permanentRedirectUrl = secondUrl;
-        } else if (secondUrl.equals(firstUrl.replace("http://", "https://"))) {
-            Log.d(TAG, "Treating http->https non-permanent redirect as permanent: " + firstUrl);
-            permanentRedirectUrl = secondUrl;
-        }
     }
 
     private static long getFreeSpaceAvailable() {
