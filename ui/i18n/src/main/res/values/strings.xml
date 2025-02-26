@@ -24,7 +24,7 @@
     <string name="downloads_log_label">Download log</string>
     <string name="subscriptions_label">Subscriptions</string>
     <string name="subscriptions_label_short">Subscriptions</string>
-    <string name="subscriptions_list_label">Subscriptions list (side menu only)</string>
+    <string name="subscriptions_list_label">Subscriptions list</string>
     <string name="cancel_download_label">Cancel download</string>
     <string name="playback_history_label">Playback history</string>
     <string name="playback_history_label_short">History</string>
