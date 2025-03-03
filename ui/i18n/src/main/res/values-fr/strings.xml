@@ -255,7 +255,7 @@
     <string name="download_pending">Téléchargement en attente</string>
     <string name="download_running">Téléchargement en cours</string>
     <string name="download_error_details">Détails</string>
-    <string name="download_log_details_message">%1$s \n\nRaison technique :\n%2$s \n\nURL du fichier :\n%3$s</string>
+    <string name="download_log_details_message">%1$s \n\nMessage technique :\n%2$s \n\nURL du fichier :\n%3$s</string>
     <string name="download_error_retrying">Le téléchargement de \"%1$s\" a échoué. Une nouvelle tentative sera faite plus tard.</string>
     <string name="download_error_not_retrying">Le téléchargement de \"%1$s\" a échoué.</string>
     <string name="download_error_tap_for_details">Taper pour plus de détails.</string>
