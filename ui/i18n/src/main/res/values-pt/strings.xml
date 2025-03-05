@@ -479,8 +479,8 @@
     <string name="pref_proxy_title">Proxy</string>
     <string name="pref_proxy_sum">Definir um proxy de rede</string>
     <string name="pref_no_browser_found">Navegador web não encontrado.</string>
-    <string name="pref_enqueue_downloaded_title">Colocar descargas na fila</string>
-    <string name="pref_enqueue_downloaded_summary">Adicionar episódios descarregados à fila</string>
+    <string name="pref_enqueue_downloaded_title">Colocar transferências na fila</string>
+    <string name="pref_enqueue_downloaded_summary">Adicionar episódios transferidos à fila</string>
     <string name="pref_skip_silence_title">Ignorar silêncio no áudio</string>
     <string name="behavior">Comportamento</string>
     <string name="pref_default_page">Página inicial</string>
@@ -493,8 +493,8 @@
     <string name="pref_filter_feed_title">Filtro de subscrições</string>
     <string name="pref_filter_feed_sum">Filtrar subscrições no menu de navegação e no ecrã de subscrições</string>
     <string name="subscriptions_counter_greater_zero">Contagem maior do que zero</string>
-    <string name="auto_downloaded">Descarregado automaticamente</string>
-    <string name="not_auto_downloaded">Não descarregado automaticamente</string>
+    <string name="auto_downloaded">Transferido automaticamente</string>
+    <string name="not_auto_downloaded">Não transferido automaticamente</string>
     <string name="kept_updated">Manter atualizada</string>
     <string name="not_kept_updated">Não manter atualizada</string>
     <string name="new_episode_notification_enabled">Notificações ativadas</string>
@@ -525,7 +525,7 @@
     <!--Synchronization-->
   <string name="sync_status_started">Sincronização iniciada</string>
     <string name="sync_status_episodes_upload">Atualizar alterações nos episódios…</string>
-    <string name="sync_status_episodes_download">Descarregar alterações nos episódios…</string>
+    <string name="sync_status_episodes_download">Transferir alterações nos episódios…</string>
     <string name="sync_status_upload_played">Carregar estado de reprodução…</string>
     <string name="sync_status_subscriptions">Sincronizar subscrições…</string>
     <string name="sync_status_success">Sincronização bem sucedida</string>
@@ -660,7 +660,7 @@
     <string name="increase_speed">Aumentar velocidade</string>
     <string name="decrease_speed">Diminuir velocidade</string>
     <string name="media_type_video_label">Vídeo</string>
-    <string name="status_downloading_label">A descarregar episódio</string>
+    <string name="status_downloading_label">A transferir episódio</string>
     <string name="in_queue_label">Na fila</string>
     <string name="is_favorite_label">Marcar como favorito</string>
     <string name="is_inbox_label">Na caixa de entrada</string>
@@ -673,8 +673,8 @@
     <string name="next_chapter">Capítulo seguinte</string>
     <string name="shuffle_suggestions">Sugestões de mistura</string>
     <string name="add_preset">Adicionar pré-ajuste</string>
-    <string name="download_started_talkback">Descarga de %1$s iniciada</string>
-    <string name="download_completed_talkback">Descarga de %1$s terminada</string>
+    <string name="download_started_talkback">Transferência de %1$s iniciada</string>
+    <string name="download_completed_talkback">Transferência de %1$s terminada</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">Autenticação</string>
     <string name="authentication_descr">Altere o nome de utilizador e a palavra-passe para este podcast e os seus episódios</string>
@@ -682,9 +682,9 @@
     <string name="feed_tags_summary">Escolha as etiquetas a usar neste podcast para organizar melhor as suas subscrições</string>
     <string name="feed_folders_include_root">Mostrar este podcast na lista principal</string>
     <string name="multi_feed_common_tags_info">Apenas as etiquetas comuns a todas as subscrições selecionadas serão mostradas. As outras não serão afetadas.</string>
-    <string name="auto_download_settings_label">Definições de descarga automática</string>
+    <string name="auto_download_settings_label">Definições de transferência automática</string>
     <string name="episode_filters_label">Filtro de episódios</string>
-    <string name="episode_filters_description">Lista de termos utilizados para determinar se um episódio deve ser incluído ou excluído das descargas automáticas</string>
+    <string name="episode_filters_description">Lista de termos utilizados para determinar se um episódio deve ser incluído ou excluído das transferências automáticas</string>
     <string name="add_term">Adicionar termo</string>
     <string name="exclude_terms">Excluir episódios que possuam qualquer um dos termos abaixo</string>
     <string name="include_terms">Incluir apenas os episódios que possuam qualquer um dos termos abaixo</string>
@@ -733,8 +733,8 @@
     <string name="filter">Filtro</string>
     <string name="hide_is_favorite_label">É favorito</string>
     <string name="not_favorite">Não é favorito</string>
-    <string name="hide_downloaded_episodes_label">Descarregado</string>
-    <string name="hide_not_downloaded_episodes_label">Não descarregado</string>
+    <string name="hide_downloaded_episodes_label">Transferido</string>
+    <string name="hide_not_downloaded_episodes_label">Não transferido</string>
     <string name="queued_label">Na fila</string>
     <string name="not_queued_label">Não na fila</string>
     <string name="has_media">Tem ficheiro</string>
@@ -774,12 +774,12 @@
     <string name="notification_group_news">Notícias</string>
     <string name="notification_channel_user_action">Requer ação</string>
     <string name="notification_channel_user_action_description">Mostrar se for necessária uma ação como, por exemplo, digitar uma palavra-passe.</string>
-    <string name="notification_channel_downloading">A descarregar</string>
-    <string name="notification_channel_downloading_description">Mostrar durante a descarga.</string>
+    <string name="notification_channel_downloading">A transferir</string>
+    <string name="notification_channel_downloading_description">Mostrar durante a transferência.</string>
     <string name="notification_channel_playing">Reprodução atual</string>
     <string name="notification_channel_playing_description">Permite o controlo da reprodução. Esta será a notificação que verá ao reproduzir um podcast.</string>
-    <string name="notification_channel_download_error">Erro ao descarregar</string>
-    <string name="notification_channel_download_error_description">Mostrar se ocorrerem erros ao descarregar/atualizar.</string>
+    <string name="notification_channel_download_error">Erro ao transferir</string>
+    <string name="notification_channel_download_error_description">Mostrar se ocorrerem erros ao transferir/atualizar.</string>
     <string name="notification_channel_sync_error">Erro de sincronização</string>
     <string name="notification_channel_sync_error_description">Mostrar se não for possível sincronizar com gpodder.</string>
     <string name="notification_channel_new_episode">Novo episódio</string>
@@ -791,7 +791,7 @@
     <!--On-Demand configuration-->
   <string name="on_demand_config_setting_changed">Definições atualizadas com sucesso.</string>
     <string name="on_demand_config_stream_text">Parece que prefere as emissões. Deseja que a lista de episódios mostre os botões adequados?</string>
-    <string name="on_demand_config_download_text">Parece que prefere as descargas. Deseja que a lista de episódios mostre os botões adequados?</string>
+    <string name="on_demand_config_download_text">Parece que prefere as transferências. Pretende que a lista de episódios mostre os botões adequados?</string>
     <string name="shortcut_subscription_label">Atalho da subscrição</string>
     <string name="shortcut_select_subscription">Selecione a subscrição</string>
     <string name="add_shortcut">Adicionar atalho</string>
@@ -833,7 +833,7 @@
     <string name="home_label_short">Início</string>
     <string name="queue_label_short">Fila</string>
     <string name="inbox_label_short">Caixa de entrada</string>
-    <string name="downloads_label_short">Descargas</string>
+    <string name="downloads_label_short">Transferências</string>
     <string name="subscriptions_label_short">Subscrições</string>
     <string name="playback_history_label_short">Histórico</string>
     <string name="episodes_label_more">Episódios »</string>
@@ -856,8 +856,8 @@
     <string name="pref_automatic_download_queue_description">Descarregar automaticamente episódios da fila</string>
     <string name="pref_automatic_download_queue_title">Descarregar a fila</string>
     <string name="episode_lists">Lista de episódios</string>
-    <string name="pref_downloads_button_action_title">Reproduzir a partir do ecrã de descargas</string>
-    <string name="pref_downloads_button_action_sum">Mostrar botão de reproduzir em vez do botão para eliminar no ecrã de descargas</string>
+    <string name="pref_downloads_button_action_title">Reproduzir a partir do ecrã de transferências</string>
+    <string name="pref_downloads_button_action_sum">Mostrar botão de reproduzir em vez do botão para eliminar no ecrã de transferências</string>
     <string name="statistics_time_total">total</string>
     <string name="statistics_time_played">reproduzidas</string>
     <string name="echo_hours_this_year">Este ano ouviu</string>

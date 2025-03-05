@@ -248,7 +248,7 @@
     <string name="download_error_insufficient_space">Det finns inte tillräckligt med utrymme kvar på enheten.</string>
     <string name="download_error_http_data_error">HTTP-datafel</string>
     <string name="download_error_error_unknown">Okänt fel</string>
-    <string name="download_error_parser_exception">Podcastens server svarade med ett trasigt flöde.</string>
+    <string name="download_error_parser_exception">Podcastens server svarade med ett trasigt flöde. Vi rekommenderar att du kontrollerar med en podcastvalidator som castfeedvalidator.com och kontaktar poddskaparen för att meddela dem.</string>
     <string name="download_error_unsupported_type">Flödestypen stöds inte</string>
     <string name="download_error_unsupported_type_html">Podcastens server svarade med en webbplats, inte en podcast.</string>
     <string name="download_error_not_found">Podcastens server kunde inte hitta filen. Den kan ha tagits bort.</string>
@@ -869,4 +869,9 @@
     <string name="echo_home_subtitle">Dina favoritpoddar och statistik från det senaste året. Endast i din telefon.</string>
     <string name="echo_hoarder_comment_medium">Du har spelat upp avsnitt från %1$d%% av dina %2$d aktiva prenumerationer i år. Vad sägs om att kolla in \"%3$s\" igen?</string>
     <string name="echo_hoarder_comment_clean">Du har spelat upp avsnitt från %1$d%% av dina %2$d aktiva prenumerationer i år. Vi slår vad om att du håller ditt skrivbord välstädat också!</string>
+    <string name="global_default_with_value">Global standard (%1$s)</string>
+    <string name="echo_hoarder_subtitle_clean">Rensa!</string>
+    <string name="echo_thanks_we_are_glad_old">för att du hängt med oss i år!\n\nDu spelade ditt första avsnitt med oss den %1$s. Det har varit vår ära att tjäna dig sedan dess.</string>
+    <string name="echo_thanks_we_are_glad_new">för att du hängde med oss i år!\n\nOavsett om du har flyttat från en annan app eller startat ditt poddäventyr med oss: så är vi glada över att ha dig!</string>
+    <string name="echo_home_header">Gå igenom året</string>
 </resources>
