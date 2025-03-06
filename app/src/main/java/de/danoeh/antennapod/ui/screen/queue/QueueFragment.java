@@ -570,12 +570,10 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             if (ascending == SortOrder.EPISODE_FILENAME_A_Z || ascending == SortOrder.SIZE_SMALL_LARGE) {
                 return;
             }
-
-            boolean defaultOrder = (ascending == SortOrder.DATE_OLD_NEW || ascending == SortOrder.SMART_SHUFFLE_OLD_NEW)
-                    ? !ascendingIsDefault
-                    : ascendingIsDefault;
-
-            super.onAddItem(title, ascending, descending, defaultOrder);
+            if (ascending == SortOrder.DATE_OLD_NEW || ascending == SortOrder.SMART_SHUFFLE_OLD_NEW) {
+                ascendingIsDefault = true;
+            }
+            super.onAddItem(title, ascending, descending, ascendingIsDefault);
         }
 
         @Override
