@@ -371,16 +371,30 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             return true;
         }
 
+        List<FeedItem> selectedItems;
+        FeedItem current;
         final int itemId = item.getItemId();
         if (itemId == R.id.move_to_top_item) {
-            queue.add(0, queue.remove(position));
-            recyclerAdapter.notifyItemMoved(position, 0);
-            DBWriter.moveQueueItemToTop(selectedItem.getId(), true);
+            selectedItems = recyclerAdapter.getSelectedItems();
+            for(int i = selectedItems.size() - 1; i >= 0; i--)
+            {
+                current = selectedItems.get(i);
+                position = FeedItemEvent.indexOfItemWithId(queue, current.getId());
+                queue.add(0, queue.remove(position));
+                recyclerAdapter.notifyItemMoved(position, 0);
+                DBWriter.moveQueueItemToTop(current.getId(), true);
+            }
             return true;
         } else if (itemId == R.id.move_to_bottom_item) {
-            queue.add(queue.size() - 1, queue.remove(position));
-            recyclerAdapter.notifyItemMoved(position, queue.size() - 1);
-            DBWriter.moveQueueItemToBottom(selectedItem.getId(), true);
+            selectedItems = recyclerAdapter.getSelectedItems();
+            for(int i = 0; i < selectedItems.size(); i++)
+            {
+                current = selectedItems.get(i);
+                position = FeedItemEvent.indexOfItemWithId(queue, current.getId());
+                queue.add(queue.size() - 1, queue.remove(position));
+                recyclerAdapter.notifyItemMoved(position, queue.size() - 1);
+                DBWriter.moveQueueItemToBottom(current.getId(), true);
+            }
             return true;
         }
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
