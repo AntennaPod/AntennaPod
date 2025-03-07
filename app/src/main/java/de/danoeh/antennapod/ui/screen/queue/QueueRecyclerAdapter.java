@@ -89,8 +89,8 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
                 menu.findItem(R.id.move_to_bottom_item).setVisible(false);
             }
         } else {
-            menu.findItem(R.id.move_to_top_item).setVisible(false);
-            menu.findItem(R.id.move_to_bottom_item).setVisible(false);
+            menu.findItem(R.id.move_to_top_item).setVisible(true);
+            menu.findItem(R.id.move_to_bottom_item).setVisible(true);
         }
     }
 }
