@@ -352,7 +352,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     }
 
     @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
+    public boolean onContextItemSelected(MenuItem item) {
         Log.d(TAG, "onContextItemSelected() called with: " + "item = [" + item + "]");
         if (!isVisible() || recyclerAdapter == null) {
             return false;
@@ -373,8 +373,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
 
         List<FeedItem> selectedItems;
-        if(recyclerAdapter.inActionMode())
-        {
+        if(recyclerAdapter.inActionMode()) {
             selectedItems = recyclerAdapter.getSelectedItems();
         } else {
             selectedItems = Collections.singletonList(selectedItem);
@@ -383,8 +382,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         FeedItem currentFeedItem;
         final int itemId = item.getItemId();
         if (itemId == R.id.move_to_top_item) {
-            for(int i = selectedItems.size() - 1; i >= 0; i--)
-            {
+            for(int i = selectedItems.size() - 1; i >= 0; i--) {
                 currentFeedItem = selectedItems.get(i);
                 position = FeedItemEvent.indexOfItemWithId(queue, currentFeedItem.getId());
                 queue.add(0, queue.remove(position));
@@ -393,8 +391,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             }
             return true;
         } else if (itemId == R.id.move_to_bottom_item) {
-            for(int i = 0; i < selectedItems.size(); i++)
-            {
+            for(int i = 0; i < selectedItems.size(); i++) {
                 currentFeedItem = selectedItems.get(i);
                 position = FeedItemEvent.indexOfItemWithId(queue, currentFeedItem.getId());
                 queue.add(queue.size() - 1, queue.remove(position));
