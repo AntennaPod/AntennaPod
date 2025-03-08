@@ -36,6 +36,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -372,10 +373,16 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
 
         List<FeedItem> selectedItems;
+        if(recyclerAdapter.inActionMode())
+        {
+            selectedItems = recyclerAdapter.getSelectedItems();
+        } else {
+            selectedItems = Collections.singletonList(selectedItem);
+        }
+
         FeedItem currentFeedItem;
         final int itemId = item.getItemId();
         if (itemId == R.id.move_to_top_item) {
-            selectedItems = recyclerAdapter.getSelectedItems();
             for(int i = selectedItems.size() - 1; i >= 0; i--)
             {
                 currentFeedItem = selectedItems.get(i);
@@ -386,7 +393,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             }
             return true;
         } else if (itemId == R.id.move_to_bottom_item) {
-            selectedItems = recyclerAdapter.getSelectedItems();
             for(int i = 0; i < selectedItems.size(); i++)
             {
                 currentFeedItem = selectedItems.get(i);
