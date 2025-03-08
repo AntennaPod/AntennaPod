@@ -351,7 +351,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
         Log.d(TAG, "onContextItemSelected() called with: " + "item = [" + item + "]");
         if (!isVisible() || recyclerAdapter == null) {
             return false;
@@ -372,28 +372,28 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
 
         List<FeedItem> selectedItems;
-        FeedItem current;
+        FeedItem currentFeedItem;
         final int itemId = item.getItemId();
         if (itemId == R.id.move_to_top_item) {
             selectedItems = recyclerAdapter.getSelectedItems();
             for(int i = selectedItems.size() - 1; i >= 0; i--)
             {
-                current = selectedItems.get(i);
-                position = FeedItemEvent.indexOfItemWithId(queue, current.getId());
+                currentFeedItem = selectedItems.get(i);
+                position = FeedItemEvent.indexOfItemWithId(queue, currentFeedItem.getId());
                 queue.add(0, queue.remove(position));
                 recyclerAdapter.notifyItemMoved(position, 0);
-                DBWriter.moveQueueItemToTop(current.getId(), true);
+                DBWriter.moveQueueItemToTop(currentFeedItem.getId(), true);
             }
             return true;
         } else if (itemId == R.id.move_to_bottom_item) {
             selectedItems = recyclerAdapter.getSelectedItems();
             for(int i = 0; i < selectedItems.size(); i++)
             {
-                current = selectedItems.get(i);
-                position = FeedItemEvent.indexOfItemWithId(queue, current.getId());
+                currentFeedItem = selectedItems.get(i);
+                position = FeedItemEvent.indexOfItemWithId(queue, currentFeedItem.getId());
                 queue.add(queue.size() - 1, queue.remove(position));
                 recyclerAdapter.notifyItemMoved(position, queue.size() - 1);
-                DBWriter.moveQueueItemToBottom(current.getId(), true);
+                DBWriter.moveQueueItemToBottom(currentFeedItem.getId(), true);
             }
             return true;
         }
