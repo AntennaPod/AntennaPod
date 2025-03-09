@@ -76,7 +76,7 @@ public class PlaybackPreferencesFragment extends AnimatedPreferenceFragment {
             if (!(newValue instanceof String)) {
                 return false;
             }
-            String newValStr = (String)newValue;
+            String newValStr = (String) newValue;
             pref.setSummary(res.getString(R.string.pref_enqueue_location_sum, options.get(newValStr)));
             return true;
         });
@@ -100,11 +100,11 @@ public class PlaybackPreferencesFragment extends AnimatedPreferenceFragment {
         String[] values = res.getStringArray(R.array.smart_mark_as_played_values);
         String[] entries = new String[values.length];
         for (int x = 0; x < values.length; x++) {
-            if(x == 0) {
+            if (x == 0) {
                 entries[x] = res.getString(R.string.pref_smart_mark_as_played_disabled);
             } else {
                 int v = Integer.parseInt(values[x]);
-                if(v < 60) {
+                if (v < 60) {
                     entries[x] = res.getQuantityString(R.plurals.time_seconds_quantified, v, v);
                 } else {
                     v /= 60;
