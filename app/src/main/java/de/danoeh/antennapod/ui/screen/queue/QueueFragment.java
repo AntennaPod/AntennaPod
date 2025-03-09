@@ -158,7 +158,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 queue.clear();
                 recyclerAdapter.updateItems(queue);
                 break;
-            case MOVED:
+            default:
                 return;
         }
         recyclerAdapter.updateDragDropEnabled();

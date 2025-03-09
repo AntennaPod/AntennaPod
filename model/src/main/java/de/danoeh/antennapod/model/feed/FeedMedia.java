@@ -190,8 +190,8 @@ public class FeedMedia implements Playable {
         return playedDurationWhenStarted;
     }
 
-    public void setPlayedDuration(int played_duration) {
-        this.playedDuration = played_duration;
+    public void setPlayedDuration(int playedDuration) {
+        this.playedDuration = playedDuration;
     }
 
     public int getPosition() {
