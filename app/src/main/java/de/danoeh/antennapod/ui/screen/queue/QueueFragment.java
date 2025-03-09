@@ -138,7 +138,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             loadItems(true);
             return;
         }
-        switch(event.action) {
+        switch (event.action) {
             case ADDED:
                 queue.add(event.position, event.item);
                 recyclerAdapter.notifyItemInserted(event.position);

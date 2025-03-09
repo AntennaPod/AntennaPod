@@ -205,7 +205,7 @@ public class FeedMedia implements Playable {
 
     public void setPosition(int position) {
         this.position = position;
-        if(position > 0 && item != null && item.isNew()) {
+        if (position > 0 && item != null && item.isNew()) {
             this.item.setPlayed(false);
         }
     }
@@ -280,7 +280,7 @@ public class FeedMedia implements Playable {
     }
 
     public boolean hasEmbeddedPicture() {
-        if(hasEmbeddedPicture == null) {
+        if (hasEmbeddedPicture == null) {
             checkEmbeddedPicture();
         }
         return hasEmbeddedPicture;
@@ -444,8 +444,9 @@ public class FeedMedia implements Playable {
         public FeedMedia createFromParcel(Parcel in) {
             final long id = in.readLong();
             final long itemID = in.readLong();
-            FeedMedia result = new FeedMedia(id, null, in.readInt(), in.readInt(), in.readLong(), in.readString(), in.readString(),
-                    in.readString(), in.readLong(), new Date(in.readLong()), in.readInt(), in.readLong());
+            FeedMedia result = new FeedMedia(id, null, in.readInt(), in.readInt(), in.readLong(), in.readString(),
+                    in.readString(), in.readString(), in.readLong(), new Date(in.readLong()),
+                    in.readInt(), in.readLong());
             result.itemID = itemID;
             return result;
         }
