@@ -7,7 +7,9 @@
             android:key="searchPreference"
             search:textHint="@string/preference_search_hint"
             search:textNoResults="@string/preference_search_no_results"
-            search:textClearHistory="@string/preference_search_clear_history" />
+            search:textClearHistory="@string/preference_search_clear_history"
+            search:textClearInput="@string/preference_search_clear_input"
+            search:textMore="@string/overflow_more" />
 
     <Preference
             android:key="prefScreenInterface"

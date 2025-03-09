@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">Altijd</string>
     <string name="feed_auto_download_never">Nooit</string>
     <string name="feed_new_episodes_action_add_to_inbox">Aan inbox toevoegen</string>
-    <string name="feed_new_episodes_action_add_to_queue">Toevoegen aan wachtrij</string>
-    <string name="feed_new_episodes_action_nothing">Niets</string>
+    <string name="feed_new_episodes_action_add_to_queue">Toevoegen aan wachtrij, automatisch downloaden uitschakelen</string>
+    <string name="feed_new_episodes_action_nothing">Niets, automatisch downloaden uitschakelen</string>
     <string name="episode_cleanup_never">Nooit</string>
     <string name="episode_cleanup_except_favorite_removal">Indien niet favoriet</string>
     <string name="episode_cleanup_queue_removal">Indien niet in wachtrij</string>
@@ -872,4 +872,6 @@
     <string name="echo_hoarder_comment_clean">Je hebt %1$dd%% van je %2$d active abonnementen afgespeeld dit jaar. Je bureau ziet er vast ook opgeruimd uit!</string>
     <string name="echo_thanks_we_are_glad_new">dat je dit jaar bij ons bent begonnen!\n\nOf je nou bent overgestapt uit een andere app, of je podcast-avontuur met ons bent begonnen: we zijn blij dat je er bent!</string>
     <string name="echo_thanks_we_are_glad_old">dat je dit jaar bij ons bent gebleven\n\nJe hebt je eerste aflevering met ons afgespeeld in %1$s. Het is voor ons een eer u sindsdien van dienst te zijn.</string>
+    <string name="preference_search_clear_input">Wissen</string>
+    <string name="overflow_more">Meer</string>
 </resources>

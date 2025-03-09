@@ -119,8 +119,8 @@
     <string name="episode_cleanup_queue_removal">Sırada değilse</string>
     <string name="episode_cleanup_after_listening">Bittikten sonra</string>
     <plurals name="episode_cleanup_hours_after_listening">
-        <item quantity="one">Bitirdikten %dsaat sonraBitirdikten %d saat sonra.</item>
-        <item quantity="other"></item>
+        <item quantity="one">Bitirdikten %dsaat sonra</item>
+        <item quantity="other">Bitirdikten %d saat sonra.</item>
     </plurals>
     <plurals name="episode_cleanup_days_after_listening">
         <item quantity="one">Bitirdikten %dgün sonra</item>

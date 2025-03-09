@@ -338,4 +338,11 @@
     <!--On-Demand configuration-->
   <string name="on_demand_config_setting_changed">L\'axuste anovóse correutamente.</string>
     <string name="on_demand_config_download_text">Paez que baxes muncho. ¿Quies que les llistes d\'episodios amuesen los botones de descarga?</string>
+    <string name="add_feed_label_short">Añedir</string>
+    <string name="home_label_short">Ainiciu</string>
+    <string name="add_feed_label">Añedir podcast</string>
+    <string name="home_label">Ainiciu</string>
+    <string name="feed_update_receiver_name">Actualizar suscripciones</string>
+    <string name="episodes_label_short">Episodiu</string>
+    <string name="queue_label_short">Cola</string>
 </resources>
