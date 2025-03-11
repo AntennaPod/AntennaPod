@@ -930,6 +930,8 @@ public class MainActivity extends CastEnabledActivity {
                     return true;
                 }
                 break;
+            default:
+                break;
         }
 
         if (customKeyCode != null) {
