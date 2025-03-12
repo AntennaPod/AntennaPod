@@ -7,8 +7,11 @@ import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.List;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
@@ -79,9 +82,6 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
         inflater.inflate(R.menu.queue_context, menu);
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        menu.findItem(R.id.move_to_top_item).setVisible(true);
-        menu.findItem(R.id.move_to_bottom_item).setVisible(true);
-
         if (!inActionMode()) {
             menu.findItem(R.id.multi_select).setVisible(true);
             final boolean keepSorted = UserPreferences.isQueueKeepSorted();
@@ -89,6 +89,38 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
                 menu.findItem(R.id.move_to_top_item).setVisible(false);
             }
             if (getItem(getItemCount() - 1).getId() == getLongPressedItem().getId() || keepSorted) {
+                menu.findItem(R.id.move_to_bottom_item).setVisible(false);
+            }
+        } else {
+            List<FeedItem> selectedItems = getSelectedItems();
+
+            if(getSelectedCount() == getItemCount())
+            {
+                menu.findItem(R.id.move_to_top_item).setVisible(false);
+                menu.findItem(R.id.move_to_bottom_item).setVisible(false);
+                return;
+            }
+
+            if (selectedItems.get(0).getId() == getItem(0).getId()) {
+                for (int i = 0; i < selectedItems.size(); i++) {
+                    if (selectedItems.get(i).getId() != getItem(i).getId()) {
+                        menu.findItem(R.id.move_to_top_item).setVisible(true);
+                        menu.findItem(R.id.move_to_bottom_item).setVisible(true);
+                        return;
+                    }
+                }
+                menu.findItem(R.id.move_to_top_item).setVisible(false);
+                menu.findItem(R.id.move_to_bottom_item).setVisible(true);
+            } else if (selectedItems.get(getSelectedCount()-1).getId() == getItem(getItemCount() -1 ).getId())
+            {
+                for (int i = 0; i < selectedItems.size(); i++) {
+                    if (selectedItems.get(i).getId() != getItem(getItemCount()-(getSelectedCount()-i)).getId()) {
+                        menu.findItem(R.id.move_to_top_item).setVisible(true);
+                        menu.findItem(R.id.move_to_bottom_item).setVisible(true);
+                        return;
+                    }
+                }
+                menu.findItem(R.id.move_to_top_item).setVisible(true);
                 menu.findItem(R.id.move_to_bottom_item).setVisible(false);
             }
         }
