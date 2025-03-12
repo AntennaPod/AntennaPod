@@ -138,6 +138,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             loadItems(true);
             return;
         }
+        int position;
         switch (event.action) {
             case ADDED:
                 queue.add(event.position, event.item);
@@ -150,7 +151,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 break;
             case REMOVED:
             case IRREVERSIBLE_REMOVED:
-                int position = FeedItemEvent.indexOfItemWithId(queue, event.item.getId());
+                position = FeedItemEvent.indexOfItemWithId(queue, event.item.getId());
                 queue.remove(position);
                 recyclerAdapter.notifyItemRemoved(position);
                 break;
@@ -158,6 +159,10 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 queue.clear();
                 recyclerAdapter.updateItems(queue);
                 break;
+            case MOVED:
+                position = FeedItemEvent.indexOfItemWithId(queue, event.item.getId());
+                queue.add(event.position, queue.remove(position));
+                recyclerAdapter.notifyItemMoved(position, event.position);
             default:
                 return;
         }
