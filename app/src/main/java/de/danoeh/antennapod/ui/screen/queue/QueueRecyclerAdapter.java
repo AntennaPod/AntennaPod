@@ -93,36 +93,44 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
             }
         } else {
             List<FeedItem> selectedItems = getSelectedItems();
+            List<FeedItem> totalItems = getItems();
+            int selectedItemCount = getSelectedCount();
+            int totalItemCount = getItemCount();
 
-            if(getSelectedCount() == getItemCount())
+            if(selectedItemCount == totalItemCount)
             {
                 menu.findItem(R.id.move_to_top_item).setVisible(false);
                 menu.findItem(R.id.move_to_bottom_item).setVisible(false);
                 return;
             }
 
-            if (selectedItems.get(0).getId() == getItem(0).getId()) {
-                for (int i = 0; i < selectedItems.size(); i++) {
-                    if (selectedItems.get(i).getId() != getItem(i).getId()) {
-                        menu.findItem(R.id.move_to_top_item).setVisible(true);
-                        menu.findItem(R.id.move_to_bottom_item).setVisible(true);
-                        return;
-                    }
+            boolean atTop = selectedItems.get(0).getId() == getItem(0).getId();
+            boolean atBottom = selectedItems.get(selectedItemCount - 1).getId() == getItem(totalItemCount -1 ).getId();
+
+            if (atTop) {
+                if(!selectedItems.equals(totalItems.subList(0, selectedItemCount))){
+                    menu.findItem(R.id.move_to_top_item).setVisible(true);
+                    menu.findItem(R.id.move_to_bottom_item).setVisible(true);
+                } else {
+                    menu.findItem(R.id.move_to_top_item).setVisible(false);
+                    menu.findItem(R.id.move_to_bottom_item).setVisible(true);
                 }
-                menu.findItem(R.id.move_to_top_item).setVisible(false);
-                menu.findItem(R.id.move_to_bottom_item).setVisible(true);
-            } else if (selectedItems.get(getSelectedCount()-1).getId() == getItem(getItemCount() -1 ).getId())
-            {
-                for (int i = 0; i < selectedItems.size(); i++) {
-                    if (selectedItems.get(i).getId() != getItem(getItemCount()-(getSelectedCount()-i)).getId()) {
-                        menu.findItem(R.id.move_to_top_item).setVisible(true);
-                        menu.findItem(R.id.move_to_bottom_item).setVisible(true);
-                        return;
-                    }
-                }
-                menu.findItem(R.id.move_to_top_item).setVisible(true);
-                menu.findItem(R.id.move_to_bottom_item).setVisible(false);
+                return;
             }
+
+            if (atBottom) {
+                if (!selectedItems.equals(totalItems.subList(totalItemCount - selectedItemCount, totalItemCount))) {
+                    menu.findItem(R.id.move_to_top_item).setVisible(true);
+                    menu.findItem(R.id.move_to_bottom_item).setVisible(true);
+                } else {
+                    menu.findItem(R.id.move_to_top_item).setVisible(true);
+                    menu.findItem(R.id.move_to_bottom_item).setVisible(false);
+                }
+                return;
+            }
+
+            menu.findItem(R.id.move_to_top_item).setVisible(true);
+            menu.findItem(R.id.move_to_bottom_item).setVisible(true);
         }
     }
 }
