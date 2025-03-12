@@ -539,6 +539,7 @@ public class DBWriter {
         if (itemIds.length < 1) {
             return;
         }
+
         final PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         final List<FeedItem> queue = DBReader.getQueue();
