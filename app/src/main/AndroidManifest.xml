@@ -245,6 +245,18 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
+                <data android:host="antennapod.org" />
+                <data android:pathPrefix="/deeplink/episode" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+            </intent-filter>
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:pathPattern="/.*\\..*/.*" />
                 <data android:host="www.subscribeonandroid.com" />
                 <data android:scheme="https" />
