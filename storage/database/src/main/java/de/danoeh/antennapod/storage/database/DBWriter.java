@@ -24,6 +24,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -519,6 +521,70 @@ public class DBWriter {
         if (performAutoDownload) {
             AutoDownloadManager.getInstance().autodownloadUndownloadedItems(context);
         }
+    }
+
+    public static Future<?> moveQueueItemsToTop(final Context context,
+                                            final long... itemIds) {
+        return runOnDbThread(() -> moveQueueItemsSynchronous(context, true, itemIds));
+    }
+
+    public static Future<?> moveQueueItemsToBottom(final Context context,
+                                                final long... itemIds) {
+        return runOnDbThread(() -> moveQueueItemsSynchronous(context, false, itemIds));
+    }
+
+    private static void moveQueueItemsSynchronous(final Context context,
+                                                  final boolean moveToTop,
+                                                  final long... itemIds ) {
+        if (itemIds.length < 1) {
+            return;
+        }
+        final PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        final List<FeedItem> queue = DBReader.getQueue();
+
+        if (moveToTop) {
+            for (int i = 0; i < itemIds.length / 2; i++) {
+                long temp = itemIds[i];
+                itemIds[i] = itemIds[itemIds.length - 1 - i];
+                itemIds[itemIds.length - 1 - i] = temp;
+            }
+        }
+
+        boolean queueModified = false;
+        List<QueueEvent> events = new ArrayList<>();
+        for (long itemId : itemIds) {
+            int index = indexInItemList(queue, itemId);
+            if (index >= 0) {
+                final FeedItem item = DBReader.getFeedItem(itemId);
+                if (item == null) {
+                    Log.e(TAG, "moveQueueItemsToTop - item in queue but somehow cannot be loaded."
+                            + " Item ignored. It should never happen. id:" + itemId);
+                    continue;
+                }
+
+                if(moveToTop)
+                {
+                    queue.add(0, queue.remove(index));
+                    events.add(QueueEvent.moved(item, 0));
+                } else {
+                    queue.add(queue.size() - 1, queue.remove(index));
+                    events.add(QueueEvent.moved(item, queue.size() - 1));
+                }
+                queueModified = true;
+            } else {
+                Log.v(TAG, "moveQueueItemsToTop - item  not in queue:" + itemId);
+            }
+        }
+        if (queueModified) {
+            adapter.setQueue(queue);
+            for (QueueEvent event : events) {
+                EventBus.getDefault().post(event);
+            }
+        } else {
+            Log.w(TAG, "Queue was not modified by call to moveQueueItemsToTop");
+        }
+        adapter.close();
     }
 
     public static Future<?> toggleFavoriteItem(final FeedItem item) {
