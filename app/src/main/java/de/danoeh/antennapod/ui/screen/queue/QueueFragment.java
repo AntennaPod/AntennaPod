@@ -163,6 +163,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 position = FeedItemEvent.indexOfItemWithId(queue, event.item.getId());
                 queue.add(event.position, queue.remove(position));
                 recyclerAdapter.notifyItemMoved(position, event.position);
+                break;
             default:
                 return;
         }
@@ -378,7 +379,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
 
         final int itemId = item.getItemId();
-        if(recyclerAdapter.inActionMode()) {
+        if (recyclerAdapter.inActionMode()) {
             new EpisodeMultiSelectActionHandler(getActivity(), item.getItemId())
                     .handleAction(recyclerAdapter.getSelectedItems());
         } else {

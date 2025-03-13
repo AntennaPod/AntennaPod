@@ -117,14 +117,12 @@ public class EpisodeMultiSelectActionHandler {
         showMessage(R.plurals.deleted_multi_episode_batch_label, countHasMedia);
     }
 
-    private void moveToTopChecked(List<FeedItem> items)
-    {
+    private void moveToTopChecked(List<FeedItem> items) {
         long[] checkedIds = getSelectedIds(items);
         DBWriter.moveQueueItemsToTop(activity, checkedIds);
     }
 
-    private void moveToBottomChecked(List<FeedItem> items)
-    {
+    private void moveToBottomChecked(List<FeedItem> items) {
         long[] checkedIds = getSelectedIds(items);
         DBWriter.moveQueueItemsToBottom(activity, checkedIds);
     }
