@@ -112,7 +112,7 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
                 return;
             }
 
-            // If all items in the list are selected or sorting is enforced,
+            // If all items in the list are selected,
             // disable move options since no movement is possible or allowed.
             if (selectedItemCount == totalItemCount) {
                 menu.findItem(R.id.move_to_top_item).setVisible(false);
