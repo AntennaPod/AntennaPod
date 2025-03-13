@@ -535,7 +535,7 @@ public class DBWriter {
                                                   final boolean moveToTop,
                                                   final long... itemIds) {
 
-        String callingFunction = moveToTop ? "Top" : "Bottom";
+        String calledBy = moveToTop ? "moveQueueItemsToTop" : "moveQueueItemsToBottom";
 
         if (itemIds.length < 1) {
             return;
@@ -560,7 +560,7 @@ public class DBWriter {
             if (index >= 0) {
                 final FeedItem item = DBReader.getFeedItem(itemId);
                 if (item == null) {
-                    Log.e(TAG, "moveQueueItemsTo" + callingFunction + " - item in queue but somehow cannot be loaded."
+                    Log.e(TAG, calledBy + " - item in queue but somehow cannot be loaded."
                             + " Item ignored. It should never happen. id:" + itemId);
                     continue;
                 }
@@ -574,7 +574,7 @@ public class DBWriter {
                 }
                 queueModified = true;
             } else {
-                Log.v(TAG, "moveQueueItemsTo" + callingFunction + " - item  not in queue:" + itemId);
+                Log.v(TAG, calledBy + " - item  not in queue:" + itemId);
             }
         }
         if (queueModified) {
@@ -583,7 +583,7 @@ public class DBWriter {
                 EventBus.getDefault().post(event);
             }
         } else {
-            Log.w(TAG, "Queue was not modified by call to moveQueueItemsTo" + callingFunction);
+            Log.w(TAG, "Queue was not modified by call to " + calledBy);
         }
         adapter.close();
     }
