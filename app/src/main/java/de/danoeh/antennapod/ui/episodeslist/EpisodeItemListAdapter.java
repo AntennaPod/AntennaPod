@@ -247,5 +247,4 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         return items;
     }
 
-
 }

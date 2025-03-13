@@ -24,8 +24,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -535,7 +533,10 @@ public class DBWriter {
 
     private static void moveQueueItemsSynchronous(final Context context,
                                                   final boolean moveToTop,
-                                                  final long... itemIds ) {
+                                                  final long... itemIds) {
+
+        String callingFunction = moveToTop ? "Top" : "Bottom";
+
         if (itemIds.length < 1) {
             return;
         }
@@ -559,13 +560,12 @@ public class DBWriter {
             if (index >= 0) {
                 final FeedItem item = DBReader.getFeedItem(itemId);
                 if (item == null) {
-                    Log.e(TAG, "moveQueueItemsToTop - item in queue but somehow cannot be loaded."
+                    Log.e(TAG, "moveQueueItemsTo" + callingFunction + " - item in queue but somehow cannot be loaded."
                             + " Item ignored. It should never happen. id:" + itemId);
                     continue;
                 }
 
-                if(moveToTop)
-                {
+                if (moveToTop) {
                     queue.add(0, queue.remove(index));
                     events.add(QueueEvent.moved(item, 0));
                 } else {
@@ -574,7 +574,7 @@ public class DBWriter {
                 }
                 queueModified = true;
             } else {
-                Log.v(TAG, "moveQueueItemsToTop - item  not in queue:" + itemId);
+                Log.v(TAG, "moveQueueItemsTo" + callingFunction + " - item  not in queue:" + itemId);
             }
         }
         if (queueModified) {
@@ -583,7 +583,7 @@ public class DBWriter {
                 EventBus.getDefault().post(event);
             }
         } else {
-            Log.w(TAG, "Queue was not modified by call to moveQueueItemsToTop");
+            Log.w(TAG, "Queue was not modified by call to moveQueueItemsTo" + callingFunction);
         }
         adapter.close();
     }
