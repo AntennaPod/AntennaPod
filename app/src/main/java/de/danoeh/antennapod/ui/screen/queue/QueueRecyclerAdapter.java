@@ -93,7 +93,7 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
             if (getItem(0).getId() == getLongPressedItem().getId() || keepSorted) {
                 menu.findItem(R.id.move_to_top_item).setVisible(false);
             }
-            // If the long-pressed item is already ate the bottom of the list or sorting is enforced,
+            // If the long-pressed item is already at the bottom of the list or sorting is enforced,
             // disable the option to move it to the bottom.
             if (getItem(getItemCount() - 1).getId() == getLongPressedItem().getId() || keepSorted) {
                 menu.findItem(R.id.move_to_bottom_item).setVisible(false);
