@@ -106,8 +106,7 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
 
             // If sorting is enforced, manual reordering is not allowed,
             // and both move options are disabled.
-            if(keepSorted)
-            {
+            if (keepSorted) {
                 menu.findItem(R.id.move_to_top_item).setVisible(false);
                 menu.findItem(R.id.move_to_bottom_item).setVisible(false);
                 return;
@@ -115,21 +114,20 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
 
             // If all items in the list are selected or sorting is enforced,
             // disable move options since no movement is possible or allowed.
-            if(selectedItemCount == totalItemCount)
-            {
+            if (selectedItemCount == totalItemCount) {
                 menu.findItem(R.id.move_to_top_item).setVisible(false);
                 menu.findItem(R.id.move_to_bottom_item).setVisible(false);
                 return;
             }
 
             boolean atTop = selectedItems.get(0).getId() == getItem(0).getId();
-            boolean atBottom = selectedItems.get(selectedItemCount - 1).getId() == getItem(totalItemCount -1 ).getId();
+            boolean atBottom = selectedItems.get(selectedItemCount - 1).getId() == getItem(totalItemCount - 1).getId();
 
             // Check if the selection is contiguous from the top.
             // If the selection is not contiguous, items can be moved to either the top or the bottom.
             // If they are contiguous, moving items to the top is disabled, as they are already there.
             if (atTop) {
-                if(!selectedItems.equals(totalItems.subList(0, selectedItemCount))){
+                if (!selectedItems.equals(totalItems.subList(0, selectedItemCount))) {
                     menu.findItem(R.id.move_to_top_item).setVisible(true);
                     menu.findItem(R.id.move_to_bottom_item).setVisible(true);
                 } else {
