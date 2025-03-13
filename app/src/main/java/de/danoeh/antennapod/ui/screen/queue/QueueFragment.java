@@ -138,6 +138,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             loadItems(true);
             return;
         }
+        int position;
         switch (event.action) {
             case ADDED:
                 queue.add(event.position, event.item);
@@ -150,13 +151,18 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 break;
             case REMOVED:
             case IRREVERSIBLE_REMOVED:
-                int position = FeedItemEvent.indexOfItemWithId(queue, event.item.getId());
+                position = FeedItemEvent.indexOfItemWithId(queue, event.item.getId());
                 queue.remove(position);
                 recyclerAdapter.notifyItemRemoved(position);
                 break;
             case CLEARED:
                 queue.clear();
                 recyclerAdapter.updateItems(queue);
+                break;
+            case MOVED:
+                position = FeedItemEvent.indexOfItemWithId(queue, event.item.getId());
+                queue.add(event.position, queue.remove(position));
+                recyclerAdapter.notifyItemMoved(position, event.position);
                 break;
             default:
                 return;
@@ -357,6 +363,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             return false;
         }
         FeedItem selectedItem = recyclerAdapter.getLongPressedItem();
+
         if (selectedItem == null) {
             Log.i(TAG, "Selected item was null, ignoring selection");
             return super.onContextItemSelected(item);
@@ -372,16 +379,21 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
 
         final int itemId = item.getItemId();
-        if (itemId == R.id.move_to_top_item) {
-            queue.add(0, queue.remove(position));
-            recyclerAdapter.notifyItemMoved(position, 0);
-            DBWriter.moveQueueItemToTop(selectedItem.getId(), true);
-            return true;
-        } else if (itemId == R.id.move_to_bottom_item) {
-            queue.add(queue.size() - 1, queue.remove(position));
-            recyclerAdapter.notifyItemMoved(position, queue.size() - 1);
-            DBWriter.moveQueueItemToBottom(selectedItem.getId(), true);
-            return true;
+        if (recyclerAdapter.inActionMode()) {
+            new EpisodeMultiSelectActionHandler(getActivity(), item.getItemId())
+                    .handleAction(recyclerAdapter.getSelectedItems());
+        } else {
+            if (itemId == R.id.move_to_top_item) {
+                queue.add(0, queue.remove(position));
+                recyclerAdapter.notifyItemMoved(position, 0);
+                DBWriter.moveQueueItemToTop(selectedItem.getId(), true);
+                return true;
+            } else if (itemId == R.id.move_to_bottom_item) {
+                queue.add(queue.size() - 1, queue.remove(position));
+                recyclerAdapter.notifyItemMoved(position, queue.size() - 1);
+                DBWriter.moveQueueItemToBottom(selectedItem.getId(), true);
+                return true;
+            }
         }
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
