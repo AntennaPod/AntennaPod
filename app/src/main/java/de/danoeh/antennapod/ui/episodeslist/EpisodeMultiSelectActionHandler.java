@@ -120,11 +120,13 @@ public class EpisodeMultiSelectActionHandler {
     private void moveToTopChecked(List<FeedItem> items) {
         long[] checkedIds = getSelectedIds(items);
         DBWriter.moveQueueItemsToTop(activity, checkedIds);
+        showMessage(R.plurals.move_to_top_batch_label, checkedIds.length);
     }
 
     private void moveToBottomChecked(List<FeedItem> items) {
         long[] checkedIds = getSelectedIds(items);
         DBWriter.moveQueueItemsToBottom(activity, checkedIds);
+        showMessage(R.plurals.move_to_bottom_batch_label, checkedIds.length);
     }
 
     private void showMessage(@PluralsRes int msgId, int numItems) {
