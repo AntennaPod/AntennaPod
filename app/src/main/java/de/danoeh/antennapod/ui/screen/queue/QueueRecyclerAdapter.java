@@ -7,11 +7,8 @@ import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
@@ -82,79 +79,18 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
         inflater.inflate(R.menu.queue_context, menu);
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        final boolean keepSorted = UserPreferences.isQueueKeepSorted();
-
-        // If the app is not currently in multi-selection action mode
         if (!inActionMode()) {
             menu.findItem(R.id.multi_select).setVisible(true);
-
-            // If the long-pressed item is already at the top of the list or sorting is enforced,
-            // disable the option to move it to the top.
+            final boolean keepSorted = UserPreferences.isQueueKeepSorted();
             if (getItem(0).getId() == getLongPressedItem().getId() || keepSorted) {
                 menu.findItem(R.id.move_to_top_item).setVisible(false);
             }
-            // If the long-pressed item is already at the bottom of the list or sorting is enforced,
-            // disable the option to move it to the bottom.
             if (getItem(getItemCount() - 1).getId() == getLongPressedItem().getId() || keepSorted) {
                 menu.findItem(R.id.move_to_bottom_item).setVisible(false);
             }
         } else {
-            List<FeedItem> selectedItems = getSelectedItems();
-            List<FeedItem> totalItems = getItems();
-            int selectedItemCount = getSelectedCount();
-            int totalItemCount = getItemCount();
-
-            // If sorting is enforced, manual reordering is not allowed,
-            // and both move options are disabled.
-            if (keepSorted) {
-                menu.findItem(R.id.move_to_top_item).setVisible(false);
-                menu.findItem(R.id.move_to_bottom_item).setVisible(false);
-                return;
-            }
-
-            // If all items in the list are selected,
-            // disable move options since no movement is possible or allowed.
-            if (selectedItemCount == totalItemCount) {
-                menu.findItem(R.id.move_to_top_item).setVisible(false);
-                menu.findItem(R.id.move_to_bottom_item).setVisible(false);
-                return;
-            }
-
-            boolean atTop = selectedItems.get(0).getId() == getItem(0).getId();
-            boolean atBottom = selectedItems.get(selectedItemCount - 1).getId() == getItem(totalItemCount - 1).getId();
-
-            // Check if the selection is contiguous from the top.
-            // If the selection is not contiguous, items can be moved to either the top or the bottom.
-            // If they are contiguous, moving items to the top is disabled, as they are already there.
-            if (atTop) {
-                if (!selectedItems.equals(totalItems.subList(0, selectedItemCount))) {
-                    menu.findItem(R.id.move_to_top_item).setVisible(true);
-                    menu.findItem(R.id.move_to_bottom_item).setVisible(true);
-                } else {
-                    menu.findItem(R.id.move_to_top_item).setVisible(false);
-                    menu.findItem(R.id.move_to_bottom_item).setVisible(true);
-                }
-                return;
-            }
-
-            // Check if the selection is contiguous from the bottom.
-            // If the selection is not contiguous, items can be moved to either the top or the bottom.
-            // If they are contiguous, moving items to the bottom is disabled, as they are already there.
-            if (atBottom) {
-                if (!selectedItems.equals(totalItems.subList(totalItemCount - selectedItemCount, totalItemCount))) {
-                    menu.findItem(R.id.move_to_top_item).setVisible(true);
-                    menu.findItem(R.id.move_to_bottom_item).setVisible(true);
-                } else {
-                    menu.findItem(R.id.move_to_top_item).setVisible(true);
-                    menu.findItem(R.id.move_to_bottom_item).setVisible(false);
-                }
-                return;
-            }
-
-            // The selection is neither fully at the top nor at the bottom,
-            // so moving items in both directions is allowed.
-            menu.findItem(R.id.move_to_top_item).setVisible(true);
-            menu.findItem(R.id.move_to_bottom_item).setVisible(true);
+            menu.findItem(R.id.move_to_top_item).setVisible(false);
+            menu.findItem(R.id.move_to_bottom_item).setVisible(false);
         }
     }
 }
