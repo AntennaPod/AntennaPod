@@ -33,13 +33,13 @@ public abstract class EditUrlSettingsDialog {
 
         final EditTextDialogBinding binding = EditTextDialogBinding.inflate(LayoutInflater.from(activity));
 
-        binding.urlEditText.setText(feed.getDownloadUrl());
+        binding.textInput.setText(feed.getDownloadUrl());
 
         new MaterialAlertDialogBuilder(activity)
                 .setView(binding.getRoot())
                 .setTitle(R.string.edit_url_menu)
                 .setPositiveButton(android.R.string.ok, (d, input) ->
-                        showConfirmAlertDialog(String.valueOf(binding.urlEditText.getText())))
+                        showConfirmAlertDialog(String.valueOf(binding.textInput.getText())))
                 .setNegativeButton(R.string.cancel_label, null)
                 .show();
     }

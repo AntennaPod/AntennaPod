@@ -73,7 +73,7 @@
             android:entries="@array/spnEnableAutoDownloadItems"
             android:entryValues="@array/spnEnableAutoDownloadValues"
             android:icon="@drawable/ic_download"
-            android:key="autoDownload"
+            android:key="includeAutoDownload"
             android:title="@string/auto_download_label" />
 
         <Preference

@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Обновить подписки</string>
-    <string name="feeds_label">Подкасты</string>
     <string name="statistics_label">Статистика</string>
     <string name="add_feed_label">Добавить подкаст</string>
     <string name="episodes_label">Выпуски</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Избранное</string>
     <string name="settings_label">Настройки</string>
     <string name="downloads_label">Загрузки</string>
-    <string name="open_autodownload_settings">Открыть настройки</string>
     <string name="downloads_log_label">Журнал загрузок</string>
     <string name="subscriptions_label">Подписки</string>
     <string name="subscriptions_list_label">Перечень подписок (только в боковом меню)</string>
     <string name="cancel_download_label">Отменить загрузку</string>
-    <string name="playback_history_label">История</string>
-    <string name="episode_cache_full_title">Кэш выпусков заполнен</string>
-    <string name="episode_cache_full_message">Достигнут предел кэша выпусков. Объем кэша можно увеличить в настройках.</string>
+    <string name="playback_history_label">История вопроизведения</string>
     <string name="years_statistics_label">По годам</string>
     <string name="notification_pref_fragment">Уведомления</string>
     <string name="current_playing_episode">Текущий</string>
@@ -34,7 +30,7 @@
     <string name="change_setting">Изменить</string>
     <string name="individual_subscription">Отдельная подписка</string>
     <!--Statistics fragment-->
-  <string name="statistics_include_marked">Учитывать длину выпусков, отмеченных как прослушанные.</string>
+  <string name="statistics_include_marked">Учитывать длину выпусков, отмеченных как прослушанные</string>
     <string name="statistics_speed_not_counted">Замечание: Скорость воспроизведения никогда не учитывается.</string>
     <string name="statistics_from">С</string>
     <string name="statistics_to">По</string>
@@ -147,7 +143,7 @@
         <item quantity="other">%d выпусков</item>
     </plurals>
     <string name="episode_notification">Уведомления о новых выпусках</string>
-    <string name="episode_notification_summary">Показывать уведомление при появлении новых выпусков.</string>
+    <string name="episode_notification_summary">Показывать уведомление при появлении новых выпусков</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s: новый выпуск</item>
         <item quantity="few">%2$s: %1$d новых выпуска</item>
@@ -195,7 +191,7 @@
     <string name="add_tag">Добавить метку</string>
     <string name="rename_tag_label">Изменить метку</string>
     <string name="confirm_mobile_feed_refresh_dialog_message">Обновление подкастов через мобильное соединение отключено в настройках.\n\nВы действительно хотите обновить подкасты?</string>
-    <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Приложение VPN имитирует соединение через мобильную сеть (с ограничением трафика). Обновление подкастов через мобильное соединение отключено в настройках\nВсё равно желаете обновить? Чтобы устранить эту проблему, свяжитесь с авторами вашего приложения VPN.</string>
+    <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Приложение VPN имитирует соединение с ограниченным трафика. Обновление подкастов через мобильное соединение отключено в настройках\n\nВсё равно обновить? Чтобы устранить эту проблему, свяжитесь с создателями вашего приложения VPN.</string>
     <!--actions on feeditems-->
   <string name="download_label">Загрузить</string>
     <plurals name="downloading_batch_label">
@@ -272,7 +268,7 @@
     <string name="download_pending">Загрузка в ожидании</string>
     <string name="download_running">Загрузка в процессе</string>
     <string name="download_error_details">Подробнее</string>
-    <string name="download_log_details_message">%1$s \n\nПричина: \n%2$s \nдрес файла:\n%3$s</string>
+    <string name="download_log_details_message">%1$s \n\nПричина: \n%2$s \n\nАдрес файла:\n%3$s</string>
     <string name="download_error_retrying">\"%1$s\" загрузка не удалась. Повтор – позже.</string>
     <string name="download_error_not_retrying">\"%1$s\" загрузка не удалась.</string>
     <string name="download_error_tap_for_details">Подробнее...</string>
@@ -291,7 +287,7 @@
     <string name="download_error_file_type_type">Ошибочный в тип файла</string>
     <string name="download_error_forbidden">Сервер подкаста отказывает в ответе.</string>
     <string name="download_canceled_msg">Загрузка отменена</string>
-    <string name="download_error_wrong_size">Соединение с сервером было оборвано до завершения загрузки.</string>
+    <string name="download_error_wrong_size">Соединение с сервером было оборвано до завершения загрузки</string>
     <string name="download_error_blocked">Загрузка была заблокирована другим приложением на вашем устройстве (например, VPN или блокировщиком рекламы).</string>
     <string name="download_error_certificate">Невозможно установить защищённое соединение. Возможно загрузке препятствует другое приложение (например, VPN или блокировщик рекламы), либо что-то не так с сертификатом сервера.</string>
     <string name="download_error_io_error">Ошибка ввода-вывода</string>
@@ -312,7 +308,7 @@
     <string name="authentication_notification_title">Необходима авторизация</string>
     <string name="confirm_mobile_download_dialog_title">Подтвердите загрузку через мобильное соединение</string>
     <string name="confirm_mobile_download_dialog_message">Загрузка через мобильное соединение отключена в настройках. AntennaPod может загрузить выпуск позже, когда появится соединение через Wi-Fi.</string>
-    <string name="confirm_mobile_download_dialog_message_vpn">Приложение VPN имитирует соединение через мобильную сеть (с ограничением трафика). Загрузка через мобильное соединение отключена в настройках. Чтобы устранить эту проблему, свяжитесь с авторами используемого Вами приложения VPN.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">Приложение VPN имитирует соединение через мобильную сеть (с ограничением трафика). Загрузка через мобильное соединение отключена в настройках. Чтобы устранить эту проблему, свяжитесь с авторами используемого Вами приложения VPN.\n\nЕсли вы не используете VPN, зайдите в настройки Wi-Fi и поменяйте тип сети на сеть без ограничения трафика.</string>
     <string name="confirm_mobile_download_dialog_download_later">Загрузить позже</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Всё равно загрузить</string>
     <string name="confirm_mobile_streaming_notification_title">Подтвердите трансляцию через мобильное соединение</string>
@@ -320,7 +316,7 @@
     <string name="confirm_mobile_streaming_button_always">Всегда</string>
     <string name="confirm_mobile_streaming_button_once">В этот раз</string>
     <!--Mediaplayer messages-->
-  <string name="playback_error_generic"><![CDATA[Не удаётся воспроизвести медиафайл.\n\n- Попробуйте удалить и загрузить выпуск заново.\n- Проверьте соединение и блокировку со стороны VPN или страницы авторизации.\n- Попробуйте долгим нажатием поделиться \"ссылкой на медиафайл\" и попытайтесь открыть её в браузере. Если это не помогло, обратитесь к авторам подкаста.]]></string>
+  <string name="playback_error_generic">Не удаётся воспроизвести файл.\n\n— Попробуйте удалить и скачать выпуск снова.\n— Проверьте соединение с интернетом: удостоверьтесь, что VPN и страница входа не блокируют его.\n— Нажмите долгим нажатием на ссылку подкаста и проверьте, что подкаст открывается в браузере. Если нет, свяжитесь с авторами подкаста.</string>
     <string name="no_media_playing_label">Ничего не воспроизводится</string>
     <string name="unknown_media_key">AntennaPod - неизвестный ключ носителя: %1$d</string>
     <string name="error_file_not_found">Файл не найден</string>
@@ -451,7 +447,7 @@
     <string name="pref_automatic_download_on_battery_title">Загружать без зарядки</string>
     <string name="pref_automatic_download_on_battery_sum">Разрешать автоматическую загрузку когда батарея не заряжается</string>
     <string name="pref_episode_cache_title">Квота на выпуски</string>
-    <string name="pref_episode_cache_summary">При достижении этого количества автоматическая загрузка прекратится.</string>
+    <string name="pref_episode_cache_summary">При достижении этого количества автоматическая загрузка прекратится</string>
     <string name="pref_episode_cover_title">Использовать обложку выпуска</string>
     <string name="pref_episode_cover_summary">Если выпуск содержит свою обложку, показывать в списках её. Если не выбрано, всегда используется обложка подкаста.</string>
     <string name="pref_show_remain_time_title">Показывать оставшееся время</string>
@@ -463,7 +459,7 @@
     <string name="pref_playback_speed_sum">Выбрать значения скорости, доступные при воспроизведении</string>
     <string name="pref_feed_playback_speed_sum">Скорость, с которой будут изначально воспроизводиться выпуски этого подкаста</string>
     <string name="pref_feed_skip">Автоматическая перемотка</string>
-    <string name="pref_feed_skip_sum">Проматывать вступительную и заключительную часть.</string>
+    <string name="pref_feed_skip_sum">Проматывать вступительную и заключительную часть</string>
     <string name="pref_feed_skip_ending">Промотать последние</string>
     <string name="pref_feed_skip_intro">Промотать первые</string>
     <string name="pref_feed_skip_ending_toast">Промотаны последние %d с</string>
@@ -645,13 +641,13 @@
     <string name="gpodnetauth_finish_descr">Поздравляем! Ваша учётная запись gpodder.net связана с устройством. AntennaPod будет автоматически синхронизировать Ваши подписки с учётной записью gpodder.net.</string>
     <string name="gpodnetauth_finish_butsyncnow">Начать синхронизацию</string>
     <string name="pref_gpodnet_setlogin_information_title">Изменить информацию авторизации</string>
-    <string name="pref_gpodnet_setlogin_information_sum">Изменить информацию авторизации для аккаунта gpodder.net</string>
+    <string name="pref_gpodnet_setlogin_information_sum">Изменить информацию авторизации для аккаунта gpodder.net.</string>
     <string name="synchronization_sync_changes_title">Синхронизировать сейчас</string>
     <string name="synchronization_sync_summary">Сихронизировать ваши подписки и изменения состояния выпусков</string>
     <string name="synchronization_full_sync_title">Выполнить полную синхронизацию</string>
     <string name="synchronization_force_sync_summary">Пересихронизировать ваши подписки и состояние выпусков</string>
     <string name="synchronization_logout">Выйти</string>
-    <string name="synchronization_login_status"><![CDATA[Авторизованы как <i>%1$s</i> на <i>%2$s</i>. <br/><br/>Вы сможете снова выбрать провайдера синхронизации после выхода из системы]]></string>
+    <string name="synchronization_login_status">Выполнен вход в %2$s как %1$s.\n\nВы можете сменить провайдера синхронизации после выхода из системы.</string>
     <string name="pref_synchronization_logout_toast">Выход успешно выполнен</string>
     <string name="gpodnetsync_error_title">Ошибка синхронизации с gpodder.net</string>
     <string name="gpodnetsync_error_descr">"Произошла ошибка во время синхронизации: "</string>
@@ -699,9 +695,9 @@
     <string name="download_completed_talkback">Завершена загрузка %1$s</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">Авторизация</string>
-    <string name="authentication_descr">Изменить имя пользователя и пароль для этого подкаста и его выпусков.</string>
+    <string name="authentication_descr">Изменить имя пользователя и пароль для этого подкаста и его выпусков</string>
     <string name="feed_tags_label">Метки</string>
-    <string name="feed_tags_summary">Используйте метки, чтобы организовать ваши подписки.</string>
+    <string name="feed_tags_summary">Используйте метки, чтобы организовать ваши подписки</string>
     <string name="feed_folders_include_root">Показывать подкаст в основном списке</string>
     <string name="multi_feed_common_tags_info">Отображаются только общие метки из всех выбранных подписок. Другие метки остаются незатронутыми.</string>
     <string name="auto_download_settings_label">Настройки автозагрузки</string>
@@ -713,7 +709,6 @@
     <string name="exclude_episodes_shorter_than">Исключить выпуски короче чем</string>
     <string name="keep_updated">Постоянно обновлять</string>
     <string name="keep_updated_summary">Обновлять подкаст при (авто)обновлении всех подкастов</string>
-    <string name="auto_download_disabled_globally">Автоматическая загрузка отключена в основных настройках AntennaPod</string>
     <string name="statistics_expected_next_episode_any_day">Со дня на день</string>
     <string name="statistics_expected_next_episode_unknown">Неизвестно</string>
     <string name="edit_url_menu">Изменить адрес канала</string>
@@ -739,9 +734,9 @@
     <string name="search_podcastindex_label">Поиск на Podcast Index</string>
     <string name="search_fyyd_label">Поиск в fyyd</string>
     <string name="add_podcast_by_url">Добавить подкаст по RSS</string>
-    <string name="discover">Ознакомиться</string>
+    <string name="discover">Найти новое</string>
     <string name="discover_hide">Скрыть</string>
-    <string name="discover_is_hidden">Вы предпочли скрыть рекомендации.</string>
+    <string name="discover_is_hidden">Вы скрыли рекомендации.</string>
     <string name="discover_powered_by_itunes">Предложения Apple Podcasts</string>
     <string name="discover_confirm">Показать рекомендации</string>
     <string name="search_powered_by">Результаты из %1$s</string>
@@ -782,7 +777,6 @@
   <string name="proxy_type_label">Тип</string>
     <string name="host_label">Узел</string>
     <string name="port_label">Порт</string>
-    <string name="optional_hint">(необязательно)</string>
     <string name="proxy_test_label">Проверить</string>
     <string name="proxy_checking">Проверка…</string>
     <string name="proxy_test_successful">Проверка пройдена</string>
@@ -803,7 +797,7 @@
     <string name="notification_channel_playing">Сейчас воспроизводится</string>
     <string name="notification_channel_playing_description">Позволяет управлять воспроизведением. Основное уведомление, показывается при воспроизведении подкаста.</string>
     <string name="notification_channel_download_error">Загрузка не удалась</string>
-    <string name="notification_channel_download_error_description">Отображается, когда загрузка или обновление канала завершилось с ошибкой</string>
+    <string name="notification_channel_download_error_description">Отображается, когда загрузка или обновление канала завершилось с ошибкой.</string>
     <string name="notification_channel_sync_error">Синхронизация не удалась</string>
     <string name="notification_channel_sync_error_description">Отображается, если сбоит синхронизация gpodder.</string>
     <string name="notification_channel_new_episode">Новый выпуск</string>
@@ -825,4 +819,71 @@
     <string name="feed_delete_confirmation_local_msg">Пожалуйста, подтвердите, что вы хотите удалить подкаст «%1$s», историю его воспроизведения и статистику. Файлы в локальной исходной папке удалены не будут.</string>
     <string name="home_no_recent_unplayed_episodes_text">Вы уже прослушали все недавние эпизоды. Никаких сюрпризов ;)</string>
     <string name="home_continue_empty_text">Вы можете добавлять эпизоды, загружая их или «Добавить в очередь» через долгое нажатие.</string>
+    <string name="home_new_empty_text">Здесь будут появляться новые выпуски. Вы сможете выбрать интересные для вас.</string>
+    <string name="statistics_episodes_downloaded">Загруженные</string>
+    <string name="statistics_release_schedule">Расписание выхода</string>
+    <string name="statistics_release_next">Следующий выпуск</string>
+    <string name="statistics_years_barchart_description">Прослушано в месяц</string>
+    <string name="null_value_podcast_error">Ссылка, на которую вы нажали, не является ссылкой на подкаст. Проверьте ссылку или найдите подкаст через поиск.</string>
+    <string name="pref_nav_drawer_items_title">Настроить навигацию</string>
+    <string name="statistics_episodes_space">Объём</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">Размер %d выпуска на устройстве</item>
+        <item quantity="few">Размер %d выпусков на устройстве</item>
+        <item quantity="many">Размер %d выпусков на устройстве</item>
+        <item quantity="other">Размер %d выпусков на устройстве</item>
+    </plurals>
+    <string name="pref_nav_drawer_items_sum">Выбрать пункты в меню навигации</string>
+    <string name="sync_status_wait_for_downloads">Подписки обновляются…</string>
+    <string name="statistics_view_all">Все подкасты</string>
+    <string name="discover_more">Найти новое</string>
+    <string name="section_shown">Показываемые</string>
+    <string name="delete_downloads_played">Удалить прослушанные</string>
+    <string name="mobile_download_notice">В течение %d минут включена загрузка через мобильную сеть</string>
+    <string name="bottom_navigation">Навигация внизу</string>
+    <string name="bottom_navigation_summary">Бета: доступ к важным экранам в одно касание</string>
+    <string name="statistics_episodes_started">Начатые</string>
+    <string name="nextcloud_login_error_generic">Не удалось войти в Nextcloud.\n\n— Проверьте соединение с интернетом.\n— Удостоверьтесь, что указан правильный адрес сервера.\n— Удостоверьтесь, что gpoddersync установлен в Nextcloud.</string>
+    <string name="statistics_episodes_total">Всего</string>
+    <string name="episode_download_failed">Не удалось скачать выпуск</string>
+    <string name="delete_downloads_played_confirmation">Удалить все прослушанные загрузки?</string>
+    <string name="preference_search_clear_input">Очистить</string>
+    <string name="overflow_more">Ещё</string>
+    <string name="pref_automatic_download_global_description">Автоматически скачивать новые выпуски. Также можно настроить для каждого подкаста.</string>
+    <string name="pref_automatic_download_queue_description">Автоматически загружить выпуски в очереди</string>
+    <string name="statistics_time_played">прослушано</string>
+    <string name="echo_intro_your_year">Ваш год</string>
+    <string name="add_feed_label_short">Добавить</string>
+    <string name="episodes_label_short">Выпуски</string>
+    <string name="home_label_short">Главная</string>
+    <string name="queue_label_short">Очередь</string>
+    <string name="inbox_label_short">Входящие</string>
+    <string name="downloads_label_short">Загрузки</string>
+    <string name="subscriptions_label_short">Подписки</string>
+    <string name="playback_history_label_short">История</string>
+    <string name="episodes_label_more">Выпуски »</string>
+    <string name="queue_label_more">Очередь »</string>
+    <string name="inbox_label_more">Входящие »</string>
+    <string name="downloads_label_more">Загрузки »</string>
+    <string name="subscriptions_label_more">Подписки »</string>
+    <string name="global_default_with_value">По умолчанию (%1$s)</string>
+    <string name="enabled">Включено</string>
+    <string name="disabled">Выключено</string>
+    <string name="delete_tag_label">Удалить метку</string>
+    <string name="delete_tag_confirmation">Удалить метку «%1$s»?</string>
+    <string name="download_error_unsupported_type_html_manual">Вы ввели адрес сайта, а не RSS подкаста.</string>
+    <string name="episode_lists">Списки выпусков</string>
+    <string name="pref_downloads_button_action_title">Воспроизведение с экрана загрузок</string>
+    <string name="pref_downloads_button_action_sum">Меняет кнопку «Удалить» на «Воспроизвести» на экране загрузок</string>
+    <string name="statistics_time_total">итого</string>
+    <string name="notification_channel_refreshing">Подкасты обновляются</string>
+    <string name="notification_channel_refreshing_description">Показывается при поиске новых выпусков.</string>
+    <string name="echo_home_header">Резюме за год</string>
+    <string name="echo_thanks_we_are_glad_old">что были с нами в этом году!\n\nВместе с нами послушали первый выпуск в %1$s. Для нас честь помогать вам всё это время.</string>
+    <string name="echo_thanks_large">Спасибо</string>
+    <string name="pref_automatic_download_queue_title">Загрузка в очереди</string>
+    <string name="echo_intro_in_podcasts">в подкастах</string>
+    <string name="echo_hoarder_subtitle_hoarder">Судя по числам, вы плюшкин</string>
+    <string name="echo_share_heading">Мои любимые подкасты</string>
+    <string name="echo_share">Мой %d в подкастах. #AntennaPodEcho</string>
 </resources>

@@ -132,19 +132,19 @@ public class AddFeedFragment extends Fragment {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle(R.string.add_podcast_by_url);
         final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
-        dialogBinding.urlEditText.setHint(R.string.add_podcast_by_url_hint);
+        dialogBinding.textInput.setHint(R.string.rss_address);
 
         ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
         final ClipData clipData = clipboard.getPrimaryClip();
         if (clipData != null && clipData.getItemCount() > 0 && clipData.getItemAt(0).getText() != null) {
             final String clipboardContent = clipData.getItemAt(0).getText().toString();
             if (clipboardContent.trim().startsWith("http")) {
-                dialogBinding.urlEditText.setText(clipboardContent.trim());
+                dialogBinding.textInput.setText(clipboardContent.trim());
             }
         }
         builder.setView(dialogBinding.getRoot());
         builder.setPositiveButton(R.string.confirm_label,
-                (dialog, which) -> addUrl(dialogBinding.urlEditText.getText().toString()));
+                (dialog, which) -> addUrl(dialogBinding.textInput.getText().toString()));
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.show();
     }

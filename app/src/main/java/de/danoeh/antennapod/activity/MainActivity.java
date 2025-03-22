@@ -55,12 +55,15 @@ import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfa
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
+import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
+import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.discovery.DiscoveryFragment;
@@ -294,6 +297,11 @@ public class MainActivity extends CastEnabledActivity {
                 onSlide(view, 0.0f);
             } else if (state == BottomSheetBehavior.STATE_EXPANDED) {
                 onSlide(view, 1.0f);
+            } else if (state == BottomSheetBehavior.STATE_HIDDEN) {
+                IntentUtils.sendLocalBroadcast(MainActivity.this,
+                        PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
+                PlaybackPreferences.writeNoMediaPlaying();
+                setPlayerVisible(false);
             }
         }
 
@@ -386,6 +394,7 @@ public class MainActivity extends CastEnabledActivity {
         params.setMargins(systemBarInsets.left, 0, systemBarInsets.right, (visible ? externalPlayerHeight : 0));
         mainView.setLayoutParams(params);
         sheetBehavior.setPeekHeight(externalPlayerHeight);
+        sheetBehavior.setHideable(true);
         sheetBehavior.setGestureInsetBottomIgnored(true);
 
         FragmentContainerView playerView = findViewById(R.id.playerFragment);
@@ -519,13 +528,14 @@ public class MainActivity extends CastEnabledActivity {
 
         Menu menu = bottomNavigationView.getMenu();
         menu.clear();
-        for (int i = 0; i < drawerItems.size() && i < bottomNavigationView.getMaxItemCount() - 1; i++) {
+        int maxItems = Math.min(5, bottomNavigationView.getMaxItemCount());
+        for (int i = 0; i < drawerItems.size() && i < maxItems - 1; i++) {
             String tag = drawerItems.get(i);
             MenuItem item = menu.add(0, NavigationNames.getBottomNavigationItemId(tag),
-                    0, getString(NavigationNames.getLabel(tag)));
+                    0, getString(NavigationNames.getShortLabel(tag)));
             item.setIcon(NavigationNames.getDrawable(tag));
         }
-        MenuItem moreItem = menu.add(0, R.id.bottom_navigation_more, 0, getString(R.string.searchpreference_more));
+        MenuItem moreItem = menu.add(0, R.id.bottom_navigation_more, 0, getString(R.string.overflow_more));
         moreItem.setIcon(R.drawable.dots_vertical);
         bottomNavigationView.setOnItemSelectedListener(bottomItemSelectedListener);
         updateBottomNavigationBadgeIfNeeded();
@@ -919,6 +929,8 @@ public class MainActivity extends CastEnabledActivity {
                             AudioManager.ADJUST_TOGGLE_MUTE, AudioManager.FLAG_SHOW_UI);
                     return true;
                 }
+                break;
+            default:
                 break;
         }
 

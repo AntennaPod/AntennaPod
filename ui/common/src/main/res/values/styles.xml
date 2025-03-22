@@ -100,7 +100,6 @@
         <item name="colorSurface">@color/black</item>
         <item name="background_color">@color/black</item>
         <item name="background_elevated">@color/black</item>
-        <item name="android:navigationBarColor">@color/black</item>
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack" parent="Theme.AntennaPod.Dark">
@@ -110,7 +109,6 @@
         <item name="colorSurface">@color/black</item>
         <item name="background_color">@color/black</item>
         <item name="background_elevated">@color/black</item>
-        <item name="android:navigationBarColor">@color/black</item>
         <item name="colorPrimaryContainer">#0D182B</item>
         <item name="colorOnPrimaryContainer">@color/white</item>
     </style>
@@ -307,6 +305,10 @@
         <item name="android:textAlignment">center</item>
         <item name="android:paddingStart">8dp</item>
         <item name="android:paddingEnd">8dp</item>
+    </style>
+
+    <style name="TextBottomNav" parent="TextAppearance.Material3.TitleSmall">
+       <item name="android:textSize">11sp</item>
     </style>
 
     <style name="AppPreferenceThemeOverlay" parent="@style/PreferenceThemeOverlay">

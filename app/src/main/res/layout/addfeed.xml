@@ -50,12 +50,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:gravity="center_vertical"
                     android:background="?attr/colorSurfaceContainer">
 
                     <ImageView
                         android:id="@+id/searchButton"
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:padding="12dp"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
                         android:contentDescription="@string/search_podcast_hint"

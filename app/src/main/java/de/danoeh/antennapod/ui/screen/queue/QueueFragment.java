@@ -138,7 +138,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             loadItems(true);
             return;
         }
-        switch(event.action) {
+        switch (event.action) {
             case ADDED:
                 queue.add(event.position, event.item);
                 recyclerAdapter.notifyItemInserted(event.position);
@@ -158,7 +158,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 queue.clear();
                 recyclerAdapter.updateItems(queue);
                 break;
-            case MOVED:
+            default:
                 return;
         }
         recyclerAdapter.updateDragDropEnabled();
@@ -567,9 +567,13 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
 
         @Override
         protected void onAddItem(int title, SortOrder ascending, SortOrder descending, boolean ascendingIsDefault) {
-            if (ascending != SortOrder.EPISODE_FILENAME_A_Z && ascending != SortOrder.SIZE_SMALL_LARGE) {
-                super.onAddItem(title, ascending, descending, ascendingIsDefault);
+            if (ascending == SortOrder.EPISODE_FILENAME_A_Z || ascending == SortOrder.SIZE_SMALL_LARGE) {
+                return;
             }
+            if (ascending == SortOrder.DATE_OLD_NEW || ascending == SortOrder.SMART_SHUFFLE_OLD_NEW) {
+                ascendingIsDefault = true;
+            }
+            super.onAddItem(title, ascending, descending, ascendingIsDefault);
         }
 
         @Override

@@ -52,7 +52,7 @@ public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
-    public static final int VERSION = 3050000;
+    public static final int VERSION = 3080000;
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -121,6 +121,7 @@ public class PodDBAdapter {
     public static final String KEY_EPISODE_NOTIFICATION = "episode_notification";
     public static final String KEY_NEW_EPISODES_ACTION = "new_episodes_action";
     public static final String KEY_PODCASTINDEX_CHAPTER_URL = "podcastindex_chapter_url";
+    public static final String KEY_SOCIAL_INTERACT_URL = "social_interact_url";
     public static final String KEY_STATE = "state";
     public static final String KEY_PODCASTINDEX_TRANSCRIPT_URL = "podcastindex_transcript_url";
     public static final String KEY_PODCASTINDEX_TRANSCRIPT_TYPE = "podcastindex_transcript_type";
@@ -188,7 +189,8 @@ public class PodDBAdapter {
             + KEY_AUTO_DOWNLOAD_ENABLED + " INTEGER,"
             + KEY_PODCASTINDEX_CHAPTER_URL + " TEXT,"
             + KEY_PODCASTINDEX_TRANSCRIPT_TYPE + " TEXT,"
-            + KEY_PODCASTINDEX_TRANSCRIPT_URL + " TEXT" + ")";
+            + KEY_PODCASTINDEX_TRANSCRIPT_URL + " TEXT,"
+            + KEY_SOCIAL_INTERACT_URL + " TEXT)";
 
     private static final String CREATE_TABLE_FEED_MEDIA = "CREATE TABLE "
             + TABLE_NAME_FEED_MEDIA + " (" + TABLE_PRIMARY_KEY + KEY_DURATION
@@ -277,6 +279,7 @@ public class PodDBAdapter {
             + TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE_URL + ", "
             + TABLE_NAME_FEED_ITEMS + "." + KEY_AUTO_DOWNLOAD_ENABLED + ", "
             + TABLE_NAME_FEED_ITEMS + "." + KEY_PODCASTINDEX_CHAPTER_URL + ", "
+            + TABLE_NAME_FEED_ITEMS + "." + KEY_SOCIAL_INTERACT_URL + ", "
             + TABLE_NAME_FEED_ITEMS + "." + KEY_PODCASTINDEX_TRANSCRIPT_TYPE + ", "
             + TABLE_NAME_FEED_ITEMS + "." + KEY_PODCASTINDEX_TRANSCRIPT_URL;
 
@@ -680,6 +683,7 @@ public class PodDBAdapter {
         values.put(KEY_AUTO_DOWNLOAD_ENABLED, item.isAutoDownloadEnabled());
         values.put(KEY_IMAGE_URL, item.getImageUrl());
         values.put(KEY_PODCASTINDEX_CHAPTER_URL, item.getPodcastIndexChapterUrl());
+        values.put(KEY_SOCIAL_INTERACT_URL, item.getSocialInteractUrl());
 
         // We only store one transcript url, we prefer JSON if it exists
         String type = item.getTranscriptType();

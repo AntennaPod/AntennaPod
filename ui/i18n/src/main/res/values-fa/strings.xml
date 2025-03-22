@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">به‌روز رسانی اشتراک‌ها</string>
-    <string name="feeds_label">پادپخش‌ها</string>
     <string name="statistics_label">آمار</string>
     <string name="add_feed_label">افزودن پادپخش</string>
     <string name="episodes_label">قسمت‌ها</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">محبوب‌ها</string>
     <string name="settings_label">تنظیمات</string>
     <string name="downloads_label">بارگیری‌ها</string>
-    <string name="open_autodownload_settings">گشودن تنظمیات</string>
     <string name="downloads_log_label">گزارش بارگیری</string>
     <string name="subscriptions_label">اشتراک‌ها</string>
-    <string name="subscriptions_list_label">سیاههٔ اشتراک‌ها</string>
+    <string name="subscriptions_list_label">سیاههٔ اشتراک‌ها (فقط فهرست کناری)</string>
     <string name="cancel_download_label">لغو بارگیری</string>
     <string name="playback_history_label">تاریخچهٔ پخش</string>
-    <string name="episode_cache_full_title">انبارهٔ قسمت پر شده</string>
-    <string name="episode_cache_full_message">تجاوز از کران انبارهٔ قسمت. می‌توانید اندازهٔ انباره را در تنظیمات افزایش دهید.</string>
     <string name="years_statistics_label">سال</string>
     <string name="notification_pref_fragment">آگاهی‌ها</string>
     <string name="current_playing_episode">فعلی</string>
@@ -52,7 +48,7 @@
     <string name="home_new_title">ببینید چه مواردی جدید است</string>
     <string name="home_downloads_title">مدیریت موارد بارگیری‌شده</string>
     <string name="home_welcome_title">به آنتناپاد خوش‌آمدید!</string>
-    <string name="home_welcome_text">هنوز مشترک پادپخشی نشده‌اید. گشودن فهرست کناری برای افزودن پادپخش.</string>
+    <string name="home_welcome_text">هنوز مشترک پادپخشی نشده‌اید. گشودن فهرست برای افزودن پادپخش.</string>
     <string name="notification_permission_denied">اجازه را رد کردید.</string>
     <string name="configure_home">پیکربندی صفحه اصلی</string>
     <string name="section_hidden">نهفته</string>
@@ -116,8 +112,8 @@
     <string name="feed_auto_download_always">همیشه</string>
     <string name="feed_auto_download_never">هیچگاه</string>
     <string name="feed_new_episodes_action_add_to_inbox">افزودن به صندوق ورودی</string>
-    <string name="feed_new_episodes_action_add_to_queue">افزودن به صف</string>
-    <string name="feed_new_episodes_action_nothing">هیچ</string>
+    <string name="feed_new_episodes_action_add_to_queue">افزودن به صف، از کار انداختن بارگیری خودکار</string>
+    <string name="feed_new_episodes_action_nothing">هیچ، از کار انداختن بارگیری خودکار</string>
     <string name="episode_cleanup_never">هرگز</string>
     <string name="episode_cleanup_except_favorite_removal">وقتی که جزو علاقه‌مندی‌ها نباشد</string>
     <string name="episode_cleanup_queue_removal">وقتی که در صف نیست</string>
@@ -131,7 +127,7 @@
         <item quantity="other">%d قسمت</item>
     </plurals>
     <string name="episode_notification">آگاهی‌های قسمت</string>
-    <string name="episode_notification_summary">نمایش آگاهی هنگام انتشار قسمت جدید.</string>
+    <string name="episode_notification_summary">نمایش آگاهی هنگام انتشار قسمت جدید</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s دارای قسمتی جدید است</item>
         <item quantity="other">%2$s دارای %1$d قسمت جدید است</item>
@@ -235,7 +231,7 @@
     <string name="download_error_insufficient_space">حجم کافی بر روی دستگاه شما باقی نمانده است.</string>
     <string name="download_error_http_data_error">خطای دادهٔ HTTP</string>
     <string name="download_error_error_unknown">خطای ناشناخته</string>
-    <string name="download_error_parser_exception">کارساز میزبان پادپخش خوراکی خراب فرستاده.</string>
+    <string name="download_error_parser_exception">کارساز میزبان پادپخش خوراکی خراب فرستاده. توصیه می‌شود با تأیید کنندهٔ پادپخشی چون castfeedvalidator.com بررسی کرده و به سازندهٔ پادکست اطّلاع دهید.</string>
     <string name="download_error_unsupported_type">گونهٔ خوراک پشتیبانی نشده</string>
     <string name="download_error_unsupported_type_html">کارساز میزبان پادپخش پایگاه وب فرستاده ،نه پادپخش.</string>
     <string name="download_error_not_found">کارساز میزبان پادپخش نمی‌داند پرونده را کجا بیابد. شاید حذف شده باشد.</string>
@@ -265,7 +261,7 @@
     <string name="authentication_notification_title">هویت‌سنجی مورد نیاز است</string>
     <string name="confirm_mobile_download_dialog_title">تأیید بارگیری همراه</string>
     <string name="confirm_mobile_download_dialog_message">بارگیری روی دادهٔ همراه در تنظیمات از کار افتاده. آنتناپاد می‌تواند قسمت را بعداً که وای‌فای موجود بود به صورت خودکار بار بگیرد.</string>
-    <string name="confirm_mobile_download_dialog_message_vpn">برنامه VPN شما وانمود می کند که یک شبکه تلفن همراه است (اتصال اندازه گیری شده). دانلود از طریق اتصال داده تلفن همراه در تنظیمات غیرفعال است. اگر می خواهید این مشکل برطرف شود، با سازندگان برنامه VPN خود تماس بگیرید.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">- از وی‌پی‌ان استفاده می‌کنید؟ کارهٔ وی‌پی‌انتان وانمود می کند که شبکهٔ همراه (اندازه‌گیری شده) است. اگر می‌خواهید این مشکل حل شود، با سازندگان کارهٔ وی‌پی‌انتان تماس بگیرید.\n- از وی‌پی‌ان استفاده نمی‌کنید؟ تنظیمات وای‌فای اندرویدتان را گشوده و گونهٔ وای‌فایتان را به اندازه‌گیری نشده تغییر دهید.</string>
     <string name="confirm_mobile_download_dialog_download_later">بعداً بار گرفته شود</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">به هر روی بار گرفته شود</string>
     <string name="confirm_mobile_streaming_notification_title">تأیید جریان همراه</string>
@@ -406,7 +402,7 @@
     <string name="pref_playback_speed_sum">سرعتهای موجود برای بازپخش با سرعت متغیر را سفارشی کنید</string>
     <string name="pref_feed_playback_speed_sum">سرعت استفاده شده هنگام آغاز پخش صدا برای قسمت‌های این پادپخش</string>
     <string name="pref_feed_skip">پرش خودکار</string>
-    <string name="pref_feed_skip_sum">از اجرای قسمت معرفی و پایانی صرف نظر کن.</string>
+    <string name="pref_feed_skip_sum">پرش از معرّفی‌ها و تیتراژ پایانی</string>
     <string name="pref_feed_skip_ending">پرش به آخر</string>
     <string name="pref_feed_skip_intro">پرش به اول</string>
     <string name="pref_feed_skip_ending_toast">پرش از %d ثانیه آخر</string>
@@ -607,7 +603,7 @@
     <string name="add_preset">اضافه کردن پیش تنظیم</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">احراز هویت</string>
-    <string name="authentication_descr">تغییر نام کاربری و گذرواژه‌تان برای این پادپخش و قسمت‌هایش.</string>
+    <string name="authentication_descr">تغییر نام کاربری و گذرواژه‌تان برای این پادپخش و قسمت‌هایش</string>
     <string name="feed_tags_label">برچسب‌ها</string>
     <string name="feed_tags_summary">تغییر برچسب‌های این پادپخش برای کمک به سازمان‌دهی اشتراک‌هایتان</string>
     <string name="feed_folders_include_root">نمایش این قسمت در سیاههٔ اصلی</string>
@@ -621,7 +617,6 @@
     <string name="exclude_episodes_shorter_than">حذف قسمت‌های کوتاه‌تر از</string>
     <string name="keep_updated">به‌روز ماندن</string>
     <string name="keep_updated_summary">شامل شدن این پادپخش هنگام نوسازی (خودکار) همهٔ پادپخش‌ها</string>
-    <string name="auto_download_disabled_globally">بارگیری خودکار در تنظیمات اصلی آنتن پاد غیرفعال است</string>
     <string name="statistics_expected_next_episode_any_day">همین روزها</string>
     <string name="statistics_expected_next_episode_unknown">نانعلوم</string>
     <string name="edit_url_menu">URL فید را ویرایش کنید</string>
@@ -689,7 +684,6 @@
   <string name="proxy_type_label">نوع</string>
     <string name="host_label">میزبان</string>
     <string name="port_label">پورت</string>
-    <string name="optional_hint">(اختیاری)</string>
     <string name="proxy_test_label">تست</string>
     <string name="proxy_checking">چک کردن…</string>
     <string name="proxy_test_successful">تست موفق بود</string>
@@ -704,8 +698,8 @@
     <string name="notification_group_news">اخبار</string>
     <string name="notification_channel_user_action">نیاز به انجام کاری</string>
     <string name="notification_channel_user_action_description">در صورت نیاز به اقدام به عملی ، به عنوان مثال در صورت نیاز به وارد کردن رمز عبور ، نشان داده شود.</string>
-    <string name="notification_channel_downloading">درحال بارگیری</string>
-    <string name="notification_channel_downloading_description">هنگام بارگیری نشان داده می شود.</string>
+    <string name="notification_channel_downloading">قسمت‌های درحال بارگیری</string>
+    <string name="notification_channel_downloading_description">نشان داده شده هنگام بارگیری قسمت‌ها.</string>
     <string name="notification_channel_playing">در حال اجرا</string>
     <string name="notification_channel_playing_description">دادن اجازهٔ واپایش پخش. این آگاهی اصلی‌ایست که هنگام پخش یک پادپخش می‌بینید.</string>
     <string name="notification_channel_download_error">دانلود ناموفق</string>
@@ -744,7 +738,6 @@
     <string name="fast_forward_label">پیشبرد سریع</string>
     <string name="home_new_empty_text">قسمت‌های جدید این‌جا ظاهر خواهند شد. می‌توانید تصمیم بگیرید که به آن‌ها علاقه دارید یا نه.</string>
     <string name="bottom_navigation_summary">ویژگی آزمایشی: دسترسی به مهم‌ترین صفحه‌ها از هرجا با یک لمس</string>
-    <string name="statistics_episodes_played">پخش شده</string>
     <string name="pref_episode_cache_title">کران قسمت</string>
     <string name="clear_queue_confirmation_msg">لطفاً تأیید کنید که می‌خواهید همهٔ قسمت‌ها را از صف بردارید.</string>
     <string name="feed_delete_confirmation_local_msg">لطفاً تأیید کنید که می‌خواهید پادپخش «%1$s»، تاریخچهٔ پخش و آمارهایش را بردارید. پرونده‌های موجود در شاخهٔ منبع محلی حذف نخواهد شد.</string>
@@ -814,4 +807,71 @@
     <string name="feed_delete_confirmation_msg_batch">لطفاً تأیید کنید که می‌خواهید پادپخش گزیده، همهٔ قسمت‌هایش (از جمله بارگرفته‌ها)، تاریخچهٔ پخش و آمارهایش را حذف کنید.</string>
     <string name="state_deleted_not_subscribed">هنوز مشترک این پادپخش نیستید. برای دسترسی آسان‌تر و نگه داشتن تاریخجهٔ پخشش، به رایگان مشترک شوید.</string>
     <string name="edit_url_confirmation_msg">تغییر دادن نشانی خوراک می‌تواند وضعیت پخش و سیاهه کردن پادپخش را به آسانی خراب کند. تغییرش را توصیه نکرده و در صورت خراب شدن چیزی پشتیبانی ارائه نخواهیم داد. این کار بازگشت‌پذیر نیست. اشتراک‌های خراب نمی‌توانند با تغییر دوبارهٔ نشانی درست شوند. توصیه می‌کنیم پیش از ادامه، پشتیبان بگیرید.</string>
+    <string name="inbox_label_more">صندوق »</string>
+    <string name="downloads_label_more">بارگیری‌ها »</string>
+    <string name="subscriptions_label_more">اشتراک‌ها »</string>
+    <string name="notification_channel_refreshing">تازه سازی پادپخش‌ها</string>
+    <string name="echo_queue_hours_clean">که یعنی روزانه %1$s تا آغاز %2$d.</string>
+    <string name="queue_label_short">صف</string>
+    <string name="queue_label_more">صف »</string>
+    <string name="episodes_label_more">قسمت‌ها »</string>
+    <string name="add_feed_label_short">افزودن</string>
+    <string name="delete_tag_confirmation">تأیید درخواست حذف برچسب «%1$s».</string>
+    <string name="preference_search_clear_input">پاک سازی</string>
+    <string name="inbox_label_short">صندوق</string>
+    <string name="downloads_label_short">بارگیری‌ها</string>
+    <string name="disabled">از کار افتاده</string>
+    <string name="delete_tag_label">حذف برچسب</string>
+    <string name="global_default_with_value">پیش‌گزیدهٔ سراسری (%1$s)</string>
+    <string name="episodes_label_short">قسمت‌ها</string>
+    <string name="subscriptions_label_short">اشتراک‌ها</string>
+    <string name="home_label_short">خانه</string>
+    <string name="playback_history_label_short">تاریخچه</string>
+    <string name="download_error_unsupported_type_html_manual">نشانی وارد شده برای پایگاه وب است، نه خوراک پادپخش.</string>
+    <string name="echo_queue_title_clean">و آمادهٔ آغاز سال جدید هستید</string>
+    <string name="pref_automatic_download_queue_title">صف بارگیری</string>
+    <string name="echo_intro_your_year">سال</string>
+    <string name="overflow_more">بیش‌تر</string>
+    <plurals name="echo_queue_hours_waiting">
+        <item quantity="one">ساعت از %1$d قسمت\nدر صفتان منتظر است</item>
+        <item quantity="other">ساعت از %1$d قسمت\nدر صفتان منتظر است</item>
+    </plurals>
+    <string name="echo_listened_after_title">تحلیل‌هایی روی زمان ارائه قسمت‌ها و زمان تکمیلتان انجام داده‌ایم. نتیجه‌گیریمان؟</string>
+    <string name="echo_hoarder_comment_medium">قسمت‌هایی معادل %1$d٪ از %2$d اشتراک‌های فعّالتان در امسال را پخش کرده‌اید. چه‌طور است سری به «%3$s» بزنید؟</string>
+    <string name="echo_hoarder_comment_hoarder">شماره‌ها دروغ نمی‌گویند. و با پخش فقط %1$d٪ از %2$d اشتراک فعّالتان در امسال، احتمالاً درست می‌گوییم.</string>
+    <plurals name="echo_hours_podcasts">
+        <item quantity="one">ساعت قسمت‌هایی\nاز %1$d پادپخش را پخش‌کرده‌اید</item>
+        <item quantity="other">ساعت قسمت‌هایی\nاز %1$d پادپخش مختلف را پخش‌کرده‌اید</item>
+    </plurals>
+    <string name="pref_automatic_download_global_description">بارگیری خودکار قسمت‌های جدید. می‌تواند برای هر پادپخشی پایمال شود.</string>
+    <string name="pref_automatic_download_queue_description">بارگیری خودکار قسمت‌های صف شده</string>
+    <string name="episode_lists">سیاهه‌های قسمت</string>
+    <string name="pref_downloads_button_action_title">پخش از صفحهٔ بارگیری‌ها</string>
+    <string name="pref_downloads_button_action_sum">نمایش دکمهٔ پخش به جای دکمهٔ حذف روی صفحهٔ بارگیری</string>
+    <string name="statistics_time_total">مجموع</string>
+    <string name="statistics_time_played">پخش شده</string>
+    <string name="notification_channel_refreshing_description">نشان داده شده هنگام بررسی قسمت‌های جدید.</string>
+    <string name="echo_home_header">بازبینی سال</string>
+    <string name="echo_home_subtitle">آمار سال گذشته و برترین پادپخش‌هایتان. فقط روی تلفن خودتان.</string>
+    <string name="echo_intro_in_podcasts">در پادپخش‌هایتان</string>
+    <string name="echo_intro_locally">ایجاد شده به صورت محرمانه روی تلفنتان</string>
+    <string name="echo_hours_this_year">امسال</string>
+    <string name="echo_queue_title_many">و هنوز کمی بیش‌تر برای امسال دارید</string>
+    <string name="echo_queue_hours_normal">که یعنی روزانه %1$s تا آغاز %2$d. اگر از چند قسمت بپرید می‌توانید سال را تمیز آغاز کنید.</string>
+    <string name="echo_queue_hours_much">که یعنی روزانه %1$s تا آغاز %2$d. صبر کنید ببینم… چی؟</string>
+    <string name="echo_listened_after_comment_easy">آسان‌گیرید</string>
+    <string name="echo_listened_after_time">عموماً قسمت‌ها را %1$s پس از ارائه‌شان گوش می‌کنید.</string>
+    <string name="echo_listened_after_comment_addict">معتاد پادپخشید</string>
+    <string name="echo_hoarder_title">همچنین کنجکاو شدیم بدانیم به پادپخش‌هاییی که مشترکشان می‌شوید گوش می‌دهید یا نه؟</string>
+    <string name="enabled">به کار افتاده</string>
+    <string name="echo_hoarder_subtitle_clean">تمیز!</string>
+    <string name="echo_thanks_we_are_glad_old">که امسال هم با ما بودید!\n\nنخستین قسمتتان با ما را در %1$s پخش کردید. افتخار ما خدمت به شما از آن زمان است.</string>
+    <string name="echo_thanks_we_are_glad_new">که امسال به ما پیوستید!\n\nچه از کاره‌ای دیگر آمده باشید چه تجریهٔ پادپخشتان را با ما آغازیده باشید، از داشتنتان خوشنودیم!</string>
+    <string name="echo_thanks_large">سپاس</string>
+    <string name="echo_thanks_now_favorite">اکنون بیایید نگاهی به پادپخش‌های محبوبتان بیندازیم…</string>
+    <string name="echo_share_heading">پادپخش‌های محبوبم</string>
+    <string name="echo_share">سال %d در پادپخش‌ها. #AntennaPodEcho</string>
+    <string name="echo_hoarder_subtitle_hoarder">با نگاهی به اعداد، گمان می‌کنیم گردآورنده‌اید</string>
+    <string name="echo_hoarder_subtitle_medium">بررسی شد. گردآوری وجود ندارد.</string>
+    <string name="echo_hoarder_comment_clean">قسمت‌هایی معادل %1$d٪ از %2$d اشتراک‌های فعّالتان در امسال را پخش کرده‌اید. شرط می‌بندم میزتان را هم تمیز می‌کنید!</string>
 </resources>

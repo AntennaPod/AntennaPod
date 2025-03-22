@@ -1,5 +1,5 @@
 buildscript {
-    ext.agpVersion = "8.5.2"
+    ext.agpVersion = "8.6.0"
 }
 plugins {
     id 'com.android.application' version "$agpVersion" apply false
@@ -36,12 +36,12 @@ project.ext {
     //Tests
     awaitilityVersion = "3.1.6"
     junitVersion = "4.13"
-    robolectricVersion = "4.11"
+    robolectricVersion = "4.14"
     espressoVersion = "3.5.0"
     runnerVersion = "1.5.0"
     rulesVersion = "1.5.0"
     testCoreVersion = "1.5.0"
-    mockitoVersion = "5.11.0"
+    mockitoVersion = "5.15.2"
 }
 
 checkstyle {

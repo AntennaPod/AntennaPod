@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Uuenda tellimusi</string>
-    <string name="feeds_label">Taskuhäälingud</string>
     <string name="statistics_label">Statistika</string>
     <string name="add_feed_label">Lisa taskuhääling</string>
     <string name="episodes_label">Saated</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Lemmikud</string>
     <string name="settings_label">Seaded</string>
     <string name="downloads_label">Allalaadimised</string>
-    <string name="open_autodownload_settings">Ava seaded</string>
     <string name="downloads_log_label">Allalaadimise logi</string>
     <string name="subscriptions_label">Tellimused</string>
     <string name="subscriptions_list_label">Tellimuste nimekiri</string>
     <string name="cancel_download_label">Katkesta allalaadimine</string>
     <string name="playback_history_label">Esitamise ajalugu</string>
-    <string name="episode_cache_full_title">Saadete vahemälu on täis</string>
-    <string name="episode_cache_full_message">Saadete vahemälu limiit on täis. Vahemälu limiiti saab suurendada seadete alt.</string>
     <string name="years_statistics_label">Aastad</string>
     <string name="notification_pref_fragment">Teavitused</string>
     <string name="current_playing_episode">Praegune</string>
@@ -166,7 +162,7 @@
     <string name="updates_disabled_label">Värskendused keelatud</string>
     <plurals name="updated_feeds_batch_label">
         <item quantity="one">%d tellimus uuendati</item>
-        <item quantity="other">%d tellimust uuendati.</item>
+        <item quantity="other">%d tellimust uuendati</item>
     </plurals>
     <string name="edit_tags">Muuda silte</string>
     <string name="add_tag">Lisa silt</string>
@@ -330,7 +326,7 @@
     <string name="interruptions">Katkestused</string>
     <string name="playback_control">Esituse nupud</string>
     <string name="reassign_hardware_buttons">Muuda riistvara nuppude tegevus</string>
-    <string name="preference_search_hint">Otsing...</string>
+    <string name="preference_search_hint">Otsing…</string>
     <string name="preference_search_no_results">Tulemusi pole</string>
     <string name="preference_search_clear_history">Puhasta ajalugu</string>
     <string name="pref_episode_cleanup_summary">Saated, mida tohib kustutada, kui automaatne allalaadimine vajab ruumi uute saadete jaoks</string>
@@ -621,7 +617,6 @@
     <string name="exclude_episodes_shorter_than">Välista saated lühemad kui</string>
     <string name="keep_updated">Hoia uuendatuna</string>
     <string name="keep_updated_summary">Uuenda koos teiste taskuhäälingute (automaatse) värskendamisega ka seda</string>
-    <string name="auto_download_disabled_globally">Automaatne allalaadimine on keelatud AntennaPodi peamistes seadetes</string>
     <string name="statistics_expected_next_episode_any_day">Lähipäevadel</string>
     <string name="statistics_expected_next_episode_unknown">Teadmata</string>
     <string name="edit_url_menu">Muuda voo URLi</string>
@@ -639,9 +634,9 @@
     <string name="release_schedule_saturday">L</string>
     <string name="release_schedule_sunday">P</string>
     <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Tellimuste importimine teistest äppidest...</string>
+  <string name="sp_apps_importing_feeds_msg">Tellimuste importimine teistest äppidest…</string>
     <!--Add podcast fragment-->
-  <string name="search_podcast_hint">Otsi taskuhäälingut...</string>
+  <string name="search_podcast_hint">Otsi taskuhäälingut…</string>
     <string name="search_itunes_label">Otsi Apple Podcastsist</string>
     <string name="search_podcastindex_label">Otsi Podcast Indexist</string>
     <string name="search_fyyd_label">Search fyyd-ist</string>
@@ -689,9 +684,8 @@
   <string name="proxy_type_label">Tüüp</string>
     <string name="host_label">Hostinimi</string>
     <string name="port_label">Port</string>
-    <string name="optional_hint">(valikuline)</string>
     <string name="proxy_test_label">Proovi</string>
-    <string name="proxy_checking">Kontrollimine...</string>
+    <string name="proxy_checking">Kontrollimine…</string>
     <string name="proxy_test_successful">Kontroll oli edukas</string>
     <string name="proxy_test_failed">Kontroll ebaõnnestus</string>
     <string name="proxy_host_empty_error">Hostinimi ei saa olla tühi</string>

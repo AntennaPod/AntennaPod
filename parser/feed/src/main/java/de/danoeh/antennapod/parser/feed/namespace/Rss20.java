@@ -54,7 +54,10 @@ public class Rss20 extends Namespace {
                     && MimeTypeUtils.isMediaFile(mimeType) && validUrl) {
                 long size = 0;
                 try {
-                    size = Long.parseLong(attributes.getValue(ENC_LEN));
+                    String sizeStr = attributes.getValue(ENC_LEN);
+                    if (!TextUtils.isEmpty(sizeStr)) {
+                        size = Long.parseLong(sizeStr);
+                    }
                     if (size < 16384) {
                         // less than 16kb is suspicious, check manually
                         size = 0;

@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Abonnementen bijwerken</string>
-    <string name="feeds_label">Podcasts</string>
     <string name="statistics_label">Statistieken</string>
     <string name="add_feed_label">Podcast toevoegen</string>
     <string name="episodes_label">Afleveringen</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Favorieten</string>
     <string name="settings_label">Instellingen</string>
     <string name="downloads_label">Downloads</string>
-    <string name="open_autodownload_settings">Instellingen openen</string>
     <string name="downloads_log_label">Log downloaden</string>
     <string name="subscriptions_label">Abonnementen</string>
     <string name="subscriptions_list_label">Abonnementenlijst (alleen zijpaneel)</string>
     <string name="cancel_download_label">Download afbreken</string>
     <string name="playback_history_label">Afspeelgeschiedenis</string>
-    <string name="episode_cache_full_title">Afleveringscache is vol</string>
-    <string name="episode_cache_full_message">Het maximum aantal gecachete afleveringen is bereikt. Je kunt dit aantal verhogen in de instellingen.</string>
     <string name="years_statistics_label">Jaren</string>
     <string name="notification_pref_fragment">Meldingen</string>
     <string name="current_playing_episode">Huidige</string>
@@ -52,7 +48,7 @@
     <string name="home_new_title">Bekijk wat er nieuw is</string>
     <string name="home_downloads_title">Downloads beheren</string>
     <string name="home_welcome_title">Welkom bij AntennaPod!</string>
-    <string name="home_welcome_text">Je bent nog niet geabonneerd op een podcast. Open het zijpaneel om er een toe te voegen.</string>
+    <string name="home_welcome_text">Je bent nog niet geabonneerd op een podcast. Open het menu om er een toe te voegen.</string>
     <string name="notification_permission_denied">Toestemming geweigerd.</string>
     <string name="configure_home">Startscherm instellen</string>
     <string name="section_hidden">Verborgen</string>
@@ -116,8 +112,8 @@
     <string name="feed_auto_download_always">Altijd</string>
     <string name="feed_auto_download_never">Nooit</string>
     <string name="feed_new_episodes_action_add_to_inbox">Aan inbox toevoegen</string>
-    <string name="feed_new_episodes_action_add_to_queue">Toevoegen aan wachtrij</string>
-    <string name="feed_new_episodes_action_nothing">Niets</string>
+    <string name="feed_new_episodes_action_add_to_queue">Toevoegen aan wachtrij, automatisch downloaden uitschakelen</string>
+    <string name="feed_new_episodes_action_nothing">Niets, automatisch downloaden uitschakelen</string>
     <string name="episode_cleanup_never">Nooit</string>
     <string name="episode_cleanup_except_favorite_removal">Indien niet favoriet</string>
     <string name="episode_cleanup_queue_removal">Indien niet in wachtrij</string>
@@ -131,7 +127,7 @@
         <item quantity="other">%d afleveringen</item>
     </plurals>
     <string name="episode_notification">Afleveringsmeldingen</string>
-    <string name="episode_notification_summary">Toon een melding als er een nieuwe aflevering is uitgebracht.</string>
+    <string name="episode_notification_summary">Toon een melding als er een nieuwe aflevering is uitgebracht</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">Er is een nieuwe aflevering van %2$s</item>
         <item quantity="other">Er zijn %1$d nieuwe afleveringen van %2$s</item>
@@ -235,7 +231,7 @@
     <string name="download_error_insufficient_space">Er is onvoldoende ruimte op het toestel.</string>
     <string name="download_error_http_data_error">HTTP-gegevensfout</string>
     <string name="download_error_error_unknown">Onbekende fout</string>
-    <string name="download_error_parser_exception">De server van de podcast host heeft een beschadigde podcastfeed doorgegeven.</string>
+    <string name="download_error_parser_exception">De server van de podcast host heeft een beschadigde podcastfeed doorgegeven. We raden aan om te controleren met een podcast-checker zoals castfeedvalidator.com en de podcast-maker op de hoogte te stellen.</string>
     <string name="download_error_unsupported_type">Niet-ondersteunde feedsoort</string>
     <string name="download_error_unsupported_type_html">De server van de podcast host stuurde een website, geen podcast.</string>
     <string name="download_error_not_found">De server van de podcast host kan het bestand kan vinden. Mogelijk is het verwijderd.</string>
@@ -265,7 +261,7 @@
     <string name="authentication_notification_title">Authenticatie vereist</string>
     <string name="confirm_mobile_download_dialog_title">Bevestig downloaden via mobiel internet</string>
     <string name="confirm_mobile_download_dialog_message">Downloaden via mobiel internet is uitgeschakeld in de instellingen. AntennaPod kan de aflevering later downloaden is Wi-Fi beschikbaar is.</string>
-    <string name="confirm_mobile_download_dialog_message_vpn">Je VPN-app doet zich voor als een mobiel netwerk (metered connection). Downloaden via mobiele internet is uitgeschakeld in de instellingen. Als je dit probleem opgelost wil hebben, neem dan contact op met de makers van je VPN-app.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">- Gebruik je een VPN? Je VPN-app doet zich voor als een mobiel netwerk (betaalde verbinding). Neem contact op met de makers van je VPN-app om ze te vragen dit op te lossen.\n- Gebruik je geen VPN? Pas dan de Wifi-instellingen van Android aan om je netwerk niet meer als betaald te behandelen.</string>
     <string name="confirm_mobile_download_dialog_download_later">Later downloaden</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Toch downloaden</string>
     <string name="confirm_mobile_streaming_notification_title">Bevestig streamen via mobiel internet</string>
@@ -406,7 +402,7 @@
     <string name="pref_playback_speed_sum">De snelheden aanpassen die beschikbaar zijn voor afspelen met variabele snelheid</string>
     <string name="pref_feed_playback_speed_sum">De te gebruiken snelheid bij het afspelen van afleveringen in deze podcast</string>
     <string name="pref_feed_skip">Automatisch overslaan</string>
-    <string name="pref_feed_skip_sum">Sla introducties en aftitelingen over.</string>
+    <string name="pref_feed_skip_sum">Sla introducties en aftitelingen over</string>
     <string name="pref_feed_skip_ending">Laatste overslaan</string>
     <string name="pref_feed_skip_intro">Eerste overslaan</string>
     <string name="pref_feed_skip_ending_toast">Laatste %d seconden overgeslagen</string>
@@ -607,7 +603,7 @@
     <string name="add_preset">Voorinstelling toevoegen</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">Authenticatie</string>
-    <string name="authentication_descr">Gebruikersnaam en wachtwoord wijzigen voor deze podcast en bijbehorende afleveringen.</string>
+    <string name="authentication_descr">Gebruikersnaam en wachtwoord wijzigen voor deze podcast en bijbehorende afleveringen</string>
     <string name="feed_tags_label">Labels</string>
     <string name="feed_tags_summary">Wijzig de labels van deze podcast om abonnementen te organiseren</string>
     <string name="feed_folders_include_root">Podcast in de hoofdlijst tonen</string>
@@ -621,7 +617,6 @@
     <string name="exclude_episodes_shorter_than">Afleveringen uitsluiten die korter zijn dan</string>
     <string name="keep_updated">Bijgewerkt houden</string>
     <string name="keep_updated_summary">Deze podcast meenemen bij het (automatisch) vernieuwen van alle podcasts</string>
-    <string name="auto_download_disabled_globally">Automatisch downloaden is uitgeschakeld in de AntennaPod-instellingen</string>
     <string name="statistics_expected_next_episode_any_day">Elk moment</string>
     <string name="statistics_expected_next_episode_unknown">Onbekend</string>
     <string name="edit_url_menu">Feed-url bewerken</string>
@@ -689,7 +684,6 @@
   <string name="proxy_type_label">Type</string>
     <string name="host_label">Host</string>
     <string name="port_label">Poort</string>
-    <string name="optional_hint">(optioneel)</string>
     <string name="proxy_test_label">Testen</string>
     <string name="proxy_checking">Bezig met controleren…</string>
     <string name="proxy_test_successful">Test geslaagd</string>
@@ -703,17 +697,17 @@
   <string name="notification_group_errors">Foutmeldingen</string>
     <string name="notification_group_news">Nieuws</string>
     <string name="notification_channel_user_action">Actie vereist</string>
-    <string name="notification_channel_user_action_description">Tonen als een actie vereist is, bijvoorbeeld als je een wachtwoord moet invoeren.</string>
-    <string name="notification_channel_downloading">Downloaden</string>
-    <string name="notification_channel_downloading_description">Tonen als er iets wordt gedownload.</string>
+    <string name="notification_channel_user_action_description">Getoond als een actie vereist is, bijvoorbeeld als je een wachtwoord moet invoeren.</string>
+    <string name="notification_channel_downloading">Afleveringen downloaden</string>
+    <string name="notification_channel_downloading_description">Getoond als er afleveringen worden gedownload.</string>
     <string name="notification_channel_playing">Nu aan het afspelen</string>
     <string name="notification_channel_playing_description">Hiermee kun je het afspelen bedienen. Dit is de voornaamste melding tijdens het afspelen van een podcast.</string>
     <string name="notification_channel_download_error">Downloaden mislukt</string>
-    <string name="notification_channel_download_error_description">Wordt getoond als er iets misgaat, zoals het downloaden of het bijwerken van de feed.</string>
+    <string name="notification_channel_download_error_description">Getoond als er iets misgaat, zoals het downloaden of het bijwerken van de feed.</string>
     <string name="notification_channel_sync_error">Synchronisatie mislukt</string>
-    <string name="notification_channel_sync_error_description">Worden getoond als gpodder-synchronisatie mislukt.</string>
+    <string name="notification_channel_sync_error_description">Getoond als gpodder-synchronisatie mislukt.</string>
     <string name="notification_channel_new_episode">Nieuwe aflevering</string>
-    <string name="notification_channel_new_episode_description">Wordt getoond als een nieuwe aflevering is gevonden, waarbij meldingen zijn ingeschakeld</string>
+    <string name="notification_channel_new_episode_description">Getoond als een nieuwe aflevering is gevonden, waarbij meldingen zijn ingeschakeld</string>
     <!--Widget settings-->
   <string name="widget_settings">Widgetinstellingen</string>
     <string name="widget_create_button">Widget maken</string>
@@ -743,7 +737,6 @@
         <item quantity="one">%d uur na afloop</item>
         <item quantity="other">%d uren na afloop</item>
     </plurals>
-    <string name="statistics_episodes_played">afgespeeld</string>
     <string name="preview_episodes">Preview van afleveringen</string>
     <string name="bottom_navigation">Navigatiebalk</string>
     <string name="statistics_view_all">Alle podcasts »</string>
@@ -814,4 +807,71 @@
     <string name="edit_url_confirmation_msg">Het RSS adres veranderen maakt vaak de afspeelstatus en afleveringslijst van de podcast kapot. We raden dit af en bieden GEEN ondersteuning als er iets mis gaat. Dit kan niet ongedaan gemaakt worden. Het kapotte abonnement kan NIET gerepareerd worden door het oude adres weer terug te zetten. We raden aan om een eerst back-up te maken voordat je verder gaat.</string>
     <string name="multi_select_started_talkback">Meervoudige selectie acties onderaan getoond</string>
     <string name="episode_download_failed">Aflevering downloaden mislukt</string>
+    <string name="add_feed_label_short">Toevoegen</string>
+    <string name="queue_label_short">Wachtrij</string>
+    <string name="home_label_short">Start</string>
+    <string name="subscriptions_label_short">Abonnementen</string>
+    <string name="playback_history_label_short">Geschiedenis</string>
+    <string name="downloads_label_more">Downloads »</string>
+    <string name="subscriptions_label_more">Abonnementen »</string>
+    <string name="enabled">Ingeschakeld</string>
+    <string name="disabled">Uitgeschakeld</string>
+    <string name="pref_automatic_download_global_description">Nieuwe afleveringen automatisch downloaden. Kan per podcast aangepast worden.</string>
+    <string name="notification_channel_refreshing_description">Getoond tijdens controleren op nieuwe afleveringen.</string>
+    <string name="inbox_label_more">Postvak IN »</string>
+    <string name="episodes_label_short">Afleveringen</string>
+    <string name="inbox_label_short">Postvak IN</string>
+    <string name="delete_tag_label">Label verwijderen</string>
+    <string name="pref_downloads_button_action_title">Afspelen vanaf het downloadsscherm</string>
+    <string name="statistics_time_total">Totaal</string>
+    <string name="statistics_time_played">afgespeeld</string>
+    <string name="episodes_label_more">Afleveringen »</string>
+    <string name="pref_automatic_download_queue_title">Download toegevoegd aan wachtrij</string>
+    <string name="pref_automatic_download_queue_description">Afleveringen in de wachtrij automatisch downloaden</string>
+    <string name="episode_lists">Afleveringslijsten</string>
+    <string name="pref_downloads_button_action_sum">Toon een afspeelknop i.p.v. een verwijder knop op het downloadsscherm</string>
+    <string name="notification_channel_refreshing">Podcasts aan het verversen</string>
+    <string name="echo_home_header">Blik terug op het jaar</string>
+    <string name="echo_intro_your_year">Jouw jaar</string>
+    <string name="echo_intro_in_podcasts">in podcasts</string>
+    <string name="echo_intro_locally">privé gegenereerd op jouw telefoon</string>
+    <string name="echo_hours_this_year">Dit jaar heb je afgespeeld</string>
+    <string name="echo_queue_title_clean">En je bent klaar om een schone start van het jaar te maken. Je hebt</string>
+    <string name="echo_queue_hours_normal">Dat is zo\'n %1$s per dag tot %2$d start. Je kunt een schone start van het jaar maken als je een paar afleveringen overslaat.</string>
+    <string name="echo_queue_hours_clean">Dat is zo\'n %1$s per dag tot %2$d start.</string>
+    <string name="echo_queue_hours_much">Dat is zo\'n %1$s per dag tot %2$d start. Wacht, wat?</string>
+    <string name="echo_listened_after_comment_easy">Je luistert op je gemak</string>
+    <string name="echo_listened_after_time">Typisch voltooi je een aflevering %1$s na uitgave.</string>
+    <string name="echo_hoarder_title">We vroegen ons ook af: luister je wel echt naar de podcasts waarop je geabonneerd bent?</string>
+    <string name="echo_hoarder_subtitle_hoarder">Gezien de cijfers denken we dat je een verzamelaar bent</string>
+    <string name="echo_hoarder_subtitle_clean">Opgeruimd!</string>
+    <string name="echo_hoarder_subtitle_medium">Klaar. Geen verzameling te zien hier.</string>
+    <string name="echo_thanks_large">Bedankt</string>
+    <string name="echo_thanks_now_favorite">Laten we nu eens kijken naar je favoriete podcasts…</string>
+    <string name="echo_share_heading">Mijn favoriete podcasts</string>
+    <string name="echo_share">Mijn %d in podcasts. #AntennaPodEcho</string>
+    <string name="downloads_label_short">Downloads</string>
+    <string name="delete_tag_confirmation">Bevestig dat je het label \"%1$s\" wilt verwijderen.</string>
+    <string name="queue_label_more">Wachtrij »</string>
+    <string name="echo_home_subtitle">Jouw top-podcasts en statistieken uit het afgelopen jaar. Exclusief op jouw telefoon.</string>
+    <string name="download_error_unsupported_type_html_manual">Het adres dat je hebt ingevoerd is een website adres, niet een podcast RSS adres.</string>
+    <string name="global_default_with_value">Standaardinstelling (%1$s)</string>
+    <string name="echo_queue_title_many">En je hebt nog best wat te doen dit jaar. Je hebt</string>
+    <plurals name="echo_queue_hours_waiting">
+        <item quantity="one">uren wachten in je wachtrij\nvan %1$d aflevering</item>
+        <item quantity="other">uren wachten in je wachtrij\nvan %1$d afleveringen</item>
+    </plurals>
+    <plurals name="echo_hours_podcasts">
+        <item quantity="one">uren aan afleveringen\nvan %1$d podcast</item>
+        <item quantity="other">uren aan afleveringen\nvan %1$d verschillende podcasts</item>
+    </plurals>
+    <string name="echo_listened_after_comment_addict">Je bent verslaafd aan podcasts</string>
+    <string name="echo_listened_after_title">We hebben wat geanalyseerd wanneer nieuwe afleveringen worden uitgegeven, en wanneer je ze voltooid hebt. Onze conclusie?</string>
+    <string name="echo_hoarder_comment_hoarder">Getallen liegen niet, zegt men. En aangezien slechts %1$d%% van je %2$d actieve abonnementen dit jaar zijn afgespeeld, hebben we waarschijnlijk gelijk.</string>
+    <string name="echo_hoarder_comment_medium">Je hebt dit jaar %1$d%% van je %2$d actieve abonnementen afgespeeld. Misschien moet je weer eens naar \"%3$s\" luisteren?</string>
+    <string name="echo_hoarder_comment_clean">Je hebt %1$dd%% van je %2$d active abonnementen afgespeeld dit jaar. Je bureau ziet er vast ook opgeruimd uit!</string>
+    <string name="echo_thanks_we_are_glad_new">dat je dit jaar bij ons bent begonnen!\n\nOf je nou bent overgestapt uit een andere app, of je podcast-avontuur met ons bent begonnen: we zijn blij dat je er bent!</string>
+    <string name="echo_thanks_we_are_glad_old">dat je dit jaar bij ons bent gebleven\n\nJe hebt je eerste aflevering met ons afgespeeld in %1$s. Het is voor ons een eer u sindsdien van dienst te zijn.</string>
+    <string name="preference_search_clear_input">Wissen</string>
+    <string name="overflow_more">Meer</string>
 </resources>

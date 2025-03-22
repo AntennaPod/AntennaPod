@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Actualizare abonamente</string>
-    <string name="feeds_label">Podcasturi</string>
     <string name="statistics_label">Statistici</string>
     <string name="add_feed_label">Adaugă podcast</string>
     <string name="episodes_label">Episoade</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Favorite</string>
     <string name="settings_label">Setări</string>
     <string name="downloads_label">Descărcări</string>
-    <string name="open_autodownload_settings">Deschide setări</string>
     <string name="downloads_log_label">Istoric descărcări</string>
     <string name="subscriptions_label">Abonamente</string>
     <string name="subscriptions_list_label">Listă Abonamente</string>
     <string name="cancel_download_label">Anulează descărcarea</string>
     <string name="playback_history_label">Istoricul de ascultare</string>
-    <string name="episode_cache_full_title">Memorie cache plină</string>
-    <string name="episode_cache_full_message">Memoria cache pentru episoade este plină. Puteți mări mărimea memoriei in Setări.</string>
     <string name="years_statistics_label">Ani</string>
     <string name="notification_pref_fragment">Notificări</string>
     <string name="current_playing_episode">Curent</string>
@@ -136,7 +132,7 @@
     <string name="episode_notification_summary">Arată notificări când un nou episod este disponibil.</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s are un episod nou</item>
-        <item quantity="few">%2$s are episoade noi</item>
+        <item quantity="few">%2$s are %1$d episoade noi</item>
         <item quantity="other">%2$s are %1$d episoade noi</item>
     </plurals>
     <plurals name="new_episode_notification_title">
@@ -349,7 +345,7 @@
     <string name="interruptions">Intreruperi</string>
     <string name="playback_control">Controlul redării</string>
     <string name="reassign_hardware_buttons">Reatribuiți butoanele fizice</string>
-    <string name="preference_search_hint">Căutare...</string>
+    <string name="preference_search_hint">Căutare…</string>
     <string name="preference_search_no_results">Fără rezultate</string>
     <string name="preference_search_clear_history">Istoric gol</string>
     <string name="pref_episode_cleanup_title">Şterge înaintea descărcării automate</string>
@@ -512,10 +508,10 @@
     <string name="search_online">Caută online</string>
     <!--Synchronization-->
   <string name="sync_status_started">Sincronizarea a început</string>
-    <string name="sync_status_episodes_upload">Se încarcă schimbările episoadelor...</string>
-    <string name="sync_status_episodes_download">Se descarcă modificările episoadelor...</string>
-    <string name="sync_status_upload_played">Se încarcă starea fișierelor redate...</string>
-    <string name="sync_status_subscriptions">Se sincronizează abonamentele...</string>
+    <string name="sync_status_episodes_upload">Se încarcă schimbările episoadelor…</string>
+    <string name="sync_status_episodes_download">Se descarcă modificările episoadelor…</string>
+    <string name="sync_status_upload_played">Se încarcă starea fișierelor redate…</string>
+    <string name="sync_status_subscriptions">Se sincronizează abonamentele…</string>
     <string name="sync_status_success">Sincronizarea a reușit</string>
     <string name="sync_status_error">Sincronizarea a eșuat</string>
     <!--import and export-->
@@ -542,7 +538,7 @@
     <string name="automatic_database_export_error">A apărut o eroare în timpul creării bazei de date</string>
     <string name="database_import_label">import bază de date</string>
     <string name="database_import_warning">Importarea unei baze de date va înlocui abonamentele tale și istoricul fișierelor redate. Ar trebui să exporți baza de date curentă ca un fișier de rezervă. Dorești să înlocuiești?</string>
-    <string name="please_wait">Vă rugăm așteptați...</string>
+    <string name="please_wait">Vă rugăm așteptați…</string>
     <string name="export_error_label">Eroare exportare</string>
     <string name="export_success_title">Exportarea a reușit</string>
     <string name="opml_import_ask_read_permission">Accesarea memoriei externe este necesară pentru a citi fișierul OPML</string>
@@ -659,7 +655,6 @@
     <string name="exclude_episodes_shorter_than">Exclude episoadele mai scurte de</string>
     <string name="keep_updated">Menține actualizat</string>
     <string name="keep_updated_summary">Include acest podcast când reîmprospătarea automată a podcasturilor este pornită</string>
-    <string name="auto_download_disabled_globally">Descărcarea automată este oprită în setările generale ale AntennaPod</string>
     <string name="statistics_expected_next_episode_any_day">Cât de curând</string>
     <string name="statistics_expected_next_episode_unknown">Nu se știe</string>
     <string name="edit_url_menu">Editează fluxurile URL</string>
@@ -678,9 +673,9 @@
     <string name="release_schedule_saturday">Sâm</string>
     <string name="release_schedule_sunday">Dum</string>
     <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Importare abonamente din aplicații cu un singur scop...</string>
+  <string name="sp_apps_importing_feeds_msg">Importare abonamente din aplicații cu un singur scop…</string>
     <!--Add podcast fragment-->
-  <string name="search_podcast_hint">Caută podcast...</string>
+  <string name="search_podcast_hint">Caută podcast…</string>
     <string name="search_itunes_label">Caută în Apple Podcasts</string>
     <string name="search_podcastindex_label">Caută în Podcast Index</string>
     <string name="search_fyyd_label">Caută în fyyd</string>
@@ -728,9 +723,8 @@
   <string name="proxy_type_label">Tip</string>
     <string name="host_label">Server Gazdă</string>
     <string name="port_label">Port</string>
-    <string name="optional_hint">(Opțional)</string>
     <string name="proxy_test_label">Se testează</string>
-    <string name="proxy_checking">Se verifică...</string>
+    <string name="proxy_checking">Se verifică…</string>
     <string name="proxy_test_successful">Testul a reușit</string>
     <string name="proxy_test_failed">Testul a eșuat</string>
     <string name="proxy_host_empty_error">Numele serverului gazdă nu poate fi gol</string>

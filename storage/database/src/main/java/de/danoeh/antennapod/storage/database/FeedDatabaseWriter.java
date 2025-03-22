@@ -187,8 +187,6 @@ public abstract class FeedDatabaseWriter {
                             || priorMostRecentDate.before(item.getPubDate())
                             || priorMostRecentDate.equals(item.getPubDate());
                     if (savedFeed.getState() == Feed.STATE_SUBSCRIBED && shouldPerformNewEpisodesAction) {
-                        Log.d(TAG, "Performing new episode action for item published on " + item.getPubDate()
-                                + ", prior most recent date = " + priorMostRecentDate);
                         FeedPreferences.NewEpisodesAction action = savedFeed.getPreferences().getNewEpisodesAction();
                         if (action == FeedPreferences.NewEpisodesAction.GLOBAL) {
                             action = UserPreferences.getNewEpisodesAction();

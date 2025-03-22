@@ -2,24 +2,20 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">تحديث الاشتراكات</string>
-    <string name="feeds_label">البودكاستات</string>
     <string name="statistics_label">الإحصائيات</string>
     <string name="add_feed_label">إضافة بودكاست</string>
     <string name="episodes_label">الحلقات</string>
     <string name="home_label">الصفحة الرئيسية</string>
-    <string name="queue_label">لائحة الاستماع</string>
+    <string name="queue_label">قائمة الاستماع</string>
     <string name="inbox_label">صندوق الوارد</string>
     <string name="favorite_episodes_label">المفضلات</string>
     <string name="settings_label">الإعدادات</string>
     <string name="downloads_label">التنزيلات</string>
-    <string name="open_autodownload_settings">افتح الإعدادات</string>
     <string name="downloads_log_label">سجل التنزيلات</string>
     <string name="subscriptions_label">الاشتراكات</string>
     <string name="subscriptions_list_label">لائحة الاشتراكات (فقط في الدرج)</string>
     <string name="cancel_download_label">ألغِ التنزيل</string>
     <string name="playback_history_label">سجل التشغيل</string>
-    <string name="episode_cache_full_title">ذاكرة تخزين الحلقات ممتلئة</string>
-    <string name="episode_cache_full_message">لقد تجاوزت الحد الأقصى لتخزين الحلقات. ارفع قيمة التخزين في الإعدادات.</string>
     <string name="years_statistics_label">السنين</string>
     <string name="notification_pref_fragment">إشعارات</string>
     <string name="current_playing_episode">الحالي</string>
@@ -52,7 +48,7 @@
     <string name="home_new_title">اطلع على الجديد</string>
     <string name="home_downloads_title">إدارة التنزيلات</string>
     <string name="home_welcome_title">مرحبا بك في AntennaPod!</string>
-    <string name="home_welcome_text">لم تشترك بأي بودكاست، أفتح الدرج لإضافة بودكاست.</string>
+    <string name="home_welcome_text">لم تشترك بأي بودكاست، أفتح القائمة لإضافة بودكاست.</string>
     <string name="notification_permission_denied">لقد رفضت السماح بالإشعارات.</string>
     <string name="configure_home">اضبط شاشة المنزل</string>
     <string name="section_hidden">مخفي</string>
@@ -116,8 +112,8 @@
     <string name="feed_auto_download_always">دائما</string>
     <string name="feed_auto_download_never">ابدا</string>
     <string name="feed_new_episodes_action_add_to_inbox">أضف إلى صندوق الوارد</string>
-    <string name="feed_new_episodes_action_add_to_queue">أضف للائحة الاستماع</string>
-    <string name="feed_new_episodes_action_nothing">فارغ</string>
+    <string name="feed_new_episodes_action_add_to_queue">أضف إلى لائحة الاستماع, عطّل التحميل التلقائي</string>
+    <string name="feed_new_episodes_action_nothing">لا شيء, عطّل التحميل التلقائي</string>
     <string name="episode_cleanup_never">ابدا</string>
     <string name="episode_cleanup_except_favorite_removal">عند عدم التفضيل</string>
     <string name="episode_cleanup_queue_removal">إذا لم يكن في لائحة الاستماع</string>
@@ -155,7 +151,7 @@
         <item quantity="other">%d حلقات</item>
     </plurals>
     <string name="episode_notification">تنبيه بالحلقات الجديدة</string>
-    <string name="episode_notification_summary">نبهني عند صدور حلقة جديدة.</string>
+    <string name="episode_notification_summary">نبهني عند صدور حلقة جديدة</string>
     <plurals name="new_episode_notification_message">
         <item quantity="zero">لا حلقات جديدة من %2$s</item>
         <item quantity="one">حلقة جديدة من %2$s</item>
@@ -308,7 +304,7 @@
     <string name="download_error_insufficient_space">لا توجد مساحة متبقية كافية في جهازك.</string>
     <string name="download_error_http_data_error">خطأ في بيانات HTTP</string>
     <string name="download_error_error_unknown">خطأ غير معروف</string>
-    <string name="download_error_parser_exception">أرسَل خادم البودكاست المستضيف ملف تغذية معطوبًا.</string>
+    <string name="download_error_parser_exception">قام خادم مضيف البودكاست بإرسال موجز بودكاست معطل. نوصي بمراجعة أداة التحقق من صحة البودكاست مثل castfeedvalidator.com والاتصال بمنشئ البودكاست لإعلامه بذلك.</string>
     <string name="download_error_unsupported_type">نمط قناة غير مدعوم</string>
     <string name="download_error_unsupported_type_html">أرسل خادم البودكاست المستضيف موقعًا و ليس بودكاستًا.</string>
     <string name="download_error_not_found">تعذر خادم البودكاست من العثور على الملف. من الارجح أن الملف محذوف.</string>
@@ -326,12 +322,12 @@
     <string name="download_error_request_error">خطأ طلب</string>
     <string name="download_error_db_access">خطأ وصول لقاعدة البيانات</string>
     <plurals name="downloads_left">
-        <item quantity="zero">%d تنزيل بقي</item>
-        <item quantity="one">%d تنزيل بقي</item>
-        <item quantity="two">%d تنزيلان بقيا</item>
-        <item quantity="few">%d تنزيلات بقت</item>
-        <item quantity="many">%d تنزيلات بقت</item>
-        <item quantity="other">%d تنزيلات بقت</item>
+        <item quantity="zero">بقي %d تنزيل</item>
+        <item quantity="one">بقي تنزيل واحد</item>
+        <item quantity="two">بقي تنزيلان</item>
+        <item quantity="few">بقي %d تنزيلات</item>
+        <item quantity="many">بقي %d تنزيلاً</item>
+        <item quantity="other">بقي %d تنزيل</item>
     </plurals>
     <string name="download_notification_title_feeds">يجري تحديث البودكاستات</string>
     <string name="download_notification_title_episodes">يجري تنزيل الحلقات</string>
@@ -342,7 +338,7 @@
     <string name="authentication_notification_title">التحقق مطلوب</string>
     <string name="confirm_mobile_download_dialog_title">أكد رغبة التنزيل باستخدام بيانات الجوال</string>
     <string name="confirm_mobile_download_dialog_message">عُطلت ميزة التنزيل باستخدام بيانات الجوال في الإعدادات. يمكن لـ AntennaPod أن ينزل الحلقة تلقائيا عند توفر شبكة واي-فاي.</string>
-    <string name="confirm_mobile_download_dialog_message_vpn">يدّعي تطبيق VPN الخاص بك بأنه شبكة جوال(إتصال محدود الاستخدام). عطّل التنزيل عن طريق شبكة الجوال في الإعدادات. إذا أردت حل هذه المشلكة، تواصل مع مطوري تطبيق VPN المستخدم.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">- هل تستخدم VPN؟ يتظاهر تطبيق VPN الخاص بك بأنه شبكة جوال (اتصال مقنن). إذا كنت تريد إصلاح هذه المشكلة، اتصل بمنشئي تطبيق VPN الخاص بك.\n- لا تستخدم VPN؟ افتح إعدادات Wi-Fi لنظام Android وقم بتغيير نوع شبكة Wi-Fi الخاصة بك لتكون غير مقننة.</string>
     <string name="confirm_mobile_download_dialog_download_later">التنزيل لاحقا</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">التنزيل على أي حال</string>
     <string name="confirm_mobile_streaming_notification_title">أكد البث التدفقي باستخدام بيانات الجوال</string>
@@ -493,7 +489,7 @@
     <string name="pref_playback_speed_sum">حدد السرعات المتوفرة في التشغيل متعدد السرعات</string>
     <string name="pref_feed_playback_speed_sum">سرعة التشغيل الصوتي عند بدء تشغيل حلقات من هذا البودكاست</string>
     <string name="pref_feed_skip">تخطي تلقائي</string>
-    <string name="pref_feed_skip_sum">تخطى المقدمة والمؤخرة.</string>
+    <string name="pref_feed_skip_sum">تخطى المقدمة والختام</string>
     <string name="pref_feed_skip_ending">تخطى الآخر</string>
     <string name="pref_feed_skip_intro">تخطى الأول</string>
     <string name="pref_feed_skip_ending_toast">تخطى آخر %d ثانية</string>
@@ -737,7 +733,7 @@
     <string name="download_completed_talkback">انتهى تنزيل %1$s</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">تسجيل الدخول</string>
-    <string name="authentication_descr">غيّر اسم المستخدم وكلمة المرور لهذا البودكاست وحلقاته.</string>
+    <string name="authentication_descr">غيّر اسم المستخدم وكلمة المرور لهذا البودكاست وحلقاته</string>
     <string name="feed_tags_label">العلامات</string>
     <string name="feed_tags_summary">غيّر العلامات الخاصة بهذا البودكاست للمساعدة في تنظيم اشتراكاتك</string>
     <string name="feed_folders_include_root">اعرض هذا البودكاست في القائمة الرئيسية</string>
@@ -751,7 +747,6 @@
     <string name="exclude_episodes_shorter_than">استبعد الحلقات الاقصر من</string>
     <string name="keep_updated">أبقه محدثا</string>
     <string name="keep_updated_summary">أضف هذا البودكاست عند تحديث (أو التحديث التلقائي) جميع ملفات البودكاستات</string>
-    <string name="auto_download_disabled_globally">التنزيل التلقائي معطل في الإعدادات الرئيسية لـ AntennaPod</string>
     <string name="statistics_expected_next_episode_any_day">قريبًا</string>
     <string name="statistics_expected_next_episode_unknown">غير معروف</string>
     <string name="edit_url_menu">عدل على الرابط</string>
@@ -820,7 +815,6 @@
   <string name="proxy_type_label">النوع</string>
     <string name="host_label">خادم</string>
     <string name="port_label">رقم المنفذ</string>
-    <string name="optional_hint">(إختياري)</string>
     <string name="proxy_test_label">اختبار</string>
     <string name="proxy_checking">تفحص…</string>
     <string name="proxy_test_successful">اختبار ناجح</string>
@@ -836,8 +830,8 @@
     <string name="notification_group_news">الأخبار</string>
     <string name="notification_channel_user_action">مطلوب اتخاذ إجراء</string>
     <string name="notification_channel_user_action_description">يظهر إذا كان الإجراء المطلوب منك ، على سبيل المثال إذا كنت بحاجة إلى إدخال كلمة مرور.</string>
-    <string name="notification_channel_downloading">تحميل</string>
-    <string name="notification_channel_downloading_description">يظهر عندما يكون التنزيل يحدث.</string>
+    <string name="notification_channel_downloading">جارٍ تنزيل الحلقات</string>
+    <string name="notification_channel_downloading_description">تظهر أثناء تنزيل الحلقات حالياً.</string>
     <string name="notification_channel_playing">يشغل حاليا</string>
     <string name="notification_channel_playing_description">تسمح بتحكم التشغيل. هذا الاشعار الرئيسي الذي تراه عند تشغيل البودكاست.</string>
     <string name="notification_channel_download_error">التنزيل فشل</string>
@@ -875,7 +869,6 @@
     <string name="mobile_download_notice">سيُنزّل باستخدام بيانات الهاتف لمدة %d دقيقة</string>
     <string name="bottom_navigation">التنقل السفلي</string>
     <string name="statistics_episodes_started">بُدأت</string>
-    <string name="statistics_episodes_played">شغِّلت</string>
     <string name="statistics_episodes_downloaded">نزِّلت</string>
     <string name="statistics_episodes_space">المساحة المستخدمة</string>
     <string name="statistics_years_barchart_description">مدة التشغيل في الشهر</string>
@@ -894,4 +887,46 @@
     <string name="sync_status_wait_for_downloads">بانتظار تحديث البودكاستات…</string>
     <string name="nextcloud_login_error_generic">فشل الولوج إلى NextCloud الخاص بك.\n\n- تأكد من اتصالك بالشبكة.\n- تأكد من صحة عنوان الخادم.\n- تأكد من تثبيت الملحق gpoddersync على NextCloud.</string>
     <string name="discover_more">اكتشف المزيد »</string>
+    <string name="pref_automatic_download_global_description">تنزيل الحلقات الجديدة تلقائياً. يمكن تعديله لكل بودكاست.</string>
+    <string name="pref_automatic_download_queue_title">التنزيل في قائمة الانتظار</string>
+    <string name="pref_automatic_download_queue_description">تنزيل الحلقات المدرجة في قائمة الانتظار تلقائياً</string>
+    <string name="episode_lists">قوائم الحلقة</string>
+    <string name="pref_downloads_button_action_title">شغّل من شاشة التنزيلات</string>
+    <string name="pref_downloads_button_action_sum">إعرض زر التشغيل بدلاً من زر الحذف على شاشة التنزيلات</string>
+    <string name="statistics_time_total">الإجمالي</string>
+    <string name="echo_hours_this_year">لقد استمعت هذا العام إلى</string>
+    <string name="echo_intro_locally">تم إنشاؤه بشكل خاص على هاتفك</string>
+    <string name="echo_queue_title_clean">وأنت مستعد لبداية عام نظيفة. لديك</string>
+    <string name="add_feed_label_short">أضف</string>
+    <string name="episodes_label_short">حلقات</string>
+    <string name="home_label_short">الصفحة الرئيسية</string>
+    <string name="queue_label_short">قائمة الاستماع</string>
+    <string name="inbox_label_short">صندوق الوارد</string>
+    <string name="downloads_label_short">التنزيلات</string>
+    <string name="subscriptions_label_short">الاشتراكات</string>
+    <string name="playback_history_label_short">سجل</string>
+    <string name="episodes_label_more">حلقات »</string>
+    <string name="queue_label_more">قائمة الاستماع »</string>
+    <string name="inbox_label_more">صندوق الوارد »</string>
+    <string name="downloads_label_more">التنزيلات »</string>
+    <string name="subscriptions_label_more">الاشتراكات »</string>
+    <string name="enabled">مفعّلة</string>
+    <string name="disabled">معطّلة</string>
+    <string name="global_default_with_value">الافتراضي العام (%1$s)</string>
+    <string name="delete_tag_label">احذف العلامة</string>
+    <string name="delete_tag_confirmation">الرجاء تأكيد رغبتك في حذف العلامة ”%1$s“.</string>
+    <string name="download_error_unsupported_type_html_manual">العنوان الذي أدخلته هو عنوان موقع ويب وليس عنوان RSS للبودكاست.</string>
+    <plurals name="echo_hours_podcasts">
+        <item quantity="zero">ساعات من الحلقات\nمن %1$d بودكاست</item>
+        <item quantity="one">ساعات من الحلقات\nمن %1$d بودكاست</item>
+        <item quantity="two">ساعات من الحلقات\nمن بودكاستان مختلفان</item>
+        <item quantity="few">ساعات من الحلقات\nمن %1$d بودكاستات مختلفة</item>
+        <item quantity="many">ساعات من الحلقات\nمن %1$d بودكاستاً مختلفاً</item>
+        <item quantity="other">ساعات من الحلقات\nمن %1$d بودكاست مختلف</item>
+    </plurals>
+    <string name="preference_search_clear_input">مسح</string>
+    <string name="overflow_more">المزيد</string>
+    <string name="statistics_time_played">تم الاستماع لها</string>
+    <string name="notification_channel_refreshing">تحديث البودكاستات</string>
+    <string name="echo_queue_title_many">ولا يزال أمامك الكثير هذا العام. لديك</string>
 </resources>

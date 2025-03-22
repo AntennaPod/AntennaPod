@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Hizivaat ar c\'houmanantoù</string>
-    <string name="feeds_label">Podskignadoù</string>
     <string name="statistics_label">Stadegoù</string>
     <string name="add_feed_label">Ouzhpennañ ur podskignad</string>
     <string name="episodes_label">Rannoù</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Sinedoù</string>
     <string name="settings_label">Gwellvezioù</string>
     <string name="downloads_label">Pellgargadennoù</string>
-    <string name="open_autodownload_settings">Digeriñ an arventennoù</string>
     <string name="downloads_log_label">Pellgargañ ar c\'herzhlevr</string>
     <string name="subscriptions_label">Koumanantoù</string>
     <string name="subscriptions_list_label">Roll ar c\'houmanantoù</string>
     <string name="cancel_download_label">Nullañ ar pellgargañ</string>
     <string name="playback_history_label">Roll istor lenn</string>
-    <string name="episode_cache_full_title">Leun eo krubuilh ar rannoù</string>
-    <string name="episode_cache_full_message">Tizhet eo bet bevenn pellgargadurioù ar rannoù. Gallout a rit kreskaat ment ar c\'hrubuilh en arventennoù.</string>
     <string name="years_statistics_label">Bloavezhioù</string>
     <string name="notification_pref_fragment">Rebuzadurioù</string>
     <string name="current_playing_episode">War ar stern</string>
@@ -139,9 +135,9 @@
     <string name="episode_notification_summary">Diskouez ur rebuzadur pa vez embannet ur rann nevez</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">Ur rann nevez a zo gant %2$s</item>
-        <item quantity="two">Ur rann nevez zo gant %2$s</item>
-        <item quantity="few">Ur rann nevez zo gant %2$s</item>
-        <item quantity="many">Ur rann nevez zo gant %2$s</item>
+        <item quantity="two">%1$d rann nevez zo gant %2$s</item>
+        <item quantity="few">%1$d rann nevez zo gant %2$s</item>
+        <item quantity="many">%1$d rann nevez zo gant %2$s</item>
         <item quantity="other">%1$d rann nevez zo gant %2$s</item>
     </plurals>
     <plurals name="new_episode_notification_title">
@@ -353,7 +349,7 @@
     <string name="interruptions">Diskrogoù</string>
     <string name="playback_control">Reoliadurioù lenn</string>
     <string name="reassign_hardware_buttons">Asinañ en-dro afelloù fizikel</string>
-    <string name="preference_search_hint">Klask...</string>
+    <string name="preference_search_hint">Klask…</string>
     <string name="preference_search_no_results">Disoc\'h ebet</string>
     <string name="preference_search_clear_history">Skarzhañ ar roll istor</string>
     <string name="pref_episode_cleanup_summary">Ar rannoù a c\'hallfe bezañ dilamet ma vez ezhomm muioc\'h a egor dieub gant ar pellgargañ emgefreek.</string>
@@ -499,8 +495,8 @@
   <string name="sync_status_started">Goubredañ loc\'het</string>
     <string name="sync_status_episodes_upload">Oc\'h uskargañ kemmoù ar rannoù</string>
     <string name="sync_status_episodes_download">O pellgargañ kemmoù ar rannoù</string>
-    <string name="sync_status_upload_played">Oc\'h uskargañ ar statudoù lenn...</string>
-    <string name="sync_status_subscriptions">O c\'houbredañ ar c\'houmanantoù...</string>
+    <string name="sync_status_upload_played">Oc\'h uskargañ ar statudoù lenn…</string>
+    <string name="sync_status_subscriptions">O c\'houbredañ ar c\'houmanantoù…</string>
     <string name="sync_status_success">Goubredet gant berzh</string>
     <string name="sync_status_error">C\'hwitadenn en ur c\'houbredañ</string>
     <!--import and export-->
@@ -524,7 +520,7 @@
     <string name="database_export_label">Ezporzhiañ ar stlennvon</string>
     <string name="database_import_label">Enporzhiañ ar stlennvon</string>
     <string name="database_import_warning">Enporzhiañ ur stlennvon a amsavo ho holl goumanantoù ha roll istor lenn. Erbediñ a reomp ezporzhiañ ho stlennvon en a-raok. Fellout a ra deoc\'h enporzhiañ?</string>
-    <string name="please_wait">Gortozit un tamm...</string>
+    <string name="please_wait">Gortozit un tamm…</string>
     <string name="export_error_label">Fazi ezporzhiañ</string>
     <string name="export_success_title">Ezporzhiet gant berzh</string>
     <string name="opml_import_ask_read_permission">Ret eo aotren haeziñ ar c\'hadaviñ diavaez evit lenn ar restr OPML</string>
@@ -623,12 +619,11 @@
     <string name="exclude_episodes_shorter_than">Skarzhañ kuit ar rannoù berroc\'h eget</string>
     <string name="keep_updated">Leuskel hizivaet</string>
     <string name="keep_updated_summary">Ebarzhiñ ar podskignad pa vez hizivaet an holl bodskignadoù</string>
-    <string name="auto_download_disabled_globally">N\'eo ket gweredekaet al lenn emgefreek e arventennoù pennañ AntennaPod</string>
     <string name="edit_url_menu">Kemm URL ar wazh</string>
     <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Oc\'h enporzhiañ ar c\'houmanantoù diwar arloadoù gant un arver unel...</string>
+  <string name="sp_apps_importing_feeds_msg">Oc\'h enporzhiañ ar c\'houmanantoù diwar arloadoù gant un arver unel…</string>
     <!--Add podcast fragment-->
-  <string name="search_podcast_hint">Klask ur podskignad...</string>
+  <string name="search_podcast_hint">Klask ur podskignad…</string>
     <string name="search_itunes_label">Klask war Apple Podcasts</string>
     <string name="search_podcastindex_label">Klask war Podcast Index</string>
     <string name="search_fyyd_label">Klask war fydd</string>
@@ -675,9 +670,8 @@
   <string name="proxy_type_label">RIzh</string>
     <string name="host_label">Ostiz</string>
     <string name="port_label">Porzh</string>
-    <string name="optional_hint">(Diret)</string>
     <string name="proxy_test_label">Amprouiñ</string>
-    <string name="proxy_checking">O wiriañ...</string>
+    <string name="proxy_checking">O wiriañ…</string>
     <string name="proxy_test_successful">Amprouet gant berzh</string>
     <string name="proxy_test_failed">C\'hwitet</string>
     <string name="proxy_host_empty_error">N\'hall ket an ostiz bezañ goullo</string>
