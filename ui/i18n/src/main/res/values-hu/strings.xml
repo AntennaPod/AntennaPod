@@ -113,8 +113,8 @@
     <string name="feed_auto_download_always">Mindig</string>
     <string name="feed_auto_download_never">Soha</string>
     <string name="feed_new_episodes_action_add_to_inbox">Hozzáadás a beérkezettekhez</string>
-    <string name="feed_new_episodes_action_add_to_queue">Hozzáadás a lejátszási sorhoz</string>
-    <string name="feed_new_episodes_action_nothing">Semmi</string>
+    <string name="feed_new_episodes_action_add_to_queue">Hozzáadás a lejátszási sorhoz, automatikus letöltés letiltása</string>
+    <string name="feed_new_episodes_action_nothing">Semmi, automatikus letöltés letiltása</string>
     <string name="episode_cleanup_never">Soha</string>
     <string name="episode_cleanup_except_favorite_removal">Ha nincs felvéve a kedvencek közé</string>
     <string name="episode_cleanup_queue_removal">Ha nincs sorba állítva</string>
@@ -615,7 +615,7 @@
     <string name="add_term">Kifejezés hozzáadása</string>
     <string name="exclude_terms">A lenti kifejezések bármelyikét tartalmazó epizódok kizárása</string>
     <string name="include_terms">Csak a lenti kifejezések egyikét tartalmazó epizódok belevétele</string>
-    <string name="exclude_episodes_shorter_than">Az ennél rövidebb epizódok kizárása:</string>
+    <string name="exclude_episodes_shorter_than">Ennél rövidebb epizódok kizárása</string>
     <string name="keep_updated">Frissítve tartás</string>
     <string name="keep_updated_summary">A podcast belevétele az összes podcast (automatikus) frissítésébe</string>
     <string name="statistics_expected_next_episode_any_day">Pár napon belül</string>
@@ -676,7 +676,7 @@
     <string name="share_dialog_for_social">Közösségi üzenet</string>
     <string name="share_dialog_media_address">Médiacím</string>
     <string name="share_dialog_media_file_label">Médiafájl</string>
-    <string name="share_starting_position_label">Ettől kezdve:</string>
+    <string name="share_starting_position_label">Ettől kezdve</string>
     <!--Audio controls-->
   <string name="audio_controls">Hangvezérlők</string>
     <string name="playback_speed">Lejátszási sebesség</string>
@@ -837,15 +837,15 @@
     <string name="echo_intro_your_year">Az Ön éve</string>
     <string name="echo_intro_in_podcasts">a podcastjeiben</string>
     <string name="echo_intro_locally">privátan előállítva a telefonján</string>
-    <string name="echo_hours_this_year">Az éven ennyit játszott le:</string>
+    <string name="echo_hours_this_year">Az éven</string>
     <plurals name="echo_hours_podcasts">
-        <item quantity="one">órányi epizód,\n%1$d podcastből</item>
-        <item quantity="other">órányi epizód,\n%1$d különböző podcastből</item>
+        <item quantity="one">órányi epizódot játszott le,\n%1$d podcastből</item>
+        <item quantity="other">órányi epizódot játszott le,\n%1$d különböző podcastből</item>
     </plurals>
-    <string name="echo_queue_title_clean">Készen áll a tiszta kezdésre az év elején. Ez vár Önre:</string>
+    <string name="echo_queue_title_clean">Készen áll a tiszta kezdésre az év elején,</string>
     <plurals name="echo_queue_hours_waiting">
-        <item quantity="one">órányi műsor a várakozási sorban,\n%1$d epizódból</item>
-        <item quantity="other">órányi műsor a várakozási sorban,\n%1$d epizódból</item>
+        <item quantity="one">órányi műsor van a várakozási sorban,\n%1$d epizódból</item>
+        <item quantity="other">órányi műsor van a várakozási sorban,\n%1$d epizódból</item>
     </plurals>
     <string name="echo_queue_hours_clean">Ez %2$d kezdetéig körülbelül napi %1$s.</string>
     <string name="echo_queue_hours_normal">Ez %2$d kezdetéig körülbelül napi %1$s. Tisztán kezdheti az évet, ha kihagy néhány epizódot.</string>
@@ -871,5 +871,8 @@
     <string name="pref_automatic_download_queue_title">Letöltés sorba állítva</string>
     <string name="pref_automatic_download_queue_description">Sorba állított epizódok automatikus letöltése</string>
     <string name="episode_lists">Epizódlisták</string>
-    <string name="echo_queue_title_many">Még van egy kis idő az évből. Ez vár Önre:</string>
+    <string name="echo_queue_title_many">Még van egy kis idő az évből,</string>
+    <string name="preference_search_clear_input">Törlés</string>
+    <string name="echo_listened_after_time">A kiadásuk után átlagosan %1$s után fejezte be az epizódokat.</string>
+    <string name="overflow_more">Továbbiak</string>
 </resources>

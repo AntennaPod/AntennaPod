@@ -50,7 +50,7 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
     private static final String TAG = "FeedSettingsPrefFrag";
     private static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
     private static final String PREF_EPISODE_FILTER = "episodeFilter";
-    private static final String PREF_AUTODOWNLOAD = "autoDownload";
+    private static final String PREF_AUTODOWNLOAD = "includeAutoDownload";
     private static final String PREF_SCREEN = "feedSettingsScreen";
     private static final String PREF_AUTHENTICATION = "authentication";
     private static final String PREF_AUTO_DELETE = "autoDelete";

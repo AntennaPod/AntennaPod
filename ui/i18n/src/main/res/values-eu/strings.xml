@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">Beti</string>
     <string name="feed_auto_download_never">Inoiz ez</string>
     <string name="feed_new_episodes_action_add_to_inbox">Gehitu sarrerako ontzira</string>
-    <string name="feed_new_episodes_action_add_to_queue">Gehitu ilaran</string>
-    <string name="feed_new_episodes_action_nothing">Ezer ez</string>
+    <string name="feed_new_episodes_action_add_to_queue">Gehitu ilaran, desgaitu deskarga automatikoa</string>
+    <string name="feed_new_episodes_action_nothing">Ezer ez, desgaitu deskarga automatikoa</string>
     <string name="episode_cleanup_never">Inoiz ez</string>
     <string name="episode_cleanup_except_favorite_removal">Gogoko ez denean</string>
     <string name="episode_cleanup_queue_removal">Ilaran ez dagoenean</string>
@@ -872,4 +872,6 @@
     <string name="subscriptions_label_more">Harpidetzak »</string>
     <string name="disabled">Desgaituta</string>
     <string name="global_default_with_value">Lehenetsi globala (%1$s)</string>
+    <string name="overflow_more">Gehiago</string>
+    <string name="preference_search_clear_input">Garbitu</string>
 </resources>

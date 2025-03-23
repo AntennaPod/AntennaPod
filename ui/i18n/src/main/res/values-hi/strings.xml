@@ -35,14 +35,14 @@
     <string name="statistics_from">से:</string>
     <string name="statistics_to">तक:</string>
     <string name="statistics_today">आज</string>
-    <string name="statistics_filter_all_time">सारा टाइम</string>
-    <string name="statistics_filter_past_year">आखिरी साल</string>
+    <string name="statistics_filter_all_time">पूरा समय</string>
+    <string name="statistics_filter_past_year">पिछले साल</string>
     <string name="statistics_reset_data">आंकड़े खाली करें</string>
     <string name="statistics_reset_data_msg">ये सारे एपिसोड का टाइम लॉग साफ कर देगा। पक्का आगे जाएं?</string>
-    <string name="statistics_counting_range">%1$s से %2$s के बीच सुना गया</string>
+    <string name="statistics_counting_range">%1$s से %2$s के बीच सुने हैं</string>
     <string name="statistics_counting_total">कुल सुना</string>
     <!--Home fragment-->
-  <string name="home_surprise_title">सरप्राइज़ हो लो</string>
+  <string name="home_surprise_title">चौंक गए?</string>
     <string name="home_classics_title">अपने क्लासिक देखें</string>
     <string name="home_continue_title">सुनना जारी रखें</string>
     <string name="home_new_title">क्या नया है</string>
@@ -557,7 +557,7 @@
     <string name="synchronization_full_sync_title">पूरा सिंक ज़बरदस्ती करें</string>
     <string name="synchronization_force_sync_summary">सभी सदस्यताओं और एपिसोड स्थितियों को पुनः-समकालित करें</string>
     <string name="synchronization_logout">लॉगआउट करें</string>
-    <string name="synchronization_login_status"><![CDATA[<i>%1$s</i> के तरह<i>%2$s</i> पे लॉगइन है।  <br/><br/> लॉगआउट करके सिंक प्रदाता वापस चुन सकते है]]></string>
+    <string name="synchronization_login_status"><![CDATA[<i>%1$s</i> के तरह<i>%2$s</i> पे लॉगइन है। <br/><br/> लॉगआउट करके सिंक प्रदाता वापस चुन सकते है]]></string>
     <string name="pref_synchronization_logout_toast">लॉगआउट हो गए</string>
     <string name="gpodnetsync_error_title">gpodder.net सिंक गड़बड़</string>
     <string name="gpodnetsync_error_descr">"सिंक करते टाइम एक गड़बड़ हुई: "</string>
@@ -690,4 +690,5 @@
     <string name="shortcut_subscription_label">सदस्यता शॉर्टकट</string>
     <string name="shortcut_select_subscription">सदस्यता चुनें</string>
     <string name="add_shortcut">शॉर्टकट जोड़ें</string>
+    <string name="home_no_recent_unplayed_episodes_text">आपने सभी नए एपिसोद सुन लिए है। यहां कुछ नया नहीं है ;)</string>
 </resources>

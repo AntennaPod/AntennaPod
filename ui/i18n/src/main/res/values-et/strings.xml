@@ -161,8 +161,8 @@
     <string name="please_wait_for_data">Palun oota andmete laadimist</string>
     <string name="updates_disabled_label">Värskendused keelatud</string>
     <plurals name="updated_feeds_batch_label">
-        <item quantity="one">%d tellimus uuendati%d tellimust uuendati.</item>
-        <item quantity="other"></item>
+        <item quantity="one">%d tellimus uuendati</item>
+        <item quantity="other">%d tellimust uuendati</item>
     </plurals>
     <string name="edit_tags">Muuda silte</string>
     <string name="add_tag">Lisa silt</string>

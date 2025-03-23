@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">总是</string>
     <string name="feed_auto_download_never">从不</string>
     <string name="feed_new_episodes_action_add_to_inbox">添加到收件箱</string>
-    <string name="feed_new_episodes_action_add_to_queue">添加到队列</string>
-    <string name="feed_new_episodes_action_nothing">啥都没有</string>
+    <string name="feed_new_episodes_action_add_to_queue">添加到队列，禁用自动下载</string>
+    <string name="feed_new_episodes_action_nothing">无，禁用自动下载</string>
     <string name="episode_cleanup_never">从不</string>
     <string name="episode_cleanup_except_favorite_removal">当未收藏时</string>
     <string name="episode_cleanup_queue_removal">当不在队列中</string>
@@ -850,4 +850,6 @@
     <string name="echo_share">我的 %d 年播客之旅回顾。#AntennaPodEcho</string>
     <string name="echo_queue_hours_clean">这相当于每天大约 %1$s，直至 %2$d 开始。</string>
     <string name="echo_hoarder_comment_hoarder">数字不撒谎。考虑到今年您的 %2$d 个活动订阅中仅 %1$d%% 已播放，我们的结论或许是对的。</string>
+    <string name="overflow_more">更多</string>
+    <string name="preference_search_clear_input">清除</string>
 </resources>

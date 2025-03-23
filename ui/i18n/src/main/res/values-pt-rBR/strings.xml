@@ -16,8 +16,6 @@
     <string name="subscriptions_list_label">Lista de assinaturas (apenas menu lateral)</string>
     <string name="cancel_download_label">Cancelar download</string>
     <string name="playback_history_label">Histórico de reprodução</string>
-    <string name="episode_cache_full_title">Cache de episódios cheio</string>
-    <string name="episode_cache_full_message">O limite de cache de episódios foi alcançado. Você pode aumentar o tamanho do cache em Configurações.</string>
     <string name="years_statistics_label">Anos</string>
     <string name="notification_pref_fragment">Notificações</string>
     <string name="current_playing_episode">Atual</string>

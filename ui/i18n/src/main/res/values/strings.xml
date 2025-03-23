@@ -152,8 +152,8 @@
     <string name="feed_auto_download_always">Always</string>
     <string name="feed_auto_download_never">Never</string>
     <string name="feed_new_episodes_action_add_to_inbox">Add to inbox</string>
-    <string name="feed_new_episodes_action_add_to_queue">Add to queue</string>
-    <string name="feed_new_episodes_action_nothing">Nothing</string>
+    <string name="feed_new_episodes_action_add_to_queue">Add to queue, disable auto download</string>
+    <string name="feed_new_episodes_action_nothing">Nothing, disable auto download</string>
     <string name="episode_cleanup_never">Never</string>
     <string name="episode_cleanup_except_favorite_removal">When not favorited</string>
     <string name="episode_cleanup_queue_removal">When not in queue</string>
@@ -414,6 +414,8 @@
     <string name="preference_search_hint">Search…</string>
     <string name="preference_search_no_results">No results</string>
     <string name="preference_search_clear_history">Clear history</string>
+    <string name="preference_search_clear_input">Clear</string>
+    <string name="overflow_more">More</string>
     <string name="pref_episode_cleanup_title">Delete before auto download</string>
     <string name="pref_episode_cleanup_summary">Episodes that should be eligible for removal if Auto Download needs space for new episodes</string>
     <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth are disconnected</string>

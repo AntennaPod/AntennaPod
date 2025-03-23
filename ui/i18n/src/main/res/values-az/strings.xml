@@ -16,8 +16,6 @@
     <string name="subscriptions_list_label">Abunəlik siyahısı (yalnız yan menü)</string>
     <string name="cancel_download_label">Endirməni dayandırın</string>
     <string name="playback_history_label">Dinləmə tarixçəsi</string>
-    <string name="episode_cache_full_title">Bölüm keşi dolub</string>
-    <string name="episode_cache_full_message">Bölüm keşi limiti bitdi. Keş ölçüsünü ayarlardan artıra bilərsiniz.</string>
     <string name="years_statistics_label">İllər</string>
     <string name="notification_pref_fragment">Bildirişlər</string>
     <!--Google Assistant-->
@@ -147,7 +145,6 @@
         <item quantity="one">%d bölüm gələnlər qutusundan silindi.</item>
         <item quantity="other">%d bölüm gələnlər qutusundan silindi.</item>
     </plurals>
-    <string name="auto_download_disabled_globally">Avtomotik yükləmə ayarlarda deaktiv edilib</string>
     <string name="episode_notification">Bölüm bildirişləri</string>
     <string name="mark_unread_label_no_media">Oxunmamış kimi işarələ</string>
     <string name="add_to_queue_label">Növbəyə əlavə et</string>
@@ -346,7 +343,6 @@
         <item quantity="one">%d bölümün ümumi ölçüsü</item>
         <item quantity="other">%d bölümün ümumi ölçüsü</item>
     </plurals>
-    <string name="statistics_episodes_played">dinlənmiş</string>
     <string name="support_funding_label">Dəstək</string>
     <string name="support_podcast">Bu podkastı dəstəklə</string>
     <string name="favorites_export_summary">Saxlanılmış sevimliləri fayla ixrac et</string>

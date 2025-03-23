@@ -178,8 +178,8 @@ public class FeedPreferences implements Serializable {
     }
 
     /**
-     * Update this FeedPreferences object from another one. The feedID, autoDownload and AutoDeleteAction attributes are excluded
-     * from the update.
+     * Update this FeedPreferences object from another one. The feedID, autoDownload and AutoDeleteAction attributes
+     * are excluded from the update.
      */
     public void updateFromOther(FeedPreferences other) {
         if (other == null)

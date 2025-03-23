@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">Sempre</string>
     <string name="feed_auto_download_never">Nunca</string>
     <string name="feed_new_episodes_action_add_to_inbox">Engadir a novidades</string>
-    <string name="feed_new_episodes_action_add_to_queue">Engadir á cola</string>
-    <string name="feed_new_episodes_action_nothing">Nada</string>
+    <string name="feed_new_episodes_action_add_to_queue">Engadir á cola, desactivar descarga automatica</string>
+    <string name="feed_new_episodes_action_nothing">Nada, desactivar descarga automatica</string>
     <string name="episode_cleanup_never">Nunca</string>
     <string name="episode_cleanup_except_favorite_removal">Cando non favorito</string>
     <string name="episode_cleanup_queue_removal">Cando non estea na cola</string>
@@ -872,4 +872,6 @@
     <string name="echo_listened_after_time">Normalmente completas o episodio %1$s despois de que fose publicado.</string>
     <string name="echo_listened_after_comment_addict">Tes adicción a isto dos podcasts</string>
     <string name="echo_hoarder_subtitle_hoarder">Mirando os números, cremos que che gusta acumular</string>
+    <string name="overflow_more">Máis</string>
+    <string name="preference_search_clear_input">Limpar</string>
 </resources>

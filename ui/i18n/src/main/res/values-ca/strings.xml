@@ -120,24 +120,24 @@
     <string name="episode_cleanup_after_listening">Després d\'acabar</string>
     <plurals name="num_selected_label">
         <item quantity="one">%1$d/%2$d seleccionat</item>
-        <item quantity="many"/>
+        <item quantity="many">%1$d/%2$d seleccionat</item>
         <item quantity="other">%1$d/%2$d seleccionats</item>
     </plurals>
     <plurals name="num_episodes">
         <item quantity="one">%d episodi</item>
-        <item quantity="many"/>
+        <item quantity="many">%d episodis</item>
         <item quantity="other">%d episodis</item>
     </plurals>
     <string name="episode_notification">Notificacions d\'episodi nou</string>
     <string name="episode_notification_summary">Mostra una notificació quan es publiqui un episodi nou</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s té un nou episodi</item>
-        <item quantity="many"/>
-        <item quantity="other">%2$sté %1$d episodis nous</item>
+        <item quantity="many">%2$s té %1$d episodis nous</item>
+        <item quantity="other">%2$s té %1$d episodis nous</item>
     </plurals>
     <plurals name="new_episode_notification_title">
         <item quantity="one">Nou episodi</item>
-        <item quantity="many"/>
+        <item quantity="many">Episodis nous</item>
         <item quantity="other">Episodis nous</item>
     </plurals>
     <string name="new_episode_notification_group_text">Les teves subscripcions tenen episodis nous.</string>
@@ -167,7 +167,7 @@
     <string name="updates_disabled_label">Actualitzacions desactivades</string>
     <plurals name="updated_feeds_batch_label">
         <item quantity="one">%d subscripció actualizada.</item>
-        <item quantity="many"/>
+        <item quantity="many">%d subscripcions actualizades.</item>
         <item quantity="other">%d subscripcions actualizades.</item>
     </plurals>
     <string name="edit_tags">Edita etiquetes</string>
@@ -179,7 +179,7 @@
   <string name="download_label">Baixa</string>
     <plurals name="downloading_batch_label">
         <item quantity="one">Baixant %d episodi.</item>
-        <item quantity="many"/>
+        <item quantity="many">Baixant %d episodis.</item>
         <item quantity="other">Baixant %d episodis.</item>
     </plurals>
     <string name="play_label">Reprodueix</string>
@@ -196,31 +196,31 @@
     <string name="play_this_to_seek_position">Per a botar a posicions deus reproduir l\'episodi.</string>
     <plurals name="marked_read_batch_label">
         <item quantity="one">%d episodi marcat com a reproduït.</item>
-        <item quantity="many"/>
+        <item quantity="many">%d episodis marcats com a reproduïts.</item>
         <item quantity="other">%d episodis marcats com a reproduïts.</item>
     </plurals>
     <string name="mark_unread_label">Marca com a pendent</string>
     <string name="mark_unread_label_no_media">Marcar com a no llegit</string>
     <plurals name="marked_unread_batch_label">
         <item quantity="one">%d episodi marcat com a no llegit.</item>
-        <item quantity="many"/>
+        <item quantity="many">%d episodis marcats com a no llegits.</item>
         <item quantity="other">%d episodis marcats com a no llegits.</item>
     </plurals>
     <string name="add_to_queue_label">Afegeix a la cua</string>
     <plurals name="added_to_queue_batch_label">
         <item quantity="one">%d episodi afegit a la cua.</item>
-        <item quantity="many"/>
+        <item quantity="many">%d episodis afegits a la cua.</item>
         <item quantity="other">%d episodis afegits a la cua.</item>
     </plurals>
     <string name="remove_from_queue_label">Suprimeix de la cua</string>
     <plurals name="removed_from_queue_batch_label">
         <item quantity="one">%d episodi retirat de la cua.</item>
-        <item quantity="many"/>
+        <item quantity="many">%d episodis retirats de la cua.</item>
         <item quantity="other">%d episodis retirats de la cua.</item>
     </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d episodi eliminat de la Safata d\'entrada.</item>
-        <item quantity="many"/>
+        <item quantity="many">%d episodis eliminats de la Safata d\'entrada.</item>
         <item quantity="other">%d episodis eliminats de la Safata d\'entrada.</item>
     </plurals>
     <string name="add_to_favorite_label">Afegeix a preferits</string>
@@ -266,7 +266,7 @@
     <string name="download_error_db_access">Error d\'accés a la Base de Dades</string>
     <plurals name="downloads_left">
         <item quantity="one">%d baixada pendent</item>
-        <item quantity="many"/>
+        <item quantity="many">%d baixades pendents</item>
         <item quantity="other">%d baixades pendents</item>
     </plurals>
     <string name="download_notification_title_feeds">S\'estan actualitzant els pòdcasts</string>
@@ -561,22 +561,22 @@
     <string name="time_hours">hores</string>
     <plurals name="time_seconds_quantified">
         <item quantity="one">%d segon</item>
-        <item quantity="many"/>
+        <item quantity="many">%d segons</item>
         <item quantity="other">%d segons</item>
     </plurals>
     <plurals name="time_minutes_quantified">
         <item quantity="one">%d minut</item>
-        <item quantity="many"/>
+        <item quantity="many">%d minuts</item>
         <item quantity="other">%d minuts</item>
     </plurals>
     <plurals name="time_hours_quantified">
         <item quantity="one">%d hora</item>
-        <item quantity="many"/>
+        <item quantity="many">%d hores</item>
         <item quantity="other">%d hores</item>
     </plurals>
     <plurals name="time_days_quantified">
         <item quantity="one">%d dia</item>
-        <item quantity="many"/>
+        <item quantity="many">%d dies</item>
         <item quantity="other">%d dies</item>
     </plurals>
     <string name="auto_enable_label">Activació automàtica del temporitzador en reproduir</string>

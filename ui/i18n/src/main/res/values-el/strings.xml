@@ -201,14 +201,14 @@
     <string name="mark_read_no_media_label">Επισήμανση ως αναγνωσμένο</string>
     <string name="play_this_to_seek_position">Προκειμένου να μεταπιδήσετε σε συγκεκριμένες θέσεις, πρέπει να αναπαράγετε το επεισόδιο</string>
     <plurals name="marked_read_batch_label">
-        <item quantity="one">%d επεισόδιο επισημάνθηκε ως αναπαραχθέν%d επεισόδια επισημάνθηκαν ως αναπαραχθέντα</item>
-        <item quantity="other"></item>
+        <item quantity="one">%d επεισόδιο επισημάνθηκε ως αναπαραχθέν</item>
+        <item quantity="other">%d επεισόδια επισημάνθηκαν ως αναπαραχθέντα</item>
     </plurals>
     <string name="mark_unread_label">Επισήμανση ως μη αναπαραχθέν</string>
     <string name="mark_unread_label_no_media">Επισήμανση ως μη αναγνωσμένο</string>
     <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d επεισόδιο επισημάνθηκε ως μη αναπαραχθέν%d επεισόδια επισημάνθηκαν ως μη αναπαραχθέντα</item>
-        <item quantity="other"></item>
+        <item quantity="one">%d επεισόδιο επισημάνθηκε ως μη αναπαραχθέν</item>
+        <item quantity="other">%d επεισόδια επισημάνθηκαν ως μη αναπαραχθέντα</item>
     </plurals>
     <string name="add_to_queue_label">Προσθήκη στην ουρά</string>
     <plurals name="added_to_queue_batch_label">
@@ -221,8 +221,8 @@
         <item quantity="other">%d επεισόδια αφαιρέθηκαν από την ουρά.</item>
     </plurals>
     <plurals name="removed_from_inbox_batch_label">
-        <item quantity="one">%d επεισόδιο αφαιρέθηκε από τα Εισερχόμενα%d επεισόδια αφαιρέθηκαν από τα Εισερχόμενα</item>
-        <item quantity="other"></item>
+        <item quantity="one">%d επεισόδιο αφαιρέθηκε από τα Εισερχόμενα</item>
+        <item quantity="other">%d επεισόδια αφαιρέθηκαν από τα Εισερχόμενα</item>
     </plurals>
     <string name="add_to_favorite_label">Προσθήκη στα αγαπημένα</string>
     <string name="show_transcript">Εμφάνιση μεταγραφής</string>

@@ -822,6 +822,8 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
                     return true;
                 }
                 break;
+            default:
+                break;
         }
 
         //Go to x% of video:
