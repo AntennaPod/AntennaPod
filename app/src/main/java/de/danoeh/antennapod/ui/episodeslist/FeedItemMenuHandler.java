@@ -104,13 +104,11 @@ public class FeedItemMenuHandler {
             canShowSocialInteract = false;
         }
 
-
         if (queue != null) {
             boolean[] canMove = canMove(queue, selectedItems);
             setItemVisibility(menu, R.id.move_to_top_item, canMove[0]);
             setItemVisibility(menu, R.id.move_to_bottom_item, canMove[1]);
         }
-
 
         setItemVisibility(menu, R.id.skip_episode_item, canSkip);
         setItemVisibility(menu, R.id.remove_from_queue_item, canRemoveFromQueue);
