@@ -308,6 +308,9 @@ public class AudioPlayerFragment extends Fragment implements
     public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
         if (event.isCancelled() || event.wasJustEnabled()) {
             AudioPlayerFragment.this.loadMediaInfo(false);
+        } else if (event.isOver()) {
+            toolbar.getMenu().findItem(R.id.set_sleeptimer_item).setVisible(true);
+            toolbar.getMenu().findItem(R.id.disable_sleeptimer_item).setVisible(false);
         }
     }
 
