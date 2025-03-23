@@ -313,6 +313,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
             }
         }
+
+        WidgetUpdater.updateWidget(getApplicationContext(), new WidgetUpdater.WidgetState(PlayerStatus.STOPPED));
+
         stateManager.stopForeground(!UserPreferences.isPersistNotify());
         isRunning = false;
         currentMediaType = MediaType.UNKNOWN;
