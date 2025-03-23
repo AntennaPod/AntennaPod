@@ -104,16 +104,17 @@ public class FeedItemMenuHandler {
             canShowSocialInteract = false;
         }
 
-        boolean canMoveToTop;
-        boolean canMoveToBottom;
-        canMoveToTop = canMove(queue, selectedItems)[0];
-        canMoveToBottom = canMove(queue, selectedItems)[1];
+
+        if (queue != null) {
+            boolean[] canMove = canMove(queue, selectedItems);
+            setItemVisibility(menu, R.id.move_to_top_item, canMove[0]);
+            setItemVisibility(menu, R.id.move_to_bottom_item, canMove[1]);
+        }
+
 
         setItemVisibility(menu, R.id.skip_episode_item, canSkip);
         setItemVisibility(menu, R.id.remove_from_queue_item, canRemoveFromQueue);
         setItemVisibility(menu, R.id.add_to_queue_item, canAddToQueue);
-        setItemVisibility(menu, R.id.move_to_top_item, canMoveToTop);
-        setItemVisibility(menu, R.id.move_to_bottom_item, canMoveToBottom);
         setItemVisibility(menu, R.id.visit_website_item, canVisitWebsite);
         setItemVisibility(menu, R.id.share_item, canShare);
         setItemVisibility(menu, R.id.remove_inbox_item, canRemoveFromInbox);
@@ -151,8 +152,7 @@ public class FeedItemMenuHandler {
 
     public static boolean onPrepareMenu(Menu menu, List<FeedItem> selectedItems,
                                         int... excludeIds) {
-        List<FeedItem> queue = DBReader.getQueue();
-        return onPrepareMenu(menu, selectedItems, queue, excludeIds);
+        return onPrepareMenu(menu, selectedItems, null, excludeIds);
     }
 
 
