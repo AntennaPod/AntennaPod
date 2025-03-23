@@ -198,12 +198,12 @@ public class FeedItemMenuHandler {
         boolean canMoveToBottom = true;
 
         if (selectedItems.isEmpty() || queue.isEmpty()) {
-            return new boolean[]{!canMoveToTop, !canMoveToBottom};
+            return new boolean[]{false, false};
         }
 
         // No manual reordering allowed if sorting enforced, or queue locked. Both move options are disabled.
         if (UserPreferences.isQueueLocked() || UserPreferences.isQueueKeepSorted()) {
-            return new boolean[]{!canMoveToTop, !canMoveToBottom};
+            return new boolean[]{false, false};
         }
 
         int queueSize = queue.size();
@@ -214,7 +214,7 @@ public class FeedItemMenuHandler {
 
         // If all items in the list are selected, disable move options since no movement is possible or allowed.
         if (selectedSize == queueSize) {
-            return new boolean[]{!canMoveToTop, !canMoveToBottom};
+            return new boolean[]{false, false};
         }
 
         if (selectedItems.size() == 1) {
