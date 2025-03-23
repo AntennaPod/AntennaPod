@@ -20,6 +20,7 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
+import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.playback.service.PlaybackService;
 import org.greenrobot.eventbus.EventBus;
@@ -145,7 +146,8 @@ public class SleepTimerDialog extends DialogFragment {
         });
         Button setButton = content.findViewById(R.id.setSleeptimerButton);
         setButton.setOnClickListener(v -> {
-            if (!PlaybackService.isRunning) {
+            if (!PlaybackService.isRunning
+                    || (controller != null && controller.getStatus() != PlayerStatus.PLAYING)) {
                 Snackbar.make(content, R.string.no_media_playing_label, Snackbar.LENGTH_LONG).show();
                 return;
             }
