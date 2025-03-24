@@ -75,7 +75,6 @@ public class FeedItemMenuHandler {
         boolean canShowTranscript = false;
         boolean canShowSocialInteract = false;
 
-
         for (FeedItem item : selectedItems) {
             boolean hasMedia = item.getMedia() != null;
             canSkip |= hasMedia && PlaybackStatus.isPlaying(item.getMedia());
@@ -150,8 +149,6 @@ public class FeedItemMenuHandler {
                                         int... excludeIds) {
         return onPrepareMenu(menu, selectedItems, null, excludeIds);
     }
-
-
 
     /**
      * Used to set the viability of a menu item.
@@ -243,9 +240,6 @@ public class FeedItemMenuHandler {
         }
         return new boolean[]{canMoveToTop, canMoveToBottom};
     }
-
-
-
 
     /**
      * Default menu handling for the given FeedItem.
