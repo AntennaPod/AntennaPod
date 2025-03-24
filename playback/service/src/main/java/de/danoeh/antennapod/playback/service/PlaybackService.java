@@ -744,16 +744,32 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private void startPlayingFromPreferences() {
-        Observable.fromCallable(() -> DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
-                .subscribeOn(Schedulers.io())
+        Log.d(TAG, "startPlayingFromPreferences()");
+
+        Observable<FeedMedia> currentlyPlayingMedia = Observable
+                .fromCallable(() -> DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
+                .subscribeOn(Schedulers.io());
+
+        currentlyPlayingMedia
+                .onErrorResumeNext(error -> {
+                    Log.d(TAG, "Currently playing media not found, trying queued media", error);
+                    return Observable.fromCallable(() -> DBReader.getFirstUnplayedInQueue())
+                            .subscribeOn(Schedulers.io());
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        playable -> startPlaying(playable, false),
+                        playable -> {
+                            if (playable != null) {
+                                startPlaying(playable, false);
+                            } else {
+                                stateManager.stopService();
+                            }
+                        },
                         error -> {
                             Log.d(TAG, "Playable was not loaded from preferences. Stopping service.");
-                            error.printStackTrace();
                             stateManager.stopService();
-                        });
+                        }
+                );
     }
 
     private void startPlaying(Playable playable, boolean allowStreamThisTime) {
