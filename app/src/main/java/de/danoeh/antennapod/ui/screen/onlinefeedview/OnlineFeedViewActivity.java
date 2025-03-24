@@ -138,7 +138,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         if (downloader != null && !downloader.isFinished()) {
             downloader.cancel();
         }
-        if(dialog != null && dialog.isShowing()) {
+        if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
     }
@@ -146,10 +146,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(download != null) {
+        if (download != null) {
             download.dispose();
         }
-        if(parser != null) {
+        if (parser != null) {
             parser.dispose();
         }
     }
@@ -464,7 +464,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 .setAdapter(adapter, onClickListener);
 
         runOnUiThread(() -> {
-            if(dialog != null && dialog.isShowing()) {
+            if (dialog != null && dialog.isShowing()) {
                 dialog.dismiss();
             }
             dialog = ab.show();

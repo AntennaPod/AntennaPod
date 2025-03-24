@@ -134,11 +134,11 @@
     <string name="episode_notification">Rebuzadurioù ar rann</string>
     <string name="episode_notification_summary">Diskouez ur rebuzadur pa vez embannet ur rann nevez</string>
     <plurals name="new_episode_notification_message">
-        <item quantity="one">Ur rann nevez a zo gant %2$sUr rann nevez zo gant %2$sUr rann nevez zo gant %2$sUr rann nevez zo gant %2$s%1$d rann nevez zo gant %2$s</item>
-        <item quantity="two"></item>
-        <item quantity="few"></item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">Ur rann nevez a zo gant %2$s</item>
+        <item quantity="two">%1$d rann nevez zo gant %2$s</item>
+        <item quantity="few">%1$d rann nevez zo gant %2$s</item>
+        <item quantity="many">%1$d rann nevez zo gant %2$s</item>
+        <item quantity="other">%1$d rann nevez zo gant %2$s</item>
     </plurals>
     <plurals name="new_episode_notification_title">
         <item quantity="one">Rann nevez</item>
@@ -184,11 +184,11 @@
     <!--actions on feeditems-->
   <string name="download_label">Pellgargañ</string>
     <plurals name="downloading_batch_label">
-        <item quantity="one">O pellgargañ %d rannO pellgargañ %d rannO pellgargañ %d rannO pellgargañ %d rannO pellgargañ %d rann</item>
-        <item quantity="two"></item>
-        <item quantity="few"></item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">O pellgargañ %d rann</item>
+        <item quantity="two">O pellgargañ %d rann</item>
+        <item quantity="few">O pellgargañ %d rann</item>
+        <item quantity="many">O pellgargañ %d rann</item>
+        <item quantity="other">O pellgargañ %d rann</item>
     </plurals>
     <string name="play_label">Lenn</string>
     <string name="pause_label">Ehan</string>
@@ -203,11 +203,11 @@
     <string name="mark_read_no_media_label">Merkañ evel lennet</string>
     <string name="play_this_to_seek_position">Evit kemmañ al lec\'hiadur e rankit lenn ar rann</string>
     <plurals name="marked_read_batch_label">
-        <item quantity="one">%d rann merket evel lennet%d rann merket evel lennet%d rann merket evel lennet%d rann merket evel lennet%d rann merket evel lennet</item>
-        <item quantity="two"></item>
-        <item quantity="few"></item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">%d rann merket evel lennet</item>
+        <item quantity="two">%d rann merket evel lennet</item>
+        <item quantity="few">%d rann merket evel lennet</item>
+        <item quantity="many">%d rann merket evel lennet</item>
+        <item quantity="other">%d rann merket evel lennet</item>
     </plurals>
     <string name="mark_unread_label">Merkañ evel anlennet</string>
     <string name="mark_unread_label_no_media">Merkañ evel anlennet</string>
@@ -220,26 +220,26 @@
     </plurals>
     <string name="add_to_queue_label">Ouzhpennañ el lost</string>
     <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d rann ouzhpennet el lost%d rann ouzhpennet el lost%d rann ouzhpennet el lost%d rann ouzhpennet el lost%d rann ouzhpennet el lost</item>
-        <item quantity="two"></item>
-        <item quantity="few"></item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">%d rann ouzhpennet el lost</item>
+        <item quantity="two">%d rann ouzhpennet el lost</item>
+        <item quantity="few">%d rann ouzhpennet el lost</item>
+        <item quantity="many">%d rann ouzhpennet el lost</item>
+        <item quantity="other">%d rann ouzhpennet el lost</item>
     </plurals>
     <string name="remove_from_queue_label">Dilemel eus al lost</string>
     <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d rann tennet eus al lost%d rann tennet eus al lost%d rann tennet eus al lost%d rann tennet eus al lost%d rann tennet eus al lost</item>
-        <item quantity="two"></item>
-        <item quantity="few"></item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">%d rann tennet eus al lost</item>
+        <item quantity="two">%d rann tennet eus al lost</item>
+        <item quantity="few">%d rann tennet eus al lost</item>
+        <item quantity="many">%d rann tennet eus al lost</item>
+        <item quantity="other">%d rann tennet eus al lost</item>
     </plurals>
     <plurals name="removed_from_inbox_batch_label">
-        <item quantity="one">%d rann tennet eus ar voest degemer%d rann tennet eus ar voest degemer%d rann tennet eus ar voest degemer%d rann tennet eus ar voest degemer%d rann tennet eus ar voest degemer</item>
-        <item quantity="two"></item>
-        <item quantity="few"></item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">%d rann tennet eus ar voest degemer</item>
+        <item quantity="two">%d rann tennet eus ar voest degemer</item>
+        <item quantity="few">%d rann tennet eus ar voest degemer</item>
+        <item quantity="many">%d rann tennet eus ar voest degemer</item>
+        <item quantity="other">%d rann tennet eus ar voest degemer</item>
     </plurals>
     <string name="add_to_favorite_label">Ouzhpennañ er sinedoù</string>
     <string name="remove_from_favorite_label">Dilemel eus ar sinedoù</string>

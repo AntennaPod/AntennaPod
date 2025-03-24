@@ -340,7 +340,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 throw new IllegalArgumentException("Unable to retrieve document tree");
             }
             feed.setDownloadUrl(Feed.PREFIX_LOCAL_FOLDER + uri.toString());
-            FeedDatabaseWriter.updateFeed(getContext(), feed, true);
+            FeedDatabaseWriter.updateFeed(getContext(), feed, false);
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
