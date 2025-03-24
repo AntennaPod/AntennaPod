@@ -16,6 +16,7 @@ import androidx.media.AudioFocusRequestCompat;
 import androidx.media.AudioManagerCompat;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
+import de.danoeh.antennapod.event.playback.PlaybackEndedEvent;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
@@ -680,6 +681,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     protected void endPlayback(final boolean hasEnded, final boolean wasSkipped,
                                     final boolean shouldContinue, final boolean toStoppedState) {
         releaseWifiLockIfNecessary();
+
+        EventBus.getDefault().post(PlaybackEndedEvent.ended(hasEnded, wasSkipped, shouldContinue, toStoppedState));
 
         boolean isPlaying = playerStatus == PlayerStatus.PLAYING;
 
