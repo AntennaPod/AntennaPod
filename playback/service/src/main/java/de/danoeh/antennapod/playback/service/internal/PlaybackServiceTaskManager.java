@@ -3,16 +3,12 @@ package de.danoeh.antennapod.playback.service.internal;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Vibrator;
 import androidx.annotation.NonNull;
 import android.util.Log;
 
-import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
-import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.ui.chapters.ChapterUtils;
 import de.danoeh.antennapod.ui.widget.WidgetUpdater;
 import io.reactivex.disposables.Disposable;
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -49,7 +45,6 @@ public class PlaybackServiceTaskManager {
 
     private ScheduledFuture<?> positionSaverFuture;
     private ScheduledFuture<?> widgetUpdaterFuture;
-    private ScheduledFuture<?> sleepTimerFuture;
     private volatile Disposable chapterLoaderFuture;
 
     private SleepTimer sleepTimer;
@@ -136,7 +131,7 @@ public class PlaybackServiceTaskManager {
 
     /**
      * Starts a new sleep timer with the given waiting time. If another sleep timer is already active, it will be
-     * cancelled first.
+     * resumed.
      * After waitingTime has elapsed, onSleepTimerExpired() will be called.
      *
      * @throws java.lang.IllegalArgumentException if waitingTime <= 0
@@ -148,22 +143,17 @@ public class PlaybackServiceTaskManager {
 
         Log.d(TAG, "Setting sleep timer to " + waitingTime + " milliseconds");
         if (isSleepTimerActive()) {
-            sleepTimerFuture.cancel(true);
+            sleepTimer.reset(waitingTime);
+        } else {
+            sleepTimer = SleepTimerFactory.createSleepTimer(context, waitingTime);
         }
-        sleepTimer = new SleepTimer(waitingTime);
-        sleepTimerFuture = schedExecutor.schedule(sleepTimer, 0, TimeUnit.MILLISECONDS);
-        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(waitingTime));
     }
 
     /**
      * Returns true if the sleep timer is currently active.
      */
     public synchronized boolean isSleepTimerActive() {
-        return sleepTimer != null
-                && sleepTimerFuture != null
-                && !sleepTimerFuture.isCancelled()
-                && !sleepTimerFuture.isDone()
-                && sleepTimer.getWaitingTime() > 0;
+        return sleepTimer != null && sleepTimer.isActive();
     }
 
     /**
@@ -172,17 +162,29 @@ public class PlaybackServiceTaskManager {
     public synchronized void disableSleepTimer() {
         if (isSleepTimerActive()) {
             Log.d(TAG, "Disabling sleep timer");
-            sleepTimer.cancel();
+            sleepTimer.stop();
+        }
+        sleepTimer = null;
+    }
+
+    /**
+     * Resumes the sleep timer. If the sleep timer is not active, nothing will happen.
+     * If the sleep timer was paused it will continue where it left off.
+     */
+    public synchronized void resumeSleepTimer() {
+        if (sleepTimer != null) {
+            Log.d(TAG, "Restarting sleep timer");
+            sleepTimer.resume();
         }
     }
 
     /**
-     * Restarts the sleep timer. If the sleep timer is not active, nothing will happen.
+     * Pauses the sleep timer. If the sleep timer is not active, nothing will happen.
      */
-    public synchronized void restartSleepTimer() {
+    public synchronized void pauseSleepTimer() {
         if (isSleepTimerActive()) {
-            Log.d(TAG, "Restarting sleep timer");
-            sleepTimer.restart();
+            Log.d(TAG, "Pausing sleep timer");
+            sleepTimer.pause();
         }
     }
 
@@ -191,7 +193,7 @@ public class PlaybackServiceTaskManager {
      */
     public synchronized long getSleepTimerTimeLeft() {
         if (isSleepTimerActive()) {
-            return sleepTimer.getWaitingTime();
+            return sleepTimer.getTimeLeft();
         } else {
             return 0;
         }
@@ -269,89 +271,6 @@ public class PlaybackServiceTaskManager {
             return () -> handler.post(runnable);
         } else {
             return runnable;
-        }
-    }
-
-    /**
-     * Sleeps for a given time and then pauses playback.
-     */
-    public class SleepTimer implements Runnable {
-        private static final String TAG = "SleepTimer";
-        private static final long UPDATE_INTERVAL = 1000L;
-        public static final long NOTIFICATION_THRESHOLD = 10000;
-        private boolean hasVibrated = false;
-        private final long waitingTime;
-        private long timeLeft;
-        private ShakeListener shakeListener;
-
-        public SleepTimer(long waitingTime) {
-            super();
-            this.waitingTime = waitingTime;
-            this.timeLeft = waitingTime;
-        }
-
-        @Override
-        public void run() {
-            Log.d(TAG, "Starting");
-            long lastTick = System.currentTimeMillis();
-            EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(timeLeft));
-            while (timeLeft > 0) {
-                try {
-                    Thread.sleep(UPDATE_INTERVAL);
-                } catch (InterruptedException e) {
-                    Log.d(TAG, "Thread was interrupted while waiting");
-                    e.printStackTrace();
-                    break;
-                }
-
-                long now = System.currentTimeMillis();
-                timeLeft -= now - lastTick;
-                lastTick = now;
-
-                EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(timeLeft));
-                if (timeLeft < NOTIFICATION_THRESHOLD) {
-                    Log.d(TAG, "Sleep timer is about to expire");
-                    if (SleepTimerPreferences.vibrate() && !hasVibrated) {
-                        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-                        if (v != null) {
-                            v.vibrate(500);
-                            hasVibrated = true;
-                        }
-                    }
-                    if (shakeListener == null && SleepTimerPreferences.shakeToReset()) {
-                        shakeListener = new ShakeListener(context, this);
-                    }
-                }
-                if (timeLeft <= 0) {
-                    Log.d(TAG, "Sleep timer expired");
-                    if (shakeListener != null) {
-                        shakeListener.pause();
-                        shakeListener = null;
-                    }
-                    hasVibrated = false;
-                }
-            }
-        }
-
-        public long getWaitingTime() {
-            return timeLeft;
-        }
-
-        public void restart() {
-            EventBus.getDefault().post(SleepTimerUpdatedEvent.cancelled());
-            setSleepTimer(waitingTime);
-            if (shakeListener != null) {
-                shakeListener.pause();
-                shakeListener = null;
-            }
-        }
-
-        public void cancel() {
-            sleepTimerFuture.cancel(true);
-            if (shakeListener != null) {
-                shakeListener.pause();
-            }
-            EventBus.getDefault().post(SleepTimerUpdatedEvent.cancelled());
         }
     }
 
