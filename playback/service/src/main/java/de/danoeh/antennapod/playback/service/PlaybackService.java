@@ -752,8 +752,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         currentlyPlayingMedia
                 .onErrorResumeNext(error -> {
-                    Log.d(TAG, "Currently playing media not found, trying queued media", error);
-                    return Observable.fromCallable(() -> DBReader.getFirstUnplayedInQueue())
+                    Log.d(TAG, "Currently playing media not found, trying queued media");
+                    return Observable.fromCallable(() -> DBReader.getFeedMedia(DBReader.getFirstUnplayedInQueueMediaId()))
                             .subscribeOn(Schedulers.io());
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -1838,6 +1838,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             } else if (status == PlayerStatus.INITIALIZED) {
                 setStartWhenPrepared(true);
                 prepare();
+            } else if (status == PlayerStatus.STOPPED) {
+                startPlayingFromPreferences();
             }
         }
 
