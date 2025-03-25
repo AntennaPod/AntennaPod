@@ -306,7 +306,7 @@ public class AudioPlayerFragment extends Fragment implements
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
     public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
-        if (event.isCancelled() || event.wasJustEnabled()) {
+        if (event.isCancelled() || event.wasJustEnabled() || event.isOver()) {
             AudioPlayerFragment.this.loadMediaInfo(false);
         }
     }
