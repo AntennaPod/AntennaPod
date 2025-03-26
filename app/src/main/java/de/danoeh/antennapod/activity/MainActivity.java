@@ -69,6 +69,7 @@ import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.discovery.DiscoveryFragment;
 import de.danoeh.antennapod.ui.screen.AddFeedFragment;
 import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
+import de.danoeh.antennapod.ui.screen.EpisodesByFeedTagFragment;
 import de.danoeh.antennapod.ui.screen.InboxFragment;
 import de.danoeh.antennapod.ui.screen.PlaybackHistoryFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
@@ -472,6 +473,15 @@ public class MainActivity extends CastEnabledActivity {
             fragment.setArguments(args);
         }
         NavDrawerFragment.saveLastNavFragment(this, String.valueOf(feedId));
+        loadFragment(fragment);
+    }
+
+    public void loadEpisodesByFeedTagFragment(String feedTag, Bundle args) {
+        Fragment fragment = EpisodesByFeedTagFragment.newInstance(feedTag);
+        if (args != null) {
+            fragment.setArguments(args);
+        }
+        NavDrawerFragment.saveLastNavFragment(this, feedTag);
         loadFragment(fragment);
     }
 

@@ -10,6 +10,8 @@ import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.test.antennapod.util.service.download.HTTPBin;
 import de.test.antennapod.util.syndication.feedgenerator.Rss2Generator;
@@ -141,6 +143,22 @@ public class UITestUtils {
             feed.setItems(items);
             feed.setDownloadUrl(hostFeed(feed));
             hostedFeeds.add(feed);
+        }
+
+        // add tags to the feeds
+        for (int i = 0; i < NUM_FEEDS; i++) {
+            Feed f = hostedFeeds.get(i);
+            FeedPreferences prefs = new FeedPreferences(f.getId(), FeedPreferences.AutoDownloadSetting.GLOBAL,
+                    FeedPreferences.AutoDeleteAction.GLOBAL, VolumeAdaptionSetting.OFF,
+                    FeedPreferences.NewEpisodesAction.GLOBAL, null, null);
+            f.setPreferences(prefs);
+            if (i > 0) {
+                // ensure that the feed at index 0 will not be displayed in the drawer until the tag folder is opened
+                prefs.getTags().add(FeedPreferences.TAG_ROOT);
+            }
+            for (int j = i; j < NUM_FEEDS; j++) {
+                prefs.getTags().add("tag " + j);
+            }
         }
         feedDataHosted = true;
     }

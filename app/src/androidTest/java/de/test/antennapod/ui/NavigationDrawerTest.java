@@ -1,5 +1,6 @@
 package de.test.antennapod.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
@@ -23,8 +24,10 @@ import java.util.Collections;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
+import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyBelow;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.ViewMatchers.hasSibling;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
@@ -120,14 +123,33 @@ public class NavigationDrawerTest {
         onView(isRoot()).perform(waitForView(allOf(isDescendantOfA(withId(R.id.toolbar)),
                 withText(R.string.add_feed_label), isDisplayed()), 1000));
 
-        // podcasts
-        for (int i = 0; i < uiTestUtils.hostedFeeds.size(); i++) {
+        // podcasts (all except the first, since it is not displayed at root level in the drawer)
+        for (int i = 1; i < uiTestUtils.hostedFeeds.size(); i++) {
             Feed f = uiTestUtils.hostedFeeds.get(i);
             openNavDrawer();
             onDrawerItem(withText(f.getTitle())).perform(click());
             onView(isRoot()).perform(waitForView(allOf(isDescendantOfA(withId(R.id.appBar)),
                     withText(f.getTitle()), isDisplayed()), 1000));
         }
+
+        // episodes by tag
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        for (int i = 0; i < uiTestUtils.hostedFeeds.size(); i++) {
+            openNavDrawer();
+            onView(withId(R.id.drawer_layout)).perform(swipeUp());  // make sure the folders are visible on screen
+            onDrawerItem(withText("tag " + i)).perform(click());
+            onView(isRoot()).perform(waitForView(allOf(isDescendantOfA(withId(R.id.toolbar)),
+                    withText(context.getString(R.string.episodes_by_tag_label, "tag " + i)), isDisplayed()), 1000));
+        }
+
+        // opening a tag folder
+        Feed f = uiTestUtils.hostedFeeds.get(0);
+        openNavDrawer();
+        onView(allOf(withId(R.id.imgvCover), hasSibling(withText("tag 0")))).perform(click());
+        onDrawerItem(withText(f.getTitle())).check(isCompletelyBelow(withText("tag 0")));
+        onDrawerItem(withText(f.getTitle())).perform(click());
+        onView(isRoot()).perform(waitForView(allOf(isDescendantOfA(withId(R.id.appBar)),
+                withText(f.getTitle()), isDisplayed()), 1000));
     }
 
     @Test
