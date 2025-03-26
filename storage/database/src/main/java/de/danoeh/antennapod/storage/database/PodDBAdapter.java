@@ -1126,6 +1126,41 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
+    public final Cursor getEpisodesByFeedTagCursor(int offset, int limit, FeedItemFilter filter, SortOrder sortOrder,
+                                             String tag) {
+        String orderByQuery = FeedItemSortQuery.generateFrom(sortOrder);
+        String filterQuery = FeedItemFilterQuery.generateFrom(filter);
+        String whereAndClause = "".equals(filterQuery) ? "" : " AND " + filterQuery;
+        String whereTagsContainClause = prepareWhereTagsContainClause(tag);
+
+        final String query = SELECT_FEED_ITEMS_AND_MEDIA
+                + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + " IN (SELECT " + TABLE_NAME_FEEDS + "." + KEY_ID
+                + " FROM " + TABLE_NAME_FEEDS + whereTagsContainClause + ") " + whereAndClause
+                + " ORDER BY " +  orderByQuery + " LIMIT " + offset + ", " + limit;
+        return db.rawQuery(query, null);
+    }
+
+    public final Cursor getEpisodesByFeedTagCountCursor(FeedItemFilter filter, String tag) {
+        String filterQuery = FeedItemFilterQuery.generateFrom(filter);
+        String whereAndClause = "".equals(filterQuery) ? "" : " AND " + filterQuery;
+        String whereTagsContainClause = prepareWhereTagsContainClause(tag);
+
+        final String query = "SELECT count(" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + ") FROM " + TABLE_NAME_FEED_ITEMS
+                + JOIN_FEED_ITEM_AND_MEDIA
+                + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + " IN (SELECT " + TABLE_NAME_FEEDS + "." + KEY_ID
+                + " FROM " + TABLE_NAME_FEEDS + whereTagsContainClause + ") " + whereAndClause;
+        return db.rawQuery(query, null);
+    }
+
+    private String prepareWhereTagsContainClause(String tag) {
+        return " WHERE (" + TABLE_NAME_FEEDS + "." + KEY_FEED_TAGS + " LIKE "
+                + "'" + tag + FeedPreferences.TAG_SEPARATOR + "%" + "'" + " OR "
+                + TABLE_NAME_FEEDS + "." + KEY_FEED_TAGS + " LIKE "
+                + "'" +  "%" + FeedPreferences.TAG_SEPARATOR + tag + FeedPreferences.TAG_SEPARATOR + "%" + "'" + " OR "
+                + TABLE_NAME_FEEDS + "." + KEY_FEED_TAGS + " LIKE "
+                + "'" +  "%" + FeedPreferences.TAG_SEPARATOR + tag + "'" + ")";
+    }
+
     public Cursor getRandomEpisodesCursor(int limit, int seed) {
         final String allItems = SELECT_FEED_ITEMS_AND_MEDIA
                 + " WHERE (" + KEY_READ + " = " + FeedItem.NEW + " OR " + KEY_READ + " = " + FeedItem.UNPLAYED + ") "

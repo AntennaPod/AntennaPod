@@ -240,38 +240,63 @@ public final class DBReader {
      * @param offset The first episode that should be loaded.
      * @param limit The maximum number of episodes that should be loaded.
      * @param filter The filter describing which episodes to filter out.
+     * @param sortOrder The order to use for sorting the episodes.
      */
     @NonNull
     public static List<FeedItem> getEpisodes(int offset, int limit, FeedItemFilter filter, SortOrder sortOrder) {
-        Log.d(TAG, "getRecentlyPublishedEpisodes() called with: offset=" + offset + ", limit=" + limit);
+        return getEpisodes(offset, limit, filter, sortOrder, "");
+    }
+
+    /**
+     *
+     * @param offset The first episode that should be loaded.
+     * @param limit The maximum number of episodes that should be loaded.
+     * @param filter The filter describing which episodes to filter out.
+     * @param sortOrder The order to use for sorting the episodes.
+     * @param tag The tag that the feed to which an episode belongs must have.
+     */
+    public static List<FeedItem> getEpisodes(int offset, int limit, FeedItemFilter filter, SortOrder sortOrder,
+                                             String tag) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        try (FeedItemCursor cursor = new FeedItemCursor(adapter.getEpisodesCursor(offset, limit, filter, sortOrder))) {
+        FeedItemCursor cursor;
+        if (tag.isEmpty()) {
+            Log.d(TAG, "getEpisodes() for all episodes called with: offset=" + offset + ", limit=" + limit);
+            cursor = new FeedItemCursor(adapter.getEpisodesCursor(offset, limit, filter, sortOrder));
+        } else {
+            Log.d(TAG, "getEpisodes() for tag '" + tag + "' called with: offset=" + offset + ", limit=" + limit);
+            cursor = new FeedItemCursor(adapter.getEpisodesByFeedTagCursor(offset, limit, filter, sortOrder, tag));
+        }
+        try {
             List<FeedItem> items = extractItemlistFromCursor(cursor);
             loadAdditionalFeedItemListData(items);
             return items;
         } finally {
+            cursor.close();
             adapter.close();
         }
     }
 
     public static int getTotalEpisodeCount(FeedItemFilter filter) {
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        try (Cursor cursor = adapter.getEpisodeCountCursor(filter)) {
-            if (cursor.moveToFirst()) {
-                return cursor.getInt(0);
-            }
-            return -1;
-        } finally {
-            adapter.close();
-        }
+        return getFirstIntFromCursor(adapter -> adapter.getEpisodeCountCursor(filter));
     }
 
     public static int getFeedEpisodeCount(long feedId, FeedItemFilter filter) {
+        return getFirstIntFromCursor(adapter -> adapter.getFeedEpisodeCountCursor(feedId, filter));
+    }
+
+    public static int getEpisodesByFeedTagCount(String tag, FeedItemFilter filter) {
+        return getFirstIntFromCursor(adapter -> adapter.getEpisodesByFeedTagCountCursor(filter, tag));
+    }
+
+    private interface GetCursorFunction {
+        Cursor apply(PodDBAdapter adapter);
+    }
+
+    private static int getFirstIntFromCursor(GetCursorFunction fn) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        try (Cursor cursor = adapter.getFeedEpisodeCountCursor(feedId, filter)) {
+        try (Cursor cursor = fn.apply(adapter)) {
             if (cursor.moveToFirst()) {
                 return cursor.getInt(0);
             }
