@@ -152,11 +152,11 @@ public class UITestUtils {
                     FeedPreferences.AutoDeleteAction.GLOBAL, VolumeAdaptionSetting.OFF,
                     FeedPreferences.NewEpisodesAction.GLOBAL, null, null);
             f.setPreferences(prefs);
-            if (i > 0) {
-                // ensure that the feed at index 0 will not be displayed in the drawer until the tag folder is opened
+            if (i < NUM_FEEDS - 1) {
+                // ensure that the last feed will not be displayed in the drawer until the tag folder is opened
                 prefs.getTags().add(FeedPreferences.TAG_ROOT);
             }
-            for (int j = i; j < NUM_FEEDS; j++) {
+            for (int j = 0; j < NUM_FEEDS; j++) {
                 prefs.getTags().add("tag " + j);
             }
         }

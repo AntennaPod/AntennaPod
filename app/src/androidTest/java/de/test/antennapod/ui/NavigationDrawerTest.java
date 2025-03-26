@@ -123,8 +123,8 @@ public class NavigationDrawerTest {
         onView(isRoot()).perform(waitForView(allOf(isDescendantOfA(withId(R.id.toolbar)),
                 withText(R.string.add_feed_label), isDisplayed()), 1000));
 
-        // podcasts (all except the first, since it is not displayed at root level in the drawer)
-        for (int i = 1; i < uiTestUtils.hostedFeeds.size(); i++) {
+        // podcasts (all except the last, since it is not displayed at root level in the drawer)
+        for (int i = 0; i < uiTestUtils.hostedFeeds.size() - 1; i++) {
             Feed f = uiTestUtils.hostedFeeds.get(i);
             openNavDrawer();
             onDrawerItem(withText(f.getTitle())).perform(click());
@@ -143,9 +143,10 @@ public class NavigationDrawerTest {
         }
 
         // opening a tag folder
-        Feed f = uiTestUtils.hostedFeeds.get(0);
         openNavDrawer();
         onView(allOf(withId(R.id.imgvCover), hasSibling(withText("tag 0")))).perform(click());
+        onView(withId(R.id.drawer_layout)).perform(swipeUp());
+        Feed f = uiTestUtils.hostedFeeds.get(uiTestUtils.hostedFeeds.size() - 1);
         onDrawerItem(withText(f.getTitle())).check(isCompletelyBelow(withText("tag 0")));
         onDrawerItem(withText(f.getTitle())).perform(click());
         onView(isRoot()).perform(waitForView(allOf(isDescendantOfA(withId(R.id.appBar)),
