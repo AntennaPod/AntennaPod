@@ -1838,8 +1838,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             } else if (status == PlayerStatus.INITIALIZED) {
                 setStartWhenPrepared(true);
                 prepare();
-            } else if (status == PlayerStatus.STOPPED) {
-                startPlayingFromPreferences();
             }
         }
 
