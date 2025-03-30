@@ -147,6 +147,7 @@ public class MainActivity extends CastEnabledActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         recycledViewPool.setMaxRecycledViews(R.id.view_type_episode_item, 25);
+        checkFirstLaunch();
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navDrawer = findViewById(R.id.navDrawerFragment);
@@ -202,7 +203,6 @@ public class MainActivity extends CastEnabledActivity {
         transaction.replace(R.id.audioplayerFragment, audioPlayerFragment, AudioPlayerFragment.TAG);
         transaction.commit();
 
-        checkFirstLaunch();
         View bottomSheet = findViewById(R.id.audioplayerFragment);
         sheetBehavior = (LockableBottomSheetBehavior) BottomSheetBehavior.from(bottomSheet);
         sheetBehavior.setHideable(false);
@@ -356,6 +356,7 @@ public class MainActivity extends CastEnabledActivity {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
             FeedUpdateManager.getInstance().restartUpdateAlarm(this, true);
+            UserPreferences.setBottomNavigationEnabled(true);
 
             SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean(PREF_IS_FIRST_LAUNCH, false);
