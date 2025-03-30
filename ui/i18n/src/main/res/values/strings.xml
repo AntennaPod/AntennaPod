@@ -383,6 +383,8 @@
     <!-- Empty list labels -->
     <string name="no_items_header_label">No queued episodes</string>
     <string name="no_items_label">Add an episode by downloading it, or long press an episode and select \"Add to queue\".</string>
+    <string name="no_queue_items_inbox_has_items_label">No episodes lined up, but there are new episodes that await you!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Go to inbox</string>
     <string name="no_shownotes_label">This episode has no shownotes.</string>
     <string name="no_comp_downloads_head_label">No downloaded episodes</string>
     <string name="no_comp_downloads_label">You can download episodes on the podcast details screen.</string>

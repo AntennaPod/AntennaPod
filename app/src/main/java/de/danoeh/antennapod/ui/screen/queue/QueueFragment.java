@@ -2,6 +2,7 @@ package de.danoeh.antennapod.ui.screen.queue;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +29,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.screen.InboxFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
@@ -451,7 +454,21 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         emptyView.attachToRecyclerView(recyclerView);
         emptyView.setIcon(R.drawable.ic_playlist_play);
         emptyView.setTitle(R.string.no_items_header_label);
-        emptyView.setMessage(R.string.no_items_label);
+        boolean inboxHasEpisodes = DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW)) > 0;
+        if (inboxHasEpisodes) {
+            emptyView.setMessage(R.string.no_queue_items_inbox_has_items_label);
+            emptyView.setButtonText(R.string.no_queue_items_inbox_has_items_button_label);
+            emptyView.setButtonVisibility(View.VISIBLE);
+            emptyView.setButtonOnClickListener(v -> {
+                Intent intent = new MainActivityStarter(getContext())
+                        .withFragmentLoaded(InboxFragment.TAG)
+                        .getIntent();
+                getActivity().finish();
+                startActivity(intent);
+            });
+        } else {
+            emptyView.setMessage(R.string.no_items_label);
+        }
         emptyView.updateAdapter(recyclerAdapter);
 
         floatingSelectMenu = root.findViewById(R.id.floatingSelectMenu);
