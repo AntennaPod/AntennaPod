@@ -126,7 +126,7 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
             }
             return count;
         } catch (ExecutionException | InterruptedException e) {
-            return 999;
+            return 0;
         }
     }
 }
