@@ -9,6 +9,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.OutOfQuotaPolicy;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
+import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.net.download.service.episode.EpisodeDownloadWorker;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -19,6 +20,7 @@ import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -96,5 +98,35 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
     @Override
     public void cancelAll(Context context) {
         WorkManager.getInstance(context).cancelAllWorkByTag(WORK_TAG);
+    }
+
+    @Override
+    public int getNumberOfActiveDownloads(Context context) {
+        if (!currentDownloads.isEmpty()) {
+            // App is running, we have up-to-date items
+            int count = 0;
+            for (DownloadStatus status : currentDownloads.values()) {
+                if (status.getState() == DownloadStatus.STATE_RUNNING
+                        || status.getState() == DownloadStatus.STATE_QUEUED) {
+                    count++;
+                }
+            }
+            return count;
+        }
+        try {
+            List<WorkInfo> workInfos = WorkManager.getInstance(context)
+                    .getWorkInfosByTag(DownloadServiceInterface.WORK_TAG).get();
+            int count = 0;
+            for (WorkInfo info : workInfos) {
+                if (info.getState() == WorkInfo.State.RUNNING
+                        || info.getState() == WorkInfo.State.ENQUEUED
+                        || info.getState() == WorkInfo.State.BLOCKED) {
+                    count++;
+                }
+            }
+            return count;
+        } catch (ExecutionException | InterruptedException e) {
+            return 999;
+        }
     }
 }
