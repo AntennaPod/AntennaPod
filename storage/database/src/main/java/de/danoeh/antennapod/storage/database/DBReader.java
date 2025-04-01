@@ -447,7 +447,7 @@ public final class DBReader {
         try (FeedItemCursor cursor = new FeedItemCursor(adapter.getQueueCursor())) {
             List<FeedItem> items = extractItemlistFromCursor(cursor);
             for (FeedItem item : items) {
-                if(!item.isPlayed()) {
+                if (!item.isPlayed()) {
                     return item.getMedia() != null ? item.getMedia().getId() : -1;
                 }
             }
