@@ -858,11 +858,7 @@ public class PodDBAdapter {
     }
 
     public void removeFavoriteItem(FeedItem item) {
-        String deleteClause = String.format("DELETE FROM %s WHERE %s=%s AND %s=%s",
-                TABLE_NAME_FAVORITES,
-                KEY_FEEDITEM, item.getId(),
-                KEY_FEED, item.getFeedId());
-        db.execSQL(deleteClause);
+        db.execSQL("DELETE FROM " + TABLE_NAME_FAVORITES + " WHERE " + KEY_FEEDITEM + "=" + item.getId());
     }
 
     private boolean isItemInFavorites(FeedItem item) {
@@ -924,6 +920,7 @@ public class PodDBAdapter {
                             + " AND " + KEY_FEEDFILE + " IN (" + mediaIds + ")", null);
             db.delete(TABLE_NAME_FEED_MEDIA, KEY_ID + " IN (" + mediaIds + ")", null);
             db.delete(TABLE_NAME_FEED_ITEMS, KEY_ID + " IN (" + itemIds + ")", null);
+            db.delete(TABLE_NAME_FAVORITES, KEY_FEEDITEM + " IN (" + itemIds + ")", null);
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             Log.e(TAG, Log.getStackTraceString(e));
