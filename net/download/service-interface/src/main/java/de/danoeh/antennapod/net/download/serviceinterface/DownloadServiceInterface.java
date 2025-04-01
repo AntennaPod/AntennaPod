@@ -15,7 +15,7 @@ public abstract class DownloadServiceInterface {
     public static final String WORK_DATA_MEDIA_ID = "media_id";
     public static final String WORK_DATA_WAS_QUEUED = "was_queued";
     private static DownloadServiceInterface impl;
-    protected Map<String, DownloadStatus> currentDownloads = new HashMap<>();
+    private Map<String, DownloadStatus> currentDownloads = new HashMap<>();
 
     public static DownloadServiceInterface get() {
         return impl;

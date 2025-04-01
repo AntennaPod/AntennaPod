@@ -9,7 +9,6 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.OutOfQuotaPolicy;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
-import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.net.download.service.episode.EpisodeDownloadWorker;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -102,17 +101,6 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
 
     @Override
     public int getNumberOfActiveDownloads(Context context) {
-        if (!currentDownloads.isEmpty()) {
-            // App is running, we have up-to-date items
-            int count = 0;
-            for (DownloadStatus status : currentDownloads.values()) {
-                if (status.getState() == DownloadStatus.STATE_RUNNING
-                        || status.getState() == DownloadStatus.STATE_QUEUED) {
-                    count++;
-                }
-            }
-            return count;
-        }
         try {
             List<WorkInfo> workInfos = WorkManager.getInstance(context)
                     .getWorkInfosByTag(DownloadServiceInterface.WORK_TAG).get();
