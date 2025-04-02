@@ -42,7 +42,7 @@
     <string name="statistics_counting_range">Прослухано між %1$sта%2$s</string>
     <string name="statistics_counting_total">Прослухано загалом</string>
     <!--Home fragment-->
-  <string name="home_surprise_title">Здивуйтеся</string>
+  <string name="home_surprise_title">Спробуйте навмання</string>
     <string name="home_classics_title">То є любов</string>
     <string name="home_continue_title">Продовжити прослуховування</string>
     <string name="home_new_title">Нові надходження</string>
@@ -56,7 +56,7 @@
   <string name="drawer_open">Показати меню</string>
     <string name="drawer_close">Сховати меню</string>
     <string name="drawer_preferences">Налаштування шторки</string>
-    <string name="drawer_feed_order_unplayed_episodes">Сортувати за лічильником</string>
+    <string name="drawer_feed_order_unplayed_episodes">Сортувати за кількістю нових випусків</string>
     <string name="drawer_feed_order_alphabetical">Сортувати за абеткою</string>
     <string name="drawer_feed_order_last_update">Сортувати за датою публікації</string>
     <string name="drawer_feed_order_most_played">Сортувати за кількістю прослуханих випусків</string>
@@ -84,7 +84,7 @@
     <string name="cancel_label">Скасувати</string>
     <string name="yes">Так</string>
     <string name="no">Ні</string>
-    <string name="reset">Перезапуск</string>
+    <string name="reset">Скинути</string>
     <string name="global_default">Глобальне налаштування за замовчуванням</string>
     <string name="url_label">Посилання</string>
     <string name="support_funding_label">Підтримка</string>
@@ -262,7 +262,7 @@
     <string name="skip_episode_label">Пропустити випуск</string>
     <string name="reset_position">Скинути позицію відтворення</string>
     <string name="no_items_selected">Не вибрано жодний елемент</string>
-    <string name="delete_local_feed_warning_body">У разі видалення епізод зникне з AntennaPod, а його файл буде видалено зі сховища вашого пристрою. Його не можна буде знову завантажити через AntennaPod.</string>
+    <string name="delete_local_feed_warning_body">У разі видалення випуск зникне з AntennaPod, а його файл буде видалено зі сховища вашого пристрою. Його не можна буде знову завантажити через AntennaPod.</string>
     <!--Download messages and labels-->
   <string name="download_successful">успішно</string>
     <string name="download_pending">Потрібно завантажити</string>
@@ -339,7 +339,7 @@
     <string name="feed_title">Назва подкасту</string>
     <string name="random">Випадково</string>
     <string name="smart_shuffle">Розумне перемішування</string>
-    <string name="size">Розмір</string>
+    <string name="size">За розміром</string>
     <string name="clear_queue_confirmation_msg">Будь ласка, підтвердьте, що хочете видалити ВСІ випуски з черги.</string>
     <string name="time_left_label">"Залишилось: "</string>
     <!--Variable Speed-->
@@ -430,7 +430,7 @@
     <string name="pref_mobileUpdate_refresh">Оновлення подкасту</string>
     <string name="pref_mobileUpdate_images">Обкладинки зображень</string>
     <string name="pref_mobileUpdate_auto_download">Автозавантаження</string>
-    <string name="pref_mobileUpdate_episode_download">Завантаження випусків</string>
+    <string name="pref_mobileUpdate_episode_download">Завантажити випуск</string>
     <string name="pref_mobileUpdate_streaming">Потокове передавання</string>
     <string name="user_interface_label">Оболонка</string>
     <string name="user_interface_sum">Зовнішній вигляд, підписки, екран блокування</string>
@@ -438,7 +438,7 @@
     <string name="pref_black_theme_message">Використовуйте повний чорний для темної теми</string>
     <string name="pref_tinted_theme_title">Динамічні кольори</string>
     <string name="pref_tinted_theme_message">Адаптація кольорів програми на основі шпалер</string>
-    <string name="pref_nav_drawer_feed_order_title">Встановити порядок підписок</string>
+    <string name="pref_nav_drawer_feed_order_title">Оберіть сортування подкастів</string>
     <string name="pref_nav_drawer_feed_order_sum">Змінити порядок ваших підписок</string>
     <string name="pref_nav_drawer_feed_counter_title">Налаштувати лічильник підписок</string>
     <string name="pref_nav_drawer_feed_counter_sum">Змініть інформацію, що відображається лічильником підписки. Це впливає на сортування підписок, якщо в параметрі \"Порядок підписок\" вибрано \"Лічильник\".</string>
@@ -506,9 +506,9 @@
     <string name="pref_delete_removes_from_queue_sum">У разі видалення завантаженого випуску також вилучати його з черги</string>
     <string name="pref_filter_feed_title">Фільтр підписок</string>
     <string name="pref_filter_feed_sum">Фільтруйте підписки на панелі навігації та на сторінці підписок</string>
-    <string name="subscriptions_counter_greater_zero">Лічильник більше нуля</string>
-    <string name="auto_downloaded">Завантажено автоматично</string>
-    <string name="not_auto_downloaded">Не завантажено автоматично</string>
+    <string name="subscriptions_counter_greater_zero">З новими випусками</string>
+    <string name="auto_downloaded">Завантажується автоматично</string>
+    <string name="not_auto_downloaded">Не завантажується автоматично</string>
     <string name="kept_updated">Оновлюється</string>
     <string name="not_kept_updated">Не оновлюється</string>
     <string name="new_episode_notification_enabled">Сповіщення ввімкнено</string>
@@ -695,7 +695,7 @@
     <string name="download_completed_talkback">Успішно завантажено %1$s</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">Автентифікація</string>
-    <string name="authentication_descr">Змініть своє ім’я користувача та пароль для цього подкасту та його епізодів</string>
+    <string name="authentication_descr">Змініть своє ім’я користувача та пароль для цього подкасту та його випусків</string>
     <string name="feed_tags_label">Мітки</string>
     <string name="feed_tags_summary">Змініть теги цього подкасту, щоб упорядкувати ваші підписки</string>
     <string name="feed_folders_include_root">Відображати цей подкаст в основному списку підписок</string>
@@ -792,8 +792,8 @@
     <string name="notification_group_news">Новини</string>
     <string name="notification_channel_user_action">Потрібна дія</string>
     <string name="notification_channel_user_action_description">Відображається, якщо потрібна ваша дія, наприклад, якщо потрібно ввести пароль.</string>
-    <string name="notification_channel_downloading">Завантаження епізодів</string>
-    <string name="notification_channel_downloading_description">Відображається під час завантаження епізодів.</string>
+    <string name="notification_channel_downloading">Завантаження випусків</string>
+    <string name="notification_channel_downloading_description">Відображається під час завантаження випусків.</string>
     <string name="notification_channel_playing">Слухаєте зараз</string>
     <string name="notification_channel_playing_description">Дозволяє керувати відтворенням. Це сповіщення, яке ви бачите під час відтворення подкасту.</string>
     <string name="notification_channel_download_error">Не вдалося завантажити</string>
@@ -850,15 +850,15 @@
     <string name="pref_automatic_download_global_description">Автоматично завантажувати нові серії. Може бути перевизначено для кожного подкасту.</string>
     <string name="pref_automatic_download_queue_title">Завантаження в черзі</string>
     <string name="pref_automatic_download_queue_description">Автоматично завантажувати серії в черзі</string>
-    <string name="episode_lists">Списки епізодів</string>
+    <string name="episode_lists">Списки випусків</string>
     <string name="pref_downloads_button_action_title">Грайте з екрана завантажень</string>
-    <string name="episodes_label_short">Епізоди</string>
+    <string name="episodes_label_short">Випуски</string>
     <string name="home_label_short">Додому</string>
     <string name="inbox_label_short">Вхідні</string>
     <string name="downloads_label_short">Завантаження</string>
     <string name="subscriptions_label_short">Підписки</string>
-    <string name="playback_history_label_short">історія</string>
-    <string name="episodes_label_more">Епізоди »</string>
+    <string name="playback_history_label_short">Історія</string>
+    <string name="episodes_label_more">Випуски »</string>
     <string name="queue_label_more">Черга »</string>
     <string name="inbox_label_more">Вхідні »</string>
     <string name="downloads_label_more">Завантаження »</string>
@@ -870,7 +870,7 @@
     <string name="statistics_time_total">всього</string>
     <string name="statistics_time_played">грав</string>
     <string name="notification_channel_refreshing">Оновлення подкастів</string>
-    <string name="notification_channel_refreshing_description">Показується під час перевірки нових епізодів.</string>
+    <string name="notification_channel_refreshing_description">Показується під час перевірки нових випусків.</string>
     <string name="echo_home_header">Перегляньте рік</string>
     <string name="echo_home_subtitle">Ваші найпопулярніші подкасти та статистика за минулий рік. Ексклюзивно на вашому телефоні.</string>
     <string name="echo_intro_your_year">Ваш рік</string>
@@ -880,13 +880,13 @@
     <string name="echo_queue_title_clean">І ви готові до чистого початку року. Ви маєте</string>
     <string name="echo_queue_title_many">І у вас ще є чимало попереду цього року. Ви маєте</string>
     <string name="echo_queue_hours_clean">Це приблизно %1$s щодня, доки не почнеться %2$d.</string>
-    <string name="echo_queue_hours_normal">Це приблизно %1$s кожного дня до початку %2$d. Ви можете почати рік чисто, якщо пропустите кілька епізодів.</string>
-    <string name="echo_listened_after_title">Ми провели певний аналіз того, коли випускаються епізоди та коли ви їх завершили. Наш висновок?</string>
+    <string name="echo_queue_hours_normal">Це приблизно %1$s кожного дня до початку %2$d. Ви можете почати рік чисто, якщо пропустите кілька випусків.</string>
+    <string name="echo_listened_after_title">Ми провели певний аналіз того, коли з\'являються випуски та коли ви їх завершили. Наш висновок?</string>
     <string name="echo_listened_after_comment_easy">Ви легкі</string>
     <string name="echo_listened_after_comment_addict">Ти залежна від подкастів</string>
     <string name="echo_hoarder_title">Нам також було цікаво: чи слухаєте ви подкасти, на які підписані?</string>
     <string name="echo_hoarder_subtitle_hoarder">Дивлячись на цифри, ми думаємо, що ви накопичуєте</string>
-    <string name="echo_thanks_we_are_glad_old">за те, що залишилися з нами цього року!\n\nВи зіграли з нами свій перший епізод у %1$s. З тих пір ми мали честь служити вам.</string>
+    <string name="echo_thanks_we_are_glad_old">...за те, що ви з нами цього року!\n\nСвій перший випуск ви прослухали з нами у %1$s. Для нас це честь бути корисними для вас відтоді.</string>
     <string name="echo_thanks_now_favorite">А тепер давайте подивимося на ваші улюблені подкасти…</string>
     <string name="echo_share_heading">Мої улюблені подкасти</string>
     <string name="echo_share">Мій %d рік у подкастах. #АнтенаПоДехо</string>
@@ -896,24 +896,24 @@
     <string name="echo_queue_hours_much">Це приблизно %1$s кожного дня до початку %2$d. Почекай, що?</string>
     <string name="delete_tag_label">Видалити тег</string>
     <string name="echo_hoarder_comment_hoarder">Кажуть, цифри не брешуть. І оскільки лише %1$d%% із ваших %2$d активних підписок було зіграно цього року, ми, ймовірно, маємо рацію.</string>
-    <string name="echo_hoarder_comment_medium">Цього року ви відтворили епізоди з %1$d%% із %2$d активних підписок. Як щодо перевірки \"%3$s\" ще раз?</string>
+    <string name="echo_hoarder_comment_medium">Цього року ви прослухали випуски з %1$d%% ваших %2$d активних підписок. Чому б знову не послухати \"%3$s\"?</string>
     <string name="echo_hoarder_subtitle_clean">Чистий!</string>
     <string name="echo_thanks_large">Дякую</string>
     <string name="echo_thanks_we_are_glad_new">за те, що приєдналися до нас цього року!\n\nНезалежно від того, чи ви перейшли з іншого додатка чи почали свою подкаст-пригоду з нами: ми раді, що ви у нас!</string>
-    <string name="echo_hoarder_comment_clean">Цього року ви відтворили епізоди з %1$d%% із %2$d активних підписок. Ми впевнені, що ви також тримаєте свій стіл чистим!</string>
+    <string name="echo_hoarder_comment_clean">Цього року ви прослухали випуски з %1$d%% ваших %2$d активних підписок. Ви мабуть і робочий стіл тримаєте в порядку!</string>
     <plurals name="echo_hours_podcasts">
-        <item quantity="one">годин епізодів\nз %1$d подкасту</item>
-        <item quantity="few">годин епізодів\nз %1$d різних подкастів</item>
-        <item quantity="many">годин епізодів\nз %1$d різних подкастів</item>
-        <item quantity="other">годин епізодів\nз %1$d різних подкастів</item>
+        <item quantity="one">годин випуска\nз %1$d подкасту</item>
+        <item quantity="few">годин випусків\nз %1$d різних подкастів</item>
+        <item quantity="many">годин випусків\nз %1$d різних подкастів</item>
+        <item quantity="other">годин випусків\nз %1$d різних подкастів</item>
     </plurals>
     <string name="echo_listened_after_time">Зазвичай ви закінчили серію %1$s після її виходу.</string>
     <string name="queue_label_short">Черга</string>
     <plurals name="echo_queue_hours_waiting">
-        <item quantity="one">годин очікування у вашій черзі\nз %1$d епізоду</item>
-        <item quantity="few">годин очікування у вашій черзі\nз %1$d епізодів</item>
-        <item quantity="many">годин очікування у вашій черзі\nз %1$d епізодів</item>
-        <item quantity="other">годин очікування у вашій черзі\nз %1$d епізодів</item>
+        <item quantity="one">годин очікування у вашій черзі\nз %1$d випуску</item>
+        <item quantity="few">годин очікування у вашій черзі\nз %1$d випусків</item>
+        <item quantity="many">годин очікування у вашій черзі\nз %1$d випусків</item>
+        <item quantity="other">годин очікування у вашій черзі\nз %1$d випусків</item>
     </plurals>
     <string name="echo_hoarder_subtitle_medium">Перевірте. Тут немає накопичення.</string>
     <string name="overflow_more">Більше</string>

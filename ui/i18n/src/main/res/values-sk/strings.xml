@@ -680,7 +680,7 @@
     <string name="exclude_episodes_shorter_than">Vynechať epizódy kratšie ako</string>
     <string name="keep_updated">Priebežne aktualizovať</string>
     <string name="keep_updated_summary">Zahrnúť tento podcast pri (automatickej) obnove všetkých podcastov</string>
-    <string name="statistics_expected_next_episode_any_day">Teraz ktorýkoľvek deň</string>
+    <string name="statistics_expected_next_episode_any_day">Ktorýkoľvek deň</string>
     <string name="statistics_expected_next_episode_unknown">Neznáma</string>
     <string name="edit_url_menu">Upraviť URL adresu kanálu</string>
     <string name="edit_url_confirmation_msg">Zmenou URL adresy RSS môže ľahko narušiť stav prehrávania a zoznam epizód podcastu. NEODPORÚČAME ho meniť a NEPOSKYTUJEME podporu, ak sa niečo pokazí. Nie je to možné vrátiť späť. Pokazený odber sa NEDÁ opraviť jednoduchou zmenou adresy späť. Pred pokračovaním odporúčame si vytvoriť zálohu.</string>
@@ -853,7 +853,7 @@
         <item quantity="other">%d epizód bolo pridaných do poradia.</item>
     </plurals>
     <string name="statistics_time_total">celkovo</string>
-    <string name="statistics_time_played">prehrávané</string>
+    <string name="statistics_time_played">prehrávaných</string>
     <string name="echo_home_header">Prehľad roka</string>
     <string name="echo_home_subtitle">Vaše najlepšie podcasty a štatistiky za posledný rok. Exkluzívne vo vašom telefóne.</string>
     <string name="echo_intro_your_year">Váš rok</string>
