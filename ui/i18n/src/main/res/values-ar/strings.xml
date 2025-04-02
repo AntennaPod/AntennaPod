@@ -917,16 +917,19 @@
     <string name="delete_tag_confirmation">الرجاء تأكيد رغبتك في حذف العلامة ”%1$s“.</string>
     <string name="download_error_unsupported_type_html_manual">العنوان الذي أدخلته هو عنوان موقع ويب وليس عنوان RSS للبودكاست.</string>
     <plurals name="echo_hours_podcasts">
-        <item quantity="zero">ساعات من الحلقات\nمن %1$d بودكاست</item>
-        <item quantity="one">ساعات من الحلقات\nمن %1$d بودكاست</item>
-        <item quantity="two">ساعات من الحلقات\nمن بودكاستان مختلفان</item>
-        <item quantity="few">ساعات من الحلقات\nمن %1$d بودكاستات مختلفة</item>
-        <item quantity="many">ساعات من الحلقات\nمن %1$d بودكاستاً مختلفاً</item>
-        <item quantity="other">ساعات من الحلقات\nمن %1$d بودكاست مختلف</item>
+        <item quantity="zero">ساعات من الحلقات\nمن المسموعية %1$d</item>
+        <item quantity="one">ساعات من الحلقات\nمن المسموعية %1$d</item>
+        <item quantity="two">ساعات من الحلقات\nمن المسموعيتان %1$d</item>
+        <item quantity="few">ساعات من الحلقات\nمن مسموعيات مختلفة %1$d</item>
+        <item quantity="many">ساعات من الحلقات\nمن مسموعيات مختلفة %1$d</item>
+        <item quantity="other">ساعات من الحلقات\nمن مسموعية مختلفة %1$d</item>
     </plurals>
     <string name="preference_search_clear_input">مسح</string>
     <string name="overflow_more">المزيد</string>
     <string name="statistics_time_played">تم الاستماع لها</string>
     <string name="notification_channel_refreshing">تحديث البودكاستات</string>
     <string name="echo_queue_title_many">ولا يزال أمامك الكثير هذا العام. لديك</string>
+    <string name="echo_hoarder_title">كنا نتساءل أيضًا: هل تستمع إلى المسموعية التي اشتركت فيها؟</string>
+    <string name="echo_share_heading">مسموعياتي المفضَّلة</string>
+    <string name="echo_thanks_now_favorite">والآن، دعنا نلقي نظرة على المسموعية المفضَّلة لديك…</string>
 </resources>
