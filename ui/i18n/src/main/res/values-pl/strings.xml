@@ -908,4 +908,8 @@
     <string name="echo_hoarder_title">Zastanawialiśmy się również: czy słuchasz podcastów, które subskrybujesz?</string>
     <string name="echo_thanks_now_favorite">Przyjrzyjmy się teraz Twoim ulubionym podcastom…</string>
     <string name="echo_share">Mój rok %d w podcastach. #AntennaPodEcho</string>
+    <string name="echo_queue_title_clean">I teraz jest czas na wejście w nowy rok z czystą kartą. Obecnie masz</string>
+    <string name="echo_hoarder_subtitle_hoarder">Patrząc na liczby, jest osobą, która lubi chomikować rzeczy</string>
+    <string name="echo_thanks_we_are_glad_new">za dołączenie do nas w tym roku!\n\nNiezależnie od tego, czy przeniosłeś się z innej aplikacji, czy zacząłeś swoją przygodę z podcastami z nami: cieszymy się, że Cię mamy!</string>
+    <string name="echo_queue_hours_normal">To około %1$s każdego dnia, aż do rozpoczęcia %2$d. Możesz zacząć rok na czysto jeśli pominiesz kilka odcinków.</string>
 </resources>

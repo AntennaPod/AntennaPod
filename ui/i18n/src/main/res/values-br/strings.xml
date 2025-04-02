@@ -352,7 +352,7 @@
     <string name="preference_search_hint">Klask…</string>
     <string name="preference_search_no_results">Disoc\'h ebet</string>
     <string name="preference_search_clear_history">Skarzhañ ar roll istor</string>
-    <string name="pref_episode_cleanup_summary">Ar rannoù a c\'hallfe bezañ dilamet ma vez ezhomm muioc\'h a egor dieub gant ar pellgargañ emgefreek.</string>
+    <string name="pref_episode_cleanup_summary">Ar rannoù a c\'hallfe bezañ dilamet ma vez ezhomm muioc\'h a egor dieub gant ar pellgargañ emgefreek</string>
     <string name="pref_pauseOnDisconnect_sum">Paouez gant al lenn pa vez diluget selaouelloù pe bluetooth</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Kenderc\'hel al lenn pa vez adluget ar selaouelloù</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Adstagañ gant al lenn pa vez adkennasket ar bluetooth</string>
@@ -664,7 +664,7 @@
     <string name="share_starting_position_label">Adalek</string>
     <!--Audio controls-->
   <string name="audio_controls">Reoliadurioù aodio</string>
-    <string name="playback_speed">Tizh lenn</string>
+    <string name="playback_speed">Tizh al lenn</string>
     <string name="player_switch_to_audio_only">Tremen d\'ar son hepken</string>
     <!--proxy settings-->
   <string name="proxy_type_label">RIzh</string>
@@ -705,4 +705,36 @@
     <string name="shortcut_subscription_label">Berradenn ar c\'houmanant</string>
     <string name="shortcut_select_subscription">Dibab ar c\'houmanant</string>
     <string name="add_shortcut">Ouzhpennañ ur verradenn</string>
+    <string name="add_feed_label_short">Ouzhpennañ</string>
+    <string name="episodes_label_short">Rannoù</string>
+    <string name="queue_label_short">Lost</string>
+    <string name="inbox_label_short">Boest degemer</string>
+    <string name="subscriptions_label_short">Koumanantoù</string>
+    <string name="playback_history_label_short">Roll istor</string>
+    <string name="episodes_label_more">Rannoù »</string>
+    <string name="queue_label_more">Lost »</string>
+    <string name="inbox_label_more">Boest degemer »</string>
+    <string name="downloads_label_more">Pellgargadennoù »</string>
+    <string name="enabled">Gweredekaet</string>
+    <string name="disabled">Diweredekaet</string>
+    <string name="global_default_with_value">Dre ziouer (%1$s)</string>
+    <string name="delete_tag_label">Dilemel an dikedenn</string>
+    <string name="section_shown">Diskouezet</string>
+    <string name="feed_new_episodes_action_add_to_queue">Ouzhpennañ el lost (diweredekaat a ra ar pellgargañ emgefreek)</string>
+    <string name="delete_downloads_played">Dilemel a re lennet</string>
+    <string name="home_label_short">Degemer</string>
+    <string name="subscriptions_label_more">Koumanantoù »</string>
+    <string name="downloads_label_short">Pellgargadennoù</string>
+    <string name="theming">Neuz</string>
+    <string name="pref_episode_cleanup_title">Dilemel a-raok ar pellgargañ emgefreek</string>
+    <string name="transcript_follow">Heuliañ an aodio</string>
+    <string name="pref_episode_cache_title">Bevenn ar rannoù</string>
+    <string name="pref_auto_delete_playback_sum">Dilemel ar rann pa vez echu al lenn</string>
+    <string name="overflow_more">Muioc\'h</string>
+    <string name="preference_search_clear_input">Skarzhañ</string>
+    <string name="pref_auto_delete_playback_title">Dilemel goude lenn</string>
+    <string name="pref_auto_delete_title">Dilemel emgefreek</string>
+    <string name="pref_automatic_download_global_description">Pellgargañ emgefreek ar rannoù nevez. Gallout a ra bezañ kemmet gant bep a bodskignad.</string>
+    <string name="pref_automatic_download_queue_title">Pellgargadenn lakaet el lost</string>
+    <string name="pref_automatic_download_queue_description">Pellgargañ emgefreek ar rannoù lakaet el lost</string>
 </resources>
