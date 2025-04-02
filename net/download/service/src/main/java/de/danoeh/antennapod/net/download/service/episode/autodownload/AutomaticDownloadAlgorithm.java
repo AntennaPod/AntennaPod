@@ -85,6 +85,7 @@ public class AutomaticDownloadAlgorithm {
 
                 int autoDownloadableEpisodes = candidates.size();
                 int downloadedEpisodes = DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.DOWNLOADED));
+                downloadedEpisodes += DownloadServiceInterface.get().getNumberOfActiveDownloads(context);
                 int deletedEpisodes = EpisodeCleanupAlgorithmFactory.build()
                         .makeRoomForEpisodes(context, autoDownloadableEpisodes);
                 boolean cacheIsUnlimited =
@@ -99,7 +100,7 @@ public class AutomaticDownloadAlgorithm {
                 }
 
                 List<FeedItem> itemsToDownload = candidates.subList(0, episodeSpaceLeft);
-                if (itemsToDownload.size() > 0) {
+                if (!itemsToDownload.isEmpty()) {
                     Log.d(TAG, "Enqueueing " + itemsToDownload.size() + " items for download");
 
                     for (FeedItem episode : itemsToDownload) {
