@@ -12,11 +12,13 @@ public class ShakeListener implements SensorEventListener {
 
     private Sensor mAccelerometer;
     private SensorManager mSensorMgr;
-    private final PlaybackServiceTaskManager.SleepTimer mSleepTimer;
+    private final SleepTimer mSleepTimer;
+    private final long mInitialTimeout;
     private final Context mContext;
 
-    public ShakeListener(Context context, PlaybackServiceTaskManager.SleepTimer sleepTimer) {
+    public ShakeListener(Context context, long initialTimeout, SleepTimer sleepTimer) {
         mContext = context;
+        mInitialTimeout = initialTimeout;
         mSleepTimer = sleepTimer;
         resume();
     }
@@ -51,7 +53,7 @@ public class ShakeListener implements SensorEventListener {
         double gForce = Math.sqrt(gX*gX + gY*gY + gZ*gZ);
         if (gForce > 2.25) {
             Log.d(TAG, "Detected shake " + gForce);
-            mSleepTimer.restart();
+            mSleepTimer.reset(mInitialTimeout);
         }
     }
 

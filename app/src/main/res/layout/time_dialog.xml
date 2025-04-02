@@ -140,6 +140,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/timer_vibration_label" />
 
+            <CheckBox
+                android:id="@+id/cbPauseWhenNotPlaying"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/timer_pause_while_not_playing_label" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

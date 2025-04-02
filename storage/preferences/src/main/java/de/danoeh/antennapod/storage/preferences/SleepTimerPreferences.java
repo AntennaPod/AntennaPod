@@ -16,6 +16,7 @@ public class SleepTimerPreferences {
     private static final String PREF_VALUE = "LastValue";
 
     private static final String PREF_VIBRATE = "Vibrate";
+    private static final String PREF_PAUSE_WHILE_NOT_PLAYING = "PauseWhileNotPlaying";
     private static final String PREF_SHAKE_TO_RESET = "ShakeToReset";
     private static final String PREF_AUTO_ENABLE = "AutoEnable";
     private static final String PREF_AUTO_ENABLE_FROM = "AutoEnableFrom";
@@ -56,6 +57,14 @@ public class SleepTimerPreferences {
 
     public static boolean vibrate() {
         return prefs.getBoolean(PREF_VIBRATE, false);
+    }
+
+    public static void setPauseWhileNotPlaying(boolean pauseWhileNotPlaying) {
+        prefs.edit().putBoolean(PREF_PAUSE_WHILE_NOT_PLAYING, pauseWhileNotPlaying).apply();
+    }
+
+    public static boolean pauseWhileNotPlaying() {
+        return prefs.getBoolean(PREF_PAUSE_WHILE_NOT_PLAYING, true);
     }
 
     public static void setShakeToReset(boolean shakeToReset) {

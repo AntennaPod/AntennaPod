@@ -79,7 +79,7 @@ import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
-import de.danoeh.antennapod.playback.service.internal.PlaybackServiceTaskManager.SleepTimer;
+import de.danoeh.antennapod.playback.service.internal.SleepTimer;
 import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.event.MessageEvent;
@@ -671,7 +671,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 } else {
                     return false;
                 }
-                taskManager.restartSleepTimer();
+                taskManager.resumeSleepTimer();
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PLAY:
                 if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
@@ -684,7 +684,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 } else {
                     return false;
                 }
-                taskManager.restartSleepTimer();
+                taskManager.resumeSleepTimer();
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
@@ -1655,16 +1655,17 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public void resume() {
         mediaPlayer.resume();
-        taskManager.restartSleepTimer();
+        taskManager.resumeSleepTimer();
     }
 
     public void prepare() {
         mediaPlayer.prepare();
-        taskManager.restartSleepTimer();
+        taskManager.resumeSleepTimer();
     }
 
     public void pause(boolean abandonAudioFocus, boolean reinit) {
         mediaPlayer.pause(abandonAudioFocus, reinit);
+        taskManager.pauseSleepTimer();
     }
 
     public PlaybackServiceMediaPlayer.PSMPInfo getPSMPInfo() {
