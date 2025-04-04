@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Arrays;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -444,8 +446,15 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             @Override
             protected void onSelectedItemsUpdated() {
                 super.onSelectedItemsUpdated();
-                FeedItemMenuHandler.onPrepareMenu(floatingSelectMenu.getMenu(), getSelectedItems(), queue,
+                Menu menu = floatingSelectMenu.getMenu();
+                List<FeedItem> selectedItems = getSelectedItems();
+                FeedItemMenuHandler.onPrepareMenu(menu, selectedItems,
                         R.id.add_to_queue_item, R.id.remove_inbox_item);
+
+                boolean[] canMove = canMove(queue, selectedItems);
+                menu.findItem(R.id.move_to_top_item).setVisible(canMove[0]);
+                menu.findItem(R.id.move_to_bottom_item).setVisible(canMove[1]);
+
                 floatingSelectMenu.updateItemVisibility();
             }
         };
@@ -603,6 +612,66 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             UserPreferences.setQueueKeepSortedOrder(sortOrder);
             DBWriter.reorderQueue(sortOrder, true);
         }
+    }
+
+    /**
+     * This method checks if the selected items are allowed to be moved to the top, bottom or both of the Queue.
+     * @param queue The FeedItems currently in the Queue.
+     * @param selectedItems The FeedItems for which the check is performed.
+     * @return A boolean array where:
+     *           [0] is true if moving to the top is allowed, false otherwise.
+     *           [1] is true if moving to the bottom is allowed, false otherwise.
+     * */
+    public static boolean[] canMove(List<FeedItem> queue, List<FeedItem> selectedItems) {
+        boolean canMoveToTop = true;
+        boolean canMoveToBottom = true;
+
+        if (selectedItems.isEmpty() || queue.isEmpty()) {
+            return new boolean[]{false, false};
+        }
+
+        // No manual reordering allowed if sorting enforced, or queue locked. Both move options are disabled.
+        if (UserPreferences.isQueueLocked() || UserPreferences.isQueueKeepSorted()) {
+            return new boolean[]{false, false};
+        }
+
+        int queueSize = queue.size();
+        int selectedSize = selectedItems.size();
+
+        boolean isFirstItemSelected = selectedItems.get(0).getId() == queue.get(0).getId();
+        boolean isLastItemSelected = selectedItems.get(selectedSize - 1).getId() == queue.get(queueSize - 1).getId();
+
+        // If all items in the list are selected, disable move options since no movement is possible or allowed.
+        if (selectedSize == queueSize) {
+            return new boolean[]{false, false};
+        }
+
+        if (selectedItems.size() == 1) {
+            // If the selected item is already at the top of the list, disable the option to move it to the top.
+            if (isFirstItemSelected) {
+                canMoveToTop = false;
+            }
+            // If the selected item is already at the bottom of the list, disable the option to move it to the bottom.
+            if (isLastItemSelected) {
+                canMoveToBottom = false;
+            }
+        } else {
+
+            // Check if selected items contiguous.
+            // If contiguous from the top, moving items to the top is disabled, as they are already there.
+            boolean contiguousAtTop = isFirstItemSelected && selectedItems.equals(queue.subList(0, selectedSize));
+            // If contiguous from the bottom, moving items to the bottom is disabled, as they are already there.
+            boolean contiguousAtBottom = isLastItemSelected
+                    && selectedItems.equals(queue.subList(queueSize - selectedSize, queueSize));
+
+            if (contiguousAtTop) {
+                canMoveToTop = false;
+            }
+            if (contiguousAtBottom) {
+                canMoveToBottom = false;
+            }
+        }
+        return new boolean[]{canMoveToTop, canMoveToBottom};
     }
 
     private class QueueSwipeActions extends SwipeActions {
