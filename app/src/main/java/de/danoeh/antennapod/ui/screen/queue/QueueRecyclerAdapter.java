@@ -27,11 +27,11 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
     public QueueRecyclerAdapter(MainActivity mainActivity, SwipeActions swipeActions) {
         super(mainActivity);
         this.swipeActions = swipeActions;
-        dragDropEnabled = !(UserPreferences.isQueueKeepSorted() || UserPreferences.isQueueLocked());
+        dragDropEnabled = ! (UserPreferences.isQueueKeepSorted() || UserPreferences.isQueueLocked());
     }
 
     public void updateDragDropEnabled() {
-        dragDropEnabled = !(UserPreferences.isQueueKeepSorted() || UserPreferences.isQueueLocked());
+        dragDropEnabled = ! (UserPreferences.isQueueKeepSorted() || UserPreferences.isQueueLocked());
         notifyDataSetChanged();
     }
 

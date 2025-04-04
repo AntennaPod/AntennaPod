@@ -239,12 +239,4 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         return items;
     }
 
-    public List<FeedItem> getItems() {
-        List<FeedItem> items = new ArrayList<>();
-        for (int i = 0; i < getItemCount(); i++) {
-            items.add(getItem(i));
-        }
-        return items;
-    }
-
 }

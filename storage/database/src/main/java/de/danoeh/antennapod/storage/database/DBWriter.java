@@ -24,6 +24,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -522,22 +523,22 @@ public class DBWriter {
     }
 
     public static Future<?> moveQueueItemsToTop(final Context context,
-                                            final long... itemIds) {
-        return runOnDbThread(() -> moveQueueItemsSynchronous(context, true, itemIds));
+                                            final List<FeedItem> items) {
+        return runOnDbThread(() -> moveQueueItemsSynchronous(context, true, items));
     }
 
     public static Future<?> moveQueueItemsToBottom(final Context context,
-                                                final long... itemIds) {
-        return runOnDbThread(() -> moveQueueItemsSynchronous(context, false, itemIds));
+                                                   final List<FeedItem> items) {
+        return runOnDbThread(() -> moveQueueItemsSynchronous(context, false, items));
     }
 
     private static void moveQueueItemsSynchronous(final Context context,
                                                   final boolean moveToTop,
-                                                  final long... itemIds) {
+                                                  final List<FeedItem> items) {
 
         String calledBy = moveToTop ? "moveQueueItemsToTop" : "moveQueueItemsToBottom";
 
-        if (itemIds.length < 1) {
+        if (items.isEmpty()) {
             return;
         }
 
@@ -546,37 +547,26 @@ public class DBWriter {
         final List<FeedItem> queue = DBReader.getQueue();
 
         if (moveToTop) {
-            for (int i = 0; i < itemIds.length / 2; i++) {
-                long temp = itemIds[i];
-                itemIds[i] = itemIds[itemIds.length - 1 - i];
-                itemIds[itemIds.length - 1 - i] = temp;
-            }
+            Collections.reverse(items);
         }
 
         boolean queueModified = false;
         List<QueueEvent> events = new ArrayList<>();
-        for (long itemId : itemIds) {
+
+        for (FeedItem item : items) {
+            long itemId = item.getId();
             int index = indexInItemList(queue, itemId);
             if (index >= 0) {
-                final FeedItem item = DBReader.getFeedItem(itemId);
-                if (item == null) {
-                    Log.e(TAG, calledBy + " - item in queue but somehow cannot be loaded."
-                            + " Item ignored. It should never happen. id:" + itemId);
-                    continue;
-                }
-
-                if (moveToTop) {
-                    queue.add(0, queue.remove(index));
-                    events.add(QueueEvent.moved(item, 0));
-                } else {
-                    queue.add(queue.size() - 1, queue.remove(index));
-                    events.add(QueueEvent.moved(item, queue.size() - 1));
-                }
+                queue.remove(index);
+                int newIndex = moveToTop ? 0 : queue.size();
+                queue.add(newIndex, item);
+                events.add(QueueEvent.moved(item, newIndex));
                 queueModified = true;
             } else {
                 Log.v(TAG, calledBy + " - item  not in queue:" + itemId);
             }
         }
+
         if (queueModified) {
             adapter.setQueue(queue);
             for (QueueEvent event : events) {
