@@ -114,9 +114,6 @@ public class EpisodeMultiSelectActionHandler {
     }
 
     private void showMessage(@PluralsRes int msgId, int numItems) {
-        if (numItems == 1) {
-            return;
-        }
         totalNumItems += numItems;
         activity.runOnUiThread(() -> {
             String text = activity.getResources().getQuantityString(msgId, totalNumItems, totalNumItems);
