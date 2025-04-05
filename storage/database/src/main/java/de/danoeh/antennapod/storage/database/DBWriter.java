@@ -24,6 +24,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -519,6 +520,62 @@ public class DBWriter {
         if (performAutoDownload) {
             AutoDownloadManager.getInstance().autodownloadUndownloadedItems(context);
         }
+    }
+
+    public static Future<?> moveQueueItemsToTop(final Context context,
+                                            final List<FeedItem> items) {
+        return runOnDbThread(() -> moveQueueItemsSynchronous(context, true, items));
+    }
+
+    public static Future<?> moveQueueItemsToBottom(final Context context,
+                                                   final List<FeedItem> items) {
+        return runOnDbThread(() -> moveQueueItemsSynchronous(context, false, items));
+    }
+
+    private static void moveQueueItemsSynchronous(final Context context,
+                                                  final boolean moveToTop,
+                                                  final List<FeedItem> items) {
+
+        String calledBy = moveToTop ? "moveQueueItemsToTop" : "moveQueueItemsToBottom";
+
+        if (items.isEmpty()) {
+            return;
+        }
+
+        final PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        final List<FeedItem> queue = DBReader.getQueue();
+
+        if (moveToTop) {
+            Collections.reverse(items);
+        }
+
+        boolean queueModified = false;
+        List<QueueEvent> events = new ArrayList<>();
+
+        for (FeedItem item : items) {
+            long itemId = item.getId();
+            int index = indexInItemList(queue, itemId);
+            if (index >= 0) {
+                queue.remove(index);
+                int newIndex = moveToTop ? 0 : queue.size();
+                queue.add(newIndex, item);
+                events.add(QueueEvent.moved(item, newIndex));
+                queueModified = true;
+            } else {
+                Log.v(TAG, calledBy + " - item  not in queue:" + itemId);
+            }
+        }
+
+        if (queueModified) {
+            adapter.setQueue(queue);
+            for (QueueEvent event : events) {
+                EventBus.getDefault().post(event);
+            }
+        } else {
+            Log.w(TAG, "Queue was not modified by call to " + calledBy);
+        }
+        adapter.close();
     }
 
     public static Future<?> toggleFavoriteItem(final FeedItem item) {
