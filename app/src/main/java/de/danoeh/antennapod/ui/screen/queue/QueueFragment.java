@@ -28,6 +28,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
+import de.danoeh.antennapod.ui.screen.InboxFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
@@ -516,6 +517,14 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> {
                     queue = items;
+                    if (queue.isEmpty() && DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW)) > 0) {
+                        emptyView.setMessage(R.string.no_queue_items_inbox_has_items_label);
+                        emptyView.setButtonText(R.string.no_queue_items_inbox_has_items_button_label);
+                        emptyView.setButtonVisibility(View.VISIBLE);
+                        emptyView.setButtonOnClickListener(v -> {
+                            ((MainActivity) getActivity()).loadChildFragment(new InboxFragment());
+                        });
+                    }
                     progressBar.setVisibility(View.GONE);
                     recyclerAdapter.setDummyViews(0);
                     recyclerAdapter.updateItems(queue);
