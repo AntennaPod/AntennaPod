@@ -7,11 +7,14 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,6 +40,7 @@ import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 public class SleepTimerDialog extends DialogFragment {
     private PlaybackController controller;
     private EditText etxtTime;
+    private Spinner spShakeToResetMode;
     private LinearLayout timeSetup;
     private LinearLayout timeDisplay;
     private TextView time;
@@ -77,6 +81,7 @@ public class SleepTimerDialog extends DialogFragment {
         builder.setPositiveButton(R.string.close_label, null);
 
         etxtTime = content.findViewById(R.id.etxtTime);
+        spShakeToResetMode = content.findViewById(R.id.spShakeToResetMode);
         timeSetup = content.findViewById(R.id.timeSetup);
         timeDisplay = content.findViewById(R.id.timeDisplay);
         timeDisplay.setVisibility(View.GONE);
@@ -108,6 +113,24 @@ public class SleepTimerDialog extends DialogFragment {
             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(etxtTime, InputMethodManager.SHOW_IMPLICIT);
         }, 100);
+
+        String[] spShakeToResetModeContent = new String[] {
+                getString(R.string.sleep_timer_shake_to_reset_mode_end),
+                getString(R.string.sleep_timer_shake_to_reset_mode_always) };
+        ArrayAdapter<String> spShakeToResetModeAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_item, spShakeToResetModeContent);
+        spShakeToResetModeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spShakeToResetMode.setAdapter(spShakeToResetModeAdapter);
+        spShakeToResetMode.setSelection(SleepTimerPreferences.shakeToResetMode());
+        spShakeToResetMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SleepTimerPreferences.setShakeToResetMode(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
 
         final CheckBox cbShakeToReset = content.findViewById(R.id.cbShakeToReset);
         final CheckBox cbVibrate = content.findViewById(R.id.cbVibrate);
