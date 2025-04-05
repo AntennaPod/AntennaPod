@@ -313,6 +313,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
             }
         }
+
+        WidgetUpdater.updateWidget(getApplicationContext(), new WidgetUpdater.WidgetState(PlayerStatus.STOPPED));
+
         stateManager.stopForeground(!UserPreferences.isPersistNotify());
         isRunning = false;
         currentMediaType = MediaType.UNKNOWN;
@@ -741,16 +744,32 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private void startPlayingFromPreferences() {
-        Observable.fromCallable(() -> DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
-                .subscribeOn(Schedulers.io())
+        Log.d(TAG, "startPlayingFromPreferences()");
+
+        Observable<FeedMedia> currentlyPlayingMedia = Observable
+                .fromCallable(() -> DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
+                .subscribeOn(Schedulers.io());
+
+        currentlyPlayingMedia
+                .onErrorResumeNext(error -> {
+                    Log.d(TAG, "Currently playing media not found, trying queued media");
+                    return Observable.fromCallable(() -> DBReader.getFeedMedia(DBReader.getFirstUnplayedInQueueMediaId()))
+                            .subscribeOn(Schedulers.io());
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        playable -> startPlaying(playable, false),
+                        playable -> {
+                            if (playable != null) {
+                                startPlaying(playable, false);
+                            } else {
+                                stateManager.stopService();
+                            }
+                        },
                         error -> {
                             Log.d(TAG, "Playable was not loaded from preferences. Stopping service.");
-                            error.printStackTrace();
                             stateManager.stopService();
-                        });
+                        }
+                );
     }
 
     private void startPlaying(Playable playable, boolean allowStreamThisTime) {

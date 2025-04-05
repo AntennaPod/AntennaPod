@@ -439,6 +439,24 @@ public final class DBReader {
         }
     }
 
+    public static long getFirstUnplayedInQueueMediaId() {
+        Log.d(TAG, "getFirstUnplayedInQueueMediaId() called");
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+
+        try (FeedItemCursor cursor = new FeedItemCursor(adapter.getQueueCursor())) {
+            List<FeedItem> items = extractItemlistFromCursor(cursor);
+            for (FeedItem item : items) {
+                if (!item.isPlayed()) {
+                    return item.getMedia() != null ? item.getMedia().getId() : -1;
+                }
+            }
+            return -1;
+        } finally {
+            adapter.close();
+        }
+    }
+
     /**
      * Loads a specific FeedItem from the database.
      *
