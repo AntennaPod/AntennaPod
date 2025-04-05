@@ -7,8 +7,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -34,6 +36,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.ParameterizedRobolectricTestRunner;
 import org.robolectric.RobolectricTestRunner;
 
+import static de.danoeh.antennapod.net.download.service.episode.autodownload.DbTestUtils.addTagsToFeed;
 import static de.danoeh.antennapod.net.download.service.episode.autodownload.DbTestUtils.saveFeedlist;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -461,6 +464,30 @@ public class DbReaderTest {
             assertEquals(item1.getItemIdentifier(), feedItemByGuid.getItemIdentifier());
         }
 
+        @Test
+        public void testGetFeedItemsByTag() {
+            final int numFeeds = 4;
+            final int numItems = 2;
+            List<Feed> feeds = saveFeedlist(numFeeds, numItems, false);
+
+            List<String> incrementalTagList = new ArrayList<>();
+            for (int i = 0; i < numFeeds; i++) {
+                incrementalTagList.add("tag " + i);
+                addTagsToFeed(incrementalTagList, feeds.get(i));
+            }
+
+            for (int i = 0; i < incrementalTagList.size(); i++) {
+                List<FeedItem> savedItems = DBReader.getEpisodes(0, Integer.MAX_VALUE, FeedItemFilter.unfiltered(),
+                        SortOrder.DATE_NEW_OLD, incrementalTagList.get(i));
+                assertEquals((numFeeds - i) * numItems, savedItems.size());
+
+                Set<Long> feedIds = new HashSet<>();
+                for (FeedItem item : savedItems) {
+                    feedIds.add(item.getFeedId());
+                }
+                assertEquals(numFeeds - i, feedIds.size());
+            }
+        }
     }
 
     @RunWith(ParameterizedRobolectricTestRunner.class)

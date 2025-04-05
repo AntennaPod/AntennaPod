@@ -8,6 +8,8 @@ import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 
 import static org.junit.Assert.assertTrue;
@@ -72,5 +74,22 @@ abstract class DbTestUtils {
         adapter.close();
 
         return feeds;
+    }
+
+    public static void addTagsToFeed(List<String> tags, Feed f) {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+
+        FeedPreferences prefs = new FeedPreferences(f.getId(), FeedPreferences.AutoDownloadSetting.GLOBAL,
+                FeedPreferences.AutoDeleteAction.GLOBAL, VolumeAdaptionSetting.OFF,
+                FeedPreferences.NewEpisodesAction.GLOBAL, null, null);
+
+        prefs.getTags().add(FeedPreferences.TAG_ROOT);
+        for (String tag : tags) {
+            prefs.getTags().add(tag);
+        }
+
+        f.setPreferences(prefs);
+        adapter.setFeedPreferences(prefs);
     }
 }

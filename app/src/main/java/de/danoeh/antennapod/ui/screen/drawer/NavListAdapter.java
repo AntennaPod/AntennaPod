@@ -160,7 +160,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
                 bindFeedView((NavDrawerData.FeedDrawerItem) item, (FeedHolder) holder);
             } else {
-                bindTagView((NavDrawerData.TagDrawerItem) item, (FeedHolder) holder);
+                bindTagView((NavDrawerData.TagDrawerItem) item, (FeedHolder) holder, position);
             }
             holder.itemView.setOnCreateContextMenuListener(itemAccess);
         }
@@ -273,16 +273,19 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         }
     }
 
-    private void bindTagView(NavDrawerData.TagDrawerItem tag, FeedHolder holder) {
+    private void bindTagView(NavDrawerData.TagDrawerItem tag, FeedHolder holder, int position) {
         Activity context = activity.get();
         if (context == null) {
             return;
         }
         if (tag.isOpen()) {
             holder.count.setVisibility(View.GONE);
+            holder.image.setImageResource(R.drawable.ic_arrow_down);
+        } else {
+            holder.image.setImageResource(R.drawable.ic_arrow_right);
         }
         Glide.with(context).clear(holder.image);
-        holder.image.setImageResource(R.drawable.ic_tag);
+        holder.image.setOnClickListener(v -> itemAccess.onFolderIconClick(position));
         holder.failure.setVisibility(View.GONE);
     }
 
@@ -349,6 +352,8 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         void onItemClick(int position);
 
         boolean onItemLongClick(int position);
+
+        void onFolderIconClick(int position);
 
         @Override
         void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo);

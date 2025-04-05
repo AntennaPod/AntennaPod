@@ -285,15 +285,17 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             String lastNavFragment = getLastNavFragment(getContext());
             if (position < navAdapter.getSubscriptionOffset()) {
                 return navAdapter.getFragmentTags().get(position).equals(lastNavFragment);
-            } else if (StringUtils.isNumeric(lastNavFragment)) { // last fragment was not a list, but a feed
-                long feedId = Long.parseLong(lastNavFragment);
-                if (navDrawerData != null) {
-                    NavDrawerData.DrawerItem itemToCheck = flatItemList.get(
-                            position - navAdapter.getSubscriptionOffset());
-                    if (itemToCheck.type == NavDrawerData.DrawerItem.Type.FEED) {
-                        // When the same feed is displayed multiple times, it should be highlighted multiple times.
-                        return ((NavDrawerData.FeedDrawerItem) itemToCheck).feed.getId() == feedId;
-                    }
+            } else if (navDrawerData != null) {
+                NavDrawerData.DrawerItem itemToCheck = flatItemList.get(
+                        position - navAdapter.getSubscriptionOffset());
+                if (StringUtils.isNumeric(lastNavFragment)  // last fragment was not a list, but a feed
+                        && itemToCheck.type == NavDrawerData.DrawerItem.Type.FEED) {
+                    long feedId = Long.parseLong(lastNavFragment);
+                    // When the same feed is displayed multiple times, it should be highlighted multiple times.
+                    return ((NavDrawerData.FeedDrawerItem) itemToCheck).feed.getId() == feedId;
+                } else if (itemToCheck.type == NavDrawerData.DrawerItem.Type.TAG) {
+                    // In this case lastNavFragment is the name of the tag
+                    return itemToCheck.getTitle().equals(lastNavFragment);
                 }
             }
             return false;
@@ -350,25 +352,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                                 .setState(BottomSheetBehavior.STATE_COLLAPSED);
                     } else {
                         NavDrawerData.TagDrawerItem folder = ((NavDrawerData.TagDrawerItem) clickedItem);
-                        if (openFolders.contains(folder.getTitle())) {
-                            openFolders.remove(folder.getTitle());
-                        } else {
-                            openFolders.add(folder.getTitle());
-                        }
-
-                        getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-                                .edit()
-                                .putStringSet(PREF_OPEN_FOLDERS, openFolders)
-                                .apply();
-
-                        disposable = Observable.fromCallable(() -> makeFlatDrawerData(navDrawerData.items, 0))
-                                .subscribeOn(Schedulers.computation())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(
-                                        result -> {
-                                            flatItemList = result;
-                                            navAdapter.notifyDataSetChanged();
-                                        }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+                        ((MainActivity) getActivity()).loadEpisodesByFeedTagFragment(folder.getTitle(), null);
                     }
                 }
             } else if (UserPreferences.getSubscriptionsFilter().isEnabled()
@@ -394,6 +378,38 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                 contextPressedItem = flatItemList.get(position - navAdapter.getSubscriptionOffset());
                 return false;
             }
+        }
+
+        @Override
+        public void onFolderIconClick(int position) {
+            int pos = position - navAdapter.getSubscriptionOffset();
+            NavDrawerData.DrawerItem clickedItem = flatItemList.get(pos);
+            if (!(clickedItem instanceof NavDrawerData.TagDrawerItem)) {
+                return;
+            }
+
+            NavDrawerData.TagDrawerItem folder = ((NavDrawerData.TagDrawerItem) clickedItem);
+            if (openFolders.contains(folder.getTitle())) {
+                openFolders.remove(folder.getTitle());
+                ((NavDrawerData.TagDrawerItem) clickedItem).setOpen(true);
+            } else {
+                openFolders.add(folder.getTitle());
+                ((NavDrawerData.TagDrawerItem) clickedItem).setOpen(false);
+            }
+
+            getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                    .edit()
+                    .putStringSet(PREF_OPEN_FOLDERS, openFolders)
+                    .apply();
+
+            disposable = Observable.fromCallable(() -> makeFlatDrawerData(navDrawerData.items, 0))
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            result -> {
+                                flatItemList = result;
+                                navAdapter.notifyDataSetChanged();
+                            }, error -> Log.e(TAG, Log.getStackTraceString(error)));
         }
 
         @Override
