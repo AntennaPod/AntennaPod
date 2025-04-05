@@ -45,7 +45,6 @@ public class FeedItem implements Serializable {
     private String socialInteractUrl;
     private String podcastIndexTranscriptUrl;
     private String podcastIndexTranscriptType;
-    private String podcastIndexTranscriptText;
     private Transcript transcript;
 
     private int state;
@@ -456,29 +455,15 @@ public class FeedItem implements Serializable {
         return podcastIndexTranscriptType;
     }
 
-    public void updateTranscriptPreferredFormat(String type, String url) {
-        if (StringUtils.isEmpty(type) || StringUtils.isEmpty(url)) {
+    public void updateTranscriptPreferredFormat(String typeStr, String url) {
+        if (StringUtils.isEmpty(typeStr) || StringUtils.isEmpty(url)) {
             return;
         }
-
-        String canonicalSrr = "application/srr";
-        String jsonType = "application/json";
-
-        switch (type) {
-            case "application/json":
-                podcastIndexTranscriptUrl = url;
-                podcastIndexTranscriptType = type;
-                break;
-            case "application/srr":
-            case "application/srt":
-            case "application/x-subrip":
-                if (podcastIndexTranscriptUrl == null || !podcastIndexTranscriptType.equals(jsonType)) {
-                    podcastIndexTranscriptUrl = url;
-                    podcastIndexTranscriptType = canonicalSrr;
-                }
-                break;
-            default:
-                break;
+        TranscriptType type = TranscriptType.fromMime(typeStr);
+        TranscriptType previousType = TranscriptType.fromMime(podcastIndexTranscriptType);
+        if (type.priority > previousType.priority) {
+            podcastIndexTranscriptUrl = url;
+            podcastIndexTranscriptType = type.canonicalMime;
         }
     }
 
@@ -488,14 +473,6 @@ public class FeedItem implements Serializable {
 
     public void setTranscript(Transcript t) {
         transcript = t;
-    }
-
-    public String getPodcastIndexTranscriptText() {
-        return podcastIndexTranscriptText;
-    }
-
-    public String setPodcastIndexTranscriptText(String str) {
-        return podcastIndexTranscriptText = str;
     }
 
     public boolean hasTranscript() {
