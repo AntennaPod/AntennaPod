@@ -244,7 +244,6 @@
     <string name="pref_mobileUpdate_sum">Pasirinkite, kas bus leidžiama naudojantis mobiliuoju internetu</string>
     <string name="pref_mobileUpdate_refresh">Tinklalaidžių atnaujinimas</string>
     <string name="pref_mobileUpdate_images">Viršelio paveikslėliai</string>
-    <string name="pref_mobileUpdate_auto_download">Automatinis atsiuntimas</string>
     <string name="pref_mobileUpdate_episode_download">Epizodų atsiuntimas</string>
     <string name="pref_mobileUpdate_streaming">Klausymasis tiesiogiai</string>
     <string name="pref_nav_drawer_feed_order_sum">Keiskite prenumeratų tvarką</string>
@@ -371,7 +370,6 @@
     <string name="gpodnetauth_existing_devices">Esami įrenginiai</string>
     <string name="gpodnetauth_create_device">Sukurti įrenginį</string>
     <string name="gpodnetauth_finish_descr">Sveikiname! Jūsų „gpodder.net“ paskyra susieta su šiuo įrenginiu. Nuo šiol „AntennaPod“ automatiškai sinchronizuos prenumeratas šiame įrenginyje su Jūsų „gpodder.net“ paskyra.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Pradėti sinchronizavimą dabar</string>
     <string name="pref_gpodnet_setlogin_information_title">Keisti prisijungimo duomenis</string>
     <string name="pref_gpodnet_setlogin_information_sum">Keisti prisijungimo prie „gpodder.net“ paskyros duomenis.</string>
     <string name="synchronization_sync_changes_title">Sinchronizuoti dabar</string>

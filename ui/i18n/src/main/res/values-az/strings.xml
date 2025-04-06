@@ -116,7 +116,6 @@
     <string name="username_label">İstifadəçi adı</string>
     <string name="password_label">Şifrə</string>
     <string name="gpodnetauth_finish_descr">Təbriklər! Gpodder hesabınız ilə cihazınız arasında əlaqə yarandə. Bundan sonra AntennaPod cihazınızdakı abunəlikləri gpodder.net hesabınız ilə eyniləşdiriləcək.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Eyniləşdirməni indi başladın</string>
     <string name="pref_gpodnet_setlogin_information_title">Giriş məlumatını dəyişin</string>
     <string name="pref_gpodnet_setlogin_information_sum">Gpodder.net hesabınız üçün giriş məlumatını dəyişin.</string>
     <string name="gpodnetsync_error_title">gpodder.net ilə eyniləşdirmə xətası</string>

@@ -13,7 +13,7 @@
     <string name="downloads_label">下载</string>
     <string name="downloads_log_label">下载日志</string>
     <string name="subscriptions_label">订阅</string>
-    <string name="subscriptions_list_label">订阅列表（仅侧菜单）</string>
+    <string name="subscriptions_list_label">订阅列表</string>
     <string name="cancel_download_label">取消下载</string>
     <string name="playback_history_label">播放历史</string>
     <string name="years_statistics_label">年</string>
@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">总是</string>
     <string name="feed_auto_download_never">从不</string>
     <string name="feed_new_episodes_action_add_to_inbox">添加到收件箱</string>
-    <string name="feed_new_episodes_action_add_to_queue">添加到队列，禁用自动下载</string>
-    <string name="feed_new_episodes_action_nothing">无，禁用自动下载</string>
+    <string name="feed_new_episodes_action_add_to_queue">添加到队列</string>
+    <string name="feed_new_episodes_action_nothing">无</string>
     <string name="episode_cleanup_never">从不</string>
     <string name="episode_cleanup_except_favorite_removal">当未收藏时</string>
     <string name="episode_cleanup_queue_removal">当不在队列中</string>
@@ -384,7 +384,6 @@
     <string name="pref_mobileUpdate_sum">选择使用移动数据连接时应当允许的内容</string>
     <string name="pref_mobileUpdate_refresh">播客刷新</string>
     <string name="pref_mobileUpdate_images">封面图片</string>
-    <string name="pref_mobileUpdate_auto_download">自动下载</string>
     <string name="pref_mobileUpdate_episode_download">节目下载</string>
     <string name="pref_mobileUpdate_streaming">播放中</string>
     <string name="user_interface_label">用户界面</string>
@@ -582,7 +581,6 @@
     <string name="gpodnetauth_existing_devices">现有设备</string>
     <string name="gpodnetauth_create_device">创建设备</string>
     <string name="gpodnetauth_finish_descr">恭喜! 你的 gpodder.net 账户与设备已连结完成. 现在开始 AntennaPod 将自动同步你 gpodder.net 账户内的订阅信息到设备上.</string>
-    <string name="gpodnetauth_finish_butsyncnow">开始同步</string>
     <string name="pref_gpodnet_setlogin_information_title">改变登录信息</string>
     <string name="pref_gpodnet_setlogin_information_sum">改变 gpodder.net 账户登录信息.</string>
     <string name="synchronization_sync_changes_title">立即同步</string>
@@ -774,7 +772,7 @@
     <string name="delete_downloads_played">删除已播放的</string>
     <string name="delete_downloads_played_confirmation">请确认你要删除所有已播放的下载。</string>
     <string name="bottom_navigation">底部导航</string>
-    <string name="bottom_navigation_summary">公测功能：单次点击从所有地方访问最重要的应用屏幕</string>
+    <string name="bottom_navigation_summary">一键直达核心界面，随时随地快速访问</string>
     <string name="statistics_episodes_started">已开始</string>
     <string name="statistics_episodes_total">总计</string>
     <string name="statistics_episodes_downloaded">已下载</string>
@@ -852,4 +850,9 @@
     <string name="echo_hoarder_comment_hoarder">数字不撒谎。考虑到今年您的 %2$d 个活动订阅中仅 %1$d%% 已播放，我们的结论或许是对的。</string>
     <string name="overflow_more">更多</string>
     <string name="preference_search_clear_input">清除</string>
+    <string name="visit_social_interact_query_message">请确保您信任网站“%1$s”。</string>
+    <string name="feed_new_episodes_action_summary_autodownload">自动下载已启用。节目将添加到收件箱，下载完成后移动到队列‌。</string>
+    <string name="visit_social_interact_label">显示评论</string>
+    <string name="visit_social_interact_query_title">您将离开 AntennaPod</string>
+    <string name="rss_address">RSS 地址</string>
 </resources>

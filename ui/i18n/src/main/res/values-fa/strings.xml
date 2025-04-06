@@ -374,7 +374,6 @@
     <string name="pref_mobileUpdate_sum">آنچه که باید از طریق اتصال داده تلفن همراه مجاز است را انتخاب کنید</string>
     <string name="pref_mobileUpdate_refresh">نوسازی پادپخش</string>
     <string name="pref_mobileUpdate_images">تصویر جلد</string>
-    <string name="pref_mobileUpdate_auto_download">بارگیری‌های خودکار</string>
     <string name="pref_mobileUpdate_episode_download">بارگیری قسمت</string>
     <string name="pref_mobileUpdate_streaming">جاری شدن</string>
     <string name="user_interface_label">میانای کاربری</string>
@@ -554,7 +553,6 @@
     <string name="gpodnetauth_existing_devices">دستگاههای موجود</string>
     <string name="gpodnetauth_create_device">ایجاد دستگاه</string>
     <string name="gpodnetauth_finish_descr">تبریک می گویم! حساب gpodder.net شما اکنون با دستگاه شما پیوند داده شده است. آنتن پاد از این پس اشتراک های دستگاه شما را با حساب gpodder.net خود به طور خودکار همگام سازی می کند.</string>
-    <string name="gpodnetauth_finish_butsyncnow">شروع همگام‌سازی</string>
     <string name="pref_gpodnet_setlogin_information_title">تغییر اطلاعات ورود</string>
     <string name="pref_gpodnet_setlogin_information_sum">اطلاعات ورود به سیستم حساب gpodder.net خود را تغییر دهید.</string>
     <string name="synchronization_sync_changes_title">اکنون همگام سازی کنید</string>

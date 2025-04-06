@@ -390,7 +390,6 @@
     <string name="pref_mobileUpdate_sum">Izberite, kaj naj bo dovoljeno prek mobilne podatkovne povezave</string>
     <string name="pref_mobileUpdate_refresh">Osvežitev poddaje</string>
     <string name="pref_mobileUpdate_images">Naslovne slike</string>
-    <string name="pref_mobileUpdate_auto_download">Samodejni prenos</string>
     <string name="pref_mobileUpdate_episode_download">Prenos epizode</string>
     <string name="pref_mobileUpdate_streaming">Pretakanje</string>
     <string name="user_interface_label">Uporabniški vmesnik</string>
@@ -560,7 +559,6 @@
     <string name="gpodnetauth_existing_devices">Obstoječe naprave</string>
     <string name="gpodnetauth_create_device">Ustvari napravo</string>
     <string name="gpodnetauth_finish_descr">Čestitam! Vaš račun gpodder.net je zdaj povezan z vašo napravo. AntennaPod bo od zdaj naprej samodejno sinhroniziral naročnine na vaši napravi z vašim računom gpodder.net.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Začnite sedaj sinhronizirati</string>
     <string name="pref_gpodnet_setlogin_information_title">Spremenite podatke za prijavo</string>
     <string name="pref_gpodnet_setlogin_information_sum">Spremenite podatke za prijavo za svoj račun gpodder.net.</string>
     <string name="synchronization_sync_changes_title">Sinhroniziraj takoj</string>
