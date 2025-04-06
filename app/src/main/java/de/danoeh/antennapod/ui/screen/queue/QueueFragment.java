@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -86,7 +87,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     private MaterialToolbar toolbar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private boolean displayUpArrow;
-    private boolean displayGoToInboxButton;
 
     private List<FeedItem> queue;
 
@@ -514,14 +514,14 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             emptyView.hide();
         }
         disposable = Observable.fromCallable(() -> {
-            displayGoToInboxButton = DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW)) > 0;
-            return DBReader.getQueue();
+            boolean displayGoToInboxButton = DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW)) > 0;
+            return new Pair<>(DBReader.getQueue(), displayGoToInboxButton);
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(items -> {
-                    queue = items;
-                    if (displayGoToInboxButton) {
+                .subscribe(itemsAndDisplayButton -> {
+                    queue = itemsAndDisplayButton.first;
+                    if (itemsAndDisplayButton.second) {
                         emptyView.setMessage(R.string.no_queue_items_inbox_has_items_label);
                         emptyView.setButtonText(R.string.no_queue_items_inbox_has_items_button_label);
                         emptyView.setButtonVisibility(View.VISIBLE);
