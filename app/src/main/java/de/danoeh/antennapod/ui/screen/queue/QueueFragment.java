@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +29,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
+import de.danoeh.antennapod.ui.screen.InboxFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
@@ -511,11 +513,21 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         if (queue == null) {
             emptyView.hide();
         }
-        disposable = Observable.fromCallable(DBReader::getQueue)
+        disposable = Observable.fromCallable(() -> {
+            boolean displayGoToInboxButton = DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW)) > 0;
+            return new Pair<>(DBReader.getQueue(), displayGoToInboxButton);
+        })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(items -> {
-                    queue = items;
+                .subscribe(itemsAndDisplayButton -> {
+                    queue = itemsAndDisplayButton.first;
+                    if (itemsAndDisplayButton.second) {
+                        emptyView.setMessage(R.string.no_queue_items_inbox_has_items_label);
+                        emptyView.setButtonText(R.string.no_queue_items_inbox_has_items_button_label);
+                        emptyView.setButtonVisibility(View.VISIBLE);
+                        emptyView.setButtonOnClickListener(v -> ((MainActivity) getActivity())
+                                .loadChildFragment(new InboxFragment()));
+                    }
                     progressBar.setVisibility(View.GONE);
                     recyclerAdapter.setDummyViews(0);
                     recyclerAdapter.updateItems(queue);
