@@ -399,7 +399,6 @@
     <string name="pref_mobileUpdate_sum">Selecciona què és permès a la connexió de la xarxa mòbil</string>
     <string name="pref_mobileUpdate_refresh">Actualitzar pòdcast</string>
     <string name="pref_mobileUpdate_images">Cobre images</string>
-    <string name="pref_mobileUpdate_auto_download">Baixada automática</string>
     <string name="pref_mobileUpdate_episode_download">Baixada d\'episodis</string>
     <string name="pref_mobileUpdate_streaming">Streaming</string>
     <string name="user_interface_label">Interfície d\'usuari</string>
@@ -605,7 +604,6 @@
     <string name="gpodnetauth_existing_devices">Dispositius existents</string>
     <string name="gpodnetauth_create_device">Crea dispositiu</string>
     <string name="gpodnetauth_finish_descr">Felicitats! El vostre compte de gpodder.net s\'ha enllaçat amb el dispositiu. D\'ara endavant, AntennaPod sincronitzarà automàticament les subscripcions del dispositiu al vostre compte.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Sincronitza ara</string>
     <string name="pref_gpodnet_setlogin_information_title">Dades d\'inici de sessió</string>
     <string name="pref_gpodnet_setlogin_information_sum">Canvia les dades d\'inici de sessió del vostre compte de gpodder.net</string>
     <string name="synchronization_sync_changes_title">Sincronitzar ara</string>

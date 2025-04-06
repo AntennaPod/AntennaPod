@@ -13,7 +13,7 @@
     <string name="downloads_label">Sťahovanie</string>
     <string name="downloads_log_label">Záznam sťahovaní</string>
     <string name="subscriptions_label">Odbery</string>
-    <string name="subscriptions_list_label">Zoznam odberov (iba bočné menu)</string>
+    <string name="subscriptions_list_label">Zoznam odberov</string>
     <string name="cancel_download_label">Zrušiť sťahovanie</string>
     <string name="playback_history_label">História prehrávania</string>
     <string name="years_statistics_label">Roky</string>
@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">Vždy</string>
     <string name="feed_auto_download_never">Nikdy</string>
     <string name="feed_new_episodes_action_add_to_inbox">Pridať do noviniek</string>
-    <string name="feed_new_episodes_action_add_to_queue">Pridať do poradia, vypnúť automatické sťahovanie</string>
-    <string name="feed_new_episodes_action_nothing">Nerobiť nič, vypnúť automatické sťahovanie</string>
+    <string name="feed_new_episodes_action_add_to_queue">Pridať do poradia</string>
+    <string name="feed_new_episodes_action_nothing">Nerobiť nič</string>
     <string name="episode_cleanup_never">Nikdy</string>
     <string name="episode_cleanup_except_favorite_removal">Ak nie je medzi obľúbenými</string>
     <string name="episode_cleanup_queue_removal">Ak nie je v poradí</string>
@@ -236,9 +236,9 @@
     <string name="remove_from_favorite_label">Odstrániť z obľúbených</string>
     <string name="visit_website_label">Navštíviť webovú stránku</string>
     <string name="skip_episode_label">Preskočiť epizódu</string>
-    <string name="reset_position">Obnoviť pozíciu prehrávania</string>
+    <string name="reset_position">Resetovať pozíciu prehrávania</string>
     <string name="no_items_selected">Nie sú vybrané žiadne položky</string>
-    <string name="delete_local_feed_warning_body">Vymazaním odstránite epizódu z aplikácie AntennaPod a vymaže sa mediálny súbor z úložiska vášho zariadenia. Nebude možné ju znova stiahnuť cez AntennaPod.</string>
+    <string name="delete_local_feed_warning_body">Mazanie odstráni epizódu z aplikácie AntennaPod a vymaže mediálny súbor z úložiska vášho zariadenia. Nebude možné ju znova stiahnuť cez AntennaPod.</string>
     <!--Download messages and labels-->
   <string name="download_successful">dokončené</string>
     <string name="download_pending">Čakajúce sťahovanie</string>
@@ -404,7 +404,6 @@
     <string name="pref_mobileUpdate_sum">Vyberte, čo by malo byť povolené cez mobilné dátové pripojenie</string>
     <string name="pref_mobileUpdate_refresh">Aktualizovať podcast</string>
     <string name="pref_mobileUpdate_images">Obrázky podcastov/epizód</string>
-    <string name="pref_mobileUpdate_auto_download">Automatické sťahovanie</string>
     <string name="pref_mobileUpdate_episode_download">Stiahnutie epizódy</string>
     <string name="pref_mobileUpdate_streaming">Streamovanie</string>
     <string name="user_interface_label">Používateľské rozhranie</string>
@@ -610,7 +609,6 @@
     <string name="gpodnetauth_existing_devices">Existujúce zariadenia</string>
     <string name="gpodnetauth_create_device">Vytvoriť zariadenie</string>
     <string name="gpodnetauth_finish_descr">Gratulujeme! Váš gpodder.net účet je teraz prepojený s vašim zariadením. AntennaPod bude odteraz automaticky synchronizovať odbery vo vašom zariadení s vašim gpodder.net účtom.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Spustiť synchronizáciu teraz</string>
     <string name="pref_gpodnet_setlogin_information_title">Zmena prihlasovacích údajov</string>
     <string name="pref_gpodnet_setlogin_information_sum">Zmení prihlasovacie údaje k vášmu gpodder.net účtu.</string>
     <string name="synchronization_sync_changes_title">Synchronizovať teraz</string>
@@ -792,7 +790,7 @@
     <string name="delete_downloads_played">Odstrániť prehraté</string>
     <string name="delete_downloads_played_confirmation">Potvrďte, že chcete odstrániť všetky prehrané stiahnuté súbory.</string>
     <string name="bottom_navigation">Spodná navigácia</string>
-    <string name="bottom_navigation_summary">Beta funkcia: Pristupujte k najdôležitejším obrazovkám odkiaľkoľvek iba jediným kliknutím</string>
+    <string name="bottom_navigation_summary">Pristupujte k najdôležitejším obrazovkám odkiaľkoľvek iba jediným kliknutím</string>
     <string name="statistics_release_next">ďalšia epizóda (odhad)</string>
     <string name="statistics_years_barchart_description">Prehraný čas po mesiacoch</string>
     <string name="section_shown">Zobrazené</string>
@@ -896,4 +894,9 @@
     <string name="notification_channel_refreshing_description">Zobrazuje sa pri kontrole nových epizód.</string>
     <string name="preference_search_clear_input">Vymazať</string>
     <string name="overflow_more">Viac</string>
+    <string name="feed_new_episodes_action_summary_autodownload">Automatické sťahovanie je povolené. Epizódy sú pridané do schránky a po stiahnutí budú presunuté do poradia.</string>
+    <string name="visit_social_interact_label">Zobraziť komentáre</string>
+    <string name="visit_social_interact_query_title">Opúšťate AntennaPod</string>
+    <string name="rss_address">RSS adresa</string>
+    <string name="visit_social_interact_query_message">Uistite sa, že dôverujete stránke „%1$s\".</string>
 </resources>

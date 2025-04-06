@@ -13,7 +13,7 @@
     <string name="downloads_label">Descargas</string>
     <string name="downloads_log_label">Rexistro de descargas</string>
     <string name="subscriptions_label">Subscricións</string>
-    <string name="subscriptions_list_label">Lista de subscricións (só menú lateral)</string>
+    <string name="subscriptions_list_label">Lista de subscricións</string>
     <string name="cancel_download_label">Cancelar descarga</string>
     <string name="playback_history_label">Historial de reprodución</string>
     <string name="years_statistics_label">Anos</string>
@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">Sempre</string>
     <string name="feed_auto_download_never">Nunca</string>
     <string name="feed_new_episodes_action_add_to_inbox">Engadir a novidades</string>
-    <string name="feed_new_episodes_action_add_to_queue">Engadir á cola, desactivar descarga automatica</string>
-    <string name="feed_new_episodes_action_nothing">Nada, desactivar descarga automatica</string>
+    <string name="feed_new_episodes_action_add_to_queue">Engadir á cola</string>
+    <string name="feed_new_episodes_action_nothing">Ningunha</string>
     <string name="episode_cleanup_never">Nunca</string>
     <string name="episode_cleanup_except_favorite_removal">Cando non favorito</string>
     <string name="episode_cleanup_queue_removal">Cando non estea na cola</string>
@@ -399,7 +399,6 @@
     <string name="pref_mobileUpdate_sum">Escolle o que estará permitido utilizando conexión de datos do móbil</string>
     <string name="pref_mobileUpdate_refresh">Actualizar podcast</string>
     <string name="pref_mobileUpdate_images">Imaxes de portadas</string>
-    <string name="pref_mobileUpdate_auto_download">Descarga automática</string>
     <string name="pref_mobileUpdate_episode_download">Descarga de episodio</string>
     <string name="pref_mobileUpdate_streaming">Retransmisión</string>
     <string name="user_interface_label">Interface de usuaria</string>
@@ -601,7 +600,6 @@
     <string name="gpodnetauth_existing_devices">Dispositivos existentes</string>
     <string name="gpodnetauth_create_device">Crear dispositivo</string>
     <string name="gpodnetauth_finish_descr">Parabéns! A túa conta gpodder.net está conectada ao dispositivo. AntennaPod poderá agora sincronizar automaticamente as túas subscricións no dispositivo na conta de gpodder.net.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Iniciar a sincronización</string>
     <string name="pref_gpodnet_setlogin_information_title">Cambiar a información de conexión</string>
     <string name="pref_gpodnet_setlogin_information_sum">Cambiar as credenciais de conexión da túa conta gpodder.net.</string>
     <string name="synchronization_sync_changes_title">Sincronizar agora</string>
@@ -778,7 +776,7 @@
     <string name="sync_status_wait_for_downloads">Agardando a que se actualicen as subscricións…</string>
     <string name="statistics_view_all">Todos os podcasts »</string>
     <string name="statistics_episodes_started">iniciado</string>
-    <string name="bottom_navigation_summary">Característica ßeta: Acceder ás pantallas máis importantes desde calquera lugar cun só toque</string>
+    <string name="bottom_navigation_summary">Acceder ás pantallas máis importantes desde calquera lugar cun só toque</string>
     <string name="statistics_episodes_space">espazo ocupado</string>
     <string name="home_new_empty_text">Aquí aparecerán os episodios novos. Poderás decidir entón se son do teu interese.</string>
     <string name="home_downloads_empty_text">Podes descargar calquera episodio para escoitalo sen conexión.</string>
@@ -874,4 +872,9 @@
     <string name="echo_hoarder_subtitle_hoarder">Mirando os números, cremos que che gusta acumular</string>
     <string name="overflow_more">Máis</string>
     <string name="preference_search_clear_input">Limpar</string>
+    <string name="visit_social_interact_label">Mostrar comentarios</string>
+    <string name="visit_social_interact_query_message">Comproba que tes confianza no sitio web «%1$s».</string>
+    <string name="visit_social_interact_query_title">Vas saír de AntennaPod</string>
+    <string name="rss_address">Enderezo RSS</string>
+    <string name="feed_new_episodes_action_summary_autodownload">Activada a descarga automática. Os episodios engádense á caixa de entrada e móvense á cola unha vez descargados.</string>
 </resources>

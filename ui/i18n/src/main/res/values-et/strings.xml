@@ -13,7 +13,7 @@
     <string name="downloads_label">Allalaadimised</string>
     <string name="downloads_log_label">Allalaadimise logi</string>
     <string name="subscriptions_label">Tellimused</string>
-    <string name="subscriptions_list_label">Tellimuste loend (ainult külgmenüü)</string>
+    <string name="subscriptions_list_label">Tellimuste loend</string>
     <string name="cancel_download_label">Katkesta allalaadimine</string>
     <string name="playback_history_label">Esitamise ajalugu</string>
     <string name="years_statistics_label">Aastad</string>
@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">Alati</string>
     <string name="feed_auto_download_never">Mitte kunagi</string>
     <string name="feed_new_episodes_action_add_to_inbox">Lisa postkasti</string>
-    <string name="feed_new_episodes_action_add_to_queue">Lisa järjekorda, keela automaatne allalaadimine</string>
-    <string name="feed_new_episodes_action_nothing">Mittemidagi, keela automaatne allalaadimine</string>
+    <string name="feed_new_episodes_action_add_to_queue">Lisa järjekorda</string>
+    <string name="feed_new_episodes_action_nothing">Mitte midagi</string>
     <string name="episode_cleanup_never">Mitte kunagi</string>
     <string name="episode_cleanup_except_favorite_removal">Kui pole lemmik</string>
     <string name="episode_cleanup_queue_removal">Kui pole järjekorras</string>
@@ -374,7 +374,6 @@
     <string name="pref_mobileUpdate_sum">Vali, mis peaks olema lubatud andmeside kaudu</string>
     <string name="pref_mobileUpdate_refresh">Taskuhäälingu värskendamine</string>
     <string name="pref_mobileUpdate_images">Kaanepildid</string>
-    <string name="pref_mobileUpdate_auto_download">Automaatne allalaadimine</string>
     <string name="pref_mobileUpdate_episode_download">Saate allalaadimine</string>
     <string name="pref_mobileUpdate_streaming">Voogedastus</string>
     <string name="user_interface_label">Kasutajaliides</string>
@@ -554,7 +553,6 @@
     <string name="gpodnetauth_existing_devices">Olemasolevad seadmed</string>
     <string name="gpodnetauth_create_device">Loo uus seade</string>
     <string name="gpodnetauth_finish_descr">Palju õnne! Sinu gpodder.net konto on nüüd lingitud sinu seadmega. AntennaPod süngib nüüdsest tellimused sinu seadmes gpodder.net-i kontoga.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Alusta kohe sünkroonimist</string>
     <string name="pref_gpodnet_setlogin_information_title">Muuda kasutajakonto infot</string>
     <string name="pref_gpodnet_setlogin_information_sum">Muuda oma gpodder.net konto sisselogimise andmeid.</string>
     <string name="synchronization_sync_changes_title">Sünkrooni nüüd</string>
@@ -562,7 +560,7 @@
     <string name="synchronization_full_sync_title">Nõua täielikku sünkroonimist</string>
     <string name="synchronization_force_sync_summary">Sünkrooni kõik tellimused ja saadete olekud uuesti</string>
     <string name="synchronization_logout">Logi välja</string>
-    <string name="synchronization_login_status"><![CDATA[Sisse logitud kui <i>%1$s</i> serveril <i>%2$s</i>. <br/><br/>Võid sünkroonimispakkuja uuesti valida kui logid välja]]></string>
+    <string name="synchronization_login_status">Sisse logitud kui %1$s serveril %2$s.\n\nVõid sünkroonimispakkuja uuesti valida pärast välja logimist.</string>
     <string name="pref_synchronization_logout_toast">Väljalogimine oli edukas</string>
     <string name="gpodnetsync_error_title">gpodder.net sünkroonimise viga</string>
     <string name="gpodnetsync_error_descr">"Sünkroonimise ajal tekkis viga: "</string>
@@ -772,7 +770,7 @@
     <string name="home_downloads_empty_text">Saad alla laadida mis tahes saate, et seda võrguühenduseta kuulata.</string>
     <string name="delete_downloads_played_confirmation">Kinnita, et soovid kustutada kõik esitatud allalaadimised.</string>
     <string name="bottom_navigation">Navigeerimine all</string>
-    <string name="bottom_navigation_summary">Beetafunktsioon: Ligipääs kõige olulisematele ekraanidele kõikjalt ühe puudutusega</string>
+    <string name="bottom_navigation_summary">Ligipääs kõige olulisematele lehtedele kõikjalt ühe puudutusega</string>
     <string name="delete_downloads_played">Kustuta esitatud</string>
     <plurals name="statistics_episodes_total">
         <item quantity="one">kokku</item>
@@ -886,4 +884,9 @@
     <string name="echo_hoarder_subtitle_medium">Selge. Ei mingit kogumist.</string>
     <string name="echo_thanks_large">Aitäh,</string>
     <string name="echo_hoarder_subtitle_clean">Puhas!</string>
+    <string name="visit_social_interact_query_title">Oled lahkumas AntennaPod\'ist</string>
+    <string name="rss_address">RSS aadress</string>
+    <string name="feed_new_episodes_action_summary_autodownload">Automaatne allalaadimine on lubatud. Episoodid lisatakse postkasti ja teisaldatakse pärast allalaadimist järjekorda.</string>
+    <string name="visit_social_interact_label">Kuva kommentaarid</string>
+    <string name="visit_social_interact_query_message">Veendu, et usaldad veebisaiti \"%1$s\".</string>
 </resources>

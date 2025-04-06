@@ -362,7 +362,6 @@
     <string name="pref_mobileUpdate_sum">モバイルデータ接続時に許可するものを選択します</string>
     <string name="pref_mobileUpdate_refresh">ポッドキャストの更新</string>
     <string name="pref_mobileUpdate_images">カバー画像</string>
-    <string name="pref_mobileUpdate_auto_download">自動ダウンロード</string>
     <string name="pref_mobileUpdate_episode_download">エピソードのダウンロード</string>
     <string name="pref_mobileUpdate_streaming">ストリーミング</string>
     <string name="user_interface_label">ユーザーインターフェース</string>
@@ -542,7 +541,6 @@
     <string name="gpodnetauth_existing_devices">既存のデバイス</string>
     <string name="gpodnetauth_create_device">デバイスの作成</string>
     <string name="gpodnetauth_finish_descr">おめでとうございます！gpodder.netアカウントが今お使いのデバイスとリンクされました。 AntennaPodは今から自動的にgpodder.netアカウントを使用してデバイスの購読を同期します。</string>
-    <string name="gpodnetauth_finish_butsyncnow">今すぐ同期を開始</string>
     <string name="pref_gpodnet_setlogin_information_title">ログイン情報を変更</string>
     <string name="pref_gpodnet_setlogin_information_sum">gpodder.netアカウントのログイン情報を変更します。</string>
     <string name="synchronization_sync_changes_title">今すぐ同期する</string>
