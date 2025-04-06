@@ -22,6 +22,7 @@ import okhttp3.ResponseBody;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
 
 /**
  * {@see com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader}.
@@ -124,10 +125,10 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
             newEncodingValue = "gzip, deflate, br";
         } else {
             StringBuilder encodingBuilder = new StringBuilder(existingEncoding);
-            if (!existingEncoding.toLowerCase().contains("deflate")) {
+            if (!existingEncoding.toLowerCase(Locale.ROOT).contains("deflate")) {
                 encodingBuilder.append(", deflate");
             }
-            if (!existingEncoding.toLowerCase().contains("br")) {
+            if (!existingEncoding.toLowerCase(Locale.ROOT).contains("br")) {
                 encodingBuilder.append(", br");
             }
             newEncodingValue = encodingBuilder.toString();
