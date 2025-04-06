@@ -97,17 +97,41 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
         @NonNull
         @Override
         public Response intercept(@NonNull Chain chain) throws IOException {
+            String existingEncoding = chain.request().header("Accept-Encoding");
+            String newEncodingValue = getEncodeString(existingEncoding);
             if (NetworkUtils.isImageAllowed()) {
-                return chain.proceed(chain.request());
+
+                return chain.proceed(chain.request().newBuilder()
+                        .header("Accept-Encoding", newEncodingValue) // Avoid gzip to get the actual size
+                        .build());
             } else {
                 return new Response.Builder()
                         .protocol(Protocol.HTTP_2)
                         .code(420)
                         .message("Policy Not Fulfilled")
+                        .header("Accept-Encoding", newEncodingValue)
                         .body(ResponseBody.create(new byte[0], null))
                         .request(chain.request())
                         .build();
             }
         }
+    }
+
+    @NonNull
+    private static String getEncodeString(String existingEncoding) {
+        String newEncodingValue;
+        if (existingEncoding == null || existingEncoding.isEmpty()) {
+            newEncodingValue = "gzip, deflate, br";
+        } else {
+            StringBuilder encodingBuilder = new StringBuilder(existingEncoding);
+            if (!existingEncoding.toLowerCase().contains("deflate")) {
+                encodingBuilder.append(", deflate");
+            }
+            if (!existingEncoding.toLowerCase().contains("br")) {
+                encodingBuilder.append(", br");
+            }
+            newEncodingValue = encodingBuilder.toString();
+        }
+        return newEncodingValue;
     }
 }
