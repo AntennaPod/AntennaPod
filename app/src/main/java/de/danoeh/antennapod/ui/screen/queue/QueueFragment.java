@@ -86,6 +86,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     private MaterialToolbar toolbar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private boolean displayUpArrow;
+    private boolean displayGoToInboxButton;
 
     private List<FeedItem> queue;
 
@@ -512,18 +513,20 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         if (queue == null) {
             emptyView.hide();
         }
-        disposable = Observable.fromCallable(DBReader::getQueue)
+        disposable = Observable.fromCallable(() -> {
+            displayGoToInboxButton = DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW)) > 0;
+            return DBReader.getQueue();
+        })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> {
                     queue = items;
-                    if (queue.isEmpty() && DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW)) > 0) {
+                    if (displayGoToInboxButton) {
                         emptyView.setMessage(R.string.no_queue_items_inbox_has_items_label);
                         emptyView.setButtonText(R.string.no_queue_items_inbox_has_items_button_label);
                         emptyView.setButtonVisibility(View.VISIBLE);
-                        emptyView.setButtonOnClickListener(v -> {
-                            ((MainActivity) getActivity()).loadChildFragment(new InboxFragment());
-                        });
+                        emptyView.setButtonOnClickListener(v -> ((MainActivity) getActivity())
+                                .loadChildFragment(new InboxFragment()));
                     }
                     progressBar.setVisibility(View.GONE);
                     recyclerAdapter.setDummyViews(0);
