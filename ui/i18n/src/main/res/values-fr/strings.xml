@@ -13,7 +13,7 @@
     <string name="downloads_label">Téléchargements</string>
     <string name="downloads_log_label">Journal des téléchargements</string>
     <string name="subscriptions_label">Abonnements</string>
-    <string name="subscriptions_list_label">Liste des abonnements (volet uniquement)</string>
+    <string name="subscriptions_list_label">Liste des abonnements</string>
     <string name="cancel_download_label">Annuler le téléchargement</string>
     <string name="playback_history_label">Journal de lecture</string>
     <string name="years_statistics_label">Années</string>
@@ -113,8 +113,8 @@
     <string name="feed_auto_download_always">Toujours</string>
     <string name="feed_auto_download_never">Jamais</string>
     <string name="feed_new_episodes_action_add_to_inbox">Ajouter à la boîte de réception</string>
-    <string name="feed_new_episodes_action_add_to_queue">Ajouter à la liste de lecture (désactive le téléchargement automatique)</string>
-    <string name="feed_new_episodes_action_nothing">Ne rien faire (désactive le téléchargement automatique)</string>
+    <string name="feed_new_episodes_action_add_to_queue">Ajouter à la liste de lecture</string>
+    <string name="feed_new_episodes_action_nothing">Ne rien faire</string>
     <string name="episode_cleanup_never">Jamais</string>
     <string name="episode_cleanup_except_favorite_removal">Quand pas un favori</string>
     <string name="episode_cleanup_queue_removal">Quand pas dans la liste de lecture</string>
@@ -415,7 +415,6 @@
     <string name="pref_mobileUpdate_sum">Choisir ce qui est autorisé lorsque la connexion mobile est utilisée</string>
     <string name="pref_mobileUpdate_refresh">Mise à jour des podcasts</string>
     <string name="pref_mobileUpdate_images">Récupération des images</string>
-    <string name="pref_mobileUpdate_auto_download">Téléchargement automatique</string>
     <string name="pref_mobileUpdate_episode_download">Téléchargement d\'épisodes</string>
     <string name="pref_mobileUpdate_streaming">Streaming</string>
     <string name="user_interface_label">Interface utilisateur</string>
@@ -621,7 +620,6 @@
     <string name="gpodnetauth_existing_devices">Appareils déjà existants</string>
     <string name="gpodnetauth_create_device">Créer un appareil</string>
     <string name="gpodnetauth_finish_descr">Félicitations ! Votre compte gpodder.net est maintenant lié à votre appareil. AntennaPod va désormais automatiquement synchroniser vos podcasts sur votre appareil avec votre compte gpodder.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Commencer la synchronisation</string>
     <string name="pref_gpodnet_setlogin_information_title">Modifier les informations de connexion</string>
     <string name="pref_gpodnet_setlogin_information_sum">Modifier les informations de connexion pour votre compte gpodder.net.</string>
     <string name="synchronization_sync_changes_title">Synchroniser maintenant</string>
@@ -897,4 +895,9 @@
     <string name="pref_automatic_download_queue_title">Téléchargement de la liste de lecture</string>
     <string name="preference_search_clear_input">Effacer</string>
     <string name="overflow_more">Plus</string>
+    <string name="visit_social_interact_query_title">Vous allez sortir d\'AntennaPod</string>
+    <string name="rss_address">Lien RSS</string>
+    <string name="feed_new_episodes_action_summary_autodownload">Le téléchargement automatique est activé. Les épisodes sont ajoutés à la boîte de réception puis déplacés dans la liste de lecture une fois téléchargés.</string>
+    <string name="visit_social_interact_query_message">Assurez-vous que vous pouvez faire confiance au site \"%1$s\".</string>
+    <string name="visit_social_interact_label">Afficher les commentaires</string>
 </resources>

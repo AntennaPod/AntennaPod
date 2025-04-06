@@ -13,7 +13,7 @@
     <string name="downloads_label">הורדות</string>
     <string name="downloads_log_label">יומן הורדות</string>
     <string name="subscriptions_label">הסכתים</string>
-    <string name="subscriptions_list_label">רשימת מינויים (תפריט צד בלבד)</string>
+    <string name="subscriptions_list_label">רשימת מינויים</string>
     <string name="cancel_download_label">ביטול הורדה</string>
     <string name="playback_history_label">היסטוריית נגינה</string>
     <string name="years_statistics_label">שנים</string>
@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">תמיד</string>
     <string name="feed_auto_download_never">אף פעם</string>
     <string name="feed_new_episodes_action_add_to_inbox">הוספה לדואר נכנס</string>
-    <string name="feed_new_episodes_action_add_to_queue">הוספה לתור, השבתת הורדה אוטומטית</string>
-    <string name="feed_new_episodes_action_nothing">כלום, השבתת הורדה אוטומטית</string>
+    <string name="feed_new_episodes_action_add_to_queue">הוספה לתור</string>
+    <string name="feed_new_episodes_action_nothing">כלום</string>
     <string name="episode_cleanup_never">אף פעם</string>
     <string name="episode_cleanup_except_favorite_removal">כאשר לא במועדפים</string>
     <string name="episode_cleanup_queue_removal">כאשר לא בתור</string>
@@ -414,7 +414,6 @@
     <string name="pref_mobileUpdate_sum">לבחור מה מותר דרך חיבור רשת סלולרית</string>
     <string name="pref_mobileUpdate_refresh">רענון הסכתים</string>
     <string name="pref_mobileUpdate_images">תמונות נושא</string>
-    <string name="pref_mobileUpdate_auto_download">הורדה אוטומטית</string>
     <string name="pref_mobileUpdate_episode_download">הורדת פרקים</string>
     <string name="pref_mobileUpdate_streaming">הזרמה</string>
     <string name="user_interface_label">ממשק משתמש</string>
@@ -620,7 +619,6 @@
     <string name="gpodnetauth_existing_devices">מכשירים קיימים</string>
     <string name="gpodnetauth_create_device">יצירת מכשיר</string>
     <string name="gpodnetauth_finish_descr">מזל טוב! חשבון ה־gpodder.net שלך מקושר כעת עם המכשיר שלך. מעתה כל המינויים שלך יסונכרנו אוטומטית על ידי אנטנה־פּוֹד מהמכשיר שלך לחשבון ה־gpodder.net שלך.</string>
-    <string name="gpodnetauth_finish_butsyncnow">התחלת סנכרון כעת</string>
     <string name="pref_gpodnet_setlogin_information_title">שינוי פרטי הכניסה</string>
     <string name="pref_gpodnet_setlogin_information_sum">שינוי פרטי הכניסה לחשבון ה־gpodder.net שלך.</string>
     <string name="synchronization_sync_changes_title">לסנכרן עכשיו</string>
@@ -819,7 +817,7 @@
     <string name="feed_delete_confirmation_local_msg">נא לאשר את הסרת ההסכת „%1$s”, לרבות היסטוריית הנגינה שלו והסטטיסטיקה שלו. הקבצים בתיקיית המקור המקומית לא יימחקו.</string>
     <string name="null_value_podcast_error">הקישור בו נגעת לא מכיל כתובת הסכת תקנית. נא לוודא שהקישור תקין ולנסות שוב או לחפש את ההסכת ידנית.</string>
     <string name="bottom_navigation">ניווט תחתון</string>
-    <string name="bottom_navigation_summary">יכולת ניסיונית: גישה למסכים החשובים ביותר מכל מקום, בנגיעה אחת</string>
+    <string name="bottom_navigation_summary">גישה למסכים החשובים ביותר מכל מקום, בנגיעה אחת</string>
     <string name="statistics_episodes_total">סך הכול</string>
     <string name="statistics_episodes_space">מקום תפוס</string>
     <string name="pref_nav_drawer_items_sum">נא לבחור אילו פריטים מופיעים במגירת הניווט או בניווט התחתון</string>
@@ -896,4 +894,9 @@
     <string name="echo_hoarder_comment_hoarder">המספרים לא משקרים. ועם %1$d%% בלבד מתוך %2$d מינויים פעילים שהתנגנו השנה, כנראה שהתובנות האלה נכונות.</string>
     <string name="preference_search_clear_input">פינוי</string>
     <string name="overflow_more">עוד</string>
+    <string name="visit_social_interact_query_title">בחרת לצאת מ־AntennaPod</string>
+    <string name="feed_new_episodes_action_summary_autodownload">הורדה אוטומטית הופעלה. הפרקים נוספים לתיבת הנכנסים ואז מועברים לתור לאחר הורדתם.</string>
+    <string name="visit_social_interact_label">הצגת הערות</string>
+    <string name="visit_social_interact_query_message">נא לוודא שהאתר „%1$s” אמין.</string>
+    <string name="rss_address">כתובת RSS</string>
 </resources>

@@ -13,7 +13,7 @@
     <string name="downloads_label">Downloads</string>
     <string name="downloads_log_label">Log downloaden</string>
     <string name="subscriptions_label">Abonnementen</string>
-    <string name="subscriptions_list_label">Abonnementenlijst (alleen zijpaneel)</string>
+    <string name="subscriptions_list_label">Abonnementenlijst</string>
     <string name="cancel_download_label">Download afbreken</string>
     <string name="playback_history_label">Afspeelgeschiedenis</string>
     <string name="years_statistics_label">Jaren</string>
@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">Altijd</string>
     <string name="feed_auto_download_never">Nooit</string>
     <string name="feed_new_episodes_action_add_to_inbox">Aan inbox toevoegen</string>
-    <string name="feed_new_episodes_action_add_to_queue">Toevoegen aan wachtrij, automatisch downloaden uitschakelen</string>
-    <string name="feed_new_episodes_action_nothing">Niets, automatisch downloaden uitschakelen</string>
+    <string name="feed_new_episodes_action_add_to_queue">Toevoegen aan wachtrij</string>
+    <string name="feed_new_episodes_action_nothing">Niets</string>
     <string name="episode_cleanup_never">Nooit</string>
     <string name="episode_cleanup_except_favorite_removal">Indien niet favoriet</string>
     <string name="episode_cleanup_queue_removal">Indien niet in wachtrij</string>
@@ -374,7 +374,6 @@
     <string name="pref_mobileUpdate_sum">Kies wat je wilt toestaan via mobiel internet</string>
     <string name="pref_mobileUpdate_refresh">Podcast vernieuwen</string>
     <string name="pref_mobileUpdate_images">Omslagafbeeldingen</string>
-    <string name="pref_mobileUpdate_auto_download">Automatisch downloaden</string>
     <string name="pref_mobileUpdate_episode_download">Aflevering downloaden</string>
     <string name="pref_mobileUpdate_streaming">Streamen</string>
     <string name="user_interface_label">Gebruikersinterface</string>
@@ -554,7 +553,6 @@
     <string name="gpodnetauth_existing_devices">Bestaande toestellen</string>
     <string name="gpodnetauth_create_device">Toestel toevoegen</string>
     <string name="gpodnetauth_finish_descr">Gefeliciteerd! Je gpodder.net-account is nu gekoppeld met dit apparaat. AntennaPod synchroniseert voortaan de abonnementen op dit apparaat automatisch met je gpodder.net-account.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Nu synchroniseren</string>
     <string name="pref_gpodnet_setlogin_information_title">Inloggegevens wijzigen</string>
     <string name="pref_gpodnet_setlogin_information_sum">Wijzig de inloggegevens van je gpodder.net-account.</string>
     <string name="synchronization_sync_changes_title">Nu synchroniseren</string>
@@ -759,7 +757,7 @@
     <string name="home_no_recent_unplayed_episodes_text">Je hebt alle recente afleveringen al afgespeeld. Hier zijn geen verrassingen meer te vinden ;)</string>
     <string name="section_shown">Getoond</string>
     <string name="delete_downloads_played">Afgespeelde bestanden verwijderen</string>
-    <string name="bottom_navigation_summary">Bètafunctie: Navigeer naar de belangrijkste schermen waar je ook bent, met één tik</string>
+    <string name="bottom_navigation_summary">Navigeer naar de belangrijkste schermen waar je ook bent, met één tik</string>
     <string name="statistics_episodes_started">gestart</string>
     <string name="statistics_episodes_total">totaal</string>
     <string name="statistics_release_schedule">Uitgaveschema</string>
@@ -874,4 +872,9 @@
     <string name="echo_thanks_we_are_glad_old">dat je dit jaar bij ons bent gebleven\n\nJe hebt je eerste aflevering met ons afgespeeld in %1$s. Het is voor ons een eer u sindsdien van dienst te zijn.</string>
     <string name="preference_search_clear_input">Wissen</string>
     <string name="overflow_more">Meer</string>
+    <string name="visit_social_interact_label">Reacties weergeven</string>
+    <string name="visit_social_interact_query_message">Let goed op of je de website \"%1$s\" vertrouwt.</string>
+    <string name="visit_social_interact_query_title">Je verlaat AntennaPod</string>
+    <string name="rss_address">RSS-adres</string>
+    <string name="feed_new_episodes_action_summary_autodownload">Automatisch downloaden staat aan. Afleveringen worden aan postvak IN toegevoegd en worden naar de wachtrij verplaatst zodra ze gedownload zijn.</string>
 </resources>

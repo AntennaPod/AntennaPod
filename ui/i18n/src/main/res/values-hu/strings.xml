@@ -375,7 +375,6 @@
     <string name="pref_mobileUpdate_sum">Válassza ki, hogy mit engedélyez mobil adatkapcsolaton keresztül</string>
     <string name="pref_mobileUpdate_refresh">Podcast frissítése</string>
     <string name="pref_mobileUpdate_images">Borítóképek</string>
-    <string name="pref_mobileUpdate_auto_download">Automatikus letöltés</string>
     <string name="pref_mobileUpdate_episode_download">Epizódletöltés</string>
     <string name="pref_mobileUpdate_streaming">Közvetítés</string>
     <string name="user_interface_label">Felhasználói felület</string>
@@ -555,7 +554,6 @@
     <string name="gpodnetauth_existing_devices">Létező eszközök</string>
     <string name="gpodnetauth_create_device">Eszköz létrehozása</string>
     <string name="gpodnetauth_finish_descr">Gratulálunk! A gpodder.net fiókja most már össze van kapcsolva az eszközével. Az AntennaPod automatikusan szinkronizálja az eszközén lévő feliratkozásait a gpodder.net fiókjával.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Szinkronizálás indítása most</string>
     <string name="pref_gpodnet_setlogin_information_title">Bejelentkezési adatok módosítása</string>
     <string name="pref_gpodnet_setlogin_information_sum">A gpodder.net fiókjához használt bejelentkezési adatok módosítása.</string>
     <string name="synchronization_sync_changes_title">Szinkronizálás most</string>

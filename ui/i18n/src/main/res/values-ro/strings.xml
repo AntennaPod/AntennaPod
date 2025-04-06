@@ -399,7 +399,6 @@
     <string name="pref_mobileUpdate_sum">Selectează ce ar trebui să fie permis să folosească conexiunea de date mobile</string>
     <string name="pref_mobileUpdate_refresh">Reîmprospătare podcast</string>
     <string name="pref_mobileUpdate_images">Imagine de copertă</string>
-    <string name="pref_mobileUpdate_auto_download">Descărcare automată</string>
     <string name="pref_mobileUpdate_episode_download">Descarărcare episoade</string>
     <string name="pref_mobileUpdate_streaming">Streaming</string>
     <string name="user_interface_label">Interfață grafică</string>
@@ -585,7 +584,6 @@
     <string name="gpodnetauth_existing_devices">Dispozitive existente</string>
     <string name="gpodnetauth_create_device">Creează un dispozitiv</string>
     <string name="gpodnetauth_finish_descr">Felicitări! contul tău gpodder.net este acum conectat cu dispozitivul tău. AntennaPod va sincroniza automat toate abonamentele de pe dispozitivul dumneavoastra cu contul gpodder.net</string>
-    <string name="gpodnetauth_finish_butsyncnow">Începe sincronizarea acum</string>
     <string name="pref_gpodnet_setlogin_information_title">Schimbă informațiile de autentificare</string>
     <string name="pref_gpodnet_setlogin_information_sum">Schimbă informațiile de autentificare pentru contul tău gpodder.net.</string>
     <string name="synchronization_sync_changes_title">Sincronizează acum</string>

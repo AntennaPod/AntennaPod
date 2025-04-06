@@ -283,7 +283,6 @@
     <string name="pref_mobileUpdate_sum">Pilih hal-hal diperbolehkan melalui koneksi data seluler</string>
     <string name="pref_mobileUpdate_refresh">Penyegaran siniar</string>
     <string name="pref_mobileUpdate_images">Gambar sampul</string>
-    <string name="pref_mobileUpdate_auto_download">Unduh secara otomatis</string>
     <string name="pref_mobileUpdate_episode_download">Pengunduhan episode</string>
     <string name="pref_mobileUpdate_streaming">Penjaliran</string>
     <string name="user_interface_label">Antarmuka pengguna</string>
@@ -433,7 +432,6 @@
     <string name="gpodnetauth_existing_devices">Perangkat yang sudah ada</string>
     <string name="gpodnetauth_create_device">Buat perangkat</string>
     <string name="gpodnetauth_finish_descr">Selamat! Akun gpodder.net Anda sekarang terhubung dengan perangkat Anda. AntennaPod sekarang akan secara otomatis menyinkronkan langganan pada perangkat Anda dengan akun gpodder.net Anda.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Mulai penyinkronan sekarang</string>
     <string name="pref_gpodnet_setlogin_information_title">Ubah informasi masuk</string>
     <string name="pref_gpodnet_setlogin_information_sum">Ubah informasi masuk akun gpodder.net Anda</string>
     <string name="synchronization_sync_changes_title">Sinkronkan sekarang</string>

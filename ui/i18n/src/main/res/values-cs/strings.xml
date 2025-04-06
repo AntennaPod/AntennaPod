@@ -386,7 +386,6 @@
     <string name="pref_mobileUpdate_sum">Vyberte, co by mělo být povoleno přes mobilní data</string>
     <string name="pref_mobileUpdate_refresh">Obnovit podcast</string>
     <string name="pref_mobileUpdate_images">Obrázky podcastů/epizod</string>
-    <string name="pref_mobileUpdate_auto_download">Automatické stahování</string>
     <string name="pref_mobileUpdate_episode_download">Stahování epizod</string>
     <string name="pref_mobileUpdate_streaming">Streamování</string>
     <string name="user_interface_label">Uživatelské rozhraní</string>
@@ -566,7 +565,6 @@
     <string name="gpodnetauth_existing_devices">Existující zařízení</string>
     <string name="gpodnetauth_create_device">Vytvořit zařízení</string>
     <string name="gpodnetauth_finish_descr">Gratulujeme! Váš gpodder.net účet je nyní úspěšně propojen s vaším zařízením. AntennaPod bude automaticky synchronizovat odebírané podcasty s nastaveným účtem na gpodder.net.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Synchronizovat nyní</string>
     <string name="pref_gpodnet_setlogin_information_title">Změna přihlašovacích údajů</string>
     <string name="pref_gpodnet_setlogin_information_sum">Změní přihlašovací údaje k vašemu gpodder.net účtu.</string>
     <string name="synchronization_sync_changes_title">Synchronizovat nyní</string>
