@@ -63,7 +63,7 @@ public class AntennapodHttpClient {
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.interceptors().add(new BasicAuthorizationInterceptor());
-        builder.networkInterceptors().add(new UserAgentInterceptor());
+        builder.interceptors().add(new UserAgentInterceptor());
 
         // set cookie handler
         CookieManager cm = new CookieManager();
@@ -75,7 +75,6 @@ public class AntennapodHttpClient {
         builder.readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
         builder.writeTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
         builder.cache(new Cache(cacheDirectory, 20L * 1000000)); // 20MB
-
         // configure redirects
         builder.followRedirects(true);
         builder.followSslRedirects(true);

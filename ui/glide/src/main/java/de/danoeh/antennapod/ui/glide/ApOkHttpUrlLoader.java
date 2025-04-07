@@ -14,6 +14,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.danoeh.antennapod.net.common.NetworkUtils;
+import de.danoeh.antennapod.net.common.RequestHeaderIntercepter;
 import de.danoeh.antennapod.net.common.UserAgentInterceptor;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -43,6 +44,7 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
                 synchronized (Factory.class) {
                     if (internalClient == null) {
                         OkHttpClient.Builder builder = AntennapodHttpClient.newBuilder();
+                        builder.interceptors().add(new RequestHeaderIntercepter());
                         builder.interceptors().add(new NetworkAllowanceInterceptor());
                         builder.interceptors().add(new UserAgentInterceptor());
                         builder.cache(null); // Handled by Glide
@@ -100,19 +102,14 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
         @NonNull
         @Override
         public Response intercept(@NonNull Chain chain) throws IOException {
-            String existingEncoding = chain.request().header("Accept-Encoding");
-            String newEncodingValue = getEncodeString(existingEncoding);
             if (NetworkUtils.isImageAllowed()) {
-
                 return chain.proceed(chain.request().newBuilder()
-                        .header("Accept-Encoding", newEncodingValue) // Avoid gzip to get the actual size
                         .build());
             } else {
                 return new Response.Builder()
                         .protocol(Protocol.HTTP_2)
                         .code(420)
                         .message("Policy Not Fulfilled")
-                        .header("Accept-Encoding", newEncodingValue)
                         .body(ResponseBody.create(new byte[0], null))
                         .request(chain.request())
                         .build();
@@ -120,21 +117,4 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
         }
     }
 
-    @NonNull
-    private static String getEncodeString(String existingEncoding) {
-        String newEncodingValue;
-        if (existingEncoding == null || existingEncoding.isEmpty()) {
-            newEncodingValue = "gzip, deflate, br";
-        } else {
-            StringBuilder encodingBuilder = new StringBuilder(existingEncoding);
-            if (!existingEncoding.toLowerCase(Locale.ROOT).contains("deflate")) {
-                encodingBuilder.append(", deflate");
-            }
-            if (!existingEncoding.toLowerCase(Locale.ROOT).contains("br")) {
-                encodingBuilder.append(", br");
-            }
-            newEncodingValue = encodingBuilder.toString();
-        }
-        return newEncodingValue;
-    }
 }
