@@ -24,6 +24,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -153,8 +154,8 @@ public class DBWriter {
             if (media.getItem().getFeed().getState() == Feed.STATE_SUBSCRIBED) {
                 SynchronizationQueue.getInstance().enqueueEpisodeAction(
                         new EpisodeAction.Builder(media.getItem(), EpisodeAction.DELETE)
-                            .currentTimestamp()
-                            .build());
+                                .currentTimestamp()
+                                .build());
             }
 
             EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
@@ -521,74 +522,6 @@ public class DBWriter {
         }
     }
 
-    public static Future<?> toggleFavoriteItem(final FeedItem item) {
-        if (item.isTagged(FeedItem.TAG_FAVORITE)) {
-            return removeFavoriteItem(item);
-        } else {
-            return addFavoriteItem(item);
-        }
-    }
-
-    public static Future<?> addFavoriteItem(final FeedItem item) {
-        return runOnDbThread(() -> {
-            final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
-            adapter.addFavoriteItem(item);
-            adapter.close();
-            item.addTag(FeedItem.TAG_FAVORITE);
-            EventBus.getDefault().post(new FavoritesEvent());
-            EventBus.getDefault().post(FeedItemEvent.updated(item));
-        });
-    }
-
-    public static Future<?> removeFavoriteItem(final FeedItem item) {
-        return runOnDbThread(() -> {
-            final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
-            adapter.removeFavoriteItem(item);
-            adapter.close();
-            item.removeTag(FeedItem.TAG_FAVORITE);
-            EventBus.getDefault().post(new FavoritesEvent());
-            EventBus.getDefault().post(FeedItemEvent.updated(item));
-        });
-    }
-
-    /**
-     * Moves the specified item to the top of the queue.
-     *
-     * @param itemId          The item to move to the top of the queue
-     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
-     */
-    public static Future<?> moveQueueItemToTop(final long itemId, final boolean broadcastUpdate) {
-        return runOnDbThread(() -> {
-            LongList queueIdList = DBReader.getQueueIDList();
-            int index = queueIdList.indexOf(itemId);
-            if (index >= 0) {
-                moveQueueItemHelper(index, 0, broadcastUpdate);
-            } else {
-                Log.e(TAG, "moveQueueItemToTop: item not found");
-            }
-        });
-    }
-
-    /**
-     * Moves the specified item to the bottom of the queue.
-     *
-     * @param itemId          The item to move to the bottom of the queue
-     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
-     */
-    public static Future<?> moveQueueItemToBottom(final long itemId,
-                                                  final boolean broadcastUpdate) {
-        return runOnDbThread(() -> {
-            LongList queueIdList = DBReader.getQueueIDList();
-            int index = queueIdList.indexOf(itemId);
-            if (index >= 0) {
-                moveQueueItemHelper(index, queueIdList.size() - 1,
-                        broadcastUpdate);
-            } else {
-                Log.e(TAG, "moveQueueItemToBottom: item not found");
-            }
-        });
-    }
-
     /**
      * Changes the position of a FeedItem in the queue.
      *
@@ -630,6 +563,83 @@ public class DBWriter {
             }
         }
         adapter.close();
+    }
+
+    public static Future<?> moveQueueItemsToTop(final Context context, final List<FeedItem> items) {
+        return runOnDbThread(() -> moveQueueItemsSynchronous(context, true, items));
+    }
+
+    public static Future<?> moveQueueItemsToBottom(final Context context, final List<FeedItem> items) {
+        return runOnDbThread(() -> moveQueueItemsSynchronous(context, false, items));
+    }
+
+    private static void moveQueueItemsSynchronous(final Context context, final boolean moveToTop,
+                                                  final List<FeedItem> items) {
+
+        if (items.isEmpty()) {
+            return;
+        }
+
+        final PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        final List<FeedItem> queue = DBReader.getQueue();
+
+        if (moveToTop) {
+            Collections.reverse(items);
+        }
+
+        boolean queueModified = false;
+        List<QueueEvent> events = new ArrayList<>();
+
+        queue.removeAll(items);
+        events.add(QueueEvent.setQueue(queue));
+
+        for (FeedItem item : items) {
+            int newIndex = moveToTop ? 0 : queue.size();
+            queue.add(newIndex, item);
+            events.add(QueueEvent.moved(item, newIndex));
+            queueModified = true;
+        }
+
+        if (queueModified) {
+            adapter.setQueue(queue);
+            for (QueueEvent event : events) {
+                EventBus.getDefault().post(event);
+            }
+        } else {
+            Log.w(TAG, "moveToTop: " + moveToTop +  " - Queue was not modified.");
+        }
+        adapter.close();
+    }
+
+    public static Future<?> toggleFavoriteItem(final FeedItem item) {
+        if (item.isTagged(FeedItem.TAG_FAVORITE)) {
+            return removeFavoriteItem(item);
+        } else {
+            return addFavoriteItem(item);
+        }
+    }
+
+    public static Future<?> addFavoriteItem(final FeedItem item) {
+        return runOnDbThread(() -> {
+            final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
+            adapter.addFavoriteItem(item);
+            adapter.close();
+            item.addTag(FeedItem.TAG_FAVORITE);
+            EventBus.getDefault().post(new FavoritesEvent());
+            EventBus.getDefault().post(FeedItemEvent.updated(item));
+        });
+    }
+
+    public static Future<?> removeFavoriteItem(final FeedItem item) {
+        return runOnDbThread(() -> {
+            final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
+            adapter.removeFavoriteItem(item);
+            adapter.close();
+            item.removeTag(FeedItem.TAG_FAVORITE);
+            EventBus.getDefault().post(new FavoritesEvent());
+            EventBus.getDefault().post(FeedItemEvent.updated(item));
+        });
     }
 
     public static Future<?> resetPagedFeedPage(Feed feed) {

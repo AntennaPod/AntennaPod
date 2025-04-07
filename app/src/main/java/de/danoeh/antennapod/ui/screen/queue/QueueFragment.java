@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -140,6 +142,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             loadItems(true);
             return;
         }
+        int position;
         switch (event.action) {
             case ADDED:
                 queue.add(event.position, event.item);
@@ -152,13 +155,18 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 break;
             case REMOVED:
             case IRREVERSIBLE_REMOVED:
-                int position = FeedItemEvent.indexOfItemWithId(queue, event.item.getId());
+                position = FeedItemEvent.indexOfItemWithId(queue, event.item.getId());
                 queue.remove(position);
                 recyclerAdapter.notifyItemRemoved(position);
                 break;
             case CLEARED:
                 queue.clear();
                 recyclerAdapter.updateItems(queue);
+                break;
+            case MOVED:
+                position = FeedItemEvent.indexOfItemWithId(queue, event.item.getId());
+                queue.add(event.position, queue.remove(position));
+                recyclerAdapter.notifyItemMoved(position, event.position);
                 break;
             default:
                 return;
@@ -374,16 +382,18 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
 
         final int itemId = item.getItemId();
-        if (itemId == R.id.move_to_top_item) {
-            queue.add(0, queue.remove(position));
-            recyclerAdapter.notifyItemMoved(position, 0);
-            DBWriter.moveQueueItemToTop(selectedItem.getId(), true);
-            return true;
-        } else if (itemId == R.id.move_to_bottom_item) {
-            queue.add(queue.size() - 1, queue.remove(position));
-            recyclerAdapter.notifyItemMoved(position, queue.size() - 1);
-            DBWriter.moveQueueItemToBottom(selectedItem.getId(), true);
-            return true;
+        if (!recyclerAdapter.inActionMode()) {
+            if (itemId == R.id.move_to_top_item) {
+                queue.add(0, queue.remove(position));
+                recyclerAdapter.notifyItemMoved(position, 0);
+                DBWriter.moveQueueItemsToTop(getContext(), Collections.singletonList(selectedItem));
+                return true;
+            } else if (itemId == R.id.move_to_bottom_item) {
+                queue.add(queue.remove(position));
+                recyclerAdapter.notifyItemMoved(position, queue.size() - 1);
+                DBWriter.moveQueueItemsToBottom(getContext(), Collections.singletonList(selectedItem));
+                return true;
+            }
         }
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
@@ -437,8 +447,15 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             @Override
             protected void onSelectedItemsUpdated() {
                 super.onSelectedItemsUpdated();
+                Menu menu = floatingSelectMenu.getMenu();
+                List<FeedItem> selectedItems = getSelectedItems();
                 FeedItemMenuHandler.onPrepareMenu(floatingSelectMenu.getMenu(), getSelectedItems(),
                         R.id.add_to_queue_item, R.id.remove_inbox_item);
+
+                Pair<Boolean, Boolean> canMove = canMove(queue, selectedItems);
+                menu.findItem(R.id.move_to_top_item).setVisible(canMove.first);
+                menu.findItem(R.id.move_to_bottom_item).setVisible(canMove.second);
+
                 floatingSelectMenu.updateItemVisibility();
             }
         };
@@ -606,6 +623,52 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             UserPreferences.setQueueKeepSortedOrder(sortOrder);
             DBWriter.reorderQueue(sortOrder, true);
         }
+    }
+
+    /**
+     * This method checks if the selected items are allowed to be moved to the top, bottom or both of the Queue.
+     * @param queue The FeedItems currently in the Queue.
+     * @param selectedItems The FeedItems for which the check is performed.
+     * @return A Pair of booleans where
+     *           [0] is true if moving to the top is allowed, false otherwise.
+     *           [1] is true if moving to the bottom is allowed, false otherwise.
+     * */
+    public static Pair<Boolean, Boolean> canMove(List<FeedItem> queue, List<FeedItem> selectedItems) {
+
+        int queueSize = queue.size();
+        int selectedSize = selectedItems.size();
+
+        // No manual reordering allowed if selection or queue are empty, queue is locked,
+        // sorting is enforced or all items in the queue are selected. Then both move options are disabled.
+        if (selectedItems.isEmpty() || queue.isEmpty() || UserPreferences.isQueueLocked()
+                || UserPreferences.isQueueKeepSorted() || selectedSize == queueSize) {
+            return new Pair<Boolean, Boolean>(false, false);
+        }
+
+        boolean isFirstItemSelected = selectedItems.get(0).getId() == queue.get(0).getId();
+        boolean isLastItemSelected = selectedItems.get(selectedSize - 1).getId() == queue.get(queueSize - 1).getId();
+
+        // If only one item is selected and its already at the top of the list, disable option to move item to the top.
+        // If the item is already at the bottom of the list, disable the option to move it to the bottom.
+        if (selectedItems.size() == 1) {
+            return new Pair<Boolean, Boolean>(!isFirstItemSelected, !isLastItemSelected);
+        }
+
+        // Check if selected items contiguous.
+        // If contiguous from the top, moving items to the top is disabled, as they are already there.
+        boolean contiguousAtTop = isFirstItemSelected && selectedItems.equals(queue.subList(0, selectedSize));
+        // If contiguous from the bottom, moving items to the bottom is disabled, as they are already there.
+        boolean contiguousAtBottom = isLastItemSelected
+                && selectedItems.equals(queue.subList(queueSize - selectedSize, queueSize));
+
+        if (contiguousAtTop) {
+            return new Pair<Boolean, Boolean>(false, true);
+        }
+        if (contiguousAtBottom) {
+            return new Pair<Boolean, Boolean>(true, false);
+        }
+
+        return new Pair<Boolean, Boolean>(true, true);
     }
 
     private class QueueSwipeActions extends SwipeActions {

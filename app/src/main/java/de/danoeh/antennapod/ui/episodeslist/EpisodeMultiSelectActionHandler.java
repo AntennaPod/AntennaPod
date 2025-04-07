@@ -43,6 +43,10 @@ public class EpisodeMultiSelectActionHandler {
             downloadChecked(items);
         } else if (actionId == R.id.remove_item) {
             LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(activity, items, () -> deleteChecked(items));
+        } else if (actionId == R.id.move_to_top_item) {
+            moveToTopChecked(items);
+        } else if (actionId == R.id.move_to_bottom_item) {
+            moveToBottomChecked(items);
         } else {
             Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionId);
         }
@@ -111,6 +115,16 @@ public class EpisodeMultiSelectActionHandler {
             }
         }
         showMessage(R.plurals.deleted_multi_episode_batch_label, countHasMedia);
+    }
+
+    private void moveToTopChecked(List<FeedItem> items) {
+        DBWriter.moveQueueItemsToTop(activity, items);
+        showMessage(R.plurals.move_to_top_message, items.size());
+    }
+
+    private void moveToBottomChecked(List<FeedItem> items) {
+        DBWriter.moveQueueItemsToBottom(activity, items);
+        showMessage(R.plurals.move_to_bottom_message, items.size());
     }
 
     private void showMessage(@PluralsRes int msgId, int numItems) {

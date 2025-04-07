@@ -364,7 +364,15 @@
     <string name="clear_queue_label">Clear queue</string>
     <string name="undo">Undo</string>
     <string name="move_to_top_label">Move to top</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d episode moved to top.</item>
+        <item quantity="other">%d episodes moved to top.</item>
+    </plurals>
     <string name="move_to_bottom_label">Move to bottom</string>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d episode moved to bottom.</item>
+        <item quantity="other">%d episodes moved to bottom.</item>
+    </plurals>
     <string name="sort">Sort</string>
     <string name="keep_sorted">Keep sorted</string>
     <string name="date">Date</string>
