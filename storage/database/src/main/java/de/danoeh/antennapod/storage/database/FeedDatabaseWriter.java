@@ -192,9 +192,9 @@ public abstract class FeedDatabaseWriter {
                             action = UserPreferences.getNewEpisodesAction();
                         }
                         FeedPreferences.AutoDownloadSetting autoDownload = savedFeed.getPreferences().getAutoDownload();
-                        if (autoDownload == FeedPreferences.AutoDownloadSetting.ENABLED
+                        if (!savedFeed.isLocalFeed() && (autoDownload == FeedPreferences.AutoDownloadSetting.ENABLED
                                 || (autoDownload == FeedPreferences.AutoDownloadSetting.GLOBAL
-                                        && UserPreferences.isEnableAutodownloadGlobal())) {
+                                        && UserPreferences.isEnableAutodownloadGlobal()))) {
                             // Auto download currently only considers episodes in the inbox
                             action = FeedPreferences.NewEpisodesAction.ADD_TO_INBOX;
                         }

@@ -277,7 +277,7 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
         }
         ListPreference newEpisodesAction = findPreference(PREF_NEW_EPISODES_ACTION);
         boolean isAutoDownload = feed.getPreferences().isAutoDownload(UserPreferences.isEnableAutodownloadGlobal());
-        if (isAutoDownload) {
+        if (isAutoDownload && !feed.isLocalFeed()) {
             newEpisodesAction.setEnabled(false);
             newEpisodesAction.setSummary(R.string.feed_new_episodes_action_summary_autodownload);
             return;
