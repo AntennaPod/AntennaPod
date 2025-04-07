@@ -14,6 +14,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.danoeh.antennapod.net.common.NetworkUtils;
+import de.danoeh.antennapod.net.common.UserAgentInterceptor;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
@@ -43,6 +44,7 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
                     if (internalClient == null) {
                         OkHttpClient.Builder builder = AntennapodHttpClient.newBuilder();
                         builder.interceptors().add(new NetworkAllowanceInterceptor());
+                        builder.interceptors().add(new UserAgentInterceptor());
                         builder.cache(null); // Handled by Glide
                         internalClient = builder.build();
                     }
