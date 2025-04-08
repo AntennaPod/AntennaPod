@@ -634,41 +634,29 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
      *           [1] is true if moving to the bottom is allowed, false otherwise.
      * */
     public static Pair<Boolean, Boolean> canMove(List<FeedItem> queue, List<FeedItem> selectedItems) {
-
         int queueSize = queue.size();
         int selectedSize = selectedItems.size();
-
-        // No manual reordering allowed if selection or queue are empty, queue is locked,
-        // sorting is enforced or all items in the queue are selected. Then both move options are disabled.
+        // No manual reordering allowed or reordering would be a no-op.
         if (selectedItems.isEmpty() || queue.isEmpty() || UserPreferences.isQueueLocked()
                 || UserPreferences.isQueueKeepSorted() || selectedSize == queueSize) {
-            return new Pair<Boolean, Boolean>(false, false);
+            return new Pair<>(false, false);
         }
-
         boolean isFirstItemSelected = selectedItems.get(0).getId() == queue.get(0).getId();
         boolean isLastItemSelected = selectedItems.get(selectedSize - 1).getId() == queue.get(queueSize - 1).getId();
-
         // If only one item is selected and its already at the top of the list, disable option to move item to the top.
         // If the item is already at the bottom of the list, disable the option to move it to the bottom.
-        if (selectedItems.size() == 1) {
-            return new Pair<Boolean, Boolean>(!isFirstItemSelected, !isLastItemSelected);
+        if (selectedSize == 1) {
+            return new Pair<>(!isFirstItemSelected, !isLastItemSelected);
         }
-
-        // Check if selected items contiguous.
         // If contiguous from the top, moving items to the top is disabled, as they are already there.
-        boolean contiguousAtTop = isFirstItemSelected && selectedItems.equals(queue.subList(0, selectedSize));
+        if (isFirstItemSelected && selectedItems.equals(queue.subList(0, selectedSize))) {
+            return new Pair<>(false, true);
+        }
         // If contiguous from the bottom, moving items to the bottom is disabled, as they are already there.
-        boolean contiguousAtBottom = isLastItemSelected
-                && selectedItems.equals(queue.subList(queueSize - selectedSize, queueSize));
-
-        if (contiguousAtTop) {
-            return new Pair<Boolean, Boolean>(false, true);
+        if (isLastItemSelected && selectedItems.equals(queue.subList(queueSize - selectedSize, queueSize))) {
+            return new Pair<>(true, false);
         }
-        if (contiguousAtBottom) {
-            return new Pair<Boolean, Boolean>(true, false);
-        }
-
-        return new Pair<Boolean, Boolean>(true, true);
+        return new Pair<>(true, true);
     }
 
     private class QueueSwipeActions extends SwipeActions {
