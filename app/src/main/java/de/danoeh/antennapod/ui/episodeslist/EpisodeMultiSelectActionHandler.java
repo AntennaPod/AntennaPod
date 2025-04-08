@@ -118,12 +118,12 @@ public class EpisodeMultiSelectActionHandler {
     }
 
     private void moveToTopChecked(List<FeedItem> items) {
-        DBWriter.moveQueueItemsToTop(activity, items);
+        DBWriter.moveQueueItemsToTop(items);
         showMessage(R.plurals.move_to_top_message, items.size());
     }
 
     private void moveToBottomChecked(List<FeedItem> items) {
-        DBWriter.moveQueueItemsToBottom(activity, items);
+        DBWriter.moveQueueItemsToBottom(items);
         showMessage(R.plurals.move_to_bottom_message, items.size());
     }
 

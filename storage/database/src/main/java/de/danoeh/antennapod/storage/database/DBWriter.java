@@ -561,51 +561,34 @@ public class DBWriter {
      *                        false if the caller wants to avoid unexpected updates of the GUI.
      * @throws IndexOutOfBoundsException if (to < 0 || to >= queue.size()) || (from < 0 || from >= queue.size())
      */
-    public static Future<?> moveQueueItem(final int from,
-                                          final int to, final boolean broadcastUpdate) {
-        return runOnDbThread(() -> moveQueueItemHelper(from, to, broadcastUpdate));
-    }
+    public static Future<?> moveQueueItem(final int from, final int to, final boolean broadcastUpdate) {
+        return runOnDbThread(() -> {
+            final PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            final List<FeedItem> queue = DBReader.getQueue();
 
-    /**
-     * Changes the position of a FeedItem in the queue.
-     * <p/>
-     * This function must be run using the ExecutorService (dbExec).
-     *
-     * @param from            Source index. Must be in range 0..queue.size()-1.
-     * @param to              Destination index. Must be in range 0..queue.size()-1.
-     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
-     *                        false if the caller wants to avoid unexpected updates of the GUI.
-     * @throws IndexOutOfBoundsException if (to < 0 || to >= queue.size()) || (from < 0 || from >= queue.size())
-     */
-    private static void moveQueueItemHelper(final int from,
-                                            final int to, final boolean broadcastUpdate) {
-        final PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        final List<FeedItem> queue = DBReader.getQueue();
+            if (from >= 0 && from < queue.size() && to >= 0 && to < queue.size()) {
+                final FeedItem item = queue.remove(from);
+                queue.add(to, item);
 
-        if (from >= 0 && from < queue.size() && to >= 0 && to < queue.size()) {
-            final FeedItem item = queue.remove(from);
-            queue.add(to, item);
-
-            adapter.setQueue(queue);
-            if (broadcastUpdate) {
-                EventBus.getDefault().post(QueueEvent.moved(item, to));
+                adapter.setQueue(queue);
+                if (broadcastUpdate) {
+                    EventBus.getDefault().post(QueueEvent.moved(item, to));
+                }
             }
-        }
-        adapter.close();
+            adapter.close();
+        });
     }
 
-    public static Future<?> moveQueueItemsToTop(final Context context, final List<FeedItem> items) {
-        return runOnDbThread(() -> moveQueueItemsSynchronous(context, true, items));
+    public static Future<?> moveQueueItemsToTop(final List<FeedItem> items) {
+        return runOnDbThread(() -> moveQueueItemsSynchronous(true, items));
     }
 
-    public static Future<?> moveQueueItemsToBottom(final Context context, final List<FeedItem> items) {
-        return runOnDbThread(() -> moveQueueItemsSynchronous(context, false, items));
+    public static Future<?> moveQueueItemsToBottom(final List<FeedItem> items) {
+        return runOnDbThread(() -> moveQueueItemsSynchronous(false, items));
     }
 
-    private static void moveQueueItemsSynchronous(final Context context, final boolean moveToTop,
-                                                  final List<FeedItem> items) {
-
+    private static void moveQueueItemsSynchronous(final boolean moveToTop, final List<FeedItem> items) {
         if (items.isEmpty()) {
             return;
         }

@@ -386,12 +386,12 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             if (itemId == R.id.move_to_top_item) {
                 queue.add(0, queue.remove(position));
                 recyclerAdapter.notifyItemMoved(position, 0);
-                DBWriter.moveQueueItemsToTop(getContext(), Collections.singletonList(selectedItem));
+                DBWriter.moveQueueItemsToTop(Collections.singletonList(selectedItem));
                 return true;
             } else if (itemId == R.id.move_to_bottom_item) {
                 queue.add(queue.remove(position));
                 recyclerAdapter.notifyItemMoved(position, queue.size() - 1);
-                DBWriter.moveQueueItemsToBottom(getContext(), Collections.singletonList(selectedItem));
+                DBWriter.moveQueueItemsToBottom(Collections.singletonList(selectedItem));
                 return true;
             }
         }
