@@ -614,17 +614,18 @@ public class DBWriter {
         adapter.open();
         final List<FeedItem> queue = DBReader.getQueue();
 
+        List<FeedItem> selectedItems = moveToTop ? new ArrayList<>(items) : items;
         if (moveToTop) {
-            Collections.reverse(items);
+            Collections.reverse(selectedItems);
         }
 
         boolean queueModified = false;
         List<QueueEvent> events = new ArrayList<>();
 
-        queue.removeAll(items);
+        queue.removeAll(selectedItems);
         events.add(QueueEvent.setQueue(queue));
 
-        for (FeedItem item : items) {
+        for (FeedItem item : selectedItems) {
             int newIndex = moveToTop ? 0 : queue.size();
             queue.add(newIndex, item);
             events.add(QueueEvent.moved(item, newIndex));
