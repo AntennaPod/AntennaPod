@@ -13,7 +13,7 @@
     <string name="downloads_label">Downloads</string>
     <string name="downloads_log_label">Download-Protokoll</string>
     <string name="subscriptions_label">Abonnements</string>
-    <string name="subscriptions_list_label">Abonnement-Übersicht (nur seitliches Menü)</string>
+    <string name="subscriptions_list_label">Abonnement-Übersicht</string>
     <string name="cancel_download_label">Download abbrechen</string>
     <string name="playback_history_label">Abspielverlauf</string>
     <string name="years_statistics_label">Jahre</string>
@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">Immer</string>
     <string name="feed_auto_download_never">Nie</string>
     <string name="feed_new_episodes_action_add_to_inbox">Zum Posteingang hinzufügen</string>
-    <string name="feed_new_episodes_action_add_to_queue">Zur Warteschlange hinzufügen, automatisches Herunterladen deaktivieren</string>
-    <string name="feed_new_episodes_action_nothing">Nichts, automatisches Herunterladen deaktivieren</string>
+    <string name="feed_new_episodes_action_add_to_queue">Zur Warteschlange hinzufügen</string>
+    <string name="feed_new_episodes_action_nothing">Nichts</string>
     <string name="episode_cleanup_never">Nie</string>
     <string name="episode_cleanup_except_favorite_removal">Wenn nicht favorisiert</string>
     <string name="episode_cleanup_queue_removal">Wenn nicht in der Warteschlange</string>
@@ -397,9 +397,8 @@
     <string name="pref_stream_over_download_sum">Stream-Button anstatt Download-Button in Listen anzeigen</string>
     <string name="pref_mobileUpdate_title">Mobile Aktualisierungen</string>
     <string name="pref_mobileUpdate_sum">Auswählen, was über mobile Daten erlaubt sein soll</string>
-    <string name="pref_mobileUpdate_refresh">Aktualisierung der Podcasts</string>
+    <string name="pref_mobileUpdate_refresh">Podcasts aktualisieren</string>
     <string name="pref_mobileUpdate_images">Titelbilder</string>
-    <string name="pref_mobileUpdate_auto_download">Automatisches Herunterladen</string>
     <string name="pref_mobileUpdate_episode_download">Episoden herunterladen</string>
     <string name="pref_mobileUpdate_streaming">Streamen</string>
     <string name="user_interface_label">Benutzeroberfläche</string>
@@ -601,7 +600,6 @@
     <string name="gpodnetauth_existing_devices">Bestehende Geräte</string>
     <string name="gpodnetauth_create_device">Gerät anlegen</string>
     <string name="gpodnetauth_finish_descr">Glückwunsch! Dein gpodder.net-Profil ist jetzt mit deinem Gerät verbunden. Von nun an wird AntennaPod automatisch deine Abonnements mit deinem gpodder.net-Profil synchronisieren.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Jetzt synchronisieren</string>
     <string name="pref_gpodnet_setlogin_information_title">Anmeldeinformationen ändern</string>
     <string name="pref_gpodnet_setlogin_information_sum">Die Anmeldeinformationen deines gpodder.net-Profils ändern.</string>
     <string name="synchronization_sync_changes_title">Jetzt synchronisieren</string>
@@ -785,7 +783,7 @@
     <string name="delete_downloads_played_confirmation">Bitte bestätige, dass du alle abgespielten Downloads löschen möchtest.</string>
     <string name="delete_downloads_played">Abgespielte löschen</string>
     <string name="mobile_download_notice">Herunterladen über mobile Datenverbindung für die nächsten %d Minuten</string>
-    <string name="bottom_navigation_summary">Beta-Funktion: Zugriff auf die wichtigsten Bildschirme von überall aus, mit einem einzigen Fingertipp</string>
+    <string name="bottom_navigation_summary">Zugriff auf die wichtigsten Bildschirme von überall aus, mit einem einzigen Fingertipp</string>
     <string name="bottom_navigation">Untere Navigation</string>
     <string name="statistics_episodes_started">begonnen</string>
     <string name="nextcloud_login_error_generic">Anmeldung bei Nextcloud fehlgeschlagen.\n\n- Überprüfe die Netzwerkverbindung.\n- Stelle sicher, dass du die richtige Serveradresse verwendest.\n- Stelle sicher, dass das gpoddersync-Nextcloud-Plugin installiert ist.</string>
@@ -874,4 +872,9 @@
     <string name="download_error_unsupported_type_html_manual">Du hast eine Website-Adresse eingegeben, keine Podcast-RSS-Adresse.</string>
     <string name="overflow_more">Mehr</string>
     <string name="preference_search_clear_input">Leeren</string>
+    <string name="rss_address">RSS-Addresse</string>
+    <string name="visit_social_interact_label">Kommentare anzeigen</string>
+    <string name="visit_social_interact_query_title">Du verlässt AntennaPod</string>
+    <string name="visit_social_interact_query_message">Bitte stelle sicher, dass du der Website „%1$s“ vertraust.</string>
+    <string name="feed_new_episodes_action_summary_autodownload">Automatisches Herunterladen aktiviert. Die Episoden werden dem Posteingang hinzugefügt und nach dem Herunterladen in die Warteschlange verschoben.</string>
 </resources>

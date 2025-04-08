@@ -13,7 +13,7 @@
     <string name="downloads_label">Завантажені</string>
     <string name="downloads_log_label">Завантажити файли журналу</string>
     <string name="subscriptions_label">Подкасти</string>
-    <string name="subscriptions_list_label">Список підписок (лише бічне меню)</string>
+    <string name="subscriptions_list_label">Список підписок</string>
     <string name="cancel_download_label">Скасувати завантаження</string>
     <string name="playback_history_label">Історія прослуховувань</string>
     <string name="years_statistics_label">Роки</string>
@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">Завжди</string>
     <string name="feed_auto_download_never">Ніколи</string>
     <string name="feed_new_episodes_action_add_to_inbox">Додати у вхідні</string>
-    <string name="feed_new_episodes_action_add_to_queue">Додати в чергу, вимкнути автоматичне завантаження</string>
-    <string name="feed_new_episodes_action_nothing">Нічого, вимкнути автоматичне завантаження</string>
+    <string name="feed_new_episodes_action_add_to_queue">Додати в чергу</string>
+    <string name="feed_new_episodes_action_nothing">Нічого</string>
     <string name="episode_cleanup_never">Ніколи</string>
     <string name="episode_cleanup_except_favorite_removal">Коли не вибрано</string>
     <string name="episode_cleanup_queue_removal">Якщо не в черзі</string>
@@ -429,7 +429,6 @@
     <string name="pref_mobileUpdate_sum">Виберіть, що має бути дозволено через мобільне з\'єднання для передачі даних</string>
     <string name="pref_mobileUpdate_refresh">Оновлення подкасту</string>
     <string name="pref_mobileUpdate_images">Обкладинки зображень</string>
-    <string name="pref_mobileUpdate_auto_download">Автозавантаження</string>
     <string name="pref_mobileUpdate_episode_download">Завантажити випуск</string>
     <string name="pref_mobileUpdate_streaming">Потокове передавання</string>
     <string name="user_interface_label">Оболонка</string>
@@ -639,7 +638,6 @@
     <string name="gpodnetauth_existing_devices">Існуючі пристрої</string>
     <string name="gpodnetauth_create_device">Створити пристрій</string>
     <string name="gpodnetauth_finish_descr">Вітаємо! Ваш обліковий запис gpodder.net тепер пов\'язаний з вашим пристроєм. Відтепер AntennaPod буде автоматично синхронізувати підписки на вашому пристрої з вашим акаунтом gpodder.net.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Почати синхронізацію</string>
     <string name="pref_gpodnet_setlogin_information_title">Змінити інформацію для входу</string>
     <string name="pref_gpodnet_setlogin_information_sum">Змінити інформацію щодо облікового запису gpodder.net.</string>
     <string name="synchronization_sync_changes_title">Синхронізувати зараз</string>

@@ -47,7 +47,6 @@
     <string name="preference_search_no_results">Нәтиҗәләр юк</string>
     <string name="preference_search_clear_history">Тарихны чистарту</string>
     <string name="feed_refresh_never">Беркайчан да</string>
-    <string name="pref_mobileUpdate_auto_download">Автоматик йөкләү</string>
     <string name="pref_episode_cache_unlimited">Чикләүсез</string>
     <string name="bug_report_title">Хата турында хәбәр итү</string>
     <string name="copy_to_clipboard">Алмашу буферына күчереп алу</string>

@@ -399,7 +399,6 @@
     <string name="pref_mobileUpdate_sum">Mobil veri üzerinden nelere izin verileceğini seçiniz</string>
     <string name="pref_mobileUpdate_refresh">Podcast yenileme</string>
     <string name="pref_mobileUpdate_images">Kapak görselleri</string>
-    <string name="pref_mobileUpdate_auto_download">Otomatik indir</string>
     <string name="pref_mobileUpdate_episode_download">Bölümü indir</string>
     <string name="pref_mobileUpdate_streaming">Akış</string>
     <string name="user_interface_label">Kullanıcı arayüzü</string>
@@ -601,7 +600,6 @@
     <string name="gpodnetauth_existing_devices">Mevcut cihazlar</string>
     <string name="gpodnetauth_create_device">Cihaz oluştur</string>
     <string name="gpodnetauth_finish_descr">Tebrikler! gpodder.net hesabınız cihazınızla ilişkilendirildi. AntennaPod bundan sonra gpodder.net hesabınızla üyeliklerinizi otomatik olarak senkronize edecek.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Senkronizasyonu başlat</string>
     <string name="pref_gpodnet_setlogin_information_title">Giriş bilgisini değiştir</string>
     <string name="pref_gpodnet_setlogin_information_sum">gpodder.net hesabınız için giriş bilgisini değiştirin.</string>
     <string name="synchronization_sync_changes_title">Şimdi senkronize et</string>

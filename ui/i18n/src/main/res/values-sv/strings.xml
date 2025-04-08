@@ -399,7 +399,6 @@
     <string name="pref_mobileUpdate_sum">Välj vad som ska tillåtas över mobila dataanslutningar</string>
     <string name="pref_mobileUpdate_refresh">Podcastuppdatering</string>
     <string name="pref_mobileUpdate_images">Omslagsbilder</string>
-    <string name="pref_mobileUpdate_auto_download">Automatisk nedladdning</string>
     <string name="pref_mobileUpdate_episode_download">Avsnittsnedladdning</string>
     <string name="pref_mobileUpdate_streaming">Strömning</string>
     <string name="user_interface_label">Användargränssnitt</string>
@@ -601,7 +600,6 @@
     <string name="gpodnetauth_existing_devices">Befintliga enheter</string>
     <string name="gpodnetauth_create_device">Skapa enhet</string>
     <string name="gpodnetauth_finish_descr">Grattis! Ditt gpodder.net-konto är nu länkat med din enhet. AntennaPod kommer från och med nu automatiskt synkronisera dina prenumerationer på din enhet med ditt gpodder.net-konto.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Påbörja synkronisering</string>
     <string name="pref_gpodnet_setlogin_information_title">Ändra inloggningsinformation</string>
     <string name="pref_gpodnet_setlogin_information_sum">Ändra inloggningsinformationen för ditt gpodder.net-konto.</string>
     <string name="synchronization_sync_changes_title">Synkronisera nu</string>

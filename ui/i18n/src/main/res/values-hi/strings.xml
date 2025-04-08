@@ -377,7 +377,6 @@
     <string name="pref_mobileUpdate_sum">चुनें कि मोबाइल डाटा कनेक्शन पे क्या चल सकता है</string>
     <string name="pref_mobileUpdate_refresh">पॉडकास्ट ताज़ा करना</string>
     <string name="pref_mobileUpdate_images">कवर तस्वीर</string>
-    <string name="pref_mobileUpdate_auto_download">अपनेआप-डाउनलोड</string>
     <string name="pref_mobileUpdate_episode_download">एपिसोड डाउनलोड करना</string>
     <string name="pref_mobileUpdate_streaming">स्ट्रीमिंग</string>
     <string name="user_interface_label">उपयोगकर्ता इंटरफेस</string>
@@ -549,7 +548,6 @@
     <string name="gpodnetauth_existing_devices">मौजूदा डिवाइस</string>
     <string name="gpodnetauth_create_device">डिवाइस बनाएं</string>
     <string name="gpodnetauth_finish_descr">बधाई हो! आपका gpodder.net खाता अब आपके उपकरण के साथ लिंक किया गया है। अब एंटेना पॉड आपकी डिवाइस पर सदस्यताओं को स्वचालित रूप से आपके gpodder.net खाते के साथ सिंक करेगा।</string>
-    <string name="gpodnetauth_finish_butsyncnow">सिंक अभी शुरू करें</string>
     <string name="pref_gpodnet_setlogin_information_title">लॉगइन जानकारी बदलें</string>
     <string name="pref_gpodnet_setlogin_information_sum">अपने gpodder.net खाते के लिए लॉगइन जानकारी बदलें।</string>
     <string name="synchronization_sync_changes_title">अभी सिंक करें</string>

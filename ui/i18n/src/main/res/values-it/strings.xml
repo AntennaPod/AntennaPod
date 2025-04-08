@@ -13,7 +13,7 @@
     <string name="downloads_label">Download</string>
     <string name="downloads_log_label">Registro dei download</string>
     <string name="subscriptions_label">Iscrizioni</string>
-    <string name="subscriptions_list_label">Lista iscrizioni (solo menù laterale)</string>
+    <string name="subscriptions_list_label">Lista iscrizioni</string>
     <string name="cancel_download_label">Annulla download</string>
     <string name="playback_history_label">Cronologia riproduzioni</string>
     <string name="years_statistics_label">Anni</string>
@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">Sempre</string>
     <string name="feed_auto_download_never">Mai</string>
     <string name="feed_new_episodes_action_add_to_inbox">Aggiungi all\'inbox</string>
-    <string name="feed_new_episodes_action_add_to_queue">Aggiungi alla coda, disabilita il download automatico</string>
-    <string name="feed_new_episodes_action_nothing">Nessuna, disabilita il download automatico</string>
+    <string name="feed_new_episodes_action_add_to_queue">Aggiungi alla coda</string>
+    <string name="feed_new_episodes_action_nothing">Nessuna</string>
     <string name="episode_cleanup_never">Mai</string>
     <string name="episode_cleanup_except_favorite_removal">Quando non preferito</string>
     <string name="episode_cleanup_queue_removal">Quando non è in coda</string>
@@ -414,7 +414,6 @@
     <string name="pref_mobileUpdate_sum">Seleziona quali operazioni sono consentite su reti mobili</string>
     <string name="pref_mobileUpdate_refresh">Aggiornamento podcast</string>
     <string name="pref_mobileUpdate_images">Copertine</string>
-    <string name="pref_mobileUpdate_auto_download">Download automatici</string>
     <string name="pref_mobileUpdate_episode_download">Download episodi</string>
     <string name="pref_mobileUpdate_streaming">Streaming</string>
     <string name="user_interface_label">Interfaccia utente</string>
@@ -620,7 +619,6 @@
     <string name="gpodnetauth_existing_devices">Dispositivi esistenti</string>
     <string name="gpodnetauth_create_device">Crea dispositivo</string>
     <string name="gpodnetauth_finish_descr">Congratulazioni! Il tuo account gpodder.net è stato collegato con il dispositivo. Ora AntennaPod sincronizzerà automaticamente le iscrizioni sul dispositivo con il tuo account gpodder.net.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Avvia la sincronizzazione</string>
     <string name="pref_gpodnet_setlogin_information_title">Cambia le informazioni di login</string>
     <string name="pref_gpodnet_setlogin_information_sum">Cambia le informazioni di login per il tuo account gpodder.net.</string>
     <string name="synchronization_sync_changes_title">Sincronizza ora</string>
@@ -815,7 +813,7 @@
     <string name="section_shown">Mostrati</string>
     <string name="mobile_download_notice">Download tramite connessione dati mobile per i prossimi %d minuti</string>
     <string name="bottom_navigation">Navigazione inferiore</string>
-    <string name="bottom_navigation_summary">Funzionalità beta: accedi alle schermate più importanti da qualsiasi luogo, con un solo tocco</string>
+    <string name="bottom_navigation_summary">Accedi alle schermate più importanti da qualsiasi luogo, con un solo tocco</string>
     <string name="statistics_episodes_started">iniziati</string>
     <string name="statistics_episodes_downloaded">scaricati</string>
     <string name="statistics_episodes_total">totali</string>
@@ -896,4 +894,8 @@
     <string name="statistics_time_played">riprodotto</string>
     <string name="preference_search_clear_input">Svuota</string>
     <string name="overflow_more">Più</string>
+    <string name="visit_social_interact_label">Mostra commenti</string>
+    <string name="visit_social_interact_query_title">Stai per lasciare AntennaPod</string>
+    <string name="rss_address">Indirizzo RSS</string>
+    <string name="feed_new_episodes_action_summary_autodownload">Download automatico abilitato. Gli episodi sono aggiunti alla inbox e spostati nella coda una volta scaricati.</string>
 </resources>

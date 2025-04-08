@@ -384,7 +384,6 @@
     <string name="pref_mobileUpdate_sum">選擇以行動網路連線時可以做的事</string>
     <string name="pref_mobileUpdate_refresh">更新 Podcast</string>
     <string name="pref_mobileUpdate_images">更新封面圖</string>
-    <string name="pref_mobileUpdate_auto_download">自動下載</string>
     <string name="pref_mobileUpdate_episode_download">下載單集</string>
     <string name="pref_mobileUpdate_streaming">串流播放</string>
     <string name="user_interface_label">使用者介面</string>
@@ -582,7 +581,6 @@
     <string name="gpodnetauth_existing_devices">現存裝置</string>
     <string name="gpodnetauth_create_device">新增裝置</string>
     <string name="gpodnetauth_finish_descr">恭喜，您的 gpodder.net 帳號已經成功連結到當前的設備！AntennaPod 今後將自動與 gpodder.net 同步此設備的訂閱清單。</string>
-    <string name="gpodnetauth_finish_butsyncnow">現在開始同步</string>
     <string name="pref_gpodnet_setlogin_information_title">變更登入資訊</string>
     <string name="pref_gpodnet_setlogin_information_sum">修改您的 gpodder.net 帳號登入資訊</string>
     <string name="synchronization_sync_changes_title">立即同步</string>

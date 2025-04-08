@@ -399,7 +399,6 @@
     <string name="pref_mobileUpdate_sum">Sèbera ite est permìtidu cun una connessione de datos mòbile</string>
     <string name="pref_mobileUpdate_refresh">Atualizatzione podcasts</string>
     <string name="pref_mobileUpdate_images">Immàgines de cobertina</string>
-    <string name="pref_mobileUpdate_auto_download">Iscarrigamentu in automàticu</string>
     <string name="pref_mobileUpdate_episode_download">Iscarrigamentu de episòdios</string>
     <string name="pref_mobileUpdate_streaming">Riprodutzione sena iscarrigamentu</string>
     <string name="user_interface_label">Interfache de utente</string>
@@ -601,7 +600,6 @@
     <string name="gpodnetauth_existing_devices">Dispositivos giai cunfigurados</string>
     <string name="gpodnetauth_create_device">Crea unu dispositivu</string>
     <string name="gpodnetauth_finish_descr">Augùrios. As connètidu su dispositivu tuo cun su contu de gpodder.net. AntennaPod at a sincronizare in automàticu totu is sutiscritziones de su dispositivu tuo cun su contu de gpodder.net tuo.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Avia sa sincronizatzione immoe</string>
     <string name="pref_gpodnet_setlogin_information_title">Modìfica s\'informatzione de identificatzione</string>
     <string name="pref_gpodnet_setlogin_information_sum">Modìfica s\'informatzione de identificatzione a su contu gpodder.net tuo.</string>
     <string name="synchronization_sync_changes_title">Sincroniza immoe</string>
