@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Locale;
 
 public class RequestHeaderIntercepter implements Interceptor {
-    public static String ACCEPT_ENCODING = "gzip, identity";
+    public static final String ACCEPT_ENCODING = "gzip, identity";
 
     @Override
     public Response intercept(Chain chain) throws IOException {
