@@ -24,7 +24,6 @@ import okhttp3.ResponseBody;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Locale;
 
 /**
  * {@see com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader}.
