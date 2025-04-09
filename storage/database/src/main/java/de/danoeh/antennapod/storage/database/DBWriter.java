@@ -24,6 +24,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -552,44 +553,6 @@ public class DBWriter {
     }
 
     /**
-     * Moves the specified item to the top of the queue.
-     *
-     * @param itemId          The item to move to the top of the queue
-     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
-     */
-    public static Future<?> moveQueueItemToTop(final long itemId, final boolean broadcastUpdate) {
-        return runOnDbThread(() -> {
-            LongList queueIdList = DBReader.getQueueIDList();
-            int index = queueIdList.indexOf(itemId);
-            if (index >= 0) {
-                moveQueueItemHelper(index, 0, broadcastUpdate);
-            } else {
-                Log.e(TAG, "moveQueueItemToTop: item not found");
-            }
-        });
-    }
-
-    /**
-     * Moves the specified item to the bottom of the queue.
-     *
-     * @param itemId          The item to move to the bottom of the queue
-     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
-     */
-    public static Future<?> moveQueueItemToBottom(final long itemId,
-                                                  final boolean broadcastUpdate) {
-        return runOnDbThread(() -> {
-            LongList queueIdList = DBReader.getQueueIDList();
-            int index = queueIdList.indexOf(itemId);
-            if (index >= 0) {
-                moveQueueItemHelper(index, queueIdList.size() - 1,
-                        broadcastUpdate);
-            } else {
-                Log.e(TAG, "moveQueueItemToBottom: item not found");
-            }
-        });
-    }
-
-    /**
      * Changes the position of a FeedItem in the queue.
      *
      * @param from            Source index. Must be in range 0..queue.size()-1.
@@ -598,36 +561,67 @@ public class DBWriter {
      *                        false if the caller wants to avoid unexpected updates of the GUI.
      * @throws IndexOutOfBoundsException if (to < 0 || to >= queue.size()) || (from < 0 || from >= queue.size())
      */
-    public static Future<?> moveQueueItem(final int from,
-                                          final int to, final boolean broadcastUpdate) {
-        return runOnDbThread(() -> moveQueueItemHelper(from, to, broadcastUpdate));
+    public static Future<?> moveQueueItem(final int from, final int to, final boolean broadcastUpdate) {
+        return runOnDbThread(() -> {
+            final PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            final List<FeedItem> queue = DBReader.getQueue();
+
+            if (from >= 0 && from < queue.size() && to >= 0 && to < queue.size()) {
+                final FeedItem item = queue.remove(from);
+                queue.add(to, item);
+
+                adapter.setQueue(queue);
+                if (broadcastUpdate) {
+                    EventBus.getDefault().post(QueueEvent.moved(item, to));
+                }
+            }
+            adapter.close();
+        });
     }
 
-    /**
-     * Changes the position of a FeedItem in the queue.
-     * <p/>
-     * This function must be run using the ExecutorService (dbExec).
-     *
-     * @param from            Source index. Must be in range 0..queue.size()-1.
-     * @param to              Destination index. Must be in range 0..queue.size()-1.
-     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
-     *                        false if the caller wants to avoid unexpected updates of the GUI.
-     * @throws IndexOutOfBoundsException if (to < 0 || to >= queue.size()) || (from < 0 || from >= queue.size())
-     */
-    private static void moveQueueItemHelper(final int from,
-                                            final int to, final boolean broadcastUpdate) {
+    public static Future<?> moveQueueItemsToTop(final List<FeedItem> items) {
+        return runOnDbThread(() -> moveQueueItemsSynchronous(true, items));
+    }
+
+    public static Future<?> moveQueueItemsToBottom(final List<FeedItem> items) {
+        return runOnDbThread(() -> moveQueueItemsSynchronous(false, items));
+    }
+
+    private static void moveQueueItemsSynchronous(final boolean moveToTop, final List<FeedItem> items) {
+        if (items.isEmpty()) {
+            return;
+        }
+
         final PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         final List<FeedItem> queue = DBReader.getQueue();
 
-        if (from >= 0 && from < queue.size() && to >= 0 && to < queue.size()) {
-            final FeedItem item = queue.remove(from);
-            queue.add(to, item);
+        List<FeedItem> selectedItems = moveToTop ? new ArrayList<>(items) : items;
+        if (moveToTop) {
+            Collections.reverse(selectedItems);
+        }
 
+        boolean queueModified = false;
+        List<QueueEvent> events = new ArrayList<>();
+
+        queue.removeAll(selectedItems);
+        events.add(QueueEvent.setQueue(queue));
+
+        for (FeedItem item : selectedItems) {
+            int newIndex = moveToTop ? 0 : queue.size();
+            queue.add(newIndex, item);
+            events.add(QueueEvent.moved(item, newIndex));
+            queueModified = true;
+        }
+
+        if (queueModified) {
             adapter.setQueue(queue);
-            if (broadcastUpdate) {
-                EventBus.getDefault().post(QueueEvent.moved(item, to));
+            for (QueueEvent event : events) {
+                EventBus.getDefault().post(event);
             }
+        } else {
+            Log.w(TAG, "moveToTop: " + moveToTop +  " - Queue was not modified.");
         }
         adapter.close();
     }
