@@ -75,6 +75,7 @@ public class AntennapodHttpClient {
         builder.readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
         builder.writeTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
         builder.cache(new Cache(cacheDirectory, 20L * 1000000)); // 20MB
+
         // configure redirects
         builder.followRedirects(true);
         builder.followSslRedirects(true);
