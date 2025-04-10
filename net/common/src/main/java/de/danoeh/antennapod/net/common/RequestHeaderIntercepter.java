@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Locale;
 
 public class RequestHeaderIntercepter implements Interceptor {
-    public static final String ACCEPT_ENCODING = "gzip, identity";
+    public static final String ACCEPT_ENCODING = "gzip;q=1.0, identity;q=0.1";
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -28,7 +28,7 @@ public class RequestHeaderIntercepter implements Interceptor {
         } else {
             StringBuilder encodingBuilder = new StringBuilder(existingEncoding);
             if (!existingEncoding.toLowerCase(Locale.ROOT).contains("deflate")) {
-                encodingBuilder.append(", identity");
+                encodingBuilder.append(", identity;q=0.1");
             }
             newEncodingValue = encodingBuilder.toString();
         }

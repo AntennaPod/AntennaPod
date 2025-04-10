@@ -102,8 +102,7 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
         @Override
         public Response intercept(@NonNull Chain chain) throws IOException {
             if (NetworkUtils.isImageAllowed()) {
-                return chain.proceed(chain.request().newBuilder()
-                        .build());
+                return chain.proceed(chain.request());
             } else {
                 return new Response.Builder()
                         .protocol(Protocol.HTTP_2)
