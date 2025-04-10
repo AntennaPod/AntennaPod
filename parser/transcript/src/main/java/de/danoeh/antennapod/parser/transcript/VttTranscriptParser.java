@@ -42,6 +42,8 @@ public class VttTranscriptParser {
         Transcript transcript = new Transcript();
         Iterator<String> iterator = lines.iterator();
         Set<String> speakers = new HashSet<>();
+        String speaker = "";
+        TranscriptSegment segment = null;
 
         // Iterate through cue blocks
         while (iterator.hasNext()) {
@@ -58,7 +60,6 @@ public class VttTranscriptParser {
 
             String payload = parseCuePayload(iterator);
 
-            String speaker = "";
             Matcher matcher = VOICE_SPAN.matcher(payload);
             if (matcher.find()) {
                 speaker = matcher.group(1);
@@ -66,7 +67,28 @@ public class VttTranscriptParser {
             }
 
             payload = Jsoup.parse(payload).text(); // remove all HTML tags
-            transcript.addSegment(new TranscriptSegment(timings.start, timings.end, payload, speaker));
+
+            // should we merge this segment with the previous one?
+            if (segment != null && segment.getSpeaker().equals(speaker)
+                    && timings.end - segment.getStartTime() < TranscriptParser.MAX_SPAN) {
+                segment = new TranscriptSegment(
+                        segment.getStartTime(), timings.end, segment.getWords() + " " + payload, speaker);
+            } else {
+                if (segment != null) {
+                    transcript.addSegment(segment);
+                }
+                segment = new TranscriptSegment(timings.start, timings.end, payload, speaker);
+            }
+
+            // do we have a candidate segment long enough to add it without trying to add more
+            if (segment.getEndTime() - segment.getStartTime() >= TranscriptParser.MIN_SPAN) {
+                transcript.addSegment(segment);
+                segment = null;
+            }
+        }
+
+        if (segment != null) {
+            transcript.addSegment(segment);
         }
 
         if (transcript.getSegmentCount() == 0) {
