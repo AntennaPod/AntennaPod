@@ -178,6 +178,14 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
                 super.onCreateContextMenu(contextMenu, view, contextMenuInfo);
                 MenuItemUtils.setOnClickListeners(contextMenu, SearchFragment.this::onContextItemSelected);
             }
+
+            @Override
+            protected void onClick(Feed feed) {
+                if (adapter != null && adapter.inActionMode()) {
+                    adapter.endSelectMode();
+                }
+                super.onClick(feed);
+            }
         };
         recyclerViewFeeds.setAdapter(adapterFeeds);
 
@@ -418,6 +426,9 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     }
 
     private void searchOnline() {
+        if (adapter != null && adapter.inActionMode()) {
+            adapter.endSelectMode();
+        }
         searchView.clearFocus();
         InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(searchView.getWindowToken(), 0);

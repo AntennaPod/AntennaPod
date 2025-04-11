@@ -63,12 +63,18 @@ public class FeedMultiSelectActionHandler {
     }
 
     private void autoDownloadPrefHandler() {
-        PreferenceSwitchDialog preferenceSwitchDialog = new PreferenceSwitchDialog(activity,
-                activity.getString(R.string.auto_download_settings_label),
+        PreferenceListDialog preferenceListDialog = new PreferenceListDialog(activity,
                 activity.getString(R.string.auto_download_label));
-        preferenceSwitchDialog.setOnPreferenceChangedListener(enabled ->
-                saveFeedPreferences(feedPreferences -> feedPreferences.setAutoDownload(enabled)));
-        preferenceSwitchDialog.openDialog();
+        String[] items = activity.getResources().getStringArray(R.array.spnEnableAutoDownloadItems);
+        preferenceListDialog.openDialog(items);
+        preferenceListDialog.setOnPreferenceChangedListener(which -> {
+            FeedPreferences.AutoDownloadSetting autoDownloadSetting = switch (which) {
+                case 1 -> FeedPreferences.AutoDownloadSetting.ENABLED;
+                case 2 -> FeedPreferences.AutoDownloadSetting.DISABLED;
+                default -> FeedPreferences.AutoDownloadSetting.GLOBAL;
+            };
+            saveFeedPreferences(feedPreferences -> feedPreferences.setAutoDownload(autoDownloadSetting));
+        });
     }
 
     private void playbackSpeedPrefHandler() {

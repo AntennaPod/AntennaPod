@@ -68,9 +68,14 @@
     <PreferenceCategory
         android:key="autoDownloadCategory"
         android:title="@string/auto_download_settings_label">
-        <SwitchPreferenceCompat
-            android:key="autoDownload"
+
+        <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
+            android:entries="@array/spnEnableAutoDownloadItems"
+            android:entryValues="@array/spnEnableAutoDownloadValues"
+            android:icon="@drawable/ic_download"
+            android:key="includeAutoDownload"
             android:title="@string/auto_download_label" />
+
         <Preference
             android:key="episodeFilter"
             android:summary="@string/episode_filters_description"

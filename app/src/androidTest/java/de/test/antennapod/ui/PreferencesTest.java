@@ -59,7 +59,7 @@ public class PreferencesTest {
         EspressoTestUtils.clearPreferences();
         activityTestRule.launchActivity(new Intent());
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activityTestRule.getActivity());
-        prefs.edit().putBoolean(UserPreferences.PREF_ENABLE_AUTODL, true).commit();
+        prefs.edit().putBoolean(UserPreferences.PREF_AUTODL_GLOBAL, true).commit();
 
         res = activityTestRule.getActivity().getResources();
         UserPreferences.init(activityTestRule.getActivity());
@@ -269,17 +269,17 @@ public class PreferencesTest {
 
     @Test
     public void testAutomaticDownload() {
-        final boolean automaticDownload = UserPreferences.isEnableAutodownload();
+        final boolean automaticDownload = UserPreferences.isEnableAutodownloadGlobal();
         clickPreference(R.string.downloads_pref);
         clickPreference(R.string.pref_automatic_download_title);
         clickPreference(R.string.pref_automatic_download_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> automaticDownload != UserPreferences.isEnableAutodownload());
-        if (!UserPreferences.isEnableAutodownload()) {
+                .until(() -> automaticDownload != UserPreferences.isEnableAutodownloadGlobal());
+        if (!UserPreferences.isEnableAutodownloadGlobal()) {
             clickPreference(R.string.pref_automatic_download_title);
         }
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(UserPreferences::isEnableAutodownload);
+                .until(UserPreferences::isEnableAutodownloadGlobal);
         final boolean enableAutodownloadOnBattery = UserPreferences.isEnableAutodownloadOnBattery();
         clickPreference(R.string.pref_automatic_download_on_battery_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
@@ -327,6 +327,7 @@ public class PreferencesTest {
         clickPreference(R.string.downloads_pref);
         onView(withText(R.string.pref_auto_delete_title)).perform(click());
         onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
+        onView(withId(R.id.select_dialog_listview)).perform(swipeDown());
         onView(withText(R.string.episode_cleanup_after_listening)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> {

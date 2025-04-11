@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Posodobi naročnine</string>
-    <string name="feeds_label">Poddaje</string>
     <string name="statistics_label">Statistika</string>
     <string name="add_feed_label">Dodaj poddajo</string>
     <string name="episodes_label">Epizode</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Priljubljene</string>
     <string name="settings_label">Nastavitve</string>
     <string name="downloads_label">Prenosi</string>
-    <string name="open_autodownload_settings">Odpri nastavitve</string>
     <string name="downloads_log_label">Dnevnik prenosov</string>
     <string name="subscriptions_label">Naročnine</string>
     <string name="subscriptions_list_label">Seznam naročnin</string>
     <string name="cancel_download_label">Prekliči prenos</string>
     <string name="playback_history_label">Zgodovina predvajanja</string>
-    <string name="episode_cache_full_title">Predpomnilnik epizod poln</string>
-    <string name="episode_cache_full_message">Predpomnilnik epizod je poln. Predpomnilnik lahko povečate v nastavitvah.</string>
     <string name="years_statistics_label">Leta</string>
     <string name="notification_pref_fragment">Obvestila</string>
     <string name="current_playing_episode">Trenutno</string>
@@ -347,7 +343,7 @@
     <string name="interruptions">Prekinitve</string>
     <string name="playback_control">Predvajalne kontrole</string>
     <string name="reassign_hardware_buttons">Ponovno dodelite gumbe strojne opreme</string>
-    <string name="preference_search_hint">Iskanje...</string>
+    <string name="preference_search_hint">Iskanje…</string>
     <string name="preference_search_no_results">Ni rezultatov</string>
     <string name="preference_search_clear_history">Pobriši zgodovino</string>
     <string name="pref_episode_cleanup_summary">Epizode, ki bi morale biti primerne za odstranitev, če samodejni prenos potrebuje prostor za nove epizode</string>
@@ -394,7 +390,6 @@
     <string name="pref_mobileUpdate_sum">Izberite, kaj naj bo dovoljeno prek mobilne podatkovne povezave</string>
     <string name="pref_mobileUpdate_refresh">Osvežitev poddaje</string>
     <string name="pref_mobileUpdate_images">Naslovne slike</string>
-    <string name="pref_mobileUpdate_auto_download">Samodejni prenos</string>
     <string name="pref_mobileUpdate_episode_download">Prenos epizode</string>
     <string name="pref_mobileUpdate_streaming">Pretakanje</string>
     <string name="user_interface_label">Uporabniški vmesnik</string>
@@ -498,7 +493,7 @@
     <string name="sync_status_episodes_upload">Nalaganje sprememb epizode …</string>
     <string name="sync_status_episodes_download">Prenašanje sprememb epizode …</string>
     <string name="sync_status_upload_played">Nalaganje stanja predvajanja …</string>
-    <string name="sync_status_subscriptions">Sinhronizacija naročnin...</string>
+    <string name="sync_status_subscriptions">Sinhronizacija naročnin…</string>
     <string name="sync_status_success">Sinhronizacija uspela</string>
     <string name="sync_status_error">Sinhronizacija ni uspela</string>
     <!--import and export-->
@@ -521,7 +516,7 @@
     <string name="database_export_label">Izvoz podatkovne baze</string>
     <string name="database_import_label">Uvoz podatkovne baze</string>
     <string name="database_import_warning">Uvoz podatkovne baze bo nadomestil vse vaše trenutne naročnine in zgodovino predvajanja. Priporočamo, da svojo trenutno zbirko podatkov izvozite kot varnostno kopijo. Ali želite vseeno zamenjati?</string>
-    <string name="please_wait">Prosimo počakajte...</string>
+    <string name="please_wait">Prosimo počakajte…</string>
     <string name="export_error_label">Napaka pri izvozu</string>
     <string name="export_success_title">Izvoz uspešen</string>
     <string name="opml_import_ask_read_permission">Za branje datoteke OPML je potreben dostop do zunanjega pomnilnika</string>
@@ -564,7 +559,6 @@
     <string name="gpodnetauth_existing_devices">Obstoječe naprave</string>
     <string name="gpodnetauth_create_device">Ustvari napravo</string>
     <string name="gpodnetauth_finish_descr">Čestitam! Vaš račun gpodder.net je zdaj povezan z vašo napravo. AntennaPod bo od zdaj naprej samodejno sinhroniziral naročnine na vaši napravi z vašim računom gpodder.net.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Začnite sedaj sinhronizirati</string>
     <string name="pref_gpodnet_setlogin_information_title">Spremenite podatke za prijavo</string>
     <string name="pref_gpodnet_setlogin_information_sum">Spremenite podatke za prijavo za svoj račun gpodder.net.</string>
     <string name="synchronization_sync_changes_title">Sinhroniziraj takoj</string>
@@ -618,12 +612,11 @@
     <string name="exclude_episodes_shorter_than">Izključi epizode, ki so krajše od</string>
     <string name="keep_updated">Samodejno posodabljaj</string>
     <string name="keep_updated_summary">Vključite osveževanje te poddaje pri (samodejnem) osveževanju vseh poddaj</string>
-    <string name="auto_download_disabled_globally">Samodejni prenos je onemogočen v glavnih nastavitvah AntennaPod</string>
     <string name="edit_url_menu">Uredi URL vira</string>
     <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Uvažanje naročnin iz enonamenskih aplikacij …</string>
     <!--Add podcast fragment-->
-  <string name="search_podcast_hint">Iščite poddajo...</string>
+  <string name="search_podcast_hint">Iščite poddajo…</string>
     <string name="search_itunes_label">Iskanje na Apple Podcasts</string>
     <string name="search_podcastindex_label">Iskanje na Podcast Index</string>
     <string name="search_fyyd_label">Iskanje na fyyd</string>
@@ -667,7 +660,6 @@
   <string name="proxy_type_label">Tip</string>
     <string name="host_label">Gostitelj</string>
     <string name="port_label">Vrata (Port)</string>
-    <string name="optional_hint">(Opcijsko)</string>
     <string name="proxy_test_label">Test</string>
     <string name="proxy_checking">Preverjanje…</string>
     <string name="proxy_test_successful">Test uspešen</string>

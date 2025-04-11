@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.PluralsRes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -42,20 +43,24 @@ public class EpisodeMultiSelectActionHandler {
             downloadChecked(items);
         } else if (actionId == R.id.remove_item) {
             LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(activity, items, () -> deleteChecked(items));
+        } else if (actionId == R.id.move_to_top_item) {
+            moveToTopChecked(items);
+        } else if (actionId == R.id.move_to_bottom_item) {
+            moveToBottomChecked(items);
         } else {
             Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionId);
         }
     }
 
     private void queueChecked(List<FeedItem> items) {
-        // Check if an episode actually contains any media files before adding it to queue
-        LongList toQueue = new LongList(items.size());
+        // Count here to give accurate number in snackbar
+        List<FeedItem> toQueue = new ArrayList<>();
         for (FeedItem episode : items) {
-            if (episode.hasMedia()) {
-                toQueue.add(episode.getId());
+            if (episode.hasMedia() && !episode.isTagged(FeedItem.TAG_QUEUE)) {
+                toQueue.add(episode);
             }
         }
-        DBWriter.addQueueItem(activity, true, toQueue.toArray());
+        DBWriter.addQueueItem(activity, toQueue.toArray(new FeedItem[0]));
         showMessage(R.plurals.added_to_queue_batch_label, toQueue.size());
     }
 
@@ -110,6 +115,16 @@ public class EpisodeMultiSelectActionHandler {
             }
         }
         showMessage(R.plurals.deleted_multi_episode_batch_label, countHasMedia);
+    }
+
+    private void moveToTopChecked(List<FeedItem> items) {
+        DBWriter.moveQueueItemsToTop(items);
+        showMessage(R.plurals.move_to_top_message, items.size());
+    }
+
+    private void moveToBottomChecked(List<FeedItem> items) {
+        DBWriter.moveQueueItemsToBottom(items);
+        showMessage(R.plurals.move_to_bottom_message, items.size());
     }
 
     private void showMessage(@PluralsRes int msgId, int numItems) {

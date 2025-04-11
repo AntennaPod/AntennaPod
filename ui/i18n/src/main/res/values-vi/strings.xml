@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="feeds_label">Podcast</string>
     <string name="statistics_label">Thống kê</string>
     <string name="episodes_label">Số tập</string>
     <string name="queue_label">Hàng đợi</string>
@@ -8,8 +7,6 @@
     <string name="settings_label">Thiết lập</string>
     <string name="downloads_label">Tải về</string>
     <string name="subscriptions_label">Đăng ký</string>
-    <string name="episode_cache_full_title">Đầy bộ nhớ tạm</string>
-    <string name="episode_cache_full_message">Bộ nhớ tạm cho các tập podcast đã đạt dung lượng tối đa. Bạn có thể tăng giới hạn này lên trong phần Thiết lập.</string>
     <string name="notification_pref_fragment">Thông báo</string>
     <!--Google Assistant-->
   <string name="app_action_not_found">Không tìm thấy \"%1$s\"</string>

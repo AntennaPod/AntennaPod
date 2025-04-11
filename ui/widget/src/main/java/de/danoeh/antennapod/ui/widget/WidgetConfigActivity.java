@@ -12,12 +12,11 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
-import de.danoeh.antennapod.ui.common.ThemeSwitcher;
+import de.danoeh.antennapod.ui.common.ToolbarActivity;
 
 import java.util.Locale;
 
-public class WidgetConfigActivity extends AppCompatActivity {
+public class WidgetConfigActivity extends ToolbarActivity {
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
     private SeekBar opacitySeekBar;
@@ -30,7 +29,6 @@ public class WidgetConfigActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(ThemeSwitcher.getTheme(this));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_widget_config);
 

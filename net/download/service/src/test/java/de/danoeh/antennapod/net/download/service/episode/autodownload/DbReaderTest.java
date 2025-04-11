@@ -5,6 +5,7 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -153,6 +154,9 @@ public class DbReaderTest {
             Feed feed = saveFeedlist(numFeeds, numItems, false).get(0);
             List<FeedItem> items = feed.getItems();
             feed.setItems(null);
+            Collections.sort(items, (o1, o2) ->
+                    Long.compare(o2.getPubDate().getTime(), o1.getPubDate().getTime()));
+
             List<FeedItem> savedItems = DBReader.getFeedItemList(feed,
                     FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
             assertNotNull(savedItems);

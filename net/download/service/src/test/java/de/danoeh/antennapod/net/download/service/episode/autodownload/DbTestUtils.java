@@ -43,9 +43,11 @@ abstract class DbTestUtils {
             Feed f = new Feed(0, null, "feed " + i, "link" + i, "descr", null, null,
                     null, null, "id" + i, null, null, "url" + i, System.currentTimeMillis());
             f.setItems(new ArrayList<>());
+            long itemDate = new Date().getTime();
             for (int j = 0; j < numItems; j++) {
-                FeedItem item = new FeedItem(0, "item " + j, "id" + j, "link" + j, new Date(),
+                FeedItem item = new FeedItem(0, "item " + j, "id" + j, "link" + j, new Date(itemDate),
                         FeedItem.PLAYED, f, withChapters);
+                itemDate += 24L * 60 * 60 * 1000;
                 if (withMedia) {
                     FeedMedia media = new FeedMedia(item, "url" + j, 1, "audio/mp3");
                     item.setMedia(media);

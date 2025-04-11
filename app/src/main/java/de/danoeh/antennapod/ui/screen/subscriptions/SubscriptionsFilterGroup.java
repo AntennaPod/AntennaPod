@@ -1,16 +1,19 @@
 package de.danoeh.antennapod.ui.screen.subscriptions;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
 
 public enum SubscriptionsFilterGroup {
-    COUNTER_GREATER_ZERO(new ItemProperties(R.string.subscriptions_counter_greater_zero, "counter_greater_zero")),
-    AUTO_DOWNLOAD(new ItemProperties(R.string.auto_downloaded, "enabled_auto_download"),
-            new ItemProperties(R.string.not_auto_downloaded, "disabled_auto_download")),
-    UPDATED(new ItemProperties(R.string.kept_updated, "enabled_updates"),
-            new ItemProperties(R.string.not_kept_updated, "disabled_updates")),
+    COUNTER_GREATER_ZERO(new ItemProperties(R.string.subscriptions_counter_greater_zero,
+            SubscriptionsFilter.COUNTER_GREATER_ZERO)),
+    AUTO_DOWNLOAD(new ItemProperties(R.string.auto_downloaded, SubscriptionsFilter.ENABLED_AUTO_DOWNLOAD),
+            new ItemProperties(R.string.not_auto_downloaded, SubscriptionsFilter.DISABLED_AUTO_DOWNLOAD)),
+    UPDATED(new ItemProperties(R.string.kept_updated, SubscriptionsFilter.ENABLED_UPDATES),
+            new ItemProperties(R.string.not_kept_updated, SubscriptionsFilter.DISABLED_UPDATES)),
     NEW_EPISODE_NOTIFICATION(new ItemProperties(R.string.new_episode_notification_enabled,
-                                                           "episode_notification_enabled"),
-            new ItemProperties(R.string.new_episode_notification_disabled, "episode_notification_disabled"));
+                    SubscriptionsFilter.EPISODE_NOTIFICATION_ENABLED),
+            new ItemProperties(R.string.new_episode_notification_disabled,
+                    SubscriptionsFilter.EPISODE_NOTIFICATION_DISABLED));
 
 
     public final ItemProperties[] values;

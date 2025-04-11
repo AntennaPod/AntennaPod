@@ -370,7 +370,8 @@ public class CompletedDownloadsFragment extends Fragment
         @Override
         public void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
             if (!inActionMode()) {
-                if (holder.getFeedItem().isDownloaded()) {
+                if (holder.getFeedItem().isDownloaded()
+                        && !UserPreferences.shouldDownloadsButtonActionPlay()) {
                     DeleteActionButton actionButton = new DeleteActionButton(getItem(pos));
                     actionButton.configure(holder.secondaryActionButton, holder.secondaryActionIcon, getActivity());
                 }

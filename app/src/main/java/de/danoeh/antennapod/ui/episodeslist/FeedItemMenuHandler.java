@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Arrays;
@@ -71,6 +72,7 @@ public class FeedItemMenuHandler {
         boolean canAddFavorite = false;
         boolean canRemoveFavorite = false;
         boolean canShowTranscript = false;
+        boolean canShowSocialInteract = false;
 
         for (FeedItem item : selectedItems) {
             boolean hasMedia = item.getMedia() != null;
@@ -88,12 +90,14 @@ public class FeedItemMenuHandler {
             canAddFavorite |= !item.isTagged(FeedItem.TAG_FAVORITE);
             canRemoveFavorite |= item.isTagged(FeedItem.TAG_FAVORITE);
             canShowTranscript |= item.hasTranscript();
+            canShowSocialInteract |= item.getSocialInteractUrl() != null;
         }
 
         if (selectedItems.size() > 1) {
             canVisitWebsite = false;
             canShare = false;
             canShowTranscript = false;
+            canShowSocialInteract = false;
         }
 
         setItemVisibility(menu, R.id.skip_episode_item, canSkip);
@@ -105,6 +109,7 @@ public class FeedItemMenuHandler {
         setItemVisibility(menu, R.id.mark_read_item, canMarkPlayed);
         setItemVisibility(menu, R.id.mark_unread_item, canMarkUnplayed);
         setItemVisibility(menu, R.id.reset_position, canResetPosition);
+        setItemVisibility(menu, R.id.open_social_interact_url, canShowSocialInteract);
 
         // Display proper strings when item has no media
         if (selectedItems.size() == 1 && selectedItems.get(0).getMedia() == null) {
@@ -225,6 +230,15 @@ public class FeedItemMenuHandler {
             DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, true);
         } else if (menuItemId == R.id.visit_website_item) {
             IntentUtils.openInBrowser(context, selectedItem.getLinkWithFallback());
+        } else if (menuItemId == R.id.open_social_interact_url) {
+            new MaterialAlertDialogBuilder(context)
+                    .setTitle(R.string.visit_social_interact_query_title)
+                    .setMessage(context.getString(R.string.visit_social_interact_query_message,
+                            selectedItem.getSocialInteractUrl()))
+                    .setPositiveButton(R.string.confirm_label, (dialog, which) ->
+                            IntentUtils.openInBrowser(context, selectedItem.getSocialInteractUrl()))
+                    .setNegativeButton(R.string.cancel_label, null)
+                    .show();
         } else if (menuItemId == R.id.share_item) {
             ShareDialog shareDialog = ShareDialog.newInstance(selectedItem);
             shareDialog.show((fragment.getActivity().getSupportFragmentManager()), "ShareEpisodeDialog");

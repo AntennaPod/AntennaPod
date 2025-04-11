@@ -78,7 +78,7 @@ public class DbCleanupTests {
                 .getDefaultSharedPreferences(context.getApplicationContext()).edit();
         prefEdit.putString(UserPreferences.PREF_EPISODE_CACHE_SIZE, Integer.toString(EPISODE_CACHE_SIZE));
         prefEdit.putString(UserPreferences.PREF_EPISODE_CLEANUP, Integer.toString(cleanupAlgorithm));
-        prefEdit.putBoolean(UserPreferences.PREF_ENABLE_AUTODL, true);
+        prefEdit.putBoolean(UserPreferences.PREF_AUTODL_GLOBAL, true);
         prefEdit.commit();
 
         UserPreferences.init(context);

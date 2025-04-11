@@ -79,7 +79,8 @@ public class DownloadActionButton extends ItemActionButton {
                             })
                     .setNegativeButton(R.string.cancel_label, null);
             if (NetworkUtils.isNetworkRestricted() && NetworkUtils.isVpnOverWifi()) {
-                builder.setMessage(R.string.confirm_mobile_download_dialog_message_vpn);
+                builder.setMessage(context.getString(R.string.confirm_mobile_download_dialog_message)
+                        + "\n\n" + context.getString(R.string.confirm_mobile_download_dialog_message_vpn));
             } else {
                 builder.setMessage(R.string.confirm_mobile_download_dialog_message);
             }

@@ -14,6 +14,7 @@ import androidx.preference.Preference;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
+import de.danoeh.antennapod.storage.preferences.UsageStatistics;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import de.danoeh.antennapod.ui.screen.subscriptions.FeedSortDialog;
 import org.greenrobot.eventbus.EventBus;
@@ -34,6 +35,7 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences_user_interface);
         setupInterfaceScreen();
+        backOpensDrawerToggle(UserPreferences.isBottomNavigationEnabled());
     }
 
     @Override
@@ -90,10 +92,29 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
                     ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_swipe);
                     return true;
                 });
+        findPreference(UserPreferences.PREF_STREAM_OVER_DOWNLOAD)
+                .setOnPreferenceChangeListener((preference, newValue) -> {
+                    // Update all visible lists to reflect new streaming action button
+                    EventBus.getDefault().post(new UnreadItemsUpdateEvent());
+                    // User consciously decided whether to prefer the streaming button, disable suggestion
+                    UsageStatistics.doNotAskAgain(UsageStatistics.ACTION_STREAM);
+                    return true;
+                });
 
         if (Build.VERSION.SDK_INT >= 26) {
             findPreference(UserPreferences.PREF_EXPANDED_NOTIFICATION).setVisible(false);
         }
+
+        findPreference(UserPreferences.PREF_BOTTOM_NAVIGATION).setOnPreferenceChangeListener((preference, newValue) -> {
+            if (newValue instanceof Boolean) {
+                backOpensDrawerToggle((Boolean) newValue);
+            }
+            return true;
+        });
+    }
+
+    private void backOpensDrawerToggle(boolean bottomNavigationEnabled) {
+        findPreference(UserPreferences.PREF_BACK_OPENS_DRAWER).setEnabled(!bottomNavigationEnabled);
     }
 
     private void showFullNotificationButtonsDialog() {

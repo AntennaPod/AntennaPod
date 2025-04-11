@@ -673,7 +673,7 @@ public final class DBReader {
         if (subscriptionsFilter == null) {
             subscriptionsFilter = new SubscriptionsFilter("");
         }
-        feeds = subscriptionsFilter.filter(feeds, feedCounters);
+        feeds = SubscriptionsFilterExecutor.filter(feeds, feedCounters, subscriptionsFilter);
 
         Comparator<Feed> comparator;
         switch (feedOrder) {

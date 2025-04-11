@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="feeds_label">പോഡ്കാസ്റ്റുകൾ</string>
     <string name="statistics_label">സ്ഥിതിവിവരക്കണക്ക്</string>
     <string name="episodes_label">ലക്കങ്ങള്‍</string>
     <string name="queue_label">ക്യൂ</string>
     <string name="favorite_episodes_label">മുന്‍നിരയിലുളളത്</string>
     <string name="settings_label">ക്രമീകരണം</string>
-    <string name="downloads_label">ഡൌണ്‍ലോഡുകള്‍</string>
+    <string name="downloads_label">ഡൗൺലോഡുകൾ</string>
     <string name="subscriptions_label">സബ്‍സ്‍ക്രിപ്ഷനുകള്‍</string>
-    <string name="episode_cache_full_title">പരമ്പര ക്യാഷേ മെമ്മറി നിറഞ്ഞു</string>
-    <string name="episode_cache_full_message">പരമ്പര ക്യാഷേ മെമ്മറിയുടെ പരമാവധിയിലെത്തി. ക്രമീകരണങ്ങളില്‍നിന്നും ക്യാഷേയുടെ വലിപ്പം കൂട്ടാം.</string>
     <string name="notification_pref_fragment">നോട്ടിഫിക്കേഷനുകൾ</string>
     <string name="swipeactions_summary">ലിസ്റ്റിൽ ഒരു എപ്പിസോഡ് സ്വൈപ്പ് ചെയ്യുമ്പോൾ എന്താണ് സംഭവിക്കുന്നതെന്ന് തിരഞ്ഞെടുക്കുക</string>
     <string name="change_setting">മാറ്റുക</string>
@@ -24,7 +21,7 @@
     <string name="drawer_feed_order_last_update">പ്രസിദ്ധീകരിച്ച സമയമനുസരിച്ച് ക്രമീകരിക്കുക</string>
     <string name="drawer_feed_order_most_played">പരമ്പരകള്‍ പ്ലേ ചെയ്ത എണ്ണത്തിനനുസരിച്ച ക്രമീകരീക്കുക</string>
     <string name="drawer_feed_counter_unplayed">പ്ലേ ചെയ്യാത്ത പരമ്പരകളുടെ എണ്ണം</string>
-    <string name="drawer_feed_counter_downloaded">ഡൗണ്‍ലോഡുചെയ്ത എപ്പിസോഡുകളുടെ എണ്ണം</string>
+    <string name="drawer_feed_counter_downloaded">ഡൗണ്ലോഡ് ചെയ്ത എപ്പിസോഡുകളുടെ എണ്ണം</string>
     <string name="drawer_feed_counter_none">ഒന്നുമില്ല</string>
     <!--Bug report activity-->
   <string name="log_file_share_exception">അനുയോജ്യമായ ആപ്പുകളോന്നും കണ്ടില്ല</string>

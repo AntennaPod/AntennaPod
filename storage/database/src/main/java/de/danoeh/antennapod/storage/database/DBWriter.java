@@ -24,6 +24,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -334,84 +335,43 @@ public class DBWriter {
      * @param context             A context that is used for opening a database connection.
      * @param itemId              ID of the FeedItem that should be added to the queue.
      * @param index               Destination index. Must be in range 0..queue.size()
-     * @param performAutoDownload True if an auto-download process should be started after the operation
      * @throws IndexOutOfBoundsException if index < 0 || index >= queue.size()
      */
-    public static Future<?> addQueueItemAt(final Context context, final long itemId,
-                                           final int index, final boolean performAutoDownload) {
+    public static Future<?> addQueueItemAt(final Context context, final long itemId, final int index) {
         return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             final List<FeedItem> queue = DBReader.getQueue();
-            FeedItem item;
 
-            if (queue != null) {
-                if (!itemListContains(queue, itemId)) {
-                    item = DBReader.getFeedItem(itemId);
-                    if (item != null) {
-                        queue.add(index, item);
-                        adapter.setQueue(queue);
-                        item.addTag(FeedItem.TAG_QUEUE);
-                        EventBus.getDefault().post(QueueEvent.added(item, index));
-                        EventBus.getDefault().post(FeedItemEvent.updated(item));
-                        if (item.isNew()) {
-                            DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
-                        }
+            if (!itemListContains(queue, itemId)) {
+                FeedItem item = DBReader.getFeedItem(itemId);
+                if (item != null) {
+                    queue.add(index, item);
+                    adapter.setQueue(queue);
+                    item.addTag(FeedItem.TAG_QUEUE);
+                    EventBus.getDefault().post(QueueEvent.added(item, index));
+                    EventBus.getDefault().post(FeedItemEvent.updated(item));
+                    if (item.isNew()) {
+                        DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
                     }
                 }
             }
 
             adapter.close();
-            if (performAutoDownload) {
-                AutoDownloadManager.getInstance().autodownloadUndownloadedItems(context);
-            }
-
+            AutoDownloadManager.getInstance().autodownloadUndownloadedItems(context);
         });
-
     }
 
+    /**
+     * Appends FeedItem objects to the end of the queue. The 'read'-attribute of all items will be set to true.
+     * If a FeedItem is already in the queue, the FeedItem will not change its position in the queue.
+     *
+     * @param context  A context that is used for opening a database connection.
+     * @param items    FeedItem objects that should be added to the queue.
+     */
     public static Future<?> addQueueItem(final Context context, final FeedItem... items) {
-        return addQueueItem(context, true, items);
-    }
-
-    public static Future<?> addQueueItem(final Context context, boolean markAsUnplayed, final FeedItem... items) {
-        LongList itemIds = new LongList(items.length);
-        for (FeedItem item : items) {
-            if (!item.hasMedia()) {
-                continue;
-            }
-            itemIds.add(item.getId());
-            item.addTag(FeedItem.TAG_QUEUE);
-        }
-        return addQueueItem(context, false, markAsUnplayed, itemIds.toArray());
-    }
-
-    /**
-     * Appends FeedItem objects to the end of the queue. The 'read'-attribute of all items will be set to true.
-     * If a FeedItem is already in the queue, the FeedItem will not change its position in the queue.
-     *
-     * @param context             A context that is used for opening a database connection.
-     * @param performAutoDownload true if an auto-download process should be started after the operation.
-     * @param itemIds             IDs of the FeedItem objects that should be added to the queue.
-     */
-    public static Future<?> addQueueItem(final Context context, final boolean performAutoDownload,
-                                         final long... itemIds) {
-        return addQueueItem(context, performAutoDownload, true, itemIds);
-    }
-
-    /**
-     * Appends FeedItem objects to the end of the queue. The 'read'-attribute of all items will be set to true.
-     * If a FeedItem is already in the queue, the FeedItem will not change its position in the queue.
-     *
-     * @param context             A context that is used for opening a database connection.
-     * @param performAutoDownload true if an auto-download process should be started after the operation.
-     * @param markAsUnplayed      true if the items should be marked as unplayed when enqueueing
-     * @param itemIds             IDs of the FeedItem objects that should be added to the queue.
-     */
-    public static Future<?> addQueueItem(final Context context, final boolean performAutoDownload,
-                                         final boolean markAsUnplayed, final long... itemIds) {
         return runOnDbThread(() -> {
-            if (itemIds.length < 1) {
+            if (items.length < 1) {
                 return;
             }
 
@@ -419,7 +379,6 @@ public class DBWriter {
             adapter.open();
             final List<FeedItem> queue = DBReader.getQueue();
 
-            boolean queueModified = false;
             LongList markAsUnplayedIds = new LongList();
             List<QueueEvent> events = new ArrayList<>();
             List<FeedItem> updatedItems = new ArrayList<>();
@@ -427,38 +386,35 @@ public class DBWriter {
                     new ItemEnqueuePositionCalculator(UserPreferences.getEnqueueLocation());
             Playable currentlyPlaying = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
             int insertPosition = positionCalculator.calcPosition(queue, currentlyPlaying);
-            for (long itemId : itemIds) {
-                if (!itemListContains(queue, itemId)) {
-                    final FeedItem item = DBReader.getFeedItem(itemId);
-                    if (item != null) {
-                        queue.add(insertPosition, item);
-                        events.add(QueueEvent.added(item, insertPosition));
-
-                        item.addTag(FeedItem.TAG_QUEUE);
-                        updatedItems.add(item);
-                        queueModified = true;
-                        if (item.isNew()) {
-                            markAsUnplayedIds.add(item.getId());
-                        }
-                        insertPosition++;
-                    }
+            for (FeedItem item : items) {
+                if (itemListContains(queue, item.getId())) {
+                    continue;
+                } else if (!item.hasMedia()) {
+                    continue;
                 }
+                queue.add(insertPosition, item);
+                events.add(QueueEvent.added(item, insertPosition));
+
+                item.addTag(FeedItem.TAG_QUEUE);
+                updatedItems.add(item);
+                if (item.isNew()) {
+                    markAsUnplayedIds.add(item.getId());
+                }
+                insertPosition++;
             }
-            if (queueModified) {
+            if (!updatedItems.isEmpty()) {
                 applySortOrder(queue, events);
                 adapter.setQueue(queue);
                 for (QueueEvent event : events) {
                     EventBus.getDefault().post(event);
                 }
                 EventBus.getDefault().post(FeedItemEvent.updated(updatedItems));
-                if (markAsUnplayed && markAsUnplayedIds.size() > 0) {
+                if (markAsUnplayedIds.size() > 0) {
                     DBWriter.markItemPlayed(FeedItem.UNPLAYED, markAsUnplayedIds.toArray());
                 }
             }
             adapter.close();
-            if (performAutoDownload) {
-                AutoDownloadManager.getInstance().autodownloadUndownloadedItems(context);
-            }
+            AutoDownloadManager.getInstance().autodownloadUndownloadedItems(context);
         });
     }
 
@@ -597,44 +553,6 @@ public class DBWriter {
     }
 
     /**
-     * Moves the specified item to the top of the queue.
-     *
-     * @param itemId          The item to move to the top of the queue
-     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
-     */
-    public static Future<?> moveQueueItemToTop(final long itemId, final boolean broadcastUpdate) {
-        return runOnDbThread(() -> {
-            LongList queueIdList = DBReader.getQueueIDList();
-            int index = queueIdList.indexOf(itemId);
-            if (index >= 0) {
-                moveQueueItemHelper(index, 0, broadcastUpdate);
-            } else {
-                Log.e(TAG, "moveQueueItemToTop: item not found");
-            }
-        });
-    }
-
-    /**
-     * Moves the specified item to the bottom of the queue.
-     *
-     * @param itemId          The item to move to the bottom of the queue
-     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
-     */
-    public static Future<?> moveQueueItemToBottom(final long itemId,
-                                                  final boolean broadcastUpdate) {
-        return runOnDbThread(() -> {
-            LongList queueIdList = DBReader.getQueueIDList();
-            int index = queueIdList.indexOf(itemId);
-            if (index >= 0) {
-                moveQueueItemHelper(index, queueIdList.size() - 1,
-                        broadcastUpdate);
-            } else {
-                Log.e(TAG, "moveQueueItemToBottom: item not found");
-            }
-        });
-    }
-
-    /**
      * Changes the position of a FeedItem in the queue.
      *
      * @param from            Source index. Must be in range 0..queue.size()-1.
@@ -643,36 +561,67 @@ public class DBWriter {
      *                        false if the caller wants to avoid unexpected updates of the GUI.
      * @throws IndexOutOfBoundsException if (to < 0 || to >= queue.size()) || (from < 0 || from >= queue.size())
      */
-    public static Future<?> moveQueueItem(final int from,
-                                          final int to, final boolean broadcastUpdate) {
-        return runOnDbThread(() -> moveQueueItemHelper(from, to, broadcastUpdate));
+    public static Future<?> moveQueueItem(final int from, final int to, final boolean broadcastUpdate) {
+        return runOnDbThread(() -> {
+            final PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            final List<FeedItem> queue = DBReader.getQueue();
+
+            if (from >= 0 && from < queue.size() && to >= 0 && to < queue.size()) {
+                final FeedItem item = queue.remove(from);
+                queue.add(to, item);
+
+                adapter.setQueue(queue);
+                if (broadcastUpdate) {
+                    EventBus.getDefault().post(QueueEvent.moved(item, to));
+                }
+            }
+            adapter.close();
+        });
     }
 
-    /**
-     * Changes the position of a FeedItem in the queue.
-     * <p/>
-     * This function must be run using the ExecutorService (dbExec).
-     *
-     * @param from            Source index. Must be in range 0..queue.size()-1.
-     * @param to              Destination index. Must be in range 0..queue.size()-1.
-     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
-     *                        false if the caller wants to avoid unexpected updates of the GUI.
-     * @throws IndexOutOfBoundsException if (to < 0 || to >= queue.size()) || (from < 0 || from >= queue.size())
-     */
-    private static void moveQueueItemHelper(final int from,
-                                            final int to, final boolean broadcastUpdate) {
+    public static Future<?> moveQueueItemsToTop(final List<FeedItem> items) {
+        return runOnDbThread(() -> moveQueueItemsSynchronous(true, items));
+    }
+
+    public static Future<?> moveQueueItemsToBottom(final List<FeedItem> items) {
+        return runOnDbThread(() -> moveQueueItemsSynchronous(false, items));
+    }
+
+    private static void moveQueueItemsSynchronous(final boolean moveToTop, final List<FeedItem> items) {
+        if (items.isEmpty()) {
+            return;
+        }
+
         final PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         final List<FeedItem> queue = DBReader.getQueue();
 
-        if (from >= 0 && from < queue.size() && to >= 0 && to < queue.size()) {
-            final FeedItem item = queue.remove(from);
-            queue.add(to, item);
+        List<FeedItem> selectedItems = moveToTop ? new ArrayList<>(items) : items;
+        if (moveToTop) {
+            Collections.reverse(selectedItems);
+        }
 
+        boolean queueModified = false;
+        List<QueueEvent> events = new ArrayList<>();
+
+        queue.removeAll(selectedItems);
+        events.add(QueueEvent.setQueue(queue));
+
+        for (FeedItem item : selectedItems) {
+            int newIndex = moveToTop ? 0 : queue.size();
+            queue.add(newIndex, item);
+            events.add(QueueEvent.moved(item, newIndex));
+            queueModified = true;
+        }
+
+        if (queueModified) {
             adapter.setQueue(queue);
-            if (broadcastUpdate) {
-                EventBus.getDefault().post(QueueEvent.moved(item, to));
+            for (QueueEvent event : events) {
+                EventBus.getDefault().post(event);
             }
+        } else {
+            Log.w(TAG, "moveToTop: " + moveToTop +  " - Queue was not modified.");
         }
         adapter.close();
     }

@@ -34,6 +34,9 @@ public class DrawerPreferencesDialog extends ReorderDialog {
 
         final List<String> drawerItemOrder = UserPreferences.getVisibleDrawerItemOrder();
         for (String tag : drawerItemOrder) {
+            if (UserPreferences.isBottomNavigationEnabled() && tag.equals(NavListAdapter.SUBSCRIPTION_LIST_TAG)) {
+                continue;
+            }
             settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Section,
                     tag, context.getString(NavigationNames.getLabel(tag))));
         }
@@ -43,6 +46,10 @@ public class DrawerPreferencesDialog extends ReorderDialog {
 
         final List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
         for (String sectionTag : hiddenDrawerItems) {
+            if (UserPreferences.isBottomNavigationEnabled()
+                    && sectionTag.equals(NavListAdapter.SUBSCRIPTION_LIST_TAG)) {
+                continue;
+            }
             settingsDialogItems.add(new ReorderDialogItem(ReorderDialogItem.ViewType.Section,
                     sectionTag, context.getString(NavigationNames.getLabel(sectionTag))));
         }
