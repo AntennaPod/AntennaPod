@@ -204,7 +204,7 @@ public class ExoPlayerWrapper {
                 initLoudnessEnhancer(audioSessionId);
             }
         });
-        if (simpleCache != null) {
+        if (simpleCache == null) {
             simpleCache = new SimpleCache(new File(context.getCacheDir(), "streaming"),
                     new LeastRecentlyUsedCacheEvictor(100 * 1024 * 1024), new StandaloneDatabaseProvider(context));
         }
@@ -304,7 +304,7 @@ public class ExoPlayerWrapper {
         if (s.startsWith("http")) {
             dataSourceFactory = new CacheDataSource.Factory()
                     .setCache(simpleCache)
-                    .setUpstreamDataSourceFactory(httpDataSourceFactory);
+                    .setUpstreamDataSourceFactory(dataSourceFactory);
         }
         DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         extractorsFactory.setConstantBitrateSeekingEnabled(true);
