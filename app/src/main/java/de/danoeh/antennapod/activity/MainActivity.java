@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -74,6 +75,7 @@ import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
 import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
 import de.danoeh.antennapod.ui.screen.rating.RatingDialogManager;
 import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
+import de.danoeh.antennapod.ui.view.BottomSheetBackPressedCallback;
 import de.danoeh.antennapod.ui.view.LockableBottomSheetBehavior;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
@@ -105,6 +107,8 @@ public class MainActivity extends CastEnabledActivity {
     private BottomNavigation bottomNavigation;
     private View navDrawer;
     private LockableBottomSheetBehavior sheetBehavior;
+    private BottomSheetBackPressedCallback bottomSheetBackPressedCallback;
+    private OnBackPressedCallback openDefaultPageBackPressedCallback;
     private RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
     private int lastTheme = 0;
     private Insets systemBarInsets = Insets.NONE;
@@ -156,6 +160,7 @@ public class MainActivity extends CastEnabledActivity {
             bottomNavigation = null;
             setNavDrawerSize();
         }
+        openDefaultPageBackPressedCallback = new OpenDefaultPageBackPressedCallback();
 
         // Consume navigation bar insets - we apply them in setPlayerVisible()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_view), (v, insets) -> {
@@ -198,6 +203,7 @@ public class MainActivity extends CastEnabledActivity {
         sheetBehavior = (LockableBottomSheetBehavior) BottomSheetBehavior.from(bottomSheet);
         sheetBehavior.setHideable(false);
         sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
+        bottomSheetBackPressedCallback = new BottomSheetBackPressedCallback(false, sheetBehavior, bottomSheet);
 
         FeedUpdateManager.getInstance().restartUpdateAlarm(this, false);
         SynchronizationQueue.getInstance().syncIfNotSyncedRecently();
@@ -286,13 +292,16 @@ public class MainActivity extends CastEnabledActivity {
         public void onStateChanged(@NonNull View view, int state) {
             if (state == BottomSheetBehavior.STATE_COLLAPSED) {
                 onSlide(view, 0.0f);
+                bottomSheetBackPressedCallback.setEnabled(false);
             } else if (state == BottomSheetBehavior.STATE_EXPANDED) {
                 onSlide(view, 1.0f);
+                bottomSheetBackPressedCallback.setEnabled(true);
             } else if (state == BottomSheetBehavior.STATE_HIDDEN) {
                 IntentUtils.sendLocalBroadcast(MainActivity.this,
                         PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
                 PlaybackPreferences.writeNoMediaPlaying();
                 setPlayerVisible(false);
+                bottomSheetBackPressedCallback.setEnabled(false);
             }
         }
 
@@ -558,6 +567,8 @@ public class MainActivity extends CastEnabledActivity {
         if (bottomNavigation != null) {
             bottomNavigation.onStart();
         }
+        getOnBackPressedDispatcher().addCallback(this, openDefaultPageBackPressedCallback);
+        getOnBackPressedDispatcher().addCallback(this, bottomSheetBackPressedCallback);
     }
 
     @Override
@@ -617,25 +628,23 @@ public class MainActivity extends CastEnabledActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        if (isDrawerOpen() && drawerLayout != null) {
-            drawerLayout.closeDrawer(navDrawer);
-        } else if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        } else if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
-            super.onBackPressed();
-        } else {
-            String toPage = UserPreferences.getDefaultPage();
-            if (NavDrawerFragment.getLastNavFragment(this).equals(toPage)
-                    || UserPreferences.DEFAULT_PAGE_REMEMBER.equals(toPage)) {
-                if (UserPreferences.backButtonOpensDrawer() && drawerLayout != null && bottomNavigation == null) {
-                    drawerLayout.openDrawer(navDrawer);
-                } else {
-                    super.onBackPressed();
-                }
+    class OpenDefaultPageBackPressedCallback extends OnBackPressedCallback {
+        OpenDefaultPageBackPressedCallback() {
+            super(true);
+        }
+
+        @Override
+        public void handleOnBackPressed() {
+            String defaultPage = UserPreferences.getDefaultPage();
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                getSupportFragmentManager().popBackStack();
+            } else if (!NavDrawerFragment.getLastNavFragment(MainActivity.this).equals(defaultPage)
+                    && !UserPreferences.DEFAULT_PAGE_REMEMBER.equals(defaultPage)) {
+                loadFragment(defaultPage, null);
+            } else if (UserPreferences.backButtonOpensDrawer() && drawerLayout != null && bottomNavigation == null) {
+                drawerLayout.openDrawer(navDrawer);
             } else {
-                loadFragment(toPage, null);
+                finish();
             }
         }
     }
@@ -669,11 +678,10 @@ public class MainActivity extends CastEnabledActivity {
             String tag = intent.getStringExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG);
             Bundle args = intent.getBundleExtra(MainActivityStarter.EXTRA_FRAGMENT_ARGS);
             if (tag != null) {
-                Fragment fragment = createFragmentInstance(tag, args);
                 if (intent.getBooleanExtra(MainActivityStarter.EXTRA_ADD_TO_BACK_STACK, false)) {
-                    loadChildFragment(fragment);
+                    loadChildFragment(createFragmentInstance(tag, args));
                 } else {
-                    loadFragment(fragment);
+                    loadFragment(tag, null);
                 }
             }
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
