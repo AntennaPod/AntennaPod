@@ -14,15 +14,15 @@ import java.util.List;
 public class ReleaseScheduleGuesser {
     static final long ONE_MINUTE = 60 * 1000;
     static final long ONE_HOUR = ONE_MINUTE * 60;
-    static final long ONE_DAY =  ONE_HOUR * 24;
+    static final long ONE_DAY = ONE_HOUR * 24;
     static final long ONE_WEEK = ONE_DAY * 7;
     static final long ONE_MONTH = ONE_DAY * 30;
-    private static final int MAX_DATA_POINTS = 20;
+    private static final int ANALYSIS_DATA_POINTS = 20;
 
     public enum Schedule {
-        DAILY, WEEKDAYS, SPECIFIC_DAYS,
-        WEEKLY, BIWEEKLY, FOURWEEKLY,
-        MONTHLY, UNKNOWN
+        INTRADAILY, DAILY, WEEKDAYS,
+        SPECIFIC_DAYS, WEEKLY, BIWEEKLY,
+        FOURWEEKLY, MONTHLY, UNKNOWN
     }
 
     public static class Guess {
@@ -122,18 +122,29 @@ public class ReleaseScheduleGuesser {
                 daysOfWeek, daysOfMonth, mostOftenDayOfWeek, mostOftenDayOfMonth);
     }
 
+    private static List<Integer> getLargeDays(ReleaseScheduleGuesser.Stats stats, int maxSingleDayOff) {
+        List<Integer> largeDays = new ArrayList<>();
+        for (int i = Calendar.SUNDAY; i <= Calendar.SATURDAY; i++) {
+            if (stats.daysOfWeek[i] > maxSingleDayOff) {
+                largeDays.add(i);
+            }
+        }
+        return largeDays;
+    }
+
     public static Guess performGuess(List<Date> releaseDates) {
+        List<Date> releaseDatesWindow = releaseDates;
         if (releaseDates.size() <= 1) {
             return new Guess(Schedule.UNKNOWN, null, null);
-        } else if (releaseDates.size() > MAX_DATA_POINTS) {
-            releaseDates = releaseDates.subList(releaseDates.size() - MAX_DATA_POINTS, releaseDates.size());
+        } else if (releaseDates.size() > ANALYSIS_DATA_POINTS) {
+            releaseDatesWindow = releaseDates.subList(releaseDates.size() - ANALYSIS_DATA_POINTS, releaseDates.size());
         }
-        Stats stats = getStats(releaseDates);
-        final int maxTotalWrongDays = Math.max(1, releaseDates.size() / 5);
-        final int maxSingleDayOff = releaseDates.size() / 10;
+        Stats stats = getStats(releaseDatesWindow);
+        final int maxTotalWrongDays = Math.max(1, releaseDatesWindow.size() / 5);
+        final int maxSingleDayOff = releaseDatesWindow.size() / 10;
 
         GregorianCalendar last = new GregorianCalendar();
-        last.setTime(releaseDates.get(releaseDates.size() - 1));
+        last.setTime(releaseDatesWindow.get(releaseDatesWindow.size() - 1));
         last.set(Calendar.HOUR_OF_DAY, (int) stats.medianHour);
         last.set(Calendar.MINUTE, (int) ((stats.medianHour - Math.floor(stats.medianHour)) * 60));
         last.set(Calendar.SECOND, 0);
@@ -144,6 +155,18 @@ public class ReleaseScheduleGuesser {
             addTime(last, ONE_DAY);
             return new Guess(Schedule.DAILY, Arrays.asList(Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY,
                     Calendar.THURSDAY, Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY), last.getTime());
+        }  else if (stats.medianDistance < ONE_DAY) {
+            // For multiple releases per day, increase the monitoring window
+            releaseDatesWindow = releaseDates.subList(Math.max(0,
+                    releaseDates.size() - ANALYSIS_DATA_POINTS * 5), releaseDates.size());
+            stats = getStats(releaseDatesWindow);
+            // Find release days
+            List<Integer> largeDays = getLargeDays(stats, maxSingleDayOff);
+            last.setTime(releaseDatesWindow.get(releaseDatesWindow.size() - 1));
+            do {
+                addTime(last, (long) stats.medianDistance);
+            } while (!largeDays.contains(last.get(Calendar.DAY_OF_WEEK)));
+            return new Guess(Schedule.INTRADAILY, largeDays, last.getTime());
         } else if (Math.abs(stats.medianDistance - ONE_WEEK) < ONE_DAY
                 && stats.avgDeltaToMedianDistance < 2 * ONE_DAY) {
             // Just using last.set(Calendar.DAY_OF_WEEK) could skip a week
@@ -164,7 +187,7 @@ public class ReleaseScheduleGuesser {
             return new Guess(Schedule.BIWEEKLY, List.of(stats.mostOftenDayOfWeek), last.getTime());
         } else if (Math.abs(stats.medianDistance - ONE_MONTH) < 5 * ONE_DAY
                 && stats.avgDeltaToMedianDistance < 5 * ONE_DAY) {
-            if (stats.daysOfMonth[stats.mostOftenDayOfMonth] >= releaseDates.size() - maxTotalWrongDays) {
+            if (stats.daysOfMonth[stats.mostOftenDayOfMonth] >= releaseDatesWindow.size() - maxTotalWrongDays) {
                 // Just using last.set(Calendar.DAY_OF_MONTH) could skip a week
                 // when the last release is delayed over week boundaries
                 addTime(last, 2 * ONE_WEEK);
@@ -182,14 +205,10 @@ public class ReleaseScheduleGuesser {
         }
 
         // Find release days
-        List<Integer> largeDays = new ArrayList<>();
-        for (int i = Calendar.SUNDAY; i <= Calendar.SATURDAY; i++) {
-            if (stats.daysOfWeek[i] > maxSingleDayOff) {
-                largeDays.add(i);
-            }
-        }
+        List<Integer> largeDays = getLargeDays(stats, maxSingleDayOff);
+
         // Ensure that all release days are used similarly often
-        int averageDays = releaseDates.size() / largeDays.size();
+        int averageDays = releaseDatesWindow.size() / largeDays.size();
         boolean matchesAverageDays = true;
         for (int day : largeDays) {
             if (stats.daysOfWeek[day] < averageDays - maxSingleDayOff) {
@@ -212,7 +231,6 @@ public class ReleaseScheduleGuesser {
             addUntil(last, largeDays);
             return new Guess(Schedule.WEEKLY, largeDays, last.getTime());
         }
-
         addTime(last, (long) (0.6f * stats.medianDistance));
         return new Guess(Schedule.UNKNOWN, null, last.getTime());
     }

@@ -41,6 +41,52 @@ public class ReleaseScheduleGuesserTest {
     }
 
     @Test
+    public void testIntradailyEveryDay() {
+        ArrayList<Date> releaseDates = new ArrayList<>();
+        releaseDates.add(makeDate("2024-01-01 12:00"));
+        releaseDates.add(makeDate("2024-01-01 16:00"));
+        releaseDates.add(makeDate("2024-01-02 12:00"));
+        releaseDates.add(makeDate("2024-01-02 16:00"));
+        releaseDates.add(makeDate("2024-01-03 12:00"));
+        releaseDates.add(makeDate("2024-01-03 16:00"));
+        releaseDates.add(makeDate("2024-01-04 12:00"));
+        releaseDates.add(makeDate("2024-01-04 16:00"));
+        releaseDates.add(makeDate("2024-01-06 12:00"));
+        releaseDates.add(makeDate("2024-01-06 16:00"));
+        releaseDates.add(makeDate("2024-01-07 12:00"));
+        releaseDates.add(makeDate("2024-01-07 16:00"));
+        ReleaseScheduleGuesser.Guess guess = performGuess(releaseDates);
+        assertEquals(ReleaseScheduleGuesser.Schedule.INTRADAILY, guess.schedule);
+        ArrayList<Integer> expectedDays = new ArrayList<>();
+        expectedDays.add(1);
+        expectedDays.add(2);
+        expectedDays.add(3);
+        expectedDays.add(4);
+        expectedDays.add(5);
+        expectedDays.add(7);
+        assertEquals(expectedDays, guess.days);
+        assertClose(makeDate("2024-01-08 12:00"), guess.nextExpectedDate, ONE_DAY);
+    }
+
+    @Test
+    public void testIntradailyWeekdays() {
+        ArrayList<Date> releaseDates = new ArrayList<>();
+        releaseDates.add(makeDate("2024-01-01 00:00"));
+        releaseDates.add(makeDate("2024-01-01 12:00"));
+        releaseDates.add(makeDate("2024-01-02 00:00"));
+        releaseDates.add(makeDate("2024-01-02 12:00"));
+        releaseDates.add(makeDate("2024-01-03 00:00"));
+        releaseDates.add(makeDate("2024-01-03 12:00"));
+        releaseDates.add(makeDate("2024-01-04 00:00"));
+        releaseDates.add(makeDate("2024-01-04 12:00"));
+        releaseDates.add(makeDate("2024-01-05 00:00"));
+        releaseDates.add(makeDate("2024-01-05 12:00"));
+        ReleaseScheduleGuesser.Guess guess = performGuess(releaseDates);
+        assertEquals(ReleaseScheduleGuesser.Schedule.INTRADAILY, guess.schedule);
+        assertClose(makeDate("2024-01-08 12:00"), guess.nextExpectedDate, ONE_DAY);
+    }
+
+    @Test
     public void testDaily() {
         ArrayList<Date> releaseDates = new ArrayList<>();
         releaseDates.add(makeDate("2024-01-01 16:30")); // Monday
@@ -158,15 +204,15 @@ public class ReleaseScheduleGuesserTest {
     public void testUnknown() {
         ArrayList<Date> releaseDates = new ArrayList<>();
         releaseDates.add(makeDate("2024-01-01 16:30"));
-        releaseDates.add(makeDate("2024-01-03 16:30"));
-        releaseDates.add(makeDate("2024-01-03 16:31"));
         releaseDates.add(makeDate("2024-01-04 16:30"));
-        releaseDates.add(makeDate("2024-01-04 16:31"));
-        releaseDates.add(makeDate("2024-01-07 16:30"));
-        releaseDates.add(makeDate("2024-01-07 16:31"));
-        releaseDates.add(makeDate("2024-01-10 16:30"));
+        releaseDates.add(makeDate("2024-01-10 16:31"));
+        releaseDates.add(makeDate("2024-01-11 16:30"));
+        releaseDates.add(makeDate("2024-01-20 16:31"));
+        releaseDates.add(makeDate("2024-01-22 16:30"));
+        releaseDates.add(makeDate("2024-01-25 16:31"));
+        releaseDates.add(makeDate("2024-01-25 16:30"));
         ReleaseScheduleGuesser.Guess guess = performGuess(releaseDates);
         assertEquals(ReleaseScheduleGuesser.Schedule.UNKNOWN, guess.schedule);
-        assertClose(makeDate("2024-01-12 16:30"), guess.nextExpectedDate, 2 * ONE_DAY);
+        assertClose(makeDate("2024-01-27 16:30"), guess.nextExpectedDate, 2 * ONE_DAY);
     }
 }

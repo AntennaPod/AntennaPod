@@ -121,8 +121,21 @@ public class FeedStatisticsFragment extends Fragment {
         }
     }
 
+    private String getSpecificDaysString(ReleaseScheduleGuesser.Guess guess) {
+        StringBuilder days = new StringBuilder();
+        for (int i = 0; i < guess.days.size(); i++) {
+            if (i != 0) {
+                days.append(", ");
+            }
+            days.append(getReadableDay(guess.days.get(i)));
+        }
+        return days.toString();
+    }
+
     private String getReadableSchedule(ReleaseScheduleGuesser.Guess guess) {
         switch (guess.schedule) {
+            case INTRADAILY:
+                return getString(R.string.release_schedule_intradaily) + ", " + getSpecificDaysString(guess);
             case DAILY:
                 return getString(R.string.release_schedule_daily);
             case WEEKDAYS:
@@ -136,14 +149,7 @@ public class FeedStatisticsFragment extends Fragment {
             case FOURWEEKLY:
                 return getString(R.string.release_schedule_monthly) + ", " + getReadableDay(guess.days.get(0));
             case SPECIFIC_DAYS:
-                StringBuilder days = new StringBuilder();
-                for (int i = 0; i < guess.days.size(); i++) {
-                    if (i != 0) {
-                        days.append(", ");
-                    }
-                    days.append(getReadableDay(guess.days.get(i)));
-                }
-                return days.toString();
+                return getSpecificDaysString(guess);
             default:
                 return getString(R.string.statistics_expected_next_episode_unknown);
         }
@@ -190,7 +196,10 @@ public class FeedStatisticsFragment extends Fragment {
             viewBinding.episodeSchedule.mainLabel.setText(R.string.statistics_expected_next_episode_unknown);
         } else {
             if (guess.nextExpectedDate.getTime() <= new Date().getTime()) {
-                viewBinding.expectedNextEpisode.mainLabel.setText(R.string.statistics_expected_next_episode_any_day);
+                viewBinding.expectedNextEpisode.mainLabel.setText(
+                        guess.schedule.equals(ReleaseScheduleGuesser.Schedule.INTRADAILY)
+                                ? R.string.statistics_expected_next_episode_any_time
+                                : R.string.statistics_expected_next_episode_any_day);
             } else {
                 viewBinding.expectedNextEpisode.mainLabel.setText(
                         DateFormatter.formatAbbrev(getContext(), guess.nextExpectedDate));
