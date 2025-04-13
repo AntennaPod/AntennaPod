@@ -69,7 +69,8 @@ public abstract class WidgetUpdater {
         if (widgetState.media != null && widgetState.media.getMediaType() == MediaType.VIDEO) {
             startMediaPlayer = new VideoPlayerActivityStarter(context).getPendingIntent();
         } else {
-            startMediaPlayer = new MainActivityStarter(context).withOpenPlayer().getPendingIntent();
+            startMediaPlayer = new MainActivityStarter(context)
+                    .withOpenPlayer().withClearBackStack().getPendingIntent();
         }
 
         PendingIntent startPlaybackSpeedDialog = new PlaybackSpeedActivityStarter(context).getPendingIntent();

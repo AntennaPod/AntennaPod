@@ -59,7 +59,6 @@ import java.util.List;
 import java.util.Map;
 
 import static de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter.ARG_FEEDURL;
-import static de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter.ARG_STARTED_FROM_SEARCH;
 import static de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter.ARG_WAS_MANUAL_URL;
 
 /**
@@ -358,9 +357,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         // feed.getId() is always 0, we have to retrieve the id from the feed list from the database
         MainActivityStarter mainActivityStarter = new MainActivityStarter(this);
         mainActivityStarter.withOpenFeed(feedId);
-        if (getIntent().getBooleanExtra(ARG_STARTED_FROM_SEARCH, false)) {
-            mainActivityStarter.withAddToBackStack();
-        }
         finish();
         startActivity(mainActivityStarter.getIntent());
     }

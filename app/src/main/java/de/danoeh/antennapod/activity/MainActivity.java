@@ -99,7 +99,6 @@ public class MainActivity extends CastEnabledActivity {
 
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
     public static final String EXTRA_REFRESH_ON_START = "refresh_on_start";
-    public static final String EXTRA_ADD_TO_BACK_STACK = "add_to_back_stack";
     public static final String KEY_GENERATED_VIEW_ID = "generated_view_id";
 
     private @Nullable DrawerLayout drawerLayout;
@@ -666,11 +665,10 @@ public class MainActivity extends CastEnabledActivity {
             long feedId = intent.getLongExtra(EXTRA_FEED_ID, 0);
             Bundle args = intent.getBundleExtra(MainActivityStarter.EXTRA_FRAGMENT_ARGS);
             if (feedId > 0) {
-                boolean addToBackStack = intent.getBooleanExtra(EXTRA_ADD_TO_BACK_STACK, false);
-                if (addToBackStack) {
-                    loadChildFragment(FeedItemlistFragment.newInstance(feedId));
-                } else {
+                if (intent.getBooleanExtra(MainActivityStarter.EXTRA_CLEAR_BACK_STACK, false)) {
                     loadFeedFragmentById(feedId, args);
+                } else {
+                    loadChildFragment(FeedItemlistFragment.newInstance(feedId));
                 }
             }
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -678,10 +676,10 @@ public class MainActivity extends CastEnabledActivity {
             String tag = intent.getStringExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG);
             Bundle args = intent.getBundleExtra(MainActivityStarter.EXTRA_FRAGMENT_ARGS);
             if (tag != null) {
-                if (intent.getBooleanExtra(MainActivityStarter.EXTRA_ADD_TO_BACK_STACK, false)) {
-                    loadChildFragment(createFragmentInstance(tag, args));
-                } else {
+                if (intent.getBooleanExtra(MainActivityStarter.EXTRA_CLEAR_BACK_STACK, false)) {
                     loadFragment(tag, null);
+                } else {
+                    loadChildFragment(createFragmentInstance(tag, args));
                 }
             }
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);

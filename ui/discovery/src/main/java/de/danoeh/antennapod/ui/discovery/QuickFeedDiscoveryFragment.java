@@ -47,7 +47,6 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         viewBinding = QuickFeedDiscoveryBinding.inflate(inflater);
         viewBinding.discoverMore.setOnClickListener(v -> startActivity(new MainActivityStarter(getContext())
                 .withFragmentLoaded(DiscoveryFragment.TAG)
-                .withAddToBackStack()
                 .getIntent()));
 
         adapter = new FeedDiscoverAdapter(getActivity());
