@@ -254,6 +254,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 DBWriter.setFeedState(getContext(), feed, Feed.STATE_SUBSCRIBED);
                 MainActivityStarter mainActivityStarter = new MainActivityStarter(getContext());
                 mainActivityStarter.withOpenFeed(feed.getId());
+                mainActivityStarter.withClearBackStack();
                 getActivity().finish();
                 startActivity(mainActivityStarter.getIntent());
             });

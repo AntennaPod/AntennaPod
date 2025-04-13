@@ -385,6 +385,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                     if (UserPreferences.getHiddenDrawerItems().contains(getLastNavFragment(getContext()))) {
                         new MainActivityStarter(getContext())
                                 .withFragmentLoaded(UserPreferences.getDefaultPage())
+                                .withClearBackStack()
                                 .withDrawerOpen()
                                 .start();
                     }

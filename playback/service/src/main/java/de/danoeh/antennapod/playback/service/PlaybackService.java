@@ -209,7 +209,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (showVideoPlayer) {
             return new VideoPlayerActivityStarter(context).getIntent();
         } else {
-            return new MainActivityStarter(context).withOpenPlayer().getIntent();
+            return new MainActivityStarter(context).withClearBackStack().withOpenPlayer().getIntent();
         }
     }
 
@@ -221,7 +221,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (media.getMediaType() == MediaType.VIDEO && !isCasting) {
             return new VideoPlayerActivityStarter(context).getIntent();
         } else {
-            return new MainActivityStarter(context).withOpenPlayer().getIntent();
+            return new MainActivityStarter(context).withClearBackStack().withOpenPlayer().getIntent();
         }
     }
 
