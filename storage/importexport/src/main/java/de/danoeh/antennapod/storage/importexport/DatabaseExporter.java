@@ -16,63 +16,42 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.channels.FileChannel;
 
 public class DatabaseExporter {
     private static final String TAG = "DatabaseExporter";
     private static final String TEMP_DB_NAME = PodDBAdapter.DATABASE_NAME + "_tmp";
 
     public static void exportToDocument(Uri uri, Context context) throws IOException {
-        ParcelFileDescriptor pfd = null;
-        FileOutputStream fileOutputStream = null;
-        try {
-            pfd = context.getContentResolver().openFileDescriptor(uri, "wt");
-            fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
-            exportToStream(fileOutputStream, context);
+        ParcelFileDescriptor pfd = context.getContentResolver().openFileDescriptor(uri, "wt");
+        int bytesCopied = -1;
+        int resultingFileSize = 0;
+        try (FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor())) {
+            bytesCopied = exportToStream(fileOutputStream, context);
         } catch (IOException e) {
             Log.e(TAG, Log.getStackTraceString(e));
             throw e;
         } finally {
-            IOUtils.closeQuietly(fileOutputStream);
-
-            if (pfd != null) {
-                try {
-                    pfd.close();
-                } catch (IOException e) {
-                    Log.d(TAG, "Unable to close ParcelFileDescriptor");
-                }
-            }
+            resultingFileSize = (int) pfd.getStatSize();
+            IOUtils.closeQuietly(pfd);
+        }
+        if (resultingFileSize != bytesCopied) {
+            throw new IOException(String.format(
+                    "Unable to write entire database. Expected to write %s, but wrote %s.",
+                    Formatter.formatShortFileSize(context, bytesCopied),
+                    Formatter.formatShortFileSize(context, resultingFileSize)));
         }
     }
 
-    public static void exportToStream(FileOutputStream outFileStream, Context context) throws IOException {
-        FileChannel src = null;
-        FileChannel dst = null;
-        try {
-            File currentDB = context.getDatabasePath(PodDBAdapter.DATABASE_NAME);
-
-            if (currentDB.exists()) {
-                src = new FileInputStream(currentDB).getChannel();
-                dst = outFileStream.getChannel();
-                long srcSize = src.size();
-                dst.transferFrom(src, 0, srcSize);
-
-                long newDstSize = dst.size();
-                if (newDstSize != srcSize) {
-                    throw new IOException(String.format(
-                            "Unable to write entire database. Expected to write %s, but wrote %s.",
-                            Formatter.formatShortFileSize(context, srcSize),
-                            Formatter.formatShortFileSize(context, newDstSize)));
-                }
-            } else {
-                throw new IOException("Can not access current database");
-            }
+    public static int exportToStream(FileOutputStream outFileStream, Context context) throws IOException {
+        File currentDB = context.getDatabasePath(PodDBAdapter.DATABASE_NAME);
+        if (!currentDB.exists()) {
+            throw new IOException("Cannot access current database");
+        }
+        try (InputStream src = new FileInputStream(currentDB)) {
+            return IOUtils.copy(src, outFileStream);
         } catch (IOException e) {
             Log.e(TAG, Log.getStackTraceString(e));
             throw e;
-        } finally {
-            IOUtils.closeQuietly(src);
-            IOUtils.closeQuietly(dst);
         }
     }
 
