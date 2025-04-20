@@ -225,7 +225,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
             if (adapter.getSelectedCount() == 0) {
                 ((MainActivity) getActivity())
-                        .showSnackbarAbovePlayer(R.string.no_items_selected, Snackbar.LENGTH_SHORT);
+                        .showSnackbarAbovePlayer(R.string.no_items_selected_message, Snackbar.LENGTH_SHORT);
                 return false;
             }
             new EpisodeMultiSelectActionHandler((MainActivity) getActivity(), menuItem.getItemId())

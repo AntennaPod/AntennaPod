@@ -198,7 +198,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         viewBinding.floatingSelectMenu.inflate(R.menu.episodes_apply_action_speeddial);
         viewBinding.floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
             if (adapter.getSelectedCount() == 0) {
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
+                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected_message,
                         Snackbar.LENGTH_SHORT);
                 return false;
             }

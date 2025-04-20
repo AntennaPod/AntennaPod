@@ -18,7 +18,7 @@ public class MarkAsPlayedActionButton extends ItemActionButton {
     @Override
     @StringRes
     public int getLabel() {
-        return (item.hasMedia() ? R.string.mark_read_label : R.string.mark_read_no_media_label);
+        return (item.hasMedia() ? R.string.mark_as_played_label : R.string.mark_read_no_media_label);
     }
 
     @Override

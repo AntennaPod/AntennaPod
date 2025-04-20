@@ -211,7 +211,7 @@ public abstract class EpisodesListFragment extends Fragment
         floatingSelectMenu.inflate(R.menu.episodes_apply_action_speeddial);
         floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
             if (listAdapter.getSelectedCount() == 0) {
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
+                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected_message,
                         Snackbar.LENGTH_SHORT);
                 return false;
             }

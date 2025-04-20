@@ -116,8 +116,8 @@ public class FeedItemMenuHandler {
             setItemTitle(menu, R.id.mark_read_item, R.string.mark_read_no_media_label);
             setItemTitle(menu, R.id.mark_unread_item, R.string.mark_unread_label_no_media);
         } else {
-            setItemTitle(menu, R.id.mark_read_item, R.string.mark_read_label);
-            setItemTitle(menu, R.id.mark_unread_item, R.string.mark_unread_label);
+            setItemTitle(menu, R.id.mark_read_item, R.string.mark_as_played_label);
+            setItemTitle(menu, R.id.mark_unread_item, R.string.mark_as_unplayed_label);
         }
 
         setItemVisibility(menu, R.id.add_to_favorites_item, canAddFavorite);
@@ -232,8 +232,8 @@ public class FeedItemMenuHandler {
             IntentUtils.openInBrowser(context, selectedItem.getLinkWithFallback());
         } else if (menuItemId == R.id.open_social_interact_url) {
             new MaterialAlertDialogBuilder(context)
-                    .setTitle(R.string.visit_social_interact_query_title)
-                    .setMessage(context.getString(R.string.visit_social_interact_query_message,
+                    .setTitle(R.string.visit_social_interact_confirm_dialog_title)
+                    .setMessage(context.getString(R.string.visit_social_interact_confirm_dialog_message,
                             selectedItem.getSocialInteractUrl()))
                     .setPositiveButton(R.string.confirm_label, (dialog, which) ->
                             IntentUtils.openInBrowser(context, selectedItem.getSocialInteractUrl()))
@@ -290,14 +290,14 @@ public class FeedItemMenuHandler {
             case FeedItem.UNPLAYED:
                 if (item.getPlayState() == FeedItem.NEW) {
                     //was new
-                    playStateStringRes = R.string.removed_inbox_label;
+                    playStateStringRes = R.string.removed_from_inbox_message;
                 } else {
                     //was played
-                    playStateStringRes = R.string.marked_as_unplayed_label;
+                    playStateStringRes = R.string.marked_as_unplayed_message;
                 }
                 break;
             case FeedItem.PLAYED:
-                playStateStringRes = R.string.marked_as_played_label;
+                playStateStringRes = R.string.marked_as_played_message;
                 break;
         }
 

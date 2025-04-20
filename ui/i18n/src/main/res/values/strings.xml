@@ -230,7 +230,7 @@
 
     <!-- actions on feeditems -->
     <string name="download_label">Download</string>
-    <plurals name="downloading_batch_label">
+    <plurals name="downloading_episodes_message">
         <item quantity="one">Downloading %d episode.</item>
         <item quantity="other">Downloading %d episodes.</item>
     </plurals>
@@ -238,35 +238,35 @@
     <string name="pause_label">Pause</string>
     <string name="stream_label">Stream</string>
     <string name="delete_label">Delete</string>
-    <plurals name="deleted_multi_episode_batch_label">
+    <plurals name="deleted_episode_message">
         <item quantity="one">%d downloaded episode deleted.</item>
         <item quantity="other">%d downloaded episodes deleted.</item>
     </plurals>
     <string name="remove_inbox_label">Remove from inbox</string>
-    <string name="removed_inbox_label">Removed from inbox</string>
-    <string name="mark_read_label">Mark as played</string>
+    <string name="removed_from_inbox_message">Removed from inbox</string>
+    <string name="mark_as_played_label">Mark as played</string>
     <string name="toggle_played_label">Toggle played state</string>
-    <string name="marked_as_played_label">Marked as played</string>
-    <string name="marked_as_unplayed_label">Marked as unplayed</string>
+    <string name="marked_as_played_message">Marked as played</string>
+    <string name="marked_as_unplayed_message">Marked as unplayed</string>
     <string name="mark_read_no_media_label">Mark as read</string>
-    <string name="play_this_to_seek_position">To jump to positions, you need to play the episode</string>
-    <plurals name="marked_read_batch_label">
+    <string name="play_this_to_seek_position_message">To jump to positions, you need to play the episode</string>
+    <plurals name="marked_as_played_message">
         <item quantity="one">%d episode marked as played.</item>
         <item quantity="other">%d episodes marked as played.</item>
     </plurals>
-    <string name="mark_unread_label">Mark as unplayed</string>
+    <string name="mark_as_unplayed_label">Mark as unplayed</string>
     <string name="mark_unread_label_no_media">Mark as unread</string>
-    <plurals name="marked_unread_batch_label">
+    <plurals name="marked_as_unplayed_message">
         <item quantity="one">%d episode marked as unplayed.</item>
         <item quantity="other">%d episodes marked as unplayed.</item>
     </plurals>
     <string name="add_to_queue_label">Add to queue</string>
-    <plurals name="added_to_queue_batch_label">
+    <plurals name="added_to_queue_message">
         <item quantity="one">%d episode added to queue.</item>
         <item quantity="other">%d episodes added to queue.</item>
     </plurals>
     <string name="remove_from_queue_label">Remove from queue</string>
-    <plurals name="removed_from_queue_batch_label">
+    <plurals name="removed_from_queue_message">
         <item quantity="one">%d episode removed from queue.</item>
         <item quantity="other">%d episodes removed from queue.</item>
     </plurals>
@@ -277,17 +277,17 @@
     <string name="add_to_favorite_label">Add to favorites</string>
     <string name="show_transcript">Show transcript</string>
     <string name="transcript">Transcript</string>
-    <string name="transcript_follow">Follow audio</string>
+    <string name="transcript_follow_audio_label">Follow audio</string>
     <string name="no_transcript_label">No transcript</string>
     <string name="remove_from_favorite_label">Remove from favorites</string>
     <string name="visit_website_label">Visit website</string>
     <string name="visit_social_interact_label">Show comments</string>
-    <string name="visit_social_interact_query_title">You are leaving AntennaPod</string>
-    <string name="visit_social_interact_query_message">Please make sure that you trust the website \"%1$s\".</string>
+    <string name="visit_social_interact_confirm_dialog_title">You are leaving AntennaPod</string>
+    <string name="visit_social_interact_confirm_dialog_message">Please make sure that you trust the website \"%1$s\".</string>
     <string name="skip_episode_label">Skip episode</string>
-    <string name="reset_position">Reset playback position</string>
-    <string name="no_items_selected">No items selected</string>
-    <string name="delete_local_feed_warning_body">Deleting removes the episode from AntennaPod and deletes the media file from your device storage. It cannot be downloaded again through AntennaPod.</string>
+    <string name="reset_playback_position_label">Reset playback position</string>
+    <string name="no_items_selected_message">No items selected</string>
+    <string name="delete_local_feed_confirmation_dialog_message">Deleting removes the episode from AntennaPod and deletes the media file from your device storage. It cannot be downloaded again through AntennaPod.</string>
 
     <!-- Download messages and labels -->
     <string name="download_successful">successful</string>
