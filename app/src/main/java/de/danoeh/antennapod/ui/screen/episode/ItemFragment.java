@@ -151,7 +151,7 @@ public class ItemFragment extends Fragment {
                     && Objects.equals(item.getMedia().getIdentifier(), controller.getMedia().getIdentifier())) {
                 controller.seekTo(time);
             } else {
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.play_this_to_seek_position,
+                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.play_this_to_seek_position_message,
                         Snackbar.LENGTH_LONG);
             }
         });
