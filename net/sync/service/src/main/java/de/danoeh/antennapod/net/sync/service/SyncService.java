@@ -152,6 +152,24 @@ public class SyncService extends Worker {
         List<String> queuedRemovedFeeds = synchronizationQueueStorage.getQueuedRemovedFeeds();
         List<String> queuedAddedFeeds = synchronizationQueueStorage.getQueuedAddedFeeds();
 
+
+        for (String added: queuedAddedFeeds) {
+            if (queuedRemovedFeeds.contains(added)) {
+                // With old versions it is possible that the same feed got inserted in both
+                // queuedRemovedFeeds and queueAddedFeeds and is still present in the
+                // synchronization queue storage.
+                // In this case, remove it from one of the queues based on local subscription
+                // status to make sure the pushed update unambiguously reflects the current
+                // status in the app.
+                Log.d(TAG, "Feed both added and removed: " + subscriptionChanges);
+                if (localSubscriptions.contains(added)) {
+                    queuedRemovedFeeds.remove(added);
+                } else {
+                    queuedAddedFeeds.remove(added);
+                }
+            }
+        }
+
         Log.d(TAG, "Downloaded subscription changes: " + subscriptionChanges);
         for (String downloadUrl : subscriptionChanges.getAdded()) {
             if (!downloadUrl.startsWith("http")) { // Also matches https
