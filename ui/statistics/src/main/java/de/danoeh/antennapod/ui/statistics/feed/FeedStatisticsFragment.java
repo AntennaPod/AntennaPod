@@ -122,7 +122,7 @@ public class FeedStatisticsFragment extends Fragment {
     }
 
     private String getReadableSchedule(ReleaseScheduleGuesser.Guess guess) {
-        String prefix = guess.multipleReleasesPerDay ? getString(R.string.release_schedule_intradaily_specific_days)
+        String prefix = guess.multipleReleasesPerDay ? getString(R.string.release_schedule_multiple_per_day)
                 + ", " : "";
         switch (guess.schedule) {
             case DAILY:
