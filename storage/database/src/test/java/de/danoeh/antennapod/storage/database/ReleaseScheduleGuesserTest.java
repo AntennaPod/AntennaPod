@@ -41,7 +41,7 @@ public class ReleaseScheduleGuesserTest {
     }
 
     @Test
-    public void testIntradailyEveryDay() {
+    public void testMultipleTimesPerDayEveryDay() {
         ArrayList<Date> releaseDates = new ArrayList<>();
         releaseDates.add(makeDate("2024-01-01 12:00"));
         releaseDates.add(makeDate("2024-01-01 16:00"));
@@ -56,7 +56,8 @@ public class ReleaseScheduleGuesserTest {
         releaseDates.add(makeDate("2024-01-07 12:00"));
         releaseDates.add(makeDate("2024-01-07 16:00"));
         ReleaseScheduleGuesser.Guess guess = performGuess(releaseDates);
-        assertEquals(ReleaseScheduleGuesser.Schedule.INTRADAILY, guess.schedule);
+        assertEquals(ReleaseScheduleGuesser.Schedule.SPECIFIC_DAYS, guess.schedule);
+        assertTrue(guess.multipleReleasesPerDay);
         ArrayList<Integer> expectedDays = new ArrayList<>();
         expectedDays.add(1);
         expectedDays.add(2);
@@ -69,7 +70,7 @@ public class ReleaseScheduleGuesserTest {
     }
 
     @Test
-    public void testIntradailyWeekdays() {
+    public void testMultipleTimesPerDayWeekdays() {
         ArrayList<Date> releaseDates = new ArrayList<>();
         releaseDates.add(makeDate("2024-01-01 00:00"));
         releaseDates.add(makeDate("2024-01-01 12:00"));
@@ -82,8 +83,26 @@ public class ReleaseScheduleGuesserTest {
         releaseDates.add(makeDate("2024-01-05 00:00"));
         releaseDates.add(makeDate("2024-01-05 12:00"));
         ReleaseScheduleGuesser.Guess guess = performGuess(releaseDates);
-        assertEquals(ReleaseScheduleGuesser.Schedule.INTRADAILY, guess.schedule);
+        assertEquals(ReleaseScheduleGuesser.Schedule.WEEKDAYS, guess.schedule);
+        assertTrue(guess.multipleReleasesPerDay);
         assertClose(makeDate("2024-01-08 12:00"), guess.nextExpectedDate, ONE_DAY);
+    }
+
+    @Test
+    public void testMultipleTimesPerDaySpecificDays() {
+        ArrayList<Date> releaseDates = new ArrayList<>();
+        releaseDates.add(makeDate("2024-01-01 00:00"));
+        releaseDates.add(makeDate("2024-01-01 12:00"));
+        releaseDates.add(makeDate("2024-01-03 00:00"));
+        releaseDates.add(makeDate("2024-01-03 12:00"));
+        releaseDates.add(makeDate("2024-01-08 00:00"));
+        releaseDates.add(makeDate("2024-01-08 12:00"));
+        releaseDates.add(makeDate("2024-01-10 00:00"));
+        releaseDates.add(makeDate("2024-01-10 12:00"));
+        ReleaseScheduleGuesser.Guess guess = performGuess(releaseDates);
+        assertEquals(ReleaseScheduleGuesser.Schedule.SPECIFIC_DAYS, guess.schedule);
+        assertTrue(guess.multipleReleasesPerDay);
+        assertClose(makeDate("2024-01-15 12:00"), guess.nextExpectedDate, ONE_DAY);
     }
 
     @Test
