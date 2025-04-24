@@ -385,9 +385,10 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         if (disposableEpisodes != null) {
             disposableEpisodes.dispose();
         }
-        adapterFeeds.setEndButton(R.string.search_online, this::searchOnline);
         long feed = getArguments().getLong(ARG_FEED, 0);
-        chip.setVisibility((feed == 0) ? View.GONE : View.VISIBLE);
+        boolean isSearchingFeed = feed != 0;
+        chip.setVisibility(isSearchingFeed ? View.VISIBLE : View.GONE);
+        adapterFeeds.setEndButton(R.string.search_online, isSearchingFeed ? null : this::searchOnline);
 
         String query = searchView.getQuery().toString();
         if (query.isEmpty()) {
