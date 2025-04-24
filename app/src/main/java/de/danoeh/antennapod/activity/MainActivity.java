@@ -19,6 +19,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -520,6 +521,11 @@ public class MainActivity extends CastEnabledActivity {
             drawerToggle.onConfigurationChanged(newConfig);
         }
         setNavDrawerSize();
+
+        @StyleRes int requiredTheme = ThemeSwitcher.getNoTitleTheme(this);
+        if (requiredTheme != lastTheme) {
+            recreate();
+        }
     }
 
     private void setNavDrawerSize() {
