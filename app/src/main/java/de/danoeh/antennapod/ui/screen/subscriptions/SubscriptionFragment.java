@@ -178,7 +178,7 @@ public class SubscriptionFragment extends Fragment
         floatingSelectMenu = root.findViewById(R.id.floatingSelectMenu);
         floatingSelectMenu.inflate(R.menu.nav_feed_action_speeddial);
         floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
-            new FeedMultiSelectActionHandler((MainActivity) getActivity(), subscriptionAdapter.getSelectedItems())
+            new FeedMultiSelectActionHandler(getActivity(), subscriptionAdapter.getSelectedItems())
                     .handleAction(menuItem.getItemId());
             return true;
         });

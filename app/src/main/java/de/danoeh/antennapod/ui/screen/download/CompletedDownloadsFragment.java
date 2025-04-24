@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
@@ -107,7 +108,7 @@ public class CompletedDownloadsFragment extends Fragment
 
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
-        adapter = new CompletedDownloadsListAdapter((MainActivity) getActivity());
+        adapter = new CompletedDownloadsListAdapter(getActivity());
         adapter.setOnSelectModeListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
@@ -362,7 +363,7 @@ public class CompletedDownloadsFragment extends Fragment
 
     private class CompletedDownloadsListAdapter extends EpisodeItemListAdapter {
 
-        public CompletedDownloadsListAdapter(MainActivity mainActivity) {
+        public CompletedDownloadsListAdapter(FragmentActivity mainActivity) {
             super(mainActivity);
         }
 
