@@ -29,9 +29,9 @@ import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import de.danoeh.antennapod.ui.chapters.ChapterUtils;
@@ -349,8 +349,7 @@ public class CoverFragment extends Fragment {
             clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", text));
         }
         if (Build.VERSION.SDK_INT <= 32) {
-            ((MainActivity) requireActivity()).showSnackbarAbovePlayer(
-                    getResources().getString(R.string.copied_to_clipboard), Snackbar.LENGTH_SHORT);
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
         }
         return true;
     }

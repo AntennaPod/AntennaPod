@@ -27,8 +27,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
 
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.ui.screen.InboxFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
@@ -351,11 +351,11 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         if (recyclerAdapter != null) {
             recyclerAdapter.updateDragDropEnabled();
         }
-        if (queue.size() == 0) {
+        if (queue.isEmpty()) {
             if (locked) {
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.queue_locked, Snackbar.LENGTH_SHORT);
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.queue_locked)));
             } else {
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.queue_unlocked, Snackbar.LENGTH_SHORT);
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.queue_unlocked)));
             }
         }
     }
@@ -477,8 +477,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         floatingSelectMenu.inflate(R.menu.episodes_apply_action_speeddial);
         floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
             if (recyclerAdapter.getSelectedCount() == 0) {
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected_message,
-                        Snackbar.LENGTH_SHORT);
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.no_items_selected_message)));
                 return false;
             }
             new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId())

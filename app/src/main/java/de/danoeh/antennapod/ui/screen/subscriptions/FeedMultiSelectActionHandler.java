@@ -6,14 +6,13 @@ import androidx.annotation.PluralsRes;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.util.Consumer;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.databinding.PlaybackSpeedFeedSettingDialogBinding;
 import de.danoeh.antennapod.ui.screen.feed.RemoveFeedDialog;
@@ -22,6 +21,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.ui.screen.preferences.PreferenceListDialog;
 import de.danoeh.antennapod.ui.screen.preferences.PreferenceSwitchDialog;
+import org.greenrobot.eventbus.EventBus;
 
 public class FeedMultiSelectActionHandler {
     private static final String TAG = "FeedSelectHandler";
@@ -121,8 +121,8 @@ public class FeedMultiSelectActionHandler {
     }
 
     private void showMessage(@PluralsRes int msgId, int numItems) {
-        activity.showSnackbarAbovePlayer(activity.getResources()
-                .getQuantityString(msgId, numItems, numItems), Snackbar.LENGTH_LONG);
+        EventBus.getDefault().post(new MessageEvent(activity.getResources()
+                .getQuantityString(msgId, numItems, numItems)));
     }
 
     private void saveFeedPreferences(Consumer<FeedPreferences> preferencesConsumer) {

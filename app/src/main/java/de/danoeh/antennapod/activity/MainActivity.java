@@ -651,8 +651,17 @@ public class MainActivity extends CastEnabledActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MessageEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
+        Snackbar snackbar;
+        if (getBottomSheet().getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+            snackbar = Snackbar.make(findViewById(R.id.main_content_view), event.message, Snackbar.LENGTH_LONG);
+            if (findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE) {
+                snackbar.setAnchorView(findViewById(R.id.audioplayerFragment));
+            }
+        } else {
+            snackbar = Snackbar.make(findViewById(android.R.id.content), event.message, Snackbar.LENGTH_LONG);
+        }
+        snackbar.show();
 
-        Snackbar snackbar = showSnackbarAbovePlayer(event.message, Snackbar.LENGTH_LONG);
         if (event.action != null) {
             snackbar.setAction(event.actionText, v -> event.action.accept(this));
         }
@@ -710,24 +719,6 @@ public class MainActivity extends CastEnabledActivity {
         handleNavIntent();
     }
 
-    public Snackbar showSnackbarAbovePlayer(CharSequence text, int duration) {
-        Snackbar s;
-        if (getBottomSheet().getState() == BottomSheetBehavior.STATE_COLLAPSED) {
-            s = Snackbar.make(findViewById(R.id.main_content_view), text, duration);
-            if (findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE) {
-                s.setAnchorView(findViewById(R.id.audioplayerFragment));
-            }
-        } else {
-            s = Snackbar.make(findViewById(android.R.id.content), text, duration);
-        }
-        s.show();
-        return s;
-    }
-
-    public Snackbar showSnackbarAbovePlayer(int text, int duration) {
-        return showSnackbarAbovePlayer(getResources().getText(text), duration);
-    }
-
     /**
      * Handles the deep link incoming via App Actions.
      * Performs an in-app search or opens the relevant feature of the app
@@ -771,8 +762,7 @@ public class MainActivity extends CastEnabledActivity {
                         loadFragment(SubscriptionFragment.TAG, null);
                         break;
                     default:
-                        showSnackbarAbovePlayer(getString(R.string.app_action_not_found, feature),
-                                Snackbar.LENGTH_LONG);
+                        EventBus.getDefault().post(new MessageEvent(getString(R.string.app_action_not_found, feature)));
                         return;
                 }
                 break;
