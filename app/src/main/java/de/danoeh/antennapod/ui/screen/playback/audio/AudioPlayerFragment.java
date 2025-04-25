@@ -516,7 +516,6 @@ public class AudioPlayerFragment extends Fragment implements
         }
         if (feed.getState() == Feed.STATE_SUBSCRIBED) {
             new MainActivityStarter(getContext()).withOpenFeed(feed.getId()).withClearTop().start();
-            startActivity(intent);
         } else {
             startActivity(new OnlineFeedviewActivityStarter(getContext(), feed.getDownloadUrl()).getIntent());
         }
