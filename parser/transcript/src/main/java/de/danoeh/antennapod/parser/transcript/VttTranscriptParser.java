@@ -71,8 +71,7 @@ public class VttTranscriptParser {
             // should we merge this segment with the previous one?
             if (segment != null && segment.getSpeaker().equals(speaker)
                     && timings.end - segment.getStartTime() < TranscriptParser.MAX_SPAN) {
-                segment = new TranscriptSegment(
-                        segment.getStartTime(), timings.end, segment.getWords() + " " + payload, speaker);
+                segment.append(timings.end, payload);
             } else {
                 if (segment != null) {
                     transcript.addSegment(segment);
