@@ -13,8 +13,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -92,6 +94,9 @@ public class SubscriptionFragment extends Fragment
     private FloatingSelectMenu floatingSelectMenu;
     private RecyclerView.ItemDecoration itemDecoration;
     private List<NavDrawerData.DrawerItem> listItems;
+
+    private static boolean resetScrollPositionToTop = true;
+    private static Pair<Integer, Integer> scrollPosition = new Pair<>(0, 0);
 
     public static SubscriptionFragment newInstance(String folderTitle) {
         SubscriptionFragment fragment = new SubscriptionFragment();
@@ -278,8 +283,17 @@ public class SubscriptionFragment extends Fragment
     @Override
     public void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+        if (resetScrollPositionToTop) {
+            resetScrollPositionToTop = false;
+        }
         loadSubscriptions();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        scrollPosition = getScrollPosition();
     }
 
     @Override
@@ -323,6 +337,7 @@ public class SubscriptionFragment extends Fragment
                         listItems = result;
                         progressBar.setVisibility(View.GONE);
                         subscriptionAdapter.setItems(result);
+                        restoreScrollPosition(scrollPosition);
                         emptyView.updateVisibility();
                     }, error -> {
                         Log.e(TAG, Log.getStackTraceString(error));
@@ -415,5 +430,23 @@ public class SubscriptionFragment extends Fragment
         floatingSelectMenu.setVisibility(View.VISIBLE);
         subscriptionAddButton.setVisibility(View.GONE);
         updateFilterVisibility();
+    }
+
+    public Pair<Integer, Integer> getScrollPosition() {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) subscriptionRecycler.getLayoutManager();
+        int firstItem = layoutManager.findFirstVisibleItemPosition();
+        View firstItemView = layoutManager.findViewByPosition(firstItem);
+        int topOffset;
+        if (firstItemView == null) {
+            topOffset = 0;
+        } else {
+            topOffset = firstItemView.getTop();
+        }
+        return new Pair<>(firstItem, topOffset);
+    }
+
+    public void restoreScrollPosition(Pair<Integer, Integer> scrollPosition) {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) subscriptionRecycler.getLayoutManager();
+        layoutManager.scrollToPositionWithOffset(scrollPosition.first, scrollPosition.second);
     }
 }

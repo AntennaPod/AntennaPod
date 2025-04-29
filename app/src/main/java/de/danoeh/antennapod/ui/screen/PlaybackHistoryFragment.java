@@ -7,6 +7,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.core.util.Pair;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.ui.common.ConfirmationDialog;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -25,6 +27,8 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
     public static final String TAG = "PlaybackHistoryFragment";
     private static final FeedItemFilter FILTER_HISTORY = new FeedItemFilter(
             FeedItemFilter.IS_IN_HISTORY, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
+    private static boolean resetScrollPositionToTop = true;
+    private static Pair<Integer, Integer> scrollPosition = new Pair<>(0, 0);
 
     @NonNull
     @Override
@@ -49,9 +53,22 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
         return TAG;
     }
 
+    protected boolean isResetScrollPositionToTop() {
+        return resetScrollPositionToTop;
+    }
+
+    protected void setResetScrollPositionToTop(boolean reset) {
+        resetScrollPositionToTop = reset;
+    }
+
     @Override
-    protected String getPrefName() {
-        return TAG;
+    protected Pair<Integer, Integer> getScrollPosition() {
+        return scrollPosition;
+    }
+
+    @Override
+    protected void setScrollPosition(Pair<Integer, Integer> pos) {
+        scrollPosition = pos;
     }
 
     @Override

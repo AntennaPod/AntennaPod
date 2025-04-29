@@ -8,6 +8,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.core.util.Pair;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,20 +52,29 @@ public class EpisodeItemListRecyclerView extends RecyclerView {
         setPadding(horizontalSpacing, getPaddingTop(), horizontalSpacing, getPaddingBottom());
     }
 
-    public void saveScrollPosition(String tag) {
+    public Pair<Integer, Integer> getScrollPosition() {
         int firstItem = layoutManager.findFirstVisibleItemPosition();
         View firstItemView = layoutManager.findViewByPosition(firstItem);
-        float topOffset;
+        int topOffset;
         if (firstItemView == null) {
             topOffset = 0;
         } else {
             topOffset = firstItemView.getTop();
         }
+        return new Pair<>(firstItem, topOffset);
+    }
+
+    public void saveScrollPosition(String tag) {
+        Pair<Integer, Integer> scrollPosition = getScrollPosition();
 
         getContext().getSharedPreferences(TAG, Context.MODE_PRIVATE).edit()
-                .putInt(PREF_PREFIX_SCROLL_POSITION + tag, firstItem)
-                .putInt(PREF_PREFIX_SCROLL_OFFSET + tag, (int) topOffset)
+                .putInt(PREF_PREFIX_SCROLL_POSITION + tag, scrollPosition.first)
+                .putInt(PREF_PREFIX_SCROLL_OFFSET + tag, scrollPosition.second)
                 .apply();
+    }
+
+    public void restoreScrollPosition(Pair<Integer, Integer> scrollPosition) {
+        layoutManager.scrollToPositionWithOffset(scrollPosition.first, scrollPosition.second);
     }
 
     public void restoreScrollPosition(String tag) {

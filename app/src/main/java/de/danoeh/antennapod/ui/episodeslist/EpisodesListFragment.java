@@ -85,8 +85,11 @@ public abstract class EpisodesListFragment extends Fragment
     @Override
     public void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+        if (isResetScrollPositionToTop()) {
+            setResetScrollPositionToTop(false);
+        }
         loadItems();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -98,7 +101,7 @@ public abstract class EpisodesListFragment extends Fragment
     @Override
     public void onPause() {
         super.onPause();
-        recyclerView.saveScrollPosition(getPrefName());
+        setScrollPosition(recyclerView.getScrollPosition());
         unregisterForContextMenu(recyclerView);
     }
 
@@ -416,7 +419,7 @@ public abstract class EpisodesListFragment extends Fragment
                             listAdapter.updateItems(episodes);
                             listAdapter.setTotalNumberOfItems(data.second);
                             if (restoreScrollPosition) {
-                                recyclerView.restoreScrollPosition(getPrefName());
+                                recyclerView.restoreScrollPosition(getScrollPosition());
                             }
                             updateToolbar();
                         }, error -> {
@@ -438,7 +441,14 @@ public abstract class EpisodesListFragment extends Fragment
 
     protected abstract String getFragmentTag();
 
-    protected abstract String getPrefName();
+    protected abstract boolean isResetScrollPositionToTop();
+
+    protected abstract void setResetScrollPositionToTop(boolean reset);
+
+    protected abstract Pair<Integer, Integer> getScrollPosition();
+
+    protected abstract void setScrollPosition(Pair<Integer, Integer> scrollPosition);
+
 
     protected void updateToolbar() {
     }

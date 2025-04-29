@@ -11,6 +11,8 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -36,6 +38,8 @@ public class InboxFragment extends EpisodesListFragment {
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
     private static final String PREF_DO_NOT_PROMPT_REMOVE_ALL_FROM_INBOX = "prefDoNotPromptRemovalAllFromInbox";
     private SharedPreferences prefs;
+    private static boolean resetScrollPositionToTop = true;
+    private static Pair<Integer, Integer> scrollPosition = new Pair<>(0, 0);
 
     @NonNull
     @Override
@@ -61,9 +65,22 @@ public class InboxFragment extends EpisodesListFragment {
         return TAG;
     }
 
+    protected boolean isResetScrollPositionToTop() {
+        return resetScrollPositionToTop;
+    }
+
+    protected void setResetScrollPositionToTop(boolean reset) {
+        resetScrollPositionToTop = reset;
+    }
+
     @Override
-    protected String getPrefName() {
-        return PREF_NAME;
+    protected Pair<Integer, Integer> getScrollPosition() {
+        return scrollPosition;
+    }
+
+    @Override
+    protected void setScrollPosition(Pair<Integer, Integer> pos) {
+        scrollPosition = pos;
     }
 
     @Override
