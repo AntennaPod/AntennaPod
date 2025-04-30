@@ -533,6 +533,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         viewBinding.header.imgvCover.setOnClickListener(v -> showFeedInfo());
         viewBinding.header.headerDescriptionLabel.setOnClickListener(v -> showFeedInfo());
         viewBinding.header.butSubscribe.setOnClickListener(view -> {
+            if (feed == null) {
+                return;
+            }
             DBWriter.setFeedState(getContext(), feed, Feed.STATE_SUBSCRIBED);
             MainActivityStarter mainActivityStarter = new MainActivityStarter(getContext());
             mainActivityStarter.withOpenFeed(feed.getId());
@@ -540,13 +543,18 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             startActivity(mainActivityStarter.getIntent());
         });
         viewBinding.header.butShowSettings.setOnClickListener(v -> {
-            if (feed != null) {
-                FeedSettingsFragment fragment = FeedSettingsFragment.newInstance(feed);
-                ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
+            if (feed == null) {
+                return;
             }
+            FeedSettingsFragment fragment = FeedSettingsFragment.newInstance(feed);
+            ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
         });
-        viewBinding.header.butFilter.setOnClickListener(v ->
-                FeedItemFilterDialog.newInstance(feed).show(getChildFragmentManager(), null));
+        viewBinding.header.butFilter.setOnClickListener(v -> {
+            if (feed == null) {
+                return;
+            }
+            FeedItemFilterDialog.newInstance(feed).show(getChildFragmentManager(), null);
+        });
         viewBinding.header.txtvFailure.setOnClickListener(v -> showErrorDetails());
     }
 
