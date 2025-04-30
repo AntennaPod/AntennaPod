@@ -495,7 +495,7 @@
     <string name="pref_nav_drawer_feed_counter_title">Set subscription counter</string>
     <string name="pref_nav_drawer_feed_counter_sum">Change the information displayed by the subscription counter. Also affects the sorting of subscriptions if \'Subscription Order\' is set to \'Counter\'.</string>
     <string name="pref_automatic_download_title">Automatic download</string>
-    <string name="pref_automatic_download_global_description">Automatically download new episodes. Can be overridden per podcast.</string>
+    <string name="pref_automatic_download_global_description">Automatically download episodes from the inbox. Can be overridden per podcast.</string>
     <string name="pref_automatic_download_queue_title">Download queued</string>
     <string name="pref_automatic_download_queue_description">Automatically download queued episodes</string>
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes</string>
@@ -762,7 +762,7 @@
     <string name="feed_tags_summary">Change the tags of this podcast to help organize your subscriptions</string>
     <string name="feed_folders_include_root">Show this podcast in main list</string>
     <string name="multi_feed_common_tags_info">Only common tags from all selected subscriptions are shown. Other tags stay unaffected.</string>
-    <string name="auto_download_settings_label">Auto download settings</string>
+    <string name="auto_download_inbox_category">Automatically download episodes from the inbox</string>
     <string name="episode_filters_label">Episode filter</string>
     <string name="episode_filters_description">List of terms used to decide if an episode should be included or excluded when auto downloading</string>
     <string name="add_term">Add term</string>

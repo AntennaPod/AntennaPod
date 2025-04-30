@@ -67,7 +67,7 @@
 
     <PreferenceCategory
         android:key="autoDownloadCategory"
-        android:title="@string/auto_download_settings_label">
+        android:title="@string/auto_download_inbox_category">
 
         <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
             android:entries="@array/spnEnableAutoDownloadItems"
