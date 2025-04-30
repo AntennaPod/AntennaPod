@@ -22,10 +22,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
-import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
 import de.danoeh.antennapod.ui.screen.subscriptions.HorizontalFeedListAdapter;
 import de.danoeh.antennapod.ui.MenuItemUtils;
@@ -224,11 +224,10 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         floatingSelectMenu.inflate(R.menu.episodes_apply_action_speeddial);
         floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
             if (adapter.getSelectedCount() == 0) {
-                ((MainActivity) getActivity())
-                        .showSnackbarAbovePlayer(R.string.no_items_selected_message, Snackbar.LENGTH_SHORT);
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.no_items_selected_message)));
                 return false;
             }
-            new EpisodeMultiSelectActionHandler((MainActivity) getActivity(), menuItem.getItemId())
+            new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId())
                     .handleAction(adapter.getSelectedItems());
             adapter.endSelectMode();
             return true;

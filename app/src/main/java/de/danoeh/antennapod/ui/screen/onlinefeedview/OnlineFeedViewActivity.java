@@ -19,9 +19,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
 import de.danoeh.antennapod.databinding.OnlinefeedviewActivityBinding;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.model.download.DownloadResult;
@@ -51,6 +53,9 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.IOException;
@@ -128,6 +133,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         isPaused = false;
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -140,6 +146,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -466,6 +473,16 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             dialog = ab.show();
         });
         return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(MessageEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), event.message, Snackbar.LENGTH_LONG);
+        snackbar.show();
+        if (event.action != null) {
+            snackbar.setAction(event.actionText, v -> event.action.accept(this));
+        }
     }
 
     private class FeedViewAuthenticationDialog extends AuthenticationDialog {

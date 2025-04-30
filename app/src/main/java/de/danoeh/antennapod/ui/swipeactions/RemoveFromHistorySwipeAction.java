@@ -3,16 +3,14 @@ package de.danoeh.antennapod.ui.swipeactions;
 import android.content.Context;
 
 import androidx.fragment.app.Fragment;
-
-import com.google.android.material.snackbar.Snackbar;
-
 import java.util.Date;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import org.greenrobot.eventbus.EventBus;
 
 public class RemoveFromHistorySwipeAction implements SwipeAction {
 
@@ -40,15 +38,11 @@ public class RemoveFromHistorySwipeAction implements SwipeAction {
 
     @Override
     public void performAction(FeedItem item, Fragment fragment, FeedItemFilter filter) {
-
         Date playbackCompletionDate = item.getMedia().getPlaybackCompletionDate();
-
         DBWriter.deleteFromPlaybackHistory(item);
-
-        ((MainActivity) fragment.requireActivity())
-                .showSnackbarAbovePlayer(R.string.removed_history_label, Snackbar.LENGTH_LONG)
-                .setAction(fragment.getString(R.string.undo),
-                        v -> DBWriter.addItemToPlaybackHistory(item.getMedia(), playbackCompletionDate));
+        EventBus.getDefault().post(new MessageEvent(fragment.getString(R.string.removed_history_label),
+                context -> DBWriter.addItemToPlaybackHistory(item.getMedia(), playbackCompletionDate),
+                fragment.getString(R.string.undo)));
     }
 
     @Override

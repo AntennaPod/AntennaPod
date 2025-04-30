@@ -11,13 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Arrays;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
@@ -34,6 +33,7 @@ import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.view.LocalDeleteModal;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Handles interactions with the FeedItemMenu.
@@ -301,19 +301,15 @@ public class FeedItemMenuHandler {
                 break;
         }
 
-        int duration = Snackbar.LENGTH_LONG;
-
         if (showSnackbar) {
-            ((MainActivity) fragment.getActivity()).showSnackbarAbovePlayer(
-                    playStateStringRes, duration)
-                    .setAction(fragment.getString(R.string.undo), v -> {
+            EventBus.getDefault().post(new MessageEvent(fragment.getString(playStateStringRes),
+                    context -> {
                         DBWriter.markItemPlayed(item.getPlayState(), item.getId());
                         // don't forget to cancel the thing that's going to remove the media
                         h.removeCallbacks(r);
-                    });
+                    }, fragment.getString(R.string.undo)));
         }
-
-        h.postDelayed(r, (int) Math.ceil(duration * 1.05f));
+        h.postDelayed(r, 2000);
     }
 
     public static void removeNewFlagWithUndo(@NonNull Fragment fragment, FeedItem item) {

@@ -23,11 +23,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.widget.NestedScrollView;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
-import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
@@ -45,6 +45,7 @@ import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Collections;
 
@@ -103,8 +104,7 @@ public class AddFeedFragment extends Fragment {
                 chooseOpmlImportPathLauncher.launch("*/*");
             } catch (ActivityNotFoundException e) {
                 e.printStackTrace();
-                ((MainActivity) getActivity())
-                        .showSnackbarAbovePlayer(R.string.unable_to_start_system_file_manager, Snackbar.LENGTH_LONG);
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.unable_to_start_system_file_manager)));
             }
         });
 
@@ -113,8 +113,7 @@ public class AddFeedFragment extends Fragment {
                 addLocalFolderLauncher.launch(null);
             } catch (ActivityNotFoundException e) {
                 e.printStackTrace();
-                ((MainActivity) getActivity())
-                        .showSnackbarAbovePlayer(R.string.unable_to_start_system_file_manager, Snackbar.LENGTH_LONG);
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.unable_to_start_system_file_manager)));
             }
         });
         viewBinding.searchButton.setOnClickListener(view -> performSearch());
@@ -188,8 +187,7 @@ public class AddFeedFragment extends Fragment {
                             ((MainActivity) getActivity()).loadChildFragment(fragment);
                         }, error -> {
                             Log.e(TAG, Log.getStackTraceString(error));
-                            ((MainActivity) getActivity())
-                                    .showSnackbarAbovePlayer(error.getLocalizedMessage(), Snackbar.LENGTH_LONG);
+                            EventBus.getDefault().post(new MessageEvent(error.getLocalizedMessage()));
                         });
     }
 
