@@ -19,7 +19,11 @@ public class HostnameParser {
         Matcher m = URLSPLIT_REGEX.matcher(hosturl);
         if (m.matches()) {
             scheme = m.group(1);
-            host = IDN.toASCII(m.group(2));
+            try {
+                host = IDN.toASCII(m.group(2));
+            } catch (IllegalArgumentException e) {
+                host = "invalid-hostname";
+            }
             if (m.group(3) == null) {
                 port = -1;
             } else {
@@ -33,7 +37,11 @@ public class HostnameParser {
         } else {
             // URL does not match regex: use it anyway -> this will cause an exception on connect
             scheme = "https";
-            host = IDN.toASCII(hosturl);
+            try {
+                host = IDN.toASCII(hosturl);
+            } catch (IllegalArgumentException e) {
+                host = "invalid-hostname";
+            }
             port = 443;
         }
 
