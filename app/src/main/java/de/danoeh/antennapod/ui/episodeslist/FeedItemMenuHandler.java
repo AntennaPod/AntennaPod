@@ -55,7 +55,7 @@ public class FeedItemMenuHandler {
      * @return Returns true if selectedItem is not null.
      */
     public static boolean onPrepareMenu(Menu menu, List<FeedItem> selectedItems, int... excludeIds) {
-        if (menu == null || selectedItems == null) {
+        if (menu == null || selectedItems == null || selectedItems.isEmpty() || selectedItems.get(0) == null) {
             return false;
         }
         boolean canSkip = false;
