@@ -78,6 +78,8 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
             if (speakers.isEmpty() && (position % 5 == 0)) {
                 holder.viewTimecode.setVisibility(View.VISIBLE);
                 holder.viewTimecode.setText(timecode);
+            } else {
+                holder.viewTimecode.setVisibility(View.GONE);
             }
             holder.viewContent.setText(seg.getWords());
         }
