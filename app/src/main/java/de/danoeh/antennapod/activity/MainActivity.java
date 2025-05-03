@@ -524,7 +524,8 @@ public class MainActivity extends CastEnabledActivity {
 
         @StyleRes int requiredTheme = ThemeSwitcher.getNoTitleTheme(this);
         if (requiredTheme != lastTheme) {
-            recreate();
+            finish();
+            startActivity(new Intent(this, MainActivity.class));
         }
     }
 
