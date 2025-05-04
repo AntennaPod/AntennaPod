@@ -548,7 +548,8 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                     recyclerAdapter.setDummyViews(0);
                     recyclerAdapter.updateItems(queue);
                     if (restoreScrollPosition) {
-                        ScrollPositionManager.restoreScrollPositionFromPrefs(getContext(), recyclerView, PREF_NAME, TAG);
+                        ScrollPositionManager.restoreScrollPositionFromPrefs(getContext(), recyclerView,
+                                PREF_NAME, TAG);
                     }
                     refreshInfoBar();
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
