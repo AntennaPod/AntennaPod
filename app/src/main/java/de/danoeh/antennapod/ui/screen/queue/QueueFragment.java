@@ -81,6 +81,8 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         EpisodeItemListAdapter.OnSelectModeListener {
     public static final String TAG = "QueueFragment";
     private static final String KEY_UP_ARROW = "up_arrow";
+    private static final String SCROLL_POSITION_KEY = "scroll_position";
+    private static final String SCROLL_OFFSET_KEY = "scroll_offset";
 
     private TextView infoBar;
     private EpisodeItemListRecyclerView recyclerView;
@@ -111,17 +113,16 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     @Override
     public void onStart() {
         super.onStart();
-        if (queue != null) {
-            recyclerView.restoreScrollPosition(QueueFragment.TAG);
-        }
-        loadItems(true);
+        loadItems();
         EventBus.getDefault().register(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        recyclerView.saveScrollPosition(QueueFragment.TAG);
+        Pair<Integer, Integer> scrollPosition = recyclerView.getScrollPosition();
+        prefs.edit().putInt(SCROLL_POSITION_KEY, scrollPosition.first)
+                .putInt(SCROLL_OFFSET_KEY, scrollPosition.second).apply();
     }
 
     @Override
@@ -139,7 +140,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         if (queue == null) {
             return;
         } else if (recyclerAdapter == null) {
-            loadItems(true);
+            loadItems();
             return;
         }
         int position;
@@ -173,7 +174,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
         recyclerAdapter.updateDragDropEnabled();
         refreshToolbarState();
-        recyclerView.saveScrollPosition(QueueFragment.TAG);
         refreshInfoBar();
     }
 
@@ -183,7 +183,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         if (queue == null) {
             return;
         } else if (recyclerAdapter == null) {
-            loadItems(true);
+            loadItems();
             return;
         }
         for (int i = 0, size = event.items.size(); i < size; i++) {
@@ -227,14 +227,14 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
-        loadItems(false);
+        loadItems();
         refreshToolbarState();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
         // Sent when playback position is reset
-        loadItems(false);
+        loadItems();
         refreshToolbarState();
     }
 
@@ -521,7 +521,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
     }
 
-    private void loadItems(final boolean restoreScrollPosition) {
+    private void loadItems() {
         Log.d(TAG, "loadItems()");
         if (disposable != null) {
             disposable.dispose();
@@ -536,6 +536,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(itemsAndDisplayButton -> {
+                    final boolean restoreScrollPosition = queue == null || queue.isEmpty();
                     queue = itemsAndDisplayButton.first;
                     if (itemsAndDisplayButton.second) {
                         emptyView.setMessage(R.string.no_queue_items_inbox_has_items_label);
@@ -548,7 +549,9 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                     recyclerAdapter.setDummyViews(0);
                     recyclerAdapter.updateItems(queue);
                     if (restoreScrollPosition) {
-                        recyclerView.restoreScrollPosition(QueueFragment.TAG);
+                        Pair<Integer, Integer> scrollPosition = new Pair<>(
+                                prefs.getInt(SCROLL_POSITION_KEY, 0), prefs.getInt(SCROLL_OFFSET_KEY, 0));
+                        recyclerView.restoreScrollPosition(scrollPosition);
                     }
                     refreshInfoBar();
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));

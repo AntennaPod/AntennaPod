@@ -1,23 +1,19 @@
 package de.danoeh.antennapod.ui.episodeslist;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.core.util.Pair;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 
 public class EpisodeItemListRecyclerView extends RecyclerView {
-    private static final String TAG = "EpisodeItemListRecyclerView";
-    private static final String PREF_PREFIX_SCROLL_POSITION = "scroll_position_";
-    private static final String PREF_PREFIX_SCROLL_OFFSET = "scroll_offset_";
-
     private LinearLayoutManager layoutManager;
 
     public EpisodeItemListRecyclerView(@NonNull Context context) {
@@ -51,29 +47,18 @@ public class EpisodeItemListRecyclerView extends RecyclerView {
         setPadding(horizontalSpacing, getPaddingTop(), horizontalSpacing, getPaddingBottom());
     }
 
-    public void saveScrollPosition(String tag) {
+    public Pair<Integer, Integer> getScrollPosition() {
         int firstItem = layoutManager.findFirstVisibleItemPosition();
         View firstItemView = layoutManager.findViewByPosition(firstItem);
-        float topOffset;
-        if (firstItemView == null) {
-            topOffset = 0;
-        } else {
-            topOffset = firstItemView.getTop();
-        }
-
-        getContext().getSharedPreferences(TAG, Context.MODE_PRIVATE).edit()
-                .putInt(PREF_PREFIX_SCROLL_POSITION + tag, firstItem)
-                .putInt(PREF_PREFIX_SCROLL_OFFSET + tag, (int) topOffset)
-                .apply();
+        int topOffset = firstItemView == null ? 0 : firstItemView.getTop();
+        return new Pair<>(firstItem, topOffset);
     }
 
-    public void restoreScrollPosition(String tag) {
-        SharedPreferences prefs = getContext().getSharedPreferences(TAG, Context.MODE_PRIVATE);
-        int position = prefs.getInt(PREF_PREFIX_SCROLL_POSITION + tag, 0);
-        int offset = prefs.getInt(PREF_PREFIX_SCROLL_OFFSET + tag, 0);
-        if (position > 0 || offset > 0) {
-            layoutManager.scrollToPositionWithOffset(position, offset);
+    public void restoreScrollPosition(Pair<Integer, Integer> scrollPosition) {
+        if (scrollPosition == null || (scrollPosition.first == 0 && scrollPosition.second == 0)) {
+            return;
         }
+        layoutManager.scrollToPositionWithOffset(scrollPosition.first, scrollPosition.second);
     }
 
     public boolean isScrolledToBottom() {
