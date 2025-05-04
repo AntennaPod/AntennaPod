@@ -25,6 +25,7 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
     public static final String TAG = "PlaybackHistoryFragment";
     private static final FeedItemFilter FILTER_HISTORY = new FeedItemFilter(
             FeedItemFilter.IS_IN_HISTORY, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
+    private static boolean calledFirstTime = true;
 
     @NonNull
     @Override
@@ -52,6 +53,16 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
     @Override
     protected String getPrefName() {
         return TAG;
+    }
+
+    @Override
+    protected boolean isCalledFirstTime() {
+        return calledFirstTime;
+    }
+
+    @Override
+    protected void setCalledFirstTime(boolean value) {
+        calledFirstTime = value;
     }
 
     @Override

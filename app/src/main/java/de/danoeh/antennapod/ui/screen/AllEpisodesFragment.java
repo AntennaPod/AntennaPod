@@ -31,6 +31,7 @@ import java.util.List;
 public class AllEpisodesFragment extends EpisodesListFragment {
     public static final String TAG = "EpisodesFragment";
     public static final String PREF_NAME = "PrefAllEpisodesFragment";
+    private static boolean calledFirstTime = true;
 
     @NonNull
     @Override
@@ -87,6 +88,16 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     @Override
     protected String getPrefName() {
         return PREF_NAME;
+    }
+
+    @Override
+    protected boolean isCalledFirstTime() {
+        return calledFirstTime;
+    }
+
+    @Override
+    protected void setCalledFirstTime(boolean value) {
+        calledFirstTime = value;
     }
 
     @Override

@@ -23,6 +23,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.ui.ScrollPositionManager;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.ui.view.FloatingSelectMenu;
@@ -85,8 +86,12 @@ public abstract class EpisodesListFragment extends Fragment
     @Override
     public void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+        if (isCalledFirstTime()) {
+            setCalledFirstTime(false);
+            ScrollPositionManager.initializeScrollPositionToTop(getFragmentTag());
+        }
         loadItems();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -98,7 +103,7 @@ public abstract class EpisodesListFragment extends Fragment
     @Override
     public void onPause() {
         super.onPause();
-        recyclerView.saveScrollPosition(getPrefName());
+        ScrollPositionManager.storeCurrentScrollPosition(recyclerView, getFragmentTag());
         unregisterForContextMenu(recyclerView);
     }
 
@@ -414,7 +419,7 @@ public abstract class EpisodesListFragment extends Fragment
                             listAdapter.updateItems(episodes);
                             listAdapter.setTotalNumberOfItems(data.second);
                             if (restoreScrollPosition) {
-                                recyclerView.restoreScrollPosition(getPrefName());
+                                ScrollPositionManager.restoreStoredScrollPosition(recyclerView, getFragmentTag());
                             }
                             updateToolbar();
                         }, error -> {
@@ -437,6 +442,10 @@ public abstract class EpisodesListFragment extends Fragment
     protected abstract String getFragmentTag();
 
     protected abstract String getPrefName();
+
+    protected abstract boolean isCalledFirstTime();
+
+    protected abstract void setCalledFirstTime(boolean value);
 
     protected void updateToolbar() {
     }

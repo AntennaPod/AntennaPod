@@ -51,6 +51,7 @@ public class EpisodeItemListRecyclerView extends RecyclerView {
         setPadding(horizontalSpacing, getPaddingTop(), horizontalSpacing, getPaddingBottom());
     }
 
+
     public void saveScrollPosition(String tag) {
         int firstItem = layoutManager.findFirstVisibleItemPosition();
         View firstItemView = layoutManager.findViewByPosition(firstItem);
@@ -75,6 +76,7 @@ public class EpisodeItemListRecyclerView extends RecyclerView {
             layoutManager.scrollToPositionWithOffset(position, offset);
         }
     }
+
 
     public boolean isScrolledToBottom() {
         int visibleEpisodeCount = getChildCount();

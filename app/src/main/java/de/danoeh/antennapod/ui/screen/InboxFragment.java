@@ -35,6 +35,7 @@ public class InboxFragment extends EpisodesListFragment {
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
     private static final String PREF_DO_NOT_PROMPT_REMOVE_ALL_FROM_INBOX = "prefDoNotPromptRemovalAllFromInbox";
     private SharedPreferences prefs;
+    private static boolean calledFirstTime = true;
 
     @NonNull
     @Override
@@ -63,6 +64,16 @@ public class InboxFragment extends EpisodesListFragment {
     @Override
     protected String getPrefName() {
         return PREF_NAME;
+    }
+
+    @Override
+    protected boolean isCalledFirstTime() {
+        return calledFirstTime;
+    }
+
+    @Override
+    protected void setCalledFirstTime(boolean value) {
+        calledFirstTime = value;
     }
 
     @Override

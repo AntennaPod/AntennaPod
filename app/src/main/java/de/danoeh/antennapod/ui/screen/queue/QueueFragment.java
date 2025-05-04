@@ -30,6 +30,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
+import de.danoeh.antennapod.ui.ScrollPositionManager;
 import de.danoeh.antennapod.ui.screen.InboxFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
@@ -112,7 +113,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     public void onStart() {
         super.onStart();
         if (queue != null) {
-            recyclerView.restoreScrollPosition(QueueFragment.TAG);
+            ScrollPositionManager.restoreScrollPositionFromPrefs(getContext(), recyclerView, PREFS, TAG);
         }
         loadItems(true);
         EventBus.getDefault().register(this);
@@ -121,7 +122,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     @Override
     public void onPause() {
         super.onPause();
-        recyclerView.saveScrollPosition(QueueFragment.TAG);
+        ScrollPositionManager.saveCurrentScrollPositionToPrefs(getContext(), recyclerView, PREFS, TAG);
     }
 
     @Override
@@ -173,7 +174,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
         recyclerAdapter.updateDragDropEnabled();
         refreshToolbarState();
-        recyclerView.saveScrollPosition(QueueFragment.TAG);
+        ScrollPositionManager.saveCurrentScrollPositionToPrefs(getContext(), recyclerView, PREFS, TAG);
         refreshInfoBar();
     }
 
@@ -548,7 +549,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                     recyclerAdapter.setDummyViews(0);
                     recyclerAdapter.updateItems(queue);
                     if (restoreScrollPosition) {
-                        recyclerView.restoreScrollPosition(QueueFragment.TAG);
+                        ScrollPositionManager.restoreScrollPositionFromPrefs(getContext(), recyclerView, PREFS, TAG);
                     }
                     refreshInfoBar();
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
