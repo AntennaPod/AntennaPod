@@ -113,7 +113,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     public void onStart() {
         super.onStart();
         if (queue != null) {
-            ScrollPositionManager.restoreScrollPositionFromPrefs(getContext(), recyclerView, PREFS, TAG);
+            ScrollPositionManager.restoreScrollPositionFromPrefs(requireContext(), recyclerView, PREFS, TAG);
         }
         loadItems(true);
         EventBus.getDefault().register(this);
@@ -122,7 +122,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     @Override
     public void onPause() {
         super.onPause();
-        ScrollPositionManager.saveCurrentScrollPositionToPrefs(getContext(), recyclerView, PREFS, TAG);
+        ScrollPositionManager.saveCurrentScrollPositionToPrefs(requireContext(), recyclerView, PREFS, TAG);
     }
 
     @Override

@@ -67,13 +67,16 @@ public class ScrollPositionManager {
 
         LinearLayoutManager layoutManager = (LinearLayoutManager) view.getLayoutManager();
         layoutManager.scrollToPositionWithOffset(position, offset);
-
     }
 
     public static void restoreStoredScrollPosition(RecyclerView view, String tag) {
         LinearLayoutManager layoutManager = (LinearLayoutManager) view.getLayoutManager();
-        Pair<Integer, Integer> scrollPosition = getStoredScrollPosition(tag);
-        layoutManager.scrollToPositionWithOffset(scrollPosition.first, scrollPosition.second);
+        if (scrollPositions.containsKey(tag)) {
+            Pair<Integer, Integer> scrollPosition = getStoredScrollPosition(tag);
+            layoutManager.scrollToPositionWithOffset(scrollPosition.first, scrollPosition.second);
+        } else {
+            initializeScrollPositionToTop(tag);
+        }
     }
 
 }

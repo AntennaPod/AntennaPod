@@ -23,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.ui.ScrollPositionManager;
 import de.danoeh.antennapod.ui.common.ConfirmationDialog;
 import de.danoeh.antennapod.ui.screen.AddFeedFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
@@ -84,6 +85,7 @@ public class SubscriptionFragment extends Fragment
     private ProgressBar progressBar;
     private String displayedFolder = null;
     private boolean displayUpArrow;
+    private static boolean calledFirstTime = true;
 
     private Disposable disposable;
     private SharedPreferences prefs;
@@ -278,8 +280,18 @@ public class SubscriptionFragment extends Fragment
     @Override
     public void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+        if (calledFirstTime) {
+            calledFirstTime = false;
+            ScrollPositionManager.initializeScrollPositionToTop(TAG);
+        }
         loadSubscriptions();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ScrollPositionManager.storeCurrentScrollPosition(subscriptionRecycler, TAG);
     }
 
     @Override
@@ -323,6 +335,7 @@ public class SubscriptionFragment extends Fragment
                         listItems = result;
                         progressBar.setVisibility(View.GONE);
                         subscriptionAdapter.setItems(result);
+                        ScrollPositionManager.restoreStoredScrollPosition(subscriptionRecycler, TAG);
                         emptyView.updateVisibility();
                     }, error -> {
                         Log.e(TAG, Log.getStackTraceString(error));
