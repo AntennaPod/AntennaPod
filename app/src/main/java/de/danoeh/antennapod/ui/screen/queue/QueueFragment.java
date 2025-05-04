@@ -81,6 +81,8 @@ import io.reactivex.schedulers.Schedulers;
 public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuItemClickListener,
         EpisodeItemListAdapter.OnSelectModeListener {
     public static final String TAG = "QueueFragment";
+    private static final String PREF_NAME = "PrefQueueFragment";
+    private static final String PREF_SHOW_LOCK_WARNING = "show_lock_warning";
     private static final String KEY_UP_ARROW = "up_arrow";
 
     private TextView infoBar;
@@ -93,9 +95,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
 
     private List<FeedItem> queue;
 
-    private static final String PREFS = "QueueFragment";
-    private static final String PREF_SHOW_LOCK_WARNING = "show_lock_warning";
-
     private Disposable disposable;
     private SwipeActions swipeActions;
     private SharedPreferences prefs;
@@ -106,14 +105,14 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }
 
     @Override
     public void onStart() {
         super.onStart();
         if (queue != null) {
-            ScrollPositionManager.restoreScrollPositionFromPrefs(requireContext(), recyclerView, PREFS, TAG);
+            ScrollPositionManager.restoreScrollPositionFromPrefs(requireContext(), recyclerView, PREF_NAME, TAG);
         }
         loadItems(true);
         EventBus.getDefault().register(this);
@@ -122,7 +121,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     @Override
     public void onPause() {
         super.onPause();
-        ScrollPositionManager.saveCurrentScrollPositionToPrefs(requireContext(), recyclerView, PREFS, TAG);
+        ScrollPositionManager.saveCurrentScrollPositionToPrefs(requireContext(), recyclerView, PREF_NAME, TAG);
     }
 
     @Override
@@ -174,7 +173,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
         recyclerAdapter.updateDragDropEnabled();
         refreshToolbarState();
-        ScrollPositionManager.saveCurrentScrollPositionToPrefs(getContext(), recyclerView, PREFS, TAG);
+        ScrollPositionManager.saveCurrentScrollPositionToPrefs(getContext(), recyclerView, PREF_NAME, TAG);
         refreshInfoBar();
     }
 
@@ -549,7 +548,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                     recyclerAdapter.setDummyViews(0);
                     recyclerAdapter.updateItems(queue);
                     if (restoreScrollPosition) {
-                        ScrollPositionManager.restoreScrollPositionFromPrefs(getContext(), recyclerView, PREFS, TAG);
+                        ScrollPositionManager.restoreScrollPositionFromPrefs(getContext(), recyclerView, PREF_NAME, TAG);
                     }
                     refreshInfoBar();
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));

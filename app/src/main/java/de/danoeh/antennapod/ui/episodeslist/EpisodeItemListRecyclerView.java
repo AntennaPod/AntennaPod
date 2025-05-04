@@ -1,10 +1,8 @@
 package de.danoeh.antennapod.ui.episodeslist;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
-import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
@@ -15,8 +13,6 @@ import de.danoeh.antennapod.R;
 
 public class EpisodeItemListRecyclerView extends RecyclerView {
     private static final String TAG = "EpisodeItemListRecyclerView";
-    private static final String PREF_PREFIX_SCROLL_POSITION = "scroll_position_";
-    private static final String PREF_PREFIX_SCROLL_OFFSET = "scroll_offset_";
 
     private LinearLayoutManager layoutManager;
 

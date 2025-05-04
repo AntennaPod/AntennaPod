@@ -63,7 +63,7 @@ public class SubscriptionFragment extends Fragment
         implements MaterialToolbar.OnMenuItemClickListener,
         SubscriptionsRecyclerAdapter.OnSelectModeListener {
     public static final String TAG = "SubscriptionFragment";
-    private static final String PREFS = "SubscriptionFragment";
+    private static final String PREF_NAME = "PrefSubscriptionFragment";
     private static final String PREF_NUM_COLUMNS = "columns";
     private static final String KEY_UP_ARROW = "up_arrow";
     private static final String ARGUMENT_FOLDER = "folder";
@@ -106,7 +106,7 @@ public class SubscriptionFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefs = requireActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }
 
     @Override
