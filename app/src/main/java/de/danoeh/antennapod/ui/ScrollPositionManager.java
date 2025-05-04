@@ -49,7 +49,8 @@ public class ScrollPositionManager {
         scrollPositions.put(tag, scrollPosition);
     }
 
-    public static void saveCurrentScrollPositionToPrefs(Context context, RecyclerView view, String prefName, String tag) {
+    public static void saveCurrentScrollPositionToPrefs(Context context, RecyclerView view,
+                                                        String prefName, String tag) {
         Pair<Integer, Integer> scrollPosition = getCurrentScrollPosition(view);
 
         context.getSharedPreferences(prefName, Context.MODE_PRIVATE).edit()
@@ -58,7 +59,8 @@ public class ScrollPositionManager {
                 .apply();
     }
 
-    public static void restoreScrollPositionFromPrefs(Context context, RecyclerView view, String prefName, String tag) {
+    public static void restoreScrollPositionFromPrefs(Context context, RecyclerView view,
+                                                      String prefName, String tag) {
         SharedPreferences prefs = context.getSharedPreferences(prefName, Context.MODE_PRIVATE);
         int position = prefs.getInt(PREF_PREFIX_SCROLL_POSITION + tag, 0);
         int offset = prefs.getInt(PREF_PREFIX_SCROLL_OFFSET + tag, 0);
