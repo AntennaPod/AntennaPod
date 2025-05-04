@@ -76,6 +76,11 @@ public class MainActivityStarter {
         return this;
     }
 
+    public MainActivityStarter withClearTop() {
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return this;
+    }
+
     public MainActivityStarter withFragmentArgs(String name, boolean value) {
         if (fragmentArgs == null) {
             fragmentArgs = new Bundle();

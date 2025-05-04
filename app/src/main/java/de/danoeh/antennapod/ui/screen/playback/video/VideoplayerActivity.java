@@ -634,8 +634,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             PlaybackControlsDialog dialog = PlaybackControlsDialog.newInstance();
             dialog.show(getSupportFragmentManager(), "playback_controls");
         } else if (item.getItemId() == R.id.open_feed_item && feedItem != null) {
-            Intent intent = MainActivity.getIntentToOpenFeed(this, feedItem.getFeedId());
-            startActivity(intent);
+            new MainActivityStarter(this).withOpenFeed(feedItem.getFeedId()).withClearTop().start();
         } else if (item.getItemId() == R.id.visit_website_item) {
             IntentUtils.openInBrowser(VideoplayerActivity.this, getWebsiteLinkWithFallback(media));
         } else if (item.getItemId() == R.id.share_item && feedItem != null) {

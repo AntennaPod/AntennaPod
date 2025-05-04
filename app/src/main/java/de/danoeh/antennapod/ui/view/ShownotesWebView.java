@@ -23,13 +23,14 @@ import androidx.core.util.Consumer;
 import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.ui.share.ShareUtils;
 import de.danoeh.antennapod.ui.cleaner.ShownotesCleaner;
+import org.greenrobot.eventbus.EventBus;
 
 public class ShownotesWebView extends WebView implements View.OnLongClickListener {
     private static final String TAG = "ShownotesWebView";
@@ -104,10 +105,9 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             if (clipboardManager != null) {
                 clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", r.getExtra()));
             }
-            if (Build.VERSION.SDK_INT <= 32 && this.getContext() instanceof MainActivity) {
-                ((MainActivity) this.getContext()).showSnackbarAbovePlayer(
-                        getResources().getString(R.string.copied_to_clipboard),
-                        Snackbar.LENGTH_SHORT);
+            if (Build.VERSION.SDK_INT <= 32) {
+                EventBus.getDefault().post(new MessageEvent(
+                        getContext().getResources().getString(R.string.copied_to_clipboard)));
             }
             return true;
         }
