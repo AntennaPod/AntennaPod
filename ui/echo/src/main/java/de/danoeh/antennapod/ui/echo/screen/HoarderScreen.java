@@ -66,19 +66,6 @@ public class HoarderScreen extends EchoScreen {
             // Therefore, we need to explicitly load the episode list from the DB and set it to the Feed here.
             List<FeedItem> episodes = de.danoeh.antennapod.storage.database.DBReader.getFeedItemList(item.feed, new FeedItemFilter(), null, 0, Integer.MAX_VALUE);
             item.feed.setItems(episodes);
-            if (item.feed.getItems() != null) {
-                for (FeedItem episode : item.feed.getItems()) {
-                    if (episode.getPubDate() != null &&
-                        episode.getPubDate().getTime() >= sixMonthsAgo &&
-                        !episode.isPlayed()) {
-                        String title = item.feed.getTitle();
-                        if (title == null || title.isEmpty()) {
-                            title = item.feed.getFeedIdentifier();
-                        }
-                        unplayedActive.add(title);
-                    }
-                }
-            }
             if (item.feed.getPreferences().getKeepUpdated()) {
                 totalActivePodcasts++;
                 if (item.timePlayed > 0) {
