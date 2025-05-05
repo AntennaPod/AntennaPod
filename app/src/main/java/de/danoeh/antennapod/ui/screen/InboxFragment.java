@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.MessageEvent;
@@ -35,6 +37,7 @@ public class InboxFragment extends EpisodesListFragment {
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
     private static final String PREF_DO_NOT_PROMPT_REMOVE_ALL_FROM_INBOX = "prefDoNotPromptRemovalAllFromInbox";
     private SharedPreferences prefs;
+    private static Pair<Integer, Integer> scrollPosition = null;
 
     @NonNull
     @Override
@@ -61,8 +64,14 @@ public class InboxFragment extends EpisodesListFragment {
     }
 
     @Override
-    protected String getPrefName() {
-        return PREF_NAME;
+    public void onPause() {
+        super.onPause();
+        scrollPosition = recyclerView.getScrollPosition();
+    }
+
+    @Override
+    protected void onItemsFirstLoaded() {
+        recyclerView.restoreScrollPosition(scrollPosition);
     }
 
     @Override

@@ -98,7 +98,6 @@ public abstract class EpisodesListFragment extends Fragment
     @Override
     public void onPause() {
         super.onPause();
-        recyclerView.saveScrollPosition(getPrefName());
         unregisterForContextMenu(recyclerView);
     }
 
@@ -406,15 +405,15 @@ public abstract class EpisodesListFragment extends Fragment
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         data -> {
-                            final boolean restoreScrollPosition = episodes.isEmpty();
+                            final boolean firstLoaded = episodes.isEmpty();
                             episodes = data.first;
                             hasMoreItems = !(page == 1 && episodes.size() < EPISODES_PER_PAGE);
                             progressBar.setVisibility(View.GONE);
                             listAdapter.setDummyViews(0);
                             listAdapter.updateItems(episodes);
                             listAdapter.setTotalNumberOfItems(data.second);
-                            if (restoreScrollPosition) {
-                                recyclerView.restoreScrollPosition(getPrefName());
+                            if (firstLoaded) {
+                                onItemsFirstLoaded();
                             }
                             updateToolbar();
                         }, error -> {
@@ -436,9 +435,10 @@ public abstract class EpisodesListFragment extends Fragment
 
     protected abstract String getFragmentTag();
 
-    protected abstract String getPrefName();
-
     protected void updateToolbar() {
+    }
+
+    protected void onItemsFirstLoaded() {
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
