@@ -31,9 +31,11 @@ public class StatisticsItem {
      */
     public final long episodesDownloadCount;
 
+    public final boolean hasRecentUnplayed;
+
     public StatisticsItem(Feed feed, long time, long timePlayed,
                           long episodes, long episodesStarted,
-                          long totalDownloadSize, long episodesDownloadCount) {
+                          long totalDownloadSize, long episodesDownloadCount, boolean hasRecentUnplayed) {
         this.feed = feed;
         this.time = time;
         this.timePlayed = timePlayed;
@@ -41,5 +43,12 @@ public class StatisticsItem {
         this.episodesStarted = episodesStarted;
         this.totalDownloadSize = totalDownloadSize;
         this.episodesDownloadCount = episodesDownloadCount;
+        this.hasRecentUnplayed = hasRecentUnplayed;
+    }
+
+    public StatisticsItem(Feed feed, long time, long timePlayed,
+                          long episodes, long episodesStarted,
+                          long totalDownloadSize, long episodesDownloadCount) {
+        this(feed, time, timePlayed, episodes, episodesStarted, totalDownloadSize, episodesDownloadCount, false);
     }
 }
