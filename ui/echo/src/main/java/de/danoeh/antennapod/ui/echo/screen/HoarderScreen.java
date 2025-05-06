@@ -60,11 +60,12 @@ public class HoarderScreen extends EchoScreen {
         int playedActivePodcasts = 0;
         String randomUnplayedActivePodcast = "";
         ArrayList<String> unplayedActive = new ArrayList<>();
-        long sixMonthsAgo = System.currentTimeMillis() - (long)(1000L * 3600 * 24 * 30.44 * 6);
+        long sixMonthsAgo = System.currentTimeMillis() - (long) (1000L * 3600 * 24 * 30.44 * 6);
         for (StatisticsItem item : statisticsResult.feedTime) {
             // The Feed objects returned by DBReader.getStatistics() do not contain episode lists (items).
             // Therefore, we need to explicitly load the episode list from the DB and set it to the Feed here.
-            List<FeedItem> episodes = de.danoeh.antennapod.storage.database.DBReader.getFeedItemList(item.feed, new FeedItemFilter(), null, 0, Integer.MAX_VALUE);
+            List<FeedItem> episodes = de.danoeh.antennapod.storage.database.DBReader.getFeedItemList(
+                    item.feed, new FeedItemFilter(), null, 0, Integer.MAX_VALUE);
             item.feed.setItems(episodes);
             if (item.feed.getPreferences().getKeepUpdated()) {
                 totalActivePodcasts++;
@@ -74,9 +75,9 @@ public class HoarderScreen extends EchoScreen {
                     boolean hasRecentUnplayedEpisode = false;
                     if (item.feed.getItems() != null) {
                         for (FeedItem episode : item.feed.getItems()) {
-                            if (episode.getPubDate() != null &&
-                                episode.getPubDate().getTime() >= sixMonthsAgo &&
-                                !episode.isPlayed()) {
+                            if (episode.getPubDate() != null
+                                    && episode.getPubDate().getTime() >= sixMonthsAgo
+                                    && !episode.isPlayed()) {
                                 hasRecentUnplayedEpisode = true;
                                 break;
                             }
@@ -93,7 +94,8 @@ public class HoarderScreen extends EchoScreen {
             }
         }
         if (!unplayedActive.isEmpty()) {
-            randomUnplayedActivePodcast = unplayedActive.get((int) (Math.random() * unplayedActive.size()));
+            randomUnplayedActivePodcast = unplayedActive.get(
+                    (int) (Math.random() * unplayedActive.size()));
         }
         display(playedActivePodcasts, totalActivePodcasts, randomUnplayedActivePodcast);
     }
