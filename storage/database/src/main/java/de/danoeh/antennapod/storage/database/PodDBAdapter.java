@@ -1215,7 +1215,8 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getFeedStatisticsCursor(boolean includeMarkedAsPlayed, long timeFilterFrom, long timeFilterTo, long sixMonthsAgo) {
+    public final Cursor getFeedStatisticsCursor(
+            boolean includeMarkedAsPlayed, long timeFilterFrom, long timeFilterTo, long sixMonthsAgo) {
         final String lastPlayedTime = TABLE_NAME_FEED_MEDIA + "." + KEY_LAST_PLAYED_TIME;
         String wasStarted = TABLE_NAME_FEED_MEDIA + "." + KEY_PLAYBACK_COMPLETION_DATE + " > 0"
                 + " AND " + TABLE_NAME_FEED_MEDIA + "." + KEY_PLAYED_DURATION + " > 0";
@@ -1251,7 +1252,8 @@ public class PodDBAdapter {
                         + "  SELECT 1 FROM " + TABLE_NAME_FEED_ITEMS + " fi"
                         + "  WHERE fi." + KEY_FEED + " = " + TABLE_NAME_FEEDS + "." + KEY_ID
                         + "    AND fi." + KEY_READ + " != " + FeedItem.PLAYED
-                        + "    AND fi." + KEY_PUBDATE + " >= " + sixMonthsAgo + " ) THEN 1 ELSE 0 END AS has_recent_unplayed "
+                        + "    AND fi." + KEY_PUBDATE + " >= " + sixMonthsAgo
+                + " ) THEN 1 ELSE 0 END AS has_recent_unplayed "
                 + " FROM " + TABLE_NAME_FEED_ITEMS
                 + JOIN_FEED_ITEM_AND_MEDIA
                 + " INNER JOIN " + TABLE_NAME_FEEDS

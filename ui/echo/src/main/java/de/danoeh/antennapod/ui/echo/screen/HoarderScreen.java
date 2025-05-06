@@ -8,11 +8,8 @@ import de.danoeh.antennapod.storage.database.StatisticsItem;
 import de.danoeh.antennapod.ui.echo.R;
 import de.danoeh.antennapod.ui.echo.background.WavesBackground;
 import de.danoeh.antennapod.ui.echo.databinding.SimpleEchoScreenBinding;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class HoarderScreen extends EchoScreen {
     private final SimpleEchoScreenBinding viewBinding;
