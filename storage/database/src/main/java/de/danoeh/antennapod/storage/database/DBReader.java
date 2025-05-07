@@ -622,7 +622,7 @@ public final class DBReader {
             int indexPlayedTime = cursor.getColumnIndexOrThrow("played_time");
             int indexNumDownloaded = cursor.getColumnIndexOrThrow("num_downloaded");
             int indexDownloadSize = cursor.getColumnIndexOrThrow("download_size");
-            int indexHasRecentUnplayed = cursor.getColumnIndexOrThrow("has_recent_unplayed");
+            int indexNumRecentUnplayed = cursor.getColumnIndexOrThrow("num_recent_unplayed");
 
             while (cursor.moveToNext()) {
                 Feed feed = cursor.getFeed();
@@ -634,7 +634,7 @@ public final class DBReader {
                 long totalDownloadSize = cursor.getLong(indexDownloadSize);
                 long episodesDownloadCount = cursor.getLong(indexNumDownloaded);
                 long oldestDate = cursor.getLong(indexOldestDate);
-                boolean hasRecentUnplayed = cursor.getInt(indexHasRecentUnplayed) == 1;
+                boolean hasRecentUnplayed = cursor.getLong(indexNumRecentUnplayed) > 0;
 
                 if (episodes > 0 && oldestDate < Long.MAX_VALUE) {
                     result.oldestDate = Math.min(result.oldestDate, oldestDate);
