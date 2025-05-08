@@ -45,10 +45,4 @@ public class StatisticsItem {
         this.episodesDownloadCount = episodesDownloadCount;
         this.hasRecentUnplayed = hasRecentUnplayed;
     }
-
-    public StatisticsItem(Feed feed, long time, long timePlayed,
-                          long episodes, long episodesStarted,
-                          long totalDownloadSize, long episodesDownloadCount) {
-        this(feed, time, timePlayed, episodes, episodesStarted, totalDownloadSize, episodesDownloadCount, false);
-    }
 }
