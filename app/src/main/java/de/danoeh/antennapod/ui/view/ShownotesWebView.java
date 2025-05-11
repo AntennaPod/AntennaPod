@@ -10,13 +10,17 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.RenderProcessGoneDetail;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.util.Consumer;
 
@@ -86,6 +90,26 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
                 if (pageFinishedListener != null) {
                     pageFinishedListener.run();
                 }
+            }
+
+            @Override
+            public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
+                ViewGroup parent = (ViewGroup) view.getParent();
+                if (parent == null) {
+                    return true;
+                }
+                ViewGroup.LayoutParams params = parent.getLayoutParams();
+                TextView errorText = new TextView(getContext());
+                int position = parent.indexOfChild(view);
+                parent.removeView(view);
+                parent.addView(errorText, position, params);
+                int padding = (int) (40 * getContext().getResources().getDisplayMetrics().density);
+                errorText.setPadding(padding, padding, padding, padding);
+                errorText.setGravity(Gravity.CENTER);
+                errorText.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
+                errorText.setText("Your Android System WebView crashed. Try restarting the phone. If this happens "
+                        + "repeatedly, contact the phone manufacturer or the creator of your custom ROM.");
+                return true;
             }
         });
     }
