@@ -811,9 +811,6 @@
     <string name="release_schedule_saturday">Sat</string>
     <string name="release_schedule_sunday">Sun</string>
 
-    <!-- AntennaPodSP -->
-    <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>
-
     <!-- Add podcast fragment -->
     <string name="search_podcast_hint">Search podcast…</string>
     <string name="search_itunes_label">Search Apple Podcasts</string>
