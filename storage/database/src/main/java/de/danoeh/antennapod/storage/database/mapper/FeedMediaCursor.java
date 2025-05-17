@@ -37,7 +37,7 @@ public class FeedMediaCursor extends CursorWrapper {
         indexDownloadUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DOWNLOAD_URL);
         indexDownloadDate = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DOWNLOAD_DATE);
         indexPlayedDuration = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PLAYED_DURATION);
-        indexLastPlayedTime = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_LAST_PLAYED_TIME);
+        indexLastPlayedTime = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_LAST_PLAYED_TIME_STATISTICS);
         indexHasEmbeddedPicture = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_HAS_EMBEDDED_PICTURE);
     }
 
