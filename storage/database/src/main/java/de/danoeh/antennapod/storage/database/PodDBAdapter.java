@@ -95,7 +95,6 @@ public class PodDBAdapter {
     public static final String KEY_FEED_IDENTIFIER = "feed_identifier";
     public static final String KEY_REASON_DETAILED = "reason_detailed";
     public static final String KEY_DOWNLOADSTATUS_TITLE = "title";
-    public static final String KEY_PLAYBACK_COMPLETION_DATE = "playback_completion_date";
     public static final String KEY_AUTO_DOWNLOAD_ENABLED = "auto_download"; // Both tables use the same key
     public static final String KEY_KEEP_UPDATED = "keep_updated";
     public static final String KEY_AUTO_DELETE_ACTION = "auto_delete_action";
@@ -109,6 +108,7 @@ public class PodDBAdapter {
     public static final String KEY_SORT_ORDER = "sort_order";
     public static final String KEY_LAST_UPDATE_FAILED = "last_update_failed";
     public static final String KEY_HAS_EMBEDDED_PICTURE = "has_embedded_picture";
+    public static final String KEY_LAST_PLAYED_TIME_HISTORY = "playback_completion_date";
     public static final String KEY_LAST_PLAYED_TIME = "last_played_time";
     public static final String KEY_INCLUDE_FILTER = "include_filter";
     public static final String KEY_EXCLUDE_FILTER = "exclude_filter";
@@ -197,7 +197,7 @@ public class PodDBAdapter {
             + " INTEGER," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL
             + " TEXT," + KEY_DOWNLOAD_DATE + " INTEGER," + KEY_POSITION
             + " INTEGER," + KEY_SIZE + " INTEGER," + KEY_MIME_TYPE + " TEXT,"
-            + KEY_PLAYBACK_COMPLETION_DATE + " INTEGER,"
+            + KEY_LAST_PLAYED_TIME_HISTORY + " INTEGER,"
             + KEY_FEEDITEM + " INTEGER,"
             + KEY_PLAYED_DURATION + " INTEGER,"
             + KEY_HAS_EMBEDDED_PICTURE + " INTEGER,"
@@ -292,7 +292,7 @@ public class PodDBAdapter {
             + TABLE_NAME_FEED_MEDIA + "." + KEY_POSITION + ", "
             + TABLE_NAME_FEED_MEDIA + "." + KEY_SIZE + ", "
             + TABLE_NAME_FEED_MEDIA + "." + KEY_MIME_TYPE + ", "
-            + TABLE_NAME_FEED_MEDIA + "." + KEY_PLAYBACK_COMPLETION_DATE + ", "
+            + TABLE_NAME_FEED_MEDIA + "." + KEY_LAST_PLAYED_TIME_HISTORY + ", "
             + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM + ", "
             + TABLE_NAME_FEED_MEDIA + "." + KEY_PLAYED_DURATION + ", "
             + TABLE_NAME_FEED_MEDIA + "." + KEY_HAS_EMBEDDED_PICTURE + ", "
@@ -526,9 +526,9 @@ public class PodDBAdapter {
         values.put(KEY_LAST_PLAYED_TIME, media.getLastPlayedTime());
 
         if (media.getPlaybackCompletionDate() != null) {
-            values.put(KEY_PLAYBACK_COMPLETION_DATE, media.getPlaybackCompletionDate().getTime());
+            values.put(KEY_LAST_PLAYED_TIME_HISTORY, media.getPlaybackCompletionDate().getTime());
         } else {
-            values.put(KEY_PLAYBACK_COMPLETION_DATE, 0);
+            values.put(KEY_LAST_PLAYED_TIME_HISTORY, 0);
         }
         if (media.getItem() != null) {
             values.put(KEY_FEEDITEM, media.getItem().getId());
@@ -549,7 +549,7 @@ public class PodDBAdapter {
             values.put(KEY_DURATION, media.getDuration());
             values.put(KEY_PLAYED_DURATION, media.getPlayedDuration());
             values.put(KEY_LAST_PLAYED_TIME, media.getLastPlayedTime());
-            values.put(KEY_PLAYBACK_COMPLETION_DATE, media.getPlaybackCompletionDate().getTime());
+            values.put(KEY_LAST_PLAYED_TIME_HISTORY, media.getPlaybackCompletionDate().getTime());
             db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
                     new String[]{String.valueOf(media.getId())});
         } else {
@@ -560,7 +560,7 @@ public class PodDBAdapter {
     public void setFeedMediaPlaybackCompletionDate(FeedMedia media) {
         if (media.getId() != 0) {
             ContentValues values = new ContentValues();
-            values.put(KEY_PLAYBACK_COMPLETION_DATE, media.getPlaybackCompletionDate().getTime());
+            values.put(KEY_LAST_PLAYED_TIME_HISTORY, media.getPlaybackCompletionDate().getTime());
             values.put(KEY_PLAYED_DURATION, media.getPlayedDuration());
             db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
                     new String[]{String.valueOf(media.getId())});
@@ -955,7 +955,7 @@ public class PodDBAdapter {
 
     public void clearPlaybackHistory() {
         ContentValues values = new ContentValues();
-        values.put(KEY_PLAYBACK_COMPLETION_DATE, 0);
+        values.put(KEY_LAST_PLAYED_TIME_HISTORY, 0);
         db.update(TABLE_NAME_FEED_MEDIA, values, null, null);
     }
 
@@ -1185,7 +1185,7 @@ public class PodDBAdapter {
         }
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
                 + " WHERE " + KEY_DOWNLOAD_URL + " IN (" + urlsString + ")"
-                + " ORDER BY " + KEY_PLAYBACK_COMPLETION_DATE + " DESC";
+                + " ORDER BY " + KEY_LAST_PLAYED_TIME_HISTORY + " DESC";
         return db.rawQuery(query, null);
     }
 
@@ -1219,7 +1219,7 @@ public class PodDBAdapter {
     public final Cursor getFeedStatisticsCursor(boolean includeMarkedAsPlayed, long timeFilterFrom,
                                                 long timeFilterTo, long sixMonthsAgo) {
         final String lastPlayedTime = TABLE_NAME_FEED_MEDIA + "." + KEY_LAST_PLAYED_TIME;
-        String wasStarted = TABLE_NAME_FEED_MEDIA + "." + KEY_PLAYBACK_COMPLETION_DATE + " > 0"
+        String wasStarted = TABLE_NAME_FEED_MEDIA + "." + KEY_LAST_PLAYED_TIME_HISTORY + " > 0"
                 + " AND " + TABLE_NAME_FEED_MEDIA + "." + KEY_PLAYED_DURATION + " > 0";
         if (includeMarkedAsPlayed) {
             wasStarted = "(" + wasStarted + ") OR "

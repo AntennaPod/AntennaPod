@@ -45,7 +45,7 @@ class DBUpgrader {
         }
         if (oldVersion <= 7) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
-                    + " ADD COLUMN " + PodDBAdapter.KEY_PLAYBACK_COMPLETION_DATE
+                    + " ADD COLUMN " + PodDBAdapter.KEY_LAST_PLAYED_TIME_HISTORY
                     + " INTEGER");
         }
         if (oldVersion <= 8) {

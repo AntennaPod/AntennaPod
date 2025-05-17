@@ -28,7 +28,7 @@ public class FeedMediaCursor extends CursorWrapper {
     public FeedMediaCursor(Cursor cursor) {
         super(cursor);
         indexId = cursor.getColumnIndexOrThrow(PodDBAdapter.SELECT_KEY_MEDIA_ID);
-        indexPlaybackCompletionDate = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PLAYBACK_COMPLETION_DATE);
+        indexPlaybackCompletionDate = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_LAST_PLAYED_TIME_HISTORY);
         indexDuration = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DURATION);
         indexPosition = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_POSITION);
         indexSize = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_SIZE);
