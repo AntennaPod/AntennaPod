@@ -95,6 +95,7 @@ public class DbWriterTest {
     public void testSetFeedMediaPlaybackInformation() throws Exception {
         final int position = 50;
         final long lastPlayedTimeStatistics = 1000;
+        final Date lastPlayedTimeHistory = new Date();
         final int playedDuration = 60;
         final int duration = 100;
 
@@ -112,6 +113,7 @@ public class DbWriterTest {
         media.setPosition(position);
         media.setLastPlayedTimeStatistics(lastPlayedTimeStatistics);
         media.setPlayedDuration(playedDuration);
+        media.setLastPlayedTimeHistory(lastPlayedTimeHistory);
 
         DBWriter.setFeedMediaPlaybackInformation(item.getMedia()).get(TIMEOUT, TimeUnit.SECONDS);
 
@@ -120,6 +122,7 @@ public class DbWriterTest {
 
         assertEquals(position, mediaFromDb.getPosition());
         assertEquals(lastPlayedTimeStatistics, mediaFromDb.getLastPlayedTimeStatistics());
+        assertEquals(lastPlayedTimeHistory, mediaFromDb.getLastPlayedTimeHistory());
         assertEquals(playedDuration, mediaFromDb.getPlayedDuration());
         assertEquals(duration, mediaFromDb.getDuration());
     }
