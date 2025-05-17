@@ -130,9 +130,9 @@ public class DbCleanupTests {
                        boolean addToFavorites) throws IOException {
         for (int i = 0; i < numItems; i++) {
             Date itemDate = new Date(numItems - i);
-            Date playbackCompletionDate = null;
+            Date lastPlayedTimeHistory = null;
             if (itemState == FeedItem.PLAYED) {
-                playbackCompletionDate = itemDate;
+                lastPlayedTimeHistory = itemDate;
             }
             FeedItem item = new FeedItem(0, "title", "id" + i, "link", itemDate, itemState, feed);
 
@@ -140,7 +140,7 @@ public class DbCleanupTests {
             assertTrue(f.createNewFile());
             files.add(f);
             item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m",
-                    f.getAbsolutePath(), "url", System.currentTimeMillis(), playbackCompletionDate, 0, 0));
+                    f.getAbsolutePath(), "url", System.currentTimeMillis(), lastPlayedTimeHistory, 0, 0));
             items.add(item);
         }
 

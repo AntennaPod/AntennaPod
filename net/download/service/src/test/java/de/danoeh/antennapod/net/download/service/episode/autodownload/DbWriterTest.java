@@ -94,7 +94,7 @@ public class DbWriterTest {
     @Test
     public void testSetFeedMediaPlaybackInformation() throws Exception {
         final int position = 50;
-        final long lastPlayedTime = 1000;
+        final long lastPlayedTimeStatistics = 1000;
         final int playedDuration = 60;
         final int duration = 100;
 
@@ -110,7 +110,7 @@ public class DbWriterTest {
         DBWriter.setFeedItem(item).get(TIMEOUT, TimeUnit.SECONDS);
 
         media.setPosition(position);
-        media.setLastPlayedTime(lastPlayedTime);
+        media.setLastPlayedTimeStatistics(lastPlayedTimeStatistics);
         media.setPlayedDuration(playedDuration);
 
         DBWriter.setFeedMediaPlaybackInformation(item.getMedia()).get(TIMEOUT, TimeUnit.SECONDS);
@@ -119,7 +119,7 @@ public class DbWriterTest {
         FeedMedia mediaFromDb = itemFromDb.getMedia();
 
         assertEquals(position, mediaFromDb.getPosition());
-        assertEquals(lastPlayedTime, mediaFromDb.getLastPlayedTime());
+        assertEquals(lastPlayedTimeStatistics, mediaFromDb.getLastPlayedTimeStatistics());
         assertEquals(playedDuration, mediaFromDb.getPlayedDuration());
         assertEquals(duration, mediaFromDb.getDuration());
     }
@@ -467,12 +467,12 @@ public class DbWriterTest {
         adapter.close();
     }
 
-    private FeedMedia playbackHistorySetup(Date playbackCompletionDate) {
+    private FeedMedia playbackHistorySetup(Date lastPlayedTimeHistory) {
         Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
         FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), FeedItem.PLAYED, feed);
         FeedMedia media = new FeedMedia(0, item, 10, 0, 1, "mime", null,
-                "url", 0, playbackCompletionDate, 0, 0);
+                "url", 0, lastPlayedTimeHistory, 0, 0);
         feed.getItems().add(item);
         item.setMedia(media);
         PodDBAdapter adapter = PodDBAdapter.getInstance();

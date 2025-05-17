@@ -19,7 +19,7 @@ public abstract class PlayableUtils {
      */
     public static void saveCurrentPosition(Playable playable, int newPosition, long timestamp) {
         playable.setPosition(newPosition);
-        playable.setLastPlayedTime(timestamp);
+        playable.setLastPlayedTimeStatistics(timestamp);
 
         if (playable instanceof FeedMedia) {
             FeedMedia media = (FeedMedia) playable;

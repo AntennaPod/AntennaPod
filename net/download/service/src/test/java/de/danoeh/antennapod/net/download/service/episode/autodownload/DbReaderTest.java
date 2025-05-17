@@ -326,7 +326,7 @@ public class DbReaderTest {
                     FeedMedia m = feed.getItems().get(i).getMedia();
                     m.setLastPlayedTimeHistory(new Date(i + 1));
 
-                    adapter.setFeedMediaPlaybackCompletionDate(m);
+                    adapter.setFeedMediaLastPlayedTimeHistory(m);
                 }
                 adapter.close();
 
@@ -507,7 +507,7 @@ public class DbReaderTest {
             for (int i = 0; i < playedItems; i++) {
                 FeedMedia m = feed.getItems().get(i).getMedia();
                 m.setLastPlayedTimeHistory(new Date(i + 1));
-                adapter.setFeedMediaPlaybackCompletionDate(m);
+                adapter.setFeedMediaLastPlayedTimeHistory(m);
                 ids[ids.length - 1 - i] = m.getItem().getId();
             }
             adapter.close();

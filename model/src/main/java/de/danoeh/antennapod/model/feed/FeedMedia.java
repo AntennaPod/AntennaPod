@@ -38,7 +38,7 @@ public class FeedMedia implements Playable {
     private long downloadDate;
     private int duration;
     private int position; // Current position in file
-    private long lastPlayedTime; // Last time this media was played (in ms)
+    private long lastPlayedTimeStatistics; // Last time this media was played (in ms)
     private int playedDuration; // How many ms of this file have been played
     private long size; // File size in Byte
     private String mimeType;
@@ -67,7 +67,7 @@ public class FeedMedia implements Playable {
     public FeedMedia(long id, FeedItem item, int duration, int position,
                      long size, String mimeType, String localFileUrl, String downloadUrl,
                      long downloadDate, Date lastPlayedTimeHistory, int playedDuration,
-                     long lastPlayedTime) {
+                     long lastPlayedTimeStatistics) {
         this.localFileUrl = localFileUrl;
         this.downloadUrl = downloadUrl;
         this.downloadDate = downloadDate;
@@ -82,15 +82,15 @@ public class FeedMedia implements Playable {
         this.mimeType = mimeType;
         this.lastPlayedTimeHistory = lastPlayedTimeHistory == null
                 ? null : (Date) lastPlayedTimeHistory.clone();
-        this.lastPlayedTime = lastPlayedTime;
+        this.lastPlayedTimeStatistics = lastPlayedTimeStatistics;
     }
 
     public FeedMedia(long id, FeedItem item, int duration, int position,
                      long size, String mimeType, String localFileUrl, String downloadUrl,
                      long downloadDate, Date lastPlayedTimeHistory, int playedDuration,
-                     Boolean hasEmbeddedPicture, long lastPlayedTime) {
+                     Boolean hasEmbeddedPicture, long lastPlayedTimeStatistics) {
         this(id, item, duration, position, size, mimeType, localFileUrl, downloadUrl, downloadDate,
-                lastPlayedTimeHistory, playedDuration, lastPlayedTime);
+                lastPlayedTimeHistory, playedDuration, lastPlayedTimeStatistics);
         this.hasEmbeddedPicture = hasEmbeddedPicture;
     }
 
@@ -178,8 +178,8 @@ public class FeedMedia implements Playable {
     }
 
     @Override
-    public void setLastPlayedTime(long lastPlayedTime) {
-        this.lastPlayedTime = lastPlayedTime;
+    public void setLastPlayedTimeStatistics(long lastPlayedTimeStatistics) {
+        this.lastPlayedTimeStatistics = lastPlayedTimeStatistics;
     }
 
     public int getPlayedDuration() {
@@ -199,8 +199,8 @@ public class FeedMedia implements Playable {
     }
 
     @Override
-    public long getLastPlayedTime() {
-        return lastPlayedTime;
+    public long getLastPlayedTimeStatistics() {
+        return lastPlayedTimeStatistics;
     }
 
     public void setPosition(int position) {
@@ -300,7 +300,7 @@ public class FeedMedia implements Playable {
         dest.writeLong(downloadDate);
         dest.writeLong((lastPlayedTimeHistory != null) ? lastPlayedTimeHistory.getTime() : 0);
         dest.writeInt(playedDuration);
-        dest.writeLong(lastPlayedTime);
+        dest.writeLong(lastPlayedTimeStatistics);
     }
 
     @Override

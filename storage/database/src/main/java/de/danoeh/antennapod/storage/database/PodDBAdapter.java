@@ -523,7 +523,7 @@ public class PodDBAdapter {
         values.put(KEY_DOWNLOAD_DATE, media.getDownloadDate());
         values.put(KEY_FILE_URL, media.getLocalFileUrl());
         values.put(KEY_HAS_EMBEDDED_PICTURE, media.hasEmbeddedPicture());
-        values.put(KEY_LAST_PLAYED_TIME_STATISTICS, media.getLastPlayedTime());
+        values.put(KEY_LAST_PLAYED_TIME_STATISTICS, media.getLastPlayedTimeStatistics());
 
         if (media.getLastPlayedTimeHistory() != null) {
             values.put(KEY_LAST_PLAYED_TIME_HISTORY, media.getLastPlayedTimeHistory().getTime());
@@ -548,7 +548,7 @@ public class PodDBAdapter {
             values.put(KEY_POSITION, media.getPosition());
             values.put(KEY_DURATION, media.getDuration());
             values.put(KEY_PLAYED_DURATION, media.getPlayedDuration());
-            values.put(KEY_LAST_PLAYED_TIME_STATISTICS, media.getLastPlayedTime());
+            values.put(KEY_LAST_PLAYED_TIME_STATISTICS, media.getLastPlayedTimeStatistics());
             values.put(KEY_LAST_PLAYED_TIME_HISTORY, media.getLastPlayedTimeHistory().getTime());
             db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
                     new String[]{String.valueOf(media.getId())});
@@ -557,7 +557,7 @@ public class PodDBAdapter {
         }
     }
 
-    public void setFeedMediaPlaybackCompletionDate(FeedMedia media) {
+    public void setFeedMediaLastPlayedTimeHistory(FeedMedia media) {
         if (media.getId() != 0) {
             ContentValues values = new ContentValues();
             values.put(KEY_LAST_PLAYED_TIME_HISTORY, media.getLastPlayedTimeHistory().getTime());
@@ -565,7 +565,7 @@ public class PodDBAdapter {
             db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
                     new String[]{String.valueOf(media.getId())});
         } else {
-            Log.e(TAG, "setFeedMediaPlaybackCompletionDate: ID of media was 0");
+            Log.e(TAG, "setFeedMediaLastPlayedTimeHistory: ID of media was 0");
         }
     }
 
@@ -1218,7 +1218,7 @@ public class PodDBAdapter {
 
     public final Cursor getFeedStatisticsCursor(boolean includeMarkedAsPlayed, long timeFilterFrom,
                                                 long timeFilterTo, long sixMonthsAgo) {
-        final String lastPlayedTime = TABLE_NAME_FEED_MEDIA + "." + KEY_LAST_PLAYED_TIME_STATISTICS;
+        final String lastPlayedTimeStatistics = TABLE_NAME_FEED_MEDIA + "." + KEY_LAST_PLAYED_TIME_STATISTICS;
         String wasStarted = TABLE_NAME_FEED_MEDIA + "." + KEY_LAST_PLAYED_TIME_HISTORY + " > 0"
                 + " AND " + TABLE_NAME_FEED_MEDIA + "." + KEY_PLAYED_DURATION + " > 0";
         if (includeMarkedAsPlayed) {
@@ -1226,8 +1226,8 @@ public class PodDBAdapter {
                     + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.PLAYED + " OR "
                     + TABLE_NAME_FEED_MEDIA + "." + KEY_POSITION + "> 0";
         }
-        final String timeFilter = lastPlayedTime + ">=" + timeFilterFrom
-                + " AND " + lastPlayedTime + "<" + timeFilterTo;
+        final String timeFilter = lastPlayedTimeStatistics + ">=" + timeFilterFrom
+                + " AND " + lastPlayedTimeStatistics + "<" + timeFilterTo;
         String playedTime = TABLE_NAME_FEED_MEDIA + "." + KEY_PLAYED_DURATION;
         if (includeMarkedAsPlayed) {
             playedTime = "(CASE WHEN " + playedTime + " != 0"
@@ -1239,8 +1239,8 @@ public class PodDBAdapter {
 
         final String query = "SELECT " + KEYS_FEED + ", "
                         + "COUNT(*) AS num_episodes, "
-                        + "MIN(CASE WHEN " + lastPlayedTime + " > 0"
-                                + " THEN " + lastPlayedTime + " ELSE " + Long.MAX_VALUE + " END) AS oldest_date, "
+                        + "MIN(CASE WHEN " + lastPlayedTimeStatistics + " > 0"
+                                + " THEN " + lastPlayedTimeStatistics + " ELSE " + Long.MAX_VALUE + " END) AS oldest_date, "
                         + "SUM(CASE WHEN (" + wasStarted + ") THEN 1 ELSE 0 END) AS episodes_started, "
                         + "IFNULL(SUM(CASE WHEN (" + timeFilter + ")"
                                 + " THEN (" + playedTime + ") ELSE 0 END), 0) AS played_time, "

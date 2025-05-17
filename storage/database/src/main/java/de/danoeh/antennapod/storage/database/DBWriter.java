@@ -296,7 +296,7 @@ public class DBWriter {
      * current date regardless of the current value.
      *
      * @param media FeedMedia that should be added to the playback history.
-     * @param date PlaybackCompletionDate for <code>media</code>
+     * @param date LastPlayedTimeHistory for <code>media</code>
      */
     public static Future<?> addItemToPlaybackHistory(final FeedMedia media, Date date) {
         return runOnDbThread(() -> {
@@ -305,7 +305,7 @@ public class DBWriter {
 
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            adapter.setFeedMediaPlaybackCompletionDate(media);
+            adapter.setFeedMediaLastPlayedTimeHistory(media);
             adapter.close();
             EventBus.getDefault().post(PlaybackHistoryEvent.listUpdated());
 
