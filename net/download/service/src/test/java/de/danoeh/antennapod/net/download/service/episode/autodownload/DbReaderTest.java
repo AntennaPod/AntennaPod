@@ -324,7 +324,7 @@ public class DbReaderTest {
                 adapter.open();
                 for (int i = 0; i < playedItems; ++i) {
                     FeedMedia m = feed.getItems().get(i).getMedia();
-                    m.setPlaybackCompletionDate(new Date(i + 1));
+                    m.setLastPlayedTimeHistory(new Date(i + 1));
 
                     adapter.setFeedMediaPlaybackCompletionDate(m);
                 }
@@ -506,7 +506,7 @@ public class DbReaderTest {
             adapter.open();
             for (int i = 0; i < playedItems; i++) {
                 FeedMedia m = feed.getItems().get(i).getMedia();
-                m.setPlaybackCompletionDate(new Date(i + 1));
+                m.setLastPlayedTimeHistory(new Date(i + 1));
                 adapter.setFeedMediaPlaybackCompletionDate(m);
                 ids[ids.length - 1 - i] = m.getItem().getId();
             }
@@ -520,7 +520,7 @@ public class DbReaderTest {
                     numReturnedItems, saved.size());
             for (int i = 0; i < numReturnedItems; i++) {
                 FeedItem item = saved.get(i);
-                assertNotNull(item.getMedia().getPlaybackCompletionDate());
+                assertNotNull(item.getMedia().getLastPlayedTimeHistory());
                 assertEquals(String.format("Wrong sort order with offset %d and limit %d: ",
                                 paramOffset, paramLimit),
                         item.getId(), ids[paramOffset + i]);

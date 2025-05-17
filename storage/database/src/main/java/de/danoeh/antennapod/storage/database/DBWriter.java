@@ -301,7 +301,7 @@ public class DBWriter {
     public static Future<?> addItemToPlaybackHistory(final FeedMedia media, Date date) {
         return runOnDbThread(() -> {
             Log.d(TAG, "Adding item to playback history");
-            media.setPlaybackCompletionDate(date);
+            media.setLastPlayedTimeHistory(date);
 
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();

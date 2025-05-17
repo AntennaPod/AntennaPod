@@ -493,7 +493,7 @@ public class DbWriterTest {
         adapter.close();
 
         assertNotNull(media);
-        assertNotNull(media.getPlaybackCompletionDate());
+        assertNotNull(media.getLastPlayedTimeHistory());
     }
 
     @Test
@@ -508,8 +508,8 @@ public class DbWriterTest {
         adapter.close();
 
         assertNotNull(media);
-        assertNotNull(media.getPlaybackCompletionDate());
-        assertNotEquals(media.getPlaybackCompletionDate().getTime(), oldDate);
+        assertNotNull(media.getLastPlayedTimeHistory());
+        assertNotEquals(media.getLastPlayedTimeHistory().getTime(), oldDate);
     }
 
     @SuppressWarnings("SameParameterValue")

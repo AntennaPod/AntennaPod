@@ -525,8 +525,8 @@ public class PodDBAdapter {
         values.put(KEY_HAS_EMBEDDED_PICTURE, media.hasEmbeddedPicture());
         values.put(KEY_LAST_PLAYED_TIME, media.getLastPlayedTime());
 
-        if (media.getPlaybackCompletionDate() != null) {
-            values.put(KEY_LAST_PLAYED_TIME_HISTORY, media.getPlaybackCompletionDate().getTime());
+        if (media.getLastPlayedTimeHistory() != null) {
+            values.put(KEY_LAST_PLAYED_TIME_HISTORY, media.getLastPlayedTimeHistory().getTime());
         } else {
             values.put(KEY_LAST_PLAYED_TIME_HISTORY, 0);
         }
@@ -549,7 +549,7 @@ public class PodDBAdapter {
             values.put(KEY_DURATION, media.getDuration());
             values.put(KEY_PLAYED_DURATION, media.getPlayedDuration());
             values.put(KEY_LAST_PLAYED_TIME, media.getLastPlayedTime());
-            values.put(KEY_LAST_PLAYED_TIME_HISTORY, media.getPlaybackCompletionDate().getTime());
+            values.put(KEY_LAST_PLAYED_TIME_HISTORY, media.getLastPlayedTimeHistory().getTime());
             db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
                     new String[]{String.valueOf(media.getId())});
         } else {
@@ -560,7 +560,7 @@ public class PodDBAdapter {
     public void setFeedMediaPlaybackCompletionDate(FeedMedia media) {
         if (media.getId() != 0) {
             ContentValues values = new ContentValues();
-            values.put(KEY_LAST_PLAYED_TIME_HISTORY, media.getPlaybackCompletionDate().getTime());
+            values.put(KEY_LAST_PLAYED_TIME_HISTORY, media.getLastPlayedTimeHistory().getTime());
             values.put(KEY_PLAYED_DURATION, media.getPlayedDuration());
             db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
                     new String[]{String.valueOf(media.getId())});

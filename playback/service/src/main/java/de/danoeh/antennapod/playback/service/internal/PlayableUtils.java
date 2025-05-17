@@ -23,7 +23,7 @@ public abstract class PlayableUtils {
 
         if (playable instanceof FeedMedia) {
             FeedMedia media = (FeedMedia) playable;
-            media.setPlaybackCompletionDate(new Date(timestamp));
+            media.setLastPlayedTimeHistory(new Date(timestamp));
             FeedItem item = media.getItem();
             if (item != null && item.isNew()) {
                 DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
