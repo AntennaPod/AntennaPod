@@ -549,6 +549,7 @@ public class PodDBAdapter {
             values.put(KEY_DURATION, media.getDuration());
             values.put(KEY_PLAYED_DURATION, media.getPlayedDuration());
             values.put(KEY_LAST_PLAYED_TIME, media.getLastPlayedTime());
+            values.put(KEY_PLAYBACK_COMPLETION_DATE, media.getPlaybackCompletionDate().getTime());
             db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
                     new String[]{String.valueOf(media.getId())});
         } else {
