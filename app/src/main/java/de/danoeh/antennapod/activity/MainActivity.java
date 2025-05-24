@@ -514,6 +514,11 @@ public class MainActivity extends CastEnabledActivity {
         }
     }
 
+    private void restartActivity() {
+        finish();
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -524,8 +529,7 @@ public class MainActivity extends CastEnabledActivity {
 
         @StyleRes int requiredTheme = ThemeSwitcher.getNoTitleTheme(this);
         if (requiredTheme != lastTheme) {
-            finish();
-            startActivity(new Intent(this, MainActivity.class));
+            restartActivity();
         }
     }
 
@@ -575,8 +579,7 @@ public class MainActivity extends CastEnabledActivity {
         boolean hasBottomNavigation = bottomNavigation != null;
         if (lastTheme != ThemeSwitcher.getNoTitleTheme(this)
                 || hasBottomNavigation != UserPreferences.isBottomNavigationEnabled()) {
-            finish();
-            startActivity(new Intent(this, MainActivity.class));
+            restartActivity();
         }
         if (UserPreferences.getHiddenDrawerItems().contains(NavDrawerFragment.getLastNavFragment(this))) {
             loadFragment(UserPreferences.getDefaultPage(), null);
