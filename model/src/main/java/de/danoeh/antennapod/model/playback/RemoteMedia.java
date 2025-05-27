@@ -40,7 +40,7 @@ public class RemoteMedia implements Playable {
     private List<Chapter> chapters;
     private int duration;
     private int position;
-    private long lastPlayedTime;
+    private long lastPlayedTimeStatistics;
 
     public RemoteMedia(String downloadUrl, String itemId, String feedUrl, String feedTitle,
                        String episodeTitle, String episodeLink, String feedAuthor,
@@ -159,8 +159,8 @@ public class RemoteMedia implements Playable {
     }
 
     @Override
-    public long getLastPlayedTime() {
-        return lastPlayedTime;
+    public long getLastPlayedTimeStatistics() {
+        return lastPlayedTimeStatistics;
     }
 
     @Override
@@ -194,8 +194,8 @@ public class RemoteMedia implements Playable {
     }
 
     @Override
-    public void setLastPlayedTime(long lastPlayedTimestamp) {
-        lastPlayedTime = lastPlayedTimestamp;
+    public void setLastPlayedTimeStatistics(long lastPlayedTimestamp) {
+        lastPlayedTimeStatistics = lastPlayedTimestamp;
     }
 
     @Override
@@ -255,7 +255,7 @@ public class RemoteMedia implements Playable {
         dest.writeString(notes);
         dest.writeInt(duration);
         dest.writeInt(position);
-        dest.writeLong(lastPlayedTime);
+        dest.writeLong(lastPlayedTimeStatistics);
     }
 
     public static final Parcelable.Creator<RemoteMedia> CREATOR = new Parcelable.Creator<RemoteMedia>() {
@@ -266,7 +266,7 @@ public class RemoteMedia implements Playable {
                     in.readString(), in.readString(), new Date(in.readLong()), in.readString());
             result.setDuration(in.readInt());
             result.setPosition(in.readInt());
-            result.setLastPlayedTime(in.readLong());
+            result.setLastPlayedTimeStatistics(in.readLong());
             return result;
         }
 

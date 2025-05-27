@@ -38,12 +38,12 @@ public class FeedMedia implements Playable {
     private long downloadDate;
     private int duration;
     private int position; // Current position in file
-    private long lastPlayedTime; // Last time this media was played (in ms)
+    private long lastPlayedTimeStatistics; // Last time this media was played (in ms)
     private int playedDuration; // How many ms of this file have been played
     private long size; // File size in Byte
     private String mimeType;
     @Nullable private volatile FeedItem item;
-    private Date playbackCompletionDate;
+    private Date lastPlayedTimeHistory;
     private int startPosition = -1;
     private int playedDurationWhenStarted;
 
@@ -66,8 +66,8 @@ public class FeedMedia implements Playable {
 
     public FeedMedia(long id, FeedItem item, int duration, int position,
                      long size, String mimeType, String localFileUrl, String downloadUrl,
-                     long downloadDate, Date playbackCompletionDate, int playedDuration,
-                     long lastPlayedTime) {
+                     long downloadDate, Date lastPlayedTimeHistory, int playedDuration,
+                     long lastPlayedTimeStatistics) {
         this.localFileUrl = localFileUrl;
         this.downloadUrl = downloadUrl;
         this.downloadDate = downloadDate;
@@ -80,17 +80,17 @@ public class FeedMedia implements Playable {
         this.playedDurationWhenStarted = playedDuration;
         this.size = size;
         this.mimeType = mimeType;
-        this.playbackCompletionDate = playbackCompletionDate == null
-                ? null : (Date) playbackCompletionDate.clone();
-        this.lastPlayedTime = lastPlayedTime;
+        this.lastPlayedTimeHistory = lastPlayedTimeHistory == null
+                ? null : (Date) lastPlayedTimeHistory.clone();
+        this.lastPlayedTimeStatistics = lastPlayedTimeStatistics;
     }
 
     public FeedMedia(long id, FeedItem item, int duration, int position,
                      long size, String mimeType, String localFileUrl, String downloadUrl,
-                     long downloadDate, Date playbackCompletionDate, int playedDuration,
-                     Boolean hasEmbeddedPicture, long lastPlayedTime) {
+                     long downloadDate, Date lastPlayedTimeHistory, int playedDuration,
+                     Boolean hasEmbeddedPicture, long lastPlayedTimeStatistics) {
         this(id, item, duration, position, size, mimeType, localFileUrl, downloadUrl, downloadDate,
-                playbackCompletionDate, playedDuration, lastPlayedTime);
+                lastPlayedTimeHistory, playedDuration, lastPlayedTimeStatistics);
         this.hasEmbeddedPicture = hasEmbeddedPicture;
     }
 
@@ -178,8 +178,8 @@ public class FeedMedia implements Playable {
     }
 
     @Override
-    public void setLastPlayedTime(long lastPlayedTime) {
-        this.lastPlayedTime = lastPlayedTime;
+    public void setLastPlayedTimeStatistics(long lastPlayedTimeStatistics) {
+        this.lastPlayedTimeStatistics = lastPlayedTimeStatistics;
     }
 
     public int getPlayedDuration() {
@@ -199,8 +199,8 @@ public class FeedMedia implements Playable {
     }
 
     @Override
-    public long getLastPlayedTime() {
-        return lastPlayedTime;
+    public long getLastPlayedTimeStatistics() {
+        return lastPlayedTimeStatistics;
     }
 
     public void setPosition(int position) {
@@ -260,14 +260,14 @@ public class FeedMedia implements Playable {
         }
     }
 
-    public Date getPlaybackCompletionDate() {
-        return playbackCompletionDate == null
-                ? null : (Date) playbackCompletionDate.clone();
+    public Date getLastPlayedTimeHistory() {
+        return lastPlayedTimeHistory == null
+                ? null : (Date) lastPlayedTimeHistory.clone();
     }
 
-    public void setPlaybackCompletionDate(Date playbackCompletionDate) {
-        this.playbackCompletionDate = playbackCompletionDate == null
-                ? null : (Date) playbackCompletionDate.clone();
+    public void setLastPlayedTimeHistory(Date lastPlayedTimeHistory) {
+        this.lastPlayedTimeHistory = lastPlayedTimeHistory == null
+                ? null : (Date) lastPlayedTimeHistory.clone();
     }
 
     public boolean isInProgress() {
@@ -298,9 +298,9 @@ public class FeedMedia implements Playable {
         dest.writeString(localFileUrl);
         dest.writeString(downloadUrl);
         dest.writeLong(downloadDate);
-        dest.writeLong((playbackCompletionDate != null) ? playbackCompletionDate.getTime() : 0);
+        dest.writeLong((lastPlayedTimeHistory != null) ? lastPlayedTimeHistory.getTime() : 0);
         dest.writeInt(playedDuration);
-        dest.writeLong(lastPlayedTime);
+        dest.writeLong(lastPlayedTimeStatistics);
     }
 
     @Override
