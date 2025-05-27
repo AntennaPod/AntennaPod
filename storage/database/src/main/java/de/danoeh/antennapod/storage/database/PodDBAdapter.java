@@ -1125,14 +1125,14 @@ public class PodDBAdapter {
     }
 
     public Cursor getRandomEpisodesCursor(int limit, int seed) {
+        long oneHourAgo = System.currentTimeMillis() - 1000L * 3600L;
         final String allItems = SELECT_FEED_ITEMS_AND_MEDIA
                 + " WHERE (" + KEY_READ + " = " + FeedItem.NEW + " OR " + KEY_READ + " = " + FeedItem.UNPLAYED + ") "
                     // Only from the last two years. Older episodes often contain broken covers and stuff like that
                     + " AND " + KEY_PUBDATE + " > " + (System.currentTimeMillis() - 1000L * 3600L * 24L * 356L * 2)
                     // Hide episodes that have been played but not completed
                     + " AND (" + KEY_LAST_PLAYED_TIME_STATISTICS + " == 0"
-                        + " OR " + KEY_LAST_PLAYED_TIME_STATISTICS + " > "
-                + (System.currentTimeMillis() - 1000L * 3600L) + ")"
+                        + " OR " + KEY_LAST_PLAYED_TIME_STATISTICS + " > " + oneHourAgo + ")"
                     + " AND " + SELECT_WHERE_FEED_IS_SUBSCRIBED;
         final String query = "SELECT MAX(" + randomEpisodeNumber(seed) + "), * FROM (" + allItems + ")"
                 + " GROUP BY " + KEY_FEED
@@ -1241,8 +1241,8 @@ public class PodDBAdapter {
         final String query = "SELECT " + KEYS_FEED + ", "
                         + "COUNT(*) AS num_episodes, "
                         + "MIN(CASE WHEN " + lastPlayedTimeStatistics + " > 0"
-                                + " THEN " + lastPlayedTimeStatistics + " ELSE "
-                                + Long.MAX_VALUE + " END) AS oldest_date, "
+                                + " THEN " + lastPlayedTimeStatistics
+                                + " ELSE " + Long.MAX_VALUE + " END) AS oldest_date, "
                         + "SUM(CASE WHEN (" + wasStarted + ") THEN 1 ELSE 0 END) AS episodes_started, "
                         + "IFNULL(SUM(CASE WHEN (" + timeFilter + ")"
                                 + " THEN (" + playedTime + ") ELSE 0 END), 0) AS played_time, "
