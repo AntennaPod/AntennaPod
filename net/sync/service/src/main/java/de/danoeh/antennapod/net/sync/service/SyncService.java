@@ -202,11 +202,8 @@ public class SyncService extends Worker {
                 synchronizationQueueStorage.clearFeedQueues();
                 newTimeStamp = uploadResponse.timestamp;
             } catch (SyncServiceException exception) {
-                // In some cases, syncing with gpodder will fail repeatedly because there is legacy data in the
-                // synchronization storage containing the same feed url as "added" and "removed".
-                // If synchronization fails, clean up any conflicts to make sure that when it fails
-                // for this reason the next sync can succeed.
                 synchronizationQueueStorage.removeLegacyConflictingFeedEntries(localSubscriptions);
+                throw exception;
             } finally {
                 LockingAsyncExecutor.unlock();
             }

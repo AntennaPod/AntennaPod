@@ -9,10 +9,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 
@@ -120,27 +117,10 @@ public class SynchronizationQueueStorage {
      * and `enqueueFeedAdded` already take care of removing conflicting entries.
      * */
     protected void removeLegacyConflictingFeedEntries(Collection<String> currentLocalSubscriptions) {
-
         List<String> removedQueue = this.getQueuedRemovedFeeds();
         List<String> addedQueue = this.getQueuedAddedFeeds();
-        Set<String> localSubscriptions = new HashSet<>(currentLocalSubscriptions);
-
-        Iterator<String> addedIterator = addedQueue.iterator();
-        while (addedIterator.hasNext()) {
-            if (!localSubscriptions.contains(addedIterator.next())) {
-                // Feed no longer in local subscriptions, so remove update from storage
-                addedIterator.remove();
-            }
-        }
-
-        Iterator<String> removedIterator = removedQueue.iterator();
-        while (removedIterator.hasNext()) {
-            if (localSubscriptions.contains(removedIterator.next())) {
-                // Feed has been added again, remove the removed entry from storage
-                removedIterator.remove();
-            }
-        }
-
+        removedQueue.removeAll(currentLocalSubscriptions);
+        addedQueue.removeAll(removedQueue);
         sharedPreferences.edit()
                 .putString(QUEUED_FEEDS_ADDED, addedQueue.toString())
                 .putString(QUEUED_FEEDS_REMOVED, removedQueue.toString())
