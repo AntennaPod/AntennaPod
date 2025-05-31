@@ -201,6 +201,9 @@ public class SyncService extends Worker {
                         .uploadSubscriptionChanges(queuedAddedFeeds, queuedRemovedFeeds);
                 synchronizationQueueStorage.clearFeedQueues();
                 newTimeStamp = uploadResponse.timestamp;
+            } catch (SyncServiceException exception) {
+                synchronizationQueueStorage.removeLegacyConflictingFeedEntries(localSubscriptions);
+                throw exception;
             } finally {
                 LockingAsyncExecutor.unlock();
             }
