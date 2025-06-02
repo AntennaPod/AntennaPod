@@ -131,6 +131,7 @@
                 android:shadowRadius="2"
                 android:textColor="@color/white"
                 style="@style/AntennaPod.TextView.Heading"
+                android:textIsSelectable="true"
                 tools:text="Podcast title" />
 
             <TextView
@@ -143,6 +144,7 @@
                 android:shadowRadius="2"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_small"
+                android:textIsSelectable="true"
                 tools:text="Podcast author" />
 
         </LinearLayout>

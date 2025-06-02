@@ -55,6 +55,7 @@
                     android:textColor="?android:attr/textColorPrimary"
                     android:ellipsize="end"
                     android:maxLines="5"
+                    android:textIsSelectable="true"
                     tools:text="@sample/episodes.json/data/title" />
 
                 <LinearLayout
