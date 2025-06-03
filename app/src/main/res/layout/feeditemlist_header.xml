@@ -130,8 +130,8 @@
                 android:shadowColor="@color/black"
                 android:shadowRadius="2"
                 android:textColor="@color/white"
-                style="@style/AntennaPod.TextView.Heading"
                 android:textIsSelectable="true"
+                style="@style/AntennaPod.TextView.Heading"
                 tools:text="Podcast title" />
 
             <TextView
