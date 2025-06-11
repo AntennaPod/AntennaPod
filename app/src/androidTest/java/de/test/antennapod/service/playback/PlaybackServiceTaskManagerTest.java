@@ -52,7 +52,6 @@ public class PlaybackServiceTaskManagerTest {
         adapter.close();
         SleepTimerPreferences.setShakeToReset(false);
         SleepTimerPreferences.setVibrate(false);
-        SleepTimerPreferences.setPauseWhileNotPlaying(false);
     }
 
     @Test

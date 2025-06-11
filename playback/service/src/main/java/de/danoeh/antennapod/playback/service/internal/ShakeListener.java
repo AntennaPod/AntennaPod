@@ -78,7 +78,7 @@ public class ShakeListener implements SensorEventListener {
         if (gForce > 2.25) {
             Log.d(TAG, "Detected shake " + gForce);
             mSleepTimer.reset(mInitialTimeout);
-			vibrate();
+            vibrate();
         }
     }
 
