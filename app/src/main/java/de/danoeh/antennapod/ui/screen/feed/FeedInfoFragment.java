@@ -1,7 +1,10 @@
 package de.danoeh.antennapod.ui.screen.feed;
 
+import static android.content.Context.CLIPBOARD_SERVICE;
+
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -15,6 +18,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -33,6 +39,7 @@ import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
+import de.danoeh.antennapod.ui.Utils;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.share.ShareUtils;
@@ -127,6 +134,18 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         viewBinding.statisticsButton.setOnClickListener(view -> {
             StatisticsFragment fragment = new StatisticsFragment();
             ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
+        });
+
+        viewBinding.header.txtvTitle.setOnLongClickListener(v -> {
+            String textToCopy = ((TextView)v).getText().toString();
+            Utils.copyToClipboard(getContext(), textToCopy, "Podcast Title");
+            return true;
+        });
+
+        viewBinding.header.txtvAuthor.setOnLongClickListener( v -> {
+            String textToCopy = ((TextView)v).getText().toString();
+            Utils.copyToClipboard(getContext(), textToCopy, "Episode Title");
+            return true;
         });
 
         return viewBinding.getRoot();
