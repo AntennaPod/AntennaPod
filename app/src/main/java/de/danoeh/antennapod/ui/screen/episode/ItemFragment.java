@@ -196,14 +196,22 @@ public class ItemFragment extends Fragment {
         });
 
         txtvPodcast.setOnLongClickListener(v -> {
-            String textToCopy = ((TextView)v).getText().toString();
-            copyToClipboard(getContext(), textToCopy, "Podcast Title");
+            try {
+                String textToCopy = ((TextView)v).getText().toString();
+                copyToClipboard(requireContext(), textToCopy, "Podcast Title");
+            } catch (IllegalStateException e) {
+                Log.d(TAG, "Context not available in copying podcast title", e);
+            }
             return true;
         });
 
         txtvTitle.setOnLongClickListener(v -> {
-            String textToCopy = ((TextView)v).getText().toString();
-            copyToClipboard(getContext(), textToCopy, "Episode Title");
+            try {
+                String textToCopy = ((TextView)v).getText().toString();
+                copyToClipboard(requireContext(), textToCopy, "Episode Title");
+            } catch (IllegalStateException e) {
+                Log.d(TAG, "Context not available in copying podcast title", e);
+            }
             return true;
         });
 
