@@ -136,7 +136,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
 
         viewBinding.header.txtvTitle.setOnLongClickListener(v -> {
             try {
-                String textToCopy = ((TextView)v).getText().toString();
+                String textToCopy = ((TextView) v).getText().toString();
                 copyToClipboard(requireContext(), textToCopy, "Podcast Title");
             } catch (IllegalStateException e) {
                 Log.d(TAG, "Context not available in copying podcast title", e);
@@ -144,9 +144,9 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
             return true;
         });
 
-        viewBinding.header.txtvAuthor.setOnLongClickListener( v -> {
+        viewBinding.header.txtvAuthor.setOnLongClickListener(v -> {
             try {
-                String textToCopy = ((TextView)v).getText().toString();
+                String textToCopy = ((TextView) v).getText().toString();
                 copyToClipboard(requireContext(), textToCopy, "Episode Title");
             } catch (IllegalStateException e) {
                 Log.d(TAG, "Context not available in copying episode title", e);
@@ -191,7 +191,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
 
     public void copyToClipboard(Context context, String text, String label) {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
-        if ( clipboard != null) {
+        if (clipboard != null) {
             ClipData clip = ClipData.newPlainText(label, text);
             clipboard.setPrimaryClip(clip);
             if (Build.VERSION.SDK_INT <= 32) {
@@ -199,6 +199,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
             }
         }
     }
+
     private void showFeed() {
         Log.d(TAG, "Language is " + feed.getLanguage());
         Log.d(TAG, "Author is " + feed.getAuthor());
