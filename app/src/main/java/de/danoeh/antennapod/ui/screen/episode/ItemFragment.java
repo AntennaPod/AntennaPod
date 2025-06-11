@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.ui.screen.episode;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
-import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -19,7 +18,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -57,7 +55,6 @@ import de.danoeh.antennapod.storage.preferences.UsageStatistics;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.ui.Utils;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.common.DateFormatter;
@@ -200,17 +197,28 @@ public class ItemFragment extends Fragment {
 
         txtvPodcast.setOnLongClickListener(v -> {
             String textToCopy = ((TextView)v).getText().toString();
-            Utils.copyToClipboard(getContext(), textToCopy, "Podcast Title");
+            copyToClipboard(getContext(), textToCopy, "Podcast Title");
             return true;
         });
 
         txtvTitle.setOnLongClickListener(v -> {
             String textToCopy = ((TextView)v).getText().toString();
-            Utils.copyToClipboard(getContext(), textToCopy, "Episode Title");
+            copyToClipboard(getContext(), textToCopy, "Episode Title");
             return true;
         });
 
         return layout;
+    }
+
+    public void copyToClipboard(Context context, String text, String label) {
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
+        if ( clipboard != null) {
+            ClipData clip = ClipData.newPlainText(label, text);
+            clipboard.setPrimaryClip(clip);
+            if (Build.VERSION.SDK_INT <= 32) {
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
+            }
+        }
     }
 
     private void showOnDemandConfigBalloon(boolean offerStreaming) {

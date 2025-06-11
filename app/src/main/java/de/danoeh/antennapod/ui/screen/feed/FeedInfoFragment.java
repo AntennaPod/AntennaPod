@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -39,7 +38,6 @@ import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
-import de.danoeh.antennapod.ui.Utils;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.share.ShareUtils;
@@ -138,13 +136,13 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
 
         viewBinding.header.txtvTitle.setOnLongClickListener(v -> {
             String textToCopy = ((TextView)v).getText().toString();
-            Utils.copyToClipboard(getContext(), textToCopy, "Podcast Title");
+            copyToClipboard(getContext(), textToCopy, "Podcast Title");
             return true;
         });
 
         viewBinding.header.txtvAuthor.setOnLongClickListener( v -> {
             String textToCopy = ((TextView)v).getText().toString();
-            Utils.copyToClipboard(getContext(), textToCopy, "Episode Title");
+            copyToClipboard(getContext(), textToCopy, "Episode Title");
             return true;
         });
 
@@ -183,6 +181,16 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 horizontalSpacing, viewBinding.infoContainer.getPaddingBottom());
     }
 
+    public void copyToClipboard(Context context, String text, String label) {
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
+        if ( clipboard != null) {
+            ClipData clip = ClipData.newPlainText(label, text);
+            clipboard.setPrimaryClip(clip);
+            if (Build.VERSION.SDK_INT <= 32) {
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
+            }
+        }
+    }
     private void showFeed() {
         Log.d(TAG, "Language is " + feed.getLanguage());
         Log.d(TAG, "Author is " + feed.getAuthor());
