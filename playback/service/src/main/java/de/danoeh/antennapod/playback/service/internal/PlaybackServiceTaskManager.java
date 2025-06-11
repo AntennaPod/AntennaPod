@@ -168,27 +168,6 @@ public class PlaybackServiceTaskManager {
     }
 
     /**
-     * Resumes the sleep timer. If the sleep timer is not active, nothing will happen.
-     * If the sleep timer was paused it will continue where it left off.
-     */
-    public synchronized void resumeSleepTimer() {
-        if (sleepTimer != null) {
-            Log.d(TAG, "Restarting sleep timer");
-            sleepTimer.resume();
-        }
-    }
-
-    /**
-     * Pauses the sleep timer. If the sleep timer is not active, nothing will happen.
-     */
-    public synchronized void pauseSleepTimer() {
-        if (isSleepTimerActive()) {
-            Log.d(TAG, "Pausing sleep timer");
-            sleepTimer.pause();
-        }
-    }
-
-    /**
      * Returns the current sleep timer time or 0 if the sleep timer is not active.
      */
     public synchronized long getSleepTimerTimeLeft() {

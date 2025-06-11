@@ -15,21 +15,6 @@ public interface SleepTimer {
     void stop();
 
     /**
-     * Temporarily pauses sleep timer
-     */
-    void pause();
-
-    /**
-     * @return True if paused, false otherwise
-     */
-    boolean isPaused();
-
-    /**
-     * Resume previously paused sleep timer
-     */
-    void resume();
-
-    /**
      * Update sleep timer with new waiting time
      * @param waitingTimeOrEpisodes Waiting time in millis or episode count
      */

@@ -8,37 +8,51 @@ import android.os.VibratorManager;
 import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 
-public class ClockSleepTimer implements SleepTimer, Runnable {
+public class ClockSleepTimer implements SleepTimer {
     private static final String TAG = "ClockSleepTimer";
-    private static final long UPDATE_INTERVAL = 1000L;
     private final Context context;
     private final long initialWaitingTime;
     private long timeLeft;
-    private boolean isPaused = false;
+    private boolean isRunning = false;
+    private long lastTick = 0;
 
     protected boolean hasVibrated = false;
     protected ShakeListener shakeListener;
-
-    private final ScheduledExecutorService schedExecutor = Executors.newSingleThreadScheduledExecutor();
-
-    private ScheduledFuture<?> sleepTimerFuture;
 
     public ClockSleepTimer(final Context context, long initialWaitingTime) {
         this.context = context;
         this.initialWaitingTime = initialWaitingTime;
         this.timeLeft = initialWaitingTime;
 
+        EventBus.getDefault().register(this);
         EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(initialWaitingTime));
-        resume();
+
+        start();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void playbackPositionUpdate(PlaybackPositionEvent playbackPositionEvent) {
+        Log.d(TAG, "playback position updated");
+        long now = System.currentTimeMillis();
+        timeLeft -= now - lastTick;
+        lastTick = now;
+
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(timeLeft));
+        if (timeLeft < NOTIFICATION_THRESHOLD) {
+            notifyAboutExpiry();
+        }
+        if (timeLeft <= 0) {
+            Log.d(TAG, "Sleep timer expired");
+            stop();
+        }
     }
 
     protected boolean vibrate() {
@@ -87,76 +101,26 @@ public class ClockSleepTimer implements SleepTimer, Runnable {
 
     @Override
     public boolean isActive() {
-        return sleepTimerFuture != null
-                && !sleepTimerFuture.isCancelled()
-                && !sleepTimerFuture.isDone()
-                && getTimeLeft() > 0;
+        return isRunning && timeLeft > 0;
     }
 
-    @Override
-    public void resume() {
-        if (isPaused()) {
-            isPaused = false;
-        } else {
-            sleepTimerFuture = schedExecutor.schedule(this, 0, TimeUnit.MILLISECONDS);
-        }
-    }
+    public void start() {
+        lastTick = System.currentTimeMillis();
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(timeLeft));
 
-    @Override
-    public boolean isPaused() {
-        return isPaused;
-    }
-
-    @Override
-    public void pause() {
-        if (isActive()) {
-            isPaused = true;
-        }
+        isRunning = true;
     }
 
     @Override
     public void stop() {
-        sleepTimerFuture.cancel(true);
+        timeLeft = 0;
+        EventBus.getDefault().unregister(this);
+
         if (shakeListener != null) {
             shakeListener.pause();
         }
         shakeListener = null;
         EventBus.getDefault().post(SleepTimerUpdatedEvent.cancelled());
-    }
-
-    @Override
-    public void run() {
-        Log.d(TAG, "Starting");
-        long lastTick = System.currentTimeMillis();
-        EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(timeLeft));
-        while (timeLeft > 0) {
-            try {
-                Thread.sleep(UPDATE_INTERVAL);
-            } catch (InterruptedException e) {
-                Log.d(TAG, "Thread was interrupted while waiting");
-                e.printStackTrace();
-                break;
-            }
-
-            long now = System.currentTimeMillis();
-            // if we've been told not to pause while playing or we're not paused then subtract, otherwise
-            // we just report the same time left over and over
-            // this so that the event is submitted and the Playback dialog shows the remaining time
-            // so that the user knows a sleep timer is active
-            if (!SleepTimerPreferences.pauseWhileNotPlaying() || !isPaused()) {
-                timeLeft -= now - lastTick;
-            }
-            lastTick = now;
-
-            EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(timeLeft));
-            if (timeLeft < NOTIFICATION_THRESHOLD) {
-                notifyAboutExpiry();
-            }
-            if (timeLeft <= 0) {
-                Log.d(TAG, "Sleep timer expired");
-                stopShakeListener();
-            }
-        }
     }
 
     protected Context getContext() {

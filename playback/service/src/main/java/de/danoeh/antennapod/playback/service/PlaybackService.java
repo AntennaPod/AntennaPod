@@ -671,7 +671,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 } else {
                     return false;
                 }
-                taskManager.resumeSleepTimer();
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PLAY:
                 if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
@@ -684,7 +683,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 } else {
                     return false;
                 }
-                taskManager.resumeSleepTimer();
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
@@ -1655,17 +1653,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public void resume() {
         mediaPlayer.resume();
-        taskManager.resumeSleepTimer();
     }
 
     public void prepare() {
         mediaPlayer.prepare();
-        taskManager.resumeSleepTimer();
     }
 
     public void pause(boolean abandonAudioFocus, boolean reinit) {
         mediaPlayer.pause(abandonAudioFocus, reinit);
-        taskManager.pauseSleepTimer();
     }
 
     public PlaybackServiceMediaPlayer.PSMPInfo getPSMPInfo() {
