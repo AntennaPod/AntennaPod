@@ -16,12 +16,12 @@
     <item
         android:id="@+id/mark_read_item"
         custom:showAsAction="collapseActionView"
-        android:title="@string/mark_read_label">
+        android:title="@string/mark_as_played_label">
     </item>
     <item
         android:id="@+id/mark_unread_item"
         custom:showAsAction="collapseActionView"
-        android:title="@string/mark_unread_label">
+        android:title="@string/mark_as_unplayed_label">
     </item>
 
     <item
@@ -48,7 +48,7 @@
     <item
         android:id="@+id/reset_position"
         custom:showAsAction="collapseActionView"
-        android:title="@string/reset_position">
+        android:title="@string/reset_playback_position_label">
     </item>
     <item
         android:id="@+id/visit_website_item"

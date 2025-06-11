@@ -30,6 +30,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:text="@string/transcript_follow" />
+        android:text="@string/transcript_follow_audio_label" />
 
 </LinearLayout>

@@ -3,7 +3,7 @@ package de.danoeh.antennapod.ui.echo;
 import java.util.Calendar;
 
 public class EchoConfig {
-    public static final int RELEASE_YEAR = 2024;
+    public static final int RELEASE_YEAR = 2025;
 
     public static long jan1() {
         Calendar date = Calendar.getInstance();

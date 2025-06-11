@@ -18,7 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingHorizontal="8dp"
-            android:clipToPadding="false">
+            android:clipToPadding="true"
+            android:requiresFadingEdge="horizontal"
+            android:fadingEdgeLength="48dp">
 
             <LinearLayout
                 android:id="@+id/selectContainer"

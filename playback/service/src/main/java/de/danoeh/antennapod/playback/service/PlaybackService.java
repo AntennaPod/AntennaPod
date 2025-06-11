@@ -64,6 +64,7 @@ import de.danoeh.antennapod.playback.service.internal.PlaybackVolumeUpdater;
 import de.danoeh.antennapod.playback.service.internal.WearMediaSession;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import de.danoeh.antennapod.ui.widget.WidgetUpdater;
+import io.reactivex.disposables.CompositeDisposable;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -162,6 +163,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private Disposable positionEventTimer;
     private PlaybackServiceNotificationBuilder notificationBuilder;
     private CastStateListener castStateListener;
+    private final CompositeDisposable singleShotDisposables = new CompositeDisposable();
 
     private String autoSkippedFeedMediaId = null;
     private String positionJustResetAfterPlayback = null;
@@ -209,7 +211,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (showVideoPlayer) {
             return new VideoPlayerActivityStarter(context).getIntent();
         } else {
-            return new MainActivityStarter(context).withOpenPlayer().getIntent();
+            return new MainActivityStarter(context).withClearBackStack().withOpenPlayer().getIntent();
         }
     }
 
@@ -221,7 +223,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (media.getMediaType() == MediaType.VIDEO && !isCasting) {
             return new VideoPlayerActivityStarter(context).getIntent();
         } else {
-            return new MainActivityStarter(context).withOpenPlayer().getIntent();
+            return new MainActivityStarter(context).withClearBackStack().withOpenPlayer().getIntent();
         }
     }
 
@@ -313,6 +315,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
             }
         }
+        singleShotDisposables.clear();
         stateManager.stopForeground(!UserPreferences.isPersistNotify());
         isRunning = false;
         currentMediaType = MediaType.UNKNOWN;
@@ -349,7 +352,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private void loadQueueForMediaSession() {
-        Single.<List<MediaSessionCompat.QueueItem>>create(emitter -> {
+        Disposable d = Single.<List<MediaSessionCompat.QueueItem>>create(emitter -> {
             List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();
             for (FeedItem feedItem : DBReader.getQueue()) {
                 if (feedItem.getMedia() != null) {
@@ -362,6 +365,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(queueItems -> mediaSession.setQueue(queueItems), Throwable::printStackTrace);
+        singleShotDisposables.add(d);
     }
 
     private MediaBrowserCompat.MediaItem createBrowsableMediaItem(
@@ -405,7 +409,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         Log.d(TAG, "OnLoadChildren: parentMediaId=" + parentId);
         result.detach();
 
-        Completable.create(emitter -> {
+        Disposable d = Completable.create(emitter -> {
             result.sendResult(loadChildrenSynchronous(parentId));
             emitter.onComplete();
         })
@@ -417,6 +421,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         e.printStackTrace();
                         result.sendResult(null);
                     });
+        singleShotDisposables.add(d);
     }
 
     private List<MediaBrowserCompat.MediaItem> loadChildrenSynchronous(@NonNull String parentId) {
@@ -536,7 +541,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             if (allowStreamAlways) {
                 UserPreferences.setAllowMobileStreaming(true);
             }
-            Observable.fromCallable(
+            Disposable d = Observable.fromCallable(
                     () -> {
                         if (playable instanceof FeedMedia) {
                             return DBReader.getFeedMedia(((FeedMedia) playable).getId());
@@ -553,6 +558,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                                 error.printStackTrace();
                                 stateManager.stopService();
                             });
+            singleShotDisposables.add(d);
         } else {
             mediaSession.getController().getTransportControls().sendCustomAction(customAction, null);
         }
@@ -739,7 +745,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private void startPlayingFromPreferences() {
-        Observable.fromCallable(() -> DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
+        Disposable d = Observable.fromCallable(() -> DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -749,6 +755,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                             error.printStackTrace();
                             stateManager.stopService();
                         });
+        singleShotDisposables.add(d);
     }
 
     private void startPlaying(Playable playable, boolean allowStreamThisTime) {

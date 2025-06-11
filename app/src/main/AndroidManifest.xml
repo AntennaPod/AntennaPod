@@ -40,6 +40,7 @@
         android:logo="@mipmap/ic_launcher"
         android:resizeableActivity="true"
         android:allowAudioPlaybackCapture="true"
+        android:enableOnBackInvokedCallback="true"
         android:localeConfig="@xml/locale_config"
         android:networkSecurityConfig="@xml/network_security_config">
 
@@ -132,7 +133,6 @@
             android:name=".ui.screen.preferences.PreferenceActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
-            android:enableOnBackInvokedCallback="true"
             android:label="@string/settings_label">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -166,7 +166,6 @@
         </activity>
         <activity
             android:name=".ui.screen.preferences.BugReportActivity"
-            android:enableOnBackInvokedCallback="true"
             android:label="@string/bug_report_title">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -273,14 +272,6 @@
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
             </intent-filter>
         </activity>
-
-        <receiver
-            android:name=".spa.SPAReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="de.danoeh.antennapdsp.intent.SP_APPS_QUERY_FEEDS_RESPONSE"/>
-            </intent-filter>
-        </receiver>
 
         <provider
             android:authorities="@string/provider_authority"

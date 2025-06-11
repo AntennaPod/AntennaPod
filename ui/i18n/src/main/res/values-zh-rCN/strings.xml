@@ -4,7 +4,7 @@
   <string name="feed_update_receiver_name">更新订阅</string>
     <string name="statistics_label">统计</string>
     <string name="add_feed_label">添加播客</string>
-    <string name="episodes_label">曲目</string>
+    <string name="episodes_label">节目</string>
     <string name="home_label">首页</string>
     <string name="queue_label">播放列表</string>
     <string name="inbox_label">收件箱</string>
@@ -13,7 +13,7 @@
     <string name="downloads_label">下载</string>
     <string name="downloads_log_label">下载日志</string>
     <string name="subscriptions_label">订阅</string>
-    <string name="subscriptions_list_label">订阅列表（仅侧菜单）</string>
+    <string name="subscriptions_list_label">订阅列表</string>
     <string name="cancel_download_label">取消下载</string>
     <string name="playback_history_label">播放历史</string>
     <string name="years_statistics_label">年</string>
@@ -61,7 +61,7 @@
     <string name="drawer_feed_order_last_update">按出版日期排序</string>
     <string name="drawer_feed_order_most_played">根据已播放节目的数量排序</string>
     <string name="drawer_feed_counter_inbox">收件箱内播客节目的数量</string>
-    <string name="drawer_feed_counter_unplayed">未播曲目数</string>
+    <string name="drawer_feed_counter_unplayed">未播节目数</string>
     <string name="drawer_feed_counter_downloaded">已下载节目数</string>
     <string name="drawer_feed_counter_downloaded_unplayed">已下载但未播放的节目数</string>
     <string name="drawer_feed_counter_none">无</string>
@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">总是</string>
     <string name="feed_auto_download_never">从不</string>
     <string name="feed_new_episodes_action_add_to_inbox">添加到收件箱</string>
-    <string name="feed_new_episodes_action_add_to_queue">添加到队列，禁用自动下载</string>
-    <string name="feed_new_episodes_action_nothing">无，禁用自动下载</string>
+    <string name="feed_new_episodes_action_add_to_queue">添加到队列</string>
+    <string name="feed_new_episodes_action_nothing">无</string>
     <string name="episode_cleanup_never">从不</string>
     <string name="episode_cleanup_except_favorite_removal">当未收藏时</string>
     <string name="episode_cleanup_queue_removal">当不在队列中</string>
@@ -217,7 +217,7 @@
     <string name="no_transcript_label">无声音文字</string>
     <string name="remove_from_favorite_label">从收藏中删除</string>
     <string name="visit_website_label">访问网站</string>
-    <string name="skip_episode_label">跳过曲目</string>
+    <string name="skip_episode_label">跳过节目</string>
     <string name="reset_position">重置播放位置</string>
     <string name="no_items_selected">未选中项目</string>
     <string name="delete_local_feed_warning_body">删除操作会从 AntennaPod 删除播客并从设备存储删除媒体文件。无法再通过 AntennaPod 重新下载它。</string>
@@ -334,7 +334,7 @@
     <string name="preference_search_no_results">无结果</string>
     <string name="preference_search_clear_history">清除历史记录</string>
     <string name="pref_episode_cleanup_title">自动下载前删除</string>
-    <string name="pref_episode_cleanup_summary">在自动下载需要新曲目空间时，应该被删除的旧曲目</string>
+    <string name="pref_episode_cleanup_summary">在自动下载需要新节目空间时，应该被删除的旧节目</string>
     <string name="pref_pauseOnDisconnect_sum">耳机或蓝牙断开连接时暂停播放</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">当耳机重新连接时恢复播放</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">当蓝牙重新连接时恢复播放</string>
@@ -354,7 +354,7 @@
     <string name="pref_auto_local_delete_title">自动从本地文件夹删除</string>
     <string name="pref_auto_local_delete_sum">在自动删除功能中包括本地文件夹</string>
     <string name="pref_auto_local_delete_dialog_body">请注意，对于本地文件夹，此操作会从 AntennaPod 删除播客并从设备存储删除媒体文件。无法再通过 AntennaPod 下载它们。要开启自动删除吗？</string>
-    <string name="pref_smart_mark_as_played_sum">当曲目的剩余未播放时间小于一个确定值时将其表为已播放</string>
+    <string name="pref_smart_mark_as_played_sum">当节目的剩余未播放时间小于一个确定值时将其表为已播放</string>
     <string name="pref_smart_mark_as_played_title">智能标记为已播放</string>
     <string name="pref_skip_keeps_episodes_sum">当剧集被跳过时保留它们</string>
     <string name="pref_skip_keeps_episodes_title">保留跳过的节目</string>
@@ -384,7 +384,6 @@
     <string name="pref_mobileUpdate_sum">选择使用移动数据连接时应当允许的内容</string>
     <string name="pref_mobileUpdate_refresh">播客刷新</string>
     <string name="pref_mobileUpdate_images">封面图片</string>
-    <string name="pref_mobileUpdate_auto_download">自动下载</string>
     <string name="pref_mobileUpdate_episode_download">节目下载</string>
     <string name="pref_mobileUpdate_streaming">播放中</string>
     <string name="user_interface_label">用户界面</string>
@@ -582,7 +581,6 @@
     <string name="gpodnetauth_existing_devices">现有设备</string>
     <string name="gpodnetauth_create_device">创建设备</string>
     <string name="gpodnetauth_finish_descr">恭喜! 你的 gpodder.net 账户与设备已连结完成. 现在开始 AntennaPod 将自动同步你 gpodder.net 账户内的订阅信息到设备上.</string>
-    <string name="gpodnetauth_finish_butsyncnow">开始同步</string>
     <string name="pref_gpodnet_setlogin_information_title">改变登录信息</string>
     <string name="pref_gpodnet_setlogin_information_sum">改变 gpodder.net 账户登录信息.</string>
     <string name="synchronization_sync_changes_title">立即同步</string>
@@ -621,7 +619,7 @@
     <string name="increase_speed">加快速度</string>
     <string name="decrease_speed">放慢速度</string>
     <string name="media_type_video_label">视频</string>
-    <string name="status_downloading_label">曲目正在下载</string>
+    <string name="status_downloading_label">节目正在下载</string>
     <string name="in_queue_label">在队列中</string>
     <string name="is_favorite_label">标记为收藏</string>
     <string name="is_inbox_label">在收件箱中</string>
@@ -774,7 +772,7 @@
     <string name="delete_downloads_played">删除已播放的</string>
     <string name="delete_downloads_played_confirmation">请确认你要删除所有已播放的下载。</string>
     <string name="bottom_navigation">底部导航</string>
-    <string name="bottom_navigation_summary">公测功能：单次点击从所有地方访问最重要的应用屏幕</string>
+    <string name="bottom_navigation_summary">一键直达核心界面，随时随地快速访问</string>
     <string name="statistics_episodes_started">已开始</string>
     <string name="statistics_episodes_total">总计</string>
     <string name="statistics_episodes_downloaded">已下载</string>
@@ -852,4 +850,9 @@
     <string name="echo_hoarder_comment_hoarder">数字不撒谎。考虑到今年您的 %2$d 个活动订阅中仅 %1$d%% 已播放，我们的结论或许是对的。</string>
     <string name="overflow_more">更多</string>
     <string name="preference_search_clear_input">清除</string>
+    <string name="visit_social_interact_query_message">请确保您信任网站“%1$s”。</string>
+    <string name="feed_new_episodes_action_summary_autodownload">自动下载已启用。节目将添加到收件箱，下载完成后移动到队列‌。</string>
+    <string name="visit_social_interact_label">显示评论</string>
+    <string name="visit_social_interact_query_title">您将离开 AntennaPod</string>
+    <string name="rss_address">RSS 地址</string>
 </resources>

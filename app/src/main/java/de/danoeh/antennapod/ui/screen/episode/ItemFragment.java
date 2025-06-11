@@ -20,7 +20,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.snackbar.Snackbar;
 import com.skydoves.balloon.ArrowOrientation;
 import com.skydoves.balloon.ArrowOrientationRules;
 import com.skydoves.balloon.Balloon;
@@ -38,6 +37,7 @@ import de.danoeh.antennapod.actionbutton.PlayLocalActionButton;
 import de.danoeh.antennapod.actionbutton.StreamActionButton;
 import de.danoeh.antennapod.actionbutton.VisitWebsiteActionButton;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.playback.service.PlaybackStatus;
 import de.danoeh.antennapod.event.FeedItemEvent;
@@ -151,8 +151,7 @@ public class ItemFragment extends Fragment {
                     && Objects.equals(item.getMedia().getIdentifier(), controller.getMedia().getIdentifier())) {
                 controller.seekTo(time);
             } else {
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.play_this_to_seek_position,
-                        Snackbar.LENGTH_LONG);
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.play_this_to_seek_position_message)));
             }
         });
         registerForContextMenu(webvDescription);
@@ -218,8 +217,7 @@ public class ItemFragment extends Fragment {
             UserPreferences.setStreamOverDownload(offerStreaming);
             // Update all visible lists to reflect new streaming action button
             EventBus.getDefault().post(new UnreadItemsUpdateEvent());
-            ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                    R.string.on_demand_config_setting_changed, Snackbar.LENGTH_SHORT);
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.on_demand_config_setting_changed)));
             balloon.dismiss();
         });
         negativeButton.setOnClickListener(v1 -> {

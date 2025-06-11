@@ -7,6 +7,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.test.antennapod.EspressoTestUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -44,7 +45,7 @@ public class FeedSettingsTest {
         uiTestUtils.addLocalFeedData(false);
         feed = uiTestUtils.hostedFeeds.get(0);
         Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_FEED_ID, feed.getId());
+        intent.putExtra(MainActivityStarter.EXTRA_FEED_ID, feed.getId());
         activityRule.launchActivity(intent);
     }
 

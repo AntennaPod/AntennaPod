@@ -360,7 +360,6 @@
     <string name="pref_mobileUpdate_sum">Valitse, mikä on sallittua mobiiliyhteydellä</string>
     <string name="pref_mobileUpdate_refresh">Podcastien päivitys</string>
     <string name="pref_mobileUpdate_images">Kansikuvat</string>
-    <string name="pref_mobileUpdate_auto_download">Automaattinen lataus</string>
     <string name="pref_mobileUpdate_episode_download">Jaksojen lataus</string>
     <string name="pref_mobileUpdate_streaming">Suoratoisto</string>
     <string name="user_interface_label">Käyttöliittymä</string>
@@ -521,7 +520,6 @@
     <string name="gpodnetauth_existing_devices">Olemassaolevat laitteet</string>
     <string name="gpodnetauth_create_device">Luo laite</string>
     <string name="gpodnetauth_finish_descr">Onneksi olkoon! Sinun gpodder.net tili on liitetty laitteeseesi. AntennaPod alkaa automaattisesti synkronoimaan gpodder.net tiliisi.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Aloita synkrointi nyt</string>
     <string name="pref_gpodnet_setlogin_information_title">Vaihda kirjautumistietoja</string>
     <string name="pref_gpodnet_setlogin_information_sum">Vaihda kirjautumistietoja gpodder.net tiliisi.</string>
     <string name="synchronization_sync_changes_title">Synkronoi nyt</string>

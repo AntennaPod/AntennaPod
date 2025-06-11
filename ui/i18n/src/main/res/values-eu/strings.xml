@@ -13,7 +13,7 @@
     <string name="downloads_label">Deskargak</string>
     <string name="downloads_log_label">Deskargen erregistroa</string>
     <string name="subscriptions_label">Harpidetzak</string>
-    <string name="subscriptions_list_label">Harpidetza zerrenda (alboko menua soilik)</string>
+    <string name="subscriptions_list_label">Harpidetza zerrenda</string>
     <string name="cancel_download_label">Ezeztatu deskarga</string>
     <string name="playback_history_label">Erreprodukzio historia</string>
     <string name="years_statistics_label">Urteak</string>
@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">Beti</string>
     <string name="feed_auto_download_never">Inoiz ez</string>
     <string name="feed_new_episodes_action_add_to_inbox">Gehitu sarrerako ontzira</string>
-    <string name="feed_new_episodes_action_add_to_queue">Gehitu ilaran, desgaitu deskarga automatikoa</string>
-    <string name="feed_new_episodes_action_nothing">Ezer ez, desgaitu deskarga automatikoa</string>
+    <string name="feed_new_episodes_action_add_to_queue">Gehitu ilarara</string>
+    <string name="feed_new_episodes_action_nothing">Ezer ez</string>
     <string name="episode_cleanup_never">Inoiz ez</string>
     <string name="episode_cleanup_except_favorite_removal">Gogoko ez denean</string>
     <string name="episode_cleanup_queue_removal">Ilaran ez dagoenean</string>
@@ -374,7 +374,6 @@
     <string name="pref_mobileUpdate_sum">Hautatu zer onartzen den sare mugikorreko datu-konexioan</string>
     <string name="pref_mobileUpdate_refresh">Jarri egunean podcastak</string>
     <string name="pref_mobileUpdate_images">Azaleko irudiak</string>
-    <string name="pref_mobileUpdate_auto_download">Deskargatu automatikoki</string>
     <string name="pref_mobileUpdate_episode_download">Saioaren deskarga</string>
     <string name="pref_mobileUpdate_streaming">Streaming-a</string>
     <string name="user_interface_label">Erabiltzaile-interfazea</string>
@@ -554,7 +553,6 @@
     <string name="gpodnetauth_existing_devices">Dauden gailuak</string>
     <string name="gpodnetauth_create_device">Sortu gailua</string>
     <string name="gpodnetauth_finish_descr">Zorionak! Zure gpodder.net kontua zure gailuarekin lotuta dago orain. Hemendik aurrera, AntennaPodek automatikoki sinkronizatuko ditu zure gailuaren harpidetzak zure gpodder.net kontuarekin.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Hasi sinkronizazioa orain</string>
     <string name="pref_gpodnet_setlogin_information_title">Aldatu saio hasieraren informazioa</string>
     <string name="pref_gpodnet_setlogin_information_sum">Aldatu saio hasierako datuak zure gpodder.net-en kontuan.</string>
     <string name="synchronization_sync_changes_title">Sinkronizatu orain</string>
@@ -782,7 +780,7 @@
     <string name="mobile_download_notice">Mugikorraren datu-konexioari esker deskargatzen hurrengo %d minutuetan</string>
     <string name="pref_auto_delete_sum">Ezabatu atalak erreproduzitu ondoren edo deskarga automatikoak lekua behar duenean</string>
     <string name="pref_episode_cache_title">Atal muga</string>
-    <string name="bottom_navigation_summary">Beta funtzioa: atzitu pantaila garrantzitsuenetara edonondik, ukitu bakarrean</string>
+    <string name="bottom_navigation_summary">Atzitu pantaila garrantzitsuenetara edonondik, ukitu bakarrean</string>
     <string name="pref_episode_cache_summary">Deskarga automatikoa gelditzen da kopuru honetara iristen bada</string>
     <string name="pref_fast_forward_sum">Pertsonalizatu aurrera egiteko segundo-kopurua aurrera egiteko botoia sakatzen denean</string>
     <string name="pref_show_subscription_title">Tituluak erakutsi</string>
@@ -874,4 +872,9 @@
     <string name="global_default_with_value">Lehenetsi globala (%1$s)</string>
     <string name="overflow_more">Gehiago</string>
     <string name="preference_search_clear_input">Garbitu</string>
+    <string name="visit_social_interact_query_message">Egiaztatu mesedez webgunearengan konfidantza duzula \"%1$s\".</string>
+    <string name="feed_new_episodes_action_summary_autodownload">Deskarga automatikoa gaituta. Pasarteak sarrera-ontzira gehitzen dira eta, ondoren, ilarara eramaten dira deskargatuta.</string>
+    <string name="visit_social_interact_label">Erakutsi iruzkinak</string>
+    <string name="rss_address">RSS helbidea</string>
+    <string name="visit_social_interact_query_title">AntennaPod-etik ateratzear zaude</string>
 </resources>

@@ -399,7 +399,6 @@
     <string name="pref_mobileUpdate_sum">Επιλέξτε τι θα επιτρέπεται με σύνδεση δεδομένων κινητής τηλεφωνίας</string>
     <string name="pref_mobileUpdate_refresh">Ανανέωση podcast</string>
     <string name="pref_mobileUpdate_images">Εικόνες εξώφυλλου</string>
-    <string name="pref_mobileUpdate_auto_download">Αυτόματη λήψη</string>
     <string name="pref_mobileUpdate_episode_download">Λήψη επεισοδίου</string>
     <string name="pref_mobileUpdate_streaming">Ροή</string>
     <string name="user_interface_label">Περιβάλλον χρήστη</string>
@@ -601,7 +600,6 @@
     <string name="gpodnetauth_existing_devices">Ήδη υπάρχουσες συσκευές</string>
     <string name="gpodnetauth_create_device">Δημιουργία συσκευής</string>
     <string name="gpodnetauth_finish_descr">Συγχαρητήρια! Ο λογαριασμός σας στο gpodder.net συνδέεται πλέον με τη συσκευή σας. Το AntennaPod θα συγχρονίζει αυτόματα τις συνδρομές στην συσκευή σας με το λογαριασμό σας στο gpodder.net.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Έναρξη συγχρονισμού τώρα</string>
     <string name="pref_gpodnet_setlogin_information_title">Αλλαγή στοιχείων σύνδεσης</string>
     <string name="pref_gpodnet_setlogin_information_sum">Αλλαγή στοιχείων σύνδεσης για το λογαριασμό σας στο gpodder.net.</string>
     <string name="synchronization_sync_changes_title">Συγχρονισμός τώρα</string>

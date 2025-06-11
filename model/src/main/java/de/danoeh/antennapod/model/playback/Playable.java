@@ -61,7 +61,7 @@ public interface Playable extends Parcelable, Serializable {
      * Returns last time (in ms) when this playable was played or 0
      * if last played time is unknown.
      */
-    long getLastPlayedTime();
+    long getLastPlayedTimeStatistics();
 
     /**
      * Returns the description of the item, if available.
@@ -100,7 +100,7 @@ public interface Playable extends Parcelable, Serializable {
     /**
      * @param lastPlayedTimestamp  timestamp in ms
      */
-    void setLastPlayedTime(long lastPlayedTimestamp);
+    void setLastPlayedTimeStatistics(long lastPlayedTimestamp);
 
     /**
      * This method should be called every time playback starts on this object.

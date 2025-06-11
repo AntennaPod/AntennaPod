@@ -6,7 +6,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
@@ -29,10 +28,10 @@ import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import de.danoeh.antennapod.ui.chapters.ChapterUtils;
 import de.danoeh.antennapod.ui.screen.chapter.ChaptersFragment;
@@ -169,8 +168,7 @@ public class CoverFragment extends Fragment {
             return;
         }
         if (feed.getState() == Feed.STATE_SUBSCRIBED) {
-            Intent intent = MainActivity.getIntentToOpenFeed(getContext(), feed.getId());
-            startActivity(intent);
+            new MainActivityStarter(getContext()).withOpenFeed(feed.getId()).withClearTop().start();
         } else {
             startActivity(new OnlineFeedviewActivityStarter(getContext(), feed.getDownloadUrl()).getIntent());
         }
@@ -349,8 +347,7 @@ public class CoverFragment extends Fragment {
             clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", text));
         }
         if (Build.VERSION.SDK_INT <= 32) {
-            ((MainActivity) requireActivity()).showSnackbarAbovePlayer(
-                    getResources().getString(R.string.copied_to_clipboard), Snackbar.LENGTH_SHORT);
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
         }
         return true;
     }

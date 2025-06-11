@@ -166,7 +166,6 @@
     <string name="pref_mobileUpdate_sum">Esbilla qué habría permitise cola conexón a la rede móvil</string>
     <string name="pref_mobileUpdate_refresh">Refrescu de podcasts</string>
     <string name="pref_mobileUpdate_images">Portaes</string>
-    <string name="pref_mobileUpdate_auto_download">Descarga automática</string>
     <string name="pref_mobileUpdate_episode_download">Descarga d\'episodios</string>
     <string name="pref_nav_drawer_feed_order_sum">Camuda l\'orde de les soscripciones</string>
     <string name="pref_nav_drawer_feed_counter_sum">Camuda la información qu\'amuesa\'l contador de soscripciones. Tamién afeuta al orde de les soscripciones si «Orde de les soscripciones» s\'afita a «Contador».</string>
@@ -259,7 +258,6 @@
     <string name="gpodnetauth_existing_devices">Preseos esistentes</string>
     <string name="gpodnetauth_create_device">Crear el preséu</string>
     <string name="gpodnetauth_finish_descr">¡Norabona! La to cuenta de gpodder.net ta enllaciada col preséu. Dende agora, AntennaPod va sincronizar automáticamente les soscripciones del preséu con esta cuenta.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Sincronizar agora</string>
     <string name="pref_gpodnet_setlogin_information_title">Camudar la información del aniciu de sesión</string>
     <string name="pref_gpodnet_setlogin_information_sum">Camuda la información d\'aniciu de sesión de la to cuenta de gpodder.net .</string>
     <string name="gpodnetsync_error_descr">"Asocedió un fallu demientres la sincronización: "</string>

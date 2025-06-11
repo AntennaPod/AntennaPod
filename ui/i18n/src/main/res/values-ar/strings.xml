@@ -3,7 +3,7 @@
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">تحديث الاشتراكات</string>
     <string name="statistics_label">الإحصائيات</string>
-    <string name="add_feed_label">إضافة بودكاست</string>
+    <string name="add_feed_label">إضافة مسموعية</string>
     <string name="episodes_label">الحلقات</string>
     <string name="home_label">الصفحة الرئيسية</string>
     <string name="queue_label">قائمة الاستماع</string>
@@ -48,7 +48,7 @@
     <string name="home_new_title">اطلع على الجديد</string>
     <string name="home_downloads_title">إدارة التنزيلات</string>
     <string name="home_welcome_title">مرحبا بك في AntennaPod!</string>
-    <string name="home_welcome_text">لم تشترك بأي بودكاست، أفتح القائمة لإضافة بودكاست.</string>
+    <string name="home_welcome_text">لم تشترك بأي مسموعيَّة بعد. افتح القائمة لإضافة مسموعيَّات.</string>
     <string name="notification_permission_denied">لقد رفضت السماح بالإشعارات.</string>
     <string name="configure_home">اضبط شاشة المنزل</string>
     <string name="section_hidden">مخفي</string>
@@ -88,7 +88,7 @@
     <string name="global_default">الاعدادات الافتراضية</string>
     <string name="url_label">عنوان الموقع</string>
     <string name="support_funding_label">ادعم</string>
-    <string name="support_podcast">ادعم هذا البودكاست</string>
+    <string name="support_podcast">ادعم هذه المسموعيَّة</string>
     <string name="error_label">خطأ</string>
     <string name="error_msg_prefix">حدث خطأ:</string>
     <string name="refresh_label">تحديث</string>
@@ -176,21 +176,21 @@
     <string name="multi_select_mark_played_confirmation">أكد رغبتك في تحديد جميع العناصر المختارة على أنها شُغّلت.</string>
     <string name="multi_select_mark_unplayed_confirmation">أكد رغبتك في تحديد جميع العناصر المختارة على أنها لم تشغل.</string>
     <string name="show_info_label">اظهر معلومات</string>
-    <string name="show_feed_settings_label">اظهر اعدادات البودكاست</string>
-    <string name="feed_settings_label">إعدادات البودكاست</string>
-    <string name="rename_feed_label">تغيير اسم البودكاست</string>
-    <string name="remove_feed_label">أزل البودكاست</string>
+    <string name="show_feed_settings_label">أظهِر إعدادات المسموعيَّة</string>
+    <string name="feed_settings_label">إعدادات المسموعيَّة</string>
+    <string name="rename_feed_label">تغيير اسم المسموعيَّة</string>
+    <string name="remove_feed_label">أزل المسموعيَّة</string>
     <string name="share_label">مشاركة</string>
     <string name="share_file_label">مشاركة ملف</string>
-    <string name="feed_remover_msg">جار إزالة البودكاست</string>
-    <string name="load_complete_feed">حدث كامل البودكاست</string>
+    <string name="feed_remover_msg">جار إزالة المسموعيَّة</string>
+    <string name="load_complete_feed">حدِّث كامل المسموعيَّة</string>
     <string name="multi_select">اختيار متعدد</string>
     <string name="select_all_above">حدد الكل أعلاه</string>
     <string name="select_all_below">حدد الكل أدناه</string>
     <string name="multi_select_started_talkback">تظهر خيارات الاختيار المتعدد في الأسفل</string>
     <string name="filtered_label">مصفى</string>
     <string name="refresh_failed_msg">فشلت آخر عملية تحديث. اضغط لرؤية التفاصيل.</string>
-    <string name="open_podcast">افتح البودكاست</string>
+    <string name="open_podcast">افتح المسموعيَّة</string>
     <string name="please_wait_for_data">انتظر حتى تحمل البيانات</string>
     <string name="updates_disabled_label">التحديثات موقوفة</string>
     <plurals name="updated_feeds_batch_label">
@@ -205,7 +205,7 @@
     <string name="add_tag">أضف علامة</string>
     <string name="rename_tag_label">إعادة تسمية العلامات</string>
     <string name="confirm_mobile_feed_refresh_dialog_message">عُطل تحديث الاشتراكات باستخدام بيانات الهاتف في الإعدادات.\n\nهل تريد التحديث على أي حال؟</string>
-    <string name="confirm_mobile_feed_refresh_dialog_message_vpn">يدّعي تطبيق VPN الخاص بك بأنه شبكة جوال(إتصال محدود الاستخدام). عطل تحديث البودكاست عن طريق شبكة الجوال في الإعدادات.\n\nهل ترغب في التحديث على أي حال؟ إذا أردت حل هذه المشكلة، تواصل مع مطوري تطبيق VPN المُستخدم.</string>
+    <string name="confirm_mobile_feed_refresh_dialog_message_vpn">يدّعي تطبيق VPN الخاص بك بأنه شبكة جوال (إتصال محدود الاستخدام). تحديث المسموعيَّات عن طريق شبكة الجوال مُعطَّل في الإعدادات.\n\nهل ترغب في التحديث على أي حال؟ إذا أردت حل هذه المشكلة، تواصل مع مطوري تطبيق VPN المُستخدم.</string>
     <!--actions on feeditems-->
   <string name="download_label">نزّل</string>
     <plurals name="downloading_batch_label">
@@ -304,16 +304,16 @@
     <string name="download_error_insufficient_space">لا توجد مساحة متبقية كافية في جهازك.</string>
     <string name="download_error_http_data_error">خطأ في بيانات HTTP</string>
     <string name="download_error_error_unknown">خطأ غير معروف</string>
-    <string name="download_error_parser_exception">قام خادم مضيف البودكاست بإرسال موجز بودكاست معطل. نوصي بمراجعة أداة التحقق من صحة البودكاست مثل castfeedvalidator.com والاتصال بمنشئ البودكاست لإعلامه بذلك.</string>
+    <string name="download_error_parser_exception">قام خادم مضيف المسموعيَّة بإرسال موجز مسموعيَّة معطل. نوصي بمراجعة أداة التحقق من صحة المسموعيَّة مثل castfeedvalidator.com والاتصال بمنشئ المسموعيَّة لإعلامه بذلك.</string>
     <string name="download_error_unsupported_type">نمط قناة غير مدعوم</string>
-    <string name="download_error_unsupported_type_html">أرسل خادم البودكاست المستضيف موقعًا و ليس بودكاستًا.</string>
-    <string name="download_error_not_found">تعذر خادم البودكاست من العثور على الملف. من الارجح أن الملف محذوف.</string>
+    <string name="download_error_unsupported_type_html">أرسل خادم المسموعيَّة المستضيف موقعًا وليس مسموعيَّةً.</string>
+    <string name="download_error_not_found">تعذر خادم المسموعيَّة من العثور على الملف. من الأرجح أن الملف محذوف.</string>
     <string name="download_error_connection_error">خطأ في الاتصال</string>
     <string name="download_error_no_connection">لا يوجد إتصال بالشبكة</string>
     <string name="download_error_unknown_host">لم يعثر على الخادم. تأكد من كتابة العنوان بشكل صحيح و توفر اتصال بالشبكة.</string>
     <string name="download_error_unauthorized">فشل التحقق. تأكد من صحة اسم المستخدم وكلمة المرور.</string>
     <string name="download_error_file_type_type">خطأ في نوع الملف</string>
-    <string name="download_error_forbidden">خادم البودكاست يرفض الرد.</string>
+    <string name="download_error_forbidden">خادم المسموعيَّة يرفض الرد.</string>
     <string name="download_canceled_msg">أُلغي التنزيل</string>
     <string name="download_error_wrong_size">فُقد الاتصال مع الخادم قبل الانتهاء من التنزيل</string>
     <string name="download_error_blocked">حٌظر التنزيل بواسطة تطبيق آخر على جهازك(مثل الـ VPN أو مانع الإعلانات).</string>
@@ -329,12 +329,12 @@
         <item quantity="many">بقي %d تنزيلاً</item>
         <item quantity="other">بقي %d تنزيل</item>
     </plurals>
-    <string name="download_notification_title_feeds">يجري تحديث البودكاستات</string>
+    <string name="download_notification_title_feeds">جارِ تحديث المسموعيَّات</string>
     <string name="download_notification_title_episodes">يجري تنزيل الحلقات</string>
     <string name="download_log_title_unknown">عنوان غير معروف</string>
     <string name="download_type_feed">قناة</string>
     <string name="download_type_media">ملف وسائط</string>
-    <string name="no_feed_url_podcast_found_by_search">لم يعثر على رابط RSS للبودكاست المقترح، لقد عثر AntennaPod على بودكاست أخر قد يطابقه</string>
+    <string name="no_feed_url_podcast_found_by_search">لم يُعثر على رابط RSS للمسموعيَّة المقترحة، لقد عثر AntennaPod على مسموعيَّة أخرى قد تطابقها</string>
     <string name="authentication_notification_title">التحقق مطلوب</string>
     <string name="confirm_mobile_download_dialog_title">أكد رغبة التنزيل باستخدام بيانات الجوال</string>
     <string name="confirm_mobile_download_dialog_message">عُطلت ميزة التنزيل باستخدام بيانات الجوال في الإعدادات. يمكن لـ AntennaPod أن ينزل الحلقة تلقائيا عند توفر شبكة واي-فاي.</string>
@@ -346,7 +346,7 @@
     <string name="confirm_mobile_streaming_button_always">دائما</string>
     <string name="confirm_mobile_streaming_button_once">مرة</string>
     <!--Mediaplayer messages-->
-  <string name="playback_error_generic">تعذر تشغيل ملف الوسائط.\n\n- حاول حذف وإعادة تنزيل الحلقة.\n- تحقق من اتصالك بالشبكة، وتأكد من عدم وجود شبكة خصوصية افتراضية VPN أو صفحة ولوج تمنعك من الوصول.\n- جرب الضغط المطول ثم مشاركة \"عنوان الوسائط\" إلى متصفح الإنترنت لرؤية ما إذا كانت تعمل هناك. إذا لم تعمل، تواصل مع منتجي البودكاست.</string>
+  <string name="playback_error_generic">تعذر تشغيل ملف الوسائط.\n\n- حاول حذف وإعادة تنزيل الحلقة.\n- تحقق من اتصالك بالشبكة، وتأكد من عدم وجود شبكة خصوصية افتراضية VPN أو صفحة ولوج تمنعك من الوصول.\n- جرب الضغط المطول ثم مشاركة \"عنوان الوسائط\" إلى متصفح الإنترنت لرؤية ما إذا كانت تعمل هناك. إذا لم تعمل، تواصل مع منتجي المسموعيَّة.</string>
     <string name="no_media_playing_label">لا يوجد وسائط قيد التشغيل</string>
     <string name="unknown_media_key">AntennaPod - مفتاح وسائط غير معروف: %1$d</string>
     <string name="error_file_not_found">ملف غير موجود</string>
@@ -366,7 +366,7 @@
     <string name="date">تاريخ</string>
     <string name="duration">طول</string>
     <string name="episode_title">عنوان الحلقة</string>
-    <string name="feed_title">عنوان البودكاست</string>
+    <string name="feed_title">عنوان المسموعيَّة</string>
     <string name="random">عشوائي</string>
     <string name="smart_shuffle">الخلط الذكي</string>
     <string name="size">الحجم</string>
@@ -380,7 +380,7 @@
     <string name="no_items_label">أضف حلقة بإختيار تنزيل, أو أضغط مطولا على الحلقة وأختر \"أضف إلى لائحة الاستماع\".</string>
     <string name="no_shownotes_label">لا تحتوي الحلقة على ملاحظات.</string>
     <string name="no_comp_downloads_head_label">لا توجد حلقات منزلة</string>
-    <string name="no_comp_downloads_label">يمكنك تنزيل حلقات من صفحة تفاصيل البودكاست.</string>
+    <string name="no_comp_downloads_label">يمكنك تنزيل حلقات من صفحة تفاصيل المسموعيَّة.</string>
     <string name="no_log_downloads_head_label">لا سجل للتنزيلات</string>
     <string name="no_log_downloads_label">ستظهر سجلات التنزيل هنا عند توفرها.</string>
     <string name="no_history_head_label">لا يوجد سجل</string>
@@ -391,7 +391,7 @@
     <string name="no_inbox_head_label">لا يوجد حلقات في صندوق الوارد</string>
     <string name="no_inbox_label">ستعرض الحلقات الجديدة هنا عند وصولها. يمكنك بعد ذلك تحديد ما إذا كنت مهتمًا بها.</string>
     <string name="no_subscriptions_head_label">لا توجد اشتراكات</string>
-    <string name="no_subscriptions_label">للاشتراك في بودكاست ، اضغط على أيقونة علامة الجمع أدناه.</string>
+    <string name="no_subscriptions_label">للاشتراك في مسموعيَّة، اضغط على أيقونة علامة الإضافة أدناه.</string>
     <!--Preferences-->
   <string name="project_pref">المشروع</string>
     <string name="synchronization_pref">مزامنة</string>
@@ -439,7 +439,7 @@
     <string name="playback_pref_sum">تحكم سماعة الأذن, وقت التقدم, لائحة الاستماع</string>
     <string name="downloads_pref">تنزيلات</string>
     <string name="downloads_pref_sum">الفترة الزمنية للتحديثات، بيانات الجوال، التنزيل التلقائي، الحذف التلقائي</string>
-    <string name="feed_refresh_title">حدث البودكاستات</string>
+    <string name="feed_refresh_title">حدِّث المسموعيَّات</string>
     <string name="feed_refresh_sum">حدد الفترة الزمنية التي سيقوم AntennaPod فيها تلقائيا بالبحث عن حلقات جديدة</string>
     <string name="feed_refresh_never">أبداً</string>
     <string name="feed_every_hour">كل ساعة</string>
@@ -457,9 +457,8 @@
     <string name="pref_stream_over_download_sum">اعرض زر البث بدلا من زر التنزيل في القوائم</string>
     <string name="pref_mobileUpdate_title">التحديث باستخدام شبكة الجوال</string>
     <string name="pref_mobileUpdate_sum">حدد ما يجب السماح به أثناء الاتصال على شبكة الجوال</string>
-    <string name="pref_mobileUpdate_refresh">تحديث البودكاست</string>
+    <string name="pref_mobileUpdate_refresh">تحديث المسموعيَّة</string>
     <string name="pref_mobileUpdate_images">صور الغلاف</string>
-    <string name="pref_mobileUpdate_auto_download">تنزيل تلقائي</string>
     <string name="pref_mobileUpdate_episode_download">تحميل الحلقة</string>
     <string name="pref_mobileUpdate_streaming">بث متدفق</string>
     <string name="user_interface_label">واجهة المستخدم</string>
@@ -479,7 +478,7 @@
     <string name="pref_episode_cache_title">حد التنزيل</string>
     <string name="pref_episode_cache_summary">يتوقف التنزيل التلقائي عند وصوله إلى هذا الرقم</string>
     <string name="pref_episode_cover_title">استخدم صورة غلاف الحلقة</string>
-    <string name="pref_episode_cover_summary">استخدم الغلاف المخصص للحلقة في القوائم إن وجد. إذا لم يحدد هذا الاختيار ، فسيستخدم التطبيق صورة غلاف البودكاست.</string>
+    <string name="pref_episode_cover_summary">استخدم الغلاف المخصص للحلقة في القوائم إن وجد. إذا لم يحدد هذا الاختيار ، فسيستخدم التطبيق صورة غلاف المسموعيَّة.</string>
     <string name="pref_show_remain_time_title">اظهر الوقت المتبقي</string>
     <string name="pref_show_remain_time_summary">اعرض الوقت المتبقي من الحلقات عند اختيارها. إذا لم يتم اختيارها ، اعرض المدة الإجمالية للحلقات.</string>
     <string name="pref_theme_title_automatic">تلقائي</string>
@@ -487,7 +486,7 @@
     <string name="pref_theme_title_dark">داكن</string>
     <string name="pref_episode_cache_unlimited">غير محدود</string>
     <string name="pref_playback_speed_sum">حدد السرعات المتوفرة في التشغيل متعدد السرعات</string>
-    <string name="pref_feed_playback_speed_sum">سرعة التشغيل الصوتي عند بدء تشغيل حلقات من هذا البودكاست</string>
+    <string name="pref_feed_playback_speed_sum">سرعة التشغيل الصوتي عند بدء تشغيل حلقات من هذه المسموعيَّة</string>
     <string name="pref_feed_skip">تخطي تلقائي</string>
     <string name="pref_feed_skip_sum">تخطى المقدمة والختام</string>
     <string name="pref_feed_skip_ending">تخطى الآخر</string>
@@ -543,7 +542,7 @@
     <string name="not_kept_updated">لا يحدث باستمرار</string>
     <string name="new_episode_notification_enabled">الإشعارات مفعلة</string>
     <string name="new_episode_notification_disabled">الإشعارات غير مفعلة</string>
-    <string name="pref_feed_settings_dialog_msg">هذا الإعداد فريد لكل بودكاست. يمكنك تغييره بفتح صفحة البودكاست.</string>
+    <string name="pref_feed_settings_dialog_msg">هذا الإعداد فريد لكل مسموعيَّة. يمكنك تغييره بفتح صفحة المسموعيَّة.</string>
     <string name="pref_contribute">ساهم</string>
     <string name="pref_show_subscription_title">اظهر العناوين</string>
     <string name="pref_new_episodes_action_title">التعامل مع الحلقات الجديدة</string>
@@ -580,12 +579,12 @@
     <string name="opml">OPML</string>
     <string name="html">HTML</string>
     <string name="html_export_summary">عرض اشتراكاتك لصديق</string>
-    <string name="opml_export_summary">نقل اشتراكاتك لبرنامج بودكاست آخر</string>
-    <string name="opml_import_summary">استيراد اشتراكاتك من برنامج بودكاست آخر</string>
+    <string name="opml_export_summary">نقل اشتراكاتك لبرنامج مسموعيَّات آخر</string>
+    <string name="opml_import_summary">استيراد اشتراكاتك من برنامج مسموعيَّات آخر</string>
     <string name="database_export_summary">نقل الاشتراكات والحلقات المسموعة ولائحة الاستماع لـ AntennaPod على جهاز آخر</string>
     <string name="database_import_summary">استوراد قاعدة بيانات AntennaPod من جهاز آخر</string>
     <string name="opml_import_label">استيراد ملف بصيغة OPML</string>
-    <string name="opml_add_podcast_label">استورد قائمة بودكاستات (OPML)</string>
+    <string name="opml_add_podcast_label">استورد قائمة المسموعيَّات (OPML)</string>
     <string name="opml_reader_error">حدث خطأ أثناء قراءة الملف. تأكد من اختيار ملف OPML وأنه صالح.</string>
     <string name="opml_import_error_no_file">لم يختر أي ملف!</string>
     <string name="select_all_label">اختر الكل</string>
@@ -659,7 +658,7 @@
   <string name="synchronization_choose_title">اختر مزود خدمة التزامن</string>
     <string name="synchronization_summary_unchoosen">يمكنك الاختيار من بين عدة مزودين لمزامنة اشتراكاتك وحالة تشغيل الحلقة معهم</string>
     <string name="dialog_choose_sync_service_title">اختر مزود خدمة التزامن</string>
-    <string name="gpodnet_description">Gpodder.net هي خدمة مزامنة بودكاست مفتوحة المصدر يمكنك تنصيبها على الخادم الخاص بك. Gpodder.net خدمة مستقلة عن مشروع AntennaPod.</string>
+    <string name="gpodnet_description">Gpodder.net هي خدمة مزامنة مسموعيَّات مفتوحة المصدر يمكنك تثبيتها على الخادم الخاص بك. Gpodder.net خدمة مستقلة عن مشروع AntennaPod.</string>
     <string name="synchronization_summary_nextcloud">Gpoddersync هو تطبيق Nextcloud مفتوح المصدر يمكنك تنصيبه على خادمك بكل سهولة. التطبيق مستقل عن مشروع AntennaPod.</string>
     <string name="synchronization_host_explanation">اختر خادما خاصا بك للمزامنة. عند اختيارك لخادم المزامنة المرغوب، اضف عنوانه هنا.</string>
     <string name="synchronization_host_label">عنوان الخادم</string>
@@ -677,7 +676,6 @@
     <string name="gpodnetauth_existing_devices">أجهزة موجودة</string>
     <string name="gpodnetauth_create_device">أنشئ جهاز</string>
     <string name="gpodnetauth_finish_descr">تهانينا! حسابك في gpodder.net مربوط الآن مع جهازك. سيزامن AntennaPod من الآن وصاعدا اشتراكاتك على جهازك مع حسابك على gpodder.net.</string>
-    <string name="gpodnetauth_finish_butsyncnow">ابدأ المزامنة الآن</string>
     <string name="pref_gpodnet_setlogin_information_title">تغيير بيانات تسجيل الدخول</string>
     <string name="pref_gpodnet_setlogin_information_sum">غيّر بيانات تسجيل الدخول لحساب gpodder.net الخاص بك.</string>
     <string name="synchronization_sync_changes_title">زامن الآن</string>
@@ -699,7 +697,7 @@
     <string name="pref_pausePlaybackForFocusLoss_sum">اوقف التشغيل بدل اخفات الصوت عند رغبة برنامج آخر بتشغيل أصوات</string>
     <string name="pref_pausePlaybackForFocusLoss_title">توقف للمقاطعات</string>
     <!--Rating dialog-->
-  <string name="rating_tagline">منذ %1$s، استمعت إلى %2$s%3$d%4$s ساعة من البودكاستات.</string>
+  <string name="rating_tagline">منذ %1$s، استمعت إلى %2$s%3$d%4$s ساعة من المسموعيَّات.</string>
     <string name="rating_contribute_label">هل تود الأنضمام؟ سواء كنت تود الترجمة أو الدعم أو التصميم أو التطوير، سنكون سعداء بك!</string>
     <string name="rating_contribute_button">اكتشف طرق للمساهمة</string>
     <string name="rating_volunteers_label">يطوَّر AntennaPod على يد متطوعين في وقت فراغهم. اظهر تقديرك لعملهم بوضع تقييم جيد.</string>
@@ -708,7 +706,7 @@
     <!--Online feed view-->
   <string name="subscribe_label">أشترك</string>
     <string name="preview_episodes">معاينة الحلقات</string>
-    <string name="state_deleted_not_subscribed">لم تشترك بهذا البودكاست. اشترك مجانا لتصل إلى محتواه بسهولة ولتبقي سجل تشغيله.</string>
+    <string name="state_deleted_not_subscribed">لم تشترك بهذه المسموعيَّة. اشترك مجانًا لتصل إلى محتواها بسهولة ولتبقي سجل تشغيلها.</string>
     <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">الرجوع</string>
     <string name="rewind_label">العودة للخلف</string>
@@ -733,10 +731,10 @@
     <string name="download_completed_talkback">انتهى تنزيل %1$s</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">تسجيل الدخول</string>
-    <string name="authentication_descr">غيّر اسم المستخدم وكلمة المرور لهذا البودكاست وحلقاته</string>
+    <string name="authentication_descr">غيِّر اسم المستخدم وكلمة المرور لهذه المسموعيَّة وحلقاتها</string>
     <string name="feed_tags_label">العلامات</string>
-    <string name="feed_tags_summary">غيّر العلامات الخاصة بهذا البودكاست للمساعدة في تنظيم اشتراكاتك</string>
-    <string name="feed_folders_include_root">اعرض هذا البودكاست في القائمة الرئيسية</string>
+    <string name="feed_tags_summary">غيِّر العلامات الخاصة بهذه المسموعيَّة للمساعدة في تنظيم اشتراكاتك</string>
+    <string name="feed_folders_include_root">اعرض هذه المسموعيَّة في القائمة الرئيسية</string>
     <string name="multi_feed_common_tags_info">ستعرض العلامات المشتركة بين الاشتراكات المختارة فقط. لن تعدل العلامات الأخرى.</string>
     <string name="auto_download_settings_label">إعدادات التنزيل التلقائي</string>
     <string name="episode_filters_label">مصفاة الحلقات</string>
@@ -746,11 +744,11 @@
     <string name="include_terms">اشمل الحلقات التي تحتوي على أي من المصطلحات أدناه</string>
     <string name="exclude_episodes_shorter_than">استبعد الحلقات الاقصر من</string>
     <string name="keep_updated">أبقه محدثا</string>
-    <string name="keep_updated_summary">أضف هذا البودكاست عند تحديث (أو التحديث التلقائي) جميع ملفات البودكاستات</string>
+    <string name="keep_updated_summary">أضف هذه المسموعية عند تحديث (أو التحديث التلقائي) جميع المسموعيَّات</string>
     <string name="statistics_expected_next_episode_any_day">قريبًا</string>
     <string name="statistics_expected_next_episode_unknown">غير معروف</string>
     <string name="edit_url_menu">عدل على الرابط</string>
-    <string name="edit_url_confirmation_msg">قد يؤدي تغيير عنوان RSS إلى كسر حالة التشغيل و قائمة الحلقات للبودكاست. لا ننصح بتغيرها ولن نوفر أي دعم في حالة حصول أي خطأ. لا يمكن التراجع عن هذا التغيير. لن يٌسترجع الاشتراك المكسور بإعادة إرجاع الرابط القديم. ننصح بإنشاء نسخة احتياطية قبل المتابعة.</string>
+    <string name="edit_url_confirmation_msg">قد يؤدي تغيير عنوان RSS إلى كسر حالة التشغيل وقائمة الحلقات للمسموعيَّة. لا ننصح بتغيرها ولن نوفر أي دعم في حالة حصول أي خطأ. لا يمكن التراجع عن هذا التغيير. لن يُسترجع الاشتراك المكسور بإعادة إرجاع الرابط القديم. ننصح بإنشاء نسخة احتياطية قبل المتابعة.</string>
     <!--Podcast release schedules-->
   <string name="release_schedule_daily">يومياً</string>
     <string name="release_schedule_weekdays">في أيام الأسبوع</string>
@@ -767,11 +765,11 @@
     <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">يستورد الاشتراكات من التطبيقات ذات الغرض الواحد …</string>
     <!--Add podcast fragment-->
-  <string name="search_podcast_hint">ابحث عن بودكاست…</string>
+  <string name="search_podcast_hint">ابحث عن مسموعيَّة…</string>
     <string name="search_itunes_label">ابحث Apple Podcasts</string>
     <string name="search_podcastindex_label">ابحث Podcast Index</string>
     <string name="search_fyyd_label">ابحث fyyd</string>
-    <string name="add_podcast_by_url">أضف بودكاست برابط RSS</string>
+    <string name="add_podcast_by_url">أضف مسموعيَّة برابط RSS</string>
     <string name="discover">اكتشف</string>
     <string name="discover_hide">اخفاء</string>
     <string name="discover_is_hidden">لقد اخترت اخفاء الاقتراحات.</string>
@@ -784,7 +782,7 @@
     <string name="local_folder">مجلد محلي</string>
     <string name="reconnect_local_folder">إعادة توصيل المجلد المحلي</string>
     <string name="reconnect_local_folder_warning">في حالة رفض الإذن ، يمكنك استخدام هذا لإعادة الاتصال بالمجلد نفسه. لا تحدد مجلدا آخر.</string>
-    <string name="local_feed_description">خلق هذا البودكاست الافتراضي بإضافة مجلد محلي إلى AntennaPod .</string>
+    <string name="local_feed_description">أُنشأت هذه المسموعيَّة الافتراضية بإضافة مجلد محلي إلى AntennaPod .</string>
     <string name="unable_to_start_system_file_manager">غير قادر على تشغيل مدير ملفات النظام</string>
     <string name="filter">المصفاة</string>
     <string name="hide_is_favorite_label">في المفضلة</string>
@@ -833,13 +831,13 @@
     <string name="notification_channel_downloading">جارٍ تنزيل الحلقات</string>
     <string name="notification_channel_downloading_description">تظهر أثناء تنزيل الحلقات حالياً.</string>
     <string name="notification_channel_playing">يشغل حاليا</string>
-    <string name="notification_channel_playing_description">تسمح بتحكم التشغيل. هذا الاشعار الرئيسي الذي تراه عند تشغيل البودكاست.</string>
+    <string name="notification_channel_playing_description">تسمح بتحكم التشغيل. هذا الاشعار الرئيسي الذي تراه عند تشغيل المسموعيَّة.</string>
     <string name="notification_channel_download_error">التنزيل فشل</string>
     <string name="notification_channel_download_error_description">يظهر عند فشل التنزيل أو تحديث القناة.</string>
     <string name="notification_channel_sync_error">فشلت المزامنة</string>
     <string name="notification_channel_sync_error_description">أظهر عندما تفشل مزامنة gpodder.</string>
     <string name="notification_channel_new_episode">يوجد حلقة جديدة</string>
-    <string name="notification_channel_new_episode_description">تظهر عند العثور على حلقة جديدة من بودكاست ، حيث يتم تمكين الإشعارات</string>
+    <string name="notification_channel_new_episode_description">تظهر عند العثور على حلقة جديدة من مسموعيَّة ما، حيث تُمَكَّن الإشعارات</string>
     <!--Widget settings-->
   <string name="widget_settings">إعدادات أداة الشاشة</string>
     <string name="widget_create_button">أنشأ أداة شاشة</string>
@@ -855,15 +853,15 @@
     <string name="home_continue_empty_text">يمكنك إضافة حلقات عن طريق تنزيلها أو الضغط مطولاً عليها واختيار ”إضافة إلى قائمة الانتظار“.</string>
     <string name="home_no_recent_unplayed_episodes_text">لقد استمعت بالفعل لجميع الحلقات الأخيرة. لا شيء يدعو للدهشة هنا ؛)</string>
     <string name="home_new_empty_text">ستظهر الحلقات الجديدة هنا. يمكنك بعد ذلك تحديد ما إذا كنت مهتمًا بها أم لا.</string>
-    <string name="statistics_view_all">جميع البودكاستات »</string>
+    <string name="statistics_view_all">جميع المسموعيَّات »</string>
     <string name="delete_downloads_played">احذف المشغَّل</string>
-    <string name="feed_delete_confirmation_msg">أكد رغبتك في حذف البودكاست \"%1$s\"، وكل حلقاته(بما فيها المنزلة)، وسجل تشغيله، وإحصائياته.</string>
+    <string name="feed_delete_confirmation_msg">أكد رغبتك في حذف المسموعيَّة \"%1$s\"، وكل حلقاتها (بما فيها المُنزَّلة)، وسجل تشغيلها، وإحصائياتها.</string>
     <string name="statistics_release_schedule">جدول الإصدار</string>
     <string name="statistics_release_next">توقع الحلقة القادمة</string>
     <string name="section_shown">معروض</string>
     <string name="pref_nav_drawer_items_title">خصّص التنقل</string>
-    <string name="feed_delete_confirmation_local_msg">أكد رغبتك في إزالة البودكاست \"%1$s\"، وسجل تشغيله، وإحصائياته. لن تحذف ملفاته من المجلد المحلي.</string>
-    <string name="null_value_podcast_error">لا يحتوي الرابط المنقور على عنوان صحيح للبودكاست. تأكد من الرابط وحاول مجددًا، أو ابحث عن البودكاست يدويا.</string>
+    <string name="feed_delete_confirmation_local_msg">أكد رغبتك في إزالة المسموعيَّة \"%1$s\"، وسجل تشغيلها، وإحصائياتها. لن تُحذف ملفاتها من المجلد المحلي.</string>
+    <string name="null_value_podcast_error">لا يحتوي الرابط المنقور على عنوان صحيح للمسموعيَّة. تأكد من الرابط وحاول مجددًا، أو ابحث عن المسموعيَّة يدويًّا.</string>
     <string name="home_downloads_empty_text">يمكنك تحميل أي حلقة لتستمع لها بدون اتصال.</string>
     <string name="delete_downloads_played_confirmation">أكد رغبتك في حذف جميع التنزيلات المشغَّلة.</string>
     <string name="mobile_download_notice">سيُنزّل باستخدام بيانات الهاتف لمدة %d دقيقة</string>
@@ -880,14 +878,14 @@
         <item quantity="many">الحجم الكلي لـ%d حلقةً في الجهاز</item>
         <item quantity="other">الحجم الكلي لـ%d حلقةٍ في الجهاز</item>
     </plurals>
-    <string name="feed_delete_confirmation_msg_batch">أكد رغبتك في إزالة البودكاستات المحددة، وكل حلقاتها(بما فيها المنزلة)، وسجل تشغيلها، وإحصائياتها.</string>
+    <string name="feed_delete_confirmation_msg_batch">أكِّد رغبتك في إزالة المسموعيَّات المحددة، وكل حلقاتها (بما فيها المُنزَّلة)، وسجل تشغيلها، وإحصائياتها.</string>
     <string name="episode_download_failed">فشل تنزيل الحلقة</string>
     <string name="bottom_navigation_summary">ميزة تجريبية: أوصل إلى الشاشات المهمة من أي مكان، بنقرة واحدة</string>
     <string name="pref_nav_drawer_items_sum">غير الأدوات التي ستظهر في درج التنقل أو التنقل السفلي</string>
-    <string name="sync_status_wait_for_downloads">بانتظار تحديث البودكاستات…</string>
+    <string name="sync_status_wait_for_downloads">بانتظار تحديث المسموعيَّات…</string>
     <string name="nextcloud_login_error_generic">فشل الولوج إلى NextCloud الخاص بك.\n\n- تأكد من اتصالك بالشبكة.\n- تأكد من صحة عنوان الخادم.\n- تأكد من تثبيت الملحق gpoddersync على NextCloud.</string>
     <string name="discover_more">اكتشف المزيد »</string>
-    <string name="pref_automatic_download_global_description">تنزيل الحلقات الجديدة تلقائياً. يمكن تعديله لكل بودكاست.</string>
+    <string name="pref_automatic_download_global_description">تنزيل الحلقات الجديدة تلقائيًّا. يمكن تعديله لكل مسموعيَّة.</string>
     <string name="pref_automatic_download_queue_title">التنزيل في قائمة الانتظار</string>
     <string name="pref_automatic_download_queue_description">تنزيل الحلقات المدرجة في قائمة الانتظار تلقائياً</string>
     <string name="episode_lists">قوائم الحلقة</string>
@@ -915,18 +913,21 @@
     <string name="global_default_with_value">الافتراضي العام (%1$s)</string>
     <string name="delete_tag_label">احذف العلامة</string>
     <string name="delete_tag_confirmation">الرجاء تأكيد رغبتك في حذف العلامة ”%1$s“.</string>
-    <string name="download_error_unsupported_type_html_manual">العنوان الذي أدخلته هو عنوان موقع ويب وليس عنوان RSS للبودكاست.</string>
+    <string name="download_error_unsupported_type_html_manual">العنوان الذي أدخلته هو عنوان موقع ويب وليس عنوان RSS لمسموعيَّة.</string>
     <plurals name="echo_hours_podcasts">
-        <item quantity="zero">ساعات من الحلقات\nمن %1$d بودكاست</item>
-        <item quantity="one">ساعات من الحلقات\nمن %1$d بودكاست</item>
-        <item quantity="two">ساعات من الحلقات\nمن بودكاستان مختلفان</item>
-        <item quantity="few">ساعات من الحلقات\nمن %1$d بودكاستات مختلفة</item>
-        <item quantity="many">ساعات من الحلقات\nمن %1$d بودكاستاً مختلفاً</item>
-        <item quantity="other">ساعات من الحلقات\nمن %1$d بودكاست مختلف</item>
+        <item quantity="zero">ساعات من الحلقات\nمن المسموعية %1$d</item>
+        <item quantity="one">ساعات من الحلقات\nمن المسموعية %1$d</item>
+        <item quantity="two">ساعات من الحلقات\nمن المسموعيتان %1$d</item>
+        <item quantity="few">ساعات من الحلقات\nمن مسموعيات مختلفة %1$d</item>
+        <item quantity="many">ساعات من الحلقات\nمن مسموعيات مختلفة %1$d</item>
+        <item quantity="other">ساعات من الحلقات\nمن مسموعية مختلفة %1$d</item>
     </plurals>
     <string name="preference_search_clear_input">مسح</string>
     <string name="overflow_more">المزيد</string>
     <string name="statistics_time_played">تم الاستماع لها</string>
-    <string name="notification_channel_refreshing">تحديث البودكاستات</string>
+    <string name="notification_channel_refreshing">تحديث المسموعيَّات</string>
     <string name="echo_queue_title_many">ولا يزال أمامك الكثير هذا العام. لديك</string>
+    <string name="echo_hoarder_title">كنا نتساءل أيضًا: هل تستمع إلى المسموعية التي اشتركت فيها؟</string>
+    <string name="echo_share_heading">مسموعياتي المفضَّلة</string>
+    <string name="echo_thanks_now_favorite">والآن، دعنا نلقي نظرة على المسموعية المفضَّلة لديك…</string>
 </resources>

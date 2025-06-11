@@ -20,12 +20,12 @@
     <item
         android:id="@+id/mark_unread_item"
         android:icon="@drawable/ic_mark_unplayed"
-        android:title="@string/mark_unread_label" />
+        android:title="@string/mark_as_unplayed_label" />
 
     <item
         android:id="@+id/mark_read_item"
         android:icon="@drawable/ic_mark_played"
-        android:title="@string/mark_read_label" />
+        android:title="@string/mark_as_played_label" />
 
     <item
         android:id="@+id/remove_from_queue_item"
@@ -41,5 +41,15 @@
         android:id="@+id/remove_inbox_item"
         android:icon="@drawable/ic_check"
         android:title="@string/remove_inbox_label" />
+
+    <item
+        android:id="@+id/move_to_top_item"
+        android:icon="@drawable/ic_arrow_full_up"
+        android:title="@string/move_to_top_label" />
+
+    <item
+        android:id="@+id/move_to_bottom_item"
+        android:icon="@drawable/ic_arrow_full_down"
+        android:title="@string/move_to_bottom_label" />
 
 </menu>

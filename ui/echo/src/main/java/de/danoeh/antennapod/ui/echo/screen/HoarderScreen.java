@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.ui.echo.screen;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -62,8 +63,12 @@ public class HoarderScreen extends EchoScreen {
                 totalActivePodcasts++;
                 if (item.timePlayed > 0) {
                     playedActivePodcasts++;
-                } else {
-                    unplayedActive.add(item.feed.getTitle());
+                } else if (item.hasRecentUnplayed) {
+                    String title = item.feed.getTitle();
+                    if (TextUtils.isEmpty(title)) {
+                        title = item.feed.getFeedIdentifier();
+                    }
+                    unplayedActive.add(title);
                 }
             }
         }

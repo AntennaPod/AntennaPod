@@ -117,7 +117,7 @@ public class FeedItemFilter implements Serializable {
         } else if (showNotFavorite && item.isTagged(FeedItem.TAG_FAVORITE)) {
             return false;
         } else if (showInHistory && item.getMedia() != null
-                && item.getMedia().getPlaybackCompletionDate().getTime() == 0) {
+                && item.getMedia().getLastPlayedTimeHistory().getTime() == 0) {
             return false;
         } else if (!includeNotSubscribed && item.getFeed() != null
                 && item.getFeed().getState() != Feed.STATE_SUBSCRIBED) {

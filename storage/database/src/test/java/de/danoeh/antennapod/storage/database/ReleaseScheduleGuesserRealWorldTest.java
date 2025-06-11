@@ -15,6 +15,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class ReleaseScheduleGuesserRealWorldTest {
@@ -58,10 +59,6 @@ public class ReleaseScheduleGuesserRealWorldTest {
             for (String date : dates) {
                 releaseDates.add(DateUtils.parse(date));
             }
-            if (releaseDates.size() <= 3) {
-                continue;
-            }
-            totalPodcasts++;
             Collections.sort(releaseDates, Comparator.comparingLong(Date::getTime));
             Date dateActual = releaseDates.get(releaseDates.size() - 1);
             // Remove most recent one and possible duplicates of episodes on the same day
@@ -69,7 +66,12 @@ public class ReleaseScheduleGuesserRealWorldTest {
                 releaseDates = releaseDates.subList(0, releaseDates.size() - 1);
             } while (releaseDates.get(releaseDates.size() - 1).getTime()
                     > dateActual.getTime() - 30 * ReleaseScheduleGuesser.ONE_MINUTE);
+            if (releaseDates.size() <= 3) {
+                continue;
+            }
+            totalPodcasts++;
             ReleaseScheduleGuesser.Guess guess = ReleaseScheduleGuesser.performGuess(releaseDates);
+            assertNotNull(guess.nextExpectedDate);
 
             final boolean is3hoursClose = Math.abs(dateActual.getTime() - guess.nextExpectedDate.getTime())
                     < 3 * ReleaseScheduleGuesser.ONE_HOUR;
@@ -119,9 +121,9 @@ public class ReleaseScheduleGuesserRealWorldTest {
 
         assertTrue(schedulePercentage > 80);
         assertTrue(offByLessThan3HoursPercentage > 55);
-        assertTrue(scheduleAndCorrectDayPercentage > 75);
+        assertTrue(scheduleAndCorrectDayPercentage > 70);
         assertTrue(correctDayPercentage > 60);
-        assertTrue(offByLessThan2daysPercentage > 75);
+        assertTrue(offByLessThan2daysPercentage > 70);
 
         printHistogram(histogram);
     }

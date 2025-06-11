@@ -399,7 +399,6 @@
     <string name="pref_mobileUpdate_sum">Selectează ce ar trebui să fie permis să folosească conexiunea de date mobile</string>
     <string name="pref_mobileUpdate_refresh">Reîmprospătare podcast</string>
     <string name="pref_mobileUpdate_images">Imagine de copertă</string>
-    <string name="pref_mobileUpdate_auto_download">Descărcare automată</string>
     <string name="pref_mobileUpdate_episode_download">Descarărcare episoade</string>
     <string name="pref_mobileUpdate_streaming">Streaming</string>
     <string name="user_interface_label">Interfață grafică</string>
@@ -585,7 +584,6 @@
     <string name="gpodnetauth_existing_devices">Dispozitive existente</string>
     <string name="gpodnetauth_create_device">Creează un dispozitiv</string>
     <string name="gpodnetauth_finish_descr">Felicitări! contul tău gpodder.net este acum conectat cu dispozitivul tău. AntennaPod va sincroniza automat toate abonamentele de pe dispozitivul dumneavoastra cu contul gpodder.net</string>
-    <string name="gpodnetauth_finish_butsyncnow">Începe sincronizarea acum</string>
     <string name="pref_gpodnet_setlogin_information_title">Schimbă informațiile de autentificare</string>
     <string name="pref_gpodnet_setlogin_information_sum">Schimbă informațiile de autentificare pentru contul tău gpodder.net.</string>
     <string name="synchronization_sync_changes_title">Sincronizează acum</string>
@@ -760,4 +758,147 @@
     <string name="shortcut_select_subscription">Selectează abonamentul</string>
     <string name="add_shortcut">Adaugă scurtătură</string>
     <string name="home_no_recent_unplayed_episodes_text">Ai redat deja toate episoadele recente. Nimic surpinzător ;)</string>
+    <plurals name="time_minutes_quantified">
+        <item quantity="one">un minut</item>
+        <item quantity="few">%d minute</item>
+        <item quantity="other">%d de minute</item>
+    </plurals>
+    <plurals name="time_days_quantified">
+        <item quantity="one">o zi</item>
+        <item quantity="few">%d zile</item>
+        <item quantity="other">%d de zile</item>
+    </plurals>
+    <string name="home_new_empty_text">Episoadele noi vor apărea aici. Poți mai apoi să decizi dacă acestea prezintă interes pentru tine.</string>
+    <string name="feed_delete_confirmation_msg">Te rugăm să confirmi că dorești să ștergi podcastul „%1$s”, TOATE episoadele (inclusiv episoadele descărcate), istoricul de redare și statisticile asociate.</string>
+    <string name="pref_nav_drawer_items_sum">Schimbă ce elemente apar in sertarul de navigare sau în partea inferioară a ecranului</string>
+    <plurals name="time_hours_quantified">
+        <item quantity="one">o oră</item>
+        <item quantity="few">%d ore</item>
+        <item quantity="other">%d de ore</item>
+    </plurals>
+    <string name="delete_downloads_played">Șterge episoadele redate</string>
+    <string name="bottom_navigation_summary">Funcționalitate în beta: Accesează cele mai importante ecrane de oriunde dintr-o singură atingere</string>
+    <plurals name="episode_cleanup_hours_after_listening">
+        <item quantity="one">O oră după finalizare</item>
+        <item quantity="few">%d ore după finalizare</item>
+        <item quantity="other">%d de ore după finalizare</item>
+    </plurals>
+    <string name="episodes_label_short">Episoade</string>
+    <string name="home_label_short">Acasă</string>
+    <string name="queue_label_short">Queue</string>
+    <string name="inbox_label_short">Inbox</string>
+    <string name="downloads_label_short">Descărcări</string>
+    <string name="subscriptions_label_short">Abonamente</string>
+    <string name="playback_history_label_short">Istoric</string>
+    <string name="inbox_label_more">Inbox »</string>
+    <string name="subscriptions_label_more">Abonamente »</string>
+    <string name="disabled">Dezactivat</string>
+    <string name="global_default_with_value">Setări implicite generale (%1$s)</string>
+    <string name="delete_tag_confirmation">Te rugăm să confirmi că vrei să ștergi eticheta „%1$s”.</string>
+    <string name="download_error_unsupported_type_html_manual">Adresa introdusă este un website și nu o adresă RSS pentru un podcast.</string>
+    <string name="bottom_navigation">Navigare folosind butoanele din partea inferioară</string>
+    <string name="pref_automatic_download_global_description">Descarcă automat episoade noi. Poate fi suprascris per podcast.</string>
+    <string name="pref_downloads_button_action_sum">Afișează butonul de redare in locul butonului de ștergere pe pagina de descărcări</string>
+    <string name="pref_downloads_button_action_title">Redare din ecranul de descărcări</string>
+    <string name="sync_status_wait_for_downloads">Se așteaptă pentru reîmprospătarea abonamentelor…</string>
+    <plurals name="episode_cleanup_days_after_listening">
+        <item quantity="one">O zi după finalizare</item>
+        <item quantity="few">%d zile după finalizare</item>
+        <item quantity="other">%d de zile după finalizare</item>
+    </plurals>
+    <plurals name="time_seconds_quantified">
+        <item quantity="one">o secundă</item>
+        <item quantity="few">%d secunde</item>
+        <item quantity="other">%d de secunde</item>
+    </plurals>
+    <string name="episode_download_failed">Descărcarea episodului a eșuat</string>
+    <string name="nextcloud_login_error_generic">Nu am reușit sa ne autentificăm pe serverul tău Nextcloud.\n\n-Verifică conxiunea la rețea.\n-Confirmă că folosești adresa corectă a serverului.\n-Asigură-te că pluginul gpoddersync este instalat.</string>
+    <string name="home_downloads_empty_text">Poți să descarci orice episod pentru a-l asculta offline.</string>
+    <string name="pref_automatic_download_queue_description">Descarcă automat episoadele din queue</string>
+    <string name="delete_tag_label">Șterge eticheta</string>
+    <string name="add_feed_label_short">Adaugă</string>
+    <string name="delete_downloads_played_confirmation">Te rugăm să confirmi că dorești să ștergi toate episoadele descărcate și redate.</string>
+    <string name="home_continue_empty_text">Poți să adăuga episoade prin descărcare sau apăsând lung apoi selectând „Adaugă la queue”.</string>
+    <string name="episodes_label_more">Episoade »</string>
+    <string name="queue_label_more">Queue »</string>
+    <string name="downloads_label_more">Descărcări »</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">Mărimea totală ocupată de un episod pe acest dispozitiv</item>
+        <item quantity="few">Mărimea totală ocupată de %d episode pe acest dispozitiv</item>
+        <item quantity="other">Mărimea totală ocupată de %d de episode pe acest dispozitiv</item>
+    </plurals>
+    <string name="enabled">Activat</string>
+    <plurals name="deleted_multi_episode_batch_label">
+        <item quantity="one">Un episod descărcat șters.</item>
+        <item quantity="few">%d episoade descărcate șterse.</item>
+        <item quantity="other">%d de episoade descărcate șterse.</item>
+    </plurals>
+    <string name="feed_delete_confirmation_msg_batch">Te rugăm să confirmi că dorești să ștergi toate podcasturile, TOATE episoadele (inclusiv episoadele descărcate), istoricul de redare și statisticile asociate.</string>
+    <string name="null_value_podcast_error">Linkul selectat nu conține un URL de podcast valid. Te rugăm să verifici și să încerci din nou, sau să cauți podcastul manual.</string>
+    <string name="preference_search_clear_input">Curăță</string>
+    <string name="overflow_more">Mai mult</string>
+    <string name="pref_nav_drawer_items_title">Navigare personalizată</string>
+    <string name="episode_lists">Listă de epsioade</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Descărcarea episoadelor folosind datele mobile pentru următorul minut</item>
+        <item quantity="few">Descărcarea episoadelor folosind datele mobile pentru următoarele %d minute</item>
+        <item quantity="other">Descărcarea episoadelor folosind datele mobile pentru următoarele %d de minute</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">descărcat</item>
+        <item quantity="few">descărcate</item>
+        <item quantity="other">descărcate</item>
+    </plurals>
+    <string name="statistics_episodes_space">spațiu ocupat</string>
+    <string name="statistics_years_barchart_description">Timp redat per lună</string>
+    <string name="discover_more">Descoperă mai mult »</string>
+    <string name="statistics_release_schedule">programul de lansare</string>
+    <string name="statistics_release_next">următorul epsiod (estimare)</string>
+    <string name="notification_channel_refreshing">Se reîmprospătează podcasturile</string>
+    <string name="echo_home_header">Analizează anul</string>
+    <string name="echo_intro_locally">generat în privat pe telefonul tău</string>
+    <plurals name="echo_hours_podcasts">
+        <item quantity="one">ore redate de episoade\nde la un singur podcast</item>
+        <item quantity="few">ore redate de episoade\nde la %1$d podcasturi diferite</item>
+        <item quantity="other">ore redate de episoade\nde la %1$d de podcasturi diferite</item>
+    </plurals>
+    <string name="echo_hours_this_year">În acest an ai redat</string>
+    <string name="echo_queue_hours_clean">Adică %1$s minute în fiecare zi până la începutul lui %2$d.</string>
+    <string name="echo_queue_title_many">Și încă mai ai de ascultat câteva podcasturi în acest an. Ai</string>
+    <string name="echo_listened_after_time">În mod normal ai terminat un episod în %1$s minute după ce a apărut.</string>
+    <string name="echo_listened_after_comment_addict">Ești un dependent de podcasturi</string>
+    <string name="echo_hoarder_comment_hoarder">Se spune că numerele nu mint. Cum numai %1$d din %2$d abonamente active au fost redate în acest an, noi credem că avem dreptate.</string>
+    <string name="echo_hoarder_comment_clean">Ai redat %1$d din totalul de %2$d abonamente active în acest an. Noi putem pune pariu că îți menții și biroul curat !</string>
+    <string name="echo_share_heading">Podcasturile mele favorite</string>
+    <string name="echo_share">Anul meu %d în podcasturi. #AntennaPodEcho</string>
+    <string name="echo_listened_after_title">Am analizat momentul în care apar episoadele și când tu le termini de ascultat. Concluzia noastră ?</string>
+    <string name="echo_thanks_large">Mulțumim</string>
+    <string name="echo_home_subtitle">Podcasturile tale de top și statisticile din anul trecut. Exclusiv de pe telefon.</string>
+    <string name="statistics_time_total">total</string>
+    <string name="statistics_time_played">redat</string>
+    <string name="statistics_view_all">Toate podcasturile »</string>
+    <string name="echo_hoarder_comment_medium">Ai redat episoade din %1$d din %2$d din abonamentele tale active în acest an. Cum ar fi să verifici și „%3$s” din nou ?</string>
+    <string name="echo_listened_after_comment_easy">Ești comod</string>
+    <string name="echo_hoarder_subtitle_hoarder">Analizând numerele, noi credem ca ești un colecționar</string>
+    <string name="echo_hoarder_title">Noi ne întrebăm: tu chiar asculți podcasturile la care ești abonat ?</string>
+    <string name="echo_hoarder_subtitle_clean">Curat!</string>
+    <string name="echo_thanks_we_are_glad_new">pentru că ni te-ai alăturat în acest an!\n\nFie că te-ai mutat din altă aplicație, sau ai început aventura cu noi, suntem bucuroși sa te avem aici!</string>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">total</item>
+        <item quantity="few">totale</item>
+        <item quantity="other">totale</item>
+    </plurals>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">început</item>
+        <item quantity="few">începute</item>
+        <item quantity="other">începute</item>
+    </plurals>
+    <string name="echo_intro_your_year">Anul tău</string>
+    <string name="echo_intro_in_podcasts">în podcasturi</string>
+    <string name="echo_queue_title_clean">Și ești gata de un nou început de an. Ai</string>
+    <string name="echo_queue_hours_normal">Adică %1$s minute în fiecare zi până la începutul lui %2$d. Poți începe anul fără podcasturi în așteptare dacă sari peste câteva episoade.</string>
+    <string name="echo_queue_hours_much">Adică %1$s minute în fiecare zi până la începutul lui %2$d. Stai, ce ?</string>
+    <string name="echo_hoarder_subtitle_medium">Verificăm. Nu există nici-o colecție fără sens aici.</string>
+    <string name="echo_thanks_we_are_glad_old">pentru că ne-ai ales pe noi în acest an!\n\nAi redat primul episod cu noi în %1$s. A fost o onoare să te servim de atunci și până acum.</string>
+    <string name="echo_thanks_now_favorite">Acum să aruncăm o privire asupra podcasturilor tale favorite…</string>
 </resources>

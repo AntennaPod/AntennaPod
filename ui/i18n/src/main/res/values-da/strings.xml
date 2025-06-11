@@ -13,7 +13,7 @@
     <string name="downloads_label">Overførsler</string>
     <string name="downloads_log_label">Overførselslog</string>
     <string name="subscriptions_label">Abonnementer</string>
-    <string name="subscriptions_list_label">Abonnementsliste (kun sidemenu)</string>
+    <string name="subscriptions_list_label">Abonnementsliste</string>
     <string name="cancel_download_label">Annullér overførsel</string>
     <string name="playback_history_label">Afspilningshistorik</string>
     <string name="years_statistics_label">År</string>
@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">Altid</string>
     <string name="feed_auto_download_never">Aldrig</string>
     <string name="feed_new_episodes_action_add_to_inbox">Føj til indbakke</string>
-    <string name="feed_new_episodes_action_add_to_queue">Føj til kø, deaktiver automatisk overførsel</string>
-    <string name="feed_new_episodes_action_nothing">Ingenting, deaktiver automatisk overførsel</string>
+    <string name="feed_new_episodes_action_add_to_queue">Føj til kø</string>
+    <string name="feed_new_episodes_action_nothing">Ingenting</string>
     <string name="episode_cleanup_never">Aldrig</string>
     <string name="episode_cleanup_except_favorite_removal">Hvis ikke en favorit</string>
     <string name="episode_cleanup_queue_removal">Når ikke i kø</string>
@@ -399,7 +399,6 @@
     <string name="pref_mobileUpdate_sum">Vælg hvad der skal være tilladt via mobil dataforbindelse</string>
     <string name="pref_mobileUpdate_refresh">Opdatering af podcast</string>
     <string name="pref_mobileUpdate_images">Billeder</string>
-    <string name="pref_mobileUpdate_auto_download">Hent automatisk</string>
     <string name="pref_mobileUpdate_episode_download">Download af afsnit</string>
     <string name="pref_mobileUpdate_streaming">Streaming</string>
     <string name="user_interface_label">Brugerflade</string>
@@ -601,7 +600,6 @@
     <string name="gpodnetauth_existing_devices">Eksisterende enheder</string>
     <string name="gpodnetauth_create_device">Opret ny enhed</string>
     <string name="gpodnetauth_finish_descr">Tillykke! Din gpodder.net-konto er nu forbundet med din enhed. AntennaPod vil fra nu af automatisk synkronisere dine abonnementer på din enhed med din gpodder.net-konto.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Start synkronisering nu</string>
     <string name="pref_gpodnet_setlogin_information_title">Ændr loginoplysninger</string>
     <string name="pref_gpodnet_setlogin_information_sum">Ændr din gpodder.net-kontos loginoplysninger.</string>
     <string name="synchronization_sync_changes_title">Synkroniser nu</string>
@@ -781,7 +779,7 @@
     <string name="nextcloud_login_error_generic">Kan ikke logge ind på din Nextcloud.\n\n- Tjek din netværksforbindelse.\n- Bekræft, at du bruger den rigtige serveradresse.\n- Sørg for, at gpoddersync Nextcloud-udvidelsen er installeret.</string>
     <string name="statistics_episodes_downloaded">overført</string>
     <string name="discover_more">Opdag mere »</string>
-    <string name="bottom_navigation_summary">Beta-funktion: Få adgang til de vigtigste skærme fra alle steder med et enkelt tryk</string>
+    <string name="bottom_navigation_summary">Få adgang til de vigtigste skærme fra alle steder med et enkelt tryk</string>
     <string name="delete_downloads_played">Slet afspillede</string>
     <string name="feed_delete_confirmation_local_msg">Bekræft, at du vil fjerne podcasten \"%1$s\", dens afspilningshistorik og dens statistikker. Filerne i den lokale kildemappe vil ikke blive slettet.</string>
     <string name="pref_nav_drawer_items_sum">Skift hvilke elementer, der vises i navigationsskuffen eller bundnavigationen</string>
@@ -874,4 +872,9 @@
     <string name="pref_downloads_button_action_sum">Vis afspilningsknappen i stedet for sletteknappen på overførselsskærm</string>
     <string name="overflow_more">Mere</string>
     <string name="preference_search_clear_input">Ryd</string>
+    <string name="feed_new_episodes_action_summary_autodownload">Automatisk overførsel er aktiveret. Afsnit føjes til indbakken og flyttes derefter til køen, når de er overført.</string>
+    <string name="visit_social_interact_label">Vis kommentarer</string>
+    <string name="visit_social_interact_query_message">Vær sikker på, at du stoler på webstedet \"%1$s\".</string>
+    <string name="rss_address">RSS-adresse</string>
+    <string name="visit_social_interact_query_title">Du forlader AntennaPod</string>
 </resources>

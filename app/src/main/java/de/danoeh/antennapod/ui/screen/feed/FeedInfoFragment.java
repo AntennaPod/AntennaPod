@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -26,10 +25,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.FeedinfoBinding;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -52,6 +51,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -87,11 +87,8 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 android.content.ClipboardManager cm = (android.content.ClipboardManager) getContext()
                         .getSystemService(Context.CLIPBOARD_SERVICE);
                 cm.setPrimaryClip(clipData);
-                if (Build.VERSION.SDK_INT <= 32 && getActivity() instanceof MainActivity) {
-                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.copied_to_clipboard,
-                            Snackbar.LENGTH_SHORT);
-                } else if (Build.VERSION.SDK_INT <= 32) {
-                    Snackbar.make(getView(), R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
+                if (Build.VERSION.SDK_INT <= 32) {
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
                 }
             }
         }
@@ -254,6 +251,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 DBWriter.setFeedState(getContext(), feed, Feed.STATE_SUBSCRIBED);
                 MainActivityStarter mainActivityStarter = new MainActivityStarter(getContext());
                 mainActivityStarter.withOpenFeed(feed.getId());
+                mainActivityStarter.withClearBackStack();
                 getActivity().finish();
                 startActivity(mainActivityStarter.getIntent());
             });
@@ -284,8 +282,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (feed == null) {
-            ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                    R.string.please_wait_for_data, Toast.LENGTH_LONG);
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.please_wait_for_data)));
             return false;
         }
         if (item.getItemId() == R.id.visit_website_item) {
@@ -345,10 +342,8 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        () -> ((MainActivity) getActivity())
-                                .showSnackbarAbovePlayer(android.R.string.ok, Snackbar.LENGTH_SHORT),
-                        error -> ((MainActivity) getActivity())
-                                .showSnackbarAbovePlayer(error.getLocalizedMessage(), Snackbar.LENGTH_LONG));
+                        () -> EventBus.getDefault().post(new MessageEvent(getString(android.R.string.ok))),
+                        error -> EventBus.getDefault().post(new MessageEvent(error.getLocalizedMessage())));
     }
 
     private static class AddLocalFolder extends ActivityResultContracts.OpenDocumentTree {

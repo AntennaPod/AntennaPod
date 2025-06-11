@@ -612,8 +612,9 @@ public final class DBReader {
         adapter.open();
 
         StatisticsResult result = new StatisticsResult();
+        long sixMonthsAgo = System.currentTimeMillis() - (long) (1000L * 3600 * 24 * 30.44 * 6);
         try (FeedCursor cursor = new FeedCursor(adapter.getFeedStatisticsCursor(
-                includeMarkedAsPlayed, timeFilterFrom, timeFilterTo))) {
+                includeMarkedAsPlayed, timeFilterFrom, timeFilterTo, sixMonthsAgo))) {
             int indexOldestDate = cursor.getColumnIndexOrThrow("oldest_date");
             int indexNumEpisodes = cursor.getColumnIndexOrThrow("num_episodes");
             int indexEpisodesStarted = cursor.getColumnIndexOrThrow("episodes_started");
@@ -621,6 +622,7 @@ public final class DBReader {
             int indexPlayedTime = cursor.getColumnIndexOrThrow("played_time");
             int indexNumDownloaded = cursor.getColumnIndexOrThrow("num_downloaded");
             int indexDownloadSize = cursor.getColumnIndexOrThrow("download_size");
+            int indexNumRecentUnplayed = cursor.getColumnIndexOrThrow("num_recent_unplayed");
 
             while (cursor.moveToNext()) {
                 Feed feed = cursor.getFeed();
@@ -632,13 +634,14 @@ public final class DBReader {
                 long totalDownloadSize = cursor.getLong(indexDownloadSize);
                 long episodesDownloadCount = cursor.getLong(indexNumDownloaded);
                 long oldestDate = cursor.getLong(indexOldestDate);
+                boolean hasRecentUnplayed = cursor.getLong(indexNumRecentUnplayed) > 0;
 
                 if (episodes > 0 && oldestDate < Long.MAX_VALUE) {
                     result.oldestDate = Math.min(result.oldestDate, oldestDate);
                 }
 
                 result.feedTime.add(new StatisticsItem(feed, feedTotalTime, feedPlayedTime, episodes,
-                        episodesStarted, totalDownloadSize, episodesDownloadCount));
+                        episodesStarted, totalDownloadSize, episodesDownloadCount, hasRecentUnplayed));
             }
         }
         adapter.close();

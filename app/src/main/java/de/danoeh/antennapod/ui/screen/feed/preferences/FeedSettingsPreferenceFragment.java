@@ -232,6 +232,7 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
                     FeedPreferences.AutoDownloadSetting.fromInteger(Integer.parseInt((String) newValue)));
             DBWriter.setFeedPreferences(feedPreferences);
             updateAutoDownloadEnabledSummary();
+            updateNewEpisodesActionSummary();
             return false;
         });
         findPreference(PREF_TAGS).setOnPreferenceClickListener(preference -> {
@@ -271,7 +272,17 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void updateNewEpisodesActionSummary() {
+        if (feed == null || feed.getPreferences() == null) {
+            return;
+        }
         ListPreference newEpisodesAction = findPreference(PREF_NEW_EPISODES_ACTION);
+        boolean isAutoDownload = feed.getPreferences().isAutoDownload(UserPreferences.isEnableAutodownloadGlobal());
+        if (isAutoDownload && !feed.isLocalFeed()) {
+            newEpisodesAction.setEnabled(false);
+            newEpisodesAction.setSummary(R.string.feed_new_episodes_action_summary_autodownload);
+            return;
+        }
+        newEpisodesAction.setEnabled(true);
         newEpisodesAction.setValue("" + feedPreferences.getNewEpisodesAction().code);
         int globalStringResource = switch (UserPreferences.getNewEpisodesAction()) {
             case ADD_TO_INBOX -> R.string.feed_new_episodes_action_add_to_inbox;

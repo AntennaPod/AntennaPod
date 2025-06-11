@@ -47,7 +47,7 @@
     <string name="home_continue_title">Continuar escuchando</string>
     <string name="home_new_title">Novedades</string>
     <string name="home_downloads_title">Gestionar descargas</string>
-    <string name="home_welcome_title">Le damos la bienvenida a AntennaPod.</string>
+    <string name="home_welcome_title">Le damos la bienvenida a AntennaPod!</string>
     <string name="home_welcome_text">No se ha suscrito a ningún pódcast. Abra el menú para añadir un pódcast.</string>
     <string name="notification_permission_denied">Denegaste el permiso.</string>
     <string name="configure_home">Configurar pantalla de inicio</string>
@@ -293,7 +293,7 @@
     <string name="authentication_notification_title">Autenticación requerida</string>
     <string name="confirm_mobile_download_dialog_title">Confirmar descarga vía datos móviles</string>
     <string name="confirm_mobile_download_dialog_message">Se desactivaron las descargas por conexión de datos móvil en la configuración. AntennaPod podrá descargar el episodio automáticamente cuando haya conexión Wi-Fi.</string>
-    <string name="confirm_mobile_download_dialog_message_vpn">- ¿Estás usando una VPN? Tu VPN simula ser una red móvil (conexión medida). Si quieres solucionar el problema, contacta con los creadores de tu aplicación VPN.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">- ¿Estás usando una VPN? Tu VPN simula ser una red móvil (conexión medida o con límite de datos). Si quieres solucionar el problema, contacta con los creadores de tu aplicación VPN.\n- No estás usando una VPN? Abre los ajustes de Wi-Fi en Android y cambia el tipo de tu Wi-Fi para que no sea medida.</string>
     <string name="confirm_mobile_download_dialog_download_later">Descargar más tarde</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Descargar de todos modos</string>
     <string name="confirm_mobile_streaming_notification_title">Confirmar reproducción vía datos móviles</string>
@@ -414,7 +414,6 @@
     <string name="pref_mobileUpdate_sum">Seleccionar lo que se debe permitir descargar con datos móviles</string>
     <string name="pref_mobileUpdate_refresh">Actualizar podcast</string>
     <string name="pref_mobileUpdate_images">Imágenes de portada</string>
-    <string name="pref_mobileUpdate_auto_download">Descarga automática</string>
     <string name="pref_mobileUpdate_episode_download">Descarga de episodio</string>
     <string name="pref_mobileUpdate_streaming">Escuchar en directo</string>
     <string name="user_interface_label">Interfaz de usuario</string>
@@ -620,7 +619,6 @@
     <string name="gpodnetauth_existing_devices">Dispositivos existentes</string>
     <string name="gpodnetauth_create_device">Crear dispositivo</string>
     <string name="gpodnetauth_finish_descr">¡Enhorabuena! Su cuenta de gpodder.net está ahora asociada con su dispositivo. A partir de ahora AntennaPod sincronizará automáticamente las suscripciones de su dispositivo con su cuenta de gpodder.net.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Comenzar sincronización ahora</string>
     <string name="pref_gpodnet_setlogin_information_title">Cambiar información de inicio de sesión</string>
     <string name="pref_gpodnet_setlogin_information_sum">Modificar datos de inicio de sesión en gpodder.net.</string>
     <string name="synchronization_sync_changes_title">Sincroniza ahora</string>

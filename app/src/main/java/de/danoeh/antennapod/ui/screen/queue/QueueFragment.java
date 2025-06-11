@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,9 +27,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
 
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
+import de.danoeh.antennapod.ui.screen.InboxFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
@@ -36,6 +39,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -77,6 +81,8 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         EpisodeItemListAdapter.OnSelectModeListener {
     public static final String TAG = "QueueFragment";
     private static final String KEY_UP_ARROW = "up_arrow";
+    private static final String SCROLL_POSITION_KEY = "scroll_position";
+    private static final String SCROLL_OFFSET_KEY = "scroll_offset";
 
     private TextView infoBar;
     private EpisodeItemListRecyclerView recyclerView;
@@ -107,17 +113,16 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     @Override
     public void onStart() {
         super.onStart();
-        if (queue != null) {
-            recyclerView.restoreScrollPosition(QueueFragment.TAG);
-        }
-        loadItems(true);
+        loadItems();
         EventBus.getDefault().register(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        recyclerView.saveScrollPosition(QueueFragment.TAG);
+        Pair<Integer, Integer> scrollPosition = recyclerView.getScrollPosition();
+        prefs.edit().putInt(SCROLL_POSITION_KEY, scrollPosition.first)
+                .putInt(SCROLL_OFFSET_KEY, scrollPosition.second).apply();
     }
 
     @Override
@@ -135,9 +140,10 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         if (queue == null) {
             return;
         } else if (recyclerAdapter == null) {
-            loadItems(true);
+            loadItems();
             return;
         }
+        int position;
         switch (event.action) {
             case ADDED:
                 queue.add(event.position, event.item);
@@ -150,7 +156,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 break;
             case REMOVED:
             case IRREVERSIBLE_REMOVED:
-                int position = FeedItemEvent.indexOfItemWithId(queue, event.item.getId());
+                position = FeedItemEvent.indexOfItemWithId(queue, event.item.getId());
                 queue.remove(position);
                 recyclerAdapter.notifyItemRemoved(position);
                 break;
@@ -158,12 +164,16 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 queue.clear();
                 recyclerAdapter.updateItems(queue);
                 break;
+            case MOVED:
+                position = FeedItemEvent.indexOfItemWithId(queue, event.item.getId());
+                queue.add(event.position, queue.remove(position));
+                recyclerAdapter.notifyItemMoved(position, event.position);
+                break;
             default:
                 return;
         }
         recyclerAdapter.updateDragDropEnabled();
         refreshToolbarState();
-        recyclerView.saveScrollPosition(QueueFragment.TAG);
         refreshInfoBar();
     }
 
@@ -173,7 +183,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         if (queue == null) {
             return;
         } else if (recyclerAdapter == null) {
-            loadItems(true);
+            loadItems();
             return;
         }
         for (int i = 0, size = event.items.size(); i < size; i++) {
@@ -217,14 +227,14 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
-        loadItems(false);
+        loadItems();
         refreshToolbarState();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
         // Sent when playback position is reset
-        loadItems(false);
+        loadItems();
         refreshToolbarState();
     }
 
@@ -341,11 +351,11 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         if (recyclerAdapter != null) {
             recyclerAdapter.updateDragDropEnabled();
         }
-        if (queue.size() == 0) {
+        if (queue.isEmpty()) {
             if (locked) {
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.queue_locked, Snackbar.LENGTH_SHORT);
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.queue_locked)));
             } else {
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.queue_unlocked, Snackbar.LENGTH_SHORT);
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.queue_unlocked)));
             }
         }
     }
@@ -372,16 +382,18 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
 
         final int itemId = item.getItemId();
-        if (itemId == R.id.move_to_top_item) {
-            queue.add(0, queue.remove(position));
-            recyclerAdapter.notifyItemMoved(position, 0);
-            DBWriter.moveQueueItemToTop(selectedItem.getId(), true);
-            return true;
-        } else if (itemId == R.id.move_to_bottom_item) {
-            queue.add(queue.size() - 1, queue.remove(position));
-            recyclerAdapter.notifyItemMoved(position, queue.size() - 1);
-            DBWriter.moveQueueItemToBottom(selectedItem.getId(), true);
-            return true;
+        if (!recyclerAdapter.inActionMode()) {
+            if (itemId == R.id.move_to_top_item) {
+                queue.add(0, queue.remove(position));
+                recyclerAdapter.notifyItemMoved(position, 0);
+                DBWriter.moveQueueItemsToTop(Collections.singletonList(selectedItem));
+                return true;
+            } else if (itemId == R.id.move_to_bottom_item) {
+                queue.add(queue.remove(position));
+                recyclerAdapter.notifyItemMoved(position, queue.size() - 1);
+                DBWriter.moveQueueItemsToBottom(Collections.singletonList(selectedItem));
+                return true;
+            }
         }
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
@@ -435,8 +447,15 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             @Override
             protected void onSelectedItemsUpdated() {
                 super.onSelectedItemsUpdated();
+                Menu menu = floatingSelectMenu.getMenu();
+                List<FeedItem> selectedItems = getSelectedItems();
                 FeedItemMenuHandler.onPrepareMenu(floatingSelectMenu.getMenu(), getSelectedItems(),
                         R.id.add_to_queue_item, R.id.remove_inbox_item);
+
+                Pair<Boolean, Boolean> canMove = canMove(queue, selectedItems);
+                menu.findItem(R.id.move_to_top_item).setVisible(canMove.first);
+                menu.findItem(R.id.move_to_bottom_item).setVisible(canMove.second);
+
                 floatingSelectMenu.updateItemVisibility();
             }
         };
@@ -458,8 +477,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         floatingSelectMenu.inflate(R.menu.episodes_apply_action_speeddial);
         floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
             if (recyclerAdapter.getSelectedCount() == 0) {
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
-                        Snackbar.LENGTH_SHORT);
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.no_items_selected_message)));
                 return false;
             }
             new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId())
@@ -503,7 +521,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
     }
 
-    private void loadItems(final boolean restoreScrollPosition) {
+    private void loadItems() {
         Log.d(TAG, "loadItems()");
         if (disposable != null) {
             disposable.dispose();
@@ -511,16 +529,29 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         if (queue == null) {
             emptyView.hide();
         }
-        disposable = Observable.fromCallable(DBReader::getQueue)
+        disposable = Observable.fromCallable(() -> {
+            boolean displayGoToInboxButton = DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW)) > 0;
+            return new Pair<>(DBReader.getQueue(), displayGoToInboxButton);
+        })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(items -> {
-                    queue = items;
+                .subscribe(itemsAndDisplayButton -> {
+                    final boolean restoreScrollPosition = queue == null || queue.isEmpty();
+                    queue = itemsAndDisplayButton.first;
+                    if (itemsAndDisplayButton.second) {
+                        emptyView.setMessage(R.string.no_queue_items_inbox_has_items_label);
+                        emptyView.setButtonText(R.string.no_queue_items_inbox_has_items_button_label);
+                        emptyView.setButtonVisibility(View.VISIBLE);
+                        emptyView.setButtonOnClickListener(v -> ((MainActivity) getActivity())
+                                .loadChildFragment(new InboxFragment()));
+                    }
                     progressBar.setVisibility(View.GONE);
                     recyclerAdapter.setDummyViews(0);
                     recyclerAdapter.updateItems(queue);
                     if (restoreScrollPosition) {
-                        recyclerView.restoreScrollPosition(QueueFragment.TAG);
+                        Pair<Integer, Integer> scrollPosition = new Pair<>(
+                                prefs.getInt(SCROLL_POSITION_KEY, 0), prefs.getInt(SCROLL_OFFSET_KEY, 0));
+                        recyclerView.restoreScrollPosition(scrollPosition);
                     }
                     refreshInfoBar();
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
@@ -594,6 +625,40 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             UserPreferences.setQueueKeepSortedOrder(sortOrder);
             DBWriter.reorderQueue(sortOrder, true);
         }
+    }
+
+    /**
+     * This method checks if the selected items are allowed to be moved to the top, bottom or both of the Queue.
+     * @param queue The FeedItems currently in the Queue.
+     * @param selectedItems The FeedItems for which the check is performed.
+     * @return A Pair of booleans where
+     *           [0] is true if moving to the top is allowed, false otherwise.
+     *           [1] is true if moving to the bottom is allowed, false otherwise.
+     * */
+    public static Pair<Boolean, Boolean> canMove(List<FeedItem> queue, List<FeedItem> selectedItems) {
+        int queueSize = queue.size();
+        int selectedSize = selectedItems.size();
+        // No manual reordering allowed or reordering would be a no-op.
+        if (selectedItems.isEmpty() || queue.isEmpty() || UserPreferences.isQueueLocked()
+                || UserPreferences.isQueueKeepSorted() || selectedSize == queueSize) {
+            return new Pair<>(false, false);
+        }
+        boolean isFirstItemSelected = selectedItems.get(0).getId() == queue.get(0).getId();
+        boolean isLastItemSelected = selectedItems.get(selectedSize - 1).getId() == queue.get(queueSize - 1).getId();
+        // If only one item is selected and its already at the top of the list, disable option to move item to the top.
+        // If the item is already at the bottom of the list, disable the option to move it to the bottom.
+        if (selectedSize == 1) {
+            return new Pair<>(!isFirstItemSelected, !isLastItemSelected);
+        }
+        // If contiguous from the top, moving items to the top is disabled, as they are already there.
+        if (isFirstItemSelected && selectedItems.equals(queue.subList(0, selectedSize))) {
+            return new Pair<>(false, true);
+        }
+        // If contiguous from the bottom, moving items to the bottom is disabled, as they are already there.
+        if (isLastItemSelected && selectedItems.equals(queue.subList(queueSize - selectedSize, queueSize))) {
+            return new Pair<>(true, false);
+        }
+        return new Pair<>(true, true);
     }
 
     private class QueueSwipeActions extends SwipeActions {

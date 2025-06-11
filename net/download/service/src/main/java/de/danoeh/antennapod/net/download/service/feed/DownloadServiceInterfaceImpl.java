@@ -19,6 +19,7 @@ import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -96,5 +97,24 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
     @Override
     public void cancelAll(Context context) {
         WorkManager.getInstance(context).cancelAllWorkByTag(WORK_TAG);
+    }
+
+    @Override
+    public int getNumberOfActiveDownloads(Context context) {
+        try {
+            List<WorkInfo> workInfos = WorkManager.getInstance(context)
+                    .getWorkInfosByTag(DownloadServiceInterface.WORK_TAG).get();
+            int count = 0;
+            for (WorkInfo info : workInfos) {
+                if (info.getState() == WorkInfo.State.RUNNING
+                        || info.getState() == WorkInfo.State.ENQUEUED
+                        || info.getState() == WorkInfo.State.BLOCKED) {
+                    count++;
+                }
+            }
+            return count;
+        } catch (ExecutionException | InterruptedException e) {
+            return 0;
+        }
     }
 }

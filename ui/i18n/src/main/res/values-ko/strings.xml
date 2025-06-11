@@ -363,7 +363,6 @@
     <string name="pref_mobileUpdate_sum">휴대전화 데이터 연결을 통해 무엇을 허용할지 선택합니다.</string>
     <string name="pref_mobileUpdate_refresh">팟캐스트 새로 고침</string>
     <string name="pref_mobileUpdate_images">커버 이미지</string>
-    <string name="pref_mobileUpdate_auto_download">자동 다운로드</string>
     <string name="pref_mobileUpdate_episode_download">에피소드 다운로드</string>
     <string name="pref_mobileUpdate_streaming">스트리밍</string>
     <string name="user_interface_label">사용자 인터페이스</string>
@@ -543,7 +542,6 @@
     <string name="gpodnetauth_existing_devices">기존 장치</string>
     <string name="gpodnetauth_create_device">장치 만들기</string>
     <string name="gpodnetauth_finish_descr">축하합니다! gpodder.net 계정이 장치와 연결되었습니다. 이제 안테나팟에서 gpodder.net 계정의 구독 정보와 자동으로 동기화합니다.</string>
-    <string name="gpodnetauth_finish_butsyncnow">지금 동기화 시작</string>
     <string name="pref_gpodnet_setlogin_information_title">로그인 정보 바꾸기</string>
     <string name="pref_gpodnet_setlogin_information_sum">gpodder.net 계정의 로그인 정보를 바꿉니다.</string>
     <string name="synchronization_sync_changes_title">지금 동기화</string>
