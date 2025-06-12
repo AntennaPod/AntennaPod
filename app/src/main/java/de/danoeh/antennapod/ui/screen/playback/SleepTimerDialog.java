@@ -3,15 +3,19 @@ package de.danoeh.antennapod.ui.screen.playback;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,10 +31,17 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
+import de.danoeh.antennapod.storage.preferences.SleepTimerType;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 
@@ -40,7 +51,64 @@ public class SleepTimerDialog extends DialogFragment {
     private LinearLayout timeSetup;
     private LinearLayout timeDisplay;
     private TextView time;
+    private Spinner sleepTimerType;
     private CheckBox chAutoEnable;
+
+    Button extendSleepFiveMinutesButton;
+    Button extendSleepTenMinutesButton;
+    Button extendSleepTwentyMinutesButton;
+
+    static class SleepEntryConfig {
+        public final int displayValue;
+        public final int configuredValue;
+
+        public SleepEntryConfig(int displayValue, int configuredValue) {
+            this.displayValue = displayValue;
+            this.configuredValue = configuredValue;
+        }
+    }
+
+    static class SleepTimeConfig {
+        public final int buttonTextResourceId;
+        public final int displayTypeTextId;
+        public final List<SleepEntryConfig> sleepEntries = new ArrayList<>(3);
+
+        public SleepTimeConfig(
+                int buttonTextResourceId,
+                int displayTypeTextId,
+                SleepEntryConfig first,
+                SleepEntryConfig second, SleepEntryConfig third) {
+            this.buttonTextResourceId = buttonTextResourceId;
+            this.displayTypeTextId = displayTypeTextId;
+            sleepEntries.add(0, first);
+            sleepEntries.add(1, second);
+            sleepEntries.add(2, third);
+        }
+    }
+
+    private static <K, V> LinkedHashMap<K, V> linkedMapOf(Collection<Map.Entry<? extends K, ? extends V>> entries) {
+        LinkedHashMap<K, V> map = new LinkedHashMap<>();
+        for (Map.Entry<? extends K, ? extends V> entry : entries) {
+            map.put(entry.getKey(), entry.getValue());
+        }
+        return map;
+    }
+
+    LinkedHashMap<SleepTimerType, SleepTimeConfig> allSleepConfig = linkedMapOf(List.of(
+            Map.entry(SleepTimerType.CLOCK, new SleepTimeConfig(
+                    R.string.extend_sleep_timer_label, R.string.time_minutes,
+                    new SleepEntryConfig(5, 5 * 1000 * 60),
+                    new SleepEntryConfig(10, 10 * 1000 * 60),
+                    new SleepEntryConfig(30, 30 * 1000 * 60)
+            )),
+            Map.entry(SleepTimerType.EPISODES, new SleepTimeConfig(
+                    R.plurals.extend_sleep_timer_episodes_quantified, R.string.episodes_label,
+                    new SleepEntryConfig(1, 1),
+                    new SleepEntryConfig(3, 3),
+                    new SleepEntryConfig(5, 5)
+            ))
+    ));
+
 
     public SleepTimerDialog() {
 
@@ -67,6 +135,29 @@ public class SleepTimerDialog extends DialogFragment {
         EventBus.getDefault().unregister(this);
     }
 
+    private int getSleepTimerIndexFromType(SleepTimerType sleepTimerType) {
+        int count = 0;
+        for (SleepTimerType type : allSleepConfig.keySet()) {
+            if (type == sleepTimerType) {
+                return count;
+            }
+            count++;
+        }
+
+        return 0;
+    }
+
+    private SleepTimerType getSleepTimerTypeFromIndex(int selection) {
+        int count = 0;
+        for (SleepTimerType type : allSleepConfig.keySet()) {
+            if (count++ == selection) {
+                return type;
+            }
+        }
+
+        return SleepTimerType.CLOCK;
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -76,32 +167,44 @@ public class SleepTimerDialog extends DialogFragment {
         builder.setView(content);
         builder.setPositiveButton(R.string.close_label, null);
 
+        List<String> spinnerContent = new ArrayList<>();
+        for (SleepTimeConfig entry : allSleepConfig.values()) {
+            spinnerContent.add(getString(entry.displayTypeTextId).toLowerCase(Locale.getDefault()));
+        }
+
+        sleepTimerType = content.findViewById(R.id.sleepTimerType);
+
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(
+                getContext(),
+                android.R.layout.simple_spinner_item, spinnerContent);
+
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sleepTimerType.setAdapter(spinnerAdapter);
+        sleepTimerType.setSelection(getSleepTimerIndexFromType(SleepTimerPreferences.getSleepTimerType()));
+
+        sleepTimerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SleepTimerPreferences.setSleepTimerType(getSleepTimerTypeFromIndex(position));
+                refreshExtendButtons();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
         etxtTime = content.findViewById(R.id.etxtTime);
         timeSetup = content.findViewById(R.id.timeSetup);
         timeDisplay = content.findViewById(R.id.timeDisplay);
         timeDisplay.setVisibility(View.GONE);
         time = content.findViewById(R.id.time);
-        Button extendSleepFiveMinutesButton = content.findViewById(R.id.extendSleepFiveMinutesButton);
-        extendSleepFiveMinutesButton.setText(getString(R.string.extend_sleep_timer_label, 5));
-        Button extendSleepTenMinutesButton = content.findViewById(R.id.extendSleepTenMinutesButton);
-        extendSleepTenMinutesButton.setText(getString(R.string.extend_sleep_timer_label, 10));
-        Button extendSleepTwentyMinutesButton = content.findViewById(R.id.extendSleepTwentyMinutesButton);
-        extendSleepTwentyMinutesButton.setText(getString(R.string.extend_sleep_timer_label, 20));
-        extendSleepFiveMinutesButton.setOnClickListener(v -> {
-            if (controller != null) {
-                controller.extendSleepTimer(5 * 1000 * 60);
-            }
-        });
-        extendSleepTenMinutesButton.setOnClickListener(v -> {
-            if (controller != null) {
-                controller.extendSleepTimer(10 * 1000 * 60);
-            }
-        });
-        extendSleepTwentyMinutesButton.setOnClickListener(v -> {
-            if (controller != null) {
-                controller.extendSleepTimer(20 * 1000 * 60);
-            }
-        });
+
+        extendSleepFiveMinutesButton = content.findViewById(R.id.extendSleepFiveMinutesButton);
+        extendSleepTenMinutesButton = content.findViewById(R.id.extendSleepTenMinutesButton);
+        extendSleepTwentyMinutesButton = content.findViewById(R.id.extendSleepTwentyMinutesButton);
+
+        refreshExtendButtons();
 
         etxtTime.setText(SleepTimerPreferences.lastTimerValue());
         etxtTime.postDelayed(() -> {
@@ -158,7 +261,7 @@ public class SleepTimerDialog extends DialogFragment {
                 }
                 SleepTimerPreferences.setLastTimer(etxtTime.getText().toString());
                 if (controller != null) {
-                    controller.setSleepTimer(SleepTimerPreferences.timerMillis());
+                    controller.setSleepTimer(SleepTimerPreferences.timerMillisOrEpisodes());
                 }
                 closeKeyboard(content);
             } catch (NumberFormatException e) {
@@ -167,6 +270,34 @@ public class SleepTimerDialog extends DialogFragment {
             }
         });
         return builder.create();
+    }
+
+    private void refreshExtendButtons() {
+        final SleepTimeConfig selectedConfig = allSleepConfig.get(SleepTimerPreferences.getSleepTimerType());
+
+        int counter = 0;
+        for (Button button : List.of(
+                extendSleepFiveMinutesButton,
+                extendSleepTenMinutesButton,
+                extendSleepTwentyMinutesButton)) {
+            final SleepEntryConfig entryConfig = Objects.requireNonNull(selectedConfig).sleepEntries.get(counter++);
+            // button text resource can be either string or plural string
+            try {
+                button.setText(getString(selectedConfig.buttonTextResourceId, entryConfig.displayValue));
+            } catch (Resources.NotFoundException ex) {
+                button.setText(getContext().getResources()
+                        .getQuantityString(
+                                selectedConfig.buttonTextResourceId,
+                                entryConfig.displayValue,
+                                entryConfig.displayValue));
+            }
+
+            button.setOnClickListener(v -> {
+                if (controller != null) {
+                    controller.extendSleepTimer(entryConfig.configuredValue);
+                }
+            });
+        }
     }
 
     private void showTimeRangeDialog(Context context, int from, int to) {
@@ -206,7 +337,12 @@ public class SleepTimerDialog extends DialogFragment {
     public void timerUpdated(SleepTimerUpdatedEvent event) {
         timeDisplay.setVisibility(event.isOver() || event.isCancelled() ? View.GONE : View.VISIBLE);
         timeSetup.setVisibility(event.isOver() || event.isCancelled() ? View.VISIBLE : View.GONE);
-        time.setText(Converter.getDurationStringLong((int) event.getTimeLeft()));
+        sleepTimerType.setEnabled(event.isOver() || event.isCancelled());
+
+        switch (SleepTimerPreferences.getSleepTimerType()) {
+            case EPISODES -> time.setText(String.valueOf(event.getDisplayTimeLeft()));
+            default -> time.setText(Converter.getDurationStringLong((int) event.getDisplayTimeLeft()));
+        }
     }
 
     private void closeKeyboard(View content) {

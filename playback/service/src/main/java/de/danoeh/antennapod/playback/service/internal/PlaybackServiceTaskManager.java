@@ -141,7 +141,7 @@ public class PlaybackServiceTaskManager {
             throw new IllegalArgumentException("Waiting time <= 0");
         }
 
-        Log.d(TAG, "Setting sleep timer to " + waitingTime + " milliseconds");
+        Log.d(TAG, "Setting sleep timer to " + waitingTime + " milliseconds or episodes");
         if (isSleepTimerActive()) {
             sleepTimer.reset(waitingTime);
         } else {
@@ -154,6 +154,10 @@ public class PlaybackServiceTaskManager {
      */
     public synchronized boolean isSleepTimerActive() {
         return sleepTimer != null && sleepTimer.isActive();
+    }
+
+    public synchronized boolean isSleepTimerEndingThisEpisode(long episodeRemainingMillis) {
+        return sleepTimer != null && sleepTimer.isActive() && sleepTimer.isEndingThisEpisode(episodeRemainingMillis);
     }
 
     /**
@@ -170,11 +174,11 @@ public class PlaybackServiceTaskManager {
     /**
      * Returns the current sleep timer time or 0 if the sleep timer is not active.
      */
-    public synchronized long getSleepTimerTimeLeft() {
+    public synchronized TimerValue getSleepTimerTimeLeft() {
         if (isSleepTimerActive()) {
             return sleepTimer.getTimeLeft();
         } else {
-            return 0;
+            return new TimerValue(0, 0);
         }
     }
 

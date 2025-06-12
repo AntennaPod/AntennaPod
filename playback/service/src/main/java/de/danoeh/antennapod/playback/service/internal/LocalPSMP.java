@@ -25,6 +25,7 @@ import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
+import de.danoeh.antennapod.playback.service.PlaybackEndedEvent;
 import de.danoeh.antennapod.playback.service.PlaybackService;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
@@ -680,6 +681,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     protected void endPlayback(final boolean hasEnded, final boolean wasSkipped,
                                     final boolean shouldContinue, final boolean toStoppedState) {
         releaseWifiLockIfNecessary();
+
+        EventBus.getDefault().post(PlaybackEndedEvent.ended(hasEnded, wasSkipped, shouldContinue, toStoppedState));
 
         boolean isPlaying = playerStatus == PlayerStatus.PLAYING;
 

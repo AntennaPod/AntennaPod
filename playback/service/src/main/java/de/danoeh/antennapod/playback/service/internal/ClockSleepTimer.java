@@ -32,7 +32,8 @@ public class ClockSleepTimer implements SleepTimer {
         this.timeLeft = initialWaitingTime;
 
         EventBus.getDefault().register(this);
-        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(initialWaitingTime));
+        final TimerValue left = getTimeLeft();
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(left.getDisplayValue(), left.getMilisValue()));
 
         start();
     }
@@ -45,12 +46,12 @@ public class ClockSleepTimer implements SleepTimer {
         timeLeft -= now - lastTick;
         lastTick = now;
 
-        EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(timeLeft));
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(timeLeft, timeLeft));
         if (timeLeft < NOTIFICATION_THRESHOLD) {
             notifyAboutExpiry();
         }
         if (timeLeft <= 0) {
-            Log.d(TAG, "Sleep timer expired");
+            Log.d(TAG, "Clock sleep timer expired");
             stop();
         }
     }
@@ -106,7 +107,8 @@ public class ClockSleepTimer implements SleepTimer {
 
     public void start() {
         lastTick = System.currentTimeMillis();
-        EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(timeLeft));
+        final TimerValue left = getTimeLeft();
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(left.getDisplayValue(), left.getMilisValue()));
 
         isRunning = true;
     }
@@ -131,13 +133,21 @@ public class ClockSleepTimer implements SleepTimer {
         return initialWaitingTime;
     }
 
-    @Override
-    public long getTimeLeft() {
-        return timeLeft;
+    public TimerValue getTimeLeft() {
+        return new TimerValue(timeLeft, timeLeft);
+    }
+
+    public void setTimeLeft(long timeLeft) {
+        this.timeLeft = timeLeft;
     }
 
     @Override
     public void reset(long waitingTimeOrEpisodes) {
         this.timeLeft = waitingTimeOrEpisodes;
+    }
+
+    @Override
+    public boolean isEndingThisEpisode(long episodeRemainingMillis) {
+        return episodeRemainingMillis >= getTimeLeft().getMilisValue();
     }
 }

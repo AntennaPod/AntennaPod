@@ -61,6 +61,7 @@ import de.danoeh.antennapod.playback.service.internal.PlaybackServiceNotificatio
 import de.danoeh.antennapod.playback.service.internal.PlaybackServiceStateManager;
 import de.danoeh.antennapod.playback.service.internal.PlaybackServiceTaskManager;
 import de.danoeh.antennapod.playback.service.internal.PlaybackVolumeUpdater;
+import de.danoeh.antennapod.playback.service.internal.TimerValue;
 import de.danoeh.antennapod.playback.service.internal.WearMediaSession;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import de.danoeh.antennapod.ui.widget.WidgetUpdater;
@@ -877,7 +878,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
                     if (newInfo.getOldPlayerStatus() != null && newInfo.getOldPlayerStatus() != PlayerStatus.SEEKING
                             && SleepTimerPreferences.autoEnable() && autoEnableByTime && !sleepTimerActive()) {
-                        setSleepTimer(SleepTimerPreferences.timerMillis());
+                        setSleepTimer(SleepTimerPreferences.timerMillisOrEpisodes());
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label),
                                 (ctx) -> disableSleepTimer(), getString(R.string.undo)));
                     }
@@ -1015,9 +1016,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             int newPosition = mediaPlayer.getPosition() - (int) SleepTimer.NOTIFICATION_THRESHOLD / 2;
             newPosition = Math.max(newPosition, 0);
             seekTo(newPosition);
-        } else if (event.getTimeLeft() < SleepTimer.NOTIFICATION_THRESHOLD) {
+        } else if (event.getMilisTimeLeft() < SleepTimer.NOTIFICATION_THRESHOLD) {
             final float[] multiplicators = {0.1f, 0.2f, 0.3f, 0.3f, 0.3f, 0.4f, 0.4f, 0.4f, 0.6f, 0.8f};
-            float multiplicator = multiplicators[Math.max(0, (int) event.getTimeLeft() / 1000)];
+            float multiplicator = multiplicators[Math.max(0, (int) event.getMilisTimeLeft() / 1000)];
             Log.d(TAG, "onSleepTimerAlmostExpired: " + multiplicator);
             mediaPlayer.setVolume(multiplicator, multiplicator);
         } else if (event.isCancelled()) {
@@ -1475,7 +1476,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         return taskManager.isSleepTimerActive();
     }
 
-    public long getSleepTimerTimeLeft() {
+    public boolean isSleepTimerEndingThisEpisode(long episodeRemainingMillis) {
+        return taskManager.isSleepTimerEndingThisEpisode(episodeRemainingMillis);
+    }
+
+    public TimerValue getSleepTimerTimeLeft() {
         return taskManager.getSleepTimerTimeLeft();
     }
 
@@ -1996,7 +2001,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (sleepTimerActive()) {
                     disableSleepTimer();
                 } else {
-                    setSleepTimer(SleepTimerPreferences.timerMillis());
+                    setSleepTimer(SleepTimerPreferences.timerMillisOrEpisodes());
                 }
             }
         }
