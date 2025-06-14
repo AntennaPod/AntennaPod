@@ -72,6 +72,7 @@ As a developer contributing to AntennaPod, we ask that you test the feature your
 * `./gradlew testPlayDebugUnitTest`
 
 ### Running Integration Tests
+`./gradlew connectedPlayDebugAndroidTest`
 
 #### Using Android Studio
 * Create a configuration via 'Run->Edit Configurations...'
