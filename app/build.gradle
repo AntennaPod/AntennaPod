@@ -1,7 +1,6 @@
 plugins {
     id('com.android.application')
     id('com.github.triplet.play') version '3.9.0' apply false
-    id 'org.jetbrains.kotlin.android'
 }
 apply from: "../common.gradle"
 apply from: "../playFlavor.gradle"
@@ -58,9 +57,6 @@ android {
     androidResources {
         additionalParameters += ["--no-version-vectors"]
     }
-    kotlinOptions {
-        jvmTarget = '17'
-    }
 }
 
 dependencies {
@@ -94,7 +90,6 @@ dependencies {
     implementation project(':playback:service')
     implementation project(':ui:chapters')
     implementation project(':ui:transcript')
-    implementation "androidx.core:core-ktx:$coreKtxVersion"
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
