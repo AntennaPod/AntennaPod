@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.net.common
 
+import de.danoeh.antennapod.net.common.UriUtil.queryString
+import de.danoeh.antennapod.net.common.UriUtil.urlEncode
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
