@@ -69,7 +69,7 @@ Testing and Verifying
 As a developer contributing to AntennaPod, we ask that you test the feature yourself manually and better yet, add unit and functional tests to any feature of bug you fix.
 
 ### Running Unit Tests
-* `./gradlew :core:testPlayDebugUnitTest`
+* `./gradlew testPlayDebugUnitTest`
 
 ### Running Integration Tests
 
