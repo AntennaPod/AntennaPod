@@ -15,7 +15,6 @@ target/
 build/
 **/*.project
 **/*.classpath
-.kotlin
 
 # Local configuration file (sdk path, etc)
 local.properties
