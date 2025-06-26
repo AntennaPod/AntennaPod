@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.ui.screen.episode;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -189,7 +191,26 @@ public class ItemFragment extends Fragment {
             }
             actionButton2.onClick(getContext());
         });
+        txtvPodcast.setOnLongClickListener(v -> {
+            copyToClipboard(requireContext(), txtvPodcast.getText().toString());
+            return true;
+        });
+        txtvTitle.setOnLongClickListener(v -> {
+            copyToClipboard(requireContext(), txtvTitle.getText().toString());
+            return true;
+        });
         return layout;
+    }
+
+    public void copyToClipboard(Context context, String text) {
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        if (clipboard != null) {
+            ClipData clip = ClipData.newPlainText(text, text);
+            clipboard.setPrimaryClip(clip);
+            if (Build.VERSION.SDK_INT <= 32) {
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
+            }
+        }
     }
 
     private void showOnDemandConfigBalloon(boolean offerStreaming) {
