@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.ui.screen.episode;
 
-import static android.content.Context.CLIPBOARD_SERVICE;
-
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -196,32 +194,22 @@ public class ItemFragment extends Fragment {
         });
 
         txtvPodcast.setOnLongClickListener(v -> {
-            try {
-                String textToCopy = ((TextView) v).getText().toString();
-                copyToClipboard(requireContext(), textToCopy, "Podcast Title");
-            } catch (IllegalStateException e) {
-                Log.d(TAG, "Context not available in copying podcast title", e);
-            }
+            copyToClipboard(requireContext(), txtvPodcast.getText().toString());
             return true;
         });
 
         txtvTitle.setOnLongClickListener(v -> {
-            try {
-                String textToCopy = ((TextView) v).getText().toString();
-                copyToClipboard(requireContext(), textToCopy, "Episode Title");
-            } catch (IllegalStateException e) {
-                Log.d(TAG, "Context not available in copying podcast title", e);
-            }
+            copyToClipboard(requireContext(), txtvTitle.getText().toString());
             return true;
         });
 
         return layout;
     }
 
-    public void copyToClipboard(Context context, String text, String label) {
-        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
+    public void copyToClipboard(Context context, String text) {
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         if (clipboard != null) {
-            ClipData clip = ClipData.newPlainText(label, text);
+            ClipData clip = ClipData.newPlainText(text, text);
             clipboard.setPrimaryClip(clip);
             if (Build.VERSION.SDK_INT <= 32) {
                 EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
