@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
@@ -192,17 +191,14 @@ public class ItemFragment extends Fragment {
             }
             actionButton2.onClick(getContext());
         });
-
         txtvPodcast.setOnLongClickListener(v -> {
             copyToClipboard(requireContext(), txtvPodcast.getText().toString());
             return true;
         });
-
         txtvTitle.setOnLongClickListener(v -> {
             copyToClipboard(requireContext(), txtvTitle.getText().toString());
             return true;
         });
-
         return layout;
     }
 

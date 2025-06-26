@@ -123,17 +123,14 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
             StatisticsFragment fragment = new StatisticsFragment();
             ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
         });
-
         viewBinding.header.txtvTitle.setOnLongClickListener(v -> {
             copyToClipboard(requireContext(), viewBinding.header.txtvTitle.getText().toString());
             return true;
         });
-
         viewBinding.header.txtvAuthor.setOnLongClickListener(v -> {
             copyToClipboard(requireContext(), viewBinding.header.txtvAuthor.getText().toString());
             return true;
         });
-
         return viewBinding.getRoot();
     }
 

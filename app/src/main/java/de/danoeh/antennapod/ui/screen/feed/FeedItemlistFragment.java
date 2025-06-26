@@ -530,7 +530,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     private void setupHeaderView() {
         // https://github.com/bumptech/glide/issues/529
-
         viewBinding.imgvBackground.setColorFilter(new LightingColorFilter(0xff666666, 0x000000));
         viewBinding.header.butShowInfo.setOnClickListener(v -> showFeedInfo());
         viewBinding.header.imgvCover.setOnClickListener(v -> showFeedInfo());
