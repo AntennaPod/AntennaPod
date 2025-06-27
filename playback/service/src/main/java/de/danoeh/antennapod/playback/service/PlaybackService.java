@@ -428,7 +428,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (parentId.equals(getResources().getString(R.string.app_name))) {
             FeedMedia playable = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
             if (playable != null) {
-                mediaItems.add(createBrowsableMediaItem(R.string.current_playing_episode, R.drawable.ic_play_48dp, 1));
+                mediaItems.add(createBrowsableMediaItem(R.string.current_playing_episode, R.drawable.ic_play_48dp_black, 1));
             }
             mediaItems.add(createBrowsableMediaItem(R.string.queue_label, R.drawable.ic_playlist_play_black,
                     DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.QUEUED))));
