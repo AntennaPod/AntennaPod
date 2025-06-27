@@ -390,8 +390,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         MediaDescriptionCompat.Builder builder = new MediaDescriptionCompat.Builder()
                 .setMediaId("FeedId:" + feed.getId())
                 .setTitle(feed.getTitle())
-                .setDescription(feed.getDescription())
-                .setSubtitle(feed.getCustomTitle());
+                .setDescription(feed.getDescription());
         if (feed.getImageUrl() != null) {
             builder.setIconUri(Uri.parse(feed.getImageUrl()));
         }
