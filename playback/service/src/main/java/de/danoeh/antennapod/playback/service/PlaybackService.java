@@ -426,9 +426,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private List<MediaBrowserCompat.MediaItem> loadChildrenSynchronous(@NonNull String parentId) {
         List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
         if (parentId.equals(getResources().getString(R.string.app_name))) {
-            long currentlyPlaying = PlaybackPreferences.getCurrentPlayerStatus();
-            if (currentlyPlaying == PlaybackPreferences.PLAYER_STATUS_PLAYING
-                    || currentlyPlaying == PlaybackPreferences.PLAYER_STATUS_PAUSED) {
+            FeedMedia playable = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+            if (playable != null) {
                 mediaItems.add(createBrowsableMediaItem(R.string.current_playing_episode, R.drawable.ic_play_48dp, 1));
             }
             mediaItems.add(createBrowsableMediaItem(R.string.queue_label, R.drawable.ic_playlist_play_black,
