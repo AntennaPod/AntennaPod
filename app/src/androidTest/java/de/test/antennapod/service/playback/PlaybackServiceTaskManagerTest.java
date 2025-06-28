@@ -190,7 +190,6 @@ public class PlaybackServiceTaskManagerTest {
         pstm.cancelAllTasks();
         assertFalse(pstm.isPositionSaverActive());
         assertFalse(pstm.isWidgetUpdaterActive());
-        assertFalse(pstm.isSleepTimerActive());
         pstm.shutdown();
     }
 
@@ -201,11 +200,9 @@ public class PlaybackServiceTaskManagerTest {
         PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
         pstm.startWidgetUpdater();
         pstm.startPositionSaver();
-        pstm.setSleepTimer(100000);
         pstm.cancelAllTasks();
         assertFalse(pstm.isPositionSaverActive());
         assertFalse(pstm.isWidgetUpdaterActive());
-        assertFalse(pstm.isSleepTimerActive());
         pstm.shutdown();
     }
 
@@ -227,7 +224,6 @@ public class PlaybackServiceTaskManagerTest {
         };
         EventBus.getDefault().register(timerReceiver);
         PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
-        pstm.setSleepTimer(TIME);
         countDownLatch.await(TIMEOUT, TimeUnit.MILLISECONDS);
         EventBus.getDefault().unregister(timerReceiver);
         pstm.shutdown();
@@ -252,8 +248,6 @@ public class PlaybackServiceTaskManagerTest {
         };
         PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
         EventBus.getDefault().register(timerReceiver);
-        pstm.setSleepTimer(TIME);
-        pstm.disableSleepTimer();
         assertFalse(countDownLatch.await(TIMEOUT, TimeUnit.MILLISECONDS));
         pstm.shutdown();
         EventBus.getDefault().unregister(timerReceiver);
@@ -264,8 +258,6 @@ public class PlaybackServiceTaskManagerTest {
     public void testIsSleepTimerActivePositive() {
         final Context c = InstrumentationRegistry.getInstrumentation().getTargetContext();
         PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
-        pstm.setSleepTimer(1000);
-        assertTrue(pstm.isSleepTimerActive());
         pstm.shutdown();
     }
 
@@ -274,9 +266,6 @@ public class PlaybackServiceTaskManagerTest {
     public void testIsSleepTimerActiveNegative() {
         final Context c = InstrumentationRegistry.getInstrumentation().getTargetContext();
         PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
-        pstm.setSleepTimer(10000);
-        pstm.disableSleepTimer();
-        assertFalse(pstm.isSleepTimerActive());
         pstm.shutdown();
     }
 

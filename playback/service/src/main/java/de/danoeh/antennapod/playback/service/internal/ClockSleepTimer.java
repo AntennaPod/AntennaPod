@@ -31,9 +31,6 @@ public class ClockSleepTimer implements SleepTimer {
         this.initialWaitingTime = initialWaitingTime;
         this.timeLeft = initialWaitingTime;
 
-        EventBus.getDefault().register(this);
-        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(initialWaitingTime));
-
         start();
     }
 
@@ -91,20 +88,14 @@ public class ClockSleepTimer implements SleepTimer {
         }
     }
 
-    protected void stopShakeListener() {
-        if (shakeListener != null) {
-            shakeListener.pause();
-            shakeListener = null;
-        }
-        hasVibrated = false;
-    }
-
     @Override
     public boolean isActive() {
         return isRunning && timeLeft > 0;
     }
 
     public void start() {
+        registerForEvents(); // make sure we've registered for events first
+
         lastTick = System.currentTimeMillis();
         EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(timeLeft));
 
@@ -121,6 +112,12 @@ public class ClockSleepTimer implements SleepTimer {
         }
         shakeListener = null;
         EventBus.getDefault().post(SleepTimerUpdatedEvent.cancelled());
+    }
+
+    private void registerForEvents() {
+        EventBus.getDefault().register(this);
+        final long left = getTimeLeft();
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(left));
     }
 
     protected Context getContext() {
