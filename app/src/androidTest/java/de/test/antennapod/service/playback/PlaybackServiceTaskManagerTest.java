@@ -206,28 +206,7 @@ public class PlaybackServiceTaskManagerTest {
         pstm.shutdown();
     }
 
-    @Test
-    @UiThreadTest
-    public void testSetSleepTimer() throws InterruptedException {
-        final Context c = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        final long TIME = 2000;
-        final long TIMEOUT = 2 * TIME;
-        final CountDownLatch countDownLatch = new CountDownLatch(1);
-        Object timerReceiver = new Object() {
-            @Subscribe
-            public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
-                if (countDownLatch.getCount() == 0) {
-                    fail();
-                }
-                countDownLatch.countDown();
-            }
-        };
-        EventBus.getDefault().register(timerReceiver);
-        PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
-        countDownLatch.await(TIMEOUT, TimeUnit.MILLISECONDS);
-        EventBus.getDefault().unregister(timerReceiver);
-        pstm.shutdown();
-    }
+
 
     @Test
     @UiThreadTest

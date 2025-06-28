@@ -47,8 +47,6 @@ public class PlaybackServiceTaskManager {
     private ScheduledFuture<?> widgetUpdaterFuture;
     private volatile Disposable chapterLoaderFuture;
 
-    private SleepTimer sleepTimer;
-
     private final Context context;
     private final PSTMCallback callback;
 
