@@ -55,6 +55,8 @@ import androidx.media.MediaBrowserServiceCompat;
 
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
+import de.danoeh.antennapod.playback.service.internal.ClockSleepTimer;
+import de.danoeh.antennapod.playback.service.internal.EpisodeSleepTimer;
 import de.danoeh.antennapod.playback.service.internal.LocalPSMP;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
 import de.danoeh.antennapod.playback.service.internal.PlaybackServiceNotificationBuilder;
@@ -160,6 +162,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private PlaybackServiceMediaPlayer mediaPlayer;
     private PlaybackServiceTaskManager taskManager;
+    private SleepTimer sleepTimer;
     private PlaybackServiceStateManager stateManager;
     private Disposable positionEventTimer;
     private PlaybackServiceNotificationBuilder notificationBuilder;
@@ -334,6 +337,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         unregisterReceiver(audioBecomingNoisy);
         mediaPlayer.shutdown();
         taskManager.shutdown();
+        disableSleepTimer();
         EventBus.getDefault().unregister(this);
     }
 
@@ -1188,11 +1192,48 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public void setSleepTimer(long waitingTime) {
         Log.d(TAG, "Setting sleep timer to " + waitingTime + " milliseconds");
-        taskManager.setSleepTimer(waitingTime);
+        if (waitingTime <= 0) {
+            throw new IllegalArgumentException("Waiting time <= 0");
+        }
+
+        Log.d(TAG, "Setting sleep timer to " + waitingTime + " milliseconds or episodes");
+        if (isSleepTimerActive()) {
+            sleepTimer.reset(waitingTime);
+        } else {
+            sleepTimer = createSleepTimer(waitingTime);
+        }
+    }
+
+    /**
+     * Creates a new SleepTimer instance based on the current config
+     * Will either create a sleep time that counts down clock seconds, counts
+     * down playback seconds (similar to clock, but adjusted for playback speed)
+     * or episode counter
+     * @param sleepDurationOrEpisodes Either duration in millis or number of episodes
+     * @return The selected SleepTimer type
+     */
+    private SleepTimer createSleepTimer(long sleepDurationOrEpisodes) {
+        final Context context = getApplicationContext();
+        return switch (SleepTimerPreferences.getSleepTimerType()) {
+            case CLOCK -> new ClockSleepTimer(context, sleepDurationOrEpisodes);
+            case EPISODES -> new EpisodeSleepTimer(context, sleepDurationOrEpisodes);
+        };
+
+    }
+
+    /**
+     * Returns true if the sleep timer is currently active.
+     */
+    public boolean isSleepTimerActive() {
+        return sleepTimer != null && sleepTimer.isActive();
     }
 
     public void disableSleepTimer() {
-        taskManager.disableSleepTimer();
+        if (isSleepTimerActive()) {
+            Log.d(TAG, "Disabling sleep timer");
+            sleepTimer.stop();
+        }
+        sleepTimer = null;
     }
 
     private void sendNotificationBroadcast(int type, int code) {
@@ -1473,15 +1514,19 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     public boolean sleepTimerActive() {
-        return taskManager.isSleepTimerActive();
+        return sleepTimer != null && sleepTimer.isActive();
     }
 
     public boolean isSleepTimerEndingThisEpisode(long episodeRemainingMillis) {
-        return taskManager.isSleepTimerEndingThisEpisode(episodeRemainingMillis);
+        return sleepTimer != null && sleepTimer.isActive() && sleepTimer.isEndingThisEpisode(episodeRemainingMillis);
     }
 
     public TimerValue getSleepTimerTimeLeft() {
-        return taskManager.getSleepTimerTimeLeft();
+        if (isSleepTimerActive()) {
+            return sleepTimer.getTimeLeft();
+        } else {
+            return new TimerValue(0, 0);
+        }
     }
 
     private void bluetoothNotifyChange(PlaybackServiceMediaPlayer.PSMPInfo info, String whatChanged) {

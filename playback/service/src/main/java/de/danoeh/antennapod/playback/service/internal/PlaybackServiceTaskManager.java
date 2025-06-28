@@ -130,59 +130,6 @@ public class PlaybackServiceTaskManager {
     }
 
     /**
-     * Starts a new sleep timer with the given waiting time. If another sleep timer is already active, it will be
-     * resumed.
-     * After waitingTime has elapsed, onSleepTimerExpired() will be called.
-     *
-     * @throws java.lang.IllegalArgumentException if waitingTime <= 0
-     */
-    public synchronized void setSleepTimer(long waitingTime) {
-        if (waitingTime <= 0) {
-            throw new IllegalArgumentException("Waiting time <= 0");
-        }
-
-        Log.d(TAG, "Setting sleep timer to " + waitingTime + " milliseconds or episodes");
-        if (isSleepTimerActive()) {
-            sleepTimer.reset(waitingTime);
-        } else {
-            sleepTimer = SleepTimerFactory.createSleepTimer(context, waitingTime);
-        }
-    }
-
-    /**
-     * Returns true if the sleep timer is currently active.
-     */
-    public synchronized boolean isSleepTimerActive() {
-        return sleepTimer != null && sleepTimer.isActive();
-    }
-
-    public synchronized boolean isSleepTimerEndingThisEpisode(long episodeRemainingMillis) {
-        return sleepTimer != null && sleepTimer.isActive() && sleepTimer.isEndingThisEpisode(episodeRemainingMillis);
-    }
-
-    /**
-     * Disables the sleep timer. If the sleep timer is not active, nothing will happen.
-     */
-    public synchronized void disableSleepTimer() {
-        if (isSleepTimerActive()) {
-            Log.d(TAG, "Disabling sleep timer");
-            sleepTimer.stop();
-        }
-        sleepTimer = null;
-    }
-
-    /**
-     * Returns the current sleep timer time or 0 if the sleep timer is not active.
-     */
-    public synchronized TimerValue getSleepTimerTimeLeft() {
-        if (isSleepTimerActive()) {
-            return sleepTimer.getTimeLeft();
-        } else {
-            return new TimerValue(0, 0);
-        }
-    }
-
-    /**
      * Returns true if the widget updater is currently running.
      */
     public synchronized boolean isWidgetUpdaterActive() {
@@ -229,7 +176,6 @@ public class PlaybackServiceTaskManager {
     public synchronized void cancelAllTasks() {
         cancelPositionSaver();
         cancelWidgetUpdater();
-        disableSleepTimer();
 
         if (chapterLoaderFuture != null) {
             chapterLoaderFuture.dispose();
