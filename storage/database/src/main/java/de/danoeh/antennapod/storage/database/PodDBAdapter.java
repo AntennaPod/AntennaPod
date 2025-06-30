@@ -1305,7 +1305,7 @@ public class PodDBAdapter {
             case SHOW_DOWNLOADED_UNPLAYED:
                 whereRead = "(" + KEY_READ + "=" + FeedItem.NEW
                         + " OR " + KEY_READ + "=" + FeedItem.UNPLAYED + ")"
-                        + " AND (" + KEY_DOWNLOAD_DATE + ">0 OR "+KEY_DOWNLOAD_URL + "='')";
+                        + " AND (" + KEY_DOWNLOAD_DATE + ">0 OR " +KEY_DOWNLOAD_URL + "='')";
                 break;
             case SHOW_NONE:
                 // deliberate fall-through
