@@ -1300,12 +1300,12 @@ public class PodDBAdapter {
                         + " OR " + KEY_READ + "=" + FeedItem.UNPLAYED + ")";
                 break;
             case SHOW_DOWNLOADED:
-                whereRead = KEY_DOWNLOAD_DATE + ">0";
+                whereRead = KEY_DOWNLOAD_DATE + ">0 OR " + KEY_DOWNLOAD_URL + "=''";
                 break;
             case SHOW_DOWNLOADED_UNPLAYED:
                 whereRead = "(" + KEY_READ + "=" + FeedItem.NEW
                         + " OR " + KEY_READ + "=" + FeedItem.UNPLAYED + ")"
-                        + " AND " + KEY_DOWNLOAD_DATE + ">0";
+                        + " AND (" + KEY_DOWNLOAD_DATE + ">0 OR "+KEY_DOWNLOAD_URL + "='')";
                 break;
             case SHOW_NONE:
                 // deliberate fall-through
