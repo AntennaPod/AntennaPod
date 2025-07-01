@@ -252,7 +252,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onPause() {
         super.onPause();
-        scrollPosition = getScrollPosition();
+        scrollPosition = viewBinding.recyclerView.getScrollPosition();
     }
 
     @Override
@@ -264,6 +264,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             disposable.dispose();
         }
         adapter.endSelectMode();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
@@ -719,10 +724,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             default:
                 break;
         }
-    }
-
-    private Pair<Integer, Integer> getScrollPosition() {
-        return viewBinding.recyclerView.getScrollPosition();
     }
 
     private void restoreScrollPosition(Pair<Integer, Integer> scrollPosition) {
