@@ -104,6 +104,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private Feed feed;
     private Disposable disposable;
     private FeedItemListFragmentBinding viewBinding;
+    private Pair<Integer, Integer> scrollPosition = null;
 
     /**
      * Creates new ItemlistFragment which shows the Feeditems of a specific
@@ -246,6 +247,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
         viewBinding.recyclerView.setPadding(viewBinding.recyclerView.getPaddingLeft(), 0,
                 viewBinding.recyclerView.getPaddingRight(), paddingBottom);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        scrollPosition = getScrollPosition();
     }
 
     @Override
@@ -654,6 +661,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                         adapter.updateItems(feed.getItems());
                         adapter.setTotalNumberOfItems(result.second);
                         updateToolbar();
+                        restoreScrollPosition(scrollPosition);
                     }, error -> {
                         feed = null;
                         refreshHeaderView();
@@ -711,6 +719,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             default:
                 break;
         }
+    }
+
+    private Pair<Integer, Integer> getScrollPosition() {
+        return viewBinding.recyclerView.getScrollPosition();
+    }
+
+    private void restoreScrollPosition(Pair<Integer, Integer> scrollPosition) {
+        viewBinding.recyclerView.restoreScrollPosition(scrollPosition);
     }
 
     private class FeedItemListAdapter extends EpisodeItemListAdapter {
