@@ -661,7 +661,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                         adapter.updateItems(feed.getItems());
                         adapter.setTotalNumberOfItems(result.second);
                         updateToolbar();
-                        restoreScrollPosition(scrollPosition);
+                        viewBinding.recyclerView.restoreScrollPosition(scrollPosition);
                     }, error -> {
                         feed = null;
                         refreshHeaderView();
@@ -719,10 +719,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             default:
                 break;
         }
-    }
-
-    private void restoreScrollPosition(Pair<Integer, Integer> scrollPosition) {
-        viewBinding.recyclerView.restoreScrollPosition(scrollPosition);
     }
 
     private class FeedItemListAdapter extends EpisodeItemListAdapter {
