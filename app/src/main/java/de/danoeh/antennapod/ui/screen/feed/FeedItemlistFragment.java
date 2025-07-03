@@ -662,6 +662,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                         adapter.setTotalNumberOfItems(result.second);
                         updateToolbar();
                         viewBinding.recyclerView.restoreScrollPosition(scrollPosition);
+                        scrollPosition = null;
                     }, error -> {
                         feed = null;
                         refreshHeaderView();
