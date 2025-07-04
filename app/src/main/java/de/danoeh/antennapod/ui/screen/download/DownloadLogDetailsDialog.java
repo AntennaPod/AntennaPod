@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -24,15 +25,21 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
     public DownloadLogDetailsDialog(@NonNull Context context, DownloadResult status) {
         super(context);
 
+        String podcastTitle = null;
+        String episodeTitle = null;
+
         String url = "unknown";
         if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
             FeedMedia media = DBReader.getFeedMedia(status.getFeedfileId());
             if (media != null) {
+                podcastTitle = media.getFeedTitle();
+                episodeTitle = media.getEpisodeTitle();
                 url = media.getDownloadUrl();
             }
         } else if (status.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
             Feed feed = DBReader.getFeed(status.getFeedfileId(), false, 0, 0);
             if (feed != null) {
+                podcastTitle = feed.getFeedTitle();
                 url = feed.getDownloadUrl();
             }
         }
@@ -48,8 +55,19 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
         errorMessage.setSpan(new ForegroundColorSpan(0x88888888),
                 humanReadableReason.length(), errorMessage.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
+        String downloadMessage = "";
+        if (podcastTitle != null) {
+            downloadMessage += podcastTitle + "\n";
+        }
+        if (episodeTitle != null) {
+            downloadMessage += episodeTitle + "\n";
+        }
+        if (!downloadMessage.isBlank()) {
+            downloadMessage += "\n";
+        }
+
         setTitle(R.string.download_error_details);
-        setMessage(errorMessage);
+        setMessage(TextUtils.concat(downloadMessage, errorMessage));
         setPositiveButton(android.R.string.ok, null);
         setNeutralButton(R.string.copy_to_clipboard, (dialog, which) -> {
             ClipboardManager clipboard = (ClipboardManager) getContext()
