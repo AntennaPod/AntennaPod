@@ -598,7 +598,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                    downloadStatus -> new DownloadLogDetailsDialog(getContext(), downloadStatus).show(),
+                    downloadStatus -> new DownloadLogDetailsDialog(requireActivity(), downloadStatus).show(),
                     error -> error.printStackTrace(),
                     () -> new DownloadLogFragment().show(getChildFragmentManager(), null));
     }
