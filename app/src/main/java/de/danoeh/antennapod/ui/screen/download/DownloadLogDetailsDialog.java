@@ -59,9 +59,11 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
         String url = "unknown";
         if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
             FeedMedia media = DBReader.getFeedMedia(status.getFeedfileId());
-            feed = DBReader.getFeed(media.getItem().getFeedId(), false, 0, 0);
-            if (media != null) {
-                podcastTitle = feed.getFeedTitle();
+            if (media != null && media.getItem() != null) {
+                feed = DBReader.getFeed(media.getItem().getFeedId(), false, 0, 0);
+                if (feed != null) {
+                    podcastTitle = feed.getFeedTitle();
+                }
                 episodeTitle = media.getEpisodeTitle();
                 url = media.getDownloadUrl();
             }
