@@ -48,7 +48,8 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
      * The title(s) can be made clickable, so they jump to the Feed if clicked.
      * A callback can be set that will be called when the dialog is closed.
      */
-    public DownloadLogDetailsDialog(@NonNull Activity activity, DownloadResult status, boolean isTitleClickable, @Nullable Runnable onDismissCallback) {
+    public DownloadLogDetailsDialog(@NonNull Activity activity, DownloadResult status, boolean isTitleClickable,
+                                    @Nullable Runnable onDismissCallback) {
         super(activity);
 
         Feed feed = null;
@@ -107,7 +108,8 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
     }
 
     @NonNull
-    private SpannableString getClickableMessage(@NonNull Activity activity, CharSequence downloadMessage, Feed feed, Runnable onDismissCallback) {
+    private SpannableString getClickableMessage(@NonNull Activity activity, CharSequence downloadMessage, Feed feed,
+                                                Runnable onDismissCallback) {
         SpannableString clickableDownloadMessage = new SpannableString(downloadMessage);
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
@@ -135,10 +137,10 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
                 super.updateDrawState(ds);
                 ds.setUnderlineText(false);
                 // Set color to theme based text color. This works for API Version 21 as well.
-                //                android.util.TypedValue typedValue = new android.util.TypedValue();
-                //                activity.getTheme().resolveAttribute(android.R.attr.textColorPrimary, typedValue, true);
-                //                ds.setColor(androidx.core.content.res.ResourcesCompat.getColor(
-                //                        activity.getResources(), typedValue.resourceId, activity.getTheme()));
+                //  android.util.TypedValue typedValue = new android.util.TypedValue();
+                //  activity.getTheme().resolveAttribute(android.R.attr.textColorPrimary, typedValue, true);
+                //  ds.setColor(androidx.core.content.res.ResourcesCompat.getColor(
+                //  activity.getResources(), typedValue.resourceId, activity.getTheme()));
             }
         };
         clickableDownloadMessage.setSpan(clickableSpan, 0, clickableDownloadMessage.length(), 0);
@@ -169,47 +171,47 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
         return dialog;
     }
 
-//    private void openFragment(Activity activity, Feed feed) {
-//        if (feed == null) {
-//            return;
-//        }
-//        if (feed.getState() == Feed.STATE_SUBSCRIBED) {
-//            Fragment fragment = FeedItemlistFragment.newInstance(feed.getId());
-//            ((MainActivity) activity).loadChildFragment(fragment);
-//        } else {
-//            Intent intent= new OnlineFeedviewActivityStarter(getContext(), feed.getDownloadUrl())
-//                    .getIntent();
-//            activity.startActivity(intent);
-//        }
-//    }
-//
-//    /**
-//     * Switches to the Fragment if it isn't open yet.
-//     * Was used to switch from the FeedItemListFragment error TextField to the dialog and back
-//     * (when clicking the episode title link).
-//     */
-//    private void openFragmentConditionally(Activity activity, Feed feed) {
-//        if (feed == null) {
-//            return;
-//        }
-//        if (feed.getState() == Feed.STATE_SUBSCRIBED) {
-//            MainActivity mainActivity = (MainActivity) activity;
-//            FragmentManager fm = mainActivity.getSupportFragmentManager();
-//            Fragment current = fm.findFragmentById(R.id.main_content_view);
-//
-//            if (current instanceof FeedItemlistFragment) {
-//                return;
-//            }
-//
-//            Fragment fragment = FeedItemlistFragment.newInstance(feed.getId());
-//            ((MainActivity) activity).loadChildFragment(fragment);
-////            fm.beginTransaction()
-////                    .replace(R.id.main_content_view, fragment)
-////                    .commit();
-//        } else {
-//            Intent intent= new OnlineFeedviewActivityStarter(getContext(), feed.getDownloadUrl())
-//                    .getIntent();
-//            activity.startActivity(intent);
-//        }
-//    }
+    //    private void openFragment(Activity activity, Feed feed) {
+    //        if (feed == null) {
+    //            return;
+    //        }
+    //        if (feed.getState() == Feed.STATE_SUBSCRIBED) {
+    //            Fragment fragment = FeedItemlistFragment.newInstance(feed.getId());
+    //            ((MainActivity) activity).loadChildFragment(fragment);
+    //        } else {
+    //            Intent intent= new OnlineFeedviewActivityStarter(getContext(), feed.getDownloadUrl())
+    //                    .getIntent();
+    //            activity.startActivity(intent);
+    //        }
+    //    }
+    //
+    //    /**
+    //     * Switches to the Fragment if it isn't open yet.
+    //     * Was used to switch from the FeedItemListFragment error TextField to the dialog and back
+    //     * (when clicking the episode title link).
+    //     */
+    //    private void openFragmentConditionally(Activity activity, Feed feed) {
+    //        if (feed == null) {
+    //            return;
+    //        }
+    //        if (feed.getState() == Feed.STATE_SUBSCRIBED) {
+    //            MainActivity mainActivity = (MainActivity) activity;
+    //            FragmentManager fm = mainActivity.getSupportFragmentManager();
+    //            Fragment current = fm.findFragmentById(R.id.main_content_view);
+    //
+    //            if (current instanceof FeedItemlistFragment) {
+    //                return;
+    //            }
+    //
+    //            Fragment fragment = FeedItemlistFragment.newInstance(feed.getId());
+    //            ((MainActivity) activity).loadChildFragment(fragment);
+    ////            fm.beginTransaction()
+    ////                    .replace(R.id.main_content_view, fragment)
+    ////                    .commit();
+    //        } else {
+    //            Intent intent= new OnlineFeedviewActivityStarter(getContext(), feed.getDownloadUrl())
+    //                    .getIntent();
+    //            activity.startActivity(intent);
+    //        }
+    //    }
 }
