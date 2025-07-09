@@ -9,8 +9,6 @@ import androidx.viewpager2.widget.ViewPager2;
  * All items share the same general menu items and are just allowed to show/hide them.
  */
 public abstract class PagedToolbarFragment extends Fragment {
-    private static final String TAG = "PagedToolbarFragment";
-
     protected void setupPagedToolbar(final MaterialToolbar toolbar, final ViewPager2 viewPager) {
 
         toolbar.setOnMenuItemClickListener(item -> {
