@@ -9,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2;
  * All items share the same general menu items and are just allowed to show/hide them.
  */
 public abstract class PagedToolbarFragment extends Fragment {
+    private static final String TAG = "PagedToolbarFragment";
 
     protected void setupPagedToolbar(final MaterialToolbar toolbar, final ViewPager2 viewPager) {
 
@@ -22,12 +23,24 @@ public abstract class PagedToolbarFragment extends Fragment {
             }
             return false;
         });
+        // Defer findFragmentByTag until onPageScrollStateChanged (SCROLL_STATE_IDLE), as the FragmentManager
+        // isn’t ready on the first call to onPageSelected (when first switching tabs).
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            private int selectedPosition = 0;
+
             @Override
             public void onPageSelected(int position) {
-                Fragment child = getChildFragmentManager().findFragmentByTag("f" + position);
-                if (child != null) {
-                    child.onPrepareOptionsMenu(toolbar.getMenu());
+                selectedPosition = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                super.onPageScrollStateChanged(state);
+                if (state == ViewPager2.SCROLL_STATE_IDLE) {
+                    Fragment child = getChildFragmentManager().findFragmentByTag("f" + selectedPosition);
+                    if (child != null) {
+                        child.onPrepareOptionsMenu(toolbar.getMenu());
+                    }
                 }
             }
         });
