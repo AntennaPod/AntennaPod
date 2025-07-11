@@ -98,7 +98,7 @@ public class AutomaticDatabaseExportWorker extends Worker {
             }
         }
         if (hasDeletionFailed) {
-            throw new IOException("Unable to delete some db backup files");
+            throw new IOException("Unable to delete some database backup files");
         }
     }
 
