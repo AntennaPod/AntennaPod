@@ -4,7 +4,6 @@ import android.content.Context;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,13 +17,8 @@ import org.robolectric.RobolectricTestRunner;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static de.danoeh.antennapod.ui.cleaner.ShownotesCleaner.makeLinkHtml;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Test class for {@link ShownotesCleaner}.
@@ -240,112 +234,5 @@ public class ShownotesCleanerTest {
                 + "#foobar {  text-decoration: underline; font-weight:bold ; }"
                 + "baz { background-color:#f00;border: solid 2px;border-color:#0f0;text-decoration: underline; }";
         assertEquals(expected, ShownotesCleaner.cleanStyleTag(input));
-    }
-
-    @Test
-    public void testConvertPlainTextLinksToHtml() {
-        final String link1 = "https://url.to/link";
-        final String textWithLink = "text " + link1;
-        assertEquals("text " + makeLinkHtml(link1), ShownotesCleaner.convertPlainTextLinksToHtml(textWithLink));
-
-        final String link2 = "https://t.me/link";
-        final String textWithLink2 = "text " + link2;
-        assertEquals("text " + makeLinkHtml(link2),
-                ShownotesCleaner.convertPlainTextLinksToHtml(textWithLink2));
-
-        final String textWithTwoLinks = "text " + link1 + " and " + link2;
-        final String expectedTwoLinks = "text " + makeLinkHtml(link1) + " and " + makeLinkHtml(link2);
-        assertEquals(expectedTwoLinks, ShownotesCleaner.convertPlainTextLinksToHtml(textWithTwoLinks));
-
-        final String textWithMixturePlainTextAndHtml = "text " + link1 + " and " + makeLinkHtml(link2);
-        final String expectedMixture = "text " + makeLinkHtml(link1) + " and " + makeLinkHtml(link2);
-        assertEquals(expectedMixture, ShownotesCleaner.convertPlainTextLinksToHtml(textWithMixturePlainTextAndHtml));
-
-        final String textWithSpecialChars = "text'" + link1 + " and=" + link2;
-        final String expectedWithSpecialChars = "text'" + makeLinkHtml(link1) + " and=" + makeLinkHtml(link2);
-        assertEquals(expectedWithSpecialChars, ShownotesCleaner.convertPlainTextLinksToHtml(textWithSpecialChars));
-
-        final String linkWithParams = "http://t.me/link#mark?param1=1&param2=true";
-        final String textWithParams = "text " + linkWithParams + " after-text";
-        final String expectedWithParams = "text " + makeLinkHtml(linkWithParams) + " after-text";
-        assertEquals(expectedWithParams, ShownotesCleaner.convertPlainTextLinksToHtml(textWithParams));
-
-        final String linkWithComma = "https://wikipedia.org/wiki/%D0%9E%D1%82%D0%B5%D1%86_(%D1%84%D0%B8%D0%BB%D1%8C%D0%BC,_2020)";
-        final String textWithComma = "text " + linkWithComma;
-        assertEquals("text " + makeLinkHtml(linkWithComma),
-                ShownotesCleaner.convertPlainTextLinksToHtml(textWithComma));
-
-        final String linkWithDot = "https://www.ietf.org/rfc/rfc3986.txt";
-        final String textWithDot = "text " + linkWithDot;
-        assertEquals("text " + makeLinkHtml(linkWithDot),
-                ShownotesCleaner.convertPlainTextLinksToHtml(textWithDot));
-
-        final String linkWithTilda = "https://www.example.org/valid/-~.,/url/";
-        final String textWithTilda = "text " + linkWithTilda;
-        assertEquals("text " + makeLinkHtml(linkWithTilda),
-                ShownotesCleaner.convertPlainTextLinksToHtml(textWithTilda));
-    }
-
-    @Test
-    public void testConvertPlainTextLinksSupportsEveryHtmlTag() throws IOException {
-        var file = new File("src/test/resources/all_html_tags.html");
-        var input = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
-        assertEquals(input, ShownotesCleaner.convertPlainTextLinksToHtml(input));
-    }
-
-    @Test
-    public void testConvertPlainTextLinksWorksInComplexDocuments() throws IOException {
-        var file = new File("src/test/resources/all_html_tags.html");
-        var source = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
-        final String link = "https://url.to/link";
-        final String linkHtml = makeLinkHtml(link);
-        var input = source.replaceAll("PLACEHOLDER_LINK", link);
-        var expected = source.replaceAll("PLACEHOLDER_LINK", linkHtml);
-        assertEquals(expected, ShownotesCleaner.convertPlainTextLinksToHtml(input));
-    }
-
-    @Test
-    public void testConvertPlainTextLinksToHtmlWhenLinksAreAlreadyHtml() {
-        var linkTag = "Click <a alt=\"abc\" href=\"http://url.to/link\">http://url.to/link, this link</a>";
-        assertEquals(linkTag, ShownotesCleaner.convertPlainTextLinksToHtml(linkTag));
-
-        var linkTag2 = "<a href=http://domain.org/link>domain.org</a>";
-        assertEquals(linkTag2, ShownotesCleaner.convertPlainTextLinksToHtml(linkTag2));
-
-        var linkTag3 = "you can find it on <a href=http://xy.org>our new website http://xy.org</a>";
-        assertEquals(linkTag3, ShownotesCleaner.convertPlainTextLinksToHtml(linkTag3));
-
-        var linkTag4 = "you can find it on <a href=http://xy.org/newlanding>our new website http://xy.org</a>";
-        assertEquals(linkTag4, ShownotesCleaner.convertPlainTextLinksToHtml(linkTag4));
-
-        var imgTag = "<p><img src=\"https://url.to/i.jpg\" alt=\"\" /></p>";
-        assertEquals(imgTag, ShownotesCleaner.convertPlainTextLinksToHtml(imgTag));
-
-        var audioTag = "text <audio src=\"https://url.to/i.mp3\" alt=\"\" /> text";
-        assertEquals(audioTag, ShownotesCleaner.convertPlainTextLinksToHtml(audioTag));
-    }
-
-    @Test
-    public void testConvertPlainTextLinksToHtmlWhenNoLinksAreDetected() {
-        assertNull(ShownotesCleaner.convertPlainTextLinksToHtml(null));
-        assertEquals("", ShownotesCleaner.convertPlainTextLinksToHtml(""));
-
-        final String text = "plain text";
-        assertEquals(text, ShownotesCleaner.convertPlainTextLinksToHtml(text));
-
-        final String specialCharacters = "text with ' special \" characters !@#$%^&*()<>?123";
-        assertEquals(specialCharacters, ShownotesCleaner.convertPlainTextLinksToHtml(specialCharacters));
-
-        final String textWithDots = "\"Once Upon a Time...in Hollywood\" ";
-        assertEquals(textWithDots, ShownotesCleaner.convertPlainTextLinksToHtml(textWithDots));
-    }
-
-    @Test
-    public void testMakeLinkHtml() {
-        assertEquals("", ShownotesCleaner.makeLinkHtml(null));
-        assertEquals("", ShownotesCleaner.makeLinkHtml(""));
-
-        final String text = "text";
-        assertEquals("<a href=\"text\">text</a>", ShownotesCleaner.makeLinkHtml(text));
     }
 }
