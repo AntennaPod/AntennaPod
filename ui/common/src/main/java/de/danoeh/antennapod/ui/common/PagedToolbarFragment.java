@@ -10,7 +10,6 @@ import androidx.viewpager2.widget.ViewPager2;
  */
 public abstract class PagedToolbarFragment extends Fragment {
     protected void setupPagedToolbar(final MaterialToolbar toolbar, final ViewPager2 viewPager) {
-
         toolbar.setOnMenuItemClickListener(item -> {
             if (this.onOptionsItemSelected(item)) {
                 return true;
@@ -21,8 +20,6 @@ public abstract class PagedToolbarFragment extends Fragment {
             }
             return false;
         });
-        // Defer findFragmentByTag until onPageScrollStateChanged (SCROLL_STATE_IDLE), as the FragmentManager
-        // isn’t ready on the first call to onPageSelected (when first switching tabs).
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             private int selectedPosition = 0;
 
