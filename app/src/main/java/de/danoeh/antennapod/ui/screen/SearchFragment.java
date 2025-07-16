@@ -159,7 +159,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
             protected void onSelectedItemsUpdated() {
                 super.onSelectedItemsUpdated();
                 FeedItemMenuHandler.onPrepareMenu(floatingSelectMenu.getMenu(), getSelectedItems(),
-                        R.id.add_to_queue_item, R.id.remove_inbox_item);
+                        R.id.remove_inbox_item);
                 floatingSelectMenu.updateItemVisibility();
             }
         };
