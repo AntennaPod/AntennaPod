@@ -17,10 +17,12 @@ public class SleepTimerPreferences {
 
     private static final String PREF_VIBRATE = "Vibrate";
     private static final String PREF_SHAKE_TO_RESET = "ShakeToReset";
+    private static final String PREF_SHAKE_TO_RESET_MODE = "ShakeToResetMode";
     private static final String PREF_AUTO_ENABLE = "AutoEnable";
     private static final String PREF_AUTO_ENABLE_FROM = "AutoEnableFrom";
     private static final String PREF_AUTO_ENABLE_TO = "AutoEnableTo";
 
+    private static final int DEFAULT_SHAKE_TO_RESET_MODE = 0;
     private static final String DEFAULT_LAST_TIMER = "15";
     private static final int DEFAULT_AUTO_ENABLE_FROM = 22;
     private static final int DEFAULT_AUTO_ENABLE_TO = 6;
@@ -64,6 +66,14 @@ public class SleepTimerPreferences {
 
     public static boolean shakeToReset() {
         return prefs.getBoolean(PREF_SHAKE_TO_RESET, true);
+    }
+
+    public static void setShakeToResetMode(int value) {
+        prefs.edit().putInt(PREF_SHAKE_TO_RESET_MODE, value).apply();
+    }
+
+    public static int shakeToResetMode()  {
+        return prefs.getInt(PREF_SHAKE_TO_RESET_MODE, DEFAULT_SHAKE_TO_RESET_MODE);
     }
 
     public static void setAutoEnable(boolean autoEnable) {
