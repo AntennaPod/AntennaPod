@@ -13,7 +13,7 @@
     <string name="downloads_label">Lataukset</string>
     <string name="downloads_log_label">Latausloki</string>
     <string name="subscriptions_label">Tilaukset</string>
-    <string name="subscriptions_list_label">Tilausluettelo (vain sivuvalikko)</string>
+    <string name="subscriptions_list_label">Tilausluettelo</string>
     <string name="cancel_download_label">Peruuta lataus</string>
     <string name="playback_history_label">Toistohistoria</string>
     <string name="years_statistics_label">Vuosia</string>
@@ -107,8 +107,8 @@
     <string name="feed_auto_download_always">Aina</string>
     <string name="feed_auto_download_never">Ei koskaan</string>
     <string name="feed_new_episodes_action_add_to_inbox">Lisää saapuneisiin</string>
-    <string name="feed_new_episodes_action_add_to_queue">Lisää jonoon, poista automaattinen lataaminen käytöstä</string>
-    <string name="feed_new_episodes_action_nothing">Ei mitään, poista automaattinen lataaminen käytöstä</string>
+    <string name="feed_new_episodes_action_add_to_queue">Lisää jonoon</string>
+    <string name="feed_new_episodes_action_nothing">Ei mitään</string>
     <string name="episode_cleanup_never">Ei koskaan</string>
     <string name="episode_cleanup_except_favorite_removal">Kun ei ole suosikeissa</string>
     <string name="episode_cleanup_queue_removal">Kun ei ole jonossa</string>
@@ -165,42 +165,16 @@
     <string name="confirm_mobile_feed_refresh_dialog_message">Podcastien päivittäminen mobiilidatayhteydellä on poistettu käytöstä asetuksissa.\n\nHaluatko silti päivittää?</string>
     <!--actions on feeditems-->
   <string name="download_label">Lataa</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">Ladataan %d jakso.</item>
-        <item quantity="other">Ladataan %d jaksoa.</item>
-    </plurals>
     <string name="play_label">Toista</string>
     <string name="pause_label">Tauko</string>
     <string name="stream_label">Suoratoista</string>
     <string name="delete_label">Poista</string>
     <string name="remove_inbox_label">Poista saapuneista</string>
-    <string name="removed_inbox_label">Poistettu saapuneista</string>
-    <string name="mark_read_label">Merkitse toistetuksi</string>
     <string name="toggle_played_label">Vaihda toistettu-tila</string>
-    <string name="marked_as_played_label">Merkattu toistetuksi</string>
-    <string name="marked_as_unplayed_label">Merkattu toistamattomaksi</string>
     <string name="mark_read_no_media_label">Merkitse luetuksi</string>
-    <string name="play_this_to_seek_position">Jaksoa pitää toistaa siirtyäksesi kohtiin</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">%d jakso merkitty toistetuksi.</item>
-        <item quantity="other">%d jaksoa merkitty toistetuksi.</item>
-    </plurals>
-    <string name="mark_unread_label">Merkitse toistamattomaksi</string>
     <string name="mark_unread_label_no_media">Merkitse lukemattomaksi</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d jakso merkitty soittamattomaksi.</item>
-        <item quantity="other">%d jaksoa merkitty toistamattomaksi.</item>
-    </plurals>
     <string name="add_to_queue_label">Lisää jonoon</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d jakso lisätty jonoon.</item>
-        <item quantity="other">%d jaksoa lisätty jonoon.</item>
-    </plurals>
     <string name="remove_from_queue_label">Poista jonosta</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d jakso poistettu jonosta.</item>
-        <item quantity="other">%d jaksoa poistettu jonosta.</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d jakso poistettu saapuneista.</item>
         <item quantity="other">%d jaksoa poistettu saapuneista.</item>
@@ -209,8 +183,6 @@
     <string name="remove_from_favorite_label">Poista suosikeista</string>
     <string name="visit_website_label">Vieraile verkkosivustolla</string>
     <string name="skip_episode_label">Ohita jakso</string>
-    <string name="reset_position">Nollaa toistosijainti</string>
-    <string name="no_items_selected">Ei valittuja nimikkeitä</string>
     <!--Download messages and labels-->
   <string name="download_successful">onnistui</string>
     <string name="download_pending">Lataus odottamassa</string>
@@ -565,7 +537,6 @@
     <string name="feed_tags_label">Tunnisteet</string>
     <string name="feed_tags_summary">Muokkaa tämän podcastin tunnisteita tilaustesi järjestelemisen avuksi</string>
     <string name="feed_folders_include_root">Näytä tämä podcast päälistassa</string>
-    <string name="auto_download_settings_label">Automaattisen latauksen asetukset</string>
     <string name="episode_filters_label">Jaksosuodin</string>
     <string name="episode_filters_description">Lista termeistä joilla valitaan jakso automaattiseen lataukseen</string>
     <string name="add_term">Lisää termi</string>
@@ -587,8 +558,6 @@
     <string name="release_schedule_friday">pe</string>
     <string name="release_schedule_saturday">la</string>
     <string name="release_schedule_sunday">su</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Tuodaan tilauksia yksikäyttöisistä sovelluksista…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Etsi podcastia…</string>
     <string name="search_itunes_label">Etsi Apple Podcasteista</string>
@@ -682,7 +651,6 @@
     <string name="statistics_view_all">Kaikki podcastit »</string>
     <string name="subscription_display_list">Lista</string>
     <string name="rating_volunteers_label">AntennaPodia kehittävät vapaaehtoiset vapaa-ajallaan. Jaa arvostuksesi heidän työstään jättämällä hyvä arvosana.</string>
-    <string name="delete_local_feed_warning_body">Poistaminen poistaa jakson AntennaPodista ja mediatiedoston laitteen tallennustilasta. Sitä ei voi ladata uudelleen AntennaPodin kautta.</string>
     <string name="pref_episode_cleanup_title">Poista ennen automaattista lataamista</string>
     <string name="pref_new_episodes_action_title">Uusien jaksojen toiminta</string>
     <string name="shuffle_suggestions">Sekoitusehdotukset</string>
@@ -720,7 +688,6 @@
     <string name="multi_select_started_talkback">Monivalintatoiminnot näkyvät alareunassa</string>
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">VPN-sovelluksesi teeskentelee olevansa mobiiliverkko (mittariyhteys). Podcastien päivittäminen mobiilidatayhteydellä on poissa käytöstä asetuksista.\n\nHaluatko silti virkistää? Jos haluat korjata tämän ongelman, ota yhteyttä VPN-sovelluksesi tekijöihin.</string>
     <string name="show_transcript">Näytä transkriptio</string>
-    <string name="transcript_follow">Seuraa ääntä</string>
     <string name="no_transcript_label">Ei transkriptiota</string>
     <string name="null_value_podcast_error">Napautamasi linkki ei sisällä kelvollista podcastin URL-osoitetta. Tarkista linkki ja yritä uudelleen tai etsi podcast manuaalisesti.</string>
     <string name="confirm_mobile_download_dialog_message_vpn">- Käytätkö VPN:aa? VPN-sovelluksesi teeskentelee olevansa mobiiliverkko (mitattu yhteys). Jos haluat korjata tämän ongelman, ota yhteyttä VPN-sovelluksesi tekijöihin.\n- Etkö käytä VPN:aa? Avaa Androidin Wi-Fi-asetukset ja muuta Wi-Fi-verkkosi tyyppiä niin, että sitä ei mitata.</string>
@@ -765,7 +732,7 @@
     <string name="delete_downloads_played_confirmation">Vahvista, että haluat poistaa kaikki toistetut lataukset.</string>
     <string name="mobile_download_notice">Ladataan mobiilidatayhteyden kautta seuraavan %d minuutin ajan</string>
     <string name="bottom_navigation">Alareunanavigointi</string>
-    <string name="bottom_navigation_summary">Beta-ominaisuus: Pääset tärkeimpiin näyttöihin missä tahansa, yhdellä napautuksella</string>
+    <string name="bottom_navigation_summary">Pääset tärkeimpiin näyttöihin mistä tahansa, yhdellä napautuksella</string>
     <string name="nextcloud_login_error_generic">Nextcloudiin kirjautuminen ei onnistu.\n\n- Tarkista verkkoyhteytesi.\n- Varmista, että käytät oikeaa palvelinosoitetta.\n- Varmista, että gpoddersync Nextcloud -liitännäinen on asennettu.</string>
     <string name="statistics_episodes_downloaded">ladattu</string>
     <string name="statistics_episodes_space">käytetty tila</string>
@@ -780,10 +747,6 @@
     <plurals name="episode_cleanup_days_after_listening">
         <item quantity="one">%d päivä lopettamisen jälkeen</item>
         <item quantity="other">%d päivää lopettamisen jälkeen</item>
-    </plurals>
-    <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">%d ladattu jakso poistettu.</item>
-        <item quantity="other">%d ladattua jaksoa poistettu.</item>
     </plurals>
     <string name="episode_download_failed">Jakson lataus epäonnistui</string>
     <plurals name="time_hours_quantified">
@@ -870,4 +833,7 @@
     <string name="echo_share">Vuodeni %d podcasteissa. #AntennaPodEcho</string>
     <string name="global_default_with_value">Laajamittainen oletus (%1$s)</string>
     <string name="delete_tag_label">Poista tunniste</string>
+    <string name="feed_new_episodes_action_summary_autodownload">Automaattinen lataus kytketty päälle. Episodit lisätään viestilaatikkoon, josta ne siirretään jonoon, kun lataus on valmis.</string>
+    <string name="rss_address">RSS-osoite</string>
+    <string name="visit_social_interact_label">Näytä kommentit</string>
 </resources>

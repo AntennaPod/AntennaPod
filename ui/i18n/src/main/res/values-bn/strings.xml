@@ -141,21 +141,12 @@
     <string name="confirm_mobile_feed_refresh_dialog_message">মোবাইল ডেটা সংযোগের মাধ্যমে পডকাস্ট রিফ্রেশ করা সেটিংসে অক্ষম করা আছে।\n\nআপনি কি তবুও রিফ্রেশ করতে চান?</string>
     <!--actions on feeditems-->
   <string name="download_label">ডাউনলোড</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">%d টি পর্ব ডাউনলোড করা হচ্ছে।</item>
-        <item quantity="other">%d টি পর্ব ডাউনলোড করা হচ্ছে।</item>
-    </plurals>
     <string name="play_label">প্লে</string>
     <string name="pause_label">বিরতি দিন</string>
     <string name="stream_label">স্ট্রিম করুন</string>
     <string name="delete_label">মুছে ফেলুন</string>
     <string name="remove_inbox_label">ইনবক্স থেকে মুছে ফেলুন</string>
-    <string name="removed_inbox_label">ইনবক্স থেকে মুছে ফেলা হয়েছে</string>
     <string name="add_to_queue_label">সারিতে যোগ করুন</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d পর্ব সারি থেকে সরানো হয়েছে।</item>
-        <item quantity="other">%d পর্বগুলি সারি থেকে সরানো হয়েছে।</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d পর্ব ইনবক্স থেকে সরানো হয়েছে।</item>
         <item quantity="other">%d পর্বগুলি ইনবক্স থেকে সরানো হয়েছে।</item>

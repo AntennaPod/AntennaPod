@@ -180,46 +180,16 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">A túa VPN compórtase como unha rede móbil (conexión medida). A actualización dos podcast sobre redes móbiles está desactivada nos axustes.\n\nQueres actualizar actualmente? Se queres solucionar este problema, contacta coas desenvolvedoras da túa app VPN.</string>
     <!--actions on feeditems-->
   <string name="download_label">Descargar</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">Descargando %d episodio.</item>
-        <item quantity="other">Descargando %d episodios.</item>
-    </plurals>
     <string name="play_label">Reproducir</string>
     <string name="pause_label">Pausar</string>
     <string name="stream_label">Difundir</string>
     <string name="delete_label">Borrar</string>
-    <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">Eliminado %d episodio descargado.</item>
-        <item quantity="other">Eliminados %d episodios descargados.</item>
-    </plurals>
     <string name="remove_inbox_label">Retirar da lista de novidades</string>
-    <string name="removed_inbox_label">Retirado da lista de novidades</string>
-    <string name="mark_read_label">Marcar como reproducido</string>
     <string name="toggle_played_label">Cambiar estado de reprodución</string>
-    <string name="marked_as_played_label">Marcado como reproducido</string>
-    <string name="marked_as_unplayed_label">Marcado como non reproducido</string>
     <string name="mark_read_no_media_label">Marcar como lido</string>
-    <string name="play_this_to_seek_position">Para ir á posición, debes reproducir o episodio</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">%d episodio marcado como reproducido.</item>
-        <item quantity="other">%d episodios marcados como reproducidos.</item>
-    </plurals>
-    <string name="mark_unread_label">Marcar como non reproducido</string>
     <string name="mark_unread_label_no_media">Marcar como non lido</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d episodio marcado como non reproducido.</item>
-        <item quantity="other">%d episodios marcados como non reproducidos.</item>
-    </plurals>
     <string name="add_to_queue_label">Engadir á cola</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d episodio engadido a cola.</item>
-        <item quantity="other">%d episodios engadidos a cola.</item>
-    </plurals>
     <string name="remove_from_queue_label">Eliminar da cola</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d episodio eliminado da cola.</item>
-        <item quantity="other">%d episodios elimnados da cola.</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d episodio eliminado das novidades.</item>
         <item quantity="other">%d episodios eliminados das novidades.</item>
@@ -227,14 +197,10 @@
     <string name="add_to_favorite_label">Engadir a favoritos</string>
     <string name="show_transcript">Mostrar transcrición</string>
     <string name="transcript">Transcribir</string>
-    <string name="transcript_follow">Seguir audio</string>
     <string name="no_transcript_label">Sen transcrición</string>
     <string name="remove_from_favorite_label">Retirar dos favoritos</string>
     <string name="visit_website_label">Visitar sitio web</string>
     <string name="skip_episode_label">Omitir episodio</string>
-    <string name="reset_position">Reiniciar a posición de reprodución</string>
-    <string name="no_items_selected">Sen selección</string>
-    <string name="delete_local_feed_warning_body">Ao eliminar quitas o episodio de AntennaPod e eliminas o ficheiro multimedia da almacenaxe do dispositivo. Non se poderá descargar outra vez usando AntennaPod.</string>
     <!--Download messages and labels-->
   <string name="download_successful">exitoso</string>
     <string name="download_pending">Descarga pendente</string>
@@ -366,7 +332,7 @@
     <string name="pref_auto_delete_playback_title">Eliminar despois de reproducir</string>
     <string name="pref_auto_delete_title">Eliminación automática</string>
     <string name="pref_auto_delete_sum">Elimina os episodios despois de reproducilos ou cando precisa espazo para a descarga automática</string>
-    <string name="pref_auto_local_delete_title">Eliminación automática desde cartafoles locais</string>
+    <string name="pref_auto_local_delete_title">Eliminación automática dende cartafoles locais</string>
     <string name="pref_auto_local_delete_sum">Incluír cartafoles locais na ferramenta Eliminación Automática</string>
     <string name="pref_auto_local_delete_dialog_body">Ten en conta que respecto dos cartafoles locais eliminarás os episodios de AntennaPod e elimnarás os ficheiros multimedia da almacenaxe do dispositivo. Non poderás descargalos de novo usando AntennaPod. Activar eliminación automática?</string>
     <string name="pref_smart_mark_as_played_sum">Marcar episodios como reproducidos se aínda quedan un determinado número de segundos por reproducir</string>
@@ -520,9 +486,9 @@
     <string name="html">HTML</string>
     <string name="html_export_summary">Mostrar as túas subscricións a un amigo</string>
     <string name="opml_export_summary">Mover as túas subscricións a outra app de podcast</string>
-    <string name="opml_import_summary">Importar as túas subscricións desde outra app de podcast</string>
+    <string name="opml_import_summary">Importar as túas subscricións dende outra app de podcast</string>
     <string name="database_export_summary">Mover as subscricións, episodios escoitados e cola a AntennaPod en outro dispositivo</string>
-    <string name="database_import_summary">Importar a base de datos AntennaPod desde outro dispositivo</string>
+    <string name="database_import_summary">Importar a base de datos AntennaPod dende outro dispositivo</string>
     <string name="opml_import_label">Importar OPML</string>
     <string name="opml_add_podcast_label">Importar lista de podcast (OPML)</string>
     <string name="opml_reader_error">Algo fallou ao ler o ficheiro. Comproba que realmente escolleches un ficheiro OPML e que é un ficheiro válido.</string>
@@ -660,7 +626,6 @@
     <string name="feed_tags_summary">Cambia as etiquetas deste podcast para axudarche a organizar as subscricións</string>
     <string name="feed_folders_include_root">Mostrar este podcast na lista principal</string>
     <string name="multi_feed_common_tags_info">Só se mostran as etiquetas común das subscricións seleccionadas. As outras etiquetas non se ven afectadas.</string>
-    <string name="auto_download_settings_label">Axustes da descarga automática</string>
     <string name="episode_filters_label">Filtro para episodios</string>
     <string name="episode_filters_description">Lista dos termos utilizados para decidir se un episodio debe ser incluído ou excluído das descargas automáticas</string>
     <string name="add_term">Engadir termo</string>
@@ -686,8 +651,6 @@
     <string name="release_schedule_friday">Ven</string>
     <string name="release_schedule_saturday">Sáb</string>
     <string name="release_schedule_sunday">Dom</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Importando as subscricións desde aplicacións de propósito único…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Buscar podcast…</string>
     <string name="search_itunes_label">Buscar en Apple Podcasts</string>
@@ -708,7 +671,7 @@
     <string name="reconnect_local_folder_warning">En caso de faltar permisos, podes usar esto para reconectar o exactamente o mesmo cartafol. Non elixas outro cartafol.</string>
     <string name="local_feed_description">O podcast virtual foi creado ó engadir un cartafol a AntennaPod.</string>
     <string name="unable_to_start_system_file_manager">Non foi posible abrir o xestor de ficheiros</string>
-    <string name="filter">Filtrado</string>
+    <string name="filter">Filtrar</string>
     <string name="hide_is_favorite_label">É favorito</string>
     <string name="not_favorite">Non favorito</string>
     <string name="hide_downloaded_episodes_label">Descargado</string>
@@ -776,7 +739,7 @@
     <string name="sync_status_wait_for_downloads">Agardando a que se actualicen as subscricións…</string>
     <string name="statistics_view_all">Todos os podcasts »</string>
     <string name="statistics_episodes_started">iniciado</string>
-    <string name="bottom_navigation_summary">Acceder ás pantallas máis importantes desde calquera lugar cun só toque</string>
+    <string name="bottom_navigation_summary">Acceder ás pantallas máis importantes dende calquera lugar cun só toque</string>
     <string name="statistics_episodes_space">espazo ocupado</string>
     <string name="home_new_empty_text">Aquí aparecerán os episodios novos. Poderás decidir entón se son do teu interese.</string>
     <string name="home_downloads_empty_text">Podes descargar calquera episodio para escoitalo sen conexión.</string>
@@ -787,7 +750,7 @@
     <string name="statistics_episodes_downloaded">descargado</string>
     <string name="statistics_release_next">próximo episodio (estimación)</string>
     <string name="statistics_years_barchart_description">Tempo de escoita por mes</string>
-    <string name="statistics_release_schedule">programación dos episodios</string>
+    <string name="statistics_release_schedule">calendario de lanzamento</string>
     <plurals name="total_size_downloaded_podcasts">
         <item quantity="one">Tamaño total de %d episodio no dispositivo</item>
         <item quantity="other">Tamaño total de %d episodios no dispositivo</item>
@@ -812,19 +775,19 @@
     <string name="echo_hoarder_title">Tamén nos preguntamos: escoitas os podcasts aos que te subscribes?</string>
     <string name="echo_share_heading">Os meus favoritos</string>
     <string name="echo_hoarder_comment_hoarder">Os números non minten, só contan. E só escoitaches este ano o %1$d%% das %2$d subscricións activas, así que probablemente temos razón.</string>
-    <string name="echo_thanks_we_are_glad_old">por seguir con nós este ano!\n\nEscoitaches o primeiro episodio con nós en %1$s. É unha honra darche servizo desde entón.</string>
+    <string name="echo_thanks_we_are_glad_old">por seguir con nós este ano!\n\nEscoitaches o primeiro episodio con nós en %1$s. É unha honra darche servizo dende entón.</string>
     <string name="echo_hoarder_subtitle_medium">Ben, nada de acaparar.</string>
-    <string name="echo_hoarder_comment_medium">Este ano reproduciches episodios do %1$d%% das túas %2$d subscricións activas. Que che parece volver a comprobar «%3$s»?</string>
+    <string name="echo_hoarder_comment_medium">Este ano reproduciches episodios do %1$d%% das túas %2$d subscricións activas. Que che parece volver a ouvir \"%3$s\"?</string>
     <string name="echo_hoarder_subtitle_clean">Perfecto!</string>
     <string name="echo_hoarder_comment_clean">Este ano escoitaches episodios do %1$d%% das %2$d subscricións activas. Seguro que tamén tes o escritorio todo ordenadiño!</string>
     <string name="echo_thanks_large">Grazas</string>
-    <string name="echo_thanks_we_are_glad_new">por unirte a nós este ano!\n\nTanto se chegas desde outra app como se comezaches a túa aventura nos podcasts con nós: alédanos terte con nós!</string>
+    <string name="echo_thanks_we_are_glad_new">por unirte a nós este ano!\n\nTanto se chegas dende outra app como se comezaches a túa aventura nos podcasts con nós: alédanos terte con nós!</string>
     <string name="echo_thanks_now_favorite">Agora miremos os teus podcasts favoritos…</string>
     <string name="echo_share">O meu %d nos podcasts. #AntennaPodEcho</string>
     <string name="add_feed_label_short">Engadir</string>
     <string name="episodes_label_short">Episodios</string>
     <string name="home_label_short">Inicio</string>
-    <string name="queue_label_short">Na cola</string>
+    <string name="queue_label_short">Cola</string>
     <string name="inbox_label_short">Novos</string>
     <string name="downloads_label_short">Descargas</string>
     <string name="subscriptions_label_short">Subscricións</string>
@@ -841,9 +804,9 @@
     <string name="delete_tag_confirmation">Confirma que queres retirar a etiqueta «%1$s».</string>
     <string name="download_error_unsupported_type_html_manual">O enderezo escrito é unha páxina web, non un enderezo RSS de podcast.</string>
     <string name="pref_automatic_download_global_description">Descarga automática de novos episodios. Pode establecerse para cada podcast.</string>
-    <string name="pref_automatic_download_queue_title">Cola de descargas</string>
+    <string name="pref_automatic_download_queue_title">Descarga os que están na cola</string>
     <string name="episode_lists">Listas de episodios</string>
-    <string name="pref_downloads_button_action_title">Reproducir desde a pantalla de descargas</string>
+    <string name="pref_downloads_button_action_title">Reproducir dende a pantalla de descargas</string>
     <string name="pref_downloads_button_action_sum">Mostra o botón de reprodución no lugar do de borrado na pantalla de descargas</string>
     <string name="statistics_time_total">total</string>
     <string name="statistics_time_played">reproducido</string>
@@ -864,17 +827,15 @@
         <item quantity="other">horas agardando na cola\nde %1$d episodios</item>
     </plurals>
     <string name="echo_queue_hours_clean">Isto é %1$s horas cada día ata que comece %2$d.</string>
-    <string name="echo_queue_hours_normal">Isto é %1$s cada día ata que %2$d comece. Podes iniciar o ano desde cero se omites algúns episodios.</string>
+    <string name="echo_queue_hours_normal">Isto é %1$s cada día ata que %2$d comece. Podes iniciar o ano dende cero se omites algúns episodios.</string>
     <string name="echo_queue_hours_much">Isto é %1$s cada día ata que comece %2$d. Agarda, que dis oh?</string>
-    <string name="echo_listened_after_comment_easy">Lévalo con calma</string>
+    <string name="echo_listened_after_comment_easy">Es relaxado/a</string>
     <string name="echo_listened_after_time">Normalmente completas o episodio %1$s despois de que fose publicado.</string>
     <string name="echo_listened_after_comment_addict">Tes adicción a isto dos podcasts</string>
     <string name="echo_hoarder_subtitle_hoarder">Mirando os números, cremos que che gusta acumular</string>
     <string name="overflow_more">Máis</string>
     <string name="preference_search_clear_input">Limpar</string>
     <string name="visit_social_interact_label">Mostrar comentarios</string>
-    <string name="visit_social_interact_query_message">Comproba que tes confianza no sitio web «%1$s».</string>
-    <string name="visit_social_interact_query_title">Vas saír de AntennaPod</string>
     <string name="rss_address">Enderezo RSS</string>
     <string name="feed_new_episodes_action_summary_autodownload">Activada a descarga automática. Os episodios engádense á caixa de entrada e móvense á cola unha vez descargados.</string>
 </resources>

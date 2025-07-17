@@ -187,52 +187,16 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">יישום ה־VPN שלך מתחזה לרשת סלולרית (חיבור מדוד). הורדה דרך חיבור רשת סלולרית מושבת בהגדרות.\n\nלרענן בכל זאת? כדי שהבעיה הזאת תתוקן, יש ליצור קשר עם מפתחי יישומון ה־VPN שלך.</string>
     <!--actions on feeditems-->
   <string name="download_label">הורדה</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">פרק אחד בהורדה.</item>
-        <item quantity="two">%d פרקים בהורדה.</item>
-        <item quantity="other">%d פרקים בהורדה.</item>
-    </plurals>
     <string name="play_label">ניגון</string>
     <string name="pause_label">השהיה</string>
     <string name="stream_label">הזרמה</string>
     <string name="delete_label">מחיקה</string>
-    <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">פרק (%d) שירד נמחק.</item>
-        <item quantity="two">%d פרקים שירדו נמחקו.</item>
-        <item quantity="other">%d פרקים שירדו נמחקו.</item>
-    </plurals>
     <string name="remove_inbox_label">הסרה מהדואר הנכנס</string>
-    <string name="removed_inbox_label">הוסר מהדואר הנכנס</string>
-    <string name="mark_read_label">סימון כנצפה</string>
     <string name="toggle_played_label">החלפת מצב נגינה</string>
-    <string name="marked_as_played_label">סומן כהתנגן</string>
-    <string name="marked_as_unplayed_label">סומן שלא התנגן</string>
     <string name="mark_read_no_media_label">סימון כנקרא</string>
-    <string name="play_this_to_seek_position">כדי לקפוץ למיקומים, עליך לנגן את הפרק</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">פרק אחד סומן שנוגן.</item>
-        <item quantity="two">%d פרקים סומנו שנוגנו.</item>
-        <item quantity="other">%d פרקים סומנו שנוגנו.</item>
-    </plurals>
-    <string name="mark_unread_label">סימון כלא נוגן</string>
     <string name="mark_unread_label_no_media">סימון כלא נקרא</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">פרק אחד סומן שטרם נוגן.</item>
-        <item quantity="two">%d פרקים סומנו שטרם נוגנו.</item>
-        <item quantity="other">%d פרקים סומנו שטרם נוגנו.</item>
-    </plurals>
     <string name="add_to_queue_label">הוספה לתור</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">פרק אחד נוסף לתור.</item>
-        <item quantity="two">%d פרקים נוספו לתור.</item>
-        <item quantity="other">%d פרקים נוספו לתור.</item>
-    </plurals>
     <string name="remove_from_queue_label">הסרה מהתור</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">פרק אחד הוסר מהתור.</item>
-        <item quantity="two">%d פרקים הוסרו מהתור.</item>
-        <item quantity="other">%d פרקים הוסרו מהתור.</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">הפרק הוסר מהדואר הנכנס.</item>
         <item quantity="two">%d פרקים הוסרו מהדואר הנכנס.</item>
@@ -241,14 +205,10 @@
     <string name="add_to_favorite_label">הוספה למועדפים</string>
     <string name="show_transcript">הצגת תמלול</string>
     <string name="transcript">תמלול</string>
-    <string name="transcript_follow">מעקב אחר השמע</string>
     <string name="no_transcript_label">אין תמלול</string>
     <string name="remove_from_favorite_label">הסרה מהמועדפים</string>
     <string name="visit_website_label">ביקור באתר</string>
     <string name="skip_episode_label">דילוג על פרק</string>
-    <string name="reset_position">איפוס מיקום נגינה</string>
-    <string name="no_items_selected">לא נבחרו פריטים</string>
-    <string name="delete_local_feed_warning_body">מחיקה מסירה את הפרק מאנטנה־פּוֹד ומוחקת את קובץ המדיה מאחסון המכשיר שלך. אי אפשר יהיה להוריד אותו שוב דרך אנטנה־פּוֹד.</string>
     <!--Download messages and labels-->
   <string name="download_successful">הצלחה</string>
     <string name="download_pending">הורדה ממתינה</string>
@@ -679,7 +639,6 @@
     <string name="feed_tags_summary">ניתן לערוך את תגיות ההסכת הזה כדי לסייע בארגון המינויים שלך</string>
     <string name="feed_folders_include_root">הצגת ההסכת הזה ברשימה הראשית</string>
     <string name="multi_feed_common_tags_info">רק תגיות שמשותפות לכל המינויים הנבחרים מוצגות. תגיות אחרות לא משתתפות.</string>
-    <string name="auto_download_settings_label">הגדרות הורדה אוטומטית</string>
     <string name="episode_filters_label">מסנן פרקים</string>
     <string name="episode_filters_description">רשימת המונחים בהם יעשה שימוש כדי להחליט אם להכליל או להחריג פרק כלשהו במהלך הורדה אוטומטית</string>
     <string name="add_term">הוספת תקופה</string>
@@ -705,8 +664,6 @@
     <string name="release_schedule_friday">שישי</string>
     <string name="release_schedule_saturday">שבת</string>
     <string name="release_schedule_sunday">ראשון</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">מתבצע ייבוא מינויים מיישומונים ממוקדי מטרה…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">חיפוש הסכת…</string>
     <string name="search_itunes_label">חיפוש ב־Apple Podcasts</string>
@@ -894,9 +851,7 @@
     <string name="echo_hoarder_comment_hoarder">המספרים לא משקרים. ועם %1$d%% בלבד מתוך %2$d מינויים פעילים שהתנגנו השנה, כנראה שהתובנות האלה נכונות.</string>
     <string name="preference_search_clear_input">פינוי</string>
     <string name="overflow_more">עוד</string>
-    <string name="visit_social_interact_query_title">בחרת לצאת מ־AntennaPod</string>
     <string name="feed_new_episodes_action_summary_autodownload">הורדה אוטומטית הופעלה. הפרקים נוספים לתיבת הנכנסים ואז מועברים לתור לאחר הורדתם.</string>
     <string name="visit_social_interact_label">הצגת הערות</string>
-    <string name="visit_social_interact_query_message">נא לוודא שהאתר „%1$s” אמין.</string>
     <string name="rss_address">כתובת RSS</string>
 </resources>

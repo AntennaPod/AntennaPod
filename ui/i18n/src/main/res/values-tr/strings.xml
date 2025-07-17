@@ -45,17 +45,17 @@
   <string name="home_surprise_title">Sürprizle karşılaş</string>
     <string name="home_classics_title">Klasiklerinizi kontrol edin</string>
     <string name="home_continue_title">Dinlemeye devam et</string>
-    <string name="home_new_title">Yenilikler</string>
+    <string name="home_new_title">Yenilikleri görün</string>
     <string name="home_downloads_title">İndirmeleri yönet</string>
     <string name="home_welcome_title">AntennaPod\'a hoşgeldin!</string>
-    <string name="home_welcome_text">Henüz hiçbir podcast\'e abone olmadın. Kenar menüyü aç ve bir podcast ekle.</string>
-    <string name="notification_permission_denied">İzni reddettiniz</string>
+    <string name="home_welcome_text">Henüz hiçbir podcast\'e abone olmadın. Menüyü aç ve bir podcast ekle.</string>
+    <string name="notification_permission_denied">İzni reddettiniz.</string>
     <string name="configure_home">Ana Ekranı Özelleştir</string>
     <string name="section_hidden">Gizli</string>
     <!--Main activity-->
   <string name="drawer_open">Münüyü aç</string>
     <string name="drawer_close">Menüyü kapat</string>
-    <string name="drawer_preferences">İzni reddettiniz.</string>
+    <string name="drawer_preferences">Çekmece tercihleri</string>
     <string name="drawer_feed_order_unplayed_episodes">Sayaca göre sırala</string>
     <string name="drawer_feed_order_alphabetical">Alfabetik olarak sırala</string>
     <string name="drawer_feed_order_last_update">Yayınlanma tarihine göre sırala</string>
@@ -119,8 +119,8 @@
     <string name="episode_cleanup_queue_removal">Sırada değilse</string>
     <string name="episode_cleanup_after_listening">Bittikten sonra</string>
     <plurals name="episode_cleanup_hours_after_listening">
-        <item quantity="one">Bitirdikten %dsaat sonra</item>
-        <item quantity="other">Bitirdikten %d saat sonra.</item>
+        <item quantity="one">Bitirdikten %d saat sonra</item>
+        <item quantity="other">Bitirdikten %d saat sonra</item>
     </plurals>
     <plurals name="episode_cleanup_days_after_listening">
         <item quantity="one">Bitirdikten %dgün sonra</item>
@@ -135,13 +135,13 @@
         <item quantity="other">%d bölüm</item>
     </plurals>
     <string name="episode_notification">Bölüm bildirimleri</string>
-    <string name="episode_notification_summary">Yeni bölüm yayınlandığında bildirim ver.</string>
+    <string name="episode_notification_summary">Yeni bölüm yayınlandığında bildirim ver</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s\'de yeni bir bölüm var</item>
         <item quantity="other">%2$s \'de yeni %1$d bölüm var</item>
     </plurals>
     <plurals name="new_episode_notification_title">
-        <item quantity="one">Yeni bölümler</item>
+        <item quantity="one">Yeni bölüm</item>
         <item quantity="other">Yeni bölümler</item>
     </plurals>
     <string name="new_episode_notification_group_text">Aboneliklerinize ait yeni bölümler var.</string>
@@ -167,7 +167,7 @@
     <string name="filtered_label">Filtrelendi</string>
     <string name="refresh_failed_msg">Son yenileme başarısız oldu. Ayrıntıları görüntülemek için dokunun.</string>
     <string name="open_podcast">Podcasti aç</string>
-    <string name="please_wait_for_data">Please wait until the data is loaded</string>
+    <string name="please_wait_for_data">Lütfen veri yüklenene kadar bekleyin</string>
     <string name="updates_disabled_label">Güncellemeler devre dışı</string>
     <plurals name="updated_feeds_batch_label">
         <item quantity="one">%d abonelik güncellendi.</item>
@@ -180,61 +180,27 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">VPN uygulamanız bir mobil ağ gibi davranıyor (mobil veri). Mobil veri bağlantısı üzerinden podcast\'lerin yenilenmesi ayarlarda devre dışı bırakılmıştır.\n\nBuna rağmen yenilemek istiyor musunuz? Bu sorunun çözülmesini istiyorsanız, VPN uygulamanızın geliştiricileri ile iletişime geçin.</string>
     <!--actions on feeditems-->
   <string name="download_label">İndir</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">%d bölüm indiriliyor.</item>
-        <item quantity="other">%d bölüm indiriliyor.</item>
-    </plurals>
     <string name="play_label">Oynat</string>
     <string name="pause_label">Duraklat</string>
     <string name="stream_label">Akış</string>
     <string name="delete_label">Sil</string>
-    <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">İndirilen %d bölüm silindi.</item>
-        <item quantity="other">İndirilen %d bölüm silindi.</item>
-    </plurals>
     <string name="remove_inbox_label">Gelen kutusundan sil</string>
-    <string name="removed_inbox_label">Gelen kutusundan silindi</string>
-    <string name="mark_read_label">Oynatıldı olarak işaretle</string>
     <string name="toggle_played_label">Oynatma durumunu değiştir</string>
-    <string name="marked_as_played_label">Çalındı olarak işaretlendi</string>
-    <string name="marked_as_unplayed_label">Çalınmadı olarak işaretlendi</string>
     <string name="mark_read_no_media_label">Okundu olarak işaretle</string>
-    <string name="play_this_to_seek_position">Başka bir konuma atlamak için bölümü oynatmanız gerekir.</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">%d bölüm oynatıldı olarak işaretlendi.</item>
-        <item quantity="other">%d bölüm oynatıldı olarak işaretlendi.</item>
-    </plurals>
-    <string name="mark_unread_label">Oynatılmadı olarak işaretle</string>
     <string name="mark_unread_label_no_media">Okunmadı olarak işaretle</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d bölüm oynanmamış olarak işaretlendi.</item>
-        <item quantity="other">%d bölüm oynanmamış olarak işaretlendi.</item>
-    </plurals>
     <string name="add_to_queue_label">Sıraya ekle</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d bölüm kuyruğa eklendi.</item>
-        <item quantity="other">%d bölüm kuyruğa eklendi.</item>
-    </plurals>
     <string name="remove_from_queue_label">Sıradan çıkar</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d bölüm kuyruktan silindi.</item>
-        <item quantity="other">%d bölüm kuyruktan silindi.</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
-        <item quantity="one">%d bölümler gelen kutusundan kaldırıldı.</item>
-        <item quantity="other">%d bölümler gelen kutusundan kaldırıldı.</item>
+        <item quantity="one">%d bölüm gelen kutusundan kaldırıldı.</item>
+        <item quantity="other">%d bölüm gelen kutusundan kaldırıldı.</item>
     </plurals>
     <string name="add_to_favorite_label">Favorilere ekle</string>
     <string name="show_transcript">Transkripti göster</string>
     <string name="transcript">Transkript</string>
-    <string name="transcript_follow">Sesi takip et</string>
     <string name="no_transcript_label">transkript yok</string>
     <string name="remove_from_favorite_label">Favorilerden kaldır</string>
     <string name="visit_website_label">Web sitemizi ziyaret edin</string>
     <string name="skip_episode_label">Bölümü atla</string>
-    <string name="reset_position">Oynatma konumunu sıfırla</string>
-    <string name="no_items_selected">Hiçbir öğe seçilmedi</string>
-    <string name="delete_local_feed_warning_body">Silme işlemi bölümü AntennaPod\'dan kaldırır ve medya dosyasını cihazınızın depolama alanından siler. AntennaPod aracılığıyla tekrar indirilemez.</string>
     <!--Download messages and labels-->
   <string name="download_successful">başarılı</string>
     <string name="download_pending">İndirme bekleniyor</string>
@@ -248,7 +214,7 @@
     <string name="download_error_insufficient_space">Cihazınızda yeterli alan kalmadı.</string>
     <string name="download_error_http_data_error">HTTP veri hatası</string>
     <string name="download_error_error_unknown">Bilinmeyen hata</string>
-    <string name="download_error_parser_exception">Podcast kaynağının sunucusu bozuk bir podcast yayını gönderdi.</string>
+    <string name="download_error_parser_exception">Podcast kaynağının sunucusu bozuk bir podcast yayını gönderdi. castfeedvalidator.com gibi bir podcast doğrulayıcısı ile kontrol etmenizi ve podcast üreticisiyle iletişime geçerek haber vermenizi öneririz.</string>
     <string name="download_error_unsupported_type">Desteklenmeyen akış türü</string>
     <string name="download_error_unsupported_type_html">Podcast\'in bulunduğu sunucu bir podcast değil, web sitesi gönderdi.</string>
     <string name="download_error_not_found">Podcast\'in bulunduğu sunucu, dosyayı nerede bulacağını bilmiyor. Silinmiş olabilir.</string>
@@ -259,7 +225,7 @@
     <string name="download_error_file_type_type">Dosya türü hatası</string>
     <string name="download_error_forbidden">Podcast\'in bulunduğu sunucu cevap vermeyi reddediyor.</string>
     <string name="download_canceled_msg">İndirme iptal edildi</string>
-    <string name="download_error_wrong_size">İndirme tamamlanamadan sunucu ile bağlantı kesildi.</string>
+    <string name="download_error_wrong_size">İndirme tamamlanamadan sunucu ile bağlantı kesildi</string>
     <string name="download_error_blocked">İndirmek cihazınızdaki başka bir uygulama (VPN veya reklam engelleyicisi gibi) tarafından engellendi.</string>
     <string name="download_error_certificate">Güvenli bir bağlantı kurulamadı. Bu, indirmenin cihazınızdaki başka bir uygulama (VPN veya reklam engelleyicisi gibi) tarafından engellendiği veya sunucu sertifikalarında bir hata olduğu anlamına gelebilir.</string>
     <string name="download_error_io_error">IO hatası</string>
@@ -278,7 +244,7 @@
     <string name="authentication_notification_title">Yetkilendirme gerekiyor</string>
     <string name="confirm_mobile_download_dialog_title">Mobil indirmeyi onaylayın</string>
     <string name="confirm_mobile_download_dialog_message">Mobil veri bağlantısı üzerinden indirme ayarlarda devre dışı bırakılmıştır. AntennaPod, Wi-Fi kullanılabilir olduğunda bölüm daha sonra otomatik olarak indirebilir.</string>
-    <string name="confirm_mobile_download_dialog_message_vpn">VPN uygulamanız bir mobil ağ gibi davranıyor (mobil veri). Mobil veri bağlantısı üzerinden indirme ayarlarda devre dışı bırakılmıştır. Bu sorunun çözülmesini istiyorsanız, VPN uygulamanızın geliştiricileriyle iletişime geçin.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">- VPN mi kullanıyorsunuz? VPN uygulamanız bir mobil ağ gibi davranıyor (mobil veri). Bu sorunun çözülmesini istiyorsanız, VPN uygulamanızın geliştiricileriyle iletişime geçin.\n- VPN kullanmıyor musunuz? Android Wi-Fi ayarlarını açın ve Wi-Fi tipinizi mobil veri olmayacak şekilde ayarlayın.</string>
     <string name="confirm_mobile_download_dialog_download_later">Daha sonra indir</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Yine de İndir</string>
     <string name="confirm_mobile_streaming_notification_title">Mobil akışı onaylayın</string>
@@ -286,7 +252,7 @@
     <string name="confirm_mobile_streaming_button_always">Her zaman</string>
     <string name="confirm_mobile_streaming_button_once">Bir kere</string>
     <!--Mediaplayer messages-->
-  <string name="playback_error_generic"><![CDATA[Medya dosyası oynatılamadı.\n\n- Bölümü silip yeniden indirmeyi deneyin.\n- Ağ bağlantınızı kontrol edin ve VPN veya giriş sayfasının erişimi engellemediğinden emin olun.\n- \"Medya adresi \"ne uzun basıp web tarayıcınızda paylaşmayı deneyin ve orada oynatılıp oynatılamayacağını görün. Değilse, podcast yapımcısı ile iletişime geçin]]></string>
+  <string name="playback_error_generic">Medya dosyası oynatılamadı.\n\n- Bölümü silip yeniden indirmeyi deneyin.\n-Ağ bağlantınızı kontrol edin ve VPN veya giriş sayfasının erişimi engellemediğinden emin olun.\n-\"Medya adresi\"ne uzun basıp web tarayıcınızda paylaşmayı deneyin ve orada oynatılıp oynatılamayacağını görün. Değilse, podcast yapımcısı ile iletişime geçin.</string>
     <string name="no_media_playing_label">Çalınan medya yok</string>
     <string name="unknown_media_key">AntennaPod - Bilinmeyen medya anahtarı: %1$d</string>
     <string name="error_file_not_found">Dosya bulunamadı</string>
@@ -295,7 +261,7 @@
   <string name="lock_queue">Sırayı kilitle</string>
     <string name="queue_locked">Kuyruk kilitlendi</string>
     <string name="queue_unlocked">Kuyruk kilidi açıldı</string>
-    <string name="queue_lock_warning">If you lock the queue, you can no longer swipe or reorder episodes.</string>
+    <string name="queue_lock_warning">Eğer sırayı kilitlerseniz artik bölümleri silemez ve yeniden sıralayamazsınız.</string>
     <string name="checkbox_do_not_show_again">Tekrar gösterme</string>
     <string name="clear_queue_label">Sırayı temizle</string>
     <string name="undo">Geri al</string>
@@ -314,7 +280,7 @@
     <string name="time_left_label">"Kalan süre: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Kayıtlı Hızlar</string>
-    <string name="preset_already_exists">%1$.2fx is already saved as a preset.</string>
+    <string name="preset_already_exists">%1$.2f zaten ön ayar olarak kaydedildi.</string>
     <!--Empty list labels-->
   <string name="no_items_header_label">Kuyrukta bölüm yok</string>
     <string name="no_items_label">Bir bölümü indirerek veya üzerine basılı tutup \\Kuyruğa ekle\\ diyerek buraya ekleyebilirsiniz.</string>
@@ -345,7 +311,7 @@
     <string name="interruptions">Kesintiler</string>
     <string name="playback_control">Oynatma kontrolü</string>
     <string name="reassign_hardware_buttons">Cihaz düğmelerini yeniden ata</string>
-    <string name="preference_search_hint">Ara..</string>
+    <string name="preference_search_hint">Ara…</string>
     <string name="preference_search_no_results">Sonuç yok</string>
     <string name="preference_search_clear_history">Geçmişi temizle</string>
     <string name="pref_episode_cleanup_title">Otomatik indirmeden önce sil</string>
@@ -425,10 +391,10 @@
     <string name="pref_theme_title_light">Aydınlık</string>
     <string name="pref_theme_title_dark">Karanlık</string>
     <string name="pref_episode_cache_unlimited">Sınırsız</string>
-    <string name="pref_playback_speed_sum">Ses dinleme hızlarını ayarlayın.</string>
+    <string name="pref_playback_speed_sum">Ses dinleme hızlarını ayarlayın</string>
     <string name="pref_feed_playback_speed_sum">Bu Podcast\'teki bölümler için ses oynatmayı başlatırken kullanılacak hız</string>
     <string name="pref_feed_skip">Otomatik atlama</string>
-    <string name="pref_feed_skip_sum">Tanıtımları ve bitiş jeneriklerini atla.</string>
+    <string name="pref_feed_skip_sum">Tanıtımları ve bitiş jeneriklerini atla</string>
     <string name="pref_feed_skip_ending">Sonuncuyu atla</string>
     <string name="pref_feed_skip_intro">Birinciyi atla</string>
     <string name="pref_feed_skip_ending_toast">Son %d seatlas atlandı</string>
@@ -438,7 +404,7 @@
     <string name="pref_fast_forward">Hızlı ileri atlama zamanı</string>
     <string name="pref_fast_forward_sum">Hızlı ileri sarma düğmesine tıklandığında ileri atlanacak saniye sayısını özelleştir</string>
     <string name="pref_rewind">Geri sararken atlama süresi</string>
-    <string name="pref_rewind_sum">Geri Sar butonuna tıklayınca kaç saniye atlanacağını seçin.</string>
+    <string name="pref_rewind_sum">Geri Sar butonuna tıklayınca kaç saniye atlanacağını seçin</string>
     <string name="pref_expandNotify_title">Yüksek bildirim önceliği</string>
     <string name="pref_expandNotify_sum">Bu genellikle bildirimi oynatma düğmelerini gösterecek şekilde genişletir.</string>
     <string name="pref_persistNotify_title">Kalıcı oynatma kontrolleri</string>
@@ -461,7 +427,7 @@
     <string name="copied_to_clipboard">Kopyaladı</string>
     <string name="pref_proxy_title">Proxy</string>
     <string name="pref_proxy_sum">Bir ağ proxy\'si ayarlama</string>
-    <string name="pref_no_browser_found">pref tarayıcı bulunamadı</string>
+    <string name="pref_no_browser_found">Web tarayıcısı bulunamadı.</string>
     <string name="pref_enqueue_downloaded_title">Sıraya indirildi</string>
     <string name="pref_enqueue_downloaded_summary">İndirilen bölümleri kuyruğa ekle</string>
     <string name="pref_skip_silence_title">Sesteki boşlukları atla</string>
@@ -492,7 +458,7 @@
   <string name="about_pref">Hakkında</string>
     <string name="antennapod_version">AntennaPod sürümü</string>
     <string name="contributors">Katkıda bulunanlar</string>
-    <string name="contributors_summary">Herkes AntennaPod\'u daha iyi hale getirmeye yardımcı olabilir - kodla, çevirilerle veya forumumuzdaki kullanıcılara yardım ederek Herkes AntennaPod\'u daha iyi hale getirmek için yardımda bulunabilir, gerek kod yazarak gerek tercüme ederek, gerekse forumda kullanıcılara yardım ederek.</string>
+    <string name="contributors_summary">Herkes AntennaPod\'u daha iyi hale getirmek için yardımda bulunabilir, gerek kod yazarak gerek tercüme ederek, gerekse forumda kullanıcılara yardım ederek</string>
     <string name="developers">Geliştiriciler</string>
     <string name="translators">Tercüme edenler</string>
     <string name="special_thanks">Özel teşekkürler</string>
@@ -510,8 +476,8 @@
     <string name="sync_status_episodes_upload">Bölüm değişiklikleri yükleniyor…</string>
     <string name="sync_status_episodes_download">Bölüm değişiklikleri indiriliyor…</string>
     <string name="sync_status_upload_played">Oynama durumu yükleniyor…</string>
-    <string name="sync_status_subscriptions">Synchronizing subscriptions…</string>
-    <string name="sync_status_success">Abonelikler senkronize ediliyor...</string>
+    <string name="sync_status_subscriptions">Abonelikler senkronize ediliyor…</string>
+    <string name="sync_status_success">Eşzamanlama başarılı</string>
     <string name="sync_status_error">Senkronizasyon başarısız oldu</string>
     <!--import and export-->
   <string name="import_export_summary">Abonelikleri ve kuyruğu başka bir cihaza taşıma</string>
@@ -553,8 +519,8 @@
     <string name="sleep_timer_always">Her zaman</string>
     <string name="sleep_timer_label">Zamanlayıcı</string>
     <string name="time_dialog_invalid_input">Geçersiz giriş, zaman bir tam sayı olmalıdır</string>
-    <string name="shake_to_reset_label">Shake to reset</string>
-    <string name="timer_vibration_label">Vibrate shortly before end</string>
+    <string name="shake_to_reset_label">Sıfırlamak için salla</string>
+    <string name="timer_vibration_label">Bitmeden önce kısa süre titre</string>
     <string name="time_seconds">saniye</string>
     <string name="time_minutes">dakika</string>
     <string name="time_hours">saat</string>
@@ -607,13 +573,13 @@
     <string name="synchronization_full_sync_title">Tam senkronizasyona zorla</string>
     <string name="synchronization_force_sync_summary">Bütün abonelikleri ve bölüm durumlarını tekrardan senkronize et</string>
     <string name="synchronization_logout">Çıkış yap</string>
-    <string name="synchronization_login_status"><![CDATA[<i>%2$s</i> üzerinde<i>%1$s</i> olarak oturum açıldı. <br/><br/> Çıkış yaptıktan sonra senkronizasyon sağlayıcınızı tekrar seçebilirsiniz.]]></string>
+    <string name="synchronization_login_status">%1$s üzerinde %2$s olarak oturum açıldı.\n\nÇıkış yaptığınızda tekrar senkronizasyon sağlayıcınızı seçebilirsiniz.</string>
     <string name="pref_synchronization_logout_toast">Çıkış başarılı</string>
     <string name="gpodnetsync_error_title">gpodder.net senkronizasyon hatası</string>
     <string name="gpodnetsync_error_descr">"Senkronize edilirken bir hata oluştu: "</string>
     <string name="gpodnetsync_pref_report_successful">Başarılı</string>
     <string name="gpodnetsync_pref_report_failed">Başarısız</string>
-    <string name="gpodnetsync_username_characters_error">Usernames may only contain letters, digits, hyphens and underscores.</string>
+    <string name="gpodnetsync_username_characters_error">Kullanıcı adları yalnızca harfleri, rakamları, kısa çizgileri ve alt çizgileri içerebilir.</string>
     <!--Directory chooser-->
   <string name="choose_data_directory">Veri klasörünü seçin</string>
     <string name="choose_data_directory_message">Lütfen veri klasörünüzün tabanını seçin. AntennaPod uygun alt dizinleri oluşturacaktır.</string>
@@ -655,14 +621,13 @@
     <string name="download_completed_talkback">%1$s için indirme tamamlandı</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">Yetkilendirme</string>
-    <string name="authentication_descr">Bu cep yayını ve içerdiği bölümler için kullanıcı adı şifreyi değiştir.</string>
+    <string name="authentication_descr">Bu podcast ve bölümleri için kullanıcı adınızı ve şifrenizi değiştirin</string>
     <string name="feed_tags_label">Etiketler</string>
     <string name="feed_tags_summary">Aboneliklerinizi düzenlemek için bu podcastin etiketlerini değiştirin</string>
     <string name="feed_folders_include_root">Bu podcast ana listede gösterilsin</string>
     <string name="multi_feed_common_tags_info">Yalnızca seçilen tüm aboneliklerdeki ortak etiketler gösterilir. Diğer etiketler etkilenmez.</string>
-    <string name="auto_download_settings_label">Otomatik indirme seçenekleri</string>
     <string name="episode_filters_label">Bölüm filtresi</string>
-    <string name="episode_filters_description">List of terms used to decide if an episode should be included or excluded when auto downloading</string>
+    <string name="episode_filters_description">Otomatik olarak indirirken bir bölümün dahil edilmesi veya hariç tutulması gerektiğine karar vermek için kullanılan terimlerin listesi</string>
     <string name="add_term">Terim ekle</string>
     <string name="exclude_terms">Aşağıdaki şartlardan herhangi birini içeren bölümleri hariç tut</string>
     <string name="include_terms">Yalnızca aşağıdaki şartlardan herhangi birini içeren bölümleri dahil et</string>
@@ -686,8 +651,6 @@
     <string name="release_schedule_friday">Cum</string>
     <string name="release_schedule_saturday">Cmt</string>
     <string name="release_schedule_sunday">Pzr</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Üyelikler tek-amaçlı uygulamalardan içe aktarılıyor…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Podcast ara…</string>
     <string name="search_itunes_label">Apple Podcasts\'de ara</string>
@@ -742,7 +705,7 @@
     <string name="proxy_test_successful">Test başarılı</string>
     <string name="proxy_test_failed">Test başarısız</string>
     <string name="proxy_host_empty_error">Ana Sunucu boş olamaz</string>
-    <string name="proxy_host_invalid_error">Host is not a valid IP address or domain</string>
+    <string name="proxy_host_invalid_error">Ana bilgisayar geçerli bir IP adresi veya domain değil</string>
     <string name="proxy_port_invalid_error">Bağlantı noktası geçerli değil</string>
     <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Sütunların sayısı</string>
@@ -752,8 +715,8 @@
     <string name="notification_group_news">Haberler</string>
     <string name="notification_channel_user_action">Yapılması gereken işlemler</string>
     <string name="notification_channel_user_action_description">Eyleminiz gerekliyse, örneğin bir parola girmeniz gerekiyorsa gösterilir..</string>
-    <string name="notification_channel_downloading">İndiriliyor</string>
-    <string name="notification_channel_downloading_description">İndirme işlemi gösterilir.</string>
+    <string name="notification_channel_downloading">Bölümler indiriliyor</string>
+    <string name="notification_channel_downloading_description">Bölümler indirilirken gösterilir.</string>
     <string name="notification_channel_playing">Oynatılıyor</string>
     <string name="notification_channel_playing_description">Oynatmayı kontrol etmeyi sağlar. Bu, bir podcast oynatırken gördüğünüz ana bildirimdir.</string>
     <string name="notification_channel_download_error">İndirme başarısız</string>
@@ -761,7 +724,7 @@
     <string name="notification_channel_sync_error">Senkronizasyon başarısız</string>
     <string name="notification_channel_sync_error_description">gpodder senkronizasyonu başarısız olduğunda gösterilir.</string>
     <string name="notification_channel_new_episode">Yeni bölüm</string>
-    <string name="notification_channel_new_episode_description">Bölümler otomatik olarak indirildiğinde gösterilir.</string>
+    <string name="notification_channel_new_episode_description">Bildirimler etkinleştirildiği takdirde, podcastin yeni bir bölümü bulunduğunda gösterilir</string>
     <!--Widget settings-->
   <string name="widget_settings">Widget ayarları</string>
     <string name="widget_create_button">Widget oluştur</string>
@@ -791,7 +754,97 @@
     <string name="bottom_navigation">Alt gezinme</string>
     <string name="delete_downloads_played_confirmation">Lütfen oynatılan tüm indirmeleri silmek istediğinizi onaylayın.</string>
     <string name="null_value_podcast_error">Dokunduğunuz bağlantı geçerli bir podcast URL\'si içermiyor. Lütfen bağlantıyı doğrulayın ve tekrar deneyin veya podcast\'i manuel olarak arayın.</string>
-    <string name="bottom_navigation_summary">Beta özelliği: Tek bir dokunuşla her yerden en önemli ekranlara erişin</string>
+    <string name="bottom_navigation_summary">Tek bir dokunuşla her yerden en önemli ekranlara erişin</string>
     <string name="pref_nav_drawer_items_title">Gezinmeyi özelleştir</string>
     <string name="pref_nav_drawer_items_sum">Gezinme çekmecesinde veya alt gezinmede hangi öğelerin görüneceğini değiştirin</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">başlandı</item>
+        <item quantity="other">başlandı</item>
+    </plurals>
+    <string name="feed_new_episodes_action_summary_autodownload">Otomatik indirme etkinleştirildi. Bölümler gelen kutusuna eklenir ve indirildiklerinde sıraya taşınır.</string>
+    <string name="visit_social_interact_label">Yorumları göster</string>
+    <string name="preference_search_clear_input">Temizle</string>
+    <string name="overflow_more">Daha fazla</string>
+    <string name="episode_lists">Bölüm listeleri</string>
+    <string name="pref_downloads_button_action_title">İndirilenler ekranından oynat</string>
+    <string name="pref_downloads_button_action_sum">İndirilenler ekranında sil butonu yerine oynat butonunu göster</string>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">indirildi</item>
+        <item quantity="other">indirildi</item>
+    </plurals>
+    <string name="statistics_time_total">toplam</string>
+    <string name="statistics_time_played">oynatıldı</string>
+    <string name="discover_more">Daha fazlasını keşfet »</string>
+    <string name="statistics_view_all">Bütün podcastler »</string>
+    <string name="add_feed_label_short">Ekle</string>
+    <string name="episodes_label_short">Bölümler</string>
+    <string name="home_label_short">Ana sayfa</string>
+    <string name="queue_label_short">Sıra</string>
+    <string name="inbox_label_short">Gelen kutusu</string>
+    <string name="downloads_label_short">İndirilenler</string>
+    <string name="subscriptions_label_short">Abonelikler</string>
+    <string name="episodes_label_more">Bölümler »</string>
+    <string name="queue_label_more">Sıra »</string>
+    <string name="inbox_label_more">Gelen kutusu »</string>
+    <string name="subscriptions_label_more">Abonelikler »</string>
+    <string name="enabled">Etkinleştirildi</string>
+    <string name="disabled">Devredışı bırakıldı</string>
+    <string name="global_default_with_value">Küresel varsayılan (%1$s)</string>
+    <string name="episode_download_failed">Bölümün indirmesi başarısız oldu</string>
+    <string name="statistics_episodes_space">kullanılan alan</string>
+    <string name="echo_intro_your_year">Yılınız</string>
+    <string name="echo_intro_in_podcasts">podcastlerde</string>
+    <string name="echo_intro_locally">telefonunuzda gizli olarak üretildi</string>
+    <plurals name="echo_hours_podcasts">
+        <item quantity="one">saat bölüm\n%1$d podcastten</item>
+        <item quantity="other">saat bölüm\n%1$d podcastlerden</item>
+    </plurals>
+    <string name="pref_automatic_download_global_description">Yeni bölümleri otomatik olarak indir. Podcast başına istisna eklenebilir.</string>
+    <string name="pref_automatic_download_queue_title">İndirme sıraya eklendi</string>
+    <string name="pref_automatic_download_queue_description">Sıradaki bölümleri otomatik olarak indir</string>
+    <string name="nextcloud_login_error_generic">Nextcloud hesabınıza giriş yapılamadı.\n\n- Ağ bağlantınızı kontrol edin.\n- Doğru sunucu adresini kullandığınızı doğrulayın.\n- gpoddersync Nextcloud eklentisinin yüklü olduğundan emin olun.</string>
+    <string name="playback_history_label_short">Geçmiş</string>
+    <string name="download_error_unsupported_type_html_manual">Girdiğiniz adres bir website adresi, podcast RSS adresi değil.</string>
+    <string name="delete_tag_label">Etiketi sil</string>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">toplam</item>
+        <item quantity="other">toplam</item>
+    </plurals>
+    <string name="delete_tag_confirmation">Lütfen \"%1$s\" etiketini silmek istediğinizi doğrulayın.</string>
+    <string name="downloads_label_more">İndirilenler »</string>
+    <string name="echo_home_header">Yılı gözden geçirin</string>
+    <string name="statistics_release_next">sıdadaki bölüm (tahmini)</string>
+    <string name="statistics_years_barchart_description">Ay başına oynatma vakti</string>
+    <string name="rss_address">RSS adresi</string>
+    <string name="echo_home_subtitle">Geçen yıldan baş podcastleriniz ve istatistikleriniz. Yalnızca telefonunuzda.</string>
+    <string name="notification_channel_refreshing">Podcastler yenileniyor</string>
+    <string name="notification_channel_refreshing_description">Yeni bölümler kontrol edilirken gösterilir.</string>
+    <string name="statistics_release_schedule">yayınlanma takvimi</string>
+    <string name="echo_queue_title_many">Ve bu yıl hala dinelemeniz gerekenler var. Toplam</string>
+    <string name="echo_listened_after_title">Bölümlerin ne zaman yayınlandığı ve onları ne zaman bitirdiğin üzerine bir analiz yaptık. Sonuç ne mi?</string>
+    <string name="echo_queue_title_clean">Ve yıla temiz bir başlangıç yapmaya hazırsınız. Toplam</string>
+    <string name="echo_listened_after_comment_easy">Rahat takılıyorsun</string>
+    <string name="echo_hoarder_title">Ayrıca şunuda merak ettik: abone olduğun podcastleri dinliyor musun?</string>
+    <string name="echo_hoarder_subtitle_hoarder">Rakamlara bakılırsa sen bir istifçisin</string>
+    <string name="echo_hoarder_subtitle_clean">Tertemiz!</string>
+    <string name="echo_hoarder_comment_clean">Bu yıl %2$d aktif aboneliğinden %1$d%% bölüm oynattın. Bahse gireriz masanı da temiz tutuyorsundur!</string>
+    <string name="echo_hours_this_year">Bu yıl</string>
+    <plurals name="echo_queue_hours_waiting">
+        <item quantity="one">saat, %1$d bölümlük sıranda\ndinlenmeyi bekliyor</item>
+        <item quantity="other">saat, %1$d bölümlük sıranda\ndinlenmeyi bekliyor</item>
+    </plurals>
+    <string name="echo_queue_hours_clean">Bu %2$d başlayana kadar günde %1$s yapar.</string>
+    <string name="echo_queue_hours_much">Bu %2$d başlayana kadar günde %1$s yapar. Bekle, ne?</string>
+    <string name="echo_queue_hours_normal">Bu %2$d başlayana kadar günde %1$s yapar. Birkaç bölüm atlayarak yıla tertemiz başlayabilirsin.</string>
+    <string name="echo_listened_after_comment_addict">Tam bir podcast bağımlısısın</string>
+    <string name="echo_hoarder_comment_hoarder">Rakamlar yalan söylemez derler. Ve bu yıl %2$d aktif aboneliğinin yalnızca %1$d%% oynatıldı, yani muhtemelen haklıyız.</string>
+    <string name="echo_hoarder_subtitle_medium">Kontrol edildi. Burada istifçilik yok.</string>
+    <string name="echo_thanks_we_are_glad_old">bu yılı bizimle geçirdiğin için!\n\nBizimle ilk bölümünü %1$s tarihinde oynattın. O günden beri sana hizmet etmek bir onurdu.</string>
+    <string name="echo_thanks_large">Teşellürler</string>
+    <string name="echo_thanks_now_favorite">Şimdi en sevdiğin podcastlere bir göz atalım…</string>
+    <string name="echo_share_heading">En sevdiğim podcastler</string>
+    <string name="echo_share">Podcastlerde %d yılım. #AntennaPodEcho</string>
+    <string name="echo_thanks_we_are_glad_new">bu yıl bize katıldığın için!\n\nBaşka bir uygulamadan gelmiş ya da podcast macerana bizimle başlamış olsanda seninle olduğumuz için mutluyuz!</string>
+    <string name="echo_listened_after_time">Bir bölümü genellikle yayınlandıktan %1$s sonra tamamladın.</string>
+    <string name="echo_hoarder_comment_medium">Bu yıl %2$d aktif aboneliğinden %1$d%% bölüm oynattın. Şunu tekrar kontrol etmeye ne dersin \"%3$s\" ?</string>
 </resources>

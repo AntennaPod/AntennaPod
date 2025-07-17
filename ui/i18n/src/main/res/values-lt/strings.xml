@@ -108,44 +108,13 @@
     <string name="confirm_mobile_feed_refresh_dialog_message">Tinklalaidžių atnaujinimas mobiliuoju internetu išjungtas nustatymuose.\n\nAr vis tiek norite atnaujinti?</string>
     <!--actions on feeditems-->
   <string name="download_label">Atsisiųsti</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">Atsiunčiamas %d epizodas.</item>
-        <item quantity="few">Atsiunčiami %d epizodai.</item>
-        <item quantity="other">Atsiunčiami %d epizodai.</item>
-    </plurals>
     <string name="play_label">Atkurti</string>
     <string name="pause_label">Pristabdyti</string>
     <string name="stream_label">Klausytis tiesiogiai</string>
     <string name="delete_label">Ištrinti</string>
-    <string name="mark_read_label">Pažymėti kaip perklausytą</string>
-    <string name="marked_as_played_label">Pažymėtas kaip perklausytas</string>
-    <string name="marked_as_unplayed_label">Pažymėtas kaip neperklausytas</string>
     <string name="mark_read_no_media_label">Pažymėti kaip perskaitytą</string>
-    <string name="play_this_to_seek_position">Norint peršokti į poziciją reikia pradėti epizodo atkūrimą</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">%d epizodas pažymėtas kaip perklausytas.</item>
-        <item quantity="few">%d epizodai pažymėti kaip perklausyti.</item>
-        <item quantity="other">%d epizodai pažymėti kaip perklausyti.</item>
-    </plurals>
-    <string name="mark_unread_label">Pažymėti kaip neperklausytą</string>
     <string name="mark_unread_label_no_media">Pažymėti kaip neperskaitytą</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d epizodas pažymėtas kaip neperklausytas.</item>
-        <item quantity="few">%d epizodai pažymėti kaip neperklausyti.</item>
-        <item quantity="other">%d epizodai pažymėti kaip neperklausyti.</item>
-    </plurals>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d epizodas pridėtas į eilę.</item>
-        <item quantity="few">%d epizodai pridėti į eilę.</item>
-        <item quantity="other">%d epizodai pridėti į eilę.</item>
-    </plurals>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d epizodas pašalintas iš eilės.</item>
-        <item quantity="few">%d epizodai pašalinti iš eilės.</item>
-        <item quantity="other">%d epizodai pašalinti iš eilės.</item>
-    </plurals>
     <string name="skip_episode_label">Praleisti epizodą</string>
-    <string name="no_items_selected">Nėra pažymėtų elementų</string>
     <!--Download messages and labels-->
   <string name="download_successful">sėkmingi</string>
     <string name="download_pending">Laukia atsiuntimo</string>
@@ -407,8 +376,6 @@
     <string name="feed_tags_summary">Keisti tinklalaidės žymes, kad palengvinti prenumeratų tvarkymą</string>
     <string name="episode_filters_description">Žodžių ar frazių sąrašas, kuriuo remiantis sprendžiama, ar epizodas turėtų būti įtrauktas ar išbrauktas iš automatiškai atsiunčiamų epizodų</string>
     <string name="keep_updated_summary">Įtraukti šią tinklalaidę į (automatinį) visų tinklalaidžių atnaujinimą</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Įkeliamos prenumeratos iš specializuotų programėlių…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Ieškoti tinklalaidės…</string>
     <string name="search_fyyd_label">Ieškoti „fyyd“</string>
@@ -594,16 +561,12 @@
     <string name="add_tag">Pridėti žymą</string>
     <string name="toggle_played_label">Keisti atkūrimo būseną</string>
     <string name="remove_inbox_label">Pašalinti iš gaunamųjų laiškų dėžutės</string>
-    <string name="removed_inbox_label">Pašalinta iš gautųjų</string>
     <string name="show_transcript">Rodyti transkripciją</string>
     <string name="remove_from_queue_label">Pašalinti iš eilės</string>
     <string name="transcript">Transkripcija</string>
-    <string name="transcript_follow">Sekite kartu su garsu</string>
     <string name="no_transcript_label">Nėra transkripcijos</string>
     <string name="remove_from_favorite_label">Pašalinti iš mėgstamiausių</string>
     <string name="visit_website_label">Apsilankykite svetainėje</string>
-    <string name="reset_position">Iš naujo nustatykite atkūrimo padėtį</string>
-    <string name="delete_local_feed_warning_body">Ištrynus epizodą, jis pašalinamas iš „AntennaPod“, o medijos failas ištrinamas iš įrenginio atminties. Jo negalima vėl atsisiųsti per „AntennaPod“.</string>
     <string name="download_error_not_retrying">Nepavyko atsisiųsti „%1$s“.</string>
     <string name="download_error_retrying">Nepavyko atsisiųsti „%1$s“. Bus bandoma vėliau.</string>
     <string name="download_error_http_data_error">HTTP duomenų klaida</string>
@@ -701,7 +664,6 @@
     <string name="add_preset">Pridėti išankstinį nustatymą</string>
     <string name="multi_feed_common_tags_info">Rodomos tik bendros visų pasirinktų prenumeratų žymės. Kitos žymos lieka nepaveiktos.</string>
     <string name="episode_filters_label">Epizodo filtras</string>
-    <string name="auto_download_settings_label">Automatinio atsisiuntimo nustatymai</string>
     <string name="exclude_episodes_shorter_than">Neįtraukti epizodų, trumpesnių nei</string>
     <string name="keep_updated">Laikykitės aktualumo</string>
     <string name="exclude_terms">Išskirti seriją, kurioje yra bet kuris iš šių terminų</string>

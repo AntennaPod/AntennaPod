@@ -166,37 +166,16 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">VPN アプリがモバイルネットワーク (従量制接続) のように振る舞っています。モバイルデータ接続でのポッドキャストの更新は設定で無効になっています。\n\nそれでも更新しますか? この問題を解決したい場合、VPN アプリの開発者にお問い合わせください。</string>
     <!--actions on feeditems-->
   <string name="download_label">ダウンロード</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="other">%d エピソードをダウンロード中。</item>
-    </plurals>
     <string name="play_label">再生</string>
     <string name="pause_label">一時停止</string>
     <string name="stream_label">ストリーム</string>
     <string name="delete_label">削除</string>
     <string name="remove_inbox_label">受信トレイから取り除く</string>
-    <string name="removed_inbox_label">受信トレイから取り除きました</string>
-    <string name="mark_read_label">再生済みとしてマーク</string>
     <string name="toggle_played_label">再生状態の切り替え</string>
-    <string name="marked_as_played_label">再生済みとマーク済み</string>
-    <string name="marked_as_unplayed_label">未再生としてマーク</string>
     <string name="mark_read_no_media_label">既読としてマーク</string>
-    <string name="play_this_to_seek_position">位置にジャンプするには、エピソードを再生する必要があります</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="other">%d エピソードを再生済みにしました。</item>
-    </plurals>
-    <string name="mark_unread_label">未再生としてマーク</string>
     <string name="mark_unread_label_no_media">未読としてマーク</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="other">%d エピソードを未再生にしました。</item>
-    </plurals>
     <string name="add_to_queue_label">キューに追加</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="other">%d エピソードをキューに追加しました。</item>
-    </plurals>
     <string name="remove_from_queue_label">キューから削除</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="other">%d エピソードをキューから削除しました。</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="other">%d エピソードを受信トレイから削除しました。</item>
     </plurals>
@@ -204,9 +183,6 @@
     <string name="remove_from_favorite_label">お気に入りから削除</string>
     <string name="visit_website_label">Webサイトを訪問</string>
     <string name="skip_episode_label">エピソードをスキップ</string>
-    <string name="reset_position">再生位置をリセット</string>
-    <string name="no_items_selected">項目が選択されていません</string>
-    <string name="delete_local_feed_warning_body">削除すると、AntennaPod からエピソード消去され、デバイスのストレージからメディアファイルが削除されます。AntennaPod 経由では再びダウンロードすることはできません。</string>
     <!--Download messages and labels-->
   <string name="download_successful">成功</string>
     <string name="download_pending">ダウンロード保留中</string>
@@ -594,7 +570,6 @@
     <string name="feed_tags_summary">このPodcastのタグを変更すると、購読の整理がしやすくなります</string>
     <string name="feed_folders_include_root">このポッドキャストをメインリストに表示</string>
     <string name="multi_feed_common_tags_info">選択されたすべての購読に共通するタグだけが表示されます。その他のタグは影響を受けません。</string>
-    <string name="auto_download_settings_label">自動ダウンロード設定</string>
     <string name="episode_filters_label">エピソードフィルター</string>
     <string name="episode_filters_description">自動ダウンロードのときに、エピソードを含めるか除外する必要があるかを決定するために使用される条件のリスト</string>
     <string name="add_term">用語を追加</string>
@@ -619,8 +594,6 @@
     <string name="release_schedule_friday">金</string>
     <string name="release_schedule_saturday">土</string>
     <string name="release_schedule_sunday">日</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">単一目的のアプリから購読をインポート中…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">ポッドキャストの検索…</string>
     <string name="search_itunes_label">Apple Podcast を検索</string>
@@ -717,9 +690,6 @@
     <string name="home_no_recent_unplayed_episodes_text">最近のエピソードをすべて再生しました。ここには驚くべきことはありません ;)</string>
     <string name="pref_automatic_download_global_description">新しいエピソードを自動的にダウンロードする。ポッドキャストごとに上書き可能。</string>
     <string name="home_new_empty_text">新しいエピソードがここに表示されます。その後、エピソードに興味があるかどうかを決められます。</string>
-    <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="other">%d 件のダウンロード済みエピソードが削除されました。</item>
-    </plurals>
     <string name="transcript">書き起こし</string>
     <string name="pref_fast_forward">早送りのスキップ時間</string>
     <string name="statistics_view_all">すべてのポッドキャスト »</string>
@@ -815,7 +785,6 @@
     <string name="notification_channel_refreshing">ポッドキャストの更新中</string>
     <string name="edit_url_confirmation_msg">RSS アドレスを変更すると、再生状態やポッドキャストのエピソードリストが簡単に壊れてしまう可能性があります。変更はおすすめしません。これにより何か問題が発生したとしても、AntennaPod からはいかなるサポートも提供できません。この動作は二度と元に戻すことはできません。購読が壊れた場合、アドレスを戻すだけでは修復することは不可能です。継続する前にバックアップを作成することをおすすめします。</string>
     <string name="delete_downloads_played">再生済みを削除</string>
-    <string name="transcript_follow">音声を追いかける</string>
     <string name="no_transcript_label">書き起こしなし</string>
     <string name="delete_downloads_played_confirmation">すべての再生済みダウンロードを削除してもいいか確認してください。</string>
     <plurals name="mobile_download_notice">

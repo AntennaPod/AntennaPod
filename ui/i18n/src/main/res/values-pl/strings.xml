@@ -13,7 +13,7 @@
     <string name="downloads_label">Pobrane</string>
     <string name="downloads_log_label">Dziennik pobierania</string>
     <string name="subscriptions_label">Subskrypcje</string>
-    <string name="subscriptions_list_label">Lista subskrypcji (tylko w menu bocznym)</string>
+    <string name="subscriptions_list_label">Lista subskrypcji</string>
     <string name="cancel_download_label">Anuluj pobieranie</string>
     <string name="playback_history_label">Historia odtwarzania</string>
     <string name="years_statistics_label">Lata</string>
@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">Zawsze</string>
     <string name="feed_auto_download_never">Nigdy</string>
     <string name="feed_new_episodes_action_add_to_inbox">Dodaj do skrzynki odbiorczej</string>
-    <string name="feed_new_episodes_action_add_to_queue">Dodaj do kolejki, wyłącz automatyczne pobieranie</string>
-    <string name="feed_new_episodes_action_nothing">Nic, wyłącz automatyczne pobieranie</string>
+    <string name="feed_new_episodes_action_add_to_queue">Dodaj do kolejki</string>
+    <string name="feed_new_episodes_action_nothing">Nic</string>
     <string name="episode_cleanup_never">Nigdy</string>
     <string name="episode_cleanup_except_favorite_removal">Gdy nie oznaczone jako ulubione</string>
     <string name="episode_cleanup_queue_removal">Kiedy nie są w kolejce</string>
@@ -181,52 +181,16 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Twoja aplikacja VPN udaje sieć mobilną (połączenie taryfowe). Odświeżanie kanałów po sieci mobilnej jest wyłączone w ustawieniach. \n\nCzy mimo to chcesz odświeżyć? Aby rozwiązać ten problem, skontaktuj się z twórcami aplikacji VPN.</string>
     <!--actions on feeditems-->
   <string name="download_label">Pobierz</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">Pobieranie %d odcinka.</item>
-        <item quantity="few">Pobieranie %d odcinków.</item>
-        <item quantity="many">Pobieranie %d odcinków.</item>
-        <item quantity="other">Pobieranie %d odcinków.</item>
-    </plurals>
     <string name="play_label">Odtwórz</string>
     <string name="pause_label">Pauza</string>
     <string name="stream_label">Streamuj</string>
     <string name="delete_label">Usuń</string>
     <string name="remove_inbox_label">Usuń ze skrzynki odbiorczej</string>
-    <string name="removed_inbox_label">Usunięto ze skrzynki odbiorczej</string>
-    <string name="mark_read_label">Oznacz jako odtworzone</string>
     <string name="toggle_played_label">Pokaż status odtworzenia</string>
-    <string name="marked_as_played_label">Oznaczone jako odtworzone</string>
-    <string name="marked_as_unplayed_label">Oznaczone jako nieodtworzone</string>
     <string name="mark_read_no_media_label">Oznacz jako przeczytane</string>
-    <string name="play_this_to_seek_position">Aby skoczyć do konkretnej pozycji, musisz odtworzyć odcinek</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">%d odcinek oznaczony jako odtworzony.</item>
-        <item quantity="few">%d odcinki oznaczone jako odtworzone.</item>
-        <item quantity="many">%d odcinków oznaczonych jako odtworzone.</item>
-        <item quantity="other">%d odcinków oznaczonych jako odtworzone.</item>
-    </plurals>
-    <string name="mark_unread_label">Oznacz jako nieodtworzone</string>
     <string name="mark_unread_label_no_media">Oznacz jako nieprzeczytane</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d odcinek oznaczony jako nieodtworzony.</item>
-        <item quantity="few">%d odcinki oznaczone jako nieodtworzone.</item>
-        <item quantity="many">%d odcinków oznaczone jako nieodtworzone.</item>
-        <item quantity="other">%d odcinków oznaczone jako nieodtworzone.</item>
-    </plurals>
     <string name="add_to_queue_label">Dodaj do kolejki</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d odcinek dodany do kolejki.</item>
-        <item quantity="few">%d odcinki dodane do kolejki.</item>
-        <item quantity="many">%d odcinków dodanych do kolejki.</item>
-        <item quantity="other">%d odcinków dodanych do kolejki.</item>
-    </plurals>
     <string name="remove_from_queue_label">Usuń z kolejki</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d odcinek usunięty z kolejki.</item>
-        <item quantity="few">%d odcinki usunięte z kolejki.</item>
-        <item quantity="many">%d odcinków usuniętych z kolejki.</item>
-        <item quantity="other">%d odcinków usuniętych z kolejki.</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d odcinek usunięty ze skrzynki odbiorczej.</item>
         <item quantity="few">%d odcinki usunięte ze skrzynki odbiorczej.</item>
@@ -239,9 +203,6 @@
     <string name="remove_from_favorite_label">Usuń z ulubionych</string>
     <string name="visit_website_label">Odwiedź stronę internetową</string>
     <string name="skip_episode_label">Pomiń odcinek</string>
-    <string name="reset_position">Zresetuj pozycję odtwarzania</string>
-    <string name="no_items_selected">Nie zaznaczono żadnego elementu</string>
-    <string name="delete_local_feed_warning_body">Usunięcie spowoduje skasowanie odcinka z AntennaPod oraz pliku z twojego urządzenia. Nie można go pobrać ponownie za pomocą AntennaPod.</string>
     <!--Download messages and labels-->
   <string name="download_successful">Operacja zakończona sukcesem</string>
     <string name="download_pending">Pobieranie w toku</string>
@@ -639,7 +600,6 @@
     <string name="feed_tags_label">Tagi</string>
     <string name="feed_tags_summary">Zmień tagi tego podcastu, żeby lepiej zorganizować swoje subskrypcje</string>
     <string name="feed_folders_include_root">Pokaż ten kanał na liście głównej</string>
-    <string name="auto_download_settings_label">Ustawienia automatycznego pobierania</string>
     <string name="episode_filters_label">Filtr odcinków</string>
     <string name="episode_filters_description">Wykaz terminów używanych aby zdecydować, czy odcinek powinien być włączony lub wyłączony podczas automatycznego pobierania</string>
     <string name="add_term">Dodaj termin</string>
@@ -663,8 +623,6 @@
     <string name="release_schedule_friday">Pią</string>
     <string name="release_schedule_saturday">Sob</string>
     <string name="release_schedule_sunday">Nie</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Importowanie subskrybcji z jednozadaniowych aplikacji…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Szukaj podcast…</string>
     <string name="search_itunes_label">Wyszukaj w Apple Podcasts</string>
@@ -825,12 +783,6 @@
         <item quantity="many">%d dni po zakończeniu</item>
         <item quantity="other">%d dni po zakończeniu</item>
     </plurals>
-    <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">%d pobrany odcinek usunięty.</item>
-        <item quantity="few">%d pobrane odcinki usunięte.</item>
-        <item quantity="many">%d pobranych odcinków usuniętych.</item>
-        <item quantity="other">%d pobranych odcinków usuniętych.</item>
-    </plurals>
     <string name="episode_download_failed">Pobieranie odcinka nie powiodło się</string>
     <string name="nextcloud_login_error_generic">Nie udało się zalogować do twojego Nextclouda.\n\n- Sprawdź swoje połączenie internetowe.\n- Upewnij się, że używasz poprawnego adresu serwera.\n- Upewnij się, że wtyczka gpoddersync jest zainstalowana na twoim serwerze Nextcloud.</string>
     <string name="home_continue_empty_text">Możesz dodawać odcinki poprzez pobieranie ich lub długie przytrzymanie ich i zaznaczenie \"Dodaj do kolejki\".</string>
@@ -841,7 +793,7 @@
         <item quantity="other">Łączny rozmiar %d odcinków na urządzeniu</item>
     </plurals>
     <string name="feed_delete_confirmation_msg_batch">Potwierdź proszę, że chcesz usunąć wybrane podcasty, WSZYSTKIE ich odcinki (w tym te pobrane), historię odtwarzania i ich statystyki.</string>
-    <string name="bottom_navigation_summary">Funkcja beta: Miej dostęp do najpotrzebniejszych menu wszędzie, za jednym dotknięciem</string>
+    <string name="bottom_navigation_summary">Dostęp do najpotrzebniejszych menu wszędzie, za jednym dotknięciem</string>
     <string name="no_transcript_label">Bez transkrypcji</string>
     <string name="add_feed_label_short">Dodaj</string>
     <string name="episodes_label_short">Odcinki</string>
@@ -868,7 +820,6 @@
     <string name="echo_intro_your_year">Twój rok</string>
     <string name="echo_intro_in_podcasts">w podcastach</string>
     <string name="episode_lists">Lista odcinków</string>
-    <string name="transcript_follow">Dopasuj do dźwięku</string>
     <string name="global_default_with_value">Domyślnie globalne (%1$s)</string>
     <string name="delete_tag_label">Usuń tag</string>
     <string name="pref_automatic_download_queue_title">Pobieranie zakolejkowane</string>
@@ -910,4 +861,11 @@
     <string name="echo_hoarder_subtitle_hoarder">Patrząc na liczby, jest osobą, która lubi chomikować rzeczy</string>
     <string name="echo_thanks_we_are_glad_new">za dołączenie do nas w tym roku!\n\nNiezależnie od tego, czy przeniosłeś się z innej aplikacji, czy zacząłeś swoją przygodę z podcastami z nami: cieszymy się, że Cię mamy!</string>
     <string name="echo_queue_hours_normal">To około %1$s każdego dnia, aż do rozpoczęcia %2$d. Możesz zacząć rok na czysto jeśli pominiesz kilka odcinków.</string>
+    <string name="visit_social_interact_label">Pokaż komentarze</string>
+    <string name="rss_address">Adres RSS</string>
+    <string name="feed_new_episodes_action_summary_autodownload">Automatyczne pobieranie zostało włączone. Odcinki zostaną dodane do skrzynki odbiorczej, a następnie, gdy zostaną pobrane, zostaną przeniesione do kolejki.</string>
+    <string name="echo_queue_title_many">Wiąż masz sporo do zrobienia w tym roku. Masz</string>
+    <string name="echo_hoarder_subtitle_medium">Sprawdzone. Nie ma tutaj gromadzenia.</string>
+    <string name="echo_hoarder_comment_medium">W tym roku obejrzałeś odcinki z %1$d%% Twoich %2$d aktywnych subskrypcji. Może warto znów zobaczyć „%3$s”?</string>
+    <string name="echo_hoarder_comment_clean">W tym roku obejrzałeś odcinki z %1$d%% swoich %2$d aktywnych subskrypcji. Założymy się, że masz też porządek na biurku!</string>
 </resources>
