@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class SleepTimerPreferences {
@@ -15,6 +16,8 @@ public class SleepTimerPreferences {
     public static final String PREF_NAME = "SleepTimerDialog";
     private static final String PREF_VALUE = "LastValue";
 
+    private static final String PREF_TIMER_TYPE = "sleepTimerType";
+
     private static final String PREF_VIBRATE = "Vibrate";
     private static final String PREF_SHAKE_TO_RESET = "ShakeToReset";
     private static final String PREF_AUTO_ENABLE = "AutoEnable";
@@ -22,6 +25,7 @@ public class SleepTimerPreferences {
     private static final String PREF_AUTO_ENABLE_TO = "AutoEnableTo";
 
     private static final String DEFAULT_LAST_TIMER = "15";
+    private static final String DEFAULT_TIMER_TYPE = "CLOCK";
     private static final int DEFAULT_AUTO_ENABLE_FROM = 22;
     private static final int DEFAULT_AUTO_ENABLE_TO = 6;
 
@@ -45,9 +49,24 @@ public class SleepTimerPreferences {
         return prefs.getString(PREF_VALUE, DEFAULT_LAST_TIMER);
     }
 
-    public static long timerMillis() {
+    protected static long timerMillis() {
         long value = Long.parseLong(lastTimerValue());
         return TimeUnit.MINUTES.toMillis(value);
+    }
+
+    public static long timerMillisOrEpisodes() {
+        return switch (getSleepTimerType()) {
+            case CLOCK -> timerMillis();
+            case EPISODES -> Long.parseLong(SleepTimerPreferences.lastTimerValue());
+        };
+    }
+
+    public static SleepTimerType getSleepTimerType() {
+        return SleepTimerType.valueOf(prefs.getString(PREF_TIMER_TYPE, DEFAULT_TIMER_TYPE).toUpperCase(Locale.US));
+    }
+
+    public static void setSleepTimerType(SleepTimerType newType) {
+        prefs.edit().putString(PREF_TIMER_TYPE, newType.name()).apply();
     }
 
     public static void setVibrate(boolean vibrate) {

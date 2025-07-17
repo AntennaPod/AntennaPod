@@ -245,7 +245,7 @@ public class PlaybackServiceTaskManagerTest {
             public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
                 if (event.isOver()) {
                     countDownLatch.countDown();
-                } else if (event.getTimeLeft() == 1) {
+                } else if (event.getMilisTimeLeft() == 1) {
                     fail("Arrived at 1 but should have been cancelled");
                 }
             }

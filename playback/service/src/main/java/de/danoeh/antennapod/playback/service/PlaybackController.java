@@ -13,6 +13,8 @@ import android.util.Pair;
 import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+
+import de.danoeh.antennapod.playback.service.internal.TimerValue;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
@@ -348,24 +350,28 @@ public abstract class PlaybackController {
         return playbackService != null && playbackService.sleepTimerActive();
     }
 
+    public boolean isSleepTimerEndingThisEpisode(long episodeRemainingMillis) {
+        return playbackService != null && playbackService.isSleepTimerEndingThisEpisode(episodeRemainingMillis);
+    }
+
     public void disableSleepTimer() {
         if (playbackService != null) {
             playbackService.disableSleepTimer();
         }
     }
 
-    public long getSleepTimerTimeLeft() {
+    public TimerValue getSleepTimerTimeLeft() {
         if (playbackService != null) {
             return playbackService.getSleepTimerTimeLeft();
         } else {
-            return Playable.INVALID_TIME;
+            return new TimerValue(Playable.INVALID_TIME, Playable.INVALID_TIME);
         }
     }
 
     public void extendSleepTimer(long extendTime) {
-        long timeLeft = getSleepTimerTimeLeft();
-        if (playbackService != null && timeLeft != Playable.INVALID_TIME) {
-            setSleepTimer(timeLeft + extendTime);
+        TimerValue timeLeft = getSleepTimerTimeLeft();
+        if (playbackService != null && timeLeft.getMilisValue() != Playable.INVALID_TIME) {
+            setSleepTimer(timeLeft.getDisplayValue() + extendTime);
         }
     }
 

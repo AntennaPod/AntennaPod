@@ -55,12 +55,15 @@ import androidx.media.MediaBrowserServiceCompat;
 
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
+import de.danoeh.antennapod.playback.service.internal.ClockSleepTimer;
+import de.danoeh.antennapod.playback.service.internal.EpisodeSleepTimer;
 import de.danoeh.antennapod.playback.service.internal.LocalPSMP;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
 import de.danoeh.antennapod.playback.service.internal.PlaybackServiceNotificationBuilder;
 import de.danoeh.antennapod.playback.service.internal.PlaybackServiceStateManager;
 import de.danoeh.antennapod.playback.service.internal.PlaybackServiceTaskManager;
 import de.danoeh.antennapod.playback.service.internal.PlaybackVolumeUpdater;
+import de.danoeh.antennapod.playback.service.internal.TimerValue;
 import de.danoeh.antennapod.playback.service.internal.WearMediaSession;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import de.danoeh.antennapod.ui.widget.WidgetUpdater;
@@ -80,7 +83,7 @@ import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
-import de.danoeh.antennapod.playback.service.internal.PlaybackServiceTaskManager.SleepTimer;
+import de.danoeh.antennapod.playback.service.internal.SleepTimer;
 import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.event.MessageEvent;
@@ -159,6 +162,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private PlaybackServiceMediaPlayer mediaPlayer;
     private PlaybackServiceTaskManager taskManager;
+    private SleepTimer sleepTimer;
     private PlaybackServiceStateManager stateManager;
     private Disposable positionEventTimer;
     private PlaybackServiceNotificationBuilder notificationBuilder;
@@ -333,6 +337,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         unregisterReceiver(audioBecomingNoisy);
         mediaPlayer.shutdown();
         taskManager.shutdown();
+        disableSleepTimer();
         EventBus.getDefault().unregister(this);
     }
 
@@ -677,7 +682,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 } else {
                     return false;
                 }
-                taskManager.restartSleepTimer();
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PLAY:
                 if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
@@ -690,7 +694,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 } else {
                     return false;
                 }
-                taskManager.restartSleepTimer();
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
@@ -879,7 +882,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
                     if (newInfo.getOldPlayerStatus() != null && newInfo.getOldPlayerStatus() != PlayerStatus.SEEKING
                             && SleepTimerPreferences.autoEnable() && autoEnableByTime && !sleepTimerActive()) {
-                        setSleepTimer(SleepTimerPreferences.timerMillis());
+                        setSleepTimer(SleepTimerPreferences.timerMillisOrEpisodes());
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label),
                                 (ctx) -> disableSleepTimer(), getString(R.string.undo)));
                     }
@@ -1017,9 +1020,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             int newPosition = mediaPlayer.getPosition() - (int) SleepTimer.NOTIFICATION_THRESHOLD / 2;
             newPosition = Math.max(newPosition, 0);
             seekTo(newPosition);
-        } else if (event.getTimeLeft() < SleepTimer.NOTIFICATION_THRESHOLD) {
+        } else if (event.getMilisTimeLeft() < SleepTimer.NOTIFICATION_THRESHOLD) {
             final float[] multiplicators = {0.1f, 0.2f, 0.3f, 0.3f, 0.3f, 0.4f, 0.4f, 0.4f, 0.6f, 0.8f};
-            float multiplicator = multiplicators[Math.max(0, (int) event.getTimeLeft() / 1000)];
+            float multiplicator = multiplicators[Math.max(0, (int) event.getMilisTimeLeft() / 1000)];
             Log.d(TAG, "onSleepTimerAlmostExpired: " + multiplicator);
             mediaPlayer.setVolume(multiplicator, multiplicator);
         } else if (event.isCancelled()) {
@@ -1189,11 +1192,48 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public void setSleepTimer(long waitingTime) {
         Log.d(TAG, "Setting sleep timer to " + waitingTime + " milliseconds");
-        taskManager.setSleepTimer(waitingTime);
+        if (waitingTime <= 0) {
+            throw new IllegalArgumentException("Waiting time <= 0");
+        }
+
+        Log.d(TAG, "Setting sleep timer to " + waitingTime + " milliseconds or episodes");
+        if (isSleepTimerActive()) {
+            sleepTimer.reset(waitingTime);
+        } else {
+            sleepTimer = createSleepTimer(waitingTime);
+        }
+    }
+
+    /**
+     * Creates a new SleepTimer instance based on the current config
+     * Will either create a sleep time that counts down clock seconds, counts
+     * down playback seconds (similar to clock, but adjusted for playback speed)
+     * or episode counter
+     * @param sleepDurationOrEpisodes Either duration in millis or number of episodes
+     * @return The selected SleepTimer type
+     */
+    private SleepTimer createSleepTimer(long sleepDurationOrEpisodes) {
+        final Context context = getApplicationContext();
+        return switch (SleepTimerPreferences.getSleepTimerType()) {
+            case CLOCK -> new ClockSleepTimer(context, sleepDurationOrEpisodes);
+            case EPISODES -> new EpisodeSleepTimer(context, sleepDurationOrEpisodes);
+        };
+
+    }
+
+    /**
+     * Returns true if the sleep timer is currently active.
+     */
+    public boolean isSleepTimerActive() {
+        return sleepTimer != null && sleepTimer.isActive();
     }
 
     public void disableSleepTimer() {
-        taskManager.disableSleepTimer();
+        if (isSleepTimerActive()) {
+            Log.d(TAG, "Disabling sleep timer");
+            sleepTimer.stop();
+        }
+        sleepTimer = null;
     }
 
     private void sendNotificationBroadcast(int type, int code) {
@@ -1474,11 +1514,19 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     public boolean sleepTimerActive() {
-        return taskManager.isSleepTimerActive();
+        return sleepTimer != null && sleepTimer.isActive();
     }
 
-    public long getSleepTimerTimeLeft() {
-        return taskManager.getSleepTimerTimeLeft();
+    public boolean isSleepTimerEndingThisEpisode(long episodeRemainingMillis) {
+        return sleepTimer != null && sleepTimer.isActive() && sleepTimer.isEndingThisEpisode(episodeRemainingMillis);
+    }
+
+    public TimerValue getSleepTimerTimeLeft() {
+        if (isSleepTimerActive()) {
+            return sleepTimer.getTimeLeft();
+        } else {
+            return new TimerValue(0, 0);
+        }
     }
 
     private void bluetoothNotifyChange(PlaybackServiceMediaPlayer.PSMPInfo info, String whatChanged) {
@@ -1662,12 +1710,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public void resume() {
         mediaPlayer.resume();
-        taskManager.restartSleepTimer();
     }
 
     public void prepare() {
         mediaPlayer.prepare();
-        taskManager.restartSleepTimer();
     }
 
     public void pause(boolean abandonAudioFocus, boolean reinit) {
@@ -2000,7 +2046,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (sleepTimerActive()) {
                     disableSleepTimer();
                 } else {
-                    setSleepTimer(SleepTimerPreferences.timerMillis());
+                    setSleepTimer(SleepTimerPreferences.timerMillisOrEpisodes());
                 }
             }
         }
