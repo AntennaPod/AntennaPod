@@ -1197,21 +1197,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (sleepTimerActive()) {
             sleepTimer.reset(waitingTime);
         } else {
-            sleepTimer = createSleepTimer(waitingTime);
+            sleepTimer = new ClockSleepTimer(getApplicationContext());
+            sleepTimer.start(waitingTime);
         }
-    }
-
-    /**
-     * Creates a new SleepTimer instance based on the current config
-     * Will either create a sleep time that counts down clock seconds, counts
-     * down playback seconds (similar to clock, but adjusted for playback speed)
-     * or episode counter
-     * @param sleepDurationOrEpisodes Either duration in millis or number of episodes
-     * @return The selected SleepTimer type
-     */
-    private SleepTimer createSleepTimer(long sleepDurationOrEpisodes) {
-        final Context context = getApplicationContext();
-        return new ClockSleepTimer(context, sleepDurationOrEpisodes);
     }
 
     public void disableSleepTimer() {

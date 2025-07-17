@@ -10,6 +10,12 @@ public interface SleepTimer {
     long getTimeLeft();
 
     /**
+     * Starts the sleep timer.
+     * @param initialWaitingTime The waiting time for the sleep timer, either episodes or duration
+     */
+    void start(long initialWaitingTime);
+
+    /**
      * Cancels (stops) current sleep timer forever, cannot be restarted.
      */
     void stop();

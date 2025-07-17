@@ -207,7 +207,6 @@ public class PlaybackServiceTaskManagerTest {
     }
 
 
-
     @Test
     @UiThreadTest
     public void testDisableSleepTimer() throws InterruptedException {
@@ -232,13 +231,6 @@ public class PlaybackServiceTaskManagerTest {
         EventBus.getDefault().unregister(timerReceiver);
     }
 
-    @Test
-    @UiThreadTest
-    public void testIsSleepTimerActivePositive() {
-        final Context c = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
-        pstm.shutdown();
-    }
 
     @Test
     @UiThreadTest

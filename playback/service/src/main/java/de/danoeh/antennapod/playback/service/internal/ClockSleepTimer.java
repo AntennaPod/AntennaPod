@@ -18,7 +18,7 @@ import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 public class ClockSleepTimer implements SleepTimer {
     private static final String TAG = "ClockSleepTimer";
     private final Context context;
-    private final long initialWaitingTime;
+    private long initialWaitingTime;
     private long timeLeft;
     private boolean isRunning = false;
     private long lastTick = 0;
@@ -26,12 +26,8 @@ public class ClockSleepTimer implements SleepTimer {
     protected boolean hasVibrated = false;
     protected ShakeListener shakeListener;
 
-    public ClockSleepTimer(final Context context, long initialWaitingTime) {
+    public ClockSleepTimer(final Context context) {
         this.context = context;
-        this.initialWaitingTime = initialWaitingTime;
-        this.timeLeft = initialWaitingTime;
-
-        start();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -80,7 +76,8 @@ public class ClockSleepTimer implements SleepTimer {
     protected void notifyAboutExpiry() {
         Log.d(TAG, "Sleep timer is about to expire");
         if (SleepTimerPreferences.vibrate() && !hasVibrated) {
-            hasVibrated = vibrate();
+            vibrate();
+            hasVibrated = true;
         }
         // start listening for shakes if shake to reset is enabled
         if (shakeListener == null && SleepTimerPreferences.shakeToReset()) {
@@ -93,8 +90,14 @@ public class ClockSleepTimer implements SleepTimer {
         return isRunning && timeLeft > 0;
     }
 
-    public void start() {
-        registerForEvents(); // make sure we've registered for events first
+    public void start(long initialWaitingTime) {
+        this.initialWaitingTime = initialWaitingTime;
+        this.timeLeft = initialWaitingTime;
+
+        // make sure we've registered for events first
+        EventBus.getDefault().register(this);
+        final long left = getTimeLeft();
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(left));
 
         lastTick = System.currentTimeMillis();
         EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(timeLeft));
@@ -112,12 +115,6 @@ public class ClockSleepTimer implements SleepTimer {
         }
         shakeListener = null;
         EventBus.getDefault().post(SleepTimerUpdatedEvent.cancelled());
-    }
-
-    private void registerForEvents() {
-        EventBus.getDefault().register(this);
-        final long left = getTimeLeft();
-        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(left));
     }
 
     protected Context getContext() {
