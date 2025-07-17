@@ -17,14 +17,14 @@ import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 
 public class ClockSleepTimer implements SleepTimer {
     private static final String TAG = "ClockSleepTimer";
+
     private final Context context;
     private long initialWaitingTime;
     private long timeLeft;
     private boolean isRunning = false;
     private long lastTick = 0;
-
-    protected boolean hasVibrated = false;
-    protected ShakeListener shakeListener;
+    private boolean hasVibrated = false;
+    private ShakeListener shakeListener;
 
     public ClockSleepTimer(final Context context) {
         this.context = context;
@@ -48,7 +48,7 @@ public class ClockSleepTimer implements SleepTimer {
         }
     }
 
-    protected boolean vibrate() {
+    protected void vibrate() {
         final Vibrator vibrator;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             VibratorManager vibratorManager = (VibratorManager)
@@ -57,20 +57,15 @@ public class ClockSleepTimer implements SleepTimer {
         } else {
             vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         }
-
-        final int duration = 500;
-        if (vibrator != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                final VibrationEffect effect = VibrationEffect.createOneShot(
-                        duration, VibrationEffect.DEFAULT_AMPLITUDE);
-                vibrator.vibrate(effect);
-            } else {
-                vibrator.vibrate(duration);
-            }
-            return true;
+        if (vibrator == null) {
+            return;
         }
-
-        return false;
+        final int duration = 500;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            vibrator.vibrate(duration);
+        }
     }
 
     protected void notifyAboutExpiry() {

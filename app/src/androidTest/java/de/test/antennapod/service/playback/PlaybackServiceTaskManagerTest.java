@@ -202,15 +202,6 @@ public class PlaybackServiceTaskManagerTest {
         pstm.shutdown();
     }
 
-
-    @Test
-    @UiThreadTest
-    public void testIsSleepTimerActiveNegative() {
-        final Context c = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
-        pstm.shutdown();
-    }
-
     private final PlaybackServiceTaskManager.PSTMCallback defaultPSTM = new PlaybackServiceTaskManager.PSTMCallback() {
         @Override
         public void positionSaverTick() {
