@@ -5,13 +5,10 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.annotation.UiThreadTest;
 import androidx.test.filters.LargeTest;
 
-import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.playback.service.internal.PlaybackServiceTaskManager;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.danoeh.antennapod.ui.widget.WidgetUpdater;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +25,6 @@ import de.danoeh.antennapod.model.playback.Playable;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /**
  * Test class for PlaybackServiceTaskManager
