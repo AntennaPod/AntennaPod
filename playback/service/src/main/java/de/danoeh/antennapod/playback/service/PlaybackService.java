@@ -1195,7 +1195,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         Log.d(TAG, "Setting sleep timer to " + waitingTime + " milliseconds or episodes");
         if (sleepTimerActive()) {
-            sleepTimer.reset(waitingTime);
+            sleepTimer.updateRemainingTime(waitingTime);
         } else {
             sleepTimer = new ClockSleepTimer(getApplicationContext());
             sleepTimer.start(waitingTime);

@@ -209,31 +209,6 @@ public class PlaybackServiceTaskManagerTest {
 
     @Test
     @UiThreadTest
-    public void testDisableSleepTimer() throws InterruptedException {
-        final Context c = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        final long TIME = 5000;
-        final long TIMEOUT = 2 * TIME;
-        final CountDownLatch countDownLatch = new CountDownLatch(1);
-        Object timerReceiver = new Object() {
-            @Subscribe
-            public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
-                if (event.isOver()) {
-                    countDownLatch.countDown();
-                } else if (event.getTimeLeft() == 1) {
-                    fail("Arrived at 1 but should have been cancelled");
-                }
-            }
-        };
-        PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
-        EventBus.getDefault().register(timerReceiver);
-        assertFalse(countDownLatch.await(TIMEOUT, TimeUnit.MILLISECONDS));
-        pstm.shutdown();
-        EventBus.getDefault().unregister(timerReceiver);
-    }
-
-
-    @Test
-    @UiThreadTest
     public void testIsSleepTimerActiveNegative() {
         final Context c = InstrumentationRegistry.getInstrumentation().getTargetContext();
         PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);

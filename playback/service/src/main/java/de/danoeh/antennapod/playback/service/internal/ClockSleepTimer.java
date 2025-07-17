@@ -81,7 +81,7 @@ public class ClockSleepTimer implements SleepTimer {
         }
         // start listening for shakes if shake to reset is enabled
         if (shakeListener == null && SleepTimerPreferences.shakeToReset()) {
-            shakeListener = new ShakeListener(getContext(), getInitialTime(), this);
+            shakeListener = new ShakeListener(getContext(), this);
         }
     }
 
@@ -121,17 +121,18 @@ public class ClockSleepTimer implements SleepTimer {
         return context;
     }
 
-    protected long getInitialTime() {
-        return initialWaitingTime;
-    }
-
     @Override
     public long getTimeLeft() {
         return timeLeft;
     }
 
     @Override
-    public void reset(long waitingTimeOrEpisodes) {
+    public void updateRemainingTime(long waitingTimeOrEpisodes) {
         this.timeLeft = waitingTimeOrEpisodes;
+    }
+
+    @Override
+    public void reset() {
+        updateRemainingTime(initialWaitingTime);
     }
 }

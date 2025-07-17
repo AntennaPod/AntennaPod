@@ -24,7 +24,12 @@ public interface SleepTimer {
      * Update sleep timer with new waiting time
      * @param waitingTimeOrEpisodes Waiting time in millis or episode count
      */
-    void reset(long waitingTimeOrEpisodes);
+    void updateRemainingTime(long waitingTimeOrEpisodes);
+
+    /**
+     * Resets sleep timer to original duration.
+     */
+    void reset();
 
     /**
      * @return True if sleep timer is active, false otherwise
