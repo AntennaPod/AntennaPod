@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNull;
 
 
 import org.junit.Test;
-import org.junit.experimental.theories.Theory;
 
 import java.util.List;
 
@@ -58,7 +57,6 @@ public class PlainTextLinksConverterTest {
     }
 
     @Test
-    @Theory
     public void testExistingLinksArePreserved() {
         var links = List.of(
                 "Click <a alt=\"abc\" href=\"http://url.to/link\">http://url.to/link, this link</a>",
@@ -76,7 +74,6 @@ public class PlainTextLinksConverterTest {
                 "<a href=\"https://www.example.com/redirect?event=video_description&amp;redir_token=123l&amp;q=https%3A%2F%2Fexample.com%2Fshop%2Fbook%2F&amp;v=4iOzkYTrjzg\">https://example.com/shop/book/</a>",
                 "<a href=\"https://www.example.com/redirect?event=video_description&amp;redir_token=123Ws&amp;q=https%3A%2F%2Fexample.me%2FyH6x%2Fgx5ywe7g&amp;v=yIbY7x5zQO8\">https://example.me/yH6x/gx5ywe7g</a>",
                 ""
-
         );
         links.forEach(link -> assertEquals(link, PlainTextLinksConverter.convertLinksToHtml(link)));
     }
