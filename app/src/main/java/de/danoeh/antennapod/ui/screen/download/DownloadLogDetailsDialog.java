@@ -3,13 +3,21 @@ package de.danoeh.antennapod.ui.screen.download;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextPaint;
+import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.download.DownloadResult;
@@ -17,22 +25,49 @@ import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import org.greenrobot.eventbus.EventBus;
 
 public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
 
+    private Runnable dialogDismissFunction;
+
+    /**
+     * Creates a dialog with Feed title (and FeedItem title if possible).
+     */
     public DownloadLogDetailsDialog(@NonNull Context context, DownloadResult status) {
+        this(context, status, false, null);
+    }
+
+    /**
+     * Creates a dialog with Feed title (and FeedItem title if possible).
+     * The title(s) can be made clickable, so they jump to the Feed if clicked.
+     * A callback can be set that will be called when the dialog is closed.
+     */
+    public DownloadLogDetailsDialog(@NonNull Context context, DownloadResult status, boolean isTitleClickable,
+                                    @Nullable Runnable onDismissCallback) {
         super(context);
+
+        Feed feed = null;
+        String podcastTitle = null;
+        String episodeTitle = null;
 
         String url = "unknown";
         if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
             FeedMedia media = DBReader.getFeedMedia(status.getFeedfileId());
-            if (media != null) {
+            if (media != null && media.getItem() != null) {
+                feed = DBReader.getFeed(media.getItem().getFeedId(), false, 0, 0);
+                if (feed != null) {
+                    podcastTitle = feed.getFeedTitle();
+                }
+                episodeTitle = media.getEpisodeTitle();
                 url = media.getDownloadUrl();
             }
         } else if (status.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
-            Feed feed = DBReader.getFeed(status.getFeedfileId(), false, 0, 0);
+            feed = DBReader.getFeed(status.getFeedfileId(), false, 0, 0);
             if (feed != null) {
+                podcastTitle = feed.getFeedTitle();
                 url = feed.getDownloadUrl();
             }
         }
@@ -48,10 +83,19 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
         errorMessage.setSpan(new ForegroundColorSpan(0x88888888),
                 humanReadableReason.length(), errorMessage.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
+        CharSequence downloadMessage = getDownloadMessage(podcastTitle, episodeTitle);
+
+        SpannableString clickableDownloadMessage;
+        if (isTitleClickable) {
+            clickableDownloadMessage = getClickableMessage(context, downloadMessage, feed, onDismissCallback);
+        } else {
+            clickableDownloadMessage = new SpannableString(downloadMessage);
+        }
+
         setTitle(R.string.download_error_details);
-        setMessage(errorMessage);
+        setMessage(TextUtils.concat(clickableDownloadMessage, errorMessage));
         setPositiveButton(android.R.string.ok, null);
-        setNeutralButton(R.string.copy_to_clipboard, (dialog, which) -> {
+        setNeutralButton(R.string.copy_to_clipboard, (copyDialog, which) -> {
             ClipboardManager clipboard = (ClipboardManager) getContext()
                     .getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText(context.getString(R.string.download_error_details), errorMessage);
@@ -62,10 +106,62 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
         });
     }
 
+    @NonNull
+    private SpannableString getClickableMessage(@NonNull Context context, CharSequence downloadMessage, Feed feed,
+                                                Runnable onDismissCallback) {
+        SpannableString clickableDownloadMessage = new SpannableString(downloadMessage);
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                if (feed != null) {
+                    Intent intent;
+                    if (feed.getState() == Feed.STATE_SUBSCRIBED) {
+                        intent = new MainActivityStarter(context).withOpenFeed(feed.getId()).getIntent();
+                    } else {
+                        intent = new OnlineFeedviewActivityStarter(getContext(), feed.getDownloadUrl())
+                                .getIntent();
+                    }
+                    context.startActivity(intent);
+                }
+                // Close the dialog.
+                dialogDismissFunction.run();
+                // Notify the outside that the dialog was dismissed, if wanted.
+                if (onDismissCallback != null) {
+                    onDismissCallback.run();
+                }
+            }
+
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setUnderlineText(false);
+            }
+        };
+        clickableDownloadMessage.setSpan(clickableSpan, 0, clickableDownloadMessage.length(), 0);
+        return clickableDownloadMessage;
+    }
+
+    @NonNull
+    private static CharSequence getDownloadMessage(String podcastTitle, String episodeTitle) {
+        CharSequence downloadMessage = "";
+        if (podcastTitle != null) {
+            downloadMessage += podcastTitle + "\n";
+        }
+        if (episodeTitle != null) {
+            downloadMessage += episodeTitle + "\n";
+        }
+        if (!TextUtils.isEmpty(downloadMessage)) {
+            downloadMessage += "\n";
+        }
+        return downloadMessage;
+    }
+
     @Override
     public AlertDialog show() {
         AlertDialog dialog = super.show();
         ((TextView) dialog.findViewById(android.R.id.message)).setTextIsSelectable(true);
+        ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+        dialogDismissFunction = dialog::dismiss;
         return dialog;
     }
 }
