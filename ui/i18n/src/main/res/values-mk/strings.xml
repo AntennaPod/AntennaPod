@@ -63,4 +63,7 @@
     <string name="time_hours">саати</string>
     <string name="username_label">Корисник</string>
     <string name="password_label">Лозинка</string>
+    <string name="feed_update_receiver_name">Ажурирај предплати</string>
+    <string name="add_feed_label">Додај емисија (подкаст)</string>
+    <string name="add_feed_label_short">Додај</string>
 </resources>

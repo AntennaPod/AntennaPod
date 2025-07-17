@@ -180,46 +180,16 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Din VPN-app låtsas vara ett mobilt nätverk (med datapriser). Uppdatering av podcasts över mobila dataanslutningar är avstängt i inställningarna.\n\nVill du uppdatera ändå? Om du vill lösa detta problem, kontakta skaparen av din VPN-app.</string>
     <!--actions on feeditems-->
   <string name="download_label">Ladda ned</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">Laddar ner 1%d episod.</item>
-        <item quantity="other">Laddar ner %d avsnitt.</item>
-    </plurals>
     <string name="play_label">Spela</string>
     <string name="pause_label">Pausa</string>
     <string name="stream_label">Strömma</string>
     <string name="delete_label">Ta bort</string>
-    <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">%d nedladdat avsnitt raderat.</item>
-        <item quantity="other">%dnedladdade avsnitt raderade.</item>
-    </plurals>
     <string name="remove_inbox_label">Ta bort från inkorg</string>
-    <string name="removed_inbox_label">Tog bort från inkorg</string>
-    <string name="mark_read_label">Markera som spelad</string>
     <string name="toggle_played_label">Växla spelläge</string>
-    <string name="marked_as_played_label">Markera som spelad</string>
-    <string name="marked_as_unplayed_label">Markera som ospelad</string>
     <string name="mark_read_no_media_label">Markera som läst</string>
-    <string name="play_this_to_seek_position">Spela avsnittet för att kunna hoppa till olika positioner</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">1%d episod markerad som spelad.</item>
-        <item quantity="other">%d avsnitt markerade som spelade.</item>
-    </plurals>
-    <string name="mark_unread_label">Markera som ospelad</string>
     <string name="mark_unread_label_no_media">Markera som ospelad</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">1%d episod markerad som ospelad.</item>
-        <item quantity="other">%d avsnitt markerade som ospelade.</item>
-    </plurals>
     <string name="add_to_queue_label">Lägg till i kön</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">1%d episod tillagd i kön.</item>
-        <item quantity="other">%d avsnitt tillagda i kön.</item>
-    </plurals>
     <string name="remove_from_queue_label">Ta bort från kön</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d episod borttagen från kön.</item>
-        <item quantity="other">%d avsnitt borttagna från kön.</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d episod har tagits bort från inkorg.</item>
         <item quantity="other">%d avsnitt har tagits bort från inkorgen.</item>
@@ -227,14 +197,10 @@
     <string name="add_to_favorite_label">Lägg till i favoriter</string>
     <string name="show_transcript">Visa transkription</string>
     <string name="transcript">Transkribtion</string>
-    <string name="transcript_follow">Följ ljud</string>
     <string name="no_transcript_label">Ingen transkribtion</string>
     <string name="remove_from_favorite_label">Ta bort från favoriter</string>
     <string name="visit_website_label">Besök webbsidan</string>
     <string name="skip_episode_label">Hoppa över avsnittet</string>
-    <string name="reset_position">Nollställ uppspelningspositionen</string>
-    <string name="no_items_selected">Inget valt</string>
-    <string name="delete_local_feed_warning_body">Radering tar bort avsnittet från AntennaPod och raderar mediafilen från din enhet. Den kan inte laddas ner igen via AntennaPod.</string>
     <!--Download messages and labels-->
   <string name="download_successful">lyckades</string>
     <string name="download_pending">Avvaktar nedladdning</string>
@@ -660,7 +626,6 @@
     <string name="feed_tags_summary">Ändra etiketterna för denna podcast för att organisera prenumerationerna</string>
     <string name="feed_folders_include_root">Visa denna podcast i huvudlistan</string>
     <string name="multi_feed_common_tags_info">Visar endast gemensamma etiketter bland valda prenumerationer. Andra etiketter påverkas inte.</string>
-    <string name="auto_download_settings_label">Inställningar för automatisk nedladdning</string>
     <string name="episode_filters_label">Avsnittsfilter</string>
     <string name="episode_filters_description">Lista av termer som används för att avgöra om ett avsnitt ingår eller ej vid automatisk nedladdning</string>
     <string name="add_term">Lägg till term</string>
@@ -686,8 +651,6 @@
     <string name="release_schedule_friday">Fre</string>
     <string name="release_schedule_saturday">Lör</string>
     <string name="release_schedule_sunday">Sön</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Importerar prenumerationer från appar gjorda för ett enda syfte…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Sök podcast…</string>
     <string name="search_itunes_label">Sök i Apple Podcasts</string>
@@ -778,7 +741,7 @@
         <item quantity="other">Total storlek på %d avsnitten på enheten</item>
     </plurals>
     <string name="null_value_podcast_error">Länken du tryckte på innehåller inte en giltig podcast-URL. Verifiera länken och försök igen, eller sök efter podcasten manuellt.</string>
-    <string name="bottom_navigation_summary">Betafunktion: Få tillgång till de viktigaste skärmarna överallt, med ett enda tryck</string>
+    <string name="bottom_navigation_summary">Få tillgång till de viktigaste skärmarna överallt, med ett enda tryck</string>
     <string name="feed_delete_confirmation_local_msg">Vänligen bekräfta att du vill ta bort podcasten \"%1$s\", dess uppspelningshistorik och dess statistik. Filerna i den lokala källmappen kommer inte att raderas.</string>
     <string name="home_new_empty_text">Nya avsnitt kommer att dyka upp här. Du kan sedan bestämma om du är intresserad av dem.</string>
     <string name="delete_downloads_played">Ta bort spelade</string>
@@ -872,4 +835,6 @@
     <string name="echo_thanks_we_are_glad_old">för att du hängt med oss i år!\n\nDu spelade ditt första avsnitt med oss den %1$s. Det har varit vår ära att tjäna dig sedan dess.</string>
     <string name="echo_thanks_we_are_glad_new">för att du hängde med oss i år!\n\nOavsett om du har flyttat från en annan app eller startat ditt poddäventyr med oss: så är vi glada över att ha dig!</string>
     <string name="echo_home_header">Gå igenom året</string>
+    <string name="rss_address">RSS-adress</string>
+    <string name="visit_social_interact_label">Visa kommentarer</string>
 </resources>

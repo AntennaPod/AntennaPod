@@ -171,42 +171,16 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Sinu VPN ühendus paistab mobiilse andmeside võrguna (mahupõhine hinnastamine). Taskuhäälingute värskendamine üle mobiilse andmeside on seadetes keelatud.\n\nKas sa soovid ikkagi värskendada? Probleemi lahendamiseks pöördu oma VPN rakenduse arendajate poole.</string>
     <!--actions on feeditems-->
   <string name="download_label">Laadi alla</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">%d saate allalaadimine.</item>
-        <item quantity="other">%d saate allalaadimine.</item>
-    </plurals>
     <string name="play_label">Esita</string>
     <string name="pause_label">Peata</string>
     <string name="stream_label">Voogedastusena</string>
     <string name="delete_label">Kustuta</string>
     <string name="remove_inbox_label">Eemalda postkastist</string>
-    <string name="removed_inbox_label">Postkastist eemaldatud</string>
-    <string name="mark_read_label">Märgi kuulatuks</string>
     <string name="toggle_played_label">Lülita esitatud olekut</string>
-    <string name="marked_as_played_label">Märgitud kuulatuks</string>
-    <string name="marked_as_unplayed_label">Märgitud kui kuulamata</string>
     <string name="mark_read_no_media_label">Märgi loetuks</string>
-    <string name="play_this_to_seek_position">Asukohale hüppamiseks pead saadet esitama</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">%d saade märgiti kuulatuks.</item>
-        <item quantity="other">%d saadet märgiti kuulatuks.</item>
-    </plurals>
-    <string name="mark_unread_label">Märgitud kui kuulamata</string>
     <string name="mark_unread_label_no_media">Märgi mitteloetuks</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d saade märgiti kui kuulamata.</item>
-        <item quantity="other">%d saadet märgiti kui kuulamata.</item>
-    </plurals>
     <string name="add_to_queue_label">Lisa järjekorda</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d saade lisati järjekorda.</item>
-        <item quantity="other">%d saadet lisati järjekorda.</item>
-    </plurals>
     <string name="remove_from_queue_label">Eemalda järjekorrast</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d saade eemaldati järjekorrast.</item>
-        <item quantity="other">%d saadet eemaldati järjekorrast.</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d saade postkastist eemaldatud.</item>
         <item quantity="other">%d saadet postkastist eemaldatud.</item>
@@ -215,9 +189,6 @@
     <string name="remove_from_favorite_label">Eemalda lemmikutest</string>
     <string name="visit_website_label">Külasta veebilehte</string>
     <string name="skip_episode_label">Jäta saade vahele</string>
-    <string name="reset_position">Nulli esitamise asukoht</string>
-    <string name="no_items_selected">Ühtegi pole valitud</string>
-    <string name="delete_local_feed_warning_body">Kustutamine eemaldab saate AntennaPodist ja meedia faili seadme salvestusruumist. Seda ei saa uuesti AntennaPodi kaudu alla laadida.</string>
     <!--Download messages and labels-->
   <string name="download_successful">korras</string>
     <string name="download_pending">Ootel allalaadimine</string>
@@ -575,7 +546,7 @@
     <!--Rating dialog-->
   <string name="rating_tagline">Alates %1$s oled esitanud %2$s %3$d %4$s tundi taskuhäälinguid.</string>
     <string name="rating_contribute_label">Soovid kaasa lüüa? Ükskõik kas tahad tõlkida, pakkuda tuge, disainida, kodeerida, meil on sinu üle hea meel!</string>
-    <string name="rating_contribute_button">Avasta millega saad kaasa aidata</string>
+    <string name="rating_contribute_button">Avasta, millega saad kaasa aidata</string>
     <string name="rating_rate">Hinda AntennaPodi</string>
     <string name="rating_later">Hiljem</string>
     <!--Online feed view-->
@@ -606,7 +577,6 @@
     <string name="feed_tags_summary">Muuda selle taskuhäälingu silte, et aidata organiseerida oma tellimusi</string>
     <string name="feed_folders_include_root">Näita seda taskuhäälingut tellimuste nimekirjas</string>
     <string name="multi_feed_common_tags_info">Näidatakse ainult korduvad sildid kõikidest valitud tellimustest. Muud sildid jäävad muutmata.</string>
-    <string name="auto_download_settings_label">Automaatse allalaadimise seaded</string>
     <string name="episode_filters_label">Saadete filter</string>
     <string name="episode_filters_description">Terminite loetelu, mille alusel otsustada, kas saade tuleks arvata sisse või välja automaatsel allalaadimisel</string>
     <string name="add_term">Lisa mõiste</string>
@@ -631,8 +601,6 @@
     <string name="release_schedule_friday">R</string>
     <string name="release_schedule_saturday">L</string>
     <string name="release_schedule_sunday">P</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Tellimuste importimine teistest äppidest…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Otsi taskuhäälingut…</string>
     <string name="search_itunes_label">Otsi Apple Podcastsist</string>
@@ -744,13 +712,8 @@
     <string name="echo_share">Minu aasta %d taskuhäälingutes. #AntennaPodEcho</string>
     <string name="feed_delete_confirmation_local_msg">Kinnita, et soovid eemaldada taskuhäälingu \"%1$s\", selle taasesituse ajaloo ja statistika. Kohalikus kaustas olevaid faile ei kustutata.</string>
     <string name="feed_delete_confirmation_msg_batch">Kinnita, et soovid eemaldada valitud taskuhäälingu, KÕIK nende saated (sh allalaaditud), taasesituse ajaloo ja statistika.</string>
-    <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">%d allalaaditud saade kustutati.</item>
-        <item quantity="other">%d allalaaditud saadet kustutati.</item>
-    </plurals>
     <string name="pref_nav_drawer_items_title">Kohanda navigeerimist</string>
     <string name="statistics_release_next">järgmine saade (tõenäoliselt)</string>
-    <string name="transcript_follow">Jälgi heli</string>
     <string name="episode_information">Saate teave</string>
     <plurals name="episode_cleanup_days_after_listening">
         <item quantity="one">%d päev pärast lõpetamist</item>
@@ -884,9 +847,7 @@
     <string name="echo_hoarder_subtitle_medium">Selge. Ei mingit kogumist.</string>
     <string name="echo_thanks_large">Aitäh,</string>
     <string name="echo_hoarder_subtitle_clean">Puhas!</string>
-    <string name="visit_social_interact_query_title">Oled lahkumas AntennaPod\'ist</string>
     <string name="rss_address">RSS aadress</string>
     <string name="feed_new_episodes_action_summary_autodownload">Automaatne allalaadimine on lubatud. Episoodid lisatakse postkasti ja teisaldatakse pärast allalaadimist järjekorda.</string>
     <string name="visit_social_interact_label">Kuva kommentaarid</string>
-    <string name="visit_social_interact_query_message">Veendu, et usaldad veebisaiti \"%1$s\".</string>
 </resources>

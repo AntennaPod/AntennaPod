@@ -187,52 +187,16 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">La tua app VPN finge di essere una rete mobile (connessione a consumo). L\'aggiornamento dei podcast su rete dati mobile è disabilitato nelle impostazioni.\n\nVuoi aggiornare comunque? Se vuoi che questo problema sia risolto, contatta i creatori della tua app VPN.</string>
     <!--actions on feeditems-->
   <string name="download_label">Download</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">Download di %d episodio.</item>
-        <item quantity="many">Download di %d episodi.</item>
-        <item quantity="other">Download di %d episodi.</item>
-    </plurals>
     <string name="play_label">Riproduci</string>
     <string name="pause_label">Pausa</string>
     <string name="stream_label">Riproduci</string>
     <string name="delete_label">Elimina</string>
-    <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">%d episodio scaricato eliminato.</item>
-        <item quantity="many">%d episodi scaricati eliminati.</item>
-        <item quantity="other">%d episodi scaricati eliminati.</item>
-    </plurals>
     <string name="remove_inbox_label">Rimuovi dall\'inbox</string>
-    <string name="removed_inbox_label">Rimosso dall\'inbox</string>
-    <string name="mark_read_label">Segna come riprodotto</string>
     <string name="toggle_played_label">Cambia stato di riproduzione</string>
-    <string name="marked_as_played_label">Segnato come riprodotto</string>
-    <string name="marked_as_unplayed_label">Segnato come non riprodotto</string>
     <string name="mark_read_no_media_label">Segna come letto</string>
-    <string name="play_this_to_seek_position">Per saltare alla posizione devi riprodurre l\'episodio</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">%d episodio segnato come riprodotto.</item>
-        <item quantity="many">%d di episodi segnati come riprodotti.</item>
-        <item quantity="other">%d episodi segnati come riprodotti.</item>
-    </plurals>
-    <string name="mark_unread_label">Segna come non riprodotto</string>
     <string name="mark_unread_label_no_media">Segna come non letto</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d episodio segnato come non riprodotto.</item>
-        <item quantity="many">%d di episodi segnati come non riprodotti.</item>
-        <item quantity="other">%d episodi segnati come non riprodotti.</item>
-    </plurals>
     <string name="add_to_queue_label">Aggiungi alla coda</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d episodio aggiunto alla coda.</item>
-        <item quantity="many">%d di episodi aggiunti alla coda.</item>
-        <item quantity="other">%d episodi aggiunti alla coda.</item>
-    </plurals>
     <string name="remove_from_queue_label">Rimuovi dalla coda</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d episodio rimosso dalla coda.</item>
-        <item quantity="many">%d di episodi rimossi dalla coda.</item>
-        <item quantity="other">%d episodi rimossi dalla coda.</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d episodio rimosso dall\'inbox.</item>
         <item quantity="many">%d episodi rimossi dall\'inbox.</item>
@@ -241,14 +205,10 @@
     <string name="add_to_favorite_label">Aggiungi ai preferiti</string>
     <string name="show_transcript">Mostra trascrizione</string>
     <string name="transcript">Trascrizione</string>
-    <string name="transcript_follow">Segui l\'audio</string>
     <string name="no_transcript_label">Nessuna trascrizione</string>
     <string name="remove_from_favorite_label">Rimuovi dai preferiti</string>
     <string name="visit_website_label">Visita il sito</string>
     <string name="skip_episode_label">Salta l\'episodio</string>
-    <string name="reset_position">Azzera la posizione di riproduzione</string>
-    <string name="no_items_selected">Nessun elemento selezionato</string>
-    <string name="delete_local_feed_warning_body">Eliminare l\'episodio lo rimuove da AntennaPod ed elimina il file multimediale dalla memoria del tuo dispositivo. Non potrà essere scaricato di nuovo tramite AntennaPod.</string>
     <!--Download messages and labels-->
   <string name="download_successful">successo</string>
     <string name="download_pending">Download in attesa</string>
@@ -343,7 +303,7 @@
     <string name="no_all_episodes_head_label">Nessun episodio</string>
     <string name="no_all_episodes_label">Quando aggiungi un podcast, gli episodi vengono mostrati qui.</string>
     <string name="no_all_episodes_filtered_label">Prova a rimuovere i filtri per visualizzare più episodi.</string>
-    <string name="no_inbox_head_label">Nessun episodio nella inbox</string>
+    <string name="no_inbox_head_label">Nessun episodio nell\'inbox</string>
     <string name="no_inbox_label">Quando verranno pubblicati nuovi episodi, appariranno qui. Puoi decidere se ti interessano o meno.</string>
     <string name="no_subscriptions_head_label">Nessuna iscrizione</string>
     <string name="no_subscriptions_label">Per aggiungere un podcast, premi il tasto + in basso.</string>
@@ -679,7 +639,6 @@
     <string name="feed_tags_summary">Cambia i tag di questo podcast per agevolare l\'organizzazione delle tue iscrizioni</string>
     <string name="feed_folders_include_root">Mostra il podcast nella lista principale</string>
     <string name="multi_feed_common_tags_info">Vengono mostrati solo tag i comuni alle iscrizioni selezionate. Gli altri tag non vengono toccati.</string>
-    <string name="auto_download_settings_label">Impostazioni download automatico</string>
     <string name="episode_filters_label">Filtro degli episodi</string>
     <string name="episode_filters_description">Elenco di termini per filtrare gli episodi da includere o escludere dai download automatici</string>
     <string name="add_term">Aggiungi termine</string>
@@ -705,8 +664,6 @@
     <string name="release_schedule_friday">Ven</string>
     <string name="release_schedule_saturday">Sab</string>
     <string name="release_schedule_sunday">Dom</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Importazione delle iscrizioni da applicazioni specifiche in corso…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Cerca podcast…</string>
     <string name="search_itunes_label">Cerca su Apple Podcast</string>
@@ -895,7 +852,6 @@
     <string name="preference_search_clear_input">Svuota</string>
     <string name="overflow_more">Più</string>
     <string name="visit_social_interact_label">Mostra commenti</string>
-    <string name="visit_social_interact_query_title">Stai per lasciare AntennaPod</string>
     <string name="rss_address">Indirizzo RSS</string>
-    <string name="feed_new_episodes_action_summary_autodownload">Download automatico abilitato. Gli episodi sono aggiunti alla inbox e spostati nella coda una volta scaricati.</string>
+    <string name="feed_new_episodes_action_summary_autodownload">Download automatico abilitato. Gli episodi sono aggiunti all\'inbox e spostati nella coda una volta scaricati.</string>
 </resources>

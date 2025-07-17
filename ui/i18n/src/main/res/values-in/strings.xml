@@ -91,11 +91,11 @@
     <plurals name="num_episodes">
         <item quantity="other">%d episode</item>
     </plurals>
-    <string name="episode_notification_summary">Tampilkan notifikasi ketika episode baru dirilis.</string>
+    <string name="episode_notification_summary">Tampilkan notifikasi ketika episode baru dirilis</string>
     <plurals name="new_episode_notification_message">
         <item quantity="other">%2$s merilis %1$d episode baru</item>
     </plurals>
-    <string name="new_episode_notification_group_text">Siniar langganan Anda merilis episode baru!</string>
+    <string name="new_episode_notification_group_text">Siniar langganan Anda merilis episode baru.</string>
     <!--Actions on feeds-->
   <string name="remove_all_inbox_label">Hapus semua episode dari kotak masuk</string>
     <string name="removed_all_inbox_msg">Semua episode telah dihapus dari kotak masuk</string>
@@ -126,43 +126,19 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Aplikasi VPN Anda dianggap sebagai jaringan data seluler (koneksi terukur). Penyegaran siniar dengan jaringan data seluler dinonaktifkan pada pengaturan. \n\nTetap segarkan? Jika Anda ingin menyelesaikan masalah ini, hubungi pembuat aplikasi VPN Anda.</string>
     <!--actions on feeditems-->
   <string name="download_label">Unduh</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="other">Mengunduh sebanyak %d episode.</item>
-    </plurals>
     <string name="play_label">Putar</string>
     <string name="pause_label">Jeda</string>
     <string name="stream_label">Jalir</string>
     <string name="delete_label">Hapus</string>
     <string name="remove_inbox_label">Hapus dari kotak masuk</string>
-    <string name="removed_inbox_label">Dihapus dari kotak masuk</string>
-    <string name="mark_read_label">Tandai sebagai \"terputar\"</string>
     <string name="toggle_played_label">Aktifkan status \"terputar\"</string>
-    <string name="marked_as_played_label">Ditandai sebagai \"terputar\"</string>
-    <string name="marked_as_unplayed_label">Ditandai sebagai \"belum terputar\"</string>
     <string name="mark_read_no_media_label">Tandai sebagai \"terbaca\"</string>
-    <string name="play_this_to_seek_position">Untuk melompat posisi waktu, Anda perlu memutar episode siniar terlebih dahulu</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="other">Sebanyak %d episode ditandai sebagai \"terputar\".</item>
-    </plurals>
-    <string name="mark_unread_label">Tandai sebagai \"belum terputar\"</string>
     <string name="mark_unread_label_no_media">Tandai sebagai \"belum dibaca\"</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="other">Sebanyak %d episode ditandai sebagai \"belum terputar\"</item>
-    </plurals>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="other">Sebanyak %d episode ditambahkan ke antrean putar.</item>
-    </plurals>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="other">Sebanyak %d episode dihapus dari antrean putar.</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="other">Sebanyak %d episode dihapus dari kotak masuk.</item>
     </plurals>
     <string name="visit_website_label">Lihat situs</string>
     <string name="skip_episode_label">Lewati episode</string>
-    <string name="reset_position">Atur ulang posisi pemutaran</string>
-    <string name="no_items_selected">Tidak ada item terpilih</string>
-    <string name="delete_local_feed_warning_body">Dengan menghapus episode dari AntennaPod, berkas episode akan dihapus dari AntennaPod dan dari penyimpanan perangkat Anda. Episode tersebut tidak akan dapat diunduh lagi melalui AntennaPod.</string>
     <!--Download messages and labels-->
   <string name="download_successful">berhasil</string>
     <string name="download_pending">Unduhan tertunda</string>
@@ -179,7 +155,7 @@
     <string name="download_error_forbidden">Peladen hos siniar menolak merespons.</string>
     <string name="download_canceled_msg">Pengunduhan dibatalkan</string>
     <string name="download_error_wrong_size">Hubungan ke peladen terputus sebelum pengunduhan selesai</string>
-    <string name="download_error_blocked">Pengunduhan diblokir oleh aplikasi lain di perangkat Anda (cth: VPN atau penghalau iklan)</string>
+    <string name="download_error_blocked">Unduhan diblokir oleh aplikasi lain di perangkat Anda (seperti VPN atau pemblokir iklan).</string>
     <string name="download_error_certificate">Tidak dapat membuat koneksi yang aman; kemungkinan ada aplikasi dalam perangkat Anda (cth: VPN atau penghalau iklan) yang memblokir pengunduhan atau terdapat kesalahan pada sertifikat peladen.</string>
     <plurals name="downloads_left">
         <item quantity="other">Sebanyak %d unduhan tersisa</item>
@@ -366,7 +342,7 @@
     <string name="sync_status_upload_played">Mengunggah status terputar…</string>
     <string name="sync_status_subscriptions">Sedang menyinkronkan langganan…</string>
     <string name="sync_status_success">Penyinkronan berhasil</string>
-    <string name="sync_status_error">Penyinkronan gagal..</string>
+    <string name="sync_status_error">Penyinkronan gagal</string>
     <!--import and export-->
   <string name="import_export_summary">Pindahkan langganan dan antrean ke perangkat lain</string>
     <string name="database">Database</string>
@@ -433,13 +409,13 @@
     <string name="gpodnetauth_create_device">Buat perangkat</string>
     <string name="gpodnetauth_finish_descr">Selamat! Akun gpodder.net Anda sekarang terhubung dengan perangkat Anda. AntennaPod sekarang akan secara otomatis menyinkronkan langganan pada perangkat Anda dengan akun gpodder.net Anda.</string>
     <string name="pref_gpodnet_setlogin_information_title">Ubah informasi masuk</string>
-    <string name="pref_gpodnet_setlogin_information_sum">Ubah informasi masuk akun gpodder.net Anda</string>
+    <string name="pref_gpodnet_setlogin_information_sum">Ubah informasi masuk akun gpodder.net Anda.</string>
     <string name="synchronization_sync_changes_title">Sinkronkan sekarang</string>
     <string name="synchronization_sync_summary">Sinkronikan langganan dan perubahan status episode</string>
     <string name="synchronization_full_sync_title">Paksa penyinkronan menyeluruh</string>
     <string name="synchronization_force_sync_summary">Sinkronkan ulang semua langganan dan status episode</string>
     <string name="synchronization_logout">Keluar</string>
-    <string name="synchronization_login_status">Masuk sebagai %1$s pada %2$s.\n\n\n\nAnda dapat memilih penyedia penyinkronan kembali saat Anda keluar.</string>
+    <string name="synchronization_login_status">Masuk sebagai %1$s pada %2$s.\n\nAnda dapat memilih penyedia penyinkronan kembali saat Anda keluar.</string>
     <string name="pref_synchronization_logout_toast">Sudah keluar</string>
     <string name="gpodnetsync_error_title">Galat penyinkronan gpodder.net</string>
     <string name="gpodnetsync_error_descr">"Sebuah galat terjadi selama penyinkronan: "</string>
@@ -449,7 +425,7 @@
     <!--Directory chooser-->
   <string name="choose_data_directory">Pilih folder data</string>
     <string name="choose_data_directory_available_space">%1$s dari %2$s kosong</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Saat aplikasi lain memutar suara, jeda pemutaran suara alih-alih menurunkan volume suara.</string>
+    <string name="pref_pausePlaybackForFocusLoss_sum">Saat aplikasi lain memutar suara, jeda pemutaran suara alih-alih menurunkan volume suara</string>
     <string name="pref_pausePlaybackForFocusLoss_title">Jeda untuk menginterupsi</string>
     <!--Online feed view-->
   <string name="subscribe_label">Langganan</string>
@@ -477,8 +453,6 @@
     <string name="exclude_episodes_shorter_than">Kecualikan episode yang lebih pendek dari</string>
     <string name="keep_updated_summary">Sertakan siniar ini saat menyegarkan semua siniar (secara otomatis)</string>
     <string name="edit_url_menu">Sunting URL umpan</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Impor langganan dari aplikasi sekali tujuan…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Cari siniar…</string>
     <string name="search_fyyd_label">Cari fyyd</string>
@@ -644,13 +618,9 @@
     <string name="open_podcast">Buka siniar</string>
     <string name="delete_tag_label">Hapus penanda</string>
     <string name="delete_tag_confirmation">Harap konfirmasikan bahwa Anda ingin menghapus penanda \"%1$s\".</string>
-    <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="other">Sebanyak %d episode terunduh telah dihapus.</item>
-    </plurals>
     <string name="delete_downloads_played_confirmation">Harap konfirmasikan bahwa Anda ingin menghapus semua unduhan terputar.</string>
     <string name="add_to_queue_label">Tambahkan ke antrean putar</string>
     <string name="remove_from_queue_label">Hapus dari antrean putar</string>
-    <string name="transcript_follow">Ikuti audio</string>
     <string name="no_transcript_label">Tidak ada salinan</string>
     <string name="download_error_retrying">Pengunduhan \"%1$s\" gagal. Pengunduhan akan dicoba lagi nanti.</string>
     <string name="download_error_not_retrying">Pengunduhan \"%1$s\" gagal.</string>
@@ -693,7 +663,6 @@
     <string name="preview_episodes">Pratayangan episode</string>
     <string name="pref_theme_title_automatic">Otomatis</string>
     <string name="episode_information">Informasi episode</string>
-    <string name="auto_download_settings_label">Pengaturan pengunduhan otomatis</string>
     <string name="pref_episode_cache_title">Limit episode</string>
     <string name="enqueue_location_random">Acak</string>
     <string name="clear_queue_label">Bersihkan antrean</string>
@@ -799,7 +768,7 @@
     <string name="echo_queue_hours_normal">Yang berarti ada sekitar %1$s per hari hingga %2$d dimulai. Anda bisa memulai tahun ini dengan melewati beberapa episode.</string>
     <string name="echo_queue_hours_much">Yang berarti ada sekitar %1$s per hari hingga %2$d dimulai. Hah, gimana?</string>
     <string name="echo_listened_after_title">Kami sedang menganalisis kapan episode-episode akan dirilis dan kapan Anda akan selesai memutar semuanya. Kesimpulannya?</string>
-    <string name="echo_listened_after_comment_addict">Anda pecandu siniar!!</string>
+    <string name="echo_listened_after_comment_addict">Anda pecandu siniar</string>
     <string name="echo_hoarder_title">Kami juga mikir: Anda benar-benar dengerin siniar yang Anda langgani atau tidak?</string>
     <string name="echo_hoarder_subtitle_medium">Yup. Gaada timbunan langganan, nih.</string>
     <string name="echo_hoarder_comment_medium">Anda udah memutar episode %1$d%% dari %2$d langganan aktif Anda tahun ini. Coba cek \"%3$s\" lagi?</string>
@@ -807,7 +776,7 @@
     <string name="echo_thanks_now_favorite">Nah, sekarang yuk lihat siniar favorit Anda…</string>
     <string name="echo_thanks_we_are_glad_old">karena sudah bersama-sama dengan kami tahun ini!\n\nAnda memutar episode pertama Anda bersama kami pada %1$s. Suatu kehormatan sudah \"membersamai\" Anda hingga saat ini.</string>
     <string name="echo_thanks_we_are_glad_new">karena sudah bersama-sama dengan kami tahun ini!\n\nApakah Anda berpindah dari apl lain atau memulai petualangan siniar bersama kami: kami senang lho, bisa bersama dengan Anda!</string>
-    <string name="pref_automatic_download_global_description">Unduh episode-episode baru secara otomatis. Tiap episode dapat ditimpa</string>
+    <string name="pref_automatic_download_global_description">Unduh episode baru secara otomatis. Dapat diubah per podcast.</string>
     <string name="pref_automatic_download_queue_title">Unduhan diantrekan</string>
     <string name="pref_automatic_download_queue_description">Unduh episode terantre secara otomatis</string>
     <string name="documentation_support">Dokumentasi &amp; dukungan</string>
@@ -833,7 +802,7 @@
     <plurals name="echo_hours_podcasts">
         <item quantity="other">jam episode\ndari %1$d siniar</item>
     </plurals>
-    <string name="echo_queue_hours_clean">Yang berarti ada sekitar %1$s per hari hingga %2$d dimulai!</string>
+    <string name="echo_queue_hours_clean">Yang berarti ada sekitar %1$s per hari hingga %2$d dimulai.</string>
     <string name="echo_listened_after_comment_easy">Anda orangnya supel dan mudah bergaul</string>
     <string name="echo_listened_after_time">Biasanya, Anda menyelesaikan satu episode dalam %1$s setelah dirilis.</string>
     <string name="echo_hoarder_subtitle_hoarder">Kalau dilihat angkanya, sepertinya Anda tukang numpukin barang</string>
@@ -841,4 +810,16 @@
     <string name="echo_hoarder_comment_hoarder">Angka gak bisa bohong, ceunah. Dan hanya %1$d%% dari %2$d langganan aktif yang diputar tahun ini, kayaknya kami bener, sih.</string>
     <string name="echo_thanks_large">Terima Kasih</string>
     <string name="echo_share_heading">Siniar favorit Anda adalah</string>
+    <string name="feed_new_episodes_action_summary_autodownload">Pengunduhan otomatis diaktifkan. Episode ditambahkan ke kotak masuk lalu dipindahkan ke antrean setelah diunduh.</string>
+    <string name="visit_social_interact_label">Tampilkan komentar</string>
+    <string name="overflow_more">Lebih banyak</string>
+    <string name="choose_data_directory_message">Silakan pilih dasar folder data Anda. AntennaPod akan membuat subdirektori yang sesuai.</string>
+    <string name="rss_address">Alamat RSS</string>
+    <string name="statistics_expected_next_episode_any_day">Segera tiba</string>
+    <string name="pref_back_button_opens_drawer">Tombol kembali membuka laci</string>
+    <string name="pref_smart_mark_as_played_title">Tandai sebagai dimainkan secara cerdas</string>
+    <string name="pref_nav_drawer_items_sum">Ubah item mana yang muncul di laci navigasi atau navigasi bawah</string>
+    <string name="bottom_navigation">Navigasi bawah</string>
+    <string name="pref_enqueue_location_title">Lokasi antrean</string>
+    <string name="is_favorite_label">Ditandai sebagai favorit</string>
 </resources>
