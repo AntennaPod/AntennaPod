@@ -3,7 +3,6 @@ package de.danoeh.antennapod.ui.cleaner;
 import android.content.Context;
 
 import androidx.test.platform.app.InstrumentationRegistry;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,7 +17,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-
 
 /**
  * Test class for {@link ShownotesCleaner}.

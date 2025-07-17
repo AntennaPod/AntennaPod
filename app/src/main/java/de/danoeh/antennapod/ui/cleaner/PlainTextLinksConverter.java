@@ -66,36 +66,37 @@ public class PlainTextLinksConverter {
         @Override
         public void head(@NonNull Node node, int depth) {
             if (node instanceof TextNode textNode) {
-                if (!isInsideAnchor(textNode)) {
-                    String originalText = textNode.getWholeText();
-                    Matcher matcher = HTTP_LINK_REGEX.matcher(originalText);
+                if (isInsideAnchor(textNode)) {
+                    return;
+                }
+                String originalText = textNode.getWholeText();
+                Matcher matcher = HTTP_LINK_REGEX.matcher(originalText);
 
-                    if (matcher.find()) {
-                        List<Node> newNodes = new ArrayList<>();
-                        int lastEnd = 0;
+                if (matcher.find()) {
+                    List<Node> newNodes = new ArrayList<>();
+                    int lastEnd = 0;
 
-                        matcher.reset();
+                    matcher.reset();
 
-                        while (matcher.find()) {
-                            if (matcher.start() > lastEnd) {
-                                newNodes.add(new TextNode(originalText.substring(lastEnd, matcher.start())));
-                            }
-                            String url = matcher.group();
-                            newNodes.add(link(url));
-                            lastEnd = matcher.end();
+                    while (matcher.find()) {
+                        if (matcher.start() > lastEnd) {
+                            newNodes.add(new TextNode(originalText.substring(lastEnd, matcher.start())));
                         }
+                        String url = matcher.group();
+                        newNodes.add(link(url));
+                        lastEnd = matcher.end();
+                    }
 
-                        if (lastEnd < originalText.length()) {
-                            newNodes.add(new TextNode(originalText.substring(lastEnd)));
-                        }
+                    if (lastEnd < originalText.length()) {
+                        newNodes.add(new TextNode(originalText.substring(lastEnd)));
+                    }
 
-                        if (!newNodes.isEmpty()) {
-                            Node parent = textNode.parent();
-                            if (parent instanceof Element parentElement) {
-                                int index = textNode.siblingIndex();
-                                textNode.remove();
-                                parentElement.insertChildren(index, newNodes);
-                            }
+                    if (!newNodes.isEmpty()) {
+                        Node parent = textNode.parent();
+                        if (parent instanceof Element parentElement) {
+                            int index = textNode.siblingIndex();
+                            textNode.remove();
+                            parentElement.insertChildren(index, newNodes);
                         }
                     }
                 }
@@ -105,7 +106,7 @@ public class PlainTextLinksConverter {
         private static Element link(String detectedUrl) {
             var url = detectedUrl;
             if (!detectedUrl.matches(STARTS_WITH_HTTP)) {
-                url = "http://" + url;
+                url = "https://" + url;
             }
 
             return new Element(ANCHOR_TAG).attr(ANCHOR_ADDRESS, url).text(detectedUrl);

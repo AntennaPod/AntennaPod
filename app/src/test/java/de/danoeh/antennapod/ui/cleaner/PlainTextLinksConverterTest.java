@@ -23,8 +23,8 @@ public class PlainTextLinksConverterTest {
         final String textWithLink2 = "text " + link2;
         assertEquals("text " + makeLinkHtml(link2), PlainTextLinksConverter.convertLinksToHtml(textWithLink2));
 
-        final String text = "artist here:  www.sorayaperry.com";
-        final String expected = "artist here: <a href=\"http://www.sorayaperry.com\">www.sorayaperry.com</a>";
+        final String text = "artist here:  www.example.com";
+        final String expected = "artist here: <a href=\"https://www.example.com\">www.example.com</a>";
         assertEquals(expected, PlainTextLinksConverter.convertLinksToHtml(text));
 
         final String textWithTwoLinks = "text " + link1 + " and " + link2;
@@ -44,7 +44,7 @@ public class PlainTextLinksConverterTest {
         final String expectedWithParams = "text " + makeLinkHtml(linkWithParams) + " after-text";
         assertEquals(expectedWithParams, PlainTextLinksConverter.convertLinksToHtml(textWithParams));
 
-        final String linkWithComma = "https://wikipedia.org/wiki/%D0%9E%D1%82%D0%B5%D1%86_(%D1%84%D0%B8%D0%BB%D1%8C%D0%BC,_2020)";
+        final String linkWithComma = "https://example.org/%D0%%86_(%D1%%BC,_2020)";
         final String textWithComma = "text " + linkWithComma;
         assertEquals("text " + makeLinkHtml(linkWithComma), PlainTextLinksConverter.convertLinksToHtml(textWithComma));
 
@@ -67,14 +67,14 @@ public class PlainTextLinksConverterTest {
                 "you can find it on <a href=\"http://xy.org/newlanding\">our new website http://xy.org</a>",
                 "<p><img src=\"https://url.to/i.jpg\" alt=\"https://url.to/i.jpg\"></p>",
                 "text \n<audio src=\"https://url.to/i.mp3\" alt=\"https://url.to/i.mp3\">\n  text \n</audio>",
-                "<a href=\"https://newsletter.pragmaticengineer.com/p/ai-fakers?utm_source=substack&amp;utm_medium=email\">AI interview</a> - <em>01:57:01</em>",
-                "sign up for our premium feed here! <a href=\"https://www.google.com/url?q=https://hyperfixedpod.com/join&amp;source=gmail-imap&amp;ust=1733759237000000&amp;usg=AOvVaw1wVGwumKqSOTeWJgzEv9s9\"><strong>https://hyperfixedpod.com/join</strong></a>",
-                "you can do so here:<a href=\"https://www.google.com/url?q=https://hyperfixedpod.com/button&amp;source=gmail-imap&amp;ust=1733759237000000&amp;usg=AOvVaw0l32E4Vjw--CXD5HqitATY\"><strong>https://hyperfixedpod.com/button</strong></a>",
-                "LINKS:<a href=\"https://www.google.com/url?q=https://buttonmuseum.org/&amp;source=gmail-imap&amp;ust=1733759237000000&amp;usg=AOvVaw3JwxOdV3y8OmyqGJxenALD\"><strong>Busy Beaver Button Museum</strong></a>",
-                "<a href=\"https://www.google.com/url?q=https://buttonmuseum.org/buttons/ask-me-chili-cheese-fries&amp;source=gmail-imap&amp;ust=1733759237000000&amp;usg=AOvVaw2oFNwzuvrfrokwHf6zq1P4\"><strong>The Button in Question</strong></a>",
-                "<p><a href=\"https://pbs.twimg.com/media/FN_lcifXIAIzV2i?format=png&amp;name=900x900\">A picture of the photo in question</a></p>",
-                "<a href=\"https://www.youtube.com/redirect?event=video_description&amp;redir_token=QUFFLUhqa3JDNFl&amp;q=https%3A%2F%2Fexample.com%2Fshop%2Fbook%2F&amp;v=4iOzkYTrjzg\">https://example.com/shop/book/</a>",
-                "<a href=\"https://www.youtube.com/redirect?event=video_description&amp;redir_token=QUFFLUhqbnpVQWs&amp;q=https%3A%2F%2Fexample.onelink.me%2FyH6x%2Fgx5ywe7g&amp;v=yIbY7x5zQO8\">https://example.onelink.me/yH6x/gx5ywe7g</a>",
+                "<a href=\"https://example.com/p/ai-fakers?utm_source=example&amp;utm_medium=email\">AI interview</a> - <em>01:57:01</em>",
+                "sign up for our premium feed here! <a href=\"https://www.example.com/url?q=https://example.com/join&amp;source=gmail-imap&amp;ust=123&amp;usg=AOvVaw123gzEv9s9\"><strong>https://example.com/join</strong></a>",
+                "you can do so here:<a href=\"https://www.example.com/url?q=https://example.com/button&amp;source=gmail-imap&amp;ust=123&amp;usg=AOvV123jw--CX123tATY\"><strong>https://example.com/button</strong></a>",
+                "LINKS:<a href=\"https://www.example.com/url?q=https://example.org/&amp;source=gmail-imap&amp;ust=123&amp;usg=AOvVa123GJxenALD\"><strong>Example</strong></a>",
+                "<a href=\"https://www.example.com/url?q=https://example.org/buttons/ask-me-chili-cheese-fries&amp;source=gmail-imap&amp;ust=123&amp;usg=AOvVaw2oFNwzuvrfrokwHf6zq1P4\"><strong>Example</strong></a>",
+                "<p><a href=\"https://example.com/media/FN_123zV2i?format=png&amp;name=900x900\">A picture of the photo in question</a></p>",
+                "<a href=\"https://www.example.com/redirect?event=video_description&amp;redir_token=123l&amp;q=https%3A%2F%2Fexample.com%2Fshop%2Fbook%2F&amp;v=4iOzkYTrjzg\">https://example.com/shop/book/</a>",
+                "<a href=\"https://www.example.com/redirect?event=video_description&amp;redir_token=123Ws&amp;q=https%3A%2F%2Fexample.me%2FyH6x%2Fgx5ywe7g&amp;v=yIbY7x5zQO8\">https://example.me/yH6x/gx5ywe7g</a>",
                 ""
 
         );
@@ -95,7 +95,7 @@ public class PlainTextLinksConverterTest {
         expected = expected.replace(">", "&gt;");
         assertEquals(expected, PlainTextLinksConverter.convertLinksToHtml(specialCharacters));
 
-        final String textWithDots = "\"Once Upon a Time...in Hollywood\"";
+        final String textWithDots = "\"Text With...Dots Works\"";
         assertEquals(textWithDots, PlainTextLinksConverter.convertLinksToHtml(textWithDots));
     }
 
