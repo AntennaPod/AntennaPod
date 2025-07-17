@@ -495,7 +495,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        Log.d(TAG, "OnStartCommand called");
+        Log.d(TAG, "onStartCommand called");
 
         stateManager.startForeground(R.id.notification_playing, notificationBuilder.build());
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
@@ -845,9 +845,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 case PAUSED:
                     updateNotificationAndMediaSession(newInfo.getPlayable());
                     PlaybackPreferences.setCurrentPlayerStatus(PlaybackPreferences.PLAYER_STATUS_PAUSED);
-                    if (!isCasting) {
-                        stateManager.stopForeground(!UserPreferences.isPersistNotify());
-                    }
                     cancelPositionObserver();
                     break;
                 case STOPPED:
