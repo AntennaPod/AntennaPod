@@ -37,7 +37,6 @@ public class PlainTextLinksConverter {
         if (text == null || text.isEmpty()) {
             return text;
         }
-
         try {
             Document doc = Jsoup.parse(text);
             convertLinksToHtml(doc);
@@ -65,40 +64,40 @@ public class PlainTextLinksConverter {
     private static class LinkConvertingVisitor implements NodeVisitor {
         @Override
         public void head(@NonNull Node node, int depth) {
-            if (node instanceof TextNode textNode) {
-                if (isInsideAnchor(textNode)) {
-                    return;
+            if (!(node instanceof TextNode textNode)) {
+                return;
+            } else if (isInsideAnchor(textNode)) {
+                return;
+            }
+            String originalText = textNode.getWholeText();
+            Matcher matcher = HTTP_LINK_REGEX.matcher(originalText);
+
+            if (!matcher.find()) {
+                return;
+            }
+            List<Node> newNodes = new ArrayList<>();
+            int lastEnd = 0;
+            matcher.reset();
+
+            while (matcher.find()) {
+                if (matcher.start() > lastEnd) {
+                    newNodes.add(new TextNode(originalText.substring(lastEnd, matcher.start())));
                 }
-                String originalText = textNode.getWholeText();
-                Matcher matcher = HTTP_LINK_REGEX.matcher(originalText);
+                String url = matcher.group();
+                newNodes.add(link(url));
+                lastEnd = matcher.end();
+            }
 
-                if (matcher.find()) {
-                    List<Node> newNodes = new ArrayList<>();
-                    int lastEnd = 0;
+            if (lastEnd < originalText.length()) {
+                newNodes.add(new TextNode(originalText.substring(lastEnd)));
+            }
 
-                    matcher.reset();
-
-                    while (matcher.find()) {
-                        if (matcher.start() > lastEnd) {
-                            newNodes.add(new TextNode(originalText.substring(lastEnd, matcher.start())));
-                        }
-                        String url = matcher.group();
-                        newNodes.add(link(url));
-                        lastEnd = matcher.end();
-                    }
-
-                    if (lastEnd < originalText.length()) {
-                        newNodes.add(new TextNode(originalText.substring(lastEnd)));
-                    }
-
-                    if (!newNodes.isEmpty()) {
-                        Node parent = textNode.parent();
-                        if (parent instanceof Element parentElement) {
-                            int index = textNode.siblingIndex();
-                            textNode.remove();
-                            parentElement.insertChildren(index, newNodes);
-                        }
-                    }
+            if (!newNodes.isEmpty()) {
+                Node parent = textNode.parent();
+                if (parent instanceof Element parentElement) {
+                    int index = textNode.siblingIndex();
+                    textNode.remove();
+                    parentElement.insertChildren(index, newNodes);
                 }
             }
         }
@@ -108,7 +107,6 @@ public class PlainTextLinksConverter {
             if (!detectedUrl.matches(STARTS_WITH_HTTP)) {
                 url = "https://" + url;
             }
-
             return new Element(ANCHOR_TAG).attr(ANCHOR_ADDRESS, url).text(detectedUrl);
         }
 
@@ -130,5 +128,4 @@ public class PlainTextLinksConverter {
         }
         return false;
     }
-
 }

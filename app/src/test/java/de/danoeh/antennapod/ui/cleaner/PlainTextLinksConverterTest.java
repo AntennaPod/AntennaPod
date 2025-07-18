@@ -11,7 +11,6 @@ import java.util.List;
 
 public class PlainTextLinksConverterTest {
 
-
     @Test
     public void testConvertPlainTextLinksToHtml() {
         final String link1 = "https://url.to/link";
