@@ -76,6 +76,7 @@ public class ShownotesCleaner {
 
     /**
      * Applies an app-specific CSS stylesheet and adds timecode links (optional).
+     * Also converts plain-text links to HTML links.
      * <p/>
      * This method does NOT change the original shownotes string of the shownotesProvider object and it should
      * also not be changed by the caller.
@@ -99,6 +100,7 @@ public class ShownotesCleaner {
         Document document = Jsoup.parse(shownotes);
         cleanCss(document);
         document.head().appendElement("style").attr("type", "text/css").text(webviewStyle);
+        PlainTextLinksConverter.convertLinksToHtml(document);
         addTimecodes(document);
         document.body().attr("dir", "auto");
         return document.toString();
