@@ -43,7 +43,7 @@ public class AutoDownloadManagerImpl extends AutoDownloadManager {
 
     /**
      * Removed downloaded episodes outside of the queue if the episode cache is full. Episodes with a smaller
-     * 'playbackCompletionDate'-value will be deleted first.
+     * 'lastPlayedTimeHistory'-value will be deleted first.
      * <p/>
      * This method should NOT be executed on the GUI thread.
      *

@@ -19,9 +19,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
 import de.danoeh.antennapod.databinding.OnlinefeedviewActivityBinding;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.model.download.DownloadResult;
@@ -51,6 +53,9 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,7 +64,6 @@ import java.util.List;
 import java.util.Map;
 
 import static de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter.ARG_FEEDURL;
-import static de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter.ARG_STARTED_FROM_SEARCH;
 import static de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter.ARG_WAS_MANUAL_URL;
 
 /**
@@ -129,6 +133,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         isPaused = false;
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -138,18 +143,19 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         if (downloader != null && !downloader.isFinished()) {
             downloader.cancel();
         }
-        if(dialog != null && dialog.isShowing()) {
+        if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(download != null) {
+        if (download != null) {
             download.dispose();
         }
-        if(parser != null) {
+        if (parser != null) {
             parser.dispose();
         }
     }
@@ -295,6 +301,16 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(this::showFeedFragment, error -> {
             error.printStackTrace();
+            if (error instanceof UnsupportedFeedtypeException
+                    && "html".equalsIgnoreCase(((UnsupportedFeedtypeException) error).getRootElement())) {
+                if (getIntent().getBooleanExtra(ARG_WAS_MANUAL_URL, false)) {
+                    showErrorDialog(getString(R.string.download_error_unsupported_type_html_manual),
+                            error.getMessage());
+                } else {
+                    showErrorDialog(getString(R.string.download_error_unsupported_type_html), error.getMessage());
+                }
+                return;
+            }
             showErrorDialog(getString(R.string.download_error_parser_exception), error.getMessage());
         });
     }
@@ -318,13 +334,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             if ("html".equalsIgnoreCase(e.getRootElement())) {
                 boolean dialogShown = showFeedDiscoveryDialog(destinationFile, selectedDownloadUrl);
                 if (dialogShown) {
-                    return null; // Should not display an error message
-                } else {
-                    throw new UnsupportedFeedtypeException(getString(R.string.download_error_unsupported_type_html));
+                    return null; // We handled the problem
                 }
-            } else {
-                throw e;
             }
+            throw e;
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
             throw e;
@@ -351,9 +364,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         // feed.getId() is always 0, we have to retrieve the id from the feed list from the database
         MainActivityStarter mainActivityStarter = new MainActivityStarter(this);
         mainActivityStarter.withOpenFeed(feedId);
-        if (getIntent().getBooleanExtra(ARG_STARTED_FROM_SEARCH, false)) {
-            mainActivityStarter.withAddToBackStack();
-        }
         finish();
         startActivity(mainActivityStarter.getIntent());
     }
@@ -392,11 +402,12 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         builder.setTitle(R.string.edit_url_menu);
         final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
         if (downloader != null) {
-            dialogBinding.urlEditText.setText(downloader.getDownloadRequest().getSource());
+            dialogBinding.textInput.setText(downloader.getDownloadRequest().getSource());
+            dialogBinding.textInput.setHint(R.string.rss_address);
         }
         builder.setView(dialogBinding.getRoot());
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            lookupUrlAndDownload(dialogBinding.urlEditText.getText().toString());
+            lookupUrlAndDownload(dialogBinding.textInput.getText().toString());
         });
         builder.setNegativeButton(R.string.cancel_label, (dialog1, which) -> dialog1.cancel());
         builder.setOnCancelListener(dialog1 -> {
@@ -450,18 +461,28 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         };
 
         MaterialAlertDialogBuilder ab = new MaterialAlertDialogBuilder(OnlineFeedViewActivity.this)
-                .setTitle(R.string.feeds_label)
+                .setTitle(R.string.subscriptions_label)
                 .setCancelable(true)
                 .setOnCancelListener(dialog -> finish())
                 .setAdapter(adapter, onClickListener);
 
         runOnUiThread(() -> {
-            if(dialog != null && dialog.isShowing()) {
+            if (dialog != null && dialog.isShowing()) {
                 dialog.dismiss();
             }
             dialog = ab.show();
         });
         return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(MessageEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), event.message, Snackbar.LENGTH_LONG);
+        snackbar.show();
+        if (event.action != null) {
+            snackbar.setAction(event.actionText, v -> event.action.accept(this));
+        }
     }
 
     private class FeedViewAuthenticationDialog extends AuthenticationDialog {

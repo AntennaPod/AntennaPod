@@ -37,8 +37,7 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
     /**
      * @return the number of episodes that *could* be cleaned up, if needed
      */
-    public int getReclaimableItems()
-    {
+    public int getReclaimableItems() {
         return getCandidates().size();
     }
 
@@ -48,8 +47,8 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
         List<FeedItem> delete;
 
         Collections.sort(candidates, (lhs, rhs) -> {
-            Date l = lhs.getMedia().getPlaybackCompletionDate();
-            Date r = rhs.getMedia().getPlaybackCompletionDate();
+            Date l = lhs.getMedia().getLastPlayedTimeHistory();
+            Date r = rhs.getMedia().getLastPlayedTimeHistory();
 
             if (l == null) {
                 l = new Date();
@@ -106,8 +105,8 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
                 // make sure this candidate was played at least the proper amount of days prior
                 // to now
                 if (media != null
-                        && media.getPlaybackCompletionDate() != null
-                        && media.getPlaybackCompletionDate().before(mostRecentDateForDeletion)) {
+                        && media.getLastPlayedTimeHistory() != null
+                        && media.getLastPlayedTimeHistory().before(mostRecentDateForDeletion)) {
                     candidates.add(item);
                 }
             }

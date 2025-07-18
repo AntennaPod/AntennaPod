@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Aktualizovat odběry</string>
-    <string name="feeds_label">Podcasty</string>
     <string name="statistics_label">Statistiky</string>
     <string name="add_feed_label">Přidat podcast</string>
     <string name="episodes_label">Epizody</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Oblíbené</string>
     <string name="settings_label">Nastavení</string>
     <string name="downloads_label">Stahování</string>
-    <string name="open_autodownload_settings">Otevřít nastavení</string>
     <string name="downloads_log_label">Historie stáhnování</string>
     <string name="subscriptions_label">Odběry</string>
-    <string name="subscriptions_list_label">Seznam odběrů</string>
+    <string name="subscriptions_list_label">Seznam odběrů (pouze postranní menu)</string>
     <string name="cancel_download_label">Zrušit stahování</string>
     <string name="playback_history_label">Historie přehrávání</string>
-    <string name="episode_cache_full_title">Odkládací prostor pro epizody je plný</string>
-    <string name="episode_cache_full_message">Došlo k zaplnění limitu odkládacího prostoru pro epizody. Můžete navýšit vyhrazený prostor v Nastavení.</string>
     <string name="years_statistics_label">Roky</string>
     <string name="notification_pref_fragment">Upozornění</string>
     <string name="current_playing_episode">Právě přehrávaný&lt;br&gt;</string>
@@ -52,7 +48,7 @@
     <string name="home_new_title">Podívejte se, co je nového</string>
     <string name="home_downloads_title">Správa stahování</string>
     <string name="home_welcome_title">Vítejte v AntennaPod!</string>
-    <string name="home_welcome_text">Zatím nejste přihlášeni k odběru žádných podcastů. Otevřete boční nabídku a přidejte podcast.</string>
+    <string name="home_welcome_text">Zatím nejste přihlášeni k odběru žádných podcastů. Otevřete menu a přidejte podcast.</string>
     <string name="notification_permission_denied">Zamítli jste oprávnění.</string>
     <string name="configure_home">Nastavení domovské obrazovky</string>
     <string name="section_hidden">Skryté</string>
@@ -116,8 +112,8 @@
     <string name="feed_auto_download_always">Vždy</string>
     <string name="feed_auto_download_never">Nikdy</string>
     <string name="feed_new_episodes_action_add_to_inbox">Přidat do nových</string>
-    <string name="feed_new_episodes_action_add_to_queue">Přidat do fronty</string>
-    <string name="feed_new_episodes_action_nothing">Nic</string>
+    <string name="feed_new_episodes_action_add_to_queue">Přidat do fronty, vypnout automatické stahování</string>
+    <string name="feed_new_episodes_action_nothing">Nic, vypnout automatické stahování</string>
     <string name="episode_cleanup_never">Nikdy</string>
     <string name="episode_cleanup_except_favorite_removal">Pokud není mezi oblíbenými</string>
     <string name="episode_cleanup_queue_removal">Pokud není ve frontě</string>
@@ -133,7 +129,7 @@
         <item quantity="other">%d epizod</item>
     </plurals>
     <string name="episode_notification">Upozornění na epizody</string>
-    <string name="episode_notification_summary">Zobrazit oznámení když vyjde nová epizoda.</string>
+    <string name="episode_notification_summary">Zobrazit oznámení když vyjde nová epizoda</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s má novou epizodu</item>
         <item quantity="few">%2$s má %1$d nové epizody</item>
@@ -144,11 +140,11 @@
         <item quantity="few">Nové epizod</item>
         <item quantity="other">Nových epizod</item>
     </plurals>
-    <string name="new_episode_notification_group_text">Tvé odběry mají nové epizody</string>
+    <string name="new_episode_notification_group_text">Tvé odběry mají nové epizody.</string>
     <!--Actions on feeds-->
   <string name="remove_all_inbox_label">Odebrat vše z nových</string>
     <string name="removed_all_inbox_msg">Vše z nových odebráno</string>
-    <string name="remove_all_inbox_confirmation_msg">Potvrďte prosím odebrání všech položek z nových</string>
+    <string name="remove_all_inbox_confirmation_msg">Potvrďte prosím odebrání všech položek z nových.</string>
     <string name="multi_select_mark_played_confirmation">Potvrďte prosím, že chcete označit všechny vybrané položky jako poslechnuté.</string>
     <string name="multi_select_mark_unplayed_confirmation">Potvrďte prosím, že chcete označit všechny vybrané položky jako neposlechnuté.</string>
     <string name="show_info_label">Informace o zdroji</string>
@@ -198,33 +194,33 @@
     <string name="mark_read_no_media_label">Označit jako poslechnuté</string>
     <string name="play_this_to_seek_position">Pro přeskočení na pozice musíte epizodu přehrát</string>
     <plurals name="marked_read_batch_label">
-        <item quantity="one">%d epizoda označena jako přehraná</item>
-        <item quantity="few">%d epizody označeny jako přehrané</item>
-        <item quantity="other">%d epizod označeno jako přehrané</item>
+        <item quantity="one">%d epizoda označena jako přehraná.</item>
+        <item quantity="few">%d epizody označeny jako přehrané.</item>
+        <item quantity="other">%d epizod označeno jako přehrané.</item>
     </plurals>
     <string name="mark_unread_label">Označit jako neposlechnuté</string>
     <string name="mark_unread_label_no_media">Označit jako nepřečtené</string>
     <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d epizoda označena jako neposlechnutá</item>
-        <item quantity="few">%d epizody označeny jako neposlechnuté</item>
-        <item quantity="other">%d epizod označeno jako neposlechnuté</item>
+        <item quantity="one">%d epizoda označena jako neposlechnutá.</item>
+        <item quantity="few">%d epizody označeny jako neposlechnuté.</item>
+        <item quantity="other">%d epizod označeno jako neposlechnuté.</item>
     </plurals>
     <string name="add_to_queue_label">Přidat do fronty</string>
     <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d epizoda přidána do fronty</item>
-        <item quantity="few">%d epizody přidány do fronty</item>
-        <item quantity="other">%d epizod přidáno do fronty</item>
+        <item quantity="one">%d epizoda přidána do fronty.</item>
+        <item quantity="few">%d epizody přidány do fronty.</item>
+        <item quantity="other">%d epizod přidáno do fronty.</item>
     </plurals>
     <string name="remove_from_queue_label">Odebrat z fronty</string>
     <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d epizoda odebrána z fronty</item>
-        <item quantity="few">%d epizody odebrány z fronty</item>
-        <item quantity="other">%d epizod odebráno z fronty</item>
+        <item quantity="one">%d epizoda odebrána z fronty.</item>
+        <item quantity="few">%d epizody odebrány z fronty.</item>
+        <item quantity="other">%d epizod odebráno z fronty.</item>
     </plurals>
     <plurals name="removed_from_inbox_batch_label">
-        <item quantity="one">%d epizoda odebrána z doručených</item>
-        <item quantity="few">%d epizody odebrány z doručených</item>
-        <item quantity="other">%d epizod odebráno z nových</item>
+        <item quantity="one">%d epizoda odebrána z doručených.</item>
+        <item quantity="few">%d epizody odebrány z doručených.</item>
+        <item quantity="other">%d epizod odebráno z nových.</item>
     </plurals>
     <string name="add_to_favorite_label">Přidat do oblíbených</string>
     <string name="remove_from_favorite_label">Odebrat z oblíbených</string>
@@ -246,7 +242,7 @@
     <string name="download_error_insufficient_space">Ve vašem zařízení není dostatek místa.</string>
     <string name="download_error_http_data_error">Chyba HTTP dat</string>
     <string name="download_error_error_unknown">Neznámá chyba</string>
-    <string name="download_error_parser_exception">Server podcastu odeslal nefunkční zdroj podcastu.</string>
+    <string name="download_error_parser_exception">Server podcastu odeslal nefunkční zdroj podcastu. Doporučujeme to zkontrolovat pomocí validátoru podcastů, jako je castfeedvalidator.com, a kontaktovat tvůrce podcastu.</string>
     <string name="download_error_unsupported_type">Nepodporovaný typ kanálu</string>
     <string name="download_error_unsupported_type_html">Server podcastu odeslal webovou stránku místo podcastu.</string>
     <string name="download_error_not_found">Server podcastu nemůže najít soubor - pravděpodobně byl smazán.</string>
@@ -277,7 +273,7 @@
     <string name="authentication_notification_title">Vyžadováno ověření</string>
     <string name="confirm_mobile_download_dialog_title">Potvrdit stahování přes mobilní data</string>
     <string name="confirm_mobile_download_dialog_message">Stahování přes mobilní datové připojení je v nastavení zakázáno. AntennaPod může epizodu stáhnout později automaticky, až bude k dispozici Wi-Fi.</string>
-    <string name="confirm_mobile_download_dialog_message_vpn">Aplikace VPN předstírá, že je mobilní sítí (měřeným připojením). Stahování podcastů přes mobilní datové připojení je v nastavení zakázáno. Pokud chcete tento problém odstranit, obraťte se na tvůrce aplikace VPN.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">- Používáte VPN? Aplikace VPN předstírá, že je mobilní sítí (měřené připojení). Pokud chcete tento problém odstranit, obraťte se na tvůrce aplikace VPN.\n- Nepoužíváte síť VPN? Otevřete nastavení Wi-Fi v systému Android a změňte typ své Wi-Fi tak, aby nebyla měřená.</string>
     <string name="confirm_mobile_download_dialog_download_later">Stáhnout později</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">I přesto stáhnout</string>
     <string name="confirm_mobile_streaming_notification_title">Potvrďte streamování přes mobilní data</string>
@@ -285,7 +281,7 @@
     <string name="confirm_mobile_streaming_button_always">Vždy</string>
     <string name="confirm_mobile_streaming_button_once">Jednou</string>
     <!--Mediaplayer messages-->
-  <string name="playback_error_generic"><![CDATA[Mediální soubor se nepodařilo přehrát.\n\n- Zkuste epizodu smazat a znovu stáhnout.\n- Zkontrolujte síťové připojení a ujistěte se, že přístup neblokuje žádná VPN nebo přihlašovací stránka.\n- Zkuste dlouze stisknout a sdílet \"Mediální adresu\" ve webovém prohlížeči a zjistit, zda ji lze přehrát tam. Pokud ne, kontaktujte tvůrce podcastu.]]></string>
+  <string name="playback_error_generic">Mediální soubor se nepodařilo přehrát.\n\n- Zkuste epizodu smazat a znovu stáhnout.\n- Zkontrolujte síťové připojení a ujistěte se, že přístup neblokuje žádná VPN nebo přihlašovací stránka.\n- Zkuste dlouze stisknout a sdílet \\\"Mediální adresu\\\" ve webovém prohlížeči a zjistit, zda ji lze přehrát tam. Pokud ne, kontaktujte tvůrce podcastu.</string>
     <string name="no_media_playing_label">Žádné probíhající přehrávání</string>
     <string name="unknown_media_key">AntennaPod - Neznámý klíč médií: %1$d</string>
     <string name="error_file_not_found">Soubor nebyl nalezen</string>
@@ -346,7 +342,7 @@
     <string name="preference_search_no_results">Žádné výsledky</string>
     <string name="preference_search_clear_history">Vymazat historii</string>
     <string name="pref_episode_cleanup_summary">Epizody, které by mělo být možné smazat, pokud bude funkce automatického stahování potřebovat místo pro nové epizody</string>
-    <string name="pref_pauseOnDisconnect_sum">Při odpojení sluchátek nebo bluetooth připojení pozastavit přehrávání.</string>
+    <string name="pref_pauseOnDisconnect_sum">Při odpojení sluchátek nebo Bluetooth připojení pozastavit přehrávání</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Pokračovat v přehrávání po připojení sluchátek</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Pokračovat v přehrávání po připojení bluetooth</string>
     <string name="pref_hardware_forward_button_title">Tlačítko vpřed</string>
@@ -364,7 +360,7 @@
     <string name="pref_smart_mark_as_played_title">Chytré označování jako poslechnuté</string>
     <string name="pref_skip_keeps_episodes_sum">Neodstraňovat epizody při jejich přeskočení</string>
     <string name="pref_skip_keeps_episodes_title">Ponechat přeskočené epizody</string>
-    <string name="pref_favorite_keeps_episodes_sum">Ponechat epizody označené jako oblíbené.</string>
+    <string name="pref_favorite_keeps_episodes_sum">Ponechat epizody označené jako oblíbené</string>
     <string name="pref_favorite_keeps_episodes_title">Ponechat oblíbené epizody</string>
     <string name="playback_pref">Přehrávání</string>
     <string name="playback_pref_sum">Ovládání tlačítky sluchátek, přeskakování, fronta</string>
@@ -385,12 +381,11 @@
     <string name="pref_unpauseOnHeadsetReconnect_title">Opětovné připojení sluchátek</string>
     <string name="pref_unpauseOnBluetoothReconnect_title">Opětovné připojení Bluetooth</string>
     <string name="pref_stream_over_download_title">Upřednostnit streamování</string>
-    <string name="pref_stream_over_download_sum">Zobrazit tlačítko streamovat místo tlačítka stáhnout v seznamech.</string>
+    <string name="pref_stream_over_download_sum">Zobrazit v seznamech tlačítko streamovat místo tlačítka stáhnout</string>
     <string name="pref_mobileUpdate_title">Aktualizace přes mobilní data</string>
     <string name="pref_mobileUpdate_sum">Vyberte, co by mělo být povoleno přes mobilní data</string>
     <string name="pref_mobileUpdate_refresh">Obnovit podcast</string>
     <string name="pref_mobileUpdate_images">Obrázky podcastů/epizod</string>
-    <string name="pref_mobileUpdate_auto_download">Automatické stahování</string>
     <string name="pref_mobileUpdate_episode_download">Stahování epizod</string>
     <string name="pref_mobileUpdate_streaming">Streamování</string>
     <string name="user_interface_label">Uživatelské rozhraní</string>
@@ -404,7 +399,7 @@
     <string name="pref_nav_drawer_feed_counter_title">Nastavit počítadlo odběrů</string>
     <string name="pref_nav_drawer_feed_counter_sum">Změnit informaci zobrazenou čítačem odběrů. Též ovlivňuje řazení, je-li nastaveno na „podle čítače“.</string>
     <string name="pref_automatic_download_title">Automatické stahování</string>
-    <string name="pref_automatic_download_sum">Nastavení automatického stahování epizod.</string>
+    <string name="pref_automatic_download_sum">Nastavení automatického stahování epizod</string>
     <string name="pref_automatic_download_on_battery_title">Stahovat, pokud neprobíhá nabíjení</string>
     <string name="pref_automatic_download_on_battery_sum">Povolit automatické stahování i pokud není baterie nabíjena</string>
     <string name="pref_episode_cover_title">Použít obrázek epizody</string>
@@ -418,22 +413,22 @@
     <string name="pref_playback_speed_sum">Upravit předvybrané možnosti pro přehrávání zvuku různými rychlostmi</string>
     <string name="pref_feed_playback_speed_sum">Rychlost, která bude použita při zahájení přehrávání epizod tohoto podcastu</string>
     <string name="pref_feed_skip">Automatické přeskočení</string>
-    <string name="pref_feed_skip_sum">Přeskočit úvod a závěr.</string>
+    <string name="pref_feed_skip_sum">Přeskočit úvod a závěr</string>
     <string name="pref_feed_skip_ending">Přeskočit posledních</string>
     <string name="pref_feed_skip_intro">Přeskočit prvních</string>
     <string name="pref_feed_skip_ending_toast">Přeskočeno posledních %d sekund</string>
     <string name="pref_feed_skip_intro_toast">Přeskočeno prvních %d sekund</string>
-    <string name="pref_playback_time_respects_speed_title">Upravit informace o médiu vzhledem k rychlosti přehrávání.</string>
+    <string name="pref_playback_time_respects_speed_title">Upravit informace o médiu vzhledem k rychlosti přehrávání</string>
     <string name="pref_playback_time_respects_speed_sum">Zobrazené délka a pozice jsou upravené vzhledem k rychlosti přehrávání</string>
     <string name="pref_rewind">Délka času posunu zpět</string>
-    <string name="pref_rewind_sum">Upravit o kolik sekund se přeskočí zpět při stisku tlačítka přetočit zpět (RW).</string>
+    <string name="pref_rewind_sum">Upravit o kolik sekund se přeskočí zpět při stisku tlačítka přetočit zpět (RW)</string>
     <string name="pref_expandNotify_title">Vysoká priorita pro oznámení</string>
-    <string name="pref_expandNotify_sum">Toto obvykle přidá tlačítka ovládání přehrávání do zpráv upozornění</string>
+    <string name="pref_expandNotify_sum">Toto obvykle přidá tlačítka ovládání přehrávání do zpráv upozornění.</string>
     <string name="pref_persistNotify_title">Trvalé ovládací prvky přehrávání</string>
-    <string name="pref_persistNotify_sum">Zachovat oznámení a ovládání na obrazovce uzamčení i při pozastaveném přehrávání.</string>
-    <string name="pref_compact_notification_buttons_dialog_error_exact">Musíte zvolil přesně 2 položky.</string>
+    <string name="pref_persistNotify_sum">Zachovat oznámení a ovládání na obrazovce uzamčení i při pozastaveném přehrávání</string>
+    <string name="pref_compact_notification_buttons_dialog_error_exact">Musíte zvolil přesně 2 položky</string>
     <string name="pref_full_notification_buttons_title">Nastavit tlačítka v oznámení</string>
-    <string name="pref_full_notification_buttons_sum">Změňte tlačítka v oznámení přehrávání.</string>
+    <string name="pref_full_notification_buttons_sum">Změňte tlačítka v oznámení přehrávání</string>
     <string name="pref_enqueue_location_title">Pozice přidávání do fronty</string>
     <string name="pref_enqueue_location_sum">Přidávat epizody na: %1$s</string>
     <string name="enqueue_location_back">konec</string>
@@ -455,14 +450,14 @@
     <string name="pref_skip_silence_title">Přeskočit ticho v audiu</string>
     <string name="behavior">Chování</string>
     <string name="pref_default_page">Výchozí stránka</string>
-    <string name="pref_default_page_sum">Obrazovka, která se otevře při spuštění AntennaPod.</string>
+    <string name="pref_default_page_sum">Obrazovka, která se otevře při spuštění AntennaPod</string>
     <string name="pref_back_button_opens_drawer">Tlačítko Zpět otevře menu</string>
     <string name="pref_back_button_opens_drawer_summary">Stisknutím tlačítka zpět na výchozí stránce se otevře navigační panel</string>
     <string name="remember_last_page">Pamatovat si poslední stránku</string>
     <string name="pref_delete_removes_from_queue_title">Mazání také odstraňuje epizody z fronty</string>
-    <string name="pref_delete_removes_from_queue_sum">Automaticky odstraní epizodu z fronty poté, co je smazána.</string>
+    <string name="pref_delete_removes_from_queue_sum">Automaticky odstraní epizodu z fronty poté, co je smazána</string>
     <string name="pref_filter_feed_title">Filtr odběrů</string>
-    <string name="pref_filter_feed_sum">Filtrujte svoje odběry v navigačním panelu a na obrazovce odběrů.</string>
+    <string name="pref_filter_feed_sum">Filtrujte svoje odběry v navigačním panelu a na obrazovce odběrů</string>
     <string name="subscriptions_counter_greater_zero">Počet vyšší než nula</string>
     <string name="auto_downloaded">Automaticky stahováno</string>
     <string name="not_auto_downloaded">Nebylo automaticky staženo</string>
@@ -570,7 +565,6 @@
     <string name="gpodnetauth_existing_devices">Existující zařízení</string>
     <string name="gpodnetauth_create_device">Vytvořit zařízení</string>
     <string name="gpodnetauth_finish_descr">Gratulujeme! Váš gpodder.net účet je nyní úspěšně propojen s vaším zařízením. AntennaPod bude automaticky synchronizovat odebírané podcasty s nastaveným účtem na gpodder.net.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Synchronizovat nyní</string>
     <string name="pref_gpodnet_setlogin_information_title">Změna přihlašovacích údajů</string>
     <string name="pref_gpodnet_setlogin_information_sum">Změní přihlašovací údaje k vašemu gpodder.net účtu.</string>
     <string name="synchronization_sync_changes_title">Synchronizovat nyní</string>
@@ -578,7 +572,7 @@
     <string name="synchronization_full_sync_title">Vynutit úplnou synchronizaci</string>
     <string name="synchronization_force_sync_summary">Opětovná synchronizace všech odběrů a stavů epizod</string>
     <string name="synchronization_logout">Odhlásit se</string>
-    <string name="synchronization_login_status"><![CDATA[Přihlášen jako <i>%1$s</i> na <i>%2$s</i>. <br/><br/>Po odhlášení můžete znovu zvolit poskytovatele synchronizace]]></string>
+    <string name="synchronization_login_status">Přihlášen jako %1$s na %2$s.\n\nPo odhlášení můžete znovu zvolit poskytovatele synchronizace.</string>
     <string name="pref_synchronization_logout_toast">Úspěšně odhlášeno</string>
     <string name="gpodnetsync_error_title">gpodder.net synchronizace selhala</string>
     <string name="gpodnetsync_error_descr">"V průběhu synchronizace nastala chyba: "</string>
@@ -588,7 +582,7 @@
     <!--Directory chooser-->
   <string name="choose_data_directory">Vybrat umístění dat</string>
     <string name="choose_data_directory_available_space">%1$s z %2$s volných</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Místo snížení hlasitosti pozastavit přehrávání v případě, že jiná aplikace přehrává zvuk.</string>
+    <string name="pref_pausePlaybackForFocusLoss_sum">Místo snížení hlasitosti pozastavit přehrávání v případě, že jiná aplikace přehrává zvuk</string>
     <string name="pref_pausePlaybackForFocusLoss_title">Automatické pozastavení přehrávání</string>
     <!--Rating dialog-->
   <string name="rating_tagline">Od %1$s jste přehráli %2$s%3$d%4$s hodin podcastů.</string>
@@ -619,9 +613,9 @@
     <string name="add_preset">Přidat předvolbu</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">Ověření</string>
-    <string name="authentication_descr">Změnit uživatelské jméno a heslo pro tento podcast a jeho epizody.</string>
+    <string name="authentication_descr">Změnit uživatelské jméno a heslo pro tento podcast a jeho epizody</string>
     <string name="feed_tags_label">Śtítky</string>
-    <string name="feed_tags_summary">Pro lepší organizaci vašich odběrů můžete upravit štítky tohoto podcastu.</string>
+    <string name="feed_tags_summary">Pro lepší organizaci vašich odběrů můžete upravit štítky tohoto podcastu</string>
     <string name="feed_folders_include_root">Zobrazit tento podcast v hlavním seznamu</string>
     <string name="multi_feed_common_tags_info">Zobrazí se pouze společné štítky ze všech vybraných odběrů. Ostatní štítky zůstávají nedotčeny.</string>
     <string name="auto_download_settings_label">Nastavení automatického stahování</string>
@@ -633,7 +627,6 @@
     <string name="exclude_episodes_shorter_than">Vyloučit epizody kratší než</string>
     <string name="keep_updated">Udržovat aktuální</string>
     <string name="keep_updated_summary">Zahrnout tento podcast při (automatickém) obnovování všech podcastů</string>
-    <string name="auto_download_disabled_globally">Automatické stahování je zakázané v hlavním nastavení AntennaPodu</string>
     <string name="statistics_expected_next_episode_any_day">Jakýkoliv den</string>
     <string name="statistics_expected_next_episode_unknown">Neznámý</string>
     <string name="edit_url_menu">Upravit adresu URL kanálu</string>
@@ -651,7 +644,7 @@
     <string name="release_schedule_saturday">So</string>
     <string name="release_schedule_sunday">Ne</string>
     <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Importuji odběry z jednoúčelových aplikací...</string>
+  <string name="sp_apps_importing_feeds_msg">Importuji odběry z jednoúčelových aplikací…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Vyhledat podcast…</string>
     <string name="search_itunes_label">Vyhledávání v Apple Podcastech</string>
@@ -701,9 +694,8 @@
   <string name="proxy_type_label">Typ</string>
     <string name="host_label">Host</string>
     <string name="port_label">Port</string>
-    <string name="optional_hint">(Volitelný)</string>
     <string name="proxy_test_label">Test</string>
-    <string name="proxy_checking">Kontrola...</string>
+    <string name="proxy_checking">Kontroluji…</string>
     <string name="proxy_test_successful">Test úspěšný</string>
     <string name="proxy_test_failed">Test selhal</string>
     <string name="proxy_host_empty_error">Host nesmí být prázdný</string>
@@ -716,8 +708,8 @@
     <string name="notification_group_news">Novinky</string>
     <string name="notification_channel_user_action">Je vyžadována činnost z vaší strany</string>
     <string name="notification_channel_user_action_description">Zobrazuje se, pokud je požadována činnost z vaší strany. Například je-li potřeba zadat heslo.</string>
-    <string name="notification_channel_downloading">Stahuji</string>
-    <string name="notification_channel_downloading_description">Zobrazuje se v průběhu stahování.</string>
+    <string name="notification_channel_downloading">Stahuji epizody</string>
+    <string name="notification_channel_downloading_description">Zobrazuje se v průběhu stahování epizod.</string>
     <string name="notification_channel_playing">Přehrává se</string>
     <string name="notification_channel_playing_description">Umožňuje ovládat přehrávání. Toto je to hlavní oznámení, které uvidité při přehrávání podcastu.</string>
     <string name="notification_channel_download_error">Stahování selhalo</string>
@@ -725,17 +717,197 @@
     <string name="notification_channel_sync_error">Synchronizace selhala</string>
     <string name="notification_channel_sync_error_description">Zobrazovat chybu synchronizace s gpodder.</string>
     <string name="notification_channel_new_episode">Nová epizoda</string>
-    <string name="notification_channel_new_episode_description">Zobrazeno pokud bude nalezena nová epizoda podcastu a upozornění jsou zapnuta.</string>
+    <string name="notification_channel_new_episode_description">Zobrazeno pokud bude nalezena nová epizoda podcastu a upozornění jsou zapnuta</string>
     <!--Widget settings-->
   <string name="widget_settings">Nastavení widgetu</string>
     <string name="widget_create_button">Vytvořit widget</string>
     <string name="widget_opacity">Průhlednost</string>
     <!--On-Demand configuration-->
-  <string name="on_demand_config_setting_changed">Nastavení úspěšně aktualizováno</string>
+  <string name="on_demand_config_setting_changed">Nastavení úspěšně aktualizováno.</string>
     <string name="on_demand_config_stream_text">Vypadá to, že častěji streamujete než stahujete. Chcete zobrazovat tlačítko streamovat v seznamu epizod?</string>
     <string name="on_demand_config_download_text">Vypadá to, že častěji stahujete než streamujete. Chcete zobrazovat tlačítko stáhnout v seznamu epizod?</string>
     <string name="shortcut_subscription_label">Zkratka odběru</string>
     <string name="shortcut_select_subscription">Vyberte odběr</string>
     <string name="add_shortcut">Přidat zkratku</string>
     <string name="home_no_recent_unplayed_episodes_text">Už jste přehráli všechny epizody. Není vás čím překvapit ;)</string>
+    <plurals name="episode_cleanup_hours_after_listening">
+        <item quantity="one">%d hodinu po dokončení</item>
+        <item quantity="few">%d hodiny po dokončení</item>
+        <item quantity="other">%d hodin po dokončení</item>
+    </plurals>
+    <string name="add_feed_label_short">Přidat</string>
+    <string name="episodes_label_short">Epizody</string>
+    <string name="home_label_short">Domů</string>
+    <string name="queue_label_short">Fronta</string>
+    <string name="inbox_label_short">Nové</string>
+    <string name="downloads_label_short">Stahování</string>
+    <string name="subscriptions_label_short">Odběry</string>
+    <string name="playback_history_label_short">Historie</string>
+    <string name="home_continue_empty_text">Epizody můžete přidat jejich stáhnutím nebo dlouhým podržením a výběrem možnosti „Přidat do fronty“.</string>
+    <string name="home_new_empty_text">Zde se zobrazí nové epizody. Můžete se poté rozhodnout, zda jsou pro Vás zajímavé.</string>
+    <string name="section_shown">Zobrazené</string>
+    <string name="episodes_label_more">Epizody »</string>
+    <string name="home_downloads_empty_text">Můžete si stáhnout jakoukoliv epizodu pro poslech offline.</string>
+    <string name="queue_label_more">Pořadí »</string>
+    <string name="inbox_label_more">Nové »</string>
+    <string name="downloads_label_more">Stahování »</string>
+    <string name="subscriptions_label_more">Odběry »</string>
+    <string name="global_default_with_value">Globální výchozí (%1$s)</string>
+    <string name="enabled">Zapnuto</string>
+    <string name="disabled">Vypnuto</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">Celková velikost %d epizody v zařízení</item>
+        <item quantity="few">Celková velikost %d epizod v zařízení</item>
+        <item quantity="other">Celková velikost %d epizod v zařízení</item>
+    </plurals>
+    <plurals name="episode_cleanup_days_after_listening">
+        <item quantity="one">%d den po dokončení</item>
+        <item quantity="few">%d dny po dokončení</item>
+        <item quantity="other">%d dnů po dokončení</item>
+    </plurals>
+    <string name="null_value_podcast_error">Odkaz, na který jste klepli, neobsahuje platnou adresu URL podcastu. Ověřte prosím odkaz a zkuste to znovu, nebo vyhledejte podcast ručně.</string>
+    <string name="theming">Témata</string>
+    <string name="pref_auto_delete_sum">Smazat epizody po přehrání nebo když automatické stahování potřebuje místo</string>
+    <string name="pref_nav_drawer_items_sum">Změnit položky, které se zobrazují v navigačním menu nebo v dolní navigaci</string>
+    <string name="subscription_display_list">Seznam</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">zahájena</item>
+        <item quantity="few">zahájeny</item>
+        <item quantity="other">zahájeno</item>
+    </plurals>
+    <string name="rating_volunteers_label">AntennaPod vyvíjejí dobrovolníci ve svém volném čase. Podělte se o své uznání jejich práce zanecháním pěkného hodnocení.</string>
+    <string name="download_started_talkback">Zahájeno stahování pro %1$s</string>
+    <string name="state_deleted_not_subscribed">Ještě nejste přihlášeni k odběru tohoto podcastu. Přihlaste se k bezplatnému odběru, abyste k němu měli snadnější přístup a zachovali si historii přehrávání.</string>
+    <string name="edit_url_confirmation_msg">Změna adresy RSS může snadno narušit stav přehrávání a výpis epizod podcastu. Její změnu NEDOPORUČUJEME a v případě, že se něco pokazí, NEBUDE poskytnuta podpora. Tuto změnu nelze vrátit zpět. Rozbitý odběr NELZE opravit pouhou změnou adresy zpět. Před pokračováním doporučujeme vytvořit zálohu.</string>
+    <string name="pref_auto_delete_playback_title">Smazat po přehrání</string>
+    <string name="feed_delete_confirmation_msg">Potvrďte, že chcete odstranit podcast \"%1$s\", VŠECHNY jeho epizody (včetně stažených epizod), historii přehrávání a statistiky.</string>
+    <string name="feed_delete_confirmation_msg_batch">Potvrďte, že chcete odstranit vybrané podcasty, VŠECHNY jejich epizody (včetně stažených epizod), historii přehrávání a jejich statistiky.</string>
+    <string name="feed_delete_confirmation_local_msg">Potvrďte, že chcete odstranit podcast \"%1$s\", jeho historii přehrávání a statistiky. Stažené soubory nebudou odstraněny.</string>
+    <string name="multi_select_started_talkback">Akce s více možnostmi výběru zobrazené v dolní části</string>
+    <string name="delete_tag_label">Smazat štítek</string>
+    <string name="delete_tag_confirmation">Potvrďte, že chcete odstranit štítek \"%1$s\".</string>
+    <string name="delete_downloads_played_confirmation">Potvrďte, že chcete odstranit všechna přehraná stažení.</string>
+    <string name="show_transcript">Zobrazit přepis</string>
+    <string name="transcript_follow">Sledovat zvuk</string>
+    <string name="no_transcript_label">Žádný přepis</string>
+    <string name="download_error_unsupported_type_html_manual">Zadaná adresa je webová adresa, nikoli RSS adresa podcastu.</string>
+    <string name="pref_automatic_download_global_description">Automaticky stahovat nové epizody. Lze změnit pro každý podcast.</string>
+    <string name="pref_automatic_download_queue_title">Fronta stahování</string>
+    <string name="pref_automatic_download_queue_description">Automaticky stahovat epizody ve frontě</string>
+    <string name="pref_episode_cache_title">Limit epizod</string>
+    <string name="pref_fast_forward">Délka rychlého posunu vpřed</string>
+    <string name="pref_fast_forward_sum">Přizpůsobení počtu sekund, o které se má přeskočit vpřed po kliknutí na tlačítko rychlého posunu vpřed</string>
+    <string name="episode_lists">Seznamy epizod</string>
+    <string name="pref_downloads_button_action_sum">Zobrazení tlačítka přehrát místo tlačítka smazat na obrazovce stahování souborů</string>
+    <string name="pref_downloads_button_action_title">Přehrát z obrazovky stahování</string>
+    <string name="sync_status_wait_for_downloads">Čekání na aktualizaci odběrů…</string>
+    <plurals name="time_days_quantified">
+        <item quantity="one">%d den</item>
+        <item quantity="few">%d dny</item>
+        <item quantity="other">%d dnů</item>
+    </plurals>
+    <string name="choose_data_directory_message">Zvolte výchozí adresář s daty. AntennaPod vytvoří příslušné podadresáře.</string>
+    <string name="download_completed_talkback">Stahování dokončeno pro %1$s</string>
+    <plurals name="time_minutes_quantified">
+        <item quantity="one">%d minuta</item>
+        <item quantity="few">%d minuty</item>
+        <item quantity="other">%d minut</item>
+    </plurals>
+    <string name="statistics_view_all">Všechny podcasty »</string>
+    <string name="pref_episode_cache_summary">Po dosažení tohoto počtu se automatické stahování zastaví</string>
+    <plurals name="deleted_multi_episode_batch_label">
+        <item quantity="one">%d stažená epizoda smazána.</item>
+        <item quantity="few">%d stažené epizody smazány.</item>
+        <item quantity="other">%d stažených epizod smazáno.</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">stažena</item>
+        <item quantity="few">stažené</item>
+        <item quantity="other">staženo</item>
+    </plurals>
+    <string name="transcript">Přepis</string>
+    <string name="pref_episode_cleanup_title">Odstranit před automatickým stažením</string>
+    <string name="pref_auto_delete_playback_sum">Odstranit epizodu po dokončení přehrávání</string>
+    <string name="pref_nav_drawer_items_title">Přizpůsobit navigaci</string>
+    <string name="pref_show_subscription_title">Zobrazit názvy</string>
+    <string name="episode_information">Informace o epizodě</string>
+    <plurals name="time_seconds_quantified">
+        <item quantity="one">%d sekunda</item>
+        <item quantity="few">%d sekundy</item>
+        <item quantity="other">%d sekund</item>
+    </plurals>
+    <string name="preview_episodes">Náhled epizod</string>
+    <string name="fast_forward_label">Rychlý posun vpřed</string>
+    <string name="delete_downloads_played">Smazat přehrané</string>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">celkem</item>
+        <item quantity="few">celkem</item>
+        <item quantity="other">celkem</item>
+    </plurals>
+    <string name="statistics_years_barchart_description">Doba přehrávání za měsíc</string>
+    <plurals name="time_hours_quantified">
+        <item quantity="one">%d hodina</item>
+        <item quantity="few">%d hodiny</item>
+        <item quantity="other">%d hodin</item>
+    </plurals>
+    <string name="episode_download_failed">Stažení epizody selhalo</string>
+    <string name="nextcloud_login_error_generic">Nelze se přihlásit do vašeho Nextcloudu.\n\n- Zkontrolujte síťové připojení.\n- Zkontrolujte, zda používáte správnou adresu serveru.\n- Zkontrolujte, zda je nainstalován Nextcloud doplněk gpoddersync.</string>
+    <string name="preference_search_clear_input">Vymazat</string>
+    <string name="overflow_more">Více</string>
+    <string name="button_action_fast_forward">Rychlý posun vpřed</string>
+    <string name="pref_auto_delete_title">Automatické mazání</string>
+    <string name="bottom_navigation">Spodní navigace</string>
+    <string name="bottom_navigation_summary">Funkce beta verze: Přístup k nejdůležitějším obrazovkám odkudkoli jediným klepnutím</string>
+    <string name="statistics_time_total">celkem</string>
+    <string name="statistics_time_played">přehráno</string>
+    <string name="statistics_episodes_space">zabraného místa</string>
+    <string name="statistics_release_schedule">plán vydávání</string>
+    <string name="statistics_release_next">další epizoda (odhad)</string>
+    <string name="discover_more">Objevit více »</string>
+    <string name="notification_channel_refreshing">Aktualizuji podcasty</string>
+    <string name="notification_channel_refreshing_description">Zobrazuje se v průběhu kontroly nových epizod.</string>
+    <string name="echo_home_header">Zhodnocení roku</string>
+    <string name="echo_home_subtitle">Vaše nejoblíbenější podcasty a statistiky za uplynulý rok. Exkluzivně v telefonu.</string>
+    <string name="echo_intro_your_year">Tvůj rok</string>
+    <string name="echo_intro_in_podcasts">v podcastech</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Stahování přes mobilní datové připojení v příští %d minutě</item>
+        <item quantity="few">Stahování přes mobilní datové připojení v příštích %d minutách</item>
+        <item quantity="other">Stahování přes mobilní datové připojení v příštích %d minutách</item>
+    </plurals>
+    <string name="clear_queue_confirmation_msg">Potvrďte, že chcete z fronty odstranit VŠECHNY epizody.</string>
+    <plurals name="echo_hours_podcasts">
+        <item quantity="one">hodin epizod\nz %1$d podcastu</item>
+        <item quantity="few">hodin epizod\nze %1$d podcastů</item>
+        <item quantity="other">hodin epizod\nz %1$d podcastů</item>
+    </plurals>
+    <string name="echo_intro_locally">generované soukromě ve vašem telefonu</string>
+    <string name="echo_hours_this_year">Letos jste přehráli</string>
+    <string name="echo_queue_title_clean">A jste připraveni začít rok nanovo. Máte</string>
+    <plurals name="echo_queue_hours_waiting">
+        <item quantity="one">hodin čekajících ve frontě\nz %1$d epizody</item>
+        <item quantity="few">hodin čekajících ve frontě\nze %1$d epizod</item>
+        <item quantity="other">hodin čekajících ve frontě\nz %1$d epizod</item>
+    </plurals>
+    <string name="echo_thanks_we_are_glad_old">že jste s námi letos zůstali!\n\nSvoji první epizodu jste s námi odehráli v %1$s. Od té doby je nám ctí vám pomáhat.</string>
+    <string name="echo_queue_title_many">A letos toho máte ještě dost před sebou. Máte</string>
+    <string name="echo_listened_after_time">Obvykle jste epizodu dokončili %1$s po jejím vydání.</string>
+    <string name="echo_hoarder_comment_hoarder">Říká se, že čísla nelžou. A vzhledem k tomu, že letos bylo odehráno pouze %1$d%% z vašich %2$d aktivních odběrů, máme nejspíš pravdu.</string>
+    <string name="echo_hoarder_subtitle_clean">Čisto!</string>
+    <string name="echo_listened_after_comment_addict">Jste podcastový závislák</string>
+    <string name="echo_listened_after_comment_easy">Jste pohodář</string>
+    <string name="echo_queue_hours_clean">To je zhruba %1$s každý den než začne %2$d.</string>
+    <string name="echo_queue_hours_normal">To je zhruba %1$s každý den než začně %2$d. Pokud vynecháte několik epizod, můžete začít rok načisto.</string>
+    <string name="echo_queue_hours_much">To je zhruba %1$s každý den než začne %2$d. Počkat, cože?</string>
+    <string name="echo_listened_after_title">Provedli jsme analýzu, kdy byly epizody vydány a kdy jste je dokončili. Náš závěr?</string>
+    <string name="echo_hoarder_title">Také nás zajímalo: posloucháte podcasty, které odebíráte?</string>
+    <string name="echo_hoarder_subtitle_hoarder">Při pohledu na čísla si myslíme, že jste sběratel</string>
+    <string name="echo_hoarder_subtitle_medium">Koukněte. Žádné hromadění.</string>
+    <string name="echo_hoarder_comment_medium">V tomto roce jste přehráli epizody z %1$d%% z vašich %2$d aktivních odběrů. Co takhle znovu vyzkoušet \"%3$s\"?</string>
+    <string name="echo_hoarder_comment_clean">V tomto roce jste přehráli epizody z %1$d%% z vašich %2$d aktivních odběrů. Vsadíme se, že si také udržujete čistý stůl!</string>
+    <string name="echo_thanks_large">Díky</string>
+    <string name="echo_thanks_we_are_glad_new">že jste se k nám letos připojili!\n\nAť už jste přešli z jiné aplikace, nebo jste s námi začali své podcastové dobrodružství: jsme rádi, že vás mezi sebou máme!</string>
+    <string name="echo_thanks_now_favorite">Nyní se pojďme podívat na vaše oblíbené podcasty…</string>
+    <string name="echo_share_heading">Mé nejoblíbenější podcasty</string>
+    <string name="echo_share">Můj rok %d v podcastech. #AntennaPodEcho</string>
 </resources>

@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.subscriptions;
 
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.CheckBox;
@@ -11,7 +12,6 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -30,9 +30,9 @@ public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
     public final CheckBox selectCheckbox;
     public final CardView card;
     public final View errorIcon;
-    public final WeakReference<MainActivity> mainActivityRef;
+    public final WeakReference<Activity> mainActivityRef;
 
-    public SubscriptionViewHolder(@NonNull View itemView, MainActivity mainActivity) {
+    public SubscriptionViewHolder(@NonNull View itemView, Activity mainActivity) {
         super(itemView);
         title = itemView.findViewById(R.id.titleLabel);
         coverImage = itemView.findViewById(R.id.coverImage);

@@ -187,11 +187,16 @@ public abstract class FeedDatabaseWriter {
                             || priorMostRecentDate.before(item.getPubDate())
                             || priorMostRecentDate.equals(item.getPubDate());
                     if (savedFeed.getState() == Feed.STATE_SUBSCRIBED && shouldPerformNewEpisodesAction) {
-                        Log.d(TAG, "Performing new episode action for item published on " + item.getPubDate()
-                                + ", prior most recent date = " + priorMostRecentDate);
                         FeedPreferences.NewEpisodesAction action = savedFeed.getPreferences().getNewEpisodesAction();
                         if (action == FeedPreferences.NewEpisodesAction.GLOBAL) {
                             action = UserPreferences.getNewEpisodesAction();
+                        }
+                        FeedPreferences.AutoDownloadSetting autoDownload = savedFeed.getPreferences().getAutoDownload();
+                        if (!savedFeed.isLocalFeed() && (autoDownload == FeedPreferences.AutoDownloadSetting.ENABLED
+                                || (autoDownload == FeedPreferences.AutoDownloadSetting.GLOBAL
+                                        && UserPreferences.isEnableAutodownloadGlobal()))) {
+                            // Auto download currently only considers episodes in the inbox
+                            action = FeedPreferences.NewEpisodesAction.ADD_TO_INBOX;
                         }
                         switch (action) {
                             case ADD_TO_INBOX:

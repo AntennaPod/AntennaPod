@@ -61,6 +61,31 @@ public abstract class NavigationNames {
         }
     }
 
+    public static @StringRes int getShortLabel(String tag) {
+        switch (tag) {
+            case HomeFragment.TAG:
+                return R.string.home_label_short;
+            case QueueFragment.TAG:
+                return R.string.queue_label_short;
+            case InboxFragment.TAG:
+                return R.string.inbox_label_short;
+            case AllEpisodesFragment.TAG:
+                return R.string.episodes_label_short;
+            case SubscriptionFragment.TAG:
+                return R.string.subscriptions_label_short;
+            case CompletedDownloadsFragment.TAG:
+                return R.string.downloads_label_short;
+            case PlaybackHistoryFragment.TAG:
+                return R.string.playback_history_label_short;
+            case AddFeedFragment.TAG:
+                return R.string.add_feed_label_short;
+            case NavListAdapter.SUBSCRIPTION_LIST_TAG:
+                return R.string.subscriptions_list_label;
+            default:
+                return 0;
+        }
+    }
+
     public static int getBottomNavigationItemId(String tag) {
         switch (tag) {
             case QueueFragment.TAG:

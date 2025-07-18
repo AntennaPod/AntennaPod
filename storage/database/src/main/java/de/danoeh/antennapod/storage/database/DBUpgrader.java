@@ -45,7 +45,7 @@ class DBUpgrader {
         }
         if (oldVersion <= 7) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
-                    + " ADD COLUMN " + PodDBAdapter.KEY_PLAYBACK_COMPLETION_DATE
+                    + " ADD COLUMN " + PodDBAdapter.KEY_LAST_PLAYED_TIME_HISTORY
                     + " INTEGER");
         }
         if (oldVersion <= 8) {
@@ -210,7 +210,7 @@ class DBUpgrader {
         }
         if (oldVersion < 1040002) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
-                    + " ADD COLUMN " + PodDBAdapter.KEY_LAST_PLAYED_TIME + " INTEGER DEFAULT 0");
+                    + " ADD COLUMN " + PodDBAdapter.KEY_LAST_PLAYED_TIME_STATISTICS + " INTEGER DEFAULT 0");
         }
         if (oldVersion < 1040013) {
             db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_PUBDATE);
@@ -348,6 +348,12 @@ class DBUpgrader {
                     + " ADD COLUMN " + PodDBAdapter.KEY_PODCASTINDEX_TRANSCRIPT_URL + " TEXT");
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
                     + " ADD COLUMN " + PodDBAdapter.KEY_PODCASTINDEX_TRANSCRIPT_TYPE + " TEXT");
+        }
+        if (oldVersion < 3080000) {
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_SOCIAL_INTERACT_URL + " TEXT");
+            db.execSQL("DELETE FROM " + PodDBAdapter.TABLE_NAME_FAVORITES + " WHERE " + PodDBAdapter.KEY_FEEDITEM
+                    + " NOT IN (SELECT " + PodDBAdapter.KEY_ID + " FROM " + PodDBAdapter.TABLE_NAME_FEED_ITEMS + ")");
         }
     }
 

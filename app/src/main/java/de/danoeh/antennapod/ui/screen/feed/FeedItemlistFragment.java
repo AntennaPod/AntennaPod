@@ -1,7 +1,11 @@
 package de.danoeh.antennapod.ui.screen.feed;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -11,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
@@ -21,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.FeedItemListFragmentBinding;
@@ -31,6 +33,7 @@ import de.danoeh.antennapod.event.FeedEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -64,6 +67,7 @@ import de.danoeh.antennapod.ui.screen.episode.ItemPagerFragment;
 import de.danoeh.antennapod.ui.screen.feed.preferences.FeedSettingsFragment;
 import de.danoeh.antennapod.ui.screen.subscriptions.FeedMenuHandler;
 import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
+import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -100,6 +104,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private Feed feed;
     private Disposable disposable;
     private FeedItemListFragmentBinding viewBinding;
+    private Pair<Integer, Integer> scrollPosition = null;
 
     /**
      * Creates new ItemlistFragment which shows the Feeditems of a specific
@@ -197,16 +202,37 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         viewBinding.floatingSelectMenu.inflate(R.menu.episodes_apply_action_speeddial);
         viewBinding.floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
             if (adapter.getSelectedCount() == 0) {
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
-                        Snackbar.LENGTH_SHORT);
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.no_items_selected_message)));
                 return false;
             }
-            new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId())
-                    .handleAction(adapter.getSelectedItems());
-            adapter.endSelectMode();
+            EpisodeMultiSelectActionHandler handler
+                    = new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId());
+            Completable.fromAction(() -> handleActionForAllSelectedItems(handler))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> adapter.endSelectMode(),
+                            error -> Log.e(TAG, Log.getStackTraceString(error)));
             return true;
         });
         return viewBinding.getRoot();
+    }
+
+    private void handleActionForAllSelectedItems(EpisodeMultiSelectActionHandler handler) {
+        handler.handleAction(adapter.getSelectedItems());
+        if (adapter.shouldSelectLazyLoadedItems()) {
+            int applyPage = page + 1;
+            List<FeedItem> nextPage;
+            do {
+                nextPage = loadMoreData(applyPage);
+                handler.handleAction(nextPage);
+                applyPage++;
+            } while (nextPage.size() == EPISODES_PER_PAGE);
+        }
+    }
+
+    private List<FeedItem> loadMoreData(int page) {
+        Feed feed = DBReader.getFeed(feedID, true, (page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE);
+        return feed != null ? feed.getItems() : Collections.emptyList();
     }
 
     private void updateRecyclerPadding() {
@@ -221,6 +247,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
         viewBinding.recyclerView.setPadding(viewBinding.recyclerView.getPaddingLeft(), 0,
                 viewBinding.recyclerView.getPaddingRight(), paddingBottom);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        scrollPosition = viewBinding.recyclerView.getScrollPosition();
     }
 
     @Override
@@ -310,8 +342,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             return true;
         }
 
-        Runnable showRemovedAllSnackbar = () -> ((MainActivity) getActivity())
-                .showSnackbarAbovePlayer(R.string.removed_all_inbox_msg, Toast.LENGTH_SHORT);
+        Runnable showRemovedAllSnackbar = () -> EventBus.getDefault().post(
+                new MessageEvent(getString(R.string.removed_all_inbox_msg)));
         return FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), feed, showRemovedAllSnackbar);
     }
 
@@ -510,6 +542,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         viewBinding.header.imgvCover.setOnClickListener(v -> showFeedInfo());
         viewBinding.header.headerDescriptionLabel.setOnClickListener(v -> showFeedInfo());
         viewBinding.header.butSubscribe.setOnClickListener(view -> {
+            if (feed == null) {
+                return;
+            }
             DBWriter.setFeedState(getContext(), feed, Feed.STATE_SUBSCRIBED);
             MainActivityStarter mainActivityStarter = new MainActivityStarter(getContext());
             mainActivityStarter.withOpenFeed(feed.getId());
@@ -517,14 +552,38 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             startActivity(mainActivityStarter.getIntent());
         });
         viewBinding.header.butShowSettings.setOnClickListener(v -> {
-            if (feed != null) {
-                FeedSettingsFragment fragment = FeedSettingsFragment.newInstance(feed);
-                ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
+            if (feed == null) {
+                return;
             }
+            FeedSettingsFragment fragment = FeedSettingsFragment.newInstance(feed);
+            ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
         });
-        viewBinding.header.butFilter.setOnClickListener(v ->
-                FeedItemFilterDialog.newInstance(feed).show(getChildFragmentManager(), null));
+        viewBinding.header.butFilter.setOnClickListener(v -> {
+            if (feed == null) {
+                return;
+            }
+            FeedItemFilterDialog.newInstance(feed).show(getChildFragmentManager(), null);
+        });
         viewBinding.header.txtvFailure.setOnClickListener(v -> showErrorDetails());
+        viewBinding.header.txtvAuthor.setOnLongClickListener(view -> {
+            copyToClipboard(requireContext(), viewBinding.header.txtvAuthor.getText().toString());
+            return true;
+        });
+        viewBinding.header.txtvTitle.setOnLongClickListener(view -> {
+            copyToClipboard(requireContext(), viewBinding.header.txtvTitle.getText().toString());
+            return true;
+        });
+    }
+
+    public void copyToClipboard(Context context, String text) {
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        if (clipboard != null) {
+            ClipData clip = ClipData.newPlainText(text, text);
+            clipboard.setPrimaryClip(clip);
+            if (Build.VERSION.SDK_INT <= 32) {
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
+            }
+        }
     }
 
     private void showErrorDetails() {
@@ -602,6 +661,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                         adapter.updateItems(feed.getItems());
                         adapter.setTotalNumberOfItems(result.second);
                         updateToolbar();
+                        viewBinding.recyclerView.restoreScrollPosition(scrollPosition);
+                        scrollPosition = null;
                     }, error -> {
                         feed = null;
                         refreshHeaderView();
@@ -619,20 +680,19 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         isLoadingMore = true;
         adapter.setDummyViews(1);
         adapter.notifyItemInserted(adapter.getItemCount() - 1);
-        disposable = Observable.fromCallable(() -> DBReader.getFeed(feedID, true,
-                        (page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE))
+        disposable = Observable.fromCallable(() -> loadMoreData(page))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        data -> {
-                            if (data.getItems().size() < EPISODES_PER_PAGE) {
+                        items -> {
+                            if (items.size() < EPISODES_PER_PAGE) {
                                 hasMoreItems = false;
                             }
-                            feed.getItems().addAll(data.getItems());
+                            feed.getItems().addAll(items);
                             adapter.setDummyViews(0);
                             adapter.updateItems(feed.getItems());
                             if (adapter.shouldSelectLazyLoadedItems()) {
-                                adapter.setSelected(feed.getItems().size() - data.getItems().size(),
+                                adapter.setSelected(feed.getItems().size() - items.size(),
                                         feed.getItems().size(), true);
                             }
                         }, error -> {

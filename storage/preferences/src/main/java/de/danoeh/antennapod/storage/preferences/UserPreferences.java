@@ -98,7 +98,8 @@ public abstract class UserPreferences {
     private static final String PREF_MOBILE_UPDATE = "prefMobileUpdateTypes";
     public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
     public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
-    public static final String PREF_ENABLE_AUTODL = "prefEnableAutoDl";
+    public static final String PREF_AUTODL_GLOBAL = "prefEnableAutoDl";
+    public static final String PREF_AUTODL_QUEUE = "prefEnableAutoDlQueue";
     public static final String PREF_ENABLE_AUTODL_ON_BATTERY = "prefEnableAutoDownloadOnBattery";
     private static final String PREF_PROXY_TYPE = "prefProxyType";
     private static final String PREF_PROXY_HOST = "prefProxyHost";
@@ -112,6 +113,7 @@ public abstract class UserPreferences {
     // Other
     private static final String PREF_DATA_FOLDER = "prefDataFolder";
     public static final String PREF_DELETE_REMOVES_FROM_QUEUE = "prefDeleteRemovesFromQueue";
+    public static final String PREF_DOWNLOADS_BUTTON_ACTION = "prefDownloadsButtonAction";
     private static final String PREF_AUTOMATIC_EXPORT_FOLDER = "prefAutomaticExportFolder";
 
     // Mediaplayer
@@ -423,6 +425,10 @@ public abstract class UserPreferences {
         return prefs.getBoolean(PREF_DELETE_REMOVES_FROM_QUEUE, false);
     }
 
+    public static boolean shouldDownloadsButtonActionPlay() {
+        return prefs.getBoolean(PREF_DOWNLOADS_BUTTON_ACTION, false);
+    }
+
     public static float getPlaybackSpeed() {
         try {
             return Float.parseFloat(prefs.getString(PREF_PLAYBACK_SPEED, "1.00"));
@@ -530,8 +536,12 @@ public abstract class UserPreferences {
         return Integer.parseInt(prefs.getString(PREF_EPISODE_CACHE_SIZE, "20"));
     }
 
-    public static boolean isEnableAutodownload() {
-        return prefs.getBoolean(PREF_ENABLE_AUTODL, false);
+    public static boolean isEnableAutodownloadGlobal() {
+        return prefs.getBoolean(PREF_AUTODL_GLOBAL, false);
+    }
+
+    public static boolean isEnableAutodownloadQueue() {
+        return prefs.getBoolean(PREF_AUTODL_QUEUE, false);
     }
 
     public static boolean isEnableAutodownloadOnBattery() {

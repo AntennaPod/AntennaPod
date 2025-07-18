@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.episodeslist;
 
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,6 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.ui.CoverLoader;
 import de.danoeh.antennapod.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.ui.common.DateFormatter;
@@ -33,10 +33,10 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
     private final CircularProgressBar circularProgressBar;
     private final View progressBarReplacementSpacer;
 
-    private final MainActivity activity;
+    private final Activity activity;
     private FeedItem item;
 
-    public HorizontalItemViewHolder(MainActivity activity, ViewGroup parent) {
+    public HorizontalItemViewHolder(Activity activity, ViewGroup parent) {
         super(LayoutInflater.from(activity).inflate(R.layout.horizontal_itemlist_item, parent, false));
         this.activity = activity;
 

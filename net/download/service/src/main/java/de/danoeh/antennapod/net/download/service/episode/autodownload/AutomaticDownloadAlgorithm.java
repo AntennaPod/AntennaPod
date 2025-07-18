@@ -40,8 +40,7 @@ public class AutomaticDownloadAlgorithm {
         return () -> {
 
             // true if we should auto download based on network status
-            boolean networkShouldAutoDl = NetworkUtils.isAutoDownloadAllowed()
-                    && UserPreferences.isEnableAutodownload();
+            boolean networkShouldAutoDl = NetworkUtils.isAutoDownloadAllowed();
 
             // true if we should auto download based on power status
             boolean powerShouldAutoDl = deviceCharging(context) || UserPreferences.isEnableAutodownloadOnBattery();
@@ -51,18 +50,24 @@ public class AutomaticDownloadAlgorithm {
 
                 Log.d(TAG, "Performing auto-dl of undownloaded episodes");
 
-                List<FeedItem> candidates;
-                final List<FeedItem> queue = DBReader.getQueue();
                 final List<FeedItem> newItems = DBReader.getEpisodes(0, Integer.MAX_VALUE,
                         new FeedItemFilter(FeedItemFilter.NEW), SortOrder.DATE_NEW_OLD);
-                candidates = new ArrayList<>(queue.size() + newItems.size());
-                candidates.addAll(queue);
+                final List<FeedItem> candidates = new ArrayList<>();
                 for (FeedItem newItem : newItems) {
                     FeedPreferences feedPrefs = newItem.getFeed().getPreferences();
-                    if (feedPrefs.getAutoDownload()
+                    if (feedPrefs.isAutoDownload(UserPreferences.isEnableAutodownloadGlobal())
                             && !candidates.contains(newItem)
                             && feedPrefs.getFilter().shouldAutoDownload(newItem)) {
                         candidates.add(newItem);
+                    }
+                }
+
+                if (UserPreferences.isEnableAutodownloadQueue()) {
+                    final List<FeedItem> queue = DBReader.getQueue();
+                    for (FeedItem item : queue) {
+                        if (!candidates.contains(item)) {
+                            candidates.add(item);
+                        }
                     }
                 }
 
@@ -80,6 +85,7 @@ public class AutomaticDownloadAlgorithm {
 
                 int autoDownloadableEpisodes = candidates.size();
                 int downloadedEpisodes = DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.DOWNLOADED));
+                downloadedEpisodes += DownloadServiceInterface.get().getNumberOfActiveDownloads(context);
                 int deletedEpisodes = EpisodeCleanupAlgorithmFactory.build()
                         .makeRoomForEpisodes(context, autoDownloadableEpisodes);
                 boolean cacheIsUnlimited =
@@ -94,7 +100,7 @@ public class AutomaticDownloadAlgorithm {
                 }
 
                 List<FeedItem> itemsToDownload = candidates.subList(0, episodeSpaceLeft);
-                if (itemsToDownload.size() > 0) {
+                if (!itemsToDownload.isEmpty()) {
                     Log.d(TAG, "Enqueueing " + itemsToDownload.size() + " items for download");
 
                     for (FeedItem episode : itemsToDownload) {

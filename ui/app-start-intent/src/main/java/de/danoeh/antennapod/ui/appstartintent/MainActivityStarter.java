@@ -14,7 +14,7 @@ public class MainActivityStarter {
     public static final String INTENT = "de.danoeh.antennapod.intents.MAIN_ACTIVITY";
     public static final String EXTRA_OPEN_PLAYER = "open_player";
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
-    public static final String EXTRA_ADD_TO_BACK_STACK = "add_to_back_stack";
+    public static final String EXTRA_CLEAR_BACK_STACK = "clear_back_stack";
     public static final String EXTRA_FRAGMENT_TAG = "fragment_tag";
     public static final String EXTRA_OPEN_DRAWER = "open_drawer";
     public static final String EXTRA_OPEN_DOWNLOAD_LOGS = "open_download_logs";
@@ -56,8 +56,8 @@ public class MainActivityStarter {
         return this;
     }
 
-    public MainActivityStarter withAddToBackStack() {
-        intent.putExtra(EXTRA_ADD_TO_BACK_STACK, true);
+    public MainActivityStarter withClearBackStack() {
+        intent.putExtra(EXTRA_CLEAR_BACK_STACK, true);
         return this;
     }
 
@@ -73,6 +73,11 @@ public class MainActivityStarter {
 
     public MainActivityStarter withDownloadLogsOpen() {
         intent.putExtra(EXTRA_OPEN_DOWNLOAD_LOGS, true);
+        return this;
+    }
+
+    public MainActivityStarter withClearTop() {
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return this;
     }
 

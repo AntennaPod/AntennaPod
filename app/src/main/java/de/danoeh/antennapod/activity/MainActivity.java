@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -10,19 +9,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.appcompat.widget.ListPopupWindow;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
@@ -37,30 +35,26 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.badge.BadgeDrawable;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
-import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.MessageEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.download.DownloadStatus;
-import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.net.download.service.feed.FeedUpdateManagerImpl;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
-import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
+import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.discovery.DiscoveryFragment;
@@ -71,10 +65,8 @@ import de.danoeh.antennapod.ui.screen.PlaybackHistoryFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
 import de.danoeh.antennapod.ui.screen.download.DownloadLogFragment;
-import de.danoeh.antennapod.ui.screen.drawer.BottomNavigationMoreAdapter;
-import de.danoeh.antennapod.ui.screen.drawer.DrawerPreferencesDialog;
+import de.danoeh.antennapod.ui.screen.drawer.BottomNavigation;
 import de.danoeh.antennapod.ui.screen.drawer.NavDrawerFragment;
-import de.danoeh.antennapod.ui.screen.drawer.NavListAdapter;
 import de.danoeh.antennapod.ui.screen.drawer.NavigationNames;
 import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 import de.danoeh.antennapod.ui.screen.home.HomeFragment;
@@ -83,20 +75,15 @@ import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
 import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
 import de.danoeh.antennapod.ui.screen.rating.RatingDialogManager;
 import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
+import de.danoeh.antennapod.ui.view.BottomSheetBackPressedCallback;
 import de.danoeh.antennapod.ui.view.LockableBottomSheetBehavior;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -110,28 +97,19 @@ public class MainActivity extends CastEnabledActivity {
     public static final String PREF_NAME = "MainActivityPrefs";
     public static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
 
-    public static final String EXTRA_FEED_ID = "fragment_feed_id";
     public static final String EXTRA_REFRESH_ON_START = "refresh_on_start";
-    public static final String EXTRA_ADD_TO_BACK_STACK = "add_to_back_stack";
     public static final String KEY_GENERATED_VIEW_ID = "generated_view_id";
 
     private @Nullable DrawerLayout drawerLayout;
     private @Nullable ActionBarDrawerToggle drawerToggle;
-    private BottomNavigationView bottomNavigationView;
-    private Disposable bottomNavigationBadgeLoader = null;
+    private BottomNavigation bottomNavigation;
     private View navDrawer;
     private LockableBottomSheetBehavior sheetBehavior;
+    private BottomSheetBackPressedCallback bottomSheetBackPressedCallback;
+    private OnBackPressedCallback openDefaultPageBackPressedCallback;
     private RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
     private int lastTheme = 0;
     private Insets systemBarInsets = Insets.NONE;
-
-    @NonNull
-    public static Intent getIntentToOpenFeed(@NonNull Context context, long feedId) {
-        Intent intent = new Intent(context.getApplicationContext(), MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_FEED_ID, feedId);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        return intent;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -144,12 +122,23 @@ public class MainActivity extends CastEnabledActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         recycledViewPool.setMaxRecycledViews(R.id.view_type_episode_item, 25);
+        checkFirstLaunch();
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navDrawer = findViewById(R.id.navDrawerFragment);
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigation = new BottomNavigation(findViewById(R.id.bottomNavigationView)) {
+            @Override
+            public void onItemSelected(@IdRes int itemId) {
+                sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                if (itemId == R.id.bottom_navigation_settings) {
+                    startActivity(new Intent(MainActivity.this, PreferenceActivity.class));
+                    return;
+                }
+                loadFragment(NavigationNames.getBottomNavigationFragmentTag(itemId), null);
+            }
+        };
         if (UserPreferences.isBottomNavigationEnabled()) {
-            buildBottomNavigationMenu();
+            bottomNavigation.buildMenu();
             if (drawerLayout == null) { // Tablet mode
                 navDrawer.setVisibility(View.GONE);
             } else {
@@ -157,10 +146,11 @@ public class MainActivity extends CastEnabledActivity {
             }
             drawerLayout = null;
         } else {
-            bottomNavigationView.setVisibility(View.GONE);
-            bottomNavigationView = null;
+            bottomNavigation.hide();
+            bottomNavigation = null;
             setNavDrawerSize();
         }
+        openDefaultPageBackPressedCallback = new OpenDefaultPageBackPressedCallback();
 
         // Consume navigation bar insets - we apply them in setPlayerVisible()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_view), (v, insets) -> {
@@ -199,11 +189,11 @@ public class MainActivity extends CastEnabledActivity {
         transaction.replace(R.id.audioplayerFragment, audioPlayerFragment, AudioPlayerFragment.TAG);
         transaction.commit();
 
-        checkFirstLaunch();
         View bottomSheet = findViewById(R.id.audioplayerFragment);
         sheetBehavior = (LockableBottomSheetBehavior) BottomSheetBehavior.from(bottomSheet);
         sheetBehavior.setHideable(false);
         sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
+        bottomSheetBackPressedCallback = new BottomSheetBackPressedCallback(false, sheetBehavior, bottomSheet);
 
         FeedUpdateManager.getInstance().restartUpdateAlarm(this, false);
         SynchronizationQueue.getInstance().syncIfNotSyncedRecently();
@@ -250,6 +240,9 @@ public class MainActivity extends CastEnabledActivity {
                             status = DownloadStatus.STATE_QUEUED;
                             progress = 0;
                         }
+                        if (updatedEpisodes.containsKey(downloadUrl) && status == DownloadStatus.STATE_COMPLETED) {
+                            continue; // In case of a duplicate, prefer running/queued over completed
+                        }
                         updatedEpisodes.put(downloadUrl, new DownloadStatus(status, progress));
                     }
                     DownloadServiceInterface.get().setCurrentDownloads(updatedEpisodes);
@@ -289,8 +282,16 @@ public class MainActivity extends CastEnabledActivity {
         public void onStateChanged(@NonNull View view, int state) {
             if (state == BottomSheetBehavior.STATE_COLLAPSED) {
                 onSlide(view, 0.0f);
+                bottomSheetBackPressedCallback.setEnabled(false);
             } else if (state == BottomSheetBehavior.STATE_EXPANDED) {
                 onSlide(view, 1.0f);
+                bottomSheetBackPressedCallback.setEnabled(true);
+            } else if (state == BottomSheetBehavior.STATE_HIDDEN) {
+                IntentUtils.sendLocalBroadcast(MainActivity.this,
+                        PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
+                PlaybackPreferences.writeNoMediaPlaying();
+                setPlayerVisible(false);
+                bottomSheetBackPressedCallback.setEnabled(false);
             }
         }
 
@@ -335,9 +336,8 @@ public class MainActivity extends CastEnabledActivity {
         if (drawerLayout != null && drawerToggle != null) {
             drawerLayout.removeDrawerListener(drawerToggle);
         }
-        if (bottomNavigationBadgeLoader != null) {
-            bottomNavigationBadgeLoader.dispose();
-            bottomNavigationBadgeLoader = null;
+        if (bottomNavigation != null) {
+            bottomNavigation.onDestroy();
         }
     }
 
@@ -345,6 +345,7 @@ public class MainActivity extends CastEnabledActivity {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
             FeedUpdateManager.getInstance().restartUpdateAlarm(this, true);
+            UserPreferences.setBottomNavigationEnabled(true);
 
             SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean(PREF_IS_FIRST_LAUNCH, false);
@@ -383,6 +384,7 @@ public class MainActivity extends CastEnabledActivity {
         params.setMargins(systemBarInsets.left, 0, systemBarInsets.right, (visible ? externalPlayerHeight : 0));
         mainView.setLayoutParams(params);
         sheetBehavior.setPeekHeight(externalPlayerHeight);
+        sheetBehavior.setHideable(true);
         sheetBehavior.setGestureInsetBottomIgnored(true);
 
         FragmentContainerView playerView = findViewById(R.id.playerFragment);
@@ -442,14 +444,8 @@ public class MainActivity extends CastEnabledActivity {
 
     public void loadFragment(String tag, Bundle args) {
         NavDrawerFragment.saveLastNavFragment(this, tag);
-        if (bottomNavigationView != null) {
-            int bottomSelectedItem = NavigationNames.getBottomNavigationItemId(tag);
-            if (bottomNavigationView.getMenu().findItem(bottomSelectedItem) == null) {
-                bottomSelectedItem = R.id.bottom_navigation_more;
-            }
-            bottomNavigationView.setOnItemSelectedListener(null);
-            bottomNavigationView.setSelectedItemId(bottomSelectedItem);
-            bottomNavigationView.setOnItemSelectedListener(bottomItemSelectedListener);
+        if (bottomNavigation != null) {
+            bottomNavigation.updateSelectedItem(tag);
         }
         loadFragment(createFragmentInstance(tag, args));
     }
@@ -510,113 +506,17 @@ public class MainActivity extends CastEnabledActivity {
         loadChildFragment(fragment, TransitionEffect.NONE);
     }
 
-    private void buildBottomNavigationMenu() {
-        List<String> drawerItems = UserPreferences.getVisibleDrawerItemOrder();
-        drawerItems.remove(NavListAdapter.SUBSCRIPTION_LIST_TAG);
-
-        Menu menu = bottomNavigationView.getMenu();
-        menu.clear();
-        for (int i = 0; i < drawerItems.size() && i < bottomNavigationView.getMaxItemCount() - 1; i++) {
-            String tag = drawerItems.get(i);
-            MenuItem item = menu.add(0, NavigationNames.getBottomNavigationItemId(tag),
-                    0, getString(NavigationNames.getLabel(tag)));
-            item.setIcon(NavigationNames.getDrawable(tag));
-        }
-        MenuItem moreItem = menu.add(0, R.id.bottom_navigation_more, 0, getString(R.string.searchpreference_more));
-        moreItem.setIcon(R.drawable.dots_vertical);
-        bottomNavigationView.setOnItemSelectedListener(bottomItemSelectedListener);
-        updateBottomNavigationBadgeIfNeeded();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
-        updateBottomNavigationBadgeIfNeeded();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onFeedListChanged(FeedListUpdateEvent event) {
-        updateBottomNavigationBadgeIfNeeded();
-    }
-
-    private void updateBottomNavigationBadgeIfNeeded() {
-        if (bottomNavigationView == null) {
-            return;
-        } else if (bottomNavigationView.getMenu().findItem(R.id.bottom_navigation_inbox) == null) {
-            return;
-        }
-        if (bottomNavigationBadgeLoader != null) {
-            bottomNavigationBadgeLoader.dispose();
-        }
-        bottomNavigationBadgeLoader = Observable.fromCallable(
-                        () -> DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW)))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    BadgeDrawable badge = bottomNavigationView.getOrCreateBadge(R.id.bottom_navigation_inbox);
-                    badge.setVisible(result > 0);
-                    badge.setNumber(result);
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
-    }
-
-    private final NavigationBarView.OnItemSelectedListener bottomItemSelectedListener = item -> {
-        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        if (item.getItemId() == R.id.bottom_navigation_more) {
-            showBottomNavigationMorePopup();
-            return false;
-        } else {
-            loadFragment(NavigationNames.getBottomNavigationFragmentTag(item.getItemId()), null);
-            return true;
-        }
-    };
-
-    private void showBottomNavigationMorePopup() {
-        List<String> drawerItems = UserPreferences.getVisibleDrawerItemOrder();
-        drawerItems.remove(NavListAdapter.SUBSCRIPTION_LIST_TAG);
-
-        final List<MenuItem> popupMenuItems = new ArrayList<>();
-        for (int i = bottomNavigationView.getMaxItemCount() - 1; i < drawerItems.size(); i++) {
-            String tag = drawerItems.get(i);
-            MenuItem item = new MenuBuilder(this).add(0, NavigationNames.getBottomNavigationItemId(tag),
-                    0, getString(NavigationNames.getLabel(tag)));
-            item.setIcon(NavigationNames.getDrawable(tag));
-            popupMenuItems.add(item);
-        }
-        MenuItem customizeItem = new MenuBuilder(this).add(0, R.id.bottom_navigation_settings,
-                0, getString(R.string.pref_nav_drawer_items_title));
-        customizeItem.setIcon(R.drawable.ic_pencil);
-        popupMenuItems.add(customizeItem);
-
-        MenuItem settingsItem = new MenuBuilder(this).add(0, R.id.bottom_navigation_settings,
-                0, getString(R.string.settings_label));
-        settingsItem.setIcon(R.drawable.ic_settings);
-        popupMenuItems.add(settingsItem);
-
-        final ListPopupWindow listPopupWindow = new ListPopupWindow(this);
-        listPopupWindow.setWidth((int) (250 * getResources().getDisplayMetrics().density));
-        listPopupWindow.setAnchorView(bottomNavigationView);
-        listPopupWindow.setAdapter(new BottomNavigationMoreAdapter(this, popupMenuItems));
-        listPopupWindow.setOnItemClickListener((parent, view, position, id) -> {
-            if (position == popupMenuItems.size() - 1) {
-                startActivity(new Intent(this, PreferenceActivity.class));
-            } else if (position == popupMenuItems.size() - 2) {
-                new DrawerPreferencesDialog(this, this::buildBottomNavigationMenu).show();
-            } else {
-                loadFragment(NavigationNames.getBottomNavigationFragmentTag(
-                        popupMenuItems.get(position).getItemId()), null);
-            }
-            listPopupWindow.dismiss();
-        });
-        listPopupWindow.setDropDownGravity(Gravity.END | Gravity.BOTTOM);
-        listPopupWindow.setModal(true);
-        listPopupWindow.show();
-    }
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         if (drawerToggle != null) { // Tablet layout does not have a drawer
             drawerToggle.syncState();
         }
+    }
+
+    private void restartActivity() {
+        finish();
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     @Override
@@ -626,6 +526,11 @@ public class MainActivity extends CastEnabledActivity {
             drawerToggle.onConfigurationChanged(newConfig);
         }
         setNavDrawerSize();
+
+        @StyleRes int requiredTheme = ThemeSwitcher.getNoTitleTheme(this);
+        if (requiredTheme != lastTheme) {
+            restartActivity();
+        }
     }
 
     private void setNavDrawerSize() {
@@ -659,6 +564,11 @@ public class MainActivity extends CastEnabledActivity {
         super.onStart();
         EventBus.getDefault().register(this);
         new RatingDialogManager(this).showIfNeeded();
+        if (bottomNavigation != null) {
+            bottomNavigation.onStart();
+        }
+        getOnBackPressedDispatcher().addCallback(this, openDefaultPageBackPressedCallback);
+        getOnBackPressedDispatcher().addCallback(this, bottomSheetBackPressedCallback);
     }
 
     @Override
@@ -666,11 +576,10 @@ public class MainActivity extends CastEnabledActivity {
         super.onResume();
         handleNavIntent();
 
-        boolean hasBottomNavigation = bottomNavigationView != null;
+        boolean hasBottomNavigation = bottomNavigation != null;
         if (lastTheme != ThemeSwitcher.getNoTitleTheme(this)
                 || hasBottomNavigation != UserPreferences.isBottomNavigationEnabled()) {
-            finish();
-            startActivity(new Intent(this, MainActivity.class));
+            restartActivity();
         }
         if (UserPreferences.getHiddenDrawerItems().contains(NavDrawerFragment.getLastNavFragment(this))) {
             loadFragment(UserPreferences.getDefaultPage(), null);
@@ -687,6 +596,9 @@ public class MainActivity extends CastEnabledActivity {
     protected void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+        if (bottomNavigation != null) {
+            bottomNavigation.onStop();
+        }
     }
 
     @Override
@@ -715,25 +627,23 @@ public class MainActivity extends CastEnabledActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        if (isDrawerOpen() && drawerLayout != null) {
-            drawerLayout.closeDrawer(navDrawer);
-        } else if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        } else if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
-            super.onBackPressed();
-        } else {
-            String toPage = UserPreferences.getDefaultPage();
-            if (NavDrawerFragment.getLastNavFragment(this).equals(toPage)
-                    || UserPreferences.DEFAULT_PAGE_REMEMBER.equals(toPage)) {
-                if (UserPreferences.backButtonOpensDrawer() && drawerLayout != null && bottomNavigationView == null) {
-                    drawerLayout.openDrawer(navDrawer);
-                } else {
-                    super.onBackPressed();
-                }
+    class OpenDefaultPageBackPressedCallback extends OnBackPressedCallback {
+        OpenDefaultPageBackPressedCallback() {
+            super(true);
+        }
+
+        @Override
+        public void handleOnBackPressed() {
+            String defaultPage = UserPreferences.getDefaultPage();
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                getSupportFragmentManager().popBackStack();
+            } else if (!NavDrawerFragment.getLastNavFragment(MainActivity.this).equals(defaultPage)
+                    && !UserPreferences.DEFAULT_PAGE_REMEMBER.equals(defaultPage)) {
+                loadFragment(defaultPage, null);
+            } else if (UserPreferences.backButtonOpensDrawer() && drawerLayout != null && bottomNavigation == null) {
+                drawerLayout.openDrawer(navDrawer);
             } else {
-                loadFragment(toPage, null);
+                finish();
             }
         }
     }
@@ -741,8 +651,17 @@ public class MainActivity extends CastEnabledActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MessageEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
+        Snackbar snackbar;
+        if (getBottomSheet().getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+            snackbar = Snackbar.make(findViewById(R.id.main_content_view), event.message, Snackbar.LENGTH_LONG);
+            if (findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE) {
+                snackbar.setAnchorView(findViewById(R.id.audioplayerFragment));
+            }
+        } else {
+            snackbar = Snackbar.make(findViewById(android.R.id.content), event.message, Snackbar.LENGTH_LONG);
+        }
+        snackbar.show();
 
-        Snackbar snackbar = showSnackbarAbovePlayer(event.message, Snackbar.LENGTH_LONG);
         if (event.action != null) {
             snackbar.setAction(event.actionText, v -> event.action.accept(this));
         }
@@ -751,15 +670,14 @@ public class MainActivity extends CastEnabledActivity {
     private void handleNavIntent() {
         Log.d(TAG, "handleNavIntent()");
         Intent intent = getIntent();
-        if (intent.hasExtra(EXTRA_FEED_ID)) {
-            long feedId = intent.getLongExtra(EXTRA_FEED_ID, 0);
+        if (intent.hasExtra(MainActivityStarter.EXTRA_FEED_ID)) {
+            long feedId = intent.getLongExtra(MainActivityStarter.EXTRA_FEED_ID, 0);
             Bundle args = intent.getBundleExtra(MainActivityStarter.EXTRA_FRAGMENT_ARGS);
             if (feedId > 0) {
-                boolean addToBackStack = intent.getBooleanExtra(EXTRA_ADD_TO_BACK_STACK, false);
-                if (addToBackStack) {
-                    loadChildFragment(FeedItemlistFragment.newInstance(feedId));
-                } else {
+                if (intent.getBooleanExtra(MainActivityStarter.EXTRA_CLEAR_BACK_STACK, false)) {
                     loadFeedFragmentById(feedId, args);
+                } else {
+                    loadChildFragment(FeedItemlistFragment.newInstance(feedId));
                 }
             }
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -767,11 +685,10 @@ public class MainActivity extends CastEnabledActivity {
             String tag = intent.getStringExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG);
             Bundle args = intent.getBundleExtra(MainActivityStarter.EXTRA_FRAGMENT_ARGS);
             if (tag != null) {
-                Fragment fragment = createFragmentInstance(tag, args);
-                if (intent.getBooleanExtra(MainActivityStarter.EXTRA_ADD_TO_BACK_STACK, false)) {
-                    loadChildFragment(fragment);
+                if (intent.getBooleanExtra(MainActivityStarter.EXTRA_CLEAR_BACK_STACK, false)) {
+                    loadFragment(tag, null);
                 } else {
-                    loadFragment(fragment);
+                    loadChildFragment(createFragmentInstance(tag, args));
                 }
             }
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -800,24 +717,6 @@ public class MainActivity extends CastEnabledActivity {
         super.onNewIntent(intent);
         setIntent(intent);
         handleNavIntent();
-    }
-
-    public Snackbar showSnackbarAbovePlayer(CharSequence text, int duration) {
-        Snackbar s;
-        if (getBottomSheet().getState() == BottomSheetBehavior.STATE_COLLAPSED) {
-            s = Snackbar.make(findViewById(R.id.main_content_view), text, duration);
-            if (findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE) {
-                s.setAnchorView(findViewById(R.id.audioplayerFragment));
-            }
-        } else {
-            s = Snackbar.make(findViewById(android.R.id.content), text, duration);
-        }
-        s.show();
-        return s;
-    }
-
-    public Snackbar showSnackbarAbovePlayer(int text, int duration) {
-        return showSnackbarAbovePlayer(getResources().getText(text), duration);
     }
 
     /**
@@ -863,8 +762,7 @@ public class MainActivity extends CastEnabledActivity {
                         loadFragment(SubscriptionFragment.TAG, null);
                         break;
                     default:
-                        showSnackbarAbovePlayer(getString(R.string.app_action_not_found, feature),
-                                Snackbar.LENGTH_LONG);
+                        EventBus.getDefault().post(new MessageEvent(getString(R.string.app_action_not_found, feature)));
                         return;
                 }
                 break;
@@ -915,6 +813,8 @@ public class MainActivity extends CastEnabledActivity {
                             AudioManager.ADJUST_TOGGLE_MUTE, AudioManager.FLAG_SHOW_UI);
                     return true;
                 }
+                break;
+            default:
                 break;
         }
 

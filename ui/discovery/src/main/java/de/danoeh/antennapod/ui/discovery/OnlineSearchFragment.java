@@ -97,8 +97,7 @@ public class OnlineSearchFragment extends Fragment {
         //Show information about the podcast when the list item is clicked
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
             PodcastSearchResult podcast = searchResults.get(position);
-            startActivity(new OnlineFeedviewActivityStarter(getContext(), podcast.feedUrl)
-                    .withStartedFromSearch().getIntent());
+            startActivity(new OnlineFeedviewActivityStarter(getContext(), podcast.feedUrl).getIntent());
         });
         progressBar = root.findViewById(R.id.progressBar);
         txtvError = root.findViewById(R.id.txtvError);

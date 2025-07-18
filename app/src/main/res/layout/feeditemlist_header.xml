@@ -220,7 +220,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             android:text="@string/description_label"
             style="@style/TextAppearance.Material3.TitleMedium" />
 
@@ -233,14 +233,14 @@
             android:maxLines="3"
             android:layout_marginBottom="16dp"
             android:background="?android:attr/selectableItemBackground"
-            style="@style/AntennaPod.TextView.ListItemBody"
+            style="@style/TextAppearance.Material3.BodyMedium"
             tools:text="@string/design_time_lorem_ipsum" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/preview_episodes"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             style="@style/TextAppearance.Material3.TitleMedium" />
 
     </LinearLayout>

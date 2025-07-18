@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">सब्सक्रिप्शन अपडेट करें</string>
-    <string name="feeds_label">पॉडकास्ट</string>
     <string name="statistics_label">आंकड़े</string>
     <string name="add_feed_label">पॉडकास्ट जोड़ें</string>
     <string name="episodes_label">एपिसोड</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">मनपसंद</string>
     <string name="settings_label">सेटिंग</string>
     <string name="downloads_label">डाउनलोड</string>
-    <string name="open_autodownload_settings">सेटिंग खोलें</string>
     <string name="downloads_log_label">लॉग डाउनलोड</string>
     <string name="subscriptions_label">सब्सक्रिप्शन</string>
     <string name="subscriptions_list_label">सब्सक्रिप्शन लिस्ट</string>
     <string name="cancel_download_label">डाउनलोड कैंसिल करें</string>
     <string name="playback_history_label">प्लेबैक लॉग</string>
-    <string name="episode_cache_full_title">एपिसोड कैश भर गया</string>
-    <string name="episode_cache_full_message">एपिसोड कैश भर गया। सेटिंग में कैश साइज़ बढ़ाया जा सकता है।</string>
     <string name="years_statistics_label">साल</string>
     <string name="notification_pref_fragment">नोटिफिकेशन</string>
     <string name="current_playing_episode">ये</string>
@@ -39,14 +35,14 @@
     <string name="statistics_from">से:</string>
     <string name="statistics_to">तक:</string>
     <string name="statistics_today">आज</string>
-    <string name="statistics_filter_all_time">सारा टाइम</string>
-    <string name="statistics_filter_past_year">आखिरी साल</string>
+    <string name="statistics_filter_all_time">पूरा समय</string>
+    <string name="statistics_filter_past_year">पिछले साल</string>
     <string name="statistics_reset_data">आंकड़े खाली करें</string>
     <string name="statistics_reset_data_msg">ये सारे एपिसोड का टाइम लॉग साफ कर देगा। पक्का आगे जाएं?</string>
-    <string name="statistics_counting_range">%1$s से %2$s के बीच सुना गया</string>
+    <string name="statistics_counting_range">%1$s से %2$s के बीच सुने हैं</string>
     <string name="statistics_counting_total">कुल सुना</string>
     <!--Home fragment-->
-  <string name="home_surprise_title">सरप्राइज़ हो लो</string>
+  <string name="home_surprise_title">चौंक गए?</string>
     <string name="home_classics_title">अपने क्लासिक देखें</string>
     <string name="home_continue_title">सुनना जारी रखें</string>
     <string name="home_new_title">क्या नया है</string>
@@ -333,7 +329,7 @@
     <string name="interruptions">रोकटोक</string>
     <string name="playback_control">प्लेबैक कंट्रोल</string>
     <string name="reassign_hardware_buttons">हार्डवेयर बटन बदलें</string>
-    <string name="preference_search_hint">खोजें...</string>
+    <string name="preference_search_hint">खोजें…</string>
     <string name="preference_search_no_results">कोई नतीजा नहीं मिला</string>
     <string name="preference_search_clear_history">इतिहास साफ करें</string>
     <string name="pref_episode_cleanup_summary">एपिसोड जो हटाने लायक होंगे अगर अपनेआप-डाउनलोड को नए एपिसोड के लिए जगह चाहिए।</string>
@@ -381,7 +377,6 @@
     <string name="pref_mobileUpdate_sum">चुनें कि मोबाइल डाटा कनेक्शन पे क्या चल सकता है</string>
     <string name="pref_mobileUpdate_refresh">पॉडकास्ट ताज़ा करना</string>
     <string name="pref_mobileUpdate_images">कवर तस्वीर</string>
-    <string name="pref_mobileUpdate_auto_download">अपनेआप-डाउनलोड</string>
     <string name="pref_mobileUpdate_episode_download">एपिसोड डाउनलोड करना</string>
     <string name="pref_mobileUpdate_streaming">स्ट्रीमिंग</string>
     <string name="user_interface_label">उपयोगकर्ता इंटरफेस</string>
@@ -483,8 +478,8 @@
   <string name="sync_status_started">सिंक शुरू हुआ</string>
     <string name="sync_status_episodes_upload">एपिसोड बदलाव अपलोड कर रहे…</string>
     <string name="sync_status_episodes_download">एपिसोड बदलाव डाउनलोड कर रहे…</string>
-    <string name="sync_status_upload_played">सुना स्टेटस अपडेट कर रहे...</string>
-    <string name="sync_status_subscriptions">सदस्यताओं को समकालीन किया जा रहा है...</string>
+    <string name="sync_status_upload_played">सुना स्टेटस अपडेट कर रहे…</string>
+    <string name="sync_status_subscriptions">सदस्यताओं को समकालीन किया जा रहा है…</string>
     <string name="sync_status_success">सिंक सफल</string>
     <string name="sync_status_error">सिंक असफल</string>
     <!--import and export-->
@@ -507,7 +502,7 @@
     <string name="database_export_label">डाटाबेस निर्यात</string>
     <string name="database_import_label">डाटाबेस आयात</string>
     <string name="database_import_warning">डेटाबेस आयात करने से आपकी मौजूदा सभी सदस्यताएँ और प्लेयिंग हिस्ट्री को बदल दिया जाएगा। आपको अपनी वर्तमान डेटाबेस को बैकअप के रूप में निर्यात करना चाहिए। बदलाव जारी रखें?</string>
-    <string name="please_wait">इंतज़ार करें...</string>
+    <string name="please_wait">इंतज़ार करें…</string>
     <string name="export_error_label">निर्यात गड़बड़</string>
     <string name="export_success_title">निर्यात सफल</string>
     <string name="opml_import_ask_read_permission">ओपीएमएल फाइल पढ़ने के लिए बाहरी स्टोरेज तक का एक्सेस चाहिए</string>
@@ -553,7 +548,6 @@
     <string name="gpodnetauth_existing_devices">मौजूदा डिवाइस</string>
     <string name="gpodnetauth_create_device">डिवाइस बनाएं</string>
     <string name="gpodnetauth_finish_descr">बधाई हो! आपका gpodder.net खाता अब आपके उपकरण के साथ लिंक किया गया है। अब एंटेना पॉड आपकी डिवाइस पर सदस्यताओं को स्वचालित रूप से आपके gpodder.net खाते के साथ सिंक करेगा।</string>
-    <string name="gpodnetauth_finish_butsyncnow">सिंक अभी शुरू करें</string>
     <string name="pref_gpodnet_setlogin_information_title">लॉगइन जानकारी बदलें</string>
     <string name="pref_gpodnet_setlogin_information_sum">अपने gpodder.net खाते के लिए लॉगइन जानकारी बदलें।</string>
     <string name="synchronization_sync_changes_title">अभी सिंक करें</string>
@@ -561,7 +555,7 @@
     <string name="synchronization_full_sync_title">पूरा सिंक ज़बरदस्ती करें</string>
     <string name="synchronization_force_sync_summary">सभी सदस्यताओं और एपिसोड स्थितियों को पुनः-समकालित करें</string>
     <string name="synchronization_logout">लॉगआउट करें</string>
-    <string name="synchronization_login_status"><![CDATA[<i>%1$s</i> के तरह<i>%2$s</i> पे लॉगइन है।  <br/><br/> लॉगआउट करके सिंक प्रदाता वापस चुन सकते है]]></string>
+    <string name="synchronization_login_status"><![CDATA[<i>%1$s</i> के तरह<i>%2$s</i> पे लॉगइन है। <br/><br/> लॉगआउट करके सिंक प्रदाता वापस चुन सकते है]]></string>
     <string name="pref_synchronization_logout_toast">लॉगआउट हो गए</string>
     <string name="gpodnetsync_error_title">gpodder.net सिंक गड़बड़</string>
     <string name="gpodnetsync_error_descr">"सिंक करते टाइम एक गड़बड़ हुई: "</string>
@@ -609,12 +603,11 @@
     <string name="exclude_episodes_shorter_than">इससे छोटे एपिसोड शामिल ना करें:</string>
     <string name="keep_updated">अप-टू-डेट रखें</string>
     <string name="keep_updated_summary">सारे पॉडकास्ट को (अपनेआप) रिफ्रेश करते टाइम इस पॉडकास्ट को भी करें</string>
-    <string name="auto_download_disabled_globally">मेन एंटीनापॉड सेटिंग में ऑटो डाउनलोड बंद है</string>
     <string name="edit_url_menu">फीड यूआरएल बदलें</string>
     <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">एकल उद्देश्य वाले ऐप्स से सदस्यताओं का आयात किया जा रहा है...</string>
+  <string name="sp_apps_importing_feeds_msg">एकल उद्देश्य वाले ऐप्स से सदस्यताओं का आयात किया जा रहा है…</string>
     <!--Add podcast fragment-->
-  <string name="search_podcast_hint">पॉडकास्ट सर्च करें...</string>
+  <string name="search_podcast_hint">पॉडकास्ट सर्च करें…</string>
     <string name="search_itunes_label">एप्पल पॉडकास्ट में सर्च करें</string>
     <string name="search_podcastindex_label">पॉडकास्ट इंडेक्स में सर्च करें</string>
     <string name="search_fyyd_label">fyyd में सर्च करें</string>
@@ -660,9 +653,8 @@
   <string name="proxy_type_label">टाइप</string>
     <string name="host_label">होस्ट</string>
     <string name="port_label">पोर्ट</string>
-    <string name="optional_hint">(ज़रूरी नहीं)</string>
     <string name="proxy_test_label">टेस्ट</string>
-    <string name="proxy_checking">चेक कर रहे...</string>
+    <string name="proxy_checking">चेक कर रहे…</string>
     <string name="proxy_test_successful">टेस्ट पास हो गया</string>
     <string name="proxy_test_failed">टेस्ट फेल हो गया</string>
     <string name="proxy_host_empty_error">होस्ट फील्ड खाली नहीं हो सकता</string>
@@ -696,4 +688,5 @@
     <string name="shortcut_subscription_label">सदस्यता शॉर्टकट</string>
     <string name="shortcut_select_subscription">सदस्यता चुनें</string>
     <string name="add_shortcut">शॉर्टकट जोड़ें</string>
+    <string name="home_no_recent_unplayed_episodes_text">आपने सभी नए एपिसोद सुन लिए है। यहां कुछ नया नहीं है ;)</string>
 </resources>

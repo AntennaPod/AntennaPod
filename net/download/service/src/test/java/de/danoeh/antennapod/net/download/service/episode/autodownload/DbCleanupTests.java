@@ -78,7 +78,7 @@ public class DbCleanupTests {
                 .getDefaultSharedPreferences(context.getApplicationContext()).edit();
         prefEdit.putString(UserPreferences.PREF_EPISODE_CACHE_SIZE, Integer.toString(EPISODE_CACHE_SIZE));
         prefEdit.putString(UserPreferences.PREF_EPISODE_CLEANUP, Integer.toString(cleanupAlgorithm));
-        prefEdit.putBoolean(UserPreferences.PREF_ENABLE_AUTODL, true);
+        prefEdit.putBoolean(UserPreferences.PREF_AUTODL_GLOBAL, true);
         prefEdit.commit();
 
         UserPreferences.init(context);
@@ -130,9 +130,9 @@ public class DbCleanupTests {
                        boolean addToFavorites) throws IOException {
         for (int i = 0; i < numItems; i++) {
             Date itemDate = new Date(numItems - i);
-            Date playbackCompletionDate = null;
+            Date lastPlayedTimeHistory = null;
             if (itemState == FeedItem.PLAYED) {
-                playbackCompletionDate = itemDate;
+                lastPlayedTimeHistory = itemDate;
             }
             FeedItem item = new FeedItem(0, "title", "id" + i, "link", itemDate, itemState, feed);
 
@@ -140,7 +140,7 @@ public class DbCleanupTests {
             assertTrue(f.createNewFile());
             files.add(f);
             item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m",
-                    f.getAbsolutePath(), "url", System.currentTimeMillis(), playbackCompletionDate, 0, 0));
+                    f.getAbsolutePath(), "url", System.currentTimeMillis(), lastPlayedTimeHistory, 0, 0));
             items.add(item);
         }
 

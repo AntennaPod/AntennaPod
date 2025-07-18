@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.ui.screen.episode;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +22,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.snackbar.Snackbar;
 import com.skydoves.balloon.ArrowOrientation;
 import com.skydoves.balloon.ArrowOrientationRules;
 import com.skydoves.balloon.Balloon;
@@ -38,6 +39,7 @@ import de.danoeh.antennapod.actionbutton.PlayLocalActionButton;
 import de.danoeh.antennapod.actionbutton.StreamActionButton;
 import de.danoeh.antennapod.actionbutton.VisitWebsiteActionButton;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.playback.service.PlaybackStatus;
 import de.danoeh.antennapod.event.FeedItemEvent;
@@ -129,7 +131,8 @@ public class ItemFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View layout = inflater.inflate(R.layout.feeditem_fragment, container, false);
 
@@ -150,8 +153,7 @@ public class ItemFragment extends Fragment {
                     && Objects.equals(item.getMedia().getIdentifier(), controller.getMedia().getIdentifier())) {
                 controller.seekTo(time);
             } else {
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.play_this_to_seek_position,
-                        Snackbar.LENGTH_LONG);
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.play_this_to_seek_position_message)));
             }
         });
         registerForContextMenu(webvDescription);
@@ -189,7 +191,26 @@ public class ItemFragment extends Fragment {
             }
             actionButton2.onClick(getContext());
         });
+        txtvPodcast.setOnLongClickListener(v -> {
+            copyToClipboard(requireContext(), txtvPodcast.getText().toString());
+            return true;
+        });
+        txtvTitle.setOnLongClickListener(v -> {
+            copyToClipboard(requireContext(), txtvTitle.getText().toString());
+            return true;
+        });
         return layout;
+    }
+
+    public void copyToClipboard(Context context, String text) {
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        if (clipboard != null) {
+            ClipData clip = ClipData.newPlainText(text, text);
+            clipboard.setPrimaryClip(clip);
+            if (Build.VERSION.SDK_INT <= 32) {
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
+            }
+        }
     }
 
     private void showOnDemandConfigBalloon(boolean offerStreaming) {
@@ -217,8 +238,7 @@ public class ItemFragment extends Fragment {
             UserPreferences.setStreamOverDownload(offerStreaming);
             // Update all visible lists to reflect new streaming action button
             EventBus.getDefault().post(new UnreadItemsUpdateEvent());
-            ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                    R.string.on_demand_config_setting_changed, Snackbar.LENGTH_SHORT);
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.on_demand_config_setting_changed)));
             balloon.dismiss();
         });
         negativeButton.setOnClickListener(v1 -> {

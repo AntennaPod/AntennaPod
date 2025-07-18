@@ -103,13 +103,8 @@ public class ProxyDialog {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
                 android.R.layout.simple_list_item_1, types);
         viewBinding.proxyTypeSpinner.setAdapter(adapter);
+        viewBinding.proxyTypeSpinner.setThreshold(999);
         viewBinding.proxyTypeSpinner.setText(proxyConfig.type.name());
-        viewBinding.proxyTypeSpinner.setOnClickListener(view -> {
-            if (viewBinding.proxyTypeSpinner.getText().length() != 0) {
-                viewBinding.proxyTypeSpinner.setText("");
-                viewBinding.proxyTypeSpinner.postDelayed(viewBinding.proxyTypeSpinner::showDropDown, 100);
-            }
-        });
         viewBinding.proxyTypeSpinner.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

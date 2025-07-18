@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Abonelikleri güncelle</string>
-    <string name="feeds_label">Podcastler</string>
     <string name="statistics_label">İstatistikler</string>
     <string name="add_feed_label">Podcast ekle</string>
     <string name="episodes_label">Bölümler</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Favoriler</string>
     <string name="settings_label">Ayarlar</string>
     <string name="downloads_label">İndirilenler</string>
-    <string name="open_autodownload_settings">Ayarları aç</string>
     <string name="downloads_log_label">İndirme kaydı</string>
     <string name="subscriptions_label">Abonelikler</string>
     <string name="subscriptions_list_label">Abonelik listesi</string>
     <string name="cancel_download_label">İndirmeyi iptal et</string>
     <string name="playback_history_label">Oynatma geçmişi</string>
-    <string name="episode_cache_full_title">Bölüm önbelleği dolu</string>
-    <string name="episode_cache_full_message">Bölüm önbelleği limitine ulaşıldı. Ayarlardan önbellek limitini arttırabilirsiniz.</string>
     <string name="years_statistics_label">Yıllar</string>
     <string name="notification_pref_fragment">Bildirimler</string>
     <string name="current_playing_episode">Şimdiki</string>
@@ -403,7 +399,6 @@
     <string name="pref_mobileUpdate_sum">Mobil veri üzerinden nelere izin verileceğini seçiniz</string>
     <string name="pref_mobileUpdate_refresh">Podcast yenileme</string>
     <string name="pref_mobileUpdate_images">Kapak görselleri</string>
-    <string name="pref_mobileUpdate_auto_download">Otomatik indir</string>
     <string name="pref_mobileUpdate_episode_download">Bölümü indir</string>
     <string name="pref_mobileUpdate_streaming">Akış</string>
     <string name="user_interface_label">Kullanıcı arayüzü</string>
@@ -512,9 +507,9 @@
     <string name="search_online">Çevrimiçi ara</string>
     <!--Synchronization-->
   <string name="sync_status_started">Senkronizasyon başlatıldı</string>
-    <string name="sync_status_episodes_upload">Bölüm değişiklikleri yükleniyor...</string>
-    <string name="sync_status_episodes_download">Bölüm değişiklikleri indiriliyor...</string>
-    <string name="sync_status_upload_played">Oynama durumu yükleniyor...</string>
+    <string name="sync_status_episodes_upload">Bölüm değişiklikleri yükleniyor…</string>
+    <string name="sync_status_episodes_download">Bölüm değişiklikleri indiriliyor…</string>
+    <string name="sync_status_upload_played">Oynama durumu yükleniyor…</string>
     <string name="sync_status_subscriptions">Synchronizing subscriptions…</string>
     <string name="sync_status_success">Abonelikler senkronize ediliyor...</string>
     <string name="sync_status_error">Senkronizasyon başarısız oldu</string>
@@ -542,7 +537,7 @@
     <string name="automatic_database_export_error">Otomatşk veritabanı yedeklemesi sırasında hata</string>
     <string name="database_import_label">Veri tabanını içe aktarma</string>
     <string name="database_import_warning">Bir veritabanını içe aktarmak, mevcut tüm aboneliklerinizi ve çalma geçmişinizi değiştirecektir. Mevcut veritabanınızı yedek olarak dışa aktarmalısınız. Yerini değiştirmek istiyor musunuz?</string>
-    <string name="please_wait">Lütfen bekleyin...</string>
+    <string name="please_wait">Lütfen bekleyin…</string>
     <string name="export_error_label">Dışa aktarma hatası</string>
     <string name="export_success_title">Dışa aktarma başarılı</string>
     <string name="opml_import_ask_read_permission">OPML dosyasını okumak için harici depolama alanına erişim gereklidir</string>
@@ -605,7 +600,6 @@
     <string name="gpodnetauth_existing_devices">Mevcut cihazlar</string>
     <string name="gpodnetauth_create_device">Cihaz oluştur</string>
     <string name="gpodnetauth_finish_descr">Tebrikler! gpodder.net hesabınız cihazınızla ilişkilendirildi. AntennaPod bundan sonra gpodder.net hesabınızla üyeliklerinizi otomatik olarak senkronize edecek.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Senkronizasyonu başlat</string>
     <string name="pref_gpodnet_setlogin_information_title">Giriş bilgisini değiştir</string>
     <string name="pref_gpodnet_setlogin_information_sum">gpodder.net hesabınız için giriş bilgisini değiştirin.</string>
     <string name="synchronization_sync_changes_title">Şimdi senkronize et</string>
@@ -675,7 +669,6 @@
     <string name="exclude_episodes_shorter_than">Şundan kısa bölümleri hariç tut</string>
     <string name="keep_updated">Güncel tutun</string>
     <string name="keep_updated_summary">Tüm podcastleri (otomatik veya elle) yenilerken bu podcasti dahil et</string>
-    <string name="auto_download_disabled_globally">AntennaPod ayarlarında otomatik indirme devre dışı bırakılmıştır</string>
     <string name="statistics_expected_next_episode_any_day">Her an olabilir</string>
     <string name="statistics_expected_next_episode_unknown">Bilinmiyor</string>
     <string name="edit_url_menu">URL düzenle</string>
@@ -694,7 +687,7 @@
     <string name="release_schedule_saturday">Cmt</string>
     <string name="release_schedule_sunday">Pzr</string>
     <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Üyelikler tek-amaçlı uygulamalardan içe aktarılıyor...</string>
+  <string name="sp_apps_importing_feeds_msg">Üyelikler tek-amaçlı uygulamalardan içe aktarılıyor…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Podcast ara…</string>
     <string name="search_itunes_label">Apple Podcasts\'de ara</string>
@@ -744,9 +737,8 @@
   <string name="proxy_type_label">Tür</string>
     <string name="host_label">Ana sunucu</string>
     <string name="port_label">Bağlantı Noktası</string>
-    <string name="optional_hint">(İsteğe bağlı)</string>
     <string name="proxy_test_label">Test</string>
-    <string name="proxy_checking">Kontrol ediliyor...</string>
+    <string name="proxy_checking">Kontrol ediliyor…</string>
     <string name="proxy_test_successful">Test başarılı</string>
     <string name="proxy_test_failed">Test başarısız</string>
     <string name="proxy_host_empty_error">Ana Sunucu boş olamaz</string>

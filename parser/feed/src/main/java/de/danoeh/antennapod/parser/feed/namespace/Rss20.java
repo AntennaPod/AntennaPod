@@ -45,16 +45,23 @@ public class Rss20 extends Namespace {
             state.setCurrentItem(new FeedItem());
             state.getItems().add(state.getCurrentItem());
             state.getCurrentItem().setFeed(state.getFeed());
-        } else if (ENCLOSURE.equals(localName) && ITEM.equals(state.getTagstack().peek().getName())) {
+        } else if (ENCLOSURE.equals(localName) && ITEM.equals(state.getTagstack().peek().getName())
+                    && state.getCurrentItem() != null) {
             String url = attributes.getValue(ENC_URL);
             String mimeType = MimeTypeUtils.getMimeType(attributes.getValue(ENC_TYPE), url);
+            boolean isValidMedia = MimeTypeUtils.isMediaFile(mimeType);
+            if (!isValidMedia && !MimeTypeUtils.isImageFile(mimeType) && state.getCurrentItem().getMedia() == null) {
+                isValidMedia = true;
+                mimeType = "audio/*";
+            }
 
-            boolean validUrl = !TextUtils.isEmpty(url);
-            if (state.getCurrentItem() != null && state.getCurrentItem().getMedia() == null
-                    && MimeTypeUtils.isMediaFile(mimeType) && validUrl) {
+            if (state.getCurrentItem().getMedia() == null && isValidMedia && !TextUtils.isEmpty(url)) {
                 long size = 0;
                 try {
-                    size = Long.parseLong(attributes.getValue(ENC_LEN));
+                    String sizeStr = attributes.getValue(ENC_LEN);
+                    if (!TextUtils.isEmpty(sizeStr)) {
+                        size = Long.parseLong(sizeStr);
+                    }
                     if (size < 16384) {
                         // less than 16kb is suspicious, check manually
                         size = 0;

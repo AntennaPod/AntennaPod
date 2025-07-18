@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Ενημέρωση συνδρομών</string>
-    <string name="feeds_label">Podcasts</string>
     <string name="statistics_label">Στατιστικά</string>
     <string name="add_feed_label">Προσθήκη podcast</string>
     <string name="episodes_label">Επεισόδια</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Αγαπημένα</string>
     <string name="settings_label">Ρυθμίσεις</string>
     <string name="downloads_label">Λήψεις</string>
-    <string name="open_autodownload_settings">Άνοιγμα ρυθμίσεων</string>
     <string name="downloads_log_label">Αρχείο καταγραφής λήψεων</string>
     <string name="subscriptions_label">Συνδρομές</string>
     <string name="subscriptions_list_label">Λίστα συνδρομών (μόνο στο πλαϊνό μενού)</string>
     <string name="cancel_download_label">Ακύρωση λήψης</string>
     <string name="playback_history_label">Ιστορικό αναπαραγωγής</string>
-    <string name="episode_cache_full_title">Η κρυφή μνήμη του επεισοδίου είναι γεμάτη</string>
-    <string name="episode_cache_full_message">Φθάσατε το όριο μεγέθους κρυφής μνήμης του επεισοδίου. Για να αυξήσετε το επιτρεπόμενο όριο μεγέθους κρυφής μνήμης, μεταβείτε στις Ρυθμίσεις.</string>
     <string name="years_statistics_label">Χρόνια</string>
     <string name="notification_pref_fragment">Ειδοποιήσεις</string>
     <string name="current_playing_episode">Τρέχον</string>
@@ -403,7 +399,6 @@
     <string name="pref_mobileUpdate_sum">Επιλέξτε τι θα επιτρέπεται με σύνδεση δεδομένων κινητής τηλεφωνίας</string>
     <string name="pref_mobileUpdate_refresh">Ανανέωση podcast</string>
     <string name="pref_mobileUpdate_images">Εικόνες εξώφυλλου</string>
-    <string name="pref_mobileUpdate_auto_download">Αυτόματη λήψη</string>
     <string name="pref_mobileUpdate_episode_download">Λήψη επεισοδίου</string>
     <string name="pref_mobileUpdate_streaming">Ροή</string>
     <string name="user_interface_label">Περιβάλλον χρήστη</string>
@@ -512,10 +507,10 @@
     <string name="search_online">Αναζήτηση online</string>
     <!--Synchronization-->
   <string name="sync_status_started">Ο συγχρονισμός ξεκίνησε</string>
-    <string name="sync_status_episodes_upload">Αποστολή αλλαγών επεισοδίου...</string>
-    <string name="sync_status_episodes_download">Λήψη αλλαγών επεισοδίου...</string>
-    <string name="sync_status_upload_played">Αποστολή κατάστασης αναπαραγωγών...</string>
-    <string name="sync_status_subscriptions">Οι συνδρομές συγχρονίζονται...</string>
+    <string name="sync_status_episodes_upload">Αποστολή αλλαγών επεισοδίου…</string>
+    <string name="sync_status_episodes_download">Λήψη αλλαγών επεισοδίου…</string>
+    <string name="sync_status_upload_played">Αποστολή κατάστασης αναπαραγωγών…</string>
+    <string name="sync_status_subscriptions">Οι συνδρομές συγχρονίζονται…</string>
     <string name="sync_status_success">Επιτυχής συγχρονισμός</string>
     <string name="sync_status_error">Ο συγχρονισμός απέτυχε</string>
     <!--import and export-->
@@ -605,7 +600,6 @@
     <string name="gpodnetauth_existing_devices">Ήδη υπάρχουσες συσκευές</string>
     <string name="gpodnetauth_create_device">Δημιουργία συσκευής</string>
     <string name="gpodnetauth_finish_descr">Συγχαρητήρια! Ο λογαριασμός σας στο gpodder.net συνδέεται πλέον με τη συσκευή σας. Το AntennaPod θα συγχρονίζει αυτόματα τις συνδρομές στην συσκευή σας με το λογαριασμό σας στο gpodder.net.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Έναρξη συγχρονισμού τώρα</string>
     <string name="pref_gpodnet_setlogin_information_title">Αλλαγή στοιχείων σύνδεσης</string>
     <string name="pref_gpodnet_setlogin_information_sum">Αλλαγή στοιχείων σύνδεσης για το λογαριασμό σας στο gpodder.net.</string>
     <string name="synchronization_sync_changes_title">Συγχρονισμός τώρα</string>
@@ -674,7 +668,6 @@
     <string name="exclude_episodes_shorter_than">Αποκλεισμός επεισοδίων μικρότερων από</string>
     <string name="keep_updated">Διατήρηση ενημερωμένων</string>
     <string name="keep_updated_summary">Συμπερίληψη του podcast όταν (αυτο)συγχρονίζονται όλα τα podcasts</string>
-    <string name="auto_download_disabled_globally">Η αυτόματη λήψη είναι απενεργοποιημένη στις κεντρικές ρυθμίσεις του AntennaPod</string>
     <string name="statistics_expected_next_episode_any_day">Σύντομα</string>
     <string name="statistics_expected_next_episode_unknown">Άγνωστο</string>
     <string name="edit_url_menu">Επεξεργασία URL ροής</string>
@@ -693,7 +686,7 @@
     <string name="release_schedule_saturday">Σαβ</string>
     <string name="release_schedule_sunday">Κυρ</string>
     <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Εισαγωγή συνδρομών από εφαρμογές και μονο...</string>
+  <string name="sp_apps_importing_feeds_msg">Εισαγωγή συνδρομών από εφαρμογές και μονο…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Αναζήτηση podcast…</string>
     <string name="search_itunes_label">Αναζήτηση σε Apple Podcasts</string>
@@ -743,9 +736,8 @@
   <string name="proxy_type_label">Τύπος</string>
     <string name="host_label">Εξυπηρετητής</string>
     <string name="port_label">Θύρα</string>
-    <string name="optional_hint">(Προαιρετικά)</string>
     <string name="proxy_test_label">Έλεγχος</string>
-    <string name="proxy_checking">Επιβεβαίωση...</string>
+    <string name="proxy_checking">Επιβεβαίωση…</string>
     <string name="proxy_test_successful">Επιτυχής έλεγχος</string>
     <string name="proxy_test_failed">Ο έλεγχος απέτυχε</string>
     <string name="proxy_host_empty_error">Ο εξυπηρετητής δεν μπορεί να είναι άδειος</string>

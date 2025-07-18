@@ -63,7 +63,7 @@ public class AntennapodHttpClient {
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.interceptors().add(new BasicAuthorizationInterceptor());
-        builder.networkInterceptors().add(new UserAgentInterceptor());
+        builder.interceptors().add(new UserAgentInterceptor());
 
         // set cookie handler
         CookieManager cm = new CookieManager();

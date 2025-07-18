@@ -13,9 +13,7 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.model.playback.Playable;
 
 /**
- * @see de.danoeh.antennapod.storage.database.DBWriter#addQueueItem(android.content.Context, boolean, long...)
- * it uses the class to determine
- * the positions of the {@link FeedItem} in the queue.
+ * Determine the positions of the new {@link FeedItem} in the queue.
  */
 public class ItemEnqueuePositionCalculator {
 

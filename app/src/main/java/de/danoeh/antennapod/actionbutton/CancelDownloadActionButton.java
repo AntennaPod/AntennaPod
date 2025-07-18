@@ -8,7 +8,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.database.DBWriter;
 
 public class CancelDownloadActionButton extends ItemActionButton {
@@ -33,9 +32,7 @@ public class CancelDownloadActionButton extends ItemActionButton {
     public void onClick(Context context) {
         FeedMedia media = item.getMedia();
         DownloadServiceInterface.get().cancel(context, media);
-        if (UserPreferences.isEnableAutodownload()) {
-            item.disableAutoDownload();
-            DBWriter.setFeedItem(item);
-        }
+        item.disableAutoDownload();
+        DBWriter.setFeedItem(item);
     }
 }
