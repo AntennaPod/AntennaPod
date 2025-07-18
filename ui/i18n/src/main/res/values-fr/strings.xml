@@ -848,11 +848,64 @@
     <string name="disabled">Désactivé</string>
     <string name="download_error_unsupported_type_html_manual">L\'adresse entrée est celle d\'un site web et pas d\'un lien RSS de podcast.</string>
     <string name="episodes_label_short">Épisodes</string>
-    <string name="pref_automatic_download_global_description">Télécharger automatiquement les nouveaux épisodes. Peut-être modifié pour chaque podcast dans ses paramètres.</string>
+    <string name="pref_automatic_download_global_description">Télécharger automatiquement les épisodes dans la boîte de réception. Peut-être modifié pour chaque podcast dans ses paramètres.</string>
     <string name="pref_automatic_download_queue_title">Téléchargement de la liste de lecture</string>
     <string name="preference_search_clear_input">Effacer</string>
     <string name="overflow_more">Plus</string>
     <string name="rss_address">Lien RSS</string>
     <string name="feed_new_episodes_action_summary_autodownload">Le téléchargement automatique est activé. Les épisodes sont ajoutés à la boîte de réception puis déplacés dans la liste de lecture une fois téléchargés.</string>
     <string name="visit_social_interact_label">Voir les commentaires</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Marqué comme lu</item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Marqué comme non lu</item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Téléchargement d\'%d épisode.</item>
+        <item quantity="many">Téléchargement de %d épisodes.</item>
+        <item quantity="other">Téléchargement de %d épisodes.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">%d épisode téléchargé supprimé.</item>
+        <item quantity="many">%d épisodes téléchargés supprimés.</item>
+        <item quantity="other">%d épisodes téléchargés supprimés.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Supprimé de la boîte de réception</string>
+    <string name="mark_as_played_label">Marquer comme lu</string>
+    <string name="play_this_to_seek_position_message">Pour changer la position l\'épisode doit être en cours de lecture</string>
+    <string name="mark_as_unplayed_label">Marquer comme non lu</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d épisode ajouté à la liste de lecture.</item>
+        <item quantity="many">%d épisodes ajoutés à la liste de lecture.</item>
+        <item quantity="other">%d épisodes ajoutés à la liste de lecture.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d épisode supprimé de la liste de lecture.</item>
+        <item quantity="many">%d épisodes supprimés de la liste de lecture.</item>
+        <item quantity="other">%d épisodes supprimés de la liste de lecture.</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">Suivre l\'audio</string>
+    <string name="visit_social_interact_confirm_dialog_title">Vous allez sortir d\'AntennaPod</string>
+    <string name="visit_social_interact_confirm_dialog_message">Assurez-vous que vous pouvez faire confiance au site \"%1$s\".</string>
+    <string name="reset_playback_position_label">Réinitialiser la position de lecture</string>
+    <string name="no_items_selected_message">Rien n\'a été sélectionné</string>
+    <string name="delete_local_feed_confirmation_dialog_message">La suppression d\'un épisode dans AntennaPod le supprime aussi de votre appareil. Il sera définitivement perdu et ne pourra pas être \"retélécharger\" à partir d\'AntennaPod.</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d épisode déplacé en haut de la liste.</item>
+        <item quantity="many">%d épisodes déplacés en haut de la liste.</item>
+        <item quantity="other">%d épisodes déplacés en haut de la liste.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d épisode déplacé en bas de la liste.</item>
+        <item quantity="many">%d épisodes déplacés en bas de la liste.</item>
+        <item quantity="other">%d épisodes déplacés en bas de la liste.</item>
+    </plurals>
+    <string name="auto_download_inbox_category">Télécharger automatiquement les épisodes dans la boîte de réception</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Voir la boîte de réception</string>
+    <string name="no_queue_items_inbox_has_items_label">Aucun épisode dans la liste de lecture mais des épisodes attendent d\'être lu !</string>
 </resources>

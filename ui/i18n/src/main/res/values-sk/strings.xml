@@ -805,7 +805,7 @@
     <string name="episode_lists">Zoznamy epizód</string>
     <string name="pref_downloads_button_action_title">Prehrávanie z obrazovky sťahovania</string>
     <string name="pref_downloads_button_action_sum">Na obrazovke sťahovania zobraziť tlačidlo Prehrať namiesto tlačidla Odstrániť</string>
-    <string name="pref_automatic_download_global_description">Automaticky sťahovať nové epizódy. Je možné nastaviť pre jednotlivé podcasty.</string>
+    <string name="pref_automatic_download_global_description">Automaticky sťahovať epizódy z Noviniek. Je možné nastaviť pre jednotlivé podcasty.</string>
     <string name="pref_automatic_download_queue_description">Automaticky sťahovať epizódy v poradí</string>
     <string name="statistics_time_total">celkovo</string>
     <string name="statistics_time_played">prehrávaných</string>

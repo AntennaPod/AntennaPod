@@ -632,7 +632,7 @@
     <string name="shuffle_suggestions">Sugestões de embaralhamento</string>
     <string name="add_preset">Adicionar pré-definições</string>
     <string name="download_started_talkback">O download de %1$s foi iniciado</string>
-    <string name="download_completed_talkback">O download de %1$s foi finalizado</string>
+    <string name="download_completed_talkback">O download de %1$s foi concluído</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">Autenticação</string>
     <string name="authentication_descr">Altera seu nome de usuário e senha para este podcast e seus episódios</string>
@@ -760,7 +760,7 @@
     <string name="pref_nav_drawer_items_title">Personalizar a navegação</string>
     <string name="statistics_view_all">Todos os podcasts »</string>
     <string name="discover_more">Descobrir mais »</string>
-    <string name="home_continue_empty_text">Para adicionar episódios, mande baixá-los ou pressione longamente sobre eles e selecione \"Adicionar à fila\".</string>
+    <string name="home_continue_empty_text">Você pode adicionar episódios baixando-os ou mantendo-os pressionados e selecionando \"Adicionar à fila\".</string>
     <string name="home_downloads_empty_text">Você pode baixar qualquer episódio para ouvir offline.</string>
     <string name="section_shown">Exibidos</string>
     <string name="delete_downloads_played">Excluir reproduzidos</string>
@@ -799,12 +799,12 @@
     <string name="overflow_more">Mais</string>
     <string name="download_error_unsupported_type_html_manual">O endereço que você inseriu é um endereço de site, não um endereço RSS de podcast.</string>
     <string name="feed_new_episodes_action_summary_autodownload">Download automático ativado. Uma vez baixados os episódios serão adicionados à caixa de entrada e movidos para a fila.</string>
-    <string name="delete_tag_confirmation">Confirme que você quer deletar a etiqueta \"%1$s\".</string>
+    <string name="delete_tag_confirmation">Confirme que você deseja excluir a etiqueta \"%1$s\".</string>
     <string name="downloads_label_more">Baixados »</string>
     <string name="enabled">Habilitado</string>
     <string name="global_default_with_value">Padrão global (%1$s)</string>
-    <string name="delete_tag_label">Deletar etiqueta</string>
-    <string name="pref_automatic_download_global_description">Baixar automaticamente novos episódios. Pode ser ajustado individualmente em cada podcast.</string>
+    <string name="delete_tag_label">Excluir etiqueta</string>
+    <string name="pref_automatic_download_global_description">Baixar automaticamente episódios da caixa de entrada. Pode ser ajustado individualmente em cada podcast.</string>
     <string name="pref_automatic_download_queue_title">Baixar fila de download</string>
     <string name="episode_lists">Lista de episódios</string>
     <string name="pref_downloads_button_action_title">Reproduzir da tela de downloads</string>
@@ -855,4 +855,57 @@
     <string name="echo_share_heading">Meus podcasts favoritos</string>
     <string name="echo_share">Meu ano %d em podcasts. #AntennaPodEcho</string>
     <string name="echo_thanks_now_favorite">Agora, vamos dar uma olhada nos seus podcasts favoritos…</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Baixando %d episódio.</item>
+        <item quantity="many">Baixando %d episódios.</item>
+        <item quantity="other">Baixando %d episódios.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">%d episódio baixado excluído.</item>
+        <item quantity="many">%d episódios baixados excluídos.</item>
+        <item quantity="other">%d episódios baixados excluídos.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Removido da caixa de entrada</string>
+    <string name="mark_as_played_label">Marcar como reproduzido</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Marcado como reproduzido</item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Marcado como não reproduzido</item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="play_this_to_seek_position_message">Para pular para posições, você precisa reproduzir o episódio</string>
+    <string name="mark_as_unplayed_label">Marcar como não reproduzido</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d episódio adicionado à fila.</item>
+        <item quantity="many">%d episódios adicionados à fila.</item>
+        <item quantity="other">%d episódios adicionados à fila.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d episódio removido da fila.</item>
+        <item quantity="many">%d episódios removidos da fila.</item>
+        <item quantity="other">%d episódios removidos da fila.</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">Acompanhar áudio</string>
+    <string name="visit_social_interact_confirm_dialog_title">Você está saindo do AntennaPod</string>
+    <string name="visit_social_interact_confirm_dialog_message">Certifique-se de que você confia no site “%1$s”.</string>
+    <string name="reset_playback_position_label">Reiniciar posição de reprodução</string>
+    <string name="no_items_selected_message">Nenhum item selecionado</string>
+    <string name="delete_local_feed_confirmation_dialog_message">A exclusão remove o episódio do AntennaPod e exclui o arquivo de mídia do armazenamento do dispositivo. Ele não pode ser baixado novamente pelo AntennaPod.</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d episódio movido para o topo.</item>
+        <item quantity="many">%d episódios movidos para o topo.</item>
+        <item quantity="other">%d episódios movidos para o topo.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d episódio movido para o final.</item>
+        <item quantity="many">%d episódios movidos para o final.</item>
+        <item quantity="other">%d episódios movidos para o final.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">Nenhum episódio na fila, mas existem novos episódios esperando por você!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Ir para caixa de entrada</string>
+    <string name="auto_download_inbox_category">Baixar automaticamente os episódios da caixa de entrada</string>
 </resources>

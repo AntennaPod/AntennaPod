@@ -826,7 +826,7 @@
     <string name="notification_channel_refreshing">Aktualisiere Podcasts</string>
     <string name="notification_channel_refreshing_description">Wird beim Suchen nach neuen Episoden angezeigt.</string>
     <string name="echo_intro_in_podcasts">in Podcasts</string>
-    <string name="pref_automatic_download_global_description">Automatisches Herunterladen neuer Episoden. Kann individuell für jeden Podcast überschrieben werden.</string>
+    <string name="pref_automatic_download_global_description">Automatisches Herunterladen von Episoden aus dem Posteingang. Kann individuell für jeden Podcast überschrieben werden.</string>
     <string name="pref_automatic_download_queue_title">Warteschlange herunterladen</string>
     <string name="pref_automatic_download_queue_description">Automatisches Herunterladen von Episoden in der Warteschlange</string>
     <string name="episode_lists">Episodenlisten</string>
@@ -838,4 +838,49 @@
     <string name="rss_address">RSS-Adresse</string>
     <string name="visit_social_interact_label">Kommentare anzeigen</string>
     <string name="feed_new_episodes_action_summary_autodownload">Automatisches Herunterladen aktiviert. Die Episoden werden dem Posteingang hinzugefügt und nach dem Herunterladen in die Warteschlange verschoben.</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">%d Episode wird heruntergeladen.</item>
+        <item quantity="other">%d Episoden werden heruntergeladen.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">%d heruntergeladene Episode gelöscht.</item>
+        <item quantity="other">%d heruntergeladene Episoden gelöscht.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Aus dem Posteingang entfernt</string>
+    <string name="mark_as_played_label">Als abgespielt markieren</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Als abgespielt markiert</item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Als ungespielt markiert</item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="play_this_to_seek_position_message">Um zu Positionen zu springen, musst du die Episode abspielen</string>
+    <string name="mark_as_unplayed_label">Als ungespielt markieren</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d Episode zur Warteschlange hinzugefügt.</item>
+        <item quantity="other">%d Episoden zur Warteschlange hinzugefügt.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d Episode aus der Warteschlange entfernt.</item>
+        <item quantity="other">%d Episoden aus der Warteschlange entfernt.</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">Audio folgen</string>
+    <string name="visit_social_interact_confirm_dialog_title">Du verlässt AntennaPod</string>
+    <string name="visit_social_interact_confirm_dialog_message">Bitte vergewissere dich, dass du der Website „%1$s“ vertraust.</string>
+    <string name="reset_playback_position_label">Wiedergabeposition zurücksetzen</string>
+    <string name="no_items_selected_message">Keine Einträge ausgewählt</string>
+    <string name="delete_local_feed_confirmation_dialog_message">Durch das Löschen wird die Episode aus AntennaPod entfernt und die Mediendatei aus dem Gerätespeicher gelöscht. Sie kann nicht erneut über AntennaPod heruntergeladen werden.</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d Episode nach oben verschoben.</item>
+        <item quantity="other">%d Episoden nach oben verschoben.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d Episode nach unten verschoben.</item>
+        <item quantity="other">%d Episoden nach unten verschoben.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">Es sind keine Episoden eingereiht, aber es warten neue Episoden auf dich!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Zum Posteingang gehen</string>
+    <string name="auto_download_inbox_category">Automatisches Herunterladen von Episoden aus dem Posteingang</string>
 </resources>
