@@ -55,6 +55,7 @@ import androidx.media.MediaBrowserServiceCompat;
 
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
+import de.danoeh.antennapod.playback.service.internal.ClockSleepTimer;
 import de.danoeh.antennapod.playback.service.internal.LocalPSMP;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
 import de.danoeh.antennapod.playback.service.internal.PlaybackServiceNotificationBuilder;
@@ -80,7 +81,7 @@ import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
-import de.danoeh.antennapod.playback.service.internal.PlaybackServiceTaskManager.SleepTimer;
+import de.danoeh.antennapod.playback.service.internal.SleepTimer;
 import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.event.MessageEvent;
@@ -159,6 +160,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private PlaybackServiceMediaPlayer mediaPlayer;
     private PlaybackServiceTaskManager taskManager;
+    private SleepTimer sleepTimer;
     private PlaybackServiceStateManager stateManager;
     private Disposable positionEventTimer;
     private PlaybackServiceNotificationBuilder notificationBuilder;
@@ -676,7 +678,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 } else {
                     return false;
                 }
-                taskManager.restartSleepTimer();
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PLAY:
                 if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
@@ -689,7 +690,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 } else {
                     return false;
                 }
-                taskManager.restartSleepTimer();
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
@@ -1188,11 +1188,25 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public void setSleepTimer(long waitingTime) {
         Log.d(TAG, "Setting sleep timer to " + waitingTime + " milliseconds");
-        taskManager.setSleepTimer(waitingTime);
+        if (waitingTime <= 0) {
+            throw new IllegalArgumentException("Waiting time <= 0");
+        }
+
+        Log.d(TAG, "Setting sleep timer to " + waitingTime + " milliseconds or episodes");
+        if (sleepTimerActive()) {
+            sleepTimer.updateRemainingTime(waitingTime);
+        } else {
+            sleepTimer = new ClockSleepTimer(getApplicationContext());
+            sleepTimer.start(waitingTime);
+        }
     }
 
     public void disableSleepTimer() {
-        taskManager.disableSleepTimer();
+        if (sleepTimerActive()) {
+            Log.d(TAG, "Disabling sleep timer");
+            sleepTimer.stop();
+        }
+        sleepTimer = null;
     }
 
     private void sendNotificationBroadcast(int type, int code) {
@@ -1473,11 +1487,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     public boolean sleepTimerActive() {
-        return taskManager.isSleepTimerActive();
+        return sleepTimer != null && sleepTimer.isActive();
     }
 
     public long getSleepTimerTimeLeft() {
-        return taskManager.getSleepTimerTimeLeft();
+        if (sleepTimerActive()) {
+            return sleepTimer.getTimeLeft();
+        } else {
+            return 0;
+        }
     }
 
     private void bluetoothNotifyChange(PlaybackServiceMediaPlayer.PSMPInfo info, String whatChanged) {
@@ -1661,12 +1679,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public void resume() {
         mediaPlayer.resume();
-        taskManager.restartSleepTimer();
     }
 
     public void prepare() {
         mediaPlayer.prepare();
-        taskManager.restartSleepTimer();
     }
 
     public void pause(boolean abandonAudioFocus, boolean reinit) {
