@@ -1663,9 +1663,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     setSpeed(event.getSpeed());
                 }
                 if (event.getSkipSilence() == FeedPreferences.SkipSilence.GLOBAL) {
-                    setSkipSilence(UserPreferences.isSkipSilence());
+                    setSkipSilence(UserPreferences.getSkipSilence());
                 } else {
-                    setSkipSilence(event.getSkipSilence() == FeedPreferences.SkipSilence.AGGRESSIVE);
+                    setSkipSilence(event.getSkipSilence());
                 }
             }
         }
@@ -1723,7 +1723,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         mediaPlayer.setPlaybackParams(speed, getCurrentSkipSilence());
     }
 
-    public void setSkipSilence(boolean skipSilence) {
+    public void setSkipSilence(FeedPreferences.SkipSilence skipSilence) {
         PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(skipSilence);
         mediaPlayer.setPlaybackParams(getCurrentPlaybackSpeed(), skipSilence);
     }
@@ -1735,9 +1735,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         return mediaPlayer.getPlaybackSpeed();
     }
 
-    public boolean getCurrentSkipSilence() {
+    public FeedPreferences.SkipSilence getCurrentSkipSilence() {
         if (mediaPlayer == null) {
-            return false;
+            return FeedPreferences.SkipSilence.OFF;
         }
         return mediaPlayer.getSkipSilence();
     }
