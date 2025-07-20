@@ -20,9 +20,11 @@ public class PlainTextLinksConverter {
             "(?:https?://(?:www\\.)?|www\\.)"   // http(s)://[www.] OR www.
                     + "[-a-zA-Z0-9@:%._+~#=]{1,256}"  // Domain name
                     + "\\.[a-zA-Z]{2,6}\\b"           // Top-level domain
-                    + "[-a-zA-Z0-9@:%_+.~#?&/=(),;]*", // Path, query params
+                    + "[-a-zA-Z0-9@:%_+.*~#?!&$/=()\\[\\],;]*", // Path, query params
             Pattern.CASE_INSENSITIVE
     );
+    protected static final List<String> NOT_ALLOWED_END_CHARS = List.of(
+            ".", ",", ";", ":", "?", "!", ")", "(", "[", "]", "-", "_", "~", "#", "@", "$", "*", "+");
 
     private static final String STARTS_WITH_HTTP = "(?i)https?://.*";
     private static final String ANCHOR_TAG = "a";
@@ -80,10 +82,13 @@ public class PlainTextLinksConverter {
             matcher.reset();
 
             while (matcher.find()) {
+                String url = matcher.group();
+                if (endsWithPunctuation(url)) {
+                    continue;
+                }
                 if (matcher.start() > lastEnd) {
                     newNodes.add(new TextNode(originalText.substring(lastEnd, matcher.start())));
                 }
-                String url = matcher.group();
                 newNodes.add(link(url));
                 lastEnd = matcher.end();
             }
@@ -125,6 +130,15 @@ public class PlainTextLinksConverter {
                 }
             }
             current = current.parent();
+        }
+        return false;
+    }
+
+    private static boolean endsWithPunctuation(String url) {
+        for (String endChar : NOT_ALLOWED_END_CHARS) {
+            if (url.endsWith(endChar)) {
+                return true;
+            }
         }
         return false;
     }

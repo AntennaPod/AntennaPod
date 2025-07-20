@@ -3,10 +3,8 @@ package de.danoeh.antennapod.ui.cleaner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-
-
+import static de.danoeh.antennapod.ui.cleaner.PlainTextLinksConverter.NOT_ALLOWED_END_CHARS;
 import org.junit.Test;
-
 import java.util.List;
 
 public class PlainTextLinksConverterTest {
@@ -42,7 +40,7 @@ public class PlainTextLinksConverterTest {
         final String expectedWithParams = "text " + makeLinkHtml(linkWithParams) + " after-text";
         assertEquals(expectedWithParams, PlainTextLinksConverter.convertLinksToHtml(textWithParams));
 
-        final String linkWithComma = "https://example.org/%D0%%86_(%D1%%BC,_2020)";
+        final String linkWithComma = "https://example.org/%D0%%86_(%D1%%BC,_2020";
         final String textWithComma = "text " + linkWithComma;
         assertEquals("text " + makeLinkHtml(linkWithComma), PlainTextLinksConverter.convertLinksToHtml(textWithComma));
 
@@ -50,9 +48,57 @@ public class PlainTextLinksConverterTest {
         final String textWithDot = "text " + linkWithDot;
         assertEquals("text " + makeLinkHtml(linkWithDot), PlainTextLinksConverter.convertLinksToHtml(textWithDot));
 
-        final String linkWithTilda = "https://www.example.org/valid/-~.,/url/";
+        final String linkWithTilda = "https://www.example.org/valid/-~.,$/url/";
         final String textWithTilda = "text " + linkWithTilda;
         assertEquals("text " + makeLinkHtml(linkWithTilda), PlainTextLinksConverter.convertLinksToHtml(textWithTilda));
+
+        final String linkWithExclamation = "http://www.example.com/index.php?id=123&v=wall#!/index.php?id=234";
+        final String textWithExclamation = "text " + linkWithExclamation;
+        assertEquals("text " + makeLinkHtml(linkWithExclamation),
+                PlainTextLinksConverter.convertLinksToHtml(textWithExclamation));
+
+        final String linkWithBrackets = "http://www.example.com/index.php?bar[]=1&bar[]=2";
+        final String textWithBrackets = "text " + linkWithBrackets;
+        assertEquals("text " + makeLinkHtml(linkWithBrackets),
+                PlainTextLinksConverter.convertLinksToHtml(textWithBrackets));
+
+        final String linkWithAsterisk = "https://archive.org/web/*/http://www.example.com/";
+        final String textWithAsterisk = "text " + linkWithAsterisk;
+        assertEquals("text " + makeLinkHtml(linkWithAsterisk),
+                PlainTextLinksConverter.convertLinksToHtml(textWithAsterisk));
+    }
+
+    @Test
+    public void testBrokenLinksAreNotCreated() {
+        final String linkWithBrackets = "Sign up now (http://example.com/abc)";
+        assertEquals(linkWithBrackets, PlainTextLinksConverter.convertLinksToHtml(linkWithBrackets));
+
+        final String linkWithBrackets2 = "Sign up now (http://example.com/abc)! please";
+        assertEquals(linkWithBrackets2, PlainTextLinksConverter.convertLinksToHtml(linkWithBrackets2));
+
+        final String linkWithDot = "To read on, visit https://example.com.";
+        assertEquals(linkWithDot, PlainTextLinksConverter.convertLinksToHtml(linkWithDot));
+
+        //we choose to ignore links like this, even though they are valid
+        final String validLinkIgnored = "Visit https://example.com/wiki_(url+rules)";
+        assertEquals(validLinkIgnored, PlainTextLinksConverter.convertLinksToHtml(validLinkIgnored));
+
+        final String link = "https://example.com/abc";
+        NOT_ALLOWED_END_CHARS.forEach(end ->
+                assertEquals(link + end, PlainTextLinksConverter.convertLinksToHtml(link + end))
+        );
+
+        final String firstLinkIgnored = "(" + link + ") and " + link;
+        assertEquals("(https://example.com/abc) and " + makeLinkHtml(link),
+                PlainTextLinksConverter.convertLinksToHtml(firstLinkIgnored));
+
+        final String secondLinkIgnored = "text " + link + " and (" + link + ")";
+        assertEquals("text " + makeLinkHtml(link) + " and (https://example.com/abc)",
+                PlainTextLinksConverter.convertLinksToHtml(secondLinkIgnored));
+
+        final String middleLinkIgnored = "text " + link + " and (" + link + ") and " + link;
+        assertEquals("text " + makeLinkHtml(link) + " and (https://example.com/abc) and " + makeLinkHtml(link),
+                PlainTextLinksConverter.convertLinksToHtml(middleLinkIgnored));
     }
 
     @Test
