@@ -2,6 +2,7 @@ package de.danoeh.antennapod.ui.screen.feed;
 
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -82,14 +84,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         @Override
         public void onClick(View v) {
             if (feed != null && feed.getDownloadUrl() != null) {
-                String url = feed.getDownloadUrl();
-                ClipData clipData = ClipData.newPlainText(url, url);
-                android.content.ClipboardManager cm = (android.content.ClipboardManager) getContext()
-                        .getSystemService(Context.CLIPBOARD_SERVICE);
-                cm.setPrimaryClip(clipData);
-                if (Build.VERSION.SDK_INT <= 32) {
-                    EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
-                }
+                copyToClipboard(requireContext(), feed.getDownloadUrl());
             }
         }
     };
@@ -128,7 +123,14 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
             StatisticsFragment fragment = new StatisticsFragment();
             ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
         });
-
+        viewBinding.header.txtvTitle.setOnLongClickListener(v -> {
+            copyToClipboard(requireContext(), viewBinding.header.txtvTitle.getText().toString());
+            return true;
+        });
+        viewBinding.header.txtvAuthor.setOnLongClickListener(v -> {
+            copyToClipboard(requireContext(), viewBinding.header.txtvAuthor.getText().toString());
+            return true;
+        });
         return viewBinding.getRoot();
     }
 
@@ -162,6 +164,17 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 horizontalSpacing, viewBinding.header.getRoot().getPaddingBottom());
         viewBinding.infoContainer.setPadding(horizontalSpacing, viewBinding.infoContainer.getPaddingTop(),
                 horizontalSpacing, viewBinding.infoContainer.getPaddingBottom());
+    }
+
+    public void copyToClipboard(Context context, String text) {
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        if (clipboard != null) {
+            ClipData clip = ClipData.newPlainText(text, text);
+            clipboard.setPrimaryClip(clip);
+            if (Build.VERSION.SDK_INT <= 32) {
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
+            }
+        }
     }
 
     private void showFeed() {

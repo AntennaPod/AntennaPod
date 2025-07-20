@@ -23,11 +23,21 @@ public abstract class PagedToolbarFragment extends Fragment {
             return false;
         });
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            private int selectedPosition = 0;
+
             @Override
             public void onPageSelected(int position) {
-                Fragment child = getChildFragmentManager().findFragmentByTag("f" + position);
-                if (child != null) {
-                    child.onPrepareOptionsMenu(toolbar.getMenu());
+                selectedPosition = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                super.onPageScrollStateChanged(state);
+                if (state == ViewPager2.SCROLL_STATE_IDLE) {
+                    Fragment child = getChildFragmentManager().findFragmentByTag("f" + selectedPosition);
+                    if (child != null) {
+                        child.onPrepareOptionsMenu(toolbar.getMenu());
+                    }
                 }
             }
         });

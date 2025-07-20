@@ -1,7 +1,11 @@
 package de.danoeh.antennapod.ui.screen.feed;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -100,6 +104,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private Feed feed;
     private Disposable disposable;
     private FeedItemListFragmentBinding viewBinding;
+    private Pair<Integer, Integer> scrollPosition = null;
 
     /**
      * Creates new ItemlistFragment which shows the Feeditems of a specific
@@ -242,6 +247,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
         viewBinding.recyclerView.setPadding(viewBinding.recyclerView.getPaddingLeft(), 0,
                 viewBinding.recyclerView.getPaddingRight(), paddingBottom);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        scrollPosition = viewBinding.recyclerView.getScrollPosition();
     }
 
     @Override
@@ -554,6 +565,25 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             FeedItemFilterDialog.newInstance(feed).show(getChildFragmentManager(), null);
         });
         viewBinding.header.txtvFailure.setOnClickListener(v -> showErrorDetails());
+        viewBinding.header.txtvAuthor.setOnLongClickListener(view -> {
+            copyToClipboard(requireContext(), viewBinding.header.txtvAuthor.getText().toString());
+            return true;
+        });
+        viewBinding.header.txtvTitle.setOnLongClickListener(view -> {
+            copyToClipboard(requireContext(), viewBinding.header.txtvTitle.getText().toString());
+            return true;
+        });
+    }
+
+    public void copyToClipboard(Context context, String text) {
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        if (clipboard != null) {
+            ClipData clip = ClipData.newPlainText(text, text);
+            clipboard.setPrimaryClip(clip);
+            if (Build.VERSION.SDK_INT <= 32) {
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
+            }
+        }
     }
 
     private void showErrorDetails() {
@@ -631,6 +661,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                         adapter.updateItems(feed.getItems());
                         adapter.setTotalNumberOfItems(result.second);
                         updateToolbar();
+                        viewBinding.recyclerView.restoreScrollPosition(scrollPosition);
+                        scrollPosition = null;
                     }, error -> {
                         feed = null;
                         refreshHeaderView();

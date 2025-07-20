@@ -17,21 +17,17 @@ import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 
 public class ClockSleepTimer implements SleepTimer {
     private static final String TAG = "ClockSleepTimer";
+
     private final Context context;
-    private final long initialWaitingTime;
+    private long initialWaitingTime;
     private long timeLeft;
     private boolean isRunning = false;
     private long lastTick = 0;
+    private boolean hasVibrated = false;
+    private ShakeListener shakeListener;
 
-    protected boolean hasVibrated = false;
-    protected ShakeListener shakeListener;
-
-    public ClockSleepTimer(final Context context, long initialWaitingTime) {
+    public ClockSleepTimer(final Context context) {
         this.context = context;
-        this.initialWaitingTime = initialWaitingTime;
-        this.timeLeft = initialWaitingTime;
-
-        start();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -39,20 +35,24 @@ public class ClockSleepTimer implements SleepTimer {
     public void playbackPositionUpdate(PlaybackPositionEvent playbackPositionEvent) {
         Log.d(TAG, "playback position updated");
         long now = System.currentTimeMillis();
-        timeLeft -= now - lastTick;
+        long timeSinceLastTick = now - lastTick;
         lastTick = now;
+        if (timeSinceLastTick > 10 * 1000) {
+            return; // Ticks should arrive every second. If they didn't, playback was paused for a while.
+        }
+        timeLeft -= timeSinceLastTick;
 
-        EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(timeLeft, timeLeft));
+        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(timeLeft));
         if (timeLeft < NOTIFICATION_THRESHOLD) {
             notifyAboutExpiry();
         }
         if (timeLeft <= 0) {
-            Log.d(TAG, "Clock sleep timer expired");
+            Log.d(TAG, "Clock Sleep timer expired");
             stop();
         }
     }
 
-    protected boolean vibrate() {
+    protected void vibrate() {
         final Vibrator vibrator;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             VibratorManager vibratorManager = (VibratorManager)
@@ -61,30 +61,26 @@ public class ClockSleepTimer implements SleepTimer {
         } else {
             vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         }
-
-        final int duration = 500;
-        if (vibrator != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                final VibrationEffect effect = VibrationEffect.createOneShot(
-                        duration, VibrationEffect.DEFAULT_AMPLITUDE);
-                vibrator.vibrate(effect);
-            } else {
-                vibrator.vibrate(duration);
-            }
-            return true;
+        if (vibrator == null) {
+            return;
         }
-
-        return false;
+        final int duration = 500;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            vibrator.vibrate(duration);
+        }
     }
 
     protected void notifyAboutExpiry() {
         Log.d(TAG, "Sleep timer is about to expire");
         if (SleepTimerPreferences.vibrate() && !hasVibrated) {
-            hasVibrated = vibrate();
+            vibrate();
+            hasVibrated = true;
         }
         // start listening for shakes if shake to reset is enabled
         if (shakeListener == null && SleepTimerPreferences.shakeToReset()) {
-            shakeListener = new ShakeListener(getContext(), getInitialTime(), this);
+            shakeListener = new ShakeListener(getContext(), this);
         }
     }
 
@@ -93,12 +89,17 @@ public class ClockSleepTimer implements SleepTimer {
         return isRunning && timeLeft > 0;
     }
 
-    public void start() {
-        registerForEvents(); // make sure we've registered for events first
+    public void start(long initialWaitingTime) {
+        this.initialWaitingTime = initialWaitingTime;
+        this.timeLeft = initialWaitingTime;
+
+        // make sure we've registered for events first
+        EventBus.getDefault().register(this);
+        final long left = getTimeLeft();
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(left));
 
         lastTick = System.currentTimeMillis();
-        final TimerValue left = getTimeLeft();
-        EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(left.getDisplayValue(), left.getMilisValue()));
+        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(timeLeft));
 
         isRunning = true;
     }
@@ -112,34 +113,26 @@ public class ClockSleepTimer implements SleepTimer {
             shakeListener.pause();
         }
         shakeListener = null;
-        EventBus.getDefault().post(SleepTimerUpdatedEvent.cancelled());
-    }
-
-    private void registerForEvents() {
-        EventBus.getDefault().register(this);
-        final TimerValue left = getTimeLeft();
-        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(left.getDisplayValue(), left.getMilisValue()));
+        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.cancelled());
     }
 
     protected Context getContext() {
         return context;
     }
 
-    protected long getInitialTime() {
-        return initialWaitingTime;
-    }
-
-    public TimerValue getTimeLeft() {
-        return new TimerValue(timeLeft, timeLeft);
-    }
-
-    public void setTimeLeft(long timeLeft) {
-        this.timeLeft = timeLeft;
+    @Override
+    public long getTimeLeft() {
+        return timeLeft;
     }
 
     @Override
-    public void reset(long waitingTimeOrEpisodes) {
+    public void updateRemainingTime(long waitingTimeOrEpisodes) {
         this.timeLeft = waitingTimeOrEpisodes;
+    }
+
+    @Override
+    public void reset() {
+        updateRemainingTime(initialWaitingTime);
     }
 
     @Override

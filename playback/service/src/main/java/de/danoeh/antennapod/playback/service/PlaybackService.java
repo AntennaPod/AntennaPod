@@ -52,6 +52,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.media.MediaBrowserServiceCompat;
+import androidx.media.utils.MediaConstants;
 
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
@@ -374,7 +375,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private MediaBrowserCompat.MediaItem createBrowsableMediaItem(
-            @StringRes int title, @DrawableRes int icon, int numEpisodes) {
+            @StringRes int title, @DrawableRes int icon, int numEpisodes, boolean grid) {
         Uri uri = new Uri.Builder()
                 .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
                 .authority(getResources().getResourcePackageName(icon))
@@ -382,11 +383,21 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 .appendPath(getResources().getResourceEntryName(icon))
                 .build();
 
+        Bundle extras = new Bundle();
+        if (grid) {
+            extras.putInt(
+                    MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_BROWSABLE,
+                    MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_GRID_ITEM);
+            extras.putInt(
+                    MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_PLAYABLE,
+                    MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_GRID_ITEM);
+        }
         MediaDescriptionCompat description = new MediaDescriptionCompat.Builder()
                 .setIconUri(uri)
                 .setMediaId(getResources().getString(title))
                 .setTitle(getResources().getString(title))
                 .setSubtitle(getResources().getQuantityString(R.plurals.num_episodes, numEpisodes, numEpisodes))
+                .setExtras(extras)
                 .build();
         return new MediaBrowserCompat.MediaItem(description, MediaBrowserCompat.MediaItem.FLAG_BROWSABLE);
     }
@@ -395,8 +406,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         MediaDescriptionCompat.Builder builder = new MediaDescriptionCompat.Builder()
                 .setMediaId("FeedId:" + feed.getId())
                 .setTitle(feed.getTitle())
-                .setDescription(feed.getDescription())
-                .setSubtitle(feed.getCustomTitle());
+                .setDescription(feed.getDescription());
         if (feed.getImageUrl() != null) {
             builder.setIconUri(Uri.parse(feed.getImageUrl()));
         }
@@ -432,17 +442,22 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private List<MediaBrowserCompat.MediaItem> loadChildrenSynchronous(@NonNull String parentId) {
         List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
         if (parentId.equals(getResources().getString(R.string.app_name))) {
-            long currentlyPlaying = PlaybackPreferences.getCurrentPlayerStatus();
-            if (currentlyPlaying == PlaybackPreferences.PLAYER_STATUS_PLAYING
-                    || currentlyPlaying == PlaybackPreferences.PLAYER_STATUS_PAUSED) {
-                mediaItems.add(createBrowsableMediaItem(R.string.current_playing_episode, R.drawable.ic_play_48dp, 1));
+            FeedMedia playable = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+            if (playable != null) {
+                mediaItems.add(createBrowsableMediaItem(R.string.current_playing_episode, R.drawable.ic_play_48dp_black, 1, false));
             }
             mediaItems.add(createBrowsableMediaItem(R.string.queue_label, R.drawable.ic_playlist_play_black,
-                    DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.QUEUED))));
+                    DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.QUEUED)), false));
             mediaItems.add(createBrowsableMediaItem(R.string.downloads_label, R.drawable.ic_download_black,
-                    DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.DOWNLOADED))));
+                    DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.DOWNLOADED)), false));
             mediaItems.add(createBrowsableMediaItem(R.string.episodes_label, R.drawable.ic_feed_black,
-                    DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.UNPLAYED))));
+                    DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.UNPLAYED)), false));
+            mediaItems.add(createBrowsableMediaItem(R.string.subscriptions_label, R.drawable.ic_subscriptions_black,
+                    DBReader.getFeedList().size(), true));
+            return mediaItems;
+        }
+
+        if (parentId.equals(getResources().getString(R.string.subscriptions_label))) {
             List<Feed> feeds = DBReader.getFeedList();
             for (Feed feed : feeds) {
                 if (feed.getState() == Feed.STATE_SUBSCRIBED) {
@@ -460,7 +475,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     new FeedItemFilter(FeedItemFilter.DOWNLOADED), UserPreferences.getDownloadsSortedOrder());
         } else if (parentId.equals(getResources().getString(R.string.episodes_label))) {
             feedItems = DBReader.getEpisodes(0, MAX_ANDROID_AUTO_EPISODES_PER_FEED,
-                    new FeedItemFilter(FeedItemFilter.UNPLAYED), UserPreferences.getAllEpisodesSortOrder());
+                    new FeedItemFilter(UserPreferences.getPrefFilterAllEpisodes()),
+                    UserPreferences.getAllEpisodesSortOrder());
         } else if (parentId.startsWith("FeedId:")) {
             long feedId = Long.parseLong(parentId.split(":")[1]);
             feedItems = DBReader.getFeed(feedId, true, 0, MAX_ANDROID_AUTO_EPISODES_PER_FEED).getItems();
@@ -1197,39 +1213,16 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         Log.d(TAG, "Setting sleep timer to " + waitingTime + " milliseconds or episodes");
-        if (isSleepTimerActive()) {
-            sleepTimer.reset(waitingTime);
+        if (sleepTimerActive()) {
+            sleepTimer.updateRemainingTime(waitingTime);
         } else {
-            sleepTimer = createSleepTimer(waitingTime);
+            sleepTimer = SleepTimerPreferences.getSleepTimerType() == CLOCK ? new ClockSleepTimer(getApplicationContext()) : new EpisodeSleepTimer(context);
+            sleepTimer.start(waitingTime);
         }
     }
 
-    /**
-     * Creates a new SleepTimer instance based on the current config
-     * Will either create a sleep time that counts down clock seconds, counts
-     * down playback seconds (similar to clock, but adjusted for playback speed)
-     * or episode counter
-     * @param sleepDurationOrEpisodes Either duration in millis or number of episodes
-     * @return The selected SleepTimer type
-     */
-    private SleepTimer createSleepTimer(long sleepDurationOrEpisodes) {
-        final Context context = getApplicationContext();
-        return switch (SleepTimerPreferences.getSleepTimerType()) {
-            case CLOCK -> new ClockSleepTimer(context, sleepDurationOrEpisodes);
-            case EPISODES -> new EpisodeSleepTimer(context, sleepDurationOrEpisodes);
-        };
-
-    }
-
-    /**
-     * Returns true if the sleep timer is currently active.
-     */
-    public boolean isSleepTimerActive() {
-        return sleepTimer != null && sleepTimer.isActive();
-    }
-
     public void disableSleepTimer() {
-        if (isSleepTimerActive()) {
+        if (sleepTimerActive()) {
             Log.d(TAG, "Disabling sleep timer");
             sleepTimer.stop();
         }
@@ -1521,8 +1514,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         return sleepTimer != null && sleepTimer.isActive() && sleepTimer.isEndingThisEpisode(episodeRemainingMillis);
     }
 
-    public TimerValue getSleepTimerTimeLeft() {
-        if (isSleepTimerActive()) {
+    public long getSleepTimerTimeLeft() {
+        if (sleepTimerActive()) {
             return sleepTimer.getTimeLeft();
         } else {
             return new TimerValue(0, 0);
