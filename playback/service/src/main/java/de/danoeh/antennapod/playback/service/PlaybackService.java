@@ -445,14 +445,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.QUEUED)), false));
             mediaItems.add(createBrowsableMediaItem(R.string.downloads_label, R.drawable.ic_download_black,
                     DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.DOWNLOADED)), false));
+            mediaItems.add(createBrowsableMediaItem(R.string.episodes_label, R.drawable.ic_feed_black,
+                    DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.UNPLAYED)), false));
             mediaItems.add(createBrowsableMediaItem(R.string.subscriptions_label, R.drawable.ic_subscriptions_black,
                     DBReader.getFeedList().size(), true));
             return mediaItems;
         }
 
         if (parentId.equals(getResources().getString(R.string.subscriptions_label))) {
-            mediaItems.add(createBrowsableMediaItem(R.string.episodes_label, R.drawable.ic_feed_black,
-                    DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.UNPLAYED)), false));
             List<Feed> feeds = DBReader.getFeedList();
             for (Feed feed : feeds) {
                 if (feed.getState() == Feed.STATE_SUBSCRIBED) {
