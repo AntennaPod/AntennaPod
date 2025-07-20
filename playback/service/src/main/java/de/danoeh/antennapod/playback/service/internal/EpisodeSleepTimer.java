@@ -46,11 +46,11 @@ public class EpisodeSleepTimer extends ClockSleepTimer {
             if (currentEpisodeTimeLeft < NOTIFICATION_THRESHOLD) {
                 notifyAboutExpiry();
             }
-            // try to stop the playback with one second remaining on the last episode
-            // just so we keep this episode in queue
+            // try to stop playback in the last second
+            // if we do not manage to do it then it will be stopped when the episode is marked as completed
             if (currentEpisodeTimeLeft <= 1000) {
                 Log.d(TAG, "Episodes sleep timer expired");
-                stop();
+                stopPlayback();
             }
         } else {
             EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(
@@ -69,8 +69,14 @@ public class EpisodeSleepTimer extends ClockSleepTimer {
 
         if (getTimeLeft().getDisplayValue() <= 0) {
             // we've ran out of episodes, playback will be stopped
-            stop();
+            stopPlayback();
         }
+    }
+
+    private void stopPlayback() {
+        // send an event with time remaining 0, that stops playback
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(0, 0));
+        stop(); // stop the timer too
     }
 
 }
