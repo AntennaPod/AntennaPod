@@ -201,7 +201,7 @@ public class SleepTimerDialog extends DialogFragment {
         chAutoEnable.setText(text);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     @SuppressWarnings("unused")
     public void timerUpdated(SleepTimerUpdatedEvent event) {
         timeDisplay.setVisibility(event.isOver() || event.isCancelled() ? View.GONE : View.VISIBLE);
