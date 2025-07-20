@@ -35,8 +35,12 @@ public class ClockSleepTimer implements SleepTimer {
     public void playbackPositionUpdate(PlaybackPositionEvent playbackPositionEvent) {
         Log.d(TAG, "playback position updated");
         long now = System.currentTimeMillis();
-        timeLeft -= now - lastTick;
+        long timeSinceLastTick = now - lastTick;
         lastTick = now;
+        if (timeSinceLastTick > 10 * 1000) {
+            return; // Ticks should arrive every second. If they didn't, playback was paused for a while.
+        }
+        timeLeft -= timeSinceLastTick;
 
         EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(timeLeft));
         if (timeLeft < NOTIFICATION_THRESHOLD) {
