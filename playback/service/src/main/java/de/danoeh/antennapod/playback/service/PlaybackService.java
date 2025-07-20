@@ -66,6 +66,7 @@ import de.danoeh.antennapod.playback.service.internal.PlaybackServiceTaskManager
 import de.danoeh.antennapod.playback.service.internal.PlaybackVolumeUpdater;
 import de.danoeh.antennapod.playback.service.internal.TimerValue;
 import de.danoeh.antennapod.playback.service.internal.WearMediaSession;
+import de.danoeh.antennapod.storage.preferences.SleepTimerType;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import de.danoeh.antennapod.ui.widget.WidgetUpdater;
 import io.reactivex.disposables.CompositeDisposable;
@@ -1216,7 +1217,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (sleepTimerActive()) {
             sleepTimer.updateRemainingTime(waitingTime);
         } else {
-            sleepTimer = SleepTimerPreferences.getSleepTimerType() == CLOCK ? new ClockSleepTimer(getApplicationContext()) : new EpisodeSleepTimer(context);
+            sleepTimer = SleepTimerPreferences.getSleepTimerType() == SleepTimerType.CLOCK ?
+                    new ClockSleepTimer(getApplicationContext()) : new EpisodeSleepTimer(getApplicationContext());
             sleepTimer.start(waitingTime);
         }
     }
@@ -1514,7 +1516,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         return sleepTimer != null && sleepTimer.isActive() && sleepTimer.isEndingThisEpisode(episodeRemainingMillis);
     }
 
-    public long getSleepTimerTimeLeft() {
+    public TimerValue getSleepTimerTimeLeft() {
         if (sleepTimerActive()) {
             return sleepTimer.getTimeLeft();
         } else {

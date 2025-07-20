@@ -16,8 +16,8 @@ import de.danoeh.antennapod.playback.service.PlaybackEndedEvent;
 public class EpisodeSleepTimer extends ClockSleepTimer {
     private static final String TAG = "EpisodeSleepTimer";
 
-    public EpisodeSleepTimer(final Context context, long remainingEpisodes) {
-        super(context, remainingEpisodes);
+    public EpisodeSleepTimer(final Context context) {
+        super(context);
     }
 
     @Override
@@ -38,13 +38,17 @@ public class EpisodeSleepTimer extends ClockSleepTimer {
         final TimerValue current = getTimeLeft();
 
         if (isEndingThisEpisode(playbackPositionEvent.getPosition())) {
+            // if we're ending this episode send the "correct" remaining time
+            // this ensures that the last 10 seconds the playback volume will be reduced
             EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(
                     current.getDisplayValue(), currentEpisodeTimeLeft));
 
             if (currentEpisodeTimeLeft < NOTIFICATION_THRESHOLD) {
                 notifyAboutExpiry();
             }
-            if (currentEpisodeTimeLeft <= 0) {
+            // try to stop the playback with one second remaining on the last episode
+            // just so we keep this episode in queue
+            if (currentEpisodeTimeLeft <= 1000) {
                 Log.d(TAG, "Episodes sleep timer expired");
                 stop();
             }
@@ -61,7 +65,7 @@ public class EpisodeSleepTimer extends ClockSleepTimer {
     }
 
     private void handlePlayedEpisode() {
-        setTimeLeft(getTimeLeft().getDisplayValue() - 1);
+        updateRemainingTime(getTimeLeft().getDisplayValue() - 1);
 
         if (getTimeLeft().getDisplayValue() <= 0) {
             // we've ran out of episodes, playback will be stopped

@@ -42,7 +42,8 @@ public class ClockSleepTimer implements SleepTimer {
         }
         timeLeft -= timeSinceLastTick;
 
-        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(timeLeft));
+        final TimerValue left = getTimeLeft();
+        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(left.getDisplayValue(), left.getMilisValue()));
         if (timeLeft < NOTIFICATION_THRESHOLD) {
             notifyAboutExpiry();
         }
@@ -95,11 +96,11 @@ public class ClockSleepTimer implements SleepTimer {
 
         // make sure we've registered for events first
         EventBus.getDefault().register(this);
-        final long left = getTimeLeft();
-        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(left));
+        final TimerValue left = getTimeLeft();
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(left.getDisplayValue(), left.getMilisValue()));
 
         lastTick = System.currentTimeMillis();
-        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(timeLeft));
+        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(left.getDisplayValue(), left.getMilisValue()));
 
         isRunning = true;
     }
@@ -121,8 +122,8 @@ public class ClockSleepTimer implements SleepTimer {
     }
 
     @Override
-    public long getTimeLeft() {
-        return timeLeft;
+    public TimerValue getTimeLeft() {
+        return new TimerValue(timeLeft, timeLeft);
     }
 
     @Override
