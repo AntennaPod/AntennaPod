@@ -5,9 +5,9 @@ public interface SleepTimer {
     long NOTIFICATION_THRESHOLD = 10000;
 
     /**
-     * @return Returns time left for this timer, in millis
+     * @return Returns time left for this sleep timer, both display value and in milis
      */
-    long getTimeLeft();
+    TimerValue getTimeLeft();
 
     /**
      * Starts the sleep timer.
@@ -35,4 +35,10 @@ public interface SleepTimer {
      * @return True if sleep timer is active, false otherwise
      */
     boolean isActive();
+
+    /**
+     * @param episodeRemainingMillis Remaining milliseconds of current episode
+     * @return Returns true if the sleep timer will terminate sometime during this episode, false otherwise
+     */
+    boolean isEndingThisEpisode(long episodeRemainingMillis);
 }
