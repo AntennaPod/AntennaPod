@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -402,6 +403,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         builder.setTitle(R.string.edit_url_menu);
         final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
         if (downloader != null) {
+            dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_TEXT
+                    | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_VARIATION_URI);
             dialogBinding.textInput.setText(downloader.getDownloadRequest().getSource());
             dialogBinding.textInput.setHint(R.string.rss_address);
         }
