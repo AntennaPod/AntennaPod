@@ -803,7 +803,7 @@
     <string name="delete_tag_label">Eliminar etiqueta</string>
     <string name="delete_tag_confirmation">Confirma que queres retirar a etiqueta «%1$s».</string>
     <string name="download_error_unsupported_type_html_manual">O enderezo escrito é unha páxina web, non un enderezo RSS de podcast.</string>
-    <string name="pref_automatic_download_global_description">Descarga automática de novos episodios. Pode establecerse para cada podcast.</string>
+    <string name="pref_automatic_download_global_description">Descarga automática dos episodios das novidades. Pode establecerse para cada podcast.</string>
     <string name="pref_automatic_download_queue_title">Descarga os que están na cola</string>
     <string name="episode_lists">Listas de episodios</string>
     <string name="pref_downloads_button_action_title">Reproducir dende a pantalla de descargas</string>
@@ -838,4 +838,49 @@
     <string name="visit_social_interact_label">Mostrar comentarios</string>
     <string name="rss_address">Enderezo RSS</string>
     <string name="feed_new_episodes_action_summary_autodownload">Activada a descarga automática. Os episodios engádense á caixa de entrada e móvense á cola unha vez descargados.</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Descargando %d episodio.</item>
+        <item quantity="other">Descargando %d episodios.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">Eliminouse %d episodio descargado.</item>
+        <item quantity="other">Elimináronse %d episodios descargados.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Retirado das novidades</string>
+    <string name="mark_as_played_label">Marcar como reproducido</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Marcado como reproducido</item>
+        <item quantity="other"/>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Marcado como non reproducido</item>
+        <item quantity="other"/>
+    </plurals>
+    <string name="play_this_to_seek_position_message">Para ir a unha posición tes que reproducir o episodio</string>
+    <string name="mark_as_unplayed_label">Marcar como non reproducido</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d episodio engadido á cola.</item>
+        <item quantity="other">%d episodios engadidos á cola.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d episodio retirado da cola.</item>
+        <item quantity="other">%d episodios retirados da cola.</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">Seguir ao audio</string>
+    <string name="visit_social_interact_confirm_dialog_title">Estás saíndo de AntennaPod</string>
+    <string name="visit_social_interact_confirm_dialog_message">Pon atención e comproba que confías na web «%1$s».</string>
+    <string name="reset_playback_position_label">Restablecer posición de reprodución</string>
+    <string name="no_items_selected_message">Sen elementos seleccionados</string>
+    <string name="delete_local_feed_confirmation_dialog_message">Ao eliminar retiras o episodio de AntennaPod e eliminas o ficheiro da almacenaxe do dispositivo. Non se poderá descargar novamente usando AntennaPod.</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d episodio movido arriba.</item>
+        <item quantity="other">%d episodios movidos arriba.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d episodio movido abaixo.</item>
+        <item quantity="other">%d episodios movidos abaixo.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">Sen episodios preparados, pero hai novos episodios agardando por ti!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Ir ás novidades</string>
+    <string name="auto_download_inbox_category">Descarga automatica das novidades</string>
 </resources>

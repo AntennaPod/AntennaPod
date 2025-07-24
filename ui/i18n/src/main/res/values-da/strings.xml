@@ -316,7 +316,7 @@
     <string name="preference_search_clear_history">Slet historik</string>
     <string name="pref_episode_cleanup_title">Slet før automatisk overførsel</string>
     <string name="pref_episode_cleanup_summary">Afsnit der kan fjernes, hvis Automatisk overførsel har brug for plads til nye afsnit</string>
-    <string name="pref_pauseOnDisconnect_sum">Sæt afspilning på pause, hvis hovedtelefoner eller bluetooth afkobles</string>
+    <string name="pref_pauseOnDisconnect_sum">Sæt afspilning på pause, hvis hovedtelefoner eller bluetooth afbrydes</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Genoptag afspilning når hovedtelefonerne tilsluttes igen</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Genoptag afspilning når bluetooth forbinder igen</string>
     <string name="pref_hardware_forward_button_title">Fremadknap</string>
@@ -827,7 +827,7 @@
     <string name="echo_thanks_large">Tak</string>
     <string name="echo_thanks_we_are_glad_new">for at slutte dig til os i år!\n\nUanset om du er flyttet over fra en anden app eller har startet dit podcast-eventyr hos os: Vi er glade for at have dig!</string>
     <string name="echo_share">Mit år %d i podcasts. #AntennaPodEcho</string>
-    <string name="pref_automatic_download_global_description">Overfør automatisk nye afsnit. Kan tilsidesættes pr. podcast.</string>
+    <string name="pref_automatic_download_global_description">Overfør automatisk afsnit fra indbakken. Kan tilsidesættes pr. podcast.</string>
     <string name="pref_automatic_download_queue_title">Overfør kø</string>
     <string name="pref_automatic_download_queue_description">Overfør automatisk afsnit i kø</string>
     <string name="episode_lists">Afsnitslister</string>
@@ -838,4 +838,49 @@
     <string name="feed_new_episodes_action_summary_autodownload">Automatisk overførsel er aktiveret. Afsnit føjes til indbakken og flyttes derefter til køen, når de er overført.</string>
     <string name="visit_social_interact_label">Vis kommentarer</string>
     <string name="rss_address">RSS-adresse</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Overfører %d afsnit.</item>
+        <item quantity="other">Overfører %d afsnit.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">%d overført afsnit slettet.</item>
+        <item quantity="other">%d overførte afsnit slettet.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Fjernet fra indbakke</string>
+    <string name="mark_as_played_label">Markér som afspillet</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Markeret som afspillet</item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Markeret som uafspillet</item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="play_this_to_seek_position_message">For at springe til positioner skal du afspille afsnittet</string>
+    <string name="mark_as_unplayed_label">Markér som uafspillet</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d afsnit tilføjet til kø.</item>
+        <item quantity="other">%d afsnit tilføjet til kø.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d afsnit fjernet fra kø.</item>
+        <item quantity="other">%d afsnit fjernet fra kø.</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">Følg lyd</string>
+    <string name="visit_social_interact_confirm_dialog_title">Du forlader AntennaPod</string>
+    <string name="visit_social_interact_confirm_dialog_message">Vær sikker på, at du stoler på webstedet \"%1$s\".</string>
+    <string name="reset_playback_position_label">Nulstil afspilningsposition</string>
+    <string name="no_items_selected_message">Ingen elementer valgt</string>
+    <string name="delete_local_feed_confirmation_dialog_message">Sletning fjerner afsnittet fra AntennaPod og sletter mediefilen fra din enheds lager. Den kan ikke overføres igen via AntennaPod.</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d afsnit flyttet til top.</item>
+        <item quantity="other">%d afsnit flyttet til top.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d afsnit flyttet til bund.</item>
+        <item quantity="other">%d afsnit flyttet til bund.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">Der er ingen afsnit i kø, men der er nye afsnit, der venter på dig!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Gå til indbakke</string>
+    <string name="auto_download_inbox_category">Overfør automatisk afsnit fra indbakken</string>
 </resources>

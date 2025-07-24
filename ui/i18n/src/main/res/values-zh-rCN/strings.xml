@@ -307,8 +307,8 @@
     <string name="preference_search_clear_history">清除历史记录</string>
     <string name="pref_episode_cleanup_title">自动下载前删除</string>
     <string name="pref_episode_cleanup_summary">在自动下载需要新节目空间时，应该被删除的旧节目</string>
-    <string name="pref_pauseOnDisconnect_sum">耳机或蓝牙断开连接时暂停播放</string>
-    <string name="pref_unpauseOnHeadsetReconnect_sum">当耳机重新连接时恢复播放</string>
+    <string name="pref_pauseOnDisconnect_sum">耳机或蓝牙断开时暂停播放</string>
+    <string name="pref_unpauseOnHeadsetReconnect_sum">耳机重新连接时恢复播放</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">当蓝牙重新连接时恢复播放</string>
     <string name="pref_hardware_forward_button_title">前进按钮</string>
     <string name="pref_hardware_forward_button_summary">自定义快进按钮行为</string>
@@ -773,7 +773,7 @@
     <string name="delete_tag_label">删除标签</string>
     <string name="delete_tag_confirmation">请确认你想删除 \"%1$s\" 标签。</string>
     <string name="download_error_unsupported_type_html_manual">你输入的地址是网站地址，不是播客 RSS 地址。</string>
-    <string name="pref_automatic_download_global_description">自动下载新节目。每档播客可以使用不同的设置。</string>
+    <string name="pref_automatic_download_global_description">自动下载收件箱新节目。每档播客可以使用不同的设置。</string>
     <string name="pref_automatic_download_queue_title">下载已加入队列</string>
     <string name="pref_automatic_download_queue_description">自动下载队列中的节目</string>
     <string name="episode_lists">节目列表</string>
@@ -822,4 +822,41 @@
     <string name="feed_new_episodes_action_summary_autodownload">自动下载已启用。节目将添加到收件箱，下载完成后移动到队列‌。</string>
     <string name="visit_social_interact_label">显示评论</string>
     <string name="rss_address">RSS 地址</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="other">正在下载 %d 集节目。</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="other">删除了 %d 集已下载的节目。</item>
+    </plurals>
+    <string name="removed_from_inbox_message">从收件箱中删除</string>
+    <string name="mark_as_played_label">标记为已播放</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="other">已标记为已播放</item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="other">已标记为未播放</item>
+    </plurals>
+    <string name="play_this_to_seek_position_message">要跳转到位置，你需要播放这集节目</string>
+    <string name="mark_as_unplayed_label">标记为未播放</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="other">添加了 %d 集节目到队列。</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="other">从队列中删除了 %d 集节目。</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">跟随音频</string>
+    <string name="visit_social_interact_confirm_dialog_title">你正离开 AntennaPod</string>
+    <string name="visit_social_interact_confirm_dialog_message">请确保你信任网站“%1$s”。</string>
+    <string name="reset_playback_position_label">重置播放位置</string>
+    <string name="no_items_selected_message">未选中项目</string>
+    <string name="delete_local_feed_confirmation_dialog_message">删除源会从 AntennaPod 移除节目并从设备存储中删除媒体文件。无法通过 AntennaPod 再次下载它。</string>
+    <plurals name="move_to_top_message">
+        <item quantity="other">移动了 %d 集节目到顶部。</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="other">移动了 %d 集节目到底部。</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">队列中没有节目，但有新节目在等着你收听！</string>
+    <string name="no_queue_items_inbox_has_items_button_label">转到收件箱</string>
+    <string name="auto_download_inbox_category">自动从收件箱下载节目</string>
 </resources>

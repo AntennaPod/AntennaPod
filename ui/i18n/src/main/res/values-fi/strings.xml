@@ -49,7 +49,7 @@
     <string name="home_welcome_title">Tervetuloa AntennaPodiin!</string>
     <string name="home_welcome_text">Et ole vielä tilannut yhtään podcastia. Avaa valikko lisätäksesi podcastin.</string>
     <string name="notification_permission_denied">Et antanut lupaa.</string>
-    <string name="configure_home">Mukauta kotinäkymä</string>
+    <string name="configure_home">Määritä kotinäyttö</string>
     <string name="section_hidden">Piilotettu</string>
     <!--Main activity-->
   <string name="drawer_open">Avaa menu</string>
@@ -788,7 +788,7 @@
     <string name="episodes_label_more">Jaksot »</string>
     <string name="queue_label_more">Jono »</string>
     <string name="inbox_label_more">Saapuneet »</string>
-    <string name="pref_automatic_download_global_description">Lataa uudet jaksot automaattisesti. Voidaan ohittaa podcastia kohden.</string>
+    <string name="pref_automatic_download_global_description">Lataa jaksot automaattisesti postilaatikosta. Voidaan ohittaa podcast-kohtaisesti.</string>
     <string name="disabled">Poistettu käytöstä</string>
     <string name="delete_tag_confirmation">Vahvista, että haluat poistaa tunnisteen \"%1$s\".</string>
     <string name="download_error_unsupported_type_html_manual">Syöttämäsi osoite on verkkosivuston osoite, ei podcastin RSS-osoite.</string>
@@ -836,4 +836,49 @@
     <string name="feed_new_episodes_action_summary_autodownload">Automaattinen lataus kytketty päälle. Episodit lisätään viestilaatikkoon, josta ne siirretään jonoon, kun lataus on valmis.</string>
     <string name="rss_address">RSS-osoite</string>
     <string name="visit_social_interact_label">Näytä kommentit</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Ladataan %d jakso.</item>
+        <item quantity="other">Ladataan %d jaksoa.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">%d ladattu jakso poistettu.</item>
+        <item quantity="other">%d ladattua jaksoa poistettu.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Poistettu postilaatikosta</string>
+    <string name="mark_as_played_label">Merkitse toistetuksi</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Merkitty toistetuksi</item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Merkitty toistamattomaksi</item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="play_this_to_seek_position_message">Päästäksesi sijainteihin sinun on toistettava jakso</string>
+    <string name="mark_as_unplayed_label">Merkitse toistamattomaksi</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d jakso lisätty jonoon.</item>
+        <item quantity="other">%d jaksoa lisätty jonoon.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d jakso poistettu jonosta.</item>
+        <item quantity="other">%d jaksoa poistettu jonosta.</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">Seuraa ääntä</string>
+    <string name="visit_social_interact_confirm_dialog_title">Olet poistumassa AntennaPodista</string>
+    <string name="visit_social_interact_confirm_dialog_message">Varmista, että luotat verkkosivustoon \"%1$s\".</string>
+    <string name="reset_playback_position_label">Palauta toistokohta</string>
+    <string name="no_items_selected_message">Ei valittuja kohteita</string>
+    <string name="delete_local_feed_confirmation_dialog_message">Poistaminen poistaa jakson AntennaPodista ja poistaa mediatiedoston laitteen tallennustilasta. Sitä ei voi ladata uudelleen AntennaPodin kautta.</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d jakso siirretty ylimpään kohtaan.</item>
+        <item quantity="other">%d jaksoa siirretty ylimpään kohtaan.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d jakso siirretty alimpaan kohtaan.</item>
+        <item quantity="other">%d jaksoa siirretty alimpaan kohtaan.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">Ei jaksoja tiedossa, mutta uusia jaksoja odottavat sinua!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Siirry postilaatikkoon</string>
+    <string name="auto_download_inbox_category">Lataa jaksot automaattisesti postilaatikosta</string>
 </resources>

@@ -334,8 +334,8 @@
     <string name="preference_search_clear_history">Очистити історію</string>
     <string name="pref_episode_cleanup_title">Видалити перед автозавантаженням</string>
     <string name="pref_episode_cleanup_summary">Випуски, які слід вилучати, якщо для автоматичного завантаження нових потрібне вільне місце</string>
-    <string name="pref_pauseOnDisconnect_sum">Зупиняти відтворення коли навушники або блютуз від’єднано</string>
-    <string name="pref_unpauseOnHeadsetReconnect_sum">Поновити відтворення коли навушники повторно під’єднано</string>
+    <string name="pref_pauseOnDisconnect_sum">Призупинити відтворення, коли навушники або Bluetooth відключаються</string>
+    <string name="pref_unpauseOnHeadsetReconnect_sum">Відновлення відтворення після повторного підключення навушників</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Поновити відтворення коли блютуз повторно під’єднано</string>
     <string name="pref_hardware_forward_button_title">Кнопка вперед</string>
     <string name="pref_hardware_forward_button_summary">Налаштування кнопки вперед</string>
@@ -796,7 +796,7 @@
     <string name="bottom_navigation_summary">Отримуйте доступ до найважливіших екранів звідусіль одним дотиком</string>
     <string name="statistics_episodes_downloaded">завантажено</string>
     <string name="episode_download_failed">Не вдалося завантажити випуск</string>
-    <string name="pref_automatic_download_global_description">Автоматично завантажувати нові серії. Може бути перевизначено для кожного подкасту.</string>
+    <string name="pref_automatic_download_global_description">Автоматично завантажувати епізоди з папки \"Вхідні\". Можна змінити для кожного подкасту окремо.</string>
     <string name="pref_automatic_download_queue_title">Завантаження в черзі</string>
     <string name="pref_automatic_download_queue_description">Автоматично завантажувати серії в черзі</string>
     <string name="episode_lists">Списки випусків</string>
@@ -870,4 +870,65 @@
     <string name="feed_new_episodes_action_summary_autodownload">Автоматичне завантаження ввімкнено. Епізоди додаються до папки \"Вхідні\", а потім переміщуються в чергу після завантаження.</string>
     <string name="visit_social_interact_label">Показати коментарі</string>
     <string name="rss_address">RSS адреса</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Завантаження %d епізоду.</item>
+        <item quantity="few">Завантаження %d епізоди.</item>
+        <item quantity="many">Завантаження %d епізодів.</item>
+        <item quantity="other">Завантаження %d епізодів.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">%d завантажений епізод видалено.</item>
+        <item quantity="few">%d завантажені епізоди видалено.</item>
+        <item quantity="many">%d завантажені епізодів видалено.</item>
+        <item quantity="other">%d завантажені епізодів видалено.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Видалено з папки \"Вхідні\"</string>
+    <string name="mark_as_played_label">Позначити як відтворене</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Позначено як відтворене</item>
+        <item quantity="few"></item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Позначено як невідтворене</item>
+        <item quantity="few"></item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="play_this_to_seek_position_message">Щоб перейти до позицій, потрібно відтворити епізод</string>
+    <string name="mark_as_unplayed_label">Позначити як невідтворене</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d епізод додано до черги.</item>
+        <item quantity="few">%d епізоди додано до черги.</item>
+        <item quantity="many">%d епізодів додано до черги.</item>
+        <item quantity="other">%d епізодів додано до черги.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d епізод видалено з черги.</item>
+        <item quantity="few">%d епізоди видалено з черги.</item>
+        <item quantity="many">%d епізодів видалено з черги.</item>
+        <item quantity="other">%d епізодів видалено з черги.</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">Слідкуйте за аудіо</string>
+    <string name="visit_social_interact_confirm_dialog_title">Ви залишаєте AntennaPod</string>
+    <string name="visit_social_interact_confirm_dialog_message">Будь ласка, переконайтеся, що ви довіряєте вебсайту \"%1$s\".</string>
+    <string name="reset_playback_position_label">Скинути позицію відтворення</string>
+    <string name="no_items_selected_message">Не вибрано жодного елемента</string>
+    <string name="delete_local_feed_confirmation_dialog_message">Видалення видаляє епізод з AntennaPod та видаляє медіафайл із пам’яті вашого пристрою. Його не можна буде завантажити повторно через AntennaPod.</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d епізод переміщено на початок.</item>
+        <item quantity="few">%d епізоди переміщено на початок.</item>
+        <item quantity="many">%d епізодів переміщено на початок.</item>
+        <item quantity="other">%d епізодів переміщено на початок.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d епізод переміщено вниз.</item>
+        <item quantity="few">%d епізоди переміщено вниз.</item>
+        <item quantity="many">%d епізодів переміщено вниз.</item>
+        <item quantity="other">%d епізодів переміщено вниз.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">Немає запланованих епізодів, але на вас чекають нові епізоди!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Перейти до папки \"Вхідні\"</string>
+    <string name="auto_download_inbox_category">Автоматично завантажувати епізоди з папки \"Вхідні\"</string>
 </resources>
