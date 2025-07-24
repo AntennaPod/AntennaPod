@@ -301,8 +301,8 @@
     <string name="preference_search_no_results">Emaitzarik ez</string>
     <string name="preference_search_clear_history">Garbitu historia</string>
     <string name="pref_episode_cleanup_summary">Deskarga automatikoak saio berrientzat lekua behar badu, kendu daitezkeen saioak</string>
-    <string name="pref_pauseOnDisconnect_sum">Pausatu erreprodukzioa entzungailu edo bluetooth-a kentzean</string>
-    <string name="pref_unpauseOnHeadsetReconnect_sum">Jarraitu erreproduzitzen entzungailu edo bluetooth-a berriz konektatzean</string>
+    <string name="pref_pauseOnDisconnect_sum">Pausatu erreprodukzioa entzungailu edo bluetooth-a deskonektatzean</string>
+    <string name="pref_unpauseOnHeadsetReconnect_sum">Jarraitu erreproduzitzen entzungailuak berriz konektatutakoan</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Jarraitu erreproduzitzen bluetooth-a berriz konektatzean</string>
     <string name="pref_hardware_forward_button_title">Aurrera botoia</string>
     <string name="pref_hardware_forward_button_summary">Pertsonalizatu aurrera botoiaren portaera</string>
@@ -780,7 +780,7 @@
     <string name="echo_queue_hours_normal">Egunero %1$s inguru da %2$d hasten den arte. Urtea garbi has dezakezu atal batzuk saltatzen badituzu.</string>
     <string name="subscriptions_label_short">Harpidetzak</string>
     <string name="add_feed_label_short">Gehitu</string>
-    <string name="pref_automatic_download_global_description">Deskargatu automatikoki atal berriak. Podcast bakoitzeko gainidatzi daiteke.</string>
+    <string name="pref_automatic_download_global_description">Deskargatu automatikoki atalak sarrera-ontzitik. Podcast bakoitzeko gainidatzi daiteke.</string>
     <string name="episodes_label_short">Atalak</string>
     <string name="pref_automatic_download_queue_description">Deskargatu automatikoki ilaran dauden atalak</string>
     <string name="episode_lists">Atalen zerrendak</string>
@@ -838,4 +838,49 @@
     <string name="feed_new_episodes_action_summary_autodownload">Deskarga automatikoa gaituta. Pasarteak sarrera-ontzira gehitzen dira eta, ondoren, ilarara eramaten dira deskargatuta.</string>
     <string name="visit_social_interact_label">Erakutsi iruzkinak</string>
     <string name="rss_address">RSS helbidea</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Atal %d deskargatzen.</item>
+        <item quantity="other">%d atal deskargatzen.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">Deskargatutako atal %d ezabatuta.</item>
+        <item quantity="other">Deskargatutako %d atal deskargatuta.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Sarrera-ontzitik kendu da</string>
+    <string name="mark_as_played_label">Erreproduzituta gisa ezarri</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Erreproduzituta gisa ezarri da</item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Erreproduzitu gabea gisa ezarrita</item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="play_this_to_seek_position_message">Posizioetara salto egiteko, atala erreproduzitu behar duzu</string>
+    <string name="mark_as_unplayed_label">Erreproduzitu gabea gisa ezarri</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">atal %d ilarara gehitu da.</item>
+        <item quantity="other">%d atal ilarara gehitu dira.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">atal %d ilaratik kendu da.</item>
+        <item quantity="other">%d atal ilaratik kendu dira.</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">Jarraitu audioa</string>
+    <string name="visit_social_interact_confirm_dialog_title">Antenna Pod-etik ateratzen ari zara</string>
+    <string name="visit_social_interact_confirm_dialog_message">Mesedez, ziurtatu \"%1$s\" webgunea fidagarria dela.</string>
+    <string name="reset_playback_position_label">Berrezarri erreprodukzio-posizioa</string>
+    <string name="no_items_selected_message">Ez da elementurik hautatu</string>
+    <string name="delete_local_feed_confirmation_dialog_message">Atala ezabatzean, azken hau AntennaPod-etik eta multimedia fitxategia gailuaren biltegitik ezabatzen dira. Ezin da berriro deskargatu AntennaPod bidez.</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">Atal %d goian ezarri da.</item>
+        <item quantity="other">%d atal goian ezarri dira.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">Atal %d behean ezarri da.</item>
+        <item quantity="other">%d atal behean ezarri dira.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">Ez dago atalik programatuta, baina badaude zain dituzun atal berriak!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Sarrera-otzira joan</string>
+    <string name="auto_download_inbox_category">Deskargatu automatikoki atalak sarrera-ontzitik</string>
 </resources>

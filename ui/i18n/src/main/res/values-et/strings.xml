@@ -232,7 +232,7 @@
     <string name="authentication_notification_title">Autentimine on nõutud</string>
     <string name="confirm_mobile_download_dialog_title">Kinnita mobiilse andmeside kasutamine allalaadimiseks</string>
     <string name="confirm_mobile_download_dialog_message">Mobiilse andmeside kaudu allalaadimine on seadetest keelatud. AntennaPod saab saate hiljem Wi-Fi võrgus olles alla laadida.</string>
-    <string name="confirm_mobile_download_dialog_message_vpn">- Kas kasutad VPN-i? Sinu VPN ühendus paistab mobiilse andmeside võrguna (mahupõhine hinnastamine). Probleemi lahendamiseks pöördu oma VPN rakenduse arendajate poole..\n- Kas ei kasuta VPN-i? Ava Androidi WiFi seaded ja muuda WiFi tüüp mittemahupõhiseks.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">- Kas kasutad VPN-i? Sinu VPN ühendus paistab mobiilse andmeside võrguna (mahupõhine hinnastamine). Probleemi lahendamiseks pöördu oma VPN rakenduse arendajate poole..\n- Kas ei kasuta VPN-i? Ava Androidi Wi-Fi seaded ja muuda Wi-Fi tüüp mittemahupõhiseks.</string>
     <string name="confirm_mobile_download_dialog_download_later">Laadi hiljem</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Laadi ikkagi</string>
     <string name="confirm_mobile_streaming_notification_title">Kinnita voogedastus andmeside kaudu</string>

@@ -93,7 +93,7 @@
     <string name="error_msg_prefix">אירעה שגיאה:</string>
     <string name="refresh_label">רענון</string>
     <string name="chapters_label">פרקים</string>
-    <string name="no_chapters_label">אין פרקים</string>
+    <string name="no_chapters_label">אין מקטעים</string>
     <string name="chapter_duration">משך: %1$s</string>
     <string name="description_label">תיאור</string>
     <string name="shownotes_label">הערות הפרק</string>
@@ -325,8 +325,8 @@
     <string name="preference_search_clear_history">פינוי ההיסטוריה</string>
     <string name="pref_episode_cleanup_title">למחוק לפני הורדה אוטומטית</string>
     <string name="pref_episode_cleanup_summary">פרקים שמועמדים להסרה אם ההורדה האוטומטית צריכה מקום לפרקים חדשים</string>
-    <string name="pref_pauseOnDisconnect_sum">השהיית הנגינה כאשר האוזניות או ה־Bluetooth מנותקים</string>
-    <string name="pref_unpauseOnHeadsetReconnect_sum">להמשיך את הניגון כשהאוזניות מחוברות מחדש</string>
+    <string name="pref_pauseOnDisconnect_sum">השהיית הנגינה כאשר האוזניות או ה־Bluetooth מתנתקים</string>
+    <string name="pref_unpauseOnHeadsetReconnect_sum">להמשיך את הניגון כשהאוזניות מתחברות מחדש</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">להמשיך את הנגינה עם חיבור מחדש של ה־Bluetooth</string>
     <string name="pref_hardware_forward_button_title">כפתור קדימה</string>
     <string name="pref_hardware_forward_button_summary">להתאים את התנהגות הכפתור קדימה</string>
@@ -811,7 +811,7 @@
     </plurals>
     <string name="echo_thanks_we_are_glad_old">על שהמשכת להשתמש בנו השנה!\n\nניגנת את הפרק הראשון שלך איתנו ב־%1$s. לכבוד הוא לנו לספק לך שירות עוד מאותו הרגע.</string>
     <string name="echo_thanks_now_favorite">עכשיו, בוא נסקור את ההסכתים המועדפים עליך…</string>
-    <string name="pref_automatic_download_global_description">להוריד פרקים חדשים אוטומטית. אפשר לדרוס את זה ברמת הסכת פרטנית.</string>
+    <string name="pref_automatic_download_global_description">להוריד פרקים חדשים אוטומטית מהדואר הנכנס. אפשר לדרוס את זה ברמת הסכת פרטנית.</string>
     <string name="pref_automatic_download_queue_title">ההורדה נוספה לתור</string>
     <string name="pref_automatic_download_queue_description">להוריד אוטומטית פרקים שנוספו לתור</string>
     <string name="episode_lists">רשימת הפרקים</string>
@@ -854,4 +854,57 @@
     <string name="feed_new_episodes_action_summary_autodownload">הורדה אוטומטית הופעלה. הפרקים נוספים לתיבת הנכנסים ואז מועברים לתור לאחר הורדתם.</string>
     <string name="visit_social_interact_label">הצגת הערות</string>
     <string name="rss_address">כתובת RSS</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">פרק יורד.</item>
+        <item quantity="two">יורדים שני פרקים.</item>
+        <item quantity="other">יורדים %d פרקים.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">פרק שירד נמחק.</item>
+        <item quantity="two">שני פרקים שירדו נמחקו.</item>
+        <item quantity="other">%d פרקים שירדו נמחקו.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">הוסר מהדואר הנכנס</string>
+    <string name="mark_as_played_label">סימון כהושמע</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">סומן כהושמע</item>
+        <item quantity="two"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">סומן כלא הושמע</item>
+        <item quantity="two"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="play_this_to_seek_position_message">כדי לקפוץ בין מקומות, צריך להשמיע את הפרק</string>
+    <string name="mark_as_unplayed_label">סימון כלא הושמע</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">פרק נוסף לתור.</item>
+        <item quantity="two">שני פרקים נוספו לתור.</item>
+        <item quantity="other">%d פרקים נוספו לתור.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">פרק הוסר מהתור.</item>
+        <item quantity="two">שני פרקים הוסרו מהתור.</item>
+        <item quantity="other">%d פרקים הוסרו מהתור.</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">מעקב אחר השמע</string>
+    <string name="visit_social_interact_confirm_dialog_title">בחרת לצאת מאנטנה־פּוֹד</string>
+    <string name="visit_social_interact_confirm_dialog_message">נא לוודא שהאתר„%1$s” אמין מבחינתך.</string>
+    <string name="reset_playback_position_label">איפוס נקודת נגינה</string>
+    <string name="no_items_selected_message">לא נבחרו פריטים</string>
+    <string name="delete_local_feed_confirmation_dialog_message">מחיקה מסירה את הפרק מאנטנה־פּוֹד ומוחקת את קובץ המדיה מאחסון המכשיר שלך. אי אפשר להוריד אותו שוב דרך אנטנה־פּוֹד.</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">פרק עלה להתחלה.</item>
+        <item quantity="two">שני פרקים עלו להתחלה.</item>
+        <item quantity="other">%d פרקים עלו להתחלה.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">פרק ירד לסוף.</item>
+        <item quantity="two">שני פרקים ירדו לסוף.</item>
+        <item quantity="other">%d פרקים ירדו לסוף.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">אין פרקים שממתינים בתור, אך יש פרקים חדשים שממתינים לך!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">מעבר לדואר הנכנס</string>
+    <string name="auto_download_inbox_category">להוריד פרקים מהדואר הנכנס אוטומטית</string>
 </resources>
