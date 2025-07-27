@@ -8,7 +8,6 @@
     android:orientation="vertical"
     android:layout_marginHorizontal="8dp"
     android:background="@drawable/bg_drawer_item">
-
     <ImageView
         android:id="@+id/imgvCover"
         android:layout_width="@dimen/thumbnail_length_navlist"
@@ -25,7 +24,6 @@
         android:cropToPadding="true"
         android:scaleType="centerInside"
         tools:src="@drawable/ic_download_black" />
-
     <TextView
         android:id="@+id/txtvTitle"
         android:layout_width="wrap_content"
@@ -45,7 +43,6 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="@dimen/text_size_navdrawer"
         tools:text="Navigation item title" />
-
     <LinearLayout
             android:id="@+id/rightGroup"
             android:layout_width="wrap_content"
@@ -55,7 +52,6 @@
             android:orientation="horizontal"
             android:gravity="center_vertical"
             >
-
         <ImageView
                 android:id="@+id/itxtvFailure"
                 android:layout_width="wrap_content"
@@ -65,7 +61,6 @@
                 android:contentDescription="@string/refresh_failed_msg"
                 app:srcCompat="@drawable/ic_error"
                 tools:text="!" />
-
         <TextView
                 android:id="@+id/txtvCount"
                 android:layout_width="wrap_content"
@@ -75,6 +70,5 @@
                 android:textColor="?android:attr/textColorTertiary"
                 android:textSize="14sp"
                 tools:text="23" />
-
     </LinearLayout>
 </RelativeLayout>
