@@ -45,11 +45,13 @@
     <item
         android:id="@+id/move_to_top_item"
         android:icon="@drawable/ic_arrow_full_up"
-        android:title="@string/move_to_top_label" />
+        android:title="@string/move_to_top_label"
+        android:visible="false" />
 
     <item
         android:id="@+id/move_to_bottom_item"
         android:icon="@drawable/ic_arrow_full_down"
-        android:title="@string/move_to_bottom_label" />
+        android:title="@string/move_to_bottom_label"
+        android:visible="false" />
 
 </menu>
