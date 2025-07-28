@@ -5,13 +5,8 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.TextPaint;
-import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
+
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -20,6 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.databinding.DownloadLogDetailsDialogBinding;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.event.MessageEvent;
@@ -31,7 +27,10 @@ import org.greenrobot.eventbus.EventBus;
 
 public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
 
-    private Runnable dialogDismissFunction;
+    /**
+     * Called when the dialog is dismissed.
+     */
+    final Runnable onDismiss;
 
     /**
      * Creates a dialog with Feed title (and FeedItem title if possible).
@@ -42,20 +41,21 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
 
     /**
      * Creates a dialog with Feed title (and FeedItem title if possible).
-     * The title(s) can be made clickable, so they jump to the Feed if clicked.
-     * A callback can be set that will be called when the dialog is closed.
+     * Can show a button to jump to the feed details view.
+     * Will take a callback function to call when being dismissed.
      */
-    public DownloadLogDetailsDialog(@NonNull Context context, DownloadResult status, boolean isTitleClickable,
-                                    @Nullable Runnable onDismissCallback) {
+    public DownloadLogDetailsDialog(@NonNull Context context, DownloadResult downloadResult, boolean isJumpToFeed,
+                                    @Nullable Runnable onDismiss) {
         super(context);
+        this.onDismiss = onDismiss;
 
         Feed feed = null;
         String podcastTitle = null;
         String episodeTitle = null;
 
         String url = "unknown";
-        if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-            FeedMedia media = DBReader.getFeedMedia(status.getFeedfileId());
+        if (downloadResult.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+            FeedMedia media = DBReader.getFeedMedia(downloadResult.getFeedfileId());
             if (media != null && media.getItem() != null) {
                 feed = DBReader.getFeed(media.getItem().getFeedId(), false, 0, 0);
                 if (feed != null) {
@@ -64,8 +64,8 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
                 episodeTitle = media.getEpisodeTitle();
                 url = media.getDownloadUrl();
             }
-        } else if (status.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
-            feed = DBReader.getFeed(status.getFeedfileId(), false, 0, 0);
+        } else if (downloadResult.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
+            feed = DBReader.getFeed(downloadResult.getFeedfileId(), false, 0, 0);
             if (feed != null) {
                 podcastTitle = feed.getFeedTitle();
                 url = feed.getDownloadUrl();
@@ -73,32 +73,49 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
         }
 
         String message = context.getString(R.string.download_successful);
-        if (!status.isSuccessful()) {
-            message = status.getReasonDetailed();
+        if (!downloadResult.isSuccessful()) {
+            message = downloadResult.getReasonDetailed();
         }
 
-        String humanReadableReason = context.getString(DownloadErrorLabel.from(status.getReason()));
-        SpannableString errorMessage = new SpannableString(context.getString(R.string.download_log_details_message,
-                humanReadableReason, message, url));
-        errorMessage.setSpan(new ForegroundColorSpan(0x88888888),
-                humanReadableReason.length(), errorMessage.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        CharSequence downloadMessage = getDownloadMessage(podcastTitle, episodeTitle);
-
-        SpannableString clickableDownloadMessage;
-        if (isTitleClickable) {
-            clickableDownloadMessage = getClickableMessage(context, downloadMessage, feed, onDismissCallback);
+        final Boolean isSubscribed = feed != null ? feed.getState() == Feed.STATE_SUBSCRIBED : null;
+        final DownloadLogDetailsDialogBinding binding =
+                DownloadLogDetailsDialogBinding.inflate(LayoutInflater.from(context));
+        if (!isJumpToFeed) {
+            binding.btnGoToPodcast.setVisibility(View.GONE);
         } else {
-            clickableDownloadMessage = new SpannableString(downloadMessage);
+            final Feed f = feed;
+            binding.btnGoToPodcast.setOnClickListener(v -> {
+                goToFeedOrFeedItem(context, f, isSubscribed);
+                dismissThisDialog.run();
+            });
         }
+
+        if (podcastTitle != null) {
+            binding.txtvPodcastLabel.setText(getContext().getString(R.string.feed_title) + ":");
+            binding.txtvPodcastName.setText(podcastTitle);
+        }
+        if (episodeTitle != null) {
+            binding.txtvEpisodeLabel.setText(getContext().getString(R.string.episode_title) + ":");
+            binding.txtvEpisodeName.setText(episodeTitle);
+            // Needed for the the ellipsize = marquee to work
+            binding.txtvEpisodeName.setSelected(true);
+        } else {
+            binding.llEpisode.setVisibility(View.GONE);
+        }
+
+        final String humanReadableReason = context.getString(DownloadErrorLabel.from(downloadResult.getReason()));
+        final String dialogContent = context.getString(R.string.download_log_details_message,
+                humanReadableReason, message, url);
+
+        binding.txtvLogMessage.setText(dialogContent);
 
         setTitle(R.string.download_error_details);
-        setMessage(TextUtils.concat(clickableDownloadMessage, errorMessage));
+        setView(binding.getRoot());
         setPositiveButton(android.R.string.ok, null);
         setNeutralButton(R.string.copy_to_clipboard, (copyDialog, which) -> {
             ClipboardManager clipboard = (ClipboardManager) getContext()
                     .getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText(context.getString(R.string.download_error_details), errorMessage);
+            ClipData clip = ClipData.newPlainText(context.getString(R.string.download_error_details), dialogContent);
             clipboard.setPrimaryClip(clip);
             if (Build.VERSION.SDK_INT < 32) {
                 EventBus.getDefault().post(new MessageEvent(context.getString(R.string.copied_to_clipboard)));
@@ -106,62 +123,29 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
         });
     }
 
-    @NonNull
-    private SpannableString getClickableMessage(@NonNull Context context, CharSequence downloadMessage, Feed feed,
-                                                Runnable onDismissCallback) {
-        SpannableString clickableDownloadMessage = new SpannableString(downloadMessage);
-        ClickableSpan clickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(@NonNull View widget) {
-                if (feed != null) {
-                    Intent intent;
-                    if (feed.getState() == Feed.STATE_SUBSCRIBED) {
-                        intent = new MainActivityStarter(context).withOpenFeed(feed.getId()).getIntent();
-                    } else {
-                        intent = new OnlineFeedviewActivityStarter(getContext(), feed.getDownloadUrl())
-                                .getIntent();
-                    }
-                    context.startActivity(intent);
-                }
-                // Close the dialog.
-                dialogDismissFunction.run();
-                // Notify the outside that the dialog was dismissed, if wanted.
-                if (onDismissCallback != null) {
-                    onDismissCallback.run();
-                }
-            }
+    private Runnable dismissThisDialog;
 
-            @Override
-            public void updateDrawState(@NonNull TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setUnderlineText(false);
+    void goToFeedOrFeedItem(Context context, Feed feed, Boolean isSubscribed) {
+        if (isSubscribed != null) {
+            Intent intent;
+            if (isSubscribed) {
+                intent = new MainActivityStarter(context).withOpenFeed(feed.getId()).getIntent();
+            } else {
+                intent = new OnlineFeedviewActivityStarter(getContext(), feed.getDownloadUrl())
+                        .getIntent();
             }
-        };
-        clickableDownloadMessage.setSpan(clickableSpan, 0, clickableDownloadMessage.length(), 0);
-        return clickableDownloadMessage;
-    }
-
-    @NonNull
-    private static CharSequence getDownloadMessage(String podcastTitle, String episodeTitle) {
-        CharSequence downloadMessage = "";
-        if (podcastTitle != null) {
-            downloadMessage += podcastTitle + "\n";
+            if (onDismiss != null) {
+                onDismiss.run();
+            }
+            context.startActivity(intent);
         }
-        if (episodeTitle != null) {
-            downloadMessage += episodeTitle + "\n";
-        }
-        if (!TextUtils.isEmpty(downloadMessage)) {
-            downloadMessage += "\n";
-        }
-        return downloadMessage;
     }
 
     @Override
     public AlertDialog show() {
         AlertDialog dialog = super.show();
         ((TextView) dialog.findViewById(android.R.id.message)).setTextIsSelectable(true);
-        ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
-        dialogDismissFunction = dialog::dismiss;
+        dismissThisDialog = dialog::dismiss;
         return dialog;
     }
 }
