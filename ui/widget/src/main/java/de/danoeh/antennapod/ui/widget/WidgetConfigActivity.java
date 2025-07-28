@@ -26,6 +26,7 @@ public class WidgetConfigActivity extends ToolbarActivity {
     private CheckBox ckRewind;
     private CheckBox ckFastForward;
     private CheckBox ckSkip;
+    private CheckBox ckCoverAsBcg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +86,8 @@ public class WidgetConfigActivity extends ToolbarActivity {
         ckFastForward.setOnClickListener(v -> displayPreviewPanel());
         ckSkip = findViewById(R.id.ckSkip);
         ckSkip.setOnClickListener(v -> displayPreviewPanel());
+        ckCoverAsBcg = findViewById(R.id.ckCoverAsBcg);
+        ckCoverAsBcg.setOnClickListener(v -> displayPreviewPanel());
 
         setInitialState();
     }
@@ -95,6 +98,7 @@ public class WidgetConfigActivity extends ToolbarActivity {
         ckRewind.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + appWidgetId, false));
         ckFastForward.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + appWidgetId, false));
         ckSkip.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + appWidgetId, false));
+        ckCoverAsBcg.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_COVER_AS_BCG + appWidgetId, false));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             int color = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + appWidgetId, PlayerWidget.DEFAULT_COLOR);
             int opacity = Color.alpha(color) * 100 / 0xFF;
@@ -116,6 +120,21 @@ public class WidgetConfigActivity extends ToolbarActivity {
                 .setVisibility(ckFastForward.isChecked() ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butSkip).setVisibility(ckSkip.isChecked() ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butRew).setVisibility(ckRewind.isChecked() ? View.VISIBLE : View.GONE);
+
+        if(ckCoverAsBcg.isChecked()){
+            widgetPreview.findViewById(R.id.imgvCover).setVisibility(View.GONE);
+            widgetPreview.findViewById(R.id.widgetLayout).setBackgroundResource(R.drawable.launcher_animate);
+            opacitySeekBar.setVisibility(View.GONE);
+            findViewById(R.id.textView).setVisibility(View.GONE);
+            findViewById(R.id.widget_opacity_textView).setVisibility(View.GONE);
+        }
+        else{
+            widgetPreview.findViewById(R.id.imgvCover).setVisibility(View.VISIBLE);
+            widgetPreview.findViewById(R.id.widgetLayout).setBackgroundColor(PlayerWidget.DEFAULT_COLOR);
+            opacitySeekBar.setVisibility(View.VISIBLE);
+            findViewById(R.id.textView).setVisibility(View.VISIBLE);
+            findViewById(R.id.widget_opacity_textView).setVisibility(View.VISIBLE);
+        }
     }
 
     private void confirmCreateWidget() {
@@ -128,6 +147,7 @@ public class WidgetConfigActivity extends ToolbarActivity {
         editor.putBoolean(PlayerWidget.KEY_WIDGET_SKIP + appWidgetId, ckSkip.isChecked());
         editor.putBoolean(PlayerWidget.KEY_WIDGET_REWIND + appWidgetId, ckRewind.isChecked());
         editor.putBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + appWidgetId, ckFastForward.isChecked());
+        editor.putBoolean(PlayerWidget.KEY_WIDGET_COVER_AS_BCG + appWidgetId, ckCoverAsBcg.isChecked());
         editor.apply();
 
         Intent resultValue = new Intent();
