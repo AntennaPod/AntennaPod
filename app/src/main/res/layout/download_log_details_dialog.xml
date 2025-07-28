@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="?dialogPreferredPadding">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="?dialogPreferredPadding">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -31,8 +31,8 @@
                 <TextView
                     android:id="@+id/txtvPodcastName"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:text="No podcast name set" />
@@ -50,6 +50,7 @@
                     android:paddingBottom="0dp"
                     android:paddingTop="0dp"
                     style="@style/Widget.Material3.Button.TextButton" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -77,6 +78,7 @@
                     android:ellipsize="marquee"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:text="No episode name set" />
+
             </LinearLayout>
 
             <TextView
@@ -84,7 +86,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Technical reason:"
-                android:layout_marginTop="16dp"/>
+                android:layout_marginTop="16dp" />
+
         </LinearLayout>
+
     </ScrollView>
+
 </LinearLayout>
