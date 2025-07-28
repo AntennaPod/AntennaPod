@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import de.danoeh.antennapod.ui.common.ToolbarActivity;
 
 import java.util.Locale;
@@ -121,14 +122,13 @@ public class WidgetConfigActivity extends ToolbarActivity {
         widgetPreview.findViewById(R.id.butSkip).setVisibility(ckSkip.isChecked() ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butRew).setVisibility(ckRewind.isChecked() ? View.VISIBLE : View.GONE);
 
-        if(ckCoverAsBcg.isChecked()){
+        if (ckCoverAsBcg.isChecked()) {
             widgetPreview.findViewById(R.id.imgvCover).setVisibility(View.GONE);
             widgetPreview.findViewById(R.id.widgetLayout).setBackgroundResource(R.drawable.launcher_animate);
             opacitySeekBar.setVisibility(View.GONE);
             findViewById(R.id.textView).setVisibility(View.GONE);
             findViewById(R.id.widget_opacity_textView).setVisibility(View.GONE);
-        }
-        else{
+        } else {
             widgetPreview.findViewById(R.id.imgvCover).setVisibility(View.VISIBLE);
             widgetPreview.findViewById(R.id.widgetLayout).setBackgroundColor(PlayerWidget.DEFAULT_COLOR);
             opacitySeekBar.setVisibility(View.VISIBLE);

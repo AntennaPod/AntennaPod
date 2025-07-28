@@ -19,6 +19,7 @@ import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.model.playback.MediaType;
@@ -165,7 +166,7 @@ public abstract class WidgetUpdater {
                     .dontAnimate()
                     .transform(new FitCenter());
 
-            if(showCoverAsBcg){
+            if (showCoverAsBcg) {
                 views.setViewVisibility(R.id.imgvCover, View.GONE);
                 views.setViewVisibility(R.id.imgvBackground, View.VISIBLE);
                 views.setViewVisibility(R.id.imgvBlurOverlay, View.VISIBLE);
@@ -192,8 +193,7 @@ public abstract class WidgetUpdater {
                         views.setImageViewResource(R.id.imgvBackground, R.mipmap.ic_launcher);
                     }
                 }
-            }
-            else{
+            } else {
                 views.setViewVisibility(R.id.imgvCover, View.VISIBLE);
                 views.setViewVisibility(R.id.imgvBackground, View.GONE);
                 views.setViewVisibility(R.id.imgvBlurOverlay, View.GONE);
