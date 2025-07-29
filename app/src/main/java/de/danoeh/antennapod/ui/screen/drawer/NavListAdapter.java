@@ -262,15 +262,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
                     .dontAnimate())
                 .into(holder.image);
 
-        if (feed.hasLastUpdateFailed()) {
-            RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) holder.title.getLayoutParams();
-            p.addRule(RelativeLayout.LEFT_OF, R.id.itxtvFailure);
-            holder.failure.setVisibility(View.VISIBLE);
-        } else {
-            RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) holder.title.getLayoutParams();
-            p.addRule(RelativeLayout.LEFT_OF, R.id.txtvCount);
-            holder.failure.setVisibility(View.GONE);
-        }
+        holder.failure.setVisibility(feed.hasLastUpdateFailed() ? View.VISIBLE : View.GONE);
     }
 
     private void bindTagView(NavDrawerData.TagDrawerItem tag, FeedHolder holder) {
