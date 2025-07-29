@@ -1,5 +1,8 @@
 package de.danoeh.antennapod;
 
+import static de.danoeh.antennapod.storage.preferences.UserPreferences.PREF_PLAYBACK_SKIP_SILENCE;
+import static de.danoeh.antennapod.storage.preferences.UserPreferences.setSkipSilence;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.KeyEvent;
@@ -10,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.concurrent.TimeUnit;
 
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -119,7 +123,7 @@ public class PreferenceUpgrader {
 
             SharedPreferences sleepTimerPreferences =
                     context.getSharedPreferences(SleepTimerPreferences.PREF_NAME, Context.MODE_PRIVATE);
-            TimeUnit[] timeUnits = { TimeUnit.SECONDS, TimeUnit.MINUTES, TimeUnit.HOURS };
+            TimeUnit[] timeUnits = {TimeUnit.SECONDS, TimeUnit.MINUTES, TimeUnit.HOURS};
             long value = Long.parseLong(SleepTimerPreferences.lastTimerValue());
             TimeUnit unit = timeUnits[sleepTimerPreferences.getInt("LastTimeUnit", 1)];
             SleepTimerPreferences.setLastTimer(String.valueOf(unit.toMinutes(value)));
@@ -175,6 +179,12 @@ public class PreferenceUpgrader {
         if (newVersion == 3070003) {
             // Enable bottom navigation for beta users, so only this exact app version
             UserPreferences.setBottomNavigationEnabled(true);
+        }
+        if (oldVersion < 3080000) {
+            FeedPreferences.SkipSilence skipSilence = prefs.getBoolean(PREF_PLAYBACK_SKIP_SILENCE, false)
+                    ? FeedPreferences.SkipSilence.AGGRESSIVE
+                    : FeedPreferences.SkipSilence.OFF;
+            setSkipSilence(skipSilence);
         }
     }
 }

@@ -439,8 +439,9 @@ public abstract class UserPreferences {
         }
     }
 
-    public static boolean isSkipSilence() {
-        return prefs.getBoolean(PREF_PLAYBACK_SKIP_SILENCE, false);
+    public static FeedPreferences.SkipSilence getSkipSilence() {
+        return FeedPreferences.SkipSilence.fromCode(prefs.getInt(
+            PREF_PLAYBACK_SKIP_SILENCE, FeedPreferences.SkipSilence.OFF.code));
     }
 
     public static List<Float> getPlaybackSpeedArray() {
@@ -607,8 +608,8 @@ public abstract class UserPreferences {
         prefs.edit().putString(PREF_PLAYBACK_SPEED, String.valueOf(speed)).apply();
     }
 
-    public static void setSkipSilence(boolean skipSilence) {
-        prefs.edit().putBoolean(PREF_PLAYBACK_SKIP_SILENCE, skipSilence).apply();
+    public static void setSkipSilence(FeedPreferences.SkipSilence skipSilence) {
+        prefs.edit().putInt(PREF_PLAYBACK_SKIP_SILENCE, skipSilence.code).apply();
     }
 
     public static void setPlaybackSpeedArray(List<Float> speeds) {

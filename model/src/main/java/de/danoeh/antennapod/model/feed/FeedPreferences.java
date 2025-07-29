@@ -60,7 +60,7 @@ public class FeedPreferences implements Serializable {
     }
 
     public enum SkipSilence {
-        OFF(0), GLOBAL(1), AGGRESSIVE(2);
+        GLOBAL(0), OFF(1), MILD(2), MEDIUM(3), AGGRESSIVE(4);
 
         public final int code;
 
