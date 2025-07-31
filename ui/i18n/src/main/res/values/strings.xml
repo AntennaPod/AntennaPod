@@ -70,7 +70,7 @@
     <string name="home_welcome_title">Welcome to AntennaPod!</string>
     <string name="home_welcome_text">You are not subscribed to any podcasts yet. Open the menu to add a podcast.</string>
     <string name="notification_permission_denied">You denied the permission.</string>
-    <string name="configure_home">Configure Home Screen</string>
+    <string name="configure_home">Configure home screen</string>
     <string name="section_hidden">Hidden</string>
     <string name="section_shown">Shown</string>
     <string name="episodes_label_more">Episodes »</string>
@@ -415,8 +415,8 @@
     <string name="synchronization_sum">Synchronize with other devices</string>
     <string name="automation">Automation</string>
     <string name="download_pref_details">Details</string>
-    <string name="import_export_pref">Import/Export</string>
-    <string name="import_export_search_keywords">backup, restore</string>
+    <string name="import_export_pref">Backup &amp; restore</string>
+    <string name="import_export_search_keywords">import, export</string>
     <string name="theming">Theming</string>
     <string name="external_elements">External elements</string>
     <string name="interruptions">Interruptions</string>
@@ -429,7 +429,7 @@
     <string name="overflow_more">More</string>
     <string name="pref_episode_cleanup_title">Delete before auto download</string>
     <string name="pref_episode_cleanup_summary">Episodes that should be eligible for removal if Auto Download needs space for new episodes</string>
-    <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth get disconnected</string>
+    <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or Bluetooth devices get disconnected</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Resume playback when the headphones get reconnected</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Resume playback when bluetooth reconnects</string>
     <string name="pref_hardware_forward_button_title">Forward button</string>
