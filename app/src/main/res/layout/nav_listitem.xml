@@ -53,6 +53,8 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:orientation="horizontal"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:gravity="center_vertical">
 
         <ImageView
