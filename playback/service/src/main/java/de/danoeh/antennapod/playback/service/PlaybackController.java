@@ -13,6 +13,8 @@ import android.util.Pair;
 import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+
+import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
@@ -376,10 +378,14 @@ public abstract class PlaybackController {
     }
 
     public void seekTo(int time) {
+        Playable playable = getMedia();
         if (playbackService != null) {
             playbackService.seekTo(time);
+
+            long timestamp = playable.getLastPlayedTimeStatistics();
+            PlayableUtils.saveCurrentPosition(playable, time, timestamp);
         } else if (getMedia() instanceof FeedMedia) {
-            FeedMedia media = (FeedMedia) getMedia();
+            FeedMedia media = (FeedMedia) playable;
             media.setPosition(time);
             DBWriter.setFeedItem(media.getItem());
             EventBus.getDefault().post(new PlaybackPositionEvent(time, getMedia().getDuration()));
