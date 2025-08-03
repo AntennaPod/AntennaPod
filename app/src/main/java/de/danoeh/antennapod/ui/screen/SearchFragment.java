@@ -358,7 +358,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         if (adapter != null) {
             for (int i = 0; i < adapter.getItemCount(); i++) {
                 EpisodeItemViewHolder holder = (EpisodeItemViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
-                if (holder != null && holder.isCurrentlyPlayingItem()) {
+                if (holder != null && holder.isPlayingItem()) {
                     holder.notifyPlaybackPositionUpdated(event);
                     break;
                 }
