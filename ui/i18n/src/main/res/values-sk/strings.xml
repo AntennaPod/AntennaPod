@@ -10,7 +10,7 @@
     <string name="inbox_label">Novinky</string>
     <string name="favorite_episodes_label">Obľúbené</string>
     <string name="settings_label">Nastavenia</string>
-    <string name="downloads_label">Sťahovanie</string>
+    <string name="downloads_label">Stiahnuté</string>
     <string name="downloads_log_label">Záznam sťahovaní</string>
     <string name="subscriptions_label">Odbery</string>
     <string name="subscriptions_list_label">Zoznam odberov</string>
@@ -187,40 +187,14 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Vaša VPN aplikácia predstiera, že je mobilná sieť (merané pripojenie). Aktualizovanie podcastov cez mobilné dátové pripojenie je v nastaveniach zakázané.\n\nChcete napriek tomu aktualizovať? Ak chcete, aby bol tento problém vyriešený, kontaktujte tvorcov VPN aplikácie.</string>
     <!--actions on feeditems-->
   <string name="download_label">Stiahnuť</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">Sťahuje sa %d epizóda.</item>
-        <item quantity="few">Sťahujú sa %d epizódy.</item>
-        <item quantity="other">Sťahuje sa %d epizód.</item>
-    </plurals>
     <string name="play_label">Prehrať</string>
     <string name="pause_label">Pozastaviť</string>
     <string name="stream_label">Streamovať</string>
     <string name="delete_label">Zmazať</string>
-    <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">%d stiahnutá epizóda zmazaná.</item>
-        <item quantity="few">%d stiahnuté epizódy zmazané.</item>
-        <item quantity="other">%d stiahnutých epizód zmazaných.</item>
-    </plurals>
-    <string name="remove_inbox_label">Odstrániť z noviniek</string>
-    <string name="removed_inbox_label">Odstránené z noviniek</string>
-    <string name="mark_read_label">Označiť ako prehrané</string>
+    <string name="remove_inbox_label">Odstrániť z Noviniek</string>
     <string name="toggle_played_label">Prepnúť stav prehratia</string>
-    <string name="marked_as_played_label">Označené ako prehrané</string>
-    <string name="marked_as_unplayed_label">Označené ako neprehrané</string>
     <string name="mark_read_no_media_label">Označiť ako prečítané</string>
-    <string name="play_this_to_seek_position">Preskočenie na určitú pozíciu funguje len pri prehrávaní epizódy</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">%d epizóda bola označená ako prehraná.</item>
-        <item quantity="few">%d epizódy boli označené ako prehrané.</item>
-        <item quantity="other">%d epizód bolo označených ako prehrané.</item>
-    </plurals>
-    <string name="mark_unread_label">Označiť ako nevypočuté</string>
     <string name="mark_unread_label_no_media">Označiť ako prehrané</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d epizóda bola označená ako neprehraná.</item>
-        <item quantity="few">%d epizódy bolo označené ako neprehrané.</item>
-        <item quantity="other">%d epizód bolo označených ako neprehrané.</item>
-    </plurals>
     <string name="add_to_queue_label">Pridať do poradia</string>
     <string name="remove_from_queue_label">Odstrániť z poradia</string>
     <plurals name="removed_from_inbox_batch_label">
@@ -231,14 +205,10 @@
     <string name="add_to_favorite_label">Pridať medzi obľúbené</string>
     <string name="show_transcript">Zobraziť prepis</string>
     <string name="transcript">Prepis</string>
-    <string name="transcript_follow">Sledovať zvuk</string>
     <string name="no_transcript_label">Žiadny prepis</string>
     <string name="remove_from_favorite_label">Odstrániť z obľúbených</string>
     <string name="visit_website_label">Navštíviť webovú stránku</string>
     <string name="skip_episode_label">Preskočiť epizódu</string>
-    <string name="reset_position">Resetovať pozíciu prehrávania</string>
-    <string name="no_items_selected">Nie sú vybrané žiadne položky</string>
-    <string name="delete_local_feed_warning_body">Mazanie odstráni epizódu z aplikácie AntennaPod a vymaže mediálny súbor z úložiska vášho zariadenia. Nebude možné ju znova stiahnuť cez AntennaPod.</string>
     <!--Download messages and labels-->
   <string name="download_successful">dokončené</string>
     <string name="download_pending">Čakajúce sťahovanie</string>
@@ -270,9 +240,9 @@
     <string name="download_error_request_error">Chyba požiadavky</string>
     <string name="download_error_db_access">Chyba prístupu k databáze</string>
     <plurals name="downloads_left">
-        <item quantity="one">Zostáva %d súbor na stiahnutie</item>
-        <item quantity="few">Zostávajú %d súbory na stiahnutie</item>
-        <item quantity="other">Zostáva %d súborov na stiahnutie</item>
+        <item quantity="one">%d čaká na stiahnutie</item>
+        <item quantity="few">%d čakajú na stiahnutie</item>
+        <item quantity="other">%d čakajúcich na stiahnutie</item>
     </plurals>
     <string name="download_notification_title_feeds">Aktualizácia podcastov</string>
     <string name="download_notification_title_episodes">Sťahovanie epizód</string>
@@ -354,14 +324,14 @@
     <string name="preference_search_no_results">Žiadne výsledky</string>
     <string name="preference_search_clear_history">Vymazať históriu</string>
     <string name="pref_episode_cleanup_title">Odstrániť pred automatickým sťahovaním</string>
-    <string name="pref_episode_cleanup_summary">Epizódy, ktoré by malo byť možné zmazať, pokiaľ bude funkcia automatického sťahovania potrebovať miesto pre nové epizódy</string>
+    <string name="pref_episode_cleanup_summary">Epizódy, ktoré by bolo možné odstrániť, pokiaľ bude funkcia automatického sťahovania potrebovať miesto pre nové epizódy</string>
     <string name="pref_pauseOnDisconnect_sum">Pri odpojení slúchadiel alebo bluetooth pripojení pozastaviť prehrávanie</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Pokračovať v prehrávaní po pripojení slúchadiel</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Pokračovať v prehrávaní po pripojení bluetooth</string>
     <string name="pref_hardware_forward_button_title">Tlačidlo vpred</string>
     <string name="pref_hardware_forward_button_summary">Prispôsobiť tlačidlo vpred</string>
-    <string name="pref_hardware_previous_button_title">Tlačidlo predchádzajúce</string>
-    <string name="pref_hardware_previous_button_summary">Prispôsobiť tlačidlo predchádzajúce</string>
+    <string name="pref_hardware_previous_button_title">Tlačidlo vzad</string>
+    <string name="pref_hardware_previous_button_summary">Prispôsobiť tlačidlo vzad</string>
     <string name="button_action_fast_forward">Rýchlo vpred</string>
     <string name="button_action_rewind">Pretočiť späť</string>
     <string name="button_action_skip_episode">Preskočiť epizódu</string>
@@ -369,15 +339,15 @@
     <string name="pref_followQueue_sum">Po prehraní položky z poradia automaticky prejsť na ďalšiu</string>
     <string name="pref_auto_delete_playback_sum">Zmazať epizódu po dokončení prehrávania</string>
     <string name="pref_auto_delete_playback_title">Odstrániť po prehratí</string>
-    <string name="pref_auto_delete_title">Automatické mazanie</string>
+    <string name="pref_auto_delete_title">Automatické odstraňovanie</string>
     <string name="pref_auto_delete_sum">Odstránenie epizódy po prehratí alebo keď automatické sťahovanie potrebuje miesto</string>
-    <string name="pref_auto_local_delete_title">Automatické mazanie z lokálnych priečinkov</string>
-    <string name="pref_auto_local_delete_sum">Zahrnúť lokálne priečinky do funkcie Automatického mazania</string>
-    <string name="pref_auto_local_delete_dialog_body">Vezmite na vedomie, že táto akcia pre lokálne priečinky odstráni epizódy z aplikácie AntennaPod a zmaže ich mediálne súbory z úložiska vášho zariadenia. Tie sa nedajú znova stiahnuť cez AntennaPod. Prajete si povoliť automatické mazanie?</string>
+    <string name="pref_auto_local_delete_title">Automatické odstraňovanie z lokálnych priečinkov</string>
+    <string name="pref_auto_local_delete_sum">Zahrnúť lokálne priečinky do funkcie Automatického odstraňovania</string>
+    <string name="pref_auto_local_delete_dialog_body">Vezmite na vedomie, že táto akcia pre lokálne priečinky odstráni epizódy z aplikácie AntennaPod a zmaže ich mediálne súbory z úložiska vášho zariadenia. Tie sa nedajú znova stiahnuť cez AntennaPod. Prajete si povoliť automatické odstraňovanie?</string>
     <string name="pref_smart_mark_as_played_sum">Označiť epizódy ako vypočuté aj pokiaľ ešte zostáva určitý počet sekúnd prehrávania do ich konca</string>
-    <string name="pref_smart_mark_as_played_title">Inteligentné označovanie ako vypočuté</string>
+    <string name="pref_smart_mark_as_played_title">Označiť ako vypočuté, ak zostáva čas</string>
     <string name="pref_skip_keeps_episodes_sum">Neodstraňovať epizódy pri ich preskočení</string>
-    <string name="pref_skip_keeps_episodes_title">Nemazať preskočené epizódy</string>
+    <string name="pref_skip_keeps_episodes_title">Neodstraňovať preskočené epizódy</string>
     <string name="pref_favorite_keeps_episodes_sum">Ponechať epizódy, ktoré sú označené ako obľúbené</string>
     <string name="pref_favorite_keeps_episodes_title">Ponechať obľúbené epizódy</string>
     <string name="playback_pref">Prehrávanie</string>
@@ -418,7 +388,7 @@
     <string name="pref_nav_drawer_feed_counter_sum">Zmeniť informáciu zobrazenú počítadlom odberov. Tiež ovplyvňuje zoradenie, ak je nastavené na „podľa počítadla“.</string>
     <string name="pref_automatic_download_title">Automatické sťahovanie</string>
     <string name="pref_automatic_download_sum">Nastavenie automatického sťahovania epizód</string>
-    <string name="pref_automatic_download_on_battery_title">Sťahovať keď neprebieha nabíjanie</string>
+    <string name="pref_automatic_download_on_battery_title">Sťahovať aj keď neprebieha nabíjanie</string>
     <string name="pref_automatic_download_on_battery_sum">Povolí automatické sťahovanie aj keď nie je nabíjaná batéria</string>
     <string name="pref_episode_cache_title">Limit pre epizódy</string>
     <string name="pref_episode_cache_summary">Po dosiahnutí tohto čísla sa automatické sťahovanie zastaví</string>
@@ -433,7 +403,7 @@
     <string name="pref_playback_speed_sum">Upraviť predvybrané možnosti pre prehrávanie zvuku rôznymi rýchlosťami</string>
     <string name="pref_feed_playback_speed_sum">Rýchlosť, ktorá bude použitá pri začatí prehrávania epizód tohoto podcastu</string>
     <string name="pref_feed_skip">Automatické preskočenie</string>
-    <string name="pref_feed_skip_sum">Preskočiť úvod a záverečné titulky</string>
+    <string name="pref_feed_skip_sum">Preskočiť úvod a záver</string>
     <string name="pref_feed_skip_ending">Preskočiť posledných</string>
     <string name="pref_feed_skip_intro">Preskočiť prvých</string>
     <string name="pref_feed_skip_ending_toast">Posledných %d sekúnd bolo preskočených</string>
@@ -443,7 +413,7 @@
     <string name="pref_fast_forward">Dĺžka času posunu vpred</string>
     <string name="pref_fast_forward_sum">Prispôsobiť počet preskočených sekúnd po kliknutí na tlačidlo Rýchlo vpred</string>
     <string name="pref_rewind">Dĺžka času posunu späť</string>
-    <string name="pref_rewind_sum">Upraviť o koľko sekúnd sa skočí späť pri stlačení tlačidla pretočiť späť (RW)</string>
+    <string name="pref_rewind_sum">Upraviť o koľko sekúnd sa skočí späť pri stlačení tlačidla pretočiť späť</string>
     <string name="pref_expandNotify_title">Vysoká priorita pre oznámenia</string>
     <string name="pref_expandNotify_sum">Toto obvykle pridá tlačidlá ovládania prehrávania do správ upozornení.</string>
     <string name="pref_persistNotify_title">Trvalé ovládače prehrávania</string>
@@ -452,9 +422,9 @@
     <string name="pref_full_notification_buttons_title">Nastaviť tlačidlá v upozornení</string>
     <string name="pref_full_notification_buttons_sum">Zmeniť tlačidlá v upozornení na prehrávanie</string>
     <string name="pref_enqueue_location_title">Pozícia pridávania do poradia</string>
-    <string name="pref_enqueue_location_sum">Pridávať epizódy na: %1$s</string>
-    <string name="enqueue_location_back">Dozadu</string>
-    <string name="enqueue_location_front">Dopredu</string>
+    <string name="pref_enqueue_location_sum">Pridávať epizódy: %1$s</string>
+    <string name="enqueue_location_back">Na koniec</string>
+    <string name="enqueue_location_front">Na začiatok</string>
     <string name="enqueue_location_after_current">Za prehrávanú epizódu</string>
     <string name="enqueue_location_random">Náhodne</string>
     <string name="pref_smart_mark_as_played_disabled">Vypnuté</string>
@@ -467,16 +437,16 @@
     <string name="pref_proxy_title">Proxy</string>
     <string name="pref_proxy_sum">Nastaviť sieťové proxy</string>
     <string name="pref_no_browser_found">Webový prehliadač nebol nenájdený.</string>
-    <string name="pref_enqueue_downloaded_title">Zaradiť stiahnuté</string>
+    <string name="pref_enqueue_downloaded_title">Zaradiť stiahnuté epizódy</string>
     <string name="pref_enqueue_downloaded_summary">Pridať stiahnuté epizódy do poradia</string>
     <string name="pref_skip_silence_title">Preskočiť ticho vo zvuku</string>
     <string name="behavior">Správanie</string>
     <string name="pref_default_page">Predvolená stránka</string>
     <string name="pref_default_page_sum">Obrazovka, ktorá sa otvorí pri spúšťaní aplikácie AntennaPod</string>
-    <string name="pref_back_button_opens_drawer">Tlačidlo späť otvára navigačný panel</string>
+    <string name="pref_back_button_opens_drawer">Tlačidlom späť otvoriť navigačný panel</string>
     <string name="pref_back_button_opens_drawer_summary">Stlačením tlačidla späť na predvolenej stránke sa otvorí navigačný panel</string>
-    <string name="remember_last_page">Pamätať poslednú stranu</string>
-    <string name="pref_delete_removes_from_queue_title">Mazanie odstraňuje aj epizódy z poradia</string>
+    <string name="remember_last_page">Pamätať poslednú kartu</string>
+    <string name="pref_delete_removes_from_queue_title">Odstráni aj epizódy z poradia</string>
     <string name="pref_delete_removes_from_queue_sum">Po zmazaní epizódy ju automaticky odstráni z poradia</string>
     <string name="pref_filter_feed_title">Filter odberov</string>
     <string name="pref_filter_feed_sum">Filtrujte svoje odbery v navigačnom paneli a na obrazovke odberov</string>
@@ -525,8 +495,8 @@
     <string name="html">HTML</string>
     <string name="html_export_summary">Ukážte svoje odbery priateľom</string>
     <string name="opml_export_summary">Prenesie vaše odbery do inej podcastovej aplikácie</string>
-    <string name="opml_import_summary">Importuje vaše odbery z inej podcastovej aplikácie</string>
-    <string name="database_export_summary">Prenesie odbery, počúvané epizódy a poradie do aplikácie AntennaPod v inom zariadení</string>
+    <string name="opml_import_summary">Importujte vaše odbery z inej podcastovej aplikácie</string>
+    <string name="database_export_summary">Preneste odbery, počúvané epizódy a poradie do aplikácie AntennaPod v inom zariadení</string>
     <string name="database_import_summary">Importuje databázu AntennaPod z iného zariadenia</string>
     <string name="opml_import_label">Import OPML</string>
     <string name="opml_add_podcast_label">Importovať zoznam podcastov (OPML)</string>
@@ -669,7 +639,6 @@
     <string name="feed_tags_summary">Pre lepšiu organizáciu vašich odberov môžete zmeniť štítky pre tento podcast</string>
     <string name="feed_folders_include_root">Zobraziť tento podcast v hlavnom zozname</string>
     <string name="multi_feed_common_tags_info">Zobrazia sa iba spoločné štítky zo všetkých vybraných odberov. Ostatné štítky zostanú nedotknuté.</string>
-    <string name="auto_download_settings_label">Nastavenia automatického sťahovania</string>
     <string name="episode_filters_label">Filter epizód</string>
     <string name="episode_filters_description">Zoznam pravidiel použitých na rozhodnutie, či má byť epizóda zahrnutá alebo vylúčená pri automatickom sťahovaní</string>
     <string name="add_term">Pridať pravidlo</string>
@@ -695,15 +664,13 @@
     <string name="release_schedule_friday">Pi</string>
     <string name="release_schedule_saturday">So</string>
     <string name="release_schedule_sunday">Ne</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Importovať odbery z jednoúčelových aplikácií…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Hľadať podcast…</string>
     <string name="search_itunes_label">Hľadať v Apple Podcastoch</string>
     <string name="search_podcastindex_label">Hľadať v Podcast index</string>
     <string name="search_fyyd_label">Hľadať v službe fyyd</string>
     <string name="add_podcast_by_url">Pridať podcast cez RSS adresu</string>
-    <string name="discover">Prehľadávať</string>
+    <string name="discover">Objavovanie</string>
     <string name="discover_hide">Skryť návrhy</string>
     <string name="discover_is_hidden">Návrhy boli skryté.</string>
     <string name="discover_powered_by_itunes">Návrhy z Apple Podcasts</string>
@@ -815,22 +782,17 @@
     <string name="statistics_episodes_total">celkovo</string>
     <string name="statistics_episodes_downloaded">stiahnutých</string>
     <string name="mobile_download_notice">Sťahovanie cez mobilné pripojenie počas nasledujúcich %d minút</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d epizóda bola odstránená z poradia.</item>
-        <item quantity="few">%d epizódy boli odstránené z poradia.</item>
-        <item quantity="other">%d epizód bolo odstránených z poradia.</item>
-    </plurals>
     <string name="add_feed_label_short">Pridať</string>
     <string name="episodes_label_short">Epizódy</string>
     <string name="home_label_short">Domov</string>
     <string name="queue_label_short">Poradie</string>
-    <string name="inbox_label_short">Schránka</string>
-    <string name="downloads_label_short">Sťahovanie</string>
+    <string name="inbox_label_short">Novinky</string>
+    <string name="downloads_label_short">Stiahnuté</string>
     <string name="subscriptions_label_short">Odbery</string>
     <string name="playback_history_label_short">História</string>
     <string name="episodes_label_more">Epizódy »</string>
     <string name="queue_label_more">Poradie »</string>
-    <string name="inbox_label_more">Schránka »</string>
+    <string name="inbox_label_more">Novinky »</string>
     <string name="downloads_label_more">Sťahovanie »</string>
     <string name="subscriptions_label_more">Odbery »</string>
     <string name="enabled">Povolené</string>
@@ -839,17 +801,12 @@
     <string name="delete_tag_label">Odstrániť značku</string>
     <string name="delete_tag_confirmation">Potvrďte, že chcete odstrániť značku „%1$s“.</string>
     <string name="download_error_unsupported_type_html_manual">Adresa, ktorú ste zadali, je adresa webovej stránky, nie adresa RSS podcastu.</string>
-    <string name="pref_automatic_download_queue_title">Sťahovanie poradia</string>
+    <string name="pref_automatic_download_queue_title">Sťahovanie z poradia</string>
     <string name="episode_lists">Zoznamy epizód</string>
     <string name="pref_downloads_button_action_title">Prehrávanie z obrazovky sťahovania</string>
     <string name="pref_downloads_button_action_sum">Na obrazovke sťahovania zobraziť tlačidlo Prehrať namiesto tlačidla Odstrániť</string>
-    <string name="pref_automatic_download_global_description">Automaticky sťahovať nové epizódy. Dá sa nastaviť pre jednotlivý podcast.</string>
+    <string name="pref_automatic_download_global_description">Automaticky sťahovať epizódy z Noviniek. Je možné nastaviť pre jednotlivé podcasty.</string>
     <string name="pref_automatic_download_queue_description">Automaticky sťahovať epizódy v poradí</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d epizóda bola pridaná do poradia.</item>
-        <item quantity="few">%d epizódy boli pridaná do poradia.</item>
-        <item quantity="other">%d epizód bolo pridaných do poradia.</item>
-    </plurals>
     <string name="statistics_time_total">celkovo</string>
     <string name="statistics_time_played">prehrávaných</string>
     <string name="echo_home_header">Prehľad roka</string>
@@ -896,7 +853,58 @@
     <string name="overflow_more">Viac</string>
     <string name="feed_new_episodes_action_summary_autodownload">Automatické sťahovanie je povolené. Epizódy sú pridané do schránky a po stiahnutí budú presunuté do poradia.</string>
     <string name="visit_social_interact_label">Zobraziť komentáre</string>
-    <string name="visit_social_interact_query_title">Opúšťate AntennaPod</string>
     <string name="rss_address">RSS adresa</string>
-    <string name="visit_social_interact_query_message">Uistite sa, že dôverujete stránke „%1$s\".</string>
+    <string name="auto_download_inbox_category">Automaticky sťahovať epizódy z Noviniek</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Sťahovanie %d epizódy.</item>
+        <item quantity="few">Sťahovanie %d epizód.</item>
+        <item quantity="other">Sťahovanie %d epizód.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Odstránené z Noviniek</string>
+    <string name="mark_as_played_label">Označiť ako prehrané</string>
+    <string name="no_items_selected_message">Žiadne vybrané položky</string>
+    <string name="delete_local_feed_confirmation_dialog_message">Odstránením sa epizóda odstráni z AntennaPod a mediálny súbor sa vymaže z úložiska vášho zariadenia. Nedá sa znova stiahnuť cez AntennaPod.</string>
+    <string name="reset_playback_position_label">Obnoviť pozíciu prehrávania</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Prejsť do Noviniek</string>
+    <string name="no_queue_items_inbox_has_items_label">Žiadne epizódy nie sú zaradené, ale čakajú na vás nové epizódy!</string>
+    <string name="visit_social_interact_confirm_dialog_message">Uistite sa, že dôverujete webovej stránke „%1$s“.</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d epizóda bola presunutá na začiatok.</item>
+        <item quantity="few">%d epizódy boli presunuté na začiatok.</item>
+        <item quantity="other">%d epizód bolo presunutých na začiatok.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d epizóda bola presunutá na koniec.</item>
+        <item quantity="few">%d epizódy boli presunuté na koniec.</item>
+        <item quantity="other">%d epizód bolo presunutých na koniec.</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">Sledovať zvuk</string>
+    <string name="visit_social_interact_confirm_dialog_title">Opúšťate AntennaPod</string>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d epizóda odstránená z poradia.</item>
+        <item quantity="few">%d epizódy odstránené z poradia.</item>
+        <item quantity="other">%d epizód odstránených z poradia.</item>
+    </plurals>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d epizóda pridaná do poradia.</item>
+        <item quantity="few">%d epizódy pridané do poradia.</item>
+        <item quantity="other">%d epizód pridaných do poradia.</item>
+    </plurals>
+    <string name="mark_as_unplayed_label">Označiť ako neprehrané</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Označené ako prehrané</item>
+        <item quantity="few"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="play_this_to_seek_position_message">Ak chcete preskočiť na pozície, musíte si prehrať epizódu</string>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Označené ako neprehrané</item>
+        <item quantity="few"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">%d stiahnutá epizóda odstránená.</item>
+        <item quantity="few">%d stiahnuté epizódy boli odstránené.</item>
+        <item quantity="other">%d stiahnutých epizód bolo odstránených.</item>
+    </plurals>
 </resources>

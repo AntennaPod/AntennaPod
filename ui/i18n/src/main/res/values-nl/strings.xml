@@ -150,7 +150,7 @@
     <string name="remove_feed_label">Podcast verwijderen</string>
     <string name="share_label">Delen</string>
     <string name="share_file_label">Bestand delen</string>
-    <string name="feed_remover_msg">Podcast verwijderen</string>
+    <string name="feed_remover_msg">Podcast wordt verwijderd</string>
     <string name="load_complete_feed">Volledige podcast vernieuwen</string>
     <string name="multi_select">Meervoudige selectie</string>
     <string name="select_all_above">Alles hierboven selecteren</string>
@@ -171,42 +171,16 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Je VPN-app doet zich voor als een mobiel netwerk (metered connection). Podcasts vernieuwen via mobiel internet is uitgeschakeld in de instellingen. \n\n Wil je toch vernieuwen? Als je dit probleem opgelost wil hebben, neem dan contact op met de makers van je VPN-app.</string>
     <!--actions on feeditems-->
   <string name="download_label">Downloaden</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">Bezig met downloaden van %d aflevering.</item>
-        <item quantity="other">Bezig met downloaden van %d afleveringen.</item>
-    </plurals>
     <string name="play_label">Afspelen</string>
     <string name="pause_label">Pauzeren</string>
     <string name="stream_label">Streamen</string>
     <string name="delete_label">Verwijderen</string>
     <string name="remove_inbox_label">Verwijderen uit Postvak IN</string>
-    <string name="removed_inbox_label">Verwijderd uit Postvak IN</string>
-    <string name="mark_read_label">Als afgespeeld markeren</string>
     <string name="toggle_played_label">Afspeelstatus wijzigen</string>
-    <string name="marked_as_played_label">Gemarkeerd als afgespeeld</string>
-    <string name="marked_as_unplayed_label">Gemarkeerd als niet-afgespeeld</string>
     <string name="mark_read_no_media_label">Markeren als gelezen</string>
-    <string name="play_this_to_seek_position">Speel de aflevering af om naar posities te springen</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">%d aflevering gemarkeerd als afgespeeld.</item>
-        <item quantity="other">%d afleveringen gemarkeerd als afgespeeld.</item>
-    </plurals>
-    <string name="mark_unread_label">Als niet-afgespeeld markeren</string>
     <string name="mark_unread_label_no_media">Markeren als ongelezen</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d aflevering gemarkeerd als niet-afgespeeld.</item>
-        <item quantity="other">%d afleveringen gemarkeerd als niet-afgespeeld.</item>
-    </plurals>
     <string name="add_to_queue_label">Toevoegen aan wachtrij</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d aflevering toegevoegd aan de wachtrij.</item>
-        <item quantity="other">%d afleveringen toegevoegd aan de wachtrij.</item>
-    </plurals>
     <string name="remove_from_queue_label">Verwijderen uit wachtrij</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d aflevering verwijderd uit de wachtrij.</item>
-        <item quantity="other">%d afleveringen verwijderd uit de wachtrij.</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d aflevering verwijderd uit Postvak In.</item>
         <item quantity="other">%d afleveringen verwijderd uit Postvak In.</item>
@@ -215,9 +189,6 @@
     <string name="remove_from_favorite_label">Verwijderen uit favorieten</string>
     <string name="visit_website_label">Website bezoeken</string>
     <string name="skip_episode_label">Aflevering overslaan</string>
-    <string name="reset_position">Afspeelpositie herstellen</string>
-    <string name="no_items_selected">Geen items geselecteerd</string>
-    <string name="delete_local_feed_warning_body">Verwijderen verwijdert de aflevering van AntennaPod en verwijderd de mediabestanden uit de opslag van je apparaat. Het kan niet opnieuw gedownload worden door AntennaPod.</string>
     <!--Download messages and labels-->
   <string name="download_successful">voltooid</string>
     <string name="download_pending">In afwachting van downloaden</string>
@@ -330,7 +301,7 @@
     <string name="preference_search_no_results">Geen resultaten</string>
     <string name="preference_search_clear_history">Geschiedenis wissen</string>
     <string name="pref_episode_cleanup_summary">Hier instellen wanneer afleveringen mogen worden verwijderd, in het geval \'Automatisch downloaden\' ruimte nodig heeft voor nieuwe afleveringen</string>
-    <string name="pref_pauseOnDisconnect_sum">Afspelen pauzeren wanneer hoofdtelefoon of bluetooth zijn losgekoppeld</string>
+    <string name="pref_pauseOnDisconnect_sum">Afspelen pauzeren na loskoppelen van de koptelefoon of bluetooth</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Afspelen hervatten na aansluiten van de koptelefoon</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Afspelen hervatten na herstel van de bluetoothverbinding</string>
     <string name="pref_hardware_forward_button_title">Knop Vooruit</string>
@@ -606,7 +577,6 @@
     <string name="feed_tags_summary">Wijzig de labels van deze podcast om abonnementen te organiseren</string>
     <string name="feed_folders_include_root">Podcast in de hoofdlijst tonen</string>
     <string name="multi_feed_common_tags_info">Alleen labels die alle geselecteerde abonnementen delen worden getoond. Andere labels worden niet aangepast.</string>
-    <string name="auto_download_settings_label">Instellingen voor automatisch downloaden</string>
     <string name="episode_filters_label">Afleveringsfilter</string>
     <string name="episode_filters_description">Lijst van zoektermen om te beslissen of een aflevering al of niet automatisch wordt gedownload</string>
     <string name="add_term">Zoekterm toevoegen</string>
@@ -631,8 +601,6 @@
     <string name="release_schedule_friday">Vr</string>
     <string name="release_schedule_saturday">Za</string>
     <string name="release_schedule_sunday">Zo</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Bezig met importeren van abonnementen uit eenmalige apps…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Podcast zoeken…</string>
     <string name="search_itunes_label">Zoek in Apple Podcasts</string>
@@ -776,13 +744,8 @@
         <item quantity="other">%d dagen na afloop</item>
     </plurals>
     <string name="feed_delete_confirmation_msg">Bevestig dat je de podcast \"%1$s\", ALLE afleveringen (ook al gedownloade afleveringen), afspeelgeschiedenis en bijbehorende statistieken wilt verwijderen.</string>
-    <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">%d gedownloade aflevering verwijderd.</item>
-        <item quantity="other">%d gedownloade afleveringen verwijderd.</item>
-    </plurals>
     <string name="delete_downloads_played_confirmation">Bevestig dat je alle afgespeelde downloads wilt verwijderen.</string>
     <string name="no_transcript_label">Geen transcript</string>
-    <string name="transcript_follow">Volg audio</string>
     <string name="null_value_podcast_error">De link die je aantikte bevat geen geldige podcast URL. Controleer de link en probeer het nogmaals, of zoek handmatig naar de podcast.</string>
     <string name="mobile_download_notice">De komende %d minuten word er over mobiele data gedownload</string>
     <string name="clear_queue_confirmation_msg">Bevestig dat je ALLE afleveringen uit de wachtrij wilt verwijderen.</string>
@@ -814,7 +777,7 @@
     <string name="subscriptions_label_more">Abonnementen »</string>
     <string name="enabled">Ingeschakeld</string>
     <string name="disabled">Uitgeschakeld</string>
-    <string name="pref_automatic_download_global_description">Nieuwe afleveringen automatisch downloaden. Kan per podcast aangepast worden.</string>
+    <string name="pref_automatic_download_global_description">Automatisch downloaden van afleveringen in Postvak IN. Kan per podcast aangepast worden.</string>
     <string name="notification_channel_refreshing_description">Getoond tijdens controleren op nieuwe afleveringen.</string>
     <string name="inbox_label_more">Postvak IN »</string>
     <string name="episodes_label_short">Afleveringen</string>
@@ -873,8 +836,51 @@
     <string name="preference_search_clear_input">Wissen</string>
     <string name="overflow_more">Meer</string>
     <string name="visit_social_interact_label">Reacties weergeven</string>
-    <string name="visit_social_interact_query_message">Let goed op of je de website \"%1$s\" vertrouwt.</string>
-    <string name="visit_social_interact_query_title">Je verlaat AntennaPod</string>
     <string name="rss_address">RSS-adres</string>
     <string name="feed_new_episodes_action_summary_autodownload">Automatisch downloaden staat aan. Afleveringen worden aan postvak IN toegevoegd en worden naar de wachtrij verplaatst zodra ze gedownload zijn.</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">%d aflevering aan het downloaden.</item>
+        <item quantity="other">%d afleveringen aan het downloaden.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">%d aflevering verwijderd.</item>
+        <item quantity="other">%d afleveringen verwijderd.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Verwijderd uit Postvak IN</string>
+    <string name="mark_as_played_label">Markeer als afgespeeld</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Markeer als afgespeeld</item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Markeer als onafgespeeld</item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="play_this_to_seek_position_message">Om naar een andere positie te springen moet je de aflevering afspelen</string>
+    <string name="mark_as_unplayed_label">Markeer als onafgespeeld</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d aflevering toegevoegd aan de wachtrij.</item>
+        <item quantity="other">%d afleveringen toegevoegd aan de wachtrij.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d aflevering verwijderd uit de wachtrij.</item>
+        <item quantity="other">%d afleveringen verwijderd uit de wachtrij.</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">Volg audio</string>
+    <string name="visit_social_interact_confirm_dialog_title">Je verlaat AntennaPod</string>
+    <string name="visit_social_interact_confirm_dialog_message">Let op of je de website \"%1$s\" vertrouwd.</string>
+    <string name="reset_playback_position_label">Herstel afspeelpositie</string>
+    <string name="no_items_selected_message">Geen items geselecteerd</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d aflevering naar bovenaan verplaatst.</item>
+        <item quantity="other">%d afleveringen naar bovenaan verplaatst.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d aflevering naar onderaan verplaatst.</item>
+        <item quantity="other">%d afleveringen naar onderaan verplaatst.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">Geen afleveringen in de wachtrij, maar er staan nieuwe afleveringen in Postvak IN!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Ga naar Postvak IN</string>
+    <string name="auto_download_inbox_category">Automatisch downloaden van afleveringen in Postvak IN</string>
+    <string name="delete_local_feed_confirmation_dialog_message">Dit verwijdert de aflevering uit AntennaPod en verwijdert de mediabestanden van de opslag op je apparaat. Het kan niet opnieuw gedownload worden via AntennaPod.</string>
 </resources>

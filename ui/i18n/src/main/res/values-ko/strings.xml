@@ -167,37 +167,16 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">여러분의 VPN 앱이 휴대전화 네트워크인 척 (종량제 연결) 하고 있습니다. 설정에서 휴대전화 연결을 통한 팟캐스트 새로 고침은 사용하지 않고 있습니다.\n\n그래도 새로고침하시겠습니까? 이 문제를 바로잡고 싶으면, 여러분의 VPN 앱 제작자에게 연락해 보십시오.</string>
     <!--actions on feeditems-->
   <string name="download_label">다운로드</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="other">%d개 에피소드 다운로드 중.</item>
-    </plurals>
     <string name="play_label">재생</string>
     <string name="pause_label">일시 중지</string>
     <string name="stream_label">스트리밍</string>
     <string name="delete_label">삭제</string>
     <string name="remove_inbox_label">새로 받음 목록에서 제거</string>
-    <string name="removed_inbox_label">새로 받음 목록에서 제거함</string>
-    <string name="mark_read_label">재생했다고 표시</string>
     <string name="toggle_played_label">재생함 상태 토글</string>
-    <string name="marked_as_played_label">재생했다고 표시</string>
-    <string name="marked_as_unplayed_label">재생하지 않음으로 표시</string>
     <string name="mark_read_no_media_label">읽었다고 표시</string>
-    <string name="play_this_to_seek_position">특정 재생 위치로 이동하려면, 에피소드를 재생해야 합니다</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="other">%d개 에피소드를 재생한 것으로 표시했습니다.</item>
-    </plurals>
-    <string name="mark_unread_label">재생하지 않음으로 표시</string>
     <string name="mark_unread_label_no_media">읽지 않음으로 표시</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="other">%d개 에피소드를 재생하지 않은 것으로 표시했습니다.</item>
-    </plurals>
     <string name="add_to_queue_label">대기열에 추가</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="other">%d개 에피소드를 대기열에 추가했습니다.</item>
-    </plurals>
     <string name="remove_from_queue_label">대기열에서 제거</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="other">%d개 에피소드를 대기열에서 제거했습니다.</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="other">%d개 에피소드를 새로 받음 목록에서 제거했습니다.</item>
     </plurals>
@@ -205,9 +184,6 @@
     <string name="remove_from_favorite_label">즐겨찾기에서 제거</string>
     <string name="visit_website_label">웹사이트 방문</string>
     <string name="skip_episode_label">에피소드 건너뛰기</string>
-    <string name="reset_position">재생 위치 초기화</string>
-    <string name="no_items_selected">선택 없음</string>
-    <string name="delete_local_feed_warning_body">삭제하면 안테나팟에서 에피소드도 제거하고, 장치 저장소에서 미디어 파일도 삭제합니다. 안테나팟을 통해 다시 다운로드할 수 없게 됩니다.</string>
     <!--Download messages and labels-->
   <string name="download_successful">성공</string>
     <string name="download_pending">다운로드 지연 중</string>
@@ -595,7 +571,6 @@
     <string name="feed_tags_summary">구독 정리에 도움이 되도록 이 팟캐스트의 태그 바꾸기</string>
     <string name="feed_folders_include_root">주 목록에 이 팟캐스트 표시</string>
     <string name="multi_feed_common_tags_info">선택한 구독 중에 일반적인 태그만 표시됩니다. 기타 태그는 영향을 받지 않습니다.</string>
-    <string name="auto_download_settings_label">자동 다운로드 설정</string>
     <string name="episode_filters_label">에피소드 필터</string>
     <string name="episode_filters_description">자동 다운로드를 할 때 에피소드가 포함되어야할지 제외되어야할지 결정하는 규칙의 목록</string>
     <string name="add_term">단어 추가</string>
@@ -620,8 +595,6 @@
     <string name="release_schedule_friday">금</string>
     <string name="release_schedule_saturday">토</string>
     <string name="release_schedule_sunday">일</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">단일 용도 앱에서 구독 정보를 가져옵니다…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">팟캐스트 검색…</string>
     <string name="search_itunes_label">애플 팟캐스트 검색</string>
