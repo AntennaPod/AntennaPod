@@ -377,17 +377,18 @@ public abstract class PlaybackController {
     }
 
     public void seekTo(int time) {
+        Playable playable = getMedia();
         if (playbackService != null) {
-            if (getMedia() != null) {
-                long timestamp = getMedia().getLastPlayedTimeStatistics();
-                PlayableUtils.saveCurrentPosition(getMedia(), time, timestamp);
+            if (playable != null) {
+                long timestamp = playable.getLastPlayedTimeStatistics();
+                PlayableUtils.saveCurrentPosition(playable, time, timestamp);
             }
             playbackService.seekTo(time);
-        } else if (getMedia() instanceof FeedMedia) {
-            FeedMedia media = (FeedMedia) getMedia();
+        } else if (playable instanceof FeedMedia) {
+            FeedMedia media = (FeedMedia) playable;
             media.setPosition(time);
             DBWriter.setFeedItem(media.getItem());
-            EventBus.getDefault().post(new PlaybackPositionEvent(time, getMedia().getDuration()));
+            EventBus.getDefault().post(new PlaybackPositionEvent(time, playable.getDuration()));
         }
     }
 
