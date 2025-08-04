@@ -1,7 +1,10 @@
 package de.danoeh.antennapod.ui.screen.playback;
 
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -14,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
@@ -21,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.TranscriptDialogBinding;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.Transcript;
@@ -37,7 +42,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-public class TranscriptDialogFragment extends DialogFragment {
+public class TranscriptDialogFragment extends DialogFragment
+        implements TranscriptAdapter.SegmentClickListener {
     public static final String TAG = "TranscriptFragment";
     private TranscriptDialogBinding viewBinding;
     private PlaybackController controller;
@@ -65,7 +71,7 @@ public class TranscriptDialogFragment extends DialogFragment {
         layoutManager = new LinearLayoutManager(getContext());
         viewBinding.transcriptList.setLayoutManager(layoutManager);
 
-        adapter = new TranscriptAdapter(getContext(), this::transcriptClicked);
+        adapter = new TranscriptAdapter(getContext(), this);
         viewBinding.transcriptList.setAdapter(adapter);
         viewBinding.transcriptList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -123,26 +129,68 @@ public class TranscriptDialogFragment extends DialogFragment {
                     v.setEnabled(false);
                     loadMediaInfo(true);
                 });
+                buttonNeutral.setOnClickListener(null);
                 buttonNeutral.setVisibility(View.GONE);
+                viewBinding.followAudioCheckbox.setEnabled(true);
 
                 break;
             case Copy:
+                buttonNegative.setText("Cancel");
+                buttonNegative.setOnClickListener(v -> {
+                    setTranscriptMode(TranscriptMode.Normal);
+                });
+                buttonPositive.setText("Select All");
+                buttonPositive.setOnClickListener(v -> {
+                    adapter.selectAll();
+                });
+                buttonNeutral.setVisibility(View.VISIBLE);
+                buttonNeutral.setText("Copy");
+                buttonNeutral.setOnClickListener(v -> {
+                    String selectedText = adapter.getSelectedText();
+                    ClipboardManager clipboardManager = ContextCompat.getSystemService(requireContext(), ClipboardManager.class);
+                    if (clipboardManager != null) {
+                        clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", selectedText));
+                    }
+                    if (Build.VERSION.SDK_INT <= 32) {
+                        EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
+                    }
+                });
+                viewBinding.followAudioCheckbox.setChecked(false);
+                viewBinding.followAudioCheckbox.setEnabled(false);
+
                 break;
+        }
+
+        adapter.setTranscriptMode(transcriptMode);
+    }
+
+    @Override
+    public void onTranscriptClicked(int pos, TranscriptSegment segment) {
+        if (transcriptMode == TranscriptMode.Normal) {
+            long startTime = segment.getStartTime();
+            long endTime = segment.getEndTime();
+
+            scrollToPosition(pos);
+            if (!(controller.getPosition() >= startTime && controller.getPosition() <= endTime)) {
+                controller.seekTo((int) startTime);
+            } else {
+                controller.playPause();
+            }
+            adapter.notifyItemChanged(pos);
+            viewBinding.followAudioCheckbox.setChecked(true);
+        } else if (transcriptMode == TranscriptMode.Copy) {
+            adapter.toggleSelection(pos);
         }
     }
 
-    private void transcriptClicked(int pos, TranscriptSegment segment) {
-        long startTime = segment.getStartTime();
-        long endTime = segment.getEndTime();
+    @Override
+    public void onTranscriptLongClicked(int position, TranscriptSegment seg) {
+        if (transcriptMode != TranscriptMode.Copy) {
+            viewBinding.followAudioCheckbox.setChecked(false);
 
-        scrollToPosition(pos);
-        if (!(controller.getPosition() >= startTime && controller.getPosition() <= endTime)) {
-            controller.seekTo((int) startTime);
-        } else {
-            controller.playPause();
+            setTranscriptMode(TranscriptMode.Copy);
+            adapter.toggleSelection(position);
         }
-        adapter.notifyItemChanged(pos);
-        viewBinding.followAudioCheckbox.setChecked(true);
     }
 
     @Override

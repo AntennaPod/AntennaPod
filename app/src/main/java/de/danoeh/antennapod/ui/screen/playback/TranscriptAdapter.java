@@ -11,11 +11,16 @@ import com.google.android.material.elevation.SurfaceColors;
 import de.danoeh.antennapod.databinding.TranscriptItemBinding;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.common.Converter;
+import de.danoeh.antennapod.ui.transcript.TranscriptMode;
 import de.danoeh.antennapod.ui.transcript.TranscriptViewholder;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
+import org.apache.commons.lang3.ObjectUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -29,6 +34,8 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
     private FeedMedia media;
     private int prevHighlightPosition = -1;
     private int highlightPosition = -1;
+    private TranscriptMode transcriptMode = TranscriptMode.Normal;
+    private HashSet<Integer> selectedPositions = new HashSet<>();
 
     public TranscriptAdapter(Context context, SegmentClickListener segmentClickListener) {
         this.context = context;
@@ -49,6 +56,40 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
         notifyDataSetChanged();
     }
 
+    public void setTranscriptMode(TranscriptMode transcriptMode) {
+        if (this.transcriptMode != transcriptMode) {
+            TranscriptMode oldTranscriptMode = this.transcriptMode;
+            this.transcriptMode = transcriptMode;
+
+            switch (oldTranscriptMode) {
+                case Normal:
+                    notifyItemChanged(highlightPosition);
+                    break;
+                case Copy:
+                    Iterator<Integer> iterator = selectedPositions.iterator();
+                    while (iterator.hasNext()) {
+                        Integer position = iterator.next();
+                        iterator.remove();
+                        notifyItemChanged(position);
+                    }
+                    selectedPositions.clear();
+                    break;
+            }
+            switch (transcriptMode) {
+                case Normal:
+                    notifyItemChanged(highlightPosition);
+                    break;
+                case Copy:
+                    Iterator<Integer> iterator = selectedPositions.iterator();
+                    while (iterator.hasNext()) {
+                        Integer position = iterator.next();
+                        notifyItemChanged(position);
+                    }
+                    break;
+            }
+        }
+    }
+
     @Override
     public void onBindViewHolder(@NonNull TranscriptViewholder holder, int position) {
         if (media == null || media.getTranscript() == null) {
@@ -60,6 +101,13 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
             if (segmentClickListener != null)  {
                 segmentClickListener.onTranscriptClicked(position, seg);
             }
+        });
+
+        holder.viewContent.setOnLongClickListener(v -> {
+            if (segmentClickListener != null) {
+                segmentClickListener.onTranscriptLongClicked(position, seg);
+            }
+            return true;
         });
 
         String timecode = Converter.getDurationStringLong((int) seg.getStartTime());
@@ -84,7 +132,18 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
             holder.viewContent.setText(seg.getWords());
         }
 
-        if (position == highlightPosition) {
+        switch (transcriptMode) {
+            case Normal:
+                highlightViewHolder(holder, position == highlightPosition);
+                break;
+            case Copy:
+                highlightViewHolder(holder, selectedPositions.contains(position));
+                break;
+        }
+    }
+
+    private void highlightViewHolder(TranscriptViewholder holder, boolean highlight) {
+        if (highlight) {
             float density = context.getResources().getDisplayMetrics().density;
             holder.viewContent.setBackgroundColor(SurfaceColors.getColorForElevation(context, 32 * density));
             holder.viewContent.setAlpha(1.0f);
@@ -95,6 +154,7 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
             holder.viewContent.setAlpha(0.5f);
             holder.viewTimecode.setAlpha(0.5f);
         }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -140,8 +200,56 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
         EventBus.getDefault().unregister(this);
     }
 
+    public void toggleSelection(int pos) {
+        if (selectedPositions.contains(pos)) {
+            selectedPositions.remove(pos);
+        } else {
+            selectedPositions.add(pos);
+        }
+        notifyItemChanged(pos);
+    }
+
+    public void selectAll() {
+        for (int position=0; position<getItemCount(); position++) {
+            if (!selectedPositions.contains(position)) {
+                selectedPositions.add(position);
+                notifyItemChanged(position);
+            }
+        }
+    }
+
+    public String getSelectedText() {
+        if (transcriptMode != TranscriptMode.Copy) {
+            return null;
+        }
+        Transcript transcript = media.getTranscript();
+        StringBuilder ss = new StringBuilder();
+        Iterator<Integer> iterator = selectedPositions.iterator();
+        String lastSpeaker = null;
+        while (iterator.hasNext()) {
+            int index = iterator.next();
+            TranscriptSegment seg = transcript.getSegmentAt(index);
+
+            if (!StringUtil.isBlank(seg.getSpeaker())) {
+                if (ObjectUtils.notEqual(lastSpeaker, seg.getSpeaker())) {
+                    ss.append("\n").append(seg.getSpeaker()).append(" : ");
+                    lastSpeaker = seg.getSpeaker();
+                }
+            }
+            else {
+                lastSpeaker = null;
+            }
+            if (ss.length() > 0 && ss.charAt(ss.length() - 1) != ' ') {
+                ss.append(' ');
+            }
+            ss.append(seg.getWords());
+        }
+
+        return ss.toString().strip();
+    }
 
     public interface SegmentClickListener {
         void onTranscriptClicked(int position, TranscriptSegment seg);
+        void onTranscriptLongClicked(int position, TranscriptSegment seg);
     }
 }
