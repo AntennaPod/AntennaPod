@@ -217,7 +217,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             for (int i = 0; i < recyclerAdapter.getItemCount(); i++) {
                 EpisodeItemViewHolder holder = (EpisodeItemViewHolder)
                         recyclerView.findViewHolderForAdapterPosition(i);
-                if (holder != null && holder.isCurrentlyPlayingItem()) {
+                if (holder != null && holder.isPlayingItem()) {
                     holder.notifyPlaybackPositionUpdated(event);
                     break;
                 }

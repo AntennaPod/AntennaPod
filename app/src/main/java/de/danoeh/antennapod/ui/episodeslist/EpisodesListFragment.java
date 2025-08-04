@@ -347,7 +347,7 @@ public abstract class EpisodesListFragment extends Fragment
     public void onEventMainThread(PlaybackPositionEvent event) {
         for (int i = 0; i < listAdapter.getItemCount(); i++) {
             EpisodeItemViewHolder holder = (EpisodeItemViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
-            if (holder != null && holder.isCurrentlyPlayingItem()) {
+            if (holder != null && holder.isPlayingItem()) {
                 holder.notifyPlaybackPositionUpdated(event);
                 break;
             }
