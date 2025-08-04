@@ -377,17 +377,14 @@ public abstract class PlaybackController {
     }
 
     public void seekTo(int time) {
-        Playable playable = getMedia();
         if (playbackService != null) {
-            // Save position before calling PlaybackService.seekTo,
-            // because PlaybackService.seekTo notifies subscribed components,
-            // which might read the new state from database
-            long timestamp = playable.getLastPlayedTimeStatistics();
-            PlayableUtils.saveCurrentPosition(playable, time, timestamp);
-
+            if (getMedia() != null) {
+                long timestamp = getMedia().getLastPlayedTimeStatistics();
+                PlayableUtils.saveCurrentPosition(getMedia(), time, timestamp);
+            }
             playbackService.seekTo(time);
         } else if (getMedia() instanceof FeedMedia) {
-            FeedMedia media = (FeedMedia) playable;
+            FeedMedia media = (FeedMedia) getMedia();
             media.setPosition(time);
             DBWriter.setFeedItem(media.getItem());
             EventBus.getDefault().post(new PlaybackPositionEvent(time, getMedia().getDuration()));
