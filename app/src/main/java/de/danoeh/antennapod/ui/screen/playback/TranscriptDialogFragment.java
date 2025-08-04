@@ -154,6 +154,8 @@ public class TranscriptDialogFragment extends DialogFragment
                     if (Build.VERSION.SDK_INT <= 32) {
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
                     }
+
+                    setTranscriptMode(TranscriptMode.Normal);
                 });
                 viewBinding.followAudioCheckbox.setChecked(false);
                 viewBinding.followAudioCheckbox.setEnabled(false);
