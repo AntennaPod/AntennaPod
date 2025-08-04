@@ -74,6 +74,8 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
                     }
                     selectedPositions.clear();
                     break;
+                default:
+                    break;
             }
             switch (transcriptMode) {
                 case Normal:
@@ -85,6 +87,8 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
                         Integer position = iterator.next();
                         notifyItemChanged(position);
                     }
+                    break;
+                default:
                     break;
             }
         }
@@ -138,6 +142,8 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
                 break;
             case Copy:
                 highlightViewHolder(holder, selectedPositions.contains(position));
+                break;
+            default:
                 break;
         }
     }
@@ -210,7 +216,7 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
     }
 
     public void selectAll() {
-        for (int position=0; position<getItemCount(); position++) {
+        for (int position = 0; position < getItemCount(); position++) {
             if (!selectedPositions.contains(position)) {
                 selectedPositions.add(position);
                 notifyItemChanged(position);
@@ -235,8 +241,7 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
                     ss.append("\n").append(seg.getSpeaker()).append(" : ");
                     lastSpeaker = seg.getSpeaker();
                 }
-            }
-            else {
+            } else {
                 lastSpeaker = null;
             }
             if (ss.length() > 0 && ss.charAt(ss.length() - 1) != ' ') {
@@ -250,6 +255,7 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
 
     public interface SegmentClickListener {
         void onTranscriptClicked(int position, TranscriptSegment seg);
+
         void onTranscriptLongClicked(int position, TranscriptSegment seg);
     }
 }

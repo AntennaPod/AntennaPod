@@ -146,24 +146,29 @@ public class TranscriptDialogFragment extends DialogFragment
                 buttonNeutral.setVisibility(View.VISIBLE);
                 buttonNeutral.setText(R.string.copy_label);
                 buttonNeutral.setOnClickListener(v -> {
-                    String selectedText = adapter.getSelectedText();
-                    ClipboardManager clipboardManager = ContextCompat.getSystemService(requireContext(), ClipboardManager.class);
-                    if (clipboardManager != null) {
-                        clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", selectedText));
-                    }
-                    if (Build.VERSION.SDK_INT <= 32) {
-                        EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
-                    }
-
+                    copySelectedText();
                     setTranscriptMode(TranscriptMode.Normal);
                 });
                 viewBinding.followAudioCheckbox.setChecked(false);
                 viewBinding.followAudioCheckbox.setEnabled(false);
 
                 break;
+            default:
+                break;
         }
 
         adapter.setTranscriptMode(transcriptMode);
+    }
+
+    private void copySelectedText() {
+        String selectedText = adapter.getSelectedText();
+        ClipboardManager clipboardManager = ContextCompat.getSystemService(requireContext(), ClipboardManager.class);
+        if (clipboardManager != null) {
+            clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", selectedText));
+        }
+        if (Build.VERSION.SDK_INT <= 32) {
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
+        }
     }
 
     @Override
