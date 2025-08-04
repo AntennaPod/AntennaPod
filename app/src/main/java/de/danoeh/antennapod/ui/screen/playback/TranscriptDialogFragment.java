@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,7 @@ import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.service.PlaybackController;
+import de.danoeh.antennapod.ui.transcript.TranscriptMode;
 import de.danoeh.antennapod.ui.transcript.TranscriptUtils;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -45,6 +47,7 @@ public class TranscriptDialogFragment extends DialogFragment {
     private TranscriptAdapter adapter = null;
     private boolean doInitialScroll = true;
     private LinearLayoutManager layoutManager;
+    private TranscriptMode transcriptMode = null;
 
     @Override
     public void onResume() {
@@ -78,22 +81,54 @@ public class TranscriptDialogFragment extends DialogFragment {
                 .setView(viewBinding.getRoot())
                 .setPositiveButton(getString(R.string.close_label), null)
                 .setNegativeButton(getString(R.string.refresh_label), null)
+                .setNeutralButton("Copy", null)
                 .setTitle(R.string.transcript)
                 .create();
         viewBinding.followAudioCheckbox.setChecked(true);
         dialog.setOnShowListener(dialog1 -> {
-            dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(v -> {
-                viewBinding.progLoading.setVisibility(View.VISIBLE);
-                v.setClickable(false);
-                v.setEnabled(false);
-                loadMediaInfo(true);
-            });
+            setTranscriptMode(TranscriptMode.Normal, dialog);
         });
         viewBinding.progLoading.setVisibility(View.VISIBLE);
         doInitialScroll = true;
 
 
         return dialog;
+    }
+
+    private void setTranscriptMode(TranscriptMode transcriptMode) {
+        if (getDialog() == null || !(getDialog() instanceof AlertDialog)) {
+            return;
+        }
+        AlertDialog dialog = (AlertDialog) getDialog();
+
+        setTranscriptMode(transcriptMode, dialog);
+    }
+
+    private void setTranscriptMode(TranscriptMode transcriptMode, AlertDialog dialog) {
+        this.transcriptMode = transcriptMode;
+
+        Button buttonNegative = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+        Button buttonPositive = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        Button buttonNeutral = dialog.getButton(DialogInterface.BUTTON_NEUTRAL);
+        switch (transcriptMode) {
+            case Normal:
+                buttonNegative.setText(getString(R.string.close_label));
+                buttonNegative.setOnClickListener(v -> {
+                    dialog.dismiss();
+                });
+                buttonPositive.setText(getString(R.string.refresh_label));
+                buttonPositive.setOnClickListener(v -> {
+                    viewBinding.progLoading.setVisibility(View.VISIBLE);
+                    v.setClickable(false);
+                    v.setEnabled(false);
+                    loadMediaInfo(true);
+                });
+                buttonNeutral.setVisibility(View.GONE);
+
+                break;
+            case Copy:
+                break;
+        }
     }
 
     private void transcriptClicked(int pos, TranscriptSegment segment) {
