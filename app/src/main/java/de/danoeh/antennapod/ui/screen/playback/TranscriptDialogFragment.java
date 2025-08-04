@@ -87,7 +87,7 @@ public class TranscriptDialogFragment extends DialogFragment
                 .setView(viewBinding.getRoot())
                 .setPositiveButton(getString(R.string.close_label), null)
                 .setNegativeButton(getString(R.string.refresh_label), null)
-                .setNeutralButton("Copy", null)
+                .setNeutralButton(getString(R.string.copy_label), null)
                 .setTitle(R.string.transcript)
                 .create();
         viewBinding.followAudioCheckbox.setChecked(true);
@@ -135,16 +135,16 @@ public class TranscriptDialogFragment extends DialogFragment
 
                 break;
             case Copy:
-                buttonNegative.setText("Cancel");
+                buttonNegative.setText(R.string.cancel_label);
                 buttonNegative.setOnClickListener(v -> {
                     setTranscriptMode(TranscriptMode.Normal);
                 });
-                buttonPositive.setText("Select All");
+                buttonPositive.setText(R.string.select_all_label);
                 buttonPositive.setOnClickListener(v -> {
                     adapter.selectAll();
                 });
                 buttonNeutral.setVisibility(View.VISIBLE);
-                buttonNeutral.setText("Copy");
+                buttonNeutral.setText(R.string.copy_label);
                 buttonNeutral.setOnClickListener(v -> {
                     String selectedText = adapter.getSelectedText();
                     ClipboardManager clipboardManager = ContextCompat.getSystemService(requireContext(), ClipboardManager.class);

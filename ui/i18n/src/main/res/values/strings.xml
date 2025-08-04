@@ -276,6 +276,7 @@
     </plurals>
     <string name="add_to_favorite_label">Add to favorites</string>
     <string name="show_transcript">Show transcript</string>
+    <string name="copy_label">Copy</string>
     <string name="transcript">Transcript</string>
     <string name="transcript_follow_audio_label">Follow audio</string>
     <string name="no_transcript_label">No transcript</string>
