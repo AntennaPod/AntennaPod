@@ -19,7 +19,7 @@ import de.danoeh.antennapod.model.feed.TranscriptSegment;
 
 public class VttTranscriptParser {
     private static final Pattern TIMESTAMP_PATTERN =
-            Pattern.compile("^(?:([0-9]{2}):)?([0-9]{2}):([0-9]{2})\\.([0-9]{3})$");
+            Pattern.compile("^(?:([0-9]{1,2}):)?([0-9]{2}):([0-9]{2})\\.([0-9]{3})$");
 
     private static final Pattern VOICE_SPAN =
             Pattern.compile("<v(?:\\.[^\\t\\n\\r &<>.]+)*[ \\t]([^\\n\\r&>]+)>");
