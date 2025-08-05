@@ -501,7 +501,7 @@
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes</string>
     <string name="pref_automatic_download_on_battery_title">Download when not charging</string>
     <string name="pref_automatic_download_on_battery_sum">Allow automatic download when the battery is not charging</string>
-    <string name="pref_episode_cache_title">Episode limit</string>
+    <string name="pref_episode_cache_title">Download limit</string>
     <string name="pref_episode_cache_summary">Automatic download is stopped if this number is reached</string>
     <string name="pref_episode_cover_title">Use episode cover</string>
     <string name="pref_episode_cover_summary">Use the episode specific cover in lists whenever available. If unchecked, the app will always use the podcast cover image.</string>
