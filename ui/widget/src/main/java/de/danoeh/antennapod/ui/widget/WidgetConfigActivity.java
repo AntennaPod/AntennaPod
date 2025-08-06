@@ -10,12 +10,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.request.RequestOptions;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.ui.common.ToolbarActivity;
+import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class WidgetConfigActivity extends ToolbarActivity {
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -124,17 +131,27 @@ public class WidgetConfigActivity extends ToolbarActivity {
 
         if (ckCoverAsBcg.isChecked()) {
             widgetPreview.findViewById(R.id.imgvCover).setVisibility(View.GONE);
-            widgetPreview.findViewById(R.id.widgetLayout).setBackgroundResource(R.drawable.launcher_animate);
+            widgetPreview.findViewById(R.id.imgvBackground).setVisibility(View.VISIBLE);
             opacitySeekBar.setVisibility(View.GONE);
             findViewById(R.id.textView).setVisibility(View.GONE);
             findViewById(R.id.widget_opacity_textView).setVisibility(View.GONE);
         } else {
             widgetPreview.findViewById(R.id.imgvCover).setVisibility(View.VISIBLE);
+            widgetPreview.findViewById(R.id.imgvBackground).setVisibility(View.GONE);
             widgetPreview.findViewById(R.id.widgetLayout).setBackgroundColor(PlayerWidget.DEFAULT_COLOR);
             opacitySeekBar.setVisibility(View.VISIBLE);
             findViewById(R.id.textView).setVisibility(View.VISIBLE);
             findViewById(R.id.widget_opacity_textView).setVisibility(View.VISIBLE);
         }
+
+        RequestOptions option = new RequestOptions()
+                .dontAnimate()
+                .transform(new FastBlurTransformation(), new FitCenter());
+        Glide.with(this)
+                .asBitmap()
+                .load(Feed.PREFIX_GENERATIVE_COVER)
+                .apply(option)
+                .into((ImageView) widgetPreview.findViewById(R.id.imgvBackground));
     }
 
     private void confirmCreateWidget() {
