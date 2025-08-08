@@ -148,7 +148,10 @@ public class WidgetConfigActivity extends ToolbarActivity {
                     .apply(option1)
                     .into(new CustomTarget<Drawable>() {
                         @Override
-                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        public void onResourceReady(
+                                @NonNull Drawable resource,
+                                @Nullable Transition<? super Drawable> transition
+                        ) {
                             widgetPreview.findViewById(R.id.widgetLayout).setBackground(resource);
                         }
 

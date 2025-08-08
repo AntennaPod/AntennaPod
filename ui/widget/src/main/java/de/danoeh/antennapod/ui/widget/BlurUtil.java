@@ -116,7 +116,6 @@ public class BlurUtil extends BitmapTransformation {
         int gsum;
         int bsum;
         int x;
-        int y;
         int i;
         int p;
         int yp;
@@ -145,6 +144,7 @@ public class BlurUtil extends BitmapTransformation {
         int rinsum;
         int ginsum;
         int binsum;
+        int y;
 
         for (y = 0; y < h; y++) {
             rinsum = ginsum = binsum = routsum = goutsum = boutsum = rsum = gsum = bsum = 0;
