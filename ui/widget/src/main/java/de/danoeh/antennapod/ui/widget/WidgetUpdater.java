@@ -21,6 +21,7 @@ import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.model.playback.MediaType;
@@ -166,7 +167,7 @@ public abstract class WidgetUpdater {
             int radius = context.getResources().getDimensionPixelSize(R.dimen.widget_inner_radius);
             RequestOptions option1 = new RequestOptions()
                     .dontAnimate()
-                    .transform(new FitCenter(),new BlurUtil())
+                    .transform(new FitCenter(), new BlurUtil())
                     .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
 
             RequestOptions option2 = new RequestOptions()

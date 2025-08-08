@@ -5,13 +5,10 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
@@ -31,7 +28,6 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.ui.common.ToolbarActivity;
 
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 public class WidgetConfigActivity extends ToolbarActivity {
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -143,7 +139,7 @@ public class WidgetConfigActivity extends ToolbarActivity {
             Drawable icon = null;
             RequestOptions option1 = new RequestOptions()
                     .dontAnimate()
-                    .transform(new FitCenter(),new BlurUtil())
+                    .transform(new FitCenter(), new BlurUtil())
                     .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
 
             Glide.with(this)
