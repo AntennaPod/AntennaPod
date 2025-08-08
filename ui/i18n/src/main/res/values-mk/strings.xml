@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="feeds_label">Подкастови</string>
     <string name="statistics_label">Статистики</string>
     <string name="episodes_label">Епизоди</string>
     <string name="queue_label">Редица</string>
@@ -8,8 +7,6 @@
     <string name="settings_label">Подесувања</string>
     <string name="downloads_label">Симнувања</string>
     <string name="subscriptions_label">Претплата</string>
-    <string name="episode_cache_full_title">Пун кеш на епизоди</string>
-    <string name="episode_cache_full_message">Кешот на епизоди е полн. Можете да го зголемите кешот во Подесувања</string>
     <string name="notification_pref_fragment">Нотификации</string>
     <string name="statistics_reset_data">Ресетирај статистики</string>
     <!--Main activity-->
@@ -66,4 +63,7 @@
     <string name="time_hours">саати</string>
     <string name="username_label">Корисник</string>
     <string name="password_label">Лозинка</string>
+    <string name="feed_update_receiver_name">Ажурирај предплати</string>
+    <string name="add_feed_label">Додај емисија (подкаст)</string>
+    <string name="add_feed_label_short">Додај</string>
 </resources>

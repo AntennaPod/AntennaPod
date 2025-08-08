@@ -13,11 +13,13 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.concurrent.TimeUnit;
 
+<<<<<<< HEAD
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
+=======
+>>>>>>> develop
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
-import de.danoeh.antennapod.CrashReportWriter;
 import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
@@ -40,12 +42,12 @@ public class PreferenceUpgrader {
         if (oldVersion != newVersion) {
             CrashReportWriter.getFile().delete();
 
-            upgrade(oldVersion, context);
+            upgrade(oldVersion, newVersion, context);
             upgraderPrefs.edit().putInt(PREF_CONFIGURED_VERSION, newVersion).apply();
         }
     }
 
-    private static void upgrade(int oldVersion, Context context) {
+    private static void upgrade(int oldVersion, int newVersion, Context context) {
         if (oldVersion == -1) {
             //New installation
             return;
@@ -171,8 +173,19 @@ public class PreferenceUpgrader {
                 prefs.edit().putString(UserPreferences.PREF_FILTER_ALL_EPISODES, oldEpisodeFilter).apply();
             }
         }
-
-        if (oldVersion < 3060000) {
+        if (oldVersion < 3070000) {
+            // If autodownloads are enabled, we will start deleting episodes.
+            // To prevent accidents, force off the deletions.
+            if (!UserPreferences.isEnableAutodownloadGlobal()) {
+                prefs.edit().putString(UserPreferences.PREF_EPISODE_CLEANUP,
+                        "" + UserPreferences.EPISODE_CLEANUP_NULL).apply();
+            }
+        }
+        if (newVersion == 3070003) {
+            // Enable bottom navigation for beta users, so only this exact app version
+            UserPreferences.setBottomNavigationEnabled(true);
+        }
+        if (oldVersion < 3070004) {
             FeedPreferences.SkipSilence skipSilence = prefs.getBoolean(PREF_PLAYBACK_SKIP_SILENCE, false)
                     ? FeedPreferences.SkipSilence.AGGRESSIVE
                     : FeedPreferences.SkipSilence.OFF;

@@ -385,6 +385,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                     if (UserPreferences.getHiddenDrawerItems().contains(getLastNavFragment(getContext()))) {
                         new MainActivityStarter(getContext())
                                 .withFragmentLoaded(UserPreferences.getDefaultPage())
+                                .withClearBackStack()
                                 .withDrawerOpen()
                                 .start();
                     }
@@ -455,9 +456,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
 
     public static String getLastNavFragment(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        String lastFragment = prefs.getString(PREF_LAST_FRAGMENT_TAG, HomeFragment.TAG);
-        Log.d(TAG, "getLastNavFragment() -> " + lastFragment);
-        return lastFragment;
+        return prefs.getString(PREF_LAST_FRAGMENT_TAG, HomeFragment.TAG);
     }
 
     @Override

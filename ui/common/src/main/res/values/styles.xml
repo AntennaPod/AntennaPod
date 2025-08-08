@@ -10,7 +10,6 @@
     </style>
 
     <style name="Theme.Base.AntennaPod.Dynamic.Light" parent="Theme.Material3.DynamicColors.Light">
-        <item name="progressBarTheme">@style/ProgressBarLight</item>
         <item name="background_color">@color/background_light</item>
         <item name="actionBarStyle">@style/Widget.AntennaPod.ActionBar</item>
         <item name="background_elevated">@color/background_elevated_light</item>
@@ -54,7 +53,6 @@
     </style>
 
     <style name="Theme.Base.AntennaPod.Dynamic.Dark" parent="Theme.Material3.DynamicColors.Dark">
-        <item name="progressBarTheme">@style/ProgressBarDark</item>
         <item name="background_color">@color/background_darktheme</item>
         <item name="background_elevated">@color/background_elevated_darktheme</item>
         <item name="action_icon_color">@color/white</item>
@@ -102,7 +100,6 @@
         <item name="colorSurface">@color/black</item>
         <item name="background_color">@color/black</item>
         <item name="background_elevated">@color/black</item>
-        <item name="android:navigationBarColor">@color/black</item>
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack" parent="Theme.AntennaPod.Dark">
@@ -112,7 +109,6 @@
         <item name="colorSurface">@color/black</item>
         <item name="background_color">@color/black</item>
         <item name="background_elevated">@color/black</item>
-        <item name="android:navigationBarColor">@color/black</item>
         <item name="colorPrimaryContainer">#0D182B</item>
         <item name="colorOnPrimaryContainer">@color/white</item>
     </style>
@@ -271,24 +267,8 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="AntennaPod.TextView.ListItemBody" parent="@style/TextAppearance.Material3.BodyMedium">
-        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
-        <item name="lineHeight">18sp</item>
-        <item name="android:lineHeight" tools:targetApi="p">18sp</item>
-    </style>
-
     <style name="OutlinedButtonBetterContrast" parent="Widget.Material3.Button.OutlinedButton">
         <item name="backgroundTint">@color/button_bg_selector</item>
-    </style>
-
-    <style name="ProgressBarLight">
-        <item name="android:indeterminateOnly">false</item>
-        <item name="android:progressDrawable">@drawable/progress_bar_horizontal_light</item>
-    </style>
-
-    <style name="ProgressBarDark">
-        <item name="android:indeterminateOnly">false</item>
-        <item name="android:progressDrawable">@drawable/progress_bar_horizontal_dark</item>
     </style>
 
     <style name="FastScrollRecyclerView" parent="android:Widget">
@@ -325,6 +305,10 @@
         <item name="android:textAlignment">center</item>
         <item name="android:paddingStart">8dp</item>
         <item name="android:paddingEnd">8dp</item>
+    </style>
+
+    <style name="TextBottomNav" parent="TextAppearance.Material3.TitleSmall">
+       <item name="android:textSize">11sp</item>
     </style>
 
     <style name="AppPreferenceThemeOverlay" parent="@style/PreferenceThemeOverlay">

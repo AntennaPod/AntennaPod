@@ -154,8 +154,8 @@ public class Feed {
     }
 
     /**
-     * This constructor is used for requesting a feed download (it must not be used for anything else!). It should NOT be
-     * used if the title of the feed is already known.
+     * This constructor is used for requesting a feed download (it must not be used for anything else!).
+     * It should NOT be used if the title of the feed is already known.
      */
     public Feed(String url, String lastModified) {
         this.localFileUrl = null;
@@ -179,8 +179,9 @@ public class Feed {
      */
     public Feed(String url, String lastModified, String title, String username, String password) {
         this(url, lastModified, title);
-        preferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL, VolumeAdaptionSetting.OFF,
-            FeedPreferences.NewEpisodesAction.GLOBAL, username, password);
+        preferences = new FeedPreferences(0, FeedPreferences.AutoDownloadSetting.GLOBAL,
+                FeedPreferences.AutoDeleteAction.GLOBAL, VolumeAdaptionSetting.OFF,
+                FeedPreferences.NewEpisodesAction.GLOBAL, username, password);
     }
 
     /**

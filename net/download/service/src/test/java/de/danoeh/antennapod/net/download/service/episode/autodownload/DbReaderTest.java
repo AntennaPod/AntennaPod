@@ -5,6 +5,7 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -153,6 +154,9 @@ public class DbReaderTest {
             Feed feed = saveFeedlist(numFeeds, numItems, false).get(0);
             List<FeedItem> items = feed.getItems();
             feed.setItems(null);
+            Collections.sort(items, (o1, o2) ->
+                    Long.compare(o2.getPubDate().getTime(), o1.getPubDate().getTime()));
+
             List<FeedItem> savedItems = DBReader.getFeedItemList(feed,
                     FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
             assertNotNull(savedItems);
@@ -320,9 +324,9 @@ public class DbReaderTest {
                 adapter.open();
                 for (int i = 0; i < playedItems; ++i) {
                     FeedMedia m = feed.getItems().get(i).getMedia();
-                    m.setPlaybackCompletionDate(new Date(i + 1));
+                    m.setLastPlayedTimeHistory(new Date(i + 1));
 
-                    adapter.setFeedMediaPlaybackCompletionDate(m);
+                    adapter.setFeedMediaLastPlayedTimeHistory(m);
                 }
                 adapter.close();
 
@@ -502,8 +506,8 @@ public class DbReaderTest {
             adapter.open();
             for (int i = 0; i < playedItems; i++) {
                 FeedMedia m = feed.getItems().get(i).getMedia();
-                m.setPlaybackCompletionDate(new Date(i + 1));
-                adapter.setFeedMediaPlaybackCompletionDate(m);
+                m.setLastPlayedTimeHistory(new Date(i + 1));
+                adapter.setFeedMediaLastPlayedTimeHistory(m);
                 ids[ids.length - 1 - i] = m.getItem().getId();
             }
             adapter.close();
@@ -516,7 +520,7 @@ public class DbReaderTest {
                     numReturnedItems, saved.size());
             for (int i = 0; i < numReturnedItems; i++) {
                 FeedItem item = saved.get(i);
-                assertNotNull(item.getMedia().getPlaybackCompletionDate());
+                assertNotNull(item.getMedia().getLastPlayedTimeHistory());
                 assertEquals(String.format("Wrong sort order with offset %d and limit %d: ",
                                 paramOffset, paramLimit),
                         item.getId(), ids[paramOffset + i]);

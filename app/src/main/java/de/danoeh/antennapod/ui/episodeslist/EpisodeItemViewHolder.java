@@ -256,8 +256,8 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         return item;
     }
 
-    public boolean isCurrentlyPlayingItem() {
-        return item.getMedia() != null && PlaybackStatus.isCurrentlyPlaying(item.getMedia());
+    public boolean isPlayingItem() {
+        return item.getMedia() != null && PlaybackStatus.isPlaying(item.getMedia());
     }
 
     public void notifyPlaybackPositionUpdated(PlaybackPositionEvent event) {

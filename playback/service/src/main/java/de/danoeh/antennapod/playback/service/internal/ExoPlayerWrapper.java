@@ -185,7 +185,13 @@ public class ExoPlayerWrapper {
                         if (cause != null && "Source error".equals(cause.getMessage())) {
                             cause = cause.getCause();
                         }
-                        audioErrorListener.accept(cause != null ? cause.getMessage() : error.getMessage());
+                        if (cause != null && cause.getMessage() != null) {
+                            audioErrorListener.accept(cause.getMessage());
+                        } else if (error.getMessage() != null && cause != null) {
+                            audioErrorListener.accept(error.getMessage() + ": " + cause.getClass().getSimpleName());
+                        } else {
+                            audioErrorListener.accept(null);
+                        }
                     }
                 }
             }

@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.ui.screen.playback.video;
 
+import android.app.PictureInPictureParams;
+import android.app.PictureInPictureUiState;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.ColorDrawable;
@@ -29,6 +31,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.bumptech.glide.Glide;
@@ -115,6 +118,30 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         setupView();
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x80000000));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupPip();
+    }
+
+    void setupPip() {
+        if (Build.VERSION.SDK_INT < 26) {
+            return;
+        }
+        PictureInPictureParams.Builder builder = new PictureInPictureParams.Builder();
+        if (Build.VERSION.SDK_INT >= 31) {
+            builder.setAutoEnterEnabled(true);
+            builder.setSourceRectHint(viewBinding.getRoot().getClipBounds());
+        }
+        setPictureInPictureParams(builder.build());
+    }
+
+    @Override
+    public void onPictureInPictureUiStateChanged(@NonNull PictureInPictureUiState pipState) {
+        super.onPictureInPictureUiStateChanged(pipState);
+        if (Build.VERSION.SDK_INT < 35) {
+            return;
+        }
+        if (pipState.isTransitioningToPip()) {
+            hideVideoControls(false);
+        }
     }
 
     @Override
@@ -607,8 +634,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             PlaybackControlsDialog dialog = PlaybackControlsDialog.newInstance();
             dialog.show(getSupportFragmentManager(), "playback_controls");
         } else if (item.getItemId() == R.id.open_feed_item && feedItem != null) {
-            Intent intent = MainActivity.getIntentToOpenFeed(this, feedItem.getFeedId());
-            startActivity(intent);
+            new MainActivityStarter(this).withOpenFeed(feedItem.getFeedId()).withClearTop().start();
         } else if (item.getItemId() == R.id.visit_website_item) {
             IntentUtils.openInBrowser(VideoplayerActivity.this, getWebsiteLinkWithFallback(media));
         } else if (item.getItemId() == R.id.share_item && feedItem != null) {
@@ -794,6 +820,8 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
                             AudioManager.ADJUST_TOGGLE_MUTE, AudioManager.FLAG_SHOW_UI);
                     return true;
                 }
+                break;
+            default:
                 break;
         }
 

@@ -12,13 +12,14 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.ui.common.ConfirmationDialog;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
 import de.danoeh.antennapod.actionbutton.DeleteActionButton;
@@ -107,7 +108,7 @@ public class CompletedDownloadsFragment extends Fragment
 
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
-        adapter = new CompletedDownloadsListAdapter((MainActivity) getActivity());
+        adapter = new CompletedDownloadsListAdapter(getActivity());
         adapter.setOnSelectModeListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
@@ -121,8 +122,7 @@ public class CompletedDownloadsFragment extends Fragment
         floatingSelectMenu.inflate(R.menu.episodes_apply_action_speeddial);
         floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
             if (adapter.getSelectedCount() == 0) {
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
-                        Snackbar.LENGTH_SHORT);
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.no_items_selected_message)));
                 return false;
             }
             new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId())
@@ -277,7 +277,7 @@ public class CompletedDownloadsFragment extends Fragment
         if (adapter != null) {
             for (int i = 0; i < adapter.getItemCount(); i++) {
                 EpisodeItemViewHolder holder = (EpisodeItemViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
-                if (holder != null && holder.isCurrentlyPlayingItem()) {
+                if (holder != null && holder.isPlayingItem()) {
                     holder.notifyPlaybackPositionUpdated(event);
                     break;
                 }
@@ -363,14 +363,15 @@ public class CompletedDownloadsFragment extends Fragment
 
     private class CompletedDownloadsListAdapter extends EpisodeItemListAdapter {
 
-        public CompletedDownloadsListAdapter(MainActivity mainActivity) {
+        public CompletedDownloadsListAdapter(FragmentActivity mainActivity) {
             super(mainActivity);
         }
 
         @Override
         public void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
             if (!inActionMode()) {
-                if (holder.getFeedItem().isDownloaded()) {
+                if (holder.getFeedItem().isDownloaded()
+                        && !UserPreferences.shouldDownloadsButtonActionPlay()) {
                     DeleteActionButton actionButton = new DeleteActionButton(getItem(pos));
                     actionButton.configure(holder.secondaryActionButton, holder.secondaryActionIcon, getActivity());
                 }

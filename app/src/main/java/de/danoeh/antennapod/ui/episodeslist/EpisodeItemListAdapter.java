@@ -124,7 +124,8 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
 
         holder.itemView.setSelected(false);
         if (inActionMode()) {
-            holder.secondaryActionButton.setOnClickListener(null);
+            holder.secondaryActionButton.setOnClickListener(
+                    v -> toggleSelection(holder.getBindingAdapterPosition()));
             if (isSelected(pos)) {
                 holder.itemView.setSelected(true);
                 holder.itemView.setBackgroundColor(0x88000000

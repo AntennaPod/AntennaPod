@@ -123,7 +123,7 @@ public class FeedUpdateWorker extends Worker {
                 }
             }
         }
-        return new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_DOWNLOADING)
+        return new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_REFRESHING)
                 .setContentTitle(context.getString(R.string.download_notification_title_feeds))
                 .setContentText(contentText)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(bigText))
@@ -167,6 +167,7 @@ public class FeedUpdateWorker extends Worker {
                         newEpisodesNotification.showIfNeeded(getApplicationContext(), savedFeed);
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                     DBWriter.setFeedLastUpdateFailed(feed.getId(), true);
                     DownloadResult status = new DownloadResult(feed.getTitle(),
                             feed.getId(), Feed.FEEDFILETYPE_FEED, false,

@@ -22,10 +22,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
-import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
 import de.danoeh.antennapod.ui.screen.subscriptions.HorizontalFeedListAdapter;
 import de.danoeh.antennapod.ui.MenuItemUtils;
@@ -159,7 +159,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
             protected void onSelectedItemsUpdated() {
                 super.onSelectedItemsUpdated();
                 FeedItemMenuHandler.onPrepareMenu(floatingSelectMenu.getMenu(), getSelectedItems(),
-                        R.id.add_to_queue_item, R.id.remove_inbox_item);
+                        R.id.remove_inbox_item);
                 floatingSelectMenu.updateItemVisibility();
             }
         };
@@ -177,6 +177,14 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
                                             ContextMenu.ContextMenuInfo contextMenuInfo) {
                 super.onCreateContextMenu(contextMenu, view, contextMenuInfo);
                 MenuItemUtils.setOnClickListeners(contextMenu, SearchFragment.this::onContextItemSelected);
+            }
+
+            @Override
+            protected void onClick(Feed feed) {
+                if (adapter != null && adapter.inActionMode()) {
+                    adapter.endSelectMode();
+                }
+                super.onClick(feed);
             }
         };
         recyclerViewFeeds.setAdapter(adapterFeeds);
@@ -216,11 +224,10 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         floatingSelectMenu.inflate(R.menu.episodes_apply_action_speeddial);
         floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
             if (adapter.getSelectedCount() == 0) {
-                ((MainActivity) getActivity())
-                        .showSnackbarAbovePlayer(R.string.no_items_selected, Snackbar.LENGTH_SHORT);
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.no_items_selected_message)));
                 return false;
             }
-            new EpisodeMultiSelectActionHandler((MainActivity) getActivity(), menuItem.getItemId())
+            new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId())
                     .handleAction(adapter.getSelectedItems());
             adapter.endSelectMode();
             return true;
@@ -351,7 +358,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         if (adapter != null) {
             for (int i = 0; i < adapter.getItemCount(); i++) {
                 EpisodeItemViewHolder holder = (EpisodeItemViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
-                if (holder != null && holder.isCurrentlyPlayingItem()) {
+                if (holder != null && holder.isPlayingItem()) {
                     holder.notifyPlaybackPositionUpdated(event);
                     break;
                 }
@@ -377,9 +384,10 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         if (disposableEpisodes != null) {
             disposableEpisodes.dispose();
         }
-        adapterFeeds.setEndButton(R.string.search_online, this::searchOnline);
         long feed = getArguments().getLong(ARG_FEED, 0);
-        chip.setVisibility((feed == 0) ? View.GONE : View.VISIBLE);
+        boolean isSearchingFeed = feed != 0;
+        chip.setVisibility(isSearchingFeed ? View.VISIBLE : View.GONE);
+        adapterFeeds.setEndButton(R.string.search_online, isSearchingFeed ? null : this::searchOnline);
 
         String query = searchView.getQuery().toString();
         if (query.isEmpty()) {
@@ -418,6 +426,9 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     }
 
     private void searchOnline() {
+        if (adapter != null && adapter.inActionMode()) {
+            adapter.endSelectMode();
+        }
         searchView.clearFocus();
         InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(searchView.getWindowToken(), 0);

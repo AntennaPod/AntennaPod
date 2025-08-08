@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Aktualizuj subskrypcje</string>
-    <string name="feeds_label">Podcasty</string>
     <string name="statistics_label">Statystyki</string>
     <string name="add_feed_label">Dodaj podcast</string>
     <string name="episodes_label">Odcinki</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">Ulubione</string>
     <string name="settings_label">Ustawienia</string>
     <string name="downloads_label">Pobrane</string>
-    <string name="open_autodownload_settings">Otwórz ustawienia</string>
     <string name="downloads_log_label">Dziennik pobierania</string>
     <string name="subscriptions_label">Subskrypcje</string>
     <string name="subscriptions_list_label">Lista subskrypcji</string>
     <string name="cancel_download_label">Anuluj pobieranie</string>
     <string name="playback_history_label">Historia odtwarzania</string>
-    <string name="episode_cache_full_title">Pełna pamięć cache</string>
-    <string name="episode_cache_full_message">Limit pamięci cache został osiągnięty. Możesz zwiększyć pojemność cache w ustawieniach aplikacji.</string>
     <string name="years_statistics_label">Lata</string>
     <string name="notification_pref_fragment">Powiadomienia</string>
     <string name="current_playing_episode">Obecnie odtwarzany</string>
@@ -43,7 +39,7 @@
     <string name="statistics_filter_past_year">Ostatni rok</string>
     <string name="statistics_reset_data">Resetuj statystyki</string>
     <string name="statistics_reset_data_msg">Operacja skasuje historię długości odtwarzania wszystkich odcinków. Czy na pewno chcesz kontynuować?</string>
-    <string name="statistics_counting_range">Puść pomiędzy %1$sa %2$s</string>
+    <string name="statistics_counting_range">Odtworzono pomiędzy %1$s a %2$s</string>
     <string name="statistics_counting_total">W sumie odtwarzane</string>
     <!--Home fragment-->
   <string name="home_surprise_title">Otrzymaj niespodziankę</string>
@@ -52,7 +48,7 @@
     <string name="home_new_title">Sprawdź nowości</string>
     <string name="home_downloads_title">Zarządzaj pobranymi</string>
     <string name="home_welcome_title">Witamy w AntennaPod!</string>
-    <string name="home_welcome_text">Nie subskrybujesz jeszcze żadnych podcastów. Otwórz menu boczne, aby dodać podcasty.</string>
+    <string name="home_welcome_text">Nie subskrybujesz jeszcze żadnych podcastów. Otwórz menu, aby dodać podcasty.</string>
     <string name="notification_permission_denied">Nie udzielono zgody.</string>
     <string name="configure_home">Konfiguruj stronę główną</string>
     <string name="section_hidden">Ukryte</string>
@@ -135,12 +131,12 @@
         <item quantity="other">%d odcinków</item>
     </plurals>
     <string name="episode_notification">Powiadomienia odcinka</string>
-    <string name="episode_notification_summary">Pokaż powiadomienie gdy nowy odcinek jest udostępniony</string>
+    <string name="episode_notification_summary">Pokaż powiadomienie gdy zostanie opublikowany nowy odcinek</string>
     <plurals name="new_episode_notification_message">
-        <item quantity="one">%2$s ma nowy odcinek</item>
-        <item quantity="few">%2$s ma nowe odcinki</item>
-        <item quantity="many">%2$s ma nowe odcinki</item>
-        <item quantity="other">%2$s ma nowe odcinki</item>
+        <item quantity="one">%2$s ma opublikował nowy odcinek</item>
+        <item quantity="few">%2$s opublikował %1$d nowe odcinków</item>
+        <item quantity="many">%2$s opublikował %1$d nowych odcinków</item>
+        <item quantity="other">%2$s opublikował %1$d nowych odcinków</item>
     </plurals>
     <plurals name="new_episode_notification_title">
         <item quantity="one">Nowy odcinek</item>
@@ -148,13 +144,13 @@
         <item quantity="many">Nowe odcinki</item>
         <item quantity="other">Nowe odcinki</item>
     </plurals>
-    <string name="new_episode_notification_group_text">Twoje subskrypcje mają nowe odcinki</string>
+    <string name="new_episode_notification_group_text">Twoje subskrypcje mają nowe odcinki.</string>
     <!--Actions on feeds-->
   <string name="remove_all_inbox_label">Usuń wszystkie ze skrzynki odbiorczej</string>
     <string name="removed_all_inbox_msg">Usunięto wszystkie ze skrzynki odbiorczej</string>
-    <string name="remove_all_inbox_confirmation_msg">Potwierdź, że chcesz usunąć wszystkie ze skrzynki odbiorczej</string>
-    <string name="multi_select_mark_played_confirmation">Potwierdź, że chcesz oznaczyć wszystkie zaznaczone elementy jako odtworzone</string>
-    <string name="multi_select_mark_unplayed_confirmation">Potwierdź, że chcesz oznaczyć wszystkie zaznaczone elementy jako nieodtworzone</string>
+    <string name="remove_all_inbox_confirmation_msg">Potwierdź, że chcesz usunąć wszystkie ze skrzynki odbiorczej.</string>
+    <string name="multi_select_mark_played_confirmation">Potwierdź, że chcesz oznaczyć wszystkie zaznaczone elementy jako odtworzone.</string>
+    <string name="multi_select_mark_unplayed_confirmation">Potwierdź, że chcesz oznaczyć wszystkie zaznaczone elementy jako nieodtworzone.</string>
     <string name="show_info_label">Pokaż informacje</string>
     <string name="show_feed_settings_label">Pokaż ustawienia podcastu</string>
     <string name="feed_settings_label">Ustawienia podcastu</string>
@@ -168,7 +164,7 @@
     <string name="select_all_above">Zaznacz wszystkie powyżej</string>
     <string name="select_all_below">Zaznacz wszystkie poniżej</string>
     <string name="filtered_label">Przefiltrowany</string>
-    <string name="refresh_failed_msg">Ostatnie odświeżanie nie powiodło się. Naciśnij, aby zobaczyć szczegóły</string>
+    <string name="refresh_failed_msg">Ostatnie odświeżanie nie powiodło się. Naciśnij, aby zobaczyć szczegóły.</string>
     <string name="open_podcast">Otwórz podcast</string>
     <string name="please_wait_for_data">Proszę czekać aż dane zostaną załadowane</string>
     <string name="updates_disabled_label">Aktualizacje wyłączone</string>
@@ -185,52 +181,16 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Twoja aplikacja VPN udaje sieć mobilną (połączenie taryfowe). Odświeżanie kanałów po sieci mobilnej jest wyłączone w ustawieniach. \n\nCzy mimo to chcesz odświeżyć? Aby rozwiązać ten problem, skontaktuj się z twórcami aplikacji VPN.</string>
     <!--actions on feeditems-->
   <string name="download_label">Pobierz</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">Pobieranie %d odcinka.</item>
-        <item quantity="few">Pobieranie %d odcinków.</item>
-        <item quantity="many">Pobieranie %d odcinków.</item>
-        <item quantity="other">Pobieranie %d odcinków.</item>
-    </plurals>
     <string name="play_label">Odtwórz</string>
     <string name="pause_label">Pauza</string>
     <string name="stream_label">Streamuj</string>
     <string name="delete_label">Usuń</string>
     <string name="remove_inbox_label">Usuń ze skrzynki odbiorczej</string>
-    <string name="removed_inbox_label">Usunięto ze skrzynki odbiorczej</string>
-    <string name="mark_read_label">Oznacz jako odtworzone</string>
     <string name="toggle_played_label">Pokaż status odtworzenia</string>
-    <string name="marked_as_played_label">Oznaczone jako odtworzone</string>
-    <string name="marked_as_unplayed_label">Oznaczone jako nieodtworzone</string>
     <string name="mark_read_no_media_label">Oznacz jako przeczytane</string>
-    <string name="play_this_to_seek_position">Aby skoczyć do konkretnej pozycji, musisz odtworzyć odcinek</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">%d odcinek oznaczony jako odtworzony.</item>
-        <item quantity="few">%d odcinki oznaczone jako odtworzone.</item>
-        <item quantity="many">%d odcinków oznaczonych jako odtworzone.</item>
-        <item quantity="other">%d odcinków oznaczonych jako odtworzone.</item>
-    </plurals>
-    <string name="mark_unread_label">Oznacz jako nieodtworzone</string>
     <string name="mark_unread_label_no_media">Oznacz jako nieprzeczytane</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d odcinek oznaczony jako nieodtworzony.</item>
-        <item quantity="few">%d odcinki oznaczone jako nieodtworzone.</item>
-        <item quantity="many">%d odcinków oznaczone jako nieodtworzone.</item>
-        <item quantity="other">%d odcinków oznaczone jako nieodtworzone.</item>
-    </plurals>
     <string name="add_to_queue_label">Dodaj do kolejki</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d odcinek dodany do kolejki.</item>
-        <item quantity="few">%d odcinki dodane do kolejki.</item>
-        <item quantity="many">%d odcinków dodanych do kolejki.</item>
-        <item quantity="other">%d odcinków dodanych do kolejki.</item>
-    </plurals>
     <string name="remove_from_queue_label">Usuń z kolejki</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d odcinek usunięty z kolejki.</item>
-        <item quantity="few">%d odcinki usunięte z kolejki.</item>
-        <item quantity="many">%d odcinków usuniętych z kolejki.</item>
-        <item quantity="other">%d odcinków usuniętych z kolejki.</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d odcinek usunięty ze skrzynki odbiorczej.</item>
         <item quantity="few">%d odcinki usunięte ze skrzynki odbiorczej.</item>
@@ -243,9 +203,6 @@
     <string name="remove_from_favorite_label">Usuń z ulubionych</string>
     <string name="visit_website_label">Odwiedź stronę internetową</string>
     <string name="skip_episode_label">Pomiń odcinek</string>
-    <string name="reset_position">Zresetuj pozycję odtwarzania</string>
-    <string name="no_items_selected">Nie zaznaczono żadnego elementu</string>
-    <string name="delete_local_feed_warning_body">Usunięcie spowoduje skasowanie odcinka z AntennaPod oraz pliku z twojego urządzenia. Nie można go pobrać ponownie za pomocą AntennaPod.</string>
     <!--Download messages and labels-->
   <string name="download_successful">Operacja zakończona sukcesem</string>
     <string name="download_pending">Pobieranie w toku</string>
@@ -254,12 +211,12 @@
     <string name="download_log_details_message">%1$s \n\nTechniczne powody: \n%2$s \n\nAdres URL pliku:\n%3$s</string>
     <string name="download_error_retrying">Pobieranie \"%1$s\" nie powiodło się. Spróbujemy ponownie później.</string>
     <string name="download_error_not_retrying">Pobieranie \"%1$s\" nie powiodło się.</string>
-    <string name="download_error_tap_for_details">Naciśnij, aby zobaczyć szczegóły</string>
+    <string name="download_error_tap_for_details">Naciśnij, aby zobaczyć szczegóły.</string>
     <string name="download_error_device_not_found">Nie znaleziono urządzenia docelowego</string>
     <string name="download_error_insufficient_space">Brak wystarczającej ilości wolnego miejsca na twoim urządzeniu.</string>
     <string name="download_error_http_data_error">Błąd danych HTTP</string>
     <string name="download_error_error_unknown">Nieznany błąd</string>
-    <string name="download_error_parser_exception">Serwer podcastu wysłał uszkodzony plik kanału.</string>
+    <string name="download_error_parser_exception">Serwer podcastu wysłał uszkodzony plik kanału. Zalecamy sprawdzenie podcastu za pomocą walidatora, takiego jak castfeedvalidator.com i skontaktowanie się z twórcą podcastu, aby go o tym poinformować.</string>
     <string name="download_error_unsupported_type">Nieobsługiwany typ kanału</string>
     <string name="download_error_unsupported_type_html">Serwer podcastu wysłał adres strony, a nie podcast.</string>
     <string name="download_error_not_found">Serwer podcastu nie może znaleźć pliku. Mógł zostać usunięty.</string>
@@ -270,7 +227,7 @@
     <string name="download_error_file_type_type">Błąd rodzaju pliku</string>
     <string name="download_error_forbidden">Serwer podcastu nie odpowiada.</string>
     <string name="download_canceled_msg">Pobieranie anulowane</string>
-    <string name="download_error_wrong_size">Połączenie z serwerem zostało zerwane przed ukończeniem pobierania.</string>
+    <string name="download_error_wrong_size">Połączenie z serwerem zostało zerwane przed ukończeniem pobierania</string>
     <string name="download_error_blocked">Pobieranie zostało zablokowane przez inną aplikację na twoim urządzeniu (np. VPN lub blokadę reklam).</string>
     <string name="download_error_certificate">Nie można ustanowić bezpiecznego połączenia. Może to oznaczać, że inna aplikacja na twoim urządzeniu (np. VPN lub blokada reklam) zablokowała pobieranie, lub coś jest nie tak z certyfikatami serwera.</string>
     <string name="download_error_io_error">Błąd wejścia/wyjścia</string>
@@ -291,7 +248,7 @@
     <string name="authentication_notification_title">Wymagana autoryzacja</string>
     <string name="confirm_mobile_download_dialog_title">Potwierdź pobieranie przez sieć komórkową</string>
     <string name="confirm_mobile_download_dialog_message">Pobieranie za pomocą sieci komórkowej jest wyłączone w ustawieniach. AntennaPod może później pobrać odcinek automatycznie, kiedy będzie dostępna sieć Wi-Fi.</string>
-    <string name="confirm_mobile_download_dialog_message_vpn">Twoja aplikacja VPN udaje sieć mobilną (połączenie taryfowe). Odświeżanie kanałów po sieci mobilnej jest wyłączone w ustawieniach. Aby rozwiązać ten problem, skontaktuj się z twórcami aplikacji VPN.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">- Korzystasz z VPN? Twoja aplikacja VPN udaje sieć komórkową (połączenie taryfowe). Jeśli chcesz naprawić ten problem, skontaktuj się z twórcami aplikacji VPN.\n- Nie korzystasz z VPN? Otwórz ustawienia Wi-Fi w systemie Android i zmień typ sieci Wi-Fi, aby nie była mierzona.</string>
     <string name="confirm_mobile_download_dialog_download_later">Pobierz później</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Pobierz mimo to</string>
     <string name="confirm_mobile_streaming_notification_title">Potwierdź streamowanie przy użyciu sieci komórkowej</string>
@@ -333,18 +290,18 @@
     <string name="no_items_label">Dodaj odcinek, pobierając go, lub przytrzymaj dłużej na odcinku i wybierz \"Dodaj do kolejki\".</string>
     <string name="no_shownotes_label">Ten odcinek nie ma notatek.</string>
     <string name="no_comp_downloads_head_label">Brak pobranych odcinków</string>
-    <string name="no_comp_downloads_label">Możesz pobrać odcinki z ekranu informacji o podcaście</string>
+    <string name="no_comp_downloads_label">Możesz pobrać odcinki z ekranu informacji o podcaście.</string>
     <string name="no_log_downloads_head_label">Brak dziennika pobierań</string>
-    <string name="no_log_downloads_label">Tutaj pojawi się dziennik pobierań</string>
+    <string name="no_log_downloads_label">Tutaj pojawi się dziennik pobierań.</string>
     <string name="no_history_head_label">Brak historii</string>
     <string name="no_history_label">Tutaj pojawi się lista odcinków, po ich przesłuchaniu.</string>
     <string name="no_all_episodes_head_label">Brak odcinków</string>
     <string name="no_all_episodes_label">Tutaj pojawi się lista odcinków, gdy dodasz podcast.</string>
-    <string name="no_all_episodes_filtered_label">Spróbuj wyczyścić filtr, aby zobaczyć więcej odcinków</string>
+    <string name="no_all_episodes_filtered_label">Spróbuj wyczyścić filtr, aby zobaczyć więcej odcinków.</string>
     <string name="no_inbox_head_label">Brak odcinków w skrzynce odbiorczej</string>
     <string name="no_inbox_label">Gdy pojawią się nowe odcinki, zobaczysz je tutaj. Możesz wtedy zdecydować, czy są dla Ciebie interesujące czy nie.</string>
     <string name="no_subscriptions_head_label">Brak subskrypcji</string>
-    <string name="no_subscriptions_label">Aby subskrybować podcast naciśnij znak plus poniżej</string>
+    <string name="no_subscriptions_label">Aby subskrybować podcast naciśnij znak plus poniżej.</string>
     <!--Preferences-->
   <string name="project_pref">Projekt</string>
     <string name="synchronization_pref">Synchronizacja</string>
@@ -411,7 +368,6 @@
     <string name="pref_mobileUpdate_sum">Wybierz co ma być dozwolone przy połączeniu poprzez sieć komórkową</string>
     <string name="pref_mobileUpdate_refresh">Uaktualnianie podcastu</string>
     <string name="pref_mobileUpdate_images">Okładki</string>
-    <string name="pref_mobileUpdate_auto_download">Automatyczne pobieranie</string>
     <string name="pref_mobileUpdate_episode_download">Pobieranie odcinków</string>
     <string name="pref_mobileUpdate_streaming">Streamowanie</string>
     <string name="user_interface_label">Interfejs użytkownika</string>
@@ -423,11 +379,11 @@
     <string name="pref_nav_drawer_feed_order_title">Ustaw kolejność subskrypcji</string>
     <string name="pref_nav_drawer_feed_order_sum">Zmień kolejność subskrybowanych kanałów</string>
     <string name="pref_nav_drawer_feed_counter_title">Ustaw licznik subskrypcji</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Zmień informacje wyświetlane przez licznik subskrypcji. Zmienia również sortowanie subskrypcji, jeśli kolejność ustawiona jest na \'Sortuj wg licznika\'</string>
+    <string name="pref_nav_drawer_feed_counter_sum">Zmień informacje wyświetlane przez licznik subskrypcji. Zmienia również sortowanie subskrypcji, jeśli kolejność ustawiona jest na \'Sortuj wg licznika\'.</string>
     <string name="pref_automatic_download_title">Automatyczne pobieranie</string>
     <string name="pref_automatic_download_sum">Skonfiguruj automatyczne pobieranie odcinków</string>
     <string name="pref_automatic_download_on_battery_title">Pobieraj, gdy nie ładuje</string>
-    <string name="pref_automatic_download_on_battery_sum">Zezwól na automatyczne pobieranie, gdy bateria nie jest ładowana.</string>
+    <string name="pref_automatic_download_on_battery_sum">Zezwól na automatyczne pobieranie gdy bateria nie jest ładowana</string>
     <string name="pref_episode_cache_title">Limit odcinków</string>
     <string name="pref_episode_cache_summary">Automatyczne pobieranie zostanie wstrzymane po osiągnięciu tej wartości</string>
     <string name="pref_episode_cover_title">Użyj okładek odcinków</string>
@@ -441,7 +397,7 @@
     <string name="pref_playback_speed_sum">Dostosuj prędkości dostępne dla odtwarzania o zmiennej prędkości</string>
     <string name="pref_feed_playback_speed_sum">Prędkość używana podczas odtwarzania odcinków z tego kanału</string>
     <string name="pref_feed_skip">Automatyczne pomijanie</string>
-    <string name="pref_feed_skip_sum">Pomijaj wstęp i napisy końcowe</string>
+    <string name="pref_feed_skip_sum">Pomijaj wstęp i zakończenie</string>
     <string name="pref_feed_skip_ending">Pomijaj na końcu</string>
     <string name="pref_feed_skip_intro">Pomijaj na początku</string>
     <string name="pref_feed_skip_ending_toast">Pominięto ostatnie %d sekund(y)</string>
@@ -453,7 +409,7 @@
     <string name="pref_rewind">Długość czasu przewijania do tyłu</string>
     <string name="pref_rewind_sum">Dostosuj liczbę sekund o którą przewijane jest odtwarzanie po wciśnięciu przycisku przewijania do tyłu</string>
     <string name="pref_expandNotify_title">Wysoki priorytet powiadomienia</string>
-    <string name="pref_expandNotify_sum">Rozwija powiadomienie, aby pokazać przyciski odtwarzania</string>
+    <string name="pref_expandNotify_sum">Rozwija powiadomienie, aby pokazać przyciski odtwarzania.</string>
     <string name="pref_persistNotify_title">Stałe przyciski odtwarzacza</string>
     <string name="pref_persistNotify_sum">Utrzymuj powiadomienie i przyciski odtwarzania na ekranie blokady gdy odtwarzanie jest wstrzymane</string>
     <string name="pref_enqueue_location_title">Pozycja w kolejce</string>
@@ -499,10 +455,10 @@
     <string name="pref_new_episodes_action_sum">Działanie dla nowych odcinków</string>
     <string name="episode_information">Informacje o odcinku</string>
     <!--About screen-->
-  <string name="about_pref">O...</string>
+  <string name="about_pref">O aplikacji</string>
     <string name="antennapod_version">Wersja AntennaPod</string>
     <string name="contributors">Kontrybutorzy</string>
-    <string name="contributors_summary">Każdy może pomóc ulepszyć AntennaPod - pisząc kod, tłumacząc lub pomagając użytkownikom na forum.</string>
+    <string name="contributors_summary">Każdy może pomóc ulepszyć AntennaPod - pisząc kod, tłumacząc lub pomagając użytkownikom na forum</string>
     <string name="developers">Twórcy</string>
     <string name="translators">Tłumacze</string>
     <string name="special_thanks">Specjalne podziękowania</string>
@@ -517,10 +473,10 @@
     <string name="search_online">Szukaj online</string>
     <!--Synchronization-->
   <string name="sync_status_started">Rozpoczęto synchronizację</string>
-    <string name="sync_status_episodes_upload">Wysyłanie zmian odcinków...</string>
-    <string name="sync_status_episodes_download">Pobieranie zmian odcinków...</string>
-    <string name="sync_status_upload_played">Wysyłanie statusu odtworzeń...</string>
-    <string name="sync_status_subscriptions">Synchronizowanie subskrypcji...</string>
+    <string name="sync_status_episodes_upload">Wysyłanie zmian odcinków…</string>
+    <string name="sync_status_episodes_download">Pobieranie zmian odcinków…</string>
+    <string name="sync_status_upload_played">Wysyłanie statusu odtworzeń…</string>
+    <string name="sync_status_subscriptions">Synchronizowanie subskrypcji…</string>
     <string name="sync_status_success">Synchronizacja udana</string>
     <string name="sync_status_error">Synchronizacja nie powiodła się</string>
     <!--import and export-->
@@ -545,7 +501,7 @@
     <string name="automatic_database_export_summary">Stwórz kopię zapasową bazy danych AntennaPod co 3 dni. Zachowaj tylko 5 najnowszych kopii.</string>
     <string name="database_import_label">Import bazy danych</string>
     <string name="database_import_warning">Import bazy danych nadpisze wszystkie twoje aktualne subskrypcje i historię odtworzeń. Zalecany jest eksport aktualnej bazy danych jako kopia zapasowa. Czy chcesz zamienić?</string>
-    <string name="please_wait">Proszę czekać...</string>
+    <string name="please_wait">Prosimy poczekać…</string>
     <string name="export_error_label">Błąd eksportu</string>
     <string name="export_success_title">Export zakończony powodzeniem</string>
     <string name="opml_import_ask_read_permission">Dostęp do zewnętrznej pamięci jest potrzebny do odczytywania plików OPML</string>
@@ -591,7 +547,6 @@
     <string name="gpodnetauth_existing_devices">Istniejące urządzenia</string>
     <string name="gpodnetauth_create_device">Utwórz urządzenie</string>
     <string name="gpodnetauth_finish_descr">Gratulacje! Twoje konto na gpodder.net jest połączone z urządzeniem. AntennaPod będzie automatycznie synchronizować subskrypcje na urządzeniu z kontem na gpodder.net.</string>
-    <string name="gpodnetauth_finish_butsyncnow">Rozpocznij synchronizację</string>
     <string name="pref_gpodnet_setlogin_information_title">Zmień informacje logowania</string>
     <string name="pref_gpodnet_setlogin_information_sum">Zmień dane logowania konta gpodder.net.</string>
     <string name="synchronization_sync_changes_title">Synchronizuj teraz</string>
@@ -609,7 +564,7 @@
     <!--Directory chooser-->
   <string name="choose_data_directory">Wybierz folder danych</string>
     <string name="choose_data_directory_available_space">%1$s z %2$s wolnych</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Wstrzymaj odtwarzanie zamiast wyciszenia jeśli inna aplikacja chce odtworzyć dźwięk.</string>
+    <string name="pref_pausePlaybackForFocusLoss_sum">Wstrzymaj odtwarzanie zamiast wyciszenia kiedy inna aplikacja chce odtworzyć dźwięk</string>
     <string name="pref_pausePlaybackForFocusLoss_title">Wstrzymaj przy przerwaniu</string>
     <string name="rating_contribute_label">Chcesz do nas dołączyć? Bez względu na to, czy chcesz wspomóc projekt tłumaczeniem, designem, kodem lub finansowo, z chęcią przyjmiemy każdą pomoc!</string>
     <string name="rating_contribute_button">Odkryj jak możesz pomóc</string>
@@ -645,16 +600,14 @@
     <string name="feed_tags_label">Tagi</string>
     <string name="feed_tags_summary">Zmień tagi tego podcastu, żeby lepiej zorganizować swoje subskrypcje</string>
     <string name="feed_folders_include_root">Pokaż ten kanał na liście głównej</string>
-    <string name="auto_download_settings_label">Ustawienia automatycznego pobierania</string>
     <string name="episode_filters_label">Filtr odcinków</string>
-    <string name="episode_filters_description">Wykaz terminów używanych aby zdecydować, czy odcinek powinien być włączony lub wyłączony podczas automatycznego pobierania.</string>
+    <string name="episode_filters_description">Wykaz terminów używanych aby zdecydować, czy odcinek powinien być włączony lub wyłączony podczas automatycznego pobierania</string>
     <string name="add_term">Dodaj termin</string>
     <string name="exclude_terms">Wyklucz odcinki zawierające dowolne z poniższych wyrażeń</string>
     <string name="include_terms">Uwzględnij tylko odcinki zawierające dowolne z poniższych wyrażeń</string>
     <string name="exclude_episodes_shorter_than">Wyklucz odcinki krótsze niż</string>
     <string name="keep_updated">Utrzymuj zaktualizowany</string>
     <string name="keep_updated_summary">Uwzględnij ten podcast przy (automatycznym) odświeżaniu wszystkich kanałów</string>
-    <string name="auto_download_disabled_globally">Automatyczne pobieranie jest wyłączone w globalnych ustawieniach AntennaPod</string>
     <string name="statistics_expected_next_episode_any_day">Wkrótce</string>
     <string name="edit_url_menu">Edytuj adres kanału</string>
     <!--Podcast release schedules-->
@@ -670,8 +623,6 @@
     <string name="release_schedule_friday">Pią</string>
     <string name="release_schedule_saturday">Sob</string>
     <string name="release_schedule_sunday">Nie</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Importowanie subskrybcji z jednozadaniowych aplikacji</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Szukaj podcast…</string>
     <string name="search_itunes_label">Wyszukaj w Apple Podcasts</string>
@@ -679,7 +630,7 @@
     <string name="search_fyyd_label">Szukaj w fyyd</string>
     <string name="discover">Odkryj</string>
     <string name="discover_hide">Ukryj</string>
-    <string name="discover_is_hidden">Wybrano ukrywanie sugestii</string>
+    <string name="discover_is_hidden">Wybrano ukrywanie sugestii.</string>
     <string name="discover_powered_by_itunes">Sugestie z Apple Podcasts</string>
     <string name="discover_confirm">Pokaż sugestie</string>
     <string name="search_powered_by">Wyniki z %1$s</string>
@@ -720,12 +671,11 @@
   <string name="proxy_type_label">Typ</string>
     <string name="host_label">Host</string>
     <string name="port_label">Port</string>
-    <string name="optional_hint">(Dodatkowe)</string>
     <string name="proxy_test_label">Test</string>
-    <string name="proxy_checking">Sprawdzanie...</string>
+    <string name="proxy_checking">Sprawdzanie…</string>
     <string name="proxy_test_successful">Test zakończony powodzeniem</string>
     <string name="proxy_test_failed">Test zakończony niepowodzeniem</string>
-    <string name="proxy_host_empty_error">Host nie może być pusty!</string>
+    <string name="proxy_host_empty_error">Host nie może być pusty</string>
     <string name="proxy_host_invalid_error">Host nie jest prawidłowym adresem IP albo domeną</string>
     <string name="proxy_port_invalid_error">Błędny port</string>
     <!--Subscriptions fragment-->
@@ -736,8 +686,8 @@
     <string name="notification_group_news">Powiadomienia</string>
     <string name="notification_channel_user_action">Wymagana akcja</string>
     <string name="notification_channel_user_action_description">Pokazywane, gdy wymagane jest twoje działanie, na przykład jeśli musisz wpisać hasło.</string>
-    <string name="notification_channel_downloading">Pobieranie</string>
-    <string name="notification_channel_downloading_description">Pokazywane podczas aktywnego pobierania.</string>
+    <string name="notification_channel_downloading">Pobieranie odcinków</string>
+    <string name="notification_channel_downloading_description">Pokazywane w trakcie pobierania odcinków.</string>
     <string name="notification_channel_playing">Teraz odtwarzane</string>
     <string name="notification_channel_playing_description">Pozwala na kontrolowanie odtwarzania. To jest główne powiadomienie, które zobaczysz podczas odtwarzania podcastu.</string>
     <string name="notification_channel_download_error">Błąd pobierania</string>
@@ -820,25 +770,18 @@
     <string name="delete_downloads_played_confirmation">Potwierdź proszę, że chcesz usunąć wszystkie odtworzone pobrane odcinki.</string>
     <string name="mobile_download_notice">Pobieranie przez dane mobilne przez następne %d minut(y)</string>
     <string name="section_shown">Pokazane</string>
-    <string name="bottom_navigation">Dolny pasek</string>
+    <string name="bottom_navigation">Dolny pasek nawigacji</string>
     <string name="statistics_episodes_total">łącznie</string>
     <string name="statistics_episodes_space">zajęta pamięć</string>
     <string name="statistics_release_schedule">termin publikowania</string>
     <string name="statistics_years_barchart_description">Miesięczny czas odtwarzania</string>
     <string name="statistics_episodes_started">zaczęty(ch)</string>
-    <string name="statistics_episodes_played">odtworzony(ch)</string>
     <string name="statistics_episodes_downloaded">pobrany(ch)</string>
     <plurals name="episode_cleanup_days_after_listening">
         <item quantity="one">%d dzień po zakończeniu</item>
         <item quantity="few">%d dni po zakończeniu</item>
         <item quantity="many">%d dni po zakończeniu</item>
         <item quantity="other">%d dni po zakończeniu</item>
-    </plurals>
-    <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">%d pobrany odcinek usunięty.</item>
-        <item quantity="few">%d pobrane odcinki usunięte.</item>
-        <item quantity="many">%d pobranych odcinków usuniętych.</item>
-        <item quantity="other">%d pobranych odcinków usuniętych.</item>
     </plurals>
     <string name="episode_download_failed">Pobieranie odcinka nie powiodło się</string>
     <string name="nextcloud_login_error_generic">Nie udało się zalogować do twojego Nextclouda.\n\n- Sprawdź swoje połączenie internetowe.\n- Upewnij się, że używasz poprawnego adresu serwera.\n- Upewnij się, że wtyczka gpoddersync jest zainstalowana na twoim serwerze Nextcloud.</string>
@@ -850,5 +793,79 @@
         <item quantity="other">Łączny rozmiar %d odcinków na urządzeniu</item>
     </plurals>
     <string name="feed_delete_confirmation_msg_batch">Potwierdź proszę, że chcesz usunąć wybrane podcasty, WSZYSTKIE ich odcinki (w tym te pobrane), historię odtwarzania i ich statystyki.</string>
-    <string name="bottom_navigation_summary">Funkcja beta: Miej dostęp do najpotrzebniejszych menu wszędzie, za jednym dotknięciem</string>
+    <string name="bottom_navigation_summary">Dostęp do najpotrzebniejszych menu wszędzie, za jednym dotknięciem</string>
+    <string name="no_transcript_label">Bez transkrypcji</string>
+    <string name="add_feed_label_short">Dodaj</string>
+    <string name="episodes_label_short">Odcinki</string>
+    <string name="home_label_short">Strona główna</string>
+    <string name="queue_label_short">Kolejka</string>
+    <string name="inbox_label_short">Skrzynka odbiorcza</string>
+    <string name="downloads_label_short">Pobrane</string>
+    <string name="subscriptions_label_short">Subskrypcje</string>
+    <string name="playback_history_label_short">Historia</string>
+    <string name="queue_label_more">Kolejka »</string>
+    <string name="inbox_label_more">Skrzynka odbiorcza »</string>
+    <string name="episodes_label_more">Odcinki »</string>
+    <string name="downloads_label_more">Pobrane »</string>
+    <string name="subscriptions_label_more">Subskrypcje »</string>
+    <string name="enabled">Włączono</string>
+    <string name="disabled">Wyłączono</string>
+    <string name="echo_hoarder_subtitle_clean">Czysto!</string>
+    <string name="overflow_more">Więcej</string>
+    <string name="statistics_time_total">łącznie</string>
+    <string name="preference_search_clear_input">Wyczyść</string>
+    <string name="statistics_time_played">odtworzono</string>
+    <string name="echo_thanks_large">Dziękujemy</string>
+    <string name="notification_channel_refreshing">Odświeżanie podcastów</string>
+    <string name="echo_intro_your_year">Twój rok</string>
+    <string name="echo_intro_in_podcasts">w podcastach</string>
+    <string name="episode_lists">Lista odcinków</string>
+    <string name="global_default_with_value">Domyślnie globalne (%1$s)</string>
+    <string name="delete_tag_label">Usuń tag</string>
+    <string name="pref_automatic_download_queue_title">Pobieranie zakolejkowane</string>
+    <string name="pref_downloads_button_action_title">Odtwarzanie z ekranu pobierania</string>
+    <string name="echo_home_header">Przegląd roku</string>
+    <string name="echo_listened_after_comment_addict">Jesteś podcastowym nałogowcem</string>
+    <string name="echo_share_heading">Moje ulubione podcasty</string>
+    <string name="delete_tag_confirmation">Potwierdź, że chcesz usunąć tag \"%1$s\".</string>
+    <string name="pref_automatic_download_queue_description">Automatycznie pobieraj odcinki w kolejce</string>
+    <string name="pref_downloads_button_action_sum">Wyświetlaj przycisk odtwarzania zamiast przycisku usuwania w zakładce pobranych</string>
+    <string name="notification_channel_refreshing_description">Pokazywane podczas sprawdzania nowych odcinków.</string>
+    <string name="echo_home_subtitle">Twoje najczęściej słuchane podcasty i statystyki z zeszłego roku. Tylko na twoim telefonie.</string>
+    <string name="download_error_unsupported_type_html_manual">Wprowadzony adres to adres strony internetowej, nie kanału RSS podcastu.</string>
+    <string name="pref_automatic_download_global_description">Automatycznie pobieraj nowe odcinki. Może być ustawione dla każdego podcastu oddzielnie.</string>
+    <string name="echo_hours_this_year">Tego roku odtworzono</string>
+    <plurals name="echo_hours_podcasts">
+        <item quantity="one">godzin odcinków\nz %1$d podcastu</item>
+        <item quantity="few">godzin odcinków\nz %1$d różnych podcastów</item>
+        <item quantity="many">godzin odcinków\nz %1$d różnych podcastów</item>
+        <item quantity="other">godzin odcinków\nz %1$d różnych podcastów</item>
+    </plurals>
+    <plurals name="echo_queue_hours_waiting">
+        <item quantity="one">godzin w swojej kolejce\nz %1$d odcinka</item>
+        <item quantity="few">godzin w swojej kolejce\nz %1$d odcinków</item>
+        <item quantity="many">godzin w swojej kolejce\nz %1$d odcinków</item>
+        <item quantity="other">godzin w swojej kolejce\nz %1$d odcinków</item>
+    </plurals>
+    <string name="echo_queue_hours_clean">To około %1$s każdego dnia, aż do rozpoczęcia %2$d.</string>
+    <string name="echo_listened_after_comment_easy">Nie śpieszysz się</string>
+    <string name="echo_listened_after_time">Zazwyczaj kończysz odcinek %1$s po jego wydaniu.</string>
+    <string name="echo_queue_hours_much">To około %1$s każdego dnia, aż do rozpoczęcia %2$d. Czekaj, że co?</string>
+    <string name="echo_listened_after_title">Przeprowadziliśmy analizę, kiedy odcinki są wydawane i kiedy je kończysz. Nasz wniosek?</string>
+    <string name="echo_hoarder_comment_hoarder">Liczby nie kłamią, jak to mówią. A biorąc pod uwagę, że w tym roku odtworzono tylko %1$d%% z Twoich %2$d aktywnych subskrypcji, prawdopodobnie mamy rację.</string>
+    <string name="echo_intro_locally">wygenerowane prywatnie na Twoim urządzeniu</string>
+    <string name="echo_hoarder_title">Zastanawialiśmy się również: czy słuchasz podcastów, które subskrybujesz?</string>
+    <string name="echo_thanks_now_favorite">Przyjrzyjmy się teraz Twoim ulubionym podcastom…</string>
+    <string name="echo_share">Mój rok %d w podcastach. #AntennaPodEcho</string>
+    <string name="echo_queue_title_clean">I teraz jest czas na wejście w nowy rok z czystą kartą. Obecnie masz</string>
+    <string name="echo_hoarder_subtitle_hoarder">Patrząc na liczby, jest osobą, która lubi chomikować rzeczy</string>
+    <string name="echo_thanks_we_are_glad_new">za dołączenie do nas w tym roku!\n\nNiezależnie od tego, czy przeniosłeś się z innej aplikacji, czy zacząłeś swoją przygodę z podcastami z nami: cieszymy się, że Cię mamy!</string>
+    <string name="echo_queue_hours_normal">To około %1$s każdego dnia, aż do rozpoczęcia %2$d. Możesz zacząć rok na czysto jeśli pominiesz kilka odcinków.</string>
+    <string name="visit_social_interact_label">Pokaż komentarze</string>
+    <string name="rss_address">Adres RSS</string>
+    <string name="feed_new_episodes_action_summary_autodownload">Automatyczne pobieranie zostało włączone. Odcinki zostaną dodane do skrzynki odbiorczej, a następnie, gdy zostaną pobrane, zostaną przeniesione do kolejki.</string>
+    <string name="echo_queue_title_many">Wiąż masz sporo do zrobienia w tym roku. Masz</string>
+    <string name="echo_hoarder_subtitle_medium">Sprawdzone. Nie ma tutaj gromadzenia.</string>
+    <string name="echo_hoarder_comment_medium">W tym roku obejrzałeś odcinki z %1$d%% Twoich %2$d aktywnych subskrypcji. Może warto znów zobaczyć „%3$s”?</string>
+    <string name="echo_hoarder_comment_clean">W tym roku obejrzałeś odcinki z %1$d%% swoich %2$d aktywnych subskrypcji. Założymy się, że masz też porządek na biurku!</string>
 </resources>

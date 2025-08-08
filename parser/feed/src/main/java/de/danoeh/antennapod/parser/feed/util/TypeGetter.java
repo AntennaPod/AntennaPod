@@ -5,12 +5,13 @@ import android.util.Log;
 import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
 import org.apache.commons.io.input.XmlStreamReader;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 
@@ -69,8 +70,9 @@ public class TypeGetter {
                                 }
                                 throw new UnsupportedFeedtypeException("Unsupported rss version");
                             default:
-                                Log.d(TAG, "Type is invalid");
-                                throw new UnsupportedFeedtypeException(Type.INVALID, tag);
+                                Log.d(TAG, "Type is invalid: " + tag);
+                                throwExceptionIfWebsite(feed);
+                                throw new UnsupportedFeedtypeException(tag, null);
                         }
                     } else {
                         try {
@@ -83,15 +85,8 @@ public class TypeGetter {
                 }
             } catch (XmlPullParserException e) {
                 e.printStackTrace();
-                // XML document might actually be a HTML document -> try to parse as HTML
-                String rootElement = null;
-                try {
-                    Jsoup.parse(new File(feed.getLocalFileUrl()));
-                    rootElement = "html";
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-                throw new UnsupportedFeedtypeException(Type.INVALID, rootElement);
+                throwExceptionIfWebsite(feed);
+                throw new UnsupportedFeedtypeException(e.getMessage());
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -106,20 +101,31 @@ public class TypeGetter {
             }
         }
         Log.d(TAG, "Type is invalid");
-        throw new UnsupportedFeedtypeException(Type.INVALID);
+        throw new UnsupportedFeedtypeException("Unknown problem when trying to determine feed type");
     }
 
     private Reader createReader(Feed feed) {
         Reader reader;
         try {
             reader = new XmlStreamReader(new File(feed.getLocalFileUrl()));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
         return reader;
+    }
+
+    private void throwExceptionIfWebsite(Feed feed) throws UnsupportedFeedtypeException {
+        try {
+            Document document = Jsoup.parse(new File(feed.getLocalFileUrl()));
+            Element titleElement = document.head().getElementsByTag("title").first();
+            if (titleElement != null) {
+                throw new UnsupportedFeedtypeException("html", "Website title: \"" + titleElement.text() + "\"");
+            }
+            Element firstChild = document.children().first();
+            throw new UnsupportedFeedtypeException(firstChild != null ? firstChild.tagName() : "?", null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

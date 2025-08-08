@@ -24,6 +24,7 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
+import de.danoeh.antennapod.net.common.RedirectChecker;
 import de.danoeh.antennapod.net.common.UrlChecker;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
@@ -156,12 +157,20 @@ public class SyncService extends Worker {
             if (!downloadUrl.startsWith("http")) { // Also matches https
                 Log.d(TAG, "Skipping url: " + downloadUrl);
                 continue;
+            } else if (UrlChecker.containsUrl(localSubscriptions, downloadUrl)
+                    || queuedRemovedFeeds.contains(downloadUrl)) {
+                continue;
             }
-            if (!UrlChecker.containsUrl(localSubscriptions, downloadUrl) && !queuedRemovedFeeds.contains(downloadUrl)) {
-                Feed feed = new Feed(downloadUrl, null, "Unknown podcast");
-                feed.setItems(Collections.emptyList());
-                FeedDatabaseWriter.updateFeed(getApplicationContext(), feed, false);
+            String redirectedUrl = RedirectChecker.getNewUrlIfPermanentRedirect(downloadUrl);
+            if (redirectedUrl != null
+                    && (UrlChecker.containsUrl(localSubscriptions, redirectedUrl)
+                        || queuedRemovedFeeds.contains(redirectedUrl))) {
+                continue;
             }
+
+            Feed feed = new Feed(downloadUrl, null, "Unknown podcast");
+            feed.setItems(Collections.emptyList());
+            FeedDatabaseWriter.updateFeed(getApplicationContext(), feed, false);
         }
 
         // remove subscription if not just subscribed (again)
@@ -192,6 +201,9 @@ public class SyncService extends Worker {
                         .uploadSubscriptionChanges(queuedAddedFeeds, queuedRemovedFeeds);
                 synchronizationQueueStorage.clearFeedQueues();
                 newTimeStamp = uploadResponse.timestamp;
+            } catch (SyncServiceException exception) {
+                synchronizationQueueStorage.removeLegacyConflictingFeedEntries(localSubscriptions);
+                throw exception;
             } finally {
                 LockingAsyncExecutor.unlock();
             }

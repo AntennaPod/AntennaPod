@@ -11,7 +11,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 
@@ -21,11 +20,11 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 
-import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.CrashReportWriter;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.IntentUtils;
+import de.danoeh.antennapod.ui.common.ToolbarActivity;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
@@ -36,12 +35,11 @@ import java.nio.charset.Charset;
 /**
  * Displays the 'crash report' screen
  */
-public class BugReportActivity extends AppCompatActivity {
+public class BugReportActivity extends ToolbarActivity {
     private static final String TAG = "BugReportActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(ThemeSwitcher.getTheme(this));
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setContentView(R.layout.bug_report);

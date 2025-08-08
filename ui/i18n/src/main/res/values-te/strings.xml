@@ -50,6 +50,5 @@
     <string name="gpodnetsync_pref_report_failed">విఫలమైంది</string>
     <!--proxy settings-->
   <string name="proxy_type_label">రకం</string>
-    <string name="optional_hint">(ఐచ్చికం)</string>
     <string name="proxy_host_invalid_error">హోస్ట్ చెల్లుబాటు అయ్యే ఐపీ చిరునామా లేదా డొమైన్ కాదు</string>
 </resources>

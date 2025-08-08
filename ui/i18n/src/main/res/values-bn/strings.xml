@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">সদস্যতা হালনাগাদ করুন</string>
-    <string name="feeds_label">পডকাস্ট</string>
     <string name="statistics_label">পরিসংখ্যান</string>
     <string name="add_feed_label">পডকাস্ট যোগ করুন</string>
     <string name="episodes_label">পর্বগুলি</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">পছন্দগুলি</string>
     <string name="settings_label">সেটিংস</string>
     <string name="downloads_label">ডাউনলোডকৃত ফাইল</string>
-    <string name="open_autodownload_settings">সেটিংস খুলুন</string>
     <string name="downloads_log_label">ডাউনলোড লগ</string>
     <string name="subscriptions_label">সদস্যতা</string>
     <string name="subscriptions_list_label">সাবস্ক্রিপশনের তালিকা</string>
     <string name="cancel_download_label">ডাউনলোড বাতিল করুন</string>
     <string name="playback_history_label">ইতিহাস</string>
-    <string name="episode_cache_full_title">এপিসোড ক্যাশে পূর্ণ</string>
-    <string name="episode_cache_full_message">পর্বের ক্যাশে সীমা পৌঁছে গেছে। আপনি সেটিংসে ক্যাশের আকার বাড়াতে পারেন।</string>
     <string name="years_statistics_label">বছর</string>
     <string name="notification_pref_fragment">বিজ্ঞপ্তি</string>
     <!--Google Assistant-->
@@ -145,21 +141,12 @@
     <string name="confirm_mobile_feed_refresh_dialog_message">মোবাইল ডেটা সংযোগের মাধ্যমে পডকাস্ট রিফ্রেশ করা সেটিংসে অক্ষম করা আছে।\n\nআপনি কি তবুও রিফ্রেশ করতে চান?</string>
     <!--actions on feeditems-->
   <string name="download_label">ডাউনলোড</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">%d টি পর্ব ডাউনলোড করা হচ্ছে।</item>
-        <item quantity="other">%d টি পর্ব ডাউনলোড করা হচ্ছে।</item>
-    </plurals>
     <string name="play_label">প্লে</string>
     <string name="pause_label">বিরতি দিন</string>
     <string name="stream_label">স্ট্রিম করুন</string>
     <string name="delete_label">মুছে ফেলুন</string>
     <string name="remove_inbox_label">ইনবক্স থেকে মুছে ফেলুন</string>
-    <string name="removed_inbox_label">ইনবক্স থেকে মুছে ফেলা হয়েছে</string>
     <string name="add_to_queue_label">সারিতে যোগ করুন</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d পর্ব সারি থেকে সরানো হয়েছে।</item>
-        <item quantity="other">%d পর্বগুলি সারি থেকে সরানো হয়েছে।</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d পর্ব ইনবক্স থেকে সরানো হয়েছে।</item>
         <item quantity="other">%d পর্বগুলি ইনবক্স থেকে সরানো হয়েছে।</item>
@@ -219,7 +206,7 @@
     <string name="release_schedule_saturday">শনি</string>
     <string name="release_schedule_sunday">রবি</string>
     <!--Add podcast fragment-->
-  <string name="search_podcast_hint">পডকাস্ট খুঁজুন...</string>
+  <string name="search_podcast_hint">পডকাস্ট খুঁজুন…</string>
     <string name="search_itunes_label">Apple Podcasts-এ খুঁজুন</string>
     <string name="search_podcastindex_label">পডকাস্ট ইনডেক্সে খুঁজুন</string>
     <string name="search_fyyd_label">fyyd-এ খুঁজুন</string>

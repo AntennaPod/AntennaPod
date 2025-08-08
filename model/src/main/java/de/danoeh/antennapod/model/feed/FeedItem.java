@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -44,9 +42,9 @@ public class FeedItem implements Serializable {
     private transient Feed feed;
     private long feedId;
     private String podcastIndexChapterUrl;
+    private String socialInteractUrl;
     private String podcastIndexTranscriptUrl;
     private String podcastIndexTranscriptType;
-    private String podcastIndexTranscriptText;
     private Transcript transcript;
 
     private int state;
@@ -89,7 +87,7 @@ public class FeedItem implements Serializable {
     public FeedItem(long id, String title, String link, Date pubDate, String paymentLink, long feedId,
                     boolean hasChapters, String imageUrl, int state,
                     String itemIdentifier, boolean autoDownloadEnabled, String podcastIndexChapterUrl,
-                    String transcriptType, String transcriptUrl) {
+                    String transcriptType, String transcriptUrl, String socialInteractUrl) {
         this.id = id;
         this.title = title;
         this.link = link;
@@ -102,6 +100,7 @@ public class FeedItem implements Serializable {
         this.itemIdentifier = itemIdentifier;
         this.autoDownloadEnabled = autoDownloadEnabled;
         this.podcastIndexChapterUrl = podcastIndexChapterUrl;
+        this.socialInteractUrl = socialInteractUrl;
         if (transcriptUrl != null) {
             this.podcastIndexTranscriptUrl = transcriptUrl;
             this.podcastIndexTranscriptType = transcriptType;
@@ -125,7 +124,8 @@ public class FeedItem implements Serializable {
     /**
      * This constructor should be used for creating test objects involving chapter marks.
      */
-    public FeedItem(long id, String title, String itemIdentifier, String link, Date pubDate, int state, Feed feed, boolean hasChapters) {
+    public FeedItem(long id, String title, String itemIdentifier, String link, Date pubDate,
+                    int state, Feed feed, boolean hasChapters) {
         this.id = id;
         this.title = title;
         this.itemIdentifier = itemIdentifier;
@@ -172,8 +172,14 @@ public class FeedItem implements Serializable {
         if (other.podcastIndexChapterUrl != null) {
             podcastIndexChapterUrl = other.podcastIndexChapterUrl;
         }
+        if (other.socialInteractUrl != null) {
+            socialInteractUrl = other.socialInteractUrl;
+        }
         if (other.getTranscriptUrl() != null) {
             podcastIndexTranscriptUrl = other.podcastIndexTranscriptUrl;
+        }
+        if (other.getTranscriptType() != null) {
+            podcastIndexTranscriptType = other.podcastIndexTranscriptType;
         }
     }
 
@@ -429,6 +435,14 @@ public class FeedItem implements Serializable {
         podcastIndexChapterUrl = url;
     }
 
+    public void setSocialInteractUrl(String url) {
+        socialInteractUrl = url;
+    }
+
+    public String getSocialInteractUrl() {
+        return socialInteractUrl;
+    }
+
     public void setTranscriptUrl(String type, String url) {
         updateTranscriptPreferredFormat(type, url);
     }
@@ -441,29 +455,15 @@ public class FeedItem implements Serializable {
         return podcastIndexTranscriptType;
     }
 
-    public void updateTranscriptPreferredFormat(String type, String url) {
-        if (StringUtils.isEmpty(type) || StringUtils.isEmpty(url)) {
+    public void updateTranscriptPreferredFormat(String typeStr, String url) {
+        if (StringUtils.isEmpty(typeStr) || StringUtils.isEmpty(url)) {
             return;
         }
-
-        String canonicalSrr = "application/srr";
-        String jsonType = "application/json";
-
-        switch (type) {
-            case "application/json":
-                podcastIndexTranscriptUrl = url;
-                podcastIndexTranscriptType = type;
-                break;
-            case "application/srr":
-            case "application/srt":
-            case "application/x-subrip":
-                if (podcastIndexTranscriptUrl == null || !podcastIndexTranscriptType.equals(jsonType)) {
-                    podcastIndexTranscriptUrl = url;
-                    podcastIndexTranscriptType = canonicalSrr;
-                }
-                break;
-            default:
-                break;
+        TranscriptType type = TranscriptType.fromMime(typeStr);
+        TranscriptType previousType = TranscriptType.fromMime(podcastIndexTranscriptType);
+        if (type.priority > previousType.priority) {
+            podcastIndexTranscriptUrl = url;
+            podcastIndexTranscriptType = type.canonicalMime;
         }
     }
 
@@ -475,14 +475,6 @@ public class FeedItem implements Serializable {
         transcript = t;
     }
 
-    public String getPodcastIndexTranscriptText() {
-        return podcastIndexTranscriptText;
-    }
-
-    public String setPodcastIndexTranscriptText(String str) {
-        return podcastIndexTranscriptText = str;
-    }
-
     public boolean hasTranscript() {
         return (podcastIndexTranscriptUrl != null);
     }
@@ -490,7 +482,7 @@ public class FeedItem implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return "FeedItem [id=" + id + ", title=" + title + ", feedId=" + feedId + ", pubDate=" + pubDate + "]";
     }
 
     @Override

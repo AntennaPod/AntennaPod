@@ -21,7 +21,7 @@
         android:summary="@string/pref_favorite_keeps_episodes_sum"
         android:title="@string/pref_favorite_keeps_episodes_title"/>
     <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
-        android:defaultValue="-1"
+        android:defaultValue="-2"
         android:entries="@array/episode_cleanup_entries"
         android:key="prefEpisodeCleanup"
         android:title="@string/pref_episode_cleanup_title"

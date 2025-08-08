@@ -20,6 +20,7 @@ import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.echo.EchoConfig;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.ui.screen.home.sections.DownloadsSection;
@@ -95,7 +96,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         FragmentContainerView containerView = new FragmentContainerView(getContext());
         containerView.setId(View.generateViewId());
         viewBinding.homeContainer.addView(containerView);
-        getChildFragmentManager().beginTransaction().add(containerView.getId(), section).commit();
+        getChildFragmentManager().beginTransaction().replace(containerView.getId(), section).commit();
     }
 
     private Fragment getSection(String tag) {
@@ -166,12 +167,16 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(numEpisodes -> {
-                    viewBinding.welcomeContainer.setVisibility(numEpisodes == 0 ? View.VISIBLE : View.GONE);
-                    viewBinding.homeContainer.setVisibility(numEpisodes == 0 ? View.GONE : View.VISIBLE);
-                    viewBinding.swipeRefresh.setVisibility(numEpisodes == 0 ? View.GONE : View.VISIBLE);
-                    if (numEpisodes == 0) {
+                    boolean hasEpisodes = numEpisodes != 0;
+                    viewBinding.welcomeContainer.setVisibility(hasEpisodes ? View.GONE : View.VISIBLE);
+                    viewBinding.homeContainer.setVisibility(hasEpisodes ? View.VISIBLE : View.GONE);
+                    viewBinding.swipeRefresh.setVisibility(hasEpisodes ? View.VISIBLE : View.GONE);
+                    if (!hasEpisodes) {
                         viewBinding.homeScrollView.setScrollY(0);
                     }
+                    boolean bottomNav = UserPreferences.isBottomNavigationEnabled();
+                    viewBinding.arrowBottomIcon.setVisibility(bottomNav ? View.VISIBLE : View.GONE);
+                    viewBinding.arrowSidebarIcon.setVisibility(bottomNav ? View.GONE : View.VISIBLE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 

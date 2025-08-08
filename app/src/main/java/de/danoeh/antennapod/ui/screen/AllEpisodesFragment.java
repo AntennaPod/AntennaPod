@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.ui.AllEpisodesFilterDialog;
@@ -31,6 +33,7 @@ import java.util.List;
 public class AllEpisodesFragment extends EpisodesListFragment {
     public static final String TAG = "EpisodesFragment";
     public static final String PREF_NAME = "PrefAllEpisodesFragment";
+    private static Pair<Integer, Integer> scrollPosition = null;
 
     @NonNull
     @Override
@@ -85,8 +88,14 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     }
 
     @Override
-    protected String getPrefName() {
-        return PREF_NAME;
+    public void onPause() {
+        super.onPause();
+        scrollPosition = recyclerView.getScrollPosition();
+    }
+
+    @Override
+    protected void onItemsFirstLoaded() {
+        recyclerView.restoreScrollPosition(scrollPosition);
     }
 
     @Override

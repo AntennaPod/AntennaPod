@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">ಚಂದಾದಾರಿಕೆಗಳನ್ನು ನವೀಕರಿಸಿ</string>
-    <string name="feeds_label">ಪಾಡ್‌ಕಾಸ್ಟ್‌ಗಳು</string>
     <string name="statistics_label">ಅಂಕಿಅಂಶಗಳು</string>
     <string name="add_feed_label">ಪಾಡ್ಕ್ಯಾಸ್ಟ್ಅನ್ನು ಸೇರಿಸಿ</string>
     <string name="episodes_label">ಸಂಚಿಕೆಗಳು</string>
@@ -12,14 +11,11 @@
     <string name="favorite_episodes_label">ನೆಚ್ಚಿನವುಗಳು</string>
     <string name="settings_label">ಸೆಟ್ಟಿಂಗ್ಗಳು</string>
     <string name="downloads_label">ಇಳಿಕೆಗಳು</string>
-    <string name="open_autodownload_settings">ಸೆಟ್ಟಿಂಗ್ಗಳನ್ನು ತೆರೆಯಿರಿ</string>
     <string name="downloads_log_label">ಡೌನ್‌ಲೋಡ್ ಲಾಗ್</string>
     <string name="subscriptions_label">ಚಂದಾದಾರಿಕೆಗಳು</string>
     <string name="subscriptions_list_label">ಚಂದಾದಾರಿಕೆಗಳ ಪಟ್ಟಿ</string>
     <string name="cancel_download_label">ಡೌನ್‌ಲೋಡ್ ರದ್ದುಮಾಡಿ</string>
     <string name="playback_history_label">ಪ್ಲೇಬ್ಯಾಕ್ ಇತಿಹಾಸ</string>
-    <string name="episode_cache_full_title">ಸಂಚಿಕೆ ಸಂಗ್ರಹ ತುಂಬಿದೆ</string>
-    <string name="episode_cache_full_message">ಸಂಚಿಕೆ ಸಂಗ್ರಹ ಮಿತಿಯನ್ನು ತಲುಪಲಾಗಿದೆ. ನೀವು ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಸಂಗ್ರಹ ಗಾತ್ರವನ್ನು ಹೆಚ್ಚಿಸಬಹುದು.</string>
     <string name="years_statistics_label">ವರ್ಷಗಳು</string>
     <string name="notification_pref_fragment">ಅಧಿಸೂಚನೆಗಳು</string>
     <!--Google Assistant-->
@@ -103,8 +99,6 @@
   <string name="download_label">ಡೌನ್ಲೋಡ್</string>
     <string name="play_label">ಚಾಲನೆಗೊಳಿಸಿ</string>
     <string name="stream_label">ಸ್ಟ್ರೀಮ್ ಮಾಡಿ</string>
-    <string name="mark_read_label">ಕೇಳಿಸಿದೆ ಎಂದು ಗುರುತಿಸಿ</string>
-    <string name="mark_unread_label">ಕೇಳಿಸಿಕೊಂಡಿಲ್ಲವೆಂದು ಗುರುತಿಸಿ</string>
     <!--Download messages and labels-->
   <string name="download_successful">ಯಶಸ್ವಿಯಾಗಿದೆ</string>
     <string name="download_pending">ಡೌನ್ಲೋಡ್ ಬಾಕಿ ಉಳಿದಿದೆ</string>

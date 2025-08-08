@@ -23,17 +23,16 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission;
 import androidx.annotation.Nullable;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
-import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
 import de.danoeh.antennapod.databinding.OpmlSelectionBinding;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.importexport.OpmlElement;
 import de.danoeh.antennapod.storage.importexport.OpmlReader;
+import de.danoeh.antennapod.ui.common.ToolbarActivity;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -52,7 +51,7 @@ import java.util.Locale;
 /**
  * Activity for Opml Import.
  * */
-public class OpmlImportActivity extends AppCompatActivity {
+public class OpmlImportActivity extends ToolbarActivity {
     private static final String TAG = "OpmlImportBaseActivity";
     @Nullable private Uri uri;
     private OpmlSelectionBinding viewBinding;
@@ -63,7 +62,6 @@ public class OpmlImportActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        setTheme(ThemeSwitcher.getTheme(this));
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         viewBinding = OpmlSelectionBinding.inflate(getLayoutInflater());
