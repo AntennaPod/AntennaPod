@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -79,39 +80,9 @@ public abstract class WidgetUpdater {
         views = new RemoteViews(context.getPackageName(), R.layout.player_widget);
 
         if (widgetState.media != null) {
-            Bitmap icon;
-            int iconSize = context.getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.imgvCover, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlaybackSpeed, startPlaybackSpeedDialog);
-
-            int radius = context.getResources().getDimensionPixelSize(R.dimen.widget_inner_radius);
-            RequestOptions options = new RequestOptions()
-                    .dontAnimate()
-                    .transform(new FitCenter(), new RoundedCorners(radius));
-
-            try {
-                icon = Glide.with(context)
-                        .asBitmap()
-                        .load(widgetState.media.getImageLocation())
-                        .apply(options)
-                        .submit(iconSize, iconSize)
-                        .get(500, TimeUnit.MILLISECONDS);
-                views.setImageViewBitmap(R.id.imgvCover, icon);
-            } catch (Throwable tr1) {
-                try {
-                    icon = Glide.with(context)
-                            .asBitmap()
-                            .load(ImageResourceUtils.getFallbackImageLocation(widgetState.media))
-                            .apply(options)
-                            .submit(iconSize, iconSize)
-                            .get(500, TimeUnit.MILLISECONDS);
-                    views.setImageViewBitmap(R.id.imgvCover, icon);
-                } catch (Throwable tr2) {
-                    Log.e(TAG, "Error loading the media icon for the widget", tr2);
-                    views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher);
-                }
-            }
 
             views.setTextViewText(R.id.txtvTitle, widgetState.media.getEpisodeTitle());
             views.setViewVisibility(R.id.txtvTitle, View.VISIBLE);
@@ -177,6 +148,7 @@ public abstract class WidgetUpdater {
             boolean showRewind = prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + id, false);
             boolean showFastForward = prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + id, false);
             boolean showSkip = prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + id, false);
+            boolean showCoverAsBcg = prefs.getBoolean(PlayerWidget.KEY_WIDGET_COVER_AS_BCG + id, false);
 
             if (showPlaybackSpeed || showRewind || showSkip || showFastForward) {
                 views.setInt(R.id.extendedButtonsContainer, "setVisibility", View.VISIBLE);
@@ -190,8 +162,77 @@ public abstract class WidgetUpdater {
                 views.setInt(R.id.butPlay, "setVisibility", View.VISIBLE);
             }
 
-            int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);
-            views.setInt(R.id.widgetLayout, "setBackgroundColor", backgroundColor);
+            Bitmap icon;
+            int radius = context.getResources().getDimensionPixelSize(R.dimen.widget_inner_radius);
+            RequestOptions option1 = new RequestOptions()
+                    .dontAnimate()
+                    .transform(new FitCenter(),new BlurUtil())
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+
+            RequestOptions option2 = new RequestOptions()
+                    .dontAnimate()
+                    .transform(new FitCenter(), new RoundedCorners(radius));
+
+            if (showCoverAsBcg) {
+                views.setViewVisibility(R.id.imgvCover, View.GONE);
+                views.setViewVisibility(R.id.imgvBackground, View.VISIBLE);
+                //views.setViewVisibility(R.id.imgvBlurOverlay, View.VISIBLE);
+
+                try {
+                    icon = Glide.with(context)
+                            .asBitmap()
+                            .load(widgetState.media.getImageLocation())
+                            .apply(option1)
+                            .submit()
+                            .get(5000, TimeUnit.MILLISECONDS);
+                    views.setImageViewBitmap(R.id.imgvBackground, icon);
+
+                } catch (Throwable tr1) {
+                    try {
+                        icon = Glide.with(context)
+                                .asBitmap()
+                                .load(ImageResourceUtils.getFallbackImageLocation(widgetState.media))
+                                .apply(option1)
+                                .submit()
+                                .get(5000, TimeUnit.MILLISECONDS);
+                        views.setImageViewBitmap(R.id.imgvBackground, icon);
+                    } catch (Throwable tr2) {
+                        Log.e(TAG, "Error loading the media icon for the widget", tr2);
+                        views.setImageViewResource(R.id.imgvBackground, R.mipmap.ic_launcher);
+                    }
+                }
+            } else {
+                views.setViewVisibility(R.id.imgvCover, View.VISIBLE);
+                views.setViewVisibility(R.id.imgvBackground, View.GONE);
+                //views.setViewVisibility(R.id.imgvBlurOverlay, View.GONE);
+                int iconSize = context.getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
+
+                try {
+                    icon = Glide.with(context)
+                            .asBitmap()
+                            .load(widgetState.media.getImageLocation())
+                            .apply(option2)
+                            .submit(iconSize, iconSize)
+                            .get(500, TimeUnit.MILLISECONDS);
+                    views.setImageViewBitmap(R.id.imgvCover, icon);
+                } catch (Throwable tr1) {
+                    try {
+                        icon = Glide.with(context)
+                                .asBitmap()
+                                .load(ImageResourceUtils.getFallbackImageLocation(widgetState.media))
+                                .apply(option2)
+                                .submit(iconSize, iconSize)
+                                .get(500, TimeUnit.MILLISECONDS);
+                        views.setImageViewBitmap(R.id.imgvCover, icon);
+                    } catch (Throwable tr2) {
+                        Log.e(TAG, "Error loading the media icon for the widget", tr2);
+                        views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher);
+                    }
+                }
+
+                int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);
+                views.setInt(R.id.widgetLayout, "setBackgroundColor", backgroundColor);
+            }
 
             manager.updateAppWidget(id, views);
         }

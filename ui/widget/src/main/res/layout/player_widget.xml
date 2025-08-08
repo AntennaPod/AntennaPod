@@ -13,6 +13,22 @@
         android:background="#262C31"
         tools:ignore="UselessParent">
 
+        <ImageView
+            android:id="@+id/imgvBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/cover_as_background"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            android:adjustViewBounds="true" />
+
+        <!--        <ImageView-->
+        <!--                android:id="@+id/imgvBlurOverlay"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:background="#80000000"-->
+        <!--                android:contentDescription="@string/blur_image"-->
+        <!--                android:visibility="gone" />-->
         <ImageButton
             android:id="@+id/butPlay"
             android:layout_width="@android:dimen/app_icon_size"
@@ -48,6 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
+                android:layout_marginStart="12dp"
                 android:orientation="vertical">
 
                 <TextView

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string
+        name="cover_as_background">
+Cover as background</string>
+
+    <string
+        name="blur_image">
+blur_image\n</string>
+
+</resources>
