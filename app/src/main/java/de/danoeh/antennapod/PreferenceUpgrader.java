@@ -13,12 +13,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.concurrent.TimeUnit;
 
-<<<<<<< HEAD
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-=======
->>>>>>> develop
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -185,7 +182,7 @@ public class PreferenceUpgrader {
             // Enable bottom navigation for beta users, so only this exact app version
             UserPreferences.setBottomNavigationEnabled(true);
         }
-        if (oldVersion < 3070004) {
+        if (oldVersion < 3080000) {
             FeedPreferences.SkipSilence skipSilence = prefs.getBoolean(PREF_PLAYBACK_SKIP_SILENCE, false)
                     ? FeedPreferences.SkipSilence.AGGRESSIVE
                     : FeedPreferences.SkipSilence.OFF;
