@@ -26,6 +26,7 @@ import com.bumptech.glide.request.transition.Transition;
 
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.ui.common.ToolbarActivity;
+import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 
 import java.util.Locale;
 
@@ -139,7 +140,7 @@ public class WidgetConfigActivity extends ToolbarActivity {
             Drawable icon = null;
             RequestOptions option1 = new RequestOptions()
                     .dontAnimate()
-                    .transform(new FitCenter(), new BlurUtil())
+                    .transform(new FitCenter(), new FastBlurTransformation())
                     .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
 
             Glide.with(this)

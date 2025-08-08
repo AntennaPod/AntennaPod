@@ -32,6 +32,7 @@ import de.danoeh.antennapod.ui.appstartintent.PlaybackSpeedActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.VideoPlayerActivityStarter;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
 import de.danoeh.antennapod.ui.episodes.TimeSpeedConverter;
+import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 
 /**
  * Updates the state of the player widget.
@@ -167,7 +168,7 @@ public abstract class WidgetUpdater {
             int radius = context.getResources().getDimensionPixelSize(R.dimen.widget_inner_radius);
             RequestOptions option1 = new RequestOptions()
                     .dontAnimate()
-                    .transform(new FitCenter(), new BlurUtil())
+                    .transform(new FitCenter(), new FastBlurTransformation())
                     .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
 
             RequestOptions option2 = new RequestOptions()
