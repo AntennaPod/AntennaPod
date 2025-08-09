@@ -29,7 +29,6 @@ import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.service.PlaybackController;
-import de.danoeh.antennapod.ui.transcript.TranscriptMode;
 import de.danoeh.antennapod.ui.transcript.TranscriptUtils;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -50,7 +49,6 @@ public class TranscriptDialogFragment extends DialogFragment
     private TranscriptAdapter adapter = null;
     private boolean doInitialScroll = true;
     private LinearLayoutManager layoutManager;
-    private TranscriptMode transcriptMode = null;
 
     @Override
     public void onResume() {
@@ -89,10 +87,10 @@ public class TranscriptDialogFragment extends DialogFragment
                 return true;
             } else if (id == R.id.action_copy) {
                 copySelectedText();
-                setTranscriptMode(TranscriptMode.Normal);
+                setActionMode(false);
                 return true;
             } else if (id == R.id.action_cancel_copy) {
-                setTranscriptMode(TranscriptMode.Normal);
+                setActionMode(false);
                 return true;
             }
             return false;
@@ -107,21 +105,17 @@ public class TranscriptDialogFragment extends DialogFragment
                 .setNegativeButton(R.string.close_label, null)
                 .create();
         dialog.setOnShowListener(dialog1 -> {
-            setTranscriptMode(TranscriptMode.Normal);
+            setActionMode(false);
         });
         return dialog;
     }
 
-    private void setTranscriptMode(TranscriptMode transcriptMode) {
-        this.transcriptMode = transcriptMode;
-        adapter.setTranscriptMode(transcriptMode);
-
-        boolean isCopyMode = transcriptMode == TranscriptMode.Copy;
-        viewBinding.toolbar.getMenu().findItem(R.id.action_copy).setVisible(isCopyMode);
-        viewBinding.toolbar.getMenu().findItem(R.id.action_cancel_copy).setVisible(isCopyMode);
-        viewBinding.toolbar.getMenu().findItem(R.id.action_refresh).setVisible(!isCopyMode);
-
-        viewBinding.followAudioCheckbox.setChecked(!isCopyMode);
+    private void setActionMode(boolean actionMode) {
+        adapter.setActionMode(actionMode);
+        viewBinding.toolbar.getMenu().findItem(R.id.action_copy).setVisible(actionMode);
+        viewBinding.toolbar.getMenu().findItem(R.id.action_cancel_copy).setVisible(actionMode);
+        viewBinding.toolbar.getMenu().findItem(R.id.action_refresh).setVisible(!actionMode);
+        viewBinding.followAudioCheckbox.setChecked(!actionMode);
     }
 
     private void copySelectedText() {
@@ -137,7 +131,9 @@ public class TranscriptDialogFragment extends DialogFragment
 
     @Override
     public void onTranscriptClicked(int pos, TranscriptSegment segment) {
-        if (transcriptMode == TranscriptMode.Normal) {
+        if (adapter.isActionMode()) {
+            adapter.toggleSelection(pos);
+        } else {
             long startTime = segment.getStartTime();
             long endTime = segment.getEndTime();
 
@@ -149,15 +145,13 @@ public class TranscriptDialogFragment extends DialogFragment
             }
             adapter.notifyItemChanged(pos);
             viewBinding.followAudioCheckbox.setChecked(true);
-        } else if (transcriptMode == TranscriptMode.Copy) {
-            adapter.toggleSelection(pos);
         }
     }
 
     @Override
     public void onTranscriptLongClicked(int position, TranscriptSegment seg) {
-        if (transcriptMode != TranscriptMode.Copy) {
-            setTranscriptMode(TranscriptMode.Copy);
+        if (!adapter.isActionMode()) {
+            setActionMode(true);
             adapter.toggleSelection(position);
         }
     }

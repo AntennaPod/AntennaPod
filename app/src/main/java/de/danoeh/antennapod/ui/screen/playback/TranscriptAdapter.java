@@ -15,7 +15,6 @@ import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.common.Converter;
-import de.danoeh.antennapod.ui.transcript.TranscriptMode;
 import de.danoeh.antennapod.ui.transcript.TranscriptViewholder;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -34,8 +33,8 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
     private FeedMedia media;
     private int prevHighlightPosition = -1;
     private int highlightPosition = -1;
-    private TranscriptMode transcriptMode = TranscriptMode.Normal;
-    private HashSet<Integer> selectedPositions = new HashSet<>();
+    private boolean inActionMode = false;
+    private final HashSet<Integer> selectedPositions = new HashSet<>();
 
     public TranscriptAdapter(Context context, SegmentClickListener segmentClickListener) {
         this.context = context;
@@ -56,42 +55,19 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
         notifyDataSetChanged();
     }
 
-    public void setTranscriptMode(TranscriptMode transcriptMode) {
-        if (this.transcriptMode != transcriptMode) {
-            TranscriptMode oldTranscriptMode = this.transcriptMode;
-            this.transcriptMode = transcriptMode;
-
-            switch (oldTranscriptMode) {
-                case Normal:
-                    notifyItemChanged(highlightPosition);
-                    break;
-                case Copy:
-                    Iterator<Integer> iterator = selectedPositions.iterator();
-                    while (iterator.hasNext()) {
-                        Integer position = iterator.next();
-                        iterator.remove();
-                        notifyItemChanged(position);
-                    }
-                    selectedPositions.clear();
-                    break;
-                default:
-                    break;
-            }
-            switch (transcriptMode) {
-                case Normal:
-                    notifyItemChanged(highlightPosition);
-                    break;
-                case Copy:
-                    Iterator<Integer> iterator = selectedPositions.iterator();
-                    while (iterator.hasNext()) {
-                        Integer position = iterator.next();
-                        notifyItemChanged(position);
-                    }
-                    break;
-                default:
-                    break;
-            }
+    public void setActionMode(boolean actionMode) {
+        if (this.inActionMode == actionMode) {
+            return;
         }
+        this.inActionMode = actionMode;
+        if (!actionMode) {
+            selectedPositions.clear();
+        }
+        notifyDataSetChanged();
+    }
+
+    public boolean isActionMode() {
+        return inActionMode;
     }
 
     @Override
@@ -136,15 +112,10 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
             holder.viewContent.setText(seg.getWords());
         }
 
-        switch (transcriptMode) {
-            case Normal:
-                highlightViewHolder(holder, position == highlightPosition);
-                break;
-            case Copy:
-                highlightViewHolder(holder, selectedPositions.contains(position));
-                break;
-            default:
-                break;
+        if (inActionMode) {
+            highlightViewHolder(holder, selectedPositions.contains(position));
+        } else {
+            highlightViewHolder(holder, position == highlightPosition);
         }
     }
 
@@ -225,7 +196,7 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
     }
 
     public String getSelectedText() {
-        if (transcriptMode != TranscriptMode.Copy) {
+        if (inActionMode != true) {
             return null;
         }
         Transcript transcript = media.getTranscript();
