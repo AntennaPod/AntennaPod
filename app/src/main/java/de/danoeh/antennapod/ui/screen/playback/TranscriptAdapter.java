@@ -76,6 +76,7 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
         if (media == null || media.getTranscript() == null) {
             return;
         }
+
         TranscriptSegment seg = media.getTranscript().getSegmentAt(position);
         holder.viewContent.setOnClickListener(v -> {
             if (segmentClickListener != null)  {
