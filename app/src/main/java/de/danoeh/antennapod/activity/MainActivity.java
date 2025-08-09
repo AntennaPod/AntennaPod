@@ -481,8 +481,11 @@ public class MainActivity extends CastEnabledActivity {
         }
     }
 
-    public void loadChildFragment(Fragment fragment, TransitionEffect transition) {
+    public void loadChildFragment(Fragment fragment, TransitionEffect transition, String navigationTag) {
         Validate.notNull(fragment);
+        if (navigationTag != null && bottomNavigation != null) {
+            bottomNavigation.updateSelectedItem(navigationTag);
+        }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         if (transition == TransitionEffect.FADE) {
@@ -500,6 +503,10 @@ public class MainActivity extends CastEnabledActivity {
                 .add(R.id.main_content_view, fragment, MAIN_FRAGMENT_TAG)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public void loadChildFragment(Fragment fragment, TransitionEffect transition) {
+        loadChildFragment(fragment, transition, null);
     }
 
     public void loadChildFragment(Fragment fragment) {
@@ -688,7 +695,7 @@ public class MainActivity extends CastEnabledActivity {
                 if (intent.getBooleanExtra(MainActivityStarter.EXTRA_CLEAR_BACK_STACK, false)) {
                     loadFragment(tag, null);
                 } else {
-                    loadChildFragment(createFragmentInstance(tag, args));
+                    loadChildFragment(createFragmentInstance(tag, args), TransitionEffect.NONE, tag);
                 }
             }
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
