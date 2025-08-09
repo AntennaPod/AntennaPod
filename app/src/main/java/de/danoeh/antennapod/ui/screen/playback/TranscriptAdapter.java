@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.ui.screen.playback;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -202,12 +203,18 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
         }
         Transcript transcript = media.getTranscript();
         StringBuilder ss = new StringBuilder();
-        Iterator<Integer> iterator = selectedPositions.iterator();
         String lastSpeaker = null;
-        while (iterator.hasNext()) {
-            int index = iterator.next();
+        if (selectedPositions.isEmpty()) {
+            return "";
+        }
+        java.util.List<Integer> sortedPositions = new java.util.ArrayList<>(selectedPositions);
+        java.util.Collections.sort(sortedPositions);
+        int prevIndex = -2;
+        for (int index : sortedPositions) {
+            if (prevIndex != -2 && index != prevIndex + 1) {
+                ss.append("\n[...]\n");
+            }
             TranscriptSegment seg = transcript.getSegmentAt(index);
-
             if (!StringUtil.isBlank(seg.getSpeaker())) {
                 if (ObjectUtils.notEqual(lastSpeaker, seg.getSpeaker())) {
                     ss.append("\n").append(seg.getSpeaker()).append(" : ");
@@ -216,10 +223,11 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
             } else {
                 lastSpeaker = null;
             }
-            if (ss.length() > 0 && ss.charAt(ss.length() - 1) != ' ') {
+            if (!TextUtils.isEmpty(ss) && ss.charAt(ss.length() - 1) != ' ') {
                 ss.append(' ');
             }
             ss.append(seg.getWords());
+            prevIndex = index;
         }
 
         return ss.toString().strip();
