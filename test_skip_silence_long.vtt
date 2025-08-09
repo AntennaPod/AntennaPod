@@ -1,0 +1,53 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:02:00.000
+Audio content: High tone (800Hz) - 2 minutes
+
+2
+00:02:00.000 --> 00:02:00.150
+SILENCE: 150ms (150,000 microseconds)
+
+3
+00:02:00.150 --> 00:05:00.150
+Audio content: Mid-high tone (600Hz) - 3 minutes
+
+4
+00:05:00.150 --> 00:05:00.400
+SILENCE: 250ms (250,000 microseconds)
+
+5
+00:05:00.400 --> 00:07:30.400
+Audio content: Mid tone (400Hz) - 2.5 minutes
+
+6
+00:07:30.400 --> 00:07:30.700
+SILENCE: 300ms (300,000 microseconds)
+
+7
+00:07:30.700 --> 00:09:30.700
+Audio content: Low tone (200Hz) - 2 minutes
+
+8
+00:09:30.700 --> 00:09:30.850
+SILENCE: 150ms (150,000 microseconds)
+
+9
+00:09:30.850 --> 00:11:00.850
+Audio content: Mid-low tone (300Hz) - 1.5 minutes
+
+10
+00:11:00.850 --> 00:11:01.100
+SILENCE: 250ms (250,000 microseconds)
+
+11
+00:11:01.100 --> 00:12:51.100
+Audio content: Mid tone (500Hz) - 1 minute 50 seconds
+
+12
+00:12:51.100 --> 00:12:51.400
+SILENCE: 300ms (300,000 microseconds)
+
+13
+00:12:51.400 --> 00:14:31.400
+Audio content: High-mid tone (700Hz) - 1 minute 40 seconds

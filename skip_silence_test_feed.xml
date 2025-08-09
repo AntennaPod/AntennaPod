@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" 
+     xmlns:podcast="https://podcastindex.org/namespace/1.0"
+     xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+     xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Skip Silence Test Podcast</title>
+        <description>Test podcast for validating skip silence functionality with various audio patterns and silence durations</description>
+        <link>https://example.com/skip-silence-test</link>
+        <language>en-US</language>
+        <managingEditor>test@example.com (Test User)</managingEditor>
+        <webMaster>test@example.com (Test User)</webMaster>
+        <category>Technology</category>
+        <itunes:category text="Technology"/>
+        <itunes:author>Test User</itunes:author>
+        <itunes:summary>Test podcast for validating skip silence functionality with various audio patterns and silence durations</itunes:summary>
+        <itunes:owner>
+            <itunes:name>Test User</itunes:name>
+            <itunes:email>test@example.com</itunes:email>
+        </itunes:owner>
+        <itunes:image href="https://example.com/podcast-artwork.jpg"/>
+        <image>
+            <url>https://example.com/podcast-artwork.jpg</url>
+            <title>Skip Silence Test Podcast</title>
+            <link>https://example.com/skip-silence-test</link>
+        </image>
+        <atom:link href="https://example.com/skip-silence-test/feed.xml" rel="self" type="application/rss+xml"/>
+        <podcast:guid>skip-silence-test-podcast-2024</podcast:guid>
+        <lastBuildDate>Fri, 09 Aug 2025 12:00:00 GMT</lastBuildDate>
+
+        <item>
+            <title>Episode 1: Basic Skip Silence Test</title>
+            <description>Short test episode with basic silence patterns - 150ms, 250ms, and 300ms silence periods for testing skip silence thresholds</description>
+            <link>https://example.com/skip-silence-test/episode1</link>
+            <guid isPermaLink="false">skip-silence-test-episode-1</guid>
+            <pubDate>Fri, 09 Aug 2025 12:00:00 GMT</pubDate>
+            <enclosure url="https://example.com/audio/test_skip_silence.mp3" length="84000" type="audio/mpeg"/>
+            <itunes:duration>00:00:05</itunes:duration>
+            <itunes:summary>Short test episode with basic silence patterns</itunes:summary>
+            <podcast:transcript url="https://example.com/transcripts/test_skip_silence.vtt" type="application/vtt"/>
+        </item>
+
+        <item>
+            <title>Episode 2: Extended Skip Silence Test</title>
+            <description>Long-form test episode with extended audio segments and silence periods - perfect for testing skip silence functionality over longer durations with 150ms, 250ms, and 300ms silence intervals</description>
+            <link>https://example.com/skip-silence-test/episode2</link>
+            <guid isPermaLink="false">skip-silence-test-episode-2</guid>
+            <pubDate>Fri, 09 Aug 2025 11:00:00 GMT</pubDate>
+            <enclosure url="https://example.com/audio/test_skip_silence_long.mp3" length="13950000" type="audio/mpeg"/>
+            <itunes:duration>00:14:31</itunes:duration>
+            <itunes:summary>Long-form test episode with extended audio segments and silence periods</itunes:summary>
+            <podcast:transcript url="https://example.com/transcripts/test_skip_silence_long.vtt" type="application/vtt"/>
+        </item>
+
+        <item>
+            <title>Episode 3: Random Pattern Skip Silence Test</title>
+            <description>Test episode with randomly varying audio segments and silence periods - realistic patterns with audio segments under 2 seconds and random silence durations from 120ms to 350ms</description>
+            <link>https://example.com/skip-silence-test/episode3</link>
+            <guid isPermaLink="false">skip-silence-test-episode-3</guid>
+            <pubDate>Fri, 09 Aug 2025 10:00:00 GMT</pubDate>
+            <enclosure url="https://example.com/audio/test_skip_silence_random.mp3" length="286000" type="audio/mpeg"/>
+            <itunes:duration>00:00:18</itunes:duration>
+            <itunes:summary>Test episode with randomly varying audio segments and silence periods</itunes:summary>
+            <podcast:transcript url="https://example.com/transcripts/test_skip_silence_random.vtt" type="application/vtt"/>
+        </item>
+    </channel>
+</rss>
