@@ -3,16 +3,13 @@ package de.danoeh.antennapod.ui.screen.playback;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -83,81 +80,48 @@ public class TranscriptDialogFragment extends DialogFragment
             }
         });
 
-        AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
-                .setView(viewBinding.getRoot())
-                .setPositiveButton(getString(R.string.close_label), null)
-                .setNegativeButton(getString(R.string.refresh_label), null)
-                .setNeutralButton(getString(R.string.copy_label), null)
-                .setTitle(R.string.transcript)
-                .create();
-        viewBinding.followAudioCheckbox.setChecked(true);
-        dialog.setOnShowListener(dialog1 -> {
-            setTranscriptMode(TranscriptMode.Normal, dialog);
+        viewBinding.toolbar.inflateMenu(R.menu.transcript);
+        viewBinding.toolbar.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.action_refresh) {
+                viewBinding.progLoading.setVisibility(View.VISIBLE);
+                loadMediaInfo(true);
+                return true;
+            } else if (id == R.id.action_copy) {
+                copySelectedText();
+                setTranscriptMode(TranscriptMode.Normal);
+                return true;
+            } else if (id == R.id.action_cancel_copy) {
+                setTranscriptMode(TranscriptMode.Normal);
+                return true;
+            }
+            return false;
         });
+
+        viewBinding.followAudioCheckbox.setChecked(true);
         viewBinding.progLoading.setVisibility(View.VISIBLE);
         doInitialScroll = true;
 
-
+        AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
+                .setView(viewBinding.getRoot())
+                .setNegativeButton(R.string.close_label, null)
+                .create();
+        dialog.setOnShowListener(dialog1 -> {
+            setTranscriptMode(TranscriptMode.Normal);
+        });
         return dialog;
     }
 
     private void setTranscriptMode(TranscriptMode transcriptMode) {
-        if (getDialog() == null || !(getDialog() instanceof AlertDialog)) {
-            return;
-        }
-        AlertDialog dialog = (AlertDialog) getDialog();
-
-        setTranscriptMode(transcriptMode, dialog);
-    }
-
-    private void setTranscriptMode(TranscriptMode transcriptMode, AlertDialog dialog) {
         this.transcriptMode = transcriptMode;
-
-        Button buttonNegative = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-        Button buttonPositive = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-        Button buttonNeutral = dialog.getButton(DialogInterface.BUTTON_NEUTRAL);
-        switch (transcriptMode) {
-            case Normal:
-                buttonNegative.setText(getString(R.string.close_label));
-                buttonNegative.setOnClickListener(v -> {
-                    dialog.dismiss();
-                });
-                buttonPositive.setText(getString(R.string.refresh_label));
-                buttonPositive.setOnClickListener(v -> {
-                    viewBinding.progLoading.setVisibility(View.VISIBLE);
-                    v.setClickable(false);
-                    v.setEnabled(false);
-                    loadMediaInfo(true);
-                });
-                buttonNeutral.setOnClickListener(null);
-                buttonNeutral.setVisibility(View.GONE);
-                viewBinding.followAudioCheckbox.setEnabled(true);
-
-                break;
-            case Copy:
-                buttonNegative.setText(R.string.cancel_label);
-                buttonNegative.setOnClickListener(v -> {
-                    setTranscriptMode(TranscriptMode.Normal);
-                });
-                buttonPositive.setText(R.string.select_all_label);
-                buttonPositive.setOnClickListener(v -> {
-                    adapter.selectAll();
-                });
-                buttonNeutral.setVisibility(View.VISIBLE);
-                buttonNeutral.setText(R.string.copy_label);
-                buttonNeutral.setOnClickListener(v -> {
-                    copySelectedText();
-                    setTranscriptMode(TranscriptMode.Normal);
-                });
-                viewBinding.followAudioCheckbox.setChecked(false);
-                viewBinding.followAudioCheckbox.setEnabled(false);
-
-                break;
-            default:
-                break;
-        }
-
         adapter.setTranscriptMode(transcriptMode);
+
+        boolean isCopyMode = transcriptMode == TranscriptMode.Copy;
+        viewBinding.toolbar.getMenu().findItem(R.id.action_copy).setVisible(isCopyMode);
+        viewBinding.toolbar.getMenu().findItem(R.id.action_cancel_copy).setVisible(isCopyMode);
+        viewBinding.toolbar.getMenu().findItem(R.id.action_refresh).setVisible(!isCopyMode);
+
+        viewBinding.followAudioCheckbox.setChecked(!isCopyMode);
     }
 
     private void copySelectedText() {
@@ -193,8 +157,6 @@ public class TranscriptDialogFragment extends DialogFragment
     @Override
     public void onTranscriptLongClicked(int position, TranscriptSegment seg) {
         if (transcriptMode != TranscriptMode.Copy) {
-            viewBinding.followAudioCheckbox.setChecked(false);
-
             setTranscriptMode(TranscriptMode.Copy);
             adapter.toggleSelection(position);
         }
@@ -260,12 +222,6 @@ public class TranscriptDialogFragment extends DialogFragment
 
         viewBinding.progLoading.setVisibility(View.GONE);
         adapter.setMedia(media);
-        ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.INVISIBLE);
-        if (!TextUtils.isEmpty(((FeedMedia) media).getItem().getTranscriptUrl())) {
-            ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.VISIBLE);
-            ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE).setEnabled(true);
-            ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE).setClickable(true);
-        }
     }
 
     public void scrollToPosition(int pos) {
