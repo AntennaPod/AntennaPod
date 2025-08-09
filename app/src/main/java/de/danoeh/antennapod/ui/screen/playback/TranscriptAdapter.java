@@ -18,7 +18,6 @@ import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.transcript.TranscriptViewholder;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import org.apache.commons.lang3.ObjectUtils;
 import org.greenrobot.eventbus.EventBus;
