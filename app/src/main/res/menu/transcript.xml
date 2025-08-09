@@ -7,7 +7,7 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/action_copy"
-        android:title="@string/copy_label"
+        android:title="@string/copy_to_clipboard"
         android:icon="@drawable/ic_copy"
         app:showAsAction="always" />
     <item

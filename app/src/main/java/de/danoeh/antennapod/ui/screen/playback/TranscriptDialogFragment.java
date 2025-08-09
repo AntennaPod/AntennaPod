@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -79,22 +80,7 @@ public class TranscriptDialogFragment extends DialogFragment
         });
 
         viewBinding.toolbar.inflateMenu(R.menu.transcript);
-        viewBinding.toolbar.setOnMenuItemClickListener(item -> {
-            int id = item.getItemId();
-            if (id == R.id.action_refresh) {
-                viewBinding.progLoading.setVisibility(View.VISIBLE);
-                loadMediaInfo(true);
-                return true;
-            } else if (id == R.id.action_copy) {
-                copySelectedText();
-                setActionMode(false);
-                return true;
-            } else if (id == R.id.action_cancel_copy) {
-                setActionMode(false);
-                return true;
-            }
-            return false;
-        });
+        viewBinding.toolbar.setOnMenuItemClickListener(this::onMenuItemClick);
 
         viewBinding.followAudioCheckbox.setChecked(true);
         viewBinding.progLoading.setVisibility(View.VISIBLE);
@@ -104,9 +90,7 @@ public class TranscriptDialogFragment extends DialogFragment
                 .setView(viewBinding.getRoot())
                 .setNegativeButton(R.string.close_label, null)
                 .create();
-        dialog.setOnShowListener(dialog1 -> {
-            setActionMode(false);
-        });
+        setActionMode(false);
         return dialog;
     }
 
@@ -122,7 +106,7 @@ public class TranscriptDialogFragment extends DialogFragment
         String selectedText = adapter.getSelectedText();
         ClipboardManager clipboardManager = ContextCompat.getSystemService(requireContext(), ClipboardManager.class);
         if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", selectedText));
+            clipboardManager.setPrimaryClip(ClipData.newPlainText(getString(R.string.transcript), selectedText));
         }
         if (Build.VERSION.SDK_INT <= 32) {
             EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
@@ -257,4 +241,20 @@ public class TranscriptDialogFragment extends DialogFragment
         EventBus.getDefault().unregister(this);
     }
 
+    private boolean onMenuItemClick(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_refresh) {
+            viewBinding.progLoading.setVisibility(View.VISIBLE);
+            loadMediaInfo(true);
+            return true;
+        } else if (id == R.id.action_copy) {
+            copySelectedText();
+            setActionMode(false);
+            return true;
+        } else if (id == R.id.action_cancel_copy) {
+            setActionMode(false);
+            return true;
+        }
+        return false;
+    }
 }

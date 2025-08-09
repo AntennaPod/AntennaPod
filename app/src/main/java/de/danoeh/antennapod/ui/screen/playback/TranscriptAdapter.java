@@ -131,7 +131,6 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
             holder.viewContent.setAlpha(0.5f);
             holder.viewTimecode.setAlpha(0.5f);
         }
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -186,17 +185,8 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
         notifyItemChanged(pos);
     }
 
-    public void selectAll() {
-        for (int position = 0; position < getItemCount(); position++) {
-            if (!selectedPositions.contains(position)) {
-                selectedPositions.add(position);
-                notifyItemChanged(position);
-            }
-        }
-    }
-
     public String getSelectedText() {
-        if (inActionMode != true) {
+        if (!inActionMode) {
             return null;
         }
         Transcript transcript = media.getTranscript();
