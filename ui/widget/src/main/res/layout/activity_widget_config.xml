@@ -108,6 +108,13 @@
                     android:layout_weight="1"
                     android:text="@string/skip_episode_label" />
 
+                <CheckBox
+                    android:id="@+id/ckCoverAsBcg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/cover_as_background" />
+
             </LinearLayout>
 
             <Button

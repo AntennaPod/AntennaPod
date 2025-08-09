@@ -26,6 +26,7 @@ dependencies {
     implementation project(":ui:common")
     implementation project(":ui:episodes")
     implementation project(':ui:i18n')
+    implementation project(':ui:glide')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
