@@ -90,16 +90,16 @@ public class TranscriptDialogFragment extends DialogFragment
                 .setView(viewBinding.getRoot())
                 .setNegativeButton(R.string.close_label, null)
                 .create();
-        setActionMode(false);
+        setMultiselectMode(false);
         return dialog;
     }
 
-    private void setActionMode(boolean actionMode) {
-        adapter.setActionMode(actionMode);
-        viewBinding.toolbar.getMenu().findItem(R.id.action_copy).setVisible(actionMode);
-        viewBinding.toolbar.getMenu().findItem(R.id.action_cancel_copy).setVisible(actionMode);
-        viewBinding.toolbar.getMenu().findItem(R.id.action_refresh).setVisible(!actionMode);
-        viewBinding.followAudioCheckbox.setChecked(!actionMode);
+    private void setMultiselectMode(boolean multiselectMode) {
+        adapter.setMultiselectMode(multiselectMode);
+        viewBinding.toolbar.getMenu().findItem(R.id.action_copy).setVisible(multiselectMode);
+        viewBinding.toolbar.getMenu().findItem(R.id.action_cancel_copy).setVisible(multiselectMode);
+        viewBinding.toolbar.getMenu().findItem(R.id.action_refresh).setVisible(!multiselectMode);
+        viewBinding.followAudioCheckbox.setChecked(!multiselectMode);
     }
 
     private void copySelectedText() {
@@ -115,7 +115,7 @@ public class TranscriptDialogFragment extends DialogFragment
 
     @Override
     public void onTranscriptClicked(int pos, TranscriptSegment segment) {
-        if (adapter.isActionMode()) {
+        if (adapter.isMultiselectMode()) {
             adapter.toggleSelection(pos);
         } else {
             long startTime = segment.getStartTime();
@@ -134,8 +134,8 @@ public class TranscriptDialogFragment extends DialogFragment
 
     @Override
     public void onTranscriptLongClicked(int position, TranscriptSegment seg) {
-        if (!adapter.isActionMode()) {
-            setActionMode(true);
+        if (!adapter.isMultiselectMode()) {
+            setMultiselectMode(true);
             adapter.toggleSelection(position);
         }
     }
@@ -249,10 +249,10 @@ public class TranscriptDialogFragment extends DialogFragment
             return true;
         } else if (id == R.id.action_copy) {
             copySelectedText();
-            setActionMode(false);
+            setMultiselectMode(false);
             return true;
         } else if (id == R.id.action_cancel_copy) {
-            setActionMode(false);
+            setMultiselectMode(false);
             return true;
         }
         return false;

@@ -33,7 +33,7 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
     private FeedMedia media;
     private int prevHighlightPosition = -1;
     private int highlightPosition = -1;
-    private boolean inActionMode = false;
+    private boolean inMultiselectMode = false;
     private final HashSet<Integer> selectedPositions = new HashSet<>();
 
     public TranscriptAdapter(Context context, SegmentClickListener segmentClickListener) {
@@ -55,19 +55,19 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
         notifyDataSetChanged();
     }
 
-    public void setActionMode(boolean actionMode) {
-        if (this.inActionMode == actionMode) {
+    public void setMultiselectMode(boolean multiselectMode) {
+        if (this.inMultiselectMode == multiselectMode) {
             return;
         }
-        this.inActionMode = actionMode;
-        if (!actionMode) {
+        this.inMultiselectMode = multiselectMode;
+        if (!multiselectMode) {
             selectedPositions.clear();
         }
         notifyDataSetChanged();
     }
 
-    public boolean isActionMode() {
-        return inActionMode;
+    public boolean isMultiselectMode() {
+        return inMultiselectMode;
     }
 
     @Override
@@ -75,7 +75,6 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
         if (media == null || media.getTranscript() == null) {
             return;
         }
-
         TranscriptSegment seg = media.getTranscript().getSegmentAt(position);
         holder.viewContent.setOnClickListener(v -> {
             if (segmentClickListener != null)  {
@@ -112,7 +111,7 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
             holder.viewContent.setText(seg.getWords());
         }
 
-        if (inActionMode) {
+        if (inMultiselectMode) {
             highlightViewHolder(holder, selectedPositions.contains(position));
         } else {
             highlightViewHolder(holder, position == highlightPosition);
@@ -186,7 +185,7 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
     }
 
     public String getSelectedText() {
-        if (!inActionMode) {
+        if (!inMultiselectMode) {
             return null;
         }
         Transcript transcript = media.getTranscript();
