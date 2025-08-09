@@ -184,6 +184,18 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
         notifyItemChanged(pos);
     }
 
+    public void selectAll() {
+        if (media == null || media.getTranscript() == null) {
+            return;
+        }
+        selectedPositions.clear();
+        int count = getItemCount();
+        for (int i = 0; i < count; i++) {
+            selectedPositions.add(i);
+        }
+        notifyDataSetChanged();
+    }
+
     public String getSelectedText() {
         if (!inMultiselectMode) {
             return null;

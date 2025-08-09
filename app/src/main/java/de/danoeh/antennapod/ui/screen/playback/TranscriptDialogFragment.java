@@ -98,6 +98,7 @@ public class TranscriptDialogFragment extends DialogFragment
         adapter.setMultiselectMode(multiselectMode);
         viewBinding.toolbar.getMenu().findItem(R.id.action_copy).setVisible(multiselectMode);
         viewBinding.toolbar.getMenu().findItem(R.id.action_cancel_copy).setVisible(multiselectMode);
+        viewBinding.toolbar.getMenu().findItem(R.id.action_select_all).setVisible(multiselectMode);
         viewBinding.toolbar.getMenu().findItem(R.id.action_refresh).setVisible(!multiselectMode);
         viewBinding.followAudioCheckbox.setChecked(!multiselectMode);
     }
@@ -253,6 +254,9 @@ public class TranscriptDialogFragment extends DialogFragment
             return true;
         } else if (id == R.id.action_cancel_copy) {
             setMultiselectMode(false);
+            return true;
+        } else if (id == R.id.action_select_all) {
+            adapter.selectAll();
             return true;
         }
         return false;

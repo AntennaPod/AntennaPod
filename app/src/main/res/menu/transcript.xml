@@ -11,6 +11,11 @@
         android:icon="@drawable/ic_copy"
         app:showAsAction="always" />
     <item
+        android:id="@+id/action_select_all"
+        android:title="@string/select_all_label"
+        android:icon="@drawable/ic_select_all"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_cancel_copy"
         android:title="@string/cancel_label"
         android:icon="@drawable/ic_close"
