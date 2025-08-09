@@ -1,0 +1,172 @@
+{
+  "segments": [
+    {
+      "startTime": 0.000,
+      "endTime": 0.800,
+      "body": "Audio content: 440Hz tone - 0.8s",
+      "speaker": ""
+    },
+    {
+      "startTime": 0.800,
+      "endTime": 0.920,
+      "body": "SILENCE: 120ms (120,000 microseconds)",
+      "speaker": ""
+    },
+    {
+      "startTime": 0.920,
+      "endTime": 2.420,
+      "body": "Audio content: 660Hz tone - 1.5s",
+      "speaker": ""
+    },
+    {
+      "startTime": 2.420,
+      "endTime": 2.700,
+      "body": "SILENCE: 280ms (280,000 microseconds)",
+      "speaker": ""
+    },
+    {
+      "startTime": 2.700,
+      "endTime": 3.300,
+      "body": "Audio content: 330Hz tone - 0.6s",
+      "speaker": ""
+    },
+    {
+      "startTime": 3.300,
+      "endTime": 3.650,
+      "body": "SILENCE: 350ms (350,000 microseconds)",
+      "speaker": ""
+    },
+    {
+      "startTime": 3.650,
+      "endTime": 5.550,
+      "body": "Audio content: 880Hz tone - 1.9s",
+      "speaker": ""
+    },
+    {
+      "startTime": 5.550,
+      "endTime": 5.730,
+      "body": "SILENCE: 180ms (180,000 microseconds)",
+      "speaker": ""
+    },
+    {
+      "startTime": 5.730,
+      "endTime": 6.130,
+      "body": "Audio content: 220Hz tone - 0.4s",
+      "speaker": ""
+    },
+    {
+      "startTime": 6.130,
+      "endTime": 6.350,
+      "body": "SILENCE: 220ms (220,000 microseconds)",
+      "speaker": ""
+    },
+    {
+      "startTime": 6.350,
+      "endTime": 7.550,
+      "body": "Audio content: 550Hz tone - 1.2s",
+      "speaker": ""
+    },
+    {
+      "startTime": 7.550,
+      "endTime": 7.700,
+      "body": "SILENCE: 150ms (150,000 microseconds)",
+      "speaker": ""
+    },
+    {
+      "startTime": 7.700,
+      "endTime": 8.600,
+      "body": "Audio content: 770Hz tone - 0.9s",
+      "speaker": ""
+    },
+    {
+      "startTime": 8.600,
+      "endTime": 8.910,
+      "body": "SILENCE: 310ms (310,000 microseconds)",
+      "speaker": ""
+    },
+    {
+      "startTime": 8.910,
+      "endTime": 10.610,
+      "body": "Audio content: 290Hz tone - 1.7s",
+      "speaker": ""
+    },
+    {
+      "startTime": 10.610,
+      "endTime": 10.800,
+      "body": "SILENCE: 190ms (190,000 microseconds)",
+      "speaker": ""
+    },
+    {
+      "startTime": 10.800,
+      "endTime": 11.300,
+      "body": "Audio content: 490Hz tone - 0.5s",
+      "speaker": ""
+    },
+    {
+      "startTime": 11.300,
+      "endTime": 11.560,
+      "body": "SILENCE: 260ms (260,000 microseconds)",
+      "speaker": ""
+    },
+    {
+      "startTime": 11.560,
+      "endTime": 12.660,
+      "body": "Audio content: 610Hz tone - 1.1s",
+      "speaker": ""
+    },
+    {
+      "startTime": 12.660,
+      "endTime": 12.800,
+      "body": "SILENCE: 140ms (140,000 microseconds)",
+      "speaker": ""
+    },
+    {
+      "startTime": 12.800,
+      "endTime": 14.200,
+      "body": "Audio content: 370Hz tone - 1.4s",
+      "speaker": ""
+    },
+    {
+      "startTime": 14.200,
+      "endTime": 14.530,
+      "body": "SILENCE: 330ms (330,000 microseconds)",
+      "speaker": ""
+    },
+    {
+      "startTime": 14.530,
+      "endTime": 15.230,
+      "body": "Audio content: 820Hz tone - 0.7s",
+      "speaker": ""
+    },
+    {
+      "startTime": 15.230,
+      "endTime": 15.400,
+      "body": "SILENCE: 170ms (170,000 microseconds)",
+      "speaker": ""
+    },
+    {
+      "startTime": 15.400,
+      "endTime": 17.000,
+      "body": "Audio content: 250Hz tone - 1.6s",
+      "speaker": ""
+    },
+    {
+      "startTime": 17.000,
+      "endTime": 17.290,
+      "body": "SILENCE: 290ms (290,000 microseconds)",
+      "speaker": ""
+    },
+    {
+      "startTime": 17.290,
+      "endTime": 17.590,
+      "body": "Audio content: 700Hz tone - 0.3s",
+      "speaker": ""
+    },
+    {
+      "startTime": 17.590,
+      "endTime": 17.800,
+      "body": "SILENCE: 210ms (210,000 microseconds)",
+      "speaker": ""
+    }
+  ]
+}

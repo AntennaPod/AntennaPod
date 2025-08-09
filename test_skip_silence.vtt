@@ -1,0 +1,29 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:01.000
+Audio content: High tone (800Hz)
+
+2
+00:00:01.000 --> 00:00:01.150
+SILENCE: 150ms (150,000 microseconds)
+
+3
+00:00:01.150 --> 00:00:02.650
+Audio content: Mid-high tone (600Hz)
+
+4
+00:00:02.650 --> 00:00:02.900
+SILENCE: 250ms (250,000 microseconds)
+
+5
+00:00:02.900 --> 00:00:03.900
+Audio content: Mid tone (400Hz)
+
+6
+00:00:03.900 --> 00:00:04.200
+SILENCE: 300ms (300,000 microseconds)
+
+7
+00:00:04.200 --> 00:00:05.200
+Audio content: Low tone (200Hz)

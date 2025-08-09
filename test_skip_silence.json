@@ -1,0 +1,46 @@
+{
+  "segments": [
+    {
+      "startTime": 0.000,
+      "endTime": 1.000,
+      "body": "Audio content: High tone (800Hz)",
+      "speaker": ""
+    },
+    {
+      "startTime": 1.000,
+      "endTime": 1.150,
+      "body": "SILENCE: 150ms (150,000 microseconds)",
+      "speaker": ""
+    },
+    {
+      "startTime": 1.150,
+      "endTime": 2.650,
+      "body": "Audio content: Mid-high tone (600Hz)",
+      "speaker": ""
+    },
+    {
+      "startTime": 2.650,
+      "endTime": 2.900,
+      "body": "SILENCE: 250ms (250,000 microseconds)",
+      "speaker": ""
+    },
+    {
+      "startTime": 2.900,
+      "endTime": 3.900,
+      "body": "Audio content: Mid tone (400Hz)",
+      "speaker": ""
+    },
+    {
+      "startTime": 3.900,
+      "endTime": 4.200,
+      "body": "SILENCE: 300ms (300,000 microseconds)",
+      "speaker": ""
+    },
+    {
+      "startTime": 4.200,
+      "endTime": 5.200,
+      "body": "Audio content: Low tone (200Hz)",
+      "speaker": ""
+    }
+  ]
+}

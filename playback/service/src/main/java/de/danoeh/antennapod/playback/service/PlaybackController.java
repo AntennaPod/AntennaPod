@@ -410,7 +410,7 @@ public abstract class PlaybackController {
         }
     }
 
-    public void setSkipSilence(boolean skipSilence) {
+    public void setSkipSilence(FeedPreferences.SkipSilence skipSilence) {
         if (playbackService != null) {
             playbackService.setSkipSilence(skipSilence);
         }
@@ -424,12 +424,11 @@ public abstract class PlaybackController {
         }
     }
 
-    public boolean getCurrentPlaybackSkipSilence() {
+    public FeedPreferences.SkipSilence getCurrentPlaybackSkipSilence() {
         if (playbackService != null) {
             return playbackService.getCurrentSkipSilence();
         } else {
-            return PlaybackSpeedUtils.getCurrentSkipSilencePreference(getMedia())
-                    == FeedPreferences.SkipSilence.AGGRESSIVE;
+            return PlaybackSpeedUtils.getCurrentSkipSilencePreference(getMedia());
         }
     }
 
