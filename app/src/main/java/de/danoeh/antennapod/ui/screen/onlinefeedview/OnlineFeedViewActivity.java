@@ -295,6 +295,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             FeedDatabaseWriter.updateFeed(this, feed, false);
             Feed feedFromDb = DBReader.getFeed(feed.getId(), false, 0, Integer.MAX_VALUE);
             feedFromDb.getPreferences().setKeepUpdated(false);
+            if (username != null && password != null) {
+                feedFromDb.getPreferences().setUsername(username);
+                feedFromDb.getPreferences().setPassword(password);
+            }
             DBWriter.setFeedPreferences(feedFromDb.getPreferences());
             emitter.onSuccess(feed.getId());
         })
