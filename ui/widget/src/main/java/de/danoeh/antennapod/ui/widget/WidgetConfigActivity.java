@@ -187,7 +187,7 @@ public class WidgetConfigActivity extends ToolbarActivity {
         editor.putBoolean(PlayerWidget.KEY_WIDGET_SKIP + appWidgetId, ckSkip.isChecked());
         editor.putBoolean(PlayerWidget.KEY_WIDGET_REWIND + appWidgetId, ckRewind.isChecked());
         editor.putBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + appWidgetId, ckFastForward.isChecked());
-        editor.putInt(PlayerWidget.KEY_WIDGET_BACKGROUND + appWidgetId, ckCoverAsBcg.isChecked()? 1 : 0);
+        editor.putInt(PlayerWidget.KEY_WIDGET_BACKGROUND + appWidgetId, ckCoverAsBcg.isChecked() ? 1 : 0);
         editor.apply();
 
         Intent resultValue = new Intent();
