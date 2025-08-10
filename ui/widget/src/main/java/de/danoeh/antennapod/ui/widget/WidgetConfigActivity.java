@@ -112,7 +112,8 @@ public class WidgetConfigActivity extends ToolbarActivity {
         ckRewind.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + appWidgetId, false));
         ckFastForward.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + appWidgetId, false));
         ckSkip.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + appWidgetId, false));
-        ckCoverAsBcg.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_COVER_AS_BCG + appWidgetId, false));
+        int backgroundType = prefs.getInt(PlayerWidget.KEY_WIDGET_BACKGROUND + appWidgetId, 0);
+        ckCoverAsBcg.setChecked(backgroundType == 1);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             int color = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + appWidgetId, PlayerWidget.DEFAULT_COLOR);
             int opacity = Color.alpha(color) * 100 / 0xFF;
@@ -137,23 +138,23 @@ public class WidgetConfigActivity extends ToolbarActivity {
 
         if (ckCoverAsBcg.isChecked()) {
             widgetPreview.findViewById(R.id.imgvCover).setVisibility(View.GONE);
-            Drawable icon = null;
-            RequestOptions option1 = new RequestOptions()
+            widgetPreview.findViewById(R.id.imgvBackground).setVisibility(View.VISIBLE);
+            RequestOptions option = new RequestOptions()
                     .dontAnimate()
                     .transform(new FitCenter(), new FastBlurTransformation())
                     .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
 
             Glide.with(this)
                     .asDrawable()
-                    .load(Feed.PREFIX_GENERATIVE_COVER + "default-cover-image")
-                    .apply(option1)
+                    .load(Feed.PREFIX_GENERATIVE_COVER)
+                    .apply(option)
                     .into(new CustomTarget<Drawable>() {
                         @Override
                         public void onResourceReady(
                                 @NonNull Drawable resource,
                                 @Nullable Transition<? super Drawable> transition
                         ) {
-                            widgetPreview.findViewById(R.id.widgetLayout).setBackground(resource);
+                            widgetPreview.findViewById(R.id.imgvBackground).setBackground(resource);
                         }
 
                         @Override
@@ -168,6 +169,7 @@ public class WidgetConfigActivity extends ToolbarActivity {
             findViewById(R.id.widget_opacity_textView).setVisibility(View.GONE);
         } else {
             widgetPreview.findViewById(R.id.imgvCover).setVisibility(View.VISIBLE);
+            widgetPreview.findViewById(R.id.imgvBackground).setVisibility(View.GONE);
             widgetPreview.findViewById(R.id.widgetLayout).setBackgroundColor(PlayerWidget.DEFAULT_COLOR);
             opacitySeekBar.setVisibility(View.VISIBLE);
             findViewById(R.id.textView).setVisibility(View.VISIBLE);
@@ -185,7 +187,7 @@ public class WidgetConfigActivity extends ToolbarActivity {
         editor.putBoolean(PlayerWidget.KEY_WIDGET_SKIP + appWidgetId, ckSkip.isChecked());
         editor.putBoolean(PlayerWidget.KEY_WIDGET_REWIND + appWidgetId, ckRewind.isChecked());
         editor.putBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + appWidgetId, ckFastForward.isChecked());
-        editor.putBoolean(PlayerWidget.KEY_WIDGET_COVER_AS_BCG + appWidgetId, ckCoverAsBcg.isChecked());
+        editor.putInt(PlayerWidget.KEY_WIDGET_BACKGROUND + appWidgetId, ckCoverAsBcg.isChecked()? 1 : 0);
         editor.apply();
 
         Intent resultValue = new Intent();

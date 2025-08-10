@@ -150,7 +150,8 @@ public abstract class WidgetUpdater {
             boolean showRewind = prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + id, false);
             boolean showFastForward = prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + id, false);
             boolean showSkip = prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + id, false);
-            boolean showCoverAsBcg = prefs.getBoolean(PlayerWidget.KEY_WIDGET_COVER_AS_BCG + id, false);
+            int backgroundType = prefs.getInt(PlayerWidget.KEY_WIDGET_BACKGROUND + id, 0);
+            boolean showCoverAsBcg = backgroundType == 1;
 
             if (showPlaybackSpeed || showRewind || showSkip || showFastForward) {
                 views.setInt(R.id.extendedButtonsContainer, "setVisibility", View.VISIBLE);
@@ -178,7 +179,6 @@ public abstract class WidgetUpdater {
             if (showCoverAsBcg) {
                 views.setViewVisibility(R.id.imgvCover, View.GONE);
                 views.setViewVisibility(R.id.imgvBackground, View.VISIBLE);
-                //views.setViewVisibility(R.id.imgvBlurOverlay, View.VISIBLE);
 
                 try {
                     icon = Glide.with(context)
@@ -186,7 +186,7 @@ public abstract class WidgetUpdater {
                             .load(widgetState.media.getImageLocation())
                             .apply(option1)
                             .submit()
-                            .get(5000, TimeUnit.MILLISECONDS);
+                            .get(500, TimeUnit.MILLISECONDS);
                     views.setImageViewBitmap(R.id.imgvBackground, icon);
 
                 } catch (Throwable tr1) {
@@ -196,7 +196,7 @@ public abstract class WidgetUpdater {
                                 .load(ImageResourceUtils.getFallbackImageLocation(widgetState.media))
                                 .apply(option1)
                                 .submit()
-                                .get(5000, TimeUnit.MILLISECONDS);
+                                .get(500, TimeUnit.MILLISECONDS);
                         views.setImageViewBitmap(R.id.imgvBackground, icon);
                     } catch (Throwable tr2) {
                         Log.e(TAG, "Error loading the media icon for the widget", tr2);
@@ -206,7 +206,6 @@ public abstract class WidgetUpdater {
             } else {
                 views.setViewVisibility(R.id.imgvCover, View.VISIBLE);
                 views.setViewVisibility(R.id.imgvBackground, View.GONE);
-                //views.setViewVisibility(R.id.imgvBlurOverlay, View.GONE);
                 int iconSize = context.getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
 
                 try {

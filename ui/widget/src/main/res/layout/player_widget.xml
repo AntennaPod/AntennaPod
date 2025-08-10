@@ -22,13 +22,6 @@
             android:visibility="gone"
             android:adjustViewBounds="true" />
 
-        <!--        <ImageView-->
-        <!--                android:id="@+id/imgvBlurOverlay"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="match_parent"-->
-        <!--                android:background="#80000000"-->
-        <!--                android:contentDescription="@string/blur_image"-->
-        <!--                android:visibility="gone" />-->
         <ImageButton
             android:id="@+id/butPlay"
             android:layout_width="@android:dimen/app_icon_size"
@@ -64,7 +57,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:layout_marginStart="12dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -75,6 +67,7 @@
                     android:text="@string/no_media_playing_label"
                     android:textColor="@color/white"
                     android:textSize="16sp"
+                    android:layout_marginStart="10dp"
                     android:textStyle="bold" />
 
                 <TextView
