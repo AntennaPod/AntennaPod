@@ -45,3 +45,4 @@ libs
 gradle.properties
 *.keystore
 *.p12
+.qodo/
