@@ -17,10 +17,8 @@
             android:id="@+id/imgvBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="@string/cover_as_background"
-            android:scaleType="fitXY"
             android:visibility="gone"
-            android:adjustViewBounds="true" />
+            android:importantForAccessibility="no" />
 
         <ImageButton
             android:id="@+id/butPlay"
@@ -50,13 +48,15 @@
                 android:layout_height="match_parent"
                 android:src="@mipmap/ic_launcher"
                 android:importantForAccessibility="no"
-                android:layout_margin="12dp" />
+                android:layout_marginStart="12dp"
+                android:layout_marginVertical="12dp" />
 
             <LinearLayout
                 android:id="@+id/layout_center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
+                android:layout_marginStart="12dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -67,7 +67,6 @@
                     android:text="@string/no_media_playing_label"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:layout_marginStart="10dp"
                     android:textStyle="bold" />
 
                 <TextView
