@@ -5,30 +5,25 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
-
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.ui.common.ToolbarActivity;
 import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class WidgetConfigActivity extends ToolbarActivity {
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -139,31 +134,12 @@ public class WidgetConfigActivity extends ToolbarActivity {
         if (ckCoverAsBcg.isChecked()) {
             widgetPreview.findViewById(R.id.imgvCover).setVisibility(View.GONE);
             widgetPreview.findViewById(R.id.imgvBackground).setVisibility(View.VISIBLE);
-            RequestOptions option = new RequestOptions()
-                    .dontAnimate()
-                    .transform(new FitCenter(), new FastBlurTransformation())
-                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
-
-            Glide.with(this)
-                    .asDrawable()
-                    .load(Feed.PREFIX_GENERATIVE_COVER)
-                    .apply(option)
-                    .into(new CustomTarget<Drawable>() {
-                        @Override
-                        public void onResourceReady(
-                                @NonNull Drawable resource,
-                                @Nullable Transition<? super Drawable> transition
-                        ) {
-                            widgetPreview.findViewById(R.id.imgvBackground).setBackground(resource);
-                        }
-
-                        @Override
-                        public void onLoadCleared(@Nullable Drawable placeholder) {
-                            // Optional: Handle cleanup
-                        }
-                    });
-
-
+            int iconSize = 4 * getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
+            Bitmap icon = loadCover(iconSize, new RequestOptions()
+                    .dontAnimate().transform(new FitCenter(), new FastBlurTransformation()));
+            if (icon != null) {
+                ((ImageView) widgetPreview.findViewById(R.id.imgvBackground)).setImageBitmap(icon);
+            }
             opacitySeekBar.setVisibility(View.GONE);
             findViewById(R.id.textView).setVisibility(View.GONE);
             findViewById(R.id.widget_opacity_textView).setVisibility(View.GONE);
@@ -174,6 +150,27 @@ public class WidgetConfigActivity extends ToolbarActivity {
             opacitySeekBar.setVisibility(View.VISIBLE);
             findViewById(R.id.textView).setVisibility(View.VISIBLE);
             findViewById(R.id.widget_opacity_textView).setVisibility(View.VISIBLE);
+            int iconSize = getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
+            int radius = getResources().getDimensionPixelSize(R.dimen.widget_inner_radius);
+            Bitmap icon = loadCover(iconSize, new RequestOptions()
+                    .dontAnimate().transform(new FitCenter(), new RoundedCorners(radius)));
+            if (icon != null) {
+                ((ImageView) widgetPreview.findViewById(R.id.imgvCover)).setImageBitmap(icon);
+            }
+        }
+    }
+
+    private Bitmap loadCover(int iconSize, RequestOptions options) {
+        try {
+            return Glide.with(this)
+                    .asBitmap()
+                    .load(Feed.PREFIX_GENERATIVE_COVER)
+                    .apply(options)
+                    .submit(iconSize, iconSize)
+                    .get(500, TimeUnit.MILLISECONDS);
+        } catch (Throwable tr) {
+            tr.printStackTrace();
+            return null;
         }
     }
 
