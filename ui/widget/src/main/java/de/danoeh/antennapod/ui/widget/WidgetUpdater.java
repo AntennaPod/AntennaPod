@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -165,77 +164,57 @@ public abstract class WidgetUpdater {
                 views.setInt(R.id.butPlay, "setVisibility", View.VISIBLE);
             }
 
-            Bitmap icon;
-            int radius = context.getResources().getDimensionPixelSize(R.dimen.widget_inner_radius);
-            RequestOptions option1 = new RequestOptions()
-                    .dontAnimate()
-                    .transform(new FitCenter(), new FastBlurTransformation())
-                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
-
-            RequestOptions option2 = new RequestOptions()
-                    .dontAnimate()
-                    .transform(new FitCenter(), new RoundedCorners(radius));
-
             if (showCoverAsBcg) {
                 views.setViewVisibility(R.id.imgvCover, View.GONE);
                 views.setViewVisibility(R.id.imgvBackground, View.VISIBLE);
-
-                try {
-                    icon = Glide.with(context)
-                            .asBitmap()
-                            .load(widgetState.media.getImageLocation())
-                            .apply(option1)
-                            .submit()
-                            .get(500, TimeUnit.MILLISECONDS);
+                int iconSize = 4 * context.getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
+                Bitmap icon = loadCover(context, iconSize, widgetState.media, new RequestOptions()
+                        .dontAnimate().transform(new FitCenter(), new FastBlurTransformation()));
+                if (icon != null) {
                     views.setImageViewBitmap(R.id.imgvBackground, icon);
-
-                } catch (Throwable tr1) {
-                    try {
-                        icon = Glide.with(context)
-                                .asBitmap()
-                                .load(ImageResourceUtils.getFallbackImageLocation(widgetState.media))
-                                .apply(option1)
-                                .submit()
-                                .get(500, TimeUnit.MILLISECONDS);
-                        views.setImageViewBitmap(R.id.imgvBackground, icon);
-                    } catch (Throwable tr2) {
-                        Log.e(TAG, "Error loading the media icon for the widget", tr2);
-                        views.setImageViewResource(R.id.imgvBackground, R.mipmap.ic_launcher);
-                    }
+                } else {
+                    views.setViewVisibility(R.id.imgvBackground, View.GONE);
                 }
             } else {
                 views.setViewVisibility(R.id.imgvCover, View.VISIBLE);
                 views.setViewVisibility(R.id.imgvBackground, View.GONE);
                 int iconSize = context.getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
-
-                try {
-                    icon = Glide.with(context)
-                            .asBitmap()
-                            .load(widgetState.media.getImageLocation())
-                            .apply(option2)
-                            .submit(iconSize, iconSize)
-                            .get(500, TimeUnit.MILLISECONDS);
+                int radius = context.getResources().getDimensionPixelSize(R.dimen.widget_inner_radius);
+                Bitmap icon = loadCover(context, iconSize, widgetState.media, new RequestOptions()
+                        .dontAnimate().transform(new FitCenter(), new RoundedCorners(radius)));
+                if (icon != null) {
                     views.setImageViewBitmap(R.id.imgvCover, icon);
-                } catch (Throwable tr1) {
-                    try {
-                        icon = Glide.with(context)
-                                .asBitmap()
-                                .load(ImageResourceUtils.getFallbackImageLocation(widgetState.media))
-                                .apply(option2)
-                                .submit(iconSize, iconSize)
-                                .get(500, TimeUnit.MILLISECONDS);
-                        views.setImageViewBitmap(R.id.imgvCover, icon);
-                    } catch (Throwable tr2) {
-                        Log.e(TAG, "Error loading the media icon for the widget", tr2);
-                        views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher);
-                    }
+                } else {
+                    views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher);
                 }
-
-                int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);
-                views.setInt(R.id.widgetLayout, "setBackgroundColor", backgroundColor);
             }
+            int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);
+            views.setInt(R.id.widgetLayout, "setBackgroundColor", backgroundColor);
 
             manager.updateAppWidget(id, views);
+        }
+    }
+
+    private static Bitmap loadCover(Context context, int iconSize, Playable media, RequestOptions options) {
+        try {
+            return Glide.with(context)
+                    .asBitmap()
+                    .load(media.getImageLocation())
+                    .apply(options)
+                    .submit(iconSize, iconSize)
+                    .get(500, TimeUnit.MILLISECONDS);
+        } catch (Throwable tr1) {
+            try {
+                return Glide.with(context)
+                        .asBitmap()
+                        .load(ImageResourceUtils.getFallbackImageLocation(media))
+                        .apply(options)
+                        .submit(iconSize, iconSize)
+                        .get(500, TimeUnit.MILLISECONDS);
+            } catch (Throwable tr2) {
+                Log.e(TAG, "Error loading the media icon for the widget", tr2);
+                return null;
+            }
         }
     }
 
