@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
+            android:importantForAccessibility="no"
             app:srcCompat="@drawable/teaser" />
 
         <include
