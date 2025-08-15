@@ -132,16 +132,13 @@ public class WidgetConfigActivity extends ToolbarActivity {
             widgetPreview.findViewById(R.id.imgvCover).setVisibility(View.GONE);
             widgetPreview.findViewById(R.id.imgvBackground).setVisibility(View.VISIBLE);
             loadCover(R.id.imgvBackground, new FastBlurTransformation());
-            opacitySeekBar.setVisibility(View.GONE);
-            findViewById(R.id.textView).setVisibility(View.GONE);
-            findViewById(R.id.widget_opacity_textView).setVisibility(View.GONE);
+            opacitySeekBar.setEnabled(false);
+            opacitySeekBar.setProgress(100);
         } else {
             widgetPreview.findViewById(R.id.imgvCover).setVisibility(View.VISIBLE);
             widgetPreview.findViewById(R.id.imgvBackground).setVisibility(View.GONE);
             widgetPreview.findViewById(R.id.widgetLayout).setBackgroundColor(PlayerWidget.DEFAULT_COLOR);
-            opacitySeekBar.setVisibility(View.VISIBLE);
-            findViewById(R.id.textView).setVisibility(View.VISIBLE);
-            findViewById(R.id.widget_opacity_textView).setVisibility(View.VISIBLE);
+            opacitySeekBar.setEnabled(true);
             int radius = getResources().getDimensionPixelSize(R.dimen.widget_inner_radius);
             loadCover(R.id.imgvCover, new RoundedCorners(radius));
         }
