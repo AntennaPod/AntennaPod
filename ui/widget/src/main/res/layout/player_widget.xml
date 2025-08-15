@@ -45,8 +45,9 @@
             <ImageView
                 android:id="@+id/imgvCover"
                 android:layout_width="@android:dimen/app_icon_size"
-                android:layout_height="match_parent"
+                android:layout_height="@android:dimen/app_icon_size"
                 android:src="@mipmap/ic_launcher"
+                android:layout_gravity="center_vertical"
                 android:importantForAccessibility="no"
                 android:layout_marginStart="12dp"
                 android:layout_marginVertical="12dp" />

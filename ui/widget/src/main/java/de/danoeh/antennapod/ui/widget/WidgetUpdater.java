@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -167,8 +168,10 @@ public abstract class WidgetUpdater {
                 views.setViewVisibility(R.id.imgvCover, View.GONE);
                 views.setViewVisibility(R.id.imgvBackground, View.VISIBLE);
                 int iconSize = 4 * context.getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
-                Bitmap icon = loadCover(context, iconSize, widgetState.media, new RequestOptions()
-                        .dontAnimate().transform(new FitCenter(), new FastBlurTransformation()));
+                Bitmap icon = null;
+                if (widgetState.media != null) {
+                    icon = loadCover(context, iconSize, widgetState.media, new FastBlurTransformation());
+                }
                 if (icon != null) {
                     views.setImageViewBitmap(R.id.imgvBackground, icon);
                 } else {
@@ -179,8 +182,10 @@ public abstract class WidgetUpdater {
                 views.setViewVisibility(R.id.imgvBackground, View.GONE);
                 int iconSize = context.getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
                 int radius = context.getResources().getDimensionPixelSize(R.dimen.widget_inner_radius);
-                Bitmap icon = loadCover(context, iconSize, widgetState.media, new RequestOptions()
-                        .dontAnimate().transform(new FitCenter(), new RoundedCorners(radius)));
+                Bitmap icon = null;
+                if (widgetState.media != null) {
+                    icon = loadCover(context, iconSize, widgetState.media, new RoundedCorners(radius));
+                }
                 if (icon != null) {
                     views.setImageViewBitmap(R.id.imgvCover, icon);
                 } else {
@@ -194,12 +199,13 @@ public abstract class WidgetUpdater {
         }
     }
 
-    private static Bitmap loadCover(Context context, int iconSize, Playable media, RequestOptions options) {
+    private static Bitmap loadCover(Context context, int iconSize, Playable media, Transformation<Bitmap> transform) {
         try {
             return Glide.with(context)
                     .asBitmap()
                     .load(media.getImageLocation())
-                    .apply(options)
+                    .dontAnimate()
+                    .transform(transform)
                     .submit(iconSize, iconSize)
                     .get(500, TimeUnit.MILLISECONDS);
         } catch (Throwable tr1) {
@@ -207,7 +213,8 @@ public abstract class WidgetUpdater {
                 return Glide.with(context)
                         .asBitmap()
                         .load(ImageResourceUtils.getFallbackImageLocation(media))
-                        .apply(options)
+                        .dontAnimate()
+                        .transform(transform)
                         .submit(iconSize, iconSize)
                         .get(500, TimeUnit.MILLISECONDS);
             } catch (Throwable tr2) {
