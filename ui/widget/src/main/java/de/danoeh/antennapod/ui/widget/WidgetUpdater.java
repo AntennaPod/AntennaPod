@@ -148,7 +148,7 @@ public abstract class WidgetUpdater {
             boolean showRewind = prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + id, false);
             boolean showFastForward = prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + id, false);
             boolean showSkip = prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + id, false);
-            boolean showCoverAsBcg = prefs.getBoolean(PlayerWidget.KEY_WIDGET_BACKGROUND + id, false);
+            boolean showCoverAsBcg = prefs.getBoolean(PlayerWidget.KEY_WIDGET_COVER_BACKGROUND + id, false);
 
             if (showPlaybackSpeed || showRewind || showSkip || showFastForward) {
                 views.setInt(R.id.extendedButtonsContainer, "setVisibility", View.VISIBLE);
