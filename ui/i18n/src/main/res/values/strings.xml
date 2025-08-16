@@ -295,6 +295,7 @@
     <string name="download_running">Download running</string>
     <string name="download_error_details">Details</string>
     <string name="download_log_details_message">%1$s \n\nTechnical reason: \n%2$s \n\nFile URL:\n%3$s</string>
+    <string name="download_log_open_feed">Open</string>
     <string name="download_error_retrying">Download of \"%1$s\" failed. Will be retried later.</string>
     <string name="download_error_not_retrying">Download of \"%1$s\" failed.</string>
     <string name="download_error_tap_for_details">Tap to view details.</string>
