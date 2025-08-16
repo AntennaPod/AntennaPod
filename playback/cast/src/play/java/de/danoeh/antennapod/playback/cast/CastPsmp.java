@@ -27,6 +27,7 @@ import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
@@ -184,7 +185,8 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
         }
 
         setBuffering(state == MediaStatus.PLAYER_STATE_BUFFERING);
-        setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentMedia), false);
+        setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentMedia),
+                getSkipSilence());
 
         switch (state) {
             case MediaStatus.PLAYER_STATE_PLAYING:
@@ -418,7 +420,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     }
 
     @Override
-    public void setPlaybackParams(float speed, boolean skipSilence) {
+    public void setPlaybackParams(final float speed, final FeedPreferences.SkipSilence skipSilence) {
         double playbackRate = (float) Math.max(MediaLoadOptions.PLAYBACK_RATE_MIN,
                 Math.min(MediaLoadOptions.PLAYBACK_RATE_MAX, speed));
         EventBus.getDefault().post(new SpeedChangedEvent((float) playbackRate));
@@ -432,9 +434,9 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     }
 
     @Override
-    public boolean getSkipSilence() {
+    public FeedPreferences.SkipSilence getSkipSilence() {
         // Don't think this is supported
-        return false;
+        return FeedPreferences.SkipSilence.OFF;
     }
 
     @Override

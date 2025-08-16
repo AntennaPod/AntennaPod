@@ -59,8 +59,9 @@ public class FeedPreferences implements Serializable {
         }
     }
 
+    // AGGRESSIVE (2) GLOBAL(1), OFF(0) was a previous value, we do not want to change the value
     public enum SkipSilence {
-        OFF(0), GLOBAL(1), AGGRESSIVE(2);
+        GLOBAL(1), OFF(0), MILD(10), MEDIUM(11), AGGRESSIVE(2);
 
         public final int code;
 
