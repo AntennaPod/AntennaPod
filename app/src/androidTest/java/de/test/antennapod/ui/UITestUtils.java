@@ -183,7 +183,7 @@ public class UITestUtils {
 
             queue.add(feed.getItems().get(0));
             if (feed.getItems().get(1).hasMedia()) {
-                feed.getItems().get(1).getMedia().setPlaybackCompletionDate(new Date());
+                feed.getItems().get(1).getMedia().setLastPlayedTimeHistory(new Date());
             }
         }
         localFeedDataAdded = true;

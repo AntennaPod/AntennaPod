@@ -96,7 +96,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         FragmentContainerView containerView = new FragmentContainerView(getContext());
         containerView.setId(View.generateViewId());
         viewBinding.homeContainer.addView(containerView);
-        getChildFragmentManager().beginTransaction().add(containerView.getId(), section).commit();
+        getChildFragmentManager().beginTransaction().replace(containerView.getId(), section).commit();
     }
 
     private Fragment getSection(String tag) {

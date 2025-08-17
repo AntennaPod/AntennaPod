@@ -13,8 +13,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -87,6 +89,7 @@ public class SubscriptionFragment extends Fragment
 
     private Disposable disposable;
     private SharedPreferences prefs;
+    private static Pair<Integer, Integer> scrollPosition = null;
 
     private FloatingActionButton subscriptionAddButton;
     private FloatingSelectMenu floatingSelectMenu;
@@ -178,7 +181,7 @@ public class SubscriptionFragment extends Fragment
         floatingSelectMenu = root.findViewById(R.id.floatingSelectMenu);
         floatingSelectMenu.inflate(R.menu.nav_feed_action_speeddial);
         floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
-            new FeedMultiSelectActionHandler((MainActivity) getActivity(), subscriptionAdapter.getSelectedItems())
+            new FeedMultiSelectActionHandler(getActivity(), subscriptionAdapter.getSelectedItems())
                     .handleAction(menuItem.getItemId());
             return true;
         });
@@ -283,6 +286,12 @@ public class SubscriptionFragment extends Fragment
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        scrollPosition = getScrollPosition();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
@@ -316,6 +325,7 @@ public class SubscriptionFragment extends Fragment
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     result -> {
+                        final boolean firstLoaded = listItems == null || listItems.isEmpty();
                         if (listItems != null && listItems.size() > result.size()) {
                             // We have fewer items. This can result in items being selected that are no longer visible.
                             subscriptionAdapter.endSelectMode();
@@ -323,6 +333,9 @@ public class SubscriptionFragment extends Fragment
                         listItems = result;
                         progressBar.setVisibility(View.GONE);
                         subscriptionAdapter.setItems(result);
+                        if (firstLoaded) {
+                            restoreScrollPosition(scrollPosition);
+                        }
                         emptyView.updateVisibility();
                     }, error -> {
                         Log.e(TAG, Log.getStackTraceString(error));
@@ -415,5 +428,21 @@ public class SubscriptionFragment extends Fragment
         floatingSelectMenu.setVisibility(View.VISIBLE);
         subscriptionAddButton.setVisibility(View.GONE);
         updateFilterVisibility();
+    }
+
+    public Pair<Integer, Integer> getScrollPosition() {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) subscriptionRecycler.getLayoutManager();
+        int firstItem = layoutManager.findFirstVisibleItemPosition();
+        View firstItemView = layoutManager.findViewByPosition(firstItem);
+        int topOffset = firstItemView == null ? 0 : firstItemView.getTop();
+        return new Pair<>(firstItem, topOffset);
+    }
+
+    public void restoreScrollPosition(Pair<Integer, Integer> scrollPosition) {
+        if (scrollPosition == null || (scrollPosition.first == 0 && scrollPosition.second == 0)) {
+            return;
+        }
+        LinearLayoutManager layoutManager = (LinearLayoutManager) subscriptionRecycler.getLayoutManager();
+        layoutManager.scrollToPositionWithOffset(scrollPosition.first, scrollPosition.second);
     }
 }

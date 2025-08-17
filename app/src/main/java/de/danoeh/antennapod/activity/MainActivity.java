@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -16,9 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -74,6 +75,7 @@ import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
 import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
 import de.danoeh.antennapod.ui.screen.rating.RatingDialogManager;
 import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
+import de.danoeh.antennapod.ui.view.BottomSheetBackPressedCallback;
 import de.danoeh.antennapod.ui.view.LockableBottomSheetBehavior;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
@@ -95,9 +97,7 @@ public class MainActivity extends CastEnabledActivity {
     public static final String PREF_NAME = "MainActivityPrefs";
     public static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
 
-    public static final String EXTRA_FEED_ID = "fragment_feed_id";
     public static final String EXTRA_REFRESH_ON_START = "refresh_on_start";
-    public static final String EXTRA_ADD_TO_BACK_STACK = "add_to_back_stack";
     public static final String KEY_GENERATED_VIEW_ID = "generated_view_id";
 
     private @Nullable DrawerLayout drawerLayout;
@@ -105,17 +105,11 @@ public class MainActivity extends CastEnabledActivity {
     private BottomNavigation bottomNavigation;
     private View navDrawer;
     private LockableBottomSheetBehavior sheetBehavior;
+    private BottomSheetBackPressedCallback bottomSheetBackPressedCallback;
+    private OnBackPressedCallback openDefaultPageBackPressedCallback;
     private RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
     private int lastTheme = 0;
     private Insets systemBarInsets = Insets.NONE;
-
-    @NonNull
-    public static Intent getIntentToOpenFeed(@NonNull Context context, long feedId) {
-        Intent intent = new Intent(context.getApplicationContext(), MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_FEED_ID, feedId);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        return intent;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -156,6 +150,7 @@ public class MainActivity extends CastEnabledActivity {
             bottomNavigation = null;
             setNavDrawerSize();
         }
+        openDefaultPageBackPressedCallback = new OpenDefaultPageBackPressedCallback();
 
         // Consume navigation bar insets - we apply them in setPlayerVisible()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_view), (v, insets) -> {
@@ -198,6 +193,7 @@ public class MainActivity extends CastEnabledActivity {
         sheetBehavior = (LockableBottomSheetBehavior) BottomSheetBehavior.from(bottomSheet);
         sheetBehavior.setHideable(false);
         sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
+        bottomSheetBackPressedCallback = new BottomSheetBackPressedCallback(false, sheetBehavior, bottomSheet);
 
         FeedUpdateManager.getInstance().restartUpdateAlarm(this, false);
         SynchronizationQueue.getInstance().syncIfNotSyncedRecently();
@@ -286,13 +282,16 @@ public class MainActivity extends CastEnabledActivity {
         public void onStateChanged(@NonNull View view, int state) {
             if (state == BottomSheetBehavior.STATE_COLLAPSED) {
                 onSlide(view, 0.0f);
+                bottomSheetBackPressedCallback.setEnabled(false);
             } else if (state == BottomSheetBehavior.STATE_EXPANDED) {
                 onSlide(view, 1.0f);
+                bottomSheetBackPressedCallback.setEnabled(true);
             } else if (state == BottomSheetBehavior.STATE_HIDDEN) {
                 IntentUtils.sendLocalBroadcast(MainActivity.this,
                         PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
                 PlaybackPreferences.writeNoMediaPlaying();
                 setPlayerVisible(false);
+                bottomSheetBackPressedCallback.setEnabled(false);
             }
         }
 
@@ -482,8 +481,11 @@ public class MainActivity extends CastEnabledActivity {
         }
     }
 
-    public void loadChildFragment(Fragment fragment, TransitionEffect transition) {
+    public void loadChildFragment(Fragment fragment, TransitionEffect transition, String navigationTag) {
         Validate.notNull(fragment);
+        if (navigationTag != null && bottomNavigation != null) {
+            bottomNavigation.updateSelectedItem(navigationTag);
+        }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         if (transition == TransitionEffect.FADE) {
@@ -503,6 +505,10 @@ public class MainActivity extends CastEnabledActivity {
                 .commit();
     }
 
+    public void loadChildFragment(Fragment fragment, TransitionEffect transition) {
+        loadChildFragment(fragment, transition, null);
+    }
+
     public void loadChildFragment(Fragment fragment) {
         loadChildFragment(fragment, TransitionEffect.NONE);
     }
@@ -515,6 +521,11 @@ public class MainActivity extends CastEnabledActivity {
         }
     }
 
+    private void restartActivity() {
+        finish();
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -522,6 +533,11 @@ public class MainActivity extends CastEnabledActivity {
             drawerToggle.onConfigurationChanged(newConfig);
         }
         setNavDrawerSize();
+
+        @StyleRes int requiredTheme = ThemeSwitcher.getNoTitleTheme(this);
+        if (requiredTheme != lastTheme) {
+            restartActivity();
+        }
     }
 
     private void setNavDrawerSize() {
@@ -558,6 +574,8 @@ public class MainActivity extends CastEnabledActivity {
         if (bottomNavigation != null) {
             bottomNavigation.onStart();
         }
+        getOnBackPressedDispatcher().addCallback(this, openDefaultPageBackPressedCallback);
+        getOnBackPressedDispatcher().addCallback(this, bottomSheetBackPressedCallback);
     }
 
     @Override
@@ -568,8 +586,7 @@ public class MainActivity extends CastEnabledActivity {
         boolean hasBottomNavigation = bottomNavigation != null;
         if (lastTheme != ThemeSwitcher.getNoTitleTheme(this)
                 || hasBottomNavigation != UserPreferences.isBottomNavigationEnabled()) {
-            finish();
-            startActivity(new Intent(this, MainActivity.class));
+            restartActivity();
         }
         if (UserPreferences.getHiddenDrawerItems().contains(NavDrawerFragment.getLastNavFragment(this))) {
             loadFragment(UserPreferences.getDefaultPage(), null);
@@ -617,25 +634,23 @@ public class MainActivity extends CastEnabledActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        if (isDrawerOpen() && drawerLayout != null) {
-            drawerLayout.closeDrawer(navDrawer);
-        } else if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        } else if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
-            super.onBackPressed();
-        } else {
-            String toPage = UserPreferences.getDefaultPage();
-            if (NavDrawerFragment.getLastNavFragment(this).equals(toPage)
-                    || UserPreferences.DEFAULT_PAGE_REMEMBER.equals(toPage)) {
-                if (UserPreferences.backButtonOpensDrawer() && drawerLayout != null && bottomNavigation == null) {
-                    drawerLayout.openDrawer(navDrawer);
-                } else {
-                    super.onBackPressed();
-                }
+    class OpenDefaultPageBackPressedCallback extends OnBackPressedCallback {
+        OpenDefaultPageBackPressedCallback() {
+            super(true);
+        }
+
+        @Override
+        public void handleOnBackPressed() {
+            String defaultPage = UserPreferences.getDefaultPage();
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                getSupportFragmentManager().popBackStack();
+            } else if (!NavDrawerFragment.getLastNavFragment(MainActivity.this).equals(defaultPage)
+                    && !UserPreferences.DEFAULT_PAGE_REMEMBER.equals(defaultPage)) {
+                loadFragment(defaultPage, null);
+            } else if (UserPreferences.backButtonOpensDrawer() && drawerLayout != null && bottomNavigation == null) {
+                drawerLayout.openDrawer(navDrawer);
             } else {
-                loadFragment(toPage, null);
+                finish();
             }
         }
     }
@@ -643,8 +658,17 @@ public class MainActivity extends CastEnabledActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MessageEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
+        Snackbar snackbar;
+        if (getBottomSheet().getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+            snackbar = Snackbar.make(findViewById(R.id.main_content_view), event.message, Snackbar.LENGTH_LONG);
+            if (findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE) {
+                snackbar.setAnchorView(findViewById(R.id.audioplayerFragment));
+            }
+        } else {
+            snackbar = Snackbar.make(findViewById(android.R.id.content), event.message, Snackbar.LENGTH_LONG);
+        }
+        snackbar.show();
 
-        Snackbar snackbar = showSnackbarAbovePlayer(event.message, Snackbar.LENGTH_LONG);
         if (event.action != null) {
             snackbar.setAction(event.actionText, v -> event.action.accept(this));
         }
@@ -653,15 +677,14 @@ public class MainActivity extends CastEnabledActivity {
     private void handleNavIntent() {
         Log.d(TAG, "handleNavIntent()");
         Intent intent = getIntent();
-        if (intent.hasExtra(EXTRA_FEED_ID)) {
-            long feedId = intent.getLongExtra(EXTRA_FEED_ID, 0);
+        if (intent.hasExtra(MainActivityStarter.EXTRA_FEED_ID)) {
+            long feedId = intent.getLongExtra(MainActivityStarter.EXTRA_FEED_ID, 0);
             Bundle args = intent.getBundleExtra(MainActivityStarter.EXTRA_FRAGMENT_ARGS);
             if (feedId > 0) {
-                boolean addToBackStack = intent.getBooleanExtra(EXTRA_ADD_TO_BACK_STACK, false);
-                if (addToBackStack) {
-                    loadChildFragment(FeedItemlistFragment.newInstance(feedId));
-                } else {
+                if (intent.getBooleanExtra(MainActivityStarter.EXTRA_CLEAR_BACK_STACK, false)) {
                     loadFeedFragmentById(feedId, args);
+                } else {
+                    loadChildFragment(FeedItemlistFragment.newInstance(feedId));
                 }
             }
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -669,11 +692,10 @@ public class MainActivity extends CastEnabledActivity {
             String tag = intent.getStringExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG);
             Bundle args = intent.getBundleExtra(MainActivityStarter.EXTRA_FRAGMENT_ARGS);
             if (tag != null) {
-                Fragment fragment = createFragmentInstance(tag, args);
-                if (intent.getBooleanExtra(MainActivityStarter.EXTRA_ADD_TO_BACK_STACK, false)) {
-                    loadChildFragment(fragment);
+                if (intent.getBooleanExtra(MainActivityStarter.EXTRA_CLEAR_BACK_STACK, false)) {
+                    loadFragment(tag, null);
                 } else {
-                    loadFragment(fragment);
+                    loadChildFragment(createFragmentInstance(tag, args), TransitionEffect.NONE, tag);
                 }
             }
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -702,24 +724,6 @@ public class MainActivity extends CastEnabledActivity {
         super.onNewIntent(intent);
         setIntent(intent);
         handleNavIntent();
-    }
-
-    public Snackbar showSnackbarAbovePlayer(CharSequence text, int duration) {
-        Snackbar s;
-        if (getBottomSheet().getState() == BottomSheetBehavior.STATE_COLLAPSED) {
-            s = Snackbar.make(findViewById(R.id.main_content_view), text, duration);
-            if (findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE) {
-                s.setAnchorView(findViewById(R.id.audioplayerFragment));
-            }
-        } else {
-            s = Snackbar.make(findViewById(android.R.id.content), text, duration);
-        }
-        s.show();
-        return s;
-    }
-
-    public Snackbar showSnackbarAbovePlayer(int text, int duration) {
-        return showSnackbarAbovePlayer(getResources().getText(text), duration);
     }
 
     /**
@@ -765,8 +769,7 @@ public class MainActivity extends CastEnabledActivity {
                         loadFragment(SubscriptionFragment.TAG, null);
                         break;
                     default:
-                        showSnackbarAbovePlayer(getString(R.string.app_action_not_found, feature),
-                                Snackbar.LENGTH_LONG);
+                        EventBus.getDefault().post(new MessageEvent(getString(R.string.app_action_not_found, feature)));
                         return;
                 }
                 break;

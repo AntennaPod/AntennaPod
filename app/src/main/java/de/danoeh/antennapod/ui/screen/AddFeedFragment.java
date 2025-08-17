@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +24,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.widget.NestedScrollView;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
-import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
@@ -45,6 +46,7 @@ import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Collections;
 
@@ -103,8 +105,7 @@ public class AddFeedFragment extends Fragment {
                 chooseOpmlImportPathLauncher.launch("*/*");
             } catch (ActivityNotFoundException e) {
                 e.printStackTrace();
-                ((MainActivity) getActivity())
-                        .showSnackbarAbovePlayer(R.string.unable_to_start_system_file_manager, Snackbar.LENGTH_LONG);
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.unable_to_start_system_file_manager)));
             }
         });
 
@@ -113,8 +114,7 @@ public class AddFeedFragment extends Fragment {
                 addLocalFolderLauncher.launch(null);
             } catch (ActivityNotFoundException e) {
                 e.printStackTrace();
-                ((MainActivity) getActivity())
-                        .showSnackbarAbovePlayer(R.string.unable_to_start_system_file_manager, Snackbar.LENGTH_LONG);
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.unable_to_start_system_file_manager)));
             }
         });
         viewBinding.searchButton.setOnClickListener(view -> performSearch());
@@ -133,6 +133,8 @@ public class AddFeedFragment extends Fragment {
         builder.setTitle(R.string.add_podcast_by_url);
         final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
         dialogBinding.textInput.setHint(R.string.rss_address);
+        dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_TEXT
+                | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_VARIATION_URI);
 
         ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
         final ClipData clipData = clipboard.getPrimaryClip();
@@ -188,8 +190,7 @@ public class AddFeedFragment extends Fragment {
                             ((MainActivity) getActivity()).loadChildFragment(fragment);
                         }, error -> {
                             Log.e(TAG, Log.getStackTraceString(error));
-                            ((MainActivity) getActivity())
-                                    .showSnackbarAbovePlayer(error.getLocalizedMessage(), Snackbar.LENGTH_LONG);
+                            EventBus.getDefault().post(new MessageEvent(error.getLocalizedMessage()));
                         });
     }
 

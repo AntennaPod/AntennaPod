@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -19,9 +20,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
 import de.danoeh.antennapod.databinding.OnlinefeedviewActivityBinding;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.model.download.DownloadResult;
@@ -51,6 +54,9 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,7 +65,6 @@ import java.util.List;
 import java.util.Map;
 
 import static de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter.ARG_FEEDURL;
-import static de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter.ARG_STARTED_FROM_SEARCH;
 import static de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter.ARG_WAS_MANUAL_URL;
 
 /**
@@ -129,6 +134,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         isPaused = false;
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -141,6 +147,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -288,6 +295,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             FeedDatabaseWriter.updateFeed(this, feed, false);
             Feed feedFromDb = DBReader.getFeed(feed.getId(), false, 0, Integer.MAX_VALUE);
             feedFromDb.getPreferences().setKeepUpdated(false);
+            if (username != null && password != null) {
+                feedFromDb.getPreferences().setUsername(username);
+                feedFromDb.getPreferences().setPassword(password);
+            }
             DBWriter.setFeedPreferences(feedFromDb.getPreferences());
             emitter.onSuccess(feed.getId());
         })
@@ -358,9 +369,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         // feed.getId() is always 0, we have to retrieve the id from the feed list from the database
         MainActivityStarter mainActivityStarter = new MainActivityStarter(this);
         mainActivityStarter.withOpenFeed(feedId);
-        if (getIntent().getBooleanExtra(ARG_STARTED_FROM_SEARCH, false)) {
-            mainActivityStarter.withAddToBackStack();
-        }
         finish();
         startActivity(mainActivityStarter.getIntent());
     }
@@ -399,6 +407,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         builder.setTitle(R.string.edit_url_menu);
         final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
         if (downloader != null) {
+            dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_TEXT
+                    | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_VARIATION_URI);
             dialogBinding.textInput.setText(downloader.getDownloadRequest().getSource());
             dialogBinding.textInput.setHint(R.string.rss_address);
         }
@@ -470,6 +480,16 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             dialog = ab.show();
         });
         return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(MessageEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), event.message, Snackbar.LENGTH_LONG);
+        snackbar.show();
+        if (event.action != null) {
+            snackbar.setAction(event.actionText, v -> event.action.accept(this));
+        }
     }
 
     private class FeedViewAuthenticationDialog extends AuthenticationDialog {

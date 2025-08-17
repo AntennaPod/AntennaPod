@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Activity and fragment titles-->
-  <string name="feed_update_receiver_name">सब्सक्रिप्शन अपडेट करें</string>
+  <string name="feed_update_receiver_name">सारे सब्सक्रिप्शन अपडेट करें</string>
     <string name="statistics_label">आंकड़े</string>
-    <string name="add_feed_label">पॉडकास्ट जोड़ें</string>
+    <string name="add_feed_label">सब्सक्राइब करें</string>
     <string name="episodes_label">एपिसोड</string>
-    <string name="home_label">होम</string>
+    <string name="home_label">होमपेज</string>
     <string name="queue_label">कतार</string>
     <string name="inbox_label">इनबॉक्स</string>
     <string name="favorite_episodes_label">मनपसंद</string>
     <string name="settings_label">सेटिंग</string>
     <string name="downloads_label">डाउनलोड</string>
-    <string name="downloads_log_label">लॉग डाउनलोड</string>
+    <string name="downloads_log_label">डाउनलोड लॉग</string>
     <string name="subscriptions_label">सब्सक्रिप्शन</string>
     <string name="subscriptions_list_label">सब्सक्रिप्शन लिस्ट</string>
     <string name="cancel_download_label">डाउनलोड कैंसिल करें</string>
     <string name="playback_history_label">प्लेबैक लॉग</string>
     <string name="years_statistics_label">साल</string>
     <string name="notification_pref_fragment">नोटिफिकेशन</string>
-    <string name="current_playing_episode">ये</string>
+    <string name="current_playing_episode">चालू</string>
     <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" नहीं मिला</string>
     <!--SwipeActions-->
@@ -26,25 +26,25 @@
     <string name="swipeactions_summary">लिस्ट में एपिसोड स्वाइप करने पर क्या होगा चुनें</string>
     <string name="swipe_right">राइट स्वाइप</string>
     <string name="swipe_left">लेफ्ट स्वाइप</string>
-    <string name="enable_swipeactions">इस स्क्रीन के लिए स्वाइप एक्शन शुरू करें</string>
+    <string name="enable_swipeactions">इस स्क्रीन के लिए स्वाइप एक्शन ऑन करें</string>
     <string name="change_setting">बदलें</string>
     <string name="individual_subscription">सब्सक्रिप्शन</string>
     <!--Statistics fragment-->
-  <string name="statistics_include_marked">उन एपिसोड का टाइम शामिल करें जिन्हे सुना हुआ मार्क किया गया है</string>
-    <string name="statistics_speed_not_counted">नोट: प्लेबैक स्पीड को कभी भी ध्यान में नहीं रखा जाता।</string>
+  <string name="statistics_include_marked">उन एपिसोड का टाइम शामिल करें जिन्हे सिर्फ सुना हुआ मार्क किया गया है</string>
+    <string name="statistics_speed_not_counted">नोट: प्लेबैक स्पीड को कभी भी इस्तेमाल नहीं किया जाता।</string>
     <string name="statistics_from">से:</string>
     <string name="statistics_to">तक:</string>
     <string name="statistics_today">आज</string>
-    <string name="statistics_filter_all_time">पूरा समय</string>
+    <string name="statistics_filter_all_time">सब कुछ</string>
     <string name="statistics_filter_past_year">पिछले साल</string>
-    <string name="statistics_reset_data">आंकड़े खाली करें</string>
-    <string name="statistics_reset_data_msg">ये सारे एपिसोड का टाइम लॉग साफ कर देगा। पक्का आगे जाएं?</string>
-    <string name="statistics_counting_range">%1$s से %2$s के बीच सुने हैं</string>
-    <string name="statistics_counting_total">कुल सुना</string>
+    <string name="statistics_reset_data">आंकड़े रीसेट करें</string>
+    <string name="statistics_reset_data_msg">ये सारे एपिसोड का टाइम लॉग साफ कर देगा। करें?</string>
+    <string name="statistics_counting_range">%1$s से %2$s के बीच सुने गए</string>
+    <string name="statistics_counting_total">कुल सुने गए</string>
     <!--Home fragment-->
-  <string name="home_surprise_title">चौंक गए?</string>
+  <string name="home_surprise_title">चौंक जाओ</string>
     <string name="home_classics_title">अपने क्लासिक देखें</string>
-    <string name="home_continue_title">सुनना जारी रखें</string>
+    <string name="home_continue_title">और सुनें</string>
     <string name="home_new_title">क्या नया है</string>
     <string name="home_downloads_title">डाउनलोड मैनेज करें</string>
     <string name="home_welcome_title">एंटीनापॉड में वेलकम!</string>
@@ -174,42 +174,16 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">आपका वीपीएन ऐप एक (मीटर्ड कनेक्शन वाला) मोबाइल नेटवर्क होने का दिखावा कर रहा है। मोबाइल डाटा कनेक्शन पर पॉडकास्ट को रीफ्रेश करना सेटिंग में बंद है।\n\nफिर भी रीफ्रेश करें? इस दिक्कत को ठीक करने के लिए अपने वीपीएन ऐप के डेवलपर से बात करें।</string>
     <!--actions on feeditems-->
   <string name="download_label">डाउनलोड करें</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">%d एपिसोड डाउनलोड कर रहे।</item>
-        <item quantity="other">%d एपिसोड डाउनलोड कर रहे।</item>
-    </plurals>
     <string name="play_label">सुनें</string>
     <string name="pause_label">रोकें</string>
     <string name="stream_label">स्ट्रीम करें</string>
     <string name="delete_label">हटाएं</string>
     <string name="remove_inbox_label">इनबॉक्स से हटाएं</string>
-    <string name="removed_inbox_label">इनबॉक्स से हटाया गया</string>
-    <string name="mark_read_label">सुना हुआ मार्क करें</string>
     <string name="toggle_played_label">सुना हुआ मार्क बदलें</string>
-    <string name="marked_as_played_label">सुना हुआ मार्क करें</string>
-    <string name="marked_as_unplayed_label">अनसुना मार्क किया गया</string>
     <string name="mark_read_no_media_label">पढ़ा हुआ मार्क करें</string>
-    <string name="play_this_to_seek_position">एपिसोड में किसी पोज़ीशन पर जाने के लिए आपको एपिसोड चलाना होगा</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">%d एपिसोड चलाया गया मार्क किया गया।</item>
-        <item quantity="other">%d एपिसोड चलाए गए मार्क किए गए।</item>
-    </plurals>
-    <string name="mark_unread_label">नहीं चलाया गया मार्क करें</string>
     <string name="mark_unread_label_no_media">अनपढ़ा मार्क करें</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d एपिसोड सुना नहीं गया मार्क किया गया।</item>
-        <item quantity="other">%d एपिसोड नहीं सुने गए मार्क किए गए।</item>
-    </plurals>
     <string name="add_to_queue_label">कतार में जोड़ें</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d एपिसोड कतार में जोड़ा गया।</item>
-        <item quantity="other">%d एपिसोड कतार में जोड़े गए।</item>
-    </plurals>
     <string name="remove_from_queue_label">कतार से हटाएं</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d एपिसोड कतार से हटाया गया।</item>
-        <item quantity="other">%d एपिसोड कतार से हटाए गए।</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d एपिसोड इनबॉक्स से हटाया गया।</item>
         <item quantity="other">%d एपिसोड इनबॉक्स से हटाए गए।</item>
@@ -218,9 +192,6 @@
     <string name="remove_from_favorite_label">\"पसंदीदा\" सूची से हटाए</string>
     <string name="visit_website_label">वेबसाइट पर जाएँ</string>
     <string name="skip_episode_label">एपिसोड छोड़ें</string>
-    <string name="reset_position">प्लेबैक स्थान रीसेट करें</string>
-    <string name="no_items_selected">कोई चीज़ नहीं चुनी गई</string>
-    <string name="delete_local_feed_warning_body">हटाने से एंटेनापॉड से एपिसोड हट जाता है और आपके डिवाइस स्टोरेज से मीडिया फ़ाइल हट जाती है। इसे एंटेनापॉड के माध्यम से दोबारा डाउनलोड नहीं किया जा सकता है।</string>
     <!--Download messages and labels-->
   <string name="download_successful">सफल</string>
     <string name="download_pending">डाउनलोड बाकि</string>
@@ -594,7 +565,6 @@
     <string name="feed_tags_label">लेबल</string>
     <string name="feed_tags_summary">इस पॉडकास्ट के टैग बदलें ताकि आपकी सदस्यताओं को संगठित करने में मदद मिले।</string>
     <string name="feed_folders_include_root">ये पॉडकास्ट मेन लिस्ट में दिखाएं</string>
-    <string name="auto_download_settings_label">ऑटो डाउनलोड सेटिंग</string>
     <string name="episode_filters_label">एपिसोड फिल्टर</string>
     <string name="episode_filters_description">शब्दों की लिस्ट जिसका इस्तेमाल ऑटो डाउनलोड में एपिसोड शामिल करने या ना करने के लिए किया जाएगा</string>
     <string name="add_term">शब्द डालें</string>
@@ -604,8 +574,6 @@
     <string name="keep_updated">अप-टू-डेट रखें</string>
     <string name="keep_updated_summary">सारे पॉडकास्ट को (अपनेआप) रिफ्रेश करते टाइम इस पॉडकास्ट को भी करें</string>
     <string name="edit_url_menu">फीड यूआरएल बदलें</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">एकल उद्देश्य वाले ऐप्स से सदस्यताओं का आयात किया जा रहा है…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">पॉडकास्ट सर्च करें…</string>
     <string name="search_itunes_label">एप्पल पॉडकास्ट में सर्च करें</string>
@@ -689,4 +657,14 @@
     <string name="shortcut_select_subscription">सदस्यता चुनें</string>
     <string name="add_shortcut">शॉर्टकट जोड़ें</string>
     <string name="home_no_recent_unplayed_episodes_text">आपने सभी नए एपिसोद सुन लिए है। यहां कुछ नया नहीं है ;)</string>
+    <string name="playback_history_label_short">इतिहास</string>
+    <string name="queue_label_more">कतार</string>
+    <string name="home_continue_empty_text">आप एपिसोड को डाउनलोड करके या उन्हें देर तक दबाकर और \"कतार में जोड़ें\" का चयन करके जोड़ सकते हैं।</string>
+    <string name="add_feed_label_short">सब्सक्राइब करें</string>
+    <string name="episodes_label_short">एपिसोड</string>
+    <string name="home_label_short">होम</string>
+    <string name="queue_label_short">कतार</string>
+    <string name="inbox_label_short">इनबॉक्स</string>
+    <string name="downloads_label_short">डाउनलोड</string>
+    <string name="subscriptions_label_short">सब्सक्रिप्शन</string>
 </resources>

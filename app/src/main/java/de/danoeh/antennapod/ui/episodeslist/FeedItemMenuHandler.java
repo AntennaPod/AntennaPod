@@ -11,13 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Arrays;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
@@ -34,6 +33,7 @@ import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.view.LocalDeleteModal;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Handles interactions with the FeedItemMenu.
@@ -55,7 +55,7 @@ public class FeedItemMenuHandler {
      * @return Returns true if selectedItem is not null.
      */
     public static boolean onPrepareMenu(Menu menu, List<FeedItem> selectedItems, int... excludeIds) {
-        if (menu == null || selectedItems == null) {
+        if (menu == null || selectedItems == null || selectedItems.isEmpty() || selectedItems.get(0) == null) {
             return false;
         }
         boolean canSkip = false;
@@ -116,8 +116,8 @@ public class FeedItemMenuHandler {
             setItemTitle(menu, R.id.mark_read_item, R.string.mark_read_no_media_label);
             setItemTitle(menu, R.id.mark_unread_item, R.string.mark_unread_label_no_media);
         } else {
-            setItemTitle(menu, R.id.mark_read_item, R.string.mark_read_label);
-            setItemTitle(menu, R.id.mark_unread_item, R.string.mark_unread_label);
+            setItemTitle(menu, R.id.mark_read_item, R.string.mark_as_played_label);
+            setItemTitle(menu, R.id.mark_unread_item, R.string.mark_as_unplayed_label);
         }
 
         setItemVisibility(menu, R.id.add_to_favorites_item, canAddFavorite);
@@ -232,8 +232,8 @@ public class FeedItemMenuHandler {
             IntentUtils.openInBrowser(context, selectedItem.getLinkWithFallback());
         } else if (menuItemId == R.id.open_social_interact_url) {
             new MaterialAlertDialogBuilder(context)
-                    .setTitle(R.string.visit_social_interact_query_title)
-                    .setMessage(context.getString(R.string.visit_social_interact_query_message,
+                    .setTitle(R.string.visit_social_interact_confirm_dialog_title)
+                    .setMessage(context.getString(R.string.visit_social_interact_confirm_dialog_message,
                             selectedItem.getSocialInteractUrl()))
                     .setPositiveButton(R.string.confirm_label, (dialog, which) ->
                             IntentUtils.openInBrowser(context, selectedItem.getSocialInteractUrl()))
@@ -290,30 +290,26 @@ public class FeedItemMenuHandler {
             case FeedItem.UNPLAYED:
                 if (item.getPlayState() == FeedItem.NEW) {
                     //was new
-                    playStateStringRes = R.string.removed_inbox_label;
+                    playStateStringRes = R.string.removed_from_inbox_message;
                 } else {
                     //was played
-                    playStateStringRes = R.string.marked_as_unplayed_label;
+                    playStateStringRes = R.string.marked_as_unplayed_message;
                 }
                 break;
             case FeedItem.PLAYED:
-                playStateStringRes = R.string.marked_as_played_label;
+                playStateStringRes = R.string.marked_as_played_message;
                 break;
         }
 
-        int duration = Snackbar.LENGTH_LONG;
-
         if (showSnackbar) {
-            ((MainActivity) fragment.getActivity()).showSnackbarAbovePlayer(
-                    playStateStringRes, duration)
-                    .setAction(fragment.getString(R.string.undo), v -> {
+            EventBus.getDefault().post(new MessageEvent(fragment.getString(playStateStringRes),
+                    context -> {
                         DBWriter.markItemPlayed(item.getPlayState(), item.getId());
                         // don't forget to cancel the thing that's going to remove the media
                         h.removeCallbacks(r);
-                    });
+                    }, fragment.getString(R.string.undo)));
         }
-
-        h.postDelayed(r, (int) Math.ceil(duration * 1.05f));
+        h.postDelayed(r, 2000);
     }
 
     public static void removeNewFlagWithUndo(@NonNull Fragment fragment, FeedItem item) {

@@ -171,7 +171,7 @@ public class LocalFeedUpdaterTest {
         Feed feed = verifySingleFeedInDatabase();
         List<FeedItem> feedItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(),
                 SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
-        assertEquals("track1.mp3", feedItems.get(0).getTitle());
+        assertEquals("track1", feedItems.get(0).getTitle());
     }
 
     @Test

@@ -90,8 +90,15 @@ public class AutomaticDatabaseExportWorker extends Worker {
             }
         }
         Collections.sort(files, (o1, o2) -> Long.compare(o2.lastModified(), o1.lastModified()));
+        boolean hasDeletionFailed = false;
         for (int i = 5; i < files.size(); i++) {
-            files.get(i).delete();
+            boolean isDeleted = files.get(i).delete();
+            if (!hasDeletionFailed && !isDeleted) {
+                hasDeletionFailed = true;
+            }
+        }
+        if (hasDeletionFailed) {
+            throw new IOException("Unable to delete some database backup files");
         }
     }
 

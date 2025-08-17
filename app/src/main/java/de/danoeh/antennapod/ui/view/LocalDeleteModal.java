@@ -24,7 +24,7 @@ public class LocalDeleteModal {
 
         new MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.delete_label)
-                .setMessage(R.string.delete_local_feed_warning_body)
+                .setMessage(R.string.delete_local_feed_confirmation_dialog_message)
                 .setPositiveButton(R.string.delete_label, (dialog, which) -> deleteCommand.run())
                 .setNegativeButton(R.string.cancel_label, null)
                 .show();

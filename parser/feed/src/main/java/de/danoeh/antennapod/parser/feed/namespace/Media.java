@@ -41,7 +41,7 @@ public class Media extends Namespace {
     @Override
     public SyndElement handleElementStart(String localName, HandlerState state,
                                           Attributes attributes) {
-        if (CONTENT.equals(localName)) {
+        if (CONTENT.equals(localName) && state.getCurrentItem() != null) {
             String url = attributes.getValue(DOWNLOAD_URL);
             String defaultStr = attributes.getValue(DEFAULT);
             String medium = attributes.getValue(MEDIUM);
@@ -61,16 +61,17 @@ public class Media extends Namespace {
                 // Apparently, some publishers explicitly specify the audio file as an image
                 validTypeImage = true;
                 mimeType = "image/*";
+            } else if (MimeTypeUtils.isMediaFile(mimeType)) {
+                validTypeMedia = true;
+            } else if (MimeTypeUtils.isImageFile(mimeType)) {
+                validTypeImage = true;
             } else {
-                if (MimeTypeUtils.isMediaFile(mimeType)) {
-                    validTypeMedia = true;
-                } else if (MimeTypeUtils.isImageFile(mimeType)) {
-                    validTypeImage = true;
-                }
+                // Workaround for broken feeds
+                validTypeMedia = state.getCurrentItem().getMedia() == null;
+                mimeType = "audio/*";
             }
 
-            if (state.getCurrentItem() != null && (state.getCurrentItem().getMedia() == null || isDefault)
-                    && url != null && validTypeMedia) {
+            if ((state.getCurrentItem().getMedia() == null || isDefault) && url != null && validTypeMedia) {
                 long size = 0;
                 String sizeStr = attributes.getValue(SIZE);
                 if (!TextUtils.isEmpty(sizeStr)) {

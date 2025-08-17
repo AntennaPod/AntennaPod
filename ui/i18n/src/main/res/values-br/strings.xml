@@ -183,57 +183,16 @@
     <string name="confirm_mobile_feed_refresh_dialog_message">Ar fed freskaat ar podskignoù dre ar rouedad hezoug n\'eo ket bet aotred en arventennoù.\n\nC\'hoant o peus freskaat memestra ?</string>
     <!--actions on feeditems-->
   <string name="download_label">Pellgargañ</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">O pellgargañ %d rann</item>
-        <item quantity="two">O pellgargañ %d rann</item>
-        <item quantity="few">O pellgargañ %d rann</item>
-        <item quantity="many">O pellgargañ %d rann</item>
-        <item quantity="other">O pellgargañ %d rann</item>
-    </plurals>
     <string name="play_label">Lenn</string>
     <string name="pause_label">Ehan</string>
     <string name="stream_label">Streaming</string>
     <string name="delete_label">Dilemel</string>
     <string name="remove_inbox_label">Tennañ eus ar voest degemer</string>
-    <string name="removed_inbox_label">Tennet eo bet eus ar voest degemer</string>
-    <string name="mark_read_label">Merkañ evel lennet</string>
     <string name="toggle_played_label">Lakaat da gemm stad al lenn</string>
-    <string name="marked_as_played_label">Lakaet war-well evel lennet</string>
-    <string name="marked_as_unplayed_label">Lakaet war-well evel lakaet da baouez</string>
     <string name="mark_read_no_media_label">Merkañ evel lennet</string>
-    <string name="play_this_to_seek_position">Evit kemmañ al lec\'hiadur e rankit lenn ar rann</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">%d rann merket evel lennet</item>
-        <item quantity="two">%d rann merket evel lennet</item>
-        <item quantity="few">%d rann merket evel lennet</item>
-        <item quantity="many">%d rann merket evel lennet</item>
-        <item quantity="other">%d rann merket evel lennet</item>
-    </plurals>
-    <string name="mark_unread_label">Merkañ evel anlennet</string>
     <string name="mark_unread_label_no_media">Merkañ evel anlennet</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d rann merket evel anlennet.</item>
-        <item quantity="two">%d rann merket evel anlennet.</item>
-        <item quantity="few">%d rann merket evel anlennet.</item>
-        <item quantity="many">%d rann merket evel anlennet.</item>
-        <item quantity="other">%d rann merket evel anlennet.</item>
-    </plurals>
     <string name="add_to_queue_label">Ouzhpennañ el lost</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d rann ouzhpennet el lost</item>
-        <item quantity="two">%d rann ouzhpennet el lost</item>
-        <item quantity="few">%d rann ouzhpennet el lost</item>
-        <item quantity="many">%d rann ouzhpennet el lost</item>
-        <item quantity="other">%d rann ouzhpennet el lost</item>
-    </plurals>
     <string name="remove_from_queue_label">Dilemel eus al lost</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d rann tennet eus al lost</item>
-        <item quantity="two">%d rann tennet eus al lost</item>
-        <item quantity="few">%d rann tennet eus al lost</item>
-        <item quantity="many">%d rann tennet eus al lost</item>
-        <item quantity="other">%d rann tennet eus al lost</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d rann tennet eus ar voest degemer</item>
         <item quantity="two">%d rann tennet eus ar voest degemer</item>
@@ -245,8 +204,6 @@
     <string name="remove_from_favorite_label">Dilemel eus ar sinedoù</string>
     <string name="visit_website_label">Gweladenniñ al lec\'hienn</string>
     <string name="skip_episode_label">Tremen a rann</string>
-    <string name="reset_position">Adderaouekaat al lec\'hiadur lenn</string>
-    <string name="no_items_selected">N\'eus bet diuzet netra</string>
     <!--Download messages and labels-->
   <string name="download_successful">echuet</string>
     <string name="download_pending">Pellgargadur war c\'hortoz</string>
@@ -608,7 +565,6 @@
     <string name="feed_tags_label">Tikedennoù</string>
     <string name="feed_tags_summary">Kemmañ tikedennoù ar podskignad-mañ evit sikour urzhiañ ho koumanantoù.</string>
     <string name="feed_folders_include_root">Diskouez ar podkast-mañ er roll pennañ</string>
-    <string name="auto_download_settings_label">Arventennoù ar pellgargañ emgefreek</string>
     <string name="episode_filters_label">Sil ar rannoù</string>
     <string name="episode_filters_description">Roll an termenoù implijet evit dibab ma rank ur rann bezañ ebarzhet pe laosket a-gostez pa vez pellgarget ent emgefreek</string>
     <string name="add_term">Ouzhpennañ un termen</string>
@@ -618,8 +574,6 @@
     <string name="keep_updated">Leuskel hizivaet</string>
     <string name="keep_updated_summary">Ebarzhiñ ar podskignad pa vez hizivaet an holl bodskignadoù</string>
     <string name="edit_url_menu">Kemm URL ar wazh</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Oc\'h enporzhiañ ar c\'houmanantoù diwar arloadoù gant un arver unel…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Klask ur podskignad…</string>
     <string name="search_itunes_label">Klask war Apple Podcasts</string>
@@ -725,7 +679,6 @@
     <string name="downloads_label_short">Pellgargadennoù</string>
     <string name="theming">Neuz</string>
     <string name="pref_episode_cleanup_title">Dilemel a-raok ar pellgargañ emgefreek</string>
-    <string name="transcript_follow">Heuliañ an aodio</string>
     <string name="pref_episode_cache_title">Bevenn ar rannoù</string>
     <string name="pref_auto_delete_playback_sum">Dilemel ar rann pa vez echu al lenn</string>
     <string name="overflow_more">Muioc\'h</string>

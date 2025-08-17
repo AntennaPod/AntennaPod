@@ -96,7 +96,7 @@ public class DownloadsSection extends HomeSection {
         for (int i = 0; i < adapter.getItemCount(); i++) {
             EpisodeItemViewHolder holder = (EpisodeItemViewHolder)
                     viewBinding.recyclerView.findViewHolderForAdapterPosition(i);
-            if (holder != null && holder.isCurrentlyPlayingItem()) {
+            if (holder != null && holder.isPlayingItem()) {
                 holder.notifyPlaybackPositionUpdated(event);
                 break;
             }

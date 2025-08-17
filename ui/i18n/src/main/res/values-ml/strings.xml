@@ -73,39 +73,13 @@
     <string name="please_wait_for_data">വിവരം ലോഡ് ചെയ്യുന്നതു വരെ കാത്തിരിക്കുക</string>
     <!--actions on feeditems-->
   <string name="download_label">ഡൗൺലോഡ്</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">%d പരമ്പര ഡൗൺലോഡ് ചെയ്യുന്നു.</item>
-        <item quantity="other">%d പരമ്പരകൾ ഡൗൺലോഡ് ചെയ്യുന്നു.</item>
-    </plurals>
     <string name="play_label">പ്ലേ</string>
     <string name="pause_label">പോസ്</string>
     <string name="stream_label">സ്ട്രീം</string>
     <string name="delete_label">നീക്കം ചെയ്യുക</string>
-    <string name="mark_read_label">പ്ലേ ചെയ്തതായി അടയാളപ്പെടുത്തുക</string>
-    <string name="marked_as_played_label">പ്ലേ ചെയ്തതായി കാണിക്കുക</string>
-    <string name="marked_as_unplayed_label">പ്ലേ ചെയാത്തതായി കാണിക്കുക</string>
     <string name="mark_read_no_media_label">വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
-    <string name="play_this_to_seek_position">പരമ്പരയിലെ നിങ്ങൾക്കു കേൾക്കേണ്ട ഭാഗത്തേക്ക് നീക്കുക</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">%d പരമ്പര കേട്ടതായി അടയാളപ്പെടുത്തി</item>
-        <item quantity="other">%d പരമ്പരകൾ കേട്ടതായി അടയാളപ്പെടുത്തി</item>
-    </plurals>
-    <string name="mark_unread_label">പ്ലേ ചെയ്യാത്തതായി അടയാളപ്പെടുത്തുക</string>
     <string name="mark_unread_label_no_media">പ്ലേ ചെയ്യാത്തതായി അടയാളപ്പെടുത്തി</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d പരമ്പര കേട്ടില്ലെന്ന് അടയാളപ്പെടുത്തി</item>
-        <item quantity="other">%d പരമ്പരകൾ കേട്ടില്ലെന്ന് അടയാളപ്പെടുത്തി</item>
-    </plurals>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d പരമ്പര ക്യൂവിൽ ചേർത്തു.</item>
-        <item quantity="other">%d പരമ്പരകൾ ക്യൂവിൽ ചേർത്തു.</item>
-    </plurals>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d പരമ്പര ക്യൂവിൽ നിന്നും നീക്കം ചെയ്കു</item>
-        <item quantity="other">%d പരമ്പരകൾ ക്യൂവിൽ നിന്നും നീക്കം ചെയ്കു</item>
-    </plurals>
     <string name="skip_episode_label">പരമ്പര വിട്ടു കളയുക</string>
-    <string name="no_items_selected">ഒന്നും തിരഞ്ഞടുത്തിട്ടില്ല</string>
     <!--Download messages and labels-->
   <string name="download_successful">സഫലമായി</string>
     <string name="download_error_details">വിശദാംശങ്ങൾ</string>

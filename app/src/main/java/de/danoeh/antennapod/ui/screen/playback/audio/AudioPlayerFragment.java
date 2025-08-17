@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.ui.screen.playback.audio;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -26,6 +25,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.playback.service.PlaybackController;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import de.danoeh.antennapod.ui.chapters.ChapterUtils;
@@ -515,8 +515,7 @@ public class AudioPlayerFragment extends Fragment implements
             return;
         }
         if (feed.getState() == Feed.STATE_SUBSCRIBED) {
-            Intent intent = MainActivity.getIntentToOpenFeed(getContext(), feed.getId());
-            startActivity(intent);
+            new MainActivityStarter(getContext()).withOpenFeed(feed.getId()).withClearTop().start();
         } else {
             startActivity(new OnlineFeedviewActivityStarter(getContext(), feed.getDownloadUrl()).getIntent());
         }

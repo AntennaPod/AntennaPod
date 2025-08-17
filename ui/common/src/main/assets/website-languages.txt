@@ -5,3 +5,5 @@ it
 da
 de
 es
+fa
+ja

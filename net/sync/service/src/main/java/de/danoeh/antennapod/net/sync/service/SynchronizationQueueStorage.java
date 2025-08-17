@@ -8,6 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 
@@ -107,6 +109,22 @@ public class SynchronizationQueueStorage {
         } catch (JSONException jsonException) {
             jsonException.printStackTrace();
         }
+    }
+
+    /** Remove feed entries that conflict with the given list of current local subscriptions.
+     * <>
+     * This is only relevant for old clients that have legacy data. In newer versions, `enqueueFeedAdded`
+     * and `enqueueFeedAdded` already take care of removing conflicting entries.
+     * */
+    protected void removeLegacyConflictingFeedEntries(Collection<String> currentLocalSubscriptions) {
+        List<String> removedQueue = this.getQueuedRemovedFeeds();
+        List<String> addedQueue = this.getQueuedAddedFeeds();
+        removedQueue.removeAll(currentLocalSubscriptions);
+        addedQueue.removeAll(removedQueue);
+        sharedPreferences.edit()
+                .putString(QUEUED_FEEDS_ADDED, addedQueue.toString())
+                .putString(QUEUED_FEEDS_REMOVED, removedQueue.toString())
+                .apply();
     }
 
     protected void enqueueFeedRemoved(String downloadUrl) {

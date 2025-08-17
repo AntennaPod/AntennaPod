@@ -13,7 +13,7 @@
     <string name="downloads_label">Λήψεις</string>
     <string name="downloads_log_label">Αρχείο καταγραφής λήψεων</string>
     <string name="subscriptions_label">Συνδρομές</string>
-    <string name="subscriptions_list_label">Λίστα συνδρομών (μόνο στο πλαϊνό μενού)</string>
+    <string name="subscriptions_list_label">Λίστα συνδρομών</string>
     <string name="cancel_download_label">Ακύρωση λήψης</string>
     <string name="playback_history_label">Ιστορικό αναπαραγωγής</string>
     <string name="years_statistics_label">Χρόνια</string>
@@ -37,7 +37,7 @@
     <string name="statistics_today">Σήμερα</string>
     <string name="statistics_filter_all_time">Εξ\' αρχής</string>
     <string name="statistics_filter_past_year">Προηγούμενο χρόνο</string>
-    <string name="statistics_reset_data">Αναίρεση στατιστικών δεδομένων.</string>
+    <string name="statistics_reset_data">Επαναφορά στατιστικών δεδομένων</string>
     <string name="statistics_reset_data_msg">Το ιστορικό διάρκειας αναπαραγωγής όλων των επεισοδίων θα διαγραφεί. Σίγουρα θέλετε να συνεχίσετε;</string>
     <string name="statistics_counting_range">Αναπαράχθηκαν μεταξύ %1$s και %2$s</string>
     <string name="statistics_counting_total">Αναπαράχθηκαν συνολικά</string>
@@ -48,7 +48,7 @@
     <string name="home_new_title">Δες τι νέο υπάρχει</string>
     <string name="home_downloads_title">Διαχείριση λήψεων</string>
     <string name="home_welcome_title">Καλωσήρθατε στο Antennapod!</string>
-    <string name="home_welcome_text">Προς το παρόν, δεν έχετε εγγραφεί σε κάποιο podcast. Ανοίξτε το πλευρικό μενού για να προσθέσετε κάποιο podcast.</string>
+    <string name="home_welcome_text">Δεν έχετε εγγραφεί ακόμα σε κανένα podcast. Ανοίξτε το μενού για να προσθέσετε ένα podcast.</string>
     <string name="notification_permission_denied">Αρνηθήκατε τη πρόσβαση.</string>
     <string name="configure_home">Διαμόρφωση Αρχικής Οθόνης</string>
     <string name="section_hidden">Κρυμμένο</string>
@@ -135,7 +135,7 @@
         <item quantity="other">%d επεισόδια</item>
     </plurals>
     <string name="episode_notification">Ειδοποιήσεις επεισοδίου</string>
-    <string name="episode_notification_summary">Εμφάνιση ειδοποίησης όταν ένα νέο επειόδιο είναι διαθέσιμο</string>
+    <string name="episode_notification_summary">Εμφάνιση ειδοποίησης όταν κυκλοφορεί ένα νέο επεισόδιο</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">Το %2$s έχει ένα νέο επεισόδιο</item>
         <item quantity="other">Το %2$s έχει %1$d νέα επεισόδια</item>
@@ -144,13 +144,13 @@
         <item quantity="one">Νέο επεισόδιο</item>
         <item quantity="other">Νέα επεισόδια</item>
     </plurals>
-    <string name="new_episode_notification_group_text">Υπάρχουν νέα επεισόδια στις συνδρομές σας</string>
+    <string name="new_episode_notification_group_text">Οι συνδρομές σας έχουν νέα επεισόδια.</string>
     <!--Actions on feeds-->
   <string name="remove_all_inbox_label">Αφαίρεση όλων από τα εισερχόμενα</string>
     <string name="removed_all_inbox_msg">Αφαιρέθηκαν όλα από τα εισερχόμενα</string>
-    <string name="remove_all_inbox_confirmation_msg">Παρακαλώ επιβεβαιώστε ότι θέλετε να διαγράψετε όλα τα εισερχόμενα</string>
-    <string name="multi_select_mark_played_confirmation">Παρακαλώ επιβεβαιώστε ότι θέλετε να επισημάνετε όλα τα επιλεγμένα αντικείμενα ως αναπαραχθέντα</string>
-    <string name="multi_select_mark_unplayed_confirmation">Παρακαλώ επιβεβαιώστε ότι θέλετε να επισημάνετε όλα τα επιλεγμένα αντικείμενα ως μη-αναπαραχθέντα</string>
+    <string name="remove_all_inbox_confirmation_msg">Παρακαλούμε επιβεβαιώστε ότι θέλετε να τα αφαιρέσετε όλα από τα εισερχόμενα.</string>
+    <string name="multi_select_mark_played_confirmation">Επιβεβαιώστε ότι θέλετε να επισημάνετε όλα τα επιλεγμένα στοιχεία ως αναπαραγόμενα.</string>
+    <string name="multi_select_mark_unplayed_confirmation">Επιβεβαιώστε ότι θέλετε να επισημάνετε όλα τα επιλεγμένα στοιχεία ως μη αναπαραγόμενα.</string>
     <string name="show_info_label">Εμφάνιση πληροφοριών</string>
     <string name="show_feed_settings_label">Εμφάνιση ρυθμίσεων podcast</string>
     <string name="feed_settings_label">Ρυθμίσεις podcast</string>
@@ -158,7 +158,7 @@
     <string name="remove_feed_label">Αφαίρεση podcast</string>
     <string name="share_label">Κοινοποίηση</string>
     <string name="share_file_label">Κοινοποίηση αρχείου</string>
-    <string name="feed_remover_msg">Αφαίρεση podcast</string>
+    <string name="feed_remover_msg">Γίνεται αφαίρεση podcast</string>
     <string name="load_complete_feed">Ανανέωση όλου του podcast</string>
     <string name="multi_select">Επιλογή πολλών</string>
     <string name="select_all_above">Επιλογή όλων των παραπάνω</string>
@@ -180,61 +180,27 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Η εφαρμογή VPN σας προσποιείται ότι είναι ένα κινητό δίκτυο (σύνδεση ογκοχρέωσης). Η ανανέωση podcast μέσω σύνδεσης με δεδομένα κινητής τηλεφωνίας είναι απενεργοποιημένη στις ρυθμίσεις.\n\nΘέλετε να γίνει ανανέωση παρ\' όλα αυτά; Αν θέλετε αυτό το πρόβλημα να διορθωθεί, επικοινωνήστε με τους δημιουργούς της VPN εφαρμογής.</string>
     <!--actions on feeditems-->
   <string name="download_label">Λήψη</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">Λήψη %d επεισοδίου.</item>
-        <item quantity="other">Λήψη %d επεισοδίων.</item>
-    </plurals>
     <string name="play_label">Αναπαραγωγή</string>
     <string name="pause_label">Παύση</string>
     <string name="stream_label">Ροή</string>
     <string name="delete_label">Διαγραφή</string>
-    <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">%d κατεβασμένο επεισόδιο διαγράφηκε.</item>
-        <item quantity="other">%d κατεβασμένα επεισόδια διαγράφηκαν.</item>
-    </plurals>
     <string name="remove_inbox_label">Αφαίρεση από τα εισερχόμενα</string>
-    <string name="removed_inbox_label">Αφαιρέθηκε από τα εισερχόμενα</string>
-    <string name="mark_read_label">Επισήμανση ως αναπαραχθέν</string>
     <string name="toggle_played_label">Εναλλαγή αναπαραχθέντας κατάστασης</string>
-    <string name="marked_as_played_label">Επισημάνθηκε ως αναπαραχθέν</string>
-    <string name="marked_as_unplayed_label">Επισημάνθηκε ως μη αναπαραχθέν</string>
     <string name="mark_read_no_media_label">Επισήμανση ως αναγνωσμένο</string>
-    <string name="play_this_to_seek_position">Προκειμένου να μεταπιδήσετε σε συγκεκριμένες θέσεις, πρέπει να αναπαράγετε το επεισόδιο</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">%d επεισόδιο επισημάνθηκε ως αναπαραχθέν</item>
-        <item quantity="other">%d επεισόδια επισημάνθηκαν ως αναπαραχθέντα</item>
-    </plurals>
-    <string name="mark_unread_label">Επισήμανση ως μη αναπαραχθέν</string>
     <string name="mark_unread_label_no_media">Επισήμανση ως μη αναγνωσμένο</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d επεισόδιο επισημάνθηκε ως μη αναπαραχθέν</item>
-        <item quantity="other">%d επεισόδια επισημάνθηκαν ως μη αναπαραχθέντα</item>
-    </plurals>
     <string name="add_to_queue_label">Προσθήκη στην ουρά</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d επεισόδιο προστέθηκε στη ουρά.</item>
-        <item quantity="other">%d επεισόδια προστέθηκαν στην ουρά.</item>
-    </plurals>
     <string name="remove_from_queue_label">Αφαίρεση από την ουρά</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d επεισόδιο αφαιρέθηκε από την ουρά.</item>
-        <item quantity="other">%d επεισόδια αφαιρέθηκαν από την ουρά.</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
-        <item quantity="one">%d επεισόδιο αφαιρέθηκε από τα Εισερχόμενα</item>
-        <item quantity="other">%d επεισόδια αφαιρέθηκαν από τα Εισερχόμενα</item>
+        <item quantity="one">%d επεισόδιο αφαιρέθηκε από τα εισερχόμενα.</item>
+        <item quantity="other">%d επεισόδια αφαιρέθηκαν από τα εισερχόμενα.</item>
     </plurals>
     <string name="add_to_favorite_label">Προσθήκη στα αγαπημένα</string>
     <string name="show_transcript">Εμφάνιση μεταγραφής</string>
     <string name="transcript">Μεταγραφή</string>
-    <string name="transcript_follow">Ακολούθηση ήχου</string>
     <string name="no_transcript_label">Χωρίς μεταγραφή</string>
     <string name="remove_from_favorite_label">Αφαίρεση από τα αγαπημένα</string>
     <string name="visit_website_label">Επισκεφθείτε την ιστοσελίδα</string>
     <string name="skip_episode_label">Παράλειψη επεισοδίου</string>
-    <string name="reset_position">Επαναφορά θέσης αναπαραγωγής</string>
-    <string name="no_items_selected">Δεν έχουν επιλεχθεί αντικείμενα</string>
-    <string name="delete_local_feed_warning_body">Η διαγραφή αφαιρεί το επεισόδιο από το AntennaPod και διαγράφει το αρχείο μέσων από τον αποθηκευτικό χώρο της συσκευής σας. Δεν μπορεί να γίνει λήψη ξανά μέσω του AntennaPod.</string>
     <!--Download messages and labels-->
   <string name="download_successful">επιτυχής</string>
     <string name="download_pending">Λήψη σε εκκρεμότητα</string>
@@ -242,13 +208,13 @@
     <string name="download_error_details">Λεπτομέρειες</string>
     <string name="download_log_details_message">%1$s \n\nΤεχικές αιτίες: \n%2$s \n\nURL αρχείου: \n%3$s</string>
     <string name="download_error_retrying">Η λήψη του «%1$s» απέτυχε. Θα γίνει εκ νέου προσπάθεια, αργότερα.</string>
-    <string name="download_error_not_retrying">Η λήψη του «%1$s» απέτυχε</string>
+    <string name="download_error_not_retrying">Η λήψη του «%1$s» απέτυχε.</string>
     <string name="download_error_tap_for_details">Πατήστε για λεπτομέρειες.</string>
     <string name="download_error_device_not_found">Η Συσκευή Αποθήκευσης δεν υπάρχει</string>
     <string name="download_error_insufficient_space">Ανεπαρκής χώρος αποθήκευσης στη συσκευή σας.</string>
     <string name="download_error_http_data_error">Σφάλμα δεδομένων HTTP</string>
     <string name="download_error_error_unknown">Άγνωστο σφάλμα</string>
-    <string name="download_error_parser_exception">Ο διακομιστής του podcast επέστρεψε σπασμένη ροή podcast.</string>
+    <string name="download_error_parser_exception">Ο διακομιστής του οικοδεσπότη του podcast έστειλε μια χαλασμένη τροφοδοσία podcast. Συνιστούμε να ελέγξετε το podcast με έναν επικυρωτή podcast όπως το castfeedvalidator.com και να επικοινωνήσετε με τον δημιουργό του podcast για να τον ενημερώσετε.</string>
     <string name="download_error_unsupported_type">Αυτός ο τύπος ροής δεν υποστηρίζεται</string>
     <string name="download_error_unsupported_type_html">Ο διακομιστής του podcast επέστρεψε ιστοσελίδα, όχι podcast.</string>
     <string name="download_error_not_found">Ο διακομιστής του podcast δεν μπορεί να εντοπίσει το αρχείο. Πιθανόν να έχει διαγραφεί.</string>
@@ -278,7 +244,7 @@
     <string name="authentication_notification_title">Απαιτείται έλεγχος ταυτότητας</string>
     <string name="confirm_mobile_download_dialog_title">Επιβεβαίωση λήψης μέσω δεδομένων κινητής τηλεφωνίας</string>
     <string name="confirm_mobile_download_dialog_message">Η λήψη μέσω δεδομένων κινητής τηλεφωνίας είναι απενεργοποιημένη στις ρυθμίσεις. Το AntennaPod θα κατεβάσει αυτόματα το επεισόδιο αργότερα, όταν συνδεθείτε σε κάποιο δίκτυο Wi-Fi.</string>
-    <string name="confirm_mobile_download_dialog_message_vpn">Η εφαρμογή VPN σας προσποιείται ότι είναι ένα κινητό δίκτυο (σύνδεση ογκοχρέωσης). Η λήψη μέσω κινητής σύνδεσης δεδομένων απενεργοποιήθηκε στις ρυθμίσεις. Εάν θέλετε να διορθωθεί αυτό το πρόβλημα, επικοινωνήστε με τους δημιουργούς της εφαρμογής VPN σας.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">- Χρησιμοποιείτε VPN; Η εφαρμογή VPN προσποιείται ότι είναι ένα δίκτυο κινητής τηλεφωνίας (μετρημένη σύνδεση). Αν θέλετε να διορθωθεί αυτό το πρόβλημα, επικοινωνήστε με τους δημιουργούς της εφαρμογής VPN σας.\n- Δεν χρησιμοποιείτε VPN; Ανοίξτε τις ρυθμίσεις Wi-Fi του Android και αλλάξτε τον τύπο του Wi-Fi σας ώστε να μην είναι μετρημένο.</string>
     <string name="confirm_mobile_download_dialog_download_later">Λήψη αργότερα</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Λήψη τώρα</string>
     <string name="confirm_mobile_streaming_notification_title">Επιβεβαίωση αναπαραγωγής μέσω δεδομένων κινητής τηλεφωνίας</string>
@@ -286,7 +252,7 @@
     <string name="confirm_mobile_streaming_button_always">Πάντοτε</string>
     <string name="confirm_mobile_streaming_button_once">Μία φορά</string>
     <!--Mediaplayer messages-->
-  <string name="playback_error_generic"><![CDATA[Δεν κατέστη δυνατή η αναπαραγωγή του αρχείου πολυμέσων.\n\n- Δοκιμάστε να κατεβάσετε εκ νέου το επεισόδιο\n- Ελέγξτε τη σύνδεση στο διαδίκτυο και σιγουρευτείτε ότι δεν χρησιμοποιείτε VPN ή οτι η σελίδα εισόδου χρήστη δεν μπλοκάρει την πρόσβαση.\n- Δοκιμάστε να πατήσετε παρατεταμένα και να μοιραστείτε τη \"Διεύθυνση Αρχείου Πολυμέσων\" στον περιηγητή σας για να δείτε εάν μπορεί να αναπαραχθεί εκεί. Εάν όχι, επικοινωνήστε με τους παραγωγούς του podcast.]]></string>
+  <string name="playback_error_generic">Δεν ήταν δυνατή η αναπαραγωγή του αρχείου πολυμέσων.\n\n- Δοκιμάστε να διαγράψετε και να κατεβάσετε ξανά το επεισόδιο.\n- Ελέγξτε τη σύνδεσή σας στο δίκτυο και βεβαιωθείτε ότι κανένα VPN ή σελίδα σύνδεσης δεν εμποδίζει την πρόσβαση.\n- Δοκιμάστε να πατήσετε παρατεταμένα και να μοιραστείτε τη «Διεύθυνση πολυμέσων» στο πρόγραμμα περιήγησης στο διαδίκτυο για να δείτε αν μπορεί να αναπαραχθεί εκεί. Αν όχι, επικοινωνήστε με τους δημιουργούς του podcast.</string>
     <string name="no_media_playing_label">Δεν αναπαράγονται πολυμέσα</string>
     <string name="unknown_media_key">AntennaPod - Άγνωστο πλήκτρο πολυμέσων: %1$d</string>
     <string name="error_file_not_found">Αρχείο δε βρέθηκε</string>
@@ -316,7 +282,7 @@
   <string name="speed_presets">Προεπιλογές</string>
     <string name="preset_already_exists">%1$.2fx είναι ήδη αποθηκευμένο ως προεπιλογή.</string>
     <!--Empty list labels-->
-  <string name="no_items_header_label">Χωρίς επεισόδια στην ουρά.</string>
+  <string name="no_items_header_label">Δεν υπάρχουν επεισόδια στην ουρά</string>
     <string name="no_items_label">Προσθέστε ένα επεισόδιο μέσω λήψης αυτού ή πατήστε παρατεταμένα σε ένα επεισόδιο και επιλέξτε «Προσθήκη στην ουρά».</string>
     <string name="no_shownotes_label">Το επεισόδιο δεν διαθέτει σημειώσεις.</string>
     <string name="no_comp_downloads_head_label">Δεν έχετε κατεβασμένα podcast</string>
@@ -357,8 +323,8 @@
     <string name="pref_hardware_forward_button_summary">Εξατομίκευση συμπεριφοράς του πλήκτρου Επόμενο</string>
     <string name="pref_hardware_previous_button_title">Πλήκτρο Προηγούμενο</string>
     <string name="pref_hardware_previous_button_summary">Εξατομίκευση συμπεριφοράς του πλήκτρου Προηγούμενο</string>
-    <string name="button_action_fast_forward">Fast-forward</string>
-    <string name="button_action_rewind">Rewind</string>
+    <string name="button_action_fast_forward">Γρήγορη-μετάβαση</string>
+    <string name="button_action_rewind">Αναδίπλωση</string>
     <string name="button_action_skip_episode">Παράλειψη επεισοδίου</string>
     <string name="button_action_restart_episode">Επανεκκίνηση επεισοδίου</string>
     <string name="pref_followQueue_sum">Μετάβαση στο επόμενο στοιχείο της ουράς όταν η αναπαραγωγή ολοκληρωθεί</string>
@@ -367,7 +333,7 @@
     <string name="pref_auto_delete_title">Αυτόματη διαγραφή</string>
     <string name="pref_auto_delete_sum">Διαγραφή επεισοδιών μετά την αναπαραγωγή ή όταν η αυτόματη λήψη χρειάζεται χώρο</string>
     <string name="pref_auto_local_delete_title">Αυτόματη διαγραφή από τοπικούς φάκελους</string>
-    <string name="pref_auto_local_delete_sum">Συμπερίληψη τοπικών φακέλων στη λειτουργία αυτόματης διαγραφής.</string>
+    <string name="pref_auto_local_delete_sum">Συμπεριλάβετε τοπικούς φακέλους στη λειτουργία αυτόματης διαγραφής</string>
     <string name="pref_auto_local_delete_dialog_body">Λάβετε υπόψη ότι για τους τοπικούς φακέλους αυτό θα αφαιρέσει τα επεισόδια από το AntennaPod και θα διαγράψει τα αρχεία πολυμέσων από τον αποθηκευτικό χώρο της συσκευής σας. Δεν μπορούν να ληφθούν ξανά μέσω του AntennaPod. Ενεργοποίηση αυτόματης διαγραφής;</string>
     <string name="pref_smart_mark_as_played_sum">Επισήμανση επεισοδίων ως αναπαραγμένα εάν απομένουν λιγότερα από συγκεκριμένα δευτερόλεπτα</string>
     <string name="pref_smart_mark_as_played_title">Έξυπνη επισήμανση ως αναπαραχθέν</string>
@@ -400,7 +366,7 @@
     <string name="pref_mobileUpdate_refresh">Ανανέωση podcast</string>
     <string name="pref_mobileUpdate_images">Εικόνες εξώφυλλου</string>
     <string name="pref_mobileUpdate_episode_download">Λήψη επεισοδίου</string>
-    <string name="pref_mobileUpdate_streaming">Ροή</string>
+    <string name="pref_mobileUpdate_streaming">Συνεχόμενη Ροή</string>
     <string name="user_interface_label">Περιβάλλον χρήστη</string>
     <string name="user_interface_sum">Εμφάνιση, συνδρομές, οθόνη κλειδώματος</string>
     <string name="pref_black_theme_title">Πλήρες μαύρο</string>
@@ -418,7 +384,7 @@
     <string name="pref_episode_cache_title">Όριο επεισοδίων</string>
     <string name="pref_episode_cache_summary">Η αυτόματη λήψη σταματάει όταν επιτευχθεί ο αριθμός</string>
     <string name="pref_episode_cover_title">Χρήση εξωφύλλου επεισοδίου</string>
-    <string name="pref_episode_cover_summary">Χρήση του εξωφύλλου επεισοδίου στις λίστες όποτε είναι δυνατό. Εάν δεν επιλεχθεί η επιλογή αυτή, η εφαρμογή θα χρησιμοποιεί πάντοτε το εξώφυλλο του podcast</string>
+    <string name="pref_episode_cover_summary">Χρησιμοποιήστε τη συγκεκριμένη κάλυψη επεισοδίου στις λίστες όποτε είναι διαθέσιμη. Αν δεν είναι επιλεγμένο, η εφαρμογή θα χρησιμοποιεί πάντα την εικόνα του εξωφύλλου του podcast.</string>
     <string name="pref_show_remain_time_title">Εμφάνιση χρόνου που απομένει</string>
     <string name="pref_show_remain_time_summary">Εμφάνιση του χρόνου που απομένει των επεισοδίων όταν επιλεχθεί. Εφόσον δεν επιλεχθεί, εμφανίζεται η διάρκεια των επεισοδίων.</string>
     <string name="pref_theme_title_automatic">Αυτόματο</string>
@@ -428,7 +394,7 @@
     <string name="pref_playback_speed_sum">Προσαρμογή των διαθέσιμων ταχυτήτων για μεταβλητές ταχύτητες αναπαραγωγής</string>
     <string name="pref_feed_playback_speed_sum">Επιλεγμένη ταχύτητα όταν εκκινείται η αναπαραγωγή ήχου για επεισόδια αυτού του podcast</string>
     <string name="pref_feed_skip">Αυτόματη παράλειψη</string>
-    <string name="pref_feed_skip_sum">Παράλειψη εισαγωγών και φινάλε.</string>
+    <string name="pref_feed_skip_sum">Παραλείψτε τις εισαγωγές και τους τίτλους τέλους</string>
     <string name="pref_feed_skip_ending">Παράλειψη τελευταίου</string>
     <string name="pref_feed_skip_intro">Παράλειψη αρχικού</string>
     <string name="pref_feed_skip_ending_toast">Παραλείφθηκαν τα τελευταία %d δευτερόλεπτα</string>
@@ -467,7 +433,7 @@
     <string name="pref_skip_silence_title">Παράλειψη σιωπών ήχου</string>
     <string name="behavior">Συμπεριφορά</string>
     <string name="pref_default_page">Προεπιλεγμένη Σελίδα</string>
-    <string name="pref_default_page_sum">Οθόνη που εμφανίζεται κατά την έναρξη του AntennaPod.</string>
+    <string name="pref_default_page_sum">Οθόνη που ανοίγει κατά την εκκίνηση του AntennaPod</string>
     <string name="pref_back_button_opens_drawer">Το κουμπί «Πίσω» ανοίγει το συρτάρι</string>
     <string name="pref_back_button_opens_drawer_summary">Η επιλογή του κουμπιού «Πίσω» στην προεπιλεγμένη σελίδα ανοίγει το συαρτάρι πλοήγησης</string>
     <string name="remember_last_page">Μνημόνευση της τελευταίας σελίδας</string>
@@ -507,10 +473,10 @@
     <string name="search_online">Αναζήτηση online</string>
     <!--Synchronization-->
   <string name="sync_status_started">Ο συγχρονισμός ξεκίνησε</string>
-    <string name="sync_status_episodes_upload">Αποστολή αλλαγών επεισοδίου…</string>
-    <string name="sync_status_episodes_download">Λήψη αλλαγών επεισοδίου…</string>
-    <string name="sync_status_upload_played">Αποστολή κατάστασης αναπαραγωγών…</string>
-    <string name="sync_status_subscriptions">Οι συνδρομές συγχρονίζονται…</string>
+    <string name="sync_status_episodes_upload">Ανέβασμα αλλαγών επεισοδίων…</string>
+    <string name="sync_status_episodes_download">Λήψη επεισοδίου αλλάζει…</string>
+    <string name="sync_status_upload_played">Ανέβασμα κατάστασης αναπαραγωγής…</string>
+    <string name="sync_status_subscriptions">Συγχρονισμός συνδρομών…</string>
     <string name="sync_status_success">Επιτυχής συγχρονισμός</string>
     <string name="sync_status_error">Ο συγχρονισμός απέτυχε</string>
     <!--import and export-->
@@ -607,7 +573,7 @@
     <string name="synchronization_full_sync_title">Επιβολή πλήρους συγχρονισμού</string>
     <string name="synchronization_force_sync_summary">Επανασυγχρονισμός όλων των συνδρομών και των καταστάσεων των επεισοδίων</string>
     <string name="synchronization_logout">Αποσύνδεση</string>
-    <string name="synchronization_login_status"><![CDATA[Σύνδεση ως <i>%1$s</i> σε <i>%2$s</i>. <br/><br/> Μπορείτε να επιλέξετε εκ νέου τον πάροχο συγχρονισμού όταν αποσυνδεθείτε]]></string>
+    <string name="synchronization_login_status">Συνδεθήκατε ως %1$s στο %2$s.\n\nΜπορείτε να επιλέξετε ξανά τον πάροχο συγχρονισμού σας μόλις αποσυνδεθείτε.</string>
     <string name="pref_synchronization_logout_toast">Επιτυχής αποσύνδεση</string>
     <string name="gpodnetsync_error_title">σφάλμα συγχρονισμού gpodder.net</string>
     <string name="gpodnetsync_error_descr">"Παρουσιάστηκε σφάλμα κατά το συγχρονισμό: "</string>
@@ -633,7 +599,7 @@
     <string name="state_deleted_not_subscribed">Δεν έχετε εγγραφεί ακόμα σε αυτό το podcast. Εγγραφείτε δωρεάν για να έχετε πιο εύκολη πρόσβαση και να διατηρήσετε το ιστορικό αναπαραγωγής του.</string>
     <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">Πίσω</string>
-    <string name="rewind_label">Rewind</string>
+    <string name="rewind_label">Ξαναγυρίστε</string>
     <string name="increase_speed">Αύξηση ταχύτητας</string>
     <string name="decrease_speed">Μείωση ταχύτητας</string>
     <string name="media_type_video_label">Βίντεο</string>
@@ -654,12 +620,11 @@
     <string name="download_completed_talkback">Η λήψη ολοκληρώθηκε για το %1$s</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">Ταυτοποίηση</string>
-    <string name="authentication_descr">Αλλαγή του όνοματος χρήστη και του κωδικόυ πρόσβασής για αυτό το podcast και τα επεισόδια του.</string>
+    <string name="authentication_descr">Αλλάξτε το όνομα χρήστη και τον κωδικό πρόσβασής σας για αυτό το podcast και τα επεισόδιά του</string>
     <string name="feed_tags_label">Ετικέτες</string>
-    <string name="feed_tags_summary">Αλλάξτε τις ετικέτες του podcast για να να οργανώσετε τις συνδρομές σας ευκολότερα</string>
+    <string name="feed_tags_summary">Αλλάξτε τις ετικέτες αυτού του podcast για να βοηθήσετε στην οργάνωση των συνδρομών σας</string>
     <string name="feed_folders_include_root">Εμφάνιση του podcast στην κύρια λίστα</string>
     <string name="multi_feed_common_tags_info">Εμφανίζονται μόνο οι κοινές ετικέτες από όλες τις επιλεγμένες συνδρομές. Οι άλλες ετικέτες παραμένουν ανέπαφες.</string>
-    <string name="auto_download_settings_label">Ρυθμίσεις αυτόματης λήψης</string>
     <string name="episode_filters_label">Φίλτρο επεισοδίων</string>
     <string name="episode_filters_description">Λίστα όρων που χρησιμοποιούνται για να αποφασιστεί εάν ένα επεισόδιο θα πρέπει να συμπεριληφθεί ή να αποκλειστεί όταν πραγματοποιείται αυτόματη λήψη</string>
     <string name="add_term">Προσθήκη όρου</string>
@@ -685,8 +650,6 @@
     <string name="release_schedule_friday">Παρ</string>
     <string name="release_schedule_saturday">Σαβ</string>
     <string name="release_schedule_sunday">Κυρ</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Εισαγωγή συνδρομών από εφαρμογές και μονο…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Αναζήτηση podcast…</string>
     <string name="search_itunes_label">Αναζήτηση σε Apple Podcasts</string>
@@ -737,7 +700,7 @@
     <string name="host_label">Εξυπηρετητής</string>
     <string name="port_label">Θύρα</string>
     <string name="proxy_test_label">Έλεγχος</string>
-    <string name="proxy_checking">Επιβεβαίωση…</string>
+    <string name="proxy_checking">Ελέγχοντας…</string>
     <string name="proxy_test_successful">Επιτυχής έλεγχος</string>
     <string name="proxy_test_failed">Ο έλεγχος απέτυχε</string>
     <string name="proxy_host_empty_error">Ο εξυπηρετητής δεν μπορεί να είναι άδειος</string>
@@ -751,8 +714,8 @@
     <string name="notification_group_news">Νέα</string>
     <string name="notification_channel_user_action">Απαιτείται ενέργεια</string>
     <string name="notification_channel_user_action_description">Εμφανίζεται εφόσον απαιτείται ενέργεια, για παράδειγμα εάν χρειαστεί να συμπληρώσετε τον κωδικό.</string>
-    <string name="notification_channel_downloading">Κατεβαίνει</string>
-    <string name="notification_channel_downloading_description">Εμφανίζεται ενώ γίνεται λήψη.</string>
+    <string name="notification_channel_downloading">Λήψη επεισοδίων</string>
+    <string name="notification_channel_downloading_description">Εμφανίζεται κατά την τρέχουσα λήψη επεισοδίων.</string>
     <string name="notification_channel_playing">Σε αναπαραγωγή</string>
     <string name="notification_channel_playing_description">Επιτρέπει τον έλεγχο της αναπαραγωγής. Αυτή είναι η κύρια ειδοποίηση που εμφανίζεται ενώ ακούτε ένα podcast.</string>
     <string name="notification_channel_download_error">Η λήψη απέτυχε</string>
@@ -783,4 +746,108 @@
         <item quantity="one">Σύνολο %d του επεισοδίου είναι αποθηκευμένο στη συσκευή</item>
         <item quantity="other">Σύνολο %d των επεισοδίων είναι αποθηκευμένα στη συσκευή</item>
     </plurals>
+    <string name="feed_new_episodes_action_summary_autodownload">Αυτόματη λήψη ενεργοποιημένη. Τα επεισόδια προστίθενται στα εισερχόμενα και στη συνέχεια μετακινούνται στην ουρά μόλις ληφθούν.</string>
+    <string name="delete_tag_confirmation">Επιβεβαιώστε ότι θέλετε να διαγράψετε την ετικέτα «%1$s».</string>
+    <string name="delete_downloads_played_confirmation">Επιβεβαιώστε ότι θέλετε να διαγράψετε όλες τις αναπαραγόμενες λήψεις.</string>
+    <string name="visit_social_interact_label">Εμφάνιση σχολίων</string>
+    <string name="null_value_podcast_error">Ο σύνδεσμος που πατήσατε δεν περιέχει έγκυρη διεύθυνση URL podcast. Παρακαλούμε επαληθεύστε το σύνδεσμο και προσπαθήστε ξανά ή αναζητήστε το podcast με μη αυτόματο τρόπο.</string>
+    <string name="preference_search_clear_input">Εκκαθάριση</string>
+    <string name="bottom_navigation">Κάτω πλοήγηση</string>
+    <string name="episode_lists">Λίστες επεισοδίων</string>
+    <string name="pref_downloads_button_action_title">Αναπαραγωγή από την οθόνη λήψεων</string>
+    <string name="sync_status_wait_for_downloads">Αναμονή για την ανανέωση των συνδρομών…</string>
+    <string name="nextcloud_login_error_generic">Δεν μπορείτε να συνδεθείτε στο Nextcloud σας.\n\n- Ελέγξτε τη σύνδεση δικτύου σας.\n- Επιβεβαιώστε ότι χρησιμοποιείτε τη σωστή διεύθυνση διακομιστή.\n- Βεβαιωθείτε ότι το πρόσθετο gpoddersync Nextcloud είναι εγκατεστημένο.</string>
+    <string name="fast_forward_label">Γρήγορη-μετάβαση</string>
+    <string name="rss_address">Διεύθυνση RSS</string>
+    <string name="echo_home_header">Ανασκόπηση του έτους</string>
+    <string name="echo_intro_locally">δημιουργείται ιδιωτικά στο τηλέφωνό σας</string>
+    <string name="echo_hours_this_year">Φέτος παίξατε</string>
+    <plurals name="echo_hours_podcasts">
+        <item quantity="one">ώρες επεισοδίων\nαπό %1$d podcast</item>
+        <item quantity="other">ώρες επεισοδίων\nαπό %1$d διαφορετικά podcasts</item>
+    </plurals>
+    <string name="echo_queue_title_clean">Και είστε έτοιμοι να κάνετε μια καθαρή αρχή της χρονιάς. Έχετε</string>
+    <string name="echo_queue_title_many">Και έχετε ακόμα αρκετά να κάνετε φέτος. Έχετε</string>
+    <string name="echo_queue_hours_clean">Αυτό είναι περίπου %1$s κάθε μέρα μέχρι να ξεκινήσει το %2$d.</string>
+    <string name="echo_queue_hours_much">Αυτό είναι περίπου %1$s κάθε μέρα μέχρι να ξεκινήσει το %2$d. Περίμενε, τι;</string>
+    <string name="echo_listened_after_comment_easy">Είσαι χαλαρός</string>
+    <string name="echo_listened_after_time">Συνήθως, ολοκληρώσατε ένα επεισόδιο %1$s μετά την κυκλοφορία του.</string>
+    <string name="echo_hoarder_comment_hoarder">Οι αριθμοί δεν λένε ψέματα, λένε. Και με μόνο το %1$d%% των %2$d ενεργών συνδρομών σας να έχουν παιχτεί φέτος, μάλλον έχουμε δίκιο.</string>
+    <string name="echo_hoarder_subtitle_clean">Καθαρά!</string>
+    <string name="echo_hoarder_comment_clean">Έχετε παίξει επεισόδια από το %1$d%% των %2$d ενεργών συνδρομών σας φέτος. Στοιχηματίζουμε ότι κρατάτε και το γραφείο σας καθαρό!</string>
+    <string name="echo_thanks_now_favorite">Τώρα, ας ρίξουμε μια ματιά στα αγαπημένα σας podcasts…</string>
+    <string name="echo_share_heading">Τα αγαπημένα μου podcasts</string>
+    <string name="echo_share">Το έτος μου %d σε podcasts. #AntennaPodEcho</string>
+    <string name="add_feed_label_short">Προσθέστε</string>
+    <string name="episodes_label_short">επεισόδια</string>
+    <string name="home_label_short">Αρχική</string>
+    <string name="queue_label_short">ουρά</string>
+    <string name="inbox_label_short">εισερχόμενα</string>
+    <string name="downloads_label_short">Λήψεις</string>
+    <string name="subscriptions_label_short">συνδρομές</string>
+    <string name="playback_history_label_short">Ιστορικό</string>
+    <string name="episodes_label_more">Επεισόδια »</string>
+    <string name="queue_label_more">Ουρά »</string>
+    <string name="inbox_label_more">Εισερχόμενα »</string>
+    <string name="downloads_label_more">Λήψεις »</string>
+    <string name="subscriptions_label_more">Συνδρομές »</string>
+    <string name="enabled">Ενεργοποίηση</string>
+    <string name="disabled">Απενεργοποίηση</string>
+    <string name="global_default_with_value">Παγκόσμια προεπιλογή (%1$s)</string>
+    <string name="delete_tag_label">Διαγραφή ετικέτας</string>
+    <string name="pref_nav_drawer_items_title">Προσαρμογή πλοήγησης</string>
+    <string name="pref_automatic_download_queue_title">Λήψη σε ουρά</string>
+    <string name="pref_automatic_download_global_description">Αυτόματη λήψη νέων επεισοδίων. Μπορεί να παρακαμφθεί ανά podcast.</string>
+    <string name="pref_automatic_download_queue_description">Αυτόματη λήψη επεισοδίων στην ουρά</string>
+    <string name="statistics_time_total">συνολικά</string>
+    <string name="statistics_time_played">παιγμένα</string>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">σύνολο</item>
+        <item quantity="other">σύνολα</item>
+    </plurals>
+    <string name="statistics_view_all">Όλα τα podcasts »</string>
+    <string name="notification_channel_refreshing">Ανανέωση podcasts</string>
+    <string name="notification_channel_refreshing_description">Εμφανίζεται κατά τον έλεγχο για νέα επεισόδια.</string>
+    <string name="echo_intro_in_podcasts">σε podcasts</string>
+    <string name="echo_home_subtitle">Τα κορυφαία podcasts και στατιστικά στοιχεία σας από το περασμένο έτος. Αποκλειστικά στο τηλέφωνό σας.</string>
+    <string name="echo_intro_your_year">Η χρονιά σας</string>
+    <plurals name="echo_queue_hours_waiting">
+        <item quantity="one">ώρες αναμονής στην ουρά σας\nαπό το επεισόδιο %1$d</item>
+        <item quantity="other">ώρες αναμονής στην ουρά σας\nαπό %1$d επεισόδια</item>
+    </plurals>
+    <string name="echo_listened_after_title">Κάναμε κάποια ανάλυση σχετικά με το πότε κυκλοφορούν τα επεισόδια και πότε τα ολοκληρώσατε. Το συμπέρασμά μας;</string>
+    <string name="echo_hoarder_title">Αναρωτηθήκαμε επίσης: ακούτε τα podcasts στα οποία έχετε εγγραφεί;</string>
+    <string name="echo_hoarder_comment_medium">Έχετε παίξει επεισόδια από το %1$d%% των %2$d ενεργών συνδρομών σας φέτος. Τι θα λέγατε να ελέγξετε ξανά το «%3$s»;</string>
+    <string name="echo_thanks_large">Ευχαριστούμε</string>
+    <string name="discover_more">Ανακαλύψτε περισσότερα »</string>
+    <string name="statistics_episodes_space">καταλαμβανόμενος χώρος</string>
+    <string name="delete_downloads_played">Διαγραφή αναπαραγωγής</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">ξεκίνησε</item>
+        <item quantity="other">ξεκίνησαν</item>
+    </plurals>
+    <string name="statistics_release_schedule">χρονοδιάγραμμα κυκλοφορίας</string>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">κατεβασμένο</item>
+        <item quantity="other">κατεβασμένα</item>
+    </plurals>
+    <string name="episode_download_failed">Η λήψη του επεισοδίου απέτυχε</string>
+    <string name="download_error_unsupported_type_html_manual">Η διεύθυνση που πληκτρολογήσατε είναι μια διεύθυνση ιστότοπου, όχι μια διεύθυνση RSS podcast.</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Λήψη μέσω σύνδεσης δεδομένων κινητής τηλεφωνίας για το επόμενο %d λεπτό</item>
+        <item quantity="other">Λήψη μέσω σύνδεσης δεδομένων κινητής τηλεφωνίας για τα επόμενα %d λεπτά</item>
+    </plurals>
+    <string name="echo_queue_hours_normal">Αυτό είναι περίπου %1$s κάθε μέρα μέχρι να ξεκινήσει το %2$d. Μπορείτε να ξεκινήσετε τη χρονιά καθαρά αν παραλείψετε μερικά επεισόδια.</string>
+    <string name="statistics_years_barchart_description">Χρόνος παιξίματος ανά μήνα</string>
+    <string name="bottom_navigation_summary">Πρόσβαση στις πιο σημαντικές οθόνες από παντού, με ένα μόνο πάτημα</string>
+    <string name="feed_delete_confirmation_local_msg">Επιβεβαιώστε ότι θέλετε να καταργήσετε το podcast «%1$s», το ιστορικό αναπαραγωγής του και τα στατιστικά του. Τα αρχεία στον τοπικό φάκελο πηγής δεν θα διαγραφούν.</string>
+    <string name="pref_nav_drawer_items_sum">Αλλαγή των στοιχείων που εμφανίζονται στο συρτάρι πλοήγησης ή στην κάτω πλοήγηση</string>
+    <string name="pref_downloads_button_action_sum">Εμφάνιση του κουμπιού αναπαραγωγής αντί του κουμπιού διαγραφής στην οθόνη λήψεων</string>
+    <string name="echo_hoarder_subtitle_medium">Ελέγξτε. Δεν υπάρχει συσσώρευση εδώ.</string>
+    <string name="echo_thanks_we_are_glad_new">για την συμμετοχή σας φέτος!\n\nΕίτε μετακινηθήκατε από άλλη εφαρμογή, είτε ξεκινήσατε την περιπέτεια του podcast μαζί μας: χαιρόμαστε που σας έχουμε μαζί μας!</string>
+    <string name="echo_hoarder_subtitle_hoarder">Κοιτάζοντας τους αριθμούς, πιστεύουμε ότι είστε αποθησαυριστής</string>
+    <string name="echo_listened_after_comment_addict">Είσαι εθισμένος στο podcast</string>
+    <string name="echo_thanks_we_are_glad_old">που μας υποστηρίξατε φέτος!\n\nΠαίξατε το πρώτο σας επεισόδιο μαζί μας στο %1$s. Από τότε είναι τιμή μας να σας εξυπηρετούμε.</string>
+    <string name="overflow_more">Περισσότερα</string>
+    <string name="statistics_release_next">επόμενο επεισόδιο (εκτίμηση)</string>
 </resources>

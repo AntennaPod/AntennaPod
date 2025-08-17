@@ -180,46 +180,16 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">S\'aplicatzione VPN tua narat de èssere una rete mòbile (connessione de pagamentu). S\'atualizatzione de podcast cando s\'est impreende una connessione de datos est disativada in sa cunfiguratzione.\n\nBoles atualizare su pròpiu? Si boles chi custu problema siat isòrvidu, cuntata is creadores de s\'aplicatzione VPN tua.</string>
     <!--actions on feeditems-->
   <string name="download_label">Iscàrriga</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">Iscarrighende %d episòdiu.</item>
-        <item quantity="other">Iscarrighende %d episòdios.</item>
-    </plurals>
     <string name="play_label">Riprodui</string>
     <string name="pause_label">Pone in pàusa</string>
     <string name="stream_label">Riprodui sena iscarrigare</string>
     <string name="delete_label">Cantzella</string>
-    <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">%d episòdiu iscarrigadu cantzelladu.</item>
-        <item quantity="other">%d episòdios iscarrigados cantzellados.</item>
-    </plurals>
     <string name="remove_inbox_label">Boga dae sa cartella de intrada</string>
-    <string name="removed_inbox_label">Bogadu dae sa cartella de intrada</string>
-    <string name="mark_read_label">Sinnala comente riproduidu</string>
     <string name="toggle_played_label">Cuncàmbia s\'istadu de riprodutzione</string>
-    <string name="marked_as_played_label">Sinnaladu comente riproduidu</string>
-    <string name="marked_as_unplayed_label">Sinnaladu comente non riproduidu</string>
     <string name="mark_read_no_media_label">Sinnala comente lèghidu</string>
-    <string name="play_this_to_seek_position">Pro brincare a positziones ispetzìficas, depes riproduire s\'episòdiu</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">%d episòdiu sinnadu comente riproduidu.</item>
-        <item quantity="other">%d episòdios sinnalados comente riproduidos.</item>
-    </plurals>
-    <string name="mark_unread_label">Sinnala comente non riproduidu</string>
     <string name="mark_unread_label_no_media">Sinnala comente non lèghidu</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d episòdiu sinnadu comente non riproduidu.</item>
-        <item quantity="other">%d episòdios sinnalados comente non riproduidos.</item>
-    </plurals>
     <string name="add_to_queue_label">Agiunghe a sa lista</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d episòdiu agiuntu a sa coa.</item>
-        <item quantity="other">%d episòdios agiuntos a sa lista.</item>
-    </plurals>
     <string name="remove_from_queue_label">Boga dae sa lista</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d episòdiu bogadu dae sa coa.</item>
-        <item quantity="other">%d episòdios bogados dae sa lista.</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d episòdiu bogadu dae sa cartella de intrada.</item>
         <item quantity="other">%d episòdios bogados dae sa cartella de intrada.</item>
@@ -227,14 +197,10 @@
     <string name="add_to_favorite_label">Agiunghe a is preferidos</string>
     <string name="show_transcript">Ammustra sa trascritzione</string>
     <string name="transcript">Trascritzione</string>
-    <string name="transcript_follow">Sighi s\'àudio</string>
     <string name="no_transcript_label">Nissuna trascritzione</string>
     <string name="remove_from_favorite_label">Boga dae is preferidos</string>
     <string name="visit_website_label">Bìsita su situ web</string>
     <string name="skip_episode_label">Brinca s\'episòdiu</string>
-    <string name="reset_position">Torra a sa positzione de riprodutzione initziale</string>
-    <string name="no_items_selected">Nissunu cuntenutu seletzionadu</string>
-    <string name="delete_local_feed_warning_body">Cantzellare custu episòdiu dd\'at a bogare de AntennaPod e at a cantzellare s\'archìviu multimediale dae sa memòria de su dispositivu. No at a pòdere èssere torradu a iscarrigare pro mèdiu de AntennaPod.</string>
     <!--Download messages and labels-->
   <string name="download_successful">fatu</string>
     <string name="download_pending">Iscarrigamentu in suspesu</string>
@@ -660,7 +626,6 @@
     <string name="feed_tags_summary">Modìfica is etichetas de custu podcast pro organizare mègius is sutiscritziones tuas</string>
     <string name="feed_folders_include_root">Ammustra custu podcast in sa lista printzipale</string>
     <string name="multi_feed_common_tags_info">S\'ammustrant isceti etichetas comunas a totu is sutiscritziones seletzionadas. Is àteras etichetas non sunt modificadas.</string>
-    <string name="auto_download_settings_label">Cunfiguratzione de s\'iscarrigamentu in automàticu</string>
     <string name="episode_filters_label">Filtru episòdios</string>
     <string name="episode_filters_description">Elencu de faeddos impreados pro detzìdere si un\'episòdiu depat èssere incluidu o escluidu in is iscarrigamentos in automàticu</string>
     <string name="add_term">Agiunghe unu faeddu</string>
@@ -686,8 +651,6 @@
     <string name="release_schedule_friday">che</string>
     <string name="release_schedule_saturday">sàb</string>
     <string name="release_schedule_sunday">dom</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Importende sutiscritziones dae aplicatziones de iscopu ùnicu…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Chirca unu podcast…</string>
     <string name="search_itunes_label">Chirca in Apple Podcasts</string>

@@ -10,10 +10,10 @@
     <string name="inbox_label">Innboks</string>
     <string name="favorite_episodes_label">Favoritter</string>
     <string name="settings_label">Innstillinger</string>
-    <string name="downloads_label">Nedlastninger</string>
+    <string name="downloads_label">Nedlastinger</string>
     <string name="downloads_log_label">Nedlastingslogg</string>
     <string name="subscriptions_label">Abonnementer</string>
-    <string name="subscriptions_list_label">Abonnementliste (kun sidemeny)</string>
+    <string name="subscriptions_list_label">Abonnementliste</string>
     <string name="cancel_download_label">Avbryt nedlastingen</string>
     <string name="playback_history_label">Avspillingshistorikk</string>
     <string name="years_statistics_label">År</string>
@@ -46,16 +46,16 @@
     <string name="home_classics_title">Sjekk dine klassikere</string>
     <string name="home_continue_title">Forsett å lytte</string>
     <string name="home_new_title">Se hva som er nytt</string>
-    <string name="home_downloads_title">Forvalte nedlastninger</string>
+    <string name="home_downloads_title">Behandle nedlastinger</string>
     <string name="home_welcome_title">Velkommen til AntennaPod!</string>
     <string name="home_welcome_text">Du har ikke abonnert noen podkaster enda. Åpne menyen for å legge til en podkast.</string>
     <string name="notification_permission_denied">Du avslo tillatelsen.</string>
-    <string name="configure_home">Konfigurer hjemmeskjermen</string>
+    <string name="configure_home">Konfigurer startskjermen</string>
     <string name="section_hidden">Skjult</string>
     <!--Main activity-->
   <string name="drawer_open">Åpne menyen</string>
     <string name="drawer_close">Lukk menyen</string>
-    <string name="drawer_preferences">Skuff-innstillinger</string>
+    <string name="drawer_preferences">Innstillinger for sidemenyen</string>
     <string name="drawer_feed_order_unplayed_episodes">Sorter etter teller</string>
     <string name="drawer_feed_order_alphabetical">Sorter alfabetisk</string>
     <string name="drawer_feed_order_last_update">Sorter etter utgivelsesdato</string>
@@ -100,7 +100,7 @@
     <string name="shownotes_contentdescription">sveip opp for å lese episodebeskrivelsen</string>
     <string name="close_label">Lukk</string>
     <string name="retry_label">Prøv igjen</string>
-    <string name="auto_download_label">Inkluder i automatiske nedlastninger</string>
+    <string name="auto_download_label">Inkluder i automatiske nedlastinger</string>
     <string name="feed_volume_adapdation">Volumtilpasning</string>
     <string name="feed_volume_adaptation_summary">Skru volumet for denne podcasten opp eller ned: %1$s</string>
     <string name="feed_volume_reduction_off">Ingen tilpasning</string>
@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">Alltid</string>
     <string name="feed_auto_download_never">Aldri</string>
     <string name="feed_new_episodes_action_add_to_inbox">Legg til i innboksen</string>
-    <string name="feed_new_episodes_action_add_to_queue">Legg til i kø, slå av automatisk nedlasting</string>
-    <string name="feed_new_episodes_action_nothing">Ingenting, slå av automatisk nedlasting</string>
+    <string name="feed_new_episodes_action_add_to_queue">Legg til i kø</string>
+    <string name="feed_new_episodes_action_nothing">Ingenting</string>
     <string name="episode_cleanup_never">Aldri</string>
     <string name="episode_cleanup_except_favorite_removal">Når ikke favorittmerket</string>
     <string name="episode_cleanup_queue_removal">Når ikke lagt i kø</string>
@@ -171,42 +171,16 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">VPN-appen din utgir seg for å være er mobilt nettverk (mengdebetalt forbindelse). Oppdatering av podkastene over mobil dataforbindelse er slått av i innstillingene.\n\nVil oppdatere likevel? Hvis du vil at dette problemet skal fikses må du kontakte de som lagde VPN-appen.</string>
     <!--actions on feeditems-->
   <string name="download_label">Last ned</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">Laster ned %d episode.</item>
-        <item quantity="other">Laster ned %d episoder.</item>
-    </plurals>
     <string name="play_label">Spill</string>
     <string name="pause_label">Pause</string>
     <string name="stream_label">Strøm</string>
     <string name="delete_label">Slett</string>
     <string name="remove_inbox_label">Fjern fra innboksen</string>
-    <string name="removed_inbox_label">Fjernet fra innboksen</string>
-    <string name="mark_read_label">Marker som avspilt</string>
     <string name="toggle_played_label">Bytte avspilt status</string>
-    <string name="marked_as_played_label">Marker som avspilt</string>
-    <string name="marked_as_unplayed_label">Marker som ikke avspilt</string>
     <string name="mark_read_no_media_label">Merk som lest</string>
-    <string name="play_this_to_seek_position">For å hoppe til posisjoner, må du spille av episoden</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">%d episode merket som avspilt.</item>
-        <item quantity="other">%d episoder merket som avspilt.</item>
-    </plurals>
-    <string name="mark_unread_label">Marker som ikke avspilt</string>
     <string name="mark_unread_label_no_media">Merk som ulest</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d episode merket som ikke avspilt.</item>
-        <item quantity="other">%d episoder merket som ikke avspilt.</item>
-    </plurals>
     <string name="add_to_queue_label">Legg til i kø</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d episode lagt til i køen.</item>
-        <item quantity="other">%d episoder lagt til i køen.</item>
-    </plurals>
     <string name="remove_from_queue_label">Fjern fra køen</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d episode fjernet fra køen.</item>
-        <item quantity="other">%d episoder fjernet fra køen.</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d episode er fjernet fra innboksen.</item>
         <item quantity="other">%d episoder er fjernet fra innboksen.</item>
@@ -215,12 +189,9 @@
     <string name="remove_from_favorite_label">Fjern fra favoritter</string>
     <string name="visit_website_label">Besøk nettside</string>
     <string name="skip_episode_label">Hopp over episode</string>
-    <string name="reset_position">Tilbakestill avspillingsposisjon</string>
-    <string name="no_items_selected">Ingenting er valgt</string>
-    <string name="delete_local_feed_warning_body">Sletting fjerner episoden fra AntennaPod og sletter mediefilen fra enhetslagringen. Den kan ikke lastes ned på ny gjennom AntennaPod.</string>
     <!--Download messages and labels-->
   <string name="download_successful">vellykket</string>
-    <string name="download_pending">Nedlastning venter</string>
+    <string name="download_pending">Nedlasting venter</string>
     <string name="download_running">Nedlasting pågår</string>
     <string name="download_error_details">Detaljer</string>
     <string name="download_log_details_message">%1$s \n\nTeknisk årsak: \n%2$s \n\nFil nettadresse:\n%3$s</string>
@@ -439,13 +410,13 @@
     <string name="behavior">Oppførsel</string>
     <string name="pref_default_page">Standardside</string>
     <string name="pref_default_page_sum">Skjerm som åpnes først nå AntennaPod åpnes</string>
-    <string name="pref_back_button_opens_drawer">Tilbakeknappen åpner skuffen</string>
-    <string name="pref_back_button_opens_drawer_summary">Å trykke tilbake knappen på standardsiden åpner navigasjonsskuffen</string>
+    <string name="pref_back_button_opens_drawer">Tilbakeknappen åpner sidemenyen</string>
+    <string name="pref_back_button_opens_drawer_summary">Å trykke tilbakeknappen på startsiden åpner sidemenyen</string>
     <string name="remember_last_page">Husk siste side</string>
     <string name="pref_delete_removes_from_queue_title">Sletting fjerner fra køen</string>
     <string name="pref_delete_removes_from_queue_sum">Slette en episode automatisk fra køen når den slettes</string>
     <string name="pref_filter_feed_title">Abonnementsfilter</string>
-    <string name="pref_filter_feed_sum">Filtrer abonnementene dine i navigasjonslinjen og på abonnementsskjermen</string>
+    <string name="pref_filter_feed_sum">Filtrer abonnementene dine i sidemenyen og på abonnementsskjermen</string>
     <string name="subscriptions_counter_greater_zero">Teller er større en null</string>
     <string name="auto_downloaded">Automatisk nedlastet</string>
     <string name="not_auto_downloaded">Ikke automatisk nedlastet</string>
@@ -541,7 +512,7 @@
     <string name="synchronization_host_label">Tjeneradresse</string>
     <string name="proceed_to_login_butLabel">Forsett til innlogging</string>
     <string name="synchronization_nextcloud_authenticate_browser">Gi tilgang ved å bruke en nettleser og kom tilbake til AntennaPod.</string>
-    <string name="gpodnetauth_login_butLabel">Logg inn</string>
+    <string name="gpodnetauth_login_butLabel">Innlogging</string>
     <string name="synchronization_credentials_explanation">Legg til påloggingsinformasjon for kontoen din på synkroniseringsserveren.</string>
     <string name="gpodnetauth_encryption_warning">Passord og data er ikke kryptert!</string>
     <string name="username_label">Brukernavn</string>
@@ -606,7 +577,6 @@
     <string name="feed_tags_summary">Endre emneknagger på podkasten for å organisere abonnementene dine bedre</string>
     <string name="feed_folders_include_root">Vis podkasten i hoved lista</string>
     <string name="multi_feed_common_tags_info">Bare vanlige emneknagger fra alle valgte abonnement er synlig. Andre emneknagger blir ikke påvirket.</string>
-    <string name="auto_download_settings_label">Innstillinger for automatisk nedlastning</string>
     <string name="episode_filters_label">Episodefiltrering</string>
     <string name="episode_filters_description">Nøkkelord som skal brukes for å avgjøre om en episode skal nedlastes automatisk eller ikke</string>
     <string name="add_term">Legg til begrep</string>
@@ -631,8 +601,6 @@
     <string name="release_schedule_friday">Fre</string>
     <string name="release_schedule_saturday">Lør</string>
     <string name="release_schedule_sunday">Søn</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Importerer abonnementer fra applikasjoner med kun ett formål…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Søk etter podkast…</string>
     <string name="search_itunes_label">Leter i Apple Podcasts</string>
@@ -747,10 +715,6 @@
     </plurals>
     <string name="choose_data_directory_message">Velg basen for datamappen din. AntennaPod vil lage de nødvendige undermappene.</string>
     <string name="pref_fast_forward">Tidshopp for framoverspoling</string>
-    <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">%d nedlastet episode slettet.</item>
-        <item quantity="other">%d nedlastede episoder er slettet.</item>
-    </plurals>
     <plurals name="time_hours_quantified">
         <item quantity="one">%d time</item>
         <item quantity="other">%d timer</item>
@@ -763,7 +727,6 @@
     <string name="multi_select_started_talkback">Aksjoner for flervalg vises nederst</string>
     <string name="show_transcript">Vis transkripsjon</string>
     <string name="transcript">Transkripsjon</string>
-    <string name="transcript_follow">Følg lyd</string>
     <string name="no_transcript_label">Ingen transkripsjon</string>
     <string name="null_value_podcast_error">Finner ingen podkast på lenken du trykket på. Sjekk lenken og prøv igjen eller søk etter podkasten manuelt.</string>
     <string name="clear_queue_confirmation_msg">Bekreft at du vil fjerne ALLE episodene fra køen.</string>
@@ -775,7 +738,7 @@
     <string name="pref_auto_delete_title">Automatisk sletting</string>
     <string name="pref_auto_delete_sum">Slett episoden etter avspilling eller når automatisk nedlasting trenger plass</string>
     <string name="pref_nav_drawer_items_title">Tilpass navigasjon</string>
-    <string name="pref_nav_drawer_items_sum">Endre hvilke elementer som vises i navigasjonsskuffen eller navigasjonen nederst</string>
+    <string name="pref_nav_drawer_items_sum">Endre hvilke elementer som vises i sidemenyen eller navigasjonslinjen nederst</string>
     <string name="pref_episode_cache_summary">Automatisk nedlasting blir stoppet dersom dette tallet nås</string>
     <string name="pref_fast_forward_sum">Tilpass antallet sekunder som skal hoppes framover når spol framover-knappen trykkes</string>
     <string name="pref_show_subscription_title">Vis titler</string>
@@ -795,8 +758,8 @@
     <string name="delete_downloads_played">Slett avspilte</string>
     <string name="delete_downloads_played_confirmation">Bekreft at du vil slette alle avspilte nedlastinger.</string>
     <string name="mobile_download_notice">Nedlasting over mobildataforbindelsen i de neste %d minuttene</string>
-    <string name="bottom_navigation">Navigering nederst</string>
-    <string name="bottom_navigation_summary">Betafunksjon: Få tilgang til viktige skjermbilder med et enkelt tapp fra hvor som helst</string>
+    <string name="bottom_navigation">Navigasjonslinje nederst</string>
+    <string name="bottom_navigation_summary">Få tilgang til viktige skjermbilder fra hvor som helst med et enkelt tapp</string>
     <string name="statistics_episodes_started">startet</string>
     <string name="statistics_episodes_total">totalt</string>
     <string name="statistics_episodes_space">plass brukt</string>
@@ -872,4 +835,7 @@
     <string name="echo_hoarder_comment_clean">Du har spilt av episoder fra %1$d%% av de %2$d aktive abonnementene dine dette året. Vi vedder på at du holder pulten din ryddig også!</string>
     <string name="echo_hoarder_comment_hoarder">Tallene lyver ikke, de forteller. Med bare %1$d%% av de %2$d aktive abonnementene dine er spilt av dette året har vi sannsynligvis rett.</string>
     <string name="echo_thanks_large">Takk</string>
+    <string name="feed_new_episodes_action_summary_autodownload">Automatisk nedlasting er aktivert. Episoder blir lagt til i innboksen og deretter flyttet til køen så snart den er lastet ned.</string>
+    <string name="rss_address">RSS-adresse</string>
+    <string name="visit_social_interact_label">Vis kommentarer</string>
 </resources>

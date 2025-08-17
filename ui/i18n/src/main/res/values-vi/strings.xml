@@ -75,8 +75,6 @@
     <string name="pause_label">Tạm dừng</string>
     <string name="stream_label">Nghe trực tiếp</string>
     <string name="delete_label">Xoá</string>
-    <string name="mark_read_label">Đánh dấu đã nghe</string>
-    <string name="mark_unread_label">Đánh dấu chưa nghe</string>
     <string name="skip_episode_label">Bỏ qua tập này</string>
     <!--Download messages and labels-->
   <string name="download_successful">thành công</string>

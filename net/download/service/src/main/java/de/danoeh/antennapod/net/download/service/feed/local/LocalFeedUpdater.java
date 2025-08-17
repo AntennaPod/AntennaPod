@@ -9,6 +9,9 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.input.CountingInputStream;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +47,6 @@ import de.danoeh.antennapod.parser.media.id3.ID3ReaderException;
 import de.danoeh.antennapod.parser.media.id3.Id3MetadataReader;
 import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentMetadataReader;
 import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentReaderException;
-import org.apache.commons.io.input.CountingInputStream;
 
 public class LocalFeedUpdater {
     private static final String TAG = "LocalFeedUpdater";
@@ -172,7 +174,8 @@ public class LocalFeedUpdater {
     }
 
     private static FeedItem createFeedItem(Feed feed, FastDocumentFile file, Context context) {
-        FeedItem item = new FeedItem(0, file.getName(), UUID.randomUUID().toString(),
+        String title = FilenameUtils.removeExtension(file.getName());
+        FeedItem item = new FeedItem(0, title, UUID.randomUUID().toString(),
                 file.getName(), new Date(file.getLastModified()), FeedItem.UNPLAYED, feed);
         item.disableAutoDownload();
 

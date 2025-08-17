@@ -61,13 +61,13 @@ public class EpisodeMultiSelectActionHandler {
             }
         }
         DBWriter.addQueueItem(activity, toQueue.toArray(new FeedItem[0]));
-        showMessage(R.plurals.added_to_queue_batch_label, toQueue.size());
+        showMessage(R.plurals.added_to_queue_message, toQueue.size());
     }
 
     private void removeFromQueueChecked(List<FeedItem> items) {
         long[] checkedIds = getSelectedIds(items);
         DBWriter.removeQueueItem(activity, true, checkedIds);
-        showMessage(R.plurals.removed_from_queue_batch_label, checkedIds.length);
+        showMessage(R.plurals.removed_from_queue_message, checkedIds.length);
     }
 
     private void removeFromInboxChecked(List<FeedItem> items) {
@@ -84,13 +84,13 @@ public class EpisodeMultiSelectActionHandler {
     private void markedCheckedPlayed(List<FeedItem> items) {
         long[] checkedIds = getSelectedIds(items);
         DBWriter.markItemPlayed(FeedItem.PLAYED, checkedIds);
-        showMessage(R.plurals.marked_read_batch_label, checkedIds.length);
+        showMessage(R.plurals.marked_as_played_message, checkedIds.length);
     }
 
     private void markedCheckedUnplayed(List<FeedItem> items) {
         long[] checkedIds = getSelectedIds(items);
         DBWriter.markItemPlayed(FeedItem.UNPLAYED, checkedIds);
-        showMessage(R.plurals.marked_unread_batch_label, checkedIds.length);
+        showMessage(R.plurals.marked_as_unplayed_message, checkedIds.length);
     }
 
     private void downloadChecked(List<FeedItem> items) {
@@ -102,7 +102,7 @@ public class EpisodeMultiSelectActionHandler {
                 downloaded++;
             }
         }
-        showMessage(R.plurals.downloading_batch_label, downloaded);
+        showMessage(R.plurals.downloading_episodes_message, downloaded);
     }
 
     private void deleteChecked(List<FeedItem> items) {
@@ -114,7 +114,7 @@ public class EpisodeMultiSelectActionHandler {
                 DBWriter.deleteFeedMediaOfItem(activity, feedItem.getMedia());
             }
         }
-        showMessage(R.plurals.deleted_multi_episode_batch_label, countHasMedia);
+        showMessage(R.plurals.deleted_episode_message, countHasMedia);
     }
 
     private void moveToTopChecked(List<FeedItem> items) {
