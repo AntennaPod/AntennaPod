@@ -30,8 +30,8 @@ project.ext {
     glideVersion = "4.16.0"
     okhttpVersion = "4.12.0"
     eventbusVersion = "3.3.1"
-    rxAndroidVersion = "2.1.1"
-    rxJavaVersion = "2.2.2"
+    rxAndroidVersion = "3.0.2"
+    rxJavaVersion = "3.1.5"
 
     //Tests
     awaitilityVersion = "3.1.6"

@@ -36,8 +36,8 @@ dependencies {
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "org.greenrobot:eventbus:$eventbusVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
-    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
-    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
     implementation "com.google.guava:guava:31.0.1-android"
 
     testImplementation "junit:junit:$junitVersion"

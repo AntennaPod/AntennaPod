@@ -1,8 +1,8 @@
 package de.danoeh.antennapod;
 
 import android.util.Log;
-import io.reactivex.exceptions.UndeliverableException;
-import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.rxjava3.exceptions.UndeliverableException;
+import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
 public class RxJavaErrorHandlerSetup {
     private static final String TAG = "RxJavaErrorHandler";
