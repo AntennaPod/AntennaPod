@@ -66,10 +66,10 @@ public class ReleaseScheduleGuesser {
         date.setTime(new Date(date.getTime().getTime() + time));
     }
 
-    private static void addUntil(GregorianCalendar date, long amount, List<Integer> days) {
+    private static void addTimeUntilOnAllowedDay(GregorianCalendar date, long amount, List<Integer> allowedDays) {
         do {
             addTime(date, amount);
-        } while (!days.contains(date.get(Calendar.DAY_OF_WEEK)));
+        } while (!allowedDays.contains(date.get(Calendar.DAY_OF_WEEK)));
     }
 
     private static <T> T getMedian(List<T> list) {
@@ -136,7 +136,7 @@ public class ReleaseScheduleGuesser {
         return largeDays;
     }
 
-    private static Date getUniqueDate(Date date) {
+    private static Date getNormalizedDate(Date date) {
         GregorianCalendar current = new GregorianCalendar();
         current.setTime(date);
         current.set(Calendar.HOUR_OF_DAY, 0);
@@ -146,61 +146,36 @@ public class ReleaseScheduleGuesser {
         return current.getTime();
     }
 
-    private static List<Date> getMostRecentDates(List<Date> releaseDates, int amount) {
-        Set<String> uniqueDates = new HashSet<>();
-        int i = releaseDates.size();
-        while (i > 0 && amount > 0) {
-            i--;
-            String dateString = getUniqueDate(releaseDates.get(i)).toString();
-            if (!uniqueDates.contains(dateString)) {
-                uniqueDates.add(dateString);
-                amount--;
-            }
-        }
-        return releaseDates.subList(i, releaseDates.size());
-    }
-
-    private static boolean containsMultipleReleasesPerDay(List<Date> releaseDates, int threshold) {
-        Set<String> uniqueDates = new HashSet<>();
-        for (int i = 0; i < releaseDates.size(); i++) {
-            uniqueDates.add(getUniqueDate(releaseDates.get(i)).toString());
-            // The threshold indicates the number of releases need to be released on the same day for a feed to
-            // be considered a multiple-per-day podcast
-            if (i > (threshold + uniqueDates.size())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static int getAverageReleasesPerDay(List<Date> releaseDates) {
-        Set<String> uniqueDates = new HashSet<>();
-        for (Date date : releaseDates) {
-            uniqueDates.add(getUniqueDate(date).toString());
-        }
-        return releaseDates.size() / uniqueDates.size();
-    }
-
-    private static int getNumberOfReleasesOnDate(List<Date> releaseDates, Date date) {
-        String dateString = getUniqueDate(date).toString();
-        int amount = 0;
-        for (Date releaseDate : releaseDates) {
-            if (dateString.equals(getUniqueDate(releaseDate).toString())) {
-                amount++;
-            }
-        }
-        return amount;
-    }
-
     public static Guess performGuess(List<Date> releaseDates) {
         if (releaseDates.size() <= 1) {
             return new Guess(Schedule.UNKNOWN, null, null, false);
         } else if (releaseDates.size() > MAX_UNIQUE_DATES) {
-            releaseDates = getMostRecentDates(releaseDates, MAX_UNIQUE_DATES);
+            Set<Date> uniqueDates = new HashSet<>();
+            int i = releaseDates.size();
+            int uniqueDateCounter = MAX_UNIQUE_DATES;
+            while (i > 0 && uniqueDateCounter > 0) {
+                i--;
+                Date date = getNormalizedDate(releaseDates.get(i));
+                if (!uniqueDates.contains(date)) {
+                    uniqueDates.add(date);
+                    uniqueDateCounter--;
+                }
+            }
+            releaseDates = releaseDates.subList(i, releaseDates.size());
         }
 
         Stats stats = getStats(releaseDates);
-        final boolean multipleReleasesPerDay = containsMultipleReleasesPerDay(releaseDates, 1);
+        boolean multipleReleasesPerDay = false;
+        Set<Date> normalizedDates = new HashSet<>();
+        for (int i = 0; i < releaseDates.size(); i++) {
+            normalizedDates.add(getNormalizedDate(releaseDates.get(i)));
+            // If i ever increases faster than normalizedDates, that means multiple episodes
+            // were released on the same day
+            if (i > (1 + normalizedDates.size())) {
+                multipleReleasesPerDay = true;
+            }
+        }
+
         final int maxTotalWrongDays = Math.max(1, releaseDates.size() / 5);
         final int maxSingleDayOff = releaseDates.size() / 10;
 
@@ -213,9 +188,20 @@ public class ReleaseScheduleGuesser {
 
         if (multipleReleasesPerDay) {
             // Find release days
-            List<Integer> largeDays = getLargeDays(stats, 0);
-            int averagePerDayAmount = getAverageReleasesPerDay(releaseDates);
-            int releasesToday = getNumberOfReleasesOnDate(releaseDates, last.getTime());
+            Set<Date> uniqueDates = new HashSet<>();
+            for (Date date : releaseDates) {
+                uniqueDates.add(getNormalizedDate(date));
+            }
+            float averagePerDayAmount = (float) releaseDates.size() / uniqueDates.size();
+
+            Date date = getNormalizedDate(last.getTime());
+            int releasesToday = 0;
+            for (Date releaseDate : releaseDates) {
+                if (date.equals(getNormalizedDate(releaseDate))) {
+                    releasesToday++;
+                }
+            }
+
             long distance;
             if (releasesToday <= averagePerDayAmount) {
                 distance = (long) stats.medianDistance;
@@ -223,7 +209,8 @@ public class ReleaseScheduleGuesser {
                 distance = ONE_DAY;
             }
 
-            addUntil(last, distance, largeDays);
+            List<Integer> largeDays = getLargeDays(stats, 0);
+            addTimeUntilOnAllowedDay(last, distance, largeDays);
             Schedule schedule = Schedule.SPECIFIC_DAYS;
             if (largeDays.size() == 7) {
                 schedule = Schedule.DAILY;
@@ -291,7 +278,7 @@ public class ReleaseScheduleGuesser {
 
         if (matchesAverageDays && stats.medianDistance < ONE_WEEK) {
             // Fixed daily release schedule (eg Mo, Thu, Fri)
-            addUntil(last, ONE_DAY, largeDays);
+            addTimeUntilOnAllowedDay(last, ONE_DAY, largeDays);
 
             if (largeDays.size() == 5 && largeDays.containsAll(Arrays.asList(
                     Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY, Calendar.THURSDAY, Calendar.FRIDAY))) {
@@ -300,7 +287,7 @@ public class ReleaseScheduleGuesser {
             return new Guess(Schedule.SPECIFIC_DAYS, largeDays, last.getTime(), false);
         } else if (largeDays.size() == 1) {
             // Probably still weekly with more exceptions than others
-            addUntil(last, ONE_DAY, largeDays);
+            addTimeUntilOnAllowedDay(last, ONE_DAY, largeDays);
             return new Guess(Schedule.WEEKLY, largeDays, last.getTime(), false);
         }
         addTime(last, (long) (0.6f * stats.medianDistance));
