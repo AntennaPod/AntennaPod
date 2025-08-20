@@ -122,19 +122,22 @@ public class FeedStatisticsFragment extends Fragment {
     }
 
     private String getReadableSchedule(ReleaseScheduleGuesser.Guess guess) {
+        String prefix = guess.multipleReleasesPerDay ? getString(R.string.release_schedule_multiple_per_day)
+                + ", " : "";
         switch (guess.schedule) {
             case DAILY:
-                return getString(R.string.release_schedule_daily);
+                return prefix + getString(R.string.release_schedule_daily);
             case WEEKDAYS:
-                return getString(R.string.release_schedule_weekdays);
+                return prefix + getString(R.string.release_schedule_weekdays);
             case WEEKLY:
-                return getString(R.string.release_schedule_weekly) + ", " + getReadableDay(guess.days.get(0));
+                return prefix + getString(R.string.release_schedule_weekly) + ", " + getReadableDay(guess.days.get(0));
             case BIWEEKLY:
-                return getString(R.string.release_schedule_biweekly) + ", " + getReadableDay(guess.days.get(0));
+                return prefix + getString(R.string.release_schedule_biweekly) + ", "
+                        + getReadableDay(guess.days.get(0));
             case MONTHLY:
-                return getString(R.string.release_schedule_monthly);
+                return prefix + getString(R.string.release_schedule_monthly);
             case FOURWEEKLY:
-                return getString(R.string.release_schedule_monthly) + ", " + getReadableDay(guess.days.get(0));
+                return prefix + getString(R.string.release_schedule_monthly) + ", " + getReadableDay(guess.days.get(0));
             case SPECIFIC_DAYS:
                 StringBuilder days = new StringBuilder();
                 for (int i = 0; i < guess.days.size(); i++) {
@@ -143,9 +146,9 @@ public class FeedStatisticsFragment extends Fragment {
                     }
                     days.append(getReadableDay(guess.days.get(i)));
                 }
-                return days.toString();
+                return prefix + days.toString();
             default:
-                return getString(R.string.statistics_expected_next_episode_unknown);
+                return prefix + getString(R.string.statistics_expected_next_episode_unknown);
         }
     }
 
@@ -190,7 +193,10 @@ public class FeedStatisticsFragment extends Fragment {
             viewBinding.episodeSchedule.mainLabel.setText(R.string.statistics_expected_next_episode_unknown);
         } else {
             if (guess.nextExpectedDate.getTime() <= new Date().getTime()) {
-                viewBinding.expectedNextEpisode.mainLabel.setText(R.string.statistics_expected_next_episode_any_day);
+                viewBinding.expectedNextEpisode.mainLabel.setText(
+                        guess.multipleReleasesPerDay
+                                ? R.string.statistics_expected_next_episode_any_time
+                                : R.string.statistics_expected_next_episode_any_day);
             } else {
                 viewBinding.expectedNextEpisode.mainLabel.setText(
                         DateFormatter.formatAbbrev(getContext(), guess.nextExpectedDate));
