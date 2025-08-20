@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.ui.screen.playback.video;
 
+import android.app.PictureInPictureParams;
+import android.app.PictureInPictureUiState;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.ColorDrawable;
@@ -29,6 +31,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.bumptech.glide.Glide;
@@ -41,6 +44,7 @@ import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
+import de.danoeh.antennapod.ui.episodeslist.FeedItemMenuHandler;
 import de.danoeh.antennapod.ui.screen.chapter.ChaptersFragment;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.playback.service.PlaybackService;
@@ -49,7 +53,7 @@ import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.common.IntentUtils;
-import de.danoeh.antennapod.ui.share.ShareUtils;
+import de.danoeh.antennapod.ui.screen.playback.TranscriptDialogFragment;
 import de.danoeh.antennapod.databinding.VideoplayerActivityBinding;
 import de.danoeh.antennapod.ui.share.ShareDialog;
 import de.danoeh.antennapod.ui.screen.feed.preferences.SkipPreferenceDialog;
@@ -64,14 +68,16 @@ import de.danoeh.antennapod.ui.screen.playback.MediaPlayerErrorDialog;
 import de.danoeh.antennapod.ui.screen.playback.PlaybackControlsDialog;
 import de.danoeh.antennapod.ui.screen.playback.SleepTimerDialog;
 import de.danoeh.antennapod.ui.screen.playback.VariableSpeedDialog;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.Collections;
 
 /**
  * Activity for playing video files.
@@ -112,6 +118,30 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         setupView();
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x80000000));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupPip();
+    }
+
+    void setupPip() {
+        if (Build.VERSION.SDK_INT < 26) {
+            return;
+        }
+        PictureInPictureParams.Builder builder = new PictureInPictureParams.Builder();
+        if (Build.VERSION.SDK_INT >= 31) {
+            builder.setAutoEnterEnabled(true);
+            builder.setSourceRectHint(viewBinding.getRoot().getClipBounds());
+        }
+        setPictureInPictureParams(builder.build());
+    }
+
+    @Override
+    public void onPictureInPictureUiStateChanged(@NonNull PictureInPictureUiState pipState) {
+        super.onPictureInPictureUiStateChanged(pipState);
+        if (Build.VERSION.SDK_INT < 35) {
+            return;
+        }
+        if (pipState.isTransitioningToPip()) {
+            hideVideoControls(false);
+        }
     }
 
     @Override
@@ -547,26 +577,13 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         boolean isFeedMedia = (media instanceof FeedMedia);
 
         menu.findItem(R.id.open_feed_item).setVisible(isFeedMedia); // FeedMedia implies it belongs to a Feed
-
-        boolean hasWebsiteLink = getWebsiteLinkWithFallback(media) != null;
-        menu.findItem(R.id.visit_website_item).setVisible(hasWebsiteLink);
-
-        boolean isItemAndHasLink = isFeedMedia && ShareUtils.hasLinkToShare(((FeedMedia) media).getItem());
-        boolean isItemHasDownloadLink = isFeedMedia && ((FeedMedia) media).getDownloadUrl() != null;
-        menu.findItem(R.id.share_item).setVisible(hasWebsiteLink || isItemAndHasLink || isItemHasDownloadLink);
-
-        menu.findItem(R.id.add_to_favorites_item).setVisible(false);
-        menu.findItem(R.id.remove_from_favorites_item).setVisible(false);
         if (isFeedMedia) {
-            menu.findItem(R.id.add_to_favorites_item).setVisible(!isFavorite);
-            menu.findItem(R.id.remove_from_favorites_item).setVisible(isFavorite);
+            FeedItemMenuHandler.onPrepareMenu(menu, Collections.singletonList(((FeedMedia) media).getItem()));
         }
 
         menu.findItem(R.id.set_sleeptimer_item).setVisible(!controller.sleepTimerActive());
         menu.findItem(R.id.disable_sleeptimer_item).setVisible(controller.sleepTimerActive());
-
         menu.findItem(R.id.player_switch_to_audio_only).setVisible(true);
-
         menu.findItem(R.id.audio_controls).setVisible(controller.getAudioTracks().size() >= 2);
         menu.findItem(R.id.playback_speed).setVisible(true);
         menu.findItem(R.id.player_show_chapters).setVisible(true);
@@ -587,6 +604,9 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             return true;
         } else if (item.getItemId() == R.id.player_show_chapters) {
             new ChaptersFragment().show(getSupportFragmentManager(), ChaptersFragment.TAG);
+            return true;
+        } else if (item.getItemId() == R.id.transcript_item) {
+            new TranscriptDialogFragment().show(getSupportFragmentManager(), TranscriptDialogFragment.TAG);
             return true;
         }
 
@@ -614,8 +634,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             PlaybackControlsDialog dialog = PlaybackControlsDialog.newInstance();
             dialog.show(getSupportFragmentManager(), "playback_controls");
         } else if (item.getItemId() == R.id.open_feed_item && feedItem != null) {
-            Intent intent = MainActivity.getIntentToOpenFeed(this, feedItem.getFeedId());
-            startActivity(intent);
+            new MainActivityStarter(this).withOpenFeed(feedItem.getFeedId()).withClearTop().start();
         } else if (item.getItemId() == R.id.visit_website_item) {
             IntentUtils.openInBrowser(VideoplayerActivity.this, getWebsiteLinkWithFallback(media));
         } else if (item.getItemId() == R.id.share_item && feedItem != null) {
@@ -801,6 +820,8 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
                             AudioManager.ADJUST_TOGGLE_MUTE, AudioManager.FLAG_SHOW_UI);
                     return true;
                 }
+                break;
+            default:
                 break;
         }
 

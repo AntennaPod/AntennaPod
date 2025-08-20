@@ -6,7 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaMetadataRetriever;
 import android.util.Log;
 
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 
 import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
@@ -43,7 +45,7 @@ class DBUpgrader {
         }
         if (oldVersion <= 7) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
-                    + " ADD COLUMN " + PodDBAdapter.KEY_PLAYBACK_COMPLETION_DATE
+                    + " ADD COLUMN " + PodDBAdapter.KEY_LAST_PLAYED_TIME_HISTORY
                     + " INTEGER");
         }
         if (oldVersion <= 8) {
@@ -208,7 +210,7 @@ class DBUpgrader {
         }
         if (oldVersion < 1040002) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
-                    + " ADD COLUMN " + PodDBAdapter.KEY_LAST_PLAYED_TIME + " INTEGER DEFAULT 0");
+                    + " ADD COLUMN " + PodDBAdapter.KEY_LAST_PLAYED_TIME_STATISTICS + " INTEGER DEFAULT 0");
         }
         if (oldVersion < 1040013) {
             db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_PUBDATE);
@@ -336,7 +338,22 @@ class DBUpgrader {
         }
         if (oldVersion < 3040000) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
-                    + " ADD COLUMN " + PodDBAdapter.KEY_FEED_SKIP_SILENCE + " INTEGER");
+                    + " ADD COLUMN " + PodDBAdapter.KEY_FEED_SKIP_SILENCE
+                    + " INTEGER DEFAULT " + FeedPreferences.SkipSilence.GLOBAL.code);
+        }
+        if (oldVersion < 3050000) {
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_STATE + " INTEGER DEFAULT " + Feed.STATE_SUBSCRIBED);
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_PODCASTINDEX_TRANSCRIPT_URL + " TEXT");
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_PODCASTINDEX_TRANSCRIPT_TYPE + " TEXT");
+        }
+        if (oldVersion < 3080000) {
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_SOCIAL_INTERACT_URL + " TEXT");
+            db.execSQL("DELETE FROM " + PodDBAdapter.TABLE_NAME_FAVORITES + " WHERE " + PodDBAdapter.KEY_FEEDITEM
+                    + " NOT IN (SELECT " + PodDBAdapter.KEY_ID + " FROM " + PodDBAdapter.TABLE_NAME_FEED_ITEMS + ")");
         }
     }
 

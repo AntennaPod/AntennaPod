@@ -13,6 +13,7 @@ import android.util.Pair;
 import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
@@ -208,18 +209,15 @@ public abstract class PlaybackController {
                 Log.d(TAG, "Bad arguments. Won't handle intent");
                 return;
             }
-            switch (type) {
-                case PlaybackServiceInterface.NOTIFICATION_TYPE_RELOAD:
-                    if (playbackService == null && PlaybackService.isRunning) {
-                        bindToService();
-                        return;
-                    }
-                    mediaInfoLoaded = false;
-                    queryService();
-                    break;
-                case PlaybackServiceInterface.NOTIFICATION_TYPE_PLAYBACK_END:
-                    onPlaybackEnd();
-                    break;
+            if (type == PlaybackServiceInterface.NOTIFICATION_TYPE_RELOAD) {
+                if (playbackService == null && PlaybackService.isRunning) {
+                    bindToService();
+                    return;
+                }
+                mediaInfoLoaded = false;
+                queryService();
+            } else if (type == PlaybackServiceInterface.NOTIFICATION_TYPE_PLAYBACK_END) {
+                onPlaybackEnd();
             }
         }
 
@@ -379,13 +377,18 @@ public abstract class PlaybackController {
     }
 
     public void seekTo(int time) {
+        Playable playable = getMedia();
         if (playbackService != null) {
+            if (playable != null) {
+                long timestamp = playable.getLastPlayedTimeStatistics();
+                PlayableUtils.saveCurrentPosition(playable, time, timestamp);
+            }
             playbackService.seekTo(time);
-        } else if (getMedia() instanceof FeedMedia) {
-            FeedMedia media = (FeedMedia) getMedia();
+        } else if (playable instanceof FeedMedia) {
+            FeedMedia media = (FeedMedia) playable;
             media.setPosition(time);
             DBWriter.setFeedItem(media.getItem());
-            EventBus.getDefault().post(new PlaybackPositionEvent(time, getMedia().getDuration()));
+            EventBus.getDefault().post(new PlaybackPositionEvent(time, playable.getDuration()));
         }
     }
 

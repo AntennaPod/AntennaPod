@@ -19,18 +19,17 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.button.MaterialButton;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
-import de.danoeh.antennapod.net.sync.service.SyncService;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationProvider;
-import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetDevice;
 import de.danoeh.antennapod.ui.preferences.R;
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import java.util.List;
 import java.util.Locale;
@@ -84,7 +83,7 @@ public class GpodderAuthenticationFragment extends DialogFragment {
                 return;
             }
             SynchronizationCredentials.clear();
-            SynchronizationQueueSink.clearQueue(getContext());
+            SynchronizationQueue.getInstance().clear();
             SynchronizationCredentials.setHosturl(serverUrlText.getText().toString());
             service = new GpodnetService(AntennapodHttpClient.getHttpClient(),
                     SynchronizationCredentials.getHosturl(), SynchronizationCredentials.getDeviceId(),
@@ -235,7 +234,7 @@ public class GpodderAuthenticationFragment extends DialogFragment {
 
         sync.setOnClickListener(v -> {
             dismiss();
-            SyncService.sync(getContext());
+            SynchronizationQueue.getInstance().syncImmediately();
         });
     }
 

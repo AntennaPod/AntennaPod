@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="statistics_today">Leo</string>
+    <!--Other-->
+  <string name="confirm_label">Kubali</string>
+    <string name="cancel_label">Ghairi</string>
+    <string name="yes">Ndio</string>
+    <string name="no">Hapana</string>
+    <string name="reset">Weka upya</string>
+    <string name="close_label">Funga</string>
+    <string name="retry_label">Jaribu tena</string>
+    <string name="play_label">Cheza</string>
+    <string name="delete_label">Futa</string>
+    <string name="confirm_mobile_streaming_button_always">Kila wakati</string>
+    <string name="confirm_mobile_streaming_button_once">Mara moja</string>
+    <string name="date">Tarehe</string>
+    <string name="duration">Muda</string>
+    <string name="preference_search_hint">Tafuta…</string>
+    <string name="feed_every_24_hours">Kila siku</string>
+    <string name="enqueue_location_back">Nyuma</string>
+    <string name="enqueue_location_front">Mbele</string>
+    <!--About screen-->
+  <string name="about_pref">Kuhusu</string>
+    <string name="time_seconds">nukta</string>
+    <string name="time_minutes">dakika</string>
+    <string name="time_hours">masaa</string>
+    <string name="password_label">Nywila</string>
+</resources>

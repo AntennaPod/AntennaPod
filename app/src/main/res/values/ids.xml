@@ -17,4 +17,17 @@
     <item name="view_type_subscription_grid_with_title" type="id"/>
     <item name="view_type_subscription_grid_without_title" type="id"/>
     <item name="view_type_subscription_list" type="id"/>
+
+    <!-- Bottom navigation -->
+    <item name="bottom_navigation_home" type="id"/>
+    <item name="bottom_navigation_queue" type="id"/>
+    <item name="bottom_navigation_inbox" type="id"/>
+    <item name="bottom_navigation_episodes" type="id"/>
+    <item name="bottom_navigation_downloads" type="id"/>
+    <item name="bottom_navigation_history" type="id"/>
+    <item name="bottom_navigation_addfeed" type="id"/>
+    <item name="bottom_navigation_subscriptions" type="id"/>
+    <item name="bottom_navigation_more" type="id"/>
+    <item name="bottom_navigation_customize" type="id"/>
+    <item name="bottom_navigation_settings" type="id"/>
 </resources>

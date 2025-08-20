@@ -37,10 +37,17 @@
     </item>
 
     <item
-        android:id="@+id/share_item"
+        android:id="@+id/share_feed"
         android:menuCategory="container"
         custom:showAsAction="never"
         android:title="@string/share_label" />
+
+    <item
+        android:id="@+id/remove_all_inbox_item"
+        android:title="@string/remove_all_inbox_label"
+        android:menuCategory="container"
+        custom:showAsAction="collapseActionView"
+        android:icon="@drawable/ic_check"/>
 
     <item
         android:id="@+id/rename_item"

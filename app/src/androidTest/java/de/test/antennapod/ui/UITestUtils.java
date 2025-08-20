@@ -128,7 +128,7 @@ public class UITestUtils {
             // create items
             List<FeedItem> items = new ArrayList<>();
             for (int j = 0; j < NUM_ITEMS_PER_FEED; j++) {
-                FeedItem item = new FeedItem(j, "Feed " + (i+1) + ": Item " + (j+1), "item" + j,
+                FeedItem item = new FeedItem(0, "Feed " + (i+1) + ": Item " + (j+1), "item" + j,
                         "http://example.com/feed" + i + "/item/" + j, new Date(), FeedItem.UNPLAYED, feed);
                 items.add(item);
 
@@ -183,7 +183,7 @@ public class UITestUtils {
 
             queue.add(feed.getItems().get(0));
             if (feed.getItems().get(1).hasMedia()) {
-                feed.getItems().get(1).getMedia().setPlaybackCompletionDate(new Date());
+                feed.getItems().get(1).getMedia().setLastPlayedTimeHistory(new Date());
             }
         }
         localFeedDataAdded = true;

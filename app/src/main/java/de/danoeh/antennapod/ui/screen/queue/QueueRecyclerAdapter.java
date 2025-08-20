@@ -7,8 +7,8 @@ import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.fragment.app.FragmentActivity;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
@@ -24,7 +24,7 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
     private boolean dragDropEnabled;
 
 
-    public QueueRecyclerAdapter(MainActivity mainActivity, SwipeActions swipeActions) {
+    public QueueRecyclerAdapter(FragmentActivity mainActivity, SwipeActions swipeActions) {
         super(mainActivity);
         this.swipeActions = swipeActions;
         dragDropEnabled = ! (UserPreferences.isQueueKeepSorted() || UserPreferences.isQueueLocked());

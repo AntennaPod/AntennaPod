@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.google.android.material.color.DynamicColors;
 
-import de.danoeh.antennapod.spa.SPAUtil;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.EventBusException;
 
@@ -45,6 +44,5 @@ public class PodcastApp extends Application {
         DynamicColors.applyToActivitiesIfAvailable(this);
         ClientConfigurator.initialize(this);
         PreferenceUpgrader.checkUpgrades(this);
-        SPAUtil.sendSPAppsQueryFeedsIntent(this);
     }
 }

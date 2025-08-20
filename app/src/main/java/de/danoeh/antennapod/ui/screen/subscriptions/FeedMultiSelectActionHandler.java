@@ -3,17 +3,16 @@ package de.danoeh.antennapod.ui.screen.subscriptions;
 import android.util.Log;
 
 import androidx.annotation.PluralsRes;
+import androidx.fragment.app.FragmentActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.util.Consumer;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.databinding.PlaybackSpeedFeedSettingDialogBinding;
 import de.danoeh.antennapod.ui.screen.feed.RemoveFeedDialog;
@@ -22,13 +21,14 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.ui.screen.preferences.PreferenceListDialog;
 import de.danoeh.antennapod.ui.screen.preferences.PreferenceSwitchDialog;
+import org.greenrobot.eventbus.EventBus;
 
 public class FeedMultiSelectActionHandler {
     private static final String TAG = "FeedSelectHandler";
-    private final MainActivity activity;
+    private final FragmentActivity activity;
     private final List<Feed> selectedItems;
 
-    public FeedMultiSelectActionHandler(MainActivity activity, List<Feed> selectedItems) {
+    public FeedMultiSelectActionHandler(FragmentActivity activity, List<Feed> selectedItems) {
         this.activity = activity;
         this.selectedItems = selectedItems;
     }
@@ -63,12 +63,18 @@ public class FeedMultiSelectActionHandler {
     }
 
     private void autoDownloadPrefHandler() {
-        PreferenceSwitchDialog preferenceSwitchDialog = new PreferenceSwitchDialog(activity,
-                activity.getString(R.string.auto_download_settings_label),
+        PreferenceListDialog preferenceListDialog = new PreferenceListDialog(activity,
                 activity.getString(R.string.auto_download_label));
-        preferenceSwitchDialog.setOnPreferenceChangedListener(enabled ->
-                saveFeedPreferences(feedPreferences -> feedPreferences.setAutoDownload(enabled)));
-        preferenceSwitchDialog.openDialog();
+        String[] items = activity.getResources().getStringArray(R.array.spnEnableAutoDownloadItems);
+        preferenceListDialog.openDialog(items);
+        preferenceListDialog.setOnPreferenceChangedListener(which -> {
+            FeedPreferences.AutoDownloadSetting autoDownloadSetting = switch (which) {
+                case 1 -> FeedPreferences.AutoDownloadSetting.ENABLED;
+                case 2 -> FeedPreferences.AutoDownloadSetting.DISABLED;
+                default -> FeedPreferences.AutoDownloadSetting.GLOBAL;
+            };
+            saveFeedPreferences(feedPreferences -> feedPreferences.setAutoDownload(autoDownloadSetting));
+        });
     }
 
     private void playbackSpeedPrefHandler() {
@@ -96,7 +102,7 @@ public class FeedMultiSelectActionHandler {
 
     private void autoDeleteEpisodesPrefHandler() {
         PreferenceListDialog preferenceListDialog = new PreferenceListDialog(activity,
-                activity.getString(R.string.auto_delete_label));
+                activity.getString(R.string.pref_auto_delete_playback_title));
         String[] items = activity.getResources().getStringArray(R.array.spnAutoDeleteItems);
         preferenceListDialog.openDialog(items);
         preferenceListDialog.setOnPreferenceChangedListener(which -> {
@@ -115,8 +121,8 @@ public class FeedMultiSelectActionHandler {
     }
 
     private void showMessage(@PluralsRes int msgId, int numItems) {
-        activity.showSnackbarAbovePlayer(activity.getResources()
-                .getQuantityString(msgId, numItems, numItems), Snackbar.LENGTH_LONG);
+        EventBus.getDefault().post(new MessageEvent(activity.getResources()
+                .getQuantityString(msgId, numItems, numItems)));
     }
 
     private void saveFeedPreferences(Consumer<FeedPreferences> preferencesConsumer) {

@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.subscriptions;
 
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.CheckBox;
@@ -10,13 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.material.elevation.SurfaceColors;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.CoverLoader;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 
 import java.lang.ref.WeakReference;
 import java.text.NumberFormat;
@@ -30,9 +30,9 @@ public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
     public final CheckBox selectCheckbox;
     public final CardView card;
     public final View errorIcon;
-    public final WeakReference<MainActivity> mainActivityRef;
+    public final WeakReference<Activity> mainActivityRef;
 
-    public SubscriptionViewHolder(@NonNull View itemView, MainActivity mainActivity) {
+    public SubscriptionViewHolder(@NonNull View itemView, Activity mainActivity) {
         super(itemView);
         title = itemView.findViewById(R.id.titleLabel);
         coverImage = itemView.findViewById(R.id.coverImage);
@@ -84,8 +84,8 @@ public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
         coverLoader.load();
 
         if (card != null) {
-            float density = mainActivityRef.get().getResources().getDisplayMetrics().density;
-            card.setCardBackgroundColor(SurfaceColors.getColorForElevation(mainActivityRef.get(), 1 * density));
+            card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(
+                    mainActivityRef.get(), R.attr.colorSurfaceContainer));
         }
 
         int textPadding = columnCount <= 3 ? 16 : 8;

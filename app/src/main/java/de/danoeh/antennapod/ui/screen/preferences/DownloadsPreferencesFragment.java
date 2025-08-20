@@ -2,28 +2,22 @@ package de.danoeh.antennapod.ui.screen.preferences;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
-import androidx.preference.TwoStatePreference;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
-import de.danoeh.antennapod.ui.preferences.screen.downloads.ChooseDataFolderDialog;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
+import de.danoeh.antennapod.ui.preferences.screen.downloads.ChooseDataFolderDialog;
 
 import java.io.File;
 
 
-public class DownloadsPreferencesFragment extends PreferenceFragmentCompat
+public class DownloadsPreferencesFragment extends AnimatedPreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String PREF_SCREEN_AUTODL = "prefAutoDownloadSettings";
-    private static final String PREF_AUTO_DELETE_LOCAL = "prefAutoDeleteLocal";
+    private static final String PREF_SCREEN_AUTO_DELETE = "prefAutoDeleteScreen";
     private static final String PREF_PROXY = "prefProxy";
     private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
-
-    private boolean blockAutoDeleteLocal = true;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -55,6 +49,10 @@ public class DownloadsPreferencesFragment extends PreferenceFragmentCompat
             ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_autodownload);
             return true;
         });
+        findPreference(PREF_SCREEN_AUTO_DELETE).setOnPreferenceClickListener(preference -> {
+            ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_auto_deletion);
+            return true;
+        });
         // validate and set correct value: number of downloads between 1 and 50 (inclusive)
         findPreference(PREF_PROXY).setOnPreferenceClickListener(preference -> {
             ProxyDialog dialog = new ProxyDialog(getActivity());
@@ -68,14 +66,7 @@ public class DownloadsPreferencesFragment extends PreferenceFragmentCompat
             });
             return true;
         });
-        findPreference(PREF_AUTO_DELETE_LOCAL).setOnPreferenceChangeListener((preference, newValue) -> {
-            if (blockAutoDeleteLocal && newValue == Boolean.TRUE) {
-                showAutoDeleteEnableDialog();
-                return false;
-            } else {
-                return true;
-            }
-        });
+        setDataFolderText();
     }
 
     private void setDataFolderText() {
@@ -90,17 +81,5 @@ public class DownloadsPreferencesFragment extends PreferenceFragmentCompat
         if (UserPreferences.PREF_UPDATE_INTERVAL.equals(key)) {
             FeedUpdateManager.getInstance().restartUpdateAlarm(getContext(), true);
         }
-    }
-
-    private void showAutoDeleteEnableDialog() {
-        new MaterialAlertDialogBuilder(requireContext())
-                .setMessage(R.string.pref_auto_local_delete_dialog_body)
-                .setPositiveButton(R.string.yes, (dialog, which) -> {
-                    blockAutoDeleteLocal = false;
-                    ((TwoStatePreference) findPreference(PREF_AUTO_DELETE_LOCAL)).setChecked(true);
-                    blockAutoDeleteLocal = true;
-                })
-                .setNegativeButton(R.string.cancel_label, null)
-                .show();
     }
 }

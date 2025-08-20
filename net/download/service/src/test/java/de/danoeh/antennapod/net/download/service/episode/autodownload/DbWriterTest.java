@@ -13,6 +13,8 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfaceStub;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueStub;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
@@ -62,6 +64,7 @@ public class DbWriterTest {
         UserPreferences.init(context);
         PlaybackPreferences.init(context);
         DownloadServiceInterface.setImpl(new DownloadServiceInterfaceStub());
+        SynchronizationQueue.setInstance(new SynchronizationQueueStub());
 
         // create new database
         PodDBAdapter.init(context);
@@ -91,7 +94,8 @@ public class DbWriterTest {
     @Test
     public void testSetFeedMediaPlaybackInformation() throws Exception {
         final int position = 50;
-        final long lastPlayedTime = 1000;
+        final long lastPlayedTimeStatistics = 1000;
+        final Date lastPlayedTimeHistory = new Date();
         final int playedDuration = 60;
         final int duration = 100;
 
@@ -107,8 +111,9 @@ public class DbWriterTest {
         DBWriter.setFeedItem(item).get(TIMEOUT, TimeUnit.SECONDS);
 
         media.setPosition(position);
-        media.setLastPlayedTime(lastPlayedTime);
+        media.setLastPlayedTimeStatistics(lastPlayedTimeStatistics);
         media.setPlayedDuration(playedDuration);
+        media.setLastPlayedTimeHistory(lastPlayedTimeHistory);
 
         DBWriter.setFeedMediaPlaybackInformation(item.getMedia()).get(TIMEOUT, TimeUnit.SECONDS);
 
@@ -116,7 +121,8 @@ public class DbWriterTest {
         FeedMedia mediaFromDb = itemFromDb.getMedia();
 
         assertEquals(position, mediaFromDb.getPosition());
-        assertEquals(lastPlayedTime, mediaFromDb.getLastPlayedTime());
+        assertEquals(lastPlayedTimeStatistics, mediaFromDb.getLastPlayedTimeStatistics());
+        assertEquals(lastPlayedTimeHistory, mediaFromDb.getLastPlayedTimeHistory());
         assertEquals(playedDuration, mediaFromDb.getPlayedDuration());
         assertEquals(duration, mediaFromDb.getDuration());
     }
@@ -464,12 +470,12 @@ public class DbWriterTest {
         adapter.close();
     }
 
-    private FeedMedia playbackHistorySetup(Date playbackCompletionDate) {
+    private FeedMedia playbackHistorySetup(Date lastPlayedTimeHistory) {
         Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
         FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), FeedItem.PLAYED, feed);
         FeedMedia media = new FeedMedia(0, item, 10, 0, 1, "mime", null,
-                "url", 0, playbackCompletionDate, 0, 0);
+                "url", 0, lastPlayedTimeHistory, 0, 0);
         feed.getItems().add(item);
         item.setMedia(media);
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -490,7 +496,7 @@ public class DbWriterTest {
         adapter.close();
 
         assertNotNull(media);
-        assertNotNull(media.getPlaybackCompletionDate());
+        assertNotNull(media.getLastPlayedTimeHistory());
     }
 
     @Test
@@ -505,8 +511,8 @@ public class DbWriterTest {
         adapter.close();
 
         assertNotNull(media);
-        assertNotNull(media.getPlaybackCompletionDate());
-        assertNotEquals(media.getPlaybackCompletionDate().getTime(), oldDate);
+        assertNotNull(media.getLastPlayedTimeHistory());
+        assertNotEquals(media.getLastPlayedTimeHistory().getTime(), oldDate);
     }
 
     @SuppressWarnings("SameParameterValue")

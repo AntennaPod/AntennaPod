@@ -11,11 +11,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -31,10 +27,11 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.danoeh.antennapod.model.download.ProxyConfig;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
-import io.reactivex.Completable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import de.danoeh.antennapod.ui.preferences.databinding.ProxySettingsBinding;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -42,30 +39,21 @@ import okhttp3.Response;
 
 public class ProxyDialog {
     private final Context context;
-
     private AlertDialog dialog;
-
-    private Spinner spType;
-    private EditText etHost;
-    private EditText etPort;
-    private EditText etUsername;
-    private EditText etPassword;
-
     private boolean testSuccessful = false;
-    private TextView txtvMessage;
     private Disposable disposable;
+    private ProxySettingsBinding viewBinding;
 
     public ProxyDialog(Context context) {
         this.context = context;
     }
 
     public Dialog show() {
-        View content = View.inflate(context, R.layout.proxy_settings, null);
-        spType = content.findViewById(R.id.spType);
+        viewBinding = ProxySettingsBinding.bind(View.inflate(context, R.layout.proxy_settings, null));
 
         dialog = new MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.pref_proxy_title)
-                .setView(content)
+                .setView(viewBinding.getRoot())
                 .setNegativeButton(R.string.cancel_label, null)
                 .setPositiveButton(R.string.proxy_test_label, null)
                 .setNeutralButton(R.string.reset, null)
@@ -83,12 +71,27 @@ public class ProxyDialog {
         });
 
         dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener((view) -> {
-            etHost.getText().clear();
-            etPort.getText().clear();
-            etUsername.getText().clear();
-            etPassword.getText().clear();
+            viewBinding.hostText.getText().clear();
+            viewBinding.portText.getText().clear();
+            viewBinding.usernameText.getText().clear();
+            viewBinding.passwordText.getText().clear();
             setProxyConfig();
         });
+
+        ProxyConfig proxyConfig = UserPreferences.getProxyConfig();
+
+        viewBinding.hostText.setText(proxyConfig.host);
+        viewBinding.hostText.addTextChangedListener(requireTestOnChange);
+        viewBinding.portText.setText(proxyConfig.port > 0 ? String.valueOf(proxyConfig.port) : "");
+        viewBinding.portText.addTextChangedListener(requireTestOnChange);
+        viewBinding.usernameText.setText(proxyConfig.username);
+        viewBinding.usernameText.addTextChangedListener(requireTestOnChange);
+        viewBinding.passwordText.setText(proxyConfig.password);
+        viewBinding.passwordText.addTextChangedListener(requireTestOnChange);
+        if (proxyConfig.type == Proxy.Type.DIRECT) {
+            enableSettings(false);
+            setTestRequired(false);
+        }
 
         List<String> types = new ArrayList<>();
         types.add(Proxy.Type.DIRECT.name());
@@ -96,69 +99,48 @@ public class ProxyDialog {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             types.add(Proxy.Type.SOCKS.name());
         }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
-                android.R.layout.simple_spinner_item, types);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spType.setAdapter(adapter);
-        ProxyConfig proxyConfig = UserPreferences.getProxyConfig();
-        spType.setSelection(adapter.getPosition(proxyConfig.type.name()));
-        etHost = content.findViewById(R.id.etHost);
-        if (!TextUtils.isEmpty(proxyConfig.host)) {
-            etHost.setText(proxyConfig.host);
-        }
-        etHost.addTextChangedListener(requireTestOnChange);
-        etPort = content.findViewById(R.id.etPort);
-        if (proxyConfig.port > 0) {
-            etPort.setText(String.valueOf(proxyConfig.port));
-        }
-        etPort.addTextChangedListener(requireTestOnChange);
-        etUsername = content.findViewById(R.id.etUsername);
-        if (!TextUtils.isEmpty(proxyConfig.username)) {
-            etUsername.setText(proxyConfig.username);
-        }
-        etUsername.addTextChangedListener(requireTestOnChange);
-        etPassword = content.findViewById(R.id.etPassword);
-        if (!TextUtils.isEmpty(proxyConfig.password)) {
-            etPassword.setText(proxyConfig.password);
-        }
-        etPassword.addTextChangedListener(requireTestOnChange);
-        if (proxyConfig.type == Proxy.Type.DIRECT) {
-            enableSettings(false);
-            setTestRequired(false);
-        }
-        spType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                android.R.layout.simple_list_item_1, types);
+        viewBinding.proxyTypeSpinner.setAdapter(adapter);
+        viewBinding.proxyTypeSpinner.setThreshold(999);
+        viewBinding.proxyTypeSpinner.setText(proxyConfig.type.name());
+        viewBinding.proxyTypeSpinner.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                boolean isDirect = Proxy.Type.DIRECT.name().equals(viewBinding.proxyTypeSpinner.getText().toString());
+                if (isDirect) {
                     dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setVisibility(View.GONE);
                 } else {
                     dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
                 }
-                enableSettings(position > 0);
-                setTestRequired(position > 0);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                enableSettings(false);
+                enableSettings(!isDirect);
+                setTestRequired(!isDirect);
             }
         });
-        txtvMessage = content.findViewById(R.id.txtvMessage);
         checkValidity();
         return dialog;
     }
 
     private void setProxyConfig() {
-        final String type = (String) spType.getSelectedItem();
+        final String type = viewBinding.proxyTypeSpinner.getText().toString();
         final Proxy.Type typeEnum = Proxy.Type.valueOf(type);
-        final String host = etHost.getText().toString();
-        final String port = etPort.getText().toString();
+        final String host = viewBinding.hostText.getText().toString();
+        final String port = viewBinding.portText.getText().toString();
 
-        String username = etUsername.getText().toString();
+        String username = viewBinding.usernameText.getText().toString();
         if (TextUtils.isEmpty(username)) {
             username = null;
         }
-        String password = etPassword.getText().toString();
+        String password = viewBinding.passwordText.getText().toString();
         if (TextUtils.isEmpty(password)) {
             password = null;
         }
@@ -187,15 +169,15 @@ public class ProxyDialog {
     };
 
     private void enableSettings(boolean enable) {
-        etHost.setEnabled(enable);
-        etPort.setEnabled(enable);
-        etUsername.setEnabled(enable);
-        etPassword.setEnabled(enable);
+        viewBinding.hostText.setEnabled(enable);
+        viewBinding.portText.setEnabled(enable);
+        viewBinding.usernameText.setEnabled(enable);
+        viewBinding.passwordText.setEnabled(enable);
     }
 
     private boolean checkValidity() {
         boolean valid = true;
-        if (spType.getSelectedItemPosition() > 0) {
+        if (!Proxy.Type.DIRECT.name().equals(viewBinding.proxyTypeSpinner.getText().toString())) {
             valid = checkHost();
         }
         valid &= checkPort();
@@ -203,13 +185,13 @@ public class ProxyDialog {
     }
 
     private boolean checkHost() {
-        String host = etHost.getText().toString();
-        if (host.length() == 0) {
-            etHost.setError(context.getString(R.string.proxy_host_empty_error));
+        String host = viewBinding.hostText.getText().toString();
+        if (host.isEmpty()) {
+            viewBinding.hostText.setError(context.getString(R.string.proxy_host_empty_error));
             return false;
         }
         if (!"localhost".equals(host) && !Patterns.DOMAIN_NAME.matcher(host).matches()) {
-            etHost.setError(context.getString(R.string.proxy_host_invalid_error));
+            viewBinding.hostText.setError(context.getString(R.string.proxy_host_invalid_error));
             return false;
         }
         return true;
@@ -218,15 +200,15 @@ public class ProxyDialog {
     private boolean checkPort() {
         int port = getPort();
         if (port < 0 || port > 65535) {
-            etPort.setError(context.getString(R.string.proxy_port_invalid_error));
+            viewBinding.portText.setError(context.getString(R.string.proxy_port_invalid_error));
             return false;
         }
         return true;
     }
 
     private int getPort() {
-        String port = etPort.getText().toString();
-        if (port.length() > 0) {
+        String port = viewBinding.portText.getText().toString();
+        if (!port.isEmpty()) {
             try {
                 return Integer.parseInt(port);
             } catch (NumberFormatException e) {
@@ -258,15 +240,15 @@ public class ProxyDialog {
         TypedArray res = context.getTheme().obtainStyledAttributes(new int[] { android.R.attr.textColorPrimary });
         int textColorPrimary = res.getColor(0, 0);
         res.recycle();
-        txtvMessage.setTextColor(textColorPrimary);
-        txtvMessage.setText(R.string.proxy_checking);
-        txtvMessage.setVisibility(View.VISIBLE);
+        viewBinding.infoLabel.setTextColor(textColorPrimary);
+        viewBinding.infoLabel.setText(R.string.proxy_checking);
+        viewBinding.infoLabel.setVisibility(View.VISIBLE);
         disposable = Completable.create(emitter -> {
-            String type = (String) spType.getSelectedItem();
-            String host = etHost.getText().toString();
-            String port = etPort.getText().toString();
-            String username = etUsername.getText().toString();
-            String password = etPassword.getText().toString();
+            String type = viewBinding.proxyTypeSpinner.getText().toString();
+            String host = viewBinding.hostText.getText().toString();
+            String port = viewBinding.portText.getText().toString();
+            String username = viewBinding.usernameText.getText().toString();
+            String password = viewBinding.passwordText.getText().toString();
             int portValue = 8080;
             if (!TextUtils.isEmpty(port)) {
                 portValue = Integer.parseInt(port);
@@ -300,16 +282,18 @@ public class ProxyDialog {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         () -> {
-                            txtvMessage.setTextColor(ThemeUtils.getColorFromAttr(context, R.attr.icon_green));
-                            txtvMessage.setText(R.string.proxy_test_successful);
+                            viewBinding.infoLabel.setTextColor(
+                                    ThemeUtils.getColorFromAttr(context, R.attr.icon_green));
+                            viewBinding.infoLabel.setText(R.string.proxy_test_successful);
                             setTestRequired(false);
                         },
                         error -> {
                             error.printStackTrace();
-                            txtvMessage.setTextColor(ThemeUtils.getColorFromAttr(context, R.attr.icon_red));
+                            viewBinding.infoLabel.setTextColor(
+                                    ThemeUtils.getColorFromAttr(context, R.attr.icon_red));
                             String message = String.format("%s: %s",
                                     context.getString(R.string.proxy_test_failed), error.getMessage());
-                            txtvMessage.setText(message);
+                            viewBinding.infoLabel.setText(message);
                             setTestRequired(true);
                         }
                 );

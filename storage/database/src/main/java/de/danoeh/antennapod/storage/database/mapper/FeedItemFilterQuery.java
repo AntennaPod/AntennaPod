@@ -22,7 +22,7 @@ public class FeedItemFilterQuery {
         // The keys used within this method, but explicitly combined with their table
         String keyRead = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_READ;
         String keyPosition = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_POSITION;
-        String keyCompletionDate = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_PLAYBACK_COMPLETION_DATE;
+        String keyCompletionDate = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_LAST_PLAYED_TIME_HISTORY;
         String keyDownloaded = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_DOWNLOAD_DATE;
         String keyMediaId = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_ID;
         String keyItemId = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_ID;
@@ -65,6 +65,9 @@ public class FeedItemFilterQuery {
         }
         if (filter.showInHistory) {
             statements.add(keyCompletionDate + " > 0 ");
+        }
+        if (!filter.includeNotSubscribed) {
+            statements.add(PodDBAdapter.SELECT_WHERE_FEED_IS_SUBSCRIBED);
         }
 
         if (statements.isEmpty()) {

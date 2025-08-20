@@ -19,47 +19,56 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
             android:background="@color/image_readability_tint"
             android:orientation="horizontal"
+            android:gravity="center_vertical"
             android:layout_alignParentBottom="true">
 
             <View
                 android:layout_width="148dp"
                 android:layout_height="match_parent" />
 
+            <Button
+                android:id="@+id/butSubscribe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/subscribe_label"
+                android:visibility="gone"
+                android:layout_marginVertical="4dp"
+                tools:visibility="visible" />
+
             <ImageButton
                 android:id="@+id/butShowInfo"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="?attr/selectableItemBackground"
                 android:contentDescription="@string/show_info_label"
-                android:layout_marginLeft="-8dp"
-                android:layout_marginStart="-8dp"
+                android:layout_marginLeft="-4dp"
+                android:layout_marginStart="-4dp"
                 android:scaleType="fitXY"
-                android:padding="8dp"
+                android:padding="12dp"
                 app:srcCompat="@drawable/ic_info_white"
                 tools:visibility="visible" />
 
             <ImageButton
                 android:id="@+id/butFilter"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="?attr/selectableItemBackground"
                 android:contentDescription="@string/filter"
                 android:scaleType="fitXY"
-                android:padding="8dp"
+                android:padding="12dp"
                 app:srcCompat="@drawable/ic_filter_white"
                 tools:visibility="visible" />
 
             <ImageButton
                 android:id="@+id/butShowSettings"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="?attr/selectableItemBackground"
                 android:contentDescription="@string/show_feed_settings_label"
                 android:scaleType="fitXY"
-                android:padding="8dp"
+                android:padding="12dp"
                 app:srcCompat="@drawable/ic_settings_white"
                 tools:visibility="visible" />
 
@@ -140,42 +149,100 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/txtvFailure"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:background="?attr/icon_red"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:visibility="gone"
-        android:text="@string/refresh_failed_msg"
-        tools:visibility="visible"
-        tools:text="(!) Last refresh failed" />
+        android:orientation="vertical"
+        android:background="?android:attr/colorBackground">
 
-    <TextView
-        android:id="@+id/txtvInformation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:background="?android:attr/colorBackground"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:visibility="gone"
-        android:gravity="center"
-        android:textColor="?attr/colorAccent"
-        tools:visibility="visible"
-        tools:text="(i) Information" />
+        <TextView
+            android:id="@+id/txtvFailure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/icon_red"
+            android:visibility="gone"
+            android:text="@string/refresh_failed_msg"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:background="@drawable/bg_message_error"
+            android:foreground="?android:attr/selectableItemBackground"
+            tools:visibility="visible"
+            tools:text="(!) Last refresh failed" />
 
-    <TextView
-        android:id="@+id/txtvUpdatesDisabled"
+        <TextView
+            android:id="@+id/txtvInformation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:visibility="gone"
+            android:gravity="center"
+            android:textColor="?attr/colorAccent"
+            tools:visibility="visible"
+            tools:text="(i) Information" />
+
+        <TextView
+            android:id="@+id/txtvUpdatesDisabled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:visibility="gone"
+            android:gravity="center"
+            android:textColor="?attr/colorAccent"
+            tools:visibility="visible"
+            tools:text="Updates disabled" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/descriptionContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="2dp"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="16dp"
         android:background="?android:attr/colorBackground"
-        android:visibility="gone"
-        android:gravity="center"
-        android:textColor="?attr/colorAccent"
-        tools:visibility="visible"
-        tools:text="Updates disabled" />
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/subscribeNagLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:background="@drawable/bg_message_info"
+            android:textColor="?attr/colorAccent"
+            android:text="@string/state_deleted_not_subscribed" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/description_label"
+            style="@style/TextAppearance.Material3.TitleMedium" />
+
+        <TextView
+            android:id="@+id/headerDescriptionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lineHeight="20dp"
+            android:maxLines="3"
+            android:layout_marginBottom="16dp"
+            android:background="?android:attr/selectableItemBackground"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            tools:text="@string/design_time_lorem_ipsum" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/preview_episodes"
+            android:layout_marginBottom="4dp"
+            style="@style/TextAppearance.Material3.TitleMedium" />
+
+    </LinearLayout>
 
 </LinearLayout>

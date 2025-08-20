@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.ui.AllEpisodesFilterDialog;
@@ -31,6 +33,7 @@ import java.util.List;
 public class AllEpisodesFragment extends EpisodesListFragment {
     public static final String TAG = "EpisodesFragment";
     public static final String PREF_NAME = "PrefAllEpisodesFragment";
+    private static Pair<Integer, Integer> scrollPosition = null;
 
     @NonNull
     @Override
@@ -42,6 +45,11 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         updateFilterUi();
         txtvInformation.setOnClickListener(
                 v -> AllEpisodesFilterDialog.newInstance(getFilter()).show(getChildFragmentManager(), null));
+
+        boolean largePadding = displayUpArrow || !UserPreferences.isBottomNavigationEnabled();
+        int paddingHorizontal = (int) (getResources().getDisplayMetrics().density * (largePadding ? 60 : 16));
+        int paddingVertical = (int) (getResources().getDisplayMetrics().density * 4);
+        txtvInformation.setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical);
         return root;
     }
 
@@ -66,7 +74,12 @@ public class AllEpisodesFragment extends EpisodesListFragment {
 
     @Override
     protected FeedItemFilter getFilter() {
-        return new FeedItemFilter(UserPreferences.getPrefFilterAllEpisodes());
+        FeedItemFilter filter = new FeedItemFilter(UserPreferences.getPrefFilterAllEpisodes());
+        if (filter.showIsFavorite) {
+            return new FeedItemFilter(filter, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
+        } else {
+            return filter;
+        }
     }
 
     @Override
@@ -75,8 +88,14 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     }
 
     @Override
-    protected String getPrefName() {
-        return PREF_NAME;
+    public void onPause() {
+        super.onPause();
+        scrollPosition = recyclerView.getScrollPosition();
+    }
+
+    @Override
+    protected void onItemsFirstLoaded() {
+        recyclerView.restoreScrollPosition(scrollPosition);
     }
 
     @Override
@@ -91,6 +110,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
             ArrayList<String> filter = new ArrayList<>(getFilter().getValuesList());
             if (filter.contains(FeedItemFilter.IS_FAVORITE)) {
                 filter.remove(FeedItemFilter.IS_FAVORITE);
+                filter.remove(FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
             } else {
                 filter.add(FeedItemFilter.IS_FAVORITE);
             }
@@ -113,14 +133,14 @@ public class AllEpisodesFragment extends EpisodesListFragment {
 
     private void updateFilterUi() {
         swipeActions.setFilter(getFilter());
-        if (listAdapter.inActionMode()) {
-            txtvInformation.setVisibility(View.INVISIBLE);
-        } else if (getFilter().getValues().length > 0) {
-            txtvInformation.setVisibility(View.VISIBLE);
-            emptyView.setMessage(R.string.no_all_episodes_filtered_label);
-        } else {
+        if (getFilter().getValues().length == 0) {
             txtvInformation.setVisibility(View.GONE);
             emptyView.setMessage(R.string.no_all_episodes_label);
+        } else if (listAdapter.inActionMode()) {
+            txtvInformation.setVisibility(View.INVISIBLE);
+        } else {
+            txtvInformation.setVisibility(View.VISIBLE);
+            emptyView.setMessage(R.string.no_all_episodes_filtered_label);
         }
         toolbar.getMenu().findItem(R.id.action_favorites).setIcon(
                 getFilter().showIsFavorite ? R.drawable.ic_star : R.drawable.ic_star_border);

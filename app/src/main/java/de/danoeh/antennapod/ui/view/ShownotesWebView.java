@@ -10,26 +10,31 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.RenderProcessGoneDetail;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.util.Consumer;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.ui.share.ShareUtils;
 import de.danoeh.antennapod.ui.cleaner.ShownotesCleaner;
+import org.greenrobot.eventbus.EventBus;
 
 public class ShownotesWebView extends WebView implements View.OnLongClickListener {
     private static final String TAG = "ShownotesWebView";
@@ -86,6 +91,26 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
                     pageFinishedListener.run();
                 }
             }
+
+            @Override
+            public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
+                ViewGroup parent = (ViewGroup) view.getParent();
+                if (parent == null) {
+                    return true;
+                }
+                ViewGroup.LayoutParams params = parent.getLayoutParams();
+                TextView errorText = new TextView(getContext());
+                int position = parent.indexOfChild(view);
+                parent.removeView(view);
+                parent.addView(errorText, position, params);
+                int padding = (int) (40 * getContext().getResources().getDisplayMetrics().density);
+                errorText.setPadding(padding, padding, padding, padding);
+                errorText.setGravity(Gravity.CENTER);
+                errorText.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
+                errorText.setText("Your Android System WebView crashed. Try restarting the phone. If this happens "
+                        + "repeatedly, contact the phone manufacturer or the creator of your custom ROM.");
+                return true;
+            }
         });
     }
 
@@ -104,10 +129,9 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             if (clipboardManager != null) {
                 clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", r.getExtra()));
             }
-            if (Build.VERSION.SDK_INT <= 32 && this.getContext() instanceof MainActivity) {
-                ((MainActivity) this.getContext()).showSnackbarAbovePlayer(
-                        getResources().getString(R.string.copied_to_clipboard),
-                        Snackbar.LENGTH_SHORT);
+            if (Build.VERSION.SDK_INT <= 32) {
+                EventBus.getDefault().post(new MessageEvent(
+                        getContext().getResources().getString(R.string.copied_to_clipboard)));
             }
             return true;
         }

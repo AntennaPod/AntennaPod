@@ -23,27 +23,16 @@ body:
       placeholder: x.y.z
     validations:
       required: true
-  - type: dropdown
-    id: source
-    attributes:
-      label: Where did you get the app from
-      multiple: false
-      options:
-        - Google Play
-        - F-Droid
-        - Other
-    validations:
-      required: true
   - type: textarea
-    id: problem
+    id: feature
     attributes:
-      label: Problem you may be having, or feature you want
-      description: Give a brief explanation about the problem that may currently exist
+      label: Feature or improvement you want
+      description: Try to be as specific as possible. Please not only explain what the feature does, but also how.
   - type: textarea
-    id: solution
+    id: reason
     attributes:
-      label: Suggested solution
-      description: Describe how your requested feature solves this problem. Try to be as specific as possible. Please not only explain what the feature does, but also how.
+      label: Why should this be added?
+      description: What problem does the feature solve? In what use-cases is the feature needed?
   - type: textarea
     id: screenshots
     attributes:

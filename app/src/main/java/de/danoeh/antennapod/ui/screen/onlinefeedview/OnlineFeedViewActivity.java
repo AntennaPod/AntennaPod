@@ -4,74 +4,56 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.LightingColorFilter;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.app.AppCompatActivity;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
-
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.net.download.service.feed.remote.Downloader;
-import de.danoeh.antennapod.net.download.service.feed.remote.HttpDownloader;
-import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
-import de.danoeh.antennapod.ui.common.ThemeSwitcher;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequestCreator;
-import de.danoeh.antennapod.net.discovery.FeedUrlNotFoundException;
-import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
-import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
-import de.danoeh.antennapod.ui.screen.download.DownloadErrorLabel;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
-import de.danoeh.antennapod.databinding.OnlinefeedviewHeaderBinding;
-import de.danoeh.antennapod.event.EpisodeDownloadEvent;
-import de.danoeh.antennapod.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.databinding.OnlinefeedviewActivityBinding;
+import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.model.download.DownloadResult;
-import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.net.common.UrlChecker;
 import de.danoeh.antennapod.net.discovery.CombinedSearcher;
+import de.danoeh.antennapod.net.discovery.FeedUrlNotFoundException;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 import de.danoeh.antennapod.net.discovery.PodcastSearcherRegistry;
+import de.danoeh.antennapod.net.download.service.feed.remote.Downloader;
+import de.danoeh.antennapod.net.download.service.feed.remote.HttpDownloader;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequestCreator;
 import de.danoeh.antennapod.parser.feed.FeedHandler;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
-import de.danoeh.antennapod.model.download.DownloadError;
-import de.danoeh.antennapod.ui.common.IntentUtils;
-import de.danoeh.antennapod.net.common.UrlChecker;
-import de.danoeh.antennapod.ui.cleaner.HtmlToPlainText;
-import de.danoeh.antennapod.databinding.OnlinefeedviewActivityBinding;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.model.playback.RemoteMedia;
 import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
-import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 import de.danoeh.antennapod.ui.preferences.screen.synchronization.AuthenticationDialog;
-import io.reactivex.Maybe;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.DisposableMaybeObserver;
-import io.reactivex.schedulers.Schedulers;
-import org.apache.commons.lang3.StringUtils;
+import de.danoeh.antennapod.ui.screen.download.DownloadErrorLabel;
+import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -83,7 +65,6 @@ import java.util.List;
 import java.util.Map;
 
 import static de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter.ARG_FEEDURL;
-import static de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter.ARG_STARTED_FROM_SEARCH;
 import static de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter.ARG_WAS_MANUAL_URL;
 
 /**
@@ -95,30 +76,16 @@ import static de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStart
  * and the activity will finish as soon as the error dialog is closed.
  */
 public class OnlineFeedViewActivity extends AppCompatActivity {
-
-    private static final int RESULT_ERROR = 2;
     private static final String TAG = "OnlineFeedViewActivity";
-    private static final String PREFS = "OnlineFeedViewActivityPreferences";
-    private static final String PREF_LAST_AUTO_DOWNLOAD = "lastAutoDownload";
-    private static final int DESCRIPTION_MAX_LINES_COLLAPSED = 4;
-
-    private volatile List<Feed> feeds;
     private String selectedDownloadUrl;
     private Downloader downloader;
     private String username = null;
     private String password = null;
-
     private boolean isPaused;
-    private boolean didPressSubscribe = false;
     private boolean isFeedFoundBySearch = false;
-
     private Dialog dialog;
-
     private Disposable download;
     private Disposable parser;
-    private Disposable updater;
-
-    private OnlinefeedviewHeaderBinding headerBinding;
     private OnlinefeedviewActivityBinding viewBinding;
 
     @Override
@@ -128,12 +95,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         viewBinding = OnlinefeedviewActivityBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
-
         viewBinding.transparentBackground.setOnClickListener(v -> finish());
-        viewBinding.closeButton.setOnClickListener(view -> finish());
         viewBinding.card.setOnClickListener(null);
         viewBinding.card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(this, R.attr.colorSurface));
-        headerBinding = OnlinefeedviewHeaderBinding.inflate(getLayoutInflater());
 
         String feedUrl = null;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
@@ -144,21 +108,16 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             feedUrl = getIntent().getDataString();
         }
 
-        if (feedUrl == null) {
+        if (feedUrl == null || UrlChecker.isDeeplinkWithoutUrl(feedUrl)) {
             Log.e(TAG, "feedUrl is null.");
             showNoPodcastFoundError();
         } else {
             Log.d(TAG, "Activity was started with url " + feedUrl);
-            setLoadingLayout();
-            // Remove subscribeonandroid.com from feed URL in order to subscribe to the actual feed URL
-            if (feedUrl.contains("subscribeonandroid.com")) {
-                feedUrl = feedUrl.replaceFirst("((www.)?(subscribeonandroid.com/))", "");
-            }
             if (savedInstanceState != null) {
                 username = savedInstanceState.getString("username");
                 password = savedInstanceState.getString("password");
             }
-            lookupUrlAndDownload(feedUrl);
+            lookupUrlAndDownload(UrlChecker.prepareUrl(feedUrl));
         }
     }
 
@@ -167,19 +126,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 .setNeutralButton(android.R.string.ok, (dialog, which) -> finish())
                 .setTitle(R.string.error_label)
                 .setMessage(R.string.null_value_podcast_error)
-                .setOnDismissListener(dialog1 -> {
-                    setResult(RESULT_ERROR);
-                    finish();
-                })
+                .setOnDismissListener(dialog1 -> finish())
                 .show());
-    }
-
-    /**
-     * Displays a progress indicator.
-     */
-    private void setLoadingLayout() {
-        viewBinding.progressBar.setVisibility(View.VISIBLE);
-        viewBinding.feedDisplayContainer.setVisibility(View.GONE);
     }
 
     @Override
@@ -193,25 +141,22 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         isPaused = true;
-        EventBus.getDefault().unregister(this);
         if (downloader != null && !downloader.isFinished()) {
             downloader.cancel();
         }
-        if(dialog != null && dialog.isShowing()) {
+        if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(updater != null) {
-            updater.dispose();
-        }
-        if(download != null) {
+        if (download != null) {
             download.dispose();
         }
-        if(parser != null) {
+        if (parser != null) {
             parser.dispose();
         }
     }
@@ -239,7 +184,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         download = PodcastSearcherRegistry.lookupUrl(url)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe(this::startFeedDownload,
+                .subscribe(this::downloadIfNotAlreadySubscribed,
                         error -> {
                             if (error instanceof FeedUrlNotFoundException) {
                                 tryToRetrieveFeedUrlBySearch((FeedUrlNotFoundException) error);
@@ -256,7 +201,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         if (url != null) {
             Log.d(TAG, "Successfully retrieve feed url");
             isFeedFoundBySearch = true;
-            startFeedDownload(url);
+            downloadIfNotAlreadySubscribed(url);
         } else {
             showNoPodcastFoundError();
             Log.d(TAG, "Failed to retrieve feed url");
@@ -277,6 +222,28 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         return null;
     }
 
+    private Feed downloadIfNotAlreadySubscribed(String url) {
+        download = Maybe.fromCallable(() -> {
+            List<Feed> feeds = DBReader.getFeedList();
+            for (Feed f : feeds) {
+                if (f.getDownloadUrl().equals(url)) {
+                    return f;
+                }
+            }
+            return null;
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(subscribedFeed -> {
+            if (subscribedFeed.getState() == Feed.STATE_SUBSCRIBED) {
+                openFeed(subscribedFeed.getId());
+            } else {
+                showFeedFragment(subscribedFeed.getId());
+            }
+        }, error -> Log.e(TAG, Log.getStackTraceString(error)), () -> startFeedDownload(url));
+        return null;
+    }
+
     private void startFeedDownload(String url) {
         Log.d(TAG, "Starting feed download");
         selectedDownloadUrl = UrlChecker.prepareUrl(url);
@@ -286,7 +253,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 .build();
 
         download = Observable.fromCallable(() -> {
-            feeds = DBReader.getFeedList();
             downloader = new HttpDownloader(request);
             downloader.call();
             return downloader.getResult();
@@ -315,46 +281,43 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
     }
 
-    @Subscribe
-    public void onFeedListChanged(FeedListUpdateEvent event) {
-        updater = Observable.fromCallable(DBReader::getFeedList)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        feeds -> {
-                            OnlineFeedViewActivity.this.feeds = feeds;
-                            handleUpdatedFeedStatus();
-                        }, error -> Log.e(TAG, Log.getStackTraceString(error))
-                );
-    }
-
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(EpisodeDownloadEvent event) {
-        handleUpdatedFeedStatus();
-    }
-
     private void parseFeed(String destination) {
         Log.d(TAG, "Parsing feed");
-        parser = Maybe.fromCallable(() -> doParseFeed(destination))
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableMaybeObserver<FeedHandlerResult>() {
-                    @Override
-                    public void onSuccess(@NonNull FeedHandlerResult result) {
-                        showFeedInformation(result.feed, result.alternateFeedUrls);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        // Ignore null result: We showed the discovery dialog.
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable error) {
-                        showErrorDialog(error.getMessage(), "");
-                        Log.d(TAG, "Feed parser exception: " + Log.getStackTraceString(error));
-                    }
-                });
+        parser = Maybe.<Long>create(emitter -> {
+            FeedHandlerResult handlerResult = doParseFeed(destination);
+            if (handlerResult == null) { // Started another attempt with another url
+                emitter.onComplete();
+                return;
+            }
+            Feed feed = handlerResult.feed;
+            feed.setState(Feed.STATE_NOT_SUBSCRIBED);
+            feed.setLastRefreshAttempt(System.currentTimeMillis());
+            FeedDatabaseWriter.updateFeed(this, feed, false);
+            Feed feedFromDb = DBReader.getFeed(feed.getId(), false, 0, Integer.MAX_VALUE);
+            feedFromDb.getPreferences().setKeepUpdated(false);
+            if (username != null && password != null) {
+                feedFromDb.getPreferences().setUsername(username);
+                feedFromDb.getPreferences().setPassword(password);
+            }
+            DBWriter.setFeedPreferences(feedFromDb.getPreferences());
+            emitter.onSuccess(feed.getId());
+        })
+        .subscribeOn(Schedulers.computation())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(this::showFeedFragment, error -> {
+            error.printStackTrace();
+            if (error instanceof UnsupportedFeedtypeException
+                    && "html".equalsIgnoreCase(((UnsupportedFeedtypeException) error).getRootElement())) {
+                if (getIntent().getBooleanExtra(ARG_WAS_MANUAL_URL, false)) {
+                    showErrorDialog(getString(R.string.download_error_unsupported_type_html_manual),
+                            error.getMessage());
+                } else {
+                    showErrorDialog(getString(R.string.download_error_unsupported_type_html), error.getMessage());
+                }
+                return;
+            }
+            showErrorDialog(getString(R.string.download_error_parser_exception), error.getMessage());
+        });
     }
 
     /**
@@ -376,13 +339,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             if ("html".equalsIgnoreCase(e.getRootElement())) {
                 boolean dialogShown = showFeedDiscoveryDialog(destinationFile, selectedDownloadUrl);
                 if (dialogShown) {
-                    return null; // Should not display an error message
-                } else {
-                    throw new UnsupportedFeedtypeException(getString(R.string.download_error_unsupported_type_html));
+                    return null; // We handled the problem
                 }
-            } else {
-                throw e;
             }
+            throw e;
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
             throw e;
@@ -392,182 +352,25 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Called when feed parsed successfully.
-     * This method is executed on the GUI thread.
-     */
-    private void showFeedInformation(final Feed feed, Map<String, String> alternateFeedUrls) {
-        viewBinding.progressBar.setVisibility(View.GONE);
-        viewBinding.feedDisplayContainer.setVisibility(View.VISIBLE);
+    private void showFeedFragment(long id) {
         if (isFeedFoundBySearch) {
-            int resId = R.string.no_feed_url_podcast_found_by_search;
-            Snackbar.make(findViewById(android.R.id.content), resId, Snackbar.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.no_feed_url_podcast_found_by_search, Toast.LENGTH_LONG).show();
         }
 
-        viewBinding.backgroundImage.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
-
-        viewBinding.listView.addHeaderView(headerBinding.getRoot());
-        viewBinding.listView.setSelector(android.R.color.transparent);
-        viewBinding.listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
-
-        if (StringUtils.isNotBlank(feed.getImageUrl())) {
-            Glide.with(this)
-                    .load(feed.getImageUrl())
-                    .apply(new RequestOptions()
-                        .placeholder(R.color.light_gray)
-                        .error(R.color.light_gray)
-                        .fitCenter()
-                        .dontAnimate())
-                    .into(viewBinding.coverImage);
-            Glide.with(this)
-                    .load(feed.getImageUrl())
-                    .apply(new RequestOptions()
-                            .placeholder(R.color.image_readability_tint)
-                            .error(R.color.image_readability_tint)
-                            .transform(new FastBlurTransformation())
-                            .dontAnimate())
-                    .into(viewBinding.backgroundImage);
-        }
-
-        viewBinding.titleLabel.setText(feed.getTitle());
-        viewBinding.authorLabel.setText(feed.getAuthor());
-        headerBinding.txtvDescription.setText(HtmlToPlainText.getPlainText(feed.getDescription()));
-
-        viewBinding.subscribeButton.setOnClickListener(v -> {
-            if (feedInFeedlist()) {
-                openFeed();
-            } else {
-                FeedDatabaseWriter.updateFeed(this, feed, false);
-                didPressSubscribe = true;
-                handleUpdatedFeedStatus();
-            }
-        });
-
-        viewBinding.stopPreviewButton.setOnClickListener(v -> {
-            PlaybackPreferences.writeNoMediaPlaying();
-            IntentUtils.sendLocalBroadcast(this, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
-        });
-
-        if (UserPreferences.isEnableAutodownload()) {
-            SharedPreferences preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
-            viewBinding.autoDownloadCheckBox.setChecked(preferences.getBoolean(PREF_LAST_AUTO_DOWNLOAD, true));
-        }
-
-        headerBinding.txtvDescription.setMaxLines(DESCRIPTION_MAX_LINES_COLLAPSED);
-        headerBinding.txtvDescription.setOnClickListener(v -> {
-            if (headerBinding.txtvDescription.getMaxLines() > DESCRIPTION_MAX_LINES_COLLAPSED) {
-                headerBinding.txtvDescription.setMaxLines(DESCRIPTION_MAX_LINES_COLLAPSED);
-            } else {
-                headerBinding.txtvDescription.setMaxLines(2000);
-            }
-        });
-
-        if (alternateFeedUrls.isEmpty()) {
-            viewBinding.alternateUrlsSpinner.setVisibility(View.GONE);
-        } else {
-            viewBinding.alternateUrlsSpinner.setVisibility(View.VISIBLE);
-
-            final List<String> alternateUrlsList = new ArrayList<>();
-            final List<String> alternateUrlsTitleList = new ArrayList<>();
-
-            alternateUrlsList.add(feed.getDownloadUrl());
-            alternateUrlsTitleList.add(feed.getTitle());
-
-
-            alternateUrlsList.addAll(alternateFeedUrls.keySet());
-            for (String url : alternateFeedUrls.keySet()) {
-                alternateUrlsTitleList.add(alternateFeedUrls.get(url));
-            }
-
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                    R.layout.alternate_urls_item, alternateUrlsTitleList) {
-                @Override
-                public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                    // reusing the old view causes a visual bug on Android <= 10
-                    return super.getDropDownView(position, null, parent);
-                }
-            };
-
-            adapter.setDropDownViewResource(R.layout.alternate_urls_dropdown_item);
-            viewBinding.alternateUrlsSpinner.setAdapter(adapter);
-            viewBinding.alternateUrlsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    selectedDownloadUrl = alternateUrlsList.get(position);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-        }
-        handleUpdatedFeedStatus();
+        viewBinding.progressBar.setVisibility(View.GONE);
+        FeedItemlistFragment fragment = FeedItemlistFragment.newInstance(id);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentContainer, fragment, FeedItemlistFragment.TAG)
+                .commitAllowingStateLoss();
     }
 
-    private void openFeed() {
+    private void openFeed(long feedId) {
         // feed.getId() is always 0, we have to retrieve the id from the feed list from the database
         MainActivityStarter mainActivityStarter = new MainActivityStarter(this);
-        mainActivityStarter.withOpenFeed(getFeedId());
-        if (getIntent().getBooleanExtra(ARG_STARTED_FROM_SEARCH, false)) {
-            mainActivityStarter.withAddToBackStack();
-        }
+        mainActivityStarter.withOpenFeed(feedId);
         finish();
         startActivity(mainActivityStarter.getIntent());
-    }
-
-    private void handleUpdatedFeedStatus() {
-        if (DownloadServiceInterface.get().isDownloadingEpisode(selectedDownloadUrl)) {
-            viewBinding.subscribeButton.setEnabled(false);
-            viewBinding.subscribeButton.setText(R.string.subscribing_label);
-        } else if (feedInFeedlist()) {
-            viewBinding.subscribeButton.setEnabled(true);
-            viewBinding.subscribeButton.setText(R.string.open_podcast);
-            if (didPressSubscribe) {
-                didPressSubscribe = false;
-
-                Feed feed1 = DBReader.getFeed(getFeedId(), false, 0, 0);
-                FeedPreferences feedPreferences = feed1.getPreferences();
-                if (UserPreferences.isEnableAutodownload()) {
-                    boolean autoDownload = viewBinding.autoDownloadCheckBox.isChecked();
-                    feedPreferences.setAutoDownload(autoDownload);
-
-                    SharedPreferences preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putBoolean(PREF_LAST_AUTO_DOWNLOAD, autoDownload);
-                    editor.apply();
-                }
-                if (username != null) {
-                    feedPreferences.setUsername(username);
-                    feedPreferences.setPassword(password);
-                }
-                DBWriter.setFeedPreferences(feedPreferences);
-
-                openFeed();
-            }
-        } else {
-            viewBinding.subscribeButton.setEnabled(true);
-            viewBinding.subscribeButton.setText(R.string.subscribe_label);
-            if (UserPreferences.isEnableAutodownload()) {
-                viewBinding.autoDownloadCheckBox.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    private boolean feedInFeedlist() {
-        return getFeedId() != 0;
-    }
-
-    private long getFeedId() {
-        if (feeds == null) {
-            return 0;
-        }
-        for (Feed f : feeds) {
-            if (f.getDownloadUrl().equals(selectedDownloadUrl)) {
-                return f.getId();
-            }
-        }
-        return 0;
     }
 
     @UiThread
@@ -576,10 +379,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
             builder.setTitle(R.string.error_label);
             if (errorMsg != null) {
-                String total = errorMsg + "\n\n" + details;
-                SpannableString errorMessage = new SpannableString(total);
+                SpannableString errorMessage = new SpannableString(getString(
+                        R.string.download_log_details_message, errorMsg, details, selectedDownloadUrl));
                 errorMessage.setSpan(new ForegroundColorSpan(0x88888888),
-                        errorMsg.length(), total.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        errorMsg.length(), errorMessage.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 builder.setMessage(errorMessage);
             } else {
                 builder.setMessage(R.string.download_error_error_unknown);
@@ -589,13 +392,13 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 builder.setNeutralButton(R.string.edit_url_menu, (dialog, which) -> editUrl());
             }
             builder.setOnCancelListener(dialog -> {
-                setResult(RESULT_ERROR);
                 finish();
             });
             if (dialog != null && dialog.isShowing()) {
                 dialog.dismiss();
             }
             dialog = builder.show();
+            ((TextView) dialog.findViewById(android.R.id.message)).setTextIsSelectable(true);
         }
     }
 
@@ -604,26 +407,20 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         builder.setTitle(R.string.edit_url_menu);
         final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
         if (downloader != null) {
-            dialogBinding.urlEditText.setText(downloader.getDownloadRequest().getSource());
+            dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_TEXT
+                    | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_VARIATION_URI);
+            dialogBinding.textInput.setText(downloader.getDownloadRequest().getSource());
+            dialogBinding.textInput.setHint(R.string.rss_address);
         }
         builder.setView(dialogBinding.getRoot());
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            setLoadingLayout();
-            lookupUrlAndDownload(dialogBinding.urlEditText.getText().toString());
+            lookupUrlAndDownload(dialogBinding.textInput.getText().toString());
         });
         builder.setNegativeButton(R.string.cancel_label, (dialog1, which) -> dialog1.cancel());
         builder.setOnCancelListener(dialog1 -> {
-            setResult(RESULT_ERROR);
             finish();
         });
         builder.show();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void playbackStateChanged(PlayerStatusEvent event) {
-        boolean isPlayingPreview =
-                PlaybackPreferences.getCurrentlyPlayingMediaType() == RemoteMedia.PLAYABLE_TYPE_REMOTE_MEDIA;
-        viewBinding.stopPreviewButton.setVisibility(isPlayingPreview ? View.VISIBLE : View.GONE);
     }
 
     /**
@@ -657,7 +454,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         if (urls.size() == 1) {
             // Skip dialog and display the item directly
             resetIntent(urls.get(0));
-            startFeedDownload(urls.get(0));
+            downloadIfNotAlreadySubscribed(urls.get(0));
             return true;
         }
 
@@ -667,22 +464,32 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             String selectedUrl = urls.get(which);
             dialog.dismiss();
             resetIntent(selectedUrl);
-            startFeedDownload(selectedUrl);
+            downloadIfNotAlreadySubscribed(selectedUrl);
         };
 
         MaterialAlertDialogBuilder ab = new MaterialAlertDialogBuilder(OnlineFeedViewActivity.this)
-                .setTitle(R.string.feeds_label)
+                .setTitle(R.string.subscriptions_label)
                 .setCancelable(true)
                 .setOnCancelListener(dialog -> finish())
                 .setAdapter(adapter, onClickListener);
 
         runOnUiThread(() -> {
-            if(dialog != null && dialog.isShowing()) {
+            if (dialog != null && dialog.isShowing()) {
                 dialog.dismiss();
             }
             dialog = ab.show();
         });
         return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(MessageEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), event.message, Snackbar.LENGTH_LONG);
+        snackbar.show();
+        if (event.action != null) {
+            snackbar.setAction(event.actionText, v -> event.action.accept(this));
+        }
     }
 
     private class FeedViewAuthenticationDialog extends AuthenticationDialog {
@@ -704,7 +511,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         protected void onConfirmed(String username, String password) {
             OnlineFeedViewActivity.this.username = username;
             OnlineFeedViewActivity.this.password = password;
-            startFeedDownload(feedUrl);
+            downloadIfNotAlreadySubscribed(feedUrl);
         }
     }
 

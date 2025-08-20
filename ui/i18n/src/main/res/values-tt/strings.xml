@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="statistics_label">Статистика</string>
+    <string name="settings_label">Көйләүләр</string>
+    <string name="downloads_label">Йөкләүләр</string>
+    <!--Google Assistant-->
+  <string name="app_action_not_found">\"%1$s\" табылмады</string>
+    <string name="change_setting">Үзгәртү</string>
+    <!--Main activity-->
+  <string name="drawer_open">Менюны ачу</string>
+    <string name="drawer_close">Менюны ябу</string>
+    <string name="copy_url_label">URL күчерү</string>
+    <string name="cancel_label">Баш тарту</string>
+    <string name="yes">Әйе</string>
+    <string name="no">Юк</string>
+    <string name="url_label">URL</string>
+    <string name="support_funding_label">Ярдәм</string>
+    <string name="error_label">Хата</string>
+    <string name="refresh_label">Яңарту</string>
+    <string name="close_label">Ябу</string>
+    <string name="retry_label">Кабатлау</string>
+    <string name="feed_auto_download_always">Һәрвакыт</string>
+    <string name="feed_auto_download_never">Беркайчан да</string>
+    <string name="episode_cleanup_never">Беркайчан да</string>
+    <string name="share_label">Уртаклашу</string>
+    <!--actions on feeditems-->
+  <string name="download_label">Йөкләү</string>
+    <string name="play_label">Уйнау</string>
+    <string name="delete_label">Бетерү</string>
+    <!--Download messages and labels-->
+  <string name="download_successful">уңышлы</string>
+    <string name="download_error_details">Нечкәлекләр</string>
+    <string name="download_type_media">Медиа файлы</string>
+    <string name="confirm_mobile_streaming_button_always">Һәрвакыт</string>
+    <string name="confirm_mobile_streaming_button_once">Бер тапкыр</string>
+    <string name="error_file_not_found">Файл табылмады</string>
+    <string name="undo">Кире кагу</string>
+    <string name="date">Дата</string>
+    <string name="random">Очраклы</string>
+    <string name="no_log_downloads_head_label">Йөкләү журналы юк</string>
+    <!--Preferences-->
+  <string name="project_pref">Проект</string>
+    <string name="automation">Автоматизация</string>
+    <string name="download_pref_details">Нечкәлекләр</string>
+    <string name="external_elements">Тышкы элементлар</string>
+    <string name="preference_search_hint">Эзләү…</string>
+    <string name="preference_search_no_results">Нәтиҗәләр юк</string>
+    <string name="preference_search_clear_history">Тарихны чистарту</string>
+    <string name="feed_refresh_never">Беркайчан да</string>
+    <string name="pref_episode_cache_unlimited">Чикләүсез</string>
+    <string name="bug_report_title">Хата турында хәбәр итү</string>
+    <string name="copy_to_clipboard">Алмашу буферына күчереп алу</string>
+    <string name="copied_to_clipboard">Алмашу буферына күчермәләнде</string>
+    <string name="pref_proxy_title">Прокси</string>
+    <!--About screen-->
+  <string name="about_pref">Хакында</string>
+    <string name="developers">Җитештерүчеләр</string>
+    <string name="translators">Тәрҗемәчеләр</string>
+    <string name="privacy_policy">Хосусыйлык сәясәте</string>
+    <string name="licenses">Лицензияләр</string>
+    <!--Search-->
+  <string name="search_status_no_results">Нәтиҗә табылмады</string>
+    <string name="search_label">Эзләү</string>
+    <!--Synchronization-->
+  <string name="sync_status_started">Синхронлау башланды</string>
+    <string name="sync_status_success">Синхронлау уңышлы булды</string>
+    <string name="sync_status_error">Синхронлау уңышсыз булды</string>
+    <string name="opml">OPML</string>
+    <string name="html">HTML</string>
+    <string name="opml_import_error_no_file">Файл сайланмады!</string>
+    <string name="select_all_label">Барысын да сайлау</string>
+    <string name="opml_export_label">OPML экспортлау</string>
+    <string name="html_export_label">HTML экспортлау</string>
+    <string name="please_wait">Көтегез…</string>
+    <string name="export_error_label">Экспортлау хатасы</string>
+    <string name="export_success_title">Экспортлау уңышлы булды</string>
+    <string name="successful_import_label">Импортлау уңышлы булды</string>
+    <string name="extend_sleep_timer_label">+%d мин</string>
+    <string name="time_seconds">секунд</string>
+    <string name="time_minutes">минут</string>
+    <string name="time_hours">сәгать</string>
+    <string name="gpodnetauth_login_butLabel">Керү</string>
+    <string name="username_label">Кулланучы исеме</string>
+    <string name="password_label">Серсүз</string>
+    <string name="gpodnetauth_device_name_default">AntennaPod %1$s-да</string>
+    <string name="gpodnetsync_pref_report_successful">Уңышлы</string>
+    <string name="gpodnetsync_pref_report_failed">Уңышсыз</string>
+    <string name="choose_data_directory_available_space">%1$s / %2$s буш</string>
+    <string name="media_type_video_label">Видео</string>
+    <string name="search_fyyd_label">Fyyd\'та эзләү</string>
+    <string name="discover_hide">Яшерү</string>
+    <string name="hide_downloaded_episodes_label">Йөкләнде</string>
+    <string name="hide_not_downloaded_episodes_label">Йөкләнмәде</string>
+    <string name="queued_label">Чиратка куелды</string>
+    <string name="no_media">Медиа юк</string>
+    <string name="hide_paused_episodes_label">Туктатылды</string>
+    <string name="not_paused">Туктатылмады</string>
+    <string name="hide_played_episodes_label">Уйнатылды</string>
+    <string name="not_played">Уйнатылмады</string>
+    <!--proxy settings-->
+  <string name="proxy_type_label">Төр</string>
+    <!--Notification channels-->
+  <string name="notification_group_errors">Хаталар</string>
+    <string name="notification_group_news">Яңалыклар</string>
+</resources>

@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class FeedMediaCursor extends CursorWrapper {
     private final int indexId;
-    private final int indexPlaybackCompletionDate;
+    private final int indexLastPlayedTimeHistory;
     private final int indexDuration;
     private final int indexPosition;
     private final int indexSize;
@@ -22,13 +22,13 @@ public class FeedMediaCursor extends CursorWrapper {
     private final int indexDownloadUrl;
     private final int indexDownloadDate;
     private final int indexPlayedDuration;
-    private final int indexLastPlayedTime;
+    private final int indexLastPlayedTimeStatistics;
     private final int indexHasEmbeddedPicture;
 
     public FeedMediaCursor(Cursor cursor) {
         super(cursor);
         indexId = cursor.getColumnIndexOrThrow(PodDBAdapter.SELECT_KEY_MEDIA_ID);
-        indexPlaybackCompletionDate = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PLAYBACK_COMPLETION_DATE);
+        indexLastPlayedTimeHistory = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_LAST_PLAYED_TIME_HISTORY);
         indexDuration = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DURATION);
         indexPosition = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_POSITION);
         indexSize = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_SIZE);
@@ -37,7 +37,7 @@ public class FeedMediaCursor extends CursorWrapper {
         indexDownloadUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DOWNLOAD_URL);
         indexDownloadDate = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DOWNLOAD_DATE);
         indexPlayedDuration = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PLAYED_DURATION);
-        indexLastPlayedTime = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_LAST_PLAYED_TIME);
+        indexLastPlayedTimeStatistics = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_LAST_PLAYED_TIME_STATISTICS);
         indexHasEmbeddedPicture = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_HAS_EMBEDDED_PICTURE);
     }
 
@@ -46,8 +46,8 @@ public class FeedMediaCursor extends CursorWrapper {
      */
     @NonNull
     public FeedMedia getFeedMedia() {
-        long playbackCompletionTime = getLong(indexPlaybackCompletionDate);
-        Date playbackCompletionDate = playbackCompletionTime > 0 ? new Date(playbackCompletionTime) : null;
+        long lastPlayedTimeHistoryTime = getLong(indexLastPlayedTimeHistory);
+        Date lastPlayedTimeHistory = lastPlayedTimeHistoryTime > 0 ? new Date(lastPlayedTimeHistoryTime) : null;
 
         Boolean hasEmbeddedPicture;
         switch (getInt(indexHasEmbeddedPicture)) {
@@ -72,10 +72,10 @@ public class FeedMediaCursor extends CursorWrapper {
                 getString(indexFileUrl),
                 getString(indexDownloadUrl),
                 getLong(indexDownloadDate),
-                playbackCompletionDate,
+                lastPlayedTimeHistory,
                 getInt(indexPlayedDuration),
                 hasEmbeddedPicture,
-                getLong(indexLastPlayedTime)
+                getLong(indexLastPlayedTimeStatistics)
         );
     }
 }

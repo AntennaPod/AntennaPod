@@ -6,8 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:clipToPadding="false"
-    android:padding="4dp">
+    android:clipToPadding="false">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card"
@@ -15,8 +14,10 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
+        android:layout_margin="4dp"
+        app:cardBackgroundColor="?attr/colorSurfaceContainer"
         app:cardCornerRadius="12dp"
-        app:cardElevation="0dp">
+        app:cardElevation="1dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="1px"
                 app:cardCornerRadius="12dp"
+                app:cardBackgroundColor="@android:color/transparent"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -79,13 +81,13 @@
 
                     </FrameLayout>
 
-                    <ProgressBar
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
                         android:id="@+id/progressBar"
                         android:layout_width="match_parent"
                         android:layout_height="4dp"
                         android:layout_gravity="bottom"
                         android:max="100"
-                        style="?attr/progressBarTheme"
+                        app:trackStopIndicatorSize="0dp"
                         tools:progress="50" />
 
                 </LinearLayout>

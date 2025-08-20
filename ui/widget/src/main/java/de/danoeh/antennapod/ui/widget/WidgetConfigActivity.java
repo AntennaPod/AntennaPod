@@ -10,14 +10,20 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
-import de.danoeh.antennapod.ui.common.ThemeSwitcher;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.load.Transformation;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.ui.common.ToolbarActivity;
+import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 
 import java.util.Locale;
 
-public class WidgetConfigActivity extends AppCompatActivity {
+public class WidgetConfigActivity extends ToolbarActivity {
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
     private SeekBar opacitySeekBar;
@@ -27,10 +33,10 @@ public class WidgetConfigActivity extends AppCompatActivity {
     private CheckBox ckRewind;
     private CheckBox ckFastForward;
     private CheckBox ckSkip;
+    private CheckBox ckCoverAsBcg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(ThemeSwitcher.getTheme(this));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_widget_config);
 
@@ -87,6 +93,8 @@ public class WidgetConfigActivity extends AppCompatActivity {
         ckFastForward.setOnClickListener(v -> displayPreviewPanel());
         ckSkip = findViewById(R.id.ckSkip);
         ckSkip.setOnClickListener(v -> displayPreviewPanel());
+        ckCoverAsBcg = findViewById(R.id.ckCoverAsBcg);
+        ckCoverAsBcg.setOnClickListener(v -> displayPreviewPanel());
 
         setInitialState();
     }
@@ -97,6 +105,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
         ckRewind.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + appWidgetId, false));
         ckFastForward.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + appWidgetId, false));
         ckSkip.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + appWidgetId, false));
+        ckCoverAsBcg.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_COVER_BACKGROUND + appWidgetId, false));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             int color = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + appWidgetId, PlayerWidget.DEFAULT_COLOR);
             int opacity = Color.alpha(color) * 100 / 0xFF;
@@ -118,6 +127,31 @@ public class WidgetConfigActivity extends AppCompatActivity {
                 .setVisibility(ckFastForward.isChecked() ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butSkip).setVisibility(ckSkip.isChecked() ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butRew).setVisibility(ckRewind.isChecked() ? View.VISIBLE : View.GONE);
+
+        if (ckCoverAsBcg.isChecked()) {
+            widgetPreview.findViewById(R.id.imgvCover).setVisibility(View.GONE);
+            widgetPreview.findViewById(R.id.imgvBackground).setVisibility(View.VISIBLE);
+            loadCover(R.id.imgvBackground, new FastBlurTransformation());
+            opacitySeekBar.setEnabled(false);
+            opacitySeekBar.setProgress(100);
+        } else {
+            widgetPreview.findViewById(R.id.imgvCover).setVisibility(View.VISIBLE);
+            widgetPreview.findViewById(R.id.imgvBackground).setVisibility(View.GONE);
+            widgetPreview.findViewById(R.id.widgetLayout).setBackgroundColor(PlayerWidget.DEFAULT_COLOR);
+            opacitySeekBar.setEnabled(true);
+            int radius = getResources().getDimensionPixelSize(R.dimen.widget_inner_radius);
+            loadCover(R.id.imgvCover, new RoundedCorners(radius));
+        }
+    }
+
+    private void loadCover(int viewId, Transformation<android.graphics.Bitmap> transform) {
+        ImageView target = findViewById(viewId);
+        Glide.with(this)
+                .asBitmap()
+                .load(Feed.PREFIX_GENERATIVE_COVER)
+                .dontAnimate()
+                .transform(new FitCenter(), transform)
+                .into(target);
     }
 
     private void confirmCreateWidget() {
@@ -130,6 +164,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
         editor.putBoolean(PlayerWidget.KEY_WIDGET_SKIP + appWidgetId, ckSkip.isChecked());
         editor.putBoolean(PlayerWidget.KEY_WIDGET_REWIND + appWidgetId, ckRewind.isChecked());
         editor.putBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + appWidgetId, ckFastForward.isChecked());
+        editor.putBoolean(PlayerWidget.KEY_WIDGET_COVER_BACKGROUND + appWidgetId, ckCoverAsBcg.isChecked());
         editor.apply();
 
         Intent resultValue = new Intent();

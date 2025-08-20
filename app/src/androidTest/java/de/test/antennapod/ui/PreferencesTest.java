@@ -59,7 +59,7 @@ public class PreferencesTest {
         EspressoTestUtils.clearPreferences();
         activityTestRule.launchActivity(new Intent());
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activityTestRule.getActivity());
-        prefs.edit().putBoolean(UserPreferences.PREF_ENABLE_AUTODL, true).commit();
+        prefs.edit().putBoolean(UserPreferences.PREF_AUTODL_GLOBAL, true).commit();
 
         res = activityTestRule.getActivity().getResources();
         UserPreferences.init(activityTestRule.getActivity());
@@ -173,11 +173,12 @@ public class PreferencesTest {
     @Test
     public void testAutoDelete() {
         clickPreference(R.string.downloads_pref);
-        final boolean autoDelete = UserPreferences.isAutoDelete();
         onView(withText(R.string.pref_auto_delete_title)).perform(click());
+        final boolean autoDelete = UserPreferences.isAutoDelete();
+        onView(withText(R.string.pref_auto_delete_playback_title)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> autoDelete != UserPreferences.isAutoDelete());
-        onView(withText(R.string.pref_auto_delete_title)).perform(click());
+        onView(withText(R.string.pref_auto_delete_playback_title)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> autoDelete == UserPreferences.isAutoDelete());
     }
@@ -185,8 +186,10 @@ public class PreferencesTest {
     @Test
     public void testAutoDeleteLocal() {
         clickPreference(R.string.downloads_pref);
-        final boolean initialAutoDelete = UserPreferences.isAutoDeleteLocal();
-        assertFalse(initialAutoDelete);
+        onView(withText(R.string.pref_auto_delete_title)).perform(click());
+        onView(withText(R.string.pref_auto_delete_playback_title)).perform(click());
+        assertTrue(UserPreferences.isAutoDelete());
+        assertFalse(UserPreferences.isAutoDeleteLocal());
 
         onView(withText(R.string.pref_auto_local_delete_title)).perform(click());
         onView(withText(R.string.yes)).perform(click());
@@ -266,17 +269,17 @@ public class PreferencesTest {
 
     @Test
     public void testAutomaticDownload() {
-        final boolean automaticDownload = UserPreferences.isEnableAutodownload();
+        final boolean automaticDownload = UserPreferences.isEnableAutodownloadGlobal();
         clickPreference(R.string.downloads_pref);
         clickPreference(R.string.pref_automatic_download_title);
         clickPreference(R.string.pref_automatic_download_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> automaticDownload != UserPreferences.isEnableAutodownload());
-        if (!UserPreferences.isEnableAutodownload()) {
+                .until(() -> automaticDownload != UserPreferences.isEnableAutodownloadGlobal());
+        if (!UserPreferences.isEnableAutodownloadGlobal()) {
             clickPreference(R.string.pref_automatic_download_title);
         }
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(UserPreferences::isEnableAutodownload);
+                .until(UserPreferences::isEnableAutodownloadGlobal);
         final boolean enableAutodownloadOnBattery = UserPreferences.isEnableAutodownloadOnBattery();
         clickPreference(R.string.pref_automatic_download_on_battery_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
@@ -289,7 +292,7 @@ public class PreferencesTest {
     @Test
     public void testEpisodeCleanupFavoriteOnly() {
         clickPreference(R.string.downloads_pref);
-        onView(withText(R.string.pref_automatic_download_title)).perform(click());
+        onView(withText(R.string.pref_auto_delete_title)).perform(click());
         onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
         onView(withId(R.id.select_dialog_listview)).perform(swipeDown());
         onView(withText(R.string.episode_cleanup_except_favorite_removal)).perform(click());
@@ -300,7 +303,7 @@ public class PreferencesTest {
     @Test
     public void testEpisodeCleanupQueueOnly() {
         clickPreference(R.string.downloads_pref);
-        onView(withText(R.string.pref_automatic_download_title)).perform(click());
+        onView(withText(R.string.pref_auto_delete_title)).perform(click());
         onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
         onView(withId(R.id.select_dialog_listview)).perform(swipeDown());
         onView(withText(R.string.episode_cleanup_queue_removal)).perform(click());
@@ -311,7 +314,7 @@ public class PreferencesTest {
     @Test
     public void testEpisodeCleanupNeverAlg() {
         clickPreference(R.string.downloads_pref);
-        onView(withText(R.string.pref_automatic_download_title)).perform(click());
+        onView(withText(R.string.pref_auto_delete_title)).perform(click());
         onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
         onView(withId(R.id.select_dialog_listview)).perform(swipeUp());
         onView(withText(R.string.episode_cleanup_never)).perform(click());
@@ -322,8 +325,9 @@ public class PreferencesTest {
     @Test
     public void testEpisodeCleanupClassic() {
         clickPreference(R.string.downloads_pref);
-        onView(withText(R.string.pref_automatic_download_title)).perform(click());
+        onView(withText(R.string.pref_auto_delete_title)).perform(click());
         onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
+        onView(withId(R.id.select_dialog_listview)).perform(swipeDown());
         onView(withText(R.string.episode_cleanup_after_listening)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> {
@@ -339,7 +343,7 @@ public class PreferencesTest {
     @Test
     public void testEpisodeCleanupNumDays() {
         clickPreference(R.string.downloads_pref);
-        clickPreference(R.string.pref_automatic_download_title);
+        onView(withText(R.string.pref_auto_delete_title)).perform(click());
         clickPreference(R.string.pref_episode_cleanup_title);
         String search = res.getQuantityString(R.plurals.episode_cleanup_days_after_listening, 3, 3);
         onView(withText(search)).perform(scrollTo());

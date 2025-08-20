@@ -23,7 +23,6 @@ import androidx.preference.SwitchPreferenceCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
-import androidx.preference.PreferenceFragmentCompat;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
@@ -37,11 +36,12 @@ import de.danoeh.antennapod.storage.importexport.FavoritesWriter;
 import de.danoeh.antennapod.storage.importexport.HtmlWriter;
 import de.danoeh.antennapod.storage.importexport.OpmlWriter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -54,7 +54,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
+public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment {
     private static final String TAG = "ImportExPrefFragment";
     private static final String PREF_OPML_EXPORT = "prefOpmlExport";
     private static final String PREF_OPML_IMPORT = "prefOpmlImport";
@@ -137,7 +137,8 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                     try {
                         chooseOpmlImportPathLauncher.launch("*/*");
                     } catch (ActivityNotFoundException e) {
-                        Log.e(TAG, "No activity found. Should never happen...");
+                        Snackbar.make(getView(), R.string.unable_to_start_system_file_manager, Snackbar.LENGTH_LONG)
+                                .show();
                     }
                     return true;
                 });
@@ -148,7 +149,12 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                 });
         findPreference(PREF_DATABASE_EXPORT).setOnPreferenceClickListener(
                 preference -> {
-                    backupDatabaseLauncher.launch(dateStampFilename(DATABASE_EXPORT_FILENAME));
+                    try {
+                        backupDatabaseLauncher.launch(dateStampFilename(DATABASE_EXPORT_FILENAME));
+                    } catch (ActivityNotFoundException e) {
+                        Snackbar.make(getView(), R.string.unable_to_start_system_file_manager, Snackbar.LENGTH_LONG)
+                                .show();
+                    }
                     return true;
                 });
         ((SwitchPreferenceCompat) findPreference(PREF_AUTOMATIC_DATABASE_EXPORT))
@@ -159,7 +165,6 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                         try {
                             automaticBackupLauncher.launch(null);
                         } catch (ActivityNotFoundException e) {
-                            e.printStackTrace();
                             Snackbar.make(getView(), R.string.unable_to_start_system_file_manager, Snackbar.LENGTH_LONG)
                                     .show();
                         }
@@ -192,7 +197,12 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.setType("*/*");
-            restoreDatabaseLauncher.launch(intent);
+            try {
+                restoreDatabaseLauncher.launch(intent);
+            } catch (ActivityNotFoundException e) {
+                Snackbar.make(getView(), R.string.unable_to_start_system_file_manager, Snackbar.LENGTH_LONG)
+                        .show();
+            }
         });
 
         // create and show the alert dialog
@@ -271,7 +281,8 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
             result.launch(intentPickAction);
             return;
         } catch (ActivityNotFoundException e) {
-            Log.e(TAG, "No activity found. Should never happen...");
+            Snackbar.make(getView(), R.string.unable_to_start_system_file_manager, Snackbar.LENGTH_LONG)
+                    .show();
         }
 
         // If we are using a SDK lower than API 21 or the implicit intent failed

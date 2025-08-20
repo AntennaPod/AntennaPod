@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <de.danoeh.antennapod.ui.preferences.preference.MasterSwitchPreference
+    <SwitchPreferenceCompat
+            android:defaultValue="false"
             android:key="prefEnableAutoDl"
             android:title="@string/pref_automatic_download_title"
-            search:summary="@string/pref_automatic_download_sum"
-            android:defaultValue="false"/>
+            android:summary="@string/pref_automatic_download_global_description"/>
+    <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="prefEnableAutoDlQueue"
+            android:title="@string/pref_automatic_download_queue_title"
+            android:summary="@string/pref_automatic_download_queue_description"/>
     <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
             android:defaultValue="25"
             android:entries="@array/episode_cache_size_entries"
@@ -15,20 +18,9 @@
             android:title="@string/pref_episode_cache_title"
             android:summary="@string/pref_episode_cache_summary"
             android:entryValues="@array/episode_cache_size_values"/>
-    <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
-            android:defaultValue="-1"
-            android:entries="@array/episode_cleanup_entries"
-            android:key="prefEpisodeCleanup"
-            android:title="@string/pref_episode_cleanup_title"
-            android:summary="@string/pref_episode_cleanup_summary"
-            android:entryValues="@array/episode_cleanup_values"/>
     <SwitchPreferenceCompat
             android:key="prefEnableAutoDownloadOnBattery"
             android:title="@string/pref_automatic_download_on_battery_title"
             android:summary="@string/pref_automatic_download_on_battery_sum"
             android:defaultValue="true"/>
-    <SwitchPreferenceCompat
-            android:key="prefEnableAutoDownloadWifiFilter"
-            android:title="@string/pref_autodl_wifi_filter_title"
-            android:summary="@string/pref_autodl_wifi_filter_sum"/>
 </PreferenceScreen>

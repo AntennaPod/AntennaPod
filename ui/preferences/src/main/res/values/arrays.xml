@@ -7,10 +7,24 @@
         <item>@string/feed_auto_download_never</item>
     </string-array>
 
+    <!-- Keep consistent with AutoDeleteAction -->
     <string-array name="spnAutoDeleteValues">
-        <item>global</item>
-        <item>always</item>
-        <item>never</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="spnEnableAutoDownloadItems">
+        <item>@string/global_default</item>
+        <item>@string/enabled</item>
+        <item>@string/disabled</item>
+    </string-array>
+
+    <!-- Keep consistent with AutoDownloadSetting -->
+    <string-array name="spnEnableAutoDownloadValues">
+        <item>1</item>
+        <item>2</item>
+        <item>0</item>
     </string-array>
 
     <string-array name="spnVolumeAdaptationItems">
@@ -22,13 +36,14 @@
         <item>@string/feed_volume_boost_heavy</item>
     </string-array>
 
+    <!-- Keep consistent with VolumeAdaptionSetting -->
     <string-array name="spnVolumeAdaptationValues">
-        <item>heavy</item>
-        <item>light</item>
-        <item>off</item>
-        <item>light_boost</item>
-        <item>medium_boost</item>
-        <item>heavy_boost</item>
+        <item>2</item>
+        <item>1</item>
+        <item>0</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
     </string-array>
 
     <string-array name="feed_refresh_interval_entries">
@@ -122,7 +137,7 @@
     <string-array name="mobile_update_entries">
         <item>@string/pref_mobileUpdate_refresh</item>
         <item>@string/pref_mobileUpdate_episode_download</item>
-        <item>@string/pref_mobileUpdate_auto_download</item>
+        <item>@string/pref_automatic_download_title</item>
         <item>@string/pref_mobileUpdate_streaming</item>
         <item>@string/pref_mobileUpdate_images</item>
         <item>@string/synchronization_pref</item>
@@ -192,18 +207,6 @@
         <item>120</item>
         <item>168</item>
         <item>-2</item>
-    </string-array>
-
-    <string-array name="nav_drawer_titles">
-        <item>@string/home_label</item>
-        <item>@string/queue_label</item>
-        <item>@string/inbox_label</item>
-        <item>@string/episodes_label</item>
-        <item>@string/subscriptions_label</item>
-        <item>@string/downloads_label</item>
-        <item>@string/playback_history_label</item>
-        <item>@string/add_feed_label</item>
-        <item>@string/subscriptions_list_label</item>
     </string-array>
 
     <string-array name="nav_drawer_feed_order_options">

@@ -13,13 +13,13 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
 
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.model.playback.MediaType;
@@ -30,6 +30,7 @@ import de.danoeh.antennapod.ui.appstartintent.PlaybackSpeedActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.VideoPlayerActivityStarter;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
 import de.danoeh.antennapod.ui.episodes.TimeSpeedConverter;
+import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 
 /**
  * Updates the state of the player widget.
@@ -69,7 +70,8 @@ public abstract class WidgetUpdater {
         if (widgetState.media != null && widgetState.media.getMediaType() == MediaType.VIDEO) {
             startMediaPlayer = new VideoPlayerActivityStarter(context).getPendingIntent();
         } else {
-            startMediaPlayer = new MainActivityStarter(context).withOpenPlayer().getPendingIntent();
+            startMediaPlayer = new MainActivityStarter(context)
+                    .withOpenPlayer().withClearBackStack().getPendingIntent();
         }
 
         PendingIntent startPlaybackSpeedDialog = new PlaybackSpeedActivityStarter(context).getPendingIntent();
@@ -78,39 +80,9 @@ public abstract class WidgetUpdater {
         views = new RemoteViews(context.getPackageName(), R.layout.player_widget);
 
         if (widgetState.media != null) {
-            Bitmap icon;
-            int iconSize = context.getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.imgvCover, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlaybackSpeed, startPlaybackSpeedDialog);
-
-            int radius = context.getResources().getDimensionPixelSize(R.dimen.widget_inner_radius);
-            RequestOptions options = new RequestOptions()
-                    .dontAnimate()
-                    .transform(new FitCenter(), new RoundedCorners(radius));
-
-            try {
-                icon = Glide.with(context)
-                        .asBitmap()
-                        .load(widgetState.media.getImageLocation())
-                        .apply(options)
-                        .submit(iconSize, iconSize)
-                        .get(500, TimeUnit.MILLISECONDS);
-                views.setImageViewBitmap(R.id.imgvCover, icon);
-            } catch (Throwable tr1) {
-                try {
-                    icon = Glide.with(context)
-                            .asBitmap()
-                            .load(ImageResourceUtils.getFallbackImageLocation(widgetState.media))
-                            .apply(options)
-                            .submit(iconSize, iconSize)
-                            .get(500, TimeUnit.MILLISECONDS);
-                    views.setImageViewBitmap(R.id.imgvCover, icon);
-                } catch (Throwable tr2) {
-                    Log.e(TAG, "Error loading the media icon for the widget", tr2);
-                    views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher);
-                }
-            }
 
             views.setTextViewText(R.id.txtvTitle, widgetState.media.getEpisodeTitle());
             views.setViewVisibility(R.id.txtvTitle, View.VISIBLE);
@@ -176,6 +148,7 @@ public abstract class WidgetUpdater {
             boolean showRewind = prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + id, false);
             boolean showFastForward = prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + id, false);
             boolean showSkip = prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + id, false);
+            boolean showCoverAsBcg = prefs.getBoolean(PlayerWidget.KEY_WIDGET_COVER_BACKGROUND + id, false);
 
             if (showPlaybackSpeed || showRewind || showSkip || showFastForward) {
                 views.setInt(R.id.extendedButtonsContainer, "setVisibility", View.VISIBLE);
@@ -189,10 +162,63 @@ public abstract class WidgetUpdater {
                 views.setInt(R.id.butPlay, "setVisibility", View.VISIBLE);
             }
 
+            if (showCoverAsBcg) {
+                views.setViewVisibility(R.id.imgvCover, View.GONE);
+                views.setViewVisibility(R.id.imgvBackground, View.VISIBLE);
+                int iconSize = 4 * context.getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
+                Bitmap icon = null;
+                if (widgetState.media != null) {
+                    icon = loadCover(context, iconSize, widgetState.media, new FastBlurTransformation());
+                }
+                if (icon != null) {
+                    views.setImageViewBitmap(R.id.imgvBackground, icon);
+                } else {
+                    views.setViewVisibility(R.id.imgvBackground, View.GONE);
+                }
+            } else {
+                views.setViewVisibility(R.id.imgvCover, View.VISIBLE);
+                views.setViewVisibility(R.id.imgvBackground, View.GONE);
+                int iconSize = context.getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
+                int radius = context.getResources().getDimensionPixelSize(R.dimen.widget_inner_radius);
+                Bitmap icon = null;
+                if (widgetState.media != null) {
+                    icon = loadCover(context, iconSize, widgetState.media, new RoundedCorners(radius));
+                }
+                if (icon != null) {
+                    views.setImageViewBitmap(R.id.imgvCover, icon);
+                } else {
+                    views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher);
+                }
+            }
             int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);
             views.setInt(R.id.widgetLayout, "setBackgroundColor", backgroundColor);
 
             manager.updateAppWidget(id, views);
+        }
+    }
+
+    private static Bitmap loadCover(Context context, int iconSize, Playable media, Transformation<Bitmap> transform) {
+        try {
+            return Glide.with(context)
+                    .asBitmap()
+                    .load(media.getImageLocation())
+                    .dontAnimate()
+                    .transform(transform)
+                    .submit(iconSize, iconSize)
+                    .get(500, TimeUnit.MILLISECONDS);
+        } catch (Throwable tr1) {
+            try {
+                return Glide.with(context)
+                        .asBitmap()
+                        .load(ImageResourceUtils.getFallbackImageLocation(media))
+                        .dontAnimate()
+                        .transform(transform)
+                        .submit(iconSize, iconSize)
+                        .get(500, TimeUnit.MILLISECONDS);
+            } catch (Throwable tr2) {
+                Log.e(TAG, "Error loading the media icon for the widget", tr2);
+                return null;
+            }
         }
     }
 

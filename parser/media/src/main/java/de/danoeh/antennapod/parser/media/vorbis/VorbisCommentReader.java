@@ -20,16 +20,14 @@ public abstract class VorbisCommentReader {
     private static final int PACKET_TYPE_IDENTIFICATION = 1;
     private static final int PACKET_TYPE_COMMENT = 3;
 
-    private final InputStream input;
+    private final VorbisInputStream input;
 
     VorbisCommentReader(InputStream input) {
-        this.input = input;
+        this.input = new VorbisInputStream(input);
     }
 
     public void readInputStream() throws VorbisCommentReaderException {
         try {
-            findIdentificationHeader();
-            findOggPage();
             findCommentHeader();
             VorbisCommentHeader commentHeader = readCommentHeader();
             Log.d(TAG, commentHeader.toString());
@@ -39,26 +37,6 @@ public abstract class VorbisCommentReader {
         } catch (IOException e) {
             Log.d(TAG, "Vorbis parser: " + e.getMessage());
         }
-    }
-
-    private void findOggPage() throws IOException {
-        // find OggS
-        byte[] buffer = new byte[4];
-        final byte[] oggPageHeader = {'O', 'g', 'g', 'S'};
-        for (int bytesRead = 0; bytesRead < SECOND_PAGE_MAX_LENGTH; bytesRead++) {
-            int data = input.read();
-            if (data == -1) {
-                throw new IOException("EOF while trying to find vorbis page");
-            }
-            buffer[bytesRead % buffer.length] = (byte) data;
-            if (bufferMatches(buffer, oggPageHeader, bytesRead)) {
-                break;
-            }
-        }
-        // read segments
-        IOUtils.skipFully(input, 22);
-        int numSegments = input.read();
-        IOUtils.skipFully(input, numSegments);
     }
 
     private void readUserComment() throws VorbisCommentReaderException {
@@ -88,25 +66,6 @@ public abstract class VorbisCommentReader {
         IOUtils.readFully(input, buffer);
         Charset charset = Charset.forName("UTF-8");
         return charset.newDecoder().decode(ByteBuffer.wrap(buffer)).toString();
-    }
-
-    /**
-     * Looks for an identification header in the first page of the file. If an
-     * identification header is found, it will be skipped completely
-     */
-    private void findIdentificationHeader() throws IOException {
-        byte[] buffer = new byte[FIRST_OPUS_PAGE_LENGTH];
-        IOUtils.readFully(input, buffer);
-        final byte[] oggIdentificationHeader = new byte[]{ PACKET_TYPE_IDENTIFICATION, 'v', 'o', 'r', 'b', 'i', 's' };
-        for (int i = 6; i < buffer.length; i++) {
-            if (bufferMatches(buffer, oggIdentificationHeader, i)) {
-                IOUtils.skip(input, FIRST_OGG_PAGE_LENGTH - FIRST_OPUS_PAGE_LENGTH);
-                return;
-            } else if (bufferMatches(buffer, "OpusHead".getBytes(), i)) {
-                return;
-            }
-        }
-        throw new IOException("No vorbis identification header found");
     }
 
     private void findCommentHeader() throws IOException {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.DataSetObserver;
 import android.view.Gravity;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import androidx.annotation.DrawableRes;
@@ -21,20 +22,27 @@ public class EmptyViewHandler {
     private boolean layoutAdded = false;
     private ListAdapter listAdapter;
     private RecyclerView.Adapter<?> recyclerAdapter;
+    private View listView;
 
     private final View emptyView;
     private final TextView tvTitle;
     private final TextView tvMessage;
     private final ImageView ivIcon;
+    private final Button button;
 
     public EmptyViewHandler(Context context) {
         emptyView = View.inflate(context, R.layout.empty_view_layout, null);
         tvTitle = emptyView.findViewById(R.id.emptyViewTitle);
         tvMessage = emptyView.findViewById(R.id.emptyViewMessage);
         ivIcon = emptyView.findViewById(R.id.emptyViewIcon);
+        button = emptyView.findViewById(R.id.button);
     }
 
     public void setTitle(int title) {
+        tvTitle.setText(title);
+    }
+
+    public void setTitle(String title) {
         tvTitle.setText(title);
     }
 
@@ -44,6 +52,18 @@ public class EmptyViewHandler {
 
     public void setMessage(String message) {
         tvMessage.setText(message);
+    }
+
+    public void setButtonText(int message) {
+        button.setText(message);
+    }
+
+    public void setButtonVisibility(int visibility) {
+        button.setVisibility(visibility);
+    }
+
+    public void setButtonOnClickListener(View.OnClickListener onClickListener) {
+        button.setOnClickListener(onClickListener);
     }
 
     public void setIcon(@DrawableRes int icon) {
@@ -61,6 +81,7 @@ public class EmptyViewHandler {
         }
         addToParentView(listView);
         layoutAdded = true;
+        this.listView = listView;
         listView.setEmptyView(emptyView);
         updateAdapter(listView.getAdapter());
     }
@@ -71,6 +92,7 @@ public class EmptyViewHandler {
         }
         addToParentView(recyclerView);
         layoutAdded = true;
+        this.listView = recyclerView;
         updateAdapter(recyclerView.getAdapter());
     }
 
@@ -148,5 +170,6 @@ public class EmptyViewHandler {
             empty = true;
         }
         emptyView.setVisibility(empty ? View.VISIBLE : View.GONE);
+        listView.setVisibility(empty ? View.INVISIBLE : View.VISIBLE);
     }
 }

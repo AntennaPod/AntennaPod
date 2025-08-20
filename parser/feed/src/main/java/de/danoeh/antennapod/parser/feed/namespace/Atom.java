@@ -78,24 +78,29 @@ public class Atom extends Namespace {
             String href = attributes.getValue(LINK_HREF);
             String rel = attributes.getValue(LINK_REL);
             SyndElement parent = state.getTagstack().peek();
-            if (parent.getName().matches(isFeedItem)) {
+            if (parent.getName().matches(isFeedItem) && state.getCurrentItem() != null) {
                 if (rel == null || LINK_REL_ALTERNATE.equals(rel)) {
                     state.getCurrentItem().setLink(href);
                 } else if (LINK_REL_ENCLOSURE.equals(rel)) {
                     String strSize = attributes.getValue(LINK_LENGTH);
                     long size = 0;
                     try {
-                        if (strSize != null) {
+                        if (!TextUtils.isEmpty(strSize)) {
                             size = Long.parseLong(strSize);
                         }
                     } catch (NumberFormatException e) {
                         Log.d(TAG, "Length attribute could not be parsed.");
                     }
                     String mimeType = MimeTypeUtils.getMimeType(attributes.getValue(LINK_TYPE), href);
+                    boolean isValidMedia = MimeTypeUtils.isMediaFile(mimeType);
+                    if (!isValidMedia && state.getCurrentItem().getMedia() == null
+                            && !MimeTypeUtils.isImageFile(mimeType)) {
+                        isValidMedia = true;
+                        mimeType = "audio/*";
+                    }
 
-                    FeedItem currItem = state.getCurrentItem();
-                    if (MimeTypeUtils.isMediaFile(mimeType) && currItem != null && !currItem.hasMedia()) {
-                        currItem.setMedia(new FeedMedia(currItem, href, size, mimeType));
+                    if (isValidMedia && !state.getCurrentItem().hasMedia()) {
+                        state.getCurrentItem().setMedia(new FeedMedia(state.getCurrentItem(), href, size, mimeType));
                     }
                 } else if (LINK_REL_PAYMENT.equals(rel)) {
                     state.getCurrentItem().setPaymentLink(href);

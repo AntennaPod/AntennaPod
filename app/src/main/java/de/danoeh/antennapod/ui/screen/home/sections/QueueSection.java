@@ -24,10 +24,10 @@ import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.ui.screen.home.HomeSection;
 import de.danoeh.antennapod.ui.episodeslist.HorizontalItemViewHolder;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -59,6 +59,7 @@ public class QueueSection extends HomeSection {
         viewBinding.recyclerView.setAdapter(listAdapter);
         int paddingHorizontal = (int) (12 * getResources().getDisplayMetrics().density);
         viewBinding.recyclerView.setPadding(paddingHorizontal, 0, paddingHorizontal, 0);
+        viewBinding.emptyLabel.setText(R.string.home_continue_empty_text);
         return view;
     }
 
@@ -142,7 +143,7 @@ public class QueueSection extends HomeSection {
 
     @Override
     protected String getMoreLinkTitle() {
-        return getString(R.string.queue_label);
+        return getString(R.string.queue_label_more);
     }
 
     private void loadItems() {
@@ -156,6 +157,7 @@ public class QueueSection extends HomeSection {
                     this.queue = queue;
                     listAdapter.setDummyViews(0);
                     listAdapter.updateData(queue);
+                    viewBinding.emptyLabel.setVisibility(queue.isEmpty() ? View.VISIBLE : View.GONE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
 
     }

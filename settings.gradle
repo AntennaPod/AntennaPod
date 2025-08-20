@@ -3,6 +3,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        mavenLocal()
     }
 }
 
@@ -12,6 +13,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url "https://jitpack.io" }
+        mavenLocal()
     }
 }
 
@@ -30,6 +32,7 @@ include ':net:sync:service'
 
 include ':parser:feed'
 include ':parser:media'
+include ':parser:transcript'
 
 include ':playback:base'
 include ':playback:cast'
@@ -51,3 +54,4 @@ include ':ui:notifications'
 include ':ui:preferences'
 include ':ui:statistics'
 include ':ui:widget'
+include ':ui:transcript'

@@ -10,7 +10,6 @@
     </style>
 
     <style name="Theme.Base.AntennaPod.Dynamic.Light" parent="Theme.Material3.DynamicColors.Light">
-        <item name="progressBarTheme">@style/ProgressBarLight</item>
         <item name="background_color">@color/background_light</item>
         <item name="actionBarStyle">@style/Widget.AntennaPod.ActionBar</item>
         <item name="background_elevated">@color/background_elevated_light</item>
@@ -27,6 +26,8 @@
         <item name="android:splitMotionEvents">false</item>
         <item name="android:fitsSystemWindows">false</item>
         <item name="android:windowContentTransitions">true</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="toolbarStyle">@style/Style.AntennaPod.Toolbar</item>
         <item name="preferenceTheme">@style/AppPreferenceThemeOverlay</item>
     </style>
 
@@ -38,11 +39,13 @@
         <item name="colorSecondary">@color/accent_light</item>
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorPrimaryDark">@color/accent_light</item>
-        <item name="colorPrimaryContainer">@color/accent_light</item>
-        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorPrimaryContainer">#D6E6F3</item>
+        <item name="colorOnPrimaryContainer">@color/black</item>
         <item name="android:colorBackground">@color/background_light</item>
         <item name="colorSurface">@color/background_light</item>
         <item name="colorSurfaceVariant">#D3DCE0</item>
+        <item name="colorSurfaceContainer">#EBEEF3</item>
+        <item name="colorSecondaryContainer">#D3DCE0</item>
     </style>
 
     <style name="Theme.AntennaPod.Dynamic.Dark" parent="Theme.Base.AntennaPod.Dynamic.Dark">
@@ -50,11 +53,10 @@
     </style>
 
     <style name="Theme.Base.AntennaPod.Dynamic.Dark" parent="Theme.Material3.DynamicColors.Dark">
-        <item name="progressBarTheme">@style/ProgressBarDark</item>
         <item name="background_color">@color/background_darktheme</item>
-        <item name="actionBarStyle">@style/Widget.AntennaPod.ActionBar</item>
         <item name="background_elevated">@color/background_elevated_darktheme</item>
         <item name="action_icon_color">@color/white</item>
+        <item name="actionBarStyle">@style/Widget.AntennaPod.ActionBar</item>
         <item name="android:textAllCaps">false</item>
         <item name="seek_background">@color/seek_background_dark</item>
         <item name="dragview_background">@drawable/ic_drag_darktheme</item>
@@ -69,7 +71,8 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowContentTransitions">true</item>
-        <item name="android:navigationBarColor">@color/background_darktheme</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="toolbarStyle">@style/Style.AntennaPod.Toolbar</item>
         <item name="preferenceTheme">@style/AppPreferenceThemeOverlay</item>
     </style>
 
@@ -81,11 +84,13 @@
         <item name="colorSecondary">@color/accent_dark</item>
         <item name="colorOnSecondary">@color/black</item>
         <item name="colorPrimaryDark">@color/accent_dark</item>
-        <item name="colorPrimaryContainer">@color/accent_dark</item>
-        <item name="colorOnPrimaryContainer">@color/black</item>
+        <item name="colorPrimaryContainer">#29374E</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
         <item name="android:colorBackground">@color/background_darktheme</item>
         <item name="colorSurface">@color/background_darktheme</item>
         <item name="colorSurfaceVariant">#2F3B4F</item>
+        <item name="colorSurfaceContainer">#1C2024</item>
+        <item name="colorSecondaryContainer">#2F3B4F</item>
     </style>
 
     <style name="Theme.AntennaPod.Dynamic.TrueBlack" parent="Theme.AntennaPod.Dynamic.Dark">
@@ -95,7 +100,6 @@
         <item name="colorSurface">@color/black</item>
         <item name="background_color">@color/black</item>
         <item name="background_elevated">@color/black</item>
-        <item name="android:navigationBarColor">@color/black</item>
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack" parent="Theme.AntennaPod.Dark">
@@ -105,7 +109,8 @@
         <item name="colorSurface">@color/black</item>
         <item name="background_color">@color/black</item>
         <item name="background_elevated">@color/black</item>
-        <item name="android:navigationBarColor">@color/black</item>
+        <item name="colorPrimaryContainer">#0D182B</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
     </style>
 
     <style name="Theme.AntennaPod.Dynamic.Light.NoTitle" parent="Theme.AntennaPod.Dynamic.Light">
@@ -152,7 +157,6 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>
-        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="Theme.AntennaPod.Light.Translucent" parent="Theme.AntennaPod.Light.NoTitle">
@@ -163,7 +167,6 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>
-        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="Theme.AntennaPod.Dynamic.Dark.Translucent" parent="Theme.AntennaPod.Dynamic.Dark.NoTitle">
@@ -174,7 +177,6 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>
-        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.Translucent" parent="Theme.AntennaPod.Dark.NoTitle">
@@ -185,7 +187,6 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>
-        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="Theme.AntennaPod.Dynamic.TrueBlack.Translucent" parent="Theme.AntennaPod.Dynamic.TrueBlack.NoTitle">
@@ -196,7 +197,6 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>
-        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack.Translucent" parent="Theme.AntennaPod.TrueBlack.NoTitle">
@@ -207,7 +207,6 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>
-        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="AnimationFade">
@@ -225,6 +224,23 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/launcher_animate</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Splash.Translucent" parent="Theme.AntennaPod.Splash">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/AnimationFade</item>
+    </style>
+
+    <style name="Style.AntennaPod.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="materialThemeOverlay">@style/Theme.AntennaPod.Toolbar</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Surface">
+        <item name="action_icon_color">?attr/colorOnSurface</item>
+        <item name="colorControlNormal">?attr/colorOnSurface</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">
@@ -251,24 +267,8 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="AntennaPod.TextView.ListItemBody" parent="@style/TextAppearance.Material3.BodyMedium">
-        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
-        <item name="lineHeight">18sp</item>
-        <item name="android:lineHeight" tools:targetApi="p">18sp</item>
-    </style>
-
     <style name="OutlinedButtonBetterContrast" parent="Widget.Material3.Button.OutlinedButton">
         <item name="backgroundTint">@color/button_bg_selector</item>
-    </style>
-
-    <style name="ProgressBarLight">
-        <item name="android:indeterminateOnly">false</item>
-        <item name="android:progressDrawable">@drawable/progress_bar_horizontal_light</item>
-    </style>
-
-    <style name="ProgressBarDark">
-        <item name="android:indeterminateOnly">false</item>
-        <item name="android:progressDrawable">@drawable/progress_bar_horizontal_dark</item>
     </style>
 
     <style name="FastScrollRecyclerView" parent="android:Widget">
@@ -285,13 +285,17 @@
         <item name="elevation">0dp</item>
     </style>
 
-    <style name="AddPodcastTextView">
+    <style name="AddPodcastTextView" parent="@style/TextAppearance.Material3.BodyMedium">
         <item name="android:drawablePadding">8dp</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
         <item name="android:background">?android:attr/selectableItemBackground</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:clickable">true</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
     <style name="TextPill">
@@ -301,6 +305,10 @@
         <item name="android:textAlignment">center</item>
         <item name="android:paddingStart">8dp</item>
         <item name="android:paddingEnd">8dp</item>
+    </style>
+
+    <style name="TextBottomNav" parent="TextAppearance.Material3.TitleSmall">
+       <item name="android:textSize">11sp</item>
     </style>
 
     <style name="AppPreferenceThemeOverlay" parent="@style/PreferenceThemeOverlay">

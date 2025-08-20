@@ -6,7 +6,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
@@ -29,9 +28,11 @@ import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import de.danoeh.antennapod.ui.chapters.ChapterUtils;
 import de.danoeh.antennapod.ui.screen.chapter.ChaptersFragment;
 import de.danoeh.antennapod.playback.service.PlaybackController;
@@ -43,10 +44,10 @@ import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
-import io.reactivex.Maybe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -122,9 +123,7 @@ public class CoverFragment extends Fragment {
                 + "\u00A0"
                 + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
         if (media instanceof FeedMedia) {
-            Intent openFeed = MainActivity.getIntentToOpenFeed(requireContext(),
-                    ((FeedMedia) media).getItem().getFeedId());
-            viewBinding.txtvPodcastTitle.setOnClickListener(v -> startActivity(openFeed));
+            viewBinding.txtvPodcastTitle.setOnClickListener(v -> openFeed(((FeedMedia) media).getItem().getFeed()));
         } else {
             viewBinding.txtvPodcastTitle.setOnClickListener(null);
         }
@@ -162,6 +161,17 @@ public class CoverFragment extends Fragment {
         displayedChapterIndex = -1;
         refreshChapterData(Chapter.getAfterPosition(media.getChapters(), media.getPosition()));
         updateChapterControlVisibility();
+    }
+
+    private void openFeed(Feed feed) {
+        if (feed == null) {
+            return;
+        }
+        if (feed.getState() == Feed.STATE_SUBSCRIBED) {
+            new MainActivityStarter(getContext()).withOpenFeed(feed.getId()).withClearTop().start();
+        } else {
+            startActivity(new OnlineFeedviewActivityStarter(getContext(), feed.getDownloadUrl()).getIntent());
+        }
     }
 
     private void updateChapterControlVisibility() {
@@ -337,8 +347,7 @@ public class CoverFragment extends Fragment {
             clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", text));
         }
         if (Build.VERSION.SDK_INT <= 32) {
-            ((MainActivity) requireActivity()).showSnackbarAbovePlayer(
-                    getResources().getString(R.string.copied_to_clipboard), Snackbar.LENGTH_SHORT);
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
         }
         return true;
     }

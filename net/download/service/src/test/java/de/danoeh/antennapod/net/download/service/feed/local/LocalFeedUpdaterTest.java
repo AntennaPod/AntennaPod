@@ -83,7 +83,7 @@ public class LocalFeedUpdaterTest {
 
         mapDummyMetadata(LOCAL_FEED_DIR1);
         mapDummyMetadata(LOCAL_FEED_DIR2);
-        shadowOf(MimeTypeMap.getSingleton()).addExtensionMimeTypMapping("mp3", "audio/mp3");
+        shadowOf(MimeTypeMap.getSingleton()).addExtensionMimeTypeMapping("mp3", "audio/mp3");
     }
 
     @After
@@ -171,7 +171,7 @@ public class LocalFeedUpdaterTest {
         Feed feed = verifySingleFeedInDatabase();
         List<FeedItem> feedItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(),
                 SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
-        assertEquals("track1.mp3", feedItems.get(0).getTitle());
+        assertEquals("track1", feedItems.get(0).getTitle());
     }
 
     @Test

@@ -22,15 +22,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
-import com.google.android.material.snackbar.Snackbar;
-import com.leinardi.android.speeddial.SpeedDialView;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
 import de.danoeh.antennapod.ui.screen.subscriptions.HorizontalFeedListAdapter;
 import de.danoeh.antennapod.ui.MenuItemUtils;
-import de.danoeh.antennapod.databinding.MultiSelectSpeedDialBinding;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
@@ -46,12 +44,13 @@ import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import de.danoeh.antennapod.ui.discovery.OnlineSearchFragment;
 import de.danoeh.antennapod.ui.view.EmptyViewHandler;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListRecyclerView;
+import de.danoeh.antennapod.ui.view.FloatingSelectMenu;
 import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -82,9 +81,9 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     private List<FeedItem> results;
     private Chip chip;
     private SearchView searchView;
+    private FloatingSelectMenu floatingSelectMenu;
     private Handler automaticSearchDebouncer;
     private long lastQueryChange = 0;
-    private MultiSelectSpeedDialBinding speedDialBinding;
     private boolean isOtherViewInFoucus = false;
 
 
@@ -141,12 +140,12 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.search_fragment, container, false);
         setupToolbar(layout.findViewById(R.id.toolbar));
-        speedDialBinding = MultiSelectSpeedDialBinding.bind(layout);
         progressBar = layout.findViewById(R.id.progressBar);
         recyclerView = layout.findViewById(R.id.recyclerView);
+        floatingSelectMenu = layout.findViewById(R.id.floatingSelectMenu);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         registerForContextMenu(recyclerView);
-        adapter = new EpisodeItemListAdapter((MainActivity) getActivity()) {
+        adapter = new EpisodeItemListAdapter(getActivity()) {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
                 super.onCreateContextMenu(menu, v, menuInfo);
@@ -154,6 +153,14 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
                     menu.findItem(R.id.multi_select).setVisible(true);
                 }
                 MenuItemUtils.setOnClickListeners(menu, SearchFragment.this::onContextItemSelected);
+            }
+
+            @Override
+            protected void onSelectedItemsUpdated() {
+                super.onSelectedItemsUpdated();
+                FeedItemMenuHandler.onPrepareMenu(floatingSelectMenu.getMenu(), getSelectedItems(),
+                        R.id.remove_inbox_item);
+                floatingSelectMenu.updateItemVisibility();
             }
         };
         adapter.setOnSelectModeListener(this);
@@ -171,14 +178,21 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
                 super.onCreateContextMenu(contextMenu, view, contextMenuInfo);
                 MenuItemUtils.setOnClickListeners(contextMenu, SearchFragment.this::onContextItemSelected);
             }
+
+            @Override
+            protected void onClick(Feed feed) {
+                if (adapter != null && adapter.inActionMode()) {
+                    adapter.endSelectMode();
+                }
+                super.onClick(feed);
+            }
         };
         recyclerViewFeeds.setAdapter(adapterFeeds);
 
         emptyViewHandler = new EmptyViewHandler(getContext());
         emptyViewHandler.attachToRecyclerView(recyclerView);
         emptyViewHandler.setIcon(R.drawable.ic_search);
-        emptyViewHandler.setTitle(R.string.search_status_no_results);
-        emptyViewHandler.setMessage(R.string.type_to_search);
+        emptyViewHandler.setTitle(R.string.type_to_search);
         EventBus.getDefault().register(this);
 
         chip = layout.findViewById(R.id.feed_title_chip);
@@ -207,25 +221,13 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
                 }
             }
         });
-        speedDialBinding.fabSD.setOverlayLayout(speedDialBinding.fabSDOverlay);
-        speedDialBinding.fabSD.inflate(R.menu.episodes_apply_action_speeddial);
-        speedDialBinding.fabSD.setOnChangeListener(new SpeedDialView.OnChangeListener() {
-            @Override
-            public boolean onMainActionSelected() {
+        floatingSelectMenu.inflate(R.menu.episodes_apply_action_speeddial);
+        floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
+            if (adapter.getSelectedCount() == 0) {
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.no_items_selected_message)));
                 return false;
             }
-
-            @Override
-            public void onToggleChanged(boolean open) {
-                if (open && adapter.getSelectedCount() == 0) {
-                    ((MainActivity) getActivity())
-                            .showSnackbarAbovePlayer(R.string.no_items_selected, Snackbar.LENGTH_SHORT);
-                    speedDialBinding.fabSD.close();
-                }
-            }
-        });
-        speedDialBinding.fabSD.setOnActionSelectedListener(actionItem -> {
-            new EpisodeMultiSelectActionHandler((MainActivity) getActivity(), actionItem.getId())
+            new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId())
                     .handleAction(adapter.getSelectedItems());
             adapter.endSelectMode();
             return true;
@@ -356,7 +358,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         if (adapter != null) {
             for (int i = 0; i < adapter.getItemCount(); i++) {
                 EpisodeItemViewHolder holder = (EpisodeItemViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
-                if (holder != null && holder.isCurrentlyPlayingItem()) {
+                if (holder != null && holder.isPlayingItem()) {
                     holder.notifyPlaybackPositionUpdated(event);
                     break;
                 }
@@ -382,13 +384,14 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         if (disposableEpisodes != null) {
             disposableEpisodes.dispose();
         }
-        adapterFeeds.setEndButton(R.string.search_online, this::searchOnline);
         long feed = getArguments().getLong(ARG_FEED, 0);
-        chip.setVisibility((feed == 0) ? View.GONE : View.VISIBLE);
+        boolean isSearchingFeed = feed != 0;
+        chip.setVisibility(isSearchingFeed ? View.VISIBLE : View.GONE);
+        adapterFeeds.setEndButton(R.string.search_online, isSearchingFeed ? null : this::searchOnline);
 
         String query = searchView.getQuery().toString();
         if (query.isEmpty()) {
-            emptyViewHandler.setMessage(R.string.type_to_search);
+            emptyViewHandler.setTitle(R.string.type_to_search);
             return;
         }
         if (feed != 0) {
@@ -401,7 +404,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
                     .subscribe(results -> {
                         progressBar.setVisibility(View.GONE);
                         adapterFeeds.updateData(results);
-                        emptyViewHandler.setMessage(getString(R.string.no_results_for_query, query));
+                        emptyViewHandler.setTitle(getString(R.string.no_results_for_query, query));
                     }, error -> Log.e(TAG, Log.getStackTraceString(error)));
         }
         disposableEpisodes = Observable.fromCallable(() -> DBReader.searchFeedItems(feed, query))
@@ -411,7 +414,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
                     progressBar.setVisibility(View.GONE);
                     this.results = results;
                     adapter.updateItems(results);
-                    emptyViewHandler.setMessage(getString(R.string.no_results_for_query, searchView.getQuery()));
+                    emptyViewHandler.setTitle(getString(R.string.no_results_for_query, searchView.getQuery()));
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
@@ -423,6 +426,9 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     }
 
     private void searchOnline() {
+        if (adapter != null && adapter.inActionMode()) {
+            adapter.endSelectMode();
+        }
         searchView.clearFocus();
         InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
@@ -438,16 +444,17 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     @Override
     public void onStartSelectMode() {
         searchViewFocusOff();
-        speedDialBinding.fabSD.removeActionItemById(R.id.remove_from_inbox_batch);
-        speedDialBinding.fabSD.removeActionItemById(R.id.remove_from_queue_batch);
-        speedDialBinding.fabSD.removeActionItemById(R.id.delete_batch);
-        speedDialBinding.fabSD.setVisibility(View.VISIBLE);
+        floatingSelectMenu.setVisibility(View.VISIBLE);
+        recyclerView.setPadding(recyclerView.getPaddingLeft(), recyclerView.getPaddingTop(),
+                recyclerView.getPaddingRight(),
+                (int) getResources().getDimension(R.dimen.floating_select_menu_height));
     }
 
     @Override
     public void onEndSelectMode() {
-        speedDialBinding.fabSD.close();
-        speedDialBinding.fabSD.setVisibility(View.GONE);
+        floatingSelectMenu.setVisibility(View.GONE);
+        recyclerView.setPadding(recyclerView.getPaddingLeft(), recyclerView.getPaddingTop(),
+                recyclerView.getPaddingRight(), 0);
         searchViewFocusOn();
     }
 

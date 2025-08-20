@@ -19,12 +19,12 @@ public abstract class RewindAfterPauseUtils {
 
     /**
      * @param currentPosition  current position in a media file in ms
-     * @param lastPlayedTime  timestamp when was media paused
+     * @param lastPlayedTimeStatistics  timestamp when was media paused
      * @return  new rewinded position for playback in milliseconds
      */
-    public static int calculatePositionWithRewind(int currentPosition, long lastPlayedTime) {
-        if (currentPosition > 0 && lastPlayedTime > 0) {
-            long elapsedTime = System.currentTimeMillis() - lastPlayedTime;
+    public static int calculatePositionWithRewind(int currentPosition, long lastPlayedTimeStatistics) {
+        if (currentPosition > 0 && lastPlayedTimeStatistics > 0) {
+            long elapsedTime = System.currentTimeMillis() - lastPlayedTimeStatistics;
             long rewindTime = 0;
 
             if (elapsedTime > ELAPSED_TIME_FOR_LONG_REWIND) {

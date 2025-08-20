@@ -24,11 +24,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
-            android:paddingBottom="8dp"
             android:text="@string/filtered_label"
-            android:layout_marginTop="-12dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginStart="60dp"
+            android:layout_marginTop="-16dp"
+            android:paddingVertical="4dp"
+            android:paddingHorizontal="16dp"
             android:visibility="gone"
             tools:visibility="visible" />
 
@@ -58,7 +57,10 @@
         android:layout_centerInParent="true"
         tools:background="@android:color/holo_red_light" />
 
-    <include
-        layout="@layout/multi_select_speed_dial" />
+    <de.danoeh.antennapod.ui.view.FloatingSelectMenu
+        android:id="@+id/floatingSelectMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

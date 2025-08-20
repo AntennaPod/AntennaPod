@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--Activity and fragment titles-->
+  <string name="feed_update_receiver_name">ಚಂದಾದಾರಿಕೆಗಳನ್ನು ನವೀಕರಿಸಿ</string>
+    <string name="statistics_label">ಅಂಕಿಅಂಶಗಳು</string>
+    <string name="add_feed_label">ಪಾಡ್ಕ್ಯಾಸ್ಟ್ಅನ್ನು ಸೇರಿಸಿ</string>
+    <string name="episodes_label">ಸಂಚಿಕೆಗಳು</string>
+    <string name="home_label">ಮುಖಪುಟ</string>
+    <string name="queue_label">ಸರದಿ</string>
+    <string name="inbox_label">ಇನ್‌ಬಾಕ್ಸ್</string>
+    <string name="favorite_episodes_label">ನೆಚ್ಚಿನವುಗಳು</string>
+    <string name="settings_label">ಸೆಟ್ಟಿಂಗ್ಗಳು</string>
+    <string name="downloads_label">ಇಳಿಕೆಗಳು</string>
+    <string name="downloads_log_label">ಡೌನ್‌ಲೋಡ್ ಲಾಗ್</string>
+    <string name="subscriptions_label">ಚಂದಾದಾರಿಕೆಗಳು</string>
+    <string name="subscriptions_list_label">ಚಂದಾದಾರಿಕೆಗಳ ಪಟ್ಟಿ</string>
+    <string name="cancel_download_label">ಡೌನ್‌ಲೋಡ್ ರದ್ದುಮಾಡಿ</string>
+    <string name="playback_history_label">ಪ್ಲೇಬ್ಯಾಕ್ ಇತಿಹಾಸ</string>
+    <string name="years_statistics_label">ವರ್ಷಗಳು</string>
+    <string name="notification_pref_fragment">ಅಧಿಸೂಚನೆಗಳು</string>
+    <!--Google Assistant-->
+  <string name="app_action_not_found">\"%1$s\" ಕಂಡುಬಂದಿಲ್ಲ</string>
+    <!--SwipeActions-->
+  <string name="swipeactions_label">ಸ್ವೈಪ್ ಕ್ರಿಯೆಗಳು</string>
+    <string name="swipeactions_summary">ಪಟ್ಟಿಯಲ್ಲಿ ಸಂಚಿಕೆಯನ್ನು ಸ್ವೈಪ್ ಮಾಡುವಾಗ ಏನಾಗುತ್ತದೆ ಎಂಬುದನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="swipe_right">ಬಲಕ್ಕೆ ಸ್ವೈಪ್</string>
+    <string name="swipe_left">ಎಡಕ್ಕೆ ಸ್ವೈಪ್</string>
+    <string name="enable_swipeactions">ಈ ಪರದೆಗಾಗಿ ಸ್ವೈಪ್ ಕ್ರಿಯೆಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</string>
+    <string name="change_setting">ಬದಲಾಯಿಸಿ</string>
+    <string name="individual_subscription">ವೈಯಕ್ತಿಕ ಚಂದಾದಾರಿಕೆ</string>
+    <!--Statistics fragment-->
+  <string name="statistics_include_marked">ಪ್ಲೇಯೆಡ್ ಎಂದು ಗುರುತಿಸಲಾದ ಸಂಚಿಕೆಗಳ ಅವಧಿಯನ್ನು ಸೇರಿಸಿ</string>
+    <string name="statistics_speed_not_counted">ಗಮನಿಸಿ: ಪ್ಲೇಬ್ಯಾಕ್ ವೇಗವನ್ನು ಎಂದಿಗೂ ಗಣನೆಗೆ ತೆಗೆದುಕೊಳ್ಳುವುದಿಲ್ಲ.</string>
+    <string name="statistics_from">ನಿಂದ</string>
+    <string name="statistics_to">ಗೆ</string>
+    <string name="statistics_today">ಇಂದು</string>
+    <string name="statistics_filter_all_time">ಸಾರ್ವಕಾಲಿಕ</string>
+    <string name="statistics_filter_past_year">ಕಳೆದ ವರ್ಷ</string>
+    <string name="statistics_reset_data">ಅಂಕಿಅಂಶಗಳ ಡೇಟಾವನ್ನು ಅಳಿಸಿ</string>
+    <string name="statistics_reset_data_msg">ಇದು ಎಲ್ಲಾ ಸಂಚಿಕೆಗಳಿಗೆ ಆಡಿದ ಅವಧಿಯ ಇತಿಹಾಸವನ್ನು ಅಳಿಸುತ್ತದೆ. ನೀವು ಮುಂದುವರೆಯಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</string>
+    <string name="statistics_counting_range">%1$s ಮತ್ತು %2$s ನಡುವೆ ಪ್ಲೇ ಮಾಡಲಾಗಿದೆ</string>
+    <string name="statistics_counting_total">ಒಟ್ಟು ಆಡಿದ ಸಮಯ</string>
+    <!--Home fragment-->
+  <string name="home_surprise_title">ಆಶ್ಚರ್ಯ ಪಡು</string>
+    <string name="home_classics_title">ನಿಮ್ಮ ಕ್ಲಾಸಿಕ್‌ಗಳನ್ನು ವೀಕ್ಷಿಸಿ</string>
+    <string name="home_continue_title">ಕೇಳುವುದನ್ನು ಮುಂದುವರಿಸಿ</string>
+    <string name="home_new_title">ಹೊಸದೇನಿದೆ ನೋಡಿ</string>
+    <string name="home_downloads_title">ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ನಿರ್ವಹಿಸಿ</string>
+    <string name="home_welcome_title">AntennaPod ಗೆ ಸ್ವಾಗತ!</string>
+    <string name="home_welcome_text">ನೀವು ಇನ್ನೂ ಯಾವುದೇ ಪಾಡ್‌ಕಾಸ್ಟ್‌ಗಳಿಗೆ ಚಂದಾದಾರರಾಗಿಲ್ಲ. ಪಾಡ್‌ಕ್ಯಾಸ್ಟ್ ಸೇರಿಸಲು ಸೈಡ್ ಮೆನು ತೆರೆಯಿರಿ.</string>
+    <string name="notification_permission_denied">ನೀವು ಅನುಮತಿಯನ್ನು ನಿರಾಕರಿಸಿದ್ದೀರಿ.</string>
+    <string name="configure_home">ಹೋಮ್ ಸ್ಕ್ರೀನ್ ಅನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಿ</string>
+    <!--Main activity-->
+  <string name="drawer_open">ಮೆನು ತೆರೆಯಿರಿ</string>
+    <string name="drawer_close">ಮೆನು ಮುಚ್ಚಿ</string>
+    <string name="drawer_preferences">ಡ್ರಾಯರ್ ಆದ್ಯತೆಗಳು</string>
+    <string name="drawer_feed_order_unplayed_episodes">ಕೌಂಟರ್ ಮೂಲಕ ವಿಂಗಡಿಸಿ</string>
+    <string name="drawer_feed_order_alphabetical">ವರ್ಣಮಾಲೆಯಂತೆ ವಿಂಗಡಿಸಿ</string>
+    <string name="drawer_feed_order_last_update">ಪ್ರಕಟಣೆಯ ದಿನಾಂಕದ ಪ್ರಕಾರ ವಿಂಗಡಿಸಿ</string>
+    <string name="drawer_feed_order_most_played">ಆಡಿದ ಸಂಚಿಕೆಗಳ ಸಂಖ್ಯೆಯ ಪ್ರಕಾರ ವಿಂಗಡಿಸಿ</string>
+    <string name="drawer_feed_counter_inbox">ಇನ್‌ಬಾಕ್ಸ್‌ನಲ್ಲಿರುವ ಸಂಚಿಕೆಗಳ ಸಂಖ್ಯೆ</string>
+    <string name="drawer_feed_counter_unplayed">ಪ್ಲೇ ಮಾಡದ ಸಂಚಿಕೆಗಳ ಸಂಖ್ಯೆ</string>
+    <string name="drawer_feed_counter_downloaded">ಇಳಿಕೆ ಮಾಡಿರುವ ಸಂಚಿಕೆಗಳ ಸಂಖ್ಯೆ</string>
+    <string name="drawer_feed_counter_downloaded_unplayed">ಡೌನ್‌ಲೋಡ್ ಮಾಡಿದ ಮತ್ತು ಪ್ಲೇ ಮಾಡದ ಸಂಚಿಕೆಗಳ ಸಂಖ್ಯೆ</string>
+    <string name="drawer_feed_counter_none">ಯಾವುದೇ ಇಲ್ಲ</string>
+    <!--Bug report activity-->
+  <string name="log_file_share_exception">ಹೊಂದಾಣಿಕೆಯಾಗುವ ಯಾವುದೇ ಅಪ್ಲಿಕೇಶನ್‌ಗಳು ಕಂಡುಬಂದಿಲ್ಲ</string>
+    <string name="export_logs_menu_title">ವಿವರವಾದ ಲಾಗ್‌ಗಳನ್ನು ರಫ್ತು ಮಾಡಿ</string>
+    <string name="confirm_export_log_dialog_message">ವಿವರವಾದ ಲಾಗ್‌ಗಳು ನಿಮ್ಮ ಚಂದಾದಾರಿಕೆಗಳ ಪಟ್ಟಿಯಂತಹ ಸೂಕ್ಷ್ಮ ಮಾಹಿತಿಯನ್ನು ಹೊಂದಿರಬಹುದು</string>
+    <!--Webview actions-->
+  <string name="open_in_browser_label">ಬ್ರೌಸರ್‌ನಲ್ಲಿ ತೆರೆಯಿರಿ</string>
+    <string name="copy_url_label">URLಅನ್ನು ನಕಲಿಸಿ</string>
+    <string name="share_url_label">URLಅನ್ನು ಹಂಚಿ</string>
+    <string name="go_to_position_label">ಈ ಸ್ಥಾನಕ್ಕೆ ಹೋಗಿ</string>
+    <!--Playback history-->
+  <string name="clear_history_label">ಇತಿಹಾಸವನ್ನು ತೆರೆವುಗೊಳಿಸಿ</string>
+    <string name="clear_playback_history_msg">ಇದು ಸಂಪೂರ್ಣ ಪ್ಲೇಬ್ಯಾಕ್ ಇತಿಹಾಸವನ್ನು ತೆರವುಗೊಳಿಸುತ್ತದೆ. ನೀವು ಖಚಿತವಾಗಿ ಮುಂದುವರಿಯಲು ಬಯಸುವಿರಾ?</string>
+    <!--Other-->
+  <string name="confirm_label">ದೃಢೀಕರಿಸಿ</string>
+    <string name="cancel_label">ರದ್ದುಗೊಳಿಸಿ</string>
+    <string name="yes">ಹೌದು</string>
+    <string name="no">ಇಲ್ಲ</string>
+    <string name="reset">ಮರುಹೊಂದಿಸಿ</string>
+    <string name="url_label">URL</string>
+    <string name="error_label">ದೋಷ</string>
+    <string name="error_msg_prefix">ದೋಷ ಕಂಡುಬಂದಿದೆ:</string>
+    <string name="refresh_label">ತಾಜಾ</string>
+    <string name="chapters_label">ಅಧ್ಯಾಯಗಳು</string>
+    <string name="description_label">ವಿವರಣೆ</string>
+    <string name="close_label">ಮುಚ್ಚಿ</string>
+    <string name="retry_label">ಮರುಪ್ರಯತ್ನಿಸಿ</string>
+    <string name="feed_auto_download_always">ಯಾವಾಗಲು</string>
+    <string name="feed_auto_download_never">ಎಂದಿಗೂ</string>
+    <string name="episode_cleanup_never">ಎಂದಿಗೂ</string>
+    <string name="show_info_label">ಮಾಹಿತಿ ತೋರಿಸಿ</string>
+    <string name="remove_feed_label">ಪಾಡ್ಕ್ಯಾಸ್ಟನ್ನು ತೆಗೆದುಹಾಕಿ</string>
+    <string name="feed_remover_msg">ಪಾಡ್ಕ್ಯಾಸ್ಟನ್ನು ತೆಗೆದುಹಾಕಲಾಗುತ್ತಿದೆ</string>
+    <!--actions on feeditems-->
+  <string name="download_label">ಡೌನ್ಲೋಡ್</string>
+    <string name="play_label">ಚಾಲನೆಗೊಳಿಸಿ</string>
+    <string name="stream_label">ಸ್ಟ್ರೀಮ್ ಮಾಡಿ</string>
+    <!--Download messages and labels-->
+  <string name="download_successful">ಯಶಸ್ವಿಯಾಗಿದೆ</string>
+    <string name="download_pending">ಡೌನ್ಲೋಡ್ ಬಾಕಿ ಉಳಿದಿದೆ</string>
+    <string name="download_running">ಚಾಲನೆಯಲ್ಲಿರುವ ಡೌನ್ಲೋಡ್</string>
+    <string name="download_error_details">ವಿವರಗಳು</string>
+    <string name="download_error_device_not_found">ಸಂಗ್ರಹಣೆಯ ಸಾಧನ ಸಿಕ್ಕಿಲ್ಲ</string>
+    <string name="no_media_playing_label">ಯಾವುದೇ ಮಾಧ್ಯಮ ಚಾಲನೆಯಲ್ಲಿಲ್ಲ</string>
+    <string name="move_to_top_label">ಮೇಲಕ್ಕೆ ಚಲಿಸಿ</string>
+    <string name="move_to_bottom_label">ಕೆಳಕ್ಕೆ ಚಲಿಸಿ</string>
+    <string name="playback_pref">ಹಿನ್ನೆಲೆ</string>
+    <string name="pref_theme_title_dark">ಗಾಢ</string>
+    <!--About screen-->
+  <string name="about_pref">ಕುರಿತು</string>
+    <!--Search-->
+  <string name="search_status_no_results">ಯಾವುದೇ ಫಲಿತಾಂಶಗಳು ಕಂಡುಬಂದಿಲ್ಲ</string>
+    <string name="search_label">ಹುಡುಕಿ</string>
+    <string name="select_all_label">ಎಲ್ಲಾವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ</string>
+    <string name="deselect_all_label">ಎಲ್ಲಾವನ್ನು ಆಯ್ಕೆ ರದ್ದುಮಾಡಿ</string>
+    <string name="export_error_label">ರಫ್ತು ಮಾಡುವ ದೋಷ</string>
+    <string name="username_label">ಬಳಕೆದಾರ ಹೆಸರು</string>
+    <string name="password_label">ಗುಪ್ತಪದ</string>
+    <string name="status_downloading_label">ಸಂಚಿಕೆಯನ್ನು ಇಳಿಕೆ ಮಾಡಲಾಗುತ್ತಿದೆ</string>
+    <string name="discover">ಅನ್ವೇಷಿಸಿ</string>
+</resources>

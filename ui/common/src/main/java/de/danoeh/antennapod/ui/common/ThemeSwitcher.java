@@ -7,20 +7,6 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public abstract class ThemeSwitcher {
     @StyleRes
-    public static int getTheme(Context context) {
-        boolean dynamic = UserPreferences.getIsThemeColorTinted();
-        switch (readThemeValue(context)) {
-            case DARK:
-                return dynamic ? R.style.Theme_AntennaPod_Dynamic_Dark : R.style.Theme_AntennaPod_Dark;
-            case BLACK:
-                return dynamic ? R.style.Theme_AntennaPod_Dynamic_TrueBlack : R.style.Theme_AntennaPod_TrueBlack;
-            case LIGHT: // fall-through
-            default:
-                return dynamic ? R.style.Theme_AntennaPod_Dynamic_Light : R.style.Theme_AntennaPod_Light;
-        }
-    }
-
-    @StyleRes
     public static int getNoTitleTheme(Context context) {
         boolean dynamic = UserPreferences.getIsThemeColorTinted();
         switch (readThemeValue(context)) {

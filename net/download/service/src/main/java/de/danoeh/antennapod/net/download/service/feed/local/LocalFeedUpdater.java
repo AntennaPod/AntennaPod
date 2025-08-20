@@ -9,6 +9,9 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.input.CountingInputStream;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +31,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.documentfile.provider.DocumentFile;
 import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
 import de.danoeh.antennapod.model.download.DownloadResult;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.net.download.service.R;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
@@ -43,14 +47,13 @@ import de.danoeh.antennapod.parser.media.id3.ID3ReaderException;
 import de.danoeh.antennapod.parser.media.id3.Id3MetadataReader;
 import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentMetadataReader;
 import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentReaderException;
-import org.apache.commons.io.input.CountingInputStream;
 
 public class LocalFeedUpdater {
     private static final String TAG = "LocalFeedUpdater";
 
     static final String[] PREFERRED_FEED_IMAGE_FILENAMES = {"folder.jpg", "Folder.jpg", "folder.png", "Folder.png"};
 
-    public static void updateFeed(Feed feed, Context context,
+    public static Feed updateFeed(Feed feed, Context context,
                                   @Nullable UpdaterProgressListener updaterProgressListener) {
         try {
             String uriString = feed.getDownloadUrl().replace(Feed.PREFIX_LOCAL_FOLDER, "");
@@ -63,24 +66,27 @@ public class LocalFeedUpdater {
                 throw new IOException("Cannot read local directory. "
                         + "Try re-connecting the folder on the podcast info page.");
             }
-            tryUpdateFeed(feed, context, documentFolder.getUri(), updaterProgressListener);
+            Feed updatedFeed = tryUpdateFeed(feed, context, documentFolder.getUri(), updaterProgressListener);
 
             if (mustReportDownloadSuccessful(feed)) {
                 reportSuccess(feed);
             }
+            return updatedFeed;
         } catch (Exception e) {
             e.printStackTrace();
             reportError(feed, e.getMessage());
         }
+        return null;
     }
 
     @VisibleForTesting
-    static void tryUpdateFeed(Feed feed, Context context, Uri folderUri,
+    static Feed tryUpdateFeed(Feed feed, Context context, Uri folderUri,
                               UpdaterProgressListener updaterProgressListener) throws IOException {
         if (feed.getItems() == null) {
             feed.setItems(new ArrayList<>());
         }
-        //make sure it is the latest 'version' of this feed from the db (all items etc)
+        // make sure it is the latest 'version' of this feed from the db (all items etc)
+        // and for new feeds, settings etc are set up properly.
         feed = FeedDatabaseWriter.updateFeed(context, feed, false);
 
         // list files in feed folder
@@ -122,11 +128,13 @@ public class LocalFeedUpdater {
 
         feed.setImageUrl(getImageUrl(allFiles, folderUri));
 
-        feed.getPreferences().setAutoDownload(false);
+        feed.getPreferences().setAutoDownload(FeedPreferences.AutoDownloadSetting.DISABLED);
         feed.setDescription(context.getString(R.string.local_feed_description));
         feed.setAuthor(context.getString(R.string.local_folder));
 
         FeedDatabaseWriter.updateFeed(context, feed, true);
+
+        return feed;
     }
 
     /**
@@ -166,7 +174,8 @@ public class LocalFeedUpdater {
     }
 
     private static FeedItem createFeedItem(Feed feed, FastDocumentFile file, Context context) {
-        FeedItem item = new FeedItem(0, file.getName(), UUID.randomUUID().toString(),
+        String title = FilenameUtils.removeExtension(file.getName());
+        FeedItem item = new FeedItem(0, title, UUID.randomUUID().toString(),
                 file.getName(), new Date(file.getLastModified()), FeedItem.UNPLAYED, feed);
         item.disableAutoDownload();
 
@@ -189,6 +198,7 @@ public class LocalFeedUpdater {
         try {
             loadMetadata(item, file, context);
         } catch (Exception e) {
+            e.printStackTrace();
             item.setDescriptionIfLonger(e.getMessage());
         }
         return item;
@@ -217,7 +227,9 @@ public class LocalFeedUpdater {
             }
 
             String durationStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-            item.getMedia().setDuration((int) Long.parseLong(durationStr));
+            if (durationStr != null && !durationStr.equals("null")) {
+                item.getMedia().setDuration((int) Long.parseLong(durationStr));
+            }
 
             item.getMedia().setHasEmbeddedPicture(mediaMetadataRetriever.getEmbeddedPicture() != null);
 

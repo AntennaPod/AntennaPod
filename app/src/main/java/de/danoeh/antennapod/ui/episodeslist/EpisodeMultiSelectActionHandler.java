@@ -1,69 +1,73 @@
 package de.danoeh.antennapod.ui.episodeslist;
 
+import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.PluralsRes;
 
-import com.google.android.material.snackbar.Snackbar;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.LongList;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.ui.view.LocalDeleteModal;
+import org.greenrobot.eventbus.EventBus;
 
 public class EpisodeMultiSelectActionHandler {
     private static final String TAG = "EpisodeSelectHandler";
-    private final MainActivity activity;
+    private final Activity activity;
     private final int actionId;
     private int totalNumItems = 0;
-    private Snackbar snackbar = null;
 
-    public EpisodeMultiSelectActionHandler(MainActivity activity, int actionId) {
+    public EpisodeMultiSelectActionHandler(Activity activity, int actionId) {
         this.activity = activity;
         this.actionId = actionId;
     }
 
     public void handleAction(List<FeedItem> items) {
-        if (actionId == R.id.add_to_queue_batch) {
+        if (actionId == R.id.add_to_queue_item) {
             queueChecked(items);
-        } else if (actionId == R.id.remove_from_queue_batch) {
+        } else if (actionId == R.id.remove_from_queue_item) {
             removeFromQueueChecked(items);
-        }  else if (actionId == R.id.remove_from_inbox_batch) {
+        }  else if (actionId == R.id.remove_inbox_item) {
             removeFromInboxChecked(items);
-        } else if (actionId == R.id.mark_read_batch) {
+        } else if (actionId == R.id.mark_read_item) {
             markedCheckedPlayed(items);
-        } else if (actionId == R.id.mark_unread_batch) {
+        } else if (actionId == R.id.mark_unread_item) {
             markedCheckedUnplayed(items);
-        } else if (actionId == R.id.download_batch) {
+        } else if (actionId == R.id.download_item) {
             downloadChecked(items);
-        } else if (actionId == R.id.delete_batch) {
+        } else if (actionId == R.id.remove_item) {
             LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(activity, items, () -> deleteChecked(items));
+        } else if (actionId == R.id.move_to_top_item) {
+            moveToTopChecked(items);
+        } else if (actionId == R.id.move_to_bottom_item) {
+            moveToBottomChecked(items);
         } else {
             Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionId);
         }
     }
 
     private void queueChecked(List<FeedItem> items) {
-        // Check if an episode actually contains any media files before adding it to queue
-        LongList toQueue = new LongList(items.size());
+        // Count here to give accurate number in snackbar
+        List<FeedItem> toQueue = new ArrayList<>();
         for (FeedItem episode : items) {
-            if (episode.hasMedia()) {
-                toQueue.add(episode.getId());
+            if (episode.hasMedia() && !episode.isTagged(FeedItem.TAG_QUEUE)) {
+                toQueue.add(episode);
             }
         }
-        DBWriter.addQueueItem(activity, true, toQueue.toArray());
-        showMessage(R.plurals.added_to_queue_batch_label, toQueue.size());
+        DBWriter.addQueueItem(activity, toQueue.toArray(new FeedItem[0]));
+        showMessage(R.plurals.added_to_queue_message, toQueue.size());
     }
 
     private void removeFromQueueChecked(List<FeedItem> items) {
         long[] checkedIds = getSelectedIds(items);
         DBWriter.removeQueueItem(activity, true, checkedIds);
-        showMessage(R.plurals.removed_from_queue_batch_label, checkedIds.length);
+        showMessage(R.plurals.removed_from_queue_message, checkedIds.length);
     }
 
     private void removeFromInboxChecked(List<FeedItem> items) {
@@ -80,13 +84,13 @@ public class EpisodeMultiSelectActionHandler {
     private void markedCheckedPlayed(List<FeedItem> items) {
         long[] checkedIds = getSelectedIds(items);
         DBWriter.markItemPlayed(FeedItem.PLAYED, checkedIds);
-        showMessage(R.plurals.marked_read_batch_label, checkedIds.length);
+        showMessage(R.plurals.marked_as_played_message, checkedIds.length);
     }
 
     private void markedCheckedUnplayed(List<FeedItem> items) {
         long[] checkedIds = getSelectedIds(items);
         DBWriter.markItemPlayed(FeedItem.UNPLAYED, checkedIds);
-        showMessage(R.plurals.marked_unread_batch_label, checkedIds.length);
+        showMessage(R.plurals.marked_as_unplayed_message, checkedIds.length);
     }
 
     private void downloadChecked(List<FeedItem> items) {
@@ -98,30 +102,39 @@ public class EpisodeMultiSelectActionHandler {
                 downloaded++;
             }
         }
-        showMessage(R.plurals.downloading_batch_label, downloaded);
+        showMessage(R.plurals.downloading_episodes_message, downloaded);
     }
 
     private void deleteChecked(List<FeedItem> items) {
         int countHasMedia = 0;
         for (FeedItem feedItem : items) {
-            if (feedItem.hasMedia() && feedItem.getMedia().isDownloaded()) {
+            if ((feedItem.hasMedia() && feedItem.getMedia().isDownloaded())
+                    || feedItem.getFeed().isLocalFeed()) {
                 countHasMedia++;
                 DBWriter.deleteFeedMediaOfItem(activity, feedItem.getMedia());
             }
         }
-        showMessage(R.plurals.deleted_multi_episode_batch_label, countHasMedia);
+        showMessage(R.plurals.deleted_episode_message, countHasMedia);
+    }
+
+    private void moveToTopChecked(List<FeedItem> items) {
+        DBWriter.moveQueueItemsToTop(items);
+        showMessage(R.plurals.move_to_top_message, items.size());
+    }
+
+    private void moveToBottomChecked(List<FeedItem> items) {
+        DBWriter.moveQueueItemsToBottom(items);
+        showMessage(R.plurals.move_to_bottom_message, items.size());
     }
 
     private void showMessage(@PluralsRes int msgId, int numItems) {
+        if (numItems == 1) {
+            return;
+        }
         totalNumItems += numItems;
         activity.runOnUiThread(() -> {
             String text = activity.getResources().getQuantityString(msgId, totalNumItems, totalNumItems);
-            if (snackbar != null) {
-                snackbar.setText(text);
-                snackbar.show(); // Resets the timeout
-            } else {
-                snackbar = activity.showSnackbarAbovePlayer(text, Snackbar.LENGTH_LONG);
-            }
+            EventBus.getDefault().post(new MessageEvent(text));
         });
     }
 

@@ -1,15 +1,16 @@
 android {
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         minSdk 21
-        targetSdk 34
+        targetSdk 35
 
         vectorDrawables.useSupportLibrary true
         vectorDrawables.generatedDensities = []
 
         testApplicationId "de.danoeh.antennapod.core.tests"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        resourceConfigurations += ["en", "ar", "br", "ca", "cs", "da", "de", "el", "es", "et", "eu", "fa", "fi", "fr", "gl", "hi", "hu", "in", "it", "iw", "ja", "ko", "lt", "nb", "nl", "pl", "pt", "pt-rBR", "ro", "ru", "sc", "sk", "sl", "sr", "sv", "tr", "uk", "zh-rCN", "zh-rTW"]
     }
 
     buildTypes {
@@ -44,7 +45,7 @@ android {
     }
 
     lint {
-        disable "GradleDependency", "OutdatedLibrary"
+        disable "GradleDependency", "OutdatedLibrary", "AndroidGradlePluginVersion"
         checkDependencies true
         warningsAsErrors true
         abortOnError true
@@ -53,7 +54,14 @@ android {
 
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
+}
+
+dependencies {
+    // align all versions of kotlin transitive dependencies, see
+    // https://youtrack.jetbrains.com/issue/KT-55297/kotlin-stdlib-should-declare-constraints-on-kotlin-stdlib-jdk8-and-kotlin-stdlib-jdk7
+    implementation platform("org.jetbrains.kotlin:kotlin-bom:1.9.24")
 }
 
 tasks.withType(Test).configureEach {

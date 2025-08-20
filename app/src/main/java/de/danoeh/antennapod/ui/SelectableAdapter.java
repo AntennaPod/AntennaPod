@@ -1,11 +1,12 @@
 package de.danoeh.antennapod.ui;
 
-import android.app.Activity;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.danoeh.antennapod.R;
@@ -19,12 +20,12 @@ public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> exten
     public static final int COUNT_AUTOMATICALLY = -1;
     private ActionMode actionMode;
     private final HashSet<Long> selectedIds = new HashSet<>();
-    private final Activity activity;
+    private final FragmentActivity activity;
     private OnSelectModeListener onSelectModeListener;
     protected boolean shouldSelectLazyLoadedItems = false;
     private int totalNumberOfItems = COUNT_AUTOMATICALLY;
 
-    public SelectableAdapter(Activity activity) {
+    public SelectableAdapter(FragmentActivity activity) {
         this.activity = activity;
     }
 
@@ -37,6 +38,17 @@ public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> exten
         selectedIds.clear();
         selectedIds.add(getItemId(pos));
 
+        OnBackPressedCallback backPressedCallback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (actionMode != null) {
+                    actionMode.finish();
+                } else {
+                    this.remove();
+                }
+            }
+        };
+
         actionMode = activity.startActionMode(new ActionMode.Callback() {
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -47,7 +59,7 @@ public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> exten
 
             @Override
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                updateTitle();
+                onSelectedItemsUpdated();
                 toggleSelectAllIcon(menu.findItem(R.id.select_toggle), false);
                 return false;
             }
@@ -59,7 +71,7 @@ public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> exten
                     shouldSelectLazyLoadedItems = selectAll;
                     setSelected(0, getItemCount(), selectAll);
                     toggleSelectAllIcon(item, selectAll);
-                    updateTitle();
+                    onSelectedItemsUpdated();
                     return true;
                 }
                 return false;
@@ -72,9 +84,11 @@ public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> exten
                 selectedIds.clear();
                 callOnEndSelectMode();
                 notifyDataSetChanged();
+                backPressedCallback.remove();
             }
         });
-        updateTitle();
+        activity.getOnBackPressedDispatcher().addCallback(activity, backPressedCallback);
+        onSelectedItemsUpdated();
 
         if (onSelectModeListener != null) {
             onSelectModeListener.onStartSelectMode();
@@ -109,7 +123,7 @@ public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> exten
         } else {
             selectedIds.remove(getItemId(pos));
         }
-        updateTitle();
+        onSelectedItemsUpdated();
     }
 
     /**
@@ -154,7 +168,7 @@ public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> exten
         }
     }
 
-    protected void updateTitle() {
+    protected void onSelectedItemsUpdated() {
         if (actionMode == null) {
             return;
         }

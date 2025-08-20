@@ -22,10 +22,10 @@ import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.ui.screen.home.HomeSection;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -84,7 +84,7 @@ public class SubscriptionsSection extends HomeSection {
 
     @Override
     protected String getMoreLinkTitle() {
-        return getString(R.string.subscriptions_label);
+        return getString(R.string.subscriptions_label_more);
     }
 
     private void loadItems() {
@@ -93,8 +93,10 @@ public class SubscriptionsSection extends HomeSection {
         }
         SharedPreferences prefs = getContext().getSharedPreferences(StatisticsFragment.PREF_NAME, Context.MODE_PRIVATE);
         boolean includeMarkedAsPlayed = prefs.getBoolean(StatisticsFragment.PREF_INCLUDE_MARKED_PLAYED, false);
+
+        long threeYearsAgo = System.currentTimeMillis() - 3L * 365L * 24L * 60L * 60L * 1000L;
         disposable = Observable.fromCallable(() ->
-                        DBReader.getStatistics(includeMarkedAsPlayed, 0, Long.MAX_VALUE).feedTime)
+                        DBReader.getStatistics(includeMarkedAsPlayed, threeYearsAgo, Long.MAX_VALUE).feedTime)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(statisticsData -> {

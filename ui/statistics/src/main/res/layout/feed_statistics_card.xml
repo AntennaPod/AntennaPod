@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:layout_margin="4dp"
+    android:padding="8dp"
+    android:background="?attr/colorSurfaceContainer"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/mainLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/wait_icon"
+        style="@style/TextAppearance.Material3.TitleSmall"
+        tools:text="1 Episode" />
+
+    <TextView
+        android:id="@+id/subtitleLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.Material3.BodySmall"
+        tools:text="on this device" />
+
+</LinearLayout>

@@ -56,4 +56,6 @@ public abstract class DownloadServiceInterface {
     public int getProgress(String url) {
         return isDownloadingEpisode(url) ? currentDownloads.get(url).getProgress() : -1;
     }
+
+    public abstract int getNumberOfActiveDownloads(Context context);
 }

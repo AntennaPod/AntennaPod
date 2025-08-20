@@ -102,7 +102,7 @@ jobs:
   emulator-test:
     name: "Emulator Test"
     needs: static-analysis
-    runs-on: macOS-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
       api-level: 30
@@ -124,6 +124,11 @@ jobs:
         run: echo "org.gradle.parallel=true" >> local.properties
       - name: Build with Gradle
         run: ./gradlew assemblePlayDebugAndroidTest
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
       - name: Android Emulator test
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -133,7 +138,7 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: zsh .github/workflows/runEmulatorTests.sh
+          script: bash .github/workflows/runEmulatorTests.sh
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

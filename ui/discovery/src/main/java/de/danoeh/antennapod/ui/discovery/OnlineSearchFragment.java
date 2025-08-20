@@ -26,7 +26,7 @@ import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 import de.danoeh.antennapod.net.discovery.PodcastSearcher;
 import de.danoeh.antennapod.net.discovery.PodcastSearcherRegistry;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 public class OnlineSearchFragment extends Fragment {
 
@@ -97,8 +97,7 @@ public class OnlineSearchFragment extends Fragment {
         //Show information about the podcast when the list item is clicked
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
             PodcastSearchResult podcast = searchResults.get(position);
-            startActivity(new OnlineFeedviewActivityStarter(getContext(), podcast.feedUrl)
-                    .withStartedFromSearch().getIntent());
+            startActivity(new OnlineFeedviewActivityStarter(getContext(), podcast.feedUrl).getIntent());
         });
         progressBar = root.findViewById(R.id.progressBar);
         txtvError = root.findViewById(R.id.txtvError);

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
@@ -89,8 +90,15 @@ public class AutomaticDatabaseExportWorker extends Worker {
             }
         }
         Collections.sort(files, (o1, o2) -> Long.compare(o2.lastModified(), o1.lastModified()));
+        boolean hasDeletionFailed = false;
         for (int i = 5; i < files.size(); i++) {
-            files.get(i).delete();
+            boolean isDeleted = files.get(i).delete();
+            if (!hasDeletionFailed && !isDeleted) {
+                hasDeletionFailed = true;
+            }
+        }
+        if (hasDeletionFailed) {
+            throw new IOException("Unable to delete some database backup files");
         }
     }
 
@@ -122,6 +130,8 @@ public class AutomaticDatabaseExportWorker extends Worker {
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS)
                 == PackageManager.PERMISSION_GRANTED) {
             nm.notify(R.id.notification_id_backup_error, notification);
+        } else {
+            Toast.makeText(getApplicationContext(), description, Toast.LENGTH_LONG).show();
         }
     }
 }

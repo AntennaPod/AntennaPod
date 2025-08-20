@@ -23,9 +23,13 @@ public class FeedItemSortQuery {
                 return PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_SIZE + " " + "DESC";
             case COMPLETION_DATE_NEW_OLD:
                 return PodDBAdapter.TABLE_NAME_FEED_MEDIA + "."
-                        + PodDBAdapter.KEY_PLAYBACK_COMPLETION_DATE + " " + "DESC";
+                        + PodDBAdapter.KEY_LAST_PLAYED_TIME_HISTORY + " " + "DESC";
             case DATE_OLD_NEW:
                 return PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_PUBDATE + " " + "ASC";
+            case EPISODE_FILENAME_A_Z:
+                return PodDBAdapter.KEY_LINK + " " + "ASC";
+            case EPISODE_FILENAME_Z_A:
+                return PodDBAdapter.KEY_LINK + " " + "DESC";
             case DATE_NEW_OLD:
             default:
                 return PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_PUBDATE + " " + "DESC";

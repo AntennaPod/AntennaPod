@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.storage.database;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -11,13 +9,11 @@ import java.util.Random;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
-import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.model.playback.Playable;
 
 /**
- * @see DBWriter#addQueueItem(Context, boolean, long...) it uses the class to determine
- * the positions of the {@link FeedItem} in the queue.
+ * Determine the positions of the new {@link FeedItem} in the queue.
  */
 public class ItemEnqueuePositionCalculator {
 

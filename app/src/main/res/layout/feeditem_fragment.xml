@@ -40,7 +40,7 @@
 
                 <TextView
                     android:id="@+id/txtvPodcast"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:foreground="?attr/selectableItemBackground"
                     android:importantForAccessibility="no"
@@ -49,7 +49,7 @@
 
                 <TextView
                     android:id="@+id/txtvTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textColor="?android:attr/textColorPrimary"
@@ -173,6 +173,20 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/nonSubscribedWarningLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:layout_marginBottom="8dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:background="@drawable/bg_message_info"
+            android:textColor="?attr/colorAccent"
+            android:visibility="gone"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="@string/state_deleted_not_subscribed" />
 
         <TextView
             android:id="@+id/noMediaLabel"

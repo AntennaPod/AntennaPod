@@ -17,6 +17,11 @@
         custom:showAsAction="always" />
 
     <item
+        android:id="@+id/action_delete_downloads_played"
+        android:title="@string/delete_downloads_played"
+        custom:showAsAction="never" />
+
+    <item
         android:id="@+id/refresh_item"
         android:title="@string/refresh_label"
         android:menuCategory="container"

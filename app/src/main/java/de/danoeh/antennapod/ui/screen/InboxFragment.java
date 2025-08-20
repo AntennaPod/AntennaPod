@@ -8,12 +8,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.ui.screen.feed.ItemSortDialog;
@@ -36,6 +37,7 @@ public class InboxFragment extends EpisodesListFragment {
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
     private static final String PREF_DO_NOT_PROMPT_REMOVE_ALL_FROM_INBOX = "prefDoNotPromptRemovalAllFromInbox";
     private SharedPreferences prefs;
+    private static Pair<Integer, Integer> scrollPosition = null;
 
     @NonNull
     @Override
@@ -48,9 +50,6 @@ public class InboxFragment extends EpisodesListFragment {
         emptyView.setIcon(R.drawable.ic_inbox);
         emptyView.setTitle(R.string.no_inbox_head_label);
         emptyView.setMessage(R.string.no_inbox_label);
-        speedDialView.removeActionItemById(R.id.mark_unread_batch);
-        speedDialView.removeActionItemById(R.id.remove_from_queue_batch);
-        speedDialView.removeActionItemById(R.id.delete_batch);
         return root;
     }
 
@@ -65,8 +64,14 @@ public class InboxFragment extends EpisodesListFragment {
     }
 
     @Override
-    protected String getPrefName() {
-        return PREF_NAME;
+    public void onPause() {
+        super.onPause();
+        scrollPosition = recyclerView.getScrollPosition();
+    }
+
+    @Override
+    protected void onItemsFirstLoaded() {
+        recyclerView.restoreScrollPosition(scrollPosition);
     }
 
     @Override
@@ -109,7 +114,7 @@ public class InboxFragment extends EpisodesListFragment {
 
     private void removeAllFromInbox() {
         DBWriter.removeAllNewFlags();
-        ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.removed_all_inbox_msg, Toast.LENGTH_SHORT);
+        EventBus.getDefault().post(new MessageEvent(getString(R.string.removed_all_inbox_msg)));
     }
 
     private void showRemoveAllDialog() {

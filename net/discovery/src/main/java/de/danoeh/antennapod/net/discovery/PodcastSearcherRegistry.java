@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.net.discovery;
 
-import io.reactivex.Single;
+import io.reactivex.rxjava3.core.Single;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +14,8 @@ public class PodcastSearcherRegistry {
     public static synchronized List<SearcherInfo> getSearchProviders() {
         if (searchProviders == null) {
             searchProviders = new ArrayList<>();
-            searchProviders.add(new SearcherInfo(new CombinedSearcher(), 1.0f));
-            searchProviders.add(new SearcherInfo(new FyydPodcastSearcher(), 1.0f));
+            searchProviders.add(new SearcherInfo(new CombinedSearcher(), 0.0f));
+            searchProviders.add(new SearcherInfo(new FyydPodcastSearcher(), 0.0f));
             searchProviders.add(new SearcherInfo(new ItunesPodcastSearcher(), 1.0f));
             searchProviders.add(new SearcherInfo(new PodcastIndexPodcastSearcher(), 1.0f));
         }

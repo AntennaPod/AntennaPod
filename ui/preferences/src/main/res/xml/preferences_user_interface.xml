@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch">
 
-    <PreferenceCategory android:title="@string/appearance">
+    <PreferenceCategory android:title="@string/theming">
         <de.danoeh.antennapod.ui.preferences.preference.ThemePreference
                 android:key="prefTheme" />
         <SwitchPreferenceCompat
@@ -16,22 +16,6 @@
                 android:key="prefTintedColors"
                 android:summary="@string/pref_tinted_theme_message"
                 android:defaultValue="false" />
-        <Preference
-                android:key="prefHiddenDrawerItems"
-                android:summary="@string/pref_nav_drawer_items_sum"
-                android:title="@string/pref_nav_drawer_items_title"/>
-        <SwitchPreferenceCompat
-                android:title="@string/pref_episode_cover_title"
-                android:key="prefEpisodeCover"
-                android:summary="@string/pref_episode_cover_summary"
-                android:defaultValue="true"
-                android:enabled="true"/>
-        <SwitchPreferenceCompat
-                android:title="@string/pref_show_remain_time_title"
-                android:key="showTimeLeft"
-                android:summary="@string/pref_show_remain_time_summary"
-                android:defaultValue="false"
-                android:enabled="true"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/subscriptions_label">
         <Preference
@@ -49,11 +33,25 @@
             android:title="@string/pref_filter_feed_title"
             android:key="prefSubscriptionsFilter"
             android:summary="@string/pref_filter_feed_sum" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/episode_information">
         <SwitchPreferenceCompat
-            android:title="@string/pref_show_subscription_title"
-            android:key="prefSubscriptionTitle"
-            android:summary="@string/pref_show_subscription_title_summary"
-            android:defaultValue="false" />
+            android:title="@string/pref_episode_cover_title"
+            android:key="prefEpisodeCover"
+            android:summary="@string/pref_episode_cover_summary"
+            android:defaultValue="true"
+            android:enabled="true"/>
+        <SwitchPreferenceCompat
+            android:title="@string/pref_show_remain_time_title"
+            android:key="showTimeLeft"
+            android:summary="@string/pref_show_remain_time_summary"
+            android:defaultValue="false"
+            android:enabled="true"/>
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="prefPlaybackTimeRespectsSpeed"
+            android:summary="@string/pref_playback_time_respects_speed_sum"
+            android:title="@string/pref_playback_time_respects_speed_title"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/external_elements">
         <SwitchPreferenceCompat
@@ -83,13 +81,34 @@
                 android:summary="@string/pref_default_page_sum"
                 android:defaultValue="HomeFragment"/>
         <SwitchPreferenceCompat
+                android:title="@string/bottom_navigation"
+                android:summary="@string/bottom_navigation_summary"
+                android:key="prefBottomNavigation" />
+        <Preference
+                android:key="prefHiddenDrawerItems"
+                android:summary="@string/pref_nav_drawer_items_sum"
+                android:title="@string/pref_nav_drawer_items_title"/>
+        <SwitchPreferenceCompat
                 android:key="prefBackButtonOpensDrawer"
                 android:title="@string/pref_back_button_opens_drawer"
                 android:summary="@string/pref_back_button_opens_drawer_summary"
                 android:defaultValue="false"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/episode_lists">
         <Preference
                 android:key="prefSwipe"
                 android:summary="@string/swipeactions_summary"
                 android:title="@string/swipeactions_label"/>
+        <SwitchPreferenceCompat
+                android:defaultValue="false"
+                android:key="prefStreamOverDownload"
+                android:summary="@string/pref_stream_over_download_sum"
+                android:title="@string/pref_stream_over_download_title"/>
+        <SwitchPreferenceCompat
+                android:defaultValue="false"
+                android:enabled="true"
+                android:key="prefDownloadsButtonAction"
+                android:summary="@string/pref_downloads_button_action_sum"
+                android:title="@string/pref_downloads_button_action_title"/>
     </PreferenceCategory>
 </PreferenceScreen>
