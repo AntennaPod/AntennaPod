@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -20,6 +21,7 @@ public class ReleaseScheduleGuesser {
     static final long ONE_WEEK = ONE_DAY * 7;
     static final long ONE_MONTH = ONE_DAY * 30;
     private static final int MAX_UNIQUE_DATES = 20;
+    private static final int MULTIPLE_PER_DAY_THRESHOLD = 2;
 
     public enum Schedule {
         DAILY, WEEKDAYS, SPECIFIC_DAYS,
@@ -147,35 +149,21 @@ public class ReleaseScheduleGuesser {
     }
 
     public static Guess performGuess(List<Date> releaseDates) {
+        releaseDates.sort(Comparator.naturalOrder());
+        Set<Date> uniqueDates = new HashSet<>();
+        int releaseDatesLowerIndex = releaseDates.size();
+        while (releaseDatesLowerIndex > 0 && uniqueDates.size() < MAX_UNIQUE_DATES) {
+            Date normalizedDate = getNormalizedDate(releaseDates.get(--releaseDatesLowerIndex));
+            uniqueDates.add(normalizedDate);
+        }
+
         if (releaseDates.size() <= 1) {
             return new Guess(Schedule.UNKNOWN, null, null, false);
         } else if (releaseDates.size() > MAX_UNIQUE_DATES) {
-            Set<Date> uniqueDates = new HashSet<>();
-            int i = releaseDates.size();
-            int uniqueDateCounter = MAX_UNIQUE_DATES;
-            while (i > 0 && uniqueDateCounter > 0) {
-                i--;
-                Date date = getNormalizedDate(releaseDates.get(i));
-                if (!uniqueDates.contains(date)) {
-                    uniqueDates.add(date);
-                    uniqueDateCounter--;
-                }
-            }
-            releaseDates = releaseDates.subList(i, releaseDates.size());
+            releaseDates = releaseDates.subList(releaseDatesLowerIndex, releaseDates.size());
         }
 
         Stats stats = getStats(releaseDates);
-        boolean multipleReleasesPerDay = false;
-        Set<Date> normalizedDates = new HashSet<>();
-        for (int i = 0; i < releaseDates.size(); i++) {
-            normalizedDates.add(getNormalizedDate(releaseDates.get(i)));
-            // If i ever increases faster than normalizedDates, that means multiple episodes
-            // were released on the same day
-            if (i > (1 + normalizedDates.size())) {
-                multipleReleasesPerDay = true;
-            }
-        }
-
         final int maxTotalWrongDays = Math.max(1, releaseDates.size() / 5);
         final int maxSingleDayOff = releaseDates.size() / 10;
 
@@ -186,14 +174,9 @@ public class ReleaseScheduleGuesser {
         last.set(Calendar.SECOND, 0);
         last.set(Calendar.MILLISECOND, 0);
 
+        boolean multipleReleasesPerDay = (releaseDates.size() - uniqueDates.size()) >= MULTIPLE_PER_DAY_THRESHOLD;
         if (multipleReleasesPerDay) {
-            // Find release days
-            Set<Date> uniqueDates = new HashSet<>();
-            for (Date date : releaseDates) {
-                uniqueDates.add(getNormalizedDate(date));
-            }
             float averagePerDayAmount = (float) releaseDates.size() / uniqueDates.size();
-
             Date date = getNormalizedDate(last.getTime());
             int releasesToday = 0;
             for (Date releaseDate : releaseDates) {
