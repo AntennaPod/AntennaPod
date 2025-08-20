@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -149,7 +148,7 @@ public class ReleaseScheduleGuesser {
     }
 
     public static Guess performGuess(List<Date> releaseDates) {
-        releaseDates.sort(Comparator.naturalOrder());
+        Collections.sort(releaseDates);
         Set<Date> uniqueDates = new HashSet<>();
         int releaseDatesLowerIndex = releaseDates.size();
         while (releaseDatesLowerIndex > 0 && uniqueDates.size() < MAX_UNIQUE_DATES) {
