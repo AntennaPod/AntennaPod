@@ -233,4 +233,65 @@ public class ShownotesCleanerTest {
                 + "baz { background-color:#f00;border: solid 2px;border-color:#0f0;text-decoration: underline; }";
         assertEquals(expected, ShownotesCleaner.cleanStyleTag(input));
     }
+
+    @Test
+    public void testAddTimecodesDoNotLinkWhenTimeExceedsDuration() {
+        final int playableDurationMs = 5 * 60 * 1000; // 5 minutes
+        // Both timecodes exceed the playable duration when parsed:
+        // "05:01" as MM:SS => 5m 1s = 301000 ms > 300000 ms
+        // "00:06:00" as HH:MM:SS => 6m = 360000 ms > 300000 ms
+        String shownotes = "<p>Exceeding timecodes 05:01 and 00:06:00 should not be linked.</p>";
+
+        ShownotesCleaner cleaner = new ShownotesCleaner(context, shownotes, playableDurationMs);
+        String result = cleaner.processShownotes();
+
+        Document doc = Jsoup.parse(result);
+        assertEquals("No links should be generated for timecodes greater than the playable duration",
+                0, doc.body().getElementsByTag("a").size());
+    }
+
+    @Test
+    public void testProcessShownotesConvertsNewlinesToBrWhenNoHtmlBreaks() {
+        String shownotes = "Line one\nLine two\nLine three";
+
+        ShownotesCleaner cleaner = new ShownotesCleaner(context, shownotes, Integer.MAX_VALUE);
+        String result = cleaner.processShownotes();
+
+        Document doc = Jsoup.parse(result);
+        Elements brs = doc.body().getElementsByTag("br");
+        assertEquals("Expected two <br> tags for three lines of text", 2, brs.size());
+
+        String bodyText = doc.body().text();
+        assertTrue(bodyText.contains("Line one"));
+        assertTrue(bodyText.contains("Line two"));
+        assertTrue(bodyText.contains("Line three"));
+    }
+
+    @Test
+    public void testProcessShownotesCleansCssInStyleTags() {
+        String shownotes = "<html><head><style>/* comment */ .test { color: red; font-weight: bold; }</style></head>" +
+                          "<body><p>Test content</p></body></html>";
+
+        ShownotesCleaner cleaner = new ShownotesCleaner(context, shownotes, Integer.MAX_VALUE);
+        String result = cleaner.processShownotes();
+
+        Document doc = Jsoup.parse(result);
+        Elements styleTags = doc.getElementsByTag("style");
+        
+        // Find the original style tag (not the one added by ShownotesCleaner)
+        String cleanedCss = null;
+        for (Element styleTag : styleTags) {
+            String css = styleTag.html();
+            if (css.contains(".test")) {
+                cleanedCss = css;
+                break;
+            }
+        }
+        
+        assertNotNull("Style tag with .test class should be found", cleanedCss);
+        assertFalse("CSS comments should be removed", cleanedCss.contains("/* comment */"));
+        assertFalse("Color properties should be removed", cleanedCss.contains("color: red"));
+        assertTrue("Other properties should remain", cleanedCss.contains("font-weight: bold"));
+    }
 }
+
