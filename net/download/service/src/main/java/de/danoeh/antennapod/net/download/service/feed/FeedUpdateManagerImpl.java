@@ -32,6 +32,7 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
     public static final String EXTRA_FEED_ID = "feed_id";
     public static final String EXTRA_NEXT_PAGE = "next_page";
     public static final String EXTRA_EVEN_ON_MOBILE = "even_on_mobile";
+    public static final String EXTRA_MANUAL = "manual";
     private static final String TAG = "AutoUpdateManager";
 
     /**
@@ -43,13 +44,14 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
             WorkManager.getInstance(context).cancelUniqueWork(WORK_ID_FEED_UPDATE);
         } else {
             PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(
-                    FeedUpdateWorker.class, UserPreferences.getUpdateInterval(), TimeUnit.HOURS)
+                    FeedUpdateWorker.class, 1, TimeUnit.HOURS)
                     .setConstraints(new Constraints.Builder()
                         .setRequiredNetworkType(UserPreferences.isAllowMobileFeedRefresh()
                             ? NetworkType.CONNECTED : NetworkType.UNMETERED).build())
                     .build();
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(WORK_ID_FEED_UPDATE,
-                    replace ? ExistingPeriodicWorkPolicy.REPLACE : ExistingPeriodicWorkPolicy.KEEP, workRequest);
+                    replace ? ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE
+                            : ExistingPeriodicWorkPolicy.KEEP, workRequest);
         }
     }
 
@@ -72,6 +74,7 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
         }
         Data.Builder builder = new Data.Builder();
         builder.putBoolean(EXTRA_EVEN_ON_MOBILE, true);
+        builder.putBoolean(EXTRA_MANUAL, true);
         if (feed != null) {
             builder.putLong(EXTRA_FEED_ID, feed.getId());
             builder.putBoolean(EXTRA_NEXT_PAGE, nextPage);
