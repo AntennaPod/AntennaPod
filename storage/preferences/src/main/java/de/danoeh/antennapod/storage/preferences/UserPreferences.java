@@ -95,7 +95,7 @@ public abstract class UserPreferences {
     private static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
     public static final String PREF_ENQUEUE_LOCATION = "prefEnqueueLocation";
     public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
-    private static final String PREF_MOBILE_UPDATE = "prefMobileUpdateTypes";
+    public static final String PREF_MOBILE_UPDATE = "prefMobileUpdateTypes";
     public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
     public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
     public static final String PREF_AUTODL_GLOBAL = "prefEnableAutoDl";
