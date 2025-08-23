@@ -319,6 +319,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
         }
         singleShotDisposables.clear();
+        WidgetUpdater.updateWidget(getApplicationContext(), new WidgetUpdater.WidgetState(getPlayable(), getStatus(),
+                    getCurrentPosition(), getDuration(), getCurrentPlaybackSpeed()));
         stateManager.stopForeground(!UserPreferences.isPersistNotify());
         isRunning = false;
         currentMediaType = MediaType.UNKNOWN;
