@@ -154,7 +154,7 @@ public class FeedUpdateWorker extends Worker {
 
     @NonNull
     @Override
-    public ListenableFuture getForegroundInfoAsync() {
+    public ListenableFuture<ForegroundInfo> getForegroundInfoAsync() {
         return Futures.immediateFuture(new ForegroundInfo(R.id.notification_updating_feeds, createNotification(null)));
     }
 

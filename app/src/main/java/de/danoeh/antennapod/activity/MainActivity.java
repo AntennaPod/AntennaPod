@@ -78,13 +78,13 @@ import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
 import de.danoeh.antennapod.ui.view.BottomSheetBackPressedCallback;
 import de.danoeh.antennapod.ui.view.LockableBottomSheetBehavior;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * The activity that is shown when the user launches the app.
@@ -104,10 +104,10 @@ public class MainActivity extends CastEnabledActivity {
     private @Nullable ActionBarDrawerToggle drawerToggle;
     private BottomNavigation bottomNavigation;
     private View navDrawer;
-    private LockableBottomSheetBehavior sheetBehavior;
+    private LockableBottomSheetBehavior<FragmentContainerView> sheetBehavior;
     private BottomSheetBackPressedCallback bottomSheetBackPressedCallback;
     private OnBackPressedCallback openDefaultPageBackPressedCallback;
-    private RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
+    private final RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
     private int lastTheme = 0;
     private Insets systemBarInsets = Insets.NONE;
 
@@ -189,10 +189,10 @@ public class MainActivity extends CastEnabledActivity {
         transaction.replace(R.id.audioplayerFragment, audioPlayerFragment, AudioPlayerFragment.TAG);
         transaction.commit();
 
-        View bottomSheet = findViewById(R.id.audioplayerFragment);
-        sheetBehavior = (LockableBottomSheetBehavior) BottomSheetBehavior.from(bottomSheet);
+        FragmentContainerView bottomSheet = findViewById(R.id.audioplayerFragment);
+        sheetBehavior = (LockableBottomSheetBehavior<FragmentContainerView>) BottomSheetBehavior.from(bottomSheet);
         sheetBehavior.setHideable(false);
-        sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
+        sheetBehavior.addBottomSheetCallback(bottomSheetCallback);
         bottomSheetBackPressedCallback = new BottomSheetBackPressedCallback(false, sheetBehavior, bottomSheet);
 
         FeedUpdateManager.getInstance().restartUpdateAlarm(this, false);
@@ -357,7 +357,7 @@ public class MainActivity extends CastEnabledActivity {
         return drawerLayout != null && navDrawer != null && drawerLayout.isDrawerOpen(navDrawer);
     }
 
-    public LockableBottomSheetBehavior getBottomSheet() {
+    public LockableBottomSheetBehavior<FragmentContainerView> getBottomSheet() {
         return sheetBehavior;
     }
 
@@ -482,7 +482,7 @@ public class MainActivity extends CastEnabledActivity {
     }
 
     public void loadChildFragment(Fragment fragment, TransitionEffect transition, String navigationTag) {
-        Validate.notNull(fragment);
+        Objects.requireNonNull(fragment);
         if (navigationTag != null && bottomNavigation != null) {
             bottomNavigation.updateSelectedItem(navigationTag);
         }
@@ -558,7 +558,7 @@ public class MainActivity extends CastEnabledActivity {
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
         if (getBottomSheet().getState() == BottomSheetBehavior.STATE_EXPANDED) {

@@ -74,13 +74,13 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -126,7 +126,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
-        Validate.notNull(args);
+        Objects.requireNonNull(args);
         feedID = args.getLong(ARGUMENT_FEED_ID);
     }
 
