@@ -78,7 +78,6 @@ import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
 import de.danoeh.antennapod.ui.view.BottomSheetBackPressedCallback;
 import de.danoeh.antennapod.ui.view.LockableBottomSheetBehavior;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -108,7 +107,7 @@ public class MainActivity extends CastEnabledActivity {
     private LockableBottomSheetBehavior<FragmentContainerView> sheetBehavior;
     private BottomSheetBackPressedCallback bottomSheetBackPressedCallback;
     private OnBackPressedCallback openDefaultPageBackPressedCallback;
-    final private RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
+    private final RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
     private int lastTheme = 0;
     private Insets systemBarInsets = Insets.NONE;
 
