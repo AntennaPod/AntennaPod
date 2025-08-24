@@ -81,6 +81,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -126,7 +127,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
-        Validate.notNull(args);
+        Objects.requireNonNull(args);
         feedID = args.getLong(ARGUMENT_FEED_ID);
     }
 
