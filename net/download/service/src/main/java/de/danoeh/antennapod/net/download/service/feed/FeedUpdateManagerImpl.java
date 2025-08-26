@@ -33,6 +33,8 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
     public static final String EXTRA_NEXT_PAGE = "next_page";
     public static final String EXTRA_EVEN_ON_MOBILE = "even_on_mobile";
     private static final String TAG = "AutoUpdateManager";
+    private static long lastManualRefreshTime = 0;
+    private static final long REFRESH_COOLDOWN_MS = 20_000;
 
     /**
      * Start / restart periodic auto feed refresh
@@ -62,6 +64,7 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
     }
 
     public void runOnce(Context context, Feed feed, boolean nextPage) {
+        lastManualRefreshTime = System.currentTimeMillis();
         OneTimeWorkRequest.Builder workRequest = new OneTimeWorkRequest.Builder(FeedUpdateWorker.class)
                 .setInitialDelay(0L, TimeUnit.MILLISECONDS)
                 .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
@@ -86,6 +89,11 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
     }
 
     public void runOnceOrAsk(@NonNull Context context, @Nullable Feed feed) {
+        if (System.currentTimeMillis() - lastManualRefreshTime < REFRESH_COOLDOWN_MS) {
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.please_wait_before_refreshing)));
+            EventBus.getDefault().postSticky(new FeedUpdateRunningEvent(false));
+            return;
+        }
         Log.d(TAG, "Run auto update immediately in background.");
         if (feed != null && feed.isLocalFeed()) {
             runOnce(context, feed);

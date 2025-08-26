@@ -211,6 +211,7 @@
     <string name="multi_select_started_talkback">Multi select actions shown at the bottom</string>
     <string name="filtered_label">Filtered</string>
     <string name="refresh_failed_msg">Last refresh failed. Tap to view details.</string>
+    <string name="please_wait_before_refreshing">Please wait some time before refreshing podcasts again.</string>
     <string name="open_podcast">Open podcast</string>
     <string name="please_wait_for_data">Please wait until the data is loaded</string>
     <string name="updates_disabled_label">Updates disabled</string>
