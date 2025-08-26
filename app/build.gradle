@@ -4,6 +4,7 @@ plugins {
 }
 apply from: "../common.gradle"
 apply from: "../playFlavor.gradle"
+apply plugin: 'jacoco'
 
 android {
     namespace "de.danoeh.antennapod"
@@ -39,6 +40,7 @@ android {
             resValue "string", "provider_authority", "de.danoeh.antennapod.debug.provider"
             enableUnitTestCoverage = true
             enableAndroidTestCoverage = true
+            testCoverageEnabled = true
         }
         release {
             resValue "string", "provider_authority", "de.danoeh.antennapod.provider"
@@ -168,7 +170,17 @@ if (project.hasProperty("antennaPodPlayPublisherCredentials")) {
         serviceAccountCredentials.set(file(antennaPodPlayPublisherCredentials))
     }
 }
-task jacocoTestReport(type: JacocoReport, dependsOn: ['testPlayDebugUnitTest', 'createPlayDebugCoverageReport', 'connectedPlayDebugAndroidTest']) {
+
+tasks.withType(Test) {
+    jacoco {
+        includeNoLocationClasses = true
+        excludes = ['jdk.internal.*']
+    }
+}
+
+//task jacocoTestReport(type: JacocoReport, dependsOn: ['testPlayDebugUnitTest']) {
+//task jacocoTestReport(type: JacocoReport, dependsOn: ['testPlayDebugUnitTest', 'connectedPlayDebugAndroidTest']) {
+task jacocoTestReport(type: JacocoReport) {
     group = "Reporting"
     description = "Generate Jacoco coverage reports for the debug build."
 
@@ -185,25 +197,27 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testPlayDebugUnitTest', '
             '**/*Test*.*',
             'android/**/*.*'
     ]
-    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/debug/classes", excludes: fileFilter)
-    // For Kotlin projects, you might need to include Kotlin classes if they are in a separate directory
-    // Example: def kotlinDebugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug", excludes: fileFilter)
-    // If you have Kotlin, adjust classDirectories.from below
+    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/playDebug/compilePlayDebugJavaWithJavac/classes", excludes: fileFilter)
+    def unitTree = fileTree(dir: "${buildDir}/intermediates/javac/playDebugUnitTest/compilePlayDebugUnitTestJavaWithJavac/classes", excludes: fileFilter)
 
-    classDirectories.from = files([debugTree]) // Add kotlinDebugTree here if needed: files([debugTree, kotlinDebugTree])
+    classDirectories.from = files([debugTree, unitTree])
     sourceDirectories.from = files(["${project.projectDir}/src/main/java"]) // Adjust if your source is elsewhere (e.g., src/main/kotlin)
 
     // Execution data from unit tests and Android tests
     def executionDataFiles = []
     // Unit test execution data
-    def unitTestExecFile = file("${buildDir}/jacoco/testDebugUnitTest.exec")
+    def unitTestExecFile = file("${buildDir}/outputs/unit_test_code_coverage/playDebugUnitTest/testPlayDebugUnitTest.exec")
     if (unitTestExecFile.exists()) {
+        println "unit test exec file exists!: ${unitTestExecFile}"
         executionDataFiles.add(unitTestExecFile)
+    } else {
+        println "unit test exec file DOES NOT EXIST!!! :("
     }
 
     // Android instrumented test execution data (.ec file)
     // The exact path might vary based on AGP version. This is a common pattern.
-    fileTree(dir: "${buildDir}/outputs/code_coverage/debugAndroidTest/connected/", includes: ["**/*.ec"]).each { File file ->
+    fileTree(dir: "${buildDir}/outputs/code_coverage/playDebugAndroidTest/connected/", includes: ["**/*.ec"]).each { File file ->
+        println "Found .ec file: ${file}"
         executionDataFiles.add(file)
     }
 
@@ -211,6 +225,6 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testPlayDebugUnitTest', '
 
 
     doLast {
-        println "JaCoCo Test Report generated at: ${reports.html.outputLocation.asFile}/index.html"
+        println "JaCoCo Test Report generated at: ${reports.html.outputLocation.asFile.get()}/index.html"
     }
 }

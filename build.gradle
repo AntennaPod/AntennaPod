@@ -61,6 +61,6 @@ tasks.register('checkstyle', Checkstyle) {
 }
 
 jacoco {
-    toolVersion = "0.8.10" // Use the latest version available
+    toolVersion = "0.8.7"
 }
 
