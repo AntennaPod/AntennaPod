@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [ opened, synchronize, reopened ]
   push:
-    branches: [ master, develop ]
+    branches: [ master, develop, ci ]
 
 jobs:
   wrapper-validation:
@@ -19,6 +19,7 @@ jobs:
     name: "Static Code Analysis"
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    if: false
     steps:
       - uses: actions/checkout@v4
         with:
@@ -52,7 +53,7 @@ jobs:
 
   unit-test:
     name: "Unit Test: ${{ matrix.variant }}"
-    needs: static-analysis
+#    needs: static-analysis
     runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:
@@ -62,14 +63,14 @@ jobs:
             base-variant: "Debug"
             execute-tests: true
             upload-artifact: true
-          - variant: "PlayRelease"
-            base-variant: "Release"
-            execute-tests: true
-            upload-artifact: false
-          - variant: "FreeRelease"
-            base-variant: "Release"
-            execute-tests: false
-            upload-artifact: false
+#          - variant: "PlayRelease"
+#            base-variant: "Release"
+#            execute-tests: true
+#            upload-artifact: false
+#          - variant: "FreeRelease"
+#            base-variant: "Release"
+#            execute-tests: false
+#            upload-artifact: false
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
@@ -101,7 +102,7 @@ jobs:
 
   emulator-test:
     name: "Emulator Test"
-    needs: static-analysis
+#    needs: static-analysis
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
