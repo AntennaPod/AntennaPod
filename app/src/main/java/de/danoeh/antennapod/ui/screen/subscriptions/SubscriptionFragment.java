@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-
 import androidx.annotation.NonNull;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
@@ -19,17 +18,34 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.storage.database.NavDrawerData;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.ui.common.ConfirmationDialog;
 import de.danoeh.antennapod.ui.screen.AddFeedFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
-import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
+import de.danoeh.antennapod.ui.screen.feed.RenameFeedDialog;
+import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
+import de.danoeh.antennapod.ui.view.EmptyViewHandler;
 import de.danoeh.antennapod.ui.view.FloatingSelectMenu;
+import de.danoeh.antennapod.ui.view.ItemOffsetDecoration;
+import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -37,25 +53,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.ui.MenuItemUtils;
-import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.storage.database.NavDrawerData;
-import de.danoeh.antennapod.ui.screen.feed.RenameFeedDialog;
-import de.danoeh.antennapod.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
-import de.danoeh.antennapod.ui.view.EmptyViewHandler;
-import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * Fragment for displaying feed subscriptions
@@ -84,7 +81,6 @@ public class SubscriptionFragment extends Fragment
     private MaterialToolbar toolbar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressBar progressBar;
-    private String displayedFolder = null;
     private boolean displayUpArrow;
 
     private Disposable disposable;
@@ -95,6 +91,10 @@ public class SubscriptionFragment extends Fragment
     private FloatingSelectMenu floatingSelectMenu;
     private RecyclerView.ItemDecoration itemDecoration;
     private List<NavDrawerData.DrawerItem> listItems;
+
+    private RecyclerView tagsRecycler;
+    private SubscriptionTagAdapter tagAdapter;
+    private List<String> tagsList = new ArrayList<>();
 
     public static SubscriptionFragment newInstance(String folderTitle) {
         SubscriptionFragment fragment = new SubscriptionFragment();
@@ -133,13 +133,6 @@ public class SubscriptionFragment extends Fragment
                     .setTitle(String.format(Locale.getDefault(), "%d", i + MIN_NUM_COLUMNS));
         }
         refreshToolbarState();
-
-        if (getArguments() != null) {
-            displayedFolder = getArguments().getString(ARGUMENT_FOLDER, null);
-            if (displayedFolder != null) {
-                toolbar.setTitle(displayedFolder);
-            }
-        }
 
         subscriptionRecycler = root.findViewById(R.id.subscriptions_grid);
         registerForContextMenu(subscriptionRecycler);
@@ -186,6 +179,22 @@ public class SubscriptionFragment extends Fragment
             return true;
         });
 
+        tagsRecycler = root.findViewById(R.id.tags_recycler);
+        tagsRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        tagsRecycler.addItemDecoration(new ItemOffsetDecoration(getContext(), 4, 0));
+        tagAdapter = new SubscriptionTagAdapter() {
+            @Override
+            protected void onTagClick(String tag) {
+                tagAdapter.setSelectedTag(tag);
+                loadSubscriptionsAndTags();
+            }
+        };
+        tagAdapter.setTags(tagsList);
+        tagAdapter.setSelectedTag(FeedPreferences.TAG_ROOT);
+        tagsRecycler.setAdapter(tagAdapter);
+        if (getArguments() != null) {
+            tagAdapter.setSelectedTag(getArguments().getString(ARGUMENT_FOLDER, null));
+        }
         return root;
     }
 
@@ -282,7 +291,7 @@ public class SubscriptionFragment extends Fragment
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        loadSubscriptions();
+        loadSubscriptionsAndTags();
     }
 
     @Override
@@ -303,7 +312,7 @@ public class SubscriptionFragment extends Fragment
         }
     }
 
-    private void loadSubscriptions() {
+    private void loadSubscriptionsAndTags() {
         if (disposable != null) {
             disposable.dispose();
         }
@@ -312,35 +321,46 @@ public class SubscriptionFragment extends Fragment
                 () -> {
                     NavDrawerData data = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter(),
                             UserPreferences.getFeedOrder(), UserPreferences.getFeedCounterSetting());
-                    List<NavDrawerData.DrawerItem> items = data.items;
-                    for (NavDrawerData.DrawerItem item : items) {
+                    List<NavDrawerData.DrawerItem> itemsInFolder = data.items;
+                    List<String> tags = new ArrayList<>();
+                    for (NavDrawerData.DrawerItem item : data.items) {
+                        if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
+                            Feed feed = ((NavDrawerData.FeedDrawerItem) item).feed;
+                            if (feed.getPreferences().getTags() != null) {
+                                tags.addAll(feed.getPreferences().getTags());
+                            }
+                        }
                         if (item.type == NavDrawerData.DrawerItem.Type.TAG
-                                && item.getTitle().equals(displayedFolder)) {
-                            return ((NavDrawerData.TagDrawerItem) item).getChildren();
+                                && item.getTitle().equals(tagAdapter.getSelectedTag())) {
+                            itemsInFolder = ((NavDrawerData.TagDrawerItem) item).getChildren();
                         }
                     }
-                    return items;
+                    return new Pair<>(itemsInFolder, tags);
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     result -> {
                         final boolean firstLoaded = listItems == null || listItems.isEmpty();
-                        if (listItems != null && listItems.size() > result.size()) {
+                        if (listItems != null && listItems.size() > result.first.size()) {
                             // We have fewer items. This can result in items being selected that are no longer visible.
                             subscriptionAdapter.endSelectMode();
                         }
-                        listItems = result;
+                        listItems = result.first;
                         progressBar.setVisibility(View.GONE);
-                        subscriptionAdapter.setItems(result);
+                        subscriptionAdapter.setItems(listItems);
                         if (firstLoaded) {
                             restoreScrollPosition(scrollPosition);
                         }
                         emptyView.updateVisibility();
+                        tagsList = result.second;
+                        if (tagAdapter != null) {
+                            tagAdapter.setTags(tagsList);
+                            tagsRecycler.setVisibility(tagsList.size() > 1 ? View.VISIBLE : View.GONE);
+                        }
                     }, error -> {
                         Log.e(TAG, Log.getStackTraceString(error));
                     });
-
         updateFilterVisibility();
     }
 
@@ -395,17 +415,17 @@ public class SubscriptionFragment extends Fragment
         if (itemId == R.id.multi_select) {
             return subscriptionAdapter.onContextItemSelected(item);
         }
-        return FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), feed, this::loadSubscriptions);
+        return FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), feed, this::loadSubscriptionsAndTags);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFeedListChanged(FeedListUpdateEvent event) {
-        loadSubscriptions();
+        loadSubscriptionsAndTags();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
-        loadSubscriptions();
+        loadSubscriptionsAndTags();
     }
 
     @Override

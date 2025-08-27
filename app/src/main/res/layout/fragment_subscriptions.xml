@@ -20,6 +20,17 @@
             app:navigationContentDescription="@string/toolbar_back_button_content_description"
             app:navigationIcon="?homeAsUpIndicator" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tags_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/feeds_filtered_message"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:visibility="visible"
+            tools:orientation="horizontal"
+            tools:listitem="@layout/item_tag_chip" />
+
         <TextView
             android:id="@+id/feeds_filtered_message"
             android:layout_width="match_parent"
