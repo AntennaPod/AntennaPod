@@ -25,7 +25,7 @@ public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> exten
     protected boolean shouldSelectLazyLoadedItems = false;
     private int totalNumberOfItems = COUNT_AUTOMATICALLY;
 
-    public SelectableAdapter(FragmentActivity activity) {
+    protected SelectableAdapter(FragmentActivity activity) {
         this.activity = activity;
     }
 

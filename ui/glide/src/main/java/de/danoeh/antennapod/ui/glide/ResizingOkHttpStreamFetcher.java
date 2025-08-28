@@ -23,102 +23,31 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class ResizingOkHttpStreamFetcher extends OkHttpStreamFetcher {
-    private static final String TAG = "ResizingOkHttpStreamFet";
+public class ResizingOkHttpStreamFetcher implements DataFetcher<InputStream> {
+    private static final String TAG = "ResizingOkHttpFetcher";
     private static final int MAX_DIMENSIONS = 1500;
-    private static final int MAX_FILE_SIZE = 1024 * 1024; // 1 MB
+    private static final long MAX_FILE_SIZE = 1024 * 1024;
 
-    private FileInputStream stream;
+    private final OkHttpStreamFetcher delegate;
+    private InputStream stream;
     private File tempIn;
     private File tempOut;
 
     public ResizingOkHttpStreamFetcher(Call.Factory client, GlideUrl url) {
-        super(client, url);
+        this.delegate = new OkHttpStreamFetcher(client, url);
     }
 
     @Override
-    public void loadData(@NonNull Priority priority, @NonNull DataFetcher.DataCallback<? super InputStream> callback) {
-        super.loadData(priority, new DataFetcher.DataCallback<InputStream>() {
+    public void loadData(@NonNull Priority priority,
+                        @NonNull DataFetcher.DataCallback<? super InputStream> callback) {
+        delegate.loadData(priority, new DataFetcher.DataCallback<InputStream>() {
             @Override
             public void onDataReady(@Nullable InputStream data) {
                 if (data == null) {
                     callback.onDataReady(null);
                     return;
                 }
-                try {
-                    tempIn = File.createTempFile("resize_", null);
-                    tempOut = File.createTempFile("resize_", null);
-                    OutputStream outputStream = new FileOutputStream(tempIn);
-                    IOUtils.copy(data, outputStream);
-                    outputStream.close();
-                    IOUtils.closeQuietly(data);
-
-                    if (tempIn.length() <= MAX_FILE_SIZE) {
-                        try {
-                            stream = new FileInputStream(tempIn);
-                            callback.onDataReady(stream); // Just deliver the original, non-scaled image
-                        } catch (FileNotFoundException fileNotFoundException) {
-                            callback.onLoadFailed(fileNotFoundException);
-                        }
-                        return;
-                    }
-
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inJustDecodeBounds = true;
-                    FileInputStream in = new FileInputStream(tempIn);
-                    BitmapFactory.decodeStream(in, null, options);
-                    IOUtils.closeQuietly(in);
-
-                    if (options.outWidth == -1 || options.outHeight == -1) {
-                        throw new IOException("Not a valid image");
-                    } else if (Math.max(options.outHeight, options.outWidth) >= MAX_DIMENSIONS) {
-                        double sampleSize = (double) Math.max(options.outHeight, options.outWidth) / MAX_DIMENSIONS;
-                        options.inSampleSize = (int) Math.pow(2d, Math.floor(Math.log(sampleSize) / Math.log(2d)));
-                    }
-
-                    options.inJustDecodeBounds = false;
-                    in = new FileInputStream(tempIn);
-                    Bitmap bitmap = BitmapFactory.decodeStream(in, null, options);
-                    IOUtils.closeQuietly(in);
-
-                    Bitmap.CompressFormat format = Build.VERSION.SDK_INT < 30
-                            ? Bitmap.CompressFormat.WEBP : Bitmap.CompressFormat.WEBP_LOSSY;
-
-                    int quality = 100;
-                    while (true) {
-                        FileOutputStream out = new FileOutputStream(tempOut);
-                        bitmap.compress(format, quality, out);
-                        IOUtils.closeQuietly(out);
-
-                        if (tempOut.length() > 3 * MAX_FILE_SIZE && quality >= 45) {
-                            quality -= 40;
-                        } else if (tempOut.length() > 2 * MAX_FILE_SIZE && quality >= 25) {
-                            quality -= 20;
-                        } else if (tempOut.length() > MAX_FILE_SIZE && quality >= 15) {
-                            quality -= 10;
-                        } else if (tempOut.length() > MAX_FILE_SIZE && quality >= 10) {
-                            quality -= 5;
-                        } else {
-                            break;
-                        }
-                    }
-                    bitmap.recycle();
-
-                    stream = new FileInputStream(tempOut);
-                    callback.onDataReady(stream);
-                    Log.d(TAG, "Compressed image from " + tempIn.length() / 1024
-                            + " to " + tempOut.length() / 1024 + " kB (quality: " + quality + "%)");
-                } catch (Throwable e) {
-                    e.printStackTrace();
-
-                    try {
-                        stream = new FileInputStream(tempIn);
-                        callback.onDataReady(stream); // Just deliver the original, non-scaled image
-                    } catch (FileNotFoundException fileNotFoundException) {
-                        e.printStackTrace();
-                        callback.onLoadFailed(fileNotFoundException);
-                    }
-                }
+                processStream(data, callback);
             }
 
             @Override
@@ -128,11 +57,131 @@ public class ResizingOkHttpStreamFetcher extends OkHttpStreamFetcher {
         });
     }
 
+    private void processStream(InputStream data, DataFetcher.DataCallback<? super InputStream> callback) {
+        try {
+            tempIn = File.createTempFile("resize_", null);
+            tempOut = File.createTempFile("resize_", null);
+            writeToFile(data, tempIn);
+
+            if (tempIn.length() <= MAX_FILE_SIZE) {
+                deliverOriginalImage(callback);
+                return;
+            }
+
+            resizeImage(callback);
+
+        } catch (IOException e) {
+            callback.onLoadFailed(e);
+        }
+    }
+
+    private void writeToFile(InputStream data, File file) throws IOException {
+        try (OutputStream out = new FileOutputStream(file)) {
+            IOUtils.copy(data, out);
+        }
+    }
+
+    private void deliverOriginalImage(DataFetcher.DataCallback<? super InputStream> callback)
+            throws FileNotFoundException {
+        stream = new FileInputStream(tempIn);
+        callback.onDataReady(stream);
+    }
+
+    private void resizeImage(DataFetcher.DataCallback<? super InputStream> callback) {
+        try {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(new FileInputStream(tempIn), null, options);
+
+            if (!isValidImage(options)) {
+                throw new IOException("Not a valid image");
+            }
+
+            Bitmap bitmap = createResizedBitmap(options);
+            compressAndDeliver(bitmap, callback);
+
+        } catch (IOException e) {
+            deliverFallback(callback, e);
+        }
+    }
+
+    private boolean isValidImage(BitmapFactory.Options options) {
+        return options.outWidth != -1 && options.outHeight != -1;
+    }
+
+    private Bitmap createResizedBitmap(BitmapFactory.Options options) throws IOException {
+        double sampleSize = (double) Math.max(options.outHeight, options.outWidth) / MAX_DIMENSIONS;
+        options.inSampleSize = (int) Math.pow(2d, Math.floor(Math.log(sampleSize) / Math.log(2d)));
+        options.inJustDecodeBounds = false;
+
+        Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(tempIn), null, options);
+        IOUtils.closeQuietly(in);
+
+        return bitmap;
+    }
+
+    private void compressAndDeliver(Bitmap bitmap, DataFetcher.DataCallback<? super InputStream> callback) throws IOException {
+        Bitmap.CompressFormat format = Build.VERSION.SDK_INT < 30
+                ? Bitmap.CompressFormat.WEBP : Bitmap.CompressFormat.WEBP_LOSSY;
+
+        int quality = 100;
+        while (true) {
+            FileOutputStream out = new FileOutputStream(tempOut);
+            bitmap.compress(format, quality, out);
+            IOUtils.closeQuietly(out);
+
+            if (tempOut.length() > 3 * MAX_FILE_SIZE && quality >= 45) {
+                quality -= 40;
+            } else if (tempOut.length() > 2 * MAX_FILE_SIZE && quality >= 25) {
+                quality -= 20;
+            } else if (tempOut.length() > MAX_FILE_SIZE && quality >= 15) {
+                quality -= 10;
+            } else if (tempOut.length() > MAX_FILE_SIZE && quality >= 10) {
+                quality -= 5;
+            } else {
+                break;
+            }
+        }
+        bitmap.recycle();
+
+        stream = new FileInputStream(tempOut);
+        callback.onDataReady(stream);
+        Log.d(TAG, "Compressed image from " + tempIn.length() / 1024
+                + " to " + tempOut.length() / 1024 + " kB (quality: " + quality + "%)");
+    }
+
+    private void deliverFallback(DataFetcher.DataCallback<? super InputStream> callback, IOException e) {
+        try {
+            stream = new FileInputStream(tempIn);
+            callback.onDataReady(stream); // Just deliver the original, non-scaled image
+        } catch (FileNotFoundException fileNotFoundException) {
+            e.printStackTrace();
+            callback.onLoadFailed(fileNotFoundException);
+        }
+    }
+
     @Override
     public void cleanup() {
         IOUtils.closeQuietly(stream);
         FileUtils.deleteQuietly(tempIn);
         FileUtils.deleteQuietly(tempOut);
-        super.cleanup();
+        delegate.cleanup();
+    }
+
+    @Override
+    public void cancel() {
+        delegate.cancel();
+    }
+
+    @NonNull
+    @Override
+    public Class<InputStream> getDataClass() {
+        return delegate.getDataClass();
+    }
+
+    @NonNull
+    @Override
+    public DataSource getDataSource() {
+        return delegate.getDataSource();
     }
 }
