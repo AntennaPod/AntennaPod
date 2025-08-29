@@ -116,12 +116,14 @@ public class ResizingOkHttpStreamFetcher implements DataFetcher<InputStream> {
         double sampleSize = (double) Math.max(options.outHeight, options.outWidth) / MAX_DIMENSIONS;
         options.inSampleSize = (int) Math.pow(2d, Math.floor(Math.log(sampleSize) / Math.log(2d)));
         options.inJustDecodeBounds = false;
-
-        Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(tempIn), null, options);
-
-        IOUtils.closeQuietly(in);
-
-        return bitmap;
+        
+        FileInputStream in = new FileInputStream(tempIn);
+        try {
+            Bitmap bitmap = BitmapFactory.decodeStream(in, null, options);
+            return bitmap;
+        } finally {
+            IOUtils.closeQuietly(in);
+        }
     }
 
     private void compressAndDeliver(Bitmap bitmap, DataFetcher.DataCallback<? super InputStream> callback) throws IOException {
