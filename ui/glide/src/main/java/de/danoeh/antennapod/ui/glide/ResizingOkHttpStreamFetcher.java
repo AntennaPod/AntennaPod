@@ -23,6 +23,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.bumptech.glide.load.DataSource;
+
+
 public class ResizingOkHttpStreamFetcher implements DataFetcher<InputStream> {
     private static final String TAG = "ResizingOkHttpFetcher";
     private static final int MAX_DIMENSIONS = 1500;
@@ -115,6 +118,7 @@ public class ResizingOkHttpStreamFetcher implements DataFetcher<InputStream> {
         options.inJustDecodeBounds = false;
 
         Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(tempIn), null, options);
+
         IOUtils.closeQuietly(in);
 
         return bitmap;
