@@ -220,8 +220,7 @@ public class AddFeedFragment extends Fragment {
             return super.createIntent(context, input)
                     .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
                             | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                            | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
-                    );
+                            | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
         }
     }
 }
