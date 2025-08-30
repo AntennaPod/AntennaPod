@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.ui.screen.subscriptions;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,11 +29,14 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.MenuItemUtils;
+import de.danoeh.antennapod.ui.common.ConfirmationDialog;
 import de.danoeh.antennapod.ui.screen.AddFeedFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
+import de.danoeh.antennapod.ui.screen.feed.RenameFeedDialog;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
 import de.danoeh.antennapod.ui.view.EmptyViewHandler;
 import de.danoeh.antennapod.ui.view.FloatingSelectMenu;
@@ -46,7 +50,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -89,7 +92,6 @@ public class SubscriptionFragment extends Fragment
     private FloatingSelectMenu floatingSelectMenu;
     private RecyclerView.ItemDecoration itemDecoration;
     private List<Feed> feeds;
-    private List<String> tags = new ArrayList<>();
 
     public static SubscriptionFragment newInstance(String folderTitle) {
         SubscriptionFragment fragment = new SubscriptionFragment();
@@ -177,10 +179,17 @@ public class SubscriptionFragment extends Fragment
         tagsRecycler = root.findViewById(R.id.tags_recycler);
         tagsRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         tagsRecycler.addItemDecoration(new ItemOffsetDecoration(getContext(), 4, 0));
-        tagAdapter = new SubscriptionTagAdapter() {
+        registerForContextMenu(tagsRecycler);
+        tagAdapter = new SubscriptionTagAdapter(getActivity()) {
             @Override
-            protected void onTagClick(String tag) {
-                tagAdapter.setSelectedTag(tag);
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                super.onCreateContextMenu(menu, v, menuInfo);
+                MenuItemUtils.setOnClickListeners(menu, SubscriptionFragment.this::onTagContextItemSelected);
+            }
+
+            @Override
+            protected void onTagClick(NavDrawerData.TagItem tag) {
+                tagAdapter.setSelectedTag(tag.getTitle());
                 loadSubscriptionsAndTags();
             }
         };
@@ -319,11 +328,10 @@ public class SubscriptionFragment extends Fragment
                 .subscribe(
                     result -> {
                         List<Feed> openedFolderFeeds = result.feeds;
-                        tags = new ArrayList<>();
                         for (NavDrawerData.TagItem tag : result.tags) {
-                            tags.add(tag.getTitle());
                             if (tag.getTitle().equals(tagAdapter.getSelectedTag())) {
                                 openedFolderFeeds = tag.getFeeds();
+                                break;
                             }
                         }
 
@@ -340,8 +348,8 @@ public class SubscriptionFragment extends Fragment
                         }
                         emptyView.updateVisibility();
                         if (tagAdapter != null) {
-                            tagAdapter.setTags(tags);
-                            tagsRecycler.setVisibility(tags.size() > 1 ? View.VISIBLE : View.GONE);
+                            tagAdapter.setTags(result.tags);
+                            tagsRecycler.setVisibility(result.tags.size() > 1 ? View.VISIBLE : View.GONE);
                         }
                     }, error -> {
                         Log.e(TAG, Log.getStackTraceString(error));
@@ -363,41 +371,42 @@ public class SubscriptionFragment extends Fragment
         return getResources().getInteger(R.integer.subscriptions_default_num_of_columns);
     }
 
+    private boolean onTagContextItemSelected(MenuItem item) {
+        NavDrawerData.TagItem selectedTag = tagAdapter.getLongPressedItem();
+        if (selectedTag == null) {
+            return false;
+        }
+        int itemId = item.getItemId();
+        if (itemId == R.id.rename_folder_item) {
+            new RenameFeedDialog(getActivity(), selectedTag).show();
+            return true;
+        } else if (itemId == R.id.delete_folder_item) {
+            ConfirmationDialog dialog = new ConfirmationDialog(getContext(), R.string.delete_tag_label,
+                    getString(R.string.delete_tag_confirmation, selectedTag)) {
+
+                @Override
+                public void onConfirmButtonPressed(DialogInterface dialog) {
+                    for (Feed feed : selectedTag.getFeeds()) {
+                        FeedPreferences preferences = feed.getPreferences();
+                        preferences.getTags().remove(selectedTag.getTitle());
+                        DBWriter.setFeedPreferences(preferences);
+                    }
+                }
+            };
+            dialog.createNewDialog().show();
+
+            return true;
+        }
+        return false;
+    }
+
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
         Feed selectedFeed = subscriptionAdapter.getSelectedItem();
         if (selectedFeed == null) {
             return false;
         }
-        int itemId = item.getItemId();
-        // TODO
-        /*if (drawerItem.type == NavDrawerData.DrawerItem.Type.TAG) {
-            if (itemId == R.id.rename_folder_item) {
-                new RenameFeedDialog(getActivity(), drawerItem).show();
-                return true;
-            } else if (itemId == R.id.delete_folder_item) {
-                ConfirmationDialog dialog = new ConfirmationDialog(
-                        getContext(), R.string.delete_tag_label,
-                        getString(R.string.delete_tag_confirmation, drawerItem.getTitle())) {
-
-                    @Override
-                    public void onConfirmButtonPressed(DialogInterface dialog) {
-                        List<NavDrawerData.DrawerItem> feeds = ((NavDrawerData.TagDrawerItem) drawerItem).getChildren();
-
-                        for (NavDrawerData.DrawerItem feed : feeds) {
-                            FeedPreferences preferences = ((NavDrawerData.FeedDrawerItem) feed).feed.getPreferences();
-                            preferences.getTags().remove(drawerItem.getTitle());
-                            DBWriter.setFeedPreferences(preferences);
-                        }
-                    }
-                };
-                dialog.createNewDialog().show();
-
-                return true;
-            }
-        }*/
-
-        if (itemId == R.id.multi_select) {
+        if (item.getItemId() == R.id.multi_select) {
             return subscriptionAdapter.onContextItemSelected(item);
         }
         return FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedFeed, this::loadSubscriptionsAndTags);

@@ -1,6 +1,12 @@
 package de.danoeh.antennapod.ui.screen.subscriptions;
 
+import android.app.Activity;
+import android.os.Build;
+import android.view.ContextMenu;
+import android.view.InputDevice;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -8,18 +14,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.chip.Chip;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.storage.database.NavDrawerData;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubscriptionTagAdapter extends RecyclerView.Adapter<SubscriptionTagAdapter.TagViewHolder> {
-    private List<String> tags = new ArrayList<>();
+public class SubscriptionTagAdapter extends RecyclerView.Adapter<SubscriptionTagAdapter.TagViewHolder>
+        implements View.OnCreateContextMenuListener {
+    private final WeakReference<Activity> activityRef;
+    private List<NavDrawerData.TagItem> tags = new ArrayList<>();
     private String selectedTag = null;
+    private NavDrawerData.TagItem longPressedItem = null;
+    int longPressedPosition = 0;
 
-    public SubscriptionTagAdapter() {
+    public SubscriptionTagAdapter(Activity activity) {
+        this.activityRef = new WeakReference<>(activity);
     }
 
-    public void setTags(List<String> tags) {
+    public void setTags(List<NavDrawerData.TagItem> tags) {
         this.tags = tags;
         notifyDataSetChanged();
     }
@@ -43,18 +56,24 @@ public class SubscriptionTagAdapter extends RecyclerView.Adapter<SubscriptionTag
 
     @Override
     public void onBindViewHolder(@NonNull TagViewHolder holder, int position) {
-        String tag = tags.get(position);
-        if (FeedPreferences.TAG_ROOT.equals(tag)) {
+        NavDrawerData.TagItem tag = tags.get(position);
+        if (FeedPreferences.TAG_ROOT.equals(tag.getTitle())) {
             holder.chip.setText(R.string.tag_all);
         } else {
-            holder.chip.setText(tag);
+            holder.chip.setText(tag.getTitle());
         }
         float dp = holder.itemView.getContext().getResources().getDisplayMetrics().density;
-        holder.chip.setElevation(tag.equals(selectedTag) ? (4 * dp) : 0);
+        holder.chip.setElevation(tag.getTitle().equals(selectedTag) ? (4 * dp) : 0);
         holder.chip.setOnClickListener(v -> onTagClick(tag));
-        holder.chip.setOnLongClickListener(v -> {
-            onTagLongClick(tag);
-            return true;
+        holder.chip.setOnTouchListener((v, e) -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (e.isFromSource(InputDevice.SOURCE_MOUSE)
+                        &&  e.getButtonState() == MotionEvent.BUTTON_SECONDARY) {
+                    longPressedPosition = holder.getBindingAdapterPosition();
+                    longPressedItem = tag;
+                }
+            }
+            return false;
         });
     }
 
@@ -63,10 +82,22 @@ public class SubscriptionTagAdapter extends RecyclerView.Adapter<SubscriptionTag
         return tags != null ? tags.size() : 0;
     }
 
-    protected void onTagClick(String tag) {
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        if (longPressedItem == null || FeedPreferences.TAG_ROOT.equals(longPressedItem.getTitle())) {
+            return;
+        }
+        MenuInflater inflater = activityRef.get().getMenuInflater();
+        inflater.inflate(R.menu.nav_feed_context, menu);
+        menu.findItem(R.id.multi_select).setVisible(true);
+        menu.setHeaderTitle(longPressedItem.getTitle());
     }
 
-    protected void onTagLongClick(String tag) {
+    protected void onTagClick(NavDrawerData.TagItem tag) {
+    }
+
+    public NavDrawerData.TagItem getLongPressedItem() {
+        return longPressedItem;
     }
 
     public static class TagViewHolder extends RecyclerView.ViewHolder {
