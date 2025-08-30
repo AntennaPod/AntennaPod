@@ -750,7 +750,7 @@ public final class DBReader {
         Collections.sort(tagsSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
 
         NavDrawerData result = new NavDrawerData(feeds, tagsSorted,
-                queueSize,numNewItems, numDownloadedItems, feedCounters);
+                queueSize, numNewItems, numDownloadedItems, feedCounters);
         adapter.close();
         return result;
     }
