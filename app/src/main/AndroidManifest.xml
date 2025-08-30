@@ -100,7 +100,7 @@
             android:windowSoftInputMode="stateAlwaysHidden"
             android:launchMode="singleTask"
             android:exported="true">
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -111,7 +111,7 @@
                     android:pathPrefix="/deeplink/main"
                     android:scheme="https" />
             </intent-filter>
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />

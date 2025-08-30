@@ -1,11 +1,13 @@
 package de.danoeh.antennapod.ui.screen.playback;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
@@ -20,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.TranscriptDialogBinding;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.Transcript;
@@ -27,15 +31,16 @@ import de.danoeh.antennapod.model.feed.TranscriptSegment;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.ui.transcript.TranscriptUtils;
-import io.reactivex.Maybe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-public class TranscriptDialogFragment extends DialogFragment {
+public class TranscriptDialogFragment extends DialogFragment
+        implements TranscriptAdapter.SegmentClickListener {
     public static final String TAG = "TranscriptFragment";
     private TranscriptDialogBinding viewBinding;
     private PlaybackController controller;
@@ -62,7 +67,7 @@ public class TranscriptDialogFragment extends DialogFragment {
         layoutManager = new LinearLayoutManager(getContext());
         viewBinding.transcriptList.setLayoutManager(layoutManager);
 
-        adapter = new TranscriptAdapter(getContext(), this::transcriptClicked);
+        adapter = new TranscriptAdapter(getContext(), this);
         viewBinding.transcriptList.setAdapter(adapter);
         viewBinding.transcriptList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -74,40 +79,66 @@ public class TranscriptDialogFragment extends DialogFragment {
             }
         });
 
-        AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
-                .setView(viewBinding.getRoot())
-                .setPositiveButton(getString(R.string.close_label), null)
-                .setNegativeButton(getString(R.string.refresh_label), null)
-                .setTitle(R.string.transcript)
-                .create();
+        viewBinding.toolbar.inflateMenu(R.menu.transcript);
+        viewBinding.toolbar.setOnMenuItemClickListener(this::onMenuItemClick);
+
         viewBinding.followAudioCheckbox.setChecked(true);
-        dialog.setOnShowListener(dialog1 -> {
-            dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(v -> {
-                viewBinding.progLoading.setVisibility(View.VISIBLE);
-                v.setClickable(false);
-                v.setEnabled(false);
-                loadMediaInfo(true);
-            });
-        });
         viewBinding.progLoading.setVisibility(View.VISIBLE);
         doInitialScroll = true;
 
-
+        AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
+                .setView(viewBinding.getRoot())
+                .setNegativeButton(R.string.close_label, null)
+                .create();
+        setMultiselectMode(false);
         return dialog;
     }
 
-    private void transcriptClicked(int pos, TranscriptSegment segment) {
-        long startTime = segment.getStartTime();
-        long endTime = segment.getEndTime();
+    private void setMultiselectMode(boolean multiselectMode) {
+        adapter.setMultiselectMode(multiselectMode);
+        viewBinding.toolbar.getMenu().findItem(R.id.action_copy).setVisible(multiselectMode);
+        viewBinding.toolbar.getMenu().findItem(R.id.action_cancel_copy).setVisible(multiselectMode);
+        viewBinding.toolbar.getMenu().findItem(R.id.action_select_all).setVisible(multiselectMode);
+        viewBinding.toolbar.getMenu().findItem(R.id.action_refresh).setVisible(!multiselectMode);
+        viewBinding.followAudioCheckbox.setChecked(!multiselectMode);
+    }
 
-        scrollToPosition(pos);
-        if (!(controller.getPosition() >= startTime && controller.getPosition() <= endTime)) {
-            controller.seekTo((int) startTime);
-        } else {
-            controller.playPause();
+    private void copySelectedText() {
+        String selectedText = adapter.getSelectedText();
+        ClipboardManager clipboardManager = ContextCompat.getSystemService(requireContext(), ClipboardManager.class);
+        if (clipboardManager != null) {
+            clipboardManager.setPrimaryClip(ClipData.newPlainText(getString(R.string.transcript), selectedText));
         }
-        adapter.notifyItemChanged(pos);
-        viewBinding.followAudioCheckbox.setChecked(true);
+        if (Build.VERSION.SDK_INT <= 32) {
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
+        }
+    }
+
+    @Override
+    public void onTranscriptClicked(int pos, TranscriptSegment segment) {
+        if (adapter.isMultiselectMode()) {
+            adapter.toggleSelection(pos);
+        } else {
+            long startTime = segment.getStartTime();
+            long endTime = segment.getEndTime();
+
+            scrollToPosition(pos);
+            if (!(controller.getPosition() >= startTime && controller.getPosition() <= endTime)) {
+                controller.seekTo((int) startTime);
+            } else {
+                controller.playPause();
+            }
+            adapter.notifyItemChanged(pos);
+            viewBinding.followAudioCheckbox.setChecked(true);
+        }
+    }
+
+    @Override
+    public void onTranscriptLongClicked(int position, TranscriptSegment seg) {
+        if (!adapter.isMultiselectMode()) {
+            setMultiselectMode(true);
+            adapter.toggleSelection(position);
+        }
     }
 
     @Override
@@ -170,12 +201,6 @@ public class TranscriptDialogFragment extends DialogFragment {
 
         viewBinding.progLoading.setVisibility(View.GONE);
         adapter.setMedia(media);
-        ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.INVISIBLE);
-        if (!TextUtils.isEmpty(((FeedMedia) media).getItem().getTranscriptUrl())) {
-            ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.VISIBLE);
-            ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE).setEnabled(true);
-            ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE).setClickable(true);
-        }
     }
 
     public void scrollToPosition(int pos) {
@@ -217,4 +242,23 @@ public class TranscriptDialogFragment extends DialogFragment {
         EventBus.getDefault().unregister(this);
     }
 
+    private boolean onMenuItemClick(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_refresh) {
+            viewBinding.progLoading.setVisibility(View.VISIBLE);
+            loadMediaInfo(true);
+            return true;
+        } else if (id == R.id.action_copy) {
+            copySelectedText();
+            setMultiselectMode(false);
+            return true;
+        } else if (id == R.id.action_cancel_copy) {
+            setMultiselectMode(false);
+            return true;
+        } else if (id == R.id.action_select_all) {
+            adapter.selectAll();
+            return true;
+        }
+        return false;
+    }
 }

@@ -194,58 +194,16 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Ваш VPN-додаток видає себе за мобільну мережу (зʼєднання з лічильником). Оновлення подкастів через мобільне з\'єднання вимкнено в налаштуваннях.\n\nВи все одно хочете оновити? Якщо ви хочете, щоб цю проблему було виправлено, зверніться до розробників вашого VPN-додатку.</string>
     <!--actions on feeditems-->
   <string name="download_label">Завантажити</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">Завантажується %d випуск.</item>
-        <item quantity="few">Завантажуються %d випуски.</item>
-        <item quantity="many">Завантажуються %d випусків.</item>
-        <item quantity="other">Завантажуються %d випусків.</item>
-    </plurals>
     <string name="play_label">Грати</string>
     <string name="pause_label">Пауза</string>
     <string name="stream_label">Прослухати без завантаження</string>
     <string name="delete_label">Видалити</string>
-    <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">%d завантажений випуск видалено.</item>
-        <item quantity="few">%d завантажених випуски видалено.</item>
-        <item quantity="many">%d завантажених випусків видалено.</item>
-        <item quantity="other">%d завантажених випусків видалено.</item>
-    </plurals>
     <string name="remove_inbox_label">Вилучити з вхідних</string>
-    <string name="removed_inbox_label">Вилучено з вхідних</string>
-    <string name="mark_read_label">Позначити як відтворений</string>
     <string name="toggle_played_label">Перемикнути стан прослуханості</string>
-    <string name="marked_as_played_label">Позначено як відтворений</string>
-    <string name="marked_as_unplayed_label">Позначено як невідтворений</string>
     <string name="mark_read_no_media_label">Позначити як прочитане</string>
-    <string name="play_this_to_seek_position">Щоб перейти до позиції, потрібно слухати випуск</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">%d випуск помічено як слуханий.</item>
-        <item quantity="few">%d випуски помічено як слухані.</item>
-        <item quantity="many">%d випусків помічено як слухані.</item>
-        <item quantity="other">%d випусків помічено як слухані.</item>
-    </plurals>
-    <string name="mark_unread_label">Позначити як невідтворений</string>
     <string name="mark_unread_label_no_media">Позначити як непрочитане</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d випуск помічено як неслуханий.</item>
-        <item quantity="few">%d випуски помічено як неслухані.</item>
-        <item quantity="many">%d випусків помічено як неслухані.</item>
-        <item quantity="other">%d випусків помічено як неслухані.</item>
-    </plurals>
     <string name="add_to_queue_label">Додати до черги</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d випуск додано до черги.</item>
-        <item quantity="few">%d випуски додано до черги.</item>
-        <item quantity="many">%d випусків додано до черги.</item>
-        <item quantity="other">%d випусків додано до черги.</item>
-    </plurals>
     <string name="remove_from_queue_label">Вилучити з черги</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d випуск видалено з черги.</item>
-        <item quantity="few">%d випуски видалено з черги.</item>
-        <item quantity="many">%d випусків видалено з черги.</item>
-        <item quantity="other">%d випусків видалено з черги.</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d випуск вилучено з нових.</item>
         <item quantity="few">%d випуски вилучено з нових.</item>
@@ -255,14 +213,10 @@
     <string name="add_to_favorite_label">Додати до обраного</string>
     <string name="show_transcript">Показати транскрипцію</string>
     <string name="transcript">Транскрипція</string>
-    <string name="transcript_follow">Разом з аудіо</string>
     <string name="no_transcript_label">Немає транскрипції</string>
     <string name="remove_from_favorite_label">Вилучити з обраних</string>
     <string name="visit_website_label">Відвідати сайт</string>
     <string name="skip_episode_label">Пропустити випуск</string>
-    <string name="reset_position">Скинути позицію відтворення</string>
-    <string name="no_items_selected">Не вибрано жодний елемент</string>
-    <string name="delete_local_feed_warning_body">У разі видалення випуск зникне з AntennaPod, а його файл буде видалено зі сховища вашого пристрою. Його не можна буде знову завантажити через AntennaPod.</string>
     <!--Download messages and labels-->
   <string name="download_successful">успішно</string>
     <string name="download_pending">Потрібно завантажити</string>
@@ -380,8 +334,8 @@
     <string name="preference_search_clear_history">Очистити історію</string>
     <string name="pref_episode_cleanup_title">Видалити перед автозавантаженням</string>
     <string name="pref_episode_cleanup_summary">Випуски, які слід вилучати, якщо для автоматичного завантаження нових потрібне вільне місце</string>
-    <string name="pref_pauseOnDisconnect_sum">Зупиняти відтворення коли навушники або блютуз від’єднано</string>
-    <string name="pref_unpauseOnHeadsetReconnect_sum">Поновити відтворення коли навушники повторно під’єднано</string>
+    <string name="pref_pauseOnDisconnect_sum">Призупинити відтворення, коли навушники або Bluetooth відключаються</string>
+    <string name="pref_unpauseOnHeadsetReconnect_sum">Відновлення відтворення після повторного підключення навушників</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Поновити відтворення коли блютуз повторно під’єднано</string>
     <string name="pref_hardware_forward_button_title">Кнопка вперед</string>
     <string name="pref_hardware_forward_button_summary">Налаштування кнопки вперед</string>
@@ -590,25 +544,25 @@
     <string name="time_hours">годин</string>
     <plurals name="time_seconds_quantified">
         <item quantity="one">%d секунда</item>
-        <item quantity="few">%d секунд</item>
+        <item quantity="few">%d секунди</item>
         <item quantity="many">%d секунд</item>
         <item quantity="other">%d секунд</item>
     </plurals>
     <plurals name="time_minutes_quantified">
         <item quantity="one">%d хвилина</item>
-        <item quantity="few">%d хвилин</item>
+        <item quantity="few">%d хвилини</item>
         <item quantity="many">%d хвилин</item>
         <item quantity="other">%d хвилин</item>
     </plurals>
     <plurals name="time_hours_quantified">
         <item quantity="one">%d година</item>
-        <item quantity="few">%d годин</item>
+        <item quantity="few">%d години</item>
         <item quantity="many">%d годин</item>
         <item quantity="other">%d годин</item>
     </plurals>
     <plurals name="time_days_quantified">
         <item quantity="one">%d день</item>
-        <item quantity="few">%d днів</item>
+        <item quantity="few">%d дня</item>
         <item quantity="many">%d днів</item>
         <item quantity="other">%d днів</item>
     </plurals>
@@ -698,7 +652,6 @@
     <string name="feed_tags_summary">Змініть теги цього подкасту, щоб упорядкувати ваші підписки</string>
     <string name="feed_folders_include_root">Відображати цей подкаст в основному списку підписок</string>
     <string name="multi_feed_common_tags_info">Показані лише спільні теги з усіх вибраних підписок. Інші теги залишаються без змін.</string>
-    <string name="auto_download_settings_label">Налаштування автозавантаження</string>
     <string name="episode_filters_label">Фільтр випусків</string>
     <string name="episode_filters_description">Перелік термінів, що використовуються для вирішення чи слід завантажувати випуск автоматично</string>
     <string name="add_term">Додати термін</string>
@@ -724,8 +677,6 @@
     <string name="release_schedule_friday">Пт</string>
     <string name="release_schedule_saturday">Сб</string>
     <string name="release_schedule_sunday">Нд</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Імпорт подкастів з інших програм…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Шукати подкаст…</string>
     <string name="search_itunes_label">Шукати на Apple Podcasts</string>
@@ -842,10 +793,10 @@
         <item quantity="other">Загальний розмір %d випусків на пристрої</item>
     </plurals>
     <string name="feed_delete_confirmation_msg_batch">Будь ласка, підтвердьте, що хочете видалити вибрані подкасти. УСІ їхні випуски (включно із завантаженими), історія відтворення і статистика також будуть видалені.</string>
-    <string name="bottom_navigation_summary">Бета-версія функції: Доступ до найважливіших екранів звідусіль в один дотик</string>
+    <string name="bottom_navigation_summary">Отримуйте доступ до найважливіших екранів звідусіль одним дотиком</string>
     <string name="statistics_episodes_downloaded">завантажено</string>
     <string name="episode_download_failed">Не вдалося завантажити випуск</string>
-    <string name="pref_automatic_download_global_description">Автоматично завантажувати нові серії. Може бути перевизначено для кожного подкасту.</string>
+    <string name="pref_automatic_download_global_description">Автоматично завантажувати епізоди з папки \"Вхідні\". Можна змінити для кожного подкасту окремо.</string>
     <string name="pref_automatic_download_queue_title">Завантаження в черзі</string>
     <string name="pref_automatic_download_queue_description">Автоматично завантажувати серії в черзі</string>
     <string name="episode_lists">Списки випусків</string>
@@ -901,7 +852,7 @@
     <string name="echo_hoarder_comment_clean">Цього року ви прослухали випуски з %1$d%% ваших %2$d активних підписок. Ви мабуть і робочий стіл тримаєте в порядку!</string>
     <plurals name="echo_hours_podcasts">
         <item quantity="one">годин випуска\nз %1$d подкасту</item>
-        <item quantity="few">годин випусків\nз %1$d різних подкастів</item>
+        <item quantity="few">годин випусків\nз %1$d різного подкастів</item>
         <item quantity="many">годин випусків\nз %1$d різних подкастів</item>
         <item quantity="other">годин випусків\nз %1$d різних подкастів</item>
     </plurals>
@@ -916,4 +867,68 @@
     <string name="echo_hoarder_subtitle_medium">Перевірте. Тут немає накопичення.</string>
     <string name="overflow_more">Більше</string>
     <string name="preference_search_clear_input">Очистити</string>
+    <string name="feed_new_episodes_action_summary_autodownload">Автоматичне завантаження ввімкнено. Епізоди додаються до папки \"Вхідні\", а потім переміщуються в чергу після завантаження.</string>
+    <string name="visit_social_interact_label">Показати коментарі</string>
+    <string name="rss_address">RSS адреса</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Завантаження %d епізоду.</item>
+        <item quantity="few">Завантаження %d епізоди.</item>
+        <item quantity="many">Завантаження %d епізодів.</item>
+        <item quantity="other">Завантаження %d епізодів.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">%d завантажений епізод видалено.</item>
+        <item quantity="few">%d завантажені епізоди видалено.</item>
+        <item quantity="many">%d завантажені епізодів видалено.</item>
+        <item quantity="other">%d завантажені епізодів видалено.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Видалено з папки \"Вхідні\"</string>
+    <string name="mark_as_played_label">Позначити як відтворене</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Позначено як відтворене</item>
+        <item quantity="few"></item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Позначено як невідтворене</item>
+        <item quantity="few"></item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="play_this_to_seek_position_message">Щоб перейти до позицій, потрібно відтворити епізод</string>
+    <string name="mark_as_unplayed_label">Позначити як невідтворене</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d епізод додано до черги.</item>
+        <item quantity="few">%d епізоди додано до черги.</item>
+        <item quantity="many">%d епізодів додано до черги.</item>
+        <item quantity="other">%d епізодів додано до черги.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d епізод видалено з черги.</item>
+        <item quantity="few">%d епізоди видалено з черги.</item>
+        <item quantity="many">%d епізодів видалено з черги.</item>
+        <item quantity="other">%d епізодів видалено з черги.</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">Слідкуйте за аудіо</string>
+    <string name="visit_social_interact_confirm_dialog_title">Ви залишаєте AntennaPod</string>
+    <string name="visit_social_interact_confirm_dialog_message">Будь ласка, переконайтеся, що ви довіряєте вебсайту \"%1$s\".</string>
+    <string name="reset_playback_position_label">Скинути позицію відтворення</string>
+    <string name="no_items_selected_message">Не вибрано жодного елемента</string>
+    <string name="delete_local_feed_confirmation_dialog_message">Видалення видаляє епізод з AntennaPod та видаляє медіафайл із пам’яті вашого пристрою. Його не можна буде завантажити повторно через AntennaPod.</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d епізод переміщено на початок.</item>
+        <item quantity="few">%d епізоди переміщено на початок.</item>
+        <item quantity="many">%d епізодів переміщено на початок.</item>
+        <item quantity="other">%d епізодів переміщено на початок.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d епізод переміщено вниз.</item>
+        <item quantity="few">%d епізоди переміщено вниз.</item>
+        <item quantity="many">%d епізодів переміщено вниз.</item>
+        <item quantity="other">%d епізодів переміщено вниз.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">Немає запланованих епізодів, але на вас чекають нові епізоди!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Перейти до папки \"Вхідні\"</string>
+    <string name="auto_download_inbox_category">Автоматично завантажувати епізоди з папки \"Вхідні\"</string>
 </resources>

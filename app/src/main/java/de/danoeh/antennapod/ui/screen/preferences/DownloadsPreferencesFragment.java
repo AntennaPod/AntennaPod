@@ -78,7 +78,7 @@ public class DownloadsPreferencesFragment extends AnimatedPreferenceFragment
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (UserPreferences.PREF_UPDATE_INTERVAL.equals(key)) {
+        if (UserPreferences.PREF_UPDATE_INTERVAL.equals(key) || UserPreferences.PREF_MOBILE_UPDATE.equals(key)) {
             FeedUpdateManager.getInstance().restartUpdateAlarm(getContext(), true);
         }
     }

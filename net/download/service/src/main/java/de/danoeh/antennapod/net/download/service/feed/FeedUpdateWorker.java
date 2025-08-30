@@ -37,6 +37,7 @@ import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequestBuilder;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 import de.danoeh.antennapod.storage.database.NonSubscribedFeedsCleaner;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,6 +48,7 @@ import java.util.concurrent.Executors;
 
 public class FeedUpdateWorker extends Worker {
     private static final String TAG = "FeedUpdateWorker";
+    private static final long JOB_SCHEDULE_TIME_VARIATION = TimeUnit.MINUTES.toMillis(15);
 
     private final NewEpisodesNotification newEpisodesNotification;
     private final NotificationManagerCompat notificationManager;
@@ -66,12 +68,21 @@ public class FeedUpdateWorker extends Worker {
         long feedId = getInputData().getLong(FeedUpdateManagerImpl.EXTRA_FEED_ID, -1);
         boolean allAreLocal = true;
         boolean force = false;
+        boolean isAutomaticRefresh = !getInputData().getBoolean(FeedUpdateManagerImpl.EXTRA_MANUAL, false);
+        boolean isAutomaticRefreshEnabled = !UserPreferences.isAutoUpdateDisabled();
         if (feedId == -1) { // Update all
             toUpdate = DBReader.getFeedList();
             Iterator<Feed> itr = toUpdate.iterator();
             while (itr.hasNext()) {
                 Feed feed = itr.next();
                 if (!feed.getPreferences().getKeepUpdated() || feed.getState() != Feed.STATE_SUBSCRIBED) {
+                    itr.remove();
+                    continue;
+                }
+                if (isAutomaticRefresh && isAutomaticRefreshEnabled
+                        && feed.getLastRefreshAttempt() > System.currentTimeMillis() - JOB_SCHEDULE_TIME_VARIATION
+                            - TimeUnit.HOURS.toMillis(UserPreferences.getUpdateInterval())) {
+                    // Recently updated, no need to automatically check again
                     itr.remove();
                     continue;
                 }
@@ -143,7 +154,7 @@ public class FeedUpdateWorker extends Worker {
 
     @NonNull
     @Override
-    public ListenableFuture getForegroundInfoAsync() {
+    public ListenableFuture<ForegroundInfo> getForegroundInfoAsync() {
         return Futures.immediateFuture(new ForegroundInfo(R.id.notification_updating_feeds, createNotification(null)));
     }
 

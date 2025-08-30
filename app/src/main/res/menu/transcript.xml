@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_refresh"
+        android:title="@string/refresh_label"
+        android:icon="@drawable/ic_refresh"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_copy"
+        android:title="@string/copy_to_clipboard"
+        android:icon="@drawable/ic_copy"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_select_all"
+        android:title="@string/select_all_label"
+        android:icon="@drawable/ic_select_all"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_cancel_copy"
+        android:title="@string/cancel_label"
+        android:icon="@drawable/ic_close"
+        app:showAsAction="always" />
+</menu>

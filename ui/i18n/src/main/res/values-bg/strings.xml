@@ -165,38 +165,18 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Твоето VPN приложение се преструва на мобилен интернет (ограничена връзка). Обновяването на подкасти докато използваш мобилен интернет е изключено в настройките. \n\nИскаш ли да обновиш все пак? Ако искаш този проблем да се разреши, свържи се със създателя на VPN приложението ти.</string>
     <!--actions on feeditems-->
   <string name="download_label">Изтегли</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">Тегли се %dепизод.</item>
-        <item quantity="other">Теглят се %dепизода.</item>
-    </plurals>
     <string name="play_label">Пусни</string>
     <string name="pause_label">Пауза</string>
     <string name="stream_label">Стрийм</string>
     <string name="delete_label">Изтрий</string>
     <string name="remove_inbox_label">Премахни от входящата кутия</string>
-    <string name="removed_inbox_label">Премахнато от входящата кутия</string>
-    <string name="mark_read_label">Маркирай като слушан</string>
     <string name="toggle_played_label">Превключи състоянито дали е слушано</string>
-    <string name="marked_as_played_label">Маркирай като слушано</string>
-    <string name="marked_as_unplayed_label">Маркирай като неслушано</string>
     <string name="mark_read_no_media_label">Маркирай като прочетено</string>
-    <string name="play_this_to_seek_position">За да преминаваш към конкретна позиция, епизодът трябва да бъде пуснат</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">%dепизод беше маркиран като слушан.</item>
-        <item quantity="other">%dепизода бяха маркирани като слушани.</item>
-    </plurals>
-    <string name="mark_unread_label">Маркирай като неслушан</string>
     <string name="mark_unread_label_no_media">Маркирай като непрочетено</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d епизод беше маркиран като неслушан.</item>
-        <item quantity="other">%d епизода бяха маркирани като неслушани.</item>
-    </plurals>
     <string name="add_to_favorite_label">Добави към любими</string>
     <string name="remove_from_favorite_label">Премахни от любими</string>
     <string name="visit_website_label">Посети сайта</string>
     <string name="skip_episode_label">Пропусни епизода</string>
-    <string name="reset_position">Нулирай позицията на възпройзвеждане</string>
-    <string name="no_items_selected">Няма избрани елементи</string>
     <!--Download messages and labels-->
   <string name="download_successful">успешно</string>
     <string name="download_pending">Тегленето се обработва</string>

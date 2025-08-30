@@ -37,11 +37,11 @@ import de.danoeh.antennapod.storage.importexport.HtmlWriter;
 import de.danoeh.antennapod.storage.importexport.OpmlWriter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -400,7 +400,8 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
         @Override
         public Intent createIntent(@NonNull final Context context, @Nullable final Uri input) {
             return super.createIntent(context, input)
-                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                            | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
         }
     }
 

@@ -77,25 +77,11 @@
     <string name="please_wait_for_data">Espera hasta que carguen los datos</string>
     <!--actions on feeditems-->
   <string name="download_label">Baxar</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">Baxando %d episodiu.</item>
-        <item quantity="other">Baxando %d episodios.</item>
-    </plurals>
     <string name="play_label">Reproducir</string>
     <string name="pause_label">Posar</string>
     <string name="stream_label">Sentir</string>
     <string name="delete_label">Desaniciar</string>
-    <string name="mark_read_label">Marcar como «Reprodúxose»</string>
-    <string name="mark_unread_label">Marcar como «Ensin reproducir»</string>
     <string name="mark_unread_label_no_media">Marcar como «Ensin lleer»</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">Amestóse %d episodiu a la cola.</item>
-        <item quantity="other">Amestáronse %d episodios a la cola.</item>
-    </plurals>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">Quitóse %d episodiu de la cola.</item>
-        <item quantity="other">Quitáronse %d episodios de la cola.</item>
-    </plurals>
     <string name="skip_episode_label">Saltar l\'episodiu</string>
     <string name="download_error_details">Detalles</string>
     <string name="download_error_tap_for_details">Calca pa ver los detalles</string>
@@ -343,4 +329,24 @@
     <string name="feed_update_receiver_name">Actualizar suscripciones</string>
     <string name="episodes_label_short">Episodiu</string>
     <string name="queue_label_short">Cola</string>
+    <string name="inbox_label">Bandexa d\'entrada</string>
+    <string name="years_statistics_label">Años</string>
+    <string name="current_playing_episode">Actual</string>
+    <string name="change_setting">Camudar</string>
+    <string name="statistics_from">Dende</string>
+    <string name="statistics_to">Hasta</string>
+    <string name="statistics_today">Güei</string>
+    <string name="section_hidden">Ocultu</string>
+    <string name="feed_new_episodes_action_nothing">Nun faer nada</string>
+    <string name="inbox_label_short">Bandexa d\'entrada</string>
+    <string name="downloads_label_short">Descargues</string>
+    <string name="downloads_log_label">Rexistru de descargues</string>
+    <string name="subscriptions_label_short">Suscripciones</string>
+    <string name="subscriptions_list_label">Llista de suscripciones</string>
+    <string name="cancel_download_label">Atayar descarga</string>
+    <string name="playback_history_label">Historial de reproducciones</string>
+    <string name="playback_history_label_short">Hestóricu</string>
+    <string name="swipeactions_label">Xestos al eslizar</string>
+    <string name="swipe_right">Eslizar a la derecha</string>
+    <string name="swipe_left">Eslizar a la izquierda</string>
 </resources>

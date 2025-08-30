@@ -15,14 +15,15 @@ import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.ui.cleaner.ShownotesCleaner;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.view.ShownotesWebView;
-import io.reactivex.Maybe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * Displays the description of a Playable object in a Webview.
@@ -127,11 +128,10 @@ public class ItemDescriptionFragment extends Fragment {
         Log.d(TAG, "Saving preferences");
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF, Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        if (controller != null && controller.getMedia() != null && webvDescription != null) {
+        if (controller != null && webvDescription != null) {
             Log.d(TAG, "Saving scroll position: " + webvDescription.getScrollY());
             editor.putInt(PREF_SCROLL_Y, webvDescription.getScrollY());
-            editor.putString(PREF_PLAYABLE_ID, controller.getMedia().getIdentifier()
-                    .toString());
+            editor.putString(PREF_PLAYABLE_ID, "" + PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
         } else {
             Log.d(TAG, "savePreferences was called while media or webview was null");
             editor.putInt(PREF_SCROLL_Y, -1);
@@ -140,22 +140,20 @@ public class ItemDescriptionFragment extends Fragment {
         editor.apply();
     }
 
-    private boolean restoreFromPreference() {
+    private void restoreFromPreference() {
         Log.d(TAG, "Restoring from preferences");
         Activity activity = getActivity();
         if (activity != null) {
             SharedPreferences prefs = activity.getSharedPreferences(PREF, Activity.MODE_PRIVATE);
             String id = prefs.getString(PREF_PLAYABLE_ID, "");
             int scrollY = prefs.getInt(PREF_SCROLL_Y, -1);
-            if (controller != null && scrollY != -1 && controller.getMedia() != null
-                    && id.equals(controller.getMedia().getIdentifier().toString())
+            if (controller != null && scrollY != -1
+                    && id.equals("" + PlaybackPreferences.getCurrentlyPlayingFeedMediaId())
                     && webvDescription != null) {
                 Log.d(TAG, "Restored scroll Position: " + scrollY);
                 webvDescription.scrollTo(webvDescription.getScrollX(), scrollY);
-                return true;
             }
         }
-        return false;
     }
 
     public void scrollToTop() {
