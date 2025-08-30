@@ -20,26 +20,33 @@
             app:navigationContentDescription="@string/toolbar_back_button_content_description"
             app:navigationIcon="?homeAsUpIndicator" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/tags_recycler"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/feeds_filtered_message"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
-            android:visibility="visible"
-            tools:orientation="horizontal"
-            tools:listitem="@layout/item_tag_chip" />
-
-        <TextView
-            android:id="@+id/feeds_filtered_message"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="4dp"
             android:layout_marginTop="-16dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:text="@string/filtered_label" />
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tags_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/feeds_filtered_message"
+                android:paddingHorizontal="12dp"
+                android:clipToPadding="false"
+                android:visibility="visible"
+                tools:orientation="horizontal"
+                tools:listitem="@layout/item_tag_chip" />
+
+            <TextView
+                android:id="@+id/feeds_filtered_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="4dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/filtered_label" />
+
+        </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 

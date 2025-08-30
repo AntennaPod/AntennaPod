@@ -382,7 +382,7 @@ public class SubscriptionFragment extends Fragment
             return true;
         } else if (itemId == R.id.delete_folder_item) {
             ConfirmationDialog dialog = new ConfirmationDialog(getContext(), R.string.delete_tag_label,
-                    getString(R.string.delete_tag_confirmation, selectedTag)) {
+                    getString(R.string.delete_tag_confirmation, selectedTag.getTitle())) {
 
                 @Override
                 public void onConfirmButtonPressed(DialogInterface dialog) {
@@ -426,6 +426,7 @@ public class SubscriptionFragment extends Fragment
     public void onEndSelectMode() {
         floatingSelectMenu.setVisibility(View.GONE);
         subscriptionAddButton.setVisibility(View.VISIBLE);
+        tagsRecycler.setVisibility(tagAdapter.getItemCount() > 1 ? View.VISIBLE : View.GONE);
         updateFilterVisibility();
     }
 
@@ -433,6 +434,7 @@ public class SubscriptionFragment extends Fragment
     public void onStartSelectMode() {
         floatingSelectMenu.setVisibility(View.VISIBLE);
         subscriptionAddButton.setVisibility(View.GONE);
+        tagsRecycler.setVisibility(tagAdapter.getItemCount() > 1 ? View.INVISIBLE : View.GONE);
         updateFilterVisibility();
     }
 

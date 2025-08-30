@@ -75,6 +75,12 @@ public class SubscriptionTagAdapter extends RecyclerView.Adapter<SubscriptionTag
             }
             return false;
         });
+        holder.chip.setOnLongClickListener(v -> {
+            longPressedPosition = holder.getBindingAdapterPosition();
+            longPressedItem = tag;
+            return false;
+        });
+        holder.chip.setOnCreateContextMenuListener(this);
     }
 
     @Override
@@ -88,8 +94,7 @@ public class SubscriptionTagAdapter extends RecyclerView.Adapter<SubscriptionTag
             return;
         }
         MenuInflater inflater = activityRef.get().getMenuInflater();
-        inflater.inflate(R.menu.nav_feed_context, menu);
-        menu.findItem(R.id.multi_select).setVisible(true);
+        inflater.inflate(R.menu.nav_folder_context, menu);
         menu.setHeaderTitle(longPressedItem.getTitle());
     }
 
