@@ -26,7 +26,6 @@ public class SubscriptionTagAdapter extends RecyclerView.Adapter<SubscriptionTag
     private List<NavDrawerData.TagItem> tags = new ArrayList<>();
     private String selectedTag = null;
     private NavDrawerData.TagItem longPressedItem = null;
-    int longPressedPosition = 0;
 
     public SubscriptionTagAdapter(Activity activity) {
         this.activityRef = new WeakReference<>(activity);
@@ -69,14 +68,12 @@ public class SubscriptionTagAdapter extends RecyclerView.Adapter<SubscriptionTag
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (e.isFromSource(InputDevice.SOURCE_MOUSE)
                         &&  e.getButtonState() == MotionEvent.BUTTON_SECONDARY) {
-                    longPressedPosition = holder.getBindingAdapterPosition();
                     longPressedItem = tag;
                 }
             }
             return false;
         });
         holder.chip.setOnLongClickListener(v -> {
-            longPressedPosition = holder.getBindingAdapterPosition();
             longPressedItem = tag;
             return false;
         });
@@ -110,7 +107,7 @@ public class SubscriptionTagAdapter extends RecyclerView.Adapter<SubscriptionTag
 
         public TagViewHolder(@NonNull View itemView) {
             super(itemView);
-            chip = (Chip) itemView;
+            chip = itemView.findViewById(R.id.tag_chip);
         }
     }
 }

@@ -33,7 +33,7 @@ public class NavDrawerData {
         private List<Feed> feeds = new ArrayList<>();
         private int counter = 0;
         private boolean isOpen = false;
-        public long id;
+        private long id;
 
         public TagItem(String name) {
             this.name = name;
@@ -64,6 +64,10 @@ public class NavDrawerData {
         public void addFeed(Feed feed, int feedCounter) {
             counter += feedCounter;
             feeds.add(feed);
+        }
+
+        public long getId() {
+            return id;
         }
     }
 }

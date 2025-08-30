@@ -5,18 +5,20 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
 
 public class DrawerItem {
-    private Feed feed = null;
-    private NavDrawerData.TagItem tag = null;
+    private final Feed feed;
+    private final NavDrawerData.TagItem tag;
     private int counter;
     private final int layer;
 
     public DrawerItem(@NonNull Feed feed, int counter, int layer) {
+        this.tag = null;
         this.feed = feed;
         this.counter = counter;
         this.layer = layer;
     }
 
     public DrawerItem(@NonNull NavDrawerData.TagItem tag) {
+        this.feed = null;
         this.tag = tag;
         this.counter = 0;
         this.layer = 0;
@@ -51,6 +53,6 @@ public class DrawerItem {
     }
 
     public long getId() {
-        return isFeed() ? feed.getId() : tag.id;
+        return isFeed() ? feed.getId() : tag.getId();
     }
 }
