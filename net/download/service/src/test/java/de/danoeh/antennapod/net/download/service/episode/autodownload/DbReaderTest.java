@@ -343,7 +343,7 @@ public class DbReaderTest {
             DbTestUtils.saveFeedlist(numFeeds, numItems, true);
             NavDrawerData navDrawerData = DBReader.getNavDrawerData(
                     UserPreferences.getSubscriptionsFilter(), FeedOrder.COUNTER, FeedCounter.SHOW_NEW);
-            assertEquals(numFeeds, navDrawerData.items.size());
+            assertEquals(numFeeds, navDrawerData.feeds.size());
             assertEquals(0, navDrawerData.numNewItems);
             assertEquals(0, navDrawerData.queueSize);
         }
@@ -373,7 +373,7 @@ public class DbReaderTest {
 
             NavDrawerData navDrawerData = DBReader.getNavDrawerData(
                     UserPreferences.getSubscriptionsFilter(), FeedOrder.COUNTER, FeedCounter.SHOW_NEW);
-            assertEquals(numFeeds, navDrawerData.items.size());
+            assertEquals(numFeeds, navDrawerData.feeds.size());
             assertEquals(numNew, navDrawerData.numNewItems);
             assertEquals(numQueue, navDrawerData.queueSize);
         }

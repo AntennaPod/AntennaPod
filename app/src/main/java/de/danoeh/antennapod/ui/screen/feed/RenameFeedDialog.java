@@ -3,8 +3,6 @@ package de.danoeh.antennapod.ui.screen.feed;
 import android.app.Activity;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
 import android.view.LayoutInflater;
 import androidx.appcompat.app.AlertDialog;
@@ -20,16 +18,16 @@ public class RenameFeedDialog {
 
     private final WeakReference<Activity> activityRef;
     private Feed feed = null;
-    private NavDrawerData.DrawerItem drawerItem = null;
+    private NavDrawerData.TagItem tag = null;
 
     public RenameFeedDialog(Activity activity, Feed feed) {
         this.activityRef = new WeakReference<>(activity);
         this.feed = feed;
     }
 
-    public RenameFeedDialog(Activity activity, NavDrawerData.DrawerItem drawerItem) {
+    public RenameFeedDialog(Activity activity, NavDrawerData.TagItem drawerItem) {
         this.activityRef = new WeakReference<>(activity);
-        this.drawerItem = drawerItem;
+        this.tag = drawerItem;
     }
 
     public void show() {
@@ -39,7 +37,7 @@ public class RenameFeedDialog {
         }
 
         final EditTextDialogBinding binding = EditTextDialogBinding.inflate(LayoutInflater.from(activity));
-        String title = feed != null ? feed.getTitle() : drawerItem.getTitle();
+        String title = feed != null ? feed.getTitle() : tag.getTitle();
 
         binding.textInput.setText(title);
         AlertDialog dialog = new MaterialAlertDialogBuilder(activity)
@@ -64,17 +62,11 @@ public class RenameFeedDialog {
     }
 
     private void renameTag(String title) {
-        if (NavDrawerData.DrawerItem.Type.TAG == drawerItem.type) {
-            List<FeedPreferences> feedPreferences = new ArrayList<>();
-            for (NavDrawerData.DrawerItem item : ((NavDrawerData.TagDrawerItem) drawerItem).getChildren()) {
-                feedPreferences.add(((NavDrawerData.FeedDrawerItem) item).feed.getPreferences());
-            }
-
-            for (FeedPreferences preferences : feedPreferences) {
-                preferences.getTags().remove(drawerItem.getTitle());
-                preferences.getTags().add(title);
-                DBWriter.setFeedPreferences(preferences);
-            }
+        for (Feed feed : tag.getFeeds()) {
+            FeedPreferences preferences = feed.getPreferences();
+            preferences.getTags().remove(tag.getTitle());
+            preferences.getTags().add(title);
+            DBWriter.setFeedPreferences(preferences);
         }
     }
 

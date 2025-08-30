@@ -737,32 +737,21 @@ public final class DBReader {
         final int numNewItems = getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW));
         final int numDownloadedItems = getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.DOWNLOADED));
 
-        List<NavDrawerData.DrawerItem> items = new ArrayList<>();
-        Map<String, NavDrawerData.TagDrawerItem> folders = new HashMap<>();
+        Map<String, NavDrawerData.TagItem> tags = new HashMap<>();
         for (Feed feed : feeds) {
             for (String tag : feed.getPreferences().getTags()) {
+                if (!tags.containsKey(tag)) {
+                    tags.put(tag, new NavDrawerData.TagItem(tag));
+                }
                 int counter = feedCounters.containsKey(feed.getId()) ? feedCounters.get(feed.getId()) : 0;
-                NavDrawerData.FeedDrawerItem drawerItem = new NavDrawerData.FeedDrawerItem(feed, feed.getId(), counter);
-                if (FeedPreferences.TAG_ROOT.equals(tag)) {
-                    items.add(drawerItem);
-                    continue;
-                }
-                NavDrawerData.TagDrawerItem folder;
-                if (folders.containsKey(tag)) {
-                    folder = folders.get(tag);
-                } else {
-                    folder = new NavDrawerData.TagDrawerItem(tag);
-                    folders.put(tag, folder);
-                }
-                drawerItem.id |= folder.id;
-                folder.getChildren().add(drawerItem);
+                tags.get(tag).addFeed(feed, counter);
             }
         }
-        List<NavDrawerData.TagDrawerItem> foldersSorted = new ArrayList<>(folders.values());
-        Collections.sort(foldersSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
-        items.addAll(foldersSorted);
+        List<NavDrawerData.TagItem> tagsSorted = new ArrayList<>(tags.values());
+        Collections.sort(tagsSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
 
-        NavDrawerData result = new NavDrawerData(items, queueSize, numNewItems, numDownloadedItems, feedCounters);
+        NavDrawerData result = new NavDrawerData(feeds, tagsSorted,
+                queueSize,numNewItems, numDownloadedItems, feedCounters);
         adapter.close();
         return result;
     }

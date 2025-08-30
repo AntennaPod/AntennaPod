@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.ui.screen.subscriptions;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,14 +28,11 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.MenuItemUtils;
-import de.danoeh.antennapod.ui.common.ConfirmationDialog;
 import de.danoeh.antennapod.ui.screen.AddFeedFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
-import de.danoeh.antennapod.ui.screen.feed.RenameFeedDialog;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
 import de.danoeh.antennapod.ui.view.EmptyViewHandler;
 import de.danoeh.antennapod.ui.view.FloatingSelectMenu;
@@ -76,6 +72,8 @@ public class SubscriptionFragment extends Fragment
 
     private RecyclerView subscriptionRecycler;
     private SubscriptionsRecyclerAdapter subscriptionAdapter;
+    private RecyclerView tagsRecycler;
+    private SubscriptionTagAdapter tagAdapter;
     private EmptyViewHandler emptyView;
     private View feedsFilteredMsg;
     private MaterialToolbar toolbar;
@@ -90,11 +88,8 @@ public class SubscriptionFragment extends Fragment
     private FloatingActionButton subscriptionAddButton;
     private FloatingSelectMenu floatingSelectMenu;
     private RecyclerView.ItemDecoration itemDecoration;
-    private List<NavDrawerData.DrawerItem> listItems;
-
-    private RecyclerView tagsRecycler;
-    private SubscriptionTagAdapter tagAdapter;
-    private List<String> tagsList = new ArrayList<>();
+    private List<Feed> feeds;
+    private List<String> tags = new ArrayList<>();
 
     public static SubscriptionFragment newInstance(String folderTitle) {
         SubscriptionFragment fragment = new SubscriptionFragment();
@@ -189,7 +184,6 @@ public class SubscriptionFragment extends Fragment
                 loadSubscriptionsAndTags();
             }
         };
-        tagAdapter.setTags(tagsList);
         tagAdapter.setSelectedTag(FeedPreferences.TAG_ROOT);
         tagsRecycler.setAdapter(tagAdapter);
         if (getArguments() != null) {
@@ -318,45 +312,36 @@ public class SubscriptionFragment extends Fragment
         }
         emptyView.hide();
         disposable = Observable.fromCallable(
-                () -> {
-                    NavDrawerData data = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter(),
-                            UserPreferences.getFeedOrder(), UserPreferences.getFeedCounterSetting());
-                    List<NavDrawerData.DrawerItem> itemsInFolder = data.items;
-                    List<String> tags = new ArrayList<>();
-                    for (NavDrawerData.DrawerItem item : data.items) {
-                        if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
-                            Feed feed = ((NavDrawerData.FeedDrawerItem) item).feed;
-                            if (feed.getPreferences().getTags() != null) {
-                                tags.addAll(feed.getPreferences().getTags());
-                            }
-                        }
-                        if (item.type == NavDrawerData.DrawerItem.Type.TAG
-                                && item.getTitle().equals(tagAdapter.getSelectedTag())) {
-                            itemsInFolder = ((NavDrawerData.TagDrawerItem) item).getChildren();
-                        }
-                    }
-                    return new Pair<>(itemsInFolder, tags);
-                })
+                () -> DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter(),
+                        UserPreferences.getFeedOrder(), UserPreferences.getFeedCounterSetting()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     result -> {
-                        final boolean firstLoaded = listItems == null || listItems.isEmpty();
-                        if (listItems != null && listItems.size() > result.first.size()) {
+                        List<Feed> openedFolderFeeds = result.feeds;
+                        tags = new ArrayList<>();
+                        for (NavDrawerData.TagItem tag : result.tags) {
+                            tags.add(tag.getTitle());
+                            if (tag.getTitle().equals(tagAdapter.getSelectedTag())) {
+                                openedFolderFeeds = tag.getFeeds();
+                            }
+                        }
+
+                        final boolean firstLoaded = feeds == null || feeds.isEmpty();
+                        if (feeds != null && feeds.size() > openedFolderFeeds.size()) {
                             // We have fewer items. This can result in items being selected that are no longer visible.
                             subscriptionAdapter.endSelectMode();
                         }
-                        listItems = result.first;
+                        feeds = openedFolderFeeds;
                         progressBar.setVisibility(View.GONE);
-                        subscriptionAdapter.setItems(listItems);
+                        subscriptionAdapter.setItems(feeds, result.feedCounters);
                         if (firstLoaded) {
                             restoreScrollPosition(scrollPosition);
                         }
                         emptyView.updateVisibility();
-                        tagsList = result.second;
                         if (tagAdapter != null) {
-                            tagAdapter.setTags(tagsList);
-                            tagsRecycler.setVisibility(tagsList.size() > 1 ? View.VISIBLE : View.GONE);
+                            tagAdapter.setTags(tags);
+                            tagsRecycler.setVisibility(tags.size() > 1 ? View.VISIBLE : View.GONE);
                         }
                     }, error -> {
                         Log.e(TAG, Log.getStackTraceString(error));
@@ -380,12 +365,13 @@ public class SubscriptionFragment extends Fragment
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        NavDrawerData.DrawerItem drawerItem = subscriptionAdapter.getSelectedItem();
-        if (drawerItem == null) {
+        Feed selectedFeed = subscriptionAdapter.getSelectedItem();
+        if (selectedFeed == null) {
             return false;
         }
         int itemId = item.getItemId();
-        if (drawerItem.type == NavDrawerData.DrawerItem.Type.TAG) {
+        // TODO
+        /*if (drawerItem.type == NavDrawerData.DrawerItem.Type.TAG) {
             if (itemId == R.id.rename_folder_item) {
                 new RenameFeedDialog(getActivity(), drawerItem).show();
                 return true;
@@ -409,13 +395,12 @@ public class SubscriptionFragment extends Fragment
 
                 return true;
             }
-        }
+        }*/
 
-        Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
         if (itemId == R.id.multi_select) {
             return subscriptionAdapter.onContextItemSelected(item);
         }
-        return FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), feed, this::loadSubscriptionsAndTags);
+        return FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedFeed, this::loadSubscriptionsAndTags);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -432,19 +417,11 @@ public class SubscriptionFragment extends Fragment
     public void onEndSelectMode() {
         floatingSelectMenu.setVisibility(View.GONE);
         subscriptionAddButton.setVisibility(View.VISIBLE);
-        subscriptionAdapter.setItems(listItems);
         updateFilterVisibility();
     }
 
     @Override
     public void onStartSelectMode() {
-        List<NavDrawerData.DrawerItem> feedsOnly = new ArrayList<>();
-        for (NavDrawerData.DrawerItem item : listItems) {
-            if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
-                feedsOnly.add(item);
-            }
-        }
-        subscriptionAdapter.setItems(feedsOnly);
         floatingSelectMenu.setVisibility(View.VISIBLE);
         subscriptionAddButton.setVisibility(View.GONE);
         updateFilterVisibility();
