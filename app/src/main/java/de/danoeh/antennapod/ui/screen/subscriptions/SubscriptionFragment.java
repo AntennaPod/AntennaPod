@@ -62,6 +62,7 @@ public class SubscriptionFragment extends Fragment
     public static final String TAG = "SubscriptionFragment";
     private static final String PREFS = "SubscriptionFragment";
     private static final String PREF_NUM_COLUMNS = "columns";
+    private static final String PREF_LAST_TAG = "last_tag";
     private static final String KEY_UP_ARROW = "up_arrow";
     private static final String ARGUMENT_FOLDER = "folder";
 
@@ -193,7 +194,7 @@ public class SubscriptionFragment extends Fragment
                 loadSubscriptionsAndTags();
             }
         };
-        tagAdapter.setSelectedTag(FeedPreferences.TAG_ROOT);
+        tagAdapter.setSelectedTag(prefs.getString(PREF_LAST_TAG, FeedPreferences.TAG_ROOT));
         tagsRecycler.setAdapter(tagAdapter);
         if (getArguments() != null) {
             tagAdapter.setSelectedTag(getArguments().getString(ARGUMENT_FOLDER, null));
@@ -301,6 +302,7 @@ public class SubscriptionFragment extends Fragment
     public void onPause() {
         super.onPause();
         scrollPosition = getScrollPosition();
+        prefs.edit().putString(PREF_LAST_TAG, tagAdapter.getSelectedTag()).apply();
     }
 
     @Override
@@ -386,6 +388,7 @@ public class SubscriptionFragment extends Fragment
 
                 @Override
                 public void onConfirmButtonPressed(DialogInterface dialog) {
+                    tagAdapter.setSelectedTag(FeedPreferences.TAG_ROOT);
                     for (Feed feed : selectedTag.getFeeds()) {
                         FeedPreferences preferences = feed.getPreferences();
                         preferences.getTags().remove(selectedTag.getTitle());

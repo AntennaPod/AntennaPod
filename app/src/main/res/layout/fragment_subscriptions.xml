@@ -30,7 +30,6 @@
                 android:id="@+id/tags_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/feeds_filtered_message"
                 android:paddingHorizontal="12dp"
                 android:clipToPadding="false"
                 android:visibility="visible"
