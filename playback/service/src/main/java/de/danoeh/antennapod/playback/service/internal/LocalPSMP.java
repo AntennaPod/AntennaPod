@@ -25,7 +25,6 @@ import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
-import de.danoeh.antennapod.playback.service.PlaybackEndedEvent;
 import de.danoeh.antennapod.playback.service.PlaybackService;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
@@ -679,10 +678,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
     @Override
     protected void endPlayback(final boolean hasEnded, final boolean wasSkipped,
-                                    final boolean shouldContinue, final boolean toStoppedState) {
+                                    boolean shouldContinue, final boolean toStoppedState) {
         releaseWifiLockIfNecessary();
 
-        EventBus.getDefault().post(PlaybackEndedEvent.ended(hasEnded, wasSkipped, shouldContinue, toStoppedState));
+        callback.episodeFinishedPlayback(); // notify that the current episode just finished
 
         boolean isPlaying = playerStatus == PlayerStatus.PLAYING;
 
@@ -702,6 +701,9 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
         final Playable currentMedia = media;
         Playable nextMedia = null;
+
+        // we should continue to next episode iff we were told to continue and we're allowed to (by sleep timer)
+        shouldContinue &= callback.shouldContinueToNextEpisode();
 
         if (shouldContinue) {
             // Load next episode if previous episode was in the queue and if there

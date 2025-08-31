@@ -983,6 +983,16 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             return PlaybackService.this.getNextInQueue(currentMedia);
         }
 
+        @Override
+        public boolean shouldContinueToNextEpisode() {
+            return PlaybackService.this.shouldContinueToNextEpisode();
+        }
+
+        @Override
+        public void episodeFinishedPlayback() {
+            PlaybackService.this.episodeFinishedPlayback();
+        }
+
         @Nullable
         @Override
         public Playable findMedia(@NonNull String url) {
@@ -1075,7 +1085,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             return null;
         }
 
-        if (!UserPreferences.isFollowQueue()) {
+        // contiue playback if user has enabled continuous playback
+        // OR they enabled an episode sleep timer and there are still episodes left to play
+        final boolean continuousPlayback = UserPreferences.isFollowQueue() || shouldContinueToNextEpisode();
+
+        if (!continuousPlayback) {
             Log.d(TAG, "getNextInQueue(), but follow queue is not enabled.");
             PlaybackPreferences.writeMediaPlaying(nextItem.getMedia());
             updateNotificationAndMediaSession(nextItem.getMedia());
@@ -1092,6 +1106,24 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             return null;
         }
         return nextItem.getMedia();
+    }
+
+    private void episodeFinishedPlayback() {
+        if (sleepTimer != null) {
+            sleepTimer.episodeFinishedPlayback();
+        }
+    }
+
+    /**
+     * Tells if we should continue to next episode
+     * @return True if we can proceed to the next episode (might be blocked by other things), or not
+     */
+    private boolean shouldContinueToNextEpisode() {
+        if (sleepTimer != null) {
+            return sleepTimer.shouldContinueToNextEpisode();
+        }
+
+        return true; // always allow when no sleep timer is active
     }
 
     /**

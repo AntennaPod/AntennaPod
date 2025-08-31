@@ -41,4 +41,13 @@ public interface SleepTimer {
      * @return Returns true if the sleep timer will terminate sometime during this episode, false otherwise
      */
     boolean isEndingThisEpisode(long episodeRemainingMillis);
+
+    /**
+     * Called when sleep timer is asked if playback is allowed to proceed to next episode.
+     * Should take into account the time left, episodes left, etc.
+     * @return True if playback is allowed to continue to next episode, false otherwise
+     */
+    boolean shouldContinueToNextEpisode();
+
+    void episodeFinishedPlayback();
 }

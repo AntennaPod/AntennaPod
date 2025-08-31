@@ -338,6 +338,10 @@ public abstract class PlaybackServiceMediaPlayer {
 
         void shouldStop();
 
+        void episodeFinishedPlayback();
+
+        boolean shouldContinueToNextEpisode();
+
         void onMediaChanged(boolean reloadUI);
 
         void onPostPlayback(@NonNull Playable media, boolean ended, boolean skipped, boolean playingNext);

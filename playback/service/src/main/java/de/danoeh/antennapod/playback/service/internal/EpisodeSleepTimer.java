@@ -1,17 +1,13 @@
 package de.danoeh.antennapod.playback.service.internal;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.ThreadMode;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
-import de.danoeh.antennapod.playback.service.PlaybackEndedEvent;
 
 public class EpisodeSleepTimer extends ClockSleepTimer {
     private static final String TAG = "EpisodeSleepTimer";
@@ -46,31 +42,28 @@ public class EpisodeSleepTimer extends ClockSleepTimer {
             if (currentEpisodeTimeLeft < NOTIFICATION_THRESHOLD) {
                 notifyAboutExpiry();
             }
-            // try to stop playback in the last second
-            // if we do not manage to do it then it will be stopped when the episode is marked as completed
-            if (currentEpisodeTimeLeft <= 1000) {
-                Log.d(TAG, "Episodes sleep timer expired");
-                stopPlayback();
-            }
         } else {
+            // if we have more than 1 episode left then just report the current values
             EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(
                     current.getDisplayValue(), current.getMilisValue()));
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    @SuppressWarnings("unused")
-    public void onPlaybackEnded(PlaybackEndedEvent playbackEndedEvent) {
-        handlePlayedEpisode();
+    @Override
+    public void episodeFinishedPlayback() {
+        // episode has finished, decrease the number of episodes left
+        updateRemainingTime(getTimeLeft().getDisplayValue() - 1);
     }
 
-    private void handlePlayedEpisode() {
-        updateRemainingTime(getTimeLeft().getDisplayValue() - 1);
-
-        if (getTimeLeft().getDisplayValue() <= 0) {
-            // we've ran out of episodes, playback will be stopped
-            stopPlayback();
+    @Override
+    public boolean shouldContinueToNextEpisode() {
+        boolean cont = getTimeLeft().getDisplayValue() > 0; // number of episodes left
+        // stop ourselves too if we're blocking playback
+        if (!cont) {
+            stop();
         }
+
+        return cont;
     }
 
     private void stopPlayback() {
@@ -78,5 +71,4 @@ public class EpisodeSleepTimer extends ClockSleepTimer {
         EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(0, 0));
         stop(); // stop the timer too
     }
-
 }

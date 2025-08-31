@@ -140,4 +140,14 @@ public class ClockSleepTimer implements SleepTimer {
     public boolean isEndingThisEpisode(long episodeRemainingMillis) {
         return episodeRemainingMillis >= getTimeLeft().getMilisValue();
     }
+
+    @Override
+    public boolean shouldContinueToNextEpisode() {
+        return getTimeLeft().getMilisValue() > 0;
+    }
+
+    @Override
+    public void episodeFinishedPlayback() {
+        //no-op
+    }
 }
