@@ -24,26 +24,23 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
-import de.danoeh.antennapod.playback.base.PlayerStatus;
-import de.danoeh.antennapod.playback.service.PlaybackController;
-import de.danoeh.antennapod.playback.service.PlaybackService;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
+import de.danoeh.antennapod.playback.base.PlayerStatus;
+import de.danoeh.antennapod.playback.service.PlaybackController;
+import de.danoeh.antennapod.playback.service.PlaybackService;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.storage.preferences.SleepTimerType;
 import de.danoeh.antennapod.ui.common.Converter;
-import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 
 public class SleepTimerDialog extends DialogFragment {
     private PlaybackController controller;
@@ -59,6 +56,20 @@ public class SleepTimerDialog extends DialogFragment {
     Button extendSleepTenMinutesButton;
     Button extendSleepTwentyMinutesButton;
 
+    private final SleepTimeConfig clockSleepTimeConfig = new SleepTimeConfig(0,
+            R.string.extend_sleep_timer_label, R.string.time_minutes,
+            new SleepEntryConfig(5, 5 * 1000 * 60),
+            new SleepEntryConfig(10, 10 * 1000 * 60),
+            new SleepEntryConfig(30, 30 * 1000 * 60)
+    );
+
+    private final SleepTimeConfig episodesSleepTimeConfig = new SleepTimeConfig(1,
+            R.plurals.extend_sleep_timer_episodes_quantified, R.string.episodes_label,
+            new SleepEntryConfig(1, 1),
+            new SleepEntryConfig(3, 3),
+            new SleepEntryConfig(5, 5)
+    );
+
     static class SleepEntryConfig {
         public final int displayValue;
         public final int configuredValue;
@@ -73,12 +84,15 @@ public class SleepTimerDialog extends DialogFragment {
         public final int buttonTextResourceId;
         public final int displayTypeTextId;
         public final List<SleepEntryConfig> sleepEntries = new ArrayList<>(3);
+        private final int index;
 
         public SleepTimeConfig(
+                int index,
                 int buttonTextResourceId,
                 int displayTypeTextId,
                 SleepEntryConfig first,
                 SleepEntryConfig second, SleepEntryConfig third) {
+            this.index = index;
             this.buttonTextResourceId = buttonTextResourceId;
             this.displayTypeTextId = displayTypeTextId;
             sleepEntries.add(0, first);
@@ -87,32 +101,14 @@ public class SleepTimerDialog extends DialogFragment {
         }
     }
 
-    private static <K, V> LinkedHashMap<K, V> linkedMapOf(Collection<Map.Entry<? extends K, ? extends V>> entries) {
-        LinkedHashMap<K, V> map = new LinkedHashMap<>();
-        for (Map.Entry<? extends K, ? extends V> entry : entries) {
-            map.put(entry.getKey(), entry.getValue());
+    private SleepTimeConfig getSleepTimeConfig(SleepTimerType timerType) {
+        if (Objects.requireNonNull(timerType) == SleepTimerType.EPISODES) {
+            return episodesSleepTimeConfig;
         }
-        return map;
+        return clockSleepTimeConfig;
     }
 
-    LinkedHashMap<SleepTimerType, SleepTimeConfig> allSleepConfig = linkedMapOf(List.of(
-            Map.entry(SleepTimerType.CLOCK, new SleepTimeConfig(
-                    R.string.extend_sleep_timer_label, R.string.time_minutes,
-                    new SleepEntryConfig(5, 5 * 1000 * 60),
-                    new SleepEntryConfig(10, 10 * 1000 * 60),
-                    new SleepEntryConfig(30, 30 * 1000 * 60)
-            )),
-            Map.entry(SleepTimerType.EPISODES, new SleepTimeConfig(
-                    R.plurals.extend_sleep_timer_episodes_quantified, R.string.episodes_label,
-                    new SleepEntryConfig(1, 1),
-                    new SleepEntryConfig(3, 3),
-                    new SleepEntryConfig(5, 5)
-            ))
-    ));
-
-
     public SleepTimerDialog() {
-
     }
 
     @Override
@@ -137,25 +133,13 @@ public class SleepTimerDialog extends DialogFragment {
     }
 
     private int getSleepTimerIndexFromType(SleepTimerType sleepTimerType) {
-        int count = 0;
-        for (SleepTimerType type : allSleepConfig.keySet()) {
-            if (type == sleepTimerType) {
-                return count;
-            }
-            count++;
-        }
-
-        return 0;
+        return getSleepTimeConfig(sleepTimerType).index;
     }
 
     private SleepTimerType getSleepTimerTypeFromIndex(int selection) {
-        int count = 0;
-        for (SleepTimerType type : allSleepConfig.keySet()) {
-            if (count++ == selection) {
-                return type;
-            }
+        if (episodesSleepTimeConfig.index == selection) {
+            return SleepTimerType.EPISODES;
         }
-
         return SleepTimerType.CLOCK;
     }
 
@@ -169,7 +153,8 @@ public class SleepTimerDialog extends DialogFragment {
         builder.setPositiveButton(R.string.close_label, null);
 
         List<String> spinnerContent = new ArrayList<>();
-        for (SleepTimeConfig entry : allSleepConfig.values()) {
+        // add "title" for all options
+        for (SleepTimeConfig entry : List.of(clockSleepTimeConfig, episodesSleepTimeConfig)) {
             spinnerContent.add(getString(entry.displayTypeTextId).toLowerCase(Locale.getDefault()));
         }
 
@@ -217,6 +202,7 @@ public class SleepTimerDialog extends DialogFragment {
         final CheckBox cbVibrate = content.findViewById(R.id.cbVibrate);
         chAutoEnable = content.findViewById(R.id.chAutoEnable);
         changeTimesButton = content.findViewById(R.id.changeTimesButton);
+        chAutoEnable.setChecked(SleepTimerPreferences.autoEnable());
 
         cbShakeToReset.setChecked(SleepTimerPreferences.shakeToReset());
         cbVibrate.setChecked(SleepTimerPreferences.vibrate());
@@ -295,7 +281,7 @@ public class SleepTimerDialog extends DialogFragment {
     }
 
     private void refreshExtendButtons() {
-        final SleepTimeConfig selectedConfig = allSleepConfig.get(SleepTimerPreferences.getSleepTimerType());
+        final SleepTimeConfig selectedConfig = getSleepTimeConfig(SleepTimerPreferences.getSleepTimerType());
 
         int counter = 0;
         for (Button button : List.of(
@@ -323,8 +309,7 @@ public class SleepTimerDialog extends DialogFragment {
             // only change the state if true, don't change it regardless of flag (alghough we could)
             if (alwaysSelected) {
                 chAutoEnable.setChecked(false);
-            }
-            else if (!chAutoEnable.isChecked()) { // if it's not checked, then make sure it's checked in UI too
+            } else if (!chAutoEnable.isChecked()) { // if it's not checked, then make sure it's checked in UI too
                 chAutoEnable.setChecked(true);
             }
             updateAutoEnableText();
