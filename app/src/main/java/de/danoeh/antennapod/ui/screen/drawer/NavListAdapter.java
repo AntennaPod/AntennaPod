@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
@@ -108,7 +107,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
     public long getItemId(int position) {
         int viewType = getItemViewType(position);
         if (viewType == VIEW_TYPE_SUBSCRIPTION) {
-            return itemAccess.getItem(position - getSubscriptionOffset()).id;
+            return itemAccess.getItem(position - getSubscriptionOffset()).getId();
         } else if (viewType == VIEW_TYPE_NAV) {
             return -Math.abs((long) fragmentTags.get(position).hashCode()) - 1; // Folder IDs are >0
         } else {
@@ -155,12 +154,12 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             bindSectionDivider((DividerHolder) holder);
         } else {
             int itemPos = position - getSubscriptionOffset();
-            NavDrawerData.DrawerItem item = itemAccess.getItem(itemPos);
+            DrawerItem item = itemAccess.getItem(itemPos);
             bindListItem(item, (FeedHolder) holder);
-            if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
-                bindFeedView((NavDrawerData.FeedDrawerItem) item, (FeedHolder) holder);
+            if (item.isFeed()) {
+                bindFeedView(item.asFeed(), (FeedHolder) holder);
             } else {
-                bindTagView((NavDrawerData.TagDrawerItem) item, (FeedHolder) holder);
+                bindTagView(item.asTag(), (FeedHolder) holder);
             }
             holder.itemView.setOnCreateContextMenuListener(itemAccess);
         }
@@ -232,7 +231,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         }
     }
 
-    private void bindListItem(NavDrawerData.DrawerItem item, FeedHolder holder) {
+    private void bindListItem(DrawerItem item, FeedHolder holder) {
         if (item.getCounter() > 0) {
             holder.count.setVisibility(View.VISIBLE);
             holder.count.setText(NumberFormat.getInstance().format(item.getCounter()));
@@ -244,8 +243,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         holder.itemView.setPadding(item.getLayer() * padding, 0, 0, 0);
     }
 
-    private void bindFeedView(NavDrawerData.FeedDrawerItem drawerItem, FeedHolder holder) {
-        Feed feed = drawerItem.feed;
+    private void bindFeedView(Feed feed, FeedHolder holder) {
         Activity context = activity.get();
         if (context == null) {
             return;
@@ -262,18 +260,10 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
                     .dontAnimate())
                 .into(holder.image);
 
-        if (feed.hasLastUpdateFailed()) {
-            RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) holder.title.getLayoutParams();
-            p.addRule(RelativeLayout.LEFT_OF, R.id.itxtvFailure);
-            holder.failure.setVisibility(View.VISIBLE);
-        } else {
-            RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) holder.title.getLayoutParams();
-            p.addRule(RelativeLayout.LEFT_OF, R.id.txtvCount);
-            holder.failure.setVisibility(View.GONE);
-        }
+        holder.failure.setVisibility(feed.hasLastUpdateFailed() ? View.VISIBLE : View.GONE);
     }
 
-    private void bindTagView(NavDrawerData.TagDrawerItem tag, FeedHolder holder) {
+    private void bindTagView(NavDrawerData.TagItem tag, FeedHolder holder) {
         Activity context = activity.get();
         if (context == null) {
             return;
@@ -332,7 +322,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
     public interface ItemAccess extends View.OnCreateContextMenuListener {
         int getCount();
 
-        NavDrawerData.DrawerItem getItem(int position);
+        DrawerItem getItem(int position);
 
         boolean isSelected(int position);
 

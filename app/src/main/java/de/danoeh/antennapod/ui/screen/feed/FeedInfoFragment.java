@@ -46,12 +46,12 @@ import de.danoeh.antennapod.ui.screen.feed.preferences.EditUrlSettingsDialog;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
 import de.danoeh.antennapod.ui.statistics.feed.FeedStatisticsDialogFragment;
 import de.danoeh.antennapod.ui.statistics.feed.FeedStatisticsFragment;
-import io.reactivex.Completable;
-import io.reactivex.Maybe;
-import io.reactivex.MaybeOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.core.MaybeOnSubscribe;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
@@ -344,7 +344,8 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
 
         Completable.fromAction(() -> {
             getActivity().getContentResolver()
-                    .takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    .takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             DocumentFile documentFile = DocumentFile.fromTreeUri(getContext(), uri);
             if (documentFile == null) {
                 throw new IllegalArgumentException("Unable to retrieve document tree");
@@ -364,7 +365,9 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         @Override
         public Intent createIntent(@NonNull final Context context, @Nullable final Uri input) {
             return super.createIntent(context, input)
-                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                            | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
         }
     }
 }

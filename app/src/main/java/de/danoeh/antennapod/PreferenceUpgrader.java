@@ -6,6 +6,7 @@ import android.view.KeyEvent;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.preference.PreferenceManager;
 
+import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -175,6 +176,9 @@ public class PreferenceUpgrader {
         if (newVersion == 3070003) {
             // Enable bottom navigation for beta users, so only this exact app version
             UserPreferences.setBottomNavigationEnabled(true);
+        }
+        if (oldVersion < 3100000) {
+            FeedUpdateManager.getInstance().restartUpdateAlarm(context, true);
         }
     }
 }

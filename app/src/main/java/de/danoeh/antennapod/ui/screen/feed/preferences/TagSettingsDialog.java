@@ -7,32 +7,29 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.databinding.EditTagsDialogBinding;
+import de.danoeh.antennapod.model.feed.FeedCounter;
+import de.danoeh.antennapod.model.feed.FeedOrder;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.storage.database.NavDrawerData;
+import de.danoeh.antennapod.ui.SimpleChipAdapter;
+import de.danoeh.antennapod.ui.view.ItemOffsetDecoration;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.ui.SimpleChipAdapter;
-import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.storage.database.DBWriter;
-import de.danoeh.antennapod.storage.database.NavDrawerData;
-import de.danoeh.antennapod.databinding.EditTagsDialogBinding;
-import de.danoeh.antennapod.model.feed.FeedCounter;
-import de.danoeh.antennapod.model.feed.FeedOrder;
-import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.ui.view.ItemOffsetDecoration;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 public class TagSettingsDialog extends DialogFragment {
     public static final String TAG = "TagSettingsDialog";
@@ -113,10 +110,9 @@ public class TagSettingsDialog extends DialogFragment {
         Observable.fromCallable(
                 () -> {
                     NavDrawerData data = DBReader.getNavDrawerData(null, FeedOrder.ALPHABETICAL, FeedCounter.SHOW_NONE);
-                    List<NavDrawerData.DrawerItem> items = data.items;
-                    List<String> folders = new ArrayList<String>();
-                    for (NavDrawerData.DrawerItem item : items) {
-                        if (item.type == NavDrawerData.DrawerItem.Type.TAG) {
+                    List<String> folders = new ArrayList<>();
+                    for (NavDrawerData.TagItem item : data.tags) {
+                        if (!FeedPreferences.TAG_ROOT.equals(item.getTitle())) {
                             folders.add(item.getTitle());
                         }
                     }

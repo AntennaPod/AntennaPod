@@ -171,42 +171,16 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Zure VPN aplikazioak sare mugikorra izateko itxurak egiten ditu (konexio mugatua). Datu mugikorreko konexioan podcastak eguneratzea desgaituta dago ezarpenetan.\n\nHala ere eguneratu nahi dituzu? Arazo hau konpontzea nahi baduzu, jarri harremanetan VPN aplikazioaren sortzaileekin.</string>
     <!--actions on feeditems-->
   <string name="download_label">Deskargatu</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">Saio %d deskargatzen.</item>
-        <item quantity="other">%d saio deskargatzen.</item>
-    </plurals>
     <string name="play_label">Entzun</string>
     <string name="pause_label">Pausatu</string>
     <string name="stream_label">Entzun zuzenean</string>
     <string name="delete_label">Ezabatu</string>
     <string name="remove_inbox_label">Kendu sarrerako ontzitik</string>
-    <string name="removed_inbox_label">Sarrerako ontzitik kenduta</string>
-    <string name="mark_read_label">Markatu erreproduzitutzat</string>
     <string name="toggle_played_label">Txandakatu erreprodukzio-egoera</string>
-    <string name="marked_as_played_label">Erreproduzitutzat markatua</string>
-    <string name="marked_as_unplayed_label">Ez erreproduzitutzat markatua</string>
     <string name="mark_read_no_media_label">Markatu irakurri gisa</string>
-    <string name="play_this_to_seek_position">Posizioetara jauzi egiteko, saioa erreproduzitu behar duzu</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">Saio %d erreproduzitu bezala markatuta.</item>
-        <item quantity="other">%d saio erreproduzitu bezala markatuta.</item>
-    </plurals>
-    <string name="mark_unread_label">Markatu ez erreproduzitu bezala</string>
     <string name="mark_unread_label_no_media">Markatu ez irakurri bezala</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">Saio %d ez erreproduzitu bezala markatuta.</item>
-        <item quantity="other">%d saio ez erreproduzitu bezala markatuta.</item>
-    </plurals>
     <string name="add_to_queue_label">Gehitu ilaran</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">Saio %d ilaran gehitua.</item>
-        <item quantity="other">%d saio ilaran gehituta.</item>
-    </plurals>
     <string name="remove_from_queue_label">Kendu ilaratik</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">Saio %d ilaratik kenduta.</item>
-        <item quantity="other">%d saio ilaratik kenduta.</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">Saio %d sarrerako ontzitik kenduta.</item>
         <item quantity="other">%d saio sarrerako ontzitik kenduta.</item>
@@ -215,9 +189,6 @@
     <string name="remove_from_favorite_label">Kendu gogokoetatik</string>
     <string name="visit_website_label">Bisitatu webgunea</string>
     <string name="skip_episode_label">Saltatu saioa</string>
-    <string name="reset_position">Erreprodukzio tokira itzuli</string>
-    <string name="no_items_selected">Ez da elementurik hautatu</string>
-    <string name="delete_local_feed_warning_body">Ezabatzeak saioa kentzen du AntennaPod-etik eta multimedia fitxategia ezabatzen du zure gailuaren biltegiratzetik. Ezin da berriz deskargatu AntennaPod erabiliz.</string>
     <!--Download messages and labels-->
   <string name="download_successful">arrakastatsua</string>
     <string name="download_pending">Deskargatzeko zain</string>
@@ -330,8 +301,8 @@
     <string name="preference_search_no_results">Emaitzarik ez</string>
     <string name="preference_search_clear_history">Garbitu historia</string>
     <string name="pref_episode_cleanup_summary">Deskarga automatikoak saio berrientzat lekua behar badu, kendu daitezkeen saioak</string>
-    <string name="pref_pauseOnDisconnect_sum">Pausatu erreprodukzioa entzungailu edo bluetooth-a kentzean</string>
-    <string name="pref_unpauseOnHeadsetReconnect_sum">Jarraitu erreproduzitzen entzungailu edo bluetooth-a berriz konektatzean</string>
+    <string name="pref_pauseOnDisconnect_sum">Pausatu erreprodukzioa entzungailu edo bluetooth-a deskonektatzean</string>
+    <string name="pref_unpauseOnHeadsetReconnect_sum">Jarraitu erreproduzitzen entzungailuak berriz konektatutakoan</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Jarraitu erreproduzitzen bluetooth-a berriz konektatzean</string>
     <string name="pref_hardware_forward_button_title">Aurrera botoia</string>
     <string name="pref_hardware_forward_button_summary">Pertsonalizatu aurrera botoiaren portaera</string>
@@ -606,7 +577,6 @@
     <string name="feed_tags_summary">Aldatu podcast honen etiketak zure harpidetzak antolatzen laguntzeko</string>
     <string name="feed_folders_include_root">Erakutsi podcast hau zerrenda nagusian</string>
     <string name="multi_feed_common_tags_info">Hautatutako harpidetza guztien ohiko etiketak baino ez dira erakusten. Gainerako etiketei ez die eragingo.</string>
-    <string name="auto_download_settings_label">Deskarga automatikoaren ezarpenak</string>
     <string name="episode_filters_label">Saioen iragazkia</string>
     <string name="episode_filters_description">Saio bat deskarga automatikotik kanpo utzi behar den edo ez erabakitzeko erabilitako terminoen zerrenda</string>
     <string name="add_term">Gehitu terminoa</string>
@@ -631,8 +601,6 @@
     <string name="release_schedule_friday">or.</string>
     <string name="release_schedule_saturday">lr.</string>
     <string name="release_schedule_sunday">ig.</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Helburu bakarreko aplikazioetatik harpidetzak inportatzen…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Bilatu podcasta…</string>
     <string name="search_itunes_label">Bilatu Apple Podcasts-en</string>
@@ -658,7 +626,7 @@
     <string name="not_favorite">Ez da gogokoa</string>
     <string name="hide_downloaded_episodes_label">Deskargatuta</string>
     <string name="hide_not_downloaded_episodes_label">Deskargatu gabe</string>
-    <string name="queued_label">Ilaran</string>
+    <string name="queued_label">Ilaran ezarrita</string>
     <string name="not_queued_label">Ez dago ilaran</string>
     <string name="has_media">Multimedia du</string>
     <string name="no_media">Ez du multimediarik</string>
@@ -717,10 +685,6 @@
     <string name="shortcut_subscription_label">Harpidetzarako lasterbidea</string>
     <string name="shortcut_select_subscription">Hautatu harpidetza</string>
     <string name="add_shortcut">Gehitu lasterbidea</string>
-    <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">Deskargatutako atalaren %d ezabatua.</item>
-        <item quantity="other">Deskargatutako atalen %d ezabatua.</item>
-    </plurals>
     <string name="pref_nav_drawer_items_title">Nabigazioa pertsonalizatu</string>
     <string name="pref_nav_drawer_items_sum">Aldatu zein elementu agertzen diren nabigazio-tiraderan edo beheko nabigazioan</string>
     <string name="choose_data_directory_message">Mesedez, aukeratu zure datu-karpetaren oinarria. AntennaPod-ek azpidirektorio egokiak sortuko ditu.</string>
@@ -741,7 +705,6 @@
     <string name="multi_select_started_talkback">Aukera anitzeko ekintzak behealdean agertzen dira</string>
     <string name="show_transcript">Transkripzioa erakutsi</string>
     <string name="transcript">Transkripzioa</string>
-    <string name="transcript_follow">Jarraitu audioa</string>
     <string name="no_transcript_label">Transkripziorik ez</string>
     <string name="clear_queue_confirmation_msg">Mesedez, berretsi atal GUZTIAK ilaratik kendu nahi dituzula.</string>
     <string name="pref_episode_cleanup_title">Ezabatu automatikoki deskargatu aurretik</string>
@@ -817,7 +780,7 @@
     <string name="echo_queue_hours_normal">Egunero %1$s inguru da %2$d hasten den arte. Urtea garbi has dezakezu atal batzuk saltatzen badituzu.</string>
     <string name="subscriptions_label_short">Harpidetzak</string>
     <string name="add_feed_label_short">Gehitu</string>
-    <string name="pref_automatic_download_global_description">Deskargatu automatikoki atal berriak. Podcast bakoitzeko gainidatzi daiteke.</string>
+    <string name="pref_automatic_download_global_description">Deskargatu automatikoki atalak sarrera-ontzitik. Podcast bakoitzeko gainidatzi daiteke.</string>
     <string name="episodes_label_short">Atalak</string>
     <string name="pref_automatic_download_queue_description">Deskargatu automatikoki ilaran dauden atalak</string>
     <string name="episode_lists">Atalen zerrendak</string>
@@ -872,9 +835,52 @@
     <string name="global_default_with_value">Lehenetsi globala (%1$s)</string>
     <string name="overflow_more">Gehiago</string>
     <string name="preference_search_clear_input">Garbitu</string>
-    <string name="visit_social_interact_query_message">Egiaztatu mesedez webgunearengan konfidantza duzula \"%1$s\".</string>
     <string name="feed_new_episodes_action_summary_autodownload">Deskarga automatikoa gaituta. Pasarteak sarrera-ontzira gehitzen dira eta, ondoren, ilarara eramaten dira deskargatuta.</string>
     <string name="visit_social_interact_label">Erakutsi iruzkinak</string>
     <string name="rss_address">RSS helbidea</string>
-    <string name="visit_social_interact_query_title">AntennaPod-etik ateratzear zaude</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Atal %d deskargatzen.</item>
+        <item quantity="other">%d atal deskargatzen.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">Deskargatutako atal %d ezabatuta.</item>
+        <item quantity="other">Deskargatutako %d atal deskargatuta.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Sarrera-ontzitik kendu da</string>
+    <string name="mark_as_played_label">Erreproduzituta gisa ezarri</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Erreproduzituta gisa ezarri da</item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Erreproduzitu gabea gisa ezarrita</item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="play_this_to_seek_position_message">Posizioetara salto egiteko, atala erreproduzitu behar duzu</string>
+    <string name="mark_as_unplayed_label">Erreproduzitu gabea gisa ezarri</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">atal %d ilarara gehitu da.</item>
+        <item quantity="other">%d atal ilarara gehitu dira.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">atal %d ilaratik kendu da.</item>
+        <item quantity="other">%d atal ilaratik kendu dira.</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">Jarraitu audioa</string>
+    <string name="visit_social_interact_confirm_dialog_title">Antenna Pod-etik ateratzen ari zara</string>
+    <string name="visit_social_interact_confirm_dialog_message">Mesedez, ziurtatu \"%1$s\" webgunea fidagarria dela.</string>
+    <string name="reset_playback_position_label">Berrezarri erreprodukzio-posizioa</string>
+    <string name="no_items_selected_message">Ez da elementurik hautatu</string>
+    <string name="delete_local_feed_confirmation_dialog_message">Atala ezabatzean, azken hau AntennaPod-etik eta multimedia fitxategia gailuaren biltegitik ezabatzen dira. Ezin da berriro deskargatu AntennaPod bidez.</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">Atal %d goian ezarri da.</item>
+        <item quantity="other">%d atal goian ezarri dira.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">Atal %d behean ezarri da.</item>
+        <item quantity="other">%d atal behean ezarri dira.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">Ez dago atalik programatuta, baina badaude zain dituzun atal berriak!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Sarrera-otzira joan</string>
+    <string name="auto_download_inbox_category">Deskargatu automatikoki atalak sarrera-ontzitik</string>
 </resources>

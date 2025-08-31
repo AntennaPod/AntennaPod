@@ -13,7 +13,7 @@
     <string name="downloads_label">Letöltések</string>
     <string name="downloads_log_label">Letöltési napló</string>
     <string name="subscriptions_label">Feliratkozások</string>
-    <string name="subscriptions_list_label">Feliratkozások listája (csak az oldalmenüben)</string>
+    <string name="subscriptions_list_label">Feliratkozások listája</string>
     <string name="cancel_download_label">Letöltés megszakítása</string>
     <string name="playback_history_label">Lejátszási előzmények</string>
     <string name="years_statistics_label">Évek</string>
@@ -113,8 +113,8 @@
     <string name="feed_auto_download_always">Mindig</string>
     <string name="feed_auto_download_never">Soha</string>
     <string name="feed_new_episodes_action_add_to_inbox">Hozzáadás a beérkezettekhez</string>
-    <string name="feed_new_episodes_action_add_to_queue">Hozzáadás a lejátszási sorhoz, automatikus letöltés letiltása</string>
-    <string name="feed_new_episodes_action_nothing">Semmi, automatikus letöltés letiltása</string>
+    <string name="feed_new_episodes_action_add_to_queue">Hozzáadás a lejátszási sorhoz</string>
+    <string name="feed_new_episodes_action_nothing">Semmi</string>
     <string name="episode_cleanup_never">Soha</string>
     <string name="episode_cleanup_except_favorite_removal">Ha nincs felvéve a kedvencek közé</string>
     <string name="episode_cleanup_queue_removal">Ha nincs sorba állítva</string>
@@ -172,42 +172,16 @@
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">A VPN-alkalmazása mobilhálózatnak (forgalomdíjas kapcsolatnak) álcázza magát. A podcastek mobil adatkapcsolaton keresztül történő frissítése le van tiltva a beállításokban.\n\nMindenképp frissíti? Ha szeretné megoldani ezt a problémát, akkor lépjen kapcsolatba a VPN-alkalmazás üzemeltetőivel.</string>
     <!--actions on feeditems-->
   <string name="download_label">Letöltés</string>
-    <plurals name="downloading_batch_label">
-        <item quantity="one">%d epizód letöltése.</item>
-        <item quantity="other">%d epizód letöltése.</item>
-    </plurals>
     <string name="play_label">Lejátszás</string>
     <string name="pause_label">Szüneteltetés</string>
     <string name="stream_label">Közvetítés</string>
     <string name="delete_label">Törlés</string>
     <string name="remove_inbox_label">Eltávolítás a beérkezők közül</string>
-    <string name="removed_inbox_label">Eltávolítva a beérkezők közül</string>
-    <string name="mark_read_label">Megjelölés lejátszottként</string>
     <string name="toggle_played_label">Lejátszott állapot be/ki</string>
-    <string name="marked_as_played_label">Megjelölve lejátszottként</string>
-    <string name="marked_as_unplayed_label">Megjelölve nem lejátszottként</string>
     <string name="mark_read_no_media_label">Megjelölés olvasottként</string>
-    <string name="play_this_to_seek_position">A pozíciókra ugráshoz le kell játszania az epizódot</string>
-    <plurals name="marked_read_batch_label">
-        <item quantity="one">%d epizód megjelölve lejátszottként.</item>
-        <item quantity="other">%d epizód megjelölve lejátszottként.</item>
-    </plurals>
-    <string name="mark_unread_label">Megjelölés nem lejátszottként</string>
     <string name="mark_unread_label_no_media">Megjelölés olvasatlanként</string>
-    <plurals name="marked_unread_batch_label">
-        <item quantity="one">%d epizód megjelölve nem lejátszottként.</item>
-        <item quantity="other">%d epizód megjelölve nem lejátszottként.</item>
-    </plurals>
     <string name="add_to_queue_label">Sorba állítás</string>
-    <plurals name="added_to_queue_batch_label">
-        <item quantity="one">%d epizód sorba állítva.</item>
-        <item quantity="other">%d epizód sorba állítva.</item>
-    </plurals>
     <string name="remove_from_queue_label">Eltávolítás a lejátszási sorból</string>
-    <plurals name="removed_from_queue_batch_label">
-        <item quantity="one">%d epizód eltávolítva a lejátszási sorból.</item>
-        <item quantity="other">%d epizód eltávolítva a lejátszási sorból.</item>
-    </plurals>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d epizód eltávolítva a beérkezők közül.</item>
         <item quantity="other">%d epizód eltávolítva a beérkezők közül.</item>
@@ -216,9 +190,6 @@
     <string name="remove_from_favorite_label">Eltávolítás a kedvencek közül</string>
     <string name="visit_website_label">Webhely felkeresése</string>
     <string name="skip_episode_label">Epizód átugrása</string>
-    <string name="reset_position">Lejátszási pozíció visszaállítása</string>
-    <string name="no_items_selected">Nincs elem kiválasztva</string>
-    <string name="delete_local_feed_warning_body">A törlés eltávolítja az epizódot az AntennaPodból, és törli a médiafájlt az eszköz tárhelyéről. Nem tölthető le újra az AntennaPoddal.</string>
     <!--Download messages and labels-->
   <string name="download_successful">sikeres</string>
     <string name="download_pending">A letöltés várakozik</string>
@@ -607,7 +578,6 @@
     <string name="feed_tags_summary">Módosítja a podcast címkéit, hogy segítsen a feliratkozásai rendszerezésében</string>
     <string name="feed_folders_include_root">A podcast megjelenítése a fő listában</string>
     <string name="multi_feed_common_tags_info">Csak a kiválasztott feliratkozások közös címkéi jelennek meg. A többi címke változatlan marad.</string>
-    <string name="auto_download_settings_label">Automatikus letöltési beállítások</string>
     <string name="episode_filters_label">Epizódszűrő</string>
     <string name="episode_filters_description">A kulcsszavak, mely alapján eldől, hogy az automatikus letöltés beleveszi-e az epizódot, vagy sem</string>
     <string name="add_term">Kifejezés hozzáadása</string>
@@ -632,8 +602,6 @@
     <string name="release_schedule_friday">p.</string>
     <string name="release_schedule_saturday">szo.</string>
     <string name="release_schedule_sunday">v.</string>
-    <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Feliratkozások importálása az egycélú alkalmazásokból…</string>
     <!--Add podcast fragment-->
   <string name="search_podcast_hint">Podcast keresése…</string>
     <string name="search_itunes_label">Keresés az Apple Podcastsban</string>
@@ -725,10 +693,6 @@
     </plurals>
     <string name="episode_information">Epizódinformációk</string>
     <string name="preview_episodes">Epizódok előnézete</string>
-    <plurals name="deleted_multi_episode_batch_label">
-        <item quantity="one">%d letöltött epizód törölve.</item>
-        <item quantity="other">%d letöltött epizód törölve.</item>
-    </plurals>
     <plurals name="episode_cleanup_hours_after_listening">
         <item quantity="one">%d órával a befejezés után</item>
         <item quantity="other">%d órával a befejezés után</item>
@@ -762,14 +726,13 @@
     <string name="feed_delete_confirmation_msg_batch">Erősítse meg, hogy eltávolítja a kiválasztott podcastet, az ÖSSZES epizóddal (beleértve a letöltött epizódokat is), előzménnyel és statisztákáival.</string>
     <string name="multi_select_started_talkback">A többszörös kiválasztási műveletek lent jelennek meg</string>
     <string name="delete_downloads_played_confirmation">Erősítse meg, hogy törli az összes lejátszott letöltést.</string>
-    <string name="transcript_follow">Hang követése</string>
     <string name="no_transcript_label">Nincs leirat</string>
     <string name="mobile_download_notice">Letöltés mobil-adatkapcsolaton keresztül a következő %d percben</string>
     <string name="theming">Téma</string>
     <string name="pref_auto_delete_playback_title">Törlés lejátszás után</string>
     <string name="pref_auto_delete_title">Automatikus törlés</string>
     <string name="pref_auto_delete_sum">Epizódok törlése lejátszás után, vagy ha az automatikus letöltésnek helyre van szüksége</string>
-    <string name="bottom_navigation_summary">Béta funkció: Érje el a legfontosabb képernyőket bárhonnan, egyetlen kattintással</string>
+    <string name="bottom_navigation_summary">Érje el a legfontosabb képernyőket bárhonnan, egyetlen koppintással</string>
     <string name="pref_nav_drawer_items_sum">A navigációs fiókban vagy az alsó navigációs sávban megjelenő elemek testreszabása</string>
     <string name="pref_episode_cache_title">Epizódkorlát</string>
     <string name="pref_episode_cache_summary">Az automatikus letöltés leáll, ha eléri ezt a számot</string>
@@ -873,4 +836,7 @@
     <string name="preference_search_clear_input">Törlés</string>
     <string name="echo_listened_after_time">A kiadásuk után átlagosan %1$s után fejezte be az epizódokat.</string>
     <string name="overflow_more">Továbbiak</string>
+    <string name="feed_new_episodes_action_summary_autodownload">Automatikus letöltés engedélyezve. Az epizódok hozzá lesznek adva a beérkezettekhez, és a letöltések után átkerülnek a lejátszási sorba.</string>
+    <string name="visit_social_interact_label">Hozzászólások megjelenítése</string>
+    <string name="rss_address">RSS-cím</string>
 </resources>

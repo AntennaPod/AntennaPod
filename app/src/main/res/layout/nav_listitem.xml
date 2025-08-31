@@ -33,10 +33,12 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/listitem_iconwithtext_textleftpadding"
         android:layout_marginLeft="@dimen/listitem_iconwithtext_textleftpadding"
-        android:layout_marginEnd="48dp"
-        android:layout_marginRight="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_toEndOf="@id/imgvCover"
         android:layout_toRightOf="@id/imgvCover"
+        android:layout_toStartOf="@+id/rightGroup"
+        android:layout_toLeftOf="@+id/rightGroup"
         android:ellipsize="end"
         android:lines="1"
         android:singleLine="true"
@@ -44,38 +46,38 @@
         android:textSize="@dimen/text_size_navdrawer"
         tools:text="Navigation item title" />
 
-    <ImageView
-        android:id="@+id/itxtvFailure"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignWithParentIfMissing="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="@dimen/list_vertical_padding"
-        android:layout_marginLeft="@dimen/list_vertical_padding"
-        android:layout_marginEnd="@dimen/list_vertical_padding"
-        android:layout_marginRight="@dimen/list_vertical_padding"
-        android:layout_toStartOf="@id/txtvCount"
-        android:layout_toLeftOf="@id/txtvCount"
-        android:visibility="gone"
-        android:contentDescription="@string/refresh_failed_msg"
-        app:srcCompat="@drawable/ic_error"
-        tools:text="!" />
-
-    <TextView
-        android:id="@+id/txtvCount"
+    <LinearLayout
+        android:id="@+id/rightGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
         android:layout_marginRight="8dp"
-        android:lines="1"
-        android:padding="8dp"
-        android:textColor="?android:attr/textColorTertiary"
-        android:textSize="14sp"
-        tools:text="23" />
+        android:layout_marginEnd="8dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/itxtvFailure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:visibility="gone"
+            android:contentDescription="@string/refresh_failed_msg"
+            app:srcCompat="@drawable/ic_error"
+            tools:text="!"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/txtvCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:padding="8dp"
+            android:textColor="?android:attr/textColorTertiary"
+            android:textSize="14sp"
+            tools:text="23" />
+
+    </LinearLayout>
 
 </RelativeLayout>

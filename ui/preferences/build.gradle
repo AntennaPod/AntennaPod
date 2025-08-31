@@ -40,8 +40,8 @@ dependencies {
     implementation "androidx.preference:preference:$preferenceVersion"
     implementation "androidx.work:work-runtime:$workManagerVersion"
 
-    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
-    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"

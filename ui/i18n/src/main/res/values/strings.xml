@@ -70,7 +70,7 @@
     <string name="home_welcome_title">Welcome to AntennaPod!</string>
     <string name="home_welcome_text">You are not subscribed to any podcasts yet. Open the menu to add a podcast.</string>
     <string name="notification_permission_denied">You denied the permission.</string>
-    <string name="configure_home">Configure Home Screen</string>
+    <string name="configure_home">Configure home screen</string>
     <string name="section_hidden">Hidden</string>
     <string name="section_shown">Shown</string>
     <string name="episodes_label_more">Episodes »</string>
@@ -211,6 +211,7 @@
     <string name="multi_select_started_talkback">Multi select actions shown at the bottom</string>
     <string name="filtered_label">Filtered</string>
     <string name="refresh_failed_msg">Last refresh failed. Tap to view details.</string>
+    <string name="please_wait_before_refreshing">Please wait some time before refreshing podcasts again.</string>
     <string name="open_podcast">Open podcast</string>
     <string name="please_wait_for_data">Please wait until the data is loaded</string>
     <string name="updates_disabled_label">Updates disabled</string>
@@ -246,8 +247,6 @@
     <string name="removed_from_inbox_message">Removed from inbox</string>
     <string name="mark_as_played_label">Mark as played</string>
     <string name="toggle_played_label">Toggle played state</string>
-    <string name="marked_as_played_message">Marked as played</string>
-    <string name="marked_as_unplayed_message">Marked as unplayed</string>
     <string name="mark_read_no_media_label">Mark as read</string>
     <string name="play_this_to_seek_position_message">To jump to positions, you need to play the episode</string>
     <plurals name="marked_as_played_message">
@@ -415,8 +414,8 @@
     <string name="synchronization_sum">Synchronize with other devices</string>
     <string name="automation">Automation</string>
     <string name="download_pref_details">Details</string>
-    <string name="import_export_pref">Import/Export</string>
-    <string name="import_export_search_keywords">backup, restore</string>
+    <string name="import_export_pref">Backup &amp; restore</string>
+    <string name="import_export_search_keywords">import, export</string>
     <string name="theming">Theming</string>
     <string name="external_elements">External elements</string>
     <string name="interruptions">Interruptions</string>
@@ -429,7 +428,7 @@
     <string name="overflow_more">More</string>
     <string name="pref_episode_cleanup_title">Delete before auto download</string>
     <string name="pref_episode_cleanup_summary">Episodes that should be eligible for removal if Auto Download needs space for new episodes</string>
-    <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth get disconnected</string>
+    <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or Bluetooth devices get disconnected</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Resume playback when the headphones get reconnected</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Resume playback when bluetooth reconnects</string>
     <string name="pref_hardware_forward_button_title">Forward button</string>
@@ -765,7 +764,8 @@
     <string name="authentication_descr">Change your username and password for this podcast and its episodes</string>
     <string name="feed_tags_label">Tags</string>
     <string name="feed_tags_summary">Change the tags of this podcast to help organize your subscriptions</string>
-    <string name="feed_folders_include_root">Show this podcast in main list</string>
+    <string name="feed_folders_include_root">Show this podcast in \"all\" tag</string>
+    <string name="tag_all">All</string>
     <string name="multi_feed_common_tags_info">Only common tags from all selected subscriptions are shown. Other tags stay unaffected.</string>
     <string name="auto_download_inbox_category">Automatically download episodes from the inbox</string>
     <string name="episode_filters_label">Episode filter</string>
@@ -794,6 +794,7 @@
     <string name="statistics_release_schedule">release schedule</string>
     <string name="statistics_release_next">next episode (estimate)</string>
     <string name="statistics_expected_next_episode_any_day">Any day now</string>
+    <string name="statistics_expected_next_episode_any_time">Any time now</string>
     <string name="statistics_expected_next_episode_unknown">Unknown</string>
     <string name="statistics_view_all">All podcasts »</string>
     <string name="statistics_years_barchart_description">Time played per month</string>
@@ -802,6 +803,7 @@
     <string name="edit_url_confirmation_msg">Changing the RSS address can easily break the playback state and episode listings of the podcast. We do NOT recommend changing it and will NOT provide support if anything goes wrong. This cannot be undone. The broken subscription CANNOT be repaired by simply changing the address back. We recommend creating a backup before continuing.</string>
 
     <!-- Podcast release schedules -->
+    <string name="release_schedule_multiple_per_day">multiple times per day</string>
     <string name="release_schedule_daily">daily</string>
     <string name="release_schedule_weekdays">on weekdays</string>
     <string name="release_schedule_weekly">weekly</string>
@@ -906,6 +908,7 @@
     <string name="widget_settings">Widget settings</string>
     <string name="widget_create_button">Create widget</string>
     <string name="widget_opacity">Opacity</string>
+    <string name="cover_as_background">Cover as background</string>
 
     <!-- On-Demand configuration -->
     <string name="on_demand_config_setting_changed">Setting updated successfully.</string>
