@@ -649,6 +649,7 @@
         <item quantity="one">+1 episode</item>
         <item quantity="other">+%d episodes</item>
     </plurals>
+    <string name="sleep_timer_auto_activate">Change the \'continuous playback\' setting if you always want to stop playback after an episode</string>
     <string name="sleep_timer_always">Always</string>
     <string name="sleep_timer_label">Sleep timer</string>
     <string name="time_dialog_invalid_input">Invalid input, time has to be an integer</string>

@@ -53,6 +53,7 @@ public class SleepTimerDialog extends DialogFragment {
     private TextView time;
     private Spinner sleepTimerType;
     private CheckBox chAutoEnable;
+    private ImageView changeTimesButton;
 
     Button extendSleepFiveMinutesButton;
     Button extendSleepTenMinutesButton;
@@ -215,13 +216,11 @@ public class SleepTimerDialog extends DialogFragment {
         final CheckBox cbShakeToReset = content.findViewById(R.id.cbShakeToReset);
         final CheckBox cbVibrate = content.findViewById(R.id.cbVibrate);
         chAutoEnable = content.findViewById(R.id.chAutoEnable);
-        final ImageView changeTimesButton = content.findViewById(R.id.changeTimesButton);
+        changeTimesButton = content.findViewById(R.id.changeTimesButton);
 
         cbShakeToReset.setChecked(SleepTimerPreferences.shakeToReset());
         cbVibrate.setChecked(SleepTimerPreferences.vibrate());
-        chAutoEnable.setChecked(SleepTimerPreferences.autoEnable());
-        changeTimesButton.setEnabled(chAutoEnable.isChecked());
-        changeTimesButton.setAlpha(chAutoEnable.isChecked() ? 1.0f : 0.5f);
+        refreshAutoEnableControls(SleepTimerPreferences.autoEnable());
 
         cbShakeToReset.setOnCheckedChangeListener((buttonView, isChecked)
                 -> SleepTimerPreferences.setShakeToReset(isChecked));
@@ -229,9 +228,14 @@ public class SleepTimerDialog extends DialogFragment {
                 -> SleepTimerPreferences.setVibrate(isChecked));
         chAutoEnable.setOnCheckedChangeListener((compoundButton, isChecked)
                 -> {
-            SleepTimerPreferences.setAutoEnable(isChecked);
-            changeTimesButton.setEnabled(isChecked);
-            changeTimesButton.setAlpha(isChecked ? 1.0f : 0.5f);
+            boolean always = SleepTimerPreferences.autoEnableFrom() == SleepTimerPreferences.autoEnableTo();
+            if (isChecked && always) {
+                Snackbar
+                        .make(chAutoEnable, getString(R.string.sleep_timer_auto_activate), Snackbar.LENGTH_LONG)
+                        .setTextMaxLines(5) // show multiple lines, text doesn't fit otherwise
+                        .show();
+            }
+            refreshAutoEnableControls(isChecked);
         });
         updateAutoEnableText();
 
@@ -272,6 +276,11 @@ public class SleepTimerDialog extends DialogFragment {
         return builder.create();
     }
 
+    private void refreshAutoEnableControls(boolean enabled) {
+        SleepTimerPreferences.setAutoEnable(enabled);
+        changeTimesButton.setAlpha(enabled ? 1.0f : 0.5f);
+    }
+
     private void setButtonText(Button button, int buttonTextResourceId, int value) {
         try {
             button.setText(getString(buttonTextResourceId, value));
@@ -309,6 +318,15 @@ public class SleepTimerDialog extends DialogFragment {
         dialog.setOnDismissListener(v -> {
             SleepTimerPreferences.setAutoEnableFrom(dialog.getFrom());
             SleepTimerPreferences.setAutoEnableTo(dialog.getTo());
+            boolean alwaysSelected = dialog.getFrom() == dialog.getTo();
+            // disable the checkbox if they've selected always
+            // only change the state if true, don't change it regardless of flag (alghough we could)
+            if (alwaysSelected) {
+                chAutoEnable.setChecked(false);
+            }
+            else if (!chAutoEnable.isChecked()) { // if it's not checked, then make sure it's checked in UI too
+                chAutoEnable.setChecked(true);
+            }
             updateAutoEnableText();
         });
         dialog.show();
