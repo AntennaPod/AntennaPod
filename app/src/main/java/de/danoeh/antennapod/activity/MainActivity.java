@@ -145,6 +145,7 @@ public class MainActivity extends CastEnabledActivity {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }
             drawerLayout = null;
+            bottomNavigation.onCreateView();
         } else {
             bottomNavigation.hide();
             bottomNavigation = null;
@@ -337,7 +338,7 @@ public class MainActivity extends CastEnabledActivity {
             drawerLayout.removeDrawerListener(drawerToggle);
         }
         if (bottomNavigation != null) {
-            bottomNavigation.onDestroy();
+            bottomNavigation.onDestroyView();
         }
     }
 
@@ -571,9 +572,6 @@ public class MainActivity extends CastEnabledActivity {
         super.onStart();
         EventBus.getDefault().register(this);
         new RatingDialogManager(this).showIfNeeded();
-        if (bottomNavigation != null) {
-            bottomNavigation.onStart();
-        }
         getOnBackPressedDispatcher().addCallback(this, openDefaultPageBackPressedCallback);
         getOnBackPressedDispatcher().addCallback(this, bottomSheetBackPressedCallback);
     }
@@ -603,9 +601,6 @@ public class MainActivity extends CastEnabledActivity {
     protected void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-        if (bottomNavigation != null) {
-            bottomNavigation.onStop();
-        }
     }
 
     @Override

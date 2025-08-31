@@ -148,15 +148,12 @@ public class BottomNavigation {
         bottomNavigationView.setVisibility(View.GONE);
     }
 
-    public void onStart() {
+    public void onCreateView() {
         EventBus.getDefault().register(this);
     }
 
-    public void onStop() {
+    public void onDestroyView() {
         EventBus.getDefault().unregister(this);
-    }
-
-    public void onDestroy() {
         if (bottomNavigationBadgeLoader != null) {
             bottomNavigationBadgeLoader.dispose();
             bottomNavigationBadgeLoader = null;
