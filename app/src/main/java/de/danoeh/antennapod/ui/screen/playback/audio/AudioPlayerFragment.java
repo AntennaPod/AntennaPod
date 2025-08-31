@@ -376,10 +376,8 @@ public class AudioPlayerFragment extends Fragment implements
                 Converter.getDurationStringLocalized(getContext(), currentPosition)));
 
         int remainingTime = converter.convert(Math.max(event.getDuration() - event.getPosition(), 0));
-        final boolean endingThisEpisode = controller.isSleepTimerEndingThisEpisode(remainingTime);
 
         showTimeLeft = UserPreferences.shouldShowRemainingTime() || controller.sleepTimerActive();
-        final String endingSymbol = endingThisEpisode ? "⏲" : "-";
 
         if (showTimeLeft) {
             int remainingSleepTime = Math.toIntExact(controller.getSleepTimerTimeLeft().getMilisValue());
@@ -389,27 +387,11 @@ public class AudioPlayerFragment extends Fragment implements
 
             txtvLength.setContentDescription(getString(R.string.remaining_time,
                     Converter.getDurationStringLocalized(getContext(), remainingTime)));
-            txtvLength.setText(((remainingTime > 0) ? endingSymbol : "")
-                    + Converter.getDurationStringLong(remainingTime));
+            txtvLength.setText(Converter.getDurationStringLong(remainingTime));
         } else {
             txtvLength.setContentDescription(getString(R.string.chapter_duration,
                     Converter.getDurationStringLocalized(getContext(), duration)));
             txtvLength.setText(Converter.getDurationStringLong(duration));
-        }
-
-        if (controller.sleepTimerActive()) {
-            if (endingThisEpisode) {
-                // add a symbol to signal that playback is ending sometime this episode
-                final CharSequence text = txtvLength.getText();
-                txtvLength.setText(text + "");
-            }
-            txtvLength.setTextColor(
-                    MaterialColors.getColor(getContext(),
-                            android.R.attr.colorActivatedHighlight, Color.RED));
-        } else {
-            txtvLength.setTextColor(
-                    MaterialColors.getColor(getContext(),
-                            android.R.attr.textColorSecondary, Color.BLACK));
         }
 
         if (!sbPosition.isPressed()) {
