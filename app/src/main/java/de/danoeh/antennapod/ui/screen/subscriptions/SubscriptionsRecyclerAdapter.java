@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.SelectableAdapter;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
@@ -27,6 +26,7 @@ import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Adapter for subscriptions
@@ -34,8 +34,9 @@ import java.util.List;
 public class SubscriptionsRecyclerAdapter extends SelectableAdapter<SubscriptionViewHolder>
         implements View.OnCreateContextMenuListener {
     private final WeakReference<MainActivity> mainActivityRef;
-    private List<NavDrawerData.DrawerItem> listItems;
-    private NavDrawerData.DrawerItem selectedItem = null;
+    private List<Feed> listItems;
+    private Map<Long, Integer> feedCounters;
+    private Feed selectedItem = null;
     int longPressedPosition = 0; // used to init actionMode
     private int columnCount = 3;
 
@@ -43,6 +44,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         super(mainActivity);
         this.mainActivityRef = new WeakReference<>(mainActivity);
         this.listItems = new ArrayList<>();
+        this.feedCounters = Map.of();
         setHasStableIds(true);
     }
 
@@ -54,7 +56,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         return listItems.get(position);
     }
 
-    public NavDrawerData.DrawerItem getSelectedItem() {
+    public Feed getSelectedItem() {
         return selectedItem;
     }
 
@@ -75,16 +77,13 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
 
     @Override
     public void onBindViewHolder(@NonNull SubscriptionViewHolder holder, int position) {
-        NavDrawerData.DrawerItem drawerItem = listItems.get(position);
-        boolean isFeed = drawerItem.type == NavDrawerData.DrawerItem.Type.FEED;
-        holder.bind(drawerItem, columnCount);
+        Feed feed = listItems.get(position);
+        holder.bind(feed, columnCount, feedCounters.containsKey(feed.getId()) ? feedCounters.get(feed.getId()) : 0);
         holder.itemView.setOnCreateContextMenuListener(this);
         if (inActionMode()) {
             if (holder.selectView != null) {
-                if (isFeed) {
-                    holder.selectCheckbox.setVisibility(View.VISIBLE);
-                }
-                holder.selectView.setVisibility(isFeed ? View.VISIBLE : View.GONE);
+                holder.selectCheckbox.setVisibility(View.VISIBLE);
+                holder.selectView.setVisibility(View.VISIBLE);
                 holder.selectCheckbox.setChecked((isSelected(position)));
                 holder.selectCheckbox.setOnCheckedChangeListener((buttonView, isChecked)
                         -> setSelected(holder.getBindingAdapterPosition(), isChecked));
@@ -106,10 +105,8 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
 
         holder.itemView.setOnLongClickListener(v -> {
             if (!inActionMode()) {
-                if (isFeed) {
-                    longPressedPosition = holder.getBindingAdapterPosition();
-                }
-                selectedItem = drawerItem;
+                longPressedPosition = holder.getBindingAdapterPosition();
+                selectedItem = feed;
             }
             return false;
         });
@@ -119,27 +116,19 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                 if (e.isFromSource(InputDevice.SOURCE_MOUSE)
                         &&  e.getButtonState() == MotionEvent.BUTTON_SECONDARY) {
                     if (!inActionMode()) {
-                        if (isFeed) {
-                            longPressedPosition = holder.getBindingAdapterPosition();
-                        }
-                        selectedItem = drawerItem;
+                        longPressedPosition = holder.getBindingAdapterPosition();
+                        selectedItem = feed;
                     }
                 }
             }
             return false;
         });
         holder.itemView.setOnClickListener(v -> {
-            if (isFeed) {
-                if (inActionMode()) {
-                    setSelected(holder.getBindingAdapterPosition(), !isSelected(holder.getBindingAdapterPosition()));
-                    notifyItemChanged(holder.getBindingAdapterPosition());
-                } else {
-                    Fragment fragment = FeedItemlistFragment
-                            .newInstance(((NavDrawerData.FeedDrawerItem) drawerItem).feed.getId());
-                    mainActivityRef.get().loadChildFragment(fragment);
-                }
-            } else if (!inActionMode()) {
-                Fragment fragment = SubscriptionFragment.newInstance(drawerItem.getTitle());
+            if (inActionMode()) {
+                setSelected(holder.getBindingAdapterPosition(), !isSelected(holder.getBindingAdapterPosition()));
+                notifyItemChanged(holder.getBindingAdapterPosition());
+            } else {
+                Fragment fragment = FeedItemlistFragment.newInstance(feed.getId());
                 mainActivityRef.get().loadChildFragment(fragment);
             }
         });
@@ -156,7 +145,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         if (position >= listItems.size()) {
             return RecyclerView.NO_ID; // Dummy views
         }
-        return listItems.get(position).id;
+        return listItems.get(position).getId();
     }
 
     @Override
@@ -165,12 +154,8 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
             return;
         }
         MenuInflater inflater = mainActivityRef.get().getMenuInflater();
-        if (selectedItem.type == NavDrawerData.DrawerItem.Type.FEED) {
-            inflater.inflate(R.menu.nav_feed_context, menu);
-            menu.findItem(R.id.multi_select).setVisible(true);
-        } else {
-            inflater.inflate(R.menu.nav_folder_context, menu);
-        }
+        inflater.inflate(R.menu.nav_feed_context, menu);
+        menu.findItem(R.id.multi_select).setVisible(true);
         menu.setHeaderTitle(selectedItem.getTitle());
     }
 
@@ -186,27 +171,16 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         List<Feed> items = new ArrayList<>();
         for (int i = 0; i < getItemCount(); i++) {
             if (isSelected(i)) {
-                NavDrawerData.DrawerItem drawerItem = listItems.get(i);
-                if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
-                    Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
-                    items.add(feed);
-                }
+                items.add(listItems.get(i));
             }
         }
         return items;
     }
 
-    public void setItems(List<NavDrawerData.DrawerItem> listItems) {
+    public void setItems(List<Feed> listItems, Map<Long, Integer> feedCounters) {
         this.listItems = listItems;
+        this.feedCounters = feedCounters;
         notifyDataSetChanged();
-    }
-
-    @Override
-    public void setSelected(int pos, boolean selected) {
-        NavDrawerData.DrawerItem drawerItem = listItems.get(pos);
-        if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
-            super.setSelected(pos, selected);
-        }
     }
 
     @Override
