@@ -272,6 +272,19 @@ public class SleepTimerDialog extends DialogFragment {
         return builder.create();
     }
 
+    private void setButtonText(Button button, int buttonTextResourceId, int value) {
+        try {
+            button.setText(getString(buttonTextResourceId, value));
+        } catch (Resources.NotFoundException ex) {
+            button.setText(getContext().getResources()
+                    .getQuantityString(
+                            buttonTextResourceId,
+                            value,
+                            value));
+        }
+
+    }
+
     private void refreshExtendButtons() {
         final SleepTimeConfig selectedConfig = allSleepConfig.get(SleepTimerPreferences.getSleepTimerType());
 
@@ -282,16 +295,7 @@ public class SleepTimerDialog extends DialogFragment {
                 extendSleepTwentyMinutesButton)) {
             final SleepEntryConfig entryConfig = Objects.requireNonNull(selectedConfig).sleepEntries.get(counter++);
             // button text resource can be either string or plural string
-            try {
-                button.setText(getString(selectedConfig.buttonTextResourceId, entryConfig.displayValue));
-            } catch (Resources.NotFoundException ex) {
-                button.setText(getContext().getResources()
-                        .getQuantityString(
-                                selectedConfig.buttonTextResourceId,
-                                entryConfig.displayValue,
-                                entryConfig.displayValue));
-            }
-
+            setButtonText(button, selectedConfig.buttonTextResourceId, entryConfig.displayValue);
             button.setOnClickListener(v -> {
                 if (controller != null) {
                     controller.extendSleepTimer(entryConfig.configuredValue);
