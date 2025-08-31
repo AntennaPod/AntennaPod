@@ -59,7 +59,11 @@ public class SubscriptionTagAdapter extends RecyclerView.Adapter<SubscriptionTag
         if (FeedPreferences.TAG_ROOT.equals(tag.getTitle())) {
             holder.chip.setText(R.string.tag_all);
         } else {
-            holder.chip.setText(tag.getTitle());
+            String title = tag.getTitle();
+            if (title.length() > 20) {
+                title = title.substring(0, 19) + "…";
+            }
+            holder.chip.setText(title);
         }
         holder.chip.setChecked(tag.getTitle().equals(selectedTag));
         holder.chip.setOnClickListener(v -> onTagClick(tag));
