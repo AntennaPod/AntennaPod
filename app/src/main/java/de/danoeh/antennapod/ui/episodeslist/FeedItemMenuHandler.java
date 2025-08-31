@@ -284,25 +284,27 @@ public class FeedItemMenuHandler {
             }
         };
 
-        int playStateStringRes;
+        String message;
         switch (playState) {
             default:
             case FeedItem.UNPLAYED:
                 if (item.getPlayState() == FeedItem.NEW) {
                     //was new
-                    playStateStringRes = R.string.removed_from_inbox_message;
+                    message = fragment.getString(R.string.removed_from_inbox_message);
                 } else {
                     //was played
-                    playStateStringRes = R.string.marked_as_unplayed_message;
+                    message = fragment.getResources().getQuantityString(
+                            R.plurals.marked_as_unplayed_message, 1);
                 }
                 break;
             case FeedItem.PLAYED:
-                playStateStringRes = R.string.marked_as_played_message;
+                message = fragment.getResources().getQuantityString(
+                        R.plurals.marked_as_played_message, 1);
                 break;
         }
 
         if (showSnackbar) {
-            EventBus.getDefault().post(new MessageEvent(fragment.getString(playStateStringRes),
+            EventBus.getDefault().post(new MessageEvent(message,
                     context -> {
                         DBWriter.markItemPlayed(item.getPlayState(), item.getId());
                         // don't forget to cancel the thing that's going to remove the media

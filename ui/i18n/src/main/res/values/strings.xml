@@ -247,8 +247,6 @@
     <string name="removed_from_inbox_message">Removed from inbox</string>
     <string name="mark_as_played_label">Mark as played</string>
     <string name="toggle_played_label">Toggle played state</string>
-    <string name="marked_as_played_message">Marked as played</string>
-    <string name="marked_as_unplayed_message">Marked as unplayed</string>
     <string name="mark_read_no_media_label">Mark as read</string>
     <string name="play_this_to_seek_position_message">To jump to positions, you need to play the episode</string>
     <plurals name="marked_as_played_message">
