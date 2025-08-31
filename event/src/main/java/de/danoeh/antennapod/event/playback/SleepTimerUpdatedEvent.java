@@ -2,12 +2,12 @@ package de.danoeh.antennapod.event.playback;
 
 public class SleepTimerUpdatedEvent {
     private static final long CANCELLED = Long.MAX_VALUE;
-    private final long milisTimeLeft;
+    private final long millisTimeLeft;
     private final long displayTimeLeft;
 
-    private SleepTimerUpdatedEvent(long displayTimeLeft, long milisTimeLeft) {
+    private SleepTimerUpdatedEvent(long displayTimeLeft, long millisTimeLeft) {
         this.displayTimeLeft = displayTimeLeft;
-        this.milisTimeLeft = milisTimeLeft;
+        this.millisTimeLeft = millisTimeLeft;
     }
 
     public static SleepTimerUpdatedEvent justEnabled(long displayTimeLeft, long milisTimeLeft) {
@@ -22,8 +22,8 @@ public class SleepTimerUpdatedEvent {
         return new SleepTimerUpdatedEvent(CANCELLED, CANCELLED);
     }
 
-    public long getMilisTimeLeft() {
-        return Math.abs(milisTimeLeft);
+    public long getMillisTimeLeft() {
+        return Math.abs(millisTimeLeft);
     }
 
     public long getDisplayTimeLeft() {
@@ -31,14 +31,14 @@ public class SleepTimerUpdatedEvent {
     }
 
     public boolean isOver() {
-        return milisTimeLeft == 0;
+        return millisTimeLeft == 0;
     }
 
     public boolean wasJustEnabled() {
-        return milisTimeLeft < 0;
+        return millisTimeLeft < 0;
     }
 
     public boolean isCancelled() {
-        return milisTimeLeft == CANCELLED;
+        return millisTimeLeft == CANCELLED;
     }
 }
