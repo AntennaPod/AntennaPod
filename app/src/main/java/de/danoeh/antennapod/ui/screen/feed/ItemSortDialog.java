@@ -20,6 +20,7 @@ import de.danoeh.antennapod.model.feed.SortOrder;
 public class ItemSortDialog extends BottomSheetDialogFragment {
     protected SortOrder sortOrder;
     protected SortDialogBinding viewBinding;
+    protected boolean showDefault;
 
     @Nullable
     @Override
@@ -32,8 +33,15 @@ public class ItemSortDialog extends BottomSheetDialogFragment {
         return viewBinding.getRoot();
     }
 
+    public void setShowDefaultSortButton(boolean showDefault) {
+        this.showDefault = showDefault;
+    }
+
     private void populateList() {
         viewBinding.gridLayout.removeAllViews();
+        if (showDefault) {
+            onAddDefaultItem(R.string.user_default);
+        }
         onAddItem(R.string.episode_title, SortOrder.EPISODE_TITLE_A_Z, SortOrder.EPISODE_TITLE_Z_A, true);
         onAddItem(R.string.feed_title, SortOrder.FEED_TITLE_A_Z, SortOrder.FEED_TITLE_Z_A, true);
         onAddItem(R.string.duration, SortOrder.DURATION_SHORT_LONG, SortOrder.DURATION_LONG_SHORT, true);
@@ -42,6 +50,27 @@ public class ItemSortDialog extends BottomSheetDialogFragment {
         onAddItem(R.string.filename, SortOrder.EPISODE_FILENAME_A_Z, SortOrder.EPISODE_FILENAME_Z_A, true);
         onAddItem(R.string.random, SortOrder.RANDOM, SortOrder.RANDOM, true);
         onAddItem(R.string.smart_shuffle, SortOrder.SMART_SHUFFLE_OLD_NEW, SortOrder.SMART_SHUFFLE_NEW_OLD, false);
+    }
+
+
+    protected void onAddDefaultItem(int title) {
+        if (sortOrder == null) {
+            SortDialogItemActiveBinding item = SortDialogItemActiveBinding.inflate(
+                    getLayoutInflater(), viewBinding.gridLayout, false);
+            item.button.setText(title);
+            viewBinding.gridLayout.addView(item.getRoot());
+        } else {
+            viewBinding.gridLayout.removeAllViews();
+            SortDialogItemBinding item = SortDialogItemBinding.inflate(
+                    getLayoutInflater(), viewBinding.gridLayout, false);
+            item.button.setText(title);
+            item.button.setOnClickListener(v -> {
+                sortOrder = null;
+                populateList();
+                onSelectionChanged();
+            });
+            viewBinding.gridLayout.addView(item.getRoot());
+        }
     }
 
     protected void onAddItem(int title, SortOrder ascending, SortOrder descending, boolean ascendingIsDefault) {

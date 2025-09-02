@@ -16,11 +16,12 @@ public class SingleFeedSortDialog extends ItemSortDialog {
         bundle.putLong(ARG_FEED_ID, feed.getId());
         bundle.putBoolean(ARG_FEED_IS_LOCAL, feed.isLocalFeed());
         if (feed.getSortOrder() == null) {
-            bundle.putString(ARG_SORT_ORDER, String.valueOf(SortOrder.DATE_NEW_OLD.code));
+            bundle.putString(ARG_SORT_ORDER, null);
         } else {
             bundle.putString(ARG_SORT_ORDER, String.valueOf(feed.getSortOrder().code));
         }
         SingleFeedSortDialog dialog = new SingleFeedSortDialog();
+        dialog.setShowDefaultSortButton(true);
         dialog.setArguments(bundle);
         return dialog;
     }
