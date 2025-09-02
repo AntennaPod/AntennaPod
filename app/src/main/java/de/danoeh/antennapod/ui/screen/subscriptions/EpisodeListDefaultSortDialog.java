@@ -1,4 +1,5 @@
 package de.danoeh.antennapod.ui.screen.subscriptions;
+
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 
