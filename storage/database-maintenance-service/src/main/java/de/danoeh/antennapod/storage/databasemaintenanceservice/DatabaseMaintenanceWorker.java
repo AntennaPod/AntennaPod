@@ -20,10 +20,10 @@ public class DatabaseMaintenanceWorker extends Worker {
     private static final String WORK_ID_DATABASE_MAINTENANCE = "DatabaseMaintenanceWorker";
 
     public static void enqueueIfNeeded(Context context) {
-            PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(
-                    DatabaseMaintenanceWorker.class, 3, TimeUnit.DAYS).build();
-            WorkManager.getInstance(context).enqueueUniquePeriodicWork(WORK_ID_DATABASE_MAINTENANCE,
-                            ExistingPeriodicWorkPolicy.KEEP, workRequest);
+        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(
+                DatabaseMaintenanceWorker.class, 3, TimeUnit.DAYS).build();
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(WORK_ID_DATABASE_MAINTENANCE,
+                        ExistingPeriodicWorkPolicy.KEEP, workRequest);
     }
 
     public DatabaseMaintenanceWorker(@NonNull Context context, @NonNull WorkerParameters params) {
