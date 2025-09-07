@@ -39,6 +39,7 @@ include ':playback:cast'
 include ':playback:service'
 
 include ':storage:database'
+include ':storage:database-maintenance-service'
 include ':storage:importexport'
 include ':storage:preferences'
 

@@ -963,6 +963,11 @@ public class PodDBAdapter {
         db.delete(TABLE_NAME_DOWNLOAD_LOG, null, null);
     }
 
+    public void clearOldDownloadLog() {
+        db.execSQL("DELETE FROM " + PodDBAdapter.TABLE_NAME_DOWNLOAD_LOG + " WHERE "
+                + PodDBAdapter.KEY_COMPLETION_DATE + "<" + (System.currentTimeMillis() - 7L * 24L * 3600L * 1000L));
+    }
+
     /**
      * Get all Feeds from the Feed Table.
      *
@@ -1531,9 +1536,6 @@ public class PodDBAdapter {
         public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
             Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to " + newVersion + ".");
             DBUpgrader.upgrade(db, oldVersion, newVersion);
-
-            db.execSQL("DELETE FROM " + PodDBAdapter.TABLE_NAME_DOWNLOAD_LOG + " WHERE "
-                    + PodDBAdapter.KEY_COMPLETION_DATE + "<" + (System.currentTimeMillis() - 7L * 24L * 3600L * 1000L));
         }
     }
 }
