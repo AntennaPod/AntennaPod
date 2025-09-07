@@ -1015,10 +1015,10 @@ public class PodDBAdapter {
         );
     }
 
-    public final Cursor getDownloadLog(final int feedFileType, final long feedFileId) {
+    public final Cursor getDownloadLog(final int feedFileType, final long feedFileId, final long limit) {
         final String query = "SELECT * FROM " + TABLE_NAME_DOWNLOAD_LOG +
                 " WHERE " + KEY_FEEDFILE + "=" + feedFileId + " AND " + KEY_FEEDFILETYPE + "=" + feedFileType
-                + " ORDER BY " + KEY_COMPLETION_DATE + " DESC";
+                + " ORDER BY " + KEY_COMPLETION_DATE + " DESC LIMIT " + limit;
         return db.rawQuery(query, null);
     }
 

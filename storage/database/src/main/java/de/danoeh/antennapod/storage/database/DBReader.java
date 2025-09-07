@@ -321,13 +321,13 @@ public final class DBReader {
      * @return A list with DownloadStatus objects that represent the feed's download log,
      * newest events first.
      */
-    public static List<DownloadResult> getFeedDownloadLog(long feedId) {
+    public static List<DownloadResult> getFeedDownloadLog(long feedId, long limit) {
         Log.d(TAG, "getFeedDownloadLog() called with: " + "feed = [" + feedId + "]");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try (DownloadResultCursor cursor = new DownloadResultCursor(
-                adapter.getDownloadLog(Feed.FEEDFILETYPE_FEED, feedId))) {
+                adapter.getDownloadLog(Feed.FEEDFILETYPE_FEED, feedId, limit))) {
             List<DownloadResult> downloadLog = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
                 downloadLog.add(cursor.getDownloadResult());
