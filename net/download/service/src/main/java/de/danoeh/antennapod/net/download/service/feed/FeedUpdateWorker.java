@@ -244,7 +244,7 @@ public class FeedUpdateWorker extends Worker {
             return savedFeed; // No download logs for new subscriptions
         }
         // we create a 'successful' download log if the feed's last refresh failed
-        List<DownloadResult> log = DBReader.getFeedDownloadLog(request.getFeedfileId());
+        List<DownloadResult> log = DBReader.getFeedDownloadLog(request.getFeedfileId(), 1);
         if (!log.isEmpty() && !log.get(0).isSuccessful()) {
             DBWriter.addDownloadStatus(parserTask.getDownloadStatus());
         }
