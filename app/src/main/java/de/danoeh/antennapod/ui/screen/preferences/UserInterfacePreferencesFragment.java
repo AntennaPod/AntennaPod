@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.storage.preferences.UsageStatistics;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
+import de.danoeh.antennapod.ui.screen.subscriptions.EpisodeListDefaultSortDialog;
 import de.danoeh.antennapod.ui.screen.subscriptions.FeedSortDialog;
 import org.greenrobot.eventbus.EventBus;
 
@@ -87,6 +88,14 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
                     FeedSortDialog.showDialog(requireContext());
                     return true;
                 }));
+
+        findPreference(UserPreferences.PREF_DEFAULT_SORTED_ORDER)
+                .setOnPreferenceClickListener((preference -> {
+                    EpisodeListDefaultSortDialog dialog = EpisodeListDefaultSortDialog.newInstance();
+                    dialog.show(getChildFragmentManager(), "SortDialog");
+                    return true;
+                }));
+
         findPreference(PREF_SWIPE)
                 .setOnPreferenceClickListener(preference -> {
                     ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_swipe);
