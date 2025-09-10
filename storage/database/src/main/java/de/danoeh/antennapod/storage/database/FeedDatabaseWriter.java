@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.storage.database;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.model.download.DownloadError;
@@ -46,38 +45,6 @@ public abstract class FeedDatabaseWriter {
     }
 
     /**
-     * Get a FeedItem by its identifying value.
-     */
-    private static FeedItem searchFeedItemByIdentifyingValue(List<FeedItem> items, FeedItem searchItem) {
-        for (FeedItem item : items) {
-            if (TextUtils.equals(item.getIdentifyingValue(), searchItem.getIdentifyingValue())) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Guess if one of the items could actually mean the searched item, even if it uses another identifying value.
-     * This is to work around podcasters breaking their GUIDs.
-     */
-    private static FeedItem searchFeedItemGuessDuplicate(List<FeedItem> items, FeedItem searchItem) {
-        // First, see if it is a well-behaving feed that contains an item with the same identifier
-        for (FeedItem item : items) {
-            if (FeedItemDuplicateGuesser.sameAndNotEmpty(item.getItemIdentifier(), searchItem.getItemIdentifier())) {
-                return item;
-            }
-        }
-        // Not found yet, start more expensive guessing
-        for (FeedItem item : items) {
-            if (FeedItemDuplicateGuesser.seemDuplicates(item, searchItem)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /**
      * Adds new Feeds to the database or updates the old versions if they already exists. If another Feed with the same
      * identifying value already exists, this method will add new FeedItems from the new Feed to the existing Feed.
      * These FeedItems will be marked as unread with the exception of the most recent FeedItem.
@@ -108,6 +75,9 @@ public abstract class FeedDatabaseWriter {
                         + " already exists. Syncing new with existing one.");
 
             Collections.sort(newFeed.getItems(), new FeedItemPubdateComparator());
+            FeedItemDuplicateGuesserPool newFeedDuplicateGuesser = new FeedItemDuplicateGuesserPool(newFeed.getItems());
+            FeedItemDuplicateGuesserPool savedFeedDuplicateGuesser
+                    = new FeedItemDuplicateGuesserPool(savedFeed.getItems());
 
             if (newFeed.getPageNr() == savedFeed.getPageNr()) {
                 savedFeed.updateFromOther(newFeed);
@@ -128,7 +98,7 @@ public abstract class FeedDatabaseWriter {
             for (int idx = 0; idx < newFeed.getItems().size(); idx++) {
                 final FeedItem item = newFeed.getItems().get(idx);
 
-                FeedItem possibleDuplicate = searchFeedItemGuessDuplicate(newFeed.getItems(), item);
+                FeedItem possibleDuplicate = newFeedDuplicateGuesser.guessDuplicate(item);
                 if (!newFeed.isLocalFeed() && possibleDuplicate != null && item != possibleDuplicate) {
                     // Canonical episode is the first one returned (usually oldest)
                     DBWriter.addDownloadStatus(new DownloadResult(item.getTitle(),
@@ -142,9 +112,9 @@ public abstract class FeedDatabaseWriter {
                     continue;
                 }
 
-                FeedItem oldItem = searchFeedItemByIdentifyingValue(savedFeed.getItems(), item);
+                FeedItem oldItem = savedFeedDuplicateGuesser.findById(item);
                 if (!newFeed.isLocalFeed() && oldItem == null) {
-                    oldItem = searchFeedItemGuessDuplicate(savedFeed.getItems(), item);
+                    oldItem = savedFeedDuplicateGuesser.guessDuplicate(item);
                     if (oldItem != null) {
                         Log.d(TAG, "Repaired duplicate: " + oldItem + ", " + item);
                         DBWriter.addDownloadStatus(new DownloadResult(item.getTitle(),
@@ -181,6 +151,7 @@ public abstract class FeedDatabaseWriter {
                     } else {
                         savedFeed.getItems().add(idx, item);
                     }
+                    savedFeedDuplicateGuesser.add(item);
 
                     boolean shouldPerformNewEpisodesAction = item.getPubDate() == null
                             || priorMostRecentDate == null
@@ -217,7 +188,7 @@ public abstract class FeedDatabaseWriter {
                 Iterator<FeedItem> it = savedFeed.getItems().iterator();
                 while (it.hasNext()) {
                     FeedItem feedItem = it.next();
-                    if (searchFeedItemByIdentifyingValue(newFeed.getItems(), feedItem) == null) {
+                    if (newFeedDuplicateGuesser.findById(feedItem) == null) {
                         unlistedItems.add(feedItem);
                         it.remove();
                     }
