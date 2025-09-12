@@ -278,6 +278,10 @@ public abstract class UserPreferences {
         return FeedCounter.fromOrdinal(Integer.parseInt(value));
     }
 
+    public static void setFeedCounterSetting(FeedCounter counter) {
+        prefs.edit().putString(PREF_DRAWER_FEED_COUNTER, "" + counter.id).apply();
+    }
+
     /**
      * @return {@code true} if episodes should use their own cover, {@code false}  otherwise
      */
