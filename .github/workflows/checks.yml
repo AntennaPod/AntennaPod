@@ -49,6 +49,7 @@ jobs:
         run: |
           git diff --name-only | xargs -I '{}' echo "::error file={},line=1,endLine=1,title=XML Format::Run android-xml-formatter.jar on this file or view CI output to see how it should be formatted."
           python .github/workflows/errorPrinter.py
+          false
 
   unit-test:
     name: "Unit Test: ${{ matrix.variant }}"
