@@ -233,6 +233,9 @@ public class SubscriptionFragment extends Fragment
         } else if (itemId == R.id.subscriptions_sort) {
             FeedSortDialog.showDialog(requireContext());
             return true;
+        } else if (itemId == R.id.subscriptions_counter) {
+            FeedCounterDialog.showDialog(requireContext());
+            return true;
         } else if (itemId == R.id.subscription_display_list) {
             setColumnNumber(1);
             return true;

@@ -489,10 +489,7 @@
     <string name="bottom_navigation_summary">Access the most important screens from everywhere, in a single tap</string>
     <string name="pref_nav_drawer_items_title">Customize navigation</string>
     <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer or bottom navigation</string>
-    <string name="pref_nav_drawer_feed_order_title">Set subscription order</string>
-    <string name="pref_nav_drawer_feed_order_sum">Change the order of your subscriptions</string>
-    <string name="pref_nav_drawer_feed_counter_title">Set subscription counter</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Change the information displayed by the subscription counter. Also affects the sorting of subscriptions if \'Subscription Order\' is set to \'Counter\'.</string>
+    <string name="pref_nav_drawer_feed_counter_title">Counter</string>
     <string name="pref_automatic_download_title">Automatic download</string>
     <string name="pref_automatic_download_global_description">Automatically download episodes from the inbox. Can be overridden per podcast.</string>
     <string name="pref_automatic_download_queue_title">Download queued</string>
@@ -561,8 +558,6 @@
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted</string>
     <string name="pref_downloads_button_action_title">Play from downloads screen</string>
     <string name="pref_downloads_button_action_sum">Display play button instead of delete button on downloads screen</string>
-    <string name="pref_filter_feed_title">Subscription filter</string>
-    <string name="pref_filter_feed_sum">Filter your subscriptions in navigation drawer and subscriptions screen</string>
     <string name="subscriptions_counter_greater_zero">Counter greater than zero</string>
     <string name="auto_downloaded">Auto downloaded</string>
     <string name="not_auto_downloaded">Not auto downloaded</string>
