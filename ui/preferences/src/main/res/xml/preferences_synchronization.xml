@@ -5,7 +5,6 @@
 
     <Preference
         android:key="preference_synchronization_description"
-        android:icon="@drawable/ic_notification_sync"
         android:summary="@string/synchronization_summary_unchoosen"/>
 
     <Preference
