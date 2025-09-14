@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import de.danoeh.antennapod.R;
@@ -135,6 +137,8 @@ public class SubscriptionFragment extends Fragment
         subscriptionRecycler = root.findViewById(R.id.subscriptions_grid);
         registerForContextMenu(subscriptionRecycler);
         subscriptionRecycler.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
+        subscriptionRecycler.addOnScrollListener(new LiftOnScrollListener(
+                root.findViewById(R.id.collapsing_container)));
         subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity()) {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -434,6 +438,12 @@ public class SubscriptionFragment extends Fragment
         subscriptionAddButton.setVisibility(View.VISIBLE);
         tagsRecycler.setVisibility(tagAdapter.getItemCount() > 1 ? View.VISIBLE : View.GONE);
         updateFilterVisibility();
+
+        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams)
+                getView().findViewById(R.id.collapsing_container).getLayoutParams();
+        params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
+                | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
+        getView().findViewById(R.id.collapsing_container).setLayoutParams(params);
     }
 
     @Override
@@ -442,6 +452,12 @@ public class SubscriptionFragment extends Fragment
         subscriptionAddButton.setVisibility(View.GONE);
         tagsRecycler.setVisibility(tagAdapter.getItemCount() > 1 ? View.INVISIBLE : View.GONE);
         updateFilterVisibility();
+
+        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams)
+                getView().findViewById(R.id.collapsing_container).getLayoutParams();
+        params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+                | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
+        getView().findViewById(R.id.collapsing_container).setLayoutParams(params);
     }
 
     public Pair<Integer, Integer> getScrollPosition() {
