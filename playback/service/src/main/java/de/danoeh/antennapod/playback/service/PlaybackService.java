@@ -524,10 +524,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.cancel(R.id.notification_streaming_confirmation);
 
-        if ((flags & Service.START_FLAG_REDELIVERY) != 0 || intent == null) {
-            Log.d(TAG, "onStartCommand is a redelivered intent, calling stopForeground now.");
-            stateManager.stopForeground(true);
-            return Service.START_NOT_STICKY;
+        if (intent == null) {
+            Log.d(TAG, "onStartCommand with null intent, attempting to resume playback.");
+            startPlayingFromPreferences();
+            return Service.START_STICKY;
         }
 
         final int keycode = intent.getIntExtra(MediaButtonReceiver.EXTRA_KEYCODE, -1);
@@ -586,7 +586,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             mediaSession.getController().getTransportControls().sendCustomAction(customAction, null);
         }
 
-        return Service.START_NOT_STICKY;
+        return Service.START_STICKY;
     }
 
     private void skipIntro(Playable playable) {
