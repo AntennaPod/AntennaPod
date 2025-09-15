@@ -85,6 +85,7 @@ public class SubscriptionFragment extends Fragment
     private MaterialToolbar toolbar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressBar progressBar;
+    private CollapsingToolbarLayout collapsingContainer;
     private boolean displayUpArrow;
 
     private Disposable disposable;
@@ -153,6 +154,7 @@ public class SubscriptionFragment extends Fragment
 
         progressBar = root.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
+        collapsingContainer = root.findViewById(R.id.collapsing_container);
 
         subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
         subscriptionAddButton.setOnClickListener(view -> {
@@ -432,18 +434,21 @@ public class SubscriptionFragment extends Fragment
         loadSubscriptionsAndTags();
     }
 
+    private void setCollapsingToolbarFlags(int flags) {
+        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) collapsingContainer.getLayoutParams();
+        params.setScrollFlags(flags);
+        collapsingContainer.setLayoutParams(params);
+    }
+
     @Override
     public void onEndSelectMode() {
         floatingSelectMenu.setVisibility(View.GONE);
         subscriptionAddButton.setVisibility(View.VISIBLE);
         tagsRecycler.setVisibility(tagAdapter.getItemCount() > 1 ? View.VISIBLE : View.GONE);
         updateFilterVisibility();
-
-        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams)
-                getView().findViewById(R.id.collapsing_container).getLayoutParams();
-        params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
+        setCollapsingToolbarFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+                | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
                 | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
-        getView().findViewById(R.id.collapsing_container).setLayoutParams(params);
     }
 
     @Override
@@ -452,12 +457,8 @@ public class SubscriptionFragment extends Fragment
         subscriptionAddButton.setVisibility(View.GONE);
         tagsRecycler.setVisibility(tagAdapter.getItemCount() > 1 ? View.INVISIBLE : View.GONE);
         updateFilterVisibility();
-
-        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams)
-                getView().findViewById(R.id.collapsing_container).getLayoutParams();
-        params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+        setCollapsingToolbarFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
                 | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
-        getView().findViewById(R.id.collapsing_container).setLayoutParams(params);
     }
 
     public Pair<Integer, Integer> getScrollPosition() {
