@@ -135,11 +135,11 @@ public class SubscriptionFragment extends Fragment
         }
         refreshToolbarState();
 
+        collapsingContainer = root.findViewById(R.id.collapsing_container);
         subscriptionRecycler = root.findViewById(R.id.subscriptions_grid);
         registerForContextMenu(subscriptionRecycler);
         subscriptionRecycler.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
-        subscriptionRecycler.addOnScrollListener(new LiftOnScrollListener(
-                root.findViewById(R.id.collapsing_container)));
+        subscriptionRecycler.addOnScrollListener(new LiftOnScrollListener(collapsingContainer));
         subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity()) {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -154,7 +154,6 @@ public class SubscriptionFragment extends Fragment
 
         progressBar = root.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
-        collapsingContainer = root.findViewById(R.id.collapsing_container);
 
         subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
         subscriptionAddButton.setOnClickListener(view -> {
