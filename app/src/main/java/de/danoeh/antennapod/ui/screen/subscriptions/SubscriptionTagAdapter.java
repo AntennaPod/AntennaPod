@@ -66,6 +66,7 @@ public class SubscriptionTagAdapter extends RecyclerView.Adapter<SubscriptionTag
             holder.chip.setText(title);
         }
         holder.chip.setChecked(tag.getTitle().equals(selectedTag));
+        holder.chip.setElevation(0);
         holder.chip.setOnClickListener(v -> onTagClick(tag));
         holder.chip.setOnTouchListener((v, e) -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
