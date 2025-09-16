@@ -119,6 +119,7 @@ public class ItemFragment extends Fragment {
     private ItemActionButton actionButton2;
     private View noMediaLabel;
     private View nonSubscribedWarningLabel;
+    private View header;
 
     private Disposable disposable;
     private PlaybackController controller;
@@ -138,6 +139,8 @@ public class ItemFragment extends Fragment {
 
         root = layout.findViewById(R.id.content_root);
 
+        header = layout.findViewById(R.id.header);
+        header.setVisibility(View.INVISIBLE);
         txtvPodcast = layout.findViewById(R.id.txtvPodcast);
         txtvPodcast.setOnClickListener(v -> openPodcast());
         txtvTitle = layout.findViewById(R.id.txtvTitle);
@@ -450,6 +453,7 @@ public class ItemFragment extends Fragment {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(result -> {
                 progbarLoading.setVisibility(View.GONE);
+                header.setVisibility(View.VISIBLE);
                 item = result;
                 onFragmentLoaded();
                 itemsLoaded = true;
