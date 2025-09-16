@@ -755,6 +755,22 @@ public final class DBReader {
         return result;
     }
 
+    public static List<NavDrawerData.TagItem> getAllTags() {
+        Map<String, NavDrawerData.TagItem> tags = new HashMap<>();
+        List<Feed> feeds = getFeedList();
+        for (Feed feed : feeds) {
+            for (String tag : feed.getPreferences().getTags()) {
+                if (!tags.containsKey(tag)) {
+                    tags.put(tag, new NavDrawerData.TagItem(tag));
+                }
+                tags.get(tag).addFeed(feed, 0);
+            }
+        }
+        List<NavDrawerData.TagItem> tagsSorted = new ArrayList<>(tags.values());
+        Collections.sort(tagsSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
+        return tagsSorted;
+    }
+
     public static List<FeedItem> searchFeedItems(final long feedId, final String query) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
