@@ -108,10 +108,15 @@ public class EpisodeMultiSelectActionHandler {
     private void deleteChecked(List<FeedItem> items) {
         int countHasMedia = 0;
         for (FeedItem feedItem : items) {
-            if ((feedItem.hasMedia() && feedItem.getMedia().isDownloaded())
-                    || feedItem.getFeed().isLocalFeed()) {
+            if (!feedItem.hasMedia()) {
+                continue;
+            }
+            if (feedItem.getMedia().isDownloaded() || feedItem.getFeed().isLocalFeed()) {
                 countHasMedia++;
                 DBWriter.deleteFeedMediaOfItem(activity, feedItem.getMedia());
+            } else if (DownloadServiceInterface.get().isDownloadingEpisode(feedItem.getMedia().getDownloadUrl())) {
+                countHasMedia++;
+                DownloadServiceInterface.get().cancel(activity, feedItem.getMedia());
             }
         }
         showMessage(R.plurals.deleted_episode_message, countHasMedia);
