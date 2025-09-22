@@ -94,7 +94,7 @@ public abstract class UserPreferences {
     // Network
     private static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
     public static final String PREF_ENQUEUE_LOCATION = "prefEnqueueLocation";
-    public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
+    public static final String PREF_UPDATE_INTERVAL_MINUTES = "prefAutoUpdateIntervall";
     public static final String PREF_MOBILE_UPDATE = "prefMobileUpdateTypes";
     public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
     public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
@@ -456,7 +456,11 @@ public abstract class UserPreferences {
     }
 
     public static long getUpdateInterval() {
-        return Integer.parseInt(prefs.getString(PREF_UPDATE_INTERVAL, "12"));
+        return Integer.parseInt(prefs.getString(PREF_UPDATE_INTERVAL_MINUTES, "720"));
+    }
+
+    public static void setUpdateInterval(long interval) {
+        prefs.edit().putString(PREF_UPDATE_INTERVAL_MINUTES, String.valueOf(interval)).apply();
     }
 
     public static boolean isAutoUpdateDisabled() {
