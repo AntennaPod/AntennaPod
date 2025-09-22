@@ -14,7 +14,7 @@
             android:key="prefAutoUpdateIntervall"
             android:title="@string/feed_refresh_title"
             android:summary="@string/feed_refresh_sum"
-            android:defaultValue="12"/>
+            android:defaultValue="720"/>
         <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
             android:entryValues="@array/globalNewEpisodesActionValues"
             android:entries="@array/globalNewEpisodesActionItems"

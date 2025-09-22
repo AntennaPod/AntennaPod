@@ -180,7 +180,7 @@ public class EspressoTestUtils {
 
         PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getInstrumentation().getTargetContext())
                 .edit()
-                .putString(UserPreferences.PREF_UPDATE_INTERVAL, "0")
+                .putString(UserPreferences.PREF_UPDATE_INTERVAL_MINUTES, "0")
                 .commit();
     }
 

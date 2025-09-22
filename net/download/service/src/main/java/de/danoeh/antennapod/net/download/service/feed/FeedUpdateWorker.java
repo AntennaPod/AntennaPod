@@ -81,7 +81,7 @@ public class FeedUpdateWorker extends Worker {
                 }
                 if (isAutomaticRefresh && isAutomaticRefreshEnabled
                         && feed.getLastRefreshAttempt() > System.currentTimeMillis() - JOB_SCHEDULE_TIME_VARIATION
-                            - TimeUnit.HOURS.toMillis(UserPreferences.getUpdateInterval())) {
+                            - TimeUnit.MINUTES.toMillis(UserPreferences.getUpdateInterval())) {
                     // Recently updated, no need to automatically check again
                     itr.remove();
                     continue;
