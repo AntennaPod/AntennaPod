@@ -199,7 +199,7 @@
     <string name="transcript">Transkript</string>
     <string name="no_transcript_label">Kein Transkript</string>
     <string name="remove_from_favorite_label">Aus Favoriten entfernen</string>
-    <string name="visit_website_label">Webseite besuchen</string>
+    <string name="visit_website_label">Website besuchen</string>
     <string name="skip_episode_label">Episode überspringen</string>
     <!--Download messages and labels-->
   <string name="download_successful">erfolgreich</string>
@@ -216,7 +216,7 @@
     <string name="download_error_error_unknown">Unbekannter Fehler</string>
     <string name="download_error_parser_exception">Der vom Podcast-Server übermittelte Feed ist defekt. Wir empfehlen, dies mit einem Podcast-Validator wie castfeedvalidator.com zu überprüfen und den Podcast-Ersteller darüber zu informieren.</string>
     <string name="download_error_unsupported_type">Nicht unterstützter Feed-Typ</string>
-    <string name="download_error_unsupported_type_html">Der Podcast-Server hat eine Webseite anstatt eines Podcasts gesendet.</string>
+    <string name="download_error_unsupported_type_html">Der Podcast-Server hat eine Website anstatt eines Podcasts gesendet.</string>
     <string name="download_error_not_found">Datei auf Podcast-Server nicht vorhanden. Sie könnte gelöscht worden sein.</string>
     <string name="download_error_connection_error">Verbindungsfehler</string>
     <string name="download_error_no_connection">Keine Netzwerkverbindung</string>
@@ -850,11 +850,11 @@
     <string name="mark_as_played_label">Als abgespielt markieren</string>
     <plurals name="marked_as_played_message">
         <item quantity="one">Als abgespielt markiert</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <plurals name="marked_as_unplayed_message">
         <item quantity="one">Als ungespielt markiert</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="play_this_to_seek_position_message">Um zu Positionen zu springen, musst du die Episode abspielen</string>
     <string name="mark_as_unplayed_label">Als ungespielt markieren</string>

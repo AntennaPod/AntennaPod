@@ -854,4 +854,57 @@
     <string name="feed_new_episodes_action_summary_autodownload">Descarga automática activada. Los episodios se añaden a la bandeja de entrada una vez descargados.</string>
     <string name="visit_social_interact_label">Mostrar comentarios</string>
     <string name="rss_address">Dirección RSS</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Descargando %d episodio.</item>
+        <item quantity="many">Descargando %d episodios.</item>
+        <item quantity="other">Descargando %d episodios.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">Eliminado %d episodio descargado.</item>
+        <item quantity="many">Eliminados %d episodios descargados.</item>
+        <item quantity="other">Eliminados %d episodios descargados.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Eliminado de la bandeja de entrada</string>
+    <string name="mark_as_played_label">Marcar como reproducido</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Marcado como reproducido</item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Marcado como no reproducido</item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="mark_as_unplayed_label">Marcar como no reproducido</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d episodio añadido a la cola.</item>
+        <item quantity="many">%d episodios añadidos a la cola.</item>
+        <item quantity="other">%d episodios añadidos a la cola.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d episodio eliminado de la cola.</item>
+        <item quantity="many">%d episodios eliminados de la cola.</item>
+        <item quantity="other">%d episodios eliminados de la cola.</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">Seguir audio</string>
+    <string name="visit_social_interact_confirm_dialog_title">Estás saliendo de AntennaPod</string>
+    <string name="reset_playback_position_label">Restablecer posición de reprodución</string>
+    <string name="no_items_selected_message">Sin elementos seleccionados</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d episodio movido al principio.</item>
+        <item quantity="many">%d episodios movidos al principio.</item>
+        <item quantity="other">%d episodios movidos al principio.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d episodio movido al final.</item>
+        <item quantity="many">%d episodios movidos al final.</item>
+        <item quantity="other">%d episodios movidos al final.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_button_label">Ir a la bandeja de entrada</string>
+    <string name="play_this_to_seek_position_message">Para ir a una posición, tienes que reproducir el episodio</string>
+    <string name="visit_social_interact_confirm_dialog_message">Asegúrate que confías en la página web «%1$s».</string>
+    <string name="no_queue_items_inbox_has_items_label">No hay episodios en la cola, ¡pero hay nuevos episodios que te esperan!</string>
+    <string name="auto_download_inbox_category">Descargar episodios automáticamente desde la bandeja de entrada</string>
+    <string name="delete_local_feed_confirmation_dialog_message">Al eliminar, se elimina el episodio de AntennaPod y el archivo multimedia del almacenamiento del dispositivo. No se puede volver a descargar a través de AntennaPod.</string>
 </resources>
