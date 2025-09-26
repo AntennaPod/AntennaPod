@@ -46,12 +46,12 @@
     <string name="home_classics_title">Проверенное временем</string>
     <string name="home_continue_title">Продолжить</string>
     <string name="home_new_title">Новое</string>
-    <string name="home_downloads_title">Скачанное</string>
+    <string name="home_downloads_title">Загруженное</string>
     <string name="home_welcome_title">Привет, это AntennaPod!</string>
     <string name="home_welcome_text">Вы ещё не подписаны ни на один подкаст. Откройте меню чтобы добавить подкаст.</string>
     <string name="notification_permission_denied">Вы не дали разрешения.</string>
     <string name="configure_home">Настроить главную</string>
-    <string name="section_hidden">Скрытый</string>
+    <string name="section_hidden">Скрытые</string>
     <!--Main activity-->
   <string name="drawer_open">Открыть меню</string>
     <string name="drawer_close">Закрыть меню</string>
@@ -253,7 +253,7 @@
         <item quantity="many">Остались %d загрузок</item>
         <item quantity="other">Остались %d загрузок</item>
     </plurals>
-    <string name="download_notification_title_feeds">Подкасты обновляются</string>
+    <string name="download_notification_title_feeds">Обновление подкастов</string>
     <string name="download_notification_title_episodes">Выпуски загружаются</string>
     <string name="download_log_title_unknown">Неизвестное название</string>
     <string name="download_type_feed">Канал</string>
@@ -338,9 +338,9 @@
     <string name="pref_unpauseOnHeadsetReconnect_sum">Продолжать воспроизведение после подключения наушников</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Возобновить, когда восстановится Bluetooth-соединение</string>
     <string name="pref_hardware_forward_button_title">Кнопка «Вперёд»</string>
-    <string name="pref_hardware_forward_button_summary">Настройка поведения кнопки Вперед</string>
+    <string name="pref_hardware_forward_button_summary">Настройте поведение кнопки «Вперёд»</string>
     <string name="pref_hardware_previous_button_title">Кнопка «Назад»</string>
-    <string name="pref_hardware_previous_button_summary">Настройка поведения кнопки Назад</string>
+    <string name="pref_hardware_previous_button_summary">Настройте поведение кнопки «Назад»</string>
     <string name="button_action_fast_forward">Перемотка вперёд</string>
     <string name="button_action_rewind">Перемотка назад</string>
     <string name="button_action_skip_episode">Пропустить выпуск</string>
@@ -349,7 +349,7 @@
     <string name="pref_auto_delete_playback_sum">Удалять выпуск по окончании воспроизведения</string>
     <string name="pref_auto_delete_playback_title">Удалять по окончании</string>
     <string name="pref_auto_delete_title">Автоматическое удаление</string>
-    <string name="pref_auto_delete_sum">Удаляет выпуски по окончании либо при нехватке места для автоматической загрузки</string>
+    <string name="pref_auto_delete_sum">Удалять выпуски по окончании либо при нехватке места во время автоматической загрузки</string>
     <string name="pref_auto_local_delete_title">Автоматическое удаление из локальных папок</string>
     <string name="pref_auto_local_delete_sum">Автоматическое удаление затронет и локальные папки</string>
     <string name="pref_auto_local_delete_dialog_body">Внимание, для локальных папок это приведёт к удалению выпусков из AntennaPod и удалению соответствующих медиафайлов из хранилища на устройстве. AntennaPod не сможет загрузить их снова. Включить автоматическое удаление?</string>
@@ -363,7 +363,7 @@
     <string name="playback_pref_sum">Кнопки гарнитуры, шаг перемотки, очередь</string>
     <string name="downloads_pref">Загрузки</string>
     <string name="downloads_pref_sum">Интервал обновления, мобильная сеть, автоматизация</string>
-    <string name="feed_refresh_title">Обновить подкасты</string>
+    <string name="feed_refresh_title">Обновление подкастов</string>
     <string name="feed_refresh_sum">Укажите интервал, с которым AntennaPod будет автоматически искать новые выпуски</string>
     <string name="feed_refresh_never">никогда</string>
     <string name="feed_every_hour">каждый час</string>
@@ -390,11 +390,11 @@
     <string name="pref_black_theme_title">Чёрная</string>
     <string name="pref_black_theme_message">Чёрная тема вместо тёмной</string>
     <string name="pref_tinted_theme_title">Динамические цвета</string>
-    <string name="pref_tinted_theme_message">Менять цвета в приложении по цвету обоев</string>
+    <string name="pref_tinted_theme_message">Адаптировать цвет приложения на основе обоев</string>
     <string name="pref_nav_drawer_feed_order_title">Порядок подписок</string>
-    <string name="pref_nav_drawer_feed_order_sum">Выбрать порядок отображения подписок</string>
+    <string name="pref_nav_drawer_feed_order_sum">Выберите порядок отображения подписок</string>
     <string name="pref_nav_drawer_feed_counter_title">Выбрать счётчик подписок</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Какую информацию показывать в счетчике подписок. Влияет также на порядок подписок, если сортировка подписок производится по количеству.</string>
+    <string name="pref_nav_drawer_feed_counter_sum">Выберите какую информацию отображает счётчик подписок. Влияет также на порядок подписок, если сортировка подписок производится по количеству.</string>
     <string name="pref_automatic_download_title">Автоматическая загрузка</string>
     <string name="pref_automatic_download_sum">Настроить автоматическую загрузку выпусков</string>
     <string name="pref_automatic_download_on_battery_title">Загружать без зарядки</string>
@@ -409,7 +409,7 @@
     <string name="pref_theme_title_light">Светлый</string>
     <string name="pref_theme_title_dark">Темный</string>
     <string name="pref_episode_cache_unlimited">не ограниченно</string>
-    <string name="pref_playback_speed_sum">Выбрать значения скорости, доступные при воспроизведении</string>
+    <string name="pref_playback_speed_sum">Настройте скорости, доступные при воспроизведении</string>
     <string name="pref_feed_playback_speed_sum">Скорость, с которой будут изначально воспроизводиться выпуски этого подкаста</string>
     <string name="pref_feed_skip">Автоматический пропуск</string>
     <string name="pref_feed_skip_sum">Проматывать вступительную и заключительную часть</string>
@@ -418,7 +418,7 @@
     <string name="pref_feed_skip_ending_toast">Промотаны последние %d с</string>
     <string name="pref_feed_skip_intro_toast">Промотаны первые %d с</string>
     <string name="pref_playback_time_respects_speed_title">Подстройка метаданных под скорость воспроизведения</string>
-    <string name="pref_playback_time_respects_speed_sum">Отображаемые позиция и продолжительность меняются со скоростью</string>
+    <string name="pref_playback_time_respects_speed_sum">Отображаемые позиция и продолжительность меняются в зависимости от скорости воспроизведения</string>
     <string name="pref_fast_forward">Интервал перемотки вперёд</string>
     <string name="pref_fast_forward_sum">Настройте длину шага в секундах при нажатии кнопки перемотки вперёд</string>
     <string name="pref_rewind">Интервал перемотки назад</string>
@@ -428,8 +428,8 @@
     <string name="pref_persistNotify_title">Не прятать кнопки воспроизведения</string>
     <string name="pref_persistNotify_sum">Сохранять уведомление и кнопки на экране блокировки во время паузы</string>
     <string name="pref_compact_notification_buttons_dialog_error_exact">Нужно выбрать ровно два пункта</string>
-    <string name="pref_full_notification_buttons_title">Кнопки уведомления</string>
-    <string name="pref_full_notification_buttons_sum">Изменить кнопки в уведомлении при воспроизведении</string>
+    <string name="pref_full_notification_buttons_title">Кнопки в уведомлении</string>
+    <string name="pref_full_notification_buttons_sum">Выберите кнопки в уведомлении при воспроизведении</string>
     <string name="pref_enqueue_location_title">Размещение в очереди</string>
     <string name="pref_enqueue_location_sum">Добавлять выпуски %1$s</string>
     <string name="enqueue_location_back">в конец</string>
@@ -452,7 +452,7 @@
     <string name="behavior">Поведение</string>
     <string name="pref_default_page">Первая страница</string>
     <string name="pref_default_page_sum">Эта страница будет показана при запуске AntennaPod</string>
-    <string name="pref_back_button_opens_drawer">Кнопка Возврат открывает боковую панель</string>
+    <string name="pref_back_button_opens_drawer">Кнопка «Назад» открывает боковую панель</string>
     <string name="pref_back_button_opens_drawer_summary">Нажатие «Назад» на первой странице откроет панель навигации</string>
     <string name="remember_last_page">Запоминать последнюю страницу</string>
     <string name="pref_delete_removes_from_queue_title">Убирать удаленные из очереди</string>
@@ -516,7 +516,7 @@
     <string name="opml_export_label">Экспорт в OPML</string>
     <string name="html_export_label">Экспорт в HTML</string>
     <string name="database_export_label">Экспорт базы данных</string>
-    <string name="automatic_database_export_label">Автоматический экспорт БД</string>
+    <string name="automatic_database_export_label">Автоматический экспорт базы данных</string>
     <string name="automatic_database_export_summary">Создавать резервную копию базы данных AntennaPod каждые 3 дня. Хранить только 5 последних резервных копий.</string>
     <string name="automatic_database_export_error">Ошибка при автоматическом экспорте БД</string>
     <string name="database_import_label">Импорт базы данных</string>
@@ -595,9 +595,9 @@
     <string name="pref_gpodnet_setlogin_information_title">Изменить информацию авторизации</string>
     <string name="pref_gpodnet_setlogin_information_sum">Изменить информацию авторизации для аккаунта gpodder.net.</string>
     <string name="synchronization_sync_changes_title">Синхронизировать сейчас</string>
-    <string name="synchronization_sync_summary">Синхронизировать ваши подписки и изменения состояния выпусков</string>
+    <string name="synchronization_sync_summary">Синхронизировать подписки и состояние выпусков</string>
     <string name="synchronization_full_sync_title">Выполнить полную синхронизацию</string>
-    <string name="synchronization_force_sync_summary">Принудительно синхронизировать ваши подписки и состояние выпусков</string>
+    <string name="synchronization_force_sync_summary">Принудительно синхронизировать все подписки и состояние выпусков</string>
     <string name="synchronization_logout">Выйти</string>
     <string name="synchronization_login_status">Выполнен вход в %2$s как %1$s.\n\nВы можете сменить провайдера синхронизации после выхода из системы.</string>
     <string name="pref_synchronization_logout_toast">Выход успешно выполнен</string>
@@ -610,7 +610,7 @@
   <string name="choose_data_directory">Выбрать папку для хранения данных</string>
     <string name="choose_data_directory_message">Укажите корневой каталог для хранения данных. AntennaPod создаст необходимые подкаталоги.</string>
     <string name="choose_data_directory_available_space">свободно: %1$s из %2$s</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Пауза вместо уменьшения громкости, когда другое приложение проигрывает звуки</string>
+    <string name="pref_pausePlaybackForFocusLoss_sum">Поставить на паузу вместо уменьшения громкости, когда другое приложение начинает воспроизводить звук</string>
     <string name="pref_pausePlaybackForFocusLoss_title">Пауза при прерывании</string>
     <!--Rating dialog-->
   <string name="rating_tagline">С %1$s вы воспроизвели %2$s%3$d%4$s часов подкастов.</string>
@@ -766,7 +766,7 @@
     <string name="feed_delete_confirmation_msg">Подтвердите, что вы хотите удалить подкаст «%1$s», все его выпуски (включая скачанные), историю воспроизведения и статистику.</string>
     <string name="feed_delete_confirmation_msg_batch">Подтвердите, что вы хотите удалить выбранные подкасты, все выпуски (включая скачанные), историю воспроизведения и статистику.</string>
     <string name="feed_delete_confirmation_local_msg">Подтвердите, что вы хотите удалить подкаст «%1$s», историю его воспроизведения и статистику. Файлы в локальной исходной папке удалены не будут.</string>
-    <string name="home_no_recent_unplayed_episodes_text">Вы уже прослушали все недавние выпуски. Непрослушанных выпусков нет.</string>
+    <string name="home_no_recent_unplayed_episodes_text">Вы уже прослушали все недавние выпуски. Так что непрослушанных выпусков тут нет ;)</string>
     <string name="home_continue_empty_text">Вы можете добавлять выпуски, скачав их или через длительное нажатие и «Добавить в очередь».</string>
     <string name="home_new_empty_text">Здесь будут появляться новые выпуски. Вы сможете выбрать интересные для вас.</string>
     <string name="statistics_episodes_downloaded">Загруженные</string>
@@ -782,11 +782,11 @@
         <item quantity="many">Размер %d выпусков на устройстве</item>
         <item quantity="other">Размер %d выпусков на устройстве</item>
     </plurals>
-    <string name="pref_nav_drawer_items_sum">Выбрать пункты в меню навигации</string>
+    <string name="pref_nav_drawer_items_sum">Выберите пункты в меню навигации</string>
     <string name="sync_status_wait_for_downloads">Подписки обновляются…</string>
     <string name="statistics_view_all">Все подкасты</string>
     <string name="discover_more">Найти новое</string>
-    <string name="section_shown">Показываемые</string>
+    <string name="section_shown">Отображаемые</string>
     <string name="delete_downloads_played">Удалить прослушанные</string>
     <string name="mobile_download_notice">В течение %d минут включена загрузка через мобильную сеть</string>
     <string name="bottom_navigation">Навигация внизу</string>
@@ -798,7 +798,7 @@
     <string name="delete_downloads_played_confirmation">Подтвердите, что вы хотите удалить все прослушанные скачанные выпуски.</string>
     <string name="preference_search_clear_input">Очистить</string>
     <string name="overflow_more">Ещё</string>
-    <string name="pref_automatic_download_global_description">Автоматически скачивать новые выпуски. Также можно настроить для каждого подкаста.</string>
+    <string name="pref_automatic_download_global_description">Автоматически загружать выпуски из входящих. Можно настроить отдельно для каждого подкаста.</string>
     <string name="pref_automatic_download_queue_description">Автоматически загружать выпуски в очереди</string>
     <string name="statistics_time_played">прослушано</string>
     <string name="echo_intro_your_year">Ваш год</string>
@@ -813,7 +813,7 @@
     <string name="episodes_label_more">Выпуски »</string>
     <string name="queue_label_more">Очередь »</string>
     <string name="inbox_label_more">Входящие »</string>
-    <string name="downloads_label_more">Скачанное »</string>
+    <string name="downloads_label_more">Загрузки »</string>
     <string name="subscriptions_label_more">Подписки »</string>
     <string name="global_default_with_value">По умолчанию (%1$s)</string>
     <string name="enabled">Включено</string>
@@ -825,7 +825,7 @@
     <string name="pref_downloads_button_action_title">Воспроизведение с экрана загрузок</string>
     <string name="pref_downloads_button_action_sum">Меняет кнопку «Удалить» на «Воспроизвести» на экране загрузок</string>
     <string name="statistics_time_total">итого</string>
-    <string name="notification_channel_refreshing">Подкасты обновляются</string>
+    <string name="notification_channel_refreshing">Обновление подкастов</string>
     <string name="notification_channel_refreshing_description">Показывается при поиске новых выпусков.</string>
     <string name="echo_home_header">Резюме за год</string>
     <string name="echo_thanks_we_are_glad_old">что были с нами в этом году!\n\nВместе с нами прослушали первый выпуск в %1$s. Для нас было честью помогать вам всё это время.</string>
@@ -855,7 +855,7 @@
     <string name="echo_thanks_now_favorite">Теперь давайте посмотрим на ваши любимые подкасты…</string>
     <string name="echo_hours_this_year">В этом году вы прослушали</string>
     <string name="echo_queue_title_many">В этом году у вас ещё много непрослушанного. У вас есть</string>
-    <string name="echo_queue_hours_much">Это примерно %1$s каждый день до начала %2$d. Подождите, что?!</string>
+    <string name="echo_queue_hours_much">Это примерно %1$s каждый день до начала %2$d. Подождите, что?</string>
     <string name="echo_listened_after_title">Мы проанализировали время выхода выпусков и время их прослушивания вами. Интересно?</string>
     <string name="echo_hoarder_comment_hoarder">Как говорят, числа не лгут. И с только %1$d%% от ваших %2$d активных подписок, которые были прослушаны в этом году, мы, вероятно, были правы.</string>
     <string name="echo_home_subtitle">Ваши самые популярные подкасты и статистика за прошлый год. Эксклюзивно на вашем телефоне.</string>
@@ -870,4 +870,65 @@
     <string name="echo_listened_after_comment_addict">Вы подкастоман</string>
     <string name="echo_listened_after_time">Как правило, вы прослушивали выпуск %1$s после его выхода.</string>
     <string name="echo_hoarder_comment_medium">Вы слушали выпуски из %1$d%% от общего числа %2$d ваших активных подписок в этом году. Почему бы не послушать «%3$s» снова?</string>
+    <string name="removed_from_inbox_message">Удалено из входящих</string>
+    <string name="mark_as_played_label">Отметить как прослушанное</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Отметить как прослушанное</item>
+        <item quantity="few"/>
+        <item quantity="many"/>
+        <item quantity="other"/>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Отметить как непрослушанное</item>
+        <item quantity="few"/>
+        <item quantity="many"/>
+        <item quantity="other"/>
+    </plurals>
+    <string name="mark_as_unplayed_label">Отметить как непрослушанный</string>
+    <string name="reset_playback_position_label">Сбросить позицию</string>
+    <string name="no_items_selected_message">Ничего не выделено</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Скачивается %d выпуск.</item>
+        <item quantity="few">Скачивается %d выпуска.</item>
+        <item quantity="many">Скачивается %d выпусков.</item>
+        <item quantity="other">Скачивается %d выпусков.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">%d загруженный выпуск удалён.</item>
+        <item quantity="few">%d загруженных выпуска удалено.</item>
+        <item quantity="many">%d загруженных выпусков удалено.</item>
+        <item quantity="other">%d загруженных выпусков удалено.</item>
+    </plurals>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d выпуск добавлен в очередь.</item>
+        <item quantity="few">%d выпуска добавлено в очередь.</item>
+        <item quantity="many">%d выпусков добавлено в очередь.</item>
+        <item quantity="other">%d выпусков добавлено в очередь.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d выпуск удалён из очереди.</item>
+        <item quantity="few">%d выпуска удалено из очереди.</item>
+        <item quantity="many">%d выпусков удалено из очереди.</item>
+        <item quantity="other">%d выпусков удалено из очереди.</item>
+    </plurals>
+    <string name="visit_social_interact_confirm_dialog_title">Вы покидаете AntennaPod</string>
+    <string name="visit_social_interact_confirm_dialog_message">Пожалуйста, убедитесь, что вы доверяете вебсайту «%1$s».</string>
+    <string name="delete_local_feed_confirmation_dialog_message">При удалении выпуск пропадёт из AntennaPod, а также будет удалён медиафайл с устройства. Повторно загрузить его через AntennaPod будет невозможно.</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d выпуск перемещён наверх.</item>
+        <item quantity="few">%d выпуска перемещено наверх.</item>
+        <item quantity="many">%d выпусков перемещено наверх.</item>
+        <item quantity="other">%d выпусков перемещено наверх.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d выпуск перемещён вниз.</item>
+        <item quantity="few">%d выпуска перемещено вниз.</item>
+        <item quantity="many">%d выпусков перемещено вниз.</item>
+        <item quantity="other">%d выпусков перемещено вниз.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_button_label">Перейти во входящие</string>
+    <string name="auto_download_inbox_category">Автоматически загружать выпуски во входящих</string>
+    <string name="play_this_to_seek_position_message">Чтобы перейти к определённой позиции, необходимо воспроизвести выпуск</string>
+    <string name="transcript_follow_audio_label">Следовать за аудио</string>
+    <string name="no_queue_items_inbox_has_items_label">Нет выпусков на очереди, но у вас есть новые выпуски!</string>
 </resources>

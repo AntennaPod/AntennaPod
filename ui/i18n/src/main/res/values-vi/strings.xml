@@ -2,9 +2,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="statistics_label">Thống kê</string>
     <string name="episodes_label">Số tập</string>
-    <string name="queue_label">Hàng đợi</string>
+    <string name="queue_label">Danh sách phát</string>
     <string name="favorite_episodes_label">Lượt thích</string>
-    <string name="settings_label">Thiết lập</string>
+    <string name="settings_label">Cài đặt</string>
     <string name="downloads_label">Tải về</string>
     <string name="subscriptions_label">Đăng ký</string>
     <string name="notification_pref_fragment">Thông báo</string>
@@ -124,4 +124,19 @@
     <string name="hide_not_downloaded_episodes_label">Chưa tải</string>
     <string name="hide_paused_episodes_label">Đang tạm dừng</string>
     <string name="hide_played_episodes_label">Đã nghe</string>
+    <string name="add_feed_label">Thêm podcast</string>
+    <string name="add_feed_label_short">Thêm</string>
+    <string name="downloads_log_label">Lịch sử tải về</string>
+    <string name="queue_label_short">Danh sách phát</string>
+    <string name="playback_history_label_short">Lịch sử nghe</string>
+    <string name="statistics_from">Từ</string>
+    <string name="statistics_to">Đến</string>
+    <string name="statistics_today">Hôm nay</string>
+    <string name="home_continue_title">Tiếp tục nghe</string>
+    <string name="home_welcome_title">Chào mừng tới AntennaPod!</string>
+    <string name="clear_history_label">Xoá lịch sử nghe</string>
+    <string name="open_in_browser_label">Mở trong trình duyệt</string>
+    <string name="support_podcast">Hỗ trợ podcast này</string>
+    <string name="inbox_label_short">Hộp thư</string>
+    <string name="inbox_label">Hộp thư</string>
 </resources>
