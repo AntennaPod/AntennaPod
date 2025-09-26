@@ -833,7 +833,7 @@
     <string name="notification_channel_refreshing_description">Pokazywane podczas sprawdzania nowych odcinków.</string>
     <string name="echo_home_subtitle">Twoje najczęściej słuchane podcasty i statystyki z zeszłego roku. Tylko na twoim telefonie.</string>
     <string name="download_error_unsupported_type_html_manual">Wprowadzony adres to adres strony internetowej, nie kanału RSS podcastu.</string>
-    <string name="pref_automatic_download_global_description">Automatycznie pobieraj nowe odcinki. Może być ustawione dla każdego podcastu oddzielnie.</string>
+    <string name="pref_automatic_download_global_description">Automatycznie pobieraj odcinki ze skrzynki odbiorczej. Może być ustawione dla każdego podcastu oddzielnie.</string>
     <string name="echo_hours_this_year">Tego roku odtworzono</string>
     <plurals name="echo_hours_podcasts">
         <item quantity="one">godzin odcinków\nz %1$d podcastu</item>
@@ -868,4 +868,64 @@
     <string name="echo_hoarder_subtitle_medium">Sprawdzone. Nie ma tutaj gromadzenia.</string>
     <string name="echo_hoarder_comment_medium">W tym roku obejrzałeś odcinki z %1$d%% Twoich %2$d aktywnych subskrypcji. Może warto znów zobaczyć „%3$s”?</string>
     <string name="echo_hoarder_comment_clean">W tym roku obejrzałeś odcinki z %1$d%% swoich %2$d aktywnych subskrypcji. Założymy się, że masz też porządek na biurku!</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Pobieranie %d odcinka.</item>
+        <item quantity="few">Pobieranie %d odcinków.</item>
+        <item quantity="many">Pobieranie %d odcinków.</item>
+        <item quantity="other">Pobieranie %d odcinków.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">Usunięto %d pobrany odcinek.</item>
+        <item quantity="few">Usunięto %d pobrane odcinki.</item>
+        <item quantity="many">Usunięto %d pobranych odcinków.</item>
+        <item quantity="other">Usunięto %d pobranych odcinków.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Usunięto ze skrzynki odbiorczej</string>
+    <string name="mark_as_played_label">Oznacz jako odtworzone</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Oznaczono jako odtworzone</item>
+        <item quantity="few"/>
+        <item quantity="many"/>
+        <item quantity="other"/>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Oznaczono jako nieodtworzone</item>
+        <item quantity="few"/>
+        <item quantity="many"/>
+        <item quantity="other"/>
+    </plurals>
+    <string name="play_this_to_seek_position_message">Aby przewinąć do konkretnej pozycji, musisz odtworzyć odcinek</string>
+    <string name="mark_as_unplayed_label">Oznacz jako nieodtworzone</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">Dodano %d odcinek do kolejki.</item>
+        <item quantity="few">Dodano %d odcinki do kolejki.</item>
+        <item quantity="many">Dodano %d odcinków do kolejki.</item>
+        <item quantity="other">Dodano %d odcinków do kolejki.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">Usunięto %d odcinek z kolejki.</item>
+        <item quantity="few">Usunięto %d odcinki z kolejki.</item>
+        <item quantity="many">Usunięto %d odcinków z kolejki.</item>
+        <item quantity="other">Usunięto %d odcinków z kolejki.</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">Dopasuj do dźwięku</string>
+    <string name="visit_social_interact_confirm_dialog_title">Wychodzisz z aplikacji AntennaPod</string>
+    <string name="visit_social_interact_confirm_dialog_message">Upewnij się, że strona \"%1$s\" jest bezpieczna.</string>
+    <string name="reset_playback_position_label">Zresetuj pozycję odtwarzania</string>
+    <string name="no_items_selected_message">Nie zaznaczono żadnego elementu</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Idź do skrzynki odbiorczej</string>
+    <string name="auto_download_inbox_category">Automatycznie pobieraj odcinki ze skrzynki odbiorczej</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d odcinek przeniesiony na górę.</item>
+        <item quantity="few">%d odcinki przeniesione na górę.</item>
+        <item quantity="many">%d odcinków przeniesionych na górę.</item>
+        <item quantity="other">%d odcinków przeniesionych na górę.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d odcinek przeniesiony na dół.</item>
+        <item quantity="few">%d odcinki przeniesione na dół.</item>
+        <item quantity="many">%d odcinków przeniesionych na dół.</item>
+        <item quantity="other">%d odcinków przeniesionych na dół.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">Brak odcinków w kolejce, ale czekają na Ciebie nowe!</string>
 </resources>
