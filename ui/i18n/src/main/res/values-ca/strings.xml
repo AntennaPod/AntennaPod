@@ -46,7 +46,7 @@
     <string name="home_classics_title">Consulteu els vostres clàssics</string>
     <string name="home_continue_title">Seguiu escoltant</string>
     <string name="home_new_title">Novetats</string>
-    <string name="home_downloads_title">Gestioneu les descàrregues</string>
+    <string name="home_downloads_title">Gestioneu les baixades</string>
     <string name="home_welcome_title">Benvinguts/des a l\'AntennaPod!</string>
     <string name="home_welcome_text">Encara no us heu subscrit a cap pòdcast. Obriu el menú per a afegir-ne un.</string>
     <string name="notification_permission_denied">Heu denegat el permís.</string>
@@ -62,8 +62,8 @@
     <string name="drawer_feed_order_most_played">Ordre per número d\'episodis reproduïts</string>
     <string name="drawer_feed_counter_inbox">Número d\'episodis a la Safata d\'entrada</string>
     <string name="drawer_feed_counter_unplayed">Número d\'episodis per reproduir</string>
-    <string name="drawer_feed_counter_downloaded">Número d\'episodis descarregats</string>
-    <string name="drawer_feed_counter_downloaded_unplayed">Número de descàrregues i episodis sense reproduir</string>
+    <string name="drawer_feed_counter_downloaded">Nombre d\'episodis baixats</string>
+    <string name="drawer_feed_counter_downloaded_unplayed">Nombre de baixades i episodis sense reproduir</string>
     <string name="drawer_feed_counter_none">Cap</string>
     <!--Bug report activity-->
   <string name="log_file_share_exception">No s\'han trobat aplicacions compatibles</string>
@@ -315,7 +315,7 @@
     <string name="preference_search_clear_history">Neteja l\'historial</string>
     <string name="pref_episode_cleanup_title">Suprimeix abans de baixar automàticament</string>
     <string name="pref_episode_cleanup_summary">Episodis que podrien eliminar-se si la Descàrrega Automàtica necessita espai per a episodis nous</string>
-    <string name="pref_pauseOnDisconnect_sum">Pausa la reproducció en desconnectar els auriculars o el bluetooth</string>
+    <string name="pref_pauseOnDisconnect_sum">Pauseu la reproducció en desconnectar els auriculars o el bluetooth</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Continua la reproducció en connectar novament els auriculars</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Continua la reproducció en connectar novament el bluetooth</string>
     <string name="pref_hardware_forward_button_title">Botó d\'avanç</string>
@@ -802,7 +802,7 @@
     <string name="download_error_unsupported_type_html_manual">L\'adreça que heu introduït és una adreça web, no una adreça RSS de pòdcast.</string>
     <string name="bottom_navigation_summary">Accedeix a les pantalles més importants de tot arreu, en un sol toc</string>
     <string name="pref_nav_drawer_items_sum">Canvia els elements que apareixen al calaix de navegació o a la navegació inferior</string>
-    <string name="pref_automatic_download_global_description">Descarrega automàticament episodis nous. Es pot anul·lar per pòdcast.</string>
+    <string name="pref_automatic_download_global_description">Descarrega automàticament episodis des de la safata d\'entrada. Es pot anul·lar per pòdcast.</string>
     <string name="pref_automatic_download_queue_title">Descarregar els de la cua</string>
     <string name="pref_automatic_download_queue_description">Baixa automàticament els episodis de la cua</string>
     <string name="pref_downloads_button_action_title">Reprodueix des de la pantalla de baixades</string>
@@ -870,4 +870,57 @@
         <item quantity="many">Descarregant amb dades mòbils durant els propers %d minuts</item>
         <item quantity="other">Descarregant amb dades mòbils durant els propers %d minuts</item>
     </plurals>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">S\'està baixant %d episodi.</item>
+        <item quantity="many">S\'estan baixant %d episodis.</item>
+        <item quantity="other">S\'estan baixant %d episodis.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">S\'ha suprimit %d episodi baixat.</item>
+        <item quantity="many">S\'han suprimit %d episodis baixats.</item>
+        <item quantity="other">S\'han suprimit %d episodis baixats.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">S\'ha eliminat de la safata d\'entrada</string>
+    <string name="mark_as_played_label">Marca com a reproduït</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">S\'ha marcat com a reproduït</item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="play_this_to_seek_position_message">Per a saltar a certa posició, heu de reproduir l\'episodi</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">S\'ha mogut %d episodi al principi.</item>
+        <item quantity="many">S\'han mogut %d episodis al principi.</item>
+        <item quantity="other">S\'han mogut %d episodis al principi.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">S\'ha mogut %d episodi al final.</item>
+        <item quantity="many">S\'han mogut %d episodis al final.</item>
+        <item quantity="other">S\'han mogut %d episodis al final.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_button_label">Ves a la safata d\'entrada</string>
+    <string name="auto_download_inbox_category">Baixa automàticament els episodis de la safata d\'entrada</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">S\'ha afegit %d episodi a la cua.</item>
+        <item quantity="many">S\'han afegit %d episodis a la cua.</item>
+        <item quantity="other">S\'han afegit %d episodis a la cua.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">S\'ha suprimit %d episodi de la cua.</item>
+        <item quantity="many">S\'han suprimit %d episodis de la cua.</item>
+        <item quantity="other">S\'han suprimit %d episodis de la cua.</item>
+    </plurals>
+    <string name="visit_social_interact_confirm_dialog_title">Esteu abandonant AntennaPod</string>
+    <string name="visit_social_interact_confirm_dialog_message">Assegureu-vos que confieu en la pàgina web «%1$s».</string>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">S\'ha marcat com a no reproduït</item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="mark_as_unplayed_label">Marca com a no reproduït</string>
+    <string name="transcript_follow_audio_label">Seguiu l\'àudio</string>
+    <string name="reset_playback_position_label">Restabliu la posició de reproducció</string>
+    <string name="no_items_selected_message">No hi ha elements seleccionats</string>
+    <string name="delete_local_feed_confirmation_dialog_message">En suprimir elimina l\'episodi de l\'AntennaPod i suprimeix el fitxer multimèdia de l\'emmagatzematge del dispositiu. No es pot tornar a descarregar a través d\'AntennaPod.</string>
+    <string name="no_queue_items_inbox_has_items_label">No hi ha episodis a la cúa, però hi ha nous episodis que t\'esperen!</string>
 </resources>

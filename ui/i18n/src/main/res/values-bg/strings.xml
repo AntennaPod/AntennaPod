@@ -305,4 +305,26 @@
     <string name="shortcut_subscription_label">Пряк път до абонамент</string>
     <string name="shortcut_select_subscription">Избери абонамент</string>
     <string name="add_shortcut">Добави пряк път</string>
+    <string name="add_feed_label_short">Добави</string>
+    <string name="episodes_label_short">Епизоди</string>
+    <string name="home_label_short">Начало</string>
+    <string name="queue_label_short">Опашка</string>
+    <string name="inbox_label_short">Поща</string>
+    <string name="downloads_label_short">Изтеглени</string>
+    <string name="subscriptions_label_short">Абонаменти</string>
+    <string name="playback_history_label_short">История</string>
+    <string name="home_no_recent_unplayed_episodes_text">Вече сте изслушали всички скорошни епизоди. Няма нищо ново ;)</string>
+    <string name="home_continue_empty_text">Можете да добавите епизоди като ги изтеглите или дълго натискане и избиране \"Добави в опашката\".</string>
+    <string name="home_new_empty_text">Нови епизоди ще се появят тук. Ще трябва да решите дали ви интересуват.</string>
+    <string name="home_downloads_empty_text">Можете да изтеглите който епизод поискате и да го слушате без интернет.</string>
+    <string name="section_shown">Показан</string>
+    <string name="episodes_label_more">Епизоди »</string>
+    <string name="queue_label_more">Опашка »</string>
+    <string name="inbox_label_more">Поша »</string>
+    <string name="downloads_label_more">Изтеглени »</string>
+    <string name="subscriptions_label_more">Абонаменти »</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">Пълен размер на %d епизод на устройството</item>
+        <item quantity="other">Пълен размер на %d епизоди на устройството</item>
+    </plurals>
 </resources>

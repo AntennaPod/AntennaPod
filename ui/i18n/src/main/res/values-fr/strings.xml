@@ -905,7 +905,7 @@
         <item quantity="many">%d épisodes déplacés en bas de la liste.</item>
         <item quantity="other">%d épisodes déplacés en bas de la liste.</item>
     </plurals>
-    <string name="auto_download_inbox_category">Téléchargement automatique des épisodes dans la boîte de réception</string>
+    <string name="auto_download_inbox_category">Téléchargement des épisodes dans la boîte de réception</string>
     <string name="no_queue_items_inbox_has_items_button_label">Ouvrir la boîte de réception</string>
-    <string name="no_queue_items_inbox_has_items_label">Vous n\'avez rien à lire mais des épisodes reçus vous attendent !</string>
+    <string name="no_queue_items_inbox_has_items_label">Vous n\'avez rien à lire mais des épisodes vous attendent !</string>
 </resources>

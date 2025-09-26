@@ -307,7 +307,7 @@
     <string name="preference_search_clear_history">清除搜尋紀錄</string>
     <string name="pref_episode_cleanup_title">自動下載前刪除</string>
     <string name="pref_episode_cleanup_summary">如果「自動下載」需要空間放置新集數，將會刪除符合條件的集數</string>
-    <string name="pref_pauseOnDisconnect_sum">耳機或藍牙斷開連接時暫停播放</string>
+    <string name="pref_pauseOnDisconnect_sum">耳機或藍牙連結斷開時暫停播放</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">當耳機再次連接時繼續播放</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">當藍牙再次連接時繼續播放</string>
     <string name="pref_hardware_forward_button_title">快轉鈕</string>
@@ -753,7 +753,7 @@
     <string name="preference_search_clear_input">清除</string>
     <string name="overflow_more">更多</string>
     <string name="pref_nav_drawer_items_title">客製化導覽列</string>
-    <string name="pref_automatic_download_global_description">自動下載新單集。此設定可被個別 Podcast 覆蓋。</string>
+    <string name="pref_automatic_download_global_description">從最新單集中自動下載新單集。此設定可被個別 Podcast 覆蓋。</string>
     <string name="pref_automatic_download_queue_description">自動下載待播清單中的單集</string>
     <string name="pref_downloads_button_action_title">從下載頁面播放</string>
     <string name="pref_downloads_button_action_sum">在下載頁面顯示播放按鈕而非刪除按鈕</string>
@@ -830,4 +830,40 @@
     <string name="echo_thanks_we_are_glad_old">您今年與我們一路相伴！\n\n您在 %1$s 第一次和我們一起收聽。從那時起，能為您服務是我們的榮幸。</string>
     <string name="echo_hoarder_subtitle_medium">確認。這裡沒在放著沒聽啦。</string>
     <string name="echo_hoarder_comment_hoarder">數字不會騙人。而您今年只有播放 %2$d 個訂閱中 %1$d%% 的單集，我們大概說對了。</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="other">正在下載 %d 集。</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="other">已刪除 %d 個已下載的集數。</item>
+    </plurals>
+    <string name="removed_from_inbox_message">從最新單集中移除</string>
+    <string name="mark_as_played_label">標示為已播放</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="other">已標示為已播放</item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="other">已標示為未播放</item>
+    </plurals>
+    <string name="play_this_to_seek_position_message">要跳到位置，你需要播放單集</string>
+    <string name="mark_as_unplayed_label">表示為未播放</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="other">%d 集已新增至待播清單。</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="other">已從待播清單移除 %d 集。</item>
+    </plurals>
+    <string name="visit_social_interact_confirm_dialog_title">您正在離開 AntennaPod</string>
+    <string name="visit_social_interact_confirm_dialog_message">請確定您信任網站「%1$s」。</string>
+    <string name="reset_playback_position_label">重置播放位置</string>
+    <string name="no_items_selected_message">未選擇任何項目</string>
+    <string name="delete_local_feed_confirmation_dialog_message">刪除操作會將該集從 AntennaPod 中移除，並從您的裝置儲存中刪除對應的媒體檔案。該檔案無法透過 AntennaPod 再次下載。</string>
+    <plurals name="move_to_top_message">
+        <item quantity="other">%d 集已移至頂端。</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="other">%d 集已移至底部。</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">暫無已排定的單集，但有新單集等著您！</string>
+    <string name="no_queue_items_inbox_has_items_button_label">移至最新單集</string>
+    <string name="auto_download_inbox_category">自動從最新單集下載</string>
 </resources>

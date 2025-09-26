@@ -42,7 +42,7 @@
     <string name="statistics_counting_range">%1$s 到 %2$s 期间播放的</string>
     <string name="statistics_counting_total">总播放</string>
     <!--Home fragment-->
-  <string name="home_surprise_title">随便听听</string>
+  <string name="home_surprise_title">不期而遇</string>
     <string name="home_classics_title">订阅列表</string>
     <string name="home_continue_title">继续收听</string>
     <string name="home_new_title">最近更新</string>
@@ -424,7 +424,7 @@
     <string name="pref_skip_silence_title">跳过静音部分</string>
     <string name="behavior">行为</string>
     <string name="pref_default_page">默认页</string>
-    <string name="pref_default_page_sum">启动 AntennaPod 时要打的屏幕</string>
+    <string name="pref_default_page_sum">启动 AntennaPod 时打开的页面</string>
     <string name="pref_back_button_opens_drawer">返回按钮打开抽屉</string>
     <string name="pref_back_button_opens_drawer_summary">在默认页面上按下返回按钮打开导航抽屉</string>
     <string name="remember_last_page">记住最后的页面</string>
