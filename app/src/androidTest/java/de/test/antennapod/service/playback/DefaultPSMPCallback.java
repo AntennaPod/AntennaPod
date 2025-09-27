@@ -56,4 +56,13 @@ public class DefaultPSMPCallback implements PlaybackServiceMediaPlayer.PSMPCallb
     @Override
     public void ensureMediaInfoLoaded(@NonNull Playable media) {
     }
+
+    @Override
+    public void episodeFinishedPlayback() {
+    }
+
+    @Override
+    public boolean shouldContinueToNextEpisode() {
+        return false;
+    }
 }

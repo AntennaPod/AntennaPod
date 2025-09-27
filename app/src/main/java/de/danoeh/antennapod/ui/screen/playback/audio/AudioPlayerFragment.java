@@ -308,6 +308,9 @@ public class AudioPlayerFragment extends Fragment implements
     public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
         if (event.isCancelled() || event.wasJustEnabled() || event.isOver()) {
             AudioPlayerFragment.this.loadMediaInfo(false);
+        } else if (event.isOver()) {
+            toolbar.getMenu().findItem(R.id.set_sleeptimer_item).setVisible(true);
+            toolbar.getMenu().findItem(R.id.disable_sleeptimer_item).setVisible(false);
         }
     }
 
@@ -357,7 +360,6 @@ public class AudioPlayerFragment extends Fragment implements
         TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
         int currentPosition = converter.convert(event.getPosition());
         int duration = converter.convert(event.getDuration());
-        int remainingTime = converter.convert(Math.max(event.getDuration() - event.getPosition(), 0));
         @Nullable Playable media = controller.getMedia();
         if (media != null) {
             currentChapterIndex = Chapter.getAfterPosition(media.getChapters(), currentPosition);
@@ -370,11 +372,20 @@ public class AudioPlayerFragment extends Fragment implements
         txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
         txtvPosition.setContentDescription(getString(R.string.position,
                 Converter.getDurationStringLocalized(getContext(), currentPosition)));
-        showTimeLeft = UserPreferences.shouldShowRemainingTime();
+
+        int remainingTime = converter.convert(Math.max(event.getDuration() - event.getPosition(), 0));
+
+        showTimeLeft = UserPreferences.shouldShowRemainingTime() || controller.sleepTimerActive();
+
         if (showTimeLeft) {
+            int remainingSleepTime = Math.toIntExact(controller.getSleepTimerTimeLeft().getMilisValue());
+            if (remainingSleepTime > 0) {
+                remainingTime = Math.min(remainingSleepTime, remainingTime);
+            }
+
             txtvLength.setContentDescription(getString(R.string.remaining_time,
                     Converter.getDurationStringLocalized(getContext(), remainingTime)));
-            txtvLength.setText(((remainingTime > 0) ? "-" : "") + Converter.getDurationStringLong(remainingTime));
+            txtvLength.setText(Converter.getDurationStringLong(remainingTime));
         } else {
             txtvLength.setContentDescription(getString(R.string.chapter_duration,
                     Converter.getDurationStringLocalized(getContext(), duration)));

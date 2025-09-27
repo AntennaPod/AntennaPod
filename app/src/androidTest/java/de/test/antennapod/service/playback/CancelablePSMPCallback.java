@@ -99,4 +99,20 @@ public class CancelablePSMPCallback implements PlaybackServiceMediaPlayer.PSMPCa
         }
         originalCallback.ensureMediaInfoLoaded(media);
     }
+
+    @Override
+    public void episodeFinishedPlayback() {
+        if (isCancelled) {
+            return;
+        }
+        originalCallback.episodeFinishedPlayback();
+    }
+
+    @Override
+    public boolean shouldContinueToNextEpisode() {
+        if (isCancelled) {
+            return false;
+        }
+        return originalCallback.shouldContinueToNextEpisode();
+    }
 }
