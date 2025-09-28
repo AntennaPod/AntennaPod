@@ -336,10 +336,12 @@ public class SubscriptionFragment extends Fragment
                 .subscribe(
                     result -> {
                         List<Feed> openedFolderFeeds = result.first.feeds;
-                        for (NavDrawerData.TagItem tag : result.first.tags) { // Filtered list
-                            if (tag.getTitle().equals(tagAdapter.getSelectedTag())) {
-                                openedFolderFeeds = tag.getFeeds();
-                                break;
+                        if (!FeedPreferences.TAG_ROOT.equals(tagAdapter.getSelectedTag())) {
+                            for (NavDrawerData.TagItem tag : result.first.tags) { // Filtered list
+                                if (tag.getTitle().equals(tagAdapter.getSelectedTag())) {
+                                    openedFolderFeeds = tag.getFeeds();
+                                    break;
+                                }
                             }
                         }
 
