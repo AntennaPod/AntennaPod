@@ -43,7 +43,7 @@ public class ClockSleepTimer implements SleepTimer {
         timeLeft -= timeSinceLastTick;
 
         final TimerValue left = getTimeLeft();
-        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(left.getDisplayValue(), left.getMilisValue()));
+        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(left.getDisplayValue(), left.getMillisValue()));
         if (timeLeft < NOTIFICATION_THRESHOLD) {
             notifyAboutExpiry();
         }
@@ -97,10 +97,10 @@ public class ClockSleepTimer implements SleepTimer {
         // make sure we've registered for events first
         EventBus.getDefault().register(this);
         final TimerValue left = getTimeLeft();
-        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(left.getDisplayValue(), left.getMilisValue()));
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(left.getDisplayValue(), left.getMillisValue()));
 
         lastTick = System.currentTimeMillis();
-        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(left.getDisplayValue(), left.getMilisValue()));
+        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(left.getDisplayValue(), left.getMillisValue()));
 
         isRunning = true;
     }
@@ -138,12 +138,12 @@ public class ClockSleepTimer implements SleepTimer {
 
     @Override
     public boolean isEndingThisEpisode(long episodeRemainingMillis) {
-        return episodeRemainingMillis >= getTimeLeft().getMilisValue();
+        return episodeRemainingMillis >= getTimeLeft().getMillisValue();
     }
 
     @Override
     public boolean shouldContinueToNextEpisode() {
-        return getTimeLeft().getMilisValue() > 0;
+        return getTimeLeft().getMillisValue() > 0;
     }
 
     @Override

@@ -350,10 +350,6 @@ public abstract class PlaybackController {
         return playbackService != null && playbackService.sleepTimerActive();
     }
 
-    public boolean isSleepTimerEndingThisEpisode(long episodeRemainingMillis) {
-        return playbackService != null && playbackService.isSleepTimerEndingThisEpisode(episodeRemainingMillis);
-    }
-
     public void disableSleepTimer() {
         if (playbackService != null) {
             playbackService.disableSleepTimer();
@@ -370,7 +366,7 @@ public abstract class PlaybackController {
 
     public void extendSleepTimer(long extendTime) {
         TimerValue timeLeft = getSleepTimerTimeLeft();
-        if (playbackService != null && timeLeft.getMilisValue() != Playable.INVALID_TIME) {
+        if (playbackService != null && timeLeft.getMillisValue() != Playable.INVALID_TIME) {
             setSleepTimer(timeLeft.getDisplayValue() + extendTime);
         }
     }

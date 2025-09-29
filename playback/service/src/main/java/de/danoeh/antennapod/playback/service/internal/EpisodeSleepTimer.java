@@ -45,7 +45,7 @@ public class EpisodeSleepTimer extends ClockSleepTimer {
         } else {
             // if we have more than 1 episode left then just report the current values
             EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(
-                    current.getDisplayValue(), current.getMilisValue()));
+                    current.getDisplayValue(), current.getMillisValue()));
         }
     }
 

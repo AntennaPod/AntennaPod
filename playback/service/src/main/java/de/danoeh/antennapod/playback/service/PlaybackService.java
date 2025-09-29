@@ -1549,10 +1549,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         return sleepTimer != null && sleepTimer.isActive();
     }
 
-    public boolean isSleepTimerEndingThisEpisode(long episodeRemainingMillis) {
-        return sleepTimer != null && sleepTimer.isActive() && sleepTimer.isEndingThisEpisode(episodeRemainingMillis);
-    }
-
     public TimerValue getSleepTimerTimeLeft() {
         if (sleepTimerActive()) {
             return sleepTimer.getTimeLeft();

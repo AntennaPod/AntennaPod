@@ -3,7 +3,6 @@ package de.danoeh.antennapod.ui.screen.playback;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
@@ -57,14 +56,14 @@ public class SleepTimerDialog extends DialogFragment {
     Button extendSleepTwentyMinutesButton;
 
     private final SleepTimeConfig clockSleepTimeConfig = new SleepTimeConfig(0,
-            R.string.extend_sleep_timer_label, R.string.time_minutes,
+            R.string.extend_sleep_timer_label, R.string.time_minutes, false,
             new SleepEntryConfig(5, 5 * 1000 * 60),
             new SleepEntryConfig(10, 10 * 1000 * 60),
             new SleepEntryConfig(30, 30 * 1000 * 60)
     );
 
     private final SleepTimeConfig episodesSleepTimeConfig = new SleepTimeConfig(1,
-            R.plurals.extend_sleep_timer_episodes_quantified, R.string.episodes_label,
+            R.plurals.extend_sleep_timer_episodes_quantified, R.string.episodes_label, true,
             new SleepEntryConfig(1, 1),
             new SleepEntryConfig(3, 3),
             new SleepEntryConfig(5, 5)
@@ -85,14 +84,17 @@ public class SleepTimerDialog extends DialogFragment {
         public final int displayTypeTextId;
         public final List<SleepEntryConfig> sleepEntries = new ArrayList<>(3);
         private final int index;
+        private final boolean pluralText;
 
         public SleepTimeConfig(
                 int index,
                 int buttonTextResourceId,
                 int displayTypeTextId,
+                boolean pluralText,
                 SleepEntryConfig first,
                 SleepEntryConfig second, SleepEntryConfig third) {
             this.index = index;
+            this.pluralText = pluralText;
             this.buttonTextResourceId = buttonTextResourceId;
             this.displayTypeTextId = displayTypeTextId;
             sleepEntries.add(0, first);
@@ -268,16 +270,11 @@ public class SleepTimerDialog extends DialogFragment {
     }
 
     private void setButtonText(Button button, int buttonTextResourceId, int value) {
-        try {
-            button.setText(getString(buttonTextResourceId, value));
-        } catch (Resources.NotFoundException ex) {
-            button.setText(getContext().getResources()
-                    .getQuantityString(
-                            buttonTextResourceId,
-                            value,
-                            value));
-        }
+        button.setText(getString(buttonTextResourceId, value));
+    }
 
+    private void setButtonTextWithPlurals(Button button, int buttonTextResourceId, int value) {
+        button.setText(getResources().getQuantityString(buttonTextResourceId, value, value));
     }
 
     private void refreshExtendButtons() {
@@ -290,7 +287,12 @@ public class SleepTimerDialog extends DialogFragment {
                 extendSleepTwentyMinutesButton)) {
             final SleepEntryConfig entryConfig = Objects.requireNonNull(selectedConfig).sleepEntries.get(counter++);
             // button text resource can be either string or plural string
-            setButtonText(button, selectedConfig.buttonTextResourceId, entryConfig.displayValue);
+            if (selectedConfig.pluralText) {
+                setButtonTextWithPlurals(button, selectedConfig.buttonTextResourceId, entryConfig.displayValue);
+            }
+            else {
+                setButtonText(button, selectedConfig.buttonTextResourceId, entryConfig.displayValue);
+            }
             button.setOnClickListener(v -> {
                 if (controller != null) {
                     controller.extendSleepTimer(entryConfig.configuredValue);
