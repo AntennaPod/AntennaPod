@@ -289,8 +289,7 @@ public class SleepTimerDialog extends DialogFragment {
             // button text resource can be either string or plural string
             if (selectedConfig.pluralText) {
                 setButtonTextWithPlurals(button, selectedConfig.buttonTextResourceId, entryConfig.displayValue);
-            }
-            else {
+            } else {
                 setButtonText(button, selectedConfig.buttonTextResourceId, entryConfig.displayValue);
             }
             button.setOnClickListener(v -> {
