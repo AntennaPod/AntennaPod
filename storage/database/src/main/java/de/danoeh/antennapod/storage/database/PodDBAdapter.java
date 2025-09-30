@@ -85,7 +85,8 @@ public class PodDBAdapter {
     public static final String KEY_FEEDFILETYPE = "feedfile_type";
     public static final String KEY_COMPLETION_DATE = "completion_date";
     public static final String KEY_FEEDITEM = "feeditem";
-    public static final String KEY_QUEUEID = "queue_id";
+    public static final String KEY_QUEUE_ID = "queue_id";
+    public static final String KEY_QUEUE_NAME = "queue_name";
     public static final String KEY_PAYMENT_LINK = "payment_link";
     public static final String KEY_START = "start";
     public static final String KEY_LANGUAGE = "language";
@@ -135,7 +136,7 @@ public class PodDBAdapter {
     public static final String TABLE_NAME_DOWNLOAD_LOG = "DownloadLog";
     public static final String TABLE_NAME_QUEUE = "Queue";
     public static final String TABLE_NAME_QUEUES = "Queues";
-    public static final String TABLE_NAME_QUEUEITEMS = "QueueItems";
+    public static final String TABLE_NAME_QUEUE_ITEMS = "QueueItems";
     public static final String TABLE_NAME_SIMPLECHAPTERS = "SimpleChapters";
     public static final String TABLE_NAME_FAVORITES = "Favorites";
 
@@ -218,13 +219,14 @@ public class PodDBAdapter {
             + KEY_FEEDITEM + " INTEGER," + KEY_FEED + " INTEGER)";
 
     private static final String CREATE_TABLE_QUEUES = "CREATE TABLE "
-            + TABLE_NAME_QUEUES + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT)";
+            + TABLE_NAME_QUEUES + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + KEY_QUEUE_NAME + " TEXT NOT NULL)";
 
     private static final String CREATE_TABLE_QUEUE_ITEMS = "CREATE TABLE "
-            + TABLE_NAME_QUEUEITEMS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + KEY_QUEUEID + " INTEGER NOT NULL," + KEY_FEEDITEM + " INTEGER NOT NULL, "
-            + KEY_POSITION + " INTEGER NOT NULL,"
-            + " FOREIGN KEY (" + KEY_QUEUEID + ") REFERENCES " + TABLE_NAME_QUEUES + "("
+            + TABLE_NAME_QUEUE_ITEMS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + KEY_QUEUE_ID + " INTEGER NOT NULL," + KEY_FEEDITEM + " INTEGER NOT NULL, "
+            + KEY_FEED + " INTEGER NOT NULL," + KEY_POSITION + " INTEGER NOT NULL,"
+            + " FOREIGN KEY (" + KEY_QUEUE_ID + ") REFERENCES " + TABLE_NAME_QUEUES + "("
             + KEY_ID + ") ON DELETE CASCADE,"
             + " FOREIGN KEY (" + KEY_FEEDITEM + ") REFERENCES " + TABLE_NAME_FEED_ITEMS + "("
             + KEY_ID + ") ON DELETE CASCADE, UNIQUE(" + KEY_FEEDITEM + "))";
