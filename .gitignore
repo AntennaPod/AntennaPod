@@ -45,3 +45,40 @@ libs
 gradle.properties
 *.keystore
 *.p12
+
+# Temporary files and debugging
+/temp/
+temp/
+**/temp/
+debug-*.java
+debug-*.sh
+test-*.java
+test-*.sh
+analyze-*.java
+analyze-*.sh
+*-debug.*
+*.debug
+
+# Claude Code settings
+.claude/settings.local.json
+
+# Don't ignore reports directory
+#!reports/
+#!reports/**
+
+# Coding agents policy unclear, I will add these ignores so we don't spam eachother until there's a proper decision made
+CLAUDE.md
+AGENTS.md
+.claude/
+.clinerules
+.cursorrules
+.github/copilot-instructions.md
+.idx/
+.replit.md
+.specify/
+.windsurfrules
+GEMINI.md
+reports/
+
+# local checks before committing. Since there's no official one, ignore the users' local ones.
+.pre-commit-config.yaml
