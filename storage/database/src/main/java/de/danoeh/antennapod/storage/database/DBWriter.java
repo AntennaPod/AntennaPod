@@ -312,6 +312,22 @@ public class DBWriter {
         });
     }
 
+    public static void setArchived(Feed feed, boolean archived) {
+        runOnDbThread(() -> {
+            FeedPreferences preferences = feed.getPreferences();
+            if (archived) {
+                preferences.getTags().add(FeedPreferences.TAG_ARCHIVE);
+                preferences.setKeepUpdated(false);
+                // TODO: Remove items from the queue
+                // TODO: Add new state and add it there, in order to remove from search
+            } else {
+                preferences.getTags().remove(FeedPreferences.TAG_ARCHIVE);
+                preferences.setKeepUpdated(true);
+            }
+            DBWriter.setFeedPreferences(feed.getPreferences());
+        });
+    }
+
     /**
      * Adds a Download status object to the download log.
      *

@@ -60,6 +60,8 @@ public abstract class FeedMenuHandler {
             new RenameFeedDialog(fragment.getActivity(), selectedFeed).show();
         } else if (menuItemId == R.id.remove_feed) {
             RemoveFeedDialog.show(context, selectedFeed, null);
+        } else if (menuItemId == R.id.archive_feed) {
+            DBWriter.setArchived(selectedFeed, true);
         } else if (menuItemId == R.id.share_feed) {
             ShareUtils.shareFeedLink(context, selectedFeed);
         } else {

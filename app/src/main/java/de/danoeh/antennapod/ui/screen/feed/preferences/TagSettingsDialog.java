@@ -112,7 +112,8 @@ public class TagSettingsDialog extends DialogFragment {
                     NavDrawerData data = DBReader.getNavDrawerData(null, FeedOrder.ALPHABETICAL, FeedCounter.SHOW_NONE);
                     List<String> folders = new ArrayList<>();
                     for (NavDrawerData.TagItem item : data.tags) {
-                        if (!FeedPreferences.TAG_ROOT.equals(item.getTitle())) {
+                        if (!FeedPreferences.TAG_ROOT.equals(item.getTitle())
+                            && !FeedPreferences.TAG_ARCHIVE.equals(item.getTitle())) {
                             folders.add(item.getTitle());
                         }
                     }

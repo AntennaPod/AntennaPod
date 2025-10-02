@@ -42,6 +42,7 @@ import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
@@ -525,10 +526,13 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             viewBinding.header.txtvInformation.setVisibility(View.GONE);
         }
         boolean isSubscribed = feed.getState() == Feed.STATE_SUBSCRIBED;
-        viewBinding.header.butShowInfo.setVisibility(isSubscribed ? View.VISIBLE : View.GONE);
-        viewBinding.header.butFilter.setVisibility(isSubscribed ? View.VISIBLE : View.GONE);
-        viewBinding.header.butShowSettings.setVisibility(isSubscribed ? View.VISIBLE : View.GONE);
+        boolean isArchived = feed.getPreferences().getTags().contains(FeedPreferences.TAG_ARCHIVE);
+        boolean showMainButtons = isSubscribed && !isArchived;
+        viewBinding.header.butShowInfo.setVisibility(showMainButtons ? View.VISIBLE : View.GONE);
+        viewBinding.header.butFilter.setVisibility(showMainButtons ? View.VISIBLE : View.GONE);
+        viewBinding.header.butShowSettings.setVisibility(showMainButtons ? View.VISIBLE : View.GONE);
         viewBinding.header.butSubscribe.setVisibility(isSubscribed ? View.GONE : View.VISIBLE);
+        viewBinding.header.butRestore.setVisibility(isArchived ? View.VISIBLE : View.GONE);
 
         if (!isSubscribed && feed.getLastRefreshAttempt() < System.currentTimeMillis() - 1000L * 3600 * 24) {
             FeedUpdateManager.getInstance().runOnce(getContext(), feed, true);
@@ -550,6 +554,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             mainActivityStarter.withOpenFeed(feed.getId());
             getActivity().finish();
             startActivity(mainActivityStarter.getIntent());
+        });
+        viewBinding.header.butRestore.setOnClickListener(v -> {
+            if (feed == null) {
+                return;
+            }
+            DBWriter.setArchived(feed, false);
         });
         viewBinding.header.butShowSettings.setOnClickListener(v -> {
             if (feed == null) {

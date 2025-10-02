@@ -740,6 +740,10 @@ public final class DBReader {
         Map<String, NavDrawerData.TagItem> tags = new HashMap<>();
         for (Feed feed : feeds) {
             for (String tag : feed.getPreferences().getTags()) {
+                if (feed.getPreferences().getTags().contains(FeedPreferences.TAG_ARCHIVE)
+                        && !FeedPreferences.TAG_ARCHIVE.equals(tag)) {
+                    continue;
+                }
                 if (!tags.containsKey(tag)) {
                     tags.put(tag, new NavDrawerData.TagItem(tag));
                 }
@@ -748,7 +752,16 @@ public final class DBReader {
             }
         }
         List<NavDrawerData.TagItem> tagsSorted = new ArrayList<>(tags.values());
-        Collections.sort(tagsSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
+        Collections.sort(tagsSorted, (o1, o2) -> {
+            // Always put archive tag last
+            if (FeedPreferences.TAG_ARCHIVE.equals(o1.getTitle())) {
+                return 1;
+            }
+            if (FeedPreferences.TAG_ARCHIVE.equals(o2.getTitle())) {
+                return -1;
+            }
+            return o1.getTitle().compareToIgnoreCase(o2.getTitle());
+        });
 
         NavDrawerData result = new NavDrawerData(feeds, tagsSorted,
                 queueSize, numNewItems, numDownloadedItems, feedCounters);
@@ -764,6 +777,10 @@ public final class DBReader {
                 if (FeedPreferences.TAG_ROOT.equals(tag)) {
                     continue;
                 }
+                if (feed.getPreferences().getTags().contains(FeedPreferences.TAG_ARCHIVE)
+                        && !FeedPreferences.TAG_ARCHIVE.equals(tag)) {
+                    continue;
+                }
                 if (!tags.containsKey(tag)) {
                     tags.put(tag, new NavDrawerData.TagItem(tag));
                 }
@@ -771,7 +788,16 @@ public final class DBReader {
             }
         }
         List<NavDrawerData.TagItem> tagsSorted = new ArrayList<>(tags.values());
-        Collections.sort(tagsSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
+        Collections.sort(tagsSorted, (o1, o2) -> {
+            // Always put archive tag last
+            if (FeedPreferences.TAG_ARCHIVE.equals(o1.getTitle())) {
+                return 1;
+            }
+            if (FeedPreferences.TAG_ARCHIVE.equals(o2.getTitle())) {
+                return -1;
+            }
+            return o1.getTitle().compareToIgnoreCase(o2.getTitle());
+        });
         // Root tag here means "all feeds", this is different from the nav drawer.
         NavDrawerData.TagItem rootTag = new NavDrawerData.TagItem(FeedPreferences.TAG_ROOT);
         for (Feed feed : feeds) {
