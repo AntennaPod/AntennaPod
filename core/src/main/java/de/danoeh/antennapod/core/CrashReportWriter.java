@@ -1,38 +1,23 @@
-package de.danoeh.antennapod;
+package de.danoeh.antennapod.core;
 
+import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 
-import de.danoeh.antennapod.BuildConfig;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
+import de.danoeh.antennapod.core.utils.PackageUtils;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
-public class CrashReportWriter implements Thread.UncaughtExceptionHandler {
-
+public class CrashReportWriter {
     private static final String TAG = "CrashReportWriter";
-
-    private final Thread.UncaughtExceptionHandler defaultHandler;
-
-    public CrashReportWriter() {
-        defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
-    }
 
     public static File getFile() {
         return new File(UserPreferences.getDataFolder(null), "crash-report.log");
-    }
-
-    @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
-        write(ex);
-        defaultHandler.uncaughtException(thread, ex);
     }
 
     public static void write(Throwable exception) {
@@ -40,14 +25,8 @@ public class CrashReportWriter implements Thread.UncaughtExceptionHandler {
         PrintWriter out = null;
         try {
             out = new PrintWriter(path, "UTF-8");
-            out.println("## Crash info");
-            out.println("Time: " + new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault()).format(new Date()));
-            out.println("AntennaPod version: " + BuildConfig.VERSION_NAME);
-            out.println();
-            out.println("## StackTrace");
-            out.println("```");
             exception.printStackTrace(out);
-            out.println("```");
+
         } catch (IOException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
@@ -55,11 +34,11 @@ public class CrashReportWriter implements Thread.UncaughtExceptionHandler {
         }
     }
 
-    public static String getSystemInfo() {
+    public static String getSystemInfo(Context context) {
         return "## Environment"
                 + "\nAndroid version: " + Build.VERSION.RELEASE
                 + "\nOS version: " + System.getProperty("os.version")
-                + "\nAntennaPod version: " + BuildConfig.VERSION_NAME
+                + "\nAntennaPod version: " + PackageUtils.getApplicationVersion(context)
                 + "\nModel: " + Build.MODEL
                 + "\nDevice: " + Build.DEVICE
                 + "\nProduct: " + Build.PRODUCT;

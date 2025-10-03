@@ -20,8 +20,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 
-import de.danoeh.antennapod.CrashReportWriter;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.CrashReportWriter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.common.ToolbarActivity;
@@ -57,7 +57,7 @@ public class BugReportActivity extends ToolbarActivity {
         }
 
         TextView crashDetailsTextView = findViewById(R.id.crash_report_logs);
-        crashDetailsTextView.setText(CrashReportWriter.getSystemInfo() + "\n\n" + stacktrace);
+        crashDetailsTextView.setText(CrashReportWriter.getSystemInfo(this) + "\n\n" + stacktrace);
 
         findViewById(R.id.btn_open_bug_tracker).setOnClickListener(v -> IntentUtils.openInBrowser(
                 BugReportActivity.this, "https://github.com/AntennaPod/AntennaPod/issues"));
@@ -121,6 +121,4 @@ public class BugReportActivity extends ToolbarActivity {
             Snackbar.make(findViewById(android.R.id.content), e.getMessage(), Snackbar.LENGTH_LONG).show();
         }
     }
-
-
 }
