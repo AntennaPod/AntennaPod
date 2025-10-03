@@ -255,8 +255,8 @@ public class SleepTimerDialog extends DialogFragment {
                 if (SleepTimerPreferences.getSleepTimerType() == SleepTimerType.EPISODES) {
                     if (!UserPreferences.isFollowQueue() && time > 1) {
                         Snackbar snack = Snackbar.make(content,
-                                getString(R.string.multiple_sleep_episodes_while_continuous_playback_disabled, time)
-                                , Snackbar.LENGTH_LONG);
+                                getString(R.string.multiple_sleep_episodes_while_continuous_playback_disabled, time),
+                                Snackbar.LENGTH_LONG);
                         snack.setTextMaxLines(5); // allow multiple lines
                         snack.show();
                     }
