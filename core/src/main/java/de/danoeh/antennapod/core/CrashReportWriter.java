@@ -7,8 +7,11 @@ import android.util.Log;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
 
 import de.danoeh.antennapod.core.utils.PackageUtils;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -32,6 +35,40 @@ public class CrashReportWriter {
         } finally {
             IOUtils.closeQuietly(out);
         }
+    }
+
+    public static Date getTimestamp() {
+        Date timestamp = null;
+
+        try {
+            File file = getFile();
+
+            if (file.exists()) {
+                timestamp = new Date(file.lastModified());
+            }
+
+        } catch (SecurityException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
+
+        return timestamp;
+    }
+
+    public static String read() {
+        String content = "";
+
+        try {
+            File file = getFile();
+
+            if (file.exists()) {
+                content = IOUtils.toString(new FileInputStream(file), StandardCharsets.UTF_8);
+            }
+
+        } catch (IOException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
+
+        return content;
     }
 
     public static String getSystemInfo(Context context) {
