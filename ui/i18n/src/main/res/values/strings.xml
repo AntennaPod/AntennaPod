@@ -652,6 +652,7 @@
     <string name="sleep_timer_always">Always</string>
     <string name="sleep_timer_label">Sleep timer</string>
     <string name="time_dialog_invalid_input">Invalid input, time has to be an integer</string>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">Continuous playback is disabled but you have selected to sleep after %1$d episodes, playback will stop after %1$d episodes have played</string>
     <string name="shake_to_reset_label">Shake to reset</string>
     <string name="timer_vibration_label">Vibrate shortly before end</string>
     <string name="time_seconds">seconds</string>

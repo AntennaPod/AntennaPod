@@ -39,6 +39,7 @@ import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.playback.service.PlaybackService;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.storage.preferences.SleepTimerType;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.Converter;
 
 public class SleepTimerDialog extends DialogFragment {
@@ -251,6 +252,16 @@ public class SleepTimerDialog extends DialogFragment {
                 if (time == 0) {
                     throw new NumberFormatException("Timer must not be zero");
                 }
+                if (SleepTimerPreferences.getSleepTimerType() == SleepTimerType.EPISODES) {
+                    if (!UserPreferences.isFollowQueue() && time > 1) {
+                        Snackbar snack = Snackbar.make(content,
+                                getString(R.string.multiple_sleep_episodes_while_continuous_playback_disabled, time)
+                                , Snackbar.LENGTH_LONG);
+                        snack.setTextMaxLines(5); // allow multiple lines
+                        snack.show();
+                    }
+                }
+
                 SleepTimerPreferences.setLastTimer(etxtTime.getText().toString());
                 if (controller != null) {
                     controller.setSleepTimer(SleepTimerPreferences.timerMillisOrEpisodes());
