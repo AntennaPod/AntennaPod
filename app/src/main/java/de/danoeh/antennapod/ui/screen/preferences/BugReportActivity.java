@@ -35,6 +35,7 @@ import java.nio.charset.Charset;
 /**
  * Displays the 'crash report' screen
  */
+@Deprecated
 public class BugReportActivity extends ToolbarActivity {
     private static final String TAG = "BugReportActivity";
 

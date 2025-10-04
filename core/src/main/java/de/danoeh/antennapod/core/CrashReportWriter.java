@@ -71,6 +71,7 @@ public class CrashReportWriter {
         return content;
     }
 
+    @Deprecated
     public static String getSystemInfo(Context context) {
         return "## Environment"
                 + "\nAndroid version: " + Build.VERSION.RELEASE

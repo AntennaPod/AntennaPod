@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/TextAppearance.Material3.BodyMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/report_bug_message"
+                android:layout_marginTop="8dp"
+                android:id="@+id/textView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="16dp" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                android:layout_marginTop="16dp"
+                android:id="@+id/materialDivider1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Environment / Device Information -->
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:id="@+id/layout_device_info"
+                app:layout_constraintTop_toBottomOf="@id/materialDivider1"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_info"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/imageView2"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_bug_device_info_title"
+                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/lbl_device_information" />
+
+
+                <TextView
+                    android:id="@+id/lbl_app_version"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_bug_attrib_app_version"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_device_information"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    android:layout_marginStart="16dp" />
+
+                <TextView
+                    android:id="@+id/lbl_android_version"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_bug_attrib_android_version"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_app_version"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    android:layout_marginStart="16dp" />
+
+                <TextView
+                    android:id="@+id/lbl_device_model"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_bug_attrib_device_model"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_android_version"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    android:layout_marginStart="16dp" />
+
+                <TextView
+                    android:id="@+id/lbl_device_name"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_bug_attrib_device_name"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_device_model"
+                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp" />
+
+                <TextView
+                    android:id="@+id/lbl_device_product"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_bug_attrib_product"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_device_name"
+                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="8dp" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/barrier_report_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="end"
+                    app:constraint_referenced_ids="lbl_app_version, lbl_android_version, lbl_device_model, lbl_device_name, lbl_device_product" />
+
+                <TextView
+                    android:background="?attr/selectableItemBackground"
+                    style="@style/TextAppearance.Material3.BodySmall"
+                    android:id="@+id/txt_attrib_app_version"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingVertical="4dp"
+                    app:layout_constraintHorizontal_weight="1"
+                    tools:text="[v1.0.0]"
+                    app:layout_constraintStart_toEndOf="@+id/barrier_report_detail"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/lbl_app_version"
+                    app:layout_constraintBottom_toBottomOf="@+id/lbl_app_version"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp" />
+
+                <TextView
+                    android:background="?attr/selectableItemBackground"
+                    style="@style/TextAppearance.Material3.BodySmall"
+                    android:id="@+id/txt_attrib_android_version"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingVertical="4dp"
+                    app:layout_constraintHorizontal_weight="1"
+                    tools:text="[16]"
+                    app:layout_constraintStart_toEndOf="@+id/barrier_report_detail"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/lbl_android_version"
+                    app:layout_constraintTop_toTopOf="@+id/lbl_android_version"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:background="?attr/selectableItemBackground"
+                    style="@style/TextAppearance.Material3.BodySmall"
+                    android:id="@+id/txt_attrib_device_model"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingVertical="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@+id/barrier_report_detail"
+                    android:layout_marginStart="8dp"
+                    tools:text="[Model Name]"
+                    app:layout_constraintTop_toTopOf="@+id/lbl_device_model"
+                    app:layout_constraintBottom_toBottomOf="@+id/lbl_device_model" />
+
+                <TextView
+                    android:background="?attr/selectableItemBackground"
+                    style="@style/TextAppearance.Material3.BodySmall"
+                    android:id="@+id/txt_attrib_device_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingVertical="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@+id/barrier_report_detail"
+                    android:layout_marginStart="8dp"
+                    tools:text="[Device Name]"
+                    app:layout_constraintTop_toTopOf="@+id/lbl_device_name"
+                    app:layout_constraintBottom_toBottomOf="@+id/lbl_device_name" />
+
+                <TextView
+                    android:background="?attr/selectableItemBackground"
+                    style="@style/TextAppearance.Material3.BodySmall"
+                    android:id="@+id/txt_attrib_product"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingVertical="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/barrier_report_detail"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintHorizontal_weight="1"
+                    tools:text="[Product]"
+                    app:layout_constraintTop_toTopOf="@+id/lbl_device_product"
+                    app:layout_constraintBottom_toBottomOf="@+id/lbl_device_product" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Crash Log Information (Optional) -->
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/materialDivider2"
+                app:layout_constraintTop_toBottomOf="@id/layout_device_info"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_crash_log"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/materialDivider2"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="8dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_bug"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp"
+                    android:id="@+id/imageView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="8dp"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:text="@string/report_bug_crash_log_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="16dp"
+                    android:id="@+id/textView8"
+                    android:layout_marginTop="8dp" />
+
+                <Button
+                    android:id="@+id/btn_expand_crash_log"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_bug_crash_log_expand"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView8"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView8" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    tools:text="@string/report_bug_crash_log_message"
+                    app:layout_constraintTop_toBottomOf="@+id/textView8"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    android:layout_marginStart="16dp"
+                    android:id="@+id/txt_crash_log_message"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:background="?attr/colorSurfaceContainer"
+                    android:id="@+id/txt_crash_log"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:maxLines="4"
+                    android:minLines="4"
+                    android:textSize="12sp"
+                    android:typeface="monospace"
+                    tools:text="[The content of the latest crash log will be displayed here!]"
+                    android:padding="4dp"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_crash_log_message"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginBottom="8dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/grp_crash_log"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:constraint_referenced_ids="materialDivider2, layout_crash_log" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <!-- Buttons -->
+
+    <Button
+        android:id="@+id/btn_copy_to_clipboard"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/copy_to_clipboard"
+        android:minWidth="0dp"
+        android:minHeight="0dp" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:id="@+id/materialDivider3" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_open_forum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/report_bug_forum_title"
+            android:layout_marginEnd="8dp"
+            tools:ignore="ButtonStyle" />
+
+        <Button
+            android:id="@+id/btn_open_github"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/report_bug_github_title"
+            android:layout_marginEnd="8dp"
+            tools:ignore="ButtonStyle" />
+    </LinearLayout>
+</LinearLayout>

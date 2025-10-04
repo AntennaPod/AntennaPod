@@ -573,6 +573,25 @@
     <string name="pref_new_episodes_action_sum">Action to take for new episodes</string>
     <string name="episode_information">Episode information</string>
 
+    <!-- Report bug -->
+    <string name="report_bug_title">Report bug</string>
+    <string name="report_bug_message">Sorry to hear something isn’t working. We’d love your help to improve AntennaPod. Please check our forum or GitHub to see if the issue has already been reported. If not, let us know and we’ll investigate.</string>
+
+    <string name="report_bug_device_info_title">Device</string>
+    <string name="report_bug_attrib_app_version">App version</string>
+    <string name="report_bug_attrib_android_version">Android version</string>
+    <string name="report_bug_attrib_device_model">Model</string>
+    <string name="report_bug_attrib_device_name">Device</string>
+    <string name="report_bug_attrib_product">Product</string>
+
+    <string name="report_bug_crash_log_title">Crash log</string>
+    <string name="report_bug_crash_log_message">The latest crash log was written on %1$s.</string>
+    <string name="report_bug_crash_log_expand">Expand</string>
+    <string name="report_bug_crash_log_collapse">Collapse</string>
+
+    <string name="report_bug_forum_title">Forum</string>
+    <string name="report_bug_github_title">GitHub</string>
+
     <!-- About screen -->
     <string name="about_pref">About</string>
     <string name="antennapod_version">AntennaPod version</string>

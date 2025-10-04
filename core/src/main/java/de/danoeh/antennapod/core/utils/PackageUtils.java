@@ -9,7 +9,11 @@ import androidx.annotation.Nullable;
 
 import java.util.Objects;
 
-public class PackageUtils {
+/**
+ * Utilities for accessing the package information.
+ */
+
+public abstract class PackageUtils {
 
     public static String getApplicationVersion(@NonNull Context context) {
         return Objects.requireNonNull(getPackageInfo(context),
