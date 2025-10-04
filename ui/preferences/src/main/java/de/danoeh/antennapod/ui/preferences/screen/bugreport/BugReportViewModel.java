@@ -12,6 +12,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import de.danoeh.antennapod.core.CrashReportWriter;
 import de.danoeh.antennapod.core.utils.PackageUtils;
@@ -163,12 +165,22 @@ public class BugReportViewModel extends AndroidViewModel {
         }
     }
 
-    private final MutableLiveData<UiState> uiState;
+    private MutableLiveData<UiState> uiState;
 
     public BugReportViewModel(Application application) {
         super(application);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
 
-        this.uiState = new MutableLiveData<>(new UiState(application));
+        //
+        // Since the crash log is read in from a file as part of the UI state
+        // initialisation we should perform the file I/O on a background thread.
+        //
+
+        executor.submit(() -> {
+            this.uiState = new MutableLiveData<>(new UiState(application));
+        });
+
+        executor.shutdown();
     }
 
     public LiveData<UiState> getState() {
