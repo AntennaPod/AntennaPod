@@ -421,8 +421,6 @@
     <string name="pref_smart_mark_as_played_disabled">Disativadu</string>
     <string name="documentation_support">Documentatzione e agiudu</string>
     <string name="visit_user_forum">Forum de utentes</string>
-    <string name="bug_report_title">Sinnala un\'errore</string>
-    <string name="open_bug_tracker">Aberi sa sinnalatzione de errores</string>
     <string name="copy_to_clipboard">Còpia in punta de billete</string>
     <string name="copied_to_clipboard">Copiadu in punta de billete</string>
     <string name="pref_proxy_title">Serbidore intermediàriu</string>

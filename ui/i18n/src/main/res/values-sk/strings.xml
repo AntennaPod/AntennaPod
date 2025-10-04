@@ -430,8 +430,6 @@
     <string name="pref_smart_mark_as_played_disabled">Vypnuté</string>
     <string name="documentation_support">Dokumentácia a podpora</string>
     <string name="visit_user_forum">Užívateľské fórum</string>
-    <string name="bug_report_title">Nahlásiť chybu</string>
-    <string name="open_bug_tracker">Otvoriť systém pre sledovanie a hlásenie chýb</string>
     <string name="copy_to_clipboard">Skopírovať do schránky</string>
     <string name="copied_to_clipboard">Skopírované do schránky</string>
     <string name="pref_proxy_title">Proxy</string>

@@ -397,8 +397,6 @@
     <string name="pref_smart_mark_as_played_disabled">غیرفعال</string>
     <string name="documentation_support">مستندات و پشتیبانی</string>
     <string name="visit_user_forum">تالار گفتمان کاربر</string>
-    <string name="bug_report_title">گزارش مشکل</string>
-    <string name="open_bug_tracker">باز کردن ردیاب اشکال</string>
     <string name="copy_to_clipboard">کپی به کلیپ بورد</string>
     <string name="copied_to_clipboard">در کلیپ بورد کپی شد</string>
     <string name="pref_proxy_title">پروکسی</string>

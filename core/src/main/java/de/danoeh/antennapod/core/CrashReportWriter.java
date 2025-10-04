@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.core;
 
-import android.content.Context;
-import android.os.Build;
 import android.util.Log;
 
 import org.apache.commons.io.IOUtils;
@@ -13,7 +11,6 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
-import de.danoeh.antennapod.core.utils.PackageUtils;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public class CrashReportWriter {
@@ -69,16 +66,5 @@ public class CrashReportWriter {
         }
 
         return content;
-    }
-
-    @Deprecated
-    public static String getSystemInfo(Context context) {
-        return "## Environment"
-                + "\nAndroid version: " + Build.VERSION.RELEASE
-                + "\nOS version: " + System.getProperty("os.version")
-                + "\nAntennaPod version: " + PackageUtils.getApplicationVersion(context)
-                + "\nModel: " + Build.MODEL
-                + "\nDevice: " + Build.DEVICE
-                + "\nProduct: " + Build.PRODUCT;
     }
 }
