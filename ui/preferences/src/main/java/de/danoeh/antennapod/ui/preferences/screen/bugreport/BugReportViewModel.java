@@ -166,10 +166,10 @@ public class BugReportViewModel extends AndroidViewModel {
     }
 
     private MutableLiveData<UiState> uiState;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public BugReportViewModel(Application application) {
         super(application);
-        ExecutorService executor = Executors.newSingleThreadExecutor();
 
         //
         // Since the crash log is read in from a file as part of the UI state
@@ -179,7 +179,11 @@ public class BugReportViewModel extends AndroidViewModel {
         executor.submit(() -> {
             this.uiState = new MutableLiveData<>(new UiState(application));
         });
+    }
 
+    @Override
+    protected void onCleared() {
+        super.onCleared();
         executor.shutdown();
     }
 
