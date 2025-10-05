@@ -42,19 +42,19 @@
                     android:text="@string/time_minutes"
                     android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp" />
+
             </LinearLayout>
 
             <TextView
-                    android:id="@+id/sleepTimerHintText"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:visibility="visible"
-                    android:layout_weight="1"
-                    android:selectAllOnFocus="true"
-                    android:layout_margin="8dp"
-                    android:ems="2"
-                    android:text="@string/multiple_sleep_episodes_while_continuous_playback_disabled"
-                    />
+                android:id="@+id/sleepTimerHintText"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:visibility="visible"
+                android:layout_weight="1"
+                android:selectAllOnFocus="true"
+                android:layout_margin="8dp"
+                android:ems="2"
+                android:text="@string/multiple_sleep_episodes_while_continuous_playback_disabled" />
 
             <Button
                 android:id="@+id/setSleeptimerButton"

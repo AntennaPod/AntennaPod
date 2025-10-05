@@ -25,7 +25,6 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
-import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -320,8 +319,8 @@ public class SleepTimerDialog extends DialogFragment {
 
         // if we're using episode timer and continuous playback is disabled, don't
         // let the user use anything other than 1 episode
-        boolean noEpisodeSelection = SleepTimerPreferences.getSleepTimerType() == SleepTimerType.EPISODES &&
-                !UserPreferences.isFollowQueue();
+        boolean noEpisodeSelection = SleepTimerPreferences.getSleepTimerType() == SleepTimerType.EPISODES
+                && !UserPreferences.isFollowQueue();
 
         if (noEpisodeSelection) {
             //we're refreshing state on value changes, endless loop otherwise
