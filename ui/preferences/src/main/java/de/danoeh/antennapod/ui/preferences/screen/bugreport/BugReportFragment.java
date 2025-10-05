@@ -118,11 +118,9 @@ public class BugReportFragment extends AnimatedFragment {
 
                 if (state == BugReportViewModel.UiState.CrashLogState.SHOWN_COLLAPSED) {
                     viewBinding.expandCrashLogButton.setText(R.string.report_bug_crash_log_expand);
-                    viewBinding.crashLogContentLabel.setMinLines(4);
                     viewBinding.crashLogContentLabel.setMaxLines(4);
                 } else {
                     viewBinding.expandCrashLogButton.setText(R.string.report_bug_crash_log_collapse);
-                    viewBinding.crashLogContentLabel.setMinLines(0);
                     viewBinding.crashLogContentLabel.setMaxLines(Integer.MAX_VALUE);
                 }
 
