@@ -412,6 +412,8 @@
     <string name="pref_smart_mark_as_played_disabled">停用</string>
     <string name="documentation_support">文件與支援資訊</string>
     <string name="visit_user_forum">使用者論壇</string>
+    <string name="bug_report_title">回報錯誤</string>
+    <string name="open_bug_tracker">開啟錯誤追蹤</string>
     <string name="copy_to_clipboard">複製到剪貼簿</string>
     <string name="copied_to_clipboard">已複製到剪貼簿</string>
     <string name="pref_proxy_title">代理伺服器</string>

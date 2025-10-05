@@ -397,6 +397,8 @@
     <string name="pref_smart_mark_as_played_disabled">बंद</string>
     <string name="documentation_support">प्रलेखन &amp; समर्थन</string>
     <string name="visit_user_forum">यूज़र फॉरम</string>
+    <string name="bug_report_title">बग रिपोर्ट करें</string>
+    <string name="open_bug_tracker">बग ट्रैकर खोलें</string>
     <string name="copy_to_clipboard">क्लिपबोर्ड पे कॉपी करें</string>
     <string name="copied_to_clipboard">क्लिपबोर्ड पे कॉपी किया गया</string>
     <string name="pref_proxy_title">प्रॉक्सी</string>

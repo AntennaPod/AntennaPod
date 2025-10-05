@@ -412,6 +412,8 @@
     <string name="pref_smart_mark_as_played_disabled">已禁用</string>
     <string name="documentation_support">文档和支持</string>
     <string name="visit_user_forum">用户论坛</string>
+    <string name="bug_report_title">报告Bug</string>
+    <string name="open_bug_tracker">打开Bug跟踪器</string>
     <string name="copy_to_clipboard">复制到剪贴板</string>
     <string name="copied_to_clipboard">已复制到剪贴板</string>
     <string name="pref_proxy_title">代理</string>

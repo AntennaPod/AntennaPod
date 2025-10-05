@@ -439,6 +439,8 @@
     <string name="pref_smart_mark_as_played_disabled">Вимкнено</string>
     <string name="documentation_support">Документація та підтримка</string>
     <string name="visit_user_forum">Форум користувачів</string>
+    <string name="bug_report_title">Повідомити про помилку</string>
+    <string name="open_bug_tracker">Відкрити трекер помилок</string>
     <string name="copy_to_clipboard">Копіювати</string>
     <string name="copied_to_clipboard">Скопійовано</string>
     <string name="pref_proxy_title">Проксі</string>

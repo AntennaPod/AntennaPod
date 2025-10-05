@@ -430,6 +430,8 @@
     <string name="pref_smart_mark_as_played_disabled">מושבת</string>
     <string name="documentation_support">תיעוד ותמיכה</string>
     <string name="visit_user_forum">פורום המשתמשים</string>
+    <string name="bug_report_title">דיווח על תקלה</string>
+    <string name="open_bug_tracker">פתיחת מערכת מעקב התקלות</string>
     <string name="copy_to_clipboard">העתקה ללוח הגזירים</string>
     <string name="copied_to_clipboard">הועתק ללוח הגזירים</string>
     <string name="pref_proxy_title">מתווך</string>
