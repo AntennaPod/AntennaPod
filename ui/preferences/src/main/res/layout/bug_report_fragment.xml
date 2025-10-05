@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -294,6 +293,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="?attr/colorSurfaceContainer"
+                    android:foreground="?attr/selectableItemBackground"
                     android:maxLines="4"
                     android:minLines="4"
                     android:textSize="12sp"
