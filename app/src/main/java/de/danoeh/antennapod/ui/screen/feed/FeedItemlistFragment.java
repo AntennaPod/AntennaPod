@@ -331,12 +331,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             SingleFeedSortDialog.newInstance(feed).show(getChildFragmentManager(), "SortDialog");
             return true;
         } else if (item.getItemId() == R.id.remove_archive_feed) {
-            RemoveFeedDialog.show(getParentFragmentManager(), Collections.singletonList(feed));
-            /*, () -> {
-                ((MainActivity) getActivity()).loadFragment(UserPreferences.getDefaultPage(), null);
-                // Make sure fragment is hidden before actually starting to delete
-                getActivity().getSupportFragmentManager().executePendingTransactions();
-            });*/
+            new RemoveFeedDialogClose(Collections.singletonList(feed)).show(getParentFragmentManager(), null);
             return true;
         } else if (item.getItemId() == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(feed.getId(), feed.getTitle()));
@@ -346,6 +341,24 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         Runnable showRemovedAllSnackbar = () -> EventBus.getDefault().post(
                 new MessageEvent(getString(R.string.removed_all_inbox_msg)));
         return FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), feed, showRemovedAllSnackbar);
+    }
+
+    public static class RemoveFeedDialogClose extends RemoveFeedDialog {
+        public RemoveFeedDialogClose(@NonNull List<Feed> feeds) {
+            super(feeds);
+        }
+
+        public RemoveFeedDialogClose() {
+            super();
+        }
+
+        @Override
+        protected void onRemoveButtonPressed() {
+            // Make sure fragment is hidden before actually starting to delete
+            ((MainActivity) getActivity()).loadFragment(UserPreferences.getDefaultPage(), null);
+            getActivity().getSupportFragmentManager().executePendingTransactions();
+            super.onRemoveButtonPressed();
+        }
     }
 
     @Override

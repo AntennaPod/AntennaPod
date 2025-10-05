@@ -34,16 +34,18 @@ public class RemoveFeedDialog extends BottomSheetDialogFragment {
     private static final String TAG = "RemoveFeedDialog";
     private static final String ARGUMENT_FEEDS = "feeds";
 
-    private List<Feed> feeds;
+    protected List<Feed> feeds;
     private RemoveFeedDialogBinding binding;
     private Disposable disposable;
 
-    public static void show(FragmentManager fragmentManager, List<Feed> feeds) {
-        RemoveFeedDialog dialog = new RemoveFeedDialog();
+    public RemoveFeedDialog() {
+        // Required empty public constructor
+    }
+
+    public RemoveFeedDialog(List<Feed> feeds) {
         Bundle args = new Bundle();
         args.putSerializable(ARGUMENT_FEEDS, new ArrayList<>(feeds));
-        dialog.setArguments(args);
-        dialog.show(fragmentManager, TAG);
+        setArguments(args);
     }
 
     @Nullable
@@ -51,6 +53,11 @@ public class RemoveFeedDialog extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = RemoveFeedDialogBinding.inflate(inflater, container, false);
+        if (getArguments() == null || !getArguments().containsKey(ARGUMENT_FEEDS)) {
+            Log.e(TAG, "No feeds specified");
+            dismiss();
+            return binding.getRoot();
+        }
         feeds = (List<Feed>) getArguments().getSerializable(ARGUMENT_FEEDS);
         if (feeds.size() == 1) {
             binding.selectionText.setText(feeds.get(0).getTitle());
@@ -98,7 +105,7 @@ public class RemoveFeedDialog extends BottomSheetDialogFragment {
         }
     }
 
-    private void onRemoveButtonPressed() {
+    protected void onRemoveButtonPressed() {
         Context context = getContext();
         if (context == null) {
             return;

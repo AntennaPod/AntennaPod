@@ -77,7 +77,8 @@ public abstract class FeedMenuHandler {
         } else if (menuItemId == R.id.rename_item) {
             new RenameFeedDialog(fragment.getActivity(), selectedFeed).show();
         } else if (menuItemId == R.id.remove_archive_feed) {
-            RemoveFeedDialog.show(fragment.getParentFragmentManager(), Collections.singletonList(selectedFeed));
+            new RemoveFeedDialog(Collections.singletonList(selectedFeed))
+                    .show(fragment.getChildFragmentManager(), null);
         } else if (menuItemId == R.id.share_feed) {
             ShareUtils.shareFeedLink(context, selectedFeed);
         } else {
