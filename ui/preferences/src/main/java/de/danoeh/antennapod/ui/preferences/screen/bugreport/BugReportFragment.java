@@ -169,11 +169,6 @@ public class BugReportFragment extends AnimatedFragment {
     private void setupClipboardCopy() {
         Context ctx = requireContext();
 
-        //
-        // Clicking the individual environment information attribute TextViews will copy
-        // their raw text to the clipboard.
-        //
-
         viewBinding.txtAttribAppVersion.setOnClickListener(
                 new ClipboardUtils.TextViewCopyOnClickListener(ctx, R.string.report_bug_attrib_app_version));
         viewBinding.txtAttribAndroidVersion.setOnClickListener(
@@ -185,10 +180,6 @@ public class BugReportFragment extends AnimatedFragment {
         viewBinding.txtAttribProduct.setOnClickListener(
                 new ClipboardUtils.TextViewCopyOnClickListener(ctx, R.string.report_bug_attrib_product));
 
-        //
-        // Clicking the crash log TextView will copy the marked up crash log content to the clipboard.
-        //
-
         viewBinding.txtCrashLog.setOnClickListener(new ClipboardUtils.ViewCopyOnClickListener(ctx,
                 R.string.report_bug_crash_log_title, R.string.copied_to_clipboard) {
             @Override
@@ -196,11 +187,6 @@ public class BugReportFragment extends AnimatedFragment {
                 return viewModel.requireCurrentState().getCrashInfoWithMarkup();
             }
         });
-
-        //
-        // Clicking the copy to clipboard button will copy both the marked up environment information
-        // and marked up crash log content (when available) to the clipboard.
-        //
 
         viewBinding.btnCopyToClipboard.setOnClickListener(new ClipboardUtils.ViewCopyOnClickListener(ctx,
                 R.string.report_bug_title, R.string.copied_to_clipboard) {
