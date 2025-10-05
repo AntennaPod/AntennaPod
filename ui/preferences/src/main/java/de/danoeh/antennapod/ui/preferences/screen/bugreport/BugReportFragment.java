@@ -33,9 +33,8 @@ import de.danoeh.antennapod.ui.preferences.R;
 import de.danoeh.antennapod.ui.preferences.databinding.BugReportFragmentBinding;
 
 /**
- * UI fragment to allow the use to submit a bug report via the AntennaPod forum or GitHub page.
+ * UI fragment to allow the user to submit a bug report via the AntennaPod forum or GitHub page.
  */
-
 public class BugReportFragment extends AnimatedFragment {
 
     private BugReportFragmentBinding viewBinding;
