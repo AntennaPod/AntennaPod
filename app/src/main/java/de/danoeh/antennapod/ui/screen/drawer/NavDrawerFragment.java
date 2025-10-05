@@ -192,14 +192,15 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
 
     private boolean onFeedContextMenuClicked(Feed feed, MenuItem item) {
         final int itemId = item.getItemId();
-        if (itemId == R.id.remove_feed) {
-            RemoveFeedDialog.show(getContext(), feed, () -> {
+        if (itemId == R.id.remove_archive_feed) {
+            RemoveFeedDialog.show(getParentFragmentManager(), Collections.singletonList(feed));
+            /*, () -> {
                 if (String.valueOf(feed.getId()).equals(getLastNavFragment(getContext()))) {
                     ((MainActivity) getActivity()).loadFragment(UserPreferences.getDefaultPage(), null);
                     // Make sure fragment is hidden before actually starting to delete
                     getActivity().getSupportFragmentManager().executePendingTransactions();
                 }
-            });
+            });*/
             return true;
         }
         if (FeedMenuHandler.onMenuItemClicked(this, itemId, feed, null)) {

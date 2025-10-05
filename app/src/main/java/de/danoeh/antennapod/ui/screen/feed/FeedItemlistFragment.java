@@ -288,7 +288,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             viewBinding.toolbar.getMenu().findItem(R.id.sort_items).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.refresh_item).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.rename_item).setVisible(false);
-            viewBinding.toolbar.getMenu().findItem(R.id.remove_feed).setVisible(false);
+            viewBinding.toolbar.getMenu().findItem(R.id.remove_archive_feed).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.remove_all_inbox_item).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.action_search).setVisible(false);
         }
@@ -330,12 +330,13 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         } else if (item.getItemId() == R.id.sort_items) {
             SingleFeedSortDialog.newInstance(feed).show(getChildFragmentManager(), "SortDialog");
             return true;
-        } else if (item.getItemId() == R.id.remove_feed) {
-            RemoveFeedDialog.show(getContext(), feed, () -> {
+        } else if (item.getItemId() == R.id.remove_archive_feed) {
+            RemoveFeedDialog.show(getParentFragmentManager(), Collections.singletonList(feed));
+            /*, () -> {
                 ((MainActivity) getActivity()).loadFragment(UserPreferences.getDefaultPage(), null);
                 // Make sure fragment is hidden before actually starting to delete
                 getActivity().getSupportFragmentManager().executePendingTransactions();
-            });
+            });*/
             return true;
         } else if (item.getItemId() == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(feed.getId(), feed.getTitle()));
