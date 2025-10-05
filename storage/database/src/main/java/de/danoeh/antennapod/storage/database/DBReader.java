@@ -198,6 +198,23 @@ public final class DBReader {
     }
 
     /**
+     * Gets the remaining queue size, given a current item, including the current item.
+     * If the current item is not found it will return 0.
+     */
+    public static int getRemainingQueueSize(long existingId) {
+        final LongList wholeQueue = getQueueIDList();
+
+        // now try to find the id
+        for (int i = 0; i < wholeQueue.size(); ++i) {
+            if (wholeQueue.get(i) == existingId) {
+                return wholeQueue.size() - i; // return however are left, including us
+            }
+        }
+
+        return 0;
+    }
+
+    /**
      * Loads a list of the FeedItems in the queue. If the FeedItems of the queue are not used directly, consider using
      * {@link #getQueueIDList()} instead.
      *
