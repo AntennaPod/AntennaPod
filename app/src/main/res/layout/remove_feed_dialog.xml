@@ -44,6 +44,14 @@
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             android:layout_marginBottom="16dp" />
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyle"
+            android:visibility="gone"
+            android:indeterminate="true" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

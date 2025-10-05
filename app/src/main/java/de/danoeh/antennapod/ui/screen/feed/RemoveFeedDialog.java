@@ -2,7 +2,6 @@ package de.danoeh.antennapod.ui.screen.feed;
 
 import android.animation.ValueAnimator;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Html;
@@ -25,6 +24,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import java.util.ArrayList;
@@ -36,6 +36,7 @@ public class RemoveFeedDialog extends BottomSheetDialogFragment {
 
     private List<Feed> feeds;
     private RemoveFeedDialogBinding binding;
+    private Disposable disposable;
 
     public static void show(FragmentManager fragmentManager, List<Feed> feeds) {
         RemoveFeedDialog dialog = new RemoveFeedDialog();
@@ -69,6 +70,10 @@ public class RemoveFeedDialog extends BottomSheetDialogFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (disposable != null) {
+            disposable.dispose();
+            disposable = null;
+        }
         binding = null;
     }
 
@@ -94,39 +99,39 @@ public class RemoveFeedDialog extends BottomSheetDialogFragment {
     }
 
     private void onRemoveButtonPressed() {
-        dismiss();
-
         Context context = getContext();
         if (context == null) {
             return;
         }
 
-        ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage(context.getString(R.string.feed_remover_msg));
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.removeConfirmButton.setVisibility(View.GONE);
+        binding.archiveButton.setVisibility(View.GONE);
+        binding.cancelButton.setVisibility(View.GONE);
 
-        Completable.fromAction(() -> {
-            for (Feed feed : feeds) {
-                DBWriter.deleteFeed(context, feed.getId()).get();
-            }
-        })
+        disposable = Completable.fromAction(
+                () -> {
+                    for (Feed feed : feeds) {
+                        DBWriter.deleteFeed(context, feed.getId()).get();
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         () -> {
                             Log.d(TAG, "Feed(s) deleted");
-                            progressDialog.dismiss();
+                            dismiss();
                         }, error -> {
                             Log.e(TAG, Log.getStackTraceString(error));
-                            progressDialog.dismiss();
+                            dismiss();
                         });
     }
 
     private void onArchiveButtonPressed() {
-        // TODO: Implement archive functionality
         dismiss();
+        for (Feed feed : feeds) {
+            DBWriter.setFeedState(getContext(), feed, Feed.STATE_ARCHIVED);
+        }
     }
 
     private void showRemoveConfirm() {
