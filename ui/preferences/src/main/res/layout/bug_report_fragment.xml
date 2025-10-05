@@ -350,18 +350,18 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/btn_open_github"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/report_bug_github_title"
+            android:layout_marginEnd="8dp" />
+
+        <Button
             android:id="@+id/btn_open_forum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/report_bug_forum_title"
-            android:layout_marginEnd="8dp"
-            tools:ignore="ButtonStyle" />
-
-        <Button
-            android:id="@+id/btn_open_github"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/report_bug_github_title"
             android:layout_marginEnd="8dp"
             tools:ignore="ButtonStyle" />
 
