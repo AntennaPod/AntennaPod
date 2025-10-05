@@ -44,6 +44,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -166,6 +167,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         if (contextPressedItem.isFeed()) {
             menu.setHeaderTitle(contextPressedItem.asFeed().getTitle());
             inflater.inflate(R.menu.nav_feed_context, menu);
+            FeedMenuHandler.onPrepare(menu, Collections.singletonList(contextPressedItem.asFeed()));
             // episodes are not loaded, so we cannot check if the podcast has new or unplayed ones!
         } else {
             menu.setHeaderTitle(contextPressedItem.asTag().getTitle());

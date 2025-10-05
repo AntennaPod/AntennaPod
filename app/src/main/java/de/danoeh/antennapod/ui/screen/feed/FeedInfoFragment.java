@@ -244,17 +244,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
             viewBinding.supportUrl.setText(str.toString());
         }
 
-        if (feed.getState() == Feed.STATE_SUBSCRIBED) {
-            long feedId = getArguments().getLong(EXTRA_FEED_ID);
-            getParentFragmentManager().beginTransaction().replace(R.id.statisticsFragmentContainer,
-                            FeedStatisticsFragment.newInstance(feedId, false), "feed_statistics_fragment")
-                    .commitAllowingStateLoss();
-
-            viewBinding.statisticsButton.setOnClickListener(view -> {
-                StatisticsFragment fragment = new StatisticsFragment();
-                ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
-            });
-        } else {
+        if (feed.getState() == Feed.STATE_NOT_SUBSCRIBED) {
             viewBinding.statisticsHeading.setVisibility(View.GONE);
             viewBinding.statisticsFragmentContainer.setVisibility(View.GONE);
             viewBinding.supportHeadingLabel.setVisibility(View.GONE);
@@ -267,6 +257,16 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 mainActivityStarter.withClearBackStack();
                 getActivity().finish();
                 startActivity(mainActivityStarter.getIntent());
+            });
+        } else {
+            long feedId = getArguments().getLong(EXTRA_FEED_ID);
+            getParentFragmentManager().beginTransaction().replace(R.id.statisticsFragmentContainer,
+                            FeedStatisticsFragment.newInstance(feedId, false), "feed_statistics_fragment")
+                    .commitAllowingStateLoss();
+
+            viewBinding.statisticsButton.setOnClickListener(view -> {
+                StatisticsFragment fragment = new StatisticsFragment();
+                ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
             });
         }
 

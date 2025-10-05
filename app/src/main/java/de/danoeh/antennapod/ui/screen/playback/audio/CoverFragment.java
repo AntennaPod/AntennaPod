@@ -167,10 +167,10 @@ public class CoverFragment extends Fragment {
         if (feed == null) {
             return;
         }
-        if (feed.getState() == Feed.STATE_SUBSCRIBED) {
-            new MainActivityStarter(getContext()).withOpenFeed(feed.getId()).withClearTop().start();
-        } else {
+        if (feed.getState() == Feed.STATE_NOT_SUBSCRIBED) {
             startActivity(new OnlineFeedviewActivityStarter(getContext(), feed.getDownloadUrl()).getIntent());
+        } else {
+            new MainActivityStarter(getContext()).withOpenFeed(feed.getId()).withClearTop().start();
         }
     }
 

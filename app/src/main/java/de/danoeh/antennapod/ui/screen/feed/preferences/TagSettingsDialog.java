@@ -113,7 +113,7 @@ public class TagSettingsDialog extends DialogFragment {
                     List<String> folders = new ArrayList<>();
                     for (NavDrawerData.TagItem item : data.tags) {
                         if (!FeedPreferences.TAG_ROOT.equals(item.getTitle())
-                            && !FeedPreferences.TAG_ARCHIVE.equals(item.getTitle())) {
+                                && !FeedPreferences.TAG_ARCHIVE.equals(item.getTitle())) {
                             folders.add(item.getTitle());
                         }
                     }

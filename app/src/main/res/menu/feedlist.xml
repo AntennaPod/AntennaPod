@@ -56,6 +56,13 @@
         custom:showAsAction="never" />
 
     <item
+        android:id="@+id/archive_feed"
+        android:menuCategory="container"
+        android:title="@string/archive_feed_label_verb"
+        android:visible="true"
+        custom:showAsAction="collapseActionView" />
+
+    <item
         android:id="@+id/remove_feed"
         android:icon="@drawable/ic_delete"
         android:menuCategory="container"

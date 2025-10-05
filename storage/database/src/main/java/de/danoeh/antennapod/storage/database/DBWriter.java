@@ -151,7 +151,7 @@ public class DBWriter {
             // Do full update of this feed to get rid of the item
             FeedUpdateManager.getInstance().runOnce(context, media.getItem().getFeed());
         } else {
-            if (media.getItem().getFeed().getState() == Feed.STATE_SUBSCRIBED) {
+            if (media.getItem().getFeed().getState() != Feed.STATE_NOT_SUBSCRIBED) {
                 SynchronizationQueue.getInstance().enqueueEpisodeAction(
                         new EpisodeAction.Builder(media.getItem(), EpisodeAction.DELETE)
                             .currentTimestamp()
@@ -184,7 +184,7 @@ public class DBWriter {
             adapter.removeFeed(feed);
             adapter.close();
 
-            if (!feed.isLocalFeed() && feed.getState() == Feed.STATE_SUBSCRIBED) {
+            if (!feed.isLocalFeed() && feed.getState() != Feed.STATE_NOT_SUBSCRIBED) {
                 SynchronizationQueue.getInstance().enqueueFeedRemoved(feed.getDownloadUrl());
             }
             EventBus.getDefault().post(new FeedListUpdateEvent(feed));
@@ -309,22 +309,6 @@ public class DBWriter {
             adapter.close();
             EventBus.getDefault().post(PlaybackHistoryEvent.listUpdated());
 
-        });
-    }
-
-    public static void setArchived(Feed feed, boolean archived) {
-        runOnDbThread(() -> {
-            FeedPreferences preferences = feed.getPreferences();
-            if (archived) {
-                preferences.getTags().add(FeedPreferences.TAG_ARCHIVE);
-                preferences.setKeepUpdated(false);
-                // TODO: Remove items from the queue
-                // TODO: Add new state and add it there, in order to remove from search
-            } else {
-                preferences.getTags().remove(FeedPreferences.TAG_ARCHIVE);
-                preferences.setKeepUpdated(true);
-            }
-            DBWriter.setFeedPreferences(feed.getPreferences());
         });
     }
 
@@ -742,7 +726,7 @@ public class DBWriter {
             adapter.close();
 
             for (Feed feed : feeds) {
-                if (!feed.isLocalFeed() && feed.getState() == Feed.STATE_SUBSCRIBED) {
+                if (!feed.isLocalFeed() && feed.getState() != Feed.STATE_NOT_SUBSCRIBED) {
                     SynchronizationQueue.getInstance().enqueueFeedAdded(feed.getDownloadUrl());
                 }
             }

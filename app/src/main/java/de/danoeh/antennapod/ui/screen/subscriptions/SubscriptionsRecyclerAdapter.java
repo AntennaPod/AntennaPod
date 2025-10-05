@@ -25,6 +25,7 @@ import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -156,6 +157,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         MenuInflater inflater = mainActivityRef.get().getMenuInflater();
         inflater.inflate(R.menu.nav_feed_context, menu);
         menu.findItem(R.id.multi_select).setVisible(true);
+        FeedMenuHandler.onPrepare(menu, Collections.singletonList(selectedItem));
         menu.setHeaderTitle(selectedItem.getTitle());
     }
 

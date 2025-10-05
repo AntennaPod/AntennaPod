@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
+import android.view.Menu;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -20,6 +21,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
@@ -28,6 +30,26 @@ import java.util.concurrent.Future;
  */
 public abstract class FeedMenuHandler {
     private static final String TAG = "FeedMenuHandler";
+
+    public static void onPrepare(Menu menu, List<Feed> feeds) {
+        boolean hasArchived = false;
+        boolean allArchived = true;
+        for (Feed feed : feeds) {
+            if (feed.getState() == Feed.STATE_ARCHIVED) {
+                hasArchived = true;
+            } else {
+                allArchived = false;
+            }
+        }
+        if (menu.findItem(R.id.archive_feed) != null) {
+            // Multi-select does not have all options yet
+            menu.findItem(R.id.archive_feed).setVisible(!allArchived);
+            menu.findItem(R.id.restore_feed).setVisible(hasArchived);
+            menu.findItem(R.id.rename_item).setVisible(!allArchived);
+            menu.findItem(R.id.remove_all_inbox_item).setVisible(!allArchived);
+        }
+        menu.findItem(R.id.edit_tags).setVisible(!allArchived);
+    }
 
     public static boolean onMenuItemClicked(@NonNull Fragment fragment, int menuItemId,
                                             @NonNull Feed selectedFeed, @Nullable Runnable removeFromInboxCallback) {
@@ -61,7 +83,9 @@ public abstract class FeedMenuHandler {
         } else if (menuItemId == R.id.remove_feed) {
             RemoveFeedDialog.show(context, selectedFeed, null);
         } else if (menuItemId == R.id.archive_feed) {
-            DBWriter.setArchived(selectedFeed, true);
+            DBWriter.setFeedState(fragment.getContext(), selectedFeed, Feed.STATE_ARCHIVED);
+        } else if (menuItemId == R.id.restore_feed) {
+            DBWriter.setFeedState(fragment.getContext(), selectedFeed, Feed.STATE_SUBSCRIBED);
         } else if (menuItemId == R.id.share_feed) {
             ShareUtils.shareFeedLink(context, selectedFeed);
         } else {

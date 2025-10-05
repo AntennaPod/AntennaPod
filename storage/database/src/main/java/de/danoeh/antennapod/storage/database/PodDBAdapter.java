@@ -1263,7 +1263,7 @@ public class PodDBAdapter {
                 + JOIN_FEED_ITEM_AND_MEDIA
                 + " INNER JOIN " + TABLE_NAME_FEEDS
                 + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
-                + " WHERE " + TABLE_NAME_FEEDS + "." + KEY_STATE + "=" + Feed.STATE_SUBSCRIBED
+                + " WHERE " + TABLE_NAME_FEEDS + "." + KEY_STATE + "!=" + Feed.STATE_NOT_SUBSCRIBED
                 + " GROUP BY " + TABLE_NAME_FEEDS + "." + KEY_ID;
         return db.rawQuery(query, null);
     }

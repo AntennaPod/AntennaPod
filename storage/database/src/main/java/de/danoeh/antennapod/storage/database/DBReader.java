@@ -671,12 +671,12 @@ public final class DBReader {
         adapter.open();
 
         final Map<Long, Integer> feedCounters = adapter.getFeedCounters(feedCounter);
-        List<Feed> feeds = getFeedList();
+        List<Feed> allFeeds = getFeedList();
 
         if (subscriptionsFilter == null) {
             subscriptionsFilter = new SubscriptionsFilter("");
         }
-        feeds = SubscriptionsFilterExecutor.filter(feeds, feedCounters, subscriptionsFilter);
+        List<Feed> feeds = SubscriptionsFilterExecutor.filter(allFeeds, feedCounters, subscriptionsFilter);
 
         Comparator<Feed> comparator;
         switch (feedOrder) {
@@ -739,11 +739,10 @@ public final class DBReader {
 
         Map<String, NavDrawerData.TagItem> tags = new HashMap<>();
         for (Feed feed : feeds) {
+            if (feed.getState() == Feed.STATE_ARCHIVED) {
+                continue;
+            }
             for (String tag : feed.getPreferences().getTags()) {
-                if (feed.getPreferences().getTags().contains(FeedPreferences.TAG_ARCHIVE)
-                        && !FeedPreferences.TAG_ARCHIVE.equals(tag)) {
-                    continue;
-                }
                 if (!tags.containsKey(tag)) {
                     tags.put(tag, new NavDrawerData.TagItem(tag));
                 }
@@ -752,16 +751,17 @@ public final class DBReader {
             }
         }
         List<NavDrawerData.TagItem> tagsSorted = new ArrayList<>(tags.values());
-        Collections.sort(tagsSorted, (o1, o2) -> {
-            // Always put archive tag last
-            if (FeedPreferences.TAG_ARCHIVE.equals(o1.getTitle())) {
-                return 1;
+        Collections.sort(tagsSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
+
+        NavDrawerData.TagItem archive = new NavDrawerData.TagItem(FeedPreferences.TAG_ARCHIVE);
+        for (Feed feed : allFeeds) {
+            if (feed.getState() == Feed.STATE_ARCHIVED) {
+                archive.addFeed(feed, 0);
             }
-            if (FeedPreferences.TAG_ARCHIVE.equals(o2.getTitle())) {
-                return -1;
-            }
-            return o1.getTitle().compareToIgnoreCase(o2.getTitle());
-        });
+        }
+        if (!archive.getFeeds().isEmpty()) {
+            tagsSorted.add(archive);
+        }
 
         NavDrawerData result = new NavDrawerData(feeds, tagsSorted,
                 queueSize, numNewItems, numDownloadedItems, feedCounters);
@@ -773,12 +773,11 @@ public final class DBReader {
         Map<String, NavDrawerData.TagItem> tags = new HashMap<>();
         List<Feed> feeds = getFeedList();
         for (Feed feed : feeds) {
+            if (feed.getState() == Feed.STATE_ARCHIVED) {
+                continue;
+            }
             for (String tag : feed.getPreferences().getTags()) {
                 if (FeedPreferences.TAG_ROOT.equals(tag)) {
-                    continue;
-                }
-                if (feed.getPreferences().getTags().contains(FeedPreferences.TAG_ARCHIVE)
-                        && !FeedPreferences.TAG_ARCHIVE.equals(tag)) {
                     continue;
                 }
                 if (!tags.containsKey(tag)) {
@@ -788,22 +787,24 @@ public final class DBReader {
             }
         }
         List<NavDrawerData.TagItem> tagsSorted = new ArrayList<>(tags.values());
-        Collections.sort(tagsSorted, (o1, o2) -> {
-            // Always put archive tag last
-            if (FeedPreferences.TAG_ARCHIVE.equals(o1.getTitle())) {
-                return 1;
-            }
-            if (FeedPreferences.TAG_ARCHIVE.equals(o2.getTitle())) {
-                return -1;
-            }
-            return o1.getTitle().compareToIgnoreCase(o2.getTitle());
-        });
+        Collections.sort(tagsSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
         // Root tag here means "all feeds", this is different from the nav drawer.
         NavDrawerData.TagItem rootTag = new NavDrawerData.TagItem(FeedPreferences.TAG_ROOT);
         for (Feed feed : feeds) {
             rootTag.addFeed(feed, 0);
         }
         tagsSorted.add(0, rootTag);
+
+        NavDrawerData.TagItem archive = new NavDrawerData.TagItem(FeedPreferences.TAG_ARCHIVE);
+        for (Feed feed : feeds) {
+            if (feed.getState() == Feed.STATE_ARCHIVED) {
+                archive.addFeed(feed, 0);
+            }
+        }
+        if (!archive.getFeeds().isEmpty()) {
+            tagsSorted.add(archive);
+        }
+
         return tagsSorted;
     }
 

@@ -293,6 +293,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             viewBinding.toolbar.getMenu().findItem(R.id.remove_all_inbox_item).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.action_search).setVisible(false);
         }
+        viewBinding.toolbar.getMenu().findItem(R.id.archive_feed).setVisible(feed.getState() == Feed.STATE_SUBSCRIBED);
     }
 
     @Override
@@ -498,7 +499,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         } else {
             viewBinding.header.txtvFailure.setVisibility(View.GONE);
         }
-        if (!feed.getPreferences().getKeepUpdated() && feed.getState() == Feed.STATE_SUBSCRIBED) {
+        if ((!feed.getPreferences().getKeepUpdated() && feed.getState() != Feed.STATE_NOT_SUBSCRIBED)
+                || feed.getState() == Feed.STATE_ARCHIVED) {
             viewBinding.header.txtvUpdatesDisabled.setText(R.string.updates_disabled_label);
             viewBinding.header.txtvUpdatesDisabled.setVisibility(View.VISIBLE);
         } else {
@@ -507,7 +509,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         viewBinding.header.txtvTitle.setText(feed.getTitle());
         viewBinding.header.txtvAuthor.setText(feed.getAuthor());
         viewBinding.header.descriptionContainer.setVisibility(View.GONE);
-        if (feed.getState() != Feed.STATE_SUBSCRIBED) {
+        if (feed.getState() == Feed.STATE_NOT_SUBSCRIBED) {
             viewBinding.header.descriptionContainer.setVisibility(View.VISIBLE);
             viewBinding.header.headerDescriptionLabel.setText(HtmlToPlainText.getPlainText(feed.getDescription()));
             viewBinding.header.subscribeNagLabel.setVisibility(
@@ -525,8 +527,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         } else {
             viewBinding.header.txtvInformation.setVisibility(View.GONE);
         }
-        boolean isSubscribed = feed.getState() == Feed.STATE_SUBSCRIBED;
-        boolean isArchived = feed.getPreferences().getTags().contains(FeedPreferences.TAG_ARCHIVE);
+        boolean isSubscribed = feed.getState() != Feed.STATE_NOT_SUBSCRIBED;
+        boolean isArchived = feed.getState() == Feed.STATE_ARCHIVED;
         boolean showMainButtons = isSubscribed && !isArchived;
         viewBinding.header.butShowInfo.setVisibility(showMainButtons ? View.VISIBLE : View.GONE);
         viewBinding.header.butFilter.setVisibility(showMainButtons ? View.VISIBLE : View.GONE);
@@ -559,7 +561,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             if (feed == null) {
                 return;
             }
-            DBWriter.setArchived(feed, false);
+            DBWriter.setFeedState(getContext(), feed, Feed.STATE_SUBSCRIBED);
         });
         viewBinding.header.butShowSettings.setOnClickListener(v -> {
             if (feed == null) {
@@ -759,7 +761,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             super.onCreateContextMenu(menu, v, menuInfo);
-            if (!inActionMode() && feed.getState() == Feed.STATE_SUBSCRIBED) {
+            if (!inActionMode() && feed.getState() != Feed.STATE_NOT_SUBSCRIBED) {
                 menu.findItem(R.id.multi_select).setVisible(true);
             }
             MenuItemUtils.setOnClickListeners(menu, FeedItemlistFragment.this::onContextItemSelected);
