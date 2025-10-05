@@ -32,12 +32,9 @@ public abstract class FeedMenuHandler {
     private static final String TAG = "FeedMenuHandler";
 
     public static void onPrepare(Menu menu, List<Feed> feeds) {
-        boolean hasArchived = false;
         boolean allArchived = true;
         for (Feed feed : feeds) {
-            if (feed.getState() == Feed.STATE_ARCHIVED) {
-                hasArchived = true;
-            } else {
+            if (feed.getState() != Feed.STATE_ARCHIVED) {
                 allArchived = false;
             }
         }
@@ -47,6 +44,7 @@ public abstract class FeedMenuHandler {
             menu.findItem(R.id.remove_all_inbox_item).setVisible(!allArchived);
         }
         menu.findItem(R.id.edit_tags).setVisible(!allArchived);
+        menu.findItem(R.id.remove_archive_feed).setVisible(!allArchived);
     }
 
     public static boolean onMenuItemClicked(@NonNull Fragment fragment, int menuItemId,
