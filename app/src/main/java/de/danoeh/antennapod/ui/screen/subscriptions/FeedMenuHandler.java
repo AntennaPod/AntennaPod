@@ -41,10 +41,8 @@ public abstract class FeedMenuHandler {
                 allArchived = false;
             }
         }
-        if (menu.findItem(R.id.archive_feed) != null) {
+        if (menu.findItem(R.id.rename_item) != null) {
             // Multi-select does not have all options yet
-            menu.findItem(R.id.archive_feed).setVisible(!allArchived);
-            menu.findItem(R.id.restore_feed).setVisible(hasArchived);
             menu.findItem(R.id.rename_item).setVisible(!allArchived);
             menu.findItem(R.id.remove_all_inbox_item).setVisible(!allArchived);
         }
@@ -82,10 +80,6 @@ public abstract class FeedMenuHandler {
             new RenameFeedDialog(fragment.getActivity(), selectedFeed).show();
         } else if (menuItemId == R.id.remove_feed) {
             RemoveFeedDialog.show(context, selectedFeed, null);
-        } else if (menuItemId == R.id.archive_feed) {
-            DBWriter.setFeedState(fragment.getContext(), selectedFeed, Feed.STATE_ARCHIVED);
-        } else if (menuItemId == R.id.restore_feed) {
-            DBWriter.setFeedState(fragment.getContext(), selectedFeed, Feed.STATE_SUBSCRIBED);
         } else if (menuItemId == R.id.share_feed) {
             ShareUtils.shareFeedLink(context, selectedFeed);
         } else {

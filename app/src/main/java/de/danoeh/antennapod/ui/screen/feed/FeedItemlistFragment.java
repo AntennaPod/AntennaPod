@@ -42,7 +42,6 @@ import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
-import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
@@ -293,7 +292,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             viewBinding.toolbar.getMenu().findItem(R.id.remove_all_inbox_item).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.action_search).setVisible(false);
         }
-        viewBinding.toolbar.getMenu().findItem(R.id.archive_feed).setVisible(feed.getState() == Feed.STATE_SUBSCRIBED);
     }
 
     @Override
