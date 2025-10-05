@@ -65,7 +65,7 @@ public class BugReportFragment extends AnimatedFragment {
             refreshCrashLogInfo(uiState);
         });
 
-        viewBinding.btnExpandCrashLog.setOnClickListener(v -> {
+        viewBinding.expandCrashLogButton.setOnClickListener(v -> {
             switch (viewModel.requireCurrentState().getCrashLogState()) {
                 case SHOWN_COLLAPSED:
                     viewModel.setCrashLogState(BugReportViewModel.UiState.CrashLogState.SHOWN_EXPANDED);
@@ -80,11 +80,11 @@ public class BugReportFragment extends AnimatedFragment {
             }
         });
 
-        viewBinding.btnOpenForum.setOnClickListener(v -> {
+        viewBinding.openForumButton.setOnClickListener(v -> {
             IntentUtils.openInBrowser(requireContext(), "https://forum.antennapod.org/search");
         });
 
-        viewBinding.btnOpenGithub.setOnClickListener(v -> {
+        viewBinding.openGithubButton.setOnClickListener(v -> {
             IntentUtils.openInBrowser(requireContext(), "https://github.com/AntennaPod/AntennaPod/issues");
         });
     }
@@ -98,11 +98,11 @@ public class BugReportFragment extends AnimatedFragment {
     }
 
     private void refreshEnvironmentInfo(@NonNull BugReportViewModel.EnvironmentInfo info) {
-        viewBinding.txtAttribAppVersion.setText(info.applicationVersion);
-        viewBinding.txtAttribAndroidVersion.setText(info.androidVersion);
-        viewBinding.txtAttribDeviceModel.setText(info.deviceModel);
-        viewBinding.txtAttribDeviceName.setText(info.deviceName);
-        viewBinding.txtAttribProduct.setText(info.productName);
+        viewBinding.attribAppVersionLabel.setText(info.applicationVersion);
+        viewBinding.attribAndroidVersionLabel.setText(info.androidVersion);
+        viewBinding.attribDeviceModelLabel.setText(info.deviceModel);
+        viewBinding.attribDeviceNameLabel.setText(info.deviceName);
+        viewBinding.attribProductNameLabel.setText(info.productName);
     }
 
     private void refreshCrashLogInfo(@NonNull BugReportViewModel.UiState uiState) {
@@ -112,25 +112,25 @@ public class BugReportFragment extends AnimatedFragment {
         switch (state) {
             case SHOWN_COLLAPSED:
             case SHOWN_EXPANDED:
-                viewBinding.txtCrashLog.setText(crashLogInfo.getContent());
-                viewBinding.txtCrashLogMessage.setText(getString(
+                viewBinding.crashLogContentLabel.setText(crashLogInfo.getContent());
+                viewBinding.crashLogMessageLabel.setText(getString(
                         R.string.report_bug_crash_log_message, uiState.getFormattedCrashLogTimestamp()));
 
                 if (state == BugReportViewModel.UiState.CrashLogState.SHOWN_COLLAPSED) {
-                    viewBinding.btnExpandCrashLog.setText(R.string.report_bug_crash_log_expand);
-                    viewBinding.txtCrashLog.setMinLines(4);
-                    viewBinding.txtCrashLog.setMaxLines(4);
+                    viewBinding.expandCrashLogButton.setText(R.string.report_bug_crash_log_expand);
+                    viewBinding.crashLogContentLabel.setMinLines(4);
+                    viewBinding.crashLogContentLabel.setMaxLines(4);
                 } else {
-                    viewBinding.btnExpandCrashLog.setText(R.string.report_bug_crash_log_collapse);
-                    viewBinding.txtCrashLog.setMinLines(0);
-                    viewBinding.txtCrashLog.setMaxLines(Integer.MAX_VALUE);
+                    viewBinding.expandCrashLogButton.setText(R.string.report_bug_crash_log_collapse);
+                    viewBinding.crashLogContentLabel.setMinLines(0);
+                    viewBinding.crashLogContentLabel.setMaxLines(Integer.MAX_VALUE);
                 }
 
-                viewBinding.grpCrashLog.setVisibility(View.VISIBLE);
+                viewBinding.crashLogToggleGroup.setVisibility(View.VISIBLE);
                 break;
 
             default:    // UNAVAILABLE
-                viewBinding.grpCrashLog.setVisibility(View.GONE);
+                viewBinding.crashLogToggleGroup.setVisibility(View.GONE);
                 break;
         }
     }
@@ -168,18 +168,18 @@ public class BugReportFragment extends AnimatedFragment {
     private void setupClipboardCopy() {
         Context ctx = requireContext();
 
-        viewBinding.txtAttribAppVersion.setOnClickListener(
+        viewBinding.attribAppVersionLabel.setOnClickListener(
                 new ClipboardUtils.TextViewCopyOnClickListener(ctx, R.string.report_bug_attrib_app_version));
-        viewBinding.txtAttribAndroidVersion.setOnClickListener(
+        viewBinding.attribAndroidVersionLabel.setOnClickListener(
                 new ClipboardUtils.TextViewCopyOnClickListener(ctx, R.string.report_bug_attrib_android_version));
-        viewBinding.txtAttribDeviceModel.setOnClickListener(
+        viewBinding.attribDeviceModelLabel.setOnClickListener(
                 new ClipboardUtils.TextViewCopyOnClickListener(ctx, R.string.report_bug_attrib_device_model));
-        viewBinding.txtAttribDeviceName.setOnClickListener(
+        viewBinding.attribDeviceNameLabel.setOnClickListener(
                 new ClipboardUtils.TextViewCopyOnClickListener(ctx, R.string.report_bug_attrib_device_name));
-        viewBinding.txtAttribProduct.setOnClickListener(
+        viewBinding.attribProductNameLabel.setOnClickListener(
                 new ClipboardUtils.TextViewCopyOnClickListener(ctx, R.string.report_bug_attrib_product));
 
-        viewBinding.txtCrashLog.setOnClickListener(new ClipboardUtils.ViewCopyOnClickListener(ctx,
+        viewBinding.crashLogContentLabel.setOnClickListener(new ClipboardUtils.ViewCopyOnClickListener(ctx,
                 R.string.report_bug_crash_log_title, R.string.copied_to_clipboard) {
             @Override
             protected String getText(View view) {
@@ -187,7 +187,7 @@ public class BugReportFragment extends AnimatedFragment {
             }
         });
 
-        viewBinding.btnCopyToClipboard.setOnClickListener(new ClipboardUtils.ViewCopyOnClickListener(ctx,
+        viewBinding.copyToClipboardButton.setOnClickListener(new ClipboardUtils.ViewCopyOnClickListener(ctx,
                 R.string.report_bug_title, R.string.copied_to_clipboard) {
             @Override
             protected String getText(View view) {
