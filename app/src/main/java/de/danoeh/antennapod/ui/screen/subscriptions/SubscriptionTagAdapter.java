@@ -93,7 +93,9 @@ public class SubscriptionTagAdapter extends RecyclerView.Adapter<SubscriptionTag
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        if (longPressedItem == null || FeedPreferences.TAG_ROOT.equals(longPressedItem.getTitle())) {
+        if (longPressedItem == null
+                || FeedPreferences.TAG_ROOT.equals(longPressedItem.getTitle())
+                || FeedPreferences.TAG_ARCHIVE.equals(longPressedItem.getTitle())) {
             return;
         }
         MenuInflater inflater = activityRef.get().getMenuInflater();

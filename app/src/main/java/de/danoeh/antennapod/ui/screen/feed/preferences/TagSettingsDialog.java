@@ -132,7 +132,7 @@ public class TagSettingsDialog extends DialogFragment {
     }
 
     private void addTag(String name) {
-        if (TextUtils.isEmpty(name) || displayedTags.contains(name)) {
+        if (TextUtils.isEmpty(name) || displayedTags.contains(name) || FeedPreferences.TAG_ARCHIVE.equals(name)) {
             return;
         }
         displayedTags.add(name);

@@ -169,6 +169,8 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             inflater.inflate(R.menu.nav_feed_context, menu);
             FeedMenuHandler.onPrepare(menu, Collections.singletonList(contextPressedItem.asFeed()));
             // episodes are not loaded, so we cannot check if the podcast has new or unplayed ones!
+        } else if (FeedPreferences.TAG_ARCHIVE.equals(contextPressedItem.asTag().getTitle())) {
+            return;
         } else {
             menu.setHeaderTitle(contextPressedItem.asTag().getTitle());
             inflater.inflate(R.menu.nav_folder_context, menu);
@@ -377,7 +379,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                                 .putStringSet(PREF_OPEN_FOLDERS, openFolders)
                                 .apply();
 
-                        disposable = Observable.fromCallable(() -> makeFlatDrawerData(navDrawerData.feeds,
+                        disposable = Observable.fromCallable(() -> makeFlatDrawerData(
                                         navDrawerData.tags, navDrawerData.feedCounters))
                                 .subscribeOn(Schedulers.computation())
                                 .observeOn(AndroidSchedulers.mainThread())
@@ -426,7 +428,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                     NavDrawerData data = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter(),
                             UserPreferences.getFeedOrder(), UserPreferences.getFeedCounterSetting());
                     reclaimableSpace = EpisodeCleanupAlgorithmFactory.build().getReclaimableItems();
-                    return new Pair<>(data, makeFlatDrawerData(data.feeds, data.tags, data.feedCounters));
+                    return new Pair<>(data, makeFlatDrawerData(data.tags, data.feedCounters));
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -442,11 +444,16 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                         });
     }
 
-    private List<DrawerItem> makeFlatDrawerData(List<Feed> feeds, List<NavDrawerData.TagItem> tags,
+    private List<DrawerItem> makeFlatDrawerData(List<NavDrawerData.TagItem> tags,
                                                 @Nullable java.util.Map<Long, Integer> feedCounters) {
         List<DrawerItem> flatItems = new ArrayList<>();
-        for (Feed feed : feeds) {
-            flatItems.add(new DrawerItem(feed, feedCounter(feed, feedCounters), 0));
+        for (NavDrawerData.TagItem tag : tags) {
+            if (FeedPreferences.TAG_ROOT.equals(tag.getTitle())) {
+                for (Feed feed : tag.getFeeds()) {
+                    flatItems.add(new DrawerItem(feed, feedCounter(feed, feedCounters), 0));
+                }
+                break;
+            }
         }
         for (NavDrawerData.TagItem tag : tags) {
             if (FeedPreferences.TAG_ROOT.equals(tag.getTitle())) {
