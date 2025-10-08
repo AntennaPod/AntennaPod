@@ -11,13 +11,17 @@ import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomViewTarget;
 import com.bumptech.glide.request.transition.Transition;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
+import de.danoeh.antennapod.ui.glide.ImageLoader;
 
 import java.lang.ref.WeakReference;
 
 public class CoverLoader {
+    private FeedItem item;
+    private Feed feed;
     private int resource = 0;
-    private String uri;
-    private String fallbackUri;
     private ImageView imgvCover;
     private boolean textAndImageCombined;
     private TextView fallbackTitle;
@@ -25,18 +29,18 @@ public class CoverLoader {
     public CoverLoader() {
     }
 
-    public CoverLoader withUri(String uri) {
-        this.uri = uri;
+    public CoverLoader withItem(FeedItem item) {
+        this.item = item;
+        return this;
+    }
+
+    public CoverLoader withFeed(Feed feed) {
+        this.feed = feed;
         return this;
     }
 
     public CoverLoader withResource(int resource) {
         this.resource = resource;
-        return this;
-    }
-
-    public CoverLoader withFallbackUri(String uri) {
-        fallbackUri = uri;
         return this;
     }
 
@@ -76,19 +80,20 @@ public class CoverLoader {
                 .fitCenter()
                 .dontAnimate();
 
-        RequestBuilder<Drawable> builder = Glide.with(imgvCover)
-                .as(Drawable.class)
-                .load(uri)
-                .apply(options);
+        if (item != null) {
+            String primaryUrl = ImageResourceUtils.getEpisodeListImageLocation(item);
+            RequestBuilder<Drawable> fallbackRequest = ImageLoader.load(imgvCover,
+                    ImageResourceUtils.getFallbackImageLocation(item), item.getFeed()).apply(options);
 
-        if (fallbackUri != null) {
-            builder = builder.error(Glide.with(imgvCover)
-                    .as(Drawable.class)
-                    .load(fallbackUri)
-                    .apply(options));
+            ImageLoader.load(imgvCover, primaryUrl, item.getFeed())
+                    .apply(options)
+                    .error(fallbackRequest)
+                    .into(coverTarget);
+        } else if (feed != null) {
+            ImageLoader.load(imgvCover, feed.getImageUrl(), feed)
+                    .apply(options)
+                    .into(coverTarget);
         }
-
-        builder.into(coverTarget);
     }
 
     static class CoverTarget extends CustomViewTarget<ImageView, Drawable> {

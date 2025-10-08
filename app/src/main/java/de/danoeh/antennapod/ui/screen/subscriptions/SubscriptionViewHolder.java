@@ -67,7 +67,7 @@ public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
             Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
             textAndImageCombined = feed.isLocalFeed() && feed.getImageUrl() != null
                     && feed.getImageUrl().startsWith(Feed.PREFIX_GENERATIVE_COVER);
-            coverLoader.withUri(feed.getImageUrl());
+            coverLoader.withFeed(feed);
             errorIcon.setVisibility(feed.hasLastUpdateFailed() ? View.VISIBLE : View.GONE);
         } else {
             textAndImageCombined = true;
