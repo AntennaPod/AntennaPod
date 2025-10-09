@@ -23,8 +23,8 @@ dependencies {
     implementation "androidx.work:work-runtime:$workManagerVersion"
 
     implementation "commons-io:commons-io:$commonsioVersion"
-    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
-    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
     implementation "org.greenrobot:eventbus:$eventbusVersion"
     implementation "com.google.guava:guava:31.0.1-android"
 }

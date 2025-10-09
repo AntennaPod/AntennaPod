@@ -646,7 +646,7 @@
     <string name="rating_rate">تقييم أنتنابد</string>
     <string name="rating_later">لاحقاً</string>
     <!--Online feed view-->
-  <string name="subscribe_label">أشترك</string>
+  <string name="subscribe_label">اشترك</string>
     <string name="preview_episodes">معاينة الحلقات</string>
     <string name="state_deleted_not_subscribed">لم تشترك بهذه المسموعيَّة. اشترك مجانًا لتصل إلى محتواها بسهولة ولتبقي سجل تشغيلها.</string>
     <!--Content descriptions for image buttons-->

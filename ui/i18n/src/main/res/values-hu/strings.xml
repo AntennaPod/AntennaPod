@@ -302,7 +302,7 @@
     <string name="preference_search_no_results">Nincs találat</string>
     <string name="preference_search_clear_history">Napló törlése</string>
     <string name="pref_episode_cleanup_summary">Azon epizódok, melyek törölhetők, ha az Automatikus letöltésnek helyre van szüksége az új epizódok miatt</string>
-    <string name="pref_pauseOnDisconnect_sum">Lejátszás szüneteltetése fejhallgató vagy bluetooth leválasztásakor</string>
+    <string name="pref_pauseOnDisconnect_sum">Lejátszás szüneteltetése a fejhallgató vagy a Bluetooth leválasztásakor</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Lejátszás folytatása a fejhallgatók újracsatlakoztatásakor</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Lejátszás folytatása a bluetooth újracsatlakozásakor</string>
     <string name="pref_hardware_forward_button_title">Tovább gomb</string>
@@ -828,7 +828,7 @@
     <string name="echo_share_heading">Saját kedvenc podcastek</string>
     <string name="echo_share">%d podcastekben. #AntennaPodEcho</string>
     <string name="download_error_unsupported_type_html_manual">A megadott cím egy webhely címe, nem egy podcast RSS-címe.</string>
-    <string name="pref_automatic_download_global_description">Új epizódok automatikus letöltése. Podcastenként felülbírálható.</string>
+    <string name="pref_automatic_download_global_description">Az epizódok automatikus letöltése a beérkezettekből. Podcastenként felülbírálható.</string>
     <string name="pref_automatic_download_queue_title">Letöltés sorba állítva</string>
     <string name="pref_automatic_download_queue_description">Sorba állított epizódok automatikus letöltése</string>
     <string name="episode_lists">Epizódlisták</string>
@@ -839,4 +839,49 @@
     <string name="feed_new_episodes_action_summary_autodownload">Automatikus letöltés engedélyezve. Az epizódok hozzá lesznek adva a beérkezettekhez, és a letöltések után átkerülnek a lejátszási sorba.</string>
     <string name="visit_social_interact_label">Hozzászólások megjelenítése</string>
     <string name="rss_address">RSS-cím</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">%d epizód letöltése.</item>
+        <item quantity="other">%d epizód letöltése.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">%d letöltött epizód törölve.</item>
+        <item quantity="other">%d letöltött epizód törölve.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Eltávolítva a beérkezők közül</string>
+    <string name="mark_as_played_label">Megjelölés lejátszottként</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Megjelölve lejátszottként</item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Megjelölve nem lejátszottként</item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="play_this_to_seek_position_message">A pozíciókra ugráshoz le kell játszania az epizódot</string>
+    <string name="mark_as_unplayed_label">Megjelölés nem lejátszottként</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d epizód hozzáadva a sorhoz.</item>
+        <item quantity="other">%d epizód hozzáadva a sorhoz.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d epizód eltávolítva a sorból.</item>
+        <item quantity="other">%d epizód eltávolítva a sorból.</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">Hang követése</string>
+    <string name="visit_social_interact_confirm_dialog_title">Elhagyja az AntennaPodot</string>
+    <string name="visit_social_interact_confirm_dialog_message">Győződjön meg arról, hogy megbízik a(z) „%1$s” webhelyben.</string>
+    <string name="reset_playback_position_label">Lejátszási pozíció visszaállítása</string>
+    <string name="no_items_selected_message">Nincs elem kiválasztva</string>
+    <string name="delete_local_feed_confirmation_dialog_message">A törlés eltávolítja az epizódot az AntennaPodból, és törli a médiafájlt az eszköz tárhelyéről. Többé nem tölthető le újra az AntennaPodon keresztül.</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d epizód a tetejére helyezve.</item>
+        <item quantity="other">%d epizód a tetejére helyezve.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d epizód alulra helyezve.</item>
+        <item quantity="other">%d epizód alulra helyezve.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">Nincs epizód bekészítve, de új epizódok várnak Önre!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Ugrás a beérkezettekhez</string>
+    <string name="auto_download_inbox_category">Az epizódok automatikus letöltése a beérkezettekből</string>
 </resources>

@@ -25,6 +25,10 @@
             android:title="@string/sort"
             custom:showAsAction="never" />
     <item
+            android:id="@+id/subscriptions_counter"
+            android:title="@string/pref_nav_drawer_feed_counter_title"
+            custom:showAsAction="never" />
+    <item
             android:id="@+id/subscription_num_columns"
             android:title="@string/subscription_num_columns"
             custom:showAsAction="never">

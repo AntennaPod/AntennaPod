@@ -177,7 +177,7 @@
     <string name="delete_label">پاک‌کردن</string>
     <string name="remove_inbox_label">برداشتن از صندوق ورودی</string>
     <string name="toggle_played_label">وضعیت پخش را تغییر دهید</string>
-    <string name="mark_read_no_media_label">علامت زدن به عنوان خوانده شده</string>
+    <string name="mark_read_no_media_label">علامت به خوانده شده</string>
     <string name="mark_unread_label_no_media">علامت‌گذاری به‌عنوان نخوانده‌شده</string>
     <string name="add_to_queue_label">افزودن به صف</string>
     <string name="remove_from_queue_label">برداشتن از صف</string>
@@ -301,8 +301,8 @@
     <string name="preference_search_no_results">نتیجه‌ای یافت نشد</string>
     <string name="preference_search_clear_history">پاک‌کردن تاریخچه</string>
     <string name="pref_episode_cleanup_summary">قسمت‌هایی که اگر بارگیری خودکار نیاز به فضا برای قسمت‌های جدید داشت، شایستهٔ برداشتنند</string>
-    <string name="pref_pauseOnDisconnect_sum">مکث پخش هنگامی که هدفون‌ها یا بلوتوث جدا شود</string>
-    <string name="pref_unpauseOnHeadsetReconnect_sum">ادامه پخش وقتی که هدفون‌ها دوباره متصل شود</string>
+    <string name="pref_pauseOnDisconnect_sum">مکث پخش هنگام قطع شدن هدفون یا بلوتوث</string>
+    <string name="pref_unpauseOnHeadsetReconnect_sum">ادامه پخش هنگام وصل شدن دوبارهٔ هدفون</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">‮‮ادامه پخش هنگامی که بلوتوث دوباره متصل شود</string>
     <string name="pref_hardware_forward_button_title">دکمهٔ پیش‌روی</string>
     <string name="pref_hardware_forward_button_summary">سفارشی کردن رفتار دکمه پرش به جلو</string>
@@ -804,7 +804,7 @@
         <item quantity="one">ساعت قسمت‌هایی\nاز %1$d پادپخش را پخش‌کرده‌اید</item>
         <item quantity="other">ساعت قسمت‌هایی\nاز %1$d پادپخش مختلف را پخش‌کرده‌اید</item>
     </plurals>
-    <string name="pref_automatic_download_global_description">بارگیری خودکار قسمت‌های جدید. می‌تواند برای هر پادپخشی پایمال شود.</string>
+    <string name="pref_automatic_download_global_description">بارگیری خودکار قسمت‌ها از صندوق ورودی. می‌تواند برای هر پادپخشی پایمال شود.</string>
     <string name="pref_automatic_download_queue_description">بارگیری خودکار قسمت‌های صف شده</string>
     <string name="episode_lists">فهرست‌های قسمت</string>
     <string name="pref_downloads_button_action_title">پخش از صفحهٔ بارگیری‌ها</string>
@@ -838,4 +838,48 @@
     <string name="visit_social_interact_label">نمایش دیدگاه‌ها</string>
     <string name="rss_address">نشانی RSS</string>
     <string name="feed_new_episodes_action_summary_autodownload">بارگیری خودکار فعال شد.قسمت‌ها به صندوق ورودی افزوده می‌شوند و پس از پایان بارگیری به صف می‌روند.</string>
+    <string name="transcript_follow_audio_label">پیروی از صدا</string>
+    <string name="removed_from_inbox_message">برداشته از صندوق ورودی</string>
+    <string name="mark_as_played_label">علامت به پخش شده</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">علامت خورده به پخش شده</item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">علامت خورده به پخش نشده</item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="mark_as_unplayed_label">علامت به پخش نشده</string>
+    <string name="play_this_to_seek_position_message">برای پرش به موقعیت‌ها باید قسمت را پخش کنید</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d قسمت به صف اضافه شد.</item>
+        <item quantity="other">%d قسمت به صف اضافه شدند.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d قسمت از صف برداشته شد.</item>
+        <item quantity="other">%d قسمت از صف برداشته شدند.</item>
+    </plurals>
+    <string name="reset_playback_position_label">بازنشانی موقعیت پخش</string>
+    <string name="no_items_selected_message">هیچ موردی گزیده نشده</string>
+    <string name="no_queue_items_inbox_has_items_button_label">رفتن به صندوق ورودی</string>
+    <string name="visit_social_interact_confirm_dialog_title">دارید آنتناپاد را ترک می‌کنید</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">بارگرفتن %d قسمت.</item>
+        <item quantity="other">بارگرفتن %d قسمت.</item>
+    </plurals>
+    <string name="auto_download_inbox_category">بارگیری خودکار قسمت‌ها از صندوق ورودی</string>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">%d قسمت بارگرفته حذف شد.</item>
+        <item quantity="other">%d قسمت بارگرفته حذف شدند.</item>
+    </plurals>
+    <string name="visit_social_interact_confirm_dialog_message">لطفاً مطمئن شوید که به پایگاه %1$s اعتماد دارید.</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d قسمت به بالا رفت.</item>
+        <item quantity="other">%d قسمت به بالا رفتند.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d قسمت به پایین رفت.</item>
+        <item quantity="other">%d قسمت به پایین رفتند.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">هیج قسمتی صف نشده؛‌ولی قسمت‌های جدیدی منتظرتانند!</string>
 </resources>

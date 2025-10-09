@@ -308,8 +308,8 @@
     <string name="preference_search_no_results">Žádné výsledky</string>
     <string name="preference_search_clear_history">Vymazat historii</string>
     <string name="pref_episode_cleanup_summary">Epizody, které by mělo být možné smazat, pokud bude funkce automatického stahování potřebovat místo pro nové epizody</string>
-    <string name="pref_pauseOnDisconnect_sum">Při odpojení sluchátek nebo Bluetooth připojení pozastavit přehrávání</string>
-    <string name="pref_unpauseOnHeadsetReconnect_sum">Pokračovat v přehrávání po připojení sluchátek</string>
+    <string name="pref_pauseOnDisconnect_sum">Pozastavit přehrávání, když se odpojí sluchátka nebo Bluetooth</string>
+    <string name="pref_unpauseOnHeadsetReconnect_sum">Obnovit přehrávání po opětovném připojení sluchátek</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Pokračovat v přehrávání po připojení bluetooth</string>
     <string name="pref_hardware_forward_button_title">Tlačítko vpřed</string>
     <string name="pref_hardware_forward_button_summary">Přizpůsobit tlačítko vpřed</string>
@@ -753,7 +753,7 @@
     <string name="show_transcript">Zobrazit přepis</string>
     <string name="no_transcript_label">Žádný přepis</string>
     <string name="download_error_unsupported_type_html_manual">Zadaná adresa je webová adresa, nikoli RSS adresa podcastu.</string>
-    <string name="pref_automatic_download_global_description">Automaticky stahovat nové epizody. Lze změnit pro každý podcast.</string>
+    <string name="pref_automatic_download_global_description">Automaticky stahovat epizody z nových. Lze přepsat pro každý podcast zvlášť.</string>
     <string name="pref_automatic_download_queue_title">Fronta stahování</string>
     <string name="pref_automatic_download_queue_description">Automaticky stahovat epizody ve frontě</string>
     <string name="pref_episode_cache_title">Limit epizod</string>
@@ -870,4 +870,57 @@
     <string name="feed_new_episodes_action_summary_autodownload">Automatické stahování je povoleno. Epizody jsou přidávány do složky Nové a po stažení jsou přesunuty do fronty.</string>
     <string name="visit_social_interact_label">Zobrazit komentáře</string>
     <string name="rss_address">RSS adresa</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Stahování %d epizody.</item>
+        <item quantity="few">Stahování %d epizod.</item>
+        <item quantity="other">Stahování %d epizod.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">%d stažená epizoda byla smazána.</item>
+        <item quantity="few">%d stažené epizody byly smazány.</item>
+        <item quantity="other">%d stažených epizod bylo smazáno.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Odebráno z nových</string>
+    <string name="mark_as_played_label">Označit jako přehrané</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Označeno jako přehrané</item>
+        <item quantity="few"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Označeno jako nepřehrané</item>
+        <item quantity="few"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="play_this_to_seek_position_message">Chcete-li přeskočit na určité pozice, musíte si epizodu přehrát</string>
+    <string name="mark_as_unplayed_label">Označit jako nepřehrané</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d epizoda přidána do fronty.</item>
+        <item quantity="few">%d epizody přidány do fronty.</item>
+        <item quantity="other">%d epizod přidáno do fronty.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d epizoda odstraněna z fronty.</item>
+        <item quantity="few">%d epizody odstraněny z fronty.</item>
+        <item quantity="other">%d epizod odstraněno z fronty.</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">Sledovat zvuk</string>
+    <string name="visit_social_interact_confirm_dialog_title">Opouštíte AntennaPod</string>
+    <string name="visit_social_interact_confirm_dialog_message">Ujistěte se, že důvěřujete webové stránce „%1$s“.</string>
+    <string name="reset_playback_position_label">Obnovit pozici přehrávání</string>
+    <string name="no_items_selected_message">Nebyly vybrány žádné položky</string>
+    <string name="delete_local_feed_confirmation_dialog_message">Smazání odstraní epizodu z AntennaPod a vymaže mediální soubor z úložiště vašeho zařízení. Nelze ji znovu stáhnout prostřednictvím AntennaPod.</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d epizoda přesunuta na začátek.</item>
+        <item quantity="few">%d epizody přesunuty na začátek.</item>
+        <item quantity="other">%d epizod přesunuto na začátek.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d epizoda přesunuta na konec.</item>
+        <item quantity="few">%d epizody přesunuty na konec.</item>
+        <item quantity="other">%d epizod přesunuto na konec.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">Žádné epizody nejsou zařazeny, ale čekají na vás nové epizody!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Přejít do nových</string>
+    <string name="auto_download_inbox_category">Automaticky stahovat epizody z nových</string>
 </resources>

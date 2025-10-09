@@ -48,6 +48,7 @@ import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
+import de.danoeh.antennapod.storage.databasemaintenanceservice.DatabaseMaintenanceWorker;
 import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -78,13 +79,13 @@ import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
 import de.danoeh.antennapod.ui.view.BottomSheetBackPressedCallback;
 import de.danoeh.antennapod.ui.view.LockableBottomSheetBehavior;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * The activity that is shown when the user launches the app.
@@ -104,10 +105,10 @@ public class MainActivity extends CastEnabledActivity {
     private @Nullable ActionBarDrawerToggle drawerToggle;
     private BottomNavigation bottomNavigation;
     private View navDrawer;
-    private LockableBottomSheetBehavior sheetBehavior;
+    private LockableBottomSheetBehavior<FragmentContainerView> sheetBehavior;
     private BottomSheetBackPressedCallback bottomSheetBackPressedCallback;
     private OnBackPressedCallback openDefaultPageBackPressedCallback;
-    private RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
+    private final RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
     private int lastTheme = 0;
     private Insets systemBarInsets = Insets.NONE;
 
@@ -145,6 +146,7 @@ public class MainActivity extends CastEnabledActivity {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }
             drawerLayout = null;
+            bottomNavigation.onCreateView();
         } else {
             bottomNavigation.hide();
             bottomNavigation = null;
@@ -189,15 +191,16 @@ public class MainActivity extends CastEnabledActivity {
         transaction.replace(R.id.audioplayerFragment, audioPlayerFragment, AudioPlayerFragment.TAG);
         transaction.commit();
 
-        View bottomSheet = findViewById(R.id.audioplayerFragment);
-        sheetBehavior = (LockableBottomSheetBehavior) BottomSheetBehavior.from(bottomSheet);
+        FragmentContainerView bottomSheet = findViewById(R.id.audioplayerFragment);
+        sheetBehavior = (LockableBottomSheetBehavior<FragmentContainerView>) BottomSheetBehavior.from(bottomSheet);
         sheetBehavior.setHideable(false);
-        sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
+        sheetBehavior.addBottomSheetCallback(bottomSheetCallback);
         bottomSheetBackPressedCallback = new BottomSheetBackPressedCallback(false, sheetBehavior, bottomSheet);
 
         FeedUpdateManager.getInstance().restartUpdateAlarm(this, false);
         SynchronizationQueue.getInstance().syncIfNotSyncedRecently();
         AutomaticDatabaseExportWorker.enqueueIfNeeded(this, false);
+        DatabaseMaintenanceWorker.enqueueIfNeeded(this);
 
         WorkManager.getInstance(this)
                 .getWorkInfosByTagLiveData(FeedUpdateManagerImpl.WORK_TAG_FEED_UPDATE)
@@ -337,7 +340,7 @@ public class MainActivity extends CastEnabledActivity {
             drawerLayout.removeDrawerListener(drawerToggle);
         }
         if (bottomNavigation != null) {
-            bottomNavigation.onDestroy();
+            bottomNavigation.onDestroyView();
         }
     }
 
@@ -357,7 +360,7 @@ public class MainActivity extends CastEnabledActivity {
         return drawerLayout != null && navDrawer != null && drawerLayout.isDrawerOpen(navDrawer);
     }
 
-    public LockableBottomSheetBehavior getBottomSheet() {
+    public LockableBottomSheetBehavior<FragmentContainerView> getBottomSheet() {
         return sheetBehavior;
     }
 
@@ -481,8 +484,11 @@ public class MainActivity extends CastEnabledActivity {
         }
     }
 
-    public void loadChildFragment(Fragment fragment, TransitionEffect transition) {
-        Validate.notNull(fragment);
+    public void loadChildFragment(Fragment fragment, TransitionEffect transition, String navigationTag) {
+        Objects.requireNonNull(fragment);
+        if (navigationTag != null && bottomNavigation != null) {
+            bottomNavigation.updateSelectedItem(navigationTag);
+        }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         if (transition == TransitionEffect.FADE) {
@@ -500,6 +506,10 @@ public class MainActivity extends CastEnabledActivity {
                 .add(R.id.main_content_view, fragment, MAIN_FRAGMENT_TAG)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public void loadChildFragment(Fragment fragment, TransitionEffect transition) {
+        loadChildFragment(fragment, transition, null);
     }
 
     public void loadChildFragment(Fragment fragment) {
@@ -551,7 +561,7 @@ public class MainActivity extends CastEnabledActivity {
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
         if (getBottomSheet().getState() == BottomSheetBehavior.STATE_EXPANDED) {
@@ -564,9 +574,6 @@ public class MainActivity extends CastEnabledActivity {
         super.onStart();
         EventBus.getDefault().register(this);
         new RatingDialogManager(this).showIfNeeded();
-        if (bottomNavigation != null) {
-            bottomNavigation.onStart();
-        }
         getOnBackPressedDispatcher().addCallback(this, openDefaultPageBackPressedCallback);
         getOnBackPressedDispatcher().addCallback(this, bottomSheetBackPressedCallback);
     }
@@ -596,9 +603,6 @@ public class MainActivity extends CastEnabledActivity {
     protected void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-        if (bottomNavigation != null) {
-            bottomNavigation.onStop();
-        }
     }
 
     @Override
@@ -688,7 +692,7 @@ public class MainActivity extends CastEnabledActivity {
                 if (intent.getBooleanExtra(MainActivityStarter.EXTRA_CLEAR_BACK_STACK, false)) {
                     loadFragment(tag, null);
                 } else {
-                    loadChildFragment(createFragmentInstance(tag, args));
+                    loadChildFragment(createFragmentInstance(tag, args), TransitionEffect.NONE, tag);
                 }
             }
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);

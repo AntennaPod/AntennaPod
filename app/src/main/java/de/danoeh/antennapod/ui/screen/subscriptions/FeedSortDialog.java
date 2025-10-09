@@ -17,7 +17,7 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 public class FeedSortDialog {
     public static void showDialog(Context context) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
-        dialog.setTitle(context.getString(R.string.pref_nav_drawer_feed_order_title));
+        dialog.setTitle(context.getString(R.string.sort));
         dialog.setNegativeButton(android.R.string.cancel, (d, listener) -> d.dismiss());
 
         int selected = UserPreferences.getFeedOrder().id;

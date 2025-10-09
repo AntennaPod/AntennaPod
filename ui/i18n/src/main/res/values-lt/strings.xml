@@ -35,7 +35,7 @@
     <string name="drawer_feed_order_most_played">Rikiuoti pagal perklausytų epizodų skaičių</string>
     <string name="drawer_feed_counter_unplayed">Neperklausytų epizodų skaičius</string>
     <string name="drawer_feed_counter_downloaded">Atsisiųstų epizodų skaičius</string>
-    <string name="drawer_feed_counter_none">Nieko</string>
+    <string name="drawer_feed_counter_none">Nėra</string>
     <!--Bug report activity-->
   <string name="log_file_share_exception">Nerasta suderinamų programėlių</string>
     <string name="export_logs_menu_title">Eksportuoti išsamų žurnalą</string>
@@ -123,7 +123,7 @@
     <string name="download_error_tap_for_details">Palieskite, jei norite pamatyti išsamesnę informaciją.</string>
     <string name="download_error_device_not_found">Nerastas laikmenos įrenginys</string>
     <string name="download_error_insufficient_space">Įrenginyje nėra pakankamai laisvos vietos.</string>
-    <string name="download_error_parser_exception">Tinklalaidę talpinantis serveris atsiuntė netaisyklingą sklaidos kanalą.</string>
+    <string name="download_error_parser_exception">Tinklalaidę talpinantis serveris atsiuntė neveikiantį tinklalaidės naujienų srautą. Rekomenduojame pasitikslinti naudojant tinklalaidžių tikrintuvą, pvz., castfeedvalidator.com, ir susisiekti su tinklalaidės kūrėju ir pranešti jam apie tai.</string>
     <string name="download_error_unsupported_type_html">Tinklalaidę talpinantis serveris atsiuntė žiniatinklio puslapį, o ne tinklalaidę.</string>
     <string name="download_error_not_found">Tinklalaidę talpinantis serveris nežino, kur rasti failą. Gali būti, jog failas buvo ištrintas.</string>
     <string name="download_error_unknown_host">Nepavyksta rasti serverio. Įsitikinkite, jog įvestas teisingas adresas ir turite veikiantį interneto ryšį.</string>
@@ -263,7 +263,7 @@
   <string name="about_pref">Apie</string>
     <string name="antennapod_version">„AntennaPod“ versija</string>
     <string name="contributors">Autoriai</string>
-    <string name="contributors_summary">Visi gali padėti padaryti „AntennaPod“ geresnę - programiniu kodu, vertimais ar pagalba naudotojams mūsų forume</string>
+    <string name="contributors_summary">Visi gali prisidėti prie „AntennaPod“ gerinimo – programiniu kodu, vertimais ar pagalba naudotojams mūsų forume</string>
     <string name="developers">Kūrėjai</string>
     <string name="translators">Vertėjai</string>
     <string name="special_thanks">Ypatinga padėka</string>
@@ -274,12 +274,12 @@
   <string name="search_status_no_results">Nieko nerasta</string>
     <string name="type_to_search">Įveskite užklausą paieškai pradėti</string>
     <string name="search_label">Paieška</string>
-    <string name="no_results_for_query">Rezultatų paieškai \"%1$s\" nėra</string>
+    <string name="no_results_for_query">Rezultatų paieškai „%1$s“ nėra</string>
     <!--Synchronization-->
   <string name="sync_status_started">Sinchronizavimas pradėtas</string>
-    <string name="sync_status_episodes_upload">Išsiunčiami epizodų pasikeitimai…</string>
-    <string name="sync_status_episodes_download">Atsiunčiami epizodų pasikeitimai…</string>
-    <string name="sync_status_upload_played">Išsiunčiama atkūrimo būsena…</string>
+    <string name="sync_status_episodes_upload">Įkeliami epizodų pakeitimai…</string>
+    <string name="sync_status_episodes_download">Atsiunčiami epizodų pakeitimai…</string>
+    <string name="sync_status_upload_played">Įkeliama atkūrimo būsena…</string>
     <string name="sync_status_subscriptions">Sinchronizuojamos prenumeratos…</string>
     <string name="sync_status_success">Sinchronizavimas sėkmingas</string>
     <string name="sync_status_error">Sinchronizavimas nepavyko</string>
@@ -346,7 +346,7 @@
     <string name="synchronization_full_sync_title">Priverstinis pilnas sinchronizavimas</string>
     <string name="synchronization_force_sync_summary">Sinchronizuoti visų prenumeratų ir epizodų būsenas iš naujo</string>
     <string name="synchronization_logout">Atsijungti</string>
-    <string name="synchronization_login_status"><![CDATA[Prisijungta kaip <i>%1$s</i> <i>%2$s</i> serveryje. <br/><br/>Atsijungę vėl galėsite pasirinkti sinchronizavimo teikėją]]></string>
+    <string name="synchronization_login_status">%2$s prisijungta kaip %1$s.\n\nAtsijungę vėl galėsite pasirinkti sinchronizavimo teikėją.</string>
     <string name="pref_synchronization_logout_toast">Sėkmingai atsijungta</string>
     <string name="gpodnetsync_error_title">„gpodder.net“ sinchronizavimo klaida</string>
     <string name="gpodnetsync_error_descr">"Sinchronizavimo metu įvyko klaida: "</string>
@@ -431,8 +431,8 @@
     <string name="notification_group_news">Naujienos</string>
     <string name="notification_channel_user_action">Reikalingas veiksmas</string>
     <string name="notification_channel_user_action_description">Rodomas, jei reikalingas jūsų veiksmas, pavyzdžiui, reikia įvesti slaptažodį.</string>
-    <string name="notification_channel_downloading">Atsiunčiama</string>
-    <string name="notification_channel_downloading_description">Rodomas atsiuntimo metu.</string>
+    <string name="notification_channel_downloading">Atsisiunčiami epizodai</string>
+    <string name="notification_channel_downloading_description">Rodoma, kai atsisiunčiami epizodai.</string>
     <string name="notification_channel_playing">Šiuo metu atkuriama</string>
     <string name="notification_channel_playing_description">Leidžia valdyti atkūrimą. Tai pagrindinis pranešimas matomas tinklalaidės atkūrimo metu.</string>
     <string name="notification_channel_download_error">Nepavykęs atsiuntimas</string>
@@ -451,8 +451,8 @@
     <string name="shortcut_subscription_label">Prenumeratos trumpinys</string>
     <string name="shortcut_select_subscription">Pažymėti prenumeratą</string>
     <string name="pref_show_subscription_title">Rodyti pavadinimus</string>
-    <string name="pref_new_episodes_action_sum">Veiksmai, kurių reikia imtis dėl naujų epizodų</string>
-    <string name="pref_new_episodes_action_title">Veiksmas naujoms epizodų</string>
+    <string name="pref_new_episodes_action_sum">Veiksmas, kurio reikia imtis atsiradus naujiems epizodams</string>
+    <string name="pref_new_episodes_action_title">Ką daryti su naujais epizodais</string>
     <string name="episode_information">Epizodo informacija</string>
     <string name="sync_status_wait_for_downloads">Laukiama, kol bus atnaujinta prenumerata…</string>
     <string name="opml_reader_error">Skaitant failą įvyko klaida. Įsitikinkite, kad iš tikrųjų pasirinkote OPML failą ir kad failas yra galiojantis.</string>
@@ -523,7 +523,7 @@
     <string name="feed_update_receiver_name">Atnaujinti prenumeratas</string>
     <string name="inbox_label">Gautieji</string>
     <string name="downloads_log_label">Atsisiųskite žurnalą</string>
-    <string name="subscriptions_list_label">Prenumeratos apžvalga (tik šoninis meniu)</string>
+    <string name="subscriptions_list_label">Prenumeratų sąrašas</string>
     <string name="playback_history_label">Atkūrimo istorija</string>
     <string name="enable_swipeactions">Įgalinti perbraukimo veiksmus šiame ekrane</string>
     <string name="swipe_left">Braukite kairėn</string>
@@ -702,7 +702,7 @@
     <string name="go_to_position_label">Eikite į šią poziciją</string>
     <string name="removed_history_label">Pašalinta iš istorijos</string>
     <string name="nextcloud_login_error_generic">Nepavyksta prisijungti prie Nextcloud.\n\n- Patikrinkite tinklo ryšį.\n- Patikrinkite, ar naudojate teisingą serverio adresą.\n- Įsitikinkite, kad įdiegtas „Nextcloud“ įskiepis gpoddersync.</string>
-    <string name="confirm_mobile_download_dialog_message_vpn">VPN programa apsimeta mobiliuoju tinklu (matuojamas ryšys). Atsisiuntimas per mobiliojo ryšio duomenų ryšį yra išjungtas nustatymuose. Jei norite, kad ši problema būtų išspręsta, kreipkitės į savo VPN programėlės kūrėjus.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">- Naudojatės VPN? Jūsų VPN programa apsimeta mobiliuoju tinklu (matuojamas ryšys). Jei norite, kad ši problema būtų išspręsta, susisiekite su savo VPN programos kūrėjais.\n- Nesinaudojate VPN? Android Wi-Fi nustatymuose pakeiskite Wi-Fi tipą į nematuojamą.</string>
     <string name="feed_volume_boost_light">Nedidelis postūmis</string>
     <string name="auto_enable_label">Automatiškai įjungti miego laikmatį paspaudus groti</string>
     <string name="pref_black_theme_message">Tamsiam dizainui naudokite visiškai juodą spalvą</string>
@@ -718,10 +718,182 @@
     <string name="rating_contribute_label">Norite prisijungti? Nesvarbu, ar norite versti, palaikyti, kurti ar programuoti, mes mielai jus priimtume!</string>
     <string name="pref_auto_local_delete_dialog_body">Atkreipkite dėmesį, kad vietinių aplankų atveju tai pašalins epizodus iš „AntennaPod“ ir ištrins jų medijos failus iš įrenginio saugyklos. Jų nebus galima vėl atsisiųsti per „AntennaPod“. įjungti automatinį ištrynimą?</string>
     <string name="pref_auto_delete_sum">Ištrinkite epizodus po atkūrimo arba kai reikia vietos automatiškai atsisiunčiant</string>
-    <string name="bottom_navigation_summary">Beta funkcija: Vienu bakstelėjimu pasiekite svarbiausius ekranus iš bet kur</string>
+    <string name="bottom_navigation_summary">Vienu bakstelėjimu pasiekite svarbiausius ekranus bet kur</string>
     <string name="pref_auto_local_delete_sum">Į automatinio ištrynimo funkciją įtraukite vietinius aplankus</string>
     <string name="multi_select_mark_unplayed_confirmation">Patvirtinkite, kad norite pažymėti visus pasirinktus elementus kaip neatkurtus.</string>
     <string name="multi_select_mark_played_confirmation">Patvirtinkite, kad norite pažymėti visus pasirinktus elementus kaip atkurtus.</string>
     <string name="removed_all_inbox_msg">Pašalinta visa iš gautųjų</string>
     <string name="playback_error_generic">Medijos failo nepavyko atkurti.\n\n- Pabandykite ištrinti ir iš naujo atsisiųsti epizodą.\n- Patikrinkite tinklo ryšį ir įsitikinkite, kad prieigos neužkerta joks VPN ar prisijungimo puslapis.\n- Pabandykite ilgai paspausti ir bendrinti „Medijos adresą“ su interneto naršykle, kad pamatytumėte, ar jį galima atkurti ten. Jei ne, susisiekite su podkasto kūrėjais.</string>
+    <string name="add_feed_label_short">Pridėti</string>
+    <string name="episodes_label_short">Epizodai</string>
+    <string name="home_label_short">Pagrindinis</string>
+    <string name="queue_label_short">Eilė</string>
+    <string name="inbox_label_short">Gautieji</string>
+    <string name="downloads_label_short">Atsisiuntimai</string>
+    <string name="subscriptions_label_short">Prenumeratos</string>
+    <string name="playback_history_label_short">Istorija</string>
+    <string name="episodes_label_more">Epizodai »</string>
+    <string name="queue_label_more">Eilė »</string>
+    <string name="inbox_label_more">Gautieji »</string>
+    <string name="downloads_label_more">Atsisiuntimai »</string>
+    <string name="subscriptions_label_more">Prenumeratos »</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="one">Bendras %d epizodo dydis įrenginyje</item>
+        <item quantity="few">Bendras %d epizodų dydis įrenginyje</item>
+        <item quantity="other">Bendras %d epizodų dydis įrenginyje</item>
+    </plurals>
+    <string name="enabled">Įjungta</string>
+    <string name="disabled">Išjungta</string>
+    <string name="global_default_with_value">Bendras numatytasis (%1$s)</string>
+    <string name="feed_new_episodes_action_summary_autodownload">Automatinis atsisiuntimas įjungtas. Epizodai įtraukiami į gautuosius ir atsisiuntus perkeliami į eilę.</string>
+    <plurals name="episode_cleanup_hours_after_listening">
+        <item quantity="one">Po %d valandos po perklausos</item>
+        <item quantity="few">Po %d valandų po perklausos</item>
+        <item quantity="other">Po %d valandų po perklausos</item>
+    </plurals>
+    <plurals name="episode_cleanup_days_after_listening">
+        <item quantity="one">Po %d dienos po perklausos</item>
+        <item quantity="few">Po %d dienų po perklausos</item>
+        <item quantity="other">Po %d dienų po perklausos</item>
+    </plurals>
+    <plurals name="new_episode_notification_title">
+        <item quantity="one">Naujas epizodas</item>
+        <item quantity="few">Nauji epizodai</item>
+        <item quantity="other">Naujų epizodų</item>
+    </plurals>
+    <string name="delete_tag_label">Ištrinti etiketę</string>
+    <string name="delete_tag_confirmation">Patvirtinkite, kad norite ištrinti „%1$s“ etiketę.</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Atsisiunčiamas %d epizodas.</item>
+        <item quantity="few">Atsisiunčiami %d epizodai.</item>
+        <item quantity="other">Atsisiunčiama %d epizodų.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">Ištrintas %d atsisiųstas epizodas.</item>
+        <item quantity="few">Ištrinti %d atsisiųsti epizodai.</item>
+        <item quantity="other">Ištrinta %d atsisiųstų epizodų.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Pašalinta iš gautųjų</string>
+    <string name="mark_as_played_label">Pažymėti kaip perklausytą</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Pažymėtas kaip perklausytas</item>
+        <item quantity="few"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Pažymėtas kaip neperklausytas</item>
+        <item quantity="few"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="play_this_to_seek_position_message">Kad peršoktumėte į kitą poziciją, turite paleisti epizodą</string>
+    <string name="mark_as_unplayed_label">Pažymėti kaip neperklausytą</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d epizodas įtrauktas į eilę.</item>
+        <item quantity="few">%d epizodai įtraukti į eilę.</item>
+        <item quantity="other">%d epizodų įtraukta į eilę.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d epizodas pašalintas iš eilės.</item>
+        <item quantity="few">%d epizodai pašalinti iš eilės.</item>
+        <item quantity="other">%d epizodų pašalinta iš eilės.</item>
+    </plurals>
+    <plurals name="removed_from_inbox_batch_label">
+        <item quantity="one">%d epizodas pašalintas iš gautųjų.</item>
+        <item quantity="few">%d epizodai pašalinti iš gautųjų.</item>
+        <item quantity="other">%d epizodų pašalinta iš gautųjų.</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">Sekti garso įrašą</string>
+    <string name="visit_social_interact_label">Rodyti komentarus</string>
+    <string name="visit_social_interact_confirm_dialog_title">Išeinate iš AntennaPod</string>
+    <string name="visit_social_interact_confirm_dialog_message">Įsitikinkite, kad pasitikite „%1$s“ svetaine.</string>
+    <string name="reset_playback_position_label">Atstatyti atkūrimo poziciją</string>
+    <string name="no_items_selected_message">Nepasirinktas joks elementas</string>
+    <string name="delete_local_feed_confirmation_dialog_message">Ištrynus, epizodas pašalinamas iš AntennaPod ir ištrinamas medijos failas iš jūsų įrenginio saugyklos. Jo negalima atsisiųsti iš naujo per AntennaPod.</string>
+    <string name="download_log_details_message">%1$s \n\nTechninė priežastis: \n%2$s \n\nFailo URL:\n%3$s</string>
+    <string name="download_error_unsupported_type_html_manual">Jūsų įvestas adresas yra svetainės, o ne tinklalaidės RSS adresas.</string>
+    <string name="notification_channel_refreshing">Atnaujiname tinklalaides</string>
+    <string name="notification_channel_refreshing_description">Rodoma, kol ieškoma naujų epizodų.</string>
+    <string name="echo_home_header">Metų peržiūra</string>
+    <string name="echo_home_subtitle">Jūsų mėgstamiausios praėjusių metų tinklalaidės ir statistika. Išskirtinai jūsų telefone.</string>
+    <string name="echo_intro_your_year">Jūsų metai</string>
+    <string name="echo_intro_in_podcasts">tinklalaidėse</string>
+    <string name="echo_intro_locally">sukurta privačiai jūsų telefone</string>
+    <string name="echo_hours_this_year">Šiemet jūs perklausėte</string>
+    <string name="echo_queue_title_clean">Ir esate pasiruošę naujai metų pradžiai. Turite</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d epizodas perkeltas viršun.</item>
+        <item quantity="few">%d epizodai perkelti viršun.</item>
+        <item quantity="other">%d epizodų perkelta viršun.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d epizodas perkeltas žemyn.</item>
+        <item quantity="few">%d epizodai perkelti žemyn.</item>
+        <item quantity="other">%d epizodų perkelta žemyn.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">Eilėje nėra epizodų, bet yra naujų, kurie laukia jūsų!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Eiti į gautuosius</string>
+    <string name="preference_search_clear_input">Išvalyti</string>
+    <string name="overflow_more">Daugiau</string>
+    <string name="pref_skip_keeps_episodes_title">Saugoti praleistus epizodus</string>
+    <string name="pref_automatic_download_global_description">Automatiškai atsisiųsti epizodus iš gautųjų. Galima nustatyti kiekvienai tinklalaidei atskirai.</string>
+    <string name="pref_automatic_download_queue_title">Atsisiųsti esančius eilėje</string>
+    <string name="pref_automatic_download_queue_description">Automatiškai atsisiųsti eilėje esančius epizodus</string>
+    <string name="episode_lists">Epizodų sąrašas</string>
+    <string name="pref_downloads_button_action_title">Leisti iš atsisiuntimų ekrano</string>
+    <string name="pref_downloads_button_action_sum">Atsisiuntimų ekrane rodyti paleidimo mygtuką vietoje ištrynimo mygtuko</string>
+    <plurals name="time_seconds_quantified">
+        <item quantity="one">%d sekundė</item>
+        <item quantity="few">%d sekundės</item>
+        <item quantity="other">%d sekundžių</item>
+    </plurals>
+    <plurals name="time_minutes_quantified">
+        <item quantity="one">%d minutė</item>
+        <item quantity="few">%d minutės</item>
+        <item quantity="other">%d minučių</item>
+    </plurals>
+    <plurals name="time_hours_quantified">
+        <item quantity="one">%d valanda</item>
+        <item quantity="few">%d valandos</item>
+        <item quantity="other">%d valandų</item>
+    </plurals>
+    <plurals name="time_days_quantified">
+        <item quantity="one">%d diena</item>
+        <item quantity="few">%d dienos</item>
+        <item quantity="other">%d dienų</item>
+    </plurals>
+    <string name="auto_download_inbox_category">Automatiškai atsisiųsti epizodus iš gautųjų</string>
+    <string name="statistics_time_total">iš viso</string>
+    <string name="statistics_time_played">leistų</string>
+    <string name="rss_address">RSS adresas</string>
+    <plurals name="echo_hours_podcasts">
+        <item quantity="one">valandų epizodų\niš %1$d tinklalaidės</item>
+        <item quantity="few">valandų epizodų\niš %1$d skirtingų tinklalaidžių</item>
+        <item quantity="other">valandų epizodų\niš %1$d skirtingų tinklalaidžių</item>
+    </plurals>
+    <string name="echo_queue_title_many">Ir jums dar liko šiek tiek nuveikti šiemet. Turite</string>
+    <plurals name="echo_queue_hours_waiting">
+        <item quantity="one">valandų jūsų eilėje\niš %1$d epizodo</item>
+        <item quantity="few">valandų jūsų eilėje\niš %1$d epizodų</item>
+        <item quantity="other">valandų jūsų eilėje\niš %1$d epizodų</item>
+    </plurals>
+    <string name="echo_queue_hours_clean">Tai sudaro maždaug %1$s kasdien iki %2$d-ųjų pradžios.</string>
+    <string name="echo_queue_hours_normal">Tai sudaro maždaug %1$s kasdien iki %2$d-ųjų pradžios. Jei praleisite keletą epizodų, galėsite pradėti metus nuo švaraus lapo.</string>
+    <string name="echo_queue_hours_much">Tai sudaro maždaug %1$s kasdien iki %2$d-ųjų pradžios. Palaukite, ką?</string>
+    <string name="echo_listened_after_title">Palyginome epizodo išleidimo laiką ir kada jį perklausėte. Mūsų išvada?</string>
+    <string name="echo_listened_after_comment_easy">Jūs klausote palengva</string>
+    <string name="echo_listened_after_time">Įprastai perklausydavote epizodą %1$s po jo išleidimo.</string>
+    <string name="echo_listened_after_comment_addict">Esate priklausomas nuo tinklalaidžių</string>
+    <string name="echo_hoarder_title">Taip pat susimąstėme: are klausote savo prenumeruojamų tinklalaidžių?</string>
+    <string name="echo_hoarder_subtitle_hoarder">Atsižvelgdami į skaičius, manome, jog esate kaupikas</string>
+    <string name="echo_hoarder_comment_hoarder">Sakoma, kad skaičiai nemeluoja. Ir žinodami, kad šiemet perklausėte tik %1$d %% savo %2$d aktyvių prenumeratų, jaučiamės teisūs.</string>
+    <string name="echo_hoarder_subtitle_medium">Švaru. Nesate kaupikas.</string>
+    <string name="echo_hoarder_comment_medium">Šiemet perklausėte %1$d %% savo %2$d aktyvių prenumeratų. Gal norėtumėte vėl pasiklausyti „%3$s“?</string>
+    <string name="echo_hoarder_subtitle_clean">Švaru!</string>
+    <string name="echo_hoarder_comment_clean">Šiemet perklausėte %1$d %% savo %2$d aktyvių prenumeratų. Esame įsitikinę, kad ir jūsų darbo stalas tviska!</string>
+    <string name="echo_thanks_large">Ačiū,</string>
+    <string name="echo_thanks_we_are_glad_old">kad buvote šiais metais su mumis!\n\nKlausėtės savo pirmojo epizodo su mumis %1$s. Nuo tada džiaugiamės, kad galime jums tarnauti.</string>
+    <string name="echo_thanks_we_are_glad_new">kad šiemet prisijungėte prie mūsų!\n\nNesvarbu, ar persikėlėte čia iš kitos programos, ar pradėjo savo tinklalaidžių odisėją su mumis – džiaugiamės turėdami jus!</string>
+    <string name="echo_thanks_now_favorite">O dabar žvilgtelėkime į jūsų pamėgtas tinklalaides…</string>
+    <string name="echo_share_heading">Mano mėgstamiausios tinklalaidės</string>
+    <string name="echo_share">Mano %d metai su tinklalaidėmis. #AntennaPodEcho</string>
 </resources>

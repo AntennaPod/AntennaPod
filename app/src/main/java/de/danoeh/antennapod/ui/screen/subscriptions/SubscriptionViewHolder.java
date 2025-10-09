@@ -13,7 +13,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.CoverLoader;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
@@ -45,17 +44,17 @@ public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
         this.mainActivityRef = new WeakReference<>(mainActivity);
     }
 
-    public void bind(NavDrawerData.DrawerItem drawerItem, int columnCount) {
+    public void bind(Feed feed, int columnCount, int counter) {
         if (selectView != null) {
             Drawable drawable = AppCompatResources.getDrawable(selectView.getContext(),
                     R.drawable.ic_checkbox_background);
             selectView.setBackground(drawable); // Setting this in XML crashes API <= 21
         }
-        title.setText(drawerItem.getTitle());
-        fallbackTitle.setText(drawerItem.getTitle());
-        coverImage.setContentDescription(drawerItem.getTitle());
-        if (drawerItem.getCounter() > 0) {
-            count.setText(NumberFormat.getInstance().format(drawerItem.getCounter()));
+        title.setText(feed.getTitle());
+        fallbackTitle.setText(feed.getTitle());
+        coverImage.setContentDescription(feed.getTitle());
+        if (counter > 0) {
+            count.setText(NumberFormat.getInstance().format(counter));
             count.setVisibility(View.VISIBLE);
         } else {
             count.setVisibility(View.GONE);

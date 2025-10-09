@@ -807,7 +807,7 @@
     <string name="echo_share_heading">Os meus podcasts favoritos</string>
     <string name="echo_share">O meu ano %d em podcasts. #AntennaPodEcho</string>
     <string name="download_error_unsupported_type_html_manual">O link que introduziu é um endereço de uma página web, não um feed RSS de podcast.</string>
-    <string name="pref_automatic_download_global_description">Transferir automaticamente novos episódios. Pode ser modificado para cada podcast nas suas definições.</string>
+    <string name="pref_automatic_download_global_description">Transferir automaticamente episódios da caixa de entrada. Pode ser modificado para cada podcast.</string>
     <string name="pref_automatic_download_queue_description">Transferir automaticamente episódios da fila</string>
     <string name="pref_automatic_download_queue_title">Transferira fila</string>
     <string name="episode_lists">Lista de episódios</string>
@@ -855,4 +855,57 @@
     <string name="feed_new_episodes_action_summary_autodownload">Transferência automática ativada. Os episódios são adicionados à caixa de entrada e, depois de transferidos, passam para a fila.</string>
     <string name="visit_social_interact_label">Mostrar comentários</string>
     <string name="rss_address">Feed RSS</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">A descarregar %d episódio.</item>
+        <item quantity="many">A descarregar %d episódios.</item>
+        <item quantity="other">A descarregar %d episódios.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">%d episódio descarregado apagado.</item>
+        <item quantity="many">%d episódios descarregados apagados.</item>
+        <item quantity="other">%d episódios descarregados apagados.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Removido da caixa de entrada</string>
+    <string name="mark_as_played_label">Marcar como reproduzido</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Marcado como reproduzido</item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Marcado como não reproduzido</item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="play_this_to_seek_position_message">Para pular para uma posição, tem que reproduzir o episódio</string>
+    <string name="mark_as_unplayed_label">Marcar como não reproduzido</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d episódio adicionado à fila.</item>
+        <item quantity="many">%d episódios adicionados à fila.</item>
+        <item quantity="other">%d episódios adicionados à fila.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d episódio removido da fila.</item>
+        <item quantity="many">%d episódios removidos da fila.</item>
+        <item quantity="other">%d episódios removidos da fila.</item>
+    </plurals>
+    <string name="visit_social_interact_confirm_dialog_title">Está a sair do AntennaPod</string>
+    <string name="visit_social_interact_confirm_dialog_message">Certifique-se de que confia no site \"%1$s\".</string>
+    <string name="reset_playback_position_label">Repor posição de reprodução</string>
+    <string name="no_items_selected_message">Nenhum elemento selecionado</string>
+    <string name="delete_local_feed_confirmation_dialog_message">Apagar remove o episódio do AntennaPod e apaga o ficheiro de média do armazenamento do dispositivo. Não pode ser descarregado novamente pelo AntennaPod.</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d episódio movido para o topo.</item>
+        <item quantity="many">%d episódios movidos para o topo.</item>
+        <item quantity="other">%d episódios movidos para o topo.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">Nenhum episódio na fila, mas existem novos episódios à espera!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Ir para a caixa de entrada</string>
+    <string name="auto_download_inbox_category">Descarregar automaticamente os episódios da caixa de entrada</string>
+    <string name="transcript_follow_audio_label">Seguir áudio</string>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d episódio movido para o fim.</item>
+        <item quantity="many">%d episódios movidos para o fim.</item>
+        <item quantity="other">%d episódios movidos para o fim.</item>
+    </plurals>
 </resources>

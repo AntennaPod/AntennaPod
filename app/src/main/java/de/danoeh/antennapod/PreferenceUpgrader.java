@@ -6,6 +6,7 @@ import android.view.KeyEvent;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.preference.PreferenceManager;
 
+import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -143,8 +144,9 @@ public class PreferenceUpgrader {
                         .apply();
             }
             UserPreferences.setAllowMobileSync(true);
-            if (prefs.getString(UserPreferences.PREF_UPDATE_INTERVAL, ":").contains(":")) { // Unset or "time of day"
-                prefs.edit().putString(UserPreferences.PREF_UPDATE_INTERVAL, "12").apply();
+            if (prefs.getString(UserPreferences.PREF_UPDATE_INTERVAL_MINUTES, ":").contains(":")) {
+                // Unset or "time of day"
+                prefs.edit().putString(UserPreferences.PREF_UPDATE_INTERVAL_MINUTES, "12").apply();
             }
         }
         if (oldVersion < 3020000) {
@@ -175,6 +177,11 @@ public class PreferenceUpgrader {
         if (newVersion == 3070003) {
             // Enable bottom navigation for beta users, so only this exact app version
             UserPreferences.setBottomNavigationEnabled(true);
+        }
+        if (oldVersion < 3100000) {
+            // Migrate refresh interval from hours to minutes
+            UserPreferences.setUpdateInterval(60L * UserPreferences.getUpdateInterval());
+            FeedUpdateManager.getInstance().restartUpdateAlarm(context, true);
         }
     }
 }

@@ -59,13 +59,13 @@
 
     <string-array name="feed_refresh_interval_values">
         <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>4</item>
-        <item>8</item>
-        <item>12</item>
-        <item>24</item>
-        <item>72</item>
+        <item>60</item>
+        <item>120</item>
+        <item>240</item>
+        <item>480</item>
+        <item>720</item>
+        <item>1440</item>
+        <item>4320</item>
     </string-array>
 
     <string-array name="globalNewEpisodesActionItems">
@@ -101,6 +101,7 @@
         <item>60</item>
         <item>120</item>
         <item>300</item>
+        <item>600</item>
     </string-array>
 
 

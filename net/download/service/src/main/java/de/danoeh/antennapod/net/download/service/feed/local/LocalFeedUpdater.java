@@ -9,13 +9,15 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.input.CountingInputStream;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -44,7 +46,6 @@ import de.danoeh.antennapod.parser.media.id3.ID3ReaderException;
 import de.danoeh.antennapod.parser.media.id3.Id3MetadataReader;
 import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentMetadataReader;
 import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentReaderException;
-import org.apache.commons.io.input.CountingInputStream;
 
 public class LocalFeedUpdater {
     private static final String TAG = "LocalFeedUpdater";
@@ -66,7 +67,8 @@ public class LocalFeedUpdater {
             }
             Feed updatedFeed = tryUpdateFeed(feed, context, documentFolder.getUri(), updaterProgressListener);
 
-            if (mustReportDownloadSuccessful(feed)) {
+            List<DownloadResult> downloadResults = DBReader.getFeedDownloadLog(feed.getId(), 1);
+            if (downloadResults.isEmpty() || !downloadResults.get(0).isSuccessful()) {
                 reportSuccess(feed);
             }
             return updatedFeed;
@@ -172,7 +174,8 @@ public class LocalFeedUpdater {
     }
 
     private static FeedItem createFeedItem(Feed feed, FastDocumentFile file, Context context) {
-        FeedItem item = new FeedItem(0, file.getName(), UUID.randomUUID().toString(),
+        String title = FilenameUtils.removeExtension(file.getName());
+        FeedItem item = new FeedItem(0, title, UUID.randomUUID().toString(),
                 file.getName(), new Date(file.getLastModified()), FeedItem.UNPLAYED, feed);
         item.disableAutoDownload();
 
@@ -264,27 +267,6 @@ public class LocalFeedUpdater {
                 Feed.FEEDFILETYPE_FEED, true, DownloadError.SUCCESS, null);
         DBWriter.addDownloadStatus(status);
         DBWriter.setFeedLastUpdateFailed(feed.getId(), false);
-    }
-
-    /**
-     * Answers if reporting success is needed for the given feed.
-     */
-    private static boolean mustReportDownloadSuccessful(Feed feed) {
-        List<DownloadResult> downloadResults = DBReader.getFeedDownloadLog(feed.getId());
-
-        if (downloadResults.isEmpty()) {
-            // report success if never reported before
-            return true;
-        }
-
-        Collections.sort(downloadResults, (downloadStatus1, downloadStatus2) ->
-                downloadStatus1.getCompletionDate().compareTo(downloadStatus2.getCompletionDate()));
-
-        DownloadResult lastDownloadResult = downloadResults.get(downloadResults.size() - 1);
-
-        // report success if the last update was not successful
-        // (avoid logging success again if the last update was ok)
-        return !lastDownloadResult.isSuccessful();
     }
 
     @FunctionalInterface

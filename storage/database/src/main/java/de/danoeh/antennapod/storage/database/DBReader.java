@@ -322,13 +322,13 @@ public final class DBReader {
      * @return A list with DownloadStatus objects that represent the feed's download log,
      * newest events first.
      */
-    public static List<DownloadResult> getFeedDownloadLog(long feedId) {
+    public static List<DownloadResult> getFeedDownloadLog(long feedId, long limit) {
         Log.d(TAG, "getFeedDownloadLog() called with: " + "feed = [" + feedId + "]");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try (DownloadResultCursor cursor = new DownloadResultCursor(
-                adapter.getDownloadLog(Feed.FEEDFILETYPE_FEED, feedId))) {
+                adapter.getDownloadLog(Feed.FEEDFILETYPE_FEED, feedId, limit))) {
             List<DownloadResult> downloadLog = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
                 downloadLog.add(cursor.getDownloadResult());
@@ -737,34 +737,48 @@ public final class DBReader {
         final int numNewItems = getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW));
         final int numDownloadedItems = getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.DOWNLOADED));
 
-        List<NavDrawerData.DrawerItem> items = new ArrayList<>();
-        Map<String, NavDrawerData.TagDrawerItem> folders = new HashMap<>();
+        Map<String, NavDrawerData.TagItem> tags = new HashMap<>();
         for (Feed feed : feeds) {
             for (String tag : feed.getPreferences().getTags()) {
+                if (!tags.containsKey(tag)) {
+                    tags.put(tag, new NavDrawerData.TagItem(tag));
+                }
                 int counter = feedCounters.containsKey(feed.getId()) ? feedCounters.get(feed.getId()) : 0;
-                NavDrawerData.FeedDrawerItem drawerItem = new NavDrawerData.FeedDrawerItem(feed, feed.getId(), counter);
-                if (FeedPreferences.TAG_ROOT.equals(tag)) {
-                    items.add(drawerItem);
-                    continue;
-                }
-                NavDrawerData.TagDrawerItem folder;
-                if (folders.containsKey(tag)) {
-                    folder = folders.get(tag);
-                } else {
-                    folder = new NavDrawerData.TagDrawerItem(tag);
-                    folders.put(tag, folder);
-                }
-                drawerItem.id |= folder.id;
-                folder.getChildren().add(drawerItem);
+                tags.get(tag).addFeed(feed, counter);
             }
         }
-        List<NavDrawerData.TagDrawerItem> foldersSorted = new ArrayList<>(folders.values());
-        Collections.sort(foldersSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
-        items.addAll(foldersSorted);
+        List<NavDrawerData.TagItem> tagsSorted = new ArrayList<>(tags.values());
+        Collections.sort(tagsSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
 
-        NavDrawerData result = new NavDrawerData(items, queueSize, numNewItems, numDownloadedItems, feedCounters);
+        NavDrawerData result = new NavDrawerData(feeds, tagsSorted,
+                queueSize, numNewItems, numDownloadedItems, feedCounters);
         adapter.close();
         return result;
+    }
+
+    public static List<NavDrawerData.TagItem> getAllTags() {
+        Map<String, NavDrawerData.TagItem> tags = new HashMap<>();
+        List<Feed> feeds = getFeedList();
+        for (Feed feed : feeds) {
+            for (String tag : feed.getPreferences().getTags()) {
+                if (FeedPreferences.TAG_ROOT.equals(tag)) {
+                    continue;
+                }
+                if (!tags.containsKey(tag)) {
+                    tags.put(tag, new NavDrawerData.TagItem(tag));
+                }
+                tags.get(tag).addFeed(feed, 0);
+            }
+        }
+        List<NavDrawerData.TagItem> tagsSorted = new ArrayList<>(tags.values());
+        Collections.sort(tagsSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
+        // Root tag here means "all feeds", this is different from the nav drawer.
+        NavDrawerData.TagItem rootTag = new NavDrawerData.TagItem(FeedPreferences.TAG_ROOT);
+        for (Feed feed : feeds) {
+            rootTag.addFeed(feed, 0);
+        }
+        tagsSorted.add(0, rootTag);
+        return tagsSorted;
     }
 
     public static List<FeedItem> searchFeedItems(final long feedId, final String query) {

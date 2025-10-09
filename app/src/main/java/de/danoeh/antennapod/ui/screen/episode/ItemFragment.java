@@ -13,8 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -27,7 +25,6 @@ import com.skydoves.balloon.ArrowOrientationRules;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.actionbutton.CancelDownloadActionButton;
 import de.danoeh.antennapod.actionbutton.DeleteActionButton;
 import de.danoeh.antennapod.actionbutton.DownloadActionButton;
@@ -38,34 +35,34 @@ import de.danoeh.antennapod.actionbutton.PlayActionButton;
 import de.danoeh.antennapod.actionbutton.PlayLocalActionButton;
 import de.danoeh.antennapod.actionbutton.StreamActionButton;
 import de.danoeh.antennapod.actionbutton.VisitWebsiteActionButton;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.databinding.FeeditemFragmentBinding;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
-import de.danoeh.antennapod.event.MessageEvent;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.playback.service.PlaybackStatus;
 import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.playback.service.PlaybackController;
-import de.danoeh.antennapod.storage.preferences.UsageStatistics;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.playback.service.PlaybackController;
+import de.danoeh.antennapod.playback.service.PlaybackStatus;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.preferences.UsageStatistics;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
+import de.danoeh.antennapod.ui.cleaner.ShownotesCleaner;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.common.DateFormatter;
-import de.danoeh.antennapod.ui.common.CircularProgressBar;
 import de.danoeh.antennapod.ui.common.ImagePlaceholder;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
-import de.danoeh.antennapod.ui.cleaner.ShownotesCleaner;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
 import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
-import de.danoeh.antennapod.ui.view.ShownotesWebView;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -100,33 +97,15 @@ public class ItemFragment extends Fragment {
     private FeedItem item;
     private String webviewData;
 
-    private ViewGroup root;
-    private ShownotesWebView webvDescription;
-    private TextView txtvPodcast;
-    private TextView txtvTitle;
-    private TextView txtvDuration;
-    private TextView txtvPublished;
-    private ImageView imgvCover;
-    private CircularProgressBar progbarDownload;
-    private ProgressBar progbarLoading;
-    private TextView butAction1Text;
-    private TextView butAction2Text;
-    private ImageView butAction1Icon;
-    private ImageView butAction2Icon;
-    private View butAction1;
-    private View butAction2;
     private ItemActionButton actionButton1;
     private ItemActionButton actionButton2;
-    private View noMediaLabel;
-    private View nonSubscribedWarningLabel;
-
     private Disposable disposable;
     private PlaybackController controller;
+    private FeeditemFragmentBinding viewBinding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         itemId = getArguments().getLong(ARG_FEEDITEM);
     }
 
@@ -134,21 +113,14 @@ public class ItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View layout = inflater.inflate(R.layout.feeditem_fragment, container, false);
-
-        root = layout.findViewById(R.id.content_root);
-
-        txtvPodcast = layout.findViewById(R.id.txtvPodcast);
-        txtvPodcast.setOnClickListener(v -> openPodcast());
-        txtvTitle = layout.findViewById(R.id.txtvTitle);
+        viewBinding = FeeditemFragmentBinding.inflate(inflater, container, false);
+        viewBinding.header.setVisibility(View.INVISIBLE);
+        viewBinding.txtvPodcast.setOnClickListener(v -> openPodcast());
         if (Build.VERSION.SDK_INT >= 23) {
-            txtvTitle.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
+            viewBinding.txtvTitle.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
         }
-        txtvDuration = layout.findViewById(R.id.txtvDuration);
-        txtvPublished = layout.findViewById(R.id.txtvPublished);
-        txtvTitle.setEllipsize(TextUtils.TruncateAt.END);
-        webvDescription = layout.findViewById(R.id.webvDescription);
-        webvDescription.setTimecodeSelectedListener(time -> {
+        viewBinding.txtvTitle.setEllipsize(TextUtils.TruncateAt.END);
+        viewBinding.webvDescription.setTimecodeSelectedListener(time -> {
             if (controller != null && item.getMedia() != null && controller.getMedia() != null
                     && Objects.equals(item.getMedia().getIdentifier(), controller.getMedia().getIdentifier())) {
                 controller.seekTo(time);
@@ -156,22 +128,9 @@ public class ItemFragment extends Fragment {
                 EventBus.getDefault().post(new MessageEvent(getString(R.string.play_this_to_seek_position_message)));
             }
         });
-        registerForContextMenu(webvDescription);
-
-        imgvCover = layout.findViewById(R.id.imgvCover);
-        imgvCover.setOnClickListener(v -> openPodcast());
-        progbarDownload = layout.findViewById(R.id.circularProgressBar);
-        progbarLoading = layout.findViewById(R.id.progbarLoading);
-        butAction1 = layout.findViewById(R.id.butAction1);
-        butAction2 = layout.findViewById(R.id.butAction2);
-        butAction1Icon = layout.findViewById(R.id.butAction1Icon);
-        butAction2Icon = layout.findViewById(R.id.butAction2Icon);
-        butAction1Text = layout.findViewById(R.id.butAction1Text);
-        butAction2Text = layout.findViewById(R.id.butAction2Text);
-        noMediaLabel = layout.findViewById(R.id.noMediaLabel);
-        nonSubscribedWarningLabel = layout.findViewById(R.id.nonSubscribedWarningLabel);
-
-        butAction1.setOnClickListener(v -> {
+        registerForContextMenu(viewBinding.webvDescription);
+        viewBinding.imgvCover.setOnClickListener(v -> openPodcast());
+        viewBinding.butAction1.setOnClickListener(v -> {
             if (actionButton1 instanceof StreamActionButton && !UserPreferences.isStreamOverDownload()
                     && UsageStatistics.hasSignificantBiasTo(UsageStatistics.ACTION_STREAM)) {
                 showOnDemandConfigBalloon(true);
@@ -181,7 +140,7 @@ public class ItemFragment extends Fragment {
             }
             actionButton1.onClick(getContext());
         });
-        butAction2.setOnClickListener(v -> {
+        viewBinding.butAction2.setOnClickListener(v -> {
             if (actionButton2 instanceof DownloadActionButton && UserPreferences.isStreamOverDownload()
                     && UsageStatistics.hasSignificantBiasTo(UsageStatistics.ACTION_DOWNLOAD)) {
                 showOnDemandConfigBalloon(false);
@@ -191,15 +150,15 @@ public class ItemFragment extends Fragment {
             }
             actionButton2.onClick(getContext());
         });
-        txtvPodcast.setOnLongClickListener(v -> {
-            copyToClipboard(requireContext(), txtvPodcast.getText().toString());
+        viewBinding.txtvPodcast.setOnLongClickListener(v -> {
+            copyToClipboard(requireContext(), viewBinding.txtvPodcast.getText().toString());
             return true;
         });
-        txtvTitle.setOnLongClickListener(v -> {
-            copyToClipboard(requireContext(), txtvTitle.getText().toString());
+        viewBinding.txtvTitle.setOnLongClickListener(v -> {
+            copyToClipboard(requireContext(), viewBinding.txtvTitle.getText().toString());
             return true;
         });
-        return layout;
+        return viewBinding.getRoot();
     }
 
     public void copyToClipboard(Context context, String text) {
@@ -245,7 +204,7 @@ public class ItemFragment extends Fragment {
             UsageStatistics.doNotAskAgain(UsageStatistics.ACTION_STREAM); // Type does not matter. Both are silenced.
             balloon.dismiss();
         });
-        balloon.showAlignBottom(butAction1, 0, (int) (-12 * getResources().getDisplayMetrics().density));
+        balloon.showAlignBottom(viewBinding.butAction1, 0, (int) (-12 * getResources().getDisplayMetrics().density));
     }
 
     @Override
@@ -266,7 +225,7 @@ public class ItemFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (itemsLoaded) {
-            progbarLoading.setVisibility(View.GONE);
+            viewBinding.progbarLoading.setVisibility(View.GONE);
             updateAppearance();
         }
     }
@@ -284,15 +243,15 @@ public class ItemFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
-        if (webvDescription != null && root != null) {
-            root.removeView(webvDescription);
-            webvDescription.destroy();
-        }
+        viewBinding.contentRoot.removeView(viewBinding.webvDescription);
+        viewBinding.webvDescription.destroy();
+        viewBinding = null;
     }
 
     private void onFragmentLoaded() {
         if (webviewData != null && !itemsLoaded) {
-            webvDescription.loadDataWithBaseURL("https://127.0.0.1", webviewData, "text/html", "utf-8", "about:blank");
+            viewBinding.webvDescription.loadDataWithBaseURL(
+                    "https://127.0.0.1", webviewData, "text/html", "utf-8", "about:blank");
         }
         updateAppearance();
     }
@@ -302,59 +261,54 @@ public class ItemFragment extends Fragment {
             Log.d(TAG, "updateAppearance item is null");
             return;
         }
-        txtvPodcast.setText(item.getFeed().getTitle());
-        txtvTitle.setText(item.getTitle());
-
+        viewBinding.txtvPodcast.setText(item.getFeed().getTitle());
+        viewBinding.txtvTitle.setText(item.getTitle());
         if (item.getPubDate() != null) {
             String pubDateStr = DateFormatter.formatAbbrev(getActivity(), item.getPubDate());
-            txtvPublished.setText(pubDateStr);
-            txtvPublished.setContentDescription(DateFormatter.formatForAccessibility(item.getPubDate()));
+            viewBinding.txtvPublished.setText(pubDateStr);
+            viewBinding.txtvPublished.setContentDescription(DateFormatter.formatForAccessibility(item.getPubDate()));
         }
-
         if (item.getFeed().getState() != Feed.STATE_SUBSCRIBED) {
-            nonSubscribedWarningLabel.setVisibility(View.VISIBLE);
-            nonSubscribedWarningLabel.setOnClickListener(v -> openPodcast());
+            viewBinding.nonSubscribedWarningLabel.setVisibility(View.VISIBLE);
+            viewBinding.nonSubscribedWarningLabel.setOnClickListener(v -> openPodcast());
         }
-
         float radius = 8 * getResources().getDisplayMetrics().density;
         RequestOptions options = new RequestOptions()
                 .error(ImagePlaceholder.getDrawable(getContext(), radius))
                 .transform(new FitCenter(),
                         new RoundedCorners((int) radius))
                 .dontAnimate();
-
         Glide.with(this)
                 .load(item.getImageLocation())
                 .error(Glide.with(this)
                         .load(ImageResourceUtils.getFallbackImageLocation(item))
                         .apply(options))
                 .apply(options)
-                .into(imgvCover);
+                .into(viewBinding.imgvCover);
         updateButtons();
     }
 
     private void updateButtons() {
-        progbarDownload.setVisibility(View.GONE);
+        viewBinding.circularProgressBar.setVisibility(View.GONE);
         if (item.hasMedia()) {
             if (DownloadServiceInterface.get().isDownloadingEpisode(item.getMedia().getDownloadUrl())) {
-                progbarDownload.setVisibility(View.VISIBLE);
-                progbarDownload.setPercentage(0.01f * Math.max(1,
+                viewBinding.circularProgressBar.setVisibility(View.VISIBLE);
+                viewBinding.circularProgressBar.setPercentage(0.01f * Math.max(1,
                         DownloadServiceInterface.get().getProgress(item.getMedia().getDownloadUrl())), item);
-                progbarDownload.setIndeterminate(
+                viewBinding.circularProgressBar.setIndeterminate(
                         DownloadServiceInterface.get().isEpisodeQueued(item.getMedia().getDownloadUrl()));
             }
         }
-
         FeedMedia media = item.getMedia();
         if (media == null) {
             actionButton1 = new MarkAsPlayedActionButton(item);
             actionButton2 = new VisitWebsiteActionButton(item);
-            noMediaLabel.setVisibility(View.VISIBLE);
+            viewBinding.noMediaLabel.setVisibility(View.VISIBLE);
         } else {
-            noMediaLabel.setVisibility(View.GONE);
+            viewBinding.noMediaLabel.setVisibility(View.GONE);
             if (media.getDuration() > 0) {
-                txtvDuration.setText(Converter.getDurationStringLong(media.getDuration()));
-                txtvDuration.setContentDescription(
+                viewBinding.txtvDuration.setText(Converter.getDurationStringLong(media.getDuration()));
+                viewBinding.txtvDuration.setContentDescription(
                         Converter.getDurationStringLocalized(getContext(), media.getDuration()));
             }
             if (PlaybackStatus.isCurrentlyPlaying(media)) {
@@ -375,20 +329,20 @@ public class ItemFragment extends Fragment {
             }
         }
 
-        butAction1Text.setText(actionButton1.getLabel());
-        butAction1Text.setTransformationMethod(null);
-        butAction1Icon.setImageResource(actionButton1.getDrawable());
-        butAction1.setVisibility(actionButton1.getVisibility());
+        viewBinding.butAction1Text.setText(actionButton1.getLabel());
+        viewBinding.butAction1Text.setTransformationMethod(null);
+        viewBinding.butAction1Icon.setImageResource(actionButton1.getDrawable());
+        viewBinding.butAction1.setVisibility(actionButton1.getVisibility());
 
-        butAction2Text.setText(actionButton2.getLabel());
-        butAction2Text.setTransformationMethod(null);
-        butAction2Icon.setImageResource(actionButton2.getDrawable());
-        butAction2.setVisibility(actionButton2.getVisibility());
+        viewBinding.butAction2Text.setText(actionButton2.getLabel());
+        viewBinding.butAction2Text.setTransformationMethod(null);
+        viewBinding.butAction2Icon.setImageResource(actionButton2.getDrawable());
+        viewBinding.butAction2.setVisibility(actionButton2.getVisibility());
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        return webvDescription.onContextItemSelected(item);
+        return viewBinding.webvDescription.onContextItemSelected(item);
     }
 
     private void openPodcast() {
@@ -443,13 +397,14 @@ public class ItemFragment extends Fragment {
             disposable.dispose();
         }
         if (!itemsLoaded) {
-            progbarLoading.setVisibility(View.VISIBLE);
+            viewBinding.progbarLoading.setVisibility(View.VISIBLE);
         }
         disposable = Observable.fromCallable(this::loadInBackground)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(result -> {
-                progbarLoading.setVisibility(View.GONE);
+                viewBinding.progbarLoading.setVisibility(View.GONE);
+                viewBinding.header.setVisibility(View.VISIBLE);
                 item = result;
                 onFragmentLoaded();
                 itemsLoaded = true;

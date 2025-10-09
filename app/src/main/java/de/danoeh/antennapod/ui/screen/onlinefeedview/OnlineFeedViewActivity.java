@@ -49,11 +49,11 @@ import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.preferences.screen.synchronization.AuthenticationDialog;
 import de.danoeh.antennapod.ui.screen.download.DownloadErrorLabel;
 import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
-import io.reactivex.Maybe;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -295,6 +295,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             FeedDatabaseWriter.updateFeed(this, feed, false);
             Feed feedFromDb = DBReader.getFeed(feed.getId(), false, 0, Integer.MAX_VALUE);
             feedFromDb.getPreferences().setKeepUpdated(false);
+            if (username != null && password != null) {
+                feedFromDb.getPreferences().setUsername(username);
+                feedFromDb.getPreferences().setPassword(password);
+            }
             DBWriter.setFeedPreferences(feedFromDb.getPreferences());
             emitter.onSuccess(feed.getId());
         })

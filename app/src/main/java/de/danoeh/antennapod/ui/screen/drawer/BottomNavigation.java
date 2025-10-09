@@ -18,10 +18,10 @@ import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -148,15 +148,12 @@ public class BottomNavigation {
         bottomNavigationView.setVisibility(View.GONE);
     }
 
-    public void onStart() {
+    public void onCreateView() {
         EventBus.getDefault().register(this);
     }
 
-    public void onStop() {
+    public void onDestroyView() {
         EventBus.getDefault().unregister(this);
-    }
-
-    public void onDestroy() {
         if (bottomNavigationBadgeLoader != null) {
             bottomNavigationBadgeLoader.dispose();
             bottomNavigationBadgeLoader = null;

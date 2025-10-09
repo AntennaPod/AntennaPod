@@ -13,6 +13,15 @@
         android:background="#262C31"
         tools:ignore="UselessParent">
 
+        <ImageView
+            android:id="@+id/imgvBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:alpha="0.6"
+            android:scaleType="centerCrop"
+            android:importantForAccessibility="no" />
+
         <ImageButton
             android:id="@+id/butPlay"
             android:layout_width="@android:dimen/app_icon_size"
@@ -38,16 +47,19 @@
             <ImageView
                 android:id="@+id/imgvCover"
                 android:layout_width="@android:dimen/app_icon_size"
-                android:layout_height="match_parent"
+                android:layout_height="@android:dimen/app_icon_size"
                 android:src="@mipmap/ic_launcher"
+                android:layout_gravity="center_vertical"
                 android:importantForAccessibility="no"
-                android:layout_margin="12dp" />
+                android:layout_marginStart="12dp"
+                android:layout_marginVertical="12dp" />
 
             <LinearLayout
                 android:id="@+id/layout_center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
+                android:layout_marginStart="12dp"
                 android:orientation="vertical">
 
                 <TextView
