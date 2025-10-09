@@ -1248,8 +1248,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         int skipEnd = preferences.getFeedSkipEnding();
         if (skipEnd > 0
                 && skipEnd * 1000 < getDuration()
-                && (remainingTime - (skipEnd * 1000) > 0)
-                && ((remainingTime - skipEnd * 1000) < (getCurrentPlaybackSpeed() * 1000))) {
+                && remainingTime > 0 // Only ensure we haven't reached the very end
+                && remainingTime <= skipEnd * 1000  // Trigger when we're within the skip zone
+                && (remainingTime - skipEnd * 1000) < (getCurrentPlaybackSpeed() * 1000)) {
             Log.d(TAG, "skipEndingIfNecessary: Skipping the remaining " + remainingTime + " " + skipEnd * 1000 + " speed " + getCurrentPlaybackSpeed());
             Context context = getApplicationContext();
             String skipMesg = context.getString(R.string.pref_feed_skip_ending_toast, skipEnd);
