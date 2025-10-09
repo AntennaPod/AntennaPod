@@ -3,6 +3,12 @@
       xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <item
+    android:id="@+id/queues_dialog"
+    android:icon="@drawable/ic_playlist_play"
+    custom:showAsAction="ifRoom"
+    android:title="@string/queues_dialog_label"/>
+
+    <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search"
         custom:showAsAction="ifRoom"
