@@ -1703,7 +1703,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     Log.d(TAG, "Currently playing item removed from queue, updating UI state");
 
                     // Update media session to reflect current state
-                    updateMediaSession(mediaPlayer.getPlayerStatus());
+                        updateMediaSession(mediaPlayer.getPlayerStatus());
 
                     // Request widget update to reflect queue state
                     taskManager.requestWidgetUpdate();
