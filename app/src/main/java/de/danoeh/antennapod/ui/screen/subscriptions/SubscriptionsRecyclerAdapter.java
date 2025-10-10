@@ -25,7 +25,6 @@ import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
