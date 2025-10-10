@@ -1405,7 +1405,7 @@ public class PodDBAdapter {
      * @return A cursor with all search results in SEL_FI_EXTRA selection.
      */
     public Cursor searchItems(long feedID, String searchQuery, int state) {
-        String[] queryWords = prepareSearchQuery(searchQuery);
+        final String[] queryWords = prepareSearchQuery(searchQuery);
 
         String queryFeedId;
         if (feedID != 0) {
