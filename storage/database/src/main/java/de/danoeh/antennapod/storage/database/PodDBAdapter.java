@@ -922,6 +922,18 @@ public class PodDBAdapter {
         }
     }
 
+    public void df_removeQueue(long queueId) {
+        try {
+            db.beginTransactionNonExclusive();
+            db.delete(TABLE_NAME_QUEUES, KEY_ID + "=" + queueId, null);
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        } finally {
+            db.endTransaction();
+        }
+    }
+
     public void clearQueue() {
         db.delete(TABLE_NAME_QUEUE, null, null);
     }

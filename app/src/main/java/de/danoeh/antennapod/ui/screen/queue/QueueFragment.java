@@ -290,6 +290,9 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         if (itemId == R.id.queue_lock) {
             toggleQueueLock();
             return true;
+        } else if (itemId == R.id.queues_dialog) {
+            new QueuesDialogFragment().show(getParentFragmentManager(), "QueuesDialog");
+            return true;
         } else if (itemId == R.id.queue_sort) {
             new QueueSortDialog().show(getChildFragmentManager().beginTransaction(), "SortDialog");
             return true;

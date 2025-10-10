@@ -464,6 +464,20 @@ public class DBWriter {
     }
 
     /**
+     * Removes a queue.
+     */
+    public static Future<?> df_removeQueue(final Context context, long queueId) {
+        return runOnDbThread(() -> {
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.df_removeQueue(queueId);
+            adapter.close();
+
+            EventBus.getDefault().post(QueueEvent.cleared());
+        });
+    }
+
+    /**
      * Removes all FeedItem objects from the queue.
      */
     public static Future<?> clearQueue() {
