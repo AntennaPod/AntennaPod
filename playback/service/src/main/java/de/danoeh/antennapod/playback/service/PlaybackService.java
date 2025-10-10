@@ -87,6 +87,7 @@ import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
+import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
@@ -1683,6 +1684,42 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     feedPreferences.setFeedSkipEnding(event.getSkipEnding());
                 }
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void onQueueEvent(QueueEvent event) {
+        Log.d(TAG, "Received QueueEvent: " + event.action);
+
+        // Handle removal of items from queue
+        if (event.action == QueueEvent.Action.REMOVED || event.action == QueueEvent.Action.IRREVERSIBLE_REMOVED) {
+            Playable currentPlayable = getPlayable();
+            if (currentPlayable instanceof FeedMedia && event.item != null) {
+                FeedMedia currentMedia = (FeedMedia) currentPlayable;
+                if (event.item.getMedia() != null &&
+                    currentMedia.getId() == event.item.getMedia().getId()) {
+                    // Currently playing item was removed from queue
+                    Log.d(TAG, "Currently playing item removed from queue, updating UI state");
+
+                    // Update media session to reflect current state
+                    updateMediaSession(mediaPlayer.getPlayerStatus());
+
+                    // Request widget update to reflect queue state
+                    taskManager.requestWidgetUpdate();
+
+                    // Post player status event to update UI
+                    EventBus.getDefault().post(new PlayerStatusEvent());
+                }
+            }
+        }
+
+        // Handle queue clearing
+        if (event.action == QueueEvent.Action.CLEARED) {
+            // Update media session and UI when queue is cleared
+            updateMediaSession(mediaPlayer.getPlayerStatus());
+            taskManager.requestWidgetUpdate();
+            EventBus.getDefault().post(new PlayerStatusEvent());
         }
     }
 
