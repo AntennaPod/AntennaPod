@@ -64,6 +64,17 @@ public class RemoveFeedDialog extends BottomSheetDialogFragment {
             binding.selectionText.setText(getResources()
                     .getQuantityString(R.plurals.num_subscriptions, feeds.size(), feeds.size()));
         }
+        boolean allArchived = true;
+        for (Feed feed : feeds) {
+            if (feed.getState() != Feed.STATE_ARCHIVED) {
+                allArchived = false;
+                break;
+            }
+        }
+        if (allArchived) {
+            binding.archiveButton.setVisibility(View.GONE);
+            binding.explanationArchiveText.setVisibility(View.GONE);
+        }
         binding.explanationArchiveText.setText(Html.fromHtml(getString(R.string.feed_delete_explanation_archive)));
         binding.explanationDeleteText.setText(Html.fromHtml(getString(R.string.feed_delete_explanation_delete)));
         binding.cancelButton.setOnClickListener(v -> dismiss());

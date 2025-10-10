@@ -58,8 +58,9 @@ public class SubscriptionTagAdapter extends RecyclerView.Adapter<SubscriptionTag
         NavDrawerData.TagItem tag = tags.get(position);
         if (FeedPreferences.TAG_ROOT.equals(tag.getTitle())) {
             holder.chip.setText(R.string.tag_all);
-        } else if (FeedPreferences.TAG_ARCHIVE.equals(tag.getTitle())) {
-            holder.chip.setText(R.string.archive_feed_label_noun);
+        } else if (FeedPreferences
+                .TAG_UNTAGGED.equals(tag.getTitle())) {
+            holder.chip.setText(R.string.tag_untagged);
         } else {
             String title = tag.getTitle();
             if (title.length() > 20) {
@@ -95,7 +96,7 @@ public class SubscriptionTagAdapter extends RecyclerView.Adapter<SubscriptionTag
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         if (longPressedItem == null
                 || FeedPreferences.TAG_ROOT.equals(longPressedItem.getTitle())
-                || FeedPreferences.TAG_ARCHIVE.equals(longPressedItem.getTitle())) {
+                || FeedPreferences.TAG_UNTAGGED.equals(longPressedItem.getTitle())) {
             return;
         }
         MenuInflater inflater = activityRef.get().getMenuInflater();

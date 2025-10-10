@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
-import android.view.Menu;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -21,7 +20,6 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
@@ -30,22 +28,6 @@ import java.util.concurrent.Future;
  */
 public abstract class FeedMenuHandler {
     private static final String TAG = "FeedMenuHandler";
-
-    public static void onPrepare(Menu menu, List<Feed> feeds) {
-        boolean allArchived = true;
-        for (Feed feed : feeds) {
-            if (feed.getState() != Feed.STATE_ARCHIVED) {
-                allArchived = false;
-            }
-        }
-        if (menu.findItem(R.id.rename_item) != null) {
-            // Multi-select does not have all options yet
-            menu.findItem(R.id.rename_item).setVisible(!allArchived);
-            menu.findItem(R.id.remove_all_inbox_item).setVisible(!allArchived);
-        }
-        menu.findItem(R.id.edit_tags).setVisible(!allArchived);
-        menu.findItem(R.id.remove_archive_feed).setVisible(!allArchived);
-    }
 
     public static boolean onMenuItemClicked(@NonNull Fragment fragment, int menuItemId,
                                             @NonNull Feed selectedFeed, @Nullable Runnable removeFromInboxCallback) {

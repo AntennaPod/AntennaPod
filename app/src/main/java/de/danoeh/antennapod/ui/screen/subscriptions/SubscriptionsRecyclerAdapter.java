@@ -157,7 +157,6 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         MenuInflater inflater = mainActivityRef.get().getMenuInflater();
         inflater.inflate(R.menu.nav_feed_context, menu);
         menu.findItem(R.id.multi_select).setVisible(true);
-        FeedMenuHandler.onPrepare(menu, Collections.singletonList(selectedItem));
         menu.setHeaderTitle(selectedItem.getTitle());
     }
 

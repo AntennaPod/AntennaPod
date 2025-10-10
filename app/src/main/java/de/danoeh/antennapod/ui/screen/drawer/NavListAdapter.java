@@ -272,8 +272,8 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         if (tag.isOpen()) {
             holder.count.setVisibility(View.GONE);
         }
-        if (FeedPreferences.TAG_ARCHIVE.equals(tag.getTitle())) {
-            holder.title.setText(R.string.archive_feed_label_noun);
+        if (FeedPreferences.TAG_UNTAGGED.equals(tag.getTitle())) {
+            holder.title.setText(R.string.tag_untagged);
         }
         Glide.with(context).clear(holder.image);
         holder.image.setImageResource(R.drawable.ic_tag);

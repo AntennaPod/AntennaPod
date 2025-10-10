@@ -65,7 +65,7 @@
                 android:layout_marginEnd="8dp"
                 android:paddingHorizontal="8dp"
                 android:text="@string/cancel_label"
-                style="@style/Widget.Material3.Button.TextButton" />
+                style="@style/Widget.Material3.Button.OutlinedButton" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/removeButton"

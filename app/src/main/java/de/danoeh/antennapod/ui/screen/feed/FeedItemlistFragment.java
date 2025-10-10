@@ -291,6 +291,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             viewBinding.toolbar.getMenu().findItem(R.id.remove_archive_feed).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.remove_all_inbox_item).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.action_search).setVisible(false);
+        } else if (feed.getState() == Feed.STATE_ARCHIVED) {
+            viewBinding.toolbar.getMenu().findItem(R.id.sort_items).setVisible(false);
         }
     }
 
@@ -539,16 +541,16 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         } else {
             viewBinding.header.txtvInformation.setVisibility(View.GONE);
         }
-        boolean isSubscribed = feed.getState() != Feed.STATE_NOT_SUBSCRIBED;
+        boolean isNotSubscribed = feed.getState() == Feed.STATE_NOT_SUBSCRIBED;
         boolean isArchived = feed.getState() == Feed.STATE_ARCHIVED;
-        boolean showMainButtons = isSubscribed && !isArchived;
-        viewBinding.header.butShowInfo.setVisibility(showMainButtons ? View.VISIBLE : View.GONE);
-        viewBinding.header.butFilter.setVisibility(showMainButtons ? View.VISIBLE : View.GONE);
-        viewBinding.header.butShowSettings.setVisibility(showMainButtons ? View.VISIBLE : View.GONE);
-        viewBinding.header.butSubscribe.setVisibility(isSubscribed ? View.GONE : View.VISIBLE);
+        boolean showSettingsButtons = !isNotSubscribed && !isArchived;
+        viewBinding.header.butShowInfo.setVisibility(!isNotSubscribed ? View.VISIBLE : View.GONE);
+        viewBinding.header.butFilter.setVisibility(showSettingsButtons ? View.VISIBLE : View.GONE);
+        viewBinding.header.butShowSettings.setVisibility(showSettingsButtons ? View.VISIBLE : View.GONE);
+        viewBinding.header.butSubscribe.setVisibility(isNotSubscribed ? View.VISIBLE : View.GONE);
         viewBinding.header.butRestore.setVisibility(isArchived ? View.VISIBLE : View.GONE);
 
-        if (!isSubscribed && feed.getLastRefreshAttempt() < System.currentTimeMillis() - 1000L * 3600 * 24) {
+        if (isNotSubscribed && feed.getLastRefreshAttempt() < System.currentTimeMillis() - 1000L * 3600 * 24) {
             FeedUpdateManager.getInstance().runOnce(getContext(), feed, true);
         }
     }
