@@ -652,9 +652,13 @@
     <string name="sleep_timer_always">Always</string>
     <string name="sleep_timer_label">Sleep timer</string>
     <string name="time_dialog_invalid_input">Invalid input, time has to be an integer</string>
-    <string name="timer_exceeds_remaining_time_while_continuous_playback_disabled">Continuous playback is disabled and you have selected a sleep timer that exceeds the remaining playback duration for the episode</string>
+    <string name="timer_exceeds_remaining_time_while_continuous_playback_disabled">Continuous playback is disabled and the current episode has only %1$d minutes left</string>
     <string name="multiple_sleep_episodes_while_continuous_playback_disabled">Continuous playback is disabled, you can only select a single episode as sleep timer</string>
-    <string name="episodes_sleep_timer_exceeds_queue">There are only %1$d episodes left in your queue which is greater than the number of episodes you have configured for your sleep timer</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="zero">There are no episodes left in your queue</item>
+        <item quantity="one">There is only one episode left in your queue</item>
+        <item quantity="other">There are only %1$d episodes left in your queue</item>
+    </plurals>
     <string name="shake_to_reset_label">Shake to reset</string>
     <string name="timer_vibration_label">Vibrate shortly before end</string>
     <string name="time_seconds">seconds</string>

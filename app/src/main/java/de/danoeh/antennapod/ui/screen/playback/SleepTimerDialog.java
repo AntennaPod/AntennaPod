@@ -338,7 +338,10 @@ public class SleepTimerDialog extends DialogFragment {
                         PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
                 final long episodes = getSelectedSleepTimeWithDefault(0);
                 if (episodes > queueSize) {
-                    sleepTimerHintText.setText(getString(R.string.episodes_sleep_timer_exceeds_queue, queueSize));
+                    sleepTimerHintText.setText(getResources().getQuantityString(
+                            R.plurals.episodes_sleep_timer_exceeds_queue,
+                            queueSize,
+                            queueSize));
                     sleepTimerHintText.setVisibility(View.VISIBLE);
                 } else {
                     sleepTimerHintText.setVisibility(View.GONE); // could maybe show duration in minutes
@@ -349,8 +352,12 @@ public class SleepTimerDialog extends DialogFragment {
                         Integer.MAX_VALUE;
                 final long timer = TimeUnit.MINUTES.toMillis(getSelectedSleepTimeWithDefault(0));
                 if ((timer > remaining) && !UserPreferences.isFollowQueue()) {
+                    final long remainingMinutes = TimeUnit.MILLISECONDS.toMinutes(remaining);
                     sleepTimerHintText
-                            .setText(R.string.timer_exceeds_remaining_time_while_continuous_playback_disabled);
+                            .setText(getString(
+                                    R.string.timer_exceeds_remaining_time_while_continuous_playback_disabled,
+                                    remainingMinutes
+                                    ));
                     sleepTimerHintText.setVisibility(View.VISIBLE);
                 } else {
                     // don't show it at all
