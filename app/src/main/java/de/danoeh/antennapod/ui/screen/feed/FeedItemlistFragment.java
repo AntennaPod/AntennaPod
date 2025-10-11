@@ -288,9 +288,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             viewBinding.toolbar.getMenu().findItem(R.id.sort_items).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.refresh_item).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.rename_item).setVisible(false);
-            viewBinding.toolbar.getMenu().findItem(R.id.remove_feed).setVisible(false);
+            viewBinding.toolbar.getMenu().findItem(R.id.remove_archive_feed).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.remove_all_inbox_item).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.action_search).setVisible(false);
+        } else if (feed.getState() == Feed.STATE_ARCHIVED) {
+            viewBinding.toolbar.getMenu().findItem(R.id.sort_items).setVisible(false);
         }
     }
 
@@ -330,12 +332,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         } else if (item.getItemId() == R.id.sort_items) {
             SingleFeedSortDialog.newInstance(feed).show(getChildFragmentManager(), "SortDialog");
             return true;
-        } else if (item.getItemId() == R.id.remove_feed) {
-            RemoveFeedDialog.show(getContext(), feed, () -> {
-                ((MainActivity) getActivity()).loadFragment(UserPreferences.getDefaultPage(), null);
-                // Make sure fragment is hidden before actually starting to delete
-                getActivity().getSupportFragmentManager().executePendingTransactions();
-            });
+        } else if (item.getItemId() == R.id.remove_archive_feed) {
+            new RemoveFeedDialogClose(Collections.singletonList(feed)).show(getParentFragmentManager(), null);
             return true;
         } else if (item.getItemId() == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(feed.getId(), feed.getTitle()));
@@ -345,6 +343,24 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         Runnable showRemovedAllSnackbar = () -> EventBus.getDefault().post(
                 new MessageEvent(getString(R.string.removed_all_inbox_msg)));
         return FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), feed, showRemovedAllSnackbar);
+    }
+
+    public static class RemoveFeedDialogClose extends RemoveFeedDialog {
+        public RemoveFeedDialogClose(@NonNull List<Feed> feeds) {
+            super(feeds);
+        }
+
+        public RemoveFeedDialogClose() {
+            super();
+        }
+
+        @Override
+        protected void onRemoveButtonPressed() {
+            // Make sure fragment is hidden before actually starting to delete
+            ((MainActivity) getActivity()).loadFragment(UserPreferences.getDefaultPage(), null);
+            getActivity().getSupportFragmentManager().executePendingTransactions();
+            super.onRemoveButtonPressed();
+        }
     }
 
     @Override
@@ -497,7 +513,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         } else {
             viewBinding.header.txtvFailure.setVisibility(View.GONE);
         }
-        if (!feed.getPreferences().getKeepUpdated() && feed.getState() == Feed.STATE_SUBSCRIBED) {
+        if ((!feed.getPreferences().getKeepUpdated() && feed.getState() != Feed.STATE_NOT_SUBSCRIBED)
+                || feed.getState() == Feed.STATE_ARCHIVED) {
             viewBinding.header.txtvUpdatesDisabled.setText(R.string.updates_disabled_label);
             viewBinding.header.txtvUpdatesDisabled.setVisibility(View.VISIBLE);
         } else {
@@ -506,7 +523,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         viewBinding.header.txtvTitle.setText(feed.getTitle());
         viewBinding.header.txtvAuthor.setText(feed.getAuthor());
         viewBinding.header.descriptionContainer.setVisibility(View.GONE);
-        if (feed.getState() != Feed.STATE_SUBSCRIBED) {
+        if (feed.getState() == Feed.STATE_NOT_SUBSCRIBED) {
             viewBinding.header.descriptionContainer.setVisibility(View.VISIBLE);
             viewBinding.header.headerDescriptionLabel.setText(HtmlToPlainText.getPlainText(feed.getDescription()));
             viewBinding.header.subscribeNagLabel.setVisibility(
@@ -524,13 +541,16 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         } else {
             viewBinding.header.txtvInformation.setVisibility(View.GONE);
         }
-        boolean isSubscribed = feed.getState() == Feed.STATE_SUBSCRIBED;
-        viewBinding.header.butShowInfo.setVisibility(isSubscribed ? View.VISIBLE : View.GONE);
-        viewBinding.header.butFilter.setVisibility(isSubscribed ? View.VISIBLE : View.GONE);
-        viewBinding.header.butShowSettings.setVisibility(isSubscribed ? View.VISIBLE : View.GONE);
-        viewBinding.header.butSubscribe.setVisibility(isSubscribed ? View.GONE : View.VISIBLE);
+        boolean isNotSubscribed = feed.getState() == Feed.STATE_NOT_SUBSCRIBED;
+        boolean isArchived = feed.getState() == Feed.STATE_ARCHIVED;
+        boolean showSettingsButtons = !isNotSubscribed && !isArchived;
+        viewBinding.header.butShowInfo.setVisibility(!isNotSubscribed ? View.VISIBLE : View.GONE);
+        viewBinding.header.butFilter.setVisibility(showSettingsButtons ? View.VISIBLE : View.GONE);
+        viewBinding.header.butShowSettings.setVisibility(showSettingsButtons ? View.VISIBLE : View.GONE);
+        viewBinding.header.butSubscribe.setVisibility(isNotSubscribed ? View.VISIBLE : View.GONE);
+        viewBinding.header.butRestore.setVisibility(isArchived ? View.VISIBLE : View.GONE);
 
-        if (!isSubscribed && feed.getLastRefreshAttempt() < System.currentTimeMillis() - 1000L * 3600 * 24) {
+        if (isNotSubscribed && feed.getLastRefreshAttempt() < System.currentTimeMillis() - 1000L * 3600 * 24) {
             FeedUpdateManager.getInstance().runOnce(getContext(), feed, true);
         }
     }
@@ -550,6 +570,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             mainActivityStarter.withOpenFeed(feed.getId());
             getActivity().finish();
             startActivity(mainActivityStarter.getIntent());
+        });
+        viewBinding.header.butRestore.setOnClickListener(v -> {
+            if (feed == null) {
+                return;
+            }
+            DBWriter.setFeedState(getContext(), feed, Feed.STATE_SUBSCRIBED);
         });
         viewBinding.header.butShowSettings.setOnClickListener(v -> {
             if (feed == null) {
@@ -749,7 +775,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             super.onCreateContextMenu(menu, v, menuInfo);
-            if (!inActionMode() && feed.getState() == Feed.STATE_SUBSCRIBED) {
+            if (!inActionMode() && feed.getState() != Feed.STATE_NOT_SUBSCRIBED) {
                 menu.findItem(R.id.multi_select).setVisible(true);
             }
             MenuItemUtils.setOnClickListeners(menu, FeedItemlistFragment.this::onContextItemSelected);

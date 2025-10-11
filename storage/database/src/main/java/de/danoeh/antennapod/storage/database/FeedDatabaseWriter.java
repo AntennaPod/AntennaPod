@@ -128,7 +128,7 @@ public abstract class FeedDatabaseWriter {
                         oldItem.setItemIdentifier(item.getItemIdentifier());
 
                         if (oldItem.isPlayed() && oldItem.getMedia() != null
-                                && savedFeed.getState() == Feed.STATE_SUBSCRIBED) {
+                                && savedFeed.getState() != Feed.STATE_NOT_SUBSCRIBED) {
                             EpisodeAction action = new EpisodeAction.Builder(oldItem, EpisodeAction.PLAY)
                                     .currentTimestamp()
                                     .started(oldItem.getMedia().getDuration() / 1000)

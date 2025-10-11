@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/remove_feed"
+        android:id="@+id/remove_archive_feed"
         android:menuCategory="container"
-        android:title="@string/remove_feed_label"
+        android:title="@string/remove_archive_feed_label"
         android:icon="@drawable/ic_delete"/>
     <item
         android:id="@+id/keep_updated"

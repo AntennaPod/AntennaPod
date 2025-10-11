@@ -1263,7 +1263,7 @@ public class PodDBAdapter {
                 + JOIN_FEED_ITEM_AND_MEDIA
                 + " INNER JOIN " + TABLE_NAME_FEEDS
                 + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
-                + " WHERE " + TABLE_NAME_FEEDS + "." + KEY_STATE + "=" + Feed.STATE_SUBSCRIBED
+                + " WHERE " + TABLE_NAME_FEEDS + "." + KEY_STATE + "!=" + Feed.STATE_NOT_SUBSCRIBED
                 + " GROUP BY " + TABLE_NAME_FEEDS + "." + KEY_ID;
         return db.rawQuery(query, null);
     }
@@ -1404,8 +1404,8 @@ public class PodDBAdapter {
      *
      * @return A cursor with all search results in SEL_FI_EXTRA selection.
      */
-    public Cursor searchItems(long feedID, String searchQuery) {
-        String[] queryWords = prepareSearchQuery(searchQuery);
+    public Cursor searchItems(long feedID, String searchQuery, int state) {
+        final String[] queryWords = prepareSearchQuery(searchQuery);
 
         String queryFeedId;
         if (feedID != 0) {
@@ -1416,8 +1416,11 @@ public class PodDBAdapter {
             queryFeedId = "1 = 1";
         }
 
-        String queryStart = SELECT_FEED_ITEMS_AND_MEDIA_WITH_DESCRIPTION
-                + " WHERE " + queryFeedId + " AND " + SELECT_WHERE_FEED_IS_SUBSCRIBED + " AND (";
+        String queryStart = SELECT_FEED_ITEMS_AND_MEDIA_WITH_DESCRIPTION + " WHERE " + queryFeedId;
+        if (state == Feed.STATE_SUBSCRIBED && feedID == 0) {
+            queryStart += " AND " + SELECT_WHERE_FEED_IS_SUBSCRIBED;
+        }
+        queryStart += " AND (";
         StringBuilder sb = new StringBuilder(queryStart);
 
         for (int i = 0; i < queryWords.length; i++) {
@@ -1443,11 +1446,10 @@ public class PodDBAdapter {
      *
      * @return A cursor with all search results in SEL_FI_EXTRA selection.
      */
-    public Cursor searchFeeds(String searchQuery) {
-        String[] queryWords = prepareSearchQuery(searchQuery);
-
+    public Cursor searchFeeds(String searchQuery, int state) {
+        final String[] queryWords = prepareSearchQuery(searchQuery);
         String queryStart = "SELECT " + KEYS_FEED + " FROM " + TABLE_NAME_FEEDS
-                + " WHERE " + KEY_STATE + " = " + Feed.STATE_SUBSCRIBED;
+                + " WHERE " + KEY_STATE + " = " + state;
         StringBuilder sb = new StringBuilder(queryStart);
 
         for (int i = 0; i < queryWords.length; i++) {

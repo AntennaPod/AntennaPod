@@ -14,6 +14,7 @@ public class FeedPreferences implements Serializable {
 
     public static final float SPEED_USE_GLOBAL = -1;
     public static final String TAG_ROOT = "#root";
+    public static final String TAG_UNTAGGED = "#untagged";
     public static final String TAG_SEPARATOR = "\u001e";
 
     public enum AutoDeleteAction {

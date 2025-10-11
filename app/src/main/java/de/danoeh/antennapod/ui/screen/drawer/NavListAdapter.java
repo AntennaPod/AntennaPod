@@ -22,6 +22,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.ImagePlaceholder;
@@ -270,6 +271,9 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         }
         if (tag.isOpen()) {
             holder.count.setVisibility(View.GONE);
+        }
+        if (FeedPreferences.TAG_UNTAGGED.equals(tag.getTitle())) {
+            holder.title.setText(R.string.tag_untagged);
         }
         Glide.with(context).clear(holder.image);
         holder.image.setImageResource(R.drawable.ic_tag);

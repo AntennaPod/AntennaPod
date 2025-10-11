@@ -19,6 +19,7 @@ public class Feed {
     public static final int FEEDFILETYPE_FEED = 0;
     public static final int STATE_SUBSCRIBED = 0;
     public static final int STATE_NOT_SUBSCRIBED = 1;
+    public static final int STATE_ARCHIVED = 2;
     public static final String TYPE_RSS2 = "rss";
     public static final String TYPE_ATOM1 = "atom";
     public static final String PREFIX_LOCAL_FOLDER = "antennapod_local:";

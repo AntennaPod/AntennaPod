@@ -59,4 +59,9 @@
         android:title="@string/pref_show_subscription_title"
         android:checkable="true"
         custom:showAsAction="never" />
+
+    <item
+        android:id="@+id/show_archive"
+        android:title="@string/archive_feed_label_noun"
+        custom:showAsAction="never" />
 </menu>

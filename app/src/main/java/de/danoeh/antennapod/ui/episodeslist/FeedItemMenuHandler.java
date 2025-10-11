@@ -130,7 +130,7 @@ public class FeedItemMenuHandler {
         setItemVisibility(menu, R.id.download_item, canDownload);
         setItemVisibility(menu, R.id.transcript_item, canShowTranscript);
 
-        if (selectedItems.size() == 1 && selectedItems.get(0).getFeed().getState() != Feed.STATE_SUBSCRIBED) {
+        if (selectedItems.size() == 1 && selectedItems.get(0).getFeed().getState() == Feed.STATE_NOT_SUBSCRIBED) {
             setItemVisibility(menu, R.id.mark_read_item, false);
         }
 
@@ -193,7 +193,7 @@ public class FeedItemMenuHandler {
         } else if (menuItemId == R.id.mark_read_item) {
             selectedItem.setPlayed(true);
             DBWriter.markItemPlayed(selectedItem, FeedItem.PLAYED, true);
-            if (!selectedItem.getFeed().isLocalFeed() && selectedItem.getFeed().getState() == Feed.STATE_SUBSCRIBED
+            if (!selectedItem.getFeed().isLocalFeed() && selectedItem.getFeed().getState() != Feed.STATE_NOT_SUBSCRIBED
                     && SynchronizationSettings.isProviderConnected()) {
                 FeedMedia media = selectedItem.getMedia();
                 // not all items have media, Gpodder only cares about those that do
@@ -211,7 +211,7 @@ public class FeedItemMenuHandler {
             selectedItem.setPlayed(false);
             DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, false);
             if (!selectedItem.getFeed().isLocalFeed() && selectedItem.getMedia() != null
-                    && selectedItem.getFeed().getState() == Feed.STATE_SUBSCRIBED) {
+                    && selectedItem.getFeed().getState() != Feed.STATE_NOT_SUBSCRIBED) {
                 SynchronizationQueue.getInstance().enqueueEpisodeAction(
                         new EpisodeAction.Builder(selectedItem, EpisodeAction.NEW)
                             .currentTimestamp()

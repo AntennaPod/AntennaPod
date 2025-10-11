@@ -235,10 +235,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(subscribedFeed -> {
-            if (subscribedFeed.getState() == Feed.STATE_SUBSCRIBED) {
-                openFeed(subscribedFeed.getId());
-            } else {
+            if (subscribedFeed.getState() == Feed.STATE_NOT_SUBSCRIBED) {
                 showFeedFragment(subscribedFeed.getId());
+            } else {
+                openFeed(subscribedFeed.getId());
             }
         }, error -> Log.e(TAG, Log.getStackTraceString(error)), () -> startFeedDownload(url));
         return null;

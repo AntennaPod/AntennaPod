@@ -103,7 +103,10 @@ public class SubscriptionsSection extends HomeSection {
                     Collections.sort(statisticsData, (item1, item2) ->
                             Long.compare(item2.timePlayed, item1.timePlayed));
                     List<Feed> feeds = new ArrayList<>();
-                    for (int i = 0; i < statisticsData.size() && i < NUM_FEEDS; i++) {
+                    for (int i = 0; i < statisticsData.size() && feeds.size() < NUM_FEEDS; i++) {
+                        if (statisticsData.get(i).feed.getState() != Feed.STATE_SUBSCRIBED) {
+                            continue;
+                        }
                         feeds.add(statisticsData.get(i).feed);
                     }
                     listAdapter.setDummyViews(0);

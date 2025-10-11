@@ -113,7 +113,7 @@ public class SynchronizationQueueImpl extends SynchronizationQueue {
             return;
         }
         if (media.getItem() == null || media.getItem().getFeed().isLocalFeed()
-                || media.getItem().getFeed().getState() != Feed.STATE_SUBSCRIBED) {
+                || media.getItem().getFeed().getState() == Feed.STATE_NOT_SUBSCRIBED) {
             return;
         }
         if (media.getStartPosition() < 0 || (!completed && media.getStartPosition() >= media.getPosition())) {
