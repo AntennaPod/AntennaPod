@@ -66,4 +66,8 @@
     <string name="feed_update_receiver_name">Ажурирај предплати</string>
     <string name="add_feed_label">Додај емисија (подкаст)</string>
     <string name="add_feed_label_short">Додај</string>
+    <string name="episodes_label_short">Епизоди</string>
+    <string name="home_label">Почетна</string>
+    <string name="home_label_short">Почетна</string>
+    <string name="queue_label_short">Редица</string>
 </resources>

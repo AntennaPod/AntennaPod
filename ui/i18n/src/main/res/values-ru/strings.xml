@@ -170,7 +170,6 @@
     <string name="remove_feed_label">Удалить подкаст</string>
     <string name="share_label">Поделиться</string>
     <string name="share_file_label">Поделиться файлом</string>
-    <string name="feed_remover_msg">Подкаст удаляется</string>
     <string name="load_complete_feed">Обновить весь подкаст</string>
     <string name="multi_select">Множественный выбор</string>
     <string name="select_all_above">Выбрать все выше</string>
@@ -391,10 +390,7 @@
     <string name="pref_black_theme_message">Чёрная тема вместо тёмной</string>
     <string name="pref_tinted_theme_title">Динамические цвета</string>
     <string name="pref_tinted_theme_message">Адаптировать цвет приложения на основе обоев</string>
-    <string name="pref_nav_drawer_feed_order_title">Порядок подписок</string>
-    <string name="pref_nav_drawer_feed_order_sum">Выберите порядок отображения подписок</string>
     <string name="pref_nav_drawer_feed_counter_title">Выбрать счётчик подписок</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Выберите какую информацию отображает счётчик подписок. Влияет также на порядок подписок, если сортировка подписок производится по количеству.</string>
     <string name="pref_automatic_download_title">Автоматическая загрузка</string>
     <string name="pref_automatic_download_sum">Настроить автоматическую загрузку выпусков</string>
     <string name="pref_automatic_download_on_battery_title">Загружать без зарядки</string>
@@ -457,8 +453,6 @@
     <string name="remember_last_page">Запоминать последнюю страницу</string>
     <string name="pref_delete_removes_from_queue_title">Убирать удаленные из очереди</string>
     <string name="pref_delete_removes_from_queue_sum">Автоматически убирать выпуск из очереди при его удалении</string>
-    <string name="pref_filter_feed_title">Фильтр подписок</string>
-    <string name="pref_filter_feed_sum">Отфильтруйте подписки на панели навигации и на экране подписок</string>
     <string name="subscriptions_counter_greater_zero">Ненулевой счётчик подписок</string>
     <string name="auto_downloaded">С автозагрузкой</string>
     <string name="not_auto_downloaded">Без автозагрузки</string>
@@ -763,9 +757,6 @@
     <string name="shortcut_select_subscription">Выбрать подписку</string>
     <string name="add_shortcut">Добавить ярлык</string>
     <string name="home_downloads_empty_text">Вы можете скачать любой выпуск, чтобы слушать его офлайн.</string>
-    <string name="feed_delete_confirmation_msg">Подтвердите, что вы хотите удалить подкаст «%1$s», все его выпуски (включая скачанные), историю воспроизведения и статистику.</string>
-    <string name="feed_delete_confirmation_msg_batch">Подтвердите, что вы хотите удалить выбранные подкасты, все выпуски (включая скачанные), историю воспроизведения и статистику.</string>
-    <string name="feed_delete_confirmation_local_msg">Подтвердите, что вы хотите удалить подкаст «%1$s», историю его воспроизведения и статистику. Файлы в локальной исходной папке удалены не будут.</string>
     <string name="home_no_recent_unplayed_episodes_text">Вы уже прослушали все недавние выпуски. Так что непрослушанных выпусков тут нет ;)</string>
     <string name="home_continue_empty_text">Вы можете добавлять выпуски, скачав их или через длительное нажатие и «Добавить в очередь».</string>
     <string name="home_new_empty_text">Здесь будут появляться новые выпуски. Вы сможете выбрать интересные для вас.</string>

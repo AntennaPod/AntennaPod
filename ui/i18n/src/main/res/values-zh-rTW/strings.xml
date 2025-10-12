@@ -152,7 +152,6 @@
     <string name="remove_feed_label">移除 Podcast</string>
     <string name="share_label">分享</string>
     <string name="share_file_label">分享檔案</string>
-    <string name="feed_remover_msg">移除 Podcast</string>
     <string name="load_complete_feed">更新所有 Podcast</string>
     <string name="multi_select">多重選取</string>
     <string name="select_all_above">選取以上全部</string>
@@ -364,10 +363,7 @@
     <string name="pref_black_theme_message">用全黑作為深色主題</string>
     <string name="pref_tinted_theme_title">動態顏色</string>
     <string name="pref_tinted_theme_message">根據桌布調整應用程式顏色</string>
-    <string name="pref_nav_drawer_feed_order_title">設定訂閱排序方式</string>
-    <string name="pref_nav_drawer_feed_order_sum">更改您訂閱頻道的排序方式</string>
     <string name="pref_nav_drawer_feed_counter_title">設定訂閱計數器</string>
-    <string name="pref_nav_drawer_feed_counter_sum">調整訂閱計數器中要顯示的東西，同時也會在排序方式設定為「計數」時影響排序。</string>
     <string name="pref_automatic_download_title">自動下載</string>
     <string name="pref_automatic_download_sum">設定單集自動下載機制</string>
     <string name="pref_automatic_download_on_battery_title">未充電時下載</string>
@@ -430,8 +426,6 @@
     <string name="remember_last_page">記住上次頁面</string>
     <string name="pref_delete_removes_from_queue_title">刪除時同步自待播清單中移除</string>
     <string name="pref_delete_removes_from_queue_sum">刪除某單集後，也自動將其從待播清單中移除</string>
-    <string name="pref_filter_feed_title">篩選訂閱內容</string>
-    <string name="pref_filter_feed_sum">在側邊欄和訂閱頁面中篩選您的訂閱</string>
     <string name="subscriptions_counter_greater_zero">計數大於 0 的</string>
     <string name="auto_downloaded">已自動下載</string>
     <string name="not_auto_downloaded">未自動下載</string>
@@ -811,12 +805,9 @@
     <plurals name="total_size_downloaded_podcasts">
         <item quantity="other">裝置上共計 %d 個單集的總大小</item>
     </plurals>
-    <string name="feed_delete_confirmation_msg">請確認您要刪除 Podcast「%1$s」、它的所有單集（包括已下載的單集）、播放記錄，以及其統計資料。</string>
     <plurals name="mobile_download_notice">
         <item quantity="other">將透過行動網路連線下載，持續 %d 分鐘</item>
     </plurals>
-    <string name="feed_delete_confirmation_local_msg">請確認您要移除 Podcast「%1$s」、其播放記錄，以及其統計資料。本機資料夾中的檔案將不會被刪除。</string>
-    <string name="feed_delete_confirmation_msg_batch">請確認您要移除所選的 Podcast、它們所有的單集（包括已下載的單集）、播放記錄，以及其統計資料。</string>
     <string name="echo_home_subtitle">您過去一年最常聽的 Podcast 和統計數據。僅限在您的手機。</string>
     <string name="echo_queue_hours_clean">這大約是每天 %1$s，直到 %2$d 年開始。</string>
     <string name="echo_intro_locally">僅在您的手機上產生</string>

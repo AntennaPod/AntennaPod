@@ -158,7 +158,6 @@
     <string name="remove_feed_label">Αφαίρεση podcast</string>
     <string name="share_label">Κοινοποίηση</string>
     <string name="share_file_label">Κοινοποίηση αρχείου</string>
-    <string name="feed_remover_msg">Γίνεται αφαίρεση podcast</string>
     <string name="load_complete_feed">Ανανέωση όλου του podcast</string>
     <string name="multi_select">Επιλογή πολλών</string>
     <string name="select_all_above">Επιλογή όλων των παραπάνω</string>
@@ -373,10 +372,7 @@
     <string name="pref_black_theme_message">Χρήση απόλυτου μαύρου για το σκοτεινό θέμα</string>
     <string name="pref_tinted_theme_title">Δυναμικά χρώματα</string>
     <string name="pref_tinted_theme_message">Προσαρμογή των χρωμάτων εφαρμογής σύμφωνα με τη ταπετσαρία</string>
-    <string name="pref_nav_drawer_feed_order_title">Ορισμός σειράς συνδρομών</string>
-    <string name="pref_nav_drawer_feed_order_sum">Αλλαγή της σειράς συνδρομών σας</string>
     <string name="pref_nav_drawer_feed_counter_title">Ορίστε μετρητή συνδρομών</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Αλλάξτε τις πληροφορίες που εμφανίζονται από τον μετρητή εγγραφών. Επίσης επηρεάζει την ταξινόμηση των εγγραφών εάν η «Σειρά Εγγραφών» είναι κατά \"Μετρητής\".</string>
     <string name="pref_automatic_download_title">Αυτόματη λήψη</string>
     <string name="pref_automatic_download_sum">Ρύθμιση της αυτόματης λήψης των επεισοδίων</string>
     <string name="pref_automatic_download_on_battery_title">Λήψη όταν δεν φορτίζει</string>
@@ -439,8 +435,6 @@
     <string name="remember_last_page">Μνημόνευση της τελευταίας σελίδας</string>
     <string name="pref_delete_removes_from_queue_title">Η διαγραφή αφαιρεί απ\' την ουρά</string>
     <string name="pref_delete_removes_from_queue_sum">Αυτόματη αφαίρεση ενός επεισοδίου από την ουρά όταν διαγράφεται</string>
-    <string name="pref_filter_feed_title">Φίλτρο συνδρομών</string>
-    <string name="pref_filter_feed_sum">Φιλτράρετε τις συνδρομές σας στο συαρτάρι πλοήγησης και στην οθόνη συνδρομών</string>
     <string name="subscriptions_counter_greater_zero">Μετρητής μεγαλύτερος του μηδενός</string>
     <string name="auto_downloaded">Κατέβηκε αυτόματα</string>
     <string name="not_auto_downloaded">Δεν κατέβηκε αυτόματα</string>
@@ -740,8 +734,6 @@
     <string name="home_downloads_empty_text">Μπορείς να κατεβάσεις οποιοδήποτε επεισόδια και να το ακούσεις εκτός σύνδεσης.</string>
     <string name="section_shown">Εμφανιζόμενα</string>
     <string name="home_new_empty_text">Τα νέα επεισόδια θα εμφανίζονται εδώ. Μετά, μπορείς να αποφασίσεις αν ενδιαφέρεσαι για αυτά.</string>
-    <string name="feed_delete_confirmation_msg_batch">Παρακαλώ επιβεβαιώστε ότι θέλετε να αφαιρέσετε τα επιλεγμένα podcasts, ΌΛΑ τα επεισόδια τους (συμπεριλαμβανομένων των επεισοδίων που έχουν ληφθεί), το ιστορικό αναπαραγωγής και τις στατιστικές τους.</string>
-    <string name="feed_delete_confirmation_msg">Παρακαλώ επιβεβαιώστε ότι θέλετε να διαγράψετε το podcast \"%1$s\", ΌΛΑ τα επεισόδια του (συμπεριλαμβανομένων των επεισοδίων που έχουν ληφθεί), το ιστορικό αναπαραγωγής και τις στατιστικές του.</string>
     <plurals name="total_size_downloaded_podcasts">
         <item quantity="one">Σύνολο %d του επεισοδίου είναι αποθηκευμένο στη συσκευή</item>
         <item quantity="other">Σύνολο %d των επεισοδίων είναι αποθηκευμένα στη συσκευή</item>
@@ -840,7 +832,6 @@
     <string name="echo_queue_hours_normal">Αυτό είναι περίπου %1$s κάθε μέρα μέχρι να ξεκινήσει το %2$d. Μπορείτε να ξεκινήσετε τη χρονιά καθαρά αν παραλείψετε μερικά επεισόδια.</string>
     <string name="statistics_years_barchart_description">Χρόνος παιξίματος ανά μήνα</string>
     <string name="bottom_navigation_summary">Πρόσβαση στις πιο σημαντικές οθόνες από παντού, με ένα μόνο πάτημα</string>
-    <string name="feed_delete_confirmation_local_msg">Επιβεβαιώστε ότι θέλετε να καταργήσετε το podcast «%1$s», το ιστορικό αναπαραγωγής του και τα στατιστικά του. Τα αρχεία στον τοπικό φάκελο πηγής δεν θα διαγραφούν.</string>
     <string name="pref_nav_drawer_items_sum">Αλλαγή των στοιχείων που εμφανίζονται στο συρτάρι πλοήγησης ή στην κάτω πλοήγηση</string>
     <string name="pref_downloads_button_action_sum">Εμφάνιση του κουμπιού αναπαραγωγής αντί του κουμπιού διαγραφής στην οθόνη λήψεων</string>
     <string name="echo_hoarder_subtitle_medium">Ελέγξτε. Δεν υπάρχει συσσώρευση εδώ.</string>

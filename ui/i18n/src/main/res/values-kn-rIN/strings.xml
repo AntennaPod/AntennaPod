@@ -94,7 +94,6 @@
     <string name="episode_cleanup_never">ಎಂದಿಗೂ</string>
     <string name="show_info_label">ಮಾಹಿತಿ ತೋರಿಸಿ</string>
     <string name="remove_feed_label">ಪಾಡ್ಕ್ಯಾಸ್ಟನ್ನು ತೆಗೆದುಹಾಕಿ</string>
-    <string name="feed_remover_msg">ಪಾಡ್ಕ್ಯಾಸ್ಟನ್ನು ತೆಗೆದುಹಾಕಲಾಗುತ್ತಿದೆ</string>
     <!--actions on feeditems-->
   <string name="download_label">ಡೌನ್ಲೋಡ್</string>
     <string name="play_label">ಚಾಲನೆಗೊಳಿಸಿ</string>
