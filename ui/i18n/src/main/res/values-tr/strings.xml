@@ -847,4 +847,20 @@
     <string name="echo_thanks_we_are_glad_new">bu yıl bize katıldığın için!\n\nBaşka bir uygulamadan gelmiş ya da podcast macerana bizimle başlamış olsanda seninle olduğumuz için mutluyuz!</string>
     <string name="echo_listened_after_time">Bir bölümü genellikle yayınlandıktan %1$s sonra tamamladın.</string>
     <string name="echo_hoarder_comment_medium">Bu yıl %2$d aktif aboneliğinden %1$d%% bölüm oynattın. Şunu tekrar kontrol etmeye ne dersin \"%3$s\" ?</string>
+    <string name="removed_from_inbox_message">Gelen kutusundan kaldırıldı</string>
+    <string name="mark_as_played_label">Oynatıldı olarak işaretle</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d bölüm sıraya eklendi.</item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="visit_social_interact_confirm_dialog_title">AntennaPod\'dan ayrılıyorsunuz</string>
+    <string name="no_items_selected_message">Hiçbir öğe seçilmedi</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Oynatıldı olarak işaretlendi</item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Oynatılmadı olarak işaretlendi</item>
+        <item quantity="other"></item>
+    </plurals>
 </resources>

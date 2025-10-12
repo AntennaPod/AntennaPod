@@ -18,7 +18,6 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -68,7 +67,8 @@ public class LocalFeedUpdater {
             }
             Feed updatedFeed = tryUpdateFeed(feed, context, documentFolder.getUri(), updaterProgressListener);
 
-            if (mustReportDownloadSuccessful(feed)) {
+            List<DownloadResult> downloadResults = DBReader.getFeedDownloadLog(feed.getId(), 1);
+            if (downloadResults.isEmpty() || !downloadResults.get(0).isSuccessful()) {
                 reportSuccess(feed);
             }
             return updatedFeed;
@@ -267,27 +267,6 @@ public class LocalFeedUpdater {
                 Feed.FEEDFILETYPE_FEED, true, DownloadError.SUCCESS, null);
         DBWriter.addDownloadStatus(status);
         DBWriter.setFeedLastUpdateFailed(feed.getId(), false);
-    }
-
-    /**
-     * Answers if reporting success is needed for the given feed.
-     */
-    private static boolean mustReportDownloadSuccessful(Feed feed) {
-        List<DownloadResult> downloadResults = DBReader.getFeedDownloadLog(feed.getId());
-
-        if (downloadResults.isEmpty()) {
-            // report success if never reported before
-            return true;
-        }
-
-        Collections.sort(downloadResults, (downloadStatus1, downloadStatus2) ->
-                downloadStatus1.getCompletionDate().compareTo(downloadStatus2.getCompletionDate()));
-
-        DownloadResult lastDownloadResult = downloadResults.get(downloadResults.size() - 1);
-
-        // report success if the last update was not successful
-        // (avoid logging success again if the last update was ok)
-        return !lastDownloadResult.isSuccessful();
     }
 
     @FunctionalInterface

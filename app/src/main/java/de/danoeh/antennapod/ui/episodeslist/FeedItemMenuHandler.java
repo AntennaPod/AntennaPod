@@ -18,6 +18,7 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
@@ -75,7 +76,9 @@ public class FeedItemMenuHandler {
         boolean canShowSocialInteract = false;
 
         for (FeedItem item : selectedItems) {
-            boolean hasMedia = item.getMedia() != null;
+            final boolean hasMedia = item.getMedia() != null;
+            final boolean isDownloading = hasMedia
+                    && DownloadServiceInterface.get().isDownloadingEpisode(item.getMedia().getDownloadUrl());
             canSkip |= hasMedia && PlaybackStatus.isPlaying(item.getMedia());
             canRemoveFromQueue |= item.isTagged(FeedItem.TAG_QUEUE);
             canAddToQueue |= hasMedia && !item.isTagged(FeedItem.TAG_QUEUE);
@@ -85,8 +88,9 @@ public class FeedItemMenuHandler {
             canMarkPlayed |= !item.isPlayed();
             canMarkUnplayed |= item.isPlayed();
             canResetPosition |= hasMedia && item.getMedia().getPosition() != 0;
-            canDelete |= (hasMedia && item.getMedia().isDownloaded()) || item.getFeed().isLocalFeed();
-            canDownload |= hasMedia && !item.getMedia().isDownloaded() && !item.getFeed().isLocalFeed();
+            canDelete |= item.getFeed().isLocalFeed() || (hasMedia && item.getMedia().isDownloaded()) || isDownloading;
+            canDownload |= hasMedia && !item.getMedia().isDownloaded()
+                    && !item.getFeed().isLocalFeed() && !isDownloading;
             canAddFavorite |= !item.isTagged(FeedItem.TAG_FAVORITE);
             canRemoveFavorite |= item.isTagged(FeedItem.TAG_FAVORITE);
             canShowTranscript |= item.hasTranscript();
@@ -284,25 +288,27 @@ public class FeedItemMenuHandler {
             }
         };
 
-        int playStateStringRes;
+        String message;
         switch (playState) {
             default:
             case FeedItem.UNPLAYED:
                 if (item.getPlayState() == FeedItem.NEW) {
                     //was new
-                    playStateStringRes = R.string.removed_from_inbox_message;
+                    message = fragment.getString(R.string.removed_from_inbox_message);
                 } else {
                     //was played
-                    playStateStringRes = R.string.marked_as_unplayed_message;
+                    message = fragment.getResources().getQuantityString(
+                            R.plurals.marked_as_unplayed_message, 1);
                 }
                 break;
             case FeedItem.PLAYED:
-                playStateStringRes = R.string.marked_as_played_message;
+                message = fragment.getResources().getQuantityString(
+                        R.plurals.marked_as_played_message, 1);
                 break;
         }
 
         if (showSnackbar) {
-            EventBus.getDefault().post(new MessageEvent(fragment.getString(playStateStringRes),
+            EventBus.getDefault().post(new MessageEvent(message,
                     context -> {
                         DBWriter.markItemPlayed(item.getPlayState(), item.getId());
                         // don't forget to cancel the thing that's going to remove the media

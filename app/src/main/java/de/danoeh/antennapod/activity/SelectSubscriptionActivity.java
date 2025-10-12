@@ -27,10 +27,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.databinding.SubscriptionSelectionActivityBinding;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -72,20 +70,6 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    public List<Feed> getFeedItems(List<NavDrawerData.DrawerItem> items, List<Feed> result) {
-        for (NavDrawerData.DrawerItem item : items) {
-            if (item.type == NavDrawerData.DrawerItem.Type.TAG) {
-                getFeedItems(((NavDrawerData.TagDrawerItem) item).getChildren(), result);
-            } else {
-                Feed feed = ((NavDrawerData.FeedDrawerItem) item).feed;
-                if (!result.contains(feed)) {
-                    result.add(feed);
-                }
-            }
-        }
-        return result;
     }
 
     private void addShortcut(Feed feed, Bitmap bitmap) {
@@ -140,12 +124,7 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
         if (disposable != null) {
             disposable.dispose();
         }
-        disposable = Observable.fromCallable(
-                () -> {
-                    NavDrawerData data = DBReader.getNavDrawerData(UserPreferences.getSubscriptionsFilter(),
-                            UserPreferences.getFeedOrder(), UserPreferences.getFeedCounterSetting());
-                    return getFeedItems(data.items, new ArrayList<>());
-                })
+        disposable = Observable.fromCallable(DBReader::getFeedList)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

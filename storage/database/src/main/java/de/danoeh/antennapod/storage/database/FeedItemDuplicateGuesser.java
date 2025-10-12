@@ -69,7 +69,7 @@ public class FeedItemDuplicateGuesser {
         return sameAndNotEmpty(canonicalizeTitle(item1.getTitle()), canonicalizeTitle(item2.getTitle()));
     }
 
-    private static String canonicalizeTitle(String title) {
+    public static String canonicalizeTitle(String title) {
         if (title == null) {
             return "";
         }

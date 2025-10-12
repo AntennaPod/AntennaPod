@@ -48,6 +48,7 @@ import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
+import de.danoeh.antennapod.storage.databasemaintenanceservice.DatabaseMaintenanceWorker;
 import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -145,6 +146,7 @@ public class MainActivity extends CastEnabledActivity {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }
             drawerLayout = null;
+            bottomNavigation.onCreateView();
         } else {
             bottomNavigation.hide();
             bottomNavigation = null;
@@ -198,6 +200,7 @@ public class MainActivity extends CastEnabledActivity {
         FeedUpdateManager.getInstance().restartUpdateAlarm(this, false);
         SynchronizationQueue.getInstance().syncIfNotSyncedRecently();
         AutomaticDatabaseExportWorker.enqueueIfNeeded(this, false);
+        DatabaseMaintenanceWorker.enqueueIfNeeded(this);
 
         WorkManager.getInstance(this)
                 .getWorkInfosByTagLiveData(FeedUpdateManagerImpl.WORK_TAG_FEED_UPDATE)
@@ -337,7 +340,7 @@ public class MainActivity extends CastEnabledActivity {
             drawerLayout.removeDrawerListener(drawerToggle);
         }
         if (bottomNavigation != null) {
-            bottomNavigation.onDestroy();
+            bottomNavigation.onDestroyView();
         }
     }
 
@@ -571,9 +574,6 @@ public class MainActivity extends CastEnabledActivity {
         super.onStart();
         EventBus.getDefault().register(this);
         new RatingDialogManager(this).showIfNeeded();
-        if (bottomNavigation != null) {
-            bottomNavigation.onStart();
-        }
         getOnBackPressedDispatcher().addCallback(this, openDefaultPageBackPressedCallback);
         getOnBackPressedDispatcher().addCallback(this, bottomSheetBackPressedCallback);
     }
@@ -603,9 +603,6 @@ public class MainActivity extends CastEnabledActivity {
     protected void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-        if (bottomNavigation != null) {
-            bottomNavigation.onStop();
-        }
     }
 
     @Override

@@ -247,8 +247,6 @@
     <string name="removed_from_inbox_message">Removed from inbox</string>
     <string name="mark_as_played_label">Mark as played</string>
     <string name="toggle_played_label">Toggle played state</string>
-    <string name="marked_as_played_message">Marked as played</string>
-    <string name="marked_as_unplayed_message">Marked as unplayed</string>
     <string name="mark_read_no_media_label">Mark as read</string>
     <string name="play_this_to_seek_position_message">To jump to positions, you need to play the episode</string>
     <plurals name="marked_as_played_message">
@@ -348,6 +346,7 @@
     <string name="confirm_mobile_streaming_notification_message">Streaming over mobile data connection is disabled in the settings. Tap to stream anyway.</string>
     <string name="confirm_mobile_streaming_button_always">Always</string>
     <string name="confirm_mobile_streaming_button_once">Once</string>
+    <string name="already_downloaded">Episode is already downloaded</string>
 
     <!-- Mediaplayer messages -->
     <string name="playback_error_generic">The media file could not be played.\n\n- Try deleting and re-downloading the episode.\n- Check your network connection, and make sure no VPN or login page is blocking access.\n- Try long-pressing and sharing the \"Media address\" to your web browser to see if it can be played there. If not, contact the podcast creators.</string>
@@ -492,10 +491,7 @@
     <string name="bottom_navigation_summary">Access the most important screens from everywhere, in a single tap</string>
     <string name="pref_nav_drawer_items_title">Customize navigation</string>
     <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer or bottom navigation</string>
-    <string name="pref_nav_drawer_feed_order_title">Set subscription order</string>
-    <string name="pref_nav_drawer_feed_order_sum">Change the order of your subscriptions</string>
-    <string name="pref_nav_drawer_feed_counter_title">Set subscription counter</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Change the information displayed by the subscription counter. Also affects the sorting of subscriptions if \'Subscription Order\' is set to \'Counter\'.</string>
+    <string name="pref_nav_drawer_feed_counter_title">Counter</string>
     <string name="pref_automatic_download_title">Automatic download</string>
     <string name="pref_automatic_download_global_description">Automatically download episodes from the inbox. Can be overridden per podcast.</string>
     <string name="pref_automatic_download_queue_title">Download queued</string>
@@ -564,8 +560,6 @@
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted</string>
     <string name="pref_downloads_button_action_title">Play from downloads screen</string>
     <string name="pref_downloads_button_action_sum">Display play button instead of delete button on downloads screen</string>
-    <string name="pref_filter_feed_title">Subscription filter</string>
-    <string name="pref_filter_feed_sum">Filter your subscriptions in navigation drawer and subscriptions screen</string>
     <string name="subscriptions_counter_greater_zero">Counter greater than zero</string>
     <string name="auto_downloaded">Auto downloaded</string>
     <string name="not_auto_downloaded">Not auto downloaded</string>
@@ -681,7 +675,7 @@
     <string name="synchronization_summary_unchoosen">You can choose from multiple providers to synchronize your subscriptions and episode play state with</string>
     <string name="dialog_choose_sync_service_title">Choose synchronization provider</string>
     <string name="gpodnet_description">Gpodder.net is an open-source podcast synchronization service that you can install on your own server. Gpodder.net is independent of the AntennaPod project.</string>
-    <string name="synchronization_summary_nextcloud">Gpoddersync is an open-source Nextcloud app that you can easily install on your own server. The app is independent of the AntennaPod project.</string>
+    <string name="synchronization_summary_nextcloud">Gpodder Sync is an open-source Nextcloud app that you can easily install on your own server. Gpodder Sync is independent of the AntennaPod project.</string>
     <string name="synchronization_host_explanation">You can pick your own server to synchronize with. When you have identified your preferred synchronization server, please enter its address here.</string>
     <string name="synchronization_host_label">Server address</string>
     <string name="proceed_to_login_butLabel">Proceed to login</string>
@@ -712,7 +706,7 @@
     <string name="gpodnetsync_pref_report_successful">Successful</string>
     <string name="gpodnetsync_pref_report_failed">Failed</string>
     <string name="gpodnetsync_username_characters_error">Usernames may only contain letters, digits, hyphens and underscores.</string>
-    <string name="nextcloud_login_error_generic">Unable to log into your Nextcloud.\n\n- Check your network connection.\n- Confirm that you are using the correct server address.\n- Make sure that the gpoddersync Nextcloud plugin is installed.</string>
+    <string name="nextcloud_login_error_generic">Unable to log into your Nextcloud.\n\n- Check your network connection.\n- Confirm that you are using the correct server address.\n- Make sure that the Gpodder Sync Nextcloud plugin is installed.</string>
 
     <!-- Directory chooser -->
     <string name="choose_data_directory">Choose data folder</string>
@@ -762,7 +756,8 @@
     <string name="authentication_descr">Change your username and password for this podcast and its episodes</string>
     <string name="feed_tags_label">Tags</string>
     <string name="feed_tags_summary">Change the tags of this podcast to help organize your subscriptions</string>
-    <string name="feed_folders_include_root">Show this podcast in main list</string>
+    <string name="feed_folders_include_root">Show above tags (side navigation only)</string>
+    <string name="tag_all">All</string>
     <string name="multi_feed_common_tags_info">Only common tags from all selected subscriptions are shown. Other tags stay unaffected.</string>
     <string name="auto_download_inbox_category">Automatically download episodes from the inbox</string>
     <string name="episode_filters_label">Episode filter</string>

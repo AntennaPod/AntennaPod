@@ -73,6 +73,7 @@ dependencies {
     implementation project(':playback:base')
     implementation project(':playback:cast')
     implementation project(':storage:database')
+    implementation project(':storage:database-maintenance-service')
     implementation project(':storage:importexport')
     implementation project(':storage:preferences')
     implementation project(':ui:app-start-intent')

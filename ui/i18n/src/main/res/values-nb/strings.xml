@@ -794,7 +794,7 @@
     <string name="echo_intro_your_year">Året ditt</string>
     <string name="delete_tag_label">Slett emneknagg</string>
     <string name="delete_tag_confirmation">Bekreft at du vil slette emneknaggen \"%1$s\".</string>
-    <string name="pref_automatic_download_global_description">Last ned nye episoder automatisk. Kan overstyres i hver podkast.</string>
+    <string name="pref_automatic_download_global_description">Laste ned nye episoder fra innboksen automatisk. Kan overstyres i hver podkast.</string>
     <string name="pref_downloads_button_action_sum">Vis avspillingsknapp i stedet for sletteknapp i nedlastinger</string>
     <string name="preference_search_clear_input">Fjern</string>
     <string name="overflow_more">Mer</string>
@@ -838,4 +838,49 @@
     <string name="feed_new_episodes_action_summary_autodownload">Automatisk nedlasting er aktivert. Episoder blir lagt til i innboksen og deretter flyttet til køen så snart den er lastet ned.</string>
     <string name="rss_address">RSS-adresse</string>
     <string name="visit_social_interact_label">Vis kommentarer</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Laster ned %d episode.</item>
+        <item quantity="other">Laster ned %d episoder.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">%d nedlastet episode er slettet.</item>
+        <item quantity="other">%d nedlastede episoder er slettet.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Fjernet fra innboksen</string>
+    <string name="mark_as_played_label">Merk som avspilt</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Merket som avspilt</item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Merket som uspillbar</item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="play_this_to_seek_position_message">For å hoppe til posisjoner må du spille episoden</string>
+    <string name="mark_as_unplayed_label">Merk som uspilt</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d episode flyttet til toppen.</item>
+        <item quantity="other">%d episoder flyttet til toppen.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d episode flyttet til bunnen.</item>
+        <item quantity="other">%d episoder flyttet til bunnen.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">Her var det tomt! Fortvil ikke, nye episoder venter på deg!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Gå til innboksen</string>
+    <string name="auto_download_inbox_category">Last ned nye episoder fra innboksen automatisk</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d episode lagt til i køen.</item>
+        <item quantity="other">%d episoder lagt til i køen.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d episode fjernet fra køen.</item>
+        <item quantity="other">%d episoder fjernet fra køen.</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">Følg lyd</string>
+    <string name="visit_social_interact_confirm_dialog_title">Du forlater AntennaPod</string>
+    <string name="visit_social_interact_confirm_dialog_message">Pass på at du stoler på nettsiden «%1$s».</string>
+    <string name="reset_playback_position_label">Tilbakestill avspillingsposisjon</string>
+    <string name="no_items_selected_message">Ingenting er valgt</string>
+    <string name="delete_local_feed_confirmation_dialog_message">Sletting fjerner episoden fra AntennaPod og sletter mediafilen fra enhentsminnet. Den kan ikke lastes ned igjen gjennom AntennaPod.</string>
 </resources>

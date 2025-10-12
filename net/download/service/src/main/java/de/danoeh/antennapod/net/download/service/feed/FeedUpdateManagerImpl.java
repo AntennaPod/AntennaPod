@@ -119,6 +119,9 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
                     UserPreferences.setAllowMobileFeedRefresh(true);
                     runOnce(context, feed);
                 })
+                .setOnCancelListener((d) -> {
+                    EventBus.getDefault().postSticky(new FeedUpdateRunningEvent(false));
+                })
                 .setNegativeButton(R.string.no, (dialog, which) -> {
                     EventBus.getDefault().postSticky(new FeedUpdateRunningEvent(false));
                 });

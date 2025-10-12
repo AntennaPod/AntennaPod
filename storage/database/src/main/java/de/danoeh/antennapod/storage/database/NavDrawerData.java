@@ -7,60 +7,38 @@ import java.util.List;
 import java.util.Map;
 
 public class NavDrawerData {
-    public final List<DrawerItem> items;
+    public final List<Feed> feeds;
+    public final List<TagItem> tags;
     public final int queueSize;
     public final int numNewItems;
     public final int numDownloadedItems;
     public final Map<Long, Integer> feedCounters;
 
-    public NavDrawerData(List<DrawerItem> feeds,
+    public NavDrawerData(List<Feed> feeds,
+                         List<TagItem> tags,
                          int queueSize,
                          int numNewItems,
                          int numDownloadedItems,
                          Map<Long, Integer> feedIndicatorValues) {
-        this.items = feeds;
+        this.feeds = feeds;
+        this.tags = tags;
         this.queueSize = queueSize;
         this.numNewItems = numNewItems;
         this.numDownloadedItems = numDownloadedItems;
         this.feedCounters = feedIndicatorValues;
     }
 
-    public abstract static class DrawerItem {
-        public enum Type {
-            TAG, FEED
-        }
-
-        public final Type type;
-        private int layer;
-        public long id;
-
-        public DrawerItem(Type type, long id) {
-            this.type = type;
-            this.id = id;
-        }
-
-        public int getLayer() {
-            return layer;
-        }
-
-        public void setLayer(int layer) {
-            this.layer = layer;
-        }
-
-        public abstract String getTitle();
-
-        public abstract int getCounter();
-    }
-
-    public static class TagDrawerItem extends DrawerItem {
-        private final List<DrawerItem> children = new ArrayList<>();
+    public static class TagItem {
         private final String name;
-        private boolean isOpen;
+        private List<Feed> feeds = new ArrayList<>();
+        private int counter = 0;
+        private boolean isOpen = false;
+        private long id;
 
-        public TagDrawerItem(String name) {
-            // Keep IDs >0 but make room for many feeds
-            super(DrawerItem.Type.TAG, Math.abs((long) name.hashCode()) << 20);
+        public TagItem(String name) {
             this.name = name;
+            // Keep IDs >0 but make room for many feeds
+            this.id = (Math.abs((long) name.hashCode()) << 20);
         }
 
         public String getTitle() {
@@ -75,35 +53,21 @@ public class NavDrawerData {
             isOpen = open;
         }
 
-        public List<DrawerItem> getChildren() {
-            return children;
-        }
-
-        public int getCounter() {
-            int sum = 0;
-            for (DrawerItem item : children) {
-                sum += item.getCounter();
-            }
-            return sum;
-        }
-    }
-
-    public static class FeedDrawerItem extends DrawerItem {
-        public final Feed feed;
-        public final int counter;
-
-        public FeedDrawerItem(Feed feed, long id, int counter) {
-            super(DrawerItem.Type.FEED, id);
-            this.feed = feed;
-            this.counter = counter;
-        }
-
-        public String getTitle() {
-            return feed.getTitle();
+        public List<Feed> getFeeds() {
+            return feeds;
         }
 
         public int getCounter() {
             return counter;
+        }
+
+        public void addFeed(Feed feed, int feedCounter) {
+            counter += feedCounter;
+            feeds.add(feed);
+        }
+
+        public long getId() {
+            return id;
         }
     }
 }

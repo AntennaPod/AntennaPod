@@ -65,5 +65,5 @@ body:
   - type: textarea
     id: logs
     attributes:
-      label: Logs
-      description: If you are experiencing a crash, including the stacktrace will likely get it fixed sooner. AntennaPod has an `export logs` feature for this.
+      label: Crash logs
+      description: If you are experiencing a crash, including the stacktrace will likely get it fixed sooner. You can copy them from the 'Report bugs' screen.
