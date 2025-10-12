@@ -4,7 +4,6 @@ import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,8 +74,6 @@ public class RemoveFeedDialog extends BottomSheetDialogFragment {
             binding.archiveButton.setVisibility(View.GONE);
             binding.explanationArchiveText.setVisibility(View.GONE);
         }
-        binding.explanationArchiveText.setText(Html.fromHtml(getString(R.string.feed_delete_explanation_archive)));
-        binding.explanationDeleteText.setText(Html.fromHtml(getString(R.string.feed_delete_explanation_delete)));
         binding.cancelButton.setOnClickListener(v -> dismiss());
         binding.removeButton.setOnClickListener(v -> showRemoveConfirm());
         binding.removeConfirmButton.setOnClickListener(v -> onRemoveButtonPressed());
