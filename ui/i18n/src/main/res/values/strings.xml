@@ -208,8 +208,8 @@
     <string name="remove_feed_label">Delete</string>
     <string name="share_label">Share</string>
     <string name="share_file_label">Share file</string>
-    <string name="feed_delete_explanation_delete"><![CDATA[<b>Deleting</b> will remove ALL its episodes including downloads, playback history, and statistics.]]></string>
-    <string name="feed_delete_explanation_archive"><![CDATA[<b>Archiving</b> will hide it from the subscription list and avoid it getting updates. Downloads, statistics and playback state are kept.]]></string>
+    <string name="feed_delete_explanation_delete">Deleting will remove ALL its episodes including downloads, playback history, and statistics.</string>
+    <string name="feed_delete_explanation_archive">Archiving will hide it from the subscription list and avoid it getting updates. Downloads, statistics and playback state are kept.</string>
     <string name="load_complete_feed">Refresh complete podcast</string>
     <string name="multi_select">Multi select</string>
     <string name="select_all_above">Select all above</string>
