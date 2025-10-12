@@ -146,7 +146,6 @@
     <string name="remove_feed_label">ポッドキャストを削除</string>
     <string name="share_label">共有</string>
     <string name="share_file_label">ファイルを共有</string>
-    <string name="feed_remover_msg">ポッドキャストを削除中</string>
     <string name="load_complete_feed">ポッドキャストをすべて更新</string>
     <string name="multi_select">複数選択</string>
     <string name="select_all_above">上のすべてを選択</string>
@@ -346,10 +345,7 @@
     <string name="pref_black_theme_message">ダークモードにて完全な黒を使用する</string>
     <string name="pref_tinted_theme_title">ダイナミックカラー</string>
     <string name="pref_tinted_theme_message">アプリの色を壁紙の色に合わせます</string>
-    <string name="pref_nav_drawer_feed_order_title">購読の順序</string>
-    <string name="pref_nav_drawer_feed_order_sum">購読の順序を変更します</string>
     <string name="pref_nav_drawer_feed_counter_title">購読カウンターを設定</string>
-    <string name="pref_nav_drawer_feed_counter_sum">購読カウンターに表示される情報を変更します。「購読の順序」に「カウンター」が設定されている場合は、購読の並べ替えにも影響します。</string>
     <string name="pref_automatic_download_title">自動ダウンロード</string>
     <string name="pref_automatic_download_sum">エピソードの自動ダウンロードを設定</string>
     <string name="pref_automatic_download_on_battery_title">充電時以外にダウンロード</string>
@@ -408,8 +404,6 @@
     <string name="remember_last_page">最後のページを記憶</string>
     <string name="pref_delete_removes_from_queue_title">キューから削除済みを削除</string>
     <string name="pref_delete_removes_from_queue_sum">削除した時に、自動的にキューからエピソードを削除します</string>
-    <string name="pref_filter_feed_title">購読フィルター</string>
-    <string name="pref_filter_feed_sum">ナビゲーションドロワーと購読画面で表示される購読をフィルター処理</string>
     <string name="subscriptions_counter_greater_zero">カウンターが 1 以上</string>
     <string name="auto_downloaded">自動DL</string>
     <string name="not_auto_downloaded">Not自動DL</string>
@@ -693,13 +687,11 @@
     <string name="transcript">書き起こし</string>
     <string name="pref_fast_forward">早送りのスキップ時間</string>
     <string name="statistics_view_all">すべてのポッドキャスト »</string>
-    <string name="feed_delete_confirmation_msg_batch">選択したポッドキャスト、すべてのエピソード (ダウンロードされたエピソードを含む)、再生履歴、その統計を削除することを確認してください。</string>
     <string name="pref_nav_drawer_items_sum">ナビゲーションドロワーまたは下部ナビゲーションに表示する項目を変更</string>
     <string name="fast_forward_label">早送り</string>
     <plurals name="episode_cleanup_hours_after_listening">
         <item quantity="other">完了後 %d 時間</item>
     </plurals>
-    <string name="feed_delete_confirmation_msg">ポッドキャスト「%1$s」、その「すべての」エピソード (ダウンロード済みエピソードを含む)、再生履歴、その統計を削除することを確認してください。</string>
     <string name="show_transcript">書き起こしを表示</string>
     <string name="pref_auto_delete_sum">再生後または自動ダウンロードに空き容量が必要なときにエピソードを削除</string>
     <string name="pref_auto_delete_playback_title">再生後に削除</string>
@@ -738,7 +730,6 @@
         <item quantity="other">完了後 %d 日</item>
     </plurals>
     <string name="multi_select_started_talkback">下部に表示されるマルチ選択アクション</string>
-    <string name="feed_delete_confirmation_local_msg">ポッドキャスト「%1$s」、再生履歴、その統計を削除することを確認してください。ローカルのソースフォルダー内のファイルは削除されません。</string>
     <string name="delete_tag_label">タグを削除</string>
     <string name="delete_tag_confirmation">タグ「%1$s」を本当に削除してもいいか確認してください。</string>
     <string name="null_value_podcast_error">タップしたリンクには有効なポッドキャスト URL が含まれていません。リンクを検証して再試行するか、ポッドキャストを手動で検索してください。</string>

@@ -155,7 +155,6 @@
     <string name="remove_feed_label">Odstrani poddajo</string>
     <string name="share_label">Deli</string>
     <string name="share_file_label">Deli datoteko</string>
-    <string name="feed_remover_msg">Odstranjujem poddajo</string>
     <string name="load_complete_feed">Osveži poddajo v celoti</string>
     <string name="multi_select">Izberi več</string>
     <string name="select_all_above">Izberi vse nad</string>
@@ -359,10 +358,7 @@
     <string name="pref_black_theme_message">Uporabi popolnoma črno barvo za temen videz</string>
     <string name="pref_tinted_theme_title">Dinamične barve</string>
     <string name="pref_tinted_theme_message">Prilagodite barve aplikacije glede na ozadje</string>
-    <string name="pref_nav_drawer_feed_order_title">Nastavite vrstni red naročnin</string>
-    <string name="pref_nav_drawer_feed_order_sum">Spremenite vrstni red svojih naročnin</string>
     <string name="pref_nav_drawer_feed_counter_title">Nastavite števec naročnin</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Spremenite informacije, ki jih prikazuje števec naročnin. Vpliva tudi na razvrščanje naročnin, če je \'Naročilo naročnine\' nastavljeno na \'Števec\'.</string>
     <string name="pref_automatic_download_title">Samodejni prenos</string>
     <string name="pref_automatic_download_sum">Nastavitve samodejnih prenosov epizod</string>
     <string name="pref_automatic_download_on_battery_title">Prenesite, ko se ne polni</string>
@@ -419,8 +415,6 @@
     <string name="remember_last_page">Zapomni si zadnjo stran</string>
     <string name="pref_delete_removes_from_queue_title">Brisanje odstrani iz čakalne vrste</string>
     <string name="pref_delete_removes_from_queue_sum">Samodejna odstranitev epizode iz čakalne vrste, ko je izbrisana</string>
-    <string name="pref_filter_feed_title">Filter naročnin</string>
-    <string name="pref_filter_feed_sum">Filtrirajte svoje naročnine v navigacijskem predalniku in na zaslonu z naročninami</string>
     <string name="subscriptions_counter_greater_zero">Števec je večji od nič</string>
     <string name="auto_downloaded">Samodejni prenos</string>
     <string name="not_auto_downloaded">Ni samodejno preneseno</string>
@@ -782,8 +776,5 @@
         <item quantity="few">%d dni</item>
         <item quantity="other">%d dni</item>
     </plurals>
-    <string name="feed_delete_confirmation_msg">Prosimo potrdite, da želite izbrisati poddajo \"%1$s\". VSE epizode (vključno s prenesenimi epizodami), zgodovino predvajanj in statistiko te poddaje.</string>
-    <string name="feed_delete_confirmation_msg_batch">Prosimo potrdite, da želite izbrisati izbrane poddaje. VSE epizode (vključno s prenesenimi epizodami), zgodovina predvajanj in statistika bodo izbrisane.</string>
-    <string name="feed_delete_confirmation_local_msg">Prosimo potrdite, da želite izbrisati poddajo \"%1$s\", zgodovino predvajanj in njeno statistiko. Prenesene datoteke v lokalni mapi ne bodo izbrisane.</string>
     <string name="delete_tag_confirmation">Prosimo potrdite izbris oznake \"%1$s\".</string>
 </resources>

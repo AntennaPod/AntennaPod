@@ -154,7 +154,6 @@
     <string name="remove_feed_label">पॉडकास्ट हटाएं</string>
     <string name="share_label">शेयर करें</string>
     <string name="share_file_label">फाइल शेयर करें</string>
-    <string name="feed_remover_msg">पॉडकास्ट हटा रहे</string>
     <string name="load_complete_feed">पूरा पॉडकास्ट रीफ्रेश करें</string>
     <string name="multi_select">कई चुनें</string>
     <string name="select_all_above">ऊपर के सब चुनें</string>
@@ -356,10 +355,7 @@
     <string name="pref_black_theme_message">डार्क थीम के लिए पूरा काला रंग का उपयोग करें</string>
     <string name="pref_tinted_theme_title">क्रियाशील रंग</string>
     <string name="pref_tinted_theme_message">ऐप रंग वॉलपेपर के हिसाब से अडैप्ट करें</string>
-    <string name="pref_nav_drawer_feed_order_title">सदस्यता क्रम निर्धारित करें</string>
-    <string name="pref_nav_drawer_feed_order_sum">अपनी सदस्यताओं का क्रम बदलें</string>
     <string name="pref_nav_drawer_feed_counter_title">सदस्यता गणित्र निर्धारित करें</string>
-    <string name="pref_nav_drawer_feed_counter_sum">सदस्यता गणित्र द्वारा प्रदर्शित जानकारी बदलें। \'सदस्यता क्रम\' को \'गणित्र\' पर सेट किया गया है तो सदस्यताओं की क्रमबद्धी पर भी प्रभाव डालता है।</string>
     <string name="pref_automatic_download_title">स्वत: डाउनलोड</string>
     <string name="pref_automatic_download_sum">एपिसोड्स का स्वचालित डाउनलोड कॉन्फ़िगर करें</string>
     <string name="pref_automatic_download_on_battery_title">जब चार्ज नहीं हो रहा हो तो डाउनलोड करें</string>
@@ -415,8 +411,6 @@
     <string name="remember_last_page">आखिरी पन्ना याद रखें</string>
     <string name="pref_delete_removes_from_queue_title">उच्छेद से यह कतार से हट जाएगा</string>
     <string name="pref_delete_removes_from_queue_sum">जब एक एपिसोड मिटा दिया जाता है, तो स्वचालित रूप से उसे कतार से हटा दें</string>
-    <string name="pref_filter_feed_title">सदस्यता फ़िल्टर</string>
-    <string name="pref_filter_feed_sum">नेविगेशन ड्रायर और सदस्यता स्क्रीन में अपनी सदस्यताओं को फ़िल्टर करें</string>
     <string name="subscriptions_counter_greater_zero">काउंटर ज़ीरो से बढ़ा</string>
     <string name="auto_downloaded">अपनेआप-डाउनलोड किया गया</string>
     <string name="not_auto_downloaded">अपनेआप-डाउनलोड नहीं किया गया</string>

@@ -154,7 +154,6 @@
     <string name="remove_feed_label">Sterge podcast</string>
     <string name="share_label">Trimiteți</string>
     <string name="share_file_label">Trimite fișier</string>
-    <string name="feed_remover_msg">Ștergere podcast</string>
     <string name="load_complete_feed">Reîncarcă tot podcastul</string>
     <string name="multi_select">Selectare multiplă</string>
     <string name="select_all_above">Selectează toate deasupra</string>
@@ -372,10 +371,7 @@
     <string name="pref_black_theme_message">Folosește negru complet pentru tema întunecată</string>
     <string name="pref_tinted_theme_title">Culori dinamice</string>
     <string name="pref_tinted_theme_message">Adaptează culorile aplicației în funcție de imaginea de fundal</string>
-    <string name="pref_nav_drawer_feed_order_title">Setează ordinea abonamentelor</string>
-    <string name="pref_nav_drawer_feed_order_sum">Schimbă ordinea abonamentelor</string>
     <string name="pref_nav_drawer_feed_counter_title">Setează contorul de abonamente</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Schimbă informațiile afișate de către contorul de abonamente. De asemenea afectează sortarea abonamentelor dacă \"Ordinea abonamentelor\" este setată pe \"Contor\"</string>
     <string name="pref_automatic_download_title">Descărcare automată</string>
     <string name="pref_automatic_download_sum">Configurează descărcarea automată a episoadelor</string>
     <string name="pref_automatic_download_on_battery_title">Descarcă când nu se incarcă</string>
@@ -438,8 +434,6 @@
     <string name="remember_last_page">Amintiți-vă ultima pagină</string>
     <string name="pref_delete_removes_from_queue_title">Ștergerea unui episod îl elimină și din coada de redare</string>
     <string name="pref_delete_removes_from_queue_sum">Elimină automat un episod din coada de redare când acesta este șters</string>
-    <string name="pref_filter_feed_title">Filtru de abonamente</string>
-    <string name="pref_filter_feed_sum">Filtrează abonamentele tale în sertarul de navigare și ecranul cu abonamente</string>
     <string name="subscriptions_counter_greater_zero">Contor diferit de zero</string>
     <string name="auto_downloaded">Descărcare automată</string>
     <string name="not_auto_downloaded">Nu se descarcă automat</string>
@@ -731,7 +725,6 @@
         <item quantity="other">%d de zile</item>
     </plurals>
     <string name="home_new_empty_text">Episoadele noi vor apărea aici. Poți mai apoi să decizi dacă acestea prezintă interes pentru tine.</string>
-    <string name="feed_delete_confirmation_msg">Te rugăm să confirmi că dorești să ștergi podcastul „%1$s”, TOATE episoadele (inclusiv episoadele descărcate), istoricul de redare și statisticile asociate.</string>
     <string name="pref_nav_drawer_items_sum">Schimbă ce elemente apar in sertarul de navigare sau în partea inferioară a ecranului</string>
     <plurals name="time_hours_quantified">
         <item quantity="one">o oră</item>
@@ -790,7 +783,6 @@
         <item quantity="other">Mărimea totală ocupată de %d de episode pe acest dispozitiv</item>
     </plurals>
     <string name="enabled">Activat</string>
-    <string name="feed_delete_confirmation_msg_batch">Te rugăm să confirmi că dorești să ștergi toate podcasturile, TOATE episoadele (inclusiv episoadele descărcate), istoricul de redare și statisticile asociate.</string>
     <string name="null_value_podcast_error">Linkul selectat nu conține un URL de podcast valid. Te rugăm să verifici și să încerci din nou, sau să cauți podcastul manual.</string>
     <string name="preference_search_clear_input">Curăță</string>
     <string name="overflow_more">Mai mult</string>

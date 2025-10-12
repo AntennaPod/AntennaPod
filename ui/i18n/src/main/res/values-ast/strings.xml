@@ -70,7 +70,6 @@
     <string name="rename_feed_label">Renomar el podcast</string>
     <string name="remove_feed_label">Quitar el podcast</string>
     <string name="share_label">Compartir</string>
-    <string name="feed_remover_msg">Quitando\'l podcast</string>
     <string name="multi_select">Esbilla múltiple</string>
     <string name="select_all_above">Esbillar tolo d\'enriba</string>
     <string name="select_all_below">Esbillar tolo d\'embaxo</string>
@@ -153,8 +152,6 @@
     <string name="pref_mobileUpdate_refresh">Refrescu de podcasts</string>
     <string name="pref_mobileUpdate_images">Portaes</string>
     <string name="pref_mobileUpdate_episode_download">Descarga d\'episodios</string>
-    <string name="pref_nav_drawer_feed_order_sum">Camuda l\'orde de les soscripciones</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Camuda la información qu\'amuesa\'l contador de soscripciones. Tamién afeuta al orde de les soscripciones si «Orde de les soscripciones» s\'afita a «Contador».</string>
     <string name="pref_automatic_download_on_battery_title">Baxar al nun tar cargando la batería</string>
     <string name="pref_automatic_download_on_battery_sum">Permite la descarga automática cuando la batería nun tea cargando.</string>
     <string name="pref_episode_cover_summary">Nes llistes, úsase la portada de los episodios siempres que seya posible. Si nun se marca esta opción, l\'aplicación va usar siempres la portada de los podcasts.</string>
