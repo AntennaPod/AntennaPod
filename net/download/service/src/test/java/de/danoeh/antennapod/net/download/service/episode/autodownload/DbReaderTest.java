@@ -469,7 +469,7 @@ public class DbReaderTest {
         private int paramOffset;
         private int paramLimit;
 
-        @ParameterizedRobolectricTestRunner.Parameters
+        @ParameterizedRobolectricTestRunner.Parameters(name = "offset={0} limit={1}")
         public static Collection<Object[]> data() {
             List<Integer> limits = Arrays.asList(1, 20, 100);
             List<Integer> offsets = Arrays.asList(0, 10, 20);
