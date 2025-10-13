@@ -419,7 +419,7 @@
     <string name="pref_full_notification_buttons_title">Boutons pour les notifications</string>
     <string name="pref_full_notification_buttons_sum">Changer les boutons pour la notification de lecture</string>
     <string name="pref_enqueue_location_title">Emplacement des épisodes téléchargés</string>
-    <string name="pref_enqueue_location_sum">Ajouter les épisodes : %1$s</string>
+    <string name="pref_enqueue_location_sum">Ajout des épisodes : %1$s</string>
     <string name="enqueue_location_back">en fin de liste</string>
     <string name="enqueue_location_front">en début de liste</string>
     <string name="enqueue_location_after_current">après l\'épisode courant</string>
@@ -752,7 +752,7 @@
     <string name="delete_downloads_played">Supprimé ceux lus</string>
     <string name="bottom_navigation">Navigation en bas</string>
     <string name="statistics_release_schedule">rythme de sortie</string>
-    <string name="home_no_recent_unplayed_episodes_text">Vous avez déjà lu tous les épisodes récents. Pas de quoi être surpris ! ;-)</string>
+    <string name="home_no_recent_unplayed_episodes_text">Vous avez déjà lu tous les épisodes récents. Pas de quoi être surpris ;-)</string>
     <string name="home_continue_empty_text">Vous pouvez ajouter des épisodes en les téléchargeant ou avec un appui long sur eux pour choisir \"Ajouter à la liste de lecture\".</string>
     <string name="home_new_empty_text">Les nouveaux épisodes seront affichés ici. Vous pourrez décider s\'ils vous intéressent.</string>
     <string name="home_downloads_empty_text">Vous pouvez télécharger les épisodes pour les écouter même sans connexion.</string>
@@ -803,7 +803,7 @@
     <string name="echo_hoarder_subtitle_hoarder">Au vu des chiffres on pense que vous avez un petit syndrome de collectionnite</string>
     <string name="echo_hoarder_comment_hoarder">Et les chiffres ne mentent pas. Avec seulement %1$d%% de vos %2$d abonnements actifs ayant été lu cette année, nous avons probablement raison.</string>
     <string name="echo_hoarder_subtitle_medium">Rien à signaler. Pas de collectionnite aiguë détectée.</string>
-    <string name="echo_hoarder_comment_medium">Vous avez lu %1$d%% de vos %2$d abonnements actifs cette année. Pourquoi pas rejeter un coup d\'oeil à \"%3$s\" ?</string>
+    <string name="echo_hoarder_comment_medium">Vous avez lu %1$d%% de vos %2$d abonnements actifs cette année. Pourquoi pas rejeter un coup d\'œil à \"%3$s\" ?</string>
     <string name="echo_hoarder_subtitle_clean">Parfait !</string>
     <string name="echo_hoarder_comment_clean">Vous avez lu %1$d%% de vos %2$d abonnements actifs cette année. C\'est sûr que vous êtes du genre à avoir un bureau propre !</string>
     <string name="echo_thanks_large">Merci</string>
@@ -901,7 +901,7 @@
     <string name="no_queue_items_inbox_has_items_label">Vous n\'avez rien à lire mais des épisodes vous attendent !</string>
     <string name="please_wait_before_refreshing">Merci d\'attendre un peu avant de réactualiser les podcasts.</string>
     <string name="already_downloaded">L\'épisode est déjà téléchargé</string>
-    <string name="tag_all">Tout</string>
+    <string name="tag_all">Tous</string>
     <string name="statistics_expected_next_episode_any_time">À tout moment</string>
     <string name="release_schedule_multiple_per_day">plusieurs fois par jour</string>
     <string name="cover_as_background">Image de l\'épisode en fonds</string>
@@ -914,7 +914,7 @@
     <string name="archive_feed_label_noun">Archives</string>
     <string name="remove_archive_feed_label">Supprimer / Archiver</string>
     <string name="feed_delete_explanation_delete">Supprimer efface TOUS les épisodes téléchargés, l\'historique de lecture et les statistiques.</string>
-    <string name="feed_delete_explanation_archive">Archiver cache le podcast de la liste des abonnements et désactive les mises à jour. Les téléchargements, l\'historique de lecture et les statistiques seront conservés.</string>
+    <string name="feed_delete_explanation_archive">Archiver cache le podcast de la liste des abonnements et désactive les mises à jour. Les téléchargements, l\'historique de lecture et les statistiques restent conservés.</string>
     <string name="tag_untagged">Sans tag</string>
-    <string name="restore_archive_label">Restaurer</string>
+    <string name="restore_archive_label">Désarchiver</string>
 </resources>
