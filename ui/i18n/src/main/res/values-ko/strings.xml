@@ -679,4 +679,12 @@
     <string name="shortcut_subscription_label">구독 바로가기</string>
     <string name="shortcut_select_subscription">구독 선택</string>
     <string name="add_shortcut">바로가기 추가</string>
+    <string name="add_feed_label_short">추가</string>
+    <string name="episodes_label_short">에피소드</string>
+    <string name="home_label_short">홈</string>
+    <string name="queue_label_short">재생 대기</string>
+    <string name="inbox_label_short">새로 받음</string>
+    <string name="downloads_label_short">다운로드</string>
+    <string name="subscriptions_label_short">구독</string>
+    <string name="playback_history_label_short">기록</string>
 </resources>

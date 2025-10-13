@@ -213,6 +213,10 @@ public class TranscriptDialogFragment extends DialogFragment
         doInitialScroll = false;
 
         boolean quickScroll = Math.abs(layoutManager.findFirstVisibleItemPosition() - pos) > 5;
+        if (layoutManager.findFirstVisibleItemPosition() < pos - 1
+                && !viewBinding.transcriptList.canScrollVertically(1)) {
+            return;
+        }
         if (quickScroll) {
             viewBinding.transcriptList.scrollToPosition(pos - 1);
             // Additionally, smooth scroll, so that currently active segment is on top of screen

@@ -6,28 +6,23 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ListView;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.preference.Preference;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
-
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.storage.preferences.UsageStatistics;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import de.danoeh.antennapod.ui.screen.subscriptions.EpisodeListDefaultSortDialog;
 import de.danoeh.antennapod.ui.screen.subscriptions.FeedSortDialog;
+import de.danoeh.antennapod.ui.screen.drawer.DrawerPreferencesDialog;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
-
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.ui.screen.drawer.DrawerPreferencesDialog;
-import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionsFilterDialog;
-import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment {
     private static final String PREF_SWIPE = "prefSwipe";

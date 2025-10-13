@@ -5,9 +5,11 @@ import android.content.Context;
 import androidx.fragment.app.Fragment;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import org.greenrobot.eventbus.EventBus;
 
 public class AddToQueueSwipeAction implements SwipeAction {
 
@@ -33,15 +35,20 @@ public class AddToQueueSwipeAction implements SwipeAction {
 
     @Override
     public void performAction(FeedItem item, Fragment fragment, FeedItemFilter filter) {
-        if (!item.isTagged(FeedItem.TAG_QUEUE)) {
-            DBWriter.addQueueItem(fragment.requireContext(), item);
-        } else {
+        if (item.isTagged(FeedItem.TAG_QUEUE)) {
             new RemoveFromQueueSwipeAction().performAction(item, fragment, filter);
+        } else if (item.getMedia() == null) {
+            EventBus.getDefault().post(new MessageEvent(fragment.getString(R.string.no_media_label)));
+        } else {
+            DBWriter.addQueueItem(fragment.requireContext(), item);
         }
     }
 
     @Override
     public boolean willRemove(FeedItemFilter filter, FeedItem item) {
-        return filter.showQueued || filter.showNew;
+        if (item.getMedia() == null) {
+            return false;
+        }
+        return filter.showNotQueued || filter.showNew;
     }
 }

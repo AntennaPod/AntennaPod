@@ -182,7 +182,7 @@
   <string name="download_label">Descargar</string>
     <string name="play_label">Reproducir</string>
     <string name="pause_label">Pausar</string>
-    <string name="stream_label">Difundir</string>
+    <string name="stream_label">Escoitar</string>
     <string name="delete_label">Borrar</string>
     <string name="remove_inbox_label">Retirar da lista de novidades</string>
     <string name="toggle_played_label">Cambiar estado de reprodución</string>

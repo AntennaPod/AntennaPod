@@ -1,33 +1,28 @@
-package de.danoeh.antennapod.net.download.service.episode.autodownload;
+package de.danoeh.antennapod.storage.database;
 
 import android.content.Context;
-
-import androidx.test.platform.app.InstrumentationRegistry;
-
+import de.danoeh.antennapod.model.download.DownloadError;
+import de.danoeh.antennapod.model.download.DownloadResult;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueStub;
-import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.storage.database.DBWriter;
-import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
-import de.danoeh.antennapod.storage.database.PodDBAdapter;
-import org.junit.After;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
-
-import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -35,40 +30,119 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Test class for {@link FeedDatabaseWriter}.
- */
 @RunWith(RobolectricTestRunner.class)
-public class DbTasksTest {
+public class FeedDatabaseWriterTest {
     private Context context;
 
     @Before
     public void setUp() {
-        context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        context = RuntimeEnvironment.getApplication();
         UserPreferences.init(context);
-        PlaybackPreferences.init(context);
-        SynchronizationQueue.setInstance(new SynchronizationQueueStub());
-
-        // create new database
         PodDBAdapter.init(context);
         PodDBAdapter.deleteDatabase();
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.close();
+        SynchronizationQueue.setInstance(new SynchronizationQueueStub());
     }
 
-    @After
-    public void tearDown() {
-        DBWriter.tearDownTests();
-        PodDBAdapter.tearDownTests();
+    @Test
+    public void testStoreNewFeed() {
+        Feed feed = createFeed();
+        for (int i = 0; i < 3; i++) {
+            feed.getItems().add(createItem("item-" + i, "Item " + i, feed));
+        }
+        Feed updatedFeed = FeedDatabaseWriter.updateFeed(context, feed, false);
+        List<FeedItem> storedItems = DBReader.getFeedItemList(updatedFeed, FeedItemFilter.unfiltered(),
+                SortOrder.EPISODE_TITLE_A_Z, 0, Integer.MAX_VALUE);
+        assertEquals(3, storedItems.size());
+        for (int i = 0; i < 3; i++) {
+            assertEquals("item-" + i, storedItems.get(i).getItemIdentifier());
+        }
+    }
+
+    @Test
+    public void testAddItemsToExistingFeed() {
+        Feed feed = createFeed();
+        for (int i = 0; i < 3; i++) {
+            feed.getItems().add(createItem("item-" + i, "Item " + i, feed));
+        }
+        feed = FeedDatabaseWriter.updateFeed(context, feed, false);
+
+        Feed updatedFeed = createFeed();
+        updatedFeed.setId(feed.getId());
+        for (int i = 3; i < 6; i++) {
+            updatedFeed.getItems().add(createItem("item-" + i, "Item " + i, feed));
+        }
+        FeedDatabaseWriter.updateFeed(context, updatedFeed, false);
+
+        List<FeedItem> dbItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(),
+                SortOrder.EPISODE_TITLE_A_Z, 0, Integer.MAX_VALUE);
+        assertEquals(6, dbItems.size());
+        for (int i = 0; i < 6; i++) {
+            assertEquals("item-" + i, dbItems.get(i).getItemIdentifier());
+        }
+    }
+
+    @Test
+    public void testAddOrUpdateItems() throws ExecutionException, InterruptedException {
+        Feed feed = createFeed();
+        for (int i = 0; i < 3; i++) {
+            feed.getItems().add(createItem("item-" + i, "Item " + i, feed));
+        }
+        feed = FeedDatabaseWriter.updateFeed(context, feed, false);
+        DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(),
+                SortOrder.EPISODE_TITLE_A_Z, 0, Integer.MAX_VALUE);
+        DBWriter.markItemPlayed(feed.getItems().get(2), FeedItem.PLAYED, false).get();
+
+        Feed updatedFeed = createFeed();
+        updatedFeed.setId(feed.getId());
+        for (int i = 2; i < 5; i++) {
+            updatedFeed.getItems().add(createItem("item-" + i, "Item " + i, feed));
+        }
+        FeedDatabaseWriter.updateFeed(context, updatedFeed, false);
+
+        List<FeedItem> dbItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(),
+                SortOrder.EPISODE_TITLE_A_Z, 0, Integer.MAX_VALUE);
+        assertEquals(5, dbItems.size());
+        for (int i = 0; i < 5; i++) {
+            assertEquals("item-" + i, dbItems.get(i).getItemIdentifier());
+        }
+        assertEquals(FeedItem.PLAYED, dbItems.get(2).getPlayState());
+    }
+
+    @Test
+    public void testDuplicateItemsInFeed() {
+        Feed feed = createFeed();
+        feed.getItems().add(createItem("id1", "Duplicate Title", feed));
+        feed.getItems().add(createItem("id2", "Duplicate Title", feed));
+        FeedDatabaseWriter.updateFeed(context, feed, false); // First update just takes the feed without complaining
+        FeedDatabaseWriter.updateFeed(context, feed, false);
+
+        List<DownloadResult> downloadLog = DBReader.getDownloadLog();
+        assertEquals(1, downloadLog.size());
+        assertEquals(DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, downloadLog.get(0).getReason());
+    }
+
+    @Test
+    public void testGuidUpdated() {
+        Feed feed = createFeed();
+        feed.getItems().add(createItem("old-id", "Unique Title", feed));
+        FeedDatabaseWriter.updateFeed(context, feed, false);
+
+        Feed newFeed = createFeed();
+        newFeed.getItems().add(createItem("new-id", "Unique Title", newFeed));
+        Feed stored = FeedDatabaseWriter.updateFeed(context, newFeed, false);
+
+        assertEquals(1, stored.getItems().size());
+        assertEquals("new-id", stored.getItems().get(0).getItemIdentifier());
     }
 
     @Test
     public void testUpdateFeedNewFeed() {
         final int numItems = 10;
 
-        Feed feed = new Feed("url", null, "title");
-        feed.setItems(new ArrayList<>());
+        Feed feed = createFeed();
         for (int i = 0; i < numItems; i++) {
             feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i,
                     new Date(), FeedItem.UNPLAYED, feed));
@@ -86,12 +160,9 @@ public class DbTasksTest {
     /** Two feeds with the same title, but different download URLs should be treated as different feeds. */
     @Test
     public void testUpdateFeedSameTitle() {
-
-        Feed feed1 = new Feed("url1", null, "title");
-        Feed feed2 = new Feed("url2", null, "title");
-
-        feed1.setItems(new ArrayList<>());
-        feed2.setItems(new ArrayList<>());
+        Feed feed1 = createFeed();
+        Feed feed2 = createFeed();
+        feed2.setDownloadUrl("different url");
 
         Feed savedFeed1 = FeedDatabaseWriter.updateFeed(context, feed1, false);
         Feed savedFeed2 = FeedDatabaseWriter.updateFeed(context, feed2, false);
@@ -104,8 +175,7 @@ public class DbTasksTest {
         final int numItemsOld = 10;
         final int numItemsNew = 10;
 
-        final Feed feed = new Feed("url", null, "title");
-        feed.setItems(new ArrayList<>());
+        final Feed feed = createFeed();
         for (int i = 0; i < numItemsOld; i++) {
             feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i,
                     new Date(i), FeedItem.PLAYED, feed));
@@ -144,9 +214,9 @@ public class DbTasksTest {
 
     @Test
     public void testUpdateFeedMediaUrlResetState() {
-        final Feed feed = new Feed("url", null, "title");
+        final Feed feed = createFeed();
         FeedItem item = new FeedItem(0, "item", "id", "link", new Date(), FeedItem.PLAYED, feed);
-        feed.setItems(singletonList(item));
+        feed.setItems(Collections.singletonList(item));
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -173,8 +243,7 @@ public class DbTasksTest {
 
     @Test
     public void testUpdateFeedRemoveUnlistedItems() {
-        final Feed feed = new Feed("url", null, "title");
-        feed.setItems(new ArrayList<>());
+        final Feed feed = createFeed();
         for (int i = 0; i < 10; i++) {
             feed.getItems().add(
                     new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.PLAYED, feed));
@@ -195,8 +264,7 @@ public class DbTasksTest {
 
     @Test
     public void testUpdateFeedSetDuplicate() {
-        final Feed feed = new Feed("url", null, "title");
-        feed.setItems(new ArrayList<>());
+        final Feed feed = createFeed();
         for (int i = 0; i < 10; i++) {
             FeedItem item =
                     new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.PLAYED, feed);
@@ -248,5 +316,20 @@ public class DbTasksTest {
             assertTrue(item.getPubDate().getTime() >= lastDate.getTime());
             lastDate = item.getPubDate();
         }
+    }
+
+    private Feed createFeed() {
+        Feed feed = new Feed("url", null, null);
+        feed.setItems(new ArrayList<>());
+        return feed;
+    }
+
+    private FeedItem createItem(String identifier, String title, Feed feed) {
+        FeedItem item = new FeedItem();
+        item.setItemIdentifier(identifier);
+        item.setTitle(title);
+        item.setMedia(new FeedMedia(item, "url-" + title, 2, "mime"));
+        item.setFeed(feed);
+        return item;
     }
 }

@@ -81,7 +81,7 @@ public class FeedUpdateWorker extends Worker {
                 }
                 if (isAutomaticRefresh && isAutomaticRefreshEnabled
                         && feed.getLastRefreshAttempt() > System.currentTimeMillis() - JOB_SCHEDULE_TIME_VARIATION
-                            - TimeUnit.HOURS.toMillis(UserPreferences.getUpdateInterval())) {
+                            - TimeUnit.MINUTES.toMillis(UserPreferences.getUpdateInterval())) {
                     // Recently updated, no need to automatically check again
                     itr.remove();
                     continue;
@@ -244,7 +244,7 @@ public class FeedUpdateWorker extends Worker {
             return savedFeed; // No download logs for new subscriptions
         }
         // we create a 'successful' download log if the feed's last refresh failed
-        List<DownloadResult> log = DBReader.getFeedDownloadLog(request.getFeedfileId());
+        List<DownloadResult> log = DBReader.getFeedDownloadLog(request.getFeedfileId(), 1);
         if (!log.isEmpty() && !log.get(0).isSuccessful()) {
             DBWriter.addDownloadStatus(parserTask.getDownloadStatus());
         }

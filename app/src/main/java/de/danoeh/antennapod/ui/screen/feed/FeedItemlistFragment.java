@@ -589,8 +589,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private void showErrorDetails() {
         Maybe.fromCallable(
                 () -> {
-                    List<DownloadResult> feedDownloadLog = DBReader.getFeedDownloadLog(feedID);
-                    if (feedDownloadLog.size() == 0 || feedDownloadLog.get(0).isSuccessful()) {
+                    List<DownloadResult> feedDownloadLog = DBReader.getFeedDownloadLog(feedID, 1);
+                    if (feedDownloadLog.isEmpty() || feedDownloadLog.get(0).isSuccessful()) {
                         return null;
                     }
                     return feedDownloadLog.get(0);

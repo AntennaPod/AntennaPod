@@ -18,6 +18,7 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
@@ -75,7 +76,9 @@ public class FeedItemMenuHandler {
         boolean canShowSocialInteract = false;
 
         for (FeedItem item : selectedItems) {
-            boolean hasMedia = item.getMedia() != null;
+            final boolean hasMedia = item.getMedia() != null;
+            final boolean isDownloading = hasMedia
+                    && DownloadServiceInterface.get().isDownloadingEpisode(item.getMedia().getDownloadUrl());
             canSkip |= hasMedia && PlaybackStatus.isPlaying(item.getMedia());
             canRemoveFromQueue |= item.isTagged(FeedItem.TAG_QUEUE);
             canAddToQueue |= hasMedia && !item.isTagged(FeedItem.TAG_QUEUE);
@@ -85,8 +88,9 @@ public class FeedItemMenuHandler {
             canMarkPlayed |= !item.isPlayed();
             canMarkUnplayed |= item.isPlayed();
             canResetPosition |= hasMedia && item.getMedia().getPosition() != 0;
-            canDelete |= (hasMedia && item.getMedia().isDownloaded()) || item.getFeed().isLocalFeed();
-            canDownload |= hasMedia && !item.getMedia().isDownloaded() && !item.getFeed().isLocalFeed();
+            canDelete |= item.getFeed().isLocalFeed() || (hasMedia && item.getMedia().isDownloaded()) || isDownloading;
+            canDownload |= hasMedia && !item.getMedia().isDownloaded()
+                    && !item.getFeed().isLocalFeed() && !isDownloading;
             canAddFavorite |= !item.isTagged(FeedItem.TAG_FAVORITE);
             canRemoveFavorite |= item.isTagged(FeedItem.TAG_FAVORITE);
             canShowTranscript |= item.hasTranscript();

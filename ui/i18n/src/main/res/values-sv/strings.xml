@@ -13,7 +13,7 @@
     <string name="downloads_label">Nedladdningar</string>
     <string name="downloads_log_label">Nedladdningslogg</string>
     <string name="subscriptions_label">Prenumerationer</string>
-    <string name="subscriptions_list_label">Prenumerationslista (endast sidomeny)</string>
+    <string name="subscriptions_list_label">Prenumerationslista</string>
     <string name="cancel_download_label">Avbryt nedladdning</string>
     <string name="playback_history_label">Uppspelningshistorik</string>
     <string name="years_statistics_label">År</string>
@@ -112,8 +112,8 @@
     <string name="feed_auto_download_always">Alltid</string>
     <string name="feed_auto_download_never">Aldrig</string>
     <string name="feed_new_episodes_action_add_to_inbox">Lägg till i inkorg</string>
-    <string name="feed_new_episodes_action_add_to_queue">Lägg till i kön, inaktivera autonedladdning</string>
-    <string name="feed_new_episodes_action_nothing">Ingenting, inaktivera autonedladdning</string>
+    <string name="feed_new_episodes_action_add_to_queue">Lägg till i kön</string>
+    <string name="feed_new_episodes_action_nothing">Ingenting</string>
     <string name="episode_cleanup_never">Aldrig</string>
     <string name="episode_cleanup_except_favorite_removal">När ej favorit</string>
     <string name="episode_cleanup_queue_removal">Om inte köad</string>
@@ -187,7 +187,7 @@
     <string name="remove_inbox_label">Ta bort från inkorg</string>
     <string name="toggle_played_label">Växla spelläge</string>
     <string name="mark_read_no_media_label">Markera som läst</string>
-    <string name="mark_unread_label_no_media">Markera som ospelad</string>
+    <string name="mark_unread_label_no_media">Markera som oläst</string>
     <string name="add_to_queue_label">Lägg till i kön</string>
     <string name="remove_from_queue_label">Ta bort från kön</string>
     <plurals name="removed_from_inbox_batch_label">
@@ -196,8 +196,8 @@
     </plurals>
     <string name="add_to_favorite_label">Lägg till i favoriter</string>
     <string name="show_transcript">Visa transkription</string>
-    <string name="transcript">Transkribtion</string>
-    <string name="no_transcript_label">Ingen transkribtion</string>
+    <string name="transcript">Transkription</string>
+    <string name="no_transcript_label">Ingen transkription</string>
     <string name="remove_from_favorite_label">Ta bort från favoriter</string>
     <string name="visit_website_label">Besök webbsidan</string>
     <string name="skip_episode_label">Hoppa över avsnittet</string>
@@ -207,7 +207,7 @@
     <string name="download_running">Nedladdning pågår</string>
     <string name="download_error_details">Detaljer</string>
     <string name="download_log_details_message">%1$s\n\nTeknisk anledning: \n%2$s \n\nFil-URL:\n%3$s</string>
-    <string name="download_error_retrying">Nedladdning av \"%1$s\" misslyckades. Omförsök kommer att ske senare.</string>
+    <string name="download_error_retrying">Nedladdning av \"%1$s\" misslyckades. Försöker igen senare.</string>
     <string name="download_error_not_retrying">Nedladdning av \"%1$s\" misslyckades.</string>
     <string name="download_error_tap_for_details">Tryck för att visa detaljer.</string>
     <string name="download_error_device_not_found">Hittade ingen lagringsenhet</string>
@@ -738,7 +738,7 @@
     <string name="add_shortcut">Lägg till genväg</string>
     <plurals name="total_size_downloaded_podcasts">
         <item quantity="one">Total storlek på %d avsnitt på enheten</item>
-        <item quantity="other">Total storlek på %d avsnitten på enheten</item>
+        <item quantity="other">Total storlek på de %d avsnitten på enheten</item>
     </plurals>
     <string name="null_value_podcast_error">Länken du tryckte på innehåller inte en giltig podcast-URL. Verifiera länken och försök igen, eller sök efter podcasten manuellt.</string>
     <string name="bottom_navigation_summary">Få tillgång till de viktigaste skärmarna överallt, med ett enda tryck</string>
@@ -810,7 +810,7 @@
     <string name="pref_downloads_button_action_title">Spela upp från nedladdningssidan</string>
     <plurals name="echo_queue_hours_waiting">
         <item quantity="one">timmar från %1$d avsnitt\nsom väntar i din kö</item>
-        <item quantity="other">timmar från %1$d avsnitt\nsom väntar i din kö</item>
+        <item quantity="other">timmar från de %1$d avsnitt\nsom väntar i din kö</item>
     </plurals>
     <string name="notification_channel_refreshing">Uppdaterar poddar</string>
     <string name="preference_search_clear_input">Rensa</string>
@@ -821,7 +821,7 @@
     <string name="echo_intro_in_podcasts">i poddar</string>
     <string name="echo_listened_after_title">Vi har analyserat hur snart du har lyssnat färdigt på avsnitt i förhållande till när de släpptes. Vår slutsats?</string>
     <string name="echo_queue_hours_clean">Det är ungefär %1$s per dag tills %2$d börjar.</string>
-    <string name="pref_automatic_download_global_description">Ladda automatiskt ned nya avsnitt. Kan åsidosättas per podcast.</string>
+    <string name="pref_automatic_download_global_description">Ladda automatiskt ned avsnitt från inkorgen. Kan åsidosättas per podcast.</string>
     <string name="echo_queue_title_clean">Och du är redo att göra en nystart i och med det nya året. Du har</string>
     <string name="echo_queue_title_many">Och du har fortfarande en hel del kvar i år. Du har</string>
     <string name="echo_queue_hours_normal">Det är ungefär %1$s varje dag tills %2$d börjar. Du kan göra en nystart i och med det nya året om du hoppar över några avsnitt.</string>
@@ -837,4 +837,50 @@
     <string name="echo_home_header">Gå igenom året</string>
     <string name="rss_address">RSS-adress</string>
     <string name="visit_social_interact_label">Visa kommentarer</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Laddar ned %d avsnitt.</item>
+        <item quantity="other">Laddar ned %d avsnitt.</item>
+    </plurals>
+    <string name="reset_playback_position_label">Nollställ uppspelningspositionen</string>
+    <string name="visit_social_interact_confirm_dialog_title">Du är på väg att lämna AntennaPod</string>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">Tog bort %d nedladdat avsnitt.</item>
+        <item quantity="other">Tog bort %d nedladdade avsnitt.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">Tog bort %d avsnitt från kön.</item>
+        <item quantity="other">Tog bort %d avsnitt från kön.</item>
+    </plurals>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">Markera som spelad</item>
+        <item quantity="other"></item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">Markera som ospelad</item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="mark_as_played_label">Markera som spelad</string>
+    <string name="feed_new_episodes_action_summary_autodownload">Automatisk nedladdning aktiverad. Avsnitt läggs till i inkorgen och flyttas sedan till kön när de har laddats ned.</string>
+    <string name="removed_from_inbox_message">Borttaget från inkorgen</string>
+    <string name="mark_as_unplayed_label">Markera som ospelad</string>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d avsnitt tillagt i kön.</item>
+        <item quantity="other">%d avsnitt tillagda i kön.</item>
+    </plurals>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d avsnitt flyttades till toppen.</item>
+        <item quantity="other">%d avsnitt flyttades till toppen.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d avsnitt flyttades till botten.</item>
+        <item quantity="other">%d avsnitt flyttades till botten.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_button_label">Gå till inkorgen</string>
+    <string name="play_this_to_seek_position_message">Du måste spela avsnittet för att kunna hoppa till olika tidpunkter</string>
+    <string name="delete_local_feed_confirmation_dialog_message">Borttagning raderar avsnittet från AntennaPod och tar bort mediafilen från din enhets lagringsutrymme. Den kan inte laddas ned igen genom AntennaPod.</string>
+    <string name="visit_social_interact_confirm_dialog_message">Vänligen säkerställ att du litar på webbplatsen \"%1$s\".</string>
+    <string name="no_items_selected_message">Inga objekt har valts</string>
+    <string name="no_queue_items_inbox_has_items_label">Inga avsnitt är köade, men det finns nya avsnitt som väntar dig!</string>
+    <string name="auto_download_inbox_category">Ladda automatiskt ned avsnitt från inkorgen</string>
+    <string name="transcript_follow_audio_label">Följ ljuduppspelning</string>
 </resources>

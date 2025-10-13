@@ -124,7 +124,7 @@ public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragme
         } else {
             preferenceHeader.setTitle(R.string.synchronization_choose_title);
             preferenceHeader.setSummary(R.string.synchronization_summary_unchoosen);
-            preferenceHeader.setIcon(R.drawable.ic_cloud);
+            preferenceHeader.setIcon(null);
             preferenceHeader.setOnPreferenceClickListener((preference) -> {
                 chooseProviderAndLogin();
                 return true;
