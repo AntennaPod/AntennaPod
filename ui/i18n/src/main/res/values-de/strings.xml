@@ -15,7 +15,7 @@
     <string name="subscriptions_label">Abonnements</string>
     <string name="subscriptions_list_label">Abonnement-Übersicht</string>
     <string name="cancel_download_label">Download abbrechen</string>
-    <string name="playback_history_label">Abspielverlauf</string>
+    <string name="playback_history_label">Wiedergabeverlauf</string>
     <string name="years_statistics_label">Jahre</string>
     <string name="notification_pref_fragment">Benachrichtigungen</string>
     <string name="current_playing_episode">Aktuell</string>
@@ -152,12 +152,12 @@
     <string name="multi_select_mark_played_confirmation">Bitte bestätige, dass du alle ausgewählten Einträge als abgespielt markieren möchtest.</string>
     <string name="multi_select_mark_unplayed_confirmation">Bitte bestätige, dass du alle ausgewählten Einträge als nicht abgespielt markieren möchtest.</string>
     <string name="show_info_label">Informationen anzeigen</string>
-    <string name="show_feed_settings_label">Zeige Podcast-Einstellungen</string>
+    <string name="show_feed_settings_label">Podcast-Einstellungen anzeigen</string>
     <string name="feed_settings_label">Podcast-Einstellungen</string>
     <string name="rename_feed_label">Umbenennen</string>
     <string name="remove_feed_label">Löschen</string>
     <string name="share_label">Teilen</string>
-    <string name="share_file_label">Teile Datei</string>
+    <string name="share_file_label">Datei teilen</string>
     <string name="load_complete_feed">Kompletten Podcast aktualisieren</string>
     <string name="multi_select">Mehrere auswählen</string>
     <string name="select_all_above">Alles oberhalb auswählen</string>
@@ -184,7 +184,7 @@
     <string name="stream_label">Streamen</string>
     <string name="delete_label">Löschen</string>
     <string name="remove_inbox_label">Aus dem Posteingang entfernen</string>
-    <string name="toggle_played_label">Abgespielt-Zustand umschalten</string>
+    <string name="toggle_played_label">Abspielstatus umschalten</string>
     <string name="mark_read_no_media_label">Als gelesen markieren</string>
     <string name="mark_unread_label_no_media">Als ungelesen markieren</string>
     <string name="add_to_queue_label">Zur Warteschlange hinzufügen</string>
@@ -631,7 +631,7 @@
     <string name="statistics_expected_next_episode_any_day">In Kürze</string>
     <string name="statistics_expected_next_episode_unknown">Unbekannt</string>
     <string name="edit_url_menu">Feed-URL bearbeiten</string>
-    <string name="edit_url_confirmation_msg">Das Ändern der RSS-Adresse kann leicht den Abgespielt-Zustand und die Episoden des Podcasts beeinträchtigen. Wir empfehlen NICHT, die Adresse zu ändern und bieten KEINEN Support an, wenn etwas schief geht. Dies kann nicht rückgängig gemacht werden. Das defekte Abonnement kann NICHT repariert werden, indem die Adresse einfach wieder geändert wird. Wir empfehlen, eine Sicherungskopie zu erstellen, bevor du fortfährst.</string>
+    <string name="edit_url_confirmation_msg">Das Ändern der RSS-Adresse kann leicht den Abspielstatus und die Episodenliste des Podcasts beeinträchtigen. Wir empfehlen, die Adresse NICHT zu ändern und bieten KEINEN Support, falls etwas schiefgeht. Dies kann nicht rückgängig gemacht werden. Das defekte Abonnement kann NICHT repariert werden, indem die Adresse einfach wieder geändert wird. Wir empfehlen, eine Sicherungskopie zu erstellen, bevor du fortfährst.</string>
     <!--Podcast release schedules-->
   <string name="release_schedule_daily">täglich</string>
     <string name="release_schedule_weekdays">an Wochentagen</string>
@@ -881,11 +881,14 @@
     <string name="tag_all">Alle</string>
     <string name="cover_as_background">Titelbild als Hintergrund</string>
     <string name="archive_feed_label_verb">Archivieren</string>
-    <string name="archive_feed_label_noun">Archivieren</string>
+    <string name="archive_feed_label_noun">Archiv</string>
     <string name="restore_archive_label">Wiederherstellen</string>
     <string name="remove_archive_feed_label">Löschen / archivieren</string>
     <plurals name="num_subscriptions">
         <item quantity="one">%d Abonnement</item>
         <item quantity="other">%d Abonnements</item>
     </plurals>
+    <string name="feed_delete_explanation_delete">Durch das Löschen werden ALLE Episoden einschließlich Downloads, Wiedergabeverlauf und Statistiken entfernt.</string>
+    <string name="feed_delete_explanation_archive">Durch das Archivieren wird es aus der Abonnementliste ausgeblendet und erhält keine Aktualisierungen mehr. Downloads, Statistiken und der Abspielstatus bleiben erhalten.</string>
+    <string name="tag_untagged">Ohne Tags</string>
 </resources>

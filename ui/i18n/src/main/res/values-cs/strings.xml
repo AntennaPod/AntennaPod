@@ -150,8 +150,8 @@
     <string name="show_info_label">Informace o zdroji</string>
     <string name="show_feed_settings_label">Zobrazit nastavení podcastu</string>
     <string name="feed_settings_label">Nastavení podcastu</string>
-    <string name="rename_feed_label">Přejmenovat podcast</string>
-    <string name="remove_feed_label">Odstranit podcast</string>
+    <string name="rename_feed_label">Přejmenovat</string>
+    <string name="remove_feed_label">Smazat</string>
     <string name="share_label">Sdílet</string>
     <string name="share_file_label">Sdílet soubor</string>
     <string name="load_complete_feed">Aktualizovat celý podcast</string>
@@ -922,4 +922,17 @@
     <string name="statistics_expected_next_episode_any_time">Kdykoli teď</string>
     <string name="release_schedule_multiple_per_day">několikrát denně</string>
     <string name="cover_as_background">Obal jako pozadí</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d odběr</item>
+        <item quantity="few">%d odběry</item>
+        <item quantity="many">%d odběrů</item>
+        <item quantity="other">%d odběrů</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Archivovat</string>
+    <string name="archive_feed_label_noun">Archiv</string>
+    <string name="restore_archive_label">Obnovit</string>
+    <string name="remove_archive_feed_label">Smazat / archivovat</string>
+    <string name="feed_delete_explanation_delete">Smazáním se odstraní VŠECHNY epizody včetně stažených souborů, historie přehrávání a statistik.</string>
+    <string name="feed_delete_explanation_archive">Archivováním se skryje ze seznamu odběrů a nebude dostávat aktualizace. Stažené soubory, statistiky a stav přehrávání zůstanou zachovány.</string>
+    <string name="tag_untagged">Bez štítku</string>
 </resources>

@@ -913,8 +913,8 @@
     <string name="archive_feed_label_verb">Arquivar</string>
     <string name="archive_feed_label_noun">Arquivo</string>
     <string name="restore_archive_label">Restaurar</string>
-    <string name="feed_delete_explanation_delete">Excluindo removerá TODOS os seus episódios, incluindo downloads, histórico de reprodução e estatísticas.</string>
-    <string name="feed_delete_explanation_archive">Arquivando ocultará da lista de inscrições e impedir que receba atualizações. Downloads, estatísticas and estado de reprodução serão mantidos.</string>
+    <string name="feed_delete_explanation_delete">Excluir removerá TODOS os seus episódios, incluindo downloads, histórico de reprodução e estatísticas.</string>
+    <string name="feed_delete_explanation_archive">Arquivar ocultará da lista de inscrições e impedirá que receba atualizações. Downloads, estatísticas and estado de reprodução serão mantidos.</string>
     <string name="remove_archive_feed_label">Excluir / arquivo</string>
     <string name="tag_untagged">Sem etiquetas</string>
 </resources>
