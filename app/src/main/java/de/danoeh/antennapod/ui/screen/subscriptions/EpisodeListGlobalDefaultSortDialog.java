@@ -7,18 +7,10 @@ import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.screen.feed.ItemSortDialog;
 
-public class EpisodeListDefaultSortDialog extends ItemSortDialog {
-    private static final String ARG_SORT_ORDER = "sortOrder";
-
-    public static EpisodeListDefaultSortDialog newInstance() {
+public class EpisodeListGlobalDefaultSortDialog extends ItemSortDialog {
+    public static EpisodeListGlobalDefaultSortDialog newInstance() {
         Bundle bundle = new Bundle();
-        SortOrder currentSortOrder = UserPreferences.getPrefDefaultSortedOrder();
-        if (currentSortOrder == null) {
-            bundle.putString(ARG_SORT_ORDER, String.valueOf(SortOrder.DATE_NEW_OLD.code));
-        } else {
-            bundle.putString(ARG_SORT_ORDER, String.valueOf(currentSortOrder.code));
-        }
-        EpisodeListDefaultSortDialog dialog = new EpisodeListDefaultSortDialog();
+        EpisodeListGlobalDefaultSortDialog dialog = new EpisodeListGlobalDefaultSortDialog();
         dialog.setArguments(bundle);
         return dialog;
     }
@@ -26,7 +18,7 @@ public class EpisodeListDefaultSortDialog extends ItemSortDialog {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sortOrder = SortOrder.fromCodeString(getArguments().getString(ARG_SORT_ORDER));
+        sortOrder = SortOrder.fromCodeString(String.valueOf(UserPreferences.getPrefGlobalSortedOrder().code));
     }
 
     @Override
@@ -40,6 +32,6 @@ public class EpisodeListDefaultSortDialog extends ItemSortDialog {
     @Override
     protected void onSelectionChanged() {
         super.onSelectionChanged();
-        UserPreferences.setPrefDefaultSortedOrder(sortOrder);
+        UserPreferences.setPrefGlobalSortedOrder(sortOrder);
     }
 }

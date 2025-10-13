@@ -6,8 +6,8 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public class FeedItemSortQuery {
     public static String generateFrom(SortOrder sortOrder) {
-        if (sortOrder == null) {
-            sortOrder = UserPreferences.getPrefDefaultSortedOrder();
+        if (sortOrder == null || SortOrder.GLOBAL_DEFAULT.equals(sortOrder)) {
+            sortOrder = UserPreferences.getPrefGlobalSortedOrder();
         }
         switch (sortOrder) {
             case EPISODE_TITLE_A_Z:
