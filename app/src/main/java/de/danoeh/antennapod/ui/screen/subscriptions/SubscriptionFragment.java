@@ -367,11 +367,17 @@ public class SubscriptionFragment extends Fragment
                         if (FeedPreferences.TAG_ROOT.equals(tagAdapter.getSelectedTag())) {
                             openedFolderFeeds = result.first.feeds;
                         } else {
+                            boolean tagExists = false;
                             for (NavDrawerData.TagItem tag : result.first.tags) { // Filtered list
                                 if (tag.getTitle().equals(tagAdapter.getSelectedTag())) {
                                     openedFolderFeeds = tag.getFeeds();
+                                    tagExists = true;
                                     break;
                                 }
+                            }
+                            if (!tagExists) {
+                                tagAdapter.setSelectedTag(FeedPreferences.TAG_ROOT);
+                                openedFolderFeeds = result.first.feeds;
                             }
                         }
 
