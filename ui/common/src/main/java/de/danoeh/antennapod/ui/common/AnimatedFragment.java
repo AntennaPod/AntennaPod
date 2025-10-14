@@ -13,6 +13,8 @@ public abstract class AnimatedFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         setEnterTransition(new MaterialSharedAxis(MaterialSharedAxis.X, true));
-        setExitTransition(new MaterialSharedAxis(MaterialSharedAxis.X, false));
+        setReturnTransition(new MaterialSharedAxis(MaterialSharedAxis.X, false));
+        setExitTransition(new MaterialSharedAxis(MaterialSharedAxis.X, true));
+        setReenterTransition(new MaterialSharedAxis(MaterialSharedAxis.X, false));
     }
 }
