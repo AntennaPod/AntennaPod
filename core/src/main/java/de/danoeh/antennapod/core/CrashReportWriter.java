@@ -58,10 +58,12 @@ public class CrashReportWriter {
             File file = getFile();
 
             if (file.exists()) {
-                content = IOUtils.toString(new FileInputStream(file), StandardCharsets.UTF_8);
+                try (FileInputStream fin = new FileInputStream(file)) {
+                    content = IOUtils.toString(fin, StandardCharsets.UTF_8);
+                }
             }
 
-        } catch (IOException e) {
+        } catch (SecurityException | IOException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         }
 

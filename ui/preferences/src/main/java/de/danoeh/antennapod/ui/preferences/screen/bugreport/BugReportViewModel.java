@@ -165,7 +165,7 @@ public class BugReportViewModel extends AndroidViewModel {
         }
     }
 
-    private MutableLiveData<UiState> uiState;
+    private final MutableLiveData<UiState> uiState = new MutableLiveData<>();
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public BugReportViewModel(Application application) {
@@ -177,7 +177,7 @@ public class BugReportViewModel extends AndroidViewModel {
         //
 
         executor.submit(() -> {
-            this.uiState = new MutableLiveData<>(new UiState(application));
+            this.uiState.postValue(new UiState(application));
         });
     }
 
