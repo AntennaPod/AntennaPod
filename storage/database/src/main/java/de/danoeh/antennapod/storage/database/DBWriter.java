@@ -33,7 +33,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Semaphore;
 
 import de.danoeh.antennapod.event.FavoritesEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
@@ -82,10 +82,18 @@ public class DBWriter {
      * Robolectric. Call this method only for unit tests.
      */
     public static void tearDownTests() {
+        // dbExec is single-threaded FIFO, so if a newly submitted task runs, all previous tasks must have finished
+        final Semaphore available = new Semaphore(1, true);
         try {
-            dbExec.awaitTermination(1, TimeUnit.SECONDS);
+            available.acquire();
         } catch (InterruptedException e) {
-            // ignore error
+            throw new RuntimeException(e);
+        }
+        dbExec.submit(() -> available.release());
+        try {
+            available.acquire();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
