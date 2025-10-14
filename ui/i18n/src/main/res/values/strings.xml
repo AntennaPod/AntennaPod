@@ -583,7 +583,7 @@
     <string name="report_bug_attrib_product">Product</string>
 
     <string name="report_bug_crash_log_title">Crash log</string>
-    <string name="report_bug_crash_log_message">The latest crash log was written on %1$s.</string>
+    <string name="report_bug_crash_log_message">Created: %1$s.</string>
     <string name="report_bug_crash_log_expand">Expand</string>
     <string name="report_bug_crash_log_collapse">Collapse</string>
 
