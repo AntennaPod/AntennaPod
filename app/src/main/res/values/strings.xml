@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="remember_playback_speed_per_output">Remember playback speed per-output</string>
+    <string name="remember_playback_speed_per_output_description">Remember different playback speed for every output
+        (such as for headphones, for phone speaker etc.)
+    </string>
+</resources>

@@ -2,6 +2,9 @@ package de.danoeh.antennapod.playback.service.internal;
 
 import android.content.Context;
 import android.media.AudioManager;
+import android.media.MediaRoute2Info;
+import android.media.MediaRouter2;
+import android.media.RouteDiscoveryPreference;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -9,6 +12,7 @@ import android.util.Pair;
 import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
 import androidx.car.app.connection.CarConnection;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.media.AudioAttributesCompat;
@@ -32,6 +36,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -63,10 +68,13 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     private boolean androidAutoConnected;
     private Observer<Integer> androidAutoConnectionObserver;
 
+    private MediaRouter2 mediaRouter;
+
     public LocalPSMP(@NonNull Context context,
                      @NonNull PlaybackServiceMediaPlayer.PSMPCallback callback) {
         super(context, callback);
         this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        this.mediaRouter = MediaRouter2.getInstance(context);
         this.startWhenPrepared = new AtomicBoolean(false);
         audioFocusCanceller = new Handler(Looper.getMainLooper());
         mediaPlayer = null;
@@ -90,6 +98,17 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 .setOnAudioFocusChangeListener(audioFocusChangeListener)
                 .setWillPauseWhenDucked(true)
                 .build();
+
+        RouteDiscoveryPreference preference = new RouteDiscoveryPreference.Builder(
+                Arrays.asList(
+                        MediaRoute2Info.FEATURE_LIVE_AUDIO,
+                        MediaRoute2Info.FEATURE_LIVE_VIDEO
+                ),
+                false
+        ).build();
+
+        mediaRouter.registerRouteCallback(ContextCompat.getMainExecutor(context), mediaRouterCallback, preference);
+
     }
 
     /**
@@ -192,7 +211,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             } else {
                 throw new IOException("Unable to read local file " + media.getLocalFileUrl());
             }
-            
+
             if (!androidAutoConnected) {
                 setPlayerStatus(PlayerStatus.INITIALIZED, media);
             }
@@ -536,6 +555,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             playerStatus = PlayerStatus.STOPPED;
         }
         androidAutoConnectionState.removeObserver(androidAutoConnectionObserver);
+        mediaRouter.unregisterRouteCallback(mediaRouterCallback);
         isShutDown = true;
         abandonAudioFocus();
         releaseWifiLockIfNecessary();
@@ -671,6 +691,18 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                     setVolume(1.0f, 1.0f);
                 }
                 pausedBecauseOfTransientAudiofocusLoss = false;
+            }
+        }
+    };
+
+    private final MediaRouter2.RouteCallback mediaRouterCallback = new MediaRouter2.RouteCallback() {
+        @Override
+        public void onRoutesUpdated(@NonNull List<MediaRoute2Info> routes) {
+            if (mediaPlayer != null) {
+                // Reload playback speed after playback output changes
+                setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media),
+                        PlaybackSpeedUtils.getCurrentSkipSilencePreference(media)
+                                == FeedPreferences.SkipSilence.AGGRESSIVE);
             }
         }
     };

@@ -2,18 +2,22 @@ package de.danoeh.antennapod.storage.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.MediaRouter2;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
-
+import de.danoeh.antennapod.model.download.ProxyConfig;
+import de.danoeh.antennapod.model.feed.FeedCounter;
 import de.danoeh.antennapod.model.feed.FeedOrder;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -28,12 +32,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-
-import de.danoeh.antennapod.model.download.ProxyConfig;
-import de.danoeh.antennapod.model.feed.FeedCounter;
-import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.model.feed.SortOrder;
-import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
 
 /**
  * Provides access to preferences set by the user in the settings screen. A
@@ -118,10 +116,12 @@ public abstract class UserPreferences {
 
     // Mediaplayer
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
+    private static final String PREF_PLAYBACK_SPEED_PER_OUTPUT = "prefPlaybackSpeedPerOutput";
     public static final String PREF_PLAYBACK_SKIP_SILENCE = "prefSkipSilence";
     private static final String PREF_FAST_FORWARD_SECS = "prefFastForwardSecs";
     private static final String PREF_REWIND_SECS = "prefRewindSecs";
     private static final String PREF_QUEUE_LOCKED = "prefQueueLocked";
+    private static final String PREF_ENABLE_PER_OUTPUT_SPEED = "prefEnablePerOutputSpeed";
 
     // Experimental
     public static final int EPISODE_CLEANUP_QUEUE = -1;
@@ -434,11 +434,31 @@ public abstract class UserPreferences {
     }
 
     public static float getPlaybackSpeed() {
+        if (isPerOutputSpeedEnabled()) {
+            MediaRouter2 mediaRouter = MediaRouter2.getInstance(context);
+            return getPerOutputPlaybackSpeed(
+                    mediaRouter.getSystemController().getSelectedRoutes().getFirst().getName().toString()
+            );
+        }
+
         try {
             return Float.parseFloat(prefs.getString(PREF_PLAYBACK_SPEED, "1.00"));
         } catch (NumberFormatException e) {
             Log.e(TAG, Log.getStackTraceString(e));
             UserPreferences.setPlaybackSpeed(1.0f);
+            return 1.0f;
+        }
+    }
+
+    public static float getPerOutputPlaybackSpeed(String mediaOutput) {
+        String filteredName = mediaOutput.toLowerCase(Locale.ROOT).replaceAll("[^a-z]", "");
+
+        try {
+            String fallbackValue = prefs.getString(PREF_PLAYBACK_SPEED, "1.00");
+            return Float.parseFloat(prefs.getString(PREF_PLAYBACK_SPEED_PER_OUTPUT + filteredName, fallbackValue));
+        } catch (NumberFormatException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+            UserPreferences.setPlaybackSpeedPerOutput(mediaOutput, 1.0f);
             return 1.0f;
         }
     }
@@ -603,6 +623,10 @@ public abstract class UserPreferences {
         return prefs.getBoolean(PREF_QUEUE_LOCKED, false);
     }
 
+    public static boolean isPerOutputSpeedEnabled() {
+        return prefs.getBoolean(PREF_ENABLE_PER_OUTPUT_SPEED, false);
+    }
+
     public static void setFastForwardSecs(int secs) {
         prefs.edit().putInt(PREF_FAST_FORWARD_SECS, secs).apply();
     }
@@ -612,7 +636,20 @@ public abstract class UserPreferences {
     }
 
     public static void setPlaybackSpeed(float speed) {
+        if (isPerOutputSpeedEnabled()) {
+            MediaRouter2 mediaRouter = MediaRouter2.getInstance(context);
+            setPlaybackSpeedPerOutput(
+                    mediaRouter.getSystemController().getSelectedRoutes().getFirst().getName().toString(), speed
+            );
+            return;
+        }
+
         prefs.edit().putString(PREF_PLAYBACK_SPEED, String.valueOf(speed)).apply();
+    }
+
+    public static void setPlaybackSpeedPerOutput(String mediaOutput, float speed) {
+        String filteredName = mediaOutput.toLowerCase(Locale.ROOT).replaceAll("[^a-z]", "");
+        prefs.edit().putString(PREF_PLAYBACK_SPEED_PER_OUTPUT + filteredName, String.valueOf(speed)).apply();
     }
 
     public static void setSkipSilence(boolean skipSilence) {
@@ -655,6 +692,10 @@ public abstract class UserPreferences {
 
     public static void setQueueLocked(boolean locked) {
         prefs.edit().putBoolean(PREF_QUEUE_LOCKED, locked).apply();
+    }
+
+    public static void setPerOutputSpeedEnabled(boolean enabled) {
+        prefs.edit().putBoolean(PREF_ENABLE_PER_OUTPUT_SPEED, enabled).apply();
     }
 
     private static List<Float> readPlaybackSpeedArray(String valueFromPrefs) {
