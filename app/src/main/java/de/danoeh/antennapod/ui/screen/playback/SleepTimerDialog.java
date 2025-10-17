@@ -72,8 +72,8 @@ public class SleepTimerDialog extends DialogFragment {
     private final SleepTimeConfig episodesSleepTimeConfig = new SleepTimeConfig(1,
             R.plurals.extend_sleep_timer_episodes_quantified, R.string.episodes_label, true,
             new SleepEntryConfig(1, 1),
-            new SleepEntryConfig(3, 3),
-            new SleepEntryConfig(5, 5)
+            new SleepEntryConfig(2, 2),
+            new SleepEntryConfig(3, 3)
     );
 
     static class SleepEntryConfig {
@@ -309,7 +309,7 @@ public class SleepTimerDialog extends DialogFragment {
     }
 
     private void setButtonTextWithPlurals(Button button, int buttonTextResourceId, int value) {
-        button.setText(getResources().getQuantityString(buttonTextResourceId, value, value));
+        button.setText("+" + getResources().getQuantityString(buttonTextResourceId, value, value));
     }
 
     private void refreshUiState() {
@@ -434,7 +434,11 @@ public class SleepTimerDialog extends DialogFragment {
         sleepTimerType.setEnabled(event.isOver() || event.isCancelled());
 
         switch (SleepTimerPreferences.getSleepTimerType()) {
-            case EPISODES -> time.setText(String.valueOf(event.getDisplayTimeLeft()));
+            case EPISODES -> time.setText(
+                    getResources().getQuantityString(
+                            R.plurals.extend_sleep_timer_episodes_quantified,
+                            (int) event.getDisplayTimeLeft(),
+                            (int) event.getDisplayTimeLeft()));
             default -> time.setText(Converter.getDurationStringLong((int) event.getDisplayTimeLeft()));
         }
     }

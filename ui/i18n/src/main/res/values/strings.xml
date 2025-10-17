@@ -645,8 +645,8 @@
     <string name="disable_sleeptimer_label">Disable sleep timer</string>
     <string name="extend_sleep_timer_label">+%d min</string>
     <plurals name="extend_sleep_timer_episodes_quantified">
-        <item quantity="one">+1 episode</item>
-        <item quantity="other">+%d episodes</item>
+        <item quantity="one">1 episode</item>
+        <item quantity="other">%d episodes</item>
     </plurals>
     <string name="sleep_timer_auto_activate">Change the \'continuous playback\' setting if you always want to stop playback after an episode</string>
     <string name="sleep_timer_always">Always</string>

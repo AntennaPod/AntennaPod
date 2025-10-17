@@ -375,7 +375,7 @@ public class AudioPlayerFragment extends Fragment implements
 
         int remainingTime = converter.convert(Math.max(event.getDuration() - event.getPosition(), 0));
 
-        showTimeLeft = UserPreferences.shouldShowRemainingTime() || controller.sleepTimerActive();
+        showTimeLeft = UserPreferences.shouldShowRemainingTime();
 
         if (showTimeLeft) {
             int remainingSleepTime = Math.toIntExact(controller.getSleepTimerTimeLeft().getMillisValue());
