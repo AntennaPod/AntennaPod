@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.ui.screen.playback;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -57,6 +60,9 @@ public class SleepTimerDialog extends DialogFragment {
     private Spinner sleepTimerType;
     private CheckBox chAutoEnable;
     private ImageView changeTimesButton;
+    private CheckBox cbVibrate;
+    private CheckBox cbShakeToReset;
+    private Button setTimerButton;
 
     Button extendSleepFiveMinutesButton;
     Button extendSleepTenMinutesButton;
@@ -196,6 +202,12 @@ public class SleepTimerDialog extends DialogFragment {
         timeDisplay.setVisibility(View.GONE);
         time = content.findViewById(R.id.time);
 
+        cbShakeToReset = content.findViewById(R.id.cbShakeToReset);
+        cbVibrate = content.findViewById(R.id.cbVibrate);
+        chAutoEnable = content.findViewById(R.id.chAutoEnable);
+        changeTimesButton = content.findViewById(R.id.changeTimesButton);
+        setTimerButton = content.findViewById(R.id.setSleeptimerButton);
+
         extendSleepFiveMinutesButton = content.findViewById(R.id.extendSleepFiveMinutesButton);
         extendSleepTenMinutesButton = content.findViewById(R.id.extendSleepTenMinutesButton);
         extendSleepTwentyMinutesButton = content.findViewById(R.id.extendSleepTwentyMinutesButton);
@@ -223,10 +235,6 @@ public class SleepTimerDialog extends DialogFragment {
             imm.showSoftInput(etxtTime, InputMethodManager.SHOW_IMPLICIT);
         }, 100);
 
-        final CheckBox cbShakeToReset = content.findViewById(R.id.cbShakeToReset);
-        final CheckBox cbVibrate = content.findViewById(R.id.cbVibrate);
-        chAutoEnable = content.findViewById(R.id.chAutoEnable);
-        changeTimesButton = content.findViewById(R.id.changeTimesButton);
         chAutoEnable.setChecked(SleepTimerPreferences.autoEnable());
 
         cbShakeToReset.setChecked(SleepTimerPreferences.shakeToReset());
@@ -262,8 +270,8 @@ public class SleepTimerDialog extends DialogFragment {
                 controller.disableSleepTimer();
             }
         });
-        Button setButton = content.findViewById(R.id.setSleeptimerButton);
-        setButton.setOnClickListener(v -> {
+
+        setTimerButton.setOnClickListener(v -> {
             if (!PlaybackService.isRunning
                     || (controller != null && controller.getStatus() != PlayerStatus.PLAYING)) {
                 Snackbar.make(content, R.string.no_media_playing_label, Snackbar.LENGTH_LONG).show();
@@ -281,6 +289,33 @@ public class SleepTimerDialog extends DialogFragment {
             }
         });
         return builder.create();
+    }
+
+    private void confirmAlwaysSleepTimerDialog() {
+        @SuppressLint("VisibleForTests")
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
+                .setTitle(R.string.sleep_timer_without_continuous_playback_title)
+                .setMessage(R.string.sleep_timer_without_continuous_playback_message)
+                .setNegativeButton(R.string.sleep_timer_without_continuous_playback_disable_playback,
+                        (dialogInterface, i) -> {
+                            // disable continuous playback and also disable the auto sleep timer
+                            UserPreferences.setFollowQueue(false);
+                            chAutoEnable.setChecked(false);
+                            refreshUiState();
+                        })
+                .setPositiveButton(R.string.sleep_timer_without_continuous_playback_proceed_with_timer,
+                        (dialogInterface, i) -> {
+                            chAutoEnable.setChecked(true);
+                        })
+                .create();
+
+        // don't let the user cancel this without selecting something
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+
+        dialog.show();
+        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE)
+                .setTextColor(ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark));
     }
 
     private long getSelectedSleepTime() throws NumberFormatException {
@@ -323,14 +358,20 @@ public class SleepTimerDialog extends DialogFragment {
                 && !UserPreferences.isFollowQueue();
 
         if (noEpisodeSelection) {
-            //we're refreshing state on value changes, endless loop otherwise
-            if (!etxtTime.getText().toString().equals("1")) {
-                etxtTime.setText("1"); // always one episode
-            }
             etxtTime.setEnabled(false);
             sleepTimerHintText.setText(R.string.multiple_sleep_episodes_while_continuous_playback_disabled);
             sleepTimerHintText.setVisibility(View.VISIBLE);
+            chAutoEnable.setVisibility(View.GONE);
+            changeTimesButton.setVisibility(View.GONE);
+            cbShakeToReset.setVisibility(View.GONE);
+            cbVibrate.setVisibility(View.GONE);
+            setTimerButton.setEnabled(false);
         } else {
+            chAutoEnable.setVisibility(View.VISIBLE);
+            changeTimesButton.setVisibility(View.VISIBLE);
+            cbShakeToReset.setVisibility(View.VISIBLE);
+            cbVibrate.setVisibility(View.VISIBLE);
+            setTimerButton.setEnabled(true);
             etxtTime.setEnabled(true);
             if (SleepTimerPreferences.getSleepTimerType() == SleepTimerType.EPISODES) {
                 // for episode timers check if the queue length exceeds the number of sleep episodes we have
@@ -393,9 +434,9 @@ public class SleepTimerDialog extends DialogFragment {
             SleepTimerPreferences.setAutoEnableTo(dialog.getTo());
             boolean alwaysSelected = dialog.getFrom() == dialog.getTo();
             // disable the checkbox if they've selected always
-            // only change the state if true, don't change it regardless of flag (alghough we could)
+            // only change the state if true, don't change it regardless of flag (although we could)
             if (alwaysSelected) {
-                chAutoEnable.setChecked(false);
+                confirmAlwaysSleepTimerDialog();
             } else if (!chAutoEnable.isChecked()) { // if it's not checked, then make sure it's checked in UI too
                 chAutoEnable.setChecked(true);
             }
