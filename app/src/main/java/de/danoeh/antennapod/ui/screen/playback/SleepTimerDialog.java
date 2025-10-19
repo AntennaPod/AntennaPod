@@ -2,7 +2,6 @@ package de.danoeh.antennapod.ui.screen.playback;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -22,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
@@ -249,10 +249,7 @@ public class SleepTimerDialog extends DialogFragment {
                 -> {
             boolean always = SleepTimerPreferences.autoEnableFrom() == SleepTimerPreferences.autoEnableTo();
             if (isChecked && always) {
-                Snackbar
-                        .make(chAutoEnable, getString(R.string.sleep_timer_auto_activate), Snackbar.LENGTH_LONG)
-                        .setTextMaxLines(5) // show multiple lines, text doesn't fit otherwise
-                        .show();
+                confirmAlwaysSleepTimerDialog();
             }
             refreshAutoEnableControls(isChecked);
         });
@@ -293,7 +290,7 @@ public class SleepTimerDialog extends DialogFragment {
 
     private void confirmAlwaysSleepTimerDialog() {
         @SuppressLint("VisibleForTests")
-        AlertDialog dialog = new AlertDialog.Builder(getContext())
+        AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.sleep_timer_without_continuous_playback_title)
                 .setMessage(R.string.sleep_timer_without_continuous_playback_message)
                 .setNegativeButton(R.string.sleep_timer_without_continuous_playback_disable_playback,
@@ -314,6 +311,7 @@ public class SleepTimerDialog extends DialogFragment {
         dialog.setCanceledOnTouchOutside(false);
 
         dialog.show();
+        // mark the disable continuous playback option in red
         dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE)
                 .setTextColor(ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark));
     }

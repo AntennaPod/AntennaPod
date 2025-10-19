@@ -652,7 +652,6 @@
     <string name="sleep_timer_without_continuous_playback_message">You can simply disable continuous playback to automatically stop after an episode, there is no need to use the sleep timer for that.\n\nIf you actually want that to happen only at specific times you can set up a sleep timer.</string>
     <string name="sleep_timer_without_continuous_playback_disable_playback">Disable continuous playback</string>
     <string name="sleep_timer_without_continuous_playback_proceed_with_timer">Use sleep timer</string>
-    <string name="sleep_timer_auto_activate">Change the \'continuous playback\' setting if you always want to stop playback after an episode</string>
     <string name="sleep_timer_always">Always</string>
     <string name="sleep_timer_label">Sleep timer</string>
     <string name="time_dialog_invalid_input">Invalid input, time has to be an integer</string>
