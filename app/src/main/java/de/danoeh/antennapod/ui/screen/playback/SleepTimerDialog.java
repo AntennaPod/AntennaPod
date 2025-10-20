@@ -249,7 +249,6 @@ public class SleepTimerDialog extends DialogFragment {
     }
 
     private void confirmAlwaysSleepTimerDialog() {
-        @SuppressLint("VisibleForTests")
         AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.sleep_timer_without_continuous_playback_title)
                 .setMessage(R.string.sleep_timer_without_continuous_playback_message)
