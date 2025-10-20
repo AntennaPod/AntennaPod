@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.ui.screen.playback;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;

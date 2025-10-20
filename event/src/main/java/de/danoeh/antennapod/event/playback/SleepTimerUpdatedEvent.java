@@ -23,8 +23,7 @@ public class SleepTimerUpdatedEvent {
         return new SleepTimerUpdatedEvent(new TimerValue(CANCELLED, CANCELLED));
     }
 
-    public long getMillisTimeLeft()
-    {
+    public long getMillisTimeLeft() {
         return Math.abs(timerValue.getMillisValue());
     }
 
