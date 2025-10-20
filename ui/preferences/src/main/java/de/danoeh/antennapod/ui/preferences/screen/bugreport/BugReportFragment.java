@@ -100,9 +100,7 @@ public class BugReportFragment extends AnimatedFragment {
     private void refreshEnvironmentInfo(@NonNull BugReportViewModel.EnvironmentInfo info) {
         viewBinding.attribAppVersionLabel.setText(info.applicationVersion);
         viewBinding.attribAndroidVersionLabel.setText(info.androidVersion);
-        viewBinding.attribDeviceModelLabel.setText(info.deviceModel);
-        viewBinding.attribDeviceNameLabel.setText(info.deviceName);
-        viewBinding.attribProductNameLabel.setText(info.productName);
+        viewBinding.attribDeviceNameLabel.setText(info.getFriendlyDeviceName());
     }
 
     private void refreshCrashLogInfo(@NonNull BugReportViewModel.UiState uiState) {
@@ -170,12 +168,8 @@ public class BugReportFragment extends AnimatedFragment {
                 new ClipboardUtils.TextViewCopyOnClickListener(ctx, R.string.report_bug_attrib_app_version));
         viewBinding.attribAndroidVersionLabel.setOnClickListener(
                 new ClipboardUtils.TextViewCopyOnClickListener(ctx, R.string.report_bug_attrib_android_version));
-        viewBinding.attribDeviceModelLabel.setOnClickListener(
-                new ClipboardUtils.TextViewCopyOnClickListener(ctx, R.string.report_bug_attrib_device_model));
         viewBinding.attribDeviceNameLabel.setOnClickListener(
                 new ClipboardUtils.TextViewCopyOnClickListener(ctx, R.string.report_bug_attrib_device_name));
-        viewBinding.attribProductNameLabel.setOnClickListener(
-                new ClipboardUtils.TextViewCopyOnClickListener(ctx, R.string.report_bug_attrib_product));
 
         viewBinding.crashLogContentLabel.setOnClickListener(new ClipboardUtils.ViewCopyOnClickListener(ctx,
                 R.string.report_bug_crash_log_title, R.string.copied_to_clipboard) {

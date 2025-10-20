@@ -94,46 +94,22 @@
                     app:layout_constraintStart_toEndOf="@+id/deviceInfoImage" />
 
                 <TextView
-                    android:id="@+id/deviceModelLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/report_bug_attrib_device_model"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="16dp"
-                    style="@style/TextAppearance.Material3.TitleSmall"
-                    app:layout_constraintTop_toBottomOf="@+id/androidVersionLabel"
-                    app:layout_constraintStart_toEndOf="@+id/deviceInfoImage" />
-
-                <TextView
                     android:id="@+id/deviceNameLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/report_bug_attrib_device_name"
-                    android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
                     style="@style/TextAppearance.Material3.TitleSmall"
-                    app:layout_constraintTop_toBottomOf="@+id/deviceModelLabel"
-                    app:layout_constraintStart_toEndOf="@+id/deviceInfoImage" />
-
-                <TextView
-                    android:id="@+id/deviceProductNameLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/report_bug_attrib_product"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    style="@style/TextAppearance.Material3.TitleSmall"
-                    app:layout_constraintTop_toBottomOf="@+id/deviceNameLabel"
                     app:layout_constraintStart_toEndOf="@+id/deviceInfoImage"
-                    app:layout_constraintBottom_toBottomOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/androidVersionLabel"
+                    android:layout_marginTop="8dp" />
 
                 <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/reportDetailsBarrier"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:barrierDirection="end"
-                    app:constraint_referenced_ids="appVersionLabel, androidVersionLabel, deviceModelLabel, deviceNameLabel, deviceProductNameLabel" />
+                    app:constraint_referenced_ids="appVersionLabel, androidVersionLabel, deviceNameLabel" />
 
                 <TextView
                     android:id="@+id/attribAppVersionLabel"
@@ -170,23 +146,6 @@
                     app:layout_constraintTop_toTopOf="@+id/androidVersionLabel" />
 
                 <TextView
-                    android:id="@+id/attribDeviceModelLabel"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
-                    android:gravity="end"
-                    android:paddingVertical="4dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    style="@style/TextAppearance.Material3.BodySmall"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toEndOf="@+id/reportDetailsBarrier"
-                    tools:text="[Model Name]"
-                    app:layout_constraintTop_toTopOf="@+id/deviceModelLabel"
-                    app:layout_constraintBottom_toBottomOf="@+id/deviceModelLabel" />
-
-                <TextView
                     android:id="@+id/attribDeviceNameLabel"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -202,23 +161,6 @@
                     tools:text="[Device Name]"
                     app:layout_constraintTop_toTopOf="@+id/deviceNameLabel"
                     app:layout_constraintBottom_toBottomOf="@+id/deviceNameLabel" />
-
-                <TextView
-                    android:id="@+id/attribProductNameLabel"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
-                    android:gravity="end"
-                    android:paddingVertical="4dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    style="@style/TextAppearance.Material3.BodySmall"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/reportDetailsBarrier"
-                    app:layout_constraintHorizontal_weight="1"
-                    tools:text="[Product]"
-                    app:layout_constraintTop_toTopOf="@+id/deviceProductNameLabel"
-                    app:layout_constraintBottom_toBottomOf="@+id/deviceProductNameLabel" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

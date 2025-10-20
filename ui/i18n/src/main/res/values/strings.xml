@@ -578,9 +578,7 @@
     <string name="report_bug_device_info_title">Device</string>
     <string name="report_bug_attrib_app_version">App version</string>
     <string name="report_bug_attrib_android_version">Android version</string>
-    <string name="report_bug_attrib_device_model">Model</string>
-    <string name="report_bug_attrib_device_name">Device</string>
-    <string name="report_bug_attrib_product">Product</string>
+    <string name="report_bug_attrib_device_name">Device Name</string>
 
     <string name="report_bug_crash_log_title">Crash log</string>
     <string name="report_bug_crash_log_message">Created: %1$s.</string>

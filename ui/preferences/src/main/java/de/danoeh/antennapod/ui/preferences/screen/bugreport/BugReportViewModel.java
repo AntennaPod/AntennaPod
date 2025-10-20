@@ -33,6 +33,7 @@ public class BugReportViewModel extends AndroidViewModel {
         String applicationVersion;
         String androidVersion;
         String androidOsVersion;
+        String deviceManufacturer;
         String deviceModel;
         String deviceName;
         String productName;
@@ -41,9 +42,18 @@ public class BugReportViewModel extends AndroidViewModel {
             this.applicationVersion = PackageUtils.getApplicationVersion(application);
             this.androidVersion = Build.VERSION.RELEASE;
             this.androidOsVersion = System.getProperty("os.version");
+            this.deviceManufacturer = Build.MANUFACTURER;
             this.deviceModel = Build.MODEL;
             this.deviceName = Build.DEVICE;
             this.productName = Build.PRODUCT;
+        }
+
+        public String getFriendlyDeviceName() {
+            if (Build.MODEL.startsWith(Build.MANUFACTURER)) {
+                return Build.MODEL;
+            }
+
+            return Build.MANUFACTURER + " " + Build.MODEL;
         }
     }
 
@@ -102,7 +112,8 @@ public class BugReportViewModel extends AndroidViewModel {
                     + "\nAntennaPod version: " + environmentInfo.applicationVersion
                     + "\nModel: " + environmentInfo.deviceModel
                     + "\nDevice: " + environmentInfo.deviceName
-                    + "\nProduct: " + environmentInfo.productName;
+                    + "\nProduct: " + environmentInfo.productName
+                    + "\nManufacturer: " + environmentInfo.deviceManufacturer;
 
             if (crashLogInfo.isAvailable()) {
                 this.formattedCrashLogTimestamp = DateUtils.formatDateTime(
