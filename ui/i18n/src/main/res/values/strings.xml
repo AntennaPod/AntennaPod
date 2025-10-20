@@ -645,21 +645,24 @@
     <string name="disable_sleeptimer_label">Disable sleep timer</string>
     <string name="extend_sleep_timer_label">+%d min</string>
     <plurals name="extend_sleep_timer_episodes_quantified">
-        <item quantity="one">1 episode</item>
+        <item quantity="one">%d episode</item>
         <item quantity="other">%d episodes</item>
     </plurals>
     <string name="sleep_timer_without_continuous_playback_title">Disable continuous playback</string>
-    <string name="sleep_timer_without_continuous_playback_message">You can simply disable continuous playback to automatically stop after an episode, there is no need to use the sleep timer for that.\n\nIf you actually want that to happen only at specific times you can set up a sleep timer.</string>
+    <string name="sleep_timer_without_continuous_playback_message">Instead of automatically enabling the sleep timer with one episode, please instead disable \"continuous playback\" in the settings.</string>
     <string name="sleep_timer_without_continuous_playback_disable_playback">Disable continuous playback</string>
     <string name="sleep_timer_without_continuous_playback_proceed_with_timer">Use sleep timer</string>
     <string name="sleep_timer_always">Always</string>
     <string name="sleep_timer_label">Sleep timer</string>
     <string name="time_dialog_invalid_input">Invalid input, time has to be an integer</string>
-    <string name="timer_exceeds_remaining_time_while_continuous_playback_disabled">Continuous playback is disabled and the current episode has only %1$d minutes left</string>
-    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">Continuous playback is disabled, there\'s no point in enabling episode sleep timers</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="one">Continuous playback is disabled and the current episode has only %1$d minute left</item>
+        <item quantity="other">Continuous playback is disabled and the current episode has only %1$d minutes left</item>
+    </plurals>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">Continuous playback is disabled in the settings. Always stopping at the end of the episode.</string>
     <plurals name="episodes_sleep_timer_exceeds_queue">
-        <item quantity="zero">There are no episodes left in your queue</item>
-        <item quantity="one">There is only one episode left in your queue</item>
+        <item quantity="zero">There are no (%1$d) episodes left in your queue</item>
+        <item quantity="one">There is only %1$d episode left in your queue</item>
         <item quantity="other">There are only %1$d episodes left in your queue</item>
     </plurals>
     <string name="shake_to_reset_label">Shake to reset</string>

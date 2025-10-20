@@ -6,7 +6,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class SleepTimerPreferences {
@@ -17,7 +16,6 @@ public class SleepTimerPreferences {
     private static final String PREF_VALUE = "LastValue";
 
     private static final String PREF_TIMER_TYPE = "sleepTimerType";
-
     private static final String PREF_VIBRATE = "Vibrate";
     private static final String PREF_SHAKE_TO_RESET = "ShakeToReset";
     private static final String PREF_AUTO_ENABLE = "AutoEnable";
@@ -25,7 +23,7 @@ public class SleepTimerPreferences {
     private static final String PREF_AUTO_ENABLE_TO = "AutoEnableTo";
 
     private static final String DEFAULT_LAST_TIMER = "15";
-    private static final String DEFAULT_TIMER_TYPE = "CLOCK";
+    private static final int DEFAULT_TIMER_TYPE = 0;
     private static final int DEFAULT_AUTO_ENABLE_FROM = 22;
     private static final int DEFAULT_AUTO_ENABLE_TO = 6;
 
@@ -62,11 +60,11 @@ public class SleepTimerPreferences {
     }
 
     public static SleepTimerType getSleepTimerType() {
-        return SleepTimerType.valueOf(prefs.getString(PREF_TIMER_TYPE, DEFAULT_TIMER_TYPE).toUpperCase(Locale.US));
+        return SleepTimerType.fromIndex(prefs.getInt(PREF_TIMER_TYPE, DEFAULT_TIMER_TYPE));
     }
 
     public static void setSleepTimerType(SleepTimerType newType) {
-        prefs.edit().putString(PREF_TIMER_TYPE, newType.name()).apply();
+        prefs.edit().putInt(PREF_TIMER_TYPE, newType.index).apply();
     }
 
     public static void setVibrate(boolean vibrate) {
