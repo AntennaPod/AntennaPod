@@ -14,7 +14,7 @@ import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
-import de.danoeh.antennapod.playback.service.internal.TimerValue;
+import de.danoeh.antennapod.model.playback.TimerValue;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;

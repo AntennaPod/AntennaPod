@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
+import de.danoeh.antennapod.model.playback.TimerValue;
 
 public class EpisodeSleepTimer extends ClockSleepTimer {
     private static final String TAG = "EpisodeSleepTimer";
@@ -36,16 +37,15 @@ public class EpisodeSleepTimer extends ClockSleepTimer {
         if (isEndingThisEpisode(playbackPositionEvent.getPosition())) {
             // if we're ending this episode send the "correct" remaining time
             // this ensures that the last 10 seconds the playback volume will be reduced
-            EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(
-                    current.getDisplayValue(), currentEpisodeTimeLeft));
+            EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(new TimerValue(
+                    current.getDisplayValue(), currentEpisodeTimeLeft)));
 
             if (currentEpisodeTimeLeft < NOTIFICATION_THRESHOLD) {
                 notifyAboutExpiry();
             }
         } else {
             // if we have more than 1 episode left then just report the current values
-            EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(
-                    current.getDisplayValue(), current.getMillisValue()));
+            EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(current));
         }
     }
 
@@ -68,7 +68,7 @@ public class EpisodeSleepTimer extends ClockSleepTimer {
 
     private void stopPlayback() {
         // send an event with time remaining 0, that stops playback
-        EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(0, 0));
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(new TimerValue(0, 0)));
         stop(); // stop the timer too
     }
 }

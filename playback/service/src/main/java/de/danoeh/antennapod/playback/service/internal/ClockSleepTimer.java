@@ -13,6 +13,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
+import de.danoeh.antennapod.model.playback.TimerValue;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 
 public class ClockSleepTimer implements SleepTimer {
@@ -43,7 +44,7 @@ public class ClockSleepTimer implements SleepTimer {
         timeLeft -= timeSinceLastTick;
 
         final TimerValue left = getTimeLeft();
-        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(left.getDisplayValue(), left.getMillisValue()));
+        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(left));
         if (timeLeft < NOTIFICATION_THRESHOLD) {
             notifyAboutExpiry();
         }
@@ -97,10 +98,10 @@ public class ClockSleepTimer implements SleepTimer {
         // make sure we've registered for events first
         EventBus.getDefault().register(this);
         final TimerValue left = getTimeLeft();
-        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(left.getDisplayValue(), left.getMillisValue()));
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(left));
 
         lastTick = System.currentTimeMillis();
-        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(left.getDisplayValue(), left.getMillisValue()));
+        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(left));
 
         isRunning = true;
     }

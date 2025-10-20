@@ -64,7 +64,7 @@ import de.danoeh.antennapod.playback.service.internal.PlaybackServiceNotificatio
 import de.danoeh.antennapod.playback.service.internal.PlaybackServiceStateManager;
 import de.danoeh.antennapod.playback.service.internal.PlaybackServiceTaskManager;
 import de.danoeh.antennapod.playback.service.internal.PlaybackVolumeUpdater;
-import de.danoeh.antennapod.playback.service.internal.TimerValue;
+import de.danoeh.antennapod.model.playback.TimerValue;
 import de.danoeh.antennapod.playback.service.internal.WearMediaSession;
 import de.danoeh.antennapod.storage.preferences.SleepTimerType;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;

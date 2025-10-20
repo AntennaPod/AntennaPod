@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.playback.service.internal;
+package de.danoeh.antennapod.model.playback;
 
 public class TimerValue {
     private final long displayValue; // Value shown to user (milliseconds or number of episodes)

@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.playback.service.internal;
 
+import de.danoeh.antennapod.model.playback.TimerValue;
+
 public interface SleepTimer {
 
     long NOTIFICATION_THRESHOLD = 10000;

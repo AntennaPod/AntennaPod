@@ -702,7 +702,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         final Playable currentMedia = media;
         Playable nextMedia = null;
 
-        // we should continue to next episode iff we were told to continue and we're allowed to (by sleep timer)
+        // we should continue to next episode if we were told to continue and we're allowed to (by sleep timer)
         shouldContinue &= callback.shouldContinueToNextEpisode();
 
         if (shouldContinue) {

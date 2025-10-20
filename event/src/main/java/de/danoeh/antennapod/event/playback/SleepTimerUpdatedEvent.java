@@ -1,44 +1,46 @@
 package de.danoeh.antennapod.event.playback;
 
+import de.danoeh.antennapod.model.playback.TimerValue;
+
 public class SleepTimerUpdatedEvent {
     private static final long CANCELLED = Long.MAX_VALUE;
-    private final long millisTimeLeft;
-    private final long displayTimeLeft;
+    private final TimerValue timerValue;
 
-    private SleepTimerUpdatedEvent(long displayTimeLeft, long millisTimeLeft) {
-        this.displayTimeLeft = displayTimeLeft;
-        this.millisTimeLeft = millisTimeLeft;
+    private SleepTimerUpdatedEvent(final TimerValue timerValue) {
+        this.timerValue = timerValue;
     }
 
-    public static SleepTimerUpdatedEvent justEnabled(long displayTimeLeft, long milisTimeLeft) {
-        return new SleepTimerUpdatedEvent(displayTimeLeft, -milisTimeLeft);
+    public static SleepTimerUpdatedEvent justEnabled(final TimerValue timer) {
+        return new SleepTimerUpdatedEvent(new TimerValue(timer.getDisplayValue(), -timer.getMillisValue()));
     }
 
-    public static SleepTimerUpdatedEvent updated(long displayTimeLeft, long milisTimeLeft) {
-        return new SleepTimerUpdatedEvent(Math.max(displayTimeLeft, 0), Math.max(0, milisTimeLeft));
+    public static SleepTimerUpdatedEvent updated(final TimerValue timer) {
+        return new SleepTimerUpdatedEvent(
+                new TimerValue(Math.max(timer.getDisplayValue(), 0), Math.max(0, timer.getMillisValue())));
     }
 
     public static SleepTimerUpdatedEvent cancelled() {
-        return new SleepTimerUpdatedEvent(CANCELLED, CANCELLED);
+        return new SleepTimerUpdatedEvent(new TimerValue(CANCELLED, CANCELLED));
     }
 
-    public long getMillisTimeLeft() {
-        return Math.abs(millisTimeLeft);
+    public long getMillisTimeLeft()
+    {
+        return Math.abs(timerValue.getMillisValue());
     }
 
     public long getDisplayTimeLeft() {
-        return Math.abs(displayTimeLeft);
+        return Math.abs(timerValue.getDisplayValue());
     }
 
     public boolean isOver() {
-        return millisTimeLeft == 0;
+        return timerValue.getMillisValue() == 0;
     }
 
     public boolean wasJustEnabled() {
-        return millisTimeLeft < 0;
+        return timerValue.getMillisValue() < 0;
     }
 
     public boolean isCancelled() {
-        return millisTimeLeft == CANCELLED;
+        return timerValue.getMillisValue() == CANCELLED;
     }
 }
