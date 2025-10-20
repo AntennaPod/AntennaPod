@@ -212,8 +212,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/report_bug_crash_log_expand"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/crashLogTitleLabel"
@@ -274,8 +272,6 @@
         android:layout_marginLeft="8dp"
         android:layout_marginBottom="8dp"
         android:text="@string/copy_to_clipboard"
-        android:minWidth="0dp"
-        android:minHeight="0dp"
         style="@style/Widget.MaterialComponents.Button.TextButton" />
 
     <com.google.android.material.divider.MaterialDivider
