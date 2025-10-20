@@ -44,6 +44,8 @@ public class BugReportFragment extends AnimatedFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(this).get(BugReportViewModel.class);
+
+        postponeEnterTransition();
     }
 
     @Override
@@ -63,6 +65,8 @@ public class BugReportFragment extends AnimatedFragment {
         viewModel.getState().observe(getViewLifecycleOwner(), uiState -> {
             refreshEnvironmentInfo(uiState.getEnvironmentInfo());
             refreshCrashLogInfo(uiState);
+
+            startPostponedEnterTransition();
         });
 
         viewBinding.expandCrashLogButton.setOnClickListener(v -> {
