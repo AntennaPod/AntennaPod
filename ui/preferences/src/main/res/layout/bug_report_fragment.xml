@@ -229,26 +229,36 @@
                     app:layout_constraintStart_toEndOf="@+id/crashLogImage"
                     app:layout_constraintEnd_toEndOf="parent" />
 
-                <TextView
-                    android:id="@+id/crashLogContentLabel"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                <HorizontalScrollView
+                    android:id="@+id/crashLogContentContainer"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
                     android:background="?attr/colorSurfaceContainer"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:maxLines="4"
-                    android:minLines="4"
-                    android:textSize="12sp"
-                    android:typeface="monospace"
-                    android:padding="4dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
+                    android:clickable="true"
                     android:layout_marginBottom="8dp"
-                    tools:text="[The content of the latest crash log will be displayed here!]"
+                    android:scrollbars="none"
                     app:layout_constraintTop_toBottomOf="@+id/crashLogMessageLabel"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/crashLogContentText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:maxLines="4"
+                        android:minLines="4"
+                        android:padding="8dp"
+                        android:textSize="12sp"
+                        android:typeface="monospace"
+                        android:scrollbars="none"
+                        tools:text="[The content of the latest crash log will be displayed here!]" />
+
+                </HorizontalScrollView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

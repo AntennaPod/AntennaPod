@@ -52,8 +52,13 @@ public class BugReportFragment extends AnimatedFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         viewBinding = BugReportFragmentBinding.inflate(inflater, container, false);
-
         return viewBinding.getRoot();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        viewBinding = null;
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -114,16 +119,16 @@ public class BugReportFragment extends AnimatedFragment {
         switch (state) {
             case SHOWN_COLLAPSED:
             case SHOWN_EXPANDED:
-                viewBinding.crashLogContentLabel.setText(crashLogInfo.getContent());
+                viewBinding.crashLogContentText.setText(crashLogInfo.getContent());
                 viewBinding.crashLogMessageLabel.setText(getString(
                         R.string.report_bug_crash_log_message, uiState.getFormattedCrashLogTimestamp()));
 
                 if (state == BugReportViewModel.UiState.CrashLogState.SHOWN_COLLAPSED) {
                     viewBinding.expandCrashLogButton.setText(R.string.report_bug_crash_log_expand);
-                    viewBinding.crashLogContentLabel.setMaxLines(4);
+                    viewBinding.crashLogContentText.setMaxLines(4);
                 } else {
                     viewBinding.expandCrashLogButton.setText(R.string.report_bug_crash_log_collapse);
-                    viewBinding.crashLogContentLabel.setMaxLines(Integer.MAX_VALUE);
+                    viewBinding.crashLogContentText.setMaxLines(Integer.MAX_VALUE);
                 }
 
                 viewBinding.crashLogToggleGroup.setVisibility(View.VISIBLE);
@@ -175,7 +180,7 @@ public class BugReportFragment extends AnimatedFragment {
         viewBinding.attribDeviceNameLabel.setOnClickListener(
                 new ClipboardUtils.TextViewCopyOnClickListener(ctx, R.string.report_bug_attrib_device_name));
 
-        viewBinding.crashLogContentLabel.setOnClickListener(new ClipboardUtils.ViewCopyOnClickListener(ctx,
+        viewBinding.crashLogContentText.setOnClickListener(new ClipboardUtils.ViewCopyOnClickListener(ctx,
                 R.string.report_bug_crash_log_title, R.string.copied_to_clipboard) {
             @Override
             protected String getText(View view) {
