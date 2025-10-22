@@ -231,8 +231,8 @@
 
                 <HorizontalScrollView
                     android:id="@+id/crashLogContentContainer"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:background="?attr/colorSurfaceContainer"
                     android:layout_marginTop="16dp"
                     android:layout_marginStart="8dp"
