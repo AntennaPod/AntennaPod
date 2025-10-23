@@ -329,6 +329,24 @@ public class DBWriter {
     }
 
     /**
+     * Creates a new queue.
+     *
+     * @param context             A context that is used for opening a database connection.
+     * @param name                The name of the new queue.
+     */
+    public static Future<?> df_addQueue(final Context context, final String name) {
+        return runOnDbThread(() -> {
+            final PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.df_addQueue(name);
+            adapter.close();
+
+            BackupManager backupManager = new BackupManager(context);
+            backupManager.dataChanged();
+        });
+    }
+
+    /**
      * Inserts a FeedItem in the queue at the specified index. The 'read'-attribute of the FeedItem will be set to
      * true. If the FeedItem is already in the queue, the queue will not be modified.
      *

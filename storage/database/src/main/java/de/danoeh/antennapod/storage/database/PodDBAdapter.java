@@ -86,7 +86,7 @@ public class PodDBAdapter {
     public static final String KEY_COMPLETION_DATE = "completion_date";
     public static final String KEY_FEEDITEM = "feeditem";
     public static final String KEY_QUEUE_ID = "queue_id";
-    public static final String KEY_QUEUE_NAME = "queue_name";
+    public static final String KEY_QUEUE_NAME = "name";
     public static final String KEY_PAYMENT_LINK = "payment_link";
     public static final String KEY_START = "start";
     public static final String KEY_LANGUAGE = "language";
@@ -888,6 +888,20 @@ public class PodDBAdapter {
         return count > 0;
     }
 
+    public void df_addQueue(String name) {
+        ContentValues values = new ContentValues();
+        try {
+            db.beginTransactionNonExclusive();
+            values.put(KEY_QUEUE_NAME, name);
+            db.insert(TABLE_NAME_QUEUES, null, values);
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        } finally {
+            db.endTransaction();
+        }
+    }
+
     public void setQueue(List<FeedItem> queue) {
         ContentValues values = new ContentValues();
         try {
@@ -1549,12 +1563,18 @@ public class PodDBAdapter {
             db.execSQL(CREATE_INDEX_FEEDMEDIA_FEEDITEM);
             db.execSQL(CREATE_INDEX_QUEUE_FEEDITEM);
             db.execSQL(CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM);
+
+            addDefaultQueue(db);
         }
 
         @Override
         public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
             Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to " + newVersion + ".");
             DBUpgrader.upgrade(db, oldVersion, newVersion);
+        }
+
+        public void addDefaultQueue(final SQLiteDatabase db) {
+            DBWriter.df_addQueue(context, "Queue");
         }
     }
 }
