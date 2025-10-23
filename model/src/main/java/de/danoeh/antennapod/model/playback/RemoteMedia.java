@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
@@ -280,21 +281,21 @@ public class RemoteMedia implements Playable {
     public boolean equals(Object other) {
         if (other instanceof RemoteMedia) {
             RemoteMedia rm = (RemoteMedia) other;
-            return StringUtils.equals(downloadUrl, rm.downloadUrl)
-                    && StringUtils.equals(feedUrl, rm.feedUrl)
-                    && StringUtils.equals(itemIdentifier, rm.itemIdentifier);
+            return Strings.CS.equals(downloadUrl, rm.downloadUrl)
+                    && Strings.CS.equals(feedUrl, rm.feedUrl)
+                    && Strings.CS.equals(itemIdentifier, rm.itemIdentifier);
         }
         if (other instanceof FeedMedia) {
             FeedMedia fm = (FeedMedia) other;
-            if (!StringUtils.equals(downloadUrl, fm.getStreamUrl())) {
+            if (!Strings.CS.equals(downloadUrl, fm.getStreamUrl())) {
                 return false;
             }
             FeedItem fi = fm.getItem();
-            if (fi == null || !StringUtils.equals(itemIdentifier, fi.getItemIdentifier())) {
+            if (fi == null || !Strings.CS.equals(itemIdentifier, fi.getItemIdentifier())) {
                 return false;
             }
             Feed feed = fi.getFeed();
-            return feed != null && StringUtils.equals(feedUrl, feed.getDownloadUrl());
+            return feed != null && Strings.CS.equals(feedUrl, feed.getDownloadUrl());
         }
         return false;
     }
