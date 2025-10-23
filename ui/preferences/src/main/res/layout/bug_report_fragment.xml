@@ -303,7 +303,8 @@
             android:layout_height="wrap_content"
             android:text="@string/report_bug_github_title"
             android:layout_marginEnd="8dp"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:textColor="?attr/colorPrimary"
+            style="?android:attr/borderlessButtonStyle" />
 
         <Button
             android:id="@+id/openForumButton"
