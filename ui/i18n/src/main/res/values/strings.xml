@@ -651,7 +651,6 @@
     <string name="sleep_timer_without_continuous_playback_title">Disable continuous playback</string>
     <string name="sleep_timer_without_continuous_playback_message">Instead of automatically enabling the sleep timer with one episode, please instead disable \"continuous playback\" in the settings.</string>
     <string name="sleep_timer_without_continuous_playback_disable_playback">Disable continuous playback</string>
-    <string name="sleep_timer_without_continuous_playback_proceed_with_timer">Use sleep timer</string>
     <string name="sleep_timer_always">Always</string>
     <string name="sleep_timer_label">Sleep timer</string>
     <string name="time_dialog_invalid_input">Invalid input, time has to be an integer</string>

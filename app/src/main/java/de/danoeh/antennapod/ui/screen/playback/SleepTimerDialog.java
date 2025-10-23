@@ -258,10 +258,6 @@ public class SleepTimerDialog extends DialogFragment {
                             chAutoEnable.setChecked(false);
                             refreshUiState();
                         })
-                .setPositiveButton(R.string.sleep_timer_without_continuous_playback_proceed_with_timer,
-                        (dialogInterface, i) -> {
-                            chAutoEnable.setChecked(true);
-                        })
                 .create();
 
         dialog.setOnCancelListener(dialogInterface -> chAutoEnable.setChecked(false));
